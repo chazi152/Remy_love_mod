@@ -1,0 +1,222 @@
+:: Widgets Debug [widget]
+<<widget "debug">>
+	<<button DEBUG>>
+	<<script>>overlayShowHide('debugOverlay')<</script>>
+	<</button>>
+
+	<<if $debugMenu is undefined>>
+		<<set $debugMenu to [false, 'debugMain', ""]>>
+	<</if>>
+	<<if $debugMenu[2] is undefined>>
+		<<set $debugMenu[2] = "">>
+	<</if>>
+	<<if $debug_favourite == undefined>>
+		<<set $debug_favourite = []>>
+	<</if>>
+	<<if setup.debugMenu.cacheDebugDiv["debugOverlay"] == undefined or setup.debugMenu.cacheDebugDiv["debugOverlay"] == {}>>
+			<<if $debugMenu == []>>
+				<<set $debugMenu = [false, "debugMain", ""]>>
+			<</if>>
+			<<replace "#debugOverlay">><<debugContents>><</replace>>
+			<<if $debugMenu[0] is true>>
+				<<removeclass "#debugOverlay" "hidden">>
+			<<else>>
+				<<addclass "#debugOverlay" "hidden">>
+			<</if>>
+	<<else>>
+		<<saveLoadCache "load">>
+		<<if $debugMenu[2] != "" and $debugMenu[2] != undefined>>
+			<<run window.researchEvents($debugMenu[2])>>
+		<</if>>
+	<</if>>
+	<<run window.checkEventCondition()>>
+<</widget>>
+
+<<widget "debugContents">>
+	<<set _selected = $debugMenu[1]>>
+	<nav class="overlayMenu">
+		<ul>
+			<li><input id="debugOverlayButton" type="button" class="close" style="width:45px;height: 35px;" value="⮨" onclick="overlayShowHide('debugOverlay', 'close')"/></li>
+			<li><input id="debugMainButton" @class="'bg-color-debug-unselected '+(_selected == 'debugMain' ? 'bg-color-debug-selected' : '')" type="button" value="Main" style="width: 60px;" onclick="overlayMenu('debugMain', 'debug')"/></li>
+			<li><input id="debugCharacterButton" @class="'bg-color-debug-unselected '+(_selected == 'debugCharacter' ? 'bg-color-debug-selected' : '')" type="button" value="Character" onclick="overlayMenu('debugCharacter', 'debug')"/></li>
+			<li><input id="debugEventsButton" @class="'bg-color-debug-unselected '+(_selected == 'debugEvents' ? 'bg-color-debug-selected' : '')" type="button" value="Events" style="width: 65px;" onclick="overlayMenu('debugEvents', 'debug')"/></li>
+			<li><input id="debugFavouritesButton" @class="'bg-color-debug-unselected '+(_selected == 'debugFavourites' ? 'bg-color-debug-selected' : '')" type="button" value="Favourites" onclick="overlayMenu('debugFavourites', 'debug')"/></li>
+			<li><input id="debugAddButton" @class="'bg-color-debug-unselected '+(_selected == 'debugAdd' ? 'bg-color-debug-selected' : '')" style="width: 20px; padding-left: 0.259em;" type="button" value="+" onclick="overlayMenu('debugAdd', 'debug')"/></li>
+		</ul>
+		<div class="header-content-search-content" id="formChangeColor" style="">
+			<input name="searchEvents" id="searchEvents" placeholder="Filtering..." onfocusout="window.changeBorderColor()" onfocus="window.changeBorderColor()" oninput="window.researchEvents()">
+		</div>
+	</nav>
+
+	<<if $debugMenu[1] is "debugMain">>
+		<div id="debugMain" class="overlayItem">
+			<h3>Main</h3>
+			<<debugMain>>
+			<br>
+		</div>
+	<<else>>
+		<div id="debugMain" class="overlayItem hidden">
+			<h3>Main</h3>
+			<<debugMain>>
+			<br>
+		</div>
+	<</if>>
+
+	<<if $debugMenu[1] is "debugCharacter">>
+		<div id="debugCharacter" class="overlayItem">
+			<h3>Character</h3>
+			<<debugCharacter>>
+			<br>
+		</div>
+	<<else>>
+		<div id="debugCharacter" class="overlayItem hidden">
+			<h3>Character</h3>
+			<<debugCharacter>>
+			<br>
+		</div>
+	<</if>>
+
+	<<if $debugMenu[1] is "debugEvents">>
+		<div id="debugEvents" class="overlayItem" onload="restoreDebugMenuState">
+			<h3>Events</h3>
+			<<debugEvents>>
+			<br>
+		</div>
+	<<else>>
+		<div id="debugEvents" class="overlayItem hidden" onload="restoreDebugMenuState">
+			<h3>Events</h3>
+			<<debugEvents>>
+			<br>
+		</div>
+	<</if>>
+	<<if $debugMenu[1] is "debugFavourites">>
+		<div id="debugFavourites" class="overlayItem" onload="restoreDebugMenuState">
+			<h3>Favourites</h3>
+			<<debugFavourites>>
+			<br>
+		</div>
+	<<else>>
+		<div id="debugFavourites" class="overlayItem hidden" onload="restoreDebugMenuState">
+			<h3>Favourites</h3>
+			<<debugFavourites>>
+			<br>
+		</div>
+	<</if>>
+	<<if $debugMenu[1] is "debugAdd">>
+		<div id="debugAdd" class="overlayItem" onload="restoreDebugMenuState">
+			<h3>Add passages to the Menu</h3>
+			<<debugAdd>>
+			<br>
+			<br>
+		</div>
+	<<else>>
+		<div id="debugAdd" class="overlayItem hidden" onload="restoreDebugMenuState">
+			<h3>Add passages to the Menu</h3>
+			<<debugAdd>>
+			<br>
+		</div>
+	<</if>>
+	<<if $debugMenu[2] != "" and $debugMenu[2] != undefined>>
+		<<run window.researchEvents($debugMenu[2])>>
+	<</if>>
+	<<saveLoadCache "save">>
+<</widget>>
+
+<<widget "debugMain">>
+	<br>
+	<div id="MainDebugInfo">
+		Allure: <<print $allure>>
+		<br>
+		Rng: <<print $rng>>
+		<br>
+		Danger: <<print $danger || '0'>>
+		<br>
+		Passage: <<print $passage>>
+		<br>
+	</div>
+
+	<input type="button" id="backwords" value="Back" onclick="SugarCube.State.backward()"/>
+	<br>
+	<div id='debugEventsMain'>
+		<<debugGenerateDivs "Main">>
+	</div>
+<</widget>>
+
+<<widget "debugCharacter">>
+	<div id='debugEventsCharacter'>
+		<<debugGenerateDivs "Character">>
+	</div>
+<</widget>>
+
+<<widget "debugEvents">>
+	<div id='debugEventsEvents'>
+		<<debugGenerateDivs "Events">>
+	</div>
+<</widget>>
+
+<<widget "debugFavourites">>
+	<<if _args[0] == "replace">>
+		<<replace "#debugEventsFavourites">>
+			<<debugGenerateDivs "Favourites">>
+		<</replace>>
+	<<else>>
+	<div id='debugEventsFavourites'>
+		<<debugGenerateDivs "Favourites">>
+	</div>
+	<</if>>
+<</widget>>
+
+<<widget "debugAdd">>
+	<div id='debugEventsAdd'>
+		<<debugGenerateDivs "Add">>
+	</div>
+<</widget>>
+
+<<widget "debugGenerateDivs">>
+	<<if ndef _event_list>>
+		<<set _event_list to window.returnEventList()>>
+	<</if>>
+	<<if _event_list["Favourites"] == undefined>>
+		<<set _event_list["Favourites"] = $debug_favourite>>
+	<</if>>
+	<<if _args[0] != "Add">>
+		<<for _index = 0; _index < _event_list[_args[0]].length; _index++>>
+			<<if _event_list[_args[0]][_index].text_only != undefined>>
+				<<for _c = 0; _event_list[_args[0]][_index].text_only[_c] == '\n'; _c++>><br name="#"><</for>>
+				<<if _c < _event_list[_args[0]][_index].text_only.length>>
+					<div name="#" @id="_args[0]+'-'+_index">
+						<<print _event_list[_args[0]][_index].text_only>>
+					</div>
+					<<for _c = _event_list[_args[0]][_index].text_only.length - 1; _event_list[_args[0]][_index].text_only[_c] == '\n'; _c-->><br name="#"><</for>>
+				<</if>>
+			<<else>>
+				<<run window.getNameAndPassage(_args[0], T.index)>>
+				<<capture _args[0] _index _link_name _link_passage>>
+					<<set _onclickTemp = "window.debugCreateLinkAndRedirect("+"'"+_args[0]+"'"+","+_index+","+"'"+_args[0]+"-"+_index+"'"+");">>
+					<div @name="_link_name" @id="_args[0]+'-'+_index">
+						<a tabindex="0" @onclick="_onclickTemp">_link_name</a>
+						<<run window.addFavouriteIcon(_args[0], _index, _args[0]+'-'+_index)>>
+					</div>
+					<<run window.addonClickDivPassage(_args[0], _index, _args[0]+'-'+_index)>>
+				<</capture>>
+			<</if>>
+		<</for>>
+	<<else>>
+		<<run window.addDebugForm()>>
+	<</if>>
+<</widget>>
+
+
+<<widget "saveLoadCache">>
+	<<if _args[0] == "save">>
+		<<run window.cacheDebugDiv()>>
+	<<else>>
+		<<run $(document).one(':passageend', (ev) => window.loadCachedDebugDiv())>>
+	<</if>>
+<</widget>>
+
+<<widget "resetDebugLinks">>
+	<<link _link_name _link_passage>>
+		<<run window.runWidgetsInsideLink(_args[0], _index)>>
+	<</link>>
+<</widget>>

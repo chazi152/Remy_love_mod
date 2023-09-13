@@ -1,0 +1,197 @@
+:: Widgets Trash [widget]
+<<widget "eventstrash">>
+<<cleareventpool>>
+<<addinlineevent "trash_1" 1>>
+	<<generate1>><<person1>>"站住！"你身后传来一个声音喊道。"这是私人领地。你到底在干什么？"
+	<br><br>
+
+	<<link [[解释原因|Trash Explain]]>><</link>><<englishdifficulty 1 1000>>
+	<br>
+	<<if $promiscuity gte 15>>
+	<<link [[色诱|Trash Seduce]]>><</link>><<promiscuous1>>
+	<br>
+	<</if>>
+	<<link [[逃跑|Trash Run]]>><</link>><<athleticsdifficulty 1 1000>>
+	<br>
+<</addinlineevent>>
+<<addinlineevent "trash_2" 1>>
+	虽然只持续了片刻，但你还是认为你感觉到了地面的颤抖。
+	<<gstress>><<stress 6>>
+	<br><br>
+
+	<<link [[继续|Trash]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</addinlineevent>>
+<<addinlineevent "trash_3" 1>>
+	<<beastNEWinit 1 dog>>
+	你听到身后传来一声咆哮声，一个<<beasttype>>正在你身后呲着牙。
+	<br><br>
+	<<if $monster is 1 or $bestialitydisable is "f">>
+		<!-- Modified for Beast People -->
+		<<link [[继续|Trash Beast]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<else>>
+		你逃跑了。虽然你受了点伤，但还是跑了出去。
+		<<beastescape>>
+		<br><br>
+
+		<<link [[继续|Trash]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</addinlineevent>>
+<<addinlineevent "trash_4" 1>>
+	"地面猛然起伏，金属镣铐从下面窜出，扣住你的手腕将你拉倒。<<gpain>><<pain 1>>
+	<br><br>
+	地面颤抖，一台大型机器升起。一盏不祥的红灯闪烁着，就像一只可怕的眼睛在盯着你。
+	<br><br>
+
+	<<link [[撑住|Trash Brace]]>><</link>>
+	<br>
+	<<link [[挣脱|Trash Break]]>><</link>><<physiquedifficulty 1 20000>>
+	<br>
+<</addinlineevent>>
+<<addinlineevent "trash_5" 1>>
+	你感觉你脚下的地面塌陷了下去，你摔在了一个浅坑中。
+	<br><br>
+	<<rng>>
+	<<if $rng gte 51 or $swarmdisable is "t">>
+	你爬了出来，虽然摔得时候有些疼，但其他还好。
+	<br><br>
+
+	<<link [[继续|Trash]]>><<set $eventskip to 1>><</link>>
+	<br>
+	<<else>>
+	你感觉有东西在你身下蠕动着。你定睛一看，你躺下的地方到处都是蛆。每只蛆都和你的手差不多长。
+	<br><br>
+
+	<<link [[继续|Trash Swarm]]>><<set $molestationstart to 1>><</link>>
+	<br>
+	<</if>>
+<</addinlineevent>>
+<<addinlineevent "trash_6" 1>>
+	你听到微弱的嗡嗡声，随着你的深入，嗡嗡声逐渐增大，这声音振的你脑袋疼。
+	<<gstress>><<stress 6>>
+	<br><br>
+
+	<<link [[继续|Trash]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</addinlineevent>>
+<<addinlineevent "trash_7" 1>>
+	一群海鸥正在附近的垃圾堆里翻啄着食物。
+
+	<<dancedifficulty 200 400 ignore>>
+	<<if $danceSuccess>>
+		一条香蕉皮被甩到你的脚下，<span class="green">但你轻松躲开了。</span>那只该死的海鸥站在你刚才站的地方。
+	<<else>>
+		一条香蕉皮被甩了过来，<span class="red">它直直的落在你的头上，</span>你愤愤的将其丢回垃圾堆里。<<gstress>><<stress 6>>
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Trash]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</addinlineevent>>
+<<addinlineevent "trash_8" 2>>
+	<<rng>>
+	<<if $rng gte 91 and $parasitedisable is "f" and $parasite.right_thigh.name is undefined>>
+		你被什么东西绊倒了，考虑到这里是个垃圾回收站，这并不奇怪。直到你<span class="lewd">感觉有什么东西缠到你右腿上。</span>你看向大腿，一只巨大的蛆正黏在你的腿上，你试图将其扯下来，只可惜是无用功。<i>也许你可以用水把它冲掉。</i>
+		<br><br>
+		<<parasite right_thigh maggot>>
+		被它所附着的皮肤传来一阵阵的温暖感，而这种感觉正在蔓延着。
+		<<garousal>><<arousal 600>>
+		<br><br>
+
+		<<link [[继续|Trash]]>><<set $eventskip to 1>><</link>>
+		<br>
+
+	<<elseif $rng gte 81 and $parasitedisable is "f" and $parasite.left_thigh.name is undefined>>
+		你被什么东西绊倒了，考虑到这里是个垃圾回收站，这并不奇怪。直到你<span class="lewd">感觉有什么东西缠到你左腿上。</span>你看向大腿，一只巨大的蛆正黏在你的腿上，你试图将其扯下来，只可惜是无用功。<i>也许你可以用水把它冲掉。</i>
+		<br><br>
+		<<parasite left_thigh maggot>>
+		被它所附着的皮肤传来一阵阵的温暖感，而这种感觉正在蔓延着。
+		<<garousal>><<arousal 600>>
+		<br><br>
+
+		<<link [[继续|Trash]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<elseif $rng gte 71 and $parasitedisable is "f" and $parasite.right_arm.name is undefined>>
+		你被什么东西绊倒了，考虑到这里是个垃圾回收站，这并不奇怪。直到你<span class="lewd">感觉有什么东西缠到你右臂上。</span>你看向胳膊，一只巨大的蛆正黏在上面，你试图将其扯下来，只可惜是无用功。<i>也许你可以用水把它冲掉。</i>
+		<br><br>
+		<<parasite right_arm maggot>>
+		被它所附着的皮肤传来一阵阵的温暖感，而这种感觉正在蔓延着。
+		<<garousal>><<arousal 600>>
+		<br><br>
+
+		<<link [[继续|Trash]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<elseif $rng gte 61 and $parasitedisable is "f" and $parasite.left_arm.name is undefined>>
+		你被什么东西绊倒了，考虑到这里是个垃圾回收站，这并不奇怪。直到你<span class="lewd">感觉有什么东西缠到你左臂上。</span>你看向胳膊，一只巨大的蛆正黏在上面上，你试图将其扯下来，只可惜是无用功。<i>也许你可以用水把它冲掉。</i>
+		<br><br>
+		<<parasite left_arm maggot>>
+		被它所附着的皮肤传来一阵阵的温暖感，而这种感觉正在蔓延着。
+		<<garousal>><<arousal 600>>
+		<br><br>
+
+		<<link [[继续|Trash]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<elseif $rng gte 51 and $parasitedisable is "f" and $parasite.tummy.name is undefined>>
+		你被什么东西绊倒了，考虑到这里是个垃圾回收站，这并不奇怪。直到你<span class="lewd">感觉有什么东西贴在了你的肚子上。</span>你看向肚子，一只巨大的蛆正黏在你的肚子上，你试图将其扯下来，只可惜是无用功。<i>也许你可以用水把它冲掉。</i>
+		<br><br>
+		<<parasite tummy maggot>>
+		被它所附着的皮肤传来一阵阵的温暖感，而这种感觉正在蔓延着。
+		<<garousal>><<arousal 600>>
+		<br><br>
+
+		<<link [[继续|Trash]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<elseif $rng gte 41 and $parasitedisable is "f" and $parasite.bottom.name is undefined>>
+		你被什么东西绊倒了，考虑到这里是个垃圾回收站，这并不奇怪。直到你<span class="lewd">感觉有什么东西贴在了你的屁股上。</span>你看向屁股，一只巨大的蛆正黏在上面，你试图将其扯下来，只可惜是无用功。<i>也许你可以用水把它冲掉。</i>
+		<br><br>
+		<<parasite bottom maggot>>
+		被它所附着的皮肤传来一阵阵的温暖感，而这种感觉正在蔓延着。
+		<<garousal>><<arousal 600 "bottom">>
+		<br><br>
+
+		<<link [[继续|Trash]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		你被什么东西绊倒了，考虑到这里是个垃圾回收站，所以这并不奇怪，但是当你回头看时，你看不到任何可能会绊倒你的东西。
+		<<gpain>><<pain 4>><<gstress>><<stress 6>>
+		<br><br>
+
+		<<link [[继续|Trash]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</addinlineevent>>
+<<if $museumAntiques.antiques.antiqueminesign isnot "found" and $museumAntiques.antiques.antiqueminesign isnot "talk" and $museumAntiques.antiques.antiqueminesign isnot "museum">>
+	<<addinlineevent "trash_9" 1>>
+		你用脚跺在一块金属板上，使它从一堆结块的污垢中脱落。污垢下面好像写着什么，但是你看不清。
+		<br><br>
+		<<link [[清理污垢 (0:10)|Trash Plate]]>><<pass 10>><</link>><<housekeepingdifficulty 1 300>>
+		<br>
+		<<link [[无视|Trash]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</addinlineevent>>
+<</if>>
+<<runeventpool>>
+<</widget>>
+
+<<widget "passouttrash">>
+	<<if isPlayerNonparasitePregnancyEnding()>>
+		<<pregnancyWatersBrokenPassout "trash">>
+	<<else>>
+		<<passout>>
+		你将自己逼的太紧了。
+		<br><br>
+		<<link [[继续|Trash Pass Out]]>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "trashSelect">>
+	<!-- This could potentially be adapted into a more all-encompassing widget that selects a random NPC -->
+	<<if _audience>>
+		<<personselect _audience.pluck()>>
+	<<else>>
+		<<personselect random(0,5)>>
+	<</if>>
+<</widget>>

@@ -1,0 +1,729 @@
+:: Domus House Lock
+
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "domus">><<set $lock to 100>>
+这扇门正紧锁着.
+<br><br>
+<<if currentSkillValue('skulduggery') gte $lock>>
+	<span class="green">这把锁看起来很容易被撬开。</span>
+	<br><br>
+	<<link [[闯入 (0:05)|Domus House Sneak]]>><<pass 5>><<crimeup 1>><</link>><<crime>>
+	<br>
+<<else>>
+	<span class="red">这把锁看上去超出了你的能力范围.</span><<skulduggeryrequired>>
+	<br><br>
+<</if>>
+<<link [[离开|Domus Street]]>><</link>>
+<br>
+
+:: Domus House Sneak
+
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+你成功地撬开了锁并进到了这栋房子里。
+<<if $skulduggery lt 200>>
+	<<skulduggeryskilluse>>
+<<else>>
+	<span class="blue">这对你来说太简单了，你从中学不到任何新技巧。</span>
+<</if>>
+<br><br>
+你偷偷摸摸地在房子里寻找任何有价值的东西。
+<<if $rng gte 81>>
+	<!-- Modified for Beast People -->
+	<<beastNEWinit 1 dog>>
+	<<if $monster is 1 or $bestialitydisable is "f">>
+		一声低沉的咆哮打断了你的动作，一只<<beasttype>>从黑暗中钻了出来，<<bHe>>朝你低声吠叫。
+		<br><br>
+		<<if $deviancy gte 15>>
+			<<link [[试着使它平静下来|Domus House Dog]]>><<set $sexstart to 1>><<generate2>><</link>><<deviant2>>
+			<br>
+		<</if>>
+		<<link [[战斗|Domus House Dog]]>><<set $molestationstart to 1>><<generate2>><</link>>
+		<br>
+		<<link [[跑路|Domus House Run]]>><<transform cat 1>><</link>>
+		<br><br>
+	<<else>>
+		一声低沉的咆哮打断了你的动作，一只狗吠叫着从黑暗中钻了出来，而它正逐步向你靠近着。
+		<br><br>
+		你仓惶逃出房子，而这条狗对你紧追不舍。但它并没有追出前门，仅仅是对着门外的<<if Time.dayState is "night">>夜晚<<else>>街道<</if>>狂吠。
+		<<beastescape>>
+		<br><br>
+		<<link [[继续|Domus Street]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<<elseif $rng gte 61>>
+	你找到了一个带密码锁的保险箱。
+	<br><br>
+	<<link [[尝试打开它|Domus House Safe]]>><</link>>
+	<br>
+	<<link [[离开|Domus Street]]>><</link>>
+	<br>
+<<elseif $rng gte 56>>
+	<<generate1>><<person1>>
+	当你蹑手蹑脚地穿过一个黑暗的房间时，一个低沉的声音吓了你一大跳。
+	<br><br>
+	"欢迎你继续四处寻找，亲爱的，但这里没有都什么，我想你是找不到你想要的东西的。虽然这条街的人都很好，但我没有什么值钱的东西。
+	如果你想要一些值钱的东西，那就去多瑙河街吧。那里有很多值得一去的地方，并且充满了各种各样的好东西。"
+	<br>
+	一个打火机被按响了两次，那微弱的火光映照出一个<<person>>的脸庞，在打着第三次之后，<<his>>嘴里的香烟终于被点着了，随着香烟的燃起，昏暗的房间里出现了那唯一的光亮。
+	<br><br>
+	"我曾经是个小偷，"<<he>>突然说道："你要记住，小偷在刚开始的那段时间内是很舒服的，很多好东西都可以用0元购来获得。那时候的生活让我沉迷，我本以为这样的生活会永久这样下去，但是我后面才明白，所有的一切都是有代价的.
+	那句话怎么说来着？所有的礼物都在暗中被标注好了价格……我们的人生如此的微不足道，单纯为了活着本身而活着，而不是为了活着之外的任何事物而活着。用偷窃，用身体，付出一切的代价，活在这操蛋的小镇……颈手枷固然是羞耻和残忍的，但是这里的监狱更加糟糕。那里与其说是监狱，不如说是地狱而更贴切一些。现如今，我已经与销赃的那家伙断了联系。
+	在这个镇上可以很容易地赚到钱，只要向那些家伙张开你的腿，钞票就会源源不断的流进你的口袋。这可比蹲监狱要容易得多，而且你至少可以选择买家。切记保持一些控制，毕竟这里的监狱可比我描述的还要残酷的多。"
+	<br><br>
+	一道道烟雾蜿蜒着向你这边聚拢，它轻而易举的穿过你的鼻腔，然后开始刺挠起你的喉咙。你忍不住的咳嗽了起来。
+	<br><br>
+	"抱歉，"<<he>>说道："这是一个需要戒掉的坏习惯。总而言之，这里什么都没有，你自己去看看吧，总比有一天你再跌跌撞撞地来到这里好。
+	去吧，想怎么看就怎么看，随便拿些什么东西吧。我可以得到更多的，所以你自己去吧。不过宝宝还在那间屋子里刚刚睡下不到一个小时，
+	所以不要吵醒那孩子，好吗？这就是我唯一的要求的。"
+	<br>
+	你悄悄地离开了。
+	<br>
+	"在这个镇上长大，这个小混蛋会需要所有能得到的休息时间，"<<he>>小声说道，似乎是在自言自语，"可怜的小混蛋。"
+	<br><br>
+	你什么都没找到，空手而归。
+	<br><br>
+	<<endevent>>
+	<<link [[离开|Domus Street]]>><</link>>
+	<br>
+<<elseif $rng gte 51>>
+	在摸索一个房间里的贵重物品时，你发现一个抽屉里有许多手机。虽然大多数看起来都是二手货，但有一部分还是相当新的。
+	<<if currentSkillValue('skulduggery') gte 500>>
+		以你对盗贼的了解让你很快确定这些都是偷来的手机。
+		再次偷窃它们应该构不成犯罪，毕竟那些家伙又不能报告有人偷了他们的赃物。
+		<br><br>
+		<<link [[全部拿走|Domus Street]]>><<set $blackmoney += 60>><</link>>
+	<<else>>
+		为什么有人会有这么多几乎全新的手机？真奇怪。
+		<br><br>
+		<<link [[拿走|Domus Street]]>><<set $blackmoney += 60>><<crimeup 60>><</link>><<crime>>
+	<</if>>
+	<br>
+	<<link [[离开|Domus Street]]>><</link>>
+	<br>
+<<elseif $rng gte 41>>
+	<<generate1>><<person1>>当你在起居室里翻找值钱东西的时候，突然听到有脚步声正在靠近，在那个<<person>>进入房间之前，你赶忙躲在了窗帘后面。<<He>>坐了下来并打开电视，<<he>>看起来可能要在那里坐上一段时间了。
+	<br><br>
+	<<link [[偷偷溜走|Domus House Sneak 2]]>><</link>>
+	<br>
+	<<link [[等待时机 (0:30)|Domus House Wait]]>><<pass 30>><</link>>
+	<br>
+<<elseif $rng gte 31>>
+	当你在起居室内翻找贵重物品时，你突然注意到某处地板像是空心的一样。
+	<<if currentSkillValue('skulduggery') gte 500>>怀疑有隐藏的藏匿处，<<else>>很困惑，<</if>>你在地毯下面找，发现了一个活板门。
+	你将活板门抬起来后往下看，似乎有一组台阶通向一个地下房间。
+	<br>
+	在黑暗之中，你无法辨认任何东西。
+	<br><br>
+	<<link [[顺着楼梯下去|Domus House Dungeon]]>><</link>>
+	<br>
+	<<link [[离开|Domus Street]]>><</link>>
+	<br>
+<<elseif $rng gte 21>>
+	<<switch $rng % 4>>
+		<<case 3>>
+			<<set _bigthing to "一整套非常高级的游戏设备">><<set _thebits to "超高清曲面屏幕，环绕立体声音响，带集成手柄的游戏椅">>
+			<<set _littlething to "一大叠色情游戏光盘">><<set _blackmoney to 50>>
+		<<case 2>>
+			<<set _bigthing to "一整套家庭影院系统">><<set _thebits to "巨型荧幕，继承立体声音响，带有控制面板的功能沙发">>
+			<<set _littlething to "一大叠色情片光盘">><<set _blackmoney to 80>>
+		<<case 1>>
+			<<set _bigthing to "一整套沉浸式VR系统">><<set _thebits to "VR头显，动漫主题的配件和家具，触觉反馈手套">>
+			<<set _littlething to "一箱动漫主题的 '原味内裤' ">><<set _blackmoney to 50>>
+		<<default>>
+			<<set _bigthing to "一个秘密的政府监视站">><<set _thebits to "间谍摄像头终端，手机窃听设备，网络监控和窃听装置">>
+			<<set _littlething to "一套与 '黑麋鹿计划' 有关的 '绝密' 政府文件">><<set _blackmoney to 110>>
+	<</switch>>
+	这所房子几乎完全是空的，就当你准备离开时，你偶然发现了一个专门用来摆放_bigthing的房间。
+	不幸的是，它里面的大部分-- _thebits --都太难拿走或太笨重而无法窃取。
+	<br>
+	还好，这个椅子边上的_littlething非常容易得手，并且应该能在黑市上卖个好价钱。
+	<br><br>
+	<<link [[拿走|Domus Street]]>><<set $blackmoney += _blackmoney>><<crimeup _blackmoney>><</link>><<crime>>
+	<br>
+	<<link [[离开|Domus Street]]>><</link>>
+	<br>
+<<elseif $rng gte 16>>
+	整个房子里没有任何有价值的东西。即使是那张床，也只是在光秃秃的木地板上放上旧污渍床垫，然后在上面铺着油腻的床单而组成的恶心玩意。
+	<<print either("简直就是悲剧。","太悲哀了。","三个孩子，一个大人，橱柜里还有半块发霉的面包。")>>
+	<br><br>
+	你不能从这些人这里偷东西，你也许应该把钱留给<i>这些家伙</i>。
+	<br><br>
+	<<if $money gte 10000>>
+		<<link [[留下 £100|Domus Leave Money]]>><<set $phase to 0>><<set $money -= 10000>><<stress -6>><<trauma -6>><</link>><<lstress>><<ltrauma>>
+		<br>
+	<</if>>
+	<<if $money gte 50000>>
+		<<link [[留下 £500|Domus Leave Money]]>><<set $phase to 1>><<set $money -= 50000>><<stress -24>><<trauma -12>><</link>><<llstress>><<lltrauma>>
+		<br>
+	<</if>>
+	<<if $money gte 100000>>
+		<<link [[留下 £1000|Domus Leave Money]]>><<set $phase to 2>><<set $money -= 100000>><<stress -50>><<trauma -18>><</link>><<lllstress>><<llltrauma>>
+		<br>
+	<</if>>
+	<<link [[就此离开|Domus Street]]>><</link>>
+	<br>
+<<else>>
+	<<rng>>
+	<<if $rng gte 91>>
+		你没有发现什么，只有一些价值<<moneyGainDisplay 1 true true>>的零钱。
+		<br><br>
+		<<link [[拿走|Domus Street]]>><<set $money += _money_gain>><<crimeup `_money_gain / 100`>><</link>><<crime>>
+		<br>
+		<<link [[离开|Domus Street]]>><</link>>
+		<br>
+	<<elseif $rng gte 81>>
+		你没有发现什么，只有一些价值<<moneyGainDisplay 2 true true>>的零钱。
+		<br><br>
+		<<link [[拿走|Domus Street]]>><<set $money += _money_gain>><<crimeup `_money_gain / 100`>><</link>><<crime>>
+		<br>
+		<<link [[离开|Domus Street]]>><</link>>
+		<br>
+	<<elseif $rng gte 71>>
+		你发现<<moneyGainDisplay 5 true true>>藏在一个抽屉里。
+		<br><br>
+		<<link [[拿走|Domus Street]]>><<set $money += _money_gain>><<crimeup `_money_gain / 100`>><</link>><<crime>>
+		<br>
+		<<link [[离开|Domus Street]]>><</link>>
+		<br>
+	<<elseif $rng gte 61>>
+		你在抽屉里找到一枚漂亮的饰针。
+		<br><br>
+		<<link [[拿走|Domus Street]]>><<set $blackmoney += 5>><<crimeup 5>><</link>><<crime>>
+		<br>
+		<<link [[离开|Domus Street]]>><</link>>
+		<br>
+	<<elseif $rng gte 51>>
+		你在沙发上的一个垫子下面发现了<<moneyGainDisplay 10 true true>>。
+		<br><br>
+		<<link [[拿走|Domus Street]]>><<set $money += _money_gain>><<crimeup `_money_gain / 100`>><</link>><<crime>>
+		<br>
+		<<link [[离开|Domus Street]]>><</link>>
+		<br>
+	<<elseif $rng gte 41>>
+		你在衣帽架旁边的凳子上发现了一条项链。
+		<br><br>
+		<<link [[拿走|Domus Street]]>><<set $blackmoney += 10>><<crimeup 10>><</link>><<crime>>
+		<br>
+		<<link [[离开|Domus Street]]>><</link>>
+		<br>
+	<<elseif $rng gte 31>>
+		你发现了<<moneyGainDisplay 15 true true>>正躺在厨房的灶台上。
+		<br><br>
+		<<link [[拿走|Domus Street]]>><<set $money += _money_gain>><<crimeup `_money_gain / 100`>><</link>><<crime>>
+		<br>
+		<<link [[离开|Domus Street]]>><</link>>
+		<br>
+	<<elseif $rng gte 21>>
+		你找到一套银质餐具。
+		<br>
+		<<link [[拿走|Domus Street]]>><<set $blackmoney += 15>><<crimeup 15>><</link>><<crime>>
+		<br>
+		<<link [[离开|Domus Street]]>><</link>>
+		<br>
+	<<elseif $rng gte 11>>
+		你在大衣口袋里发现了一对金袖扣。
+		<br><br>
+		<<link [[全部拿走|Domus Street]]>><<set $blackmoney += 20>><<crimeup 20>><</link>><<crime>>
+		<br>
+		<<link [[离开|Domus Street]]>><</link>>
+		<br>
+	<<else>>
+		你在前门旁边的一个罐子里发现了<<moneyGainDisplay 30 true true>>。
+		<br><br>
+		<<link [[拿走|Domus Street]]>><<set $money += _money_gain>><<crimeup `_money_gain / 100`>><</link>><<crime>>
+		<br>
+		<<link [[离开|Domus Street]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Domus House Dog
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $enemyno to 1>>
+	<<set $enemynomax to 1>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $enemytrust -= 40>><<set $enemyanger += 20>>
+	<<enable_rescue>>
+<<elseif $sexstart is 1>>
+	<<set $enemyno to 1>>
+	<<set $enemynomax to 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<beastCombatInit>>
+	<<set $enemytrust -= 40>>
+	你躺在地上并摆出交配的姿势。那只<<beasttype>>平静了下来，它的一些本能被你的动作所唤醒。
+	<<deviancy2>>
+	<<enable_rescue>>
+<</if>>
+<<effects>>
+<<if $phase.between(1,2) and $orgasmdown gte 2>>
+	<<set $phase += 2>>
+	<<person2>>“哇，”<<person>>说。“我的<<beasttype>>的婊子让你高潮了。也许这对你来说并不是一种惩罚，可能还是种享受呢。”你觉得很丢脸。<<famebestiality 1>>
+	<br><br>
+<<elseif $phase gte 1>>
+	<<person2>>那个<<person>>坐在沙发上看着你。
+	<br><br>
+<</if>>
+<<effectsman>>
+<<if ($phase % 2) and $alarm is 1>>
+	<<alarmstate '<span class="red"><<person2>>这个<<person>>大笑着。"怎么啦，小骚货？<<person1>>难道<<bhe>>对你来说太大了吗？"</span><<person1>>'1>>
+	<<set $alarm to 0>>
+	<<set $phase += 1>>
+<<else>>
+	<<alarmstate '<span class="red">没人能听见你的叫喊声。</span>'>>
+<</if>>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if $phase is 0>>
+	<<if _combatend>>
+		<span id="next"><<link [[继续|Domus House Dog Finish]]>><</link>></span><<nexttext>>
+	<<else>>
+		<span id="next"><<link [[继续|Domus House Dog]]>><</link>></span><<nexttext>>
+	<</if>>
+<<else>>
+	<<if _combatend>>
+		<span id="next"><<link [[继续|Domus House Dog Finish 2]]>><</link>></span><<nexttext>>
+	<<else>>
+		<span id="next"><<link [[继续|Domus House Dog]]>><</link>></span><<nexttext>>
+	<</if>>
+<</if>>
+
+:: Domus House Run
+
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "domus">>
+你仓惶逃出了房子，而这<<beasttype>>对你紧追不舍。但<<bHe>>并没有追出前门，仅仅是向着<<if Time.dayState is "night">>夜晚<<else>>街道<</if>>狂吠。
+<<beastescape>>
+<br><br>
+<<link [[继续|Domus Street]]>><<endevent>><</link>>
+<br>
+
+:: Domus House Dog Finish
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+	<<beasttype>>欢快地吠叫着走到窗前。
+	<<tearful>>你站了起来。
+	<br><br>
+	<<saveNPC 0 domus_skul_dog>>
+	<<clotheson>>
+	<<endcombat>>
+	<<loadNPC 0 domus_skul_dog>>
+	<<clearNPC domus_skul_dog>>
+	<<beasttype>>平静下来，你注意到<<bhis>>的项圈闪烁着光芒。你走近一看，发现上面镶满了珠宝。
+	<br><br>
+	<<link [[拿走它|Domus House Collar]]>><<crimeup 50>><</link>><<crime>>
+	<br>
+	<<link [[离开|Domus Street]]>><<endevent>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	这只<<beasttype>>畏缩不前，随后便翻身投降.
+	<<tearful>>你站了起来。
+	<br><br>
+	<<saveNPC 0 domus_skul_dog>>
+	<<clotheson>>
+	<<endcombat>>
+	<<loadNPC 0 domus_skul_dog>>
+	<<clearNPC domus_skul_dog>>
+	<<beasttype>>平静下来，你注意到<<bhis>>的项圈闪烁着光芒。你走近一看，发现上面镶满了珠宝。
+	<br><br>
+	<<link [[拿走它|Domus House Collar]]>><<crimeup 50>><</link>><<crime>>
+	<br>
+	<<link [[离开|Domus Street]]>><<endevent>><</link>>
+	<br>
+<<elseif $alarm is 1 and $rescue is 1>>
+	<<set $rescue to 0>>
+	<<if $NPCList[0].stance is "top">>
+		<<person2>>你听到了脚步声朝你过来。"你在这儿干什么，<<print $NPCList[0].pronouns.boy>>？"一个<<person>>对你说道。
+		当<<He>>看到你时，<<he>>笑了。"这样在我的房子里偷偷摸摸，真是太好了。"<<He>>坐了下来。"别介意。"
+		<br><br>
+		<<link [[继续|Domus House Dog]]>><<set $phase to 1>><</link>>
+	<<else>>
+		<<person2>>"你在那里得到了什么？"一位<<person>>说道。
+		当<<He>>看到你时，<<he>>笑了。"这样在我的房子里鬼鬼祟祟，真是太好了。但我有个更好的主意。"<<He>>抓住<<beasttype>>的衣领，把它从你身上拽下来。
+		<<saveNPC 1 domus_skul_dog_owner>>
+		<<endcombat>>
+		<<famebestiality 1>>
+		<<loadNPC 0 domus_skul_dog_owner>>
+		<<clearNPC domus_skul_dog_owner>>
+		<br><br>
+		<<link [[继续|Domus House Sneak Molestation]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<beasttype>>背对你。<<bHe>>又对你咆哮，但是没有动作。<<tearful>>你环顾四周。你看不到任何有价值的东西。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[离开|Domus Street]]>><</link>>
+	<br>
+<</if>>
+
+:: Domus House Collar
+
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<beasttypes>>耳朵抖动，但是<<bhe>>在你移除<<bhis>>的项圈时没有乱动。你拿着你的奖品离开这里。
+<br><br>
+<<set $blackmoney += 50>>
+<br><br>
+<<link [[离开|Domus Street]]>><<endevent>><</link>>
+<br>
+
+:: Domus House Sneak Molestation
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+<<effects>>
+<<effectsman>><<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[继续|Domus House Sneak Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Domus House Sneak Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Domus House Dog Finish 2
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+	<<person2>>这只野兽高兴地叫着，走到窗前，坐在那里。“很高兴看到一个婊子变成那样，”那个<<person>>说。 <<He>>在你恢复之前走到你身边抓住你的脖子。 <<He>>把你拖到前门，把你拖到门廊上。“如果我再看到你，你会变得更糟的。”门砰地关上了。
+	<<tearful>>你站了起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Domus Street]]>><<endevent>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	<<person2>>这头野兽畏缩着，俯首称臣。
+	<<tearful>>你在<<person>>反应之前逃离房间。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Domus Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<person1>>这<<beasttype>>从你身上下来。虽然<<bHe>>仍在对着你低吼，但只敢坐在窗边上这么干。
+	<<person2>>这个<<person>>叹了口气。"就连场好戏都不肯演给我看，是吗？"<<He>>在你能反应之前，走过来一把抓住了你的脖子，把你举着拖到门口。"如果下次再看到你，我会让你好好吃点苦头。"门被狠狠地关上了。
+	<<tearful>>你站了起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Domus Street]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Domus House Sneak Molestation Finish
+<<if $enemyhealth lte 0>>
+	你把<<person>>撞到<<his>>的椅子上。<<tearful>>你逃到外面去。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Domus Street]]>><</link>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"活该，"<<he>>说，抓住你的脖子。"你该庆幸我没有让警察介入"<<He>>把你拖到前门，然后把你推出去，你在那里摔倒在地。<<tearful>>你站起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Domus Street]]>><</link>>
+<</if>>
+
+:: Domus House Safe
+
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">><<set $lock to 400>>
+保险箱看起来很普通平凡。
+<br><br>
+<<if currentSkillValue('skulduggery') gte $lock>>
+	<span class="green">这把锁看起来很容易被撬开。</span>
+	<br><br>
+	<<link [[闯入 (0:05)|Domus House Safe Open]]>><<pass 5>><<crimeup 1>><</link>><<crime>>
+	<br>
+<<else>>
+	<span class="red">这把锁看上去超出了你的能力范围.</span><<skulduggeryrequired>>
+	<br><br>
+<</if>>
+<<link [[离开|Domus Street]]>><</link>>
+<br>
+
+:: Domus House Safe Open
+
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<if $skulduggery lt 500>>
+	<<skulduggeryskilluse>>
+<<else>>
+	<span class="blue">这对你来说太简单了，你从中学不到任何新技巧。</span>
+<</if>>
+<br><br>
+<<if $rng gte 10>>
+	你成功打开保险箱，并在里面找到了<<moneyGainDisplay 30 true true>>。
+	<br><br>
+	<<link [[拿走|Domus Street]]>><<set $money += _money_gain>><<crimeup `_money_gain / 100`>><</link>><<crime>>
+	<br>
+	<<link [[离开|Domus Street]]>><</link>>
+	<br>
+<<else>>
+	你成功地打开了保险箱，发现里面有一块看起来很贵的手表。
+	<br><br>
+	<<link [[拿走它|Domus Street]]>><<set $blackmoney += 100>><<crimeup 100>><</link>><<crime>>
+	<br>
+	<<link [[离开|Domus Street]]>><</link>>
+	<br>
+<</if>>
+
+:: Domus House Wait
+
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<if $rng gte 61>>
+	你待在窗帘后面，尽可能保持安静。30分钟后，<<person>>站起来，伸伸懒腰，走到厨房。你开始溜出去，但注意到<<he>>把<<his>>的手机放在沙发上。
+	<br><br>
+	<<link [[拿走它|Domus Street]]>><<crimeup 30>><<endevent>><<set $blackmoney += 30>><</link>><<crime>>
+	<br>
+	<<link [[离开|Domus Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	你待在窗帘后面尽可能保持安静。30分钟后，<<person>>站起来，伸伸懒腰，然后走到厨房。你偷溜出去。
+	<br><br>
+	<<link [[离开|Domus Street]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Domus House Sneak 2
+
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<person>>无法从<<he>>所坐的位置看到你，你开始慢慢地向外爬去。
+<br><br>
+<<if $rng gte 81>>
+	当你踮着脚走过<<his>>的椅背时，<<his>>向后伸出手抓住你。"以为我听不到你的声音？"<<he>>说着，把你拉到<<his>>的膝上。"我认为你需要得到教训."
+	<br><br>
+	<<link [[继续|Domus House Sneak Molestation]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	<<He>>的视线一直粘在<<his>>的电视上，让你毫不费力地溜出去。
+	<br><br>
+	<<link [[离开|Domus Street]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Domus House Dungeon
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<set $resc to 0>>
+你悄悄地潜入冰冷的深渊。
+<br><br>
+当你的眼睛调整时，你注意到来自更深处的光线。你关上身后的活板门。当你继续前行时，一股刺鼻的气味扑向你。房间里有一个橙色的灯泡，安装在一扇金属门上，从这边锁上。
+<br><br>
+你看到一些顶部有摄像头的讲台。大多数都围绕着一个金属框架床。看起来像是监狱的床。没有被子只有一张光秃秃的满是邪恶污渍的床垫。
+<br><br>
+床头板上挂着一副手铐，床上整齐地堆放着几副手铐，还有铁链和绳子。
+在那旁边，一堆破布和毛巾上面放着一个看起来很脏的金属钩。
+<br><br>
+另一台摄像机正对着一堵覆盖着干净的白色床单的墙。附近的一个盒子里装满了昂贵的摄像器材。
+<br><br>
+工作室的灯光点缀在房间四周。此刻，这些都熄灭了，只会投下险恶的阴影。
+<br><br>
+你觉得你听到门后有呼吸声。
+<br><br>
+<<link [[立刻离开|Domus House Dungeon 2]]>><<set $phase to 0>><</link>>
+<br>
+<<link [[盗窃设备后逃跑|Domus House Dungeon 2]]>><<set $phase to 1>><<crimeup 50>><<set $blackmoney += 50>><</link>><<crime>>
+<br>
+<<link [[开门|Domus House Prisoner]]>><</link>>
+<br>
+<br>
+
+:: Domus House Dungeon 2
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<set _risk to 0>>
+<<if $phase is 0>>
+	<<set _risk to 10>>
+	你径直走向出口。
+<<elseif $phase is 1>>
+	<<set _risk to 25>>
+	抓住尽可能多的设备，向出口走去。
+<</if>>
+<br><br>
+<<rng>>
+你打开活板门往外偷看。
+<<if $rng gt _risk>>
+	房间里空无一人，寂静无声。你从活板门爬上来，在关上门后悄悄逃离了这所房子。
+	<br><br>
+	<<link [[离开|Domus Street]]>><<unset $resc>><</link>>
+<<else>>
+	房间看起来空空如也。在爬出去时，<span class="red">有双手抓住了你。</span>
+	<br><br>
+	<<link [[继续|Domus House Dungeon Rape]]>><<set $molestationstart to 1>><</link>>
+<</if>>
+<br>
+
+:: Domus House Dungeon Rape
+
+<<if $molestationstart is 1>>
+	<<generate1>><<person1>>一个<<person>>牵制住你。
+	<br>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $rescue to 0>>/*no rescue possible*/
+	<<set $dun_counter to 1>>
+<</if>>
+<<effects>>
+<<effectsman>>
+
+<<if $alarm is 1>>
+	<<set $alarm to 0>>
+	<<switch $dun_counter>>
+	<<case 1>>
+		"隔音墙"，<<he>>轻叹。"这样我就能享受尖叫了。"
+	<<case 2>>
+		"继续尖叫！"<<he>>轻声细语。"更火热一些吧。"
+		<<set $enemyarousal += 10>>
+	<<case 3>>
+		"再大声尖叫！"<<he>>咆哮着。"你让我兴奋了。"
+		<<set $enemyarousal += 20>>
+	<<case 4>>
+		"尖叫！"<<he>>咆哮着。"就好像我在伤害你一样。"
+		<<set $enemyarousal += 20>>
+	<<default>>
+		"我得到你了，婊子！"<<he>>喃喃道。"尖叫！"
+		<<set $enemyarousal += 30>>
+	<</switch>>
+	<<if $NPCList[0].lefthand is "mouth" or $NPCList[0].righthand is "mouth">>
+		<br><span class="teal"><<He>>把<<his>>的手从你嘴里抽了出来。</span>
+		<<set $NPCList[0].righthand to 0>>
+		<<set $NPCList[0].lefthand to 0>>
+		<<set $mouthuse to 0>>
+	<</if>>
+	<<set $enemytrust -= 20>><<set $enemyanger -= 30>>/*reduce rate of anger/distrust*/
+	<<set $dun_counter += 1>>
+	<br><br>
+<</if>>
+<<man>>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Domus House Dungeon Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Domus House Dungeon Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Domus House Dungeon Rape Finish
+<<effects>><<unset $dun_counter>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	"真遗憾地下室的套房都住满了，否则我会留下你的，”<<he>>说。“走吧，快滚。"
+	<br><br>
+
+	<<tearful>>你自由了。
+	<br><br>
+
+	<<if $resc is 1>>
+		看到你被打败，吓坏了的囚犯一定回到了他们的地下牢房。
+		<br><br>
+	<</if>>
+
+	你离开了房子。
+<<elseif $enemyhealth lte 0>>
+
+	你把<<person>>打回去。跌跌撞撞地向后走，<<he>>踏进了仍然敞开着的活板门的空处。随着一声巨响和更大的咒骂声<<he>>消失在下面看不见了。
+
+	<<if $resc is 1>>
+		受惊的囚犯惊险躲开，疯狂地往上爬。你们一起逃离了那所房子。被释放后，囚犯都很感谢你。
+		"你可以说是拯救了我的一生。"
+		<br><br>
+		囚犯一瘸一拐地离开时，你感到一股温暖的光芒和一种为你所做的好事而从你身上卸下的重量。
+		<<lstress>><<ltrauma>><<gcontrol>><<stress -2>><<trauma -4>><<control 10>>
+	<<else>>
+		你迅速逃走。
+	<</if>>
+	<br><br>
+
+	<<tearful>>你自由了。
+<</if>>
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Domus Street]]>><<unset $resc>><</link>>
+<br>
+
+:: Domus House Prisoner
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<set _risk to 10>><<set $resc to 1>><<generateyv1>><<person1>>
+你打开门闩。你在身后发现了一个<<person>>，<<His>>像狗一样蜷缩着，瘫在光秃秃的地板上，光着的身上布满了伤痕和淤青。
+<<He>>哼了一声，两只疯狂的眼睛盯着你。
+<br>
+<<if currentSkillValue('english') gte (350+$rng)>>
+	你谨慎地组织自己的语言，<span class="green">你说服<<him>>你是友好的</span>，是来救<<him>>的。<<He>>抬起头朝你微笑。
+<<elseif $purity gte (750 + $rng)>>
+	不知怎的感觉到你散发出的纯净，<span class="green"><<he>>信任你</span>，相信你不会伤害<<him>>，<<He>>朝你微笑。
+<<else>>
+	你目不转睛地盯着，无言以对。毫无预兆地<<he>>突然嚎叫着蜷缩在地窖里。你需要几分钟的时间来安抚<<him>>，并让<<him>>相信你的友善。
+	<br><br>
+	<span class="red">你希望没人听到.</span>
+	<<set _risk += 35>>
+<</if>>
+<br><br>
+
+<<rng>>
+你领着<<him>>从房间走出来，把床上的毛巾递给<<him>>，<<He>>遮掩住<<himself>>自己的身体。你们一起爬上台阶，活板门。<<famegood 2>>
+<br><br>
+<<if $rng gt _risk>>
+	楼上的房间仍然仍然空无一人，寂静无声。你们一起逃离了这所房子。
+	<br><br>
+	获得自由后，<<person>>哭着感谢你挽救<<his>>的生命。你挥手微笑着，看着<<he>>一瘸一拐地向多瑙河街走去。
+	<br>
+	你现在感觉很好。
+	<<lstress>><<ltrauma>><<gcontrol>><<stress -2>><<trauma -4>><<control 10>>
+	<br><br>
+	<<endevent>>
+	<<link [[离开|Domus Street]]>><<unset $resc>><</link>>
+<<else>>
+	上面的房间看起来是空的。<span class="red">在你要爬出去时一只手突然抓住了你。</span>
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Domus House Dungeon Rape]]>><<set $molestationstart to 1>><</link>>/*End event clears out prisoner before combat*/
+<</if>>
+<br>
+
+:: Domus Leave Money
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+你在柜台上为他们留下
+<<if $phase is 0>>
+	£100
+<<elseif $phase is 1>>
+	£500
+<<else>>
+	£1000
+<</if>>
+，你希望这能对他们有所帮助。
+<br><br>
+
+<<link [[离开|Domus Street]]>><<endevent>><</link>>
+<br>

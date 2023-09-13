@@ -1,0 +1,804 @@
+:: Widgets Docks [widget]
+
+<<widget "dockclotheson">>
+	<<storeon "docks" "check">>
+	<<if _store_check is 1>>
+		你在之前放置的地方拿回了衣物。
+		<<storeon "docks">>
+		<br><br>
+	<</if>>
+<</widget>>
+
+<<widget "dockeffects">>
+	<!-- No effect. In progress? -->
+<</widget>>
+
+<<widget "dockunbindoffer">>
+	<<endevent>>
+	一名<<generate1>><<person1>><<person>>靠近你，脸上带着微笑。"不小心被绑住了？"<<he>>问道。"过来，我给你解开。"
+	<br><br>
+
+	<<link [[接受|Docks Binding]]>><</link>>
+	<br>
+	<<link [[拒绝|Docks Binding Refuse]]>><</link>>
+	<br>
+<</widget>>
+
+<<widget "dockoptions">>
+	<<endevent>>
+	<<link [[工作(1:00)|Docks Work]]>><<set $phase to 0>><<pass 60>><<tiredness 6>><</link>><<gtiredness>>
+	<br>
+	<<link [[偷懒(1:00)|Docks Work]]>><<set $phase to 1>><<pass 60>><<dockstatus -1>><</link>><<lcool>>
+	<br>
+
+	<<link [[离开|Docks]]>><<storeon "docks">><</link>>
+	<br>
+<</widget>>
+
+<<widget "dockstatustext">>
+	<<set $dockstatus = Math.clamp($dockstatus, 0, 100)>>
+	<<if $dockstatus gte 100>>
+		<span class="green">其他工人都尊重你。</span>
+	<<elseif $dockstatus gte 80>>
+		<span class="teal">其他工人接纳了你。</span>
+	<<elseif $dockstatus gte 30>>
+		<span class="lblue">其他工人包容着你。</span>
+	<<elseif $dockstatus gte 10>>
+		<span class="blue">其他工人以怀疑的眼光看着你。</span>
+	<<else>>
+		<span class="purple">其他工人以蔑视的眼光看着你。</span>
+	<</if>>
+<</widget>>
+
+<<widget "dockstatus">>
+	<<if _args[0]>>
+		<<set $dockstatus += (_args[0] * 2)>>
+	<</if>>
+<</widget>>
+
+<<widget "dockwork">>
+	<<set $dockhours += 1>>
+	<<if $stress gte $stressmax>>
+		<<if isPlayerNonparasitePregnancyEnding()>>
+			<<pregnancyWatersBrokenPassout "docks">>
+		<<else>>
+			你将自己逼的太紧了。
+			<br><br>
+			<<passout>>
+
+			<<if $danger gte (9900 - $allure)>>
+				<<link [[继续|Passout Docks]]>><</link>>
+				<br>
+			<<else>>
+				<<ambulance>>
+			<</if>>
+		<</if>>
+	<<elseif Time.hour gte 19>>
+		你帮忙搬运着设备，保证集装箱上了锁，以防晚上有人偷窃。
+		<br><br>
+		<<dockclotheson>>
+		你加入了保安室前排起的队，一名暴躁且<<generate1>><<person1>><<person>>把一个装着今日薪酬的棕色信封交给你。
+		<<endevent>>
+		<br>
+		你赚到了<span class="gold">£<<print (($dockwage * 12) / 100)>></span>。
+		<<set $money += ($dockwage * 12)>>
+		<br><br>
+		<<if $dockstatus gte 80>>
+			<<if playerBellyVisible()>>
+				<<generate1>><<person1>>你的一群同事聚在门口。<<person>>向你招手，"我们要去酒吧聚聚，"<<he>>说，"欢迎你加入我们，但是..."
+				<<He>>望向了你的<<bellyDescription "pc">>。"我相信你不会希望你出世的孩子会像是我们中的谁那样糟糕。"
+				<br><br>
+				<<endevent>>
+				<<link [[继续|Docks]]>><</link>>
+				<br>
+			<<else>>
+				<<generate1>><<person1>>你的一群同事聚在大门口。其中一名<<person>>向你招招手，让你过去。"我们要去酒吧喝酒，"<<he>>说。"你来不来？"
+				<br><br>
+				<<endevent>>
+				<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+					<span class="blue">你知道自己怀孕了，难以让自己投入于如此放荡的夜晚。</span>
+				<<elseif $money gte 500>>
+					<<link [[接受(1:00 £5)|Docks Pub Crawl]]>><<set $dockpubcount to 0>><<set $money -= 500>><<alcohol 120>><<dockstatus 1>><<stress -6>><<pass 60>><</link>><<gcool>><<lstress>>
+					<br>
+				<</if>>
+				<<link [[拒绝|Docks]]>><</link>>
+				<br>
+			<</if>>
+		<<else>>
+			<<link [[继续|Docks]]>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		<<if $rng gte 91>>
+			你被分配到了检查从甲板上卸下的集装箱内容的工作。
+			<<rng>>
+			<<if $rng gte 81 and $money gte 12000 and $dockslave isnot 1>>
+				<<generatey1>><<generate2>><<person2>>你听见其中一个集装箱中传来被堵住嘴一般的模糊的哭泣声。
+				<br><br>
+				你输入了密码，但集装箱并没有打开。"别管那个，"另一名码头工人说着。<<He>>指着门上印着的字母缩写。"这些集装箱免检的。"<<he>>如果也听见了里面的哭声，就是在装没听见。
+				<br><br>
+				<<set $lock to 400>>
+				<<if currentSkillValue('skulduggery') gte $lock>>
+					<span class="green">这把锁看起来很容易撬开。</span>
+					<br><br>
+					<<link [[强行打开(£100 1:00)|Docks Slave Open]]>><<set $dockslave to 1>><<crimeup 1>><</link>><<crime>>
+					<br>
+				<<else>>
+					<span class="red">这把锁超出了你的能力范围。</span><<skulduggeryrequired>>
+					<br><br>
+				<</if>>
+				<<link [[无视声音|Docks Slave Ignore]]>><</link>>
+				<br>
+			<<else>>
+				<<rng>>
+				<<if $rng gte 81>>
+					许多集装箱里都装着居民们订购的货物。其中一个包裹被撕开了，里面有什么东西在闪着光。
+					<br><br>
+					<<link [[偷窃|Docks Steal]]>><<crimeup 60>><<set $blackmoney += 60>><</link>><<crime>>
+					<br>
+					<<link [[不管|Docks Don't Steal]]>><</link>>
+					<br>
+				<<else>>
+					集装箱里装满了机械。你不知道这些机械的用处，但他们上面都贴好了标签。
+					<br><br>
+					<<dockoptions>>
+				<</if>>
+			<</if>>
+		<<elseif $rng gte 81>>
+			一艘船需要帮助入港。你，一名<<generate1>><<person1>><<person>>，和一名<<generate2>><<person2>><<person>>被派去执行任务。你们登上了一艘小艇，前去与之会合。
+			<br><br>
+			<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+			<<if $danger gte (9900 - $allure)>>
+				你们开到一半，<<person>>突然关闭了引擎。<<He>>和<<person1>><<person>>一起盯着你。"现在这海上只有你一个人哦，细皮嫩肉的小<<girl>>。"<<he>>说着，"来，让我俩爽爽，我们就不伤害你。"<<person>>手里挥舞着一条绳子。
+				<br><br>
+				<<link [[点头|Docks Rape]]>><<set $molestationstart to 1>><</link>>
+				<br>
+				<<link [[反抗|Docks Rape]]>><<set $fightstart to 1>><</link>>
+				<br>
+				<<link [[掀翻小艇|Docks Rape Capsize]]>><<dockstatus -1>><</link>><<lcool>>
+				<br>
+			<<else>>
+				<<person>>指引着船长，而你和<<person1>><<person>>则帮助船员们操作者倒缆。<<if $exposed gte 1>>虽然有所遮掩，但水手们还是在盯着你的身体看。<</if>>你们摆正了船只，引导其成功靠岸。
+				<br><br>
+				<<endevent>>
+				<<dockoptions>>
+			<</if>>
+		<<elseif $rng gte 71>>
+			一艘游轮从港口中插过，导致其他船只遭到了延误。邮轮并不理会向其发出的信号。你被派往游轮上传话，乘上了一艘小艇。
+			<br><br>
+			<<generate1>><<person1>>
+			<<if $exposed gte 1>>
+				你爬上了游轮。见到一名赤身裸体的<<girl>>爬上船，衣着得体的人群中开始窃窃私语。你找到了正在和乘客调情的船长。<<He>>看见你，惊得手里的玻璃杯都掉在了地上。
+			<<else>>
+				你爬上了游轮，从衣着得体的人群中挤过，寻找着船长。最后，你找到了正在和乘客调情的船长。
+				<br><br>
+			<</if>>
+			<<if $speech_attitude is "meek">>
+				"您好<<sir>>，"你说。"您的舰船不应向该方向行驶，阻碍到了其他船只。"
+			<<elseif $speech_attitude is "bratty">>
+				"不好意思打扰了"，你说，"但是如果你这蠢货再不调整航向的话，很快就要撞上其他船只了！"
+			<<else>>
+				"我前来传递消息，"你说。"您的航线有误，请转向至正确的航向。您的船只正造成其他船只的延误。"
+			<</if>>
+			<br><br>
+			"那就让他们等着呗，"<<he>>笑了起来。"我这船上可都是贵宾，一个个都等不及要上岸。"<<He>>转过身背对着你。
+			<br><br>
+			<<link [[回到港口|Docks Tourist Return]]>><</link>>
+			<br>
+			<<if $promiscuity gte 55>>
+				<<link [[诱惑|Docks Tourist Seduce]]>><</link>><<promiscuous4>>
+				<br>
+			<</if>>
+			<<if $submissive lte 500>>
+				<<link [[恐吓乘客|Docks Tourist Intimidate]]>><<dockstatus 3>><</link>><<defianttext>><<ggcool>>
+				<br>
+			<</if>>
+		<<elseif $rng gte 61>>
+			你被分配到给卡车卸货的任务。你注意到附近还有另一辆载具在卸货，卸货的员工穿着一身奇怪的制服。一名<<generate1>><<person1>><<generate2>><<person>>正在监督他们。
+			<br><br>
+			"别管他们，"在你身旁工作着的<<person2>><<person>>说道，"他们的货都是自己处理的。 "
+			<br><br>
+			<<link [[偷偷溜近瞧一眼|Docks Compound]]>><<drugs 240>><<stress -6>><</link>><<garousal>><<lstress>>
+			<br>
+			<<link [[无视|Docks Compound Ignore]]>><</link>>
+			<br>
+		<<elseif $rng gte 51>>
+			你被分配到将货物信息登记到电脑上的任务。当你浏览记录时，你发现了一处异常。
+			<br><br>
+			<<link [[检查异常|Docks Examine]]>><<set $phase to 0>><<stress 6>><</link>><<skill_difficulty "$maths" "数学" 1 1000>><<gstress>>
+			<br>
+			<<if currentSkillValue('skulduggery') gte 400>>
+				<<set $skulduggerydifficulty to 500>>
+				<<link [[记录珍贵货物所在地|Docks Examine Valuables]]>><<set $phase to 2>><</link>><<skulduggerydifficulty>>
+				<br>
+			<</if>>
+			<<link [[无视|Docks Examine]]>><<set $phase to 1>><</link>>
+			<br>
+		<<elseif $rng gte 41>>
+			你被分配到了打扫码头的任务。
+			<<rng>>
+			<<if $rng gte 61>>
+				你注意到一艘接近的船前方，水下有一团粉色的东西。
+				<br><br>
+				<!-- Convert to proper history skill check? -->
+				<<link [[调查|Docks History]]>><<set $phase to 0>><<stress 6>><</link>><<note "历史" "blue">><<gstress>>
+				<br>
+				<<link [[无视|Docks History]]>><<set $phase to 1>><</link>>
+				<br>
+			<<else>>
+				你顺利的完成了任务。
+				<br><br>
+				<<dockoptions>>
+			<</if>>
+		<<elseif $rng gte 31>>
+			你被分配到了搬运板条箱以备装货的任务。<<generate1>><<person1>>"你得开叉车去，"监工说。"我去找钥匙。"
+			<br><br>
+			<<if currentSkillValue('physique') gte 15000>>
+				板条箱看上去不重。等<<he>>回来的时候，你已经搬完了。"你比看上去壮啊，"<<he>>笑了笑。
+				<<gcool>><<dockstatus 1>>
+				<br><br>
+				<<dockoptions>>
+			<<else>>
+				<<He>>看着你搬运着板条箱。你顺利的完成了搬运任务。
+				<br><br>
+				<<dockoptions>>
+			<</if>>
+		<<elseif $rng gte 21>>
+
+			你被分配到了解开停泊船只缆绳的任务。缆绳又粗又重，而其他船只马上就要用到这一块停泊区了。
+			<br><br>
+			<<if currentSkillValue('physique') gte 5000 and $feetuse isnot "bound">>
+				你及时完成了任务。
+				<br><br>
+			<<else>>
+				你差一点就没能完成任务。
+				<<if $feetuse is "bound">>
+					<span class="pink">你的腿被绑着还能完成任务，真是个奇迹。</span>
+				<</if>>
+				<<gtiredness>><<tiredness 6>>
+				<br><br>
+			<</if>>
+
+			<<if $leftarm is "bound" or $rightarm is "bound" or $feetuse is "bound">>
+				<<dockunbindoffer>>
+			<<else>>
+				<<dockoptions>>
+			<</if>>
+
+		<<elseif $rng gte 11 and $exposed lte 0>>
+			你被分配到了润滑机械的任务。
+			<<if $dockstatus gte 30>>
+				你顺利的完成了任务。
+				<br><br>
+				<<dockoptions>>
+			<<elseif !$worn.over_lower.type.includes("naked")>>
+				你正在起重机旁工作时，它轰鸣着启动了，随后意外便发生了，你的$worn.over_lower.cn_name_cap被钩住了，你被起重机整个吊了起来。
+				<br><br>
+				<<generate1>><<person1>>吊机停了下来，你被吊在了半空中。操作吊机的<<person>>向空中旋转着的你挥着手。其他码头工人们纷纷驻足围观，吹着口哨鼓着掌。
+				<br><br>
+				<<set $worn.over_lower.integrity -= 10>>
+				<<if $worn.over_lower.integrity lte 0 and !$worn.lower.type.includes("naked")>>
+					<<overlowerruined>><<exposure>>
+					你的衣服在你的体重下撕裂，你落了下来。<<generate2>><<person2>>一名<<person>>接住了你。<<He>>一脸邪恶的看着你的<<lewdness>>。其他人也效仿着看着你。<<covered>>你从<<his>>怀里挣开，跑开躲了起来，身后传来嘲笑声。你找到了一条毛毯用于遮羞。
+					<<gtrauma>><<gstress>><<garousal>><<trauma 6>><<stress 6>><<arousal 600>>
+					<br><br>
+					<<towelup>>
+					<<dockoptions>>
+				<<else>>
+					<<if $worn.over_lower.integrity lte 0>>
+						你的<<print $worn.over_lower.cn_name_cap>>在你的体重下被撕开了。
+					<<else>>
+						在体重的作用下，你从钩子上落了下来。
+					<</if>>
+					<<generate2>><<person2>>一名<<person>>接住了你，但你挣开了<<his>>的怀抱。
+					<<gstress 6>>
+					<br><br>
+					<<link [[生气|Docks Angry]]>><<stress -3>><<dockstatus 1>><</link>><<gcool>><<lstress>>
+					<br>
+					<<link [[走开|Docks Walk]]>><</link>>
+					<br>
+				<</if>>
+			<<else>>
+				你正在起重机旁工作时，它轰鸣着启动了。随后，意外发生了。你的$worn.lower.cn_name_cap被钩住了，你被起重机整个吊了起来。
+				<br><br>
+				<<generate1>><<person1>>吊机停了下来，你被吊在了半空中。操作吊机的<<person>>向空中旋转着的你挥着手。其他码头工人们纷纷驻足围观，吹着口哨鼓着掌。
+				<br><br>
+				<<set $worn.lower.integrity -= 10>>
+				<<if $worn.lower.integrity lte 0>>
+					<<lowerruined>><<exposure>>
+					你的衣服在你的体重下撕裂，你落了下来。<<generate2>><<person2>>一名<<person>>接住了你。<<He>>一脸邪恶的看着你的<<lewdness>>。其他人也效仿着看着你。<<covered>>你从<<his>>怀里挣开，跑开躲了起来，身后传来嘲笑声。你找到了一条毛毯用于遮羞。
+					<<gtrauma>><<gstress>><<garousal>><<trauma 6>><<stress 6>><<arousal 600>>
+					<br><br>
+					<<towelup>>
+					<<dockoptions>>
+				<<else>>
+					在体重的作用下，你从钩子上落了下来。<<generate2>><<person2>>一名<<person>>接住了你，但你挣开了<<his>>的怀抱。
+					<<gstress 6>>
+					<br><br>
+					<<link [[生气|Docks Angry]]>><<stress -3>><<dockstatus 1>><</link>><<gcool>><<lstress>>
+					<br>
+					<<link [[走开|Docks Walk]]>><</link>>
+					<br>
+				<</if>>
+			<</if>>
+		<<else>>
+			你将板条箱从停泊的船只上搬到码头上。箱子比其他货物要更小，但还是很重。
+			<<if currentSkillValue('physique') gte 15000 and $leftarm isnot "bound" and $rightarm isnot "bound">>
+				你毫不费力，其他工人停下休息时你仍在工作。
+				<<gcool>><<dockstatus 1>>
+				<br><br>
+			<<elseif currentSkillValue('physique') gte 5000 and $leftarm isnot "bound" and $rightarm isnot "bound">>
+				你能够跟上其他码头工人们的节奏。
+				<br><br>
+			<<else>>
+				实在太重了，你无法一次把箱子搬到码头上，必须停下休息。其他码头工人们都搬了好几趟了，你才搬完一趟。
+				<<if $leftarm is "bound" and $rightarm is "bound">>
+					<span class="pink">你双手被绑缚，难以正常搬运，使得搬运过程异常艰辛。</span>
+				<</if>>
+				<br><br>
+				你还在努力搬运着第二个板条箱，却走过来一名浑身肌肉的码头工人，将你手中的板条箱搬走了。"最后一个了，"<<generate1>><<person1>><<he>>说着，甚至都没有看你一眼。
+				<<lcool>><<dockstatus -1>>
+				<br><br>
+			<</if>>
+			<<endevent>>
+
+			<<if $leftarm is "bound" or $rightarm is "bound" or $feetuse is "bound">>
+				<<dockunbindoffer>>
+			<<else>>
+				<<dockoptions>>
+			<</if>>
+
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "dockpubdestination">>
+	<<if $bus is "high">>
+		<<link [[停止|High Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<<elseif $bus is "harvest">>
+		<<link [[停止|Harvest Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<<elseif $bus is "connudatus">>
+		<<link [[停止|Connudatus Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<<elseif $bus is "barb">>
+		<<link [[停止|Barb Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<<else>>
+		<<link [[停止|Mer Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<</if>>
+<</widget>>
+
+<<widget "dockpuboptions">>
+	<<endevent>>
+	<<if $money gte 500>>
+		<<link [[继续(1:00 £5)|Docks Pub Crawl]]>><<set $dockpubcount to 0>><<set $money -= 500>><<alcohol 120>><<dockstatus 1>><<stress -6>><<pass 60>><</link>><<gcool>><<lstress>>
+		<br>
+	<</if>>
+	<<dockpubdestination>>
+<</widget>>
+
+<<widget "dockpubquiz">>
+	<<if $rng gte 81>>
+
+		是科学。
+		<br><br>
+
+		<<link [[让你的同事们回答|Docks Pub Crawl Science]]>><<set $phase2 to 0>><</link>>
+		<br>
+		<<link [[自己回答|Docks Pub Crawl Science]]>><<set $phase2 to 1>><</link>><<skill_difficulty "$science" "科学" 1 1000>>
+		<br>
+		<<link [[故意答错|Docks Pub Crawl Science]]>><<set $phase2 to 2>><</link>>
+		<br>
+
+	<<elseif $rng gte 61>>
+
+		是算数。你的一名同事伸出手准备掰手指头。
+		<br><br>
+
+		<<link [[让你的同事们回答|Docks Pub Crawl Maths]]>><<set $phase2 to 0>><</link>>
+		<br>
+		<<link [[自己回答|Docks Pub Crawl Maths]]>><<set $phase2 to 1>><</link>><<skill_difficulty "$maths" "数学" 1 1000>>
+		<br>
+		<<link [[故意答错|Docks Pub Crawl Maths]]>><<set $phase2 to 2>><</link>>
+		<br>
+
+	<<elseif $rng gte 41>>
+
+		是文学。
+		<br><br>
+
+		<<link [[让你的同事们回答|Docks Pub Crawl English]]>><<set $phase2 to 0>><</link>>
+		<br>
+		<<link [[自己回答|Docks Pub Crawl English]]>><<set $phase2 to 1>><</link>><<englishdifficulty 1 1000>>
+		<br>
+		<<link [[故意答错|Docks Pub Crawl English]]>><<set $phase2 to 2>><</link>>
+		<br>
+
+	<<elseif $rng gte 21>>
+
+		是当地的历史。
+		<br><br>
+
+		<<link [[让你的同事们回答|Docks Pub Crawl History]]>><<set $phase2 to 0>><</link>>
+		<br>
+		<<link [[自己回答|Docks Pub Crawl History]]>><<set $phase2 to 1>><</link>><<skill_difficulty "$history" "历史" 1 1000>>
+		<br>
+		<<link [[故意答错|Docks Pub Crawl History]]>><<set $phase2 to 2>><</link>>
+		<br>
+
+	<<else>>
+
+		是性爱，问题提出时激起了一篇下流的欢呼声。你的同事们表示这就是个送分题。
+		<br><br>
+
+		<<link [[让你的同事们回答|Docks Pub Crawl Love]]>><<set $phase2 to 0>><</link>>
+		<br>
+		<<link [[自己回答|Docks Pub Crawl Love]]>><<set $phase2 to 1>><<dockstatus 1>><</link>><<skill_difficulty "$promiscuity" "淫乱" 1 100>><<gcool>>
+		<br>
+		<<link [[故意答错|Docks Pub Crawl Love]]>><<set $phase2 to 2>><<dockstatus 1>><</link>><<gcool>>
+		<br>
+
+	<</if>>
+<</widget>>
+
+<<widget "skul_dock_init">>
+	<<if $skul_dock_init is undefined>>
+		<<unset $catsuit_spawned>>
+		<<set $skul_dock_init to 1>>
+		<<set $dock_security to 1>>
+		<<set $skul_dock to {}>>
+		<<set $skul_dock.NW to {}>>
+		<<set $skul_dock.N to {}>>
+		<<set $skul_dock.NE to {}>>
+		<<set $skul_dock.W to {}>>
+		<<set $skul_dock.M to {}>>
+		<<set $skul_dock.E to {}>>
+		<<set $skul_dock.SW to {}>>
+		<<set $skul_dock.S to {}>>
+		<<set $skul_dock.SE to {}>>
+		<<set _skul_dock_keys to Object.keys($skul_dock)>>
+		<<set _count to 0>>
+		<<for _i to 0; _i lt _skul_dock_keys.length; _i++>>
+			<<rng>>
+			<<if $rng gte 100>>
+				<<set $skul_dock[_skul_dock_keys[_i]].contents to "gold">>
+				<<set _count++>>
+			<<elseif $rng gte 95>>
+				<<set $skul_dock[_skul_dock_keys[_i]].contents to "aphrodisiacs">>
+				<<set _count++>>
+			<<elseif $rng gte 75>>
+				<<set $skul_dock[_skul_dock_keys[_i]].contents to "electronics">>
+				<<set _count++>>
+			<<elseif $rng gte 65>>
+				<<set $skul_dock[_skul_dock_keys[_i]].contents to "fertiliser">>
+				<<set _count++>>
+			<<elseif $rng gte 55 and $catsuit_found isnot true and $catsuit_spawned is undefined>>
+				<<set $catsuit_spawned to 1>>
+				<<set $skul_dock[_skul_dock_keys[_i]].contents to "equipment">>
+				<<set _count++>>
+			<<else>>
+				<<set $skul_dock[_skul_dock_keys[_i]].contents to "none">>
+			<</if>>
+		<</for>>
+		<<if _count lte 1>>
+			<<for _i to 0; _i lt _skul_dock_keys.length; _i++>>
+				<<if $skul_dock[_skul_dock_keys[_i]].contents is "none">>
+					<<rng>>
+					<<if $rng gte 95>>
+						<<set $skul_dock[_skul_dock_keys.pluck()].contents to "aphrodisiacs">>
+						<<set _count++>>
+					<<elseif $rng gte 75>>
+						<<set $skul_dock[_skul_dock_keys.pluck()].contents to "electronics">>
+						<<set _count++>>
+					<<elseif $rng gte 65>>
+						<<set $skul_dock[_skul_dock_keys.pluck()].contents to "fertiliser">>
+						<<set _count++>>
+					<</if>>
+					<<if _count is 2>>
+						<<break>>
+					<</if>>
+				<</if>>
+			<</for>>
+			<!--Added in case the variable gets use elsewhere-->
+			<<set _skul_dock_keys to Object.keys($skul_dock)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "skul_dock_contents">>
+	<<set _skul_dock_keys to Object.keys($skul_dock)>>
+	<<for _i to 0; _i lt _skul_dock_keys.length; _i++>>
+		<<if $skul_dock[_skul_dock_keys[_i]].contents is _args[0] and $skul_dock[_skul_dock_keys[_i]].state isnot "known">>
+			<<set $skul_dock[_skul_dock_keys[_i]].state to "known">>
+			<<set _dock_location to _skul_dock_keys[_i]>>
+			<<set _dock_contents to $skul_dock[_skul_dock_keys[_i]].contents>>
+			<<break>>
+		<</if>>
+	<</for>>
+<</widget>>
+
+<<widget "skul_dock_location">>
+	<<switch _args[0]>>
+		<<case "NW">>
+			<<set _text_output to "停系泊处">>
+		<<case "N">>
+			<<set _text_output to "锚定船">>
+		<<case "NE">>
+			<<set _text_output to "仓库">>
+		<<case "W">>
+			<<set _text_output to "起重机">>
+		<<case "M">>
+			<<set _text_output to "最高的货物集装箱堆">>
+		<<case "E">>
+			<<set _text_output to "办公大楼">>
+		<<case "SW">>
+			<<set _text_output to "货车卸货区">>
+		<<case "S">>
+			<<set _text_output to "前门">>
+		<<case "SE">>
+			<<set _text_output to "停车场">>
+	<</switch>>
+	<<print _text_output>>
+<</widget>>
+
+<<widget "skul_dock_nav">>
+	<<if $bus is "W">>
+		<<link [[潜行至锚泊的船只(0:05)|Docks Sneak]]>><<pass 5>><<set $bus to "NW">><</link>><<skul_dock_state NW>>
+		<br>
+	<</if>>
+	<<if $bus is "N">>
+		<<link [[偷偷溜下船(0:05)|Docks Sneak]]>><<pass 5>><<set $bus to "NW">><</link>><<skul_dock_state NW>>
+		<br>
+	<</if>>
+	<<if $bus is "NW">>
+		<<link [[潜行至锚泊的船只上(0:05)|Docks Sneak]]>><<pass 5>><<set $bus to "N">><</link>><<skul_dock_state N>>
+		<br>
+	<</if>>
+	<<if $bus is "E">>
+		<<link [[潜行至仓库(0:05)|Docks Sneak]]>><<pass 5>><<set $bus to "NE">><</link>><<skul_dock_state NE>>
+		<br>
+	<</if>>
+	<<if $bus is "SW" or $bus is "NW">>
+		<<link [[潜行至起重机(0:05)|Docks Sneak]]>><<pass 5>><<set $bus to "W">><</link>><<skul_dock_state W>>
+		<br>
+	<</if>>
+	<<if $bus is "E">>
+		<<link [[潜行至最高的一堆集装箱(0:05)|Docks Sneak]]>><<pass 5>><<set $bus to "M">><</link>><<skul_dock_state M>>
+		<br>
+	<</if>>
+	<<if $bus is "SE" or $bus is "M" or $bus is "NE">>
+		<<link [[潜行至办公室(0:05)|Docks Sneak]]>><<pass 5>><<set $bus to "E">><</link>><<skul_dock_state E>>
+		<br>
+	<</if>>
+	<<if $bus is "W" or $bus is "S">>
+		<<link [[潜行至货车卸货区(0:05)|Docks Sneak]]>><<pass 5>><<set $bus to "SW">><</link>><<skul_dock_state SW>>
+		<br>
+	<</if>>
+	<<if $bus is "SE" or $bus is "SW">>
+		<<link [[潜行至大门(0:05)|Docks Sneak]]>><<pass 5>><<set $bus to "S">><</link>><<skul_dock_state S>>
+		<br>
+		<br>
+	<</if>>
+	<<if $bus is "S" or $bus is "E">>
+		<<link [[潜行至停车场(0:05)|Docks Sneak]]>><<pass 5>><<set $bus to "SE">><</link>><<skul_dock_state SE>>
+		<br>
+	<</if>>
+	<<if $bus is "S">>
+		<<link [[离开|Docks]]>><<set $bus to "mer">><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "skul_dock_state">>
+	<<if $statdisable is "f">>
+		<<if $skul_dock[_args[0]].state is "known">>
+			<<if $skul_dock[_args[0]].contents is "none">>
+				<span class="purple">这里的集装箱里没有对你有价值的东西。</span>
+			<<elseif $skul_dock[_args[0]].contents is "fertiliser" and $tending lt 400>>
+				<span class="purple">这里的集装箱里没有对你有价值的东西。</span>
+			<<else>>
+				<span class="teal">其中有一个集装箱里装着贵重的<<print $skul_dock[_args[0]].contents.repalce("gold","黄金").repalce("aphrodisiacs","催情药").repalce("electronics","电器").repalce("fertiliser","农药").repalce("equipment,"设备")>>。</span>
+			<</if>>
+		<<elseif $skul_dock[_args[0]].state is "empty">>
+			<span class="lblue">你已经检查过这里了。</span>
+		<<else>>
+			<span class="blue">内容未知。</span>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "events_skul_dock">>
+	<<if $dock_security gte random(1, 4)>>
+		<<rng 5>>
+		<<if $rng is 1>>
+			<<generateSecurity 1>><<person1>>
+			你听到脚步声逐渐靠近。你躲在了一个集装箱后，等待着脚步声逐渐远去。你松了一口气。<<gstress>><<stress 6>>
+			<br><br>
+
+			<<link [[继续|Docks Sneak]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<br>
+		<<elseif $rng is 2>>
+			<<generateSecurity 1>><<person1>>
+			你前方的集装箱被手电筒照亮。拿手电筒的人就在附近，且正向你的方向走来。
+			<br><br>
+			你四下看了看。集装箱之间靠得很近。你可以原路返回，但路途比较远，而你已经没有多少时间了。
+			<br><br>
+			<<set $skulduggerydifficulty to 500>>
+			<<link [[躲藏|Docks Hide]]>><</link>><<skulduggerydifficulty>>
+			<br>
+			<<link [[逃跑|Docks Run]]>><<crimeup 100>><<tiredness 6>><<dock_security 1>><</link>><<crime>><<gtiredness>><<gsecurity>>
+			<br>
+			<<if $physiquesize lte 6000>>
+				<<link [[挤进集装箱间的缝隙里|Docks Squeeze]]>><</link>><<small_text>>
+				<br>
+			<</if>>
+		<<elseif $rng is 3>>
+			你听到一列集装箱的另一边传来脚步声。
+			<!-- Modified for Monster People -->
+			<<if ($monsterchance gte random(1, 100) and ($hallucinations gte 1 or $monsterhallucinations is "f"))>>
+				<<if beastMaleChance() lt random(1, 100)>>
+					<<set $dock_dog to "girl">>
+					你观察着他们，发现其中一只狗娘正四肢着地嗅着地面——你不久前刚经过那里，她应该是察觉到了你的气味。
+					<br><br>
+					"这边！"她喊着，跑了起来。你瞥见一名穿着保安制服的人跟着她。
+					<br><br>
+				<<else>>
+					<<set $dock_dog to "boy">>
+					你观察着他们，发现其中一只犬形少年正四肢着地嗅着地面——你不久前刚经过那里，他应该是察觉到了你的气味。
+					<br><br>
+					"这边！"他喊着，跑了起来。你瞥见一名穿着保安制服的人跟着他。
+					<br><br>
+				<</if>>
+			<<else>>
+				<<if beastMaleChance() lt random(1, 100)>>
+					<<set $dock_dog to "bitch">>
+				<<else>>
+					<<set $dock_dog to "dog">>
+				<</if>>
+				你观察着他们，发现一只狗正在嗅着地面——你不久前刚经过那里，它应该是察觉到了你的气味。
+				<br><br>
+				狗吠了两声，跑了起来。你瞥见一名穿着保安制服的人跟着她。
+				<br><br>
+			<</if>>
+
+			他们马上就要找到你了。
+			<br><br>
+
+
+			<<link [[伏击|Docks Ambush]]>><<dock_security 1>><</link>><<gsecurity>>
+			<br>
+			<<if $worn.upper.set is $worn.lower.set>>
+				<<link [[舍弃衣服留下假痕迹|Docks Sacrifice]]>><<set $phase to 0>><<dock_security -1>><</link>><<lsecurity>>
+				<br>
+			<<else>>
+				<<if $worn.upper.name isnot "naked">>
+					<<link [[舍弃上衣留下假痕迹|Docks Sacrifice]]>><<set $phase to 1>><<dock_security -1>><</link>><<lsecurity>>
+					<br>
+				<</if>>
+				<<if $worn.lower.name isnot "naked">>
+					<<link [[舍弃下装留下假痕迹|Docks Sacrifice]]>><<set $phase to 2>><<dock_security -1>><</link>><<lsecurity>>
+					<br>
+				<</if>>
+			<</if>>
+			<<if $worn.under_upper.set is $worn.under_lower.set>>
+				<<link [[舍弃贴身衣物留下假痕迹|Docks Sacrifice]]>><<set $phase to 3>><<dock_security -1>><</link>><<lsecurity>>
+				<br>
+			<<else>>
+				<<if $worn.under_upper.name isnot "naked">>
+					<<link [[舍弃贴身上装留下假痕迹|Docks Sacrifice]]>><<set $phase to 4>><<dock_security -1>><</link>><<lsecurity>>
+					<br>
+				<</if>>
+				<<if $worn.under_lower.name isnot "naked">>
+					<<link [[舍弃内衣留下假痕迹|Docks Sacrifice]]>><<set $phase to 5>><<dock_security -1>><</link>><<lsecurity>>
+					<br>
+				<</if>>
+			<</if>>
+			<<if $bus is "NW" or $bus is "N" or $bus is "NE">>
+				<<link [[潜入海里|Docks Dive]]>><</link>>
+				<br>
+			<</if>>
+
+		<<elseif $rng is 4>>
+			你听到脚下传来咔哒一声。<span class="red">检测到入侵者。</span>一个声音响起。"放弃抵抗。"一扇暗门打开，几支金属机械臂从中伸出。
+			<br><br>
+
+			<<link [[躲闪|Docks Machine Dodge]]>><</link>><<dancedifficulty 500 1200>>
+			<br>
+			<<link [[挣扎|Docks Machine Struggle]]>><</link>><<physiquedifficulty 12000 20000>>
+			<br>
+			<<link [[悄悄行动|Docks Machine Brace]]>><</link>>
+			<br>
+		<<else>>
+			<<generateSecurity 1>><<person1>>
+			一名穿保安制服的<<person>>从前方的拐角处走了出来。你藏进了两个集装箱之间。你觉得<<he>>应该没看到你。
+			<<if random(1, 2) is 1>>
+				然而当<<he>>走过你的藏身处时，<<he>>伸出手把你揪了出来。"抓住你了，"<<he>>说。
+				<br><br>
+				<<He>>拿出了对讲机。"抓住这个小逼崽子了。"<<he>>说着，把你按在一个集装箱前。"收到。"<<He>>放开对讲机，任其落在自己身旁。"支援很快就会来了。"<<He>>贴近了你。"不过，要不要先爽一爽再说呢？"
+				<br><br>
+
+				<<link [[继续|Docks Sneak Rape]]>><<set $molestationstart to 1>><</link>>
+				<br>
+			<<else>>
+				<<He>>目不斜视地走过。<<gstress>><<stress 6>>
+				<br><br>
+
+				<<link [[继续|Docks Sneak]]>><<set $eventskip to 1>><<endevent>><</link>>
+				<br>
+			<</if>>
+		<</if>>
+	<<else>>
+		<<rng 6>>
+		<<if $rng is 1>>
+			<span class="red">你脚下一滑！</span>地上有一层滑滑的，油一样的东西。
+			<br><br>
+
+			<<link [[伸手撑地|Docks Slip]]>><<pain 8>><<stress 6>><</link>><<ggpain>><<gstress>>
+			<br>
+			<<link [[尝试保持平衡|Docks Upright]]>><</link>><<dancedifficulty 400 1200>>
+			<br>
+		<<elseif $rng is 2>>
+			<<if $weather is "clear">>
+				月光倒映在海面上，你不由得看着出了神。<<lstress>><<stress -6>>
+				<br><br>
+			<<else>>
+				一阵凉爽的风拂过你的头发。
+				<br><br>
+			<</if>>
+			<<link [[继续|Docks Sneak]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<<elseif $rng is 3>>
+			<<generateSecurity 1>><<generateSecurity 2>>
+			你听见前面传来声音。有两个保安正向你走来。
+			<br><br>
+
+			<<set $skulduggerydifficulty to 500>>
+			<<link [[找一条别的路(0:10)|Docks Find]]>><<pass 10>><<dock_security 1>><</link>><<gsecurity>>
+			<br>
+			<<link [[溜过去|Docks Sneak By]]>><</link>><<skulduggerydifficulty>>
+			<br>
+		<<elseif $rng is 4>>
+			你蹑手蹑脚地穿过黑暗，但还是留下了些许痕迹。保安们更加警惕了。<<gsecurity>><<dock_security 1>>
+			<br><br>
+
+			<<link [[继续|Docks Sneak]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<<elseif $rng is 5>>
+			<<if currentSkillValue('skulduggery') gte random(1, 1000)>>
+				前方有一个摄像头。你避开了它。<span class="green">你庆幸自己及时发现了它。</span>
+				<br><br>
+
+				<<link [[继续|Docks Sneak]]>><<set $eventskip to 1>><</link>>
+				<br>
+			<<else>>
+				前方有一个摄像头，<span class="red">你发现得太迟了。</span>你躲了起来，但如果对方有注意的话就肯定发现你了。<<gsecurity>><<dock_security 1>><<crimeup 10>><<crime>>
+				<br><br>
+
+				<<link [[继续|Docks Sneak]]>><<set $eventskip to 1>><</link>>
+				<br>
+			<</if>>
+		<<else>>
+			这些集装箱都长得一个样，在你身边堆得高高的。你花了一会才搞清楚你在哪里。<<gstress>><<stress 6>>
+			<br><br>
+
+			<<link [[继续|Docks Sneak]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "dock_security">>
+	<<if _args[0]>>
+		<<set $dock_security += _args[0]>>
+	<</if>>
+<</widget>>
+
+<<widget "dock_security_text">>
+	<<if $dock_security gte 4>>
+		<span class="red">最高警戒状态已启用.</span>
+	<<elseif $dock_security gte 3>>
+		<span class="purple">保安们知道有人闯入了。</span>
+	<<elseif $dock_security gte 2>>
+		<span class="purple">保安们察觉到了什么。</span>
+	<<else>>
+		<span class="teal">现在的安全戒备等级很低，保安们都在放松.</span>
+	<</if>>
+<</widget>>

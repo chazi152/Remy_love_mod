@@ -1,0 +1,658 @@
+:: Widgets Wolf Cave [widget]
+
+<<widget "wolfcaveevent">>
+	<<beastNEWinit 1 wolf>>
+	<<rng>>
+	<<cleareventpool>>
+	<<if $wolfstate isnot "cave">>
+		<<childrenEvents "wolf_cave" $passage>>
+		<<addinlineevent "wolf cave play fight">>
+			一只年轻的<<beastsplural>>走向你，看起来它想玩打架游戏。
+			<br><br>
+			<<link [[玩 (0:20)|Wolf Cave Play Fight]]>><<pass 20>><<stress -4>><</link>><<lstress>>
+			<br>
+			<<if $deviancy gte 15>>
+				<<link [[玩淫荡的游戏|Wolf Cave Lewd Play]]>><<set $sexstart to 1>><</link>><<deviant2>>
+				<br>
+			<</if>>
+			<<if $bus is "wolfcave">>
+				<<link [[无视|Wolf Cave]]>><<endevent>><</link>>
+				<br>
+			<<else>>
+				<<link [[无视|Wolf Cave Clearing]]>><<endevent>><</link>>
+				<br>
+			<</if>>
+		<</addinlineevent>>
+		<<addinlineevent "anxious younger wolves" 2>>
+			小<<wolf_cave_plural>>盯着树林，焦急地等待狼群的归来。
+			<br><br>
+			<<endevent>>
+			<<destinationwolfcave>>
+		<</addinlineevent>>
+		<<addinlineevent "younger wolf rub" 2>>
+			其中一个年轻的<<beastsplural>>在走过的时候用头蹭你的腿。
+			<<ltrauma>><<lstress>><<trauma -6>><<stress -12>>
+			<<endevent>>
+			<br><br>
+			<<destinationwolfcave>>
+		<</addinlineevent>>
+	<<else>>
+		<<childrenEvents "wolf_cave" $passage>>
+		<<if npcIsPregnant("Black Wolf") and npcBellyVisible("Black Wolf") and !knowsAboutPregnancy("Black Wolf","pc")>>
+			<<addevent "blackWolfPresentsPregnancyToPlayer" 5000>>
+		<</if>>
+		<<if playerNormalPregnancyType() isnot "wolf" and playerIsPregnant() and playerAwareTheyArePregnant() and playerBellyVisible()>>
+			<<addevent "CaveHumanPregnancyDiscovered" 5000>>
+		<</if>>
+		<<if Object.values($children).find(child => child.mother === "pc" && child.location === "wolf_cave") and $lactating isnot 1 and Time.dayState is "day">>
+			<<addevent "wolfwetnurse" 0.5>>
+		<</if>>
+		<<if $wolfpackferocity + random(1, 20) gte $wolfpackharmony + random(1, 20)>>
+			<<addinlineevent "wolf cave fight">>
+				其中一个<<beastsplural>>向你走来，咆哮着。
+				<br><br>
+				<<link [[反抗|Wolf Cave Fight]]>><<set $molestationstart to 1>><</link>>
+				<br>
+				<<link [[呼救|Wolf Cave Help]]>><</link>>
+				<br>
+			<</addinlineevent>>
+			<<addinlineevent "wolf cave play fight" 2>>
+				打闹升级，直到有人流血。
+				<br><br>
+				<<link [[干涉|Wolf Cave Intervene]]>><<set $phase to 0>><</link>>
+				<br>
+				<<link [[怂恿|Wolf Cave Intervene]]>><<set $phase to 1>><</link>>
+				<br>
+				<<link [[无视|Wolf Cave Intervene]]>><<set $phase to 2>><</link>>
+				<br>
+			<</addinlineevent>>
+			<<addinlineevent "wolf cave blackwolf agitated" 2>>
+				<<endevent>><<npc "Black Wolf">>/*<<beastNNPCinit>>*/
+				<<if $wolfpackleader is 1>>
+					黑狼很激动。<<bHe>>咬了其他狼，并对它们咆哮，依次激怒它们。
+					<br><br>
+					<<link [[冷静下来|Wolf Cave Calm]]>><<set $phase to 0>><</link>>
+					<br>
+					<<link [[无视|Wolf Cave Calm]]>><<set $phase to 1>><</link>>
+					<br>
+				<<else>>
+					其中一个较大的<<beastsplural>>挑战黑狼。经过短暂的搏斗，黑狼赢了，但<<bhis>>的愤怒并没有平息。<<bHe>>咆哮并咬向另一个<<beastsplural>>，好像对方是想挑战<<bhim>>。
+					<br><br>
+					<<if $wolfpackpoisoned is 1>>
+						<span class="lblue">微微摇摆。毒蘑菇起作用了。它会比平时弱。</span>
+						<br><br>
+					<</if>>
+					<<link [[冷静下来|Wolf Cave Calm]]>><<set $phase to 0>><</link>>
+					<br>
+					<<link [[忽略|Wolf Cave Calm]]>><<set $phase to 1>><</link>>
+					<br>
+					<<link [[挑战|Wolf Cave Calm]]>><<set $phase to 2>><</link>>
+					<br>
+				<</if>>
+			<</addinlineevent>>
+		<<else>>
+			<<addinlineevent "wolf face lick" 2>>
+				一个<<beasttype>>向你冲过来。<<bHe>>站起来靠在你身上，差点把你撞倒。<<bHe>>舔你的脸。
+				<<ltrauma>><<lstress>><<trauma -6>><<stress -12>>
+				<br><br>
+
+				<<destinationwolfcave>>
+			<</addinlineevent>>
+			<<addinlineevent "wolve mating rank">>
+				<<endevent>>
+				<<beastNEWinit 2 wolf>>
+				低等级的<<beasttype 0>>接近你希望交配。更占优势的<<beasttype 1>>试图吸引你的注意力。
+				<br><br>
+				<<saveNPC 0 wolf_rank_1>>
+				<<saveNPC 1 wolf_rank_2>>
+				<<link [[偏爱低级的狼|Wolf Cave Rank]]>><<set $phase to 0>><</link>><<deviant1>>
+				<br>
+				<<link [[偏爱地位高的狼|Wolf Cave Rank]]>><<set $phase to 1>><</link>><<deviant1>>
+				<br>
+				<<if $deviancy gte 15>>
+					<<link [[一起上|Wolf Cave Rank]]>><<set $phase to 2>><</link>><<deviant2>>
+					<br>
+				<</if>>
+				<<link [[都不理会|Wolf Cave Rank]]>><<set $phase to 3>><</link>>
+				<br>
+			<</addinlineevent>>
+			<<addinlineevent "young wolf rock climb" 2>>
+				一个年轻的<<beasttype>>试图爬上一块岩石。<<bhe>>脚打滑，摔倒在地。<<bhe>>站起来抱怨。
+				<br><br>
+				<<link [[确保它没事(0:05)|Wolf Cave Young]]>><<set $phase to 0>><<pass 5>><</link>>
+				<br>
+				<<link [[无视|Wolf Cave Young]]>><<set $phase to 1>><</link>>
+				<br>
+			<</addinlineevent>>
+			<<addinlineevent "wolf cave howl chorus">>
+				<<endevent>><<npc "Black Wolf">>
+				在它们中，你注意到黑狼站在一块大石头上，周围是一群更大的<<wolf_cave_plural>>。<<bHe>>突然抬起<<bhis>>的头，开始大声嚎叫，很漂亮。第二只<<beasttype>>注意到了这一点，加入了<<bhis>>的兄弟姐妹的行列。
+				<br><br>
+				过了一会儿，一个规模不大的狼群跟随领头狼，开始发出和谐一致地高声嚎叫。
+				<br><br>
+				<<link [[旁观|Wolf Cave Howl]]>><<set $phase to 0>><</link>>
+				<br>
+				<<link [[跟着一起叫|Wolf Cave Howl]]>><<set $phase to 1>><</link>>
+				<br>
+			<</addinlineevent>>
+			<<if $pound and $pound.progress is 6>>
+				<<addinlineevent "wolf cave black dog" 0.5>>
+					<<endevent>><<npc "Black Wolf">><<person1>>
+					黑狼坐在一块大石头上，看着周围的森林。你看到一双眼睛盯着你。是那只黑狗。
+					<br><br>
+					<<link [[鼓励它们见面|Wolf Cave Dog Meet]]>><</link>>
+					<br>
+					<<link [[让那些家伙盯着看吧|Wolf Cave Dog Stare]]>><</link>>
+					<br>
+				<</addinlineevent>>
+			<</if>>
+		<</if>>
+	<</if>>
+	<<runeventpool>>
+<</widget>>
+
+<<widget "wolfcavestate">>
+	<<if $wolfpackferocity gte 20 and $wolfpackharmony gte 20>>
+		<span class="green">狼群在致命的目的上是统一的。</span>
+	<<elseif $wolfpackferocity gte 20 and $wolfpackharmony gte 10>>
+		<span class="purple"><<wolf_cave_plural>>踱步，互相咆哮，急切地想要狩猎。</span>
+	<<elseif $wolfpackferocity gte 20 and $wolfpackharmony gte 1>>
+		<span class="pink">T<<wolf_cave_plural>>很激动，害怕失去自己的地位。</span>
+	<<elseif $wolfpackferocity gte 20>>
+		<span class="red"><<wolf_cave_plural>>之间保持很大的距离。任何越界行为都会招致严厉的惩罚。</span>
+	<<elseif $wolfpackharmony gte 20 and $wolfpackferocity gte 10>>
+		<span class="teal">游戏打架频繁。</span>
+	<<elseif $wolfpackharmony gte 20 and $wolfpackferocity gte 1>>
+		<span class="lblue"><<wolf_cave_plural>>躺在一起，互相梳理毛发。</span>
+	<<elseif $wolfpackharmony gte 20>>
+		<span class="blue"><<wolf_cave_plural>>躺在一起，蜷成一堆。</span>
+	<<elseif $wolfpackferocity gte 10 and $wolfpackharmony gte 10>>
+		<span class="lblue">一些<<wolf_cave_plural>>互相躺着梳洗，而另一些则在树林里踱步。</span>
+	<<elseif $wolfpackferocity gte 10 and $wolfpackharmony gte 1>>
+		<span class="purple"><<wolf_cave_plural>>紧张不安，互相怒吼，龇牙咧嘴。</span>
+	<<elseif $wolfpackferocity gte 10>>
+		<span class="pink"><<wolf_cave_plural>>小心翼翼地看着对方。</span>
+	<<elseif $wolfpackharmony gte 10 and $wolfpackferocity gte 1>>
+		<span class="blue">大多数<<wolf_cave_plural>>都闭着眼睛躺着，而另一些则互相梳洗。</span>
+	<<elseif $wolfpackharmony gte 10>>
+		<span class="purple"><<wolf_cave_plural>>梳理自己，偶尔也会互相梳理。</span>
+	<<elseif $wolfpackferocity gte 1 and $wolfpackharmony gte 1>>
+		<span class="purple"><<wolf_cave_plural>>梳理自己，忽略对方</span>
+	<<elseif $wolfpackferocity gte 1>>
+		<span class="pink">狼群懒散地四处游荡，几乎无法召集能量互相咆哮。</span>
+	<<elseif $wolfpackharmony gte 1>>
+		<span class="pink">这群人懒洋洋地聚在一起，只能召唤一点能量。</span>
+	<<else>>
+		<span class="red">一种压抑的不安洋溢在狼群中。</span>
+	<</if>>
+<</widget>>
+
+<<widget "wolfcaveselect">>
+	<<if $huntstate is "ongoing" and ["dawn", "day"].includes(Time.dayState)>>
+		<<if $wolfstate is "hunt">>
+			<<set $wolfstate to "cave">>
+			<<if $blackWolfPregnancyHunt and playerIsPregnant()>>
+				狼群狩猎归来。许多人带着肉块给留在山洞里的小<<wolf_cave_plural>>。黑狼在离开之前在你身边放了一些。这次狩猎很成功。
+				<<gharmony>><<gferocity>>
+				<br><br>
+			<<elseif $rng + $wolfpackferocity + $wolfpackharmony gte 80>>
+				狼群狩猎归来。一些狼带着肉块给留在山洞里的小<<wolf_cave_plural>>。这次狩猎很成功。
+				<<gharmony>><<lferocity>>
+				<br><br>
+			<<else>>
+				狼群狩猎归来。它们什么也没抓到。
+				<<gferocity>><<lharmony>>
+				<br><br>
+				<<if $blackWolfPregnancyHunt and playerIsPregnant()>>
+					黑狼向你走来。 
+					<<if $monster is 1>>
+						现在<<bhe>>更近了，你可以看到<<bhis>>手里有什么东西。 
+						<br><br>
+
+						"<<pPackbrother>>能吃到植物很幸运。"黑狼递给你一些梨子。 
+						<br><br>
+
+						<<bHe>>看着你怀孕的肚子。"下次打猎应该尝尝肉。对幼崽有好处。"
+						<br><br>
+					<<else>>
+						一些梨叼在<<bhis>>的嘴里。<<bHe>>在摇<<bhis>>头之前把它们放在你面前。<<bHe>>似乎不喜欢那种味道。
+						<br><br>
+
+						<<bHe>>闻了闻你怀孕的肚子，然后回头看森林。<<bHe>>似乎对<<bhimself>>自己很失望。
+						<br><br>
+					<</if>>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<if $rng + $wolfpackferocity + $wolfpackharmony gte 80>>
+				狼群狩猎归来。一些狼带着肉块给留在山洞里的小<<wolf_cave_plural>>。
+				<<if npcIsPregnant("Black Wolf")>>
+					有些被带去给黑狼。<<nnpc_He "Black Wolf">>迅速把它裹起来。
+				<</if>>
+				这次狩猎很成功。
+				<<gharmony>><<lferocity>>
+				<br><br>
+			<<else>>
+				狼群狩猎归来。它们什么也没抓到。
+				<<gferocity>><<lharmony>>
+				<br><br>
+
+				<<if npcIsPregnant("Black Wolf") and npcBellyVisible("Black Wolf") and knowsAboutPregnancy("Black Wolf","pc")>>
+					<<if $monster is 1>>
+						你听到了抱怨。它似乎是从黑狼的肚子里发出来的。
+						<br><br>
+						"需要更多的猎物。"<<bHe>>若有所思地望着森林。
+						<br><br>
+					<<else>>
+						你听到了抱怨。它似乎是从黑狼怀孕的肚子里发出来的。
+						<br><br>
+						<<bHe>>再次抱怨，这次来自<<bhis>>的胃。黑狼通常不会抱怨饥饿。<<bHe>>一定很担心那些小狼崽。
+						<br><br>
+					<</if>>
+				<</if>>
+			<</if>>
+		<</if>>
+		<<unset $blackWolfNotHunting>>
+		<<unset $blackWolfPregnancyHunt>>
+		<<destinationwolfcave>>
+	<<elseif $wolfstate is "cave" and !["finished","ongoing"].includes($huntstate) and ["dusk", "night"].includes(Time.dayState)>>
+		<<set $huntstate to "ongoing">><<set $wolfpackpoisoned to 0>>
+		<<npc "Black Wolf">>
+		<<if npcBellySize("Black Wolf") lte 15>>
+			<<set $wolfstate to "hunt">>
+			黑狼嚎叫了一声，其他狼也跟着叫了起来。
+			<<if $monster is 1>>
+				"我们马上就去打猎。做好准备。"
+			<<else>>
+				它们去狩猎了。
+			<</if>>
+		<<else>>
+			<<set $blackWolfNotHunting to true>>
+			狼群在树林中奔跑时开始嚎叫和咆哮。少了一个常规成员。转过身，你看到黑狼躺在<<bhis>>平常的岩石上，轻推<<bhis>>怀孕的肚子。
+			<<if $monster is 1>>
+				<br><br>
+				<<bHe>>叹了口气，躺下看着狼群。
+			<</if>>
+		<</if>>
+		<<endevent>>
+		<br><br>
+
+		<<link [[跟着它们走|Wolf Cave Hunt]]>><</link>>
+		<br>
+		<<link [[看着它们离开|Wolf Cave Hunt Leave]]>><</link>>
+		<br>
+
+	<<elseif $wolfstate is "cave" and $wolfpackleader is 1 and $wolfpackharmony lte random(0,10) and $wolfpackferocity gte random(11,20) and $wolfchallengetimer lte 0>>
+		<<set $wolfchallengetimer to 14>><<npc "Black Wolf">>
+		你听到身后一声巨大的吠叫。你转过身来面对黑狼，<<bhis>>坚定地站在那里，对你露出了牙齿。
+		<<if $monster is 1>>
+			"软弱的领袖!"<<bhe>>咆哮。"狼群需要力量和勇气。今天狼群将有新的领袖。<<pPackbrothers>>作为头狼的时代结束了!"
+		<<else>>
+			<<bHis>>粗硬的毛发和<<bHis>>的尾巴笔直地竖在空中。<<bHe>>试图挑战你作为狼群首领的地位。
+		<</if>>
+		<br><br>
+		一小群狼聚集在你周围。
+		<br><br>
+
+		<<link [[反抗|Wolf Challenge Accept]]>><</link>>
+		<br>
+		<<link [[屈服|Wolf Challenge Surrender]]>><</link>>
+		<br>
+		<<if $wolfgirl gte 6>>
+			<<link [[推理|Wolf Challenge Reason]]>><</link>><<wolfgirl>>
+			<br>
+		<</if>>
+	<<else>>
+		<<wolfcaveevent>>
+	<</if>>
+
+	<<if Time.dayState is "day" or Time.dayState is "dawn">>
+		<<set $huntstate to "notStarted">>
+	<</if>>
+<</widget>>
+
+<<widget "destinationwolfcave">>
+	<<if $bus is "wolfcave">>
+		<<link [[继续|Wolf Cave]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Wolf Cave Clearing]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "wolfhuntevents">>
+	<<if $huntstate is "success">>
+		<<set $huntstate to "finished">>
+		<<if $wolfstate is "hunt">><<set $wolfstate to "cave">><</if>>
+		狼群吃饱了，回到了洞穴。有些为小<<wolf_cave_plural>><<if $blackWolfNotHunting>>和黑狼携带了食物。<<nnpc_He "Black Wolf">>迅速把它裹起来<</if>>。
+		<<lferocity>><<gharmony>>
+		<br><br>
+
+		<<link [[继续|Wolf Cave]]>><<unset $blackWolfNotHunting>><</link>>
+		<br>
+	<<elseif $huntstate is "ongoing" and (Time.dayState is "dawn" or Time.dayState is "day")>>
+		<<set $huntstate to "finished">>
+		<<if $wolfstate is "hunt">><<set $wolfstate to "cave">><</if>>
+		太阳从地平线升起，狼群返回洞穴。狩猎的失败使狼群感到愤怒。
+		<<gferocity>><<lharmony>>
+		<br><br>
+
+		<<link [[继续|Wolf Cave]]>><<unset $blackWolfNotHunting>><</link>>
+		<br>
+	<<elseif $huntstate is "failure">>
+		<<set $huntstate to "finished">>
+		<<if $wolfstate is "hunt">><<set $wolfstate to "cave">><</if>>		
+		<<gferocity>><<lharmony>>
+		<<if $wolfstate is "hunt">><<set $wolfstate to "cave">><</if>>
+		<br><br>
+		<<link [[继续|Wolf Cave]]>><<unset $blackWolfNotHunting>><</link>>
+		<br>
+	<<else>>
+		<<rng>>
+		<<if $bus is "wolfpackriver">>
+			你面前是一个岔路口。一条路上有鹿的蹄印。另一条路上有一些人的鞋印。
+			<br><br>
+
+			<<if $wolfpackleader is 1>>
+				狼群等着你的决定。
+				<br><br>
+
+				<<link [[跟着鹿的足迹走(1:00)|Wolf Deer]]>><<pass 1 hour>><<set $bus to "wolfpackdeer">><<tiredness 12>><</link>><<athleticsdifficulty>><<gtiredness>>
+				<br>
+				<<link [[跟着鞋印走(1:00)|Wolf Hunters]]>><<pass 1 hour>><<set $bus to "wolfpackhunters">><<tiredness 12>><</link>><<gtiredness>>
+				<br>
+				<<link [[让黑狼来决定吧(1:00)|Wolf Deer]]>><<pass 1 hour>><<set $bus to "wolfpackdeer">><<tiredness 12>><</link>><<gtiredness>>
+				<br>
+			<<else>>
+				黑狼不假思索地跟着鹿的脚印。
+				<br><br>
+
+				<<link [[继续 (1:00)|Wolf Deer]]>><<pass 1 hour>><<set $bus to "wolfpackdeer">><<tiredness 12>><</link>><<athleticsdifficulty>><<gtiredness>>
+				<br>
+			<</if>>
+		<<elseif $bus is "wolfpackcliff">>
+			你面前是一个岔路口。一条路上有鹿的蹄印，但是蹄印很杂乱。另一条路上有很大的爪印，爪子陷进了泥土里。
+
+			<<if $wolfpackleader is 1>>
+				狼群等着你的决定。
+				<br><br>
+
+				<<link [[跟着鹿的脚印走(1:00)|Wolf Carrion]]>><<pass 1 hour>><<set $bus to "wolfpackcarrion">><<tiredness 12>><</link>><<gtiredness>>
+				<br>
+				<<link [[跟着大脚印走(1:00)|Wolf Bear]]>><<pass 1 hour>><<set $bus to "wolfpackbear">><<tiredness 12>><</link>><<gtiredness>>
+				<br>
+				<<if $rng gte 51>>
+					<<link [[让黑狼来决定吧(1:00)|Wolf Carrion]]>><<pass 1 hour>><<set $bus to "wolfpackcarrion">><<tiredness 12>><</link>><<gtiredness>>
+					<br>
+				<<else>>
+					<<link [[让黑狼来决定吧(1:00)|Wolf Bear]]>><<pass 1 hour>><<set $bus to "wolfpackbear">><<tiredness 12>><</link>><<gtiredness>>
+					<br>
+				<</if>>
+			<<else>>
+				<<if $rng gte 51>>
+					黑狼嗅了嗅空气，然后追踪鹿的脚印。
+					<br><br>
+
+					<<link [[继续 (1:00)|Wolf Carrion]]>><<pass 1 hour>><<set $bus to "wolfpackcarrion">><<tiredness 12>><</link>><<gtiredness>>
+					<br>
+				<<else>>
+					黑狼嗅了嗅空气，然后跟着大脚印走。
+					<br><br>
+
+					<<link [[继续 (1:00)|Wolf Bear]]>><<pass 1 hour>><<set $bus to "wolfpackbear">><<tiredness 12>><</link>><<gtiredness>>
+					<br>
+				<</if>>
+			<</if>>
+		<<elseif $bus is "wolfpackbear">>
+		<<elseif $bus is "wolfpackhunters">>
+		<<elseif $bus is "wolfpackdeer">>
+		<<elseif $bus is "wolfpackcarrion">>
+		<<else>>
+			你来到一条从悬崖底部流出的河流。
+
+			<<if $wolfpackleader is 1>>
+				狼群等着你的决定。
+				<br><br>
+
+				<<link [[顺河而行(1:00)|Wolf River]]>><<pass 1 hour>><<set $bus to "wolfpackriver">><<tiredness 12>><</link>><<gtiredness>>
+				<br>
+				<<link [[沿着悬崖走(1:00)|Wolf Cliff]]>><<pass 1 hour>><<set $bus to "wolfpackcliff">><<tiredness 12>><</link>><<gtiredness>>
+				<br>
+				<<if $rng gte 51>>
+					<<link [[让黑狼来决定吧(1:00)|Wolf River]]>><<pass 1 hour>><<set $bus to "wolfpackriver">><<tiredness 12>><</link>><<gtiredness>>
+					<br>
+				<<else>>
+					<<link [[让黑狼来决定吧(1:00)|Wolf Cliff]]>><<pass 1 hour>><<set $bus to "wolfpackcliff">><<tiredness 12>><</link>><<gtiredness>>
+					<br>
+				<</if>>
+			<<else>>
+				<<if $rng gte 51>>
+					黑狼嗅了嗅空气，然后沿河奔跑。
+					<br><br>
+
+					<<link [[继续 (1:00)|Wolf River]]>><<pass 1 hour>><<set $bus to "wolfpackriver">><<tiredness 12>><</link>><<gtiredness>>
+					<br>
+				<<else>>
+					黑狼嗅了嗅空气，然后沿着悬崖跑去。
+					<br><br>
+
+					<<link [[继续 (1:00)|Wolf Cliff]]>><<pass 1 hour>><<set $bus to "wolfpackcliff">><<tiredness 12>><</link>><<gtiredness>>
+					<br>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "blackwolfhealth">>
+	<<if $wolfpackpoisoned is 1>>
+		<<set $enemyhealth to 200>><<set $enemyhealthmax to 200>>
+	<<else>>
+		<<set $enemyhealth to 600>><<set $enemyhealthmax to 600>>
+	<</if>>
+<</widget>>
+
+<<widget "wolfpackhuntoptions">>
+	<<if $wolfpackshroom is "red">>
+		<<link [[在黑狼的食物中加入红蘑菇(3:00)|Wolf Deer2]]>><<set $phase to 0>><<tiredness -12>><<pass 3 hours>><<tiredness -12>><<tiredness -12>><</link>><<ltiredness>>
+		<br>
+	<<elseif $wolfpackshroom is "pink">>
+		<<link [[在黑狼的食物中加入粉色蘑菇(3:00)|Wolf Deer2]]>><<set $phase to 1>><<tiredness -12>><<pass 3 hour>><<tiredness -12>><<tiredness -12>><</link>><<ltiredness>>
+		<br>
+	<</if>>
+	<<link [[休息(3:00)|Wolf Deer2]]>><<set $phase to 2>><<tiredness -12>><<pass 3 hour>><<tiredness -12>><<tiredness -12>><</link>><<ltiredness>>
+	<br>
+<</widget>>
+
+<<widget "blackwolfhand">>
+	<<if $NPCName[$NPCNameList.indexOf("Black Wolf")].gender is "m">>
+		<<set $leftarm to "penis">>
+		<<set $NPCList[0].penis to "leftarm">>
+		你把黑狼的阴茎拿在手里。
+	<<else>>
+		<<set $leftarm to "othervagina">>
+		<<set $NPCList[0].vagina to "leftarm">>
+		你用手抚摸黑狼的阴部。
+	<</if>>
+<</widget>>
+
+<<widget "ppackbrother">><<silently>>
+	<<if $wolfpackleader gte 1>>
+		<<set _text_output to "狼群领袖">>
+	<<elseif $player.gender_appearance is "m">>
+		<<set _text_output to "狼群兄弟">>
+	<<elseif $player.gender_appearance is "f">>
+		<<set _text_output to "狼群姐妹">>
+	<</if>>
+<</silently>><<print _text_output>><</widget>>
+
+<<widget "pPackbrother">><<silently>>
+	<<ppackbrother>><<capitalise>>
+<</silently>><<print _text_output>><</widget>>
+
+<<widget "ppackbrothers">><<silently>>
+	<<if $wolfpackleader gte 1>>
+		<<set _text_output to "狼群首领的">>
+	<<elseif $player.gender_appearance is "m">>
+		<<set _text_output to "狼群兄弟的">>
+	<<elseif $player.gender_appearance is "f">>
+		<<set _text_output to "狼群姐妹的">>
+	<</if>>
+<</silently>><<print _text_output>><</widget>>
+
+<<widget "pPackbrothers">><<silently>>
+	<<ppackbrothers>><<capitalise>>
+<</silently>><<print _text_output>><</widget>>
+
+<<widget "pheat">><<silently>>
+	<<if $player.gender_appearance is "m">>
+		<<set _text_output to "发情">>
+	<<elseif $player.gender_appearance is "f">>
+		<<set _text_output to "愤怒">>
+	<</if>>
+<</silently>><<print _text_output>><</widget>>
+
+<<widget "wolf_cave_update">>
+	<<if ($monsterchance gte random(1, 100) and ($hallucinations gte 1 or $monsterhallucinations is "f")) or ($bestialitydisable is "t")>>
+		<<set $wolfcave_monster_roll to true>>
+	<<else>>
+		<<set $wolfcave_monster_roll to false>>
+	<</if>>
+<</widget>>
+
+<<widget "wolf_cave_plural">><<silently>>
+	<<if beastMaleChance() gte 100>>
+		<<set _wolves_plural to "m">>
+	<<elseif beastMaleChance() gte 1>>
+		<<set _wolves_plural to "b">>
+	<<else>>
+		<<set _wolves_plural to "f">>
+	<</if>>
+	<<if $bestialitydisable is "t" or $wolfcave_monster_roll is true or ($monsterchance gte random(1, 100) and ($hallucinations gte 1 or $monsterhallucinations is "f"))>>
+		<<if _wolves_plural is "m">>
+			<<set _text_output to "狼少年们">>
+		<<elseif _wolves_plural is "f">>
+			<<set _text_output to "狼女们">>
+		<<else>>
+			<<set _text_output to "狼少年和狼女">>
+		<</if>>
+	<<else>>
+		<<set _text_output to "狼们">>
+	<</if>>
+<</silently>><<print _text_output>><</widget>>
+
+<<widget "wolf_cave_singular">><<silently>>
+	<<if _args[0]>>
+		<<set _wolves_singular to _args[0]>>
+	<<elseif beastMaleChance() gte 100 or (beastMaleChance() gte 1 and beastMaleChance() gte random(0,100))>>
+		<<set _wolves_singular to "m">>
+	<<else>>
+		<<set _wolves_singular to "f">>
+	<</if>>
+	<<if $bestialitydisable is "t" or $wolfcave_monster_roll is true or ($monsterchance gte random(1, 100) and ($hallucinations gte 1 or $monsterhallucinations is "f"))>>
+		<<if _wolves_singular is "m">>
+			<<set _text_output to "狼少年">>
+		<<else>>
+			<<set _text_output to "狼女">>
+		<</if>>
+	<<else>>
+		<<set _text_output to "狼">>
+	<</if>>
+<</silently>><<print _text_output>><</widget>>
+
+<<widget "bwpcinteraction">>
+	<<set _pregnancy to C.npc["Black Wolf"].pregnancy>>
+	<<set _pregnancyProgress to Math.clamp(_pregnancy.timer / _pregnancy.timerEnd, 0, 1)>>
+
+	<<if playerIsPregnant() and playerAwareTheyArePregnant() and knowsAboutPregnancy("pc","Black Wolf")>>
+
+		<<if $body_temperature is "chilly" or $body_temperature is "cold">>
+			<<if $monster is 1>>
+				当你坐在<<bhim>>旁边时，黑狼慢慢靠近你。 
+				<br><br>
+
+				"<<pPackbrother>>应该保持温暖。幼崽会长得更好。"你靠在<<bhim>>上，感谢温暖。
+			<<else>>
+
+				当你坐在<<bhim>>旁边时，黑狼慢慢靠近你。<<bHe>>似乎想让你保持温暖。 
+				<br><br>
+
+				<<bHe>>用<<bhis>>的鼻子轻推你怀孕的肚子，然后再不理你。
+			<</if>>
+		<<else>>
+			<<if $monster is 1>>
+				黑狼嗅了嗅你的肚子，用鼻子蹭了蹭。
+				<br><br>
+
+				"<<pPackbrother>>吃得好吗?应该在狩猎时吃肉。对幼崽有好处。"
+				<br><br>
+
+				你一想到生肉就不寒而栗。
+			<<else>>
+
+				黑狼嗅了嗅你怀孕的肚子，然后用鼻子蹭它。
+				<br><br>
+
+				<<bHe>>把<<bhis>>的耳朵贴在你的肚子上，听着什么。当你的肚子咕咕叫的时候，<<bhe>>抬起头来，关心地看着。
+				<br><br>
+
+				"我去弄点吃的，别担心。"你的话似乎足够了，黑狼平静下来。
+			<</if>>
+		<</if>>
+
+	<<else>>
+
+        <<if between(_pregnancyProgress, 0.7, 1)>>
+			<<if $monster is 1>>
+				黑狼换了个姿势，低头看着<<bhis>>怀孕的肚子。你可以看到一个小<<if _pregnancy.fetus[0].monster>>脚<<else>>爪子<</if>>在踢它。
+				<br><br>
+
+				"幼崽已经很强壮了。"你可以从<<bhis>>的声音中听到骄傲。
+
+			<<else>>
+				黑狼换了个姿势，低头看着<<bhis>>怀孕的肚子。你可以看到一只小爪子在踢它。
+				<br><br>
+
+				你看着<<bhe>>舔小狼崽踢的地方，当小爪子后退时，你笑了。
+
+			<</if>>
+
+		<<elseif Time.hour gte 18 and Time.hour lte 6>>
+
+			<<if $monster is 1>>
+
+				"很快就不会再打猎了。"黑狼嘟囔着看着<<bhis>>的肚子。"对幼崽来说很危险。"
+
+			<<else>>
+
+				黑狼用渴望的目光注视着狼群。你可以看到<<bhis>>怀孕的肚子，随着时间的推移，它越来越大。<<bHe>>很快就不能打猎了。
+
+			<</if>>
+
+		<<elseif npcBellyVisible("Black Wolf")>>
+
+			<<if $monster is 1>>
+
+				你听到一声短暂的鼾声，然后黑狼摇了摇头。<<bHe>>看向别处。
+				<br><br>
+				
+				"带小狼崽有时很累，"<<bhe>>抱怨道。
+				<br><br>
+
+				时不时地看向黑狼，你发现<<bhe>>继续抗拒睡眠。
+
+			<<else>>
+
+				黑狼换了个姿势，低头看着<<bhis>>怀孕的肚子。你可以看到一只小爪子在踢它。
+				<br><br>
+
+				你看着<<bhe>>舔小狼崽踢的地方，当小爪子后退时，你笑了。
+
+			<</if>>
+
+		<</if>>
+
+	<</if>>
+
+<</widget>>

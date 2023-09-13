@@ -1,0 +1,1002 @@
+:: Cliff Street
+
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">><<getTarget true>>
+你正待在峭壁街，这里有几座市政建筑，其中就包括市政厅，附近的海风咖啡馆可以直接看到大海。
+<<if $chef_state is 9 and Time.dayState isnot "night">>
+	在其奢华的门外已经排起了长龙。
+<<elseif $chef_state is 7 and $chef_rework lte 0>>
+	<span class="teal">新的建筑已经竣工了.</span>
+<<elseif $chef_state is 7 and $chef_rework lte 30>>
+	<span class="blue">它正被脚手架包围着，现场的建筑材料随处可见.</span>
+<<elseif $chef_state gte 2 and Time.dayState isnot "night">>
+	外面已经排起了长龙。
+<<elseif $oceanbreezejob isnot 1>>
+	窗户上的牌子上写着： "正在施工"。
+<</if>>
+有一条小路通往海滩。
+<<if Time.dayState is "day">>
+	<<if $weather is "rain">>
+		海风从海面上呼啸而来。
+	<<elseif $weather is "snow">>
+		海风从海面上呼啸而来。
+	<<else>>
+		轻轻的微风从海面上吹来。
+	<</if>>
+<<elseif Time.dayState is "dawn">>
+	<<if $weather is "rain">>
+		雨云从海面上吹来.
+	<<elseif $weather is "snow">>
+		冰冷的海风从海面上呼啸而来。
+	<<else>>
+		这里的交通非常拥堵，人们都选择开车上班。
+	<</if>>
+<<elseif Time.dayState is "dusk">>
+	<<if $weather is "rain">>
+		雨云从海上席卷而来，将那些走在下班回家路上的人们淋了个透心凉。
+	<<elseif $weather is "snow">>
+		冰冷的寒风从海上席卷而来，人们正顶着刺骨的严寒向家的方向赶去。
+	<<else>>
+		这里的交通非常拥堵，人们都选择开车下班。
+	<</if>>
+<<elseif Time.dayState is "night">>
+	<<if $weather is "rain">>
+		大海在下方咆哮着。
+	<<elseif $weather is "snow">>
+		海水在下面潺潺流淌着。
+	<<else>>
+		街道一片漆黑寂静。只有大海的声音回荡于夜色中。
+	<</if>>
+<</if>>
+<<streeteffects>>
+<br><br>
+<<if $exposed gte 1>>
+	<<exhibitionism "street">>
+	<<if $exposed is 1 and $topless is 0>>
+		<span class="lewd">这套衣服在附近的海滩上可能没什么问题，但穿在这里就显得太淫荡了！</span>
+		<br><br>
+	<</if>>
+<</if>>
+
+<<if $robinmissing is "pillory">> <!-- Robin is in pillory, or is scheduled to be -->
+	<<if Time.hour lt 15>>
+		<<if $robinPillory.known is 1>>
+			罗宾将在今天的<<ampm 15 00>>被锁在颈手枷上.
+			<br><br>
+		<<else>>
+			颈手枷暂时是空的，但不管怎样，人群开始聚集在此。
+		<</if>>
+	<<else>>
+		你看到罗宾在颈手枷上，你不确定<<nnpc_he "Robin">>何时会被释放。
+		<<set $robinPillory.known to 1>> <!-- known means you know that robin is in the pillory -->
+		<br><br>
+	<</if>>
+<<else>>
+	<<if ndef $pillory_tenant>><<setup_pillory>><</if>>
+	<<if $pillory_tenant.exists is 1>> /* If someone is in pillory... */
+		<<if Time.days gt $pillory_tenant.endday>>/* If sentence finished before today. */
+			<<clear_pillory>>
+		<<elseif (Time.days is $pillory_tenant.endday)>>
+			<<if Time.hour gt $pillory_tenant.endhour>> /* If ended earlier today */
+				<<clear_pillory>>
+			<<elseif Time.hour is $pillory_tenant.endhour>> /* If ending now? */
+				<<end_npc_pillory>>
+			<<else>> /* Sentence ongoing. */
+				<<npc_pillory>>
+			<</if>>
+		<<else>> /* Sentence ongoing to tomorrow. */
+			<<npc_pillory>>
+		<</if>>
+	<<elseif $rng %10 is 0>> /* Pillory empty gives 10% chance of new person */
+		<<new_npc_pillory>>
+	<</if>>
+<</if>>
+
+<<if $arousal gte $arousalmax>>
+	<<orgasmstreet>>
+<</if>>
+<<if $stress gte $stressmax and !$possessed>>
+	<<passoutstreet>>
+<<elseif $chef_event gte random(1, 100) and $exposed lte 0 and !$possessed>>
+	<<rng>>
+	<<if $chef_sus gte 100>>
+		<<set $chef_sus to 30>>
+		<<generatePolice 1>><<person1>>一辆警车停在你身边，一个<<person>>从车上走了下来，"你有麻烦了<<girl>>，<<he>>说道:"我听说了一些关于你的奶油生意，其中有一些令人不安的内容，有关于你对健康和安全的蔑视，我们对此非常重视，所以我们需要做一些测试。"<<He>>说完之后打开了后方的车门。
+		<br><br>
+		"上车，"<<he>>说道，"你最好按我说的做。"
+		<br><br>
+
+		<<link [[上车|Chef Blackmail Car]]>><<sub 1>><</link>>
+		<br>
+		<<link [[拒绝|Chef Blackmail Car Refuse]]>><<crimeup 3000>><<def 1>><</link>><<crime>>
+	<<elseif $chef_sus gte 10 and $rng gte 51>>
+		<<generate1>><<person1>>"嘿，你，"一个声音在旁边响起,"厨师，" 你转身看到一个<<person>>正靠在一条小巷边上。"你的奶油不错，味道也很好，我打赌我可以猜到成分。"<<He>>笑着说道:"你是个顽皮的家伙，你并不希望当局发现这一点，这是肯定的。"
+		<br><br>
+
+		<<link [[询问这家伙想要什么|Chef Blackmail Ask]]>><</link>>
+		<br>
+		<<link [[拒绝被勒索|Chef Blackmail Refuse]]>><<def 1>><<set $chef_sus += 10>><</link>><<ggsuspicion>>
+		<br>
+
+	<<else>>
+		<<generate1>><<person1>><<person>>接近你。"我尝了你的面包，"<<he>>说道："奶油真的好好吃啊！简直就是珍馐！"<<His>>的眼睛忽然亮了起来，"这还有点儿！"在你反应过来前，<<he>>飞快地从你胳膊上刮了点儿没洗掉的奶油，又舔了一下。
+		<br><br>
+
+		"太好吃了，"<<he>>说道："但好像在哪……"<<his>>好像突然明白了什么，随即却摇了摇头道："不好意思，祝你厨运昌隆。"
+		<<gsuspicion>><<set $chef_sus += 2>>
+		<br><br>
+		<<endevent>>
+		<<link [[继续|Cliff Street]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if ($danger gte (9900 - $allure) or $eventforced) and $eventskip is 0>>
+		<<eventsstreet>>
+	<<else>>
+		<<if $options.mapTop is true>>
+			<<map "cliff">>
+			<br>
+		<</if>>
+		可访问地点
+		<br>
+		<<if $scienceproject is "ongoing" and $scienceprojectdays is 0 and Time.dayState is "day" and $exposed lte 0>>
+			<<scienceicon>><<link [[参加科学博览会|Science Fair]]>><</link>>
+			<br>
+		<</if>>
+		<<if $mathsproject is "ongoing" and $mathsprojectdays is 0 and Time.dayState is "day" and $exposed lte 0>>
+			<<mathicon>><<link [[参加数学竞赛|Maths Competition]]>><</link>>
+			<br>
+		<</if>>
+		<<if $englishPlay is "ongoing" and $englishPlayDays is 0 and Time.hour gte 17 and Time.hour lt 21 and $exposed lte 0>>
+			<<englishicon>><<link [[参加舞台剧|English Play Attend]]>><</link>>
+			<br>
+		<</if>>
+		<<if $robinmissing is "pillory" and $exposed lte 0>>
+			<<if Time.hour gte 15 and Time.hour lte 22>>
+				<<pilloryicon>><<link [[观察颈手枷 (0:10)|Robin Pillory Watch]]>><<pass 10>><</link>>
+			<<elseif Time.hour gte 23>>
+				<<pilloryicon>><<link [[观察颈手枷 (0:10)|Robin Pillory Failure]]>><<pass 10>><</link>>
+			<</if>>
+			<br>
+		<<elseif $pillory_tenant.exists is 1 and $exposed lte 0>>
+			<<if Time.hour is ($pillory_tenant.endhour -1) and Time.minute gte 50>>
+				<span class="blue">一名警察试图驱散人群。</span>
+				<br>
+				<<pilloryicon>><<link [[观察 (0:10)|Cliff Street]]>><<pass 10>><</link>>
+				<br>				
+			<<else>>
+				<<pilloryicon>><<link [[观察颈手枷 (0:10)|Cliff Street Pillory]]>><<pass 10>><</link>>
+				<br>
+			<</if>>
+		<</if>>
+		<<if Time.dayState is "night" and $exposed lte 0>>
+			<<townhallicon>><<link [[市长办公室 (0:01)|Town Hall Sneak]]>><</link>>
+			<br>
+		<<elseif $exposed lte 0>>
+			<<townhallicon>><<link [[市长办公室 (0:01)|Town Hall]]>><</link>>
+			<br>
+		<</if>>
+		<<beachicon>><<link [[海滩 (0:05)|Beach]]>><<pass 5>><</link>>
+		<br>
+		<<if $exhibitionismrun is "cliff" and $weather is "clear">>
+			<<ind>><<link [[脱掉衣服 (0:07)|Cliff Challenge]]>><</link>>
+			<br>
+		<</if>>
+		<<if $chef_state is 8 and Time.dayState is "dusk">>
+			<<cafeicon>><<link [[出席开幕活动 (5:00)|Chef Opening]]>><</link>>
+			<br>
+		<<elseif $chef_state is 7 and $chef_rework gte 1 and $chef_rework lte 30>>
+
+		<<elseif $chef_state is 7 and $chef_rework lte 0>>
+			<<if $exposed lte 0>>
+				<<cafeicon>><<link [[咖啡馆 (0:01)|Ocean Breeze Rework]]>><<pass 1>><</link>>
+				<br>
+			<</if>>
+		<<elseif $openinghours is 1>>
+			<<if $exposed lte 0>>
+				<<cafeicon>><<link [[咖啡馆 (0:01)|Ocean Breeze]]>><<pass 1>><</link>>
+				<br>
+			<<else>>
+			<</if>>
+		<<elseif Time.hour is $closinghour>>
+			<span class="blue">人们正在离开咖啡馆，</span>看起来已经是关店时间了.
+			<br>
+		<<else>>
+			<<cafeicon>><<link [[咖啡馆 (0:01)|Ocean Breeze Lock]]>><<pass 1>><</link>>
+			<br>
+		<</if>>
+		<br>
+		<<if $exposed gte 1 and Time.dayState isnot "night">>
+		<<else>>
+			<<add_link "其他区域<br>">><<hideDisplay>>
+			<<barb>>
+			<<starfish>>
+			<<connudatus>>
+			<<high>>
+			<<if $exposed lte 0>>
+				<<buswait>>
+			<</if>>
+			<<loiter>>
+		<</if>>
+		<<add_link "<br>快捷小路<br>">><<hideDisplay>>
+		<<commercial>>
+		<<stormdrain>>
+		<<displayLinks>>
+		<<if $options.mapTop isnot true>>
+			<br>
+			<<map "cliff">>
+		<</if>>
+	<</if>>
+<</if>>
+<<set $eventskip to 0>>
+<<set $chef_event to 0>>
+
+:: Cliff Challenge
+<<effects>>
+
+<<if $chef_rework isnot undefined>>
+
+	咖啡馆目前正在进行装修，现场到处都是建筑工人。
+
+<<else>>
+
+	咖啡馆现在座无虚席，门口都排起了一条长龙.
+
+<</if>>
+
+人们正在海滩来来往往地忙着自己的事情. 
+<br><br>
+
+纸条上说要从咖啡馆开始，但你需要找个地方放衣服，你环视了一圈，发现有一个垃圾桶就放在咖啡馆入口旁边。
+<br><br>
+
+<<if $exhibitionism gte 35>>
+		<<link [[脱衣服|Cliff Challenge Strip]]>><</link>><<exhibitionist3>>
+		<br>
+	<<else>>
+		<span class="blue">你的露出癖还不够做这件事.</span>
+		<br>
+	<</if>>
+	<<link [[离开|Cliff Street]]>><</link>>
+
+:: Cliff Challenge Strip
+<<effects>><<strip>><<fameexhibitionism 7>>
+
+你在无数人地面前当众脱光，然后把衣服捆了起来并迅速地塞到垃圾桶的后面。 
+<br><br>
+
+就在那一瞬间，你就被周围人的喘息声、喊叫声和欢呼声所淹没.<<if $exhibitionism gte 35>><<garousal>><<arousal 600>><<else>><<gstress>><<stress 6>><</if>>
+<br><br>
+
+<<link [[继续|Cliff Challenge 2]]>><<pass 1>><</link>>
+
+:: Cliff Challenge 2
+<<effects>>
+
+<<if $chef_rework isnot undefined>>
+	你听到身后传来的嘲笑声，你转身看去.那些正在装修咖啡馆的工人们停下了手上的工作并聚在一起无情的嘲笑着你.
+<<else>>
+	你转过身，看到整个咖啡馆的人都在盯着你，包括一脸震惊的萨姆。还有几个顾客趴在了窗户上，以便于更好地看清你的裸体。
+<</if>>
+
+你转身跑开，一直跑到远离咖啡馆的街上。 
+<br><br>
+
+海滩小道就在你的左边.
+你在去海滩的路上穿过无数穿着泳装和夏装的人，其中的大多数人都停下来并目不转睛地看着你。你的跑步速度变慢了，因为你必须在拥挤的小道上费力的挤过一些人。
+<br><br>
+
+空气吹拂着你赤裸的皮肤，你可以感觉到它吹过你的双腿，它轻轻的滑过你那完全暴露在外的<<genitals>>和屁股。 
+<br><br>
+
+<<link [[继续|Cliff Challenge 3]]>><<pass 1>><</link>>
+
+:: Cliff Challenge 3
+<<effects>>
+
+你把海滩甩在身后，你很快遇见了大量穿着西装和OL装的人，你正在市政厅附近裸奔，市政厅就在你的右边。 
+<br><br>
+
+人们继续对你喊叫和嘲笑，你必须在大群的公务员之间奔跑。<<if $exhibitionism gte 35>><<garousal>><<arousal 600>><<else>><<gstress>><<stress 6>><</if>>
+<br><br>
+
+<<link [[继续|Cliff Challenge 4]]>><<pass 1>><</link>>
+
+:: Cliff Challenge 4
+<<effects>>
+
+你跑过市政厅，在右转处进入商业街，这是这个城镇最拥挤的一部分。 
+<br><br>
+
+你经过那些顾客、司机、商店门面和餐馆，街上的每个人都能看到你的裸奔，其中不少人还拿出手机拍下你的裸奔.<<if $exhibitionism gte 35>><<garousal>><<arousal 600>><<else>><<ggstress>><<stress 12>><</if>> 
+<br><br>
+
+<<link [[继续|Cliff Challenge 5]]>><<pass 1>><</link>>
+
+:: Cliff Challenge 5
+<<effects>>
+
+你经过购物中心和办公楼，这是商业街上最拥挤的部分。 
+<br><br>
+
+人们对着你大喊大叫，汽车也朝你按响喇叭，这些噪音震耳欲聋，当你走在人行道上时，你很难从人群中穿行而过，而你现在只跑到了这条街的一半。<<if $exhibitionism gte 35>><<garousal>><<arousal 600>><<else>><<ggstress>><<stress 12>><</if>>
+<br><br>
+
+<<link [[继续|Cliff Challenge 6]]>><<pass 1>><</link>>
+
+:: Cliff Challenge 6
+<<effects>><<set $location to "alley">>
+
+你向右转跑到小巷内，相比于商业街那繁多的人群，这个小巷短暂地提供了一些隐私。 
+<br><br>
+
+你快速跑过这条小巷，然后右转回到了峭壁街。 
+这里人没有那么多了，但仍然有很多人和车经过，那些家伙都能看到你完全暴露的身体，而咖啡馆就在正前方。 
+<br><br>
+
+你尽可能快地跑，并冲刺着穿过人行道，迫使几辆汽车打着喇叭急刹停住了，当你回到咖啡馆时，你完成了这次表演。
+<br><br>
+
+<<link [[继续|Cliff Challenge 7]]>><<pass 1>><</link>>
+
+:: Cliff Challenge 7
+<<effects>><<set $location to "town">>
+
+神奇的是，你的衣服还在那里，你尽可能快地穿上衣服。 
+<br><br>
+
+当你穿上衣服时，几个人鼓掌欢呼。另一个盒子落在了你面前的人行道上，你上前拿起，发现里面有着<<moneyGain 1000>>和另一张纸条。
+<br><br>
+
+<i>你确实是我们可以合作的对象，我们很快就会再联系你的。</i>
+<br><br>
+
+你听到上方传来嗡嗡声，你抬头看去，有一架小型无人机正在街道上方盘旋，在无人机的下方有一个摄像镜头直勾勾的盯着你，当它注意到你在看它时，它就直接飞走了。<<if $exhibitionism gte 35>><<garousal>><<arousal 600>><<else>><<ggstress>><<stress 12>><</if>>
+<br><br>
+
+你打了个寒颤，然后把钱装进了口袋里。
+<br><br>
+
+<<set $exhibitionismrun to undefined>><<unset $exhibitionismrunon>><<clotheson>>
+<<link [[继续|Cliff Street]]>><<pass 1>><</link>>
+
+:: Cliff Street Pillory
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+你加入了峭壁街的颈手枷周围的人群。
+<<npc_pillory_detail>>
+<<if $stress gte ($stressmax / 10) * 3>>
+	<span class="gold">你感觉你的压力很大。</span> 因为事情越来越多了。
+	你看到一些人向<<the_pillory_person>>扔水果，这看起来很有趣。<span class="teal">你有中想加入的冲动。</span>
+	<<if Time.dayState isnot "night">>
+		<br>
+		当这些围观群众都上床睡觉时，你才敢做一些更淫荡的事情。
+	<</if>>
+	<br><br>
+<</if>>
+<<if Time.dayState is "night">>
+	<<if $stress gte ($stressmax / 10) * 3>>
+		<<if $pillory_tenant.fruitstock gte 1>>
+			<<link [[扔水果 (0:02)|Cliff Street Prisoner]]>><<pass 2>><<set $phase to 0>><<stress -6>><<set $pillory_tenant.fruitstock -= 1>><</link>><<lstress>>
+			<br>
+		<<else>>
+			<span class="red">现在已经没有水果可扔了。</span>
+			<br>
+		<</if>>
+	<</if>>
+	<<if $cat gte 6 and ($pillory_tenant.ass + $pillory_tenant.genital) gte 2>>
+		<<link [[弄干那个囚犯 (0:05)|Cliff Street Prisoner]]>><<pass 5>><<set $phase to 1>><</link>>
+		<br>
+	<</if>>
+	<<if $pillory_tenant.lowerexposed gte 2 and $stress gte 4000 and $trauma gte (($traumamax / 5) * 1)>>
+		<<link [[弄干那个囚犯 (0:05)|Cliff Street Prisoner]]>><<pass 5>><<set $phase to 2>><</link>><<llstress>><<ltrauma>>
+		<br>
+	<</if>>
+	<<if $pillory_tenant.lowerexposed lte 1 or (($pronoun is "m" and $pillory_tenant.upperexposed lte 1) or ($pronoun is "f" and $pillory_tenant.upperexposed lte 2)) and $stress gte 7000 and $trauma gte (($traumamax / 5) * 2)>>
+		<<link [[让那个囚犯走光 (0:02)|Cliff Street Prisoner]]>><<pass 2>><<set $phase to 3>><</link>><<llstress>>
+		<br>
+	<</if>>
+	<<if $submissive lte 1000 or $fame.good gte 50 or $stat_police.pillory gte 1 or (($awareness + $purity) gte 1050)>>
+		<<if ($pillory_tenant.lowerexposed + $pillory_tenant.upperexposed) gte 1>>
+			<<link [[帮那个囚犯遮掩一下 (0:05)|Cliff Street Prisoner Night Help]]>><<pass 5>><<set $phase to 0>><</link>><<gstress>>
+			<br>
+		<</if>>
+		<<if $speech_attitude is "bratty" or $fame.good gte 150 or $stat_police.pillory gte 1 or (($awareness + $purity) gte 1400)>>
+			<<if $pillory_tenant.crowd gte 8>><<set $skulduggerydifficulty to 1350>> /* 50% chance of failure, even at max skulduggery */
+			<<elseif $pillory_tenant.crowd gte 6>><<set $skulduggerydifficulty to 1250>> /* 30% fail at max skul */
+			<<elseif $pillory_tenant.crowd gte 4>><<set $skulduggerydifficulty to 1100>> /* 10% chance of success, even at max skulduggery */
+			<<else>><<set $skulduggerydifficulty to 875>>
+			<</if>>
+			<<link [[释放囚犯 (0:05)|Cliff Street Prisoner Night Help]]>><<pass 5>><<set $phase to 1>><</link>> <<crime>><<skulduggerydifficulty>><<dangerousText>>
+			<br>
+		<<else>>
+			<span class="pink">你缺乏尝试营救的决心。</span>
+			<br>
+		<</if>>
+	<</if>>
+<<else>> /* day */
+	<<if $stress gte ($stressmax / 5) * 2>>
+		<<if $pillory_tenant.fruitstock gte 1>>
+			<<link [[扔水果 (0:02)|Cliff Street Prisoner]]>><<pass 2>><<set $phase to 0>><<stress -6>><<set $pillory_tenant.fruitstock -= 1>><</link>><<lstress>>
+			<br>
+		<<else>>
+			<span class="red">现在已经没有水果可扔了。</span>
+			<br>
+		<</if>>
+	<</if>>
+	<<if $pillory_tenant.lowerexposed lte 1 and $pillory_tenant.wedgied isnot 1 and ($stress gte 6000 or $trauma gte (($traumamax / 5) * 2))>>
+		<<link [[提起囚犯的内裤 (0:05)|Cliff Street Prisoner]]>><<set $pillory_tenant.wedgied to 1>><<pass 5>><<set $phase to 4>><<stress -12>><</link>><<llstress>><<ltrauma>>
+		<br>
+	<</if>>
+	<<if $submissive lte 1000 or $fame.good gte 50 or $stat_police.pillory gte 1 or (($awareness + $purity) gte 1050)>>
+		<<if ($pillory_tenant.lowerexposed + $pillory_tenant.upperexposed) gte 1>>
+			<<link [[帮那个囚犯遮掩一下 (0:05)|Cliff Street Prisoner]]>><<pass 5>><<set $phase to 5>><</link>><<gstress>>
+			<br>
+			<span class="teal">在光天化日之下，你不敢多帮忙，也许在夜晚的掩护下可以试试。</span>
+			<br><br>
+		<<else>>
+			<span class="teal">在光天化日之下，你不敢帮忙，也许在夜晚的掩护下可以试试。</span>
+			<br><br>
+		<</if>>
+	<</if>>
+
+<</if>>
+<<endevent>>
+<<link [[离开|Cliff Street]]>><</link>>
+<br>
+
+:: Cliff Street Prisoner
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<get_pillory_npc>><<person1>>
+<<if $phase is 0>>
+	附近有一盒腐烂的水果，你抓起一块在手里掂了掂。
+	<br>
+	你朝<<the_pillory_person>>扔了过去
+	<<if $rng gte 75>>
+	<<set $pillory_tenant.fruit += 1>>
+		<span class="teal">这一下完美的打中了<<him>>的脸。</span><<His>>的表情看起来要多搞笑有多搞笑。
+		<<if currentSkillValue('physique') gte ($physiquesize / 7) * 4>>你在它背后用了很大的力气，它看上去一定很疼。<</if>>
+		<<llstress>><<stress -12>>
+		<br>
+		群众欢呼雀跃且笑声不断。
+	<<else>>
+		你没有投中.<<if currentSkillValue('physique') lte ($physiquesize / 7) * 3>>附近的一些人嘲笑你的烂技术.<</if>>
+	<</if>>
+<<elseif $phase is 1>>
+	你啜饮着<<the_pillory_person>>的屁股和腹股沟内的奶油，其他的围观群众惊叹不已。
+	<<famesex 20>>
+<<elseif $phase is 2>>
+<<set $pillory_tenant.spank += 1>><<control 10>><<stress -24>><<trauma -12>>
+	你<<print either("恶毒地","愤恨地","冷酷地","自以为是地","疯狂地")>>拍打着那个<<the_pillory_person>>的屁股。不知何故,
+	<<print either("这给你一种控制感和幸福感。","这给你带来越来越多的平静感。","这使你的心理阴影消退了一些。")>>
+	<br>
+	一些人在为你加油。
+<<elseif $phase is 3>><<control 10>><<stress -24>><<trauma -12>>
+	你来到<<the_pillory_person>>的后面，然后<<print either("顺利地","笨拙的","迅速地")>>
+	<<if $pronoun is "m">>
+		<<if $pillory_tenant.upperexposed lte 1>>
+			<<set $pillory_tenant.upperexposed to 2>>脱去了<<his>>的上衣，将<<his>>的胸部彻底暴露在了空气当中
+			<<if $pillory_tenant.lowerexposed lte 1>>然后<</if>>
+		<</if>>
+		<<if $pillory_tenant.lowerexposed lte 1>>拉下<<his>>的
+			<<if $pillory_tenant.lowerexposed is 0>>裤子并<</if>>
+			将内裤脱到地上，将<<his>>的屁股和<<his>>的
+			<<if $pillory_tenant.person.gender is "m">>
+				$pillory_tenant.person.penisdesc
+			<<else>>
+				小穴
+			<</if>>
+			<<set $pillory_tenant.lowerexposed to 2>>
+		<</if>>
+	<<elseif $pronoun is "f">>
+		<<if $pillory_tenant.upperexposed lte 2>>
+			<<if $pillory_tenant.upperexposed lte 0>>扒下<<his>>的上衣<</if>>
+			脱掉了<<his>>的胸罩，使<<his>>的 $pillory_tenant.person.breastsdesc
+			<<if $pillory_tenant.lowerexposed lte 1>>朝向所有人。毫不犹豫的，你接着<</if>>
+			<<set $pillory_tenant.upperexposed to 3>>
+		<</if>>
+		<<if $pillory_tenant.lowerexposed lte 1>>
+			<<if $pillory_tenant.lowerexposed lte 0>>撩起<<his>>的衬衫，把<<his>>的内裤拉到地上，
+			<<else>>拉下<<the_pillory_person>>的内裤到地板上，<</if>>
+			使<<his>>完全暴露在外
+			<<if $pillory_tenant.person.gender is "m">>
+				$pillory_tenant.person.penisdesc
+			<<else>>
+				小穴
+			<</if>>
+			和屁股
+			<<set $pillory_tenant.lowerexposed to 2>>
+		<</if>>
+	<<else>> /* in case the game goes fully non binary */
+		撕掉了所有的衣服，使其完全暴露在外
+	<</if>>并朝向观看的人群。<<He>>震惊地大喊。
+	<br><br>
+
+	周围的某些观众虽然<<print either("在喘着粗气，但","在放声大笑，但","在抱怨着，但","沉默着，但","在吹着口哨，并","在嘲笑着，并","发出了淫秽的威胁声，并")>>更多的观众正在欢呼雀跃着。
+<<elseif $phase is 4>><<control 5>><<stress -20>><<trauma -4>><<set $pillory_tenant.broken += 1>>
+	你来到了那个家伙的后面, 然后<<print either("无耻的","积极地","迅速地","报复性地","悄悄地")>>
+	抓住<<the_pillory_person>>的<<if $pronoun is "m">>内裤<<else>>女士内裤<</if>>并用力的将其提了起来.
+	<br>
+	<<His>>发出震惊的尖叫声，这让你在跑开的时候不自禁地大笑了起来.当你重新回到人群中时，<<his>>那副苦涩的表情让你再次开怀大笑，
+	那家伙被锁在颈手枷上,<<he>>甚至无法整理自己的衣服.<<He>>清楚这一点，那些围观地群众更清楚.
+	<br>
+	人群中的许多人似乎都在分享你所带来的快乐。
+<<elseif $phase is 5>><<stress 6>><<famegood 10>><<trauma -10>><<set $pillory_tenant.upperexposed to 0>><<set $pillory_tenant.lowerexposed to 0>>
+	当人们看到你走向颈手枷时，所有人都安静下来，<<The_pillory_person>>也警惕地看向了你。但当你开始为<<his>>整理起衣服时，<<his>>也放松了那紧绷的神经，
+	这也帮助其恢复了一点点尊严.
+	<br><br>
+	当观众们意识到你在做什么时，人群中的某些人发出了嘲笑声。还有人向你投掷东西，
+	<<if $rng % 3 == 0>>
+		<<athleticsdifficulty 0 500 f>>
+		<<if $athleticsSuccess>>
+			但你成功躲开了.
+		<<else>>
+			那些东西打在了你的<<print either("胸部.","脸上.","大腿上.","后脑勺上.","背上.")>><<gpain>><<pain 3>>
+		<</if>>
+	<<else>>
+		虽然你躲掉了一些，但也就只有一些了.
+	<</if>>
+	<br><br>
+	你快速的把<<his>>的衣服放回了原处，然后迅速地离开了.<br><br>
+	你感觉到人群中投射来一些满是敌意的眼神，但你对自己的所作所为感觉良好。<<ltrauma>>
+<<else>>
+	你做了一些完全出乎意料的事情，很少有人能解释你做了什么，更少有人能解释是为了什么，也没有人愿意再谈起这件事。(错误：请报告)
+<</if>>
+<<endevent>>
+<br><br>
+<<link [[继续|Cliff Street Pillory]]>><</link>>
+<br>
+
+
+:: Cliff Street Prisoner Night Help
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<if $phase is 0>><<stress 6>><<famegood 10>><<trauma -10>><<set $pillory_tenant.upperexposed to 0>><<set $pillory_tenant.lowerexposed to 0>>
+	当人们看到你走向颈手枷时，所有人都安静下来，<<The_pillory_person>>也警惕地看向了你。但当你开始为<<his>>整理起衣服时，<<his>>也放松了那紧绷的神经，
+	这也帮助其恢复了一点点尊严.
+	<br><br>
+	当观众们意识到你在做什么时，人群不屑地转过了身，当你迅速地把<<his>>的衣服放回原处时，你听到背后传来阴险的嘟囔声。
+	<br><br>
+	<<rng 12>>
+	<<if $rng gte $pillory_tenant.crowd>>
+		在其他人还没来得及太过放肆的时候，你就迅速离开了。<br>
+		你感觉到人群中某些人对你的敌意还在持续着，
+		<<if $speech_attitude is "bratty">>
+			但那些家伙没有胆量去做任何事。<br>
+			"什么？？"你摇了摇头，然后在对人群竖起一根中指后便随意地离开了。<<lstress>><<stress -10>><br><br>
+			你觉得这样做非常好。<<ltrauma>>
+		<<else>>
+			但你对自己的所作所为感到很满意.<br>
+			你成功地离开了现场。<<ltrauma>>
+		<</if>>
+		<<endevent>>
+		<br><br>
+		<<link [[继续| Cliff Street]]>><</link>>
+		<br>
+	<<else>>
+		<<if $pillory_tenant.crowd gt 6>><<athleticsdifficulty 400 1000 f>><<else>><<athleticsdifficulty 0 500 f>><</if>>
+		"小心！"<<The_pillory_person>>突然喊道。
+		<<if $athleticsSuccess>>
+			有人想抓住你，但你躲开了那家伙的手并冲了出去。<br>。
+			你听到了追赶你的脚步声，但没什么问题，你能轻松地跑掉。<br><br>
+
+			当你停下来喘息的时候，你发现自己在不自觉地微笑，你对自己所做的事很满意。<<lstress>><<stress -6>>
+			<<endevent>>
+			<br><br>
+			<<if $rng % 4 is 3>><<link [[继续| Starfish Street]]>><<set $eventskip to 1>><</link>>
+			<<elseif $rng % 3 is 2>><<link [[继续| High Street]]>><<set $eventskip to 1>><</link>>
+			<<elseif $rng % 3 is 1>><<link [[继续| Connudatus Street]]>><<set $eventskip to 1>><</link>>
+			<<else>><<link [[继续| Barb Street]]>><<set $eventskip to 1>><</link>>
+			<</if>>
+			<br>
+		<<else>>
+			有人抓住了你！
+			<<endevent>>
+			<br><br>
+			<<link [[继续|Cliff Street Prisoner Night Strip]]>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<<elseif $phase is 1>>
+	你鼓起了所有的信心，大摇大摆地走向颈手枷，就像你应该在那里一样。<br><br>
+	你摆开架势，然后粗暴地抓住<<the_pillory_person>>的头发，然后把<<his>>的脑袋用力向后一拽，随后贴在<<his>>耳边低语道。
+	<br><br>
+	"抱歉，但我是来帮忙的，我会带你离开这里，但在这之前需要看起来和平常一样。"
+	<br><br>
+	"好了，各位，表演结束了，"你大声说道。"我们要回局里去了，这个人要供出其同伙了。
+	没错，人渣，我们有更多问题要问你，而且你这次最好乖乖地合作。"
+	<<skulduggerycheck "silent">><<crimeup 200>>
+	<<endevent>>
+	<br><br>
+	<<if $skulduggerysuccess is 1>>
+		<<link [[继续|Cliff Street Prisoner Escape]]>><</link>>
+	<<else>>
+		<<link [[继续|Cliff Street Prisoner Escape Fail]]>><</link>>
+	<</if>>
+	<br>
+<<else>>
+	没有人看到你做了什么，也没有人理解它，更没有人能够解释，就像矩阵中的一个小插曲，你在人群中回到了现实。(错误：请报告)
+	<<endevent>>
+	<br><br>
+	<<link [[继续|Cliff Street Pillory]]>><</link>>
+	<br>
+<</if>>
+
+:: Cliff Street Prisoner Night Strip
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<generate1>><<generate2>>你转过身去，发现一个<<person1>><<person>>和一个<<person2>><<person>>正皱着眉头看着你.
+<br><br>
+"你为什么要这样做？"那个<<person>>问道。
+<br><br>
+"这很明显，"那个<<person1>><<person>>说道。"<<pShe>>让活动停了下来，是因为<<pshe>>想上去为大家乐呵乐呵。"
+<br><br>
+"没错!"
+<br><br>
+"所以让我们来帮<<phim>>一把！"<br>
+那两个家伙把你扑倒在地，开始撕扯你的衣服。
+<br><br>
+<<link [[继续|Cliff Street Prisoner Night Molestation]]>><<set $molestationstart to 1>><<set $eventskip to 1>><</link>>
+
+:: Cliff Street Prisoner Night Molestation
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<npcgangstrip>>
+	<<npcidlegenitals>>
+	<<set $rescue to 0>>
+<</if>>
+<<effects>>
+<<effectsman>>
+<<alarmstate "<span class='red'>你听到了笑声，因为附近的人在模仿和嘲笑你的呼救声。</span>">>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+
+<<if _combatend or ($worn.upper.type.includes("naked") and $worn.lower.type.includes("naked") and ($worn.under_lower.type.includes("naked") or playerChastity()))>>
+	<span id="next"><<link [[继续|Cliff Street Prisoner Night Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Cliff Street Prisoner Night Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Cliff Street Prisoner Night Molestation Finish
+<<if $enemyhealth lte 0>>
+	那两个家伙吃痛退开，你乘机抓住你的衣服，<<tearful>>你越过他们，逃进了黑暗当中。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Cliff Street]]>><<set $eventskip to 1>><</link>>
+
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<if $enemyanger gte ($enemyangermax / 5) * 2>>
+		"愚蠢的荡妇。" 那个<<person>>把你扔到颈手枷上，然后用力拍打你的屁股。<<gpain>><<violence 6>><<bruise bottom>><<hitstat>>
+		<br><br>
+		"在那些家伙把你锁在这里的那天，我们会再来的，而且我们会玩得很开心的。"
+	<<else>>
+		"不错。" 那个<<person>>微笑着在你的脸颊上亲了一下，然后抢走了你最后的衣服。
+	<</if>>
+	<br><br>
+	<<tearful>>你站起身来，然后开始逃跑，直到你逃出那些人的视线为止。
+	<<set $stealtextskip to 1>>
+	<<stealclothes>>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Cliff Street]]>><<set $eventskip to 1>><</link>>
+
+<<else>> /* rescue is off, so getting here = stripped */
+	那几个家伙拿着你的衣服离开了，然后把它们扔给了看热闹的人群，只留下你赤身裸体地躺在水泥地上。<<covered>><<tearful>>你站起身来，然后开始逃跑，直到你逃出那些人的视线为止。
+	<<set $stealtextskip to 1>>
+	<<stealclothes>>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Cliff Street]]>><<set $eventskip to 1>><</link>>
+<</if>>
+
+:: Cliff Street Prisoner Escape
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<get_pillory_npc>><<person1>> /* if anyone can think of a better escape scenario, feel free to add it */
+在你熟练的技巧下，锁很快就被打开了，而附近的人群却毫不知情。<br>
+"配合我," 你小声说道。"当我们离开人群的时候，一起朝小巷走去。"
+<br><br>
+"好了，快起来吧，罪犯。"你一边叫着一边拿开颈手枷的固定装置，随后把<<the_pillory_person>>扶了起来。
+
+<<if ($pillory_tenant.lowerexposed + $pillory_tenant.upperexposed) gte 1>>
+	<<if $pillory_tenant.person.pronoun is "f">>
+		"来吧，这不是一个奶子展会，没有人想看到这一切，把这些衣服整理好...很好。
+	<<else>>
+		"你是个放荡的家伙吗？把它盖起来！没有人想看到这个，把这些衣服整理一下...很好。
+	<</if>>
+<<else>>
+	"怎么了？你在那里很开心吗？是想在那里过夜么？
+<</if>>
+你知道车站在哪里，赶紧走吧。"
+<br><br>
+当离开人群的视线后，你们就一起消失在一条小巷当中。
+<br><br>
+<<if $pillory_tenant.special.name is "Leighton">>
+	"那太令人讨厌了，我是被陷害的。"<<the_pillory_person>>激烈地说道:"但谢谢你把我救出来。"
+	<<npcincr Leighton love 10>>
+<<elseif $pillory_tenant.special.name is "Whitney">>
+	"谢......谢了"<<the_pillory_person>>皱起眉头说道:"我要去找那个陷害我的混蛋。"
+	<<npcincr Whitney love 5>>
+<<else>>
+	"谢谢你，"<<the_pillory_person>>恳切地说道:"那真是太可怕了，你真的帮了我个大忙。"
+<</if>>
+<<clear_pillory>>
+<<endevent>><<famegood 15>>
+<br><br>
+<<link [[继续|Commercial alleyways]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Cliff Street Prisoner Escape Fail
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<generatePolice 2>><<generatePolice 3>><<generatePolice 4>><<person3>><<crimeup 1000>>
+"我会带你离开这里的，"你低声说道.<br>
+然而，在这么多人的注视下，你很难在锁具上下功夫。它们打不开，捆绑物也不松动。一把锁的锁芯被堵住了，你又摸索着找另一把。
+随着时间的推移，你听到人群中传来一阵阵杂音，你开始惊慌失措，但你没有注意到的是，人群突然陷入了沉默。
+<br><br>
+"帮助罪犯逃脱合法惩罚也是一种犯罪，"你身后的一个声音说道。
+<br><br>
+"还有对公共财产的破坏," 另一个声音说道： "就是那些锁."<br>
+你慢慢的转过身，三个穿着制服的警察站在那里.
+<br><br>
+<<if $crime gte 2000>>
+	"我也认识<<pher>>，"那个<<person>>补充道:"毫无疑问，又是一个小阿飞，这家伙在局里的记录和手臂一样长。"
+<<else>>
+	"真可惜，"那个<<person>>摇了摇<<his>>的头。"<<pShe>>明明看起来也很无辜的。"
+<</if>>
+<br><br>
+"所以这儿发生了什么?" 这里的负责人,那个<<person2>><<person>>问道.
+<br><br>
+"<<pShe>>告诉我们，<<pshe>>是你们中的一员，"人群中一个声音喊道:"警官"。
+<br><br>
+"冒充警察？"<<person3>><<person>>发出嘶嘶的声音说道:"另一项罪行。"
+<br><br>
+"<<girl>>," 那个<<person2>><<person>>说道: "我想你可能会有麻烦了。"
+<br><br>
+<<link [[道歉|Cliff Street Prisoner Escape Fail 2]]>><<set $phase to 0>><</link>><br>
+<<link [[跑！|Cliff Street Prisoner Escape Fail Run]]>><<crimeup 500>><</link>><<gcrime>><br>
+<<link [[试图解释你的行为|Cliff Street Prisoner Escape Blag]]>><</link>>
+
+
+:: Cliff Street Prisoner Escape Fail Run
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<athleticsdifficulty 600 1300 f>>
+<<if $athleticsSuccess>>
+	你突然冲向公路，<span class="green">并在躲开了一个不知从哪冒出的攻击</span>后继续跑路。
+	<br><br>
+	你很快就把那两个条子甩在了后面，但那个<<person4>><<person>>却一直紧跟在你后面，你在镇上的街道上狂奔着，而那名警察则无情地紧跟其后。
+	<br><br><<person4>>
+	<<rng>>
+	<<if $rng gte 80>> /* only 20% chance of escape for most */
+		你感觉你的肺正在燃烧，就在你快要崩溃的时候，你听到<<him>>似乎被什么东西绊倒，咕噜一声撞到了墙上。<br>
+		因为肾上腺素的飙升，你在<<he>>恢复过来之前便先恢复了过来.
+		<br><br>
+		在历经了这么多的困难后，你逃了出来。你爬过最后一道栅栏，发现自己在丰收街附近的汽车站。
+		<br><br>
+		<<endevent>>
+		<<link [[继续|Bus Station]]>><<pass 5>><</link>>
+	<<elseif $rng gte 60 and $harpy gte 6 and $birdFly gte 1>> /* harpies get a bit more chance */
+		你感觉你的肺正在燃烧，就在你快要崩溃的时候，你听到<<him>>似乎被什么东西绊了个踉跄。<br>
+		肾上腺素的飙升提升了你的领先优势，在冲过一个转角下坡时，你借助地形张开翅膀，翱翔于天空之中。
+		<br><br>
+		尽管困难重重，但你还是逃了出来，会飞就是牛逼! 在城镇上空翱翔了一会儿后，你降落在商业区购物中心的屋顶上。
+		<br><br>
+		<<endevent>>
+		<<link [[继续|Commercial rooftops]]>><<pass 5>><</link>>
+	<<elseif $rng gte 40>>
+		在跑了半个镇之后，最后一名警察<span class="green">貌似终于撑不住了.</span>然而，当你跑过一个转角进入一条小巷时，你发现自己走进了<span class="red">一个死胡同。</span>
+		<br><br>
+		那个<<person4>><<person>>很快就追上并将你拦了下来."抓住你了."<<he>>逐步向你靠近.
+		<br><br>
+		当你正准备放弃时，你注意到墙根处有一个打开的地下室窗户。你不知道里面有什么，但不进去就得面对警察。
+		<br><br>
+		<<link [[穿过那个窗户|Hospital Arrest Molestation]]>><<endevent>><<set $molestationstart to 1>><</link>>
+		<br>
+		<<link [[不逃跑，直接自首|Cliff Street Prisoner Escape Fail 2]]>><<set $phase to 3>><</link>>
+		<br>
+	<<else>>
+		尽管你努力奔跑，但你依旧无法取得任何进展，那个警察不断逼近，<span class="red">直到把你抓住.</span><br>
+		你重重地摔在地面上.
+		<br><br>
+		<<link [[继续|Cliff Street Prisoner Escape Fail 2]]>><<set $phase to 2>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<if playerBellySize(true) gte 8>>
+		你突然冲向公路，<span class="red">但警察已经做好了准备，其中一人轻而易举地绊倒了你。</span><<ggpain>><<pain 12>>
+	<<else>>
+		你突然冲向公路，<span class="red">但警察已经做好了准备，其中一人朝你的腹部重重地来了一拳.</span><<ggpain>><<pain 12>><br>
+		你跪在地上大口大口地喘气。
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Cliff Street Prisoner Escape Fail 2]]>><<set $phase to 1>><</link>>
+	<br>
+<</if>>
+
+:: Cliff Street Prisoner Escape Blag
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+/* unlikely to pass, but needs some dice roll here. With high eloquence & skulduggery, you get up to an ~8% chance of really dumb cops */
+<<rng 1000>>
+<<if currentSkillValue('skulduggery') gte $rng>>/* chance rises with skul*/
+	<<rng 600 1200>> /* Rises from 0% to ~67% as $english rises from 600 to 1000 */
+	<<if currentSkillValue('english') gte $rng>><<set _eloquent to true>><<else>><<set _eloquent to false>><</if>>
+	<<rng>> /* fixed at 10% - would need 3 pretty dumb cops */
+	<<if $rng gte 91>><<set _dumb_cops to true>><<else>><<set _dumb_cops to false>><</if>>
+	<<if _dumb_cops and _eloquent>><<set _blag to true>><<else>><<set _blag to false>><</if>>
+<<else>>
+	<<set _blag to false>>
+<</if>>
+<<if _blag is true>>
+	"事实上，"你满是自信地说道。"我就该在这里，是署长派我来的，让我来测试这些绑带的质量，这些东西偷工减料地令人震惊，究竟有多少人从这逃走了？"
+	<br><br>
+	"呃....我不知道，我想..."<<person2>><<person>>困惑地说道。
+	<br><br>
+	"你不知道？好吧，我已经听够这样的废话了，"你喊道:"我要在发生任何事情之前把这个人送回局里.还有，这把锁的锁孔是被堵住了吗？我的钥匙插不进里面了。"
+	<br><br>
+	"哦，是的，是的，这个锁确实有点，"那个<<person4>><<person>>说道:"你必须......"
+	<br><br>
+	"你不介意吧？"
+	<br><br>
+	"当然，当然."
+	<br><br>
+	当这些警察为你释放囚犯，并让你俩在无人陪伴的情况下向车站走去时，你简直无法相信发生的这一切，当你二人离开视线后，你们就一起消失在了一条小巷当中。
+	<br><br>
+	<<if $pillory_tenant.special.name is "Leighton">>
+		"那太令人讨厌了，我是被陷害的。"<<the_pillory_person>>激烈地说道:"但谢谢你把我救出来。"
+		<<npcincr Leighton love 10>>
+	<<elseif $pillory_tenant.special.name is "Whitney">>
+		"谢......谢了"<<the_pillory_person>>皱起眉头说道:"我要去找那个陷害我的混蛋。"
+		<<npcincr Whitney love 5>>
+	<<else>>
+		"谢谢你，"<<the_pillory_person>>恳切地说道:"那真是太可怕了，你真的帮了我个大忙。"
+	<</if>>
+	<<clear_pillory>>
+	<<endevent>><<famegood 15>>
+	<br><br>
+	<<link [[继续|Commercial alleyways]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	"事实上，"你满是自信地说道。"我就该在这里，是署长派我来的，让我来测试这些绑带的质量，这些东西偷工...."
+	<br><br>
+	"不不。"那个<<person2>><<person>>摇了摇<<his>>的头. "不对。"
+	<br><br>
+	"听着，警官，我在这..."
+	<br><br>
+	"不，我们才不会买账."
+	<br><br>
+	"这又是'冒充警察罪'吗？"那个<<person3>><<person>>问道。"或者是..."
+	<br><br>
+	"目前而言，这真的不重要。"那个<<person2>><<person>>紧盯着你说道，"重要的是，这个年轻的<<lass>>已经过于执迷不悟了。
+	<<text_pillory_release_fail_strip>>
+	<<link [[继续|Cliff Street Prisoner Escape Fail 3]]>><<set $phase to 10>><</link>>
+	<br>
+<</if>>
+
+:: Cliff Street Prisoner Escape Fail 2
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<if $phase is 0>> /* apologised */ <<set $phase to 9>>
+	"我很抱歉，"你平静地说道。
+	<br><br>
+	<<if $crime gte 2000>>
+		"对不起，你这次要被捕了。"<<person3>><<person>>冷冷地说道。
+	<<else>>
+		"现在说这些已经太晚了，"那个<<person3>><<person>>说道:"犯罪行为必须得到惩罚，这是法律给予我们的义务。"
+	<</if>>
+	<br><br>
+	那个<<person2>><<persons>>的目光在你身上转了转。"看到一个如此年轻的<<lass>>如此执迷不悟让我很难过，但我相信万事万物总有一个原因。
+<<elseif $phase is 1>> /* punched */ <<set $phase to 10>>
+	"这是意图拒捕的攻击行为吗？"那个<<person3>><<person>>问道。"或者妨碍警察办案？"
+	<br><br>
+	"不过就目前而言，这真的不重要。"那个<<person2>><<persons>>上下打量着你说道，"重要的是，这个年轻的<<lass>>已经过于执迷不悟了。
+<<elseif $phase is 2>> /* tackled */ <<pass 5>><<set $phase to 11>>
+	当你回过神的时候，那个警察，那个<<person4>><<person>>给你上了镣铐，并正把你押送回峭壁街。<<gpain>><<pain 6>>
+	<br>
+	你试图与<<him>>交谈，但得到的只有无情的沉默。
+	<br><br>
+	几分钟后，你又回到了峭壁街的颈手枷处，重新面对那三个恼怒的警察。
+	<br>
+	"浪费警力资源？"<<person3>><<person>>问道，"你知道的，逃跑是另一种犯罪，对吗？或者说，逃避..."
+	<br><br>
+	"不过就目前而言，这真的不重要。"那个<<person2>><<persons>>上下打量着你说道，"重要的是，这个年轻的<<lass>>已经过于执迷不悟了。
+<<elseif $phase is 3>> /* surrendered */ <<pass 5>><<set $phase to 11>>
+	你还没来得及说些什么，那个警察就把你的胳膊锁住，开始把你押回峭壁街。<<gpain>><<pain 6>>
+	<br>
+	你试图与<<person4>><<him>>交谈，但得到的只有冷漠无声的回应。
+	<br><br>
+	几分钟后，你又回到了峭壁街的颈手枷处，重新面对那三个愤怒的警察。
+	<br>
+	"浪费警力资源？"<<person3>><<person>>问道，"你知道么..."
+	<br><br>
+	"算了吧。"那个<<person2>><<person>>扫视了你一下。"重要的是，这个年轻的<<lass>>已经过于执迷不悟了。
+<<else>> /* ?? */ <<set $phase to 10>>
+	你在外面呆了一会儿，不知道你做了什么，也不知道结果是什么。(错误：请报告)
+	<br><br>
+	"你有听到我说的话么,<<lass>>?" 那个<<person2>><<person>>皱眉道："你似乎不太想配合啊?
+<</if>>
+<<text_pillory_release_fail_strip>>
+<<link [[继续|Cliff Street Prisoner Escape Fail 3]]>><</link>>
+<br>
+
+:: Cliff Street Prisoner Escape Fail 3
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<bind>><<upperruined>><<underupperruined>>
+那个<<person4>><<person>>用很大的力气臂锁住你的胳膊来强迫你后退，而另外两个人则割开你的上衣，只留下几块碎布。<<ggpain>><<gstress>><<pain 16>><<stress 10>><br>
+你就完全赤裸着上身了。
+<br><br>
+那两名警察在"搜查违禁品"时粗暴地摸索着你的<<breasts>>，围观地人群发出了笑声。
+<br><br>
+"还没发现什么," 那个<<person2>><<person>>说道. "所以最好继续检查."
+<br><br>
+<<link [[继续|Cliff Street Prisoner Escape Fail 4]]>><</link>>
+<br>
+
+:: Cliff Street Prisoner Escape Fail 4
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<clothesruined>><<get_pillory_npc>>
+那些家伙继续搜查, 直到你的所有衣物都被撕成碎片后，那几个家伙才离开你
+<<if playerChastity()>>
+	只有你的$worn.genitals.cn_name_cap被保留了下来，这也是因为那些家伙无法破坏它罢了.
+<<else>>
+	全身赤裸。
+<</if>><<gpain>><<ggstress>><<pain 8>><<stress 20>>
+<br><br>
+"没有违禁品，"那个<<person2>><<person>>说道。"<<pShe>>一定是把它们丢在哪里了。"
+<br><br>
+"我们可以检查一下。"那个<<person3>><<person>>犹豫了一下。"......蛀牙里？"<<gstress>><<stress 6>>
+<br><br>
+"歹势。"那个<<person4>><<person>>翻了个白眼。"那现在怎么办？"
+<br><br>
+"<<pShe>>正试图让另一个人出去，"那个<<person3>><<person>>说道，"所以我猜<<pshe>>是想交换一下？"
+<br><br>
+"是这样吗？"那个<<person2>><<person>>问你。"你想释放这个人渣，然后服完<<person1>><<his>>的剩余刑期么？我倒是很乐意，但你的处境就不那么乐观了。
+走程序的话呢，就是用毛巾把你裹起来，后把你送到车站。在等一段时间后，把你带上法庭，然后在那些法官对系统的不公正视而不见后
+或其他的什么后，让你以社会服务的方式结束这次的闹剧，但最终的决定权在你身上，你会选择什么呢？"
+<br><br>
+<<link [[与颈手枷上的犯人互换|Cliff Street Prisoner Escape Fail 5]]>><<if $phase lt 10>><<set $phase to 0>><<else>><<set $phase to 1>><</if>><</link>><br>
+<<link [[走程序|Cliff Street Prisoner Escape Fail 5]]>><<if $phase gt 10>><<set $phase to 3>><<else>><<set $phase to 2>><</if>><</link>>
+<br>
+
+:: Cliff Street Prisoner Escape Fail 5
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">><<earnFeat "You're the Laughingstock">>
+<<set _sentence_days_left to ($pillory_tenant.endday - Time.days)>>								/* Calc hours remaining */
+<<if _sentence_days_left is 0>><<set _hours to ($pillory_tenant.endhour - Time.hour)>>			/* hours to end hour */
+<<elseif _sentence_days_left is 1>><<set _hours to (24 - Time.hour) + $pillory_tenant.endhour>> /* now to midnight + midnight to end hour */
+<<elseif _sentence_days_left is 2>><<set _hours to (48 - Time.hour) + $pillory_tenant.endhour>> /* now to midnight + day + midnight to end */
+<</if>>
+<<if _hours gte 27>><<set _hours to 27>><</if>>
+<<if _hours lt 2>><<set _hours to 2>><</if>> /* cap hours: high and low */
+
+<<person2>>
+<<if $phase lte 1>>
+	<<if _hours gte 18>><<famegood 30>>"哇哦！"那个<<person>>看起来大吃一惊。"这...这真是令人震惊的无私奉献。我相信其他人都不会介意的。嗯，没错。"
+	<<elseif _hours gte 12>><<famegood 20>>那个<<person>>看起来吃了一惊，"这......这实际上是相当光荣的，而且我相信公众也不会介意。嗯，没错。"
+	<<else>><<famegood 10>>那个<<person>>看起来吃了一惊. "好吧，我只是没想到真的有人会贯彻执行这些."
+	<</if>>
+<<else>>
+	<<person>>你面前大笑。"好心人太多了！不，你会被关上颈手枷了。"
+<</if>>
+<br><br>
+<<The_pillory_person>>提前获释。如释重负一般，这个人衷心地感谢着你。<<famegood 5>>
+警察们把你强行塞到<<his>>所处位置的颈手枷上，在把装置安装好后，把你的胳膊和脑袋锁在了固定位置。
+<br><br>
+那个<<person2>><<person>>轻轻地拍了拍你的光屁股，"祝你在这里面玩得开心，在<<number _hours>>小时后会有人来放你出来的。
+<<if $phase is 3>><<set _bonus to random(2,4)>><<set _hours += _bonus>>不过才...<<Number _hours>>小时。让<<Number _bonus>>小时作为我们跑步的额外奖励时长吧。一起享受跑步的愉悦！"
+<<elseif $phase is 0>><<set _discount to random(2,4)>><<set _hours -= _discount>>啊...就关<<number _hours>>小时吧，不过你道歉了，所以就加上<<number _discount>>个小时的折扣好了。"
+<<else>>如果我们记得的话。"
+<</if>><br><br>
+警察离开了。那个<<if $phase is 3>>之前追逐着你的<</if>><<person4>><<person>>随之给了你一个飞吻.
+<<set $pillorytime to _hours>>
+<<set $pilloryaudience to ($pillory_tenant.crowd/2)>>
+<<crimeup -5000>>
+<<clear_pillory>>
+<<endevent>>
+<br><br>
+<<link [[继续|Pillory]]>><</link>>
+<br>

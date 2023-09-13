@@ -1,0 +1,2589 @@
+:: Farm Cottage
+<<set $location to "alex_cottage">><<set $outside to 0>><<effects>>
+<<farm_work_update>>
+<<if $slimeFarmNakedStored is true>>
+	你将衣服穿好。
+	<<storeon "farmHidingSpot">>
+	<<unset $slimeFarmNakedStored>>
+<</if>>
+
+你在艾利克斯的小屋里，一楼的布局很紧凑，也很舒适。有间装设了现代电器的厨房，有张小桌子，还有间客厅，里面摆设着沙发和扶手椅。
+<br><br>
+
+<!-- Flavor text of Alex coming down, going up, or being upstairs -->
+<<if Time.hour is 21 and $alex_to_bed is undefined>>
+	<<set $alex_to_bed to 1>>
+	<<npc Alex>><<person1>>
+	艾利克斯上楼进入<<his>>的房间，楼梯在<<his>>脚下嘎吱作响。
+	<<endevent>>
+	<br><br>
+<<elseif Time.hour gte 21 or Time.hour lte 4>>
+	你听到楼上艾利克斯的鼾声。
+	<br><br>
+<<elseif Time.hour is 5 and ($alex_bed is "player" or $alex_bed is undefined)>>
+	<<set $alex_bed to "none">><<npc Alex>><<person1>>
+	楼梯嘎吱作响，你看到艾利克斯从楼上下来。<<covered>>"我去准备早饭。"<<he>>说，进入了厨房。
+	<<if $exposed gte 1>>
+		当<<He>>经过时，<<he>>假装没有偷看。<<glust>><<npcincr Alex lust 1>>
+	<</if>>
+	<<endevent>>
+	<br><br>
+<<elseif $farm_work.alex is "admin" or ($farm_work.alex is "clearing" and $farm_stage is 12)>>
+	你听到楼上传来艾利克斯和人通电话的声音。
+	<br><br>
+<</if>>
+
+<!-- Main options of available actions -->
+<<if ($farm_countdown lte 0 or $farm_countdown is undefined) and ($renttime lte -2 or ($renttime lte 0 and Time.hour gte 4 and Time.hour lte 21))>>
+	<<unset $farm_countdown>><<unset $baileyReunionScene>>
+	<span class="red">你听到有人敲门。</span>
+	<br><br>
+
+	<<if Time.hour gte 21 or Time.hour lte 4>>
+		艾利克斯在上面动了一下。
+		<br><br>
+
+		<<link [[去应门|Farm Cottage Bailey]]>><<set $phase to 0>><</link>>
+		<br>
+		<<link [[让艾利克斯去应门|Farm Cottage Bailey]]>><<set $phase to 1>><</link>>
+		<br>
+
+	<<elseif Time.hour is 5>>
+		艾利克斯十分担忧地看了你一眼。
+		<br><br>
+
+		<<link [[去应门|Farm Cottage Bailey]]>><<set $phase to 0>><</link>>
+		<br>
+		<<link [[让艾利克斯去应门|Farm Cottage Bailey]]>><<set $phase to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[去应门|Farm Cottage Bailey]]>><<set $phase to 2>><</link>>
+		<br>
+		<<link [[让艾利克斯去应门|Farm Cottage Bailey]]>><<set $phase to 3>><</link>>
+		<br>
+	<</if>>
+<<elseif $stress gte $stressmax>>
+	<<passoutfarmroad>>
+<<elseif $farm_attack_timer is 0 and Time.hour gte 21>>
+	<<npc Alex>><<person1>>
+	艾利克斯冲下楼梯。<span class="red">"<<nnpc_Hes Remy>>来了"</span><<he>>说，"我们能做到的，去做好准备，我去
+	<<if $farm.tower_guard>>
+		找$farm.tower_guard 。"
+	<<else>>
+		看看能不能找到他们的位置。"
+	<</if>>
+	<br><br>
+
+	<<farm_assault_intro>>
+	<br><br>
+
+	<<link [[做好准备|Farm Assault Wardrobe]]>><<endevent>><<set $phase to 3>><</link>>
+	<br>
+<<elseif Time.hour is 5 and $alex_breakfast is undefined>>
+	<<link [[帮艾利克斯准备早饭 (0:20)|Farm Breakfast Make]]>><<set $alex_breakfast to 1>><<pass 20>><<npcincr Alex love 1>><<stress -6>><<tiredness -6>><</link>><<glove>><<lstress>><<ltiredness>>
+	<br>
+	<<link [[吃早饭 (0:20)|Farm Breakfast Eat]]>><<set $alex_breakfast to 1>><<pass 20>><<stress -12>><<tiredness -6>><</link>><<llstress>><<ltiredness>>
+	<br>
+	<<farm_cottage_options>>
+<<elseif Time.hour is 5>>
+	艾利克斯坐在客厅里，正在看电视
+	<br><br>
+
+	<<npc Alex>><<person1>>
+	<<if $alex_tea is undefined>>
+		<<set $alex_tea to 1>>
+		<<if Time.days % 2 is 0>>
+			<<if $NPCName[$NPCNameList.indexOf("Alex")].dom gte 1>>
+				"我想喝杯茶，"<<he>>说，"介意去烧壶水吗？"
+				<br><br>
+
+				<<link [[沏一杯茶 (0:05)|Farm Breakfast Tea]]>><<npcincr Alex love 1>><<pass 5>><</link>><<glove>>
+				<br>
+				<<link [[沏两杯茶 (0:05)|Farm Breakfast Tea 2]]>><<npcincr Alex love 1>><<pass 5>><<stress -6>><</link>><<glove>><<lstress>>
+				<br>
+				<<link [[拒绝|Farm Breakfast Tea Refuse]]>><<npcincr Alex dom -1>><<npcincr Alex love -1>><</link>><<llove>><<ldom>>
+				<br>
+			<<else>>
+				"我想喝杯茶，"<<he>>边说边站起身，"你要来一杯吗？"
+				<br><br>
+
+				<<link [[接受 (0:05)|Farm Breakfast Tea Receive]]>><<pass 5>><<stress -6>><</link>><<lstress>>
+				<br>
+				<<link [[谢绝|Farm Cottage]]>><<endevent>><</link>>
+				<br>
+			<</if>>
+		<<else>>
+			<<farm_cottage_tv_options>>
+			<<farm_cottage_options>>
+		<</if>>
+	<<else>>
+		<<farm_cottage_tv_options>>
+		<<farm_cottage_options>>
+	<</if>>
+<<else>>
+	<<farm_cottage_options>>
+<</if>>
+
+
+
+:: Farm Bedroom
+<<set $outside to 0>><<effects>><<getTarget true>>
+<<farm_work_update>>
+你位于艾利克斯的小屋中自己的房间内。房间十分拥挤，但比你在孤儿院的房间要大。你的床对面立着一个衣柜。在可以俯瞰农场的窗户边上有一张书桌。
+<br><br>
+
+<<if $unbind is 1>>
+	<<unset $unbind>>
+	你解开了身上的绑带。
+	<br><br>
+<</if>>
+
+<<if $alex_bed is "player">>
+	艾利克斯躺在你的床上，打着呼噜。
+	<<if Time.hour is 5>>
+		<<set $alex_bed to "none">><<npc Alex>><<person1>>
+		<<He>>打了个哈欠，拉开了被单。<<covered>>"该去准备早饭了。"<<he>>说道。
+		<<if $daily.alex.bedOrgasm>>
+			<<if $exposed gte 2>>
+				艾利克斯匆忙地用毛巾擦了擦<<his>>的衣服，然后递给你一个干净的毛巾，移开了视线。
+				<br><br>
+				<<switch random(1, 3)>>
+					<<case 1>>
+						"你-你是变态吗？这是我刚换的衣服"<<he>>通红着脸说道。
+					<<case 2>>
+						"某，某人真是给一天开了个好头啊，死变态。"<<Hes>>脸红了。
+					<<case 3>>
+						"谢，谢谢你的包叫醒服务"<<he>>脸红了，"这可比闹钟厉害多了。"
+				<</switch>>
+			<<else>>
+				艾利克斯递过来一块毛巾，指了指你湿掉的位置，然后移开了目光。
+				<br><br>
+				<<switch random(1, 3)>>
+					<<case 1>>
+						<<He>>伸了个懒腰。"衣服我待会去洗，首先，先去吃饭。"
+					<<case 2>>
+						"做了个好梦啊，嗯？"<<he>>笑着拍了拍你的肩膀，"里面有我吗？"
+					<<case 3>>
+						"谢谢你的包叫醒服务"<<he>>笑出了声，"这可比闹钟厉害多了。"
+				<</switch>>
+			<</if>>
+		<</if>>
+		<<if $exposed gte 1>>
+			当<<He>>离开房间时，<<he>>假装没有偷看你。<<glust>><<npcincr Alex lust 1>>
+		<<else>>
+			<<He>>离开了房间，你听到楼梯在<<his>>脚下嘎吱作响。
+		<</if>>
+		<<endevent>>
+	<</if>>
+	<br><br>
+<</if>>
+
+<<if $stress gte $stressmax and !$possessed>>
+	<<passoutfarmroad>>
+<<elseif $farm_attack_timer is 0 and Time.hour gte 21 and !$possessed>>
+	<<npc Alex>><<person1>>
+	艾利克斯冲下楼梯。<span class="red">"<<nnpc_Hes Remy>>来了"</span><<he>>说，"我们能做到的，去做好准备，我去
+	<<if $farm.tower_guard>>
+		找$farm.tower_guard 。"
+	<<else>>
+		看看能不能找到他们的位置。"
+	<</if>>
+	<br><br>
+
+	<<farm_assault_intro>>
+	<br><br>
+
+	<<link [[做好准备|Farm Assault Wardrobe]]>><<endevent>><<set $phase to 3>><</link>>
+	<br>
+<<else>>
+	<<if $leftarm is "bound" or $rightarm is "bound" or $feetuse is "bound">>
+		<<if $possessed>>
+			你低头看了看身上的绑带。你轻轻一拉，几乎没有遇到任何阻力，它们就散开了。
+			<br><br>
+			<<unbind>>
+		<<else>>
+			<<link [[解开绑带 (0:10)|Farm Bedroom]]>><<set $unbind to 1>><<pass 10>><<unbind>><</link>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<bedicon>><<link [[脱光并爬到床上|Farm Bed]]>><<undressSleep "Farm Bed">><</link>>
+	<br>
+	<<listsleepoutfits "Farm Bed">>
+	<<roomoptions>>
+
+	<<wardrobeicon>><<link [[衣柜|Farm Wardrobe]]>><</link>>
+	<br>
+	<<if playerHasSexToys()>>
+		<<sextoysicon>><<link [[性玩具|Sextoys Inventory]]>><<set $sextoyInvReturnLink to $passage>><</link>>
+		<br>
+	<</if>>
+	<<if $nextPassageCheck is "Farm Mirror">>
+		<span class="nextLink"><<mirroricon>><<link [[镜子|Farm Mirror]]>><<preMirror>><</link>></span>
+	<<else>>
+		<<mirroricon>><<link [[镜子|Farm Mirror]]>><<preMirror>><</link>>
+	<</if>>
+	<br>
+	<br>
+	<<link [[艾利克斯的房间 (0:01)|Farm Alex Bedroom]]>><<pass 1>><</link>>
+	<br>
+	<<link [[下楼 (0:01)|Farm Cottage]]>><<pass 1>><</link>>
+	<br>
+	<br>
+	<<link [[设置|Farm Settings]]>><</link>>
+	<br>
+
+	<<attitudesControlCheck>>
+	<<if $attitudesControl.showGoldLink is true>>
+		<span class="goldLink"><<link [[态度|Attitudes]]>><<set $attitudesExitPassage to $passage>><</link>></span><span class="red">!!</span>
+	<<else>>
+		<<link [[态度|Attitudes]]>><<set $attitudesExitPassage to $passage>><</link>>
+	<</if>>
+	<br>
+<</if>>
+
+:: Farm Mirror
+<<effects>>
+
+<<link [[走开|Farm Bedroom]]>><<unset $mirrorMenu>><<postMirror>><</link>>
+<br>
+
+<<mirror>>
+<br><br>
+
+:: Farm Bed
+<<effects>>
+<<wearoutfit>>
+
+<<set $bus to "farm_bedroom">><<effects>>
+你们依偎在被窝里。
+<<if $alex_bed is "player">>
+	艾利克斯躺在你身旁，打着呼噜。
+<</if>>
+<<if $wraith.state and $wraithPrison and ($moonstate is "evening" or $moonstate is _nightstate)>>
+	你感到焦虑，你的目光向镜子移去。
+<</if>>
+<br><br>
+
+<<farm_sleep_options>>
+
+:: Farm Sleep
+<<set _autosavehere to true>>
+<<sleep>><<effects>>
+<<if $bus is "farm_alex_room">>
+	<<if $exposed gte 2>>
+		<<npcincr Alex lust 3>>
+	<<else>>
+		<<npcincr Alex lust 1>>
+	<</if>>
+<</if>>
+<<if $bus is "farm_alex_room" or $alex_bed is "player">>
+	<<set $bedGuest to "Alex">>
+<</if>>
+<<if $wraith.nightmare is 2 and isBloodmoon()>>
+	<<sleepeffects>>
+	你梦见一个美丽的身影。祂披着白色的外衣，站在红色的月亮之下。祂向你张开双臂，做出欢迎的姿态。当你走近时，你能感受到祂的目光正穿过你的大脑。
+	<br><br>
+
+	祂漂浮在湖面上，卷曲的树枝环绕在四周。你周围的一切都在旋转。你发现自己悬挂在一个巨大的废墟之上。你几乎无法呼吸。
+	<br><br>
+
+	你慢慢睁开眼睛，迟缓地从床上起身。<<if $bus is "farm_alex_room" or $bus is "farm_bedroom" and $alex_bed is "player">>你轻手轻脚，确保没有惊动艾利克斯。<</if>>你的耳内嗡嗡作响。
+	<br><br>
+
+	<<wraithPossess "alex_cottage">>
+	<<if $bus is "farm_alex_room">>
+		<<storeon "farm alex bed" "wardrobe">>
+		<span class="nextLink"><<link [[行走.|Farm Alex Bedroom]]>><<rainWraith>><</link>></span>
+	<<else>>
+		<<storeon "Farm Bed" "wardrobe">>
+		<span class="nextLink"><<link [[行走.|Farm Bedroom]]>><<rainWraith>><</link>></span>
+	<</if>>
+	<br>
+<<else>>
+	<<wakingEffects $sleepHoursTotal>>
+	<<if $nightmares gte 1 and $controlled is 0>>
+		你梦见自己被一个<<if ["haunt", "despair"].includes($wraith.state) and $rng lte 25>>苍白<<else>>黑暗<</if>>而可怕的东西追杀。
+	<<else>>
+		<<if $specialClothesEffects.bimboTotal gte random(100,1000) or $arousal gte 9000>>
+			你的睡眠被淫秽的梦所困扰。
+			<<arousal `$specialClothesEffects.bimboTotal / 10 * $sleepHoursTotal`>>
+			<<arousal `100 * $sleepHoursTotal`>>
+			<<if $arousal gte $arousalmax>>
+				它们把你推向了极点。
+				<<orgasm>><<set $daily.alex.bedOrgasm to true>>
+			<</if>>
+		<<elseif !_wakingEffect>>
+			你睡得很香甜。
+			<br><br>
+		<<else>>
+			<br><br>
+		<</if>>
+		<<if !_sleepinterrupt and (Time.hour gt 21 or Time.hour lt 6) and $bus is "farm_alex_room" or $alex_bed is "player">>
+			<<switch random(1, 6)>>
+				<<case 1>>
+					<<if Time.hour is 5>>
+						你试着摇醒艾利克斯。<<nnpc_He "Alex">>含糊不清地咕哝了一声。
+					<<else>>
+						你以为艾利克斯醒了，但<<nnpc_hes "Alex">>翻了个身，又睡了过去。
+					<</if>>
+				<<case 2>>
+					艾利克斯四仰八叉地躺在床上。你轻轻地把<<nnpc_his "Alex">>的胳膊从你脸上移开。
+				<<case 3>>
+					艾利克斯在梦里嗤嗤笑出了声。
+				<<case 4>>
+					艾利克斯<<print either("将被子扯到了自己那边", "在你耳旁打鼾", "嘴角淌出了口水。 你把它们擦干净")>>。
+				<<case 5>>
+					艾利克斯的半个身体悬在床边。你抬起<<nnpc_him "Alex">>的腿，把<<nnpc_him "Alex">>摆正。
+				<<case 6>>
+					"<<print either("糟糕……今晚你没有晚餐了",
+									"别看",
+									"我感觉有点宿醉",
+									"笨鸟",
+									"离开...的财产",
+									"我会展示给大家看")>>..."
+					艾利克斯喃喃而语。
+			<</switch>>
+		<<else>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<sleepeffects>>
+	<<if $remywake is 1>>
+		<<npc Alex>><<person1>>
+		"醒醒！"有人在摇你的肩膀，是艾利克斯。<span class="red">"<<nnpc_Hes Remy>>来了，"</span><<he>>说，"我们能做到的，去做好准备，我去
+		<<if $farm.tower_guard>>
+			找$farm.tower_guard 。"
+		<<else>>
+			看看能不能找到他们的位置。"
+		<</if>>
+		<br><br>
+
+		<<farm_assault_intro>>
+		<br><br>
+
+		<<set _bedroom to ($bus is "farm_alex_room" ? "farm alex bed" : "Farm Bed")>>
+		<<set $wardrobe_location to "alexFarm">>
+		<<wardrobeSelection true>>
+		<<storeon _bedroom "check">>
+		<<if _store_check is 1>>
+			<<storeon _bedroom>>
+		<</if>>
+		<<link [[做好准备|Farm Assault Wardrobe]]>><<endevent>><<set $phase to 1>><<unset $remywake>><</link>>
+		<br>
+	<<elseif _sleepinterrupt>>
+		<<npc Alex>><<person1>>
+		<<if $bus is "farm_alex_room">>
+				<<genitals>>上的触感把你从睡梦中唤醒
+				<<if $NPCList[0].penis isnot "none">>
+					你感受到一个坚硬的物体抵住了你的<<bottom>>。
+				<<else>>
+					然后某人的
+					<<if $NPCList[0].breastsize is 0>>
+						胸部
+					<<else>>
+						<<print $NPCList[0].breastsdesc>>
+					<</if>>
+					紧贴着你的背。
+				<</if>>
+				另一只手放在了你的大腿上。
+				<br><br>
+
+				<<if $daily.alex.tvTease>>
+					"在弥补今早的事情吗？"艾利克斯说着，<<his>>的呼吸拂过你的脖子。"我可以原谅你。"
+				<<else>>
+					"你这样很主动呢，"艾利克斯说着，<<his>>的呼吸拂过你的脖子。"睡在一张<<nnpc_gendery "Alex">>的床上。"
+				<</if>>
+				<br><br>
+
+				<<link [[推开|Farm Alex Climb]]>><<def 1>><<npcincr Alex dom -1>><</link>><<ldom>>
+				<br>
+				<<link [[顺其自然|Farm Alex Allow]]>><<sub 1>><<npcincr Alex dom 1>><</link>><<promiscuous1>><<gdom>>
+				<br>
+		<<else>>
+			<<if $exposed gte 2 and random(1, 2) is 2>>
+				你打了个寒颤。你的被单不见了。门外传来某人离去的脚步声。<<covered>>
+				<br><br>
+
+				你的被子散落在床脚的地上。你怀疑艾利克斯是罪魁祸首。在你睡着的时候，<<He>>不怀好意地盯着你的<<lewdness>>。
+				<br><br>
+
+				<<link [[继续睡觉|Farm Bed]]>><<endevent>><</link>>
+				<br>
+				<<link [[起来|Farm Bedroom]]>><<endevent>><</link>>
+				<br>
+				<<link [[生气 (0:05)|Farm Bedroom Confront]]>><<pass 5>><<npcincr Alex love -1>><<npcincr Alex dom -1>><</link>><<llove>><<ldom>>
+				<br>
+				<<if $promiscuity gte 35>>
+					<<link [[报复 (0:20)|Farm Bedroom Revenge]]>><<pass 20>><<npcincr Alex dom -1>><<npcincr Alex lust 5>><</link>><<promiscuous3>><<ldom>><<gglust>>
+					<br>
+				<</if>>
+			<<else>>
+				<<genitals>>上的触感把你从睡梦中唤醒
+				<<if $NPCList[0].penis isnot "none">>
+					你感受到一个坚硬的物体抵住了你的<<bottom>>。
+				<<else>>
+					然后某人的
+					<<if $NPCList[0].breastsize is 0>>
+						胸部
+					<<else>>
+						<<print $NPCList[0].breastsdesc>>
+					<</if>>
+					紧贴着你的背。
+				<</if>>
+				<br><br>
+
+				"我感觉你很孤独，"艾利克斯说道，<<his>>呼吸落在你的脖子上。
+				<br><br>
+
+				<<link [[推开|Farm Alex Push]]>><<def 1>><<npcincr Alex dom -1>><</link>><<ldom>>
+				<br>
+				<<link [[顺其自然|Farm Alex Go]]>><<sub 1>><<npcincr Alex dom 1>><</link>><<promiscuous1>><<gdom>>
+				<br>
+			<</if>>
+		<</if>>
+	<<else>>
+		<br><br>
+
+		<<if $bus is "farm_alex_room">>
+			<<link [[起来|Farm Alex Bedroom]]>>
+				<<set $wardrobe_location to "alexFarm">>
+				<<wardrobeSelection true>>
+				<<storeon "farm alex bed" "check">>
+				<<if _store_check is 1>>
+					<<storeon "farm alex bed">>
+				<</if>>
+			<</link>>
+			<br>
+		<<else>>
+			<<radiooutfits>>
+			<br><br>
+
+			<<link [[起来|Farm Bedroom]]>><<bedclotheson "Farm Bed">><</link>>
+		<</if>>
+		<br>
+	<</if>>
+<</if>>
+<<set $phase to 0>>
+
+:: Farm Alex Climb
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+
+你慢慢地离开了艾利克斯。
+<<if _alex.dom gte random(1, 50)>>
+	<<He>>用一只手抓住你的腰，将你固定住，<<his>>的身体压向了你。"你是想让我更粗暴些吗？"<<he>>低声说。"我可以这么做。"<<gstress>><<glust>><<stress 6>><<npcincr Alex lust 1>>
+	<br><br>
+
+	<<link [[挣脱|Farm Alex Climb 2]]>><<def 1>><<npcincr Alex dom -1>><</link>><<ldom>>
+	<br>
+	<<link [[答应|Farm Alex Allow]]>><<sub 1>><<npcincr Alex dom 3>><</link>><<promiscuous1>><<ggdom>>
+	<br>
+<<else>>
+	当你从床上爬起来的时候<<He>>没有阻止你，"随你便，"<<He>>翻过了身去说道。
+	<br><br>
+
+	<<link [[继续|Farm Alex Bedroom]]>><<endevent>><<storeon "farm alex bed" "check">><<if _store_check is 1>><<storeon "farm alex bed">><<set $wardrobe_location to "alexFarm">><<wardrobeSelection>><</if>><</link>>
+	<br>
+<</if>>
+
+:: Farm Alex Climb 2
+<<effects>>
+
+你打开艾利克斯的手，从床上挣扎起来。"随你便，"<<He>>翻过了身去说道。
+<br><br>
+
+<<set $alex_bed_spurned to 1>>
+
+<<link [[继续|Farm Alex Bedroom]]>><<endevent>><<storeon "farm alex bed" "check">><<if _store_check is 1>><<storeon "farm alex bed">><<set $wardrobe_location to "alexFarm">><<wardrobeSelection>><</if>><</link>>
+<br>
+
+
+:: Farm Alex Allow
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+
+你旋转你的屁股，<<bottomtext>>用你的<<bottom>>隔着衣服摩擦艾利克斯的<<print (_alex.penis isnot "none" ? "阴茎" : "小穴")>>，让它
+<<if $bottomskill lt 400>>
+	慢慢湿润了.
+<<elseif $bottomskill lt 800>>
+	快速湿润了.
+<<else>>
+	瞬间就湿透了。
+<</if>>
+<<promiscuity1>>
+
+<<He>>变得更加大胆，用吻蹂躏着你的脖子。
+<br><br>
+
+<<link [[继续|Farm Alex Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+
+:: Farm Alex Push
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+
+你转过身去，把艾利克斯推开了。
+<<if _alex.dom gte random(1, 50)>>
+	<<He>>用<<his>>的手臂搂住你的腰和肩膀，把你的身体拉近。"你想让我粗暴点吗？"<<he>>问，捏着你的<<bottom>>。"我没问题。"<<gstress>><<stress 6>><<glust>><<npcincr Alex lust 1>>
+	<br><br>
+
+	<<link [[再次推开|Farm Alex Push 2]]>><<def 1>><<npcincr Alex dom -1>><</link>><<ldom>>
+	<br>
+	<<link [[答应|Farm Alex Go]]>><<sub 1>><<npcincr Alex dom 3>><</link>><<promiscuous1>><<ggdom>>
+	<br>
+<<else>>
+	<<He>>从床上爬起来。"你会改变主意的，<<he>>说道，天太黑了，你看不清<<he>>的表情。<<He>>回到了自己的房间。
+	<br><br>
+
+	<<link [[继续|Farm Bed]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+:: Farm Alex Push 2
+<<effects>>
+
+你把艾利克斯推开，这次更用力一点。<<He>>从床上掉下来。"随你便，"<<he>>说道。"如果你改变主意了，你知道去哪儿找我。"<<He>>回到<<his>>的房间。
+<br><br>
+
+<<link [[继续|Farm Bed]]>><<endevent>><</link>>
+<br>
+
+:: Farm Alex Go
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	你引导艾利克斯的手在你的身体上下移动，邀请<<him>>进行探索。
+<<elseif $speech_attitude is "bratty">>
+	你把艾利克斯的屁股往后挤，同时把你的屁股抵住<<his>>的胯下。
+<<else>>
+	你张开双腿，抱住艾利克斯。
+<</if>>
+<<promiscuity1>>
+
+ <<he>>受到鼓励后更加大胆，用吻蹂躏着你的脖子。
+ <br><br>
+
+<<link [[继续|Farm Alex Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+
+
+:: Farm Alex Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[继续|Farm Alex Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Farm Alex Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Farm Alex Sex Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	艾利克斯翻了个身。<<lllust>><<npcincr Alex lust -5>><<npcincr Alex love 1>><<glove>>
+	<<if $bus is "farm_alex_room">>
+		<<unset $alex_bed>>
+	<<else>>
+		<<set $alex_bed to "player">>
+	<</if>>
+	<br><br>
+
+	<<tearful>>你听着<<his>>的鼾声。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+	<<if $bus is "farm_alex_room">>
+		<<link [[继续|Farm Alex Bed]]>><</link>>
+	<<else>>
+		<<link [[继续|Farm Bed]]>><</link>>
+	<</if>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	<<if $bus is "farm_alex_room">>
+		你把艾利克斯推下床，<<He>>从另一边爬起来。"我不知道你想要更粗鲁的，"<<he>>说道。<<He>>在床单下面动来动去。<<llove>><<npcincr Alex love -1>>
+		<br><br>
+
+		<<tearful>>你回到你的房间。
+		<br><br>
+		<<clotheson>>
+		<<endcombat>>
+
+		<<link [[继续|Farm Bedroom]]>><<storeon "farm alex bed" "check">><<if _store_check is 1>><<storeon "farm alex bed">><<set $wardrobe_location to "alexFarm">><<wardrobeSelection>><</if>><</link>>
+		<br>
+	<<else>>
+		你把艾利克斯从床上推下去。"我不知道你更想要粗鲁的，"<<he>>说道。太黑了，你看不见<<his>>的表情。<<He>>回到<<his>>的房间。<<llove>><<npcincr Alex love -1>>
+		<br><br>
+
+		<<tearful>>你翻了个身。
+		<br><br>
+
+		<<link [[继续|Farm Bed]]>><</link>>
+	<</if>>
+<<else>>
+	<<if $bus is "farm_alex_room">>
+		你从床上爬起来。"随你便，"<<he>>说道。<<tearful>>你回到你的房间。
+		<br><br>
+
+		<<clotheson>>
+		<<endcombat>>
+		<<link [[继续|Farm Bedroom]]>><<storeon "farm alex bed" "check">><<if _store_check is 1>><<storeon "farm alex bed">><<set $wardrobe_location to "alexFarm">><<wardrobeSelection>><</if>><</link>>
+	<<else>>
+		艾利克斯从床上爬起来。"随你便，"<<he>>说道。"你什么时候想和我做爱的时候直接过来，你知道我在哪里。"
+		<br><br>
+
+		<<tearful>>你翻了个身。
+		<br><br>
+
+		<<clotheson>>
+		<<endcombat>>
+		<<link [[继续|Farm Bed]]>><</link>>
+	<</if>>
+<</if>>
+
+
+
+:: Farm Bedroom Confront
+<<effects>>
+
+你把床单裹起来，冲进艾利克斯的房间。你打开灯，发现<<him>>在假装睡觉。
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"你不应该那样骚扰我。"，你说:"这是不礼貌的。"
+<<elseif $speech_attitude is "bratty">>
+	"他妈的变态，"你说道。"如果我对你做同样的事，你会怎么想?"
+<<else>>
+	"别做个变态，"你说道。
+<</if>>
+<br><br>
+
+"我不明白你的意思，"艾利克斯无辜地说道。
+<br><br>
+
+你又骂了<<him>>几句，但<<he>>坚持否认。但到最后，<<He>>认错了。
+<br><br>
+
+你回到你的床上。
+<br><br>
+
+<<link [[继续|Farm Bed]]>><<endevent>><</link>>
+
+:: Farm Bedroom Revenge
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+<<set _chest to (_alex.pronoun is "f" ? _alex.breastsdesc : "结实的胸膛")>>
+<<set _genitals to (_alex.penis isnot "none" ? _alex.penisdesc : "小穴")>>
+
+你等待一会儿，直到艾利克斯重新入睡，然后悄悄走到<<his>>的房间。你发现<<he>>正仰躺着，<<his>>的被子随着<<his>>的呼吸而起伏。
+<br><br>
+
+	你扯开被子。<<He>>穿着一件黑色 T 恤和<<print (_alex.pronoun is "f" ? "平角裤" : "四角裤")>>。
+	<br><br>
+
+	你小心翼翼地不发出声音，把<<print (_alex.pronoun is "f" ? "平角裤" : "四角裤")>>从<<his>>大腿上褪下，<span class="lewd">露出了<<his>>的生殖器。</span>
+
+你继续脱下<<his>>的衣服，将布料拉过<<his>>的膝盖。碰到<<his>>的脚踝时，<<he>>动了一下，于是你迅速把内衣从<<his>>的身上脱掉拿走。
+<<promiscuity3>>
+
+艾利克斯的手往股间探了探，<<his>>意识到你干了啥。"我操，"<<he>>说，<<his>>的脸颊涨红了。"别看了。"<<He>>伸手去抢<<his>>的内裤，但是你远离了床。
+<br><br>
+
+<<He>>起身追你，用<<his>>的衬衫盖住<<his>>的_genitals.
+这件衣服不够长也不够宽松，布料拉紧了，露出了<<his>>的_chest。
+<br><br>
+
+<<link [[归还|Farm Alex Give]]>><<npcincr Alex love 1>><</link>><<glove>>
+<br>
+<<link [[继续挑逗|Farm Alex Tease]]>><<npcincr Alex lust 5>><</link>><<athleticsdifficulty 1 1000>><<gglust>>
+<br>
+
+
+:: Farm Alex Give
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+
+你扔回了<<his>>的<<print (_alex.pronoun is "f" ? "平角裤" : "四角裤")>>.
+<<He>>犹豫了一下，好像不太相信你，然后快速的把它们抢走了。
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"我，我只是想让你明白这是什么感觉，"你说，转身让<<him>>穿衣服。"我知道你在偷看我睡觉。"
+<<elseif $speech_attitude is "bratty">>
+	"我还以为你喜欢这种下流呢，"你说着，转身让<<him>>穿衣服。"你似乎很想把它强加给我。"
+<<else>>
+	"是你先开始的，"你说，转身让<<him>>穿衣服。"我知道你喜欢偷看我睡觉。"
+<</if>>
+<br><br>
+
+"我，我不明白你的意思，"艾利克斯撒谎说道。你认为<<he>>不管怎样都明白你的意思。
+<br><br>
+
+你回到你的床上。
+<br><br>
+
+<<link [[继续|Farm Bed]]>><<endevent>><</link>>
+
+:: Farm Alex Tease
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+
+你站在艾利克斯的床上，在<<him>>和衣柜之间。<<He>>冲向<<his>>的
+<<print (_alex.pronoun is "f" ? "男性短裤" : "四角裤")>>
+<<if $athleticsSuccess>>
+
+	<span class="green">但是你把它们拿远了。</span><<He>>必须用一只手拽<<his>>着大腿之间的衬衫,因而处于劣势之中。<<ldom>><<npcincr Alex dom -1>>
+	<br><br>
+
+	<<if $speech_attitude is "meek">>
+		"你要为此惩罚我吗?"你揶揄道。
+	<<elseif $speech_attitude is "bratty">>
+		"没那么有趣，"你说道。"不是吗?"
+	<<else>>
+		"你想要回来吗?"你问。"你拿什么来换它们?"
+	<</if>>
+	<br><br>
+
+	艾利克斯心软了。"你的目的已经达到了，"<<he>>的脸涨得通红。"可以把衣服还给我了。"
+	<br><br>
+
+	<<link [[归还|Farm Alex Tease Give]]>><<npcincr Alex love 1>><</link>><<glove>>
+	<br>
+	<<link [[要求演出|Farm Alex Tease Demand]]>><<npcincr Alex love -1>><<npcincr Alex dom -3>><<npcincr Alex lust 5>><</link>><<llove>><<lldom>><<gglust>>
+	<br>
+<<else>>
+	<span class="red">你手上的东西被强行夺走了。</span> <<gdom>><<npcincr Alex dom 1>>
+	<br><br>
+
+	<<if $speech_attitude is "meek">>
+		"我，我只是想让你明白这是什么感觉，"你说，转身让<<him>>穿衣服。"我知道你在偷看我睡觉。"
+	<<elseif $speech_attitude is "bratty">>
+		"我还以为你喜欢这种下流呢，"你说着，转身让<<him>>穿衣服。"你似乎很想把它强加给我。"
+	<<else>>
+		"是你先开始的，"你说，转身让<<him>>穿衣服。"我知道你喜欢偷看我睡觉。"
+	<</if>>
+	<br><br>
+
+	"我，我不明白你的意思，"艾利克斯撒谎说道。你认为<<he>>不管怎样都明白你的意思。
+	<br><br>
+
+	你回到你的床上。
+	<br><br>
+
+	<<link [[继续|Farm Bed]]>><<endevent>><</link>>
+<</if>>
+
+:: Farm Alex Tease Give
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+
+你把<<print (_alex.pronoun is "f" ? "平角裤" : "四角裤")>>丢在艾利克斯面前。
+
+<<if $speech_attitude is "meek">>
+	"我，我只是想让你明白这是什么感觉，"你说，转身让<<him>>穿衣服。"我知道你在偷看我睡觉。"
+<<elseif $speech_attitude is "bratty">>
+	"我还以为你喜欢这种下流呢，"你说着，转身让<<him>>穿衣服。"你似乎很想把它强加给我。"
+<<else>>
+	"是你先开始的，"你说，转身让<<him>>穿衣服。"我知道你喜欢偷看我睡觉。"
+<</if>>
+<br><br>
+
+"我，我不明白你的意思，"艾利克斯撒谎说道。你认为<<he>>不管怎样都明白你的意思。
+<br><br>
+
+你回到你的床上。
+<br><br>
+
+<<link [[继续|Farm Bed]]>><<endevent>><</link>>
+
+
+:: Farm Alex Tease Demand
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+<<set _chest to (_alex.pronoun is "f" ? _alex.breastsdesc : "健美的胸膛")>>
+<<set _genitals to (_alex.penis isnot "none" ? _alex.penisdesc : "小穴")>>
+
+<<if $speech_attitude is "meek">>
+	"我会的，"你说道。"但我要你先把衬衫脱掉。"
+<<elseif $speech_attitude is "bratty">>
+	"我会还给你的，"你说道。"如果你把衬衫脱了。"
+<<else>>
+	"我会的，"你说道。"如果你把衬衫脱了。"
+<</if>>
+<br><br>
+
+艾利克斯的脸红得更深了。<<He>>将<<his>>的衬衫紧靠在<<his>>的身体上，看向别处。<<He>>停顿了一下，然后在一个快速的动作中，把<<his>>的衬衫拉起来，拉过<<his>>的身体和头部。<<His>>的手臂马上收回去挡着，但你已经在挡住前再次了看到<<his>>的_genitals。
+
+你看到了<<his>>的_chest。
+<br><br>
+
+"满意了吗?"<<he>>问道。
+<br><br>
+
+你把<<print (_alex.pronoun is "f" ? "平角裤" : "四角裤")>>丢给了<<him>>。
+
+<<if $speech_attitude is "meek">>
+	"我，我只是想让你明白这是什么感觉，"你说，转身让<<him>>穿衣服。"我知道你在偷看我睡觉。"
+<<elseif $speech_attitude is "bratty">>
+	"我还以为你喜欢这种下流呢，"你说着，转身让<<him>>穿衣服。"你似乎很想把它强加给我。"
+<<else>>
+	"是你先开始的，"你说，转身让<<him>>穿衣服。"我知道你喜欢偷看我睡觉。"
+<</if>>
+<br><br>
+
+"我，我不明白你的意思，"艾利克斯撒谎说道。你认为<<he>>不管怎样都明白你的意思。
+<br><br>
+
+你回到你的床上。
+<br><br>
+
+<<link [[继续|Farm Bed]]>><<endevent>><</link>>
+
+
+
+:: Farm Settings [exitCheckBypass]
+<<set $settingsExitPassage to "Farm Bedroom">>
+<<settings>>
+
+
+:: Farm Alex Bedroom
+<<set $wardrobe_location to "farm alex bed">>
+<<effects>><<getTarget true>>
+<<wearoutfit>>
+<<farm_work_update>>
+你在艾利克斯的卧室里。这里和你的卧室很像，衣服从衣柜里掉下来，桌子上乱七八糟。这扇窗户能俯瞰大路和远处的沼地。
+<br><br>
+
+<<if $stress gte $stressmax and !$possessed>>
+	<<passoutfarmroad>>
+<<else>>
+	<<if $farm_attack_timer is 0 and Time.hour gte 21 and !$possessed>>
+		<<npc Alex>><<person1>>
+		你听到了喊叫。艾利克斯闩上了门。<span class="red">"<<nnpc_Hes Remy>>来了,"</span><<he>>说道。"是雷米，我们可以做到的。去准备一下，我去
+		<<if $farm.tower_guard>>
+			找$farm.tower_guard 。"
+		<<else>>
+			看看能不能找到他们的位置。"
+		<</if>>
+		<br><br>
+
+		<<farm_assault_intro>>
+		<br><br>
+
+		<<link [[做好准备|Farm Assault Wardrobe]]>><<endevent>><<set $phase to 3>><</link>>
+		<br>
+	<<elseif Time.hour is 21 and $alex_to_bed is undefined and !$possessed>>
+		<<set $alex_to_bed to 1>>
+		一天的工作累了，艾利克斯打了个哈欠，爬上了床。
+		<br><br>
+
+	<<elseif Time.dayState is "night" and $alex_bed is undefined>>
+		<<npc Alex>><<person1>>
+		艾利克斯在床上打鼾。
+		<<if Time.hour is 5>>
+			<br><br>
+			<<set $alex_bed to "none">>
+			<<He>>把床单扔到地板上。<<covered>>"早餐，"<<he>>打了个哈欠。
+			<<if $daily.alex.bedOrgasm>>
+				过了一会儿，<<he>>转向你，脸红了。"我发誓我昨晚听到了什么声音。忘了我说过的话吧。"
+			<</if>>
+			<<if $exposed gte 1>>
+				当<<He>>离开房间时，<<he>>假装没有偷看。<<glust>><<npcincr Alex lust 1>>
+			<<else>>
+				<<He>>离开了房间，你听到楼梯在<<his>>脚下嘎吱作响。
+			<</if>>
+		<</if>>
+		<<endevent>>
+		<br><br>
+
+	<<elseif $farm_work.alex is "admin" or ($farm_work.alex is "clearing" and $farm_stage is 12) and !$possessed>>
+		<<npc Alex>><<person1>>
+		艾利克斯坐在<<his>>的办公桌前，面对着一台打开的笔记本电脑和一沓纸，正在打电话。
+		<<if $exposed gte 1>>
+			<<He>>尽量不被你的猥亵行为所干扰，但停不下来偷看。<<npcincr Alex lust 1>><<glust>>
+		<</if>>
+		<br><br>
+
+		<<if $arousal gte $arousalmax>>
+			<<orgasmLocation "alexFarmAdmin">>
+		<</if>>
+		<<endevent>>
+		<<link [[提供帮助(1:00)|Farm Alex Admin]]>><<pass 60>><<npc Alex>><<person1>><<npcincr Alex love 1>><<stress 6>><</link>><<skill_difficulty "$maths" "数学" 1 1000>><<glove>><<gstress>>
+		<br>
+		<<if $alex_countdown is undefined and $NPCName[$NPCNameList.indexOf("Alex")].love gte 80>>
+			<<link [[拥抱艾利克斯 (0:30)|Farm Phone Cuddle]]>><<pass 30>><<npc Alex>><<person1>><<npcincr Alex love 1>><</link>><<glove>>
+			<br>
+		<</if>>
+		<<if $promiscuity gte 55 and !$daily.alex.adminOral>>
+			<<link [[爬到桌子下面|Farm Alex Admin Crawl]]>><<npc Alex>><<person1>><<set $daily.alex.adminOral to true>><</link>><<promiscuous4>>
+			<br>
+		<</if>>
+		<<if checkSextoysGift("Alex") and isLoveInterest("Alex") and checkIfNPCHasCategorySextoy("Alex","strap-on").length <= 5>>
+			<<link [[送艾利克斯一个假阳具|Alex Gift Strap-on]]>><<npc Alex>><<person1>><</link>>
+			<br>
+		<</if>>
+		<br>
+	<</if>>
+	<<if $farm_stage gte 7>>
+		这里有一张桌子。你可以从事农场项目。
+		<br>
+		<<link [[坐在书桌前|Farm Upgrades]]>><</link>>
+		<br><br>
+	<</if>>
+	<<if $alex_bed_spurned isnot 1>>
+		<<bedicon>><<link [[脱光并爬到艾利克斯床上|Farm Alex Bed]]>><<undressSleep "farm alex bed">><</link>>
+		<br>
+		<<if $alwaysSleepNaked isnot true>>
+			<<bedicon>><<link [[爬到艾利克斯的床上|Farm Alex Bed]]>><</link>>
+		<<else>>
+			<<if $possessed>>
+				<span class="red">史莱姆沉默了.</span>
+			<<else>>
+				<span class="red">史莱姆让你不穿衣服睡觉。</span>
+			<</if>>
+		<</if>>
+		<br>
+	<</if>>
+	<br>
+	<<if $nextPassageCheck is "Farm Bedroom">>
+		<span class="nextLink"><<link [[你的房间(0:01)|Farm Bedroom]]>><<pass 1>><</link>></span>
+	<<else>>
+		<<link [[你的房间(0:01)|Farm Bedroom]]>><<pass 1>><</link>>
+	<</if>>
+	<br>
+	<<link [[下楼 (0:01)|Farm Cottage]]>><<pass 1>><</link>>
+	<br>
+<</if>>
+
+:: Farm Alex Bed
+<<set $bus to "farm_alex_room">><<effects>>
+
+<<if Time.dayState is "night" and $alex_bed is undefined>>
+	你依偎在艾利克斯身边。
+<<else>>
+	你们依偎在被窝里。
+<</if>>
+<<if $wraith.state and $wraithPrison and ($moonstate is "evening" or $moonstate is _nightstate)>>
+	你感到焦虑，你的目光向镜子移去。
+<</if>>
+<br><br>
+
+<<farm_sleep_options>>
+
+
+:: Farm Breakfast Make
+<<effects>>
+
+<<npc Alex>><<person1>>
+你和艾利克斯一起来到厨房，并主动提出了想要帮忙。<<Hes>>很感激你的帮助。
+
+<<if $rng gte 81>>
+	<<He>>让你洗土豆，削土豆皮，<<he>>在一边炒起了鸡蛋。
+	<br><br>
+
+	饭菜很快就准备好了。炒鸡蛋和土豆饼，都是用农场收集的食材做的。
+<<elseif $rng gte 61>>
+	<<He>>让你切蔬菜，<<he>>在一边煎培根。
+	<br><br>
+
+	饭菜很快就准备好了，是培根还有新鲜的蔬菜。
+<<elseif $rng gte 41>>
+	<<He>>让你揉面团，<<he>>在一边准备奶油。
+	<br><br>
+
+	饭菜很快就准备好了。是装饰着水果的可爱的糕点，上面还有奶油。
+<<elseif $rng gte 21>>
+	<<He>>让你洗蔬菜，<<he>>在一边用一种特殊的配方配着酱汁。
+	<br><br>
+
+	饭菜很快就准备好了。佐餐crêpes配炒蔬菜，配奶油酱。
+<<else>>
+	<<He>>让你洗水果。
+	<br><br>
+
+	饭菜很快就准备好了。你们做的水果捞。
+<</if>>
+闻起来好香。
+<br><br>
+
+
+<<link [[感谢艾利克斯|Farm Breakfast]]>><<npcincr Alex love 1>><<set $phase to 1>><</link>><<glove>>
+<br>
+<<link [[聊天|Farm Breakfast]]>><<trauma -6>><<set $phase to 2>><</link>><<ltrauma>>
+<br>
+<<link [[安静地吃|Farm Breakfast]]>><<set $phase to 3>><<stress -6>><</link>><<lstress>>
+<br>
+
+
+
+:: Farm Breakfast Eat
+<<effects>>
+
+<<npc Alex>><<person1>>
+
+你坐在餐桌旁，艾利克斯在厨房里忙忙碌碌。<<He>>拿着两个盘子从柜台转过身来，把一个放在你面前。
+
+<<if $rng gte 81>>
+	炒鸡蛋和土豆饼，都是用农场收集的食材做的。
+<<elseif $rng gte 61>>
+	培根搭配新鲜蔬菜。
+<<elseif $rng gte 41>>
+	装饰着水果的可爱糕点，上面还有奶油。
+<<elseif $rng gte 21>>
+	佐餐crêpes配炒蔬菜，配奶油酱。
+<<else>>
+	水果捞。
+<</if>>
+<br><br>
+
+艾利克斯一坐下就开始吃。
+<br><br>
+
+<<link [[感谢艾利克斯|Farm Breakfast]]>><<npcincr Alex love 1>><<set $phase to 1>><</link>><<glove>>
+<br>
+<<link [[聊天|Farm Breakfast]]>><<trauma -6>><<set $phase to 2>><</link>><<ltrauma>>
+<br>
+<<link [[安静地吃|Farm Breakfast]]>><<set $phase to 3>><<stress -6>><</link>><<lstress>>
+<br>
+
+
+:: Farm Breakfast
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+
+<<if $phase is 1>>
+	你称赞食物。
+	<<if $speech_attitude is "meek">>
+		"太好吃了!"你说道。"城里的食物还差得远呢。"
+	<<elseif $speech_attitude is "bratty">>
+		"我很感动，"你说道。"比城里的渣滓好。"
+	<<else>>
+		"真的很好吃，"你说道。"比城里的餐馆好多了。"
+	<</if>>
+	<br><br>
+
+	艾利克斯眉开眼笑。"谢谢，"<<he>>说着又吃了一口。
+	<<switch random(1, 5)>>
+		<<case 1>>
+			<<if _alex.lust gte 20>>
+				"这里的食物并不是唯一让人开胃的东西。"<<He>>眨眼。
+			<<elseif isLoveInterest("Alex")>>
+				"你是我的动力。"
+			<<else>>
+				"我做了很多练习。"
+			<</if>>
+		<<case 2>>
+			<<if $farm.build_finished.includes("coop 2")>>
+				"多亏了你，我的蛋多得都不知道该怎么办了。"
+			<<elseif $farm.build_finished.includes("coop 1")>>
+				"鸡蛋过剩。那些鸡像兔子一样繁殖。说到繁殖嘛……
+				<<if $NPCName[$NPCNameList.indexOf("Alex")].lust gte 20>>
+					等不及要给自己留点时间了。”<<He>>眨眼。
+				<<else>>
+					不要紧。食物要凉了。”<<He>>把<<his>>盘子的其余部分包起来。
+				<</if>>
+			<<else>>
+				"关于我们的蛋，我是怎么跟你说的?"
+			<</if>>
+		<<case 3>>
+			"我心情很好。
+			<<if $farm_attack_timer is 0>>
+				无论今晚发生什么，我都准备好了。"
+			<<elseif isLoveInterest("Alex")>>
+				我得到了我的
+				<<if _alex.dom gte 30>>
+					<<girl>>,
+				<<else>>
+					<<if $player.gender_appearance is "f">>女<<else>>男<</if>>人，
+				<</if>>
+				生意兴隆，我们有自己的地方。<<nnpc_gendery "Alex">>还能要求什么呢?"
+			<<else>>
+				但愿它能留下来。"
+			<</if>>
+		<<case 4>>
+			<<if $farm.milking.dayMilking is true>>
+				<<if _alex.dom gte 30>>
+					"我很高兴你自己主动挤了奶，味道很好。"
+				<<elseif _alex.dom lte -30>>
+					"我应该感谢你的奶。"<<he>>的脸颊上有一丝红晕。
+				<<else>>
+					"我用了你的奶来做这道菜。希望你不介意。如果问我的胃，它很满意。"
+				<</if>>
+			<<elseif $farm_work.cattle.gender is "m">>
+				"我们的小奶牛挤出了美味的牛奶。"
+			<<else>>
+				"我们的小乳牛挤出了美味的牛奶。"
+			<</if>>
+		<<case 5>>
+			"城里人可比不上。"<<he>>砰地一声拍打桌子，把所有东西都晃了起来。你稳住了自己的盘子。
+			<br><br>
+
+			<<if _alex.dom gte 30>>
+				"是啊，我说了。你打算怎么办？"<<he>>伸出舌头，做了个鬼脸。
+			<<elseif _alex.dom lte -30>>
+				"该死，我不是故意吓到你的。"<<he>>摇了摇头，<<he>>检查了一下你是否没事，然后继续吃饭。
+			<<else>>
+				<<he>>笑了笑，挠了挠后脑勺，说道："对不起。我只是随便说说而已。"
+			<</if>>
+	<</switch>>
+
+<<elseif $phase is 2>>
+	你一边吃饭，一边与艾利克斯聊天，谈论农场和<<his>>今天的计划。
+	<<switch random(1, 5)>>
+		<<case 1>>
+			在某个时刻<<he>>说道："关于农场的话题我们聊的已经够多了，告诉我一些关于你自己的事情吧。"
+			<br><br>
+
+			<<farm_tell_alex>>
+		<<case 2>>
+			<<silently>><<farm_upgrades_status>><</silently>>
+			<<if $farm_attack_timer is 0>>
+				"今晚雷米要来拜访。"在吃完后<<he>>说道。
+				<<if _alex.dom gte 30>>
+					<<he>>握紧了拳头，"我可以对付他们。那些混蛋会后悔踏上我的地盘。"
+				<<elseif _alex.dom lte -30>>
+					"我不会撒谎，我很紧张。"<<he>>期待地看着你，"你不一定要来，但我觉得有你在我们的胜算更大。"
+				<<else>>
+					<<he>>笑着说道："希望我们能把他们吓回去找他们妈妈。"
+				<</if>>
+			<<elseif _upgrade_count gte 8>>
+				<<he>>笑了笑。<<he>>一边吞咽着食物，一边说道："农场的状况不能再好了。现在，我们只需要继续保持这种状态。
+				老实说，我从未想过我会走到今天这一步。这一切都要归功于你。"
+			<<else>>
+				<<if $farm.aggro gte 60>>
+					"我担心工作会越来越多，而且那些恶棍一直在给我们增添麻烦,"
+				<<else>>
+					"我担心工作会越来越多,"
+				<</if>>
+					<<he>>深深地叹了口气，然后露出了一个灿烂的微笑，说道："虽然工作很多，但我们完全能够应对。"
+			<</if>>
+		<<case 3>>
+			<<if $speech_attitude is "meek">>
+				"你知道我们是什么时候认识的吗？好像已经过了很久了。" 你琢磨着问道。
+			<<elseif $speech_attitude is "bratty">>
+				"我感觉自己到这里来已经过了好久好久了。" 你说出声来。
+			<<else>>
+				"我们走了一段漫长的路，是吧？你还记得我们第一次见面的时候吗？" 你好奇地问道。
+			<</if>>
+			<<He>>听了你的话点了点头。
+			<br><br>
+
+			<<if isLoveInterest("Alex")>>
+				<<he>>微笑着说道："我永远不会忘记那天。那是发生在我身上最美好的事情，伙伴。" 你觉得<<his>>的笑容不可能更灿烂了。
+			<<else>>
+				<<he>>带着一丝温馨的微笑说道："我们经历了很多困难，但我不希望有任何改变，伙伴。"
+			<</if>>
+		<<case 4>>
+			<<He>>一边满嘴吃东西一边说话。最终，<<he>>吞下了食物。
+			<<if $tiredness gte (C.tiredness.max / 5) * 2>>
+				<<he>>问道："没睡够吗？我从你的眼神里能看出来。"
+			<<elseif $tiredness gte (C.tiredness.max / 5) * 3>>
+				<<he>>皱起眉头，担心地说道："你应该好好休息一下，看上去马上就要累垮了。"
+			<<elseif $arousal gte ($arousalmax / 5) * 3 and _alex.lust gte 20>>
+				<<He>>察觉到了你脸上明显的潮红。
+				<br><br>
+
+				<<if _alex.dom gte 10>>
+					<<he>>微笑着说道："坐好，我马上就来。"<<he>>趁桌子下面踩了一下你的下体，让你感到激动和兴奋。<<arousal 200 "genitals">><<garousal>>
+				<<elseif _alex.dom lte -10>>
+					"你在想什么？难道就是我在想的那个吗？"<<he>>也脸红了。
+				<<else>>
+					<<he>>开玩笑地说道："这么早就让你兴奋起来了？我得好好照顾一下你。"
+				<</if>>
+			<<else>>
+				"我需要再次给我父母打电话。自从<<if $pronoun is "m">>我父亲<<else>>我母亲<</if>>上次来过之后，发生了太多事情了。"
+			<</if>>
+		<<case 5>>
+			<<He>>几乎被食物呛到了，然后清了清嗓子。
+			<br><br>
+			/* Modify to account for tfs*/
+			<<if $worn.neck.collared is 1>>
+				<<if _alex.dom gte 30>>
+					突然间，你的项圈被猛地拽了一下，以至于你差点把脸埋进食物里。"<<he>>做了个鬼脸说："对不起，我才刚开始热身。"
+					"看来我低估了自己."<<arousal 100>><<npcincr Alex lust 1>><<garousal>><<glust>>
+				<<elseif _alex.dom lte -30>>
+					<<he>>羞涩地盯着你的项圈，说道："警察可能也能帮你解决这个问题，但我也许会更擅长。试试看吧。"<<he>>一边说，一边拉着你的项圈。
+					<<arousal 100>><<npcincr Alex lust 1>><<garousal>><<glust>>
+				<<else>>
+					<<he>>伸手去拿你的项圈，说道："想要来一次愉快的体验吗？"在你反应过来之前，<<he>>一下子用力一拉，让你和桌子之间的距离瞬间缩小。
+					当<<he>>看见你的表情时，他忍不住捧腹大笑。<<arousal 100>><<npcincr Alex lust 1>><<garousal>><<glust>>
+				<</if>>
+			<<elseif $worn.upper.type.includes("formal", "costume") or $worn.lower.type.includes("formal", "costume")>>
+				"你都打扮好了，"<<he>>说，同时<<his>>的眼睛扫了一眼你的衣服。"不知道你这么早要去哪里。我想这不关我的事。"
+			<<elseif $worn.upper.type.includes("holy") or $worn.lower.type.includes("holy")>>
+				"祈祷我们有个好收成，"<<he>>微笑着，双手叉腰。
+			<<elseif $worn.head.name is "football helmet" or $worn.upper.name is "padded football shirt" or $worn.lower.name is "football shorts">>
+				<<He>>注意到你的足球服装，看起来很惊讶。"没想到你是这种人，"<<he>>说道。"我已经有一段时间没有打球了。"
+			<<elseif $worn.upper.type.includes("school") or $worn.lower.type.includes("school")>>
+				<<if Time.schoolDay>>
+					"祝你在学校好运，"<<he>>说道。"我很高兴我是在家里接受教育的。"
+				<<else>>
+					"你知道，现在是周末，"<<he>>笑着说道。<<Hes>>指的是你的校服。
+				<</if>>
+			<<elseif $worn.upper.name is "cow onesie" or $worn.lower.name is "cow print chaps" or $worn.lower.name is "cow onesie bottoms" or $worn.hands.name is "cow sleeves" or $worn.legs.name is "cow socks">>
+				<<He>>注意到你的牛印花服装。"我喜欢我所看到的，奶牛<<girl>>。你会很适合的。"<<He>>很快澄清说:"不要真的去尝试。"
+			<<elseif $worn.head.name is "cowboy hat" or $worn.lower.name is "cowboy chaps">>
+				<<He>>注意到你的牛仔装。"我提过的合作伙伴不是指传统西方的那种，"<<he>>笑着说道。
+			<<elseif $worn.upper.type.includes("sleep") or $worn.lower.type.includes("sleep")>>
+				"你应该快点去换衣服，"<<he>>说道。"我可不想看到你的睡衣被毁了"
+			<<elseif $worn.head.name is "straw hat">>
+				<<He>>注意到你的草帽。"我们有相配的帽子，"<<he>>笑道。"别忘了涂防晒霜。"
+			<<elseif $worn.head.name is "racing helmet" or $worn.head.name is "riding helmet" or $worn.feet.name is "paddock boots" or $worn.feet.name is "field boots">>
+				<<He>>注意到你的骑马装。"我们可以找个时间去骑马，"<<he>>建议。"如果我不是那么忙的话。"
+			<<else>>
+				"我希望猪不要再咬我的衣服了，"<<he>>叹息道。"一定要留地方吃晚饭。"
+			<</if>>
+	<</switch>>
+<<else>>
+你一言不发的吃早餐，艾利克斯似乎很满足于把注意力集中在食物上。
+<</if>>
+<br><br>
+
+<<He>>把空盘子送到水槽。
+<br><br>
+
+<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Breakfast Tea
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+
+你给艾利克斯泡了杯茶。不加糖，加点牛奶，就像<<he>>喜欢的那样。
+<br><br>
+"干杯，"当你递给<<he>>杯子时，<<him>>说道。
+
+<<if _alex.lust gte 20>>
+	<<He>>在你转身离开时拍你的<<bottom>>。
+	<br><br>
+
+	<<link [[生气|Farm Breakfast Tea Angry]]>><<npcincr Alex love -1>><<npcincr Alex dom -1>><<stress -6>><</link>><<llove>><<ldom>><<lstress>>
+	<br>
+	<<link [[无视|Farm Cottage]]>><<npcincr Alex dom 1>><<endevent>><</link>><<gdom>>
+	<br>
+	<<if $promiscuity gte 15>>
+		<<link [[煽动|Farm Breakfast Tea Goad]]>><<sub 1>><<npcincr Alex dom 3>><</link>><<promiscuous2>><<ggdom>>
+		<br>
+	<</if>>
+<<else>>
+	<br><br>
+
+	<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Farm Breakfast Tea Angry
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	你说:"这可不是感谢我的好方式。"
+<<elseif $speech_attitude is "bratty">>
+	"下次你自己沏茶吧，"你说道。
+<<else>>
+	"不要粗鲁，"你说道。
+<</if>>
+<br><br>
+
+艾利克斯在你说话的时候盯着你的<<bottom>>看。"对不起，"<<he>>笑着说道。"忍不住"。
+<br><br>
+
+<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+
+
+:: Farm Breakfast Tea Goad
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"如果你不喜欢我的茶，"你说道。"你应该适当地惩罚我。"
+<<elseif $speech_attitude is "bratty">>
+	"你管这叫打?"你转过另一边的脸说道。"胆小鬼。再试一次。"
+<<else>>
+	"我一点儿感觉都没有，"你说道。"再来啊。"
+<</if>>
+<<promiscuity2>>
+
+艾利克斯把茶放在桌子上，然后伸手去摸你的腰。"对你来说还不够?"当<<he>>把你弯到<<he>>的膝盖上时，<<his>>问道。"这个怎么样?"
+<br><br>
+
+<<He>>用<<his>>的手打你的<<bottom>>，但不是很用力。
+<br><br>
+
+<<link [[再重点儿|Farm Breakfast Spank]]>><<sub 1>><<pain 4>><<trauma -6>><</link>><<gpain>><<ltrauma>>
+<br>
+<<link [[够了|Farm Breakfast Spank End]]>><</link>>
+<br>
+
+
+
+:: Farm Breakfast Tea 2
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+
+你泡了两杯茶。不加糖，只给艾利克斯那杯加了些牛奶，因为<<he>>喜欢这种口味。
+<br><br>
+"干杯，"当你递给<<he>>杯子时，<<him>>说道。
+
+<<if _alex.lust gte 30>>
+	<<He>>在你转身离开时拍你的<<bottom>>。
+	<br><br>
+
+	<<link [[生气|Farm Breakfast Tea Angry]]>><<npcincr Alex love -1>><<npcincr Alex dom -1>><<stress -6>><</link>><<llove>><<ldom>><<lstress>>
+	<br>
+	<<link [[无视|Farm Cottage]]>><<npcincr Alex dom 1>><<endevent>><</link>><<gdom>>
+	<br>
+	<<if $promiscuity gte 15>>
+		<<link [[煽动|Farm Breakfast Tea 2 Goad]]>><<sub 1>><<npcincr Alex dom 3>><</link>><<promiscuous2>><<ggdom>>
+		<br>
+	<</if>>
+<<else>>
+	<br><br>
+
+	<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+:: Farm Breakfast Tea 2 Goad
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"哦哦，"你一边说一边把自己的茶倒在<<his>>的大腿上。"我笨手笨脚的。我希望你不要惩罚我。"
+<<elseif $speech_attitude is "bratty">>
+	"你管这叫打?"你转过另一边的脸说道。"胆小鬼。再试一次。"
+<<else>>
+	"我一点儿感觉都没有，"你说道。"再来啊。"
+<</if>>
+<<promiscuity2>>
+
+艾利克斯把茶放在桌子上，然后伸手去摸你的腰。"对你来说还不够?"当<<he>>把你弯到<<he>>的膝盖上时，<<his>>问道。"这个怎么样?"
+<br><br>
+
+<<He>>用<<his>>的手打你的<<bottom>>，但不是很用力。
+<br><br>
+
+<<link [[再重一点儿|Farm Breakfast Spank]]>><<sub 1>><<npcincr Alex lust 5>><<set $daily.alex.spank to true>><</link>><<gpain>><<glust>><<ltrauma>>
+<br>
+<<link [[够了|Farm Breakfast Spank End]]>><</link>>
+<br>
+
+:: Farm Breakfast Spank
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+
+"更用力点儿，"你说。
+
+<<if (_alex.dom + _alex.lust) gte 40>>
+	<<pain 4>><<trauma -6>>
+	艾利克斯收回<<his>>的手，然后用另一只手打你的<<bottom>>。火辣辣的。
+	<br><br>
+
+	"这就是像你这样的坏<<girls>>的下场，"<<he>>说道。
+	<br><br>
+
+	<<link [[再重一点儿|Farm Breakfast Spank 2]]>><<sub 1>><<npcincr Alex lust 5>><</link>><<ggpain>><<glust>><<lltrauma>>
+	<br>
+	<<link [[够了|Farm Breakfast Spank End]]>><</link>>
+	<br>
+<<else>>
+	艾利克斯收回<<his>>的手准备再打一巴掌，然后犹豫了一下。
+	<br><br>
+
+	"够了，"<<he>>说道。"我想你已经吸取教训了。"<i>更高的支配地位和欲望会鼓励<<him>>更进一步。</i>
+	<br><br>
+
+	<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Farm Breakfast Spank 2
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+
+"更——更用力点儿，"你说道。
+
+<<if (_alex.dom + _alex.lust) gte 50>>
+	<<pain 8>><<trauma -12>>
+	艾利克斯一掌又一掌的欺负你的<<bottom>>。
+
+	"从现在开始你会是个好<<girl>>，"<<he>>说道。"能不能做到?"<<He>>让你感到刺痛。
+	<br><br>
+
+	<<link [[再用力一点儿|Farm Breakfast Spank 3]]>><<npcincr Alex lust 5>><</link>><<gggpain>><<glust>><<llltrauma>>
+	<br>
+	<<link [[够了|Farm Breakfast Spank End]]>><</link>>
+	<br>
+<<else>>
+	艾利克斯收回<<his>>的手准备再打一巴掌，然后犹豫了一下。
+	<br><br>
+
+	"够了，"<<he>>说道。"我想你已经吸取教训了。"<i>更高的支配地位和欲望会鼓励<<him>>更进一步。</i>
+	<br><br>
+
+	<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Farm Breakfast Spank 3
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+
+"再重点儿！"你尖叫。
+
+<<if (_alex.dom + _alex.lust) gte 60>>
+	<<pain 12>><<trauma -18>>
+	艾利克斯收回<<his>>的手，然后猛地打了你敏感的<<bottom>>一下。你的眼泪瞬间从脸上飙出，因为这一击让你向前猛地倾斜。
+	<br><br>
+
+	<<if (_alex.dom + _alex.lust) gte 70>>
+		"现在要赔偿我了，"<<he>>说道。<<he>>把你的腿从他的膝盖上推开，抓住你的头发。"让你那张嘴恰当地为我服务。"
+		<<He>> <<npcUndressText _alex "lower" "self">>, <<npcRevealText _alex "lower">>.
+		<br><br>
+
+		<<if $promiscuity gte 55>>
+			<<link [[舔|Farm Breakfast Oral]]>><<set $sexstart to 1>><<set $daily.alex.breakfastSex to true>><</link>><<promiscuous4>>
+			<br>
+		<</if>>
+		<<link [[拉开距离|Farm Breakfast Oral Refuse]]>><<npcincr Alex dom -1>><</link>>
+		<br>
+	<<else>>
+		"我想你已经学到了教训。"<<he>>推开你的膝盖，说道。当<<he>>看到你的眼泪时，<<he>>有些犹豫。"希望我没有打得太重。"<i>更高的支配欲和欲望会鼓励<<he>>继续下去。</i>
+		<br><br>
+
+		<<link [[安抚|Farm Breakfast Spank Reassure]]>><<npcincr Alex dom 1>><</link>><<gdom>>
+		<br>
+		<<link [[抱怨|Farm Breakfast Spank Complain]]>><<npcincr Alex dom -1>><</link>><<ldom>>
+		<br>
+	<</if>>
+<<else>>
+	艾利克斯收回<<his>>的手准备再打一巴掌，然后犹豫了一下。
+	<br><br>
+
+	"够了，"<<he>>说道。"我想你已经吸取教训了。"<i>更高的支配地位和欲望会鼓励<<him>>更进一步。</i>
+	<br><br>
+
+	<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Farm Breakfast Oral
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<npcoral>>
+	<<set $enemytrust += 100>><<promiscuity4>>
+<</if>>
+
+<<effects>>
+艾利克斯喝了一口茶。
+<br><br>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Farm Breakfast Oral Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Farm Breakfast Oral]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Farm Breakfast Oral Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	艾利克斯斜靠在椅子上，喝完了<<his>>的茶。<<glove>><<lllust>><<npcincr Alex love 1>><<npcincr Alex lust -10>>
+	<br><br>
+	<<tearful>>你把空杯子拿回厨房。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Farm Cottage]]>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	艾利克斯挡住了<<his>>的生殖器。"你应该说点什么，"<<he>>啧了一声。<<llove>><<ldom>><<npcincr Alex dom -1>><<npcincr Alex love -1>>
+	<br><br>
+	<<tearful>>你缓了过来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Farm Cottage]]>><</link>>
+	<br>
+<<else>>
+	"很好，"艾利克斯说道。"你可以以后再补偿我。"
+	<br><br>
+	<<tearful>>你回到厨房.
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Farm Cottage]]>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Farm Breakfast Oral Refuse
+<<effects>>
+
+你挣脱了艾利克斯的掌控。"很好，"<<he>>说道。"你以后会补偿我的。"
+<br><br>
+
+<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Breakfast Spank Reassure
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"别担心，"你说道。"这就是我想要的。"
+<<elseif $speech_attitude is "bratty">>
+	"别侮辱我，"你说道。"如果你太粗暴的话，我早就说了。"
+<<else>>
+	"你表现得很好，"你说道。"如果你太粗暴，我早就说了。"
+<</if>>
+<br><br>
+
+艾利克斯点点头。"这很激烈，"<<he>>说道。"就是这样。"
+<br><br>
+
+<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+:: Farm Breakfast Spank Complain
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你，你有点粗鲁，"你说道。"我不能坐下去了。"
+<<elseif $speech_attitude is "bratty">>
+	"你是个畜生，"你说道。"我不能坐下去了。"
+<<else>>
+	"你太粗暴了，"你说道。"我不能坐下去了。"
+<</if>>
+<br><br>
+
+艾利克斯点点头。"对不起，"<<He>>看向别处。
+<br><br>
+
+<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Breakfast Spank End
+<<effects>>
+
+你挣脱了艾利克斯的控制。"你已经吸取了教训，"<<He>>继续喝<<his>>的茶。
+<br><br>
+
+<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Breakfast Tea Refuse
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我还有别的事要做，"你说道。"而且我做得不如你好。"
+<<elseif $speech_attitude is "bratty">>
+	"我不是你的仆人，"你说道。"自己沏茶吧。"
+<<else>>
+	"我很忙，"你说道。"对不起。"
+<</if>>
+<br><br>
+
+"很好，"艾利克斯说，伸伸懒腰。"我要继续干渴下去。"
+<br><br>
+
+<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+:: Farm Breakfast Tea Receive
+<<effects>>
+
+你坐在电视机前，艾利克斯走进厨房。你听到水沸腾的声音。一分钟后，艾利克斯拿着两个冒着热气的杯子回来了。
+<br><br>
+
+<<if $NPCName[$NPCNameList.indexOf("Alex")].lust gte 20>>
+	"还有什么我能做的吗?"<<he>>弯腰把杯子放在你旁边的小桌子上。
+	<br><br>
+
+	<<link [[亲吻|Farm Breakfast Kiss]]>><<npcincr Alex love 1>><<npcincr Alex lust 5>><</link>><<kissvirginitywarning>><<glove>><<glust>>
+	<br>
+	<<if $promiscuity gte 55 and !playerChastity("hidden") and (!playerChastity("cage") or $player.vaginaExist)>>
+		<<link [[把艾利克斯的头压在你的腹股沟上|Farm Breakfast Receive Oral]]>><<set $sexstart to 1>><<set $daily.alex.breakfastSex to true>><</link>>
+		<br>
+	<</if>>
+	<<link [[普通的喝茶|Farm Breakfast Just]]>><</link>>
+	<br>
+<<else>>
+	茶让人放松。
+	<br><br>
+
+	<<if Time.hour gte 6>>
+		<<He>>看了一眼墙上的钟。"该工作了。回头见，"<<he>>边说边站起来朝门口走去。
+		<br><br>
+
+		<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+	<<farm_cottage_tv_options>>
+	<<link [[站起来|Farm Cottage]]>><<endevent>><</link>>
+	<br>
+<</if>>
+<</if>>
+
+
+:: Farm Breakfast Kiss
+<<effects>>
+
+你抓住艾利克斯的后脑勺，把<<him>>拉进一个吻。<<set $consensual to 1>>
+<<if $farm_stage gte 7 and $alex_countdown is undefined>>
+	<<takeKissVirginity "Alex" "loveInterest">>
+<<else>>
+	<<takeKissVirginity "Alex" "romantic">>
+<</if>>
+<<promiscuity1>>
+
+<<He>>跨在你身上，当<<his>>的嘴唇顺着你的下巴，然后亲吻你的脖子时，把你固定在椅子上。<<He>>在倒在你旁边的沙发上之前，顽皮地咬了你一口。
+<br><br>
+
+<<farm_cottage_tv_options>>
+<<link [[站起来|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Breakfast Receive Oral
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	艾利克斯在你面前跪下，并把手放在自己的大腿上，<<He>>和你对视。
+	<<maninit>>
+	<<if $player.penisExist and $player.vaginaExist>>
+		<<if random(1, 2) is 2 and !playerChastity("cage")>>
+			<<set $NPCList[0].mouth to "penisentrance">><<set $penisuse to "othermouth">><<set $penisstate to "othermouthentrance">><<set $penistarget to 0>>
+		<<else>>
+			<<set $NPCList[0].mouth to "vaginaentrance">><<set $vaginause to "othermouth">><<set $vaginastate to "othermouthentrance">><<set $vaginatarget to 0>>
+		<</if>>
+	<<elseif $player.penisExist and !playerChastity("cage")>>
+		<<set $NPCList[0].mouth to "penisentrance">><<set $penisuse to "othermouth">><<set $penisstate to "othermouthentrance">><<set $penistarget to 0>>
+	<<else>>
+		<<set $NPCList[0].mouth to "vaginaentrance">><<set $vaginause to "othermouth">><<set $vaginastate to "othermouthentrance">><<set $vaginatarget to 0>>
+	<</if>>
+	<<set $enemytrust += 100>><<promiscuity4>>
+	<<set $NPCList[0].location.head to "genitals">>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or $orgasmdown gte 1>>
+	<span id="next"><<link [[继续|Farm Breakfast Receive Oral Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Farm Breakfast Receive Oral]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Farm Breakfast Receive Oral Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	艾利克斯靠在椅子上，喘着气。"该死，"<<he>>说道。"我想让你高潮的。"
+	<br><br>
+	<<tearful>>你在沙发上为<<him>>腾出了位置。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<elseif $enemyhealth lte 0>>
+	<<He>>向后倒下，坐了下来。"我这么不称职吗？"<<he>>说道。
+	<br><br>
+	<<tearful>>你在沙发上为<<him>>腾出了位置。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<elseif $orgasmdown gte 1>>
+	当你的身体被高潮摧残时，你闭上了眼睛。当你再度睁开眼睛时，你发现艾利克斯正在冲你咧嘴笑。"我想你喜欢这个，"<<he>>说道。"我对我的<<girl>>很好。"
+	<br><br>
+	<<tearful>>你在沙发上为<<him>>腾出了位置。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<else>>
+	<<tearful>>你在沙发旁边为艾利克斯腾出位置。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+
+<<npc Alex>><<person1>>
+<<farm_cottage_tv_options>>
+<<link [[站起来|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+:: Farm Breakfast Just
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我很好，"你说道。"谢谢你的茶。"
+<<elseif $speech_attitude is "bratty">>
+	"就这样吧，"你喝了一口茶。
+<<else>>
+	"我很好，"你说道。"谢谢你的茶。"
+<</if>>
+<br><br>
+
+艾利克斯瘫坐在你旁边的椅子上。
+<br><br>
+
+<<farm_cottage_tv_options>>
+<<link [[站起来|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Breakfast TV
+<<effects>>
+
+<<if $daily.alex.spank and $pain gte 20>>
+	当<<He>>看到你的眼泪时，<<he>>看起来很后悔，<<he>>用一只手擦干你的眼泪，另一只手轻轻地拍着你的背。
+	<<He>>笨拙地安慰你，你可以看出<<hes>>在尽<<his>>最大的努力。你感觉稍微好些了。<<pain -10>><<lpain>>
+	<br><br>
+<</if>>
+<<if $rng gte 91>>
+	你在看一部自然纪录片，正在播放生活在自然栖息地的?animals。艾利克斯似乎很感兴趣。<<He>>
+	<<print either("保护你的眼睛不受特别图形场景的影响", "倾身仔细看", "与你分享一些动物的小故事")>>.
+<<elseif $rng gte 81>>
+	你在看电视广告。它<<print either("很奇怪", "贵得离谱", "不符合你的年龄", "显然是为成熟观众准备的")>>.
+	<<switch random(1, 3)>>
+		<<case 1>>
+			"太疯狂了，"<<he>>说道。"现在人们卖的东西。"
+		<<case 2>>
+			"得了吧，谁会信以为真呢?"<<He>>困惑地指着屏幕。
+		<<case 3>>
+			"我的<<if $pronoun is "m">>哥哥<<else>>姐姐<</if>>买过一次，"<<he>>笑着说道。"不过已经坏掉了。"
+	<</switch>>
+<<elseif $rng gte 71>>
+	你在看新闻。内容是<<print either("一些名人的生日", "天气", "展示当地", "采访当地人")>>。艾利克斯没什么特别的抱怨。
+<<elseif $rng gte 61>>
+	你看了一场重播的体育比赛。艾利克斯<<if random(1,2) is 1>>在<<his>>支持的球队进球时大声欢呼。<<else>>为失败而苦恼，尽管已经知道比赛的结果。<</if>>
+<<elseif $rng gte 51>>
+	你看了一部外国情景喜剧。艾利克斯抱怨重播，"<<print either("我有个伏笔没注意到,", "我以为是另一种情节发展呢,", "不要再这样了,")>>"，<<he>>叹气说道。
+<<elseif $rng gte 41>>
+	你在看戏剧。艾利克斯凝视着窗外。
+	<<if $weather is "rain">>
+		"外面太脏了，"<<he>>开口说道。
+	<<elseif $weather is "snow">>
+		<<if $christmas is 1 and Time.monthDay is 25>>
+			"正好赶上圣诞节，"<<he>>说道。
+		<<else>>
+			<<if random(1,2) is 1>>"一定要裹好自己，"<<he>>说。<<else>>"希望你准备好了铲子，"<<he>>笑着说，然后叹了口气。"我的背可不怎么期待接下来的事情。"<</if>>
+		<</if>>
+	<<elseif $weather is "overcast">>
+		"雾蒙蒙的，还是老样子。"<<he>>说道。
+	<<else>>
+		"我发誓……"<<he>>的声音逐渐减弱。
+	<</if>>
+<<elseif $rng gte 31>>
+	你想看点什么，但声音太小了。艾利克斯把它调大，然后在动作戏中调小。"我讨厌这种情况，"<<he>>说道。
+<<elseif $rng gte 21>>
+	你在看动画节目。艾利克斯<<print either("专注的看着", "有些无聊", "笑着看打闹")>>. 你和<<his>>有同感。
+<<elseif $rng gte 11>>
+	艾利克斯捏了捏你的手臂，对着电视做了个手势，眉开眼笑。"我已经看过无数次了，但这个部分总是让我着迷。"你有点精神了。
+<<else>>
+	艾利克斯翻遍了频道，但你找不到你喜欢的。"这个时间没什么好节目，"<<he>>耸耸肩。
+<</if>>
+<br><br>
+
+
+<<if Time.hour gte 6>>
+	<<He>>看了一眼墙上的钟。"该工作了。回头见，"<<he>>边说边站起来朝门口走去。
+	<br><br>
+
+	<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+	<br>
+<<elseif $alex_countdown is undefined>>
+	<<link [[继续看(0:20)|Farm Breakfast TV]]>><<pass 20>><<stress -6>><</link>><<lstress>>
+	<br>
+	<<link [[拥抱艾利克斯 (0:20)|Farm Breakfast Cuddle]]>><<npcincr Alex love 1>><<pass 20>><</link>><<glove>>
+	<br>
+	<<link [[停止|Farm Cottage]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<link [[继续看(0:20)|Farm Breakfast TV]]>><<pass 20>><<stress -6>><</link>><<lstress>>
+	<br>
+	<<link [[停止|Farm Cottage]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+:: Farm Breakfast Cuddle
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+
+你和艾利克斯在一起很舒服。
+<<if $daily.alex.spank and $pain gte 20>>
+	当<<He>>看到你的眼泪时，<<he>>看起来很后悔，<<he>>用一只手擦干你的眼泪，另一只手轻轻地拍着你的背。
+	<<He>>笨拙地安慰你，你可以看出<<hes>>在尽<<his>>最大的努力。你感觉稍微好些了。<<pain -10>><<lpain>>
+	<br><br>
+<</if>>
+<<switch random(1, 10)>>
+	<<case 1>>
+		<<if _alex.dom gte 30>>
+			<<He>>放下遥控器。"该死，"<<he>>说道。"介意帮我拿一下吗?"你伸出手递给<<him>>。"谢谢。"<<He>>把目光从你身上移开，悠闲地吹着口哨。
+			<br><br>
+
+			<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1 and $exhibitionism gte 75>>
+				你意识到<<he>>是故意把它掉在地上的，就是想偷看你的裙子，当<<he>>再次看你的时候，促使你把它翻起来。
+				<<He>>避开你的目光，然后傻笑起来，脸红得厉害。<<npcincr Alex lust 3>><<glust>>
+			<<elseif setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+				你变得慌乱，意识到<<he>>故意把它掉在地上看你的裙子。你拨弄<<his>>的头发直到<<he>>承认。<<stress 6>><<gstress>><<npcincr Alex lust 1>><<glust>>
+			<<else>>
+				<<He>>脸上露出大大的笑容，而你对此表示疑惑。"我看到了一些好东西。让我眼前一亮。"<<npcincr Alex lust 1>><<glust>>
+			<</if>>
+		<<elseif _alex.dom lte -30>>
+			遥控器掉了。"我去拿，"<<he>>说道。
+			<br><br>
+
+			你的目光停留在<<his>>的<<print (_alex.pronoun is "f" ? "平角裤" : "四角裤")>>紧绷着<<his>>健美的臀部，<<he>>伸手抓住它。
+			"我——我在盯着你，"艾利克斯脸红了，指着你，然后没精打采地往回走。<<npcincr Alex lust 1>><<glust>><<arousal 100>><<garousal>>
+		<<else>>
+			遥控器掉了。你们俩同时伸手去拿，然后你们的手碰在了一起。<<He>>忍不住笑，你也跟着笑。
+		<</if>>
+	<<case 2>>
+		<<He>>抚摸你的头发，你们一起观看日出。"日出真的很美，我认识一个像它一样美好的人。而且……<<pShes>>现在离我很近。"
+		<<he>>倾身吻你的脸颊，然后咧嘴笑。"我不用走很远。"
+	<<case 3>>
+		<<He>>翻看频道。有部正在播放淫秽镜头的电影。<<He>>瞥了你一眼，但很快就换了。<<npcincr Alex lust 1>><<glust>>
+		<<if Time.hour isnot 6>>
+		<br><br>
+			<<if $promiscuity gte 15>>
+				<<link [[调侃一下|Farm TV Tease]]>><<npcincr Alex lust 5>><<arousal 200>><</link>><<promiscuous1>><<glust>><<garousal>>
+				<br>
+			<</if>>
+			<<link [[问艾利克斯看到了什么|Farm TV Ask]]>><<npcincr Alex lust 3>><<arousal 100>><</link>><<glust>><<garousal>>
+		<</if>>
+	<<case 4>>
+		你们俩把头靠在一起，趁着电视广告时间，亲了一个"爱斯基摩吻"。
+	<<case 5>>
+		你脱下了<<his>>身上的<<npcClothesText _alex "upper">>，露出了<<his>>结实的腹肌。你朝着它吹着热气，<<He>>摩擦着你的脸。<<he>>看到这个场景后开怀大笑.<<npcincr Alex lust 1>><<glust>>
+	<<case 6>>
+		<<he>>一边拍打着枕头，一边说道："这里真的很安静。真希望我们能一整天都这样待在这里。"接着，<<he>>抱着你。
+		<<if ($harpy gte 6 and $transformationParts.bird.wings isnot "hidden") or ($angel gte 6 and $transformationParts.angel.wings isnot "hidden") or ($demon gte 6 and $transformationParts.demon.wings isnot "hidden") or ($fallenangel gte 2 and $transformationParts.fallenAngel.wings isnot "hidden")>>
+			拍打你的翅膀。
+		<<elseif ($wolfgirl gte 3 and $transformationParts.wolf.ears isnot "hidden") or ($cat gte 4 and $transformationParts.cat.ears isnot "hidden") or ($cow gte 4 and $transformationParts.cow.ears isnot "hidden") or ($fox gte 4 and $transformationParts.fox.ears isnot "hidden")>>
+			抓你的耳朵。
+		<<elseif $wolfgirl gte 6 or $fox gte 6>>
+			揉你的肚子。
+		<<elseif $cat gte 6>>
+			抚摸你的头发。
+		<<elseif $cow gte 6>>
+			抓你的鼻子。
+		<<else>>
+			抚摸你的脸。
+		<</if>>
+		你们凝视着对方的眼睛，感觉很平静。
+	<<case 7>>
+		"你觉得组建家庭怎么样?"你把头靠在<<his>>的肩膀上问道。
+		<br><br>
+
+		<<He>>用胳膊搂着你，停顿了一会儿。
+		<<if ($genderknown.includes("Alex") and $player.gender is _alex.pronoun) or (!$genderknown.includes("Alex") and $player.gender_appearance is _alex.pronoun)>>
+			"我们可以领养。但是我听说很贵。我们已经忙得不可开交了。不知道没有酒我该怎么办。"<<He>>突然笑了。"如果这能让你开心，我愿意出十倍的钱。"
+		<<else>>
+			"说实话，我没有考虑过。不知道我能不能成功戒酒。但我不介意。如果它能让你快乐，难十倍的事我也能干，"<<he>>微笑着对你说道。
+		<</if>>
+		<br><br>
+
+		"如果我不想要孩子呢?"
+		<br><br>
+
+		"那你问我干嘛？"<<he>>轻轻地撞了一下你的头，"就像我说的，只要能让你开心就好了。"
+	<<case 8>>
+		你伸手过去，试图抢夺遥控器，从<<his>>的肩膀上跨过去。
+		<<if $bodysize is 3>>
+			<<He>>把遥控器举得很高，但你身高足够，还是轻松夺了过来。"<<he>>大笑着说道："该死，我早该想到的。"
+			<br><br>
+
+			你在<<he>>大笑的时候突然亲了上去，<<he>>红了脸。<<takeKissVirginity "Alex" "loveInterest">>
+		<<elseif currentSkillValue('athletics') gte 800>>
+			<span class="green"><<His>>反应很快，但你的反应更快。</span>"你赢了，公平竞争。现在把遥控器还给我。"<<he>>把手放在胸前。
+			<br><br>
+
+			<<if $speech_attitude is "meek">>
+				"你生气了吗？" 你抱住<<hers>>，咯咯笑道："也许我应该看着你，而不是遥控器。"
+			<<elseif $speech_attitude is "bratty">>
+				"我刺激到你了吗？" 你调皮地戳了一下<<his>>的鼻子。"你应该是我的主要娱乐来源。"<<he>>笑了起来。
+			<<else>>
+				"别生气啦。" 你把自己挤进<<his>>的臂弯和胸膛之间。"你面前就有一场表演，不用看电视啦。"
+			<</if>>
+			<br><br>
+
+			<<His>>脸上的神情滑落，取而代之的是咧嘴微笑。"你说得太对了。" 不久之后，你们交换了一个俏皮的吻。<<takeKissVirginity "Alex" "loveInterest">>
+		<<else>>
+			<span class="red"><<He>>把你推开。</span>你失足滑倒，悬挂在沙发上。"我来救你。"<<he>>大喊道。
+			<<if _alex.dom gte 30>>
+				抓住了你的<<bottom>>，把你拉到<<his>>的大腿上。"<<he>>说道："对不起，我永远不会让我的<<girl>>失望的。"然后，<<he>>的手沿着你的后背滑了下去。
+			<<elseif _alex.dom lte -30>>
+				把你拉了回来，问道："你吓到我了。没事吧？"当你点头时，<<he>>松了一口气，拍着你的背说："下次记得说啊。"
+			<<else>>
+				拉你起来说道："太危险了，对不起。"<<he>>伸出一只手搂住了你，一会儿之后，<<he>>开始笑起来。"不过我可不能就这么让你赢了啊。"
+			<</if>>
+			<br><br>
+
+			你向前倾身，期待着一吻。<<he>>顺着你的意思，和你玩闹了一会儿，然后拉开距离，脸上泛起了红晕。这是你和艾利克斯的初吻。<<takeKissVirginity "Alex" "loveInterest">>
+		<</if>>
+	<<case 9>>
+		就在<<he>>准备站起来的时候，你抱住了<<him>>，用双腿夹住了<<his>>的腰。
+		<br><br>
+
+		<<if _alex.dom gte 30>>
+			<<he>>用结实的双臂把你紧紧搂在怀里，笑着说道："看来我们有同样的想法啊。"
+		<<elseif _alex.dom lte -30>>
+			<<he>>打了一个哈欠，说道："我只是在舒服地躺着而已。"<<he>>躺在你的胸口，把你的手臂搂在自己身上。
+		<<else>>
+			"别担心，我哪儿也不去。"<<He>>给你一个温暖的微笑，把你拉进一个充满安全感的拥抱。
+		<</if>>
+	<<case 10>>
+		你的手穿过<<his>>的腿，你抓住<<his>>健美的大腿。<<npcincr Alex lust 1>><<glust>>
+		<br><br>
+
+		<<if $daily.alex.breakfastSex>>
+			"第二轮加速了吗?"<<he>>说，红晕蔓延了<<his>>的脸。"你是另一回事。先给我点时间热身。"
+		<<elseif _alex.dom gte 30>>
+			"最好小心点，这样诱惑我，"<<he>>低声说，在你耳边吹气。"我打赌你会喜欢这个结果的。"
+		<<elseif _alex.dom lte -30>>
+			"你在想些什么啊？有什么计划吗？"<<he>>立刻脸红了，含羞地笑着问道。
+		<<else>>
+			"你可以安定下来，<<girl>>，"<<he>>拉着你的手低声说道。"等会儿我们有的是时间骑马。"
+		<</if>>
+<</switch>>
+<br><br>
+
+<<if Time.hour gte 6>>
+	<<he>>瞥了一眼墙上的时钟，然后站起身来说道："该去工作了。希望能再见到你."<<he>>笑着挥手告别。
+	<br><br>
+
+	<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<link [[继续拥抱(0:20)|Farm Breakfast Cuddle]]>><<npcincr Alex love 1>><<pass 20>><</link>><<glove>>
+	<br>
+	<<link [[看电视(0:20)|Farm Breakfast TV]]>><<pass 20>><<stress -6>><</link>><<lstress>>
+	<br>
+	<<link [[起来|Farm Cottage]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+:: Farm TV Tease
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+<<set $daily.alex.tvTease to true>>
+
+<<if $speech_attitude is "meek">>
+	"你——你是在想象我们吗?"你腼腆地笑着，搂着<<his>>的脖子。
+<<elseif $speech_attitude is "bratty">>
+	你抓住艾利克斯的衣领，看着<<him>>的眼睛。"承认吧。你想让我们表现出来。"
+<<else>>
+	你捧起<<his>>的脸颊，轻轻地问:"看到什么你想试试的东西了吗?"
+<</if>>
+<br><br>
+
+"不，我——"艾利克斯咽了口气。"我从没想过。"你知道<<hes>>在撒谎。
+<br><br>
+
+<<if $speech_attitude is "meek">>沮丧<<elseif $speech_attitude is "bratty">>决心<<else>>专注<</if>>，你把<<him>>推到头枕上，随后跨坐在<<him>>身上。
+<<if $player.breastsize gte 5>>
+	你的<<breasts>>近在眼前，令<<he>>不由自主地咽了口口水。
+<<else>>
+	你的<<bottom>>对<<his>>膝盖的压力变得太大，<<him>>无法承受。
+<</if>>
+<<promiscuity1>>
+
+<<His>>的伪装粉碎了，<<he>>抓住了你的后脑勺，还有你的大腿。<<He>>张着嘴靠过来。
+你在最后一秒急转弯。<<He>>看起来很困惑，然后
+<<if _alex.dom gte 30>>
+	叹了一口气。"你再这样取笑我，我可能会失控的。"
+<<elseif _alex.dom lte -30>>
+	有些口吃。"我——我做错什么了吗?"
+<<else>>
+	睁大眼睛。"怎么了吗?"
+<</if>>
+<br><br>
+
+你什么也不说，继续拥抱，就像什么都没发生过一样。
+<br><br>
+
+<<farm_cottage_tv_options>>
+<<link [[起来|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+:: Farm TV Ask
+<<effects>>
+
+<<set $daily.alex.tvTease to true>>
+<<if $speech_attitude is "meek">>
+	"嘿……"你紧紧地抱住他，恳求<<him>>。"我想看看。请把它换回来好吗?"
+<<elseif $speech_attitude is "bratty">>
+	"嘿，我什么都没看到，"你抱怨道，轻轻地拍打着<<his>>的手臂。"如果你能帮我换回来，我会很感激的。"
+<<else>>
+	"嘿，我没看到，"你一边说一边用手臂抱住<<him>>。"你能帮我换回来吗?"
+<</if>>
+<br><br>
+
+艾利克斯开始脸红，用<<his>>的衣领扇风。"没有什么值得看的，"<<he>>犹豫着。"我帮了你一个忙。"
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"这看起来不太对劲。"你轻轻地抓住<<his>>的手腕，<<if $bodysize isnot 3>>向上<</if>>看着<<him>>。"请告诉我。"
+<<elseif $speech_attitude is "bratty">>
+	"你的脸可不这么说，你这个骗子。"你双臂交叉，身体前倾。"承认。现在。"
+<<else>>
+	"我很确定我们是在室温下。"你用手抚摸着<<his>>的脸。"告诉我，你看到了什么?"
+<</if>>
+<br><br>
+
+<<he>>摇了摇头，嘴唇紧闭。你继续向<<him>>施加压力。
+<br>
+<<He>>扭动了一下身体。你被告知这是一场关于两个人的场景，但你继续追问。
+<br>
+<<His>>的保留态度开始破裂了。<<him>>觉得这样很尴尬。你继续追问。
+<br>
+<<He>>结结巴巴地说出自己无法解释。你问为什么。
+<br>
+然后，<<he>>提高了声音。"他们在做那件事，没错吧？裸体的……"
+<br>
+你迫不及待地等待着。"我……我反而想着我们。"<<he>>气喘吁吁地说道，<<his>>的脸和脖子变得非常红。
+<br>
+"我一直都知道，" 你最终承认道。 "我只是在跟你开玩笑。"
+<br>
+<<he>>吃惊地结巴着说道："你是想告诉我……"
+<br><br>
+
+几秒钟后，你们又像什么都没发生过一样拥抱在一起。
+<br><br>
+
+<<farm_cottage_tv_options>>
+<<link [[起来|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+:: Farm Alex Admin
+<<effects>>
+
+你拉了一把椅子过来，帮助艾利克斯管理业务。
+<<if $rng gte 3>>
+	<<He>>和镇上的一个客户交谈。客户听起来对农场的
+	<<print either("牛奶", "鸡蛋", "松露", "农产品", "收益率", "谷物", "水果", "蔬菜", "成果")>>质量感到满意。
+<<elseif $rng gte 2>>
+	<<He>>和一个供应商交谈，试图谈判更好的交易条件。
+<<else>>
+	<<He>>给你列出了农场的开支。
+<</if>>
+<br><br>
+
+<<if currentSkillValue('maths') gte random(1, 1000)>>
+	<<if $rng gte 3>>
+		<span class="green">你说服艾利克斯提高每<<print either("品脱", "加仑", "公斤", "克", "分量", "盒", "蒲式耳", "吨")>>的价格。</span><<farm_yield 3>><<ggfarm>>
+		<br><br>
+
+		"你反应很快，谢谢你的帮助。"<<he>>朝你笑了笑。
+	<<elseif $rng gte 2>>
+		你在艾利克斯的垃圾邮件文件夹中发现了一封来自另一家公司的电子邮件，提供了更好的交易条件。你向艾利克斯展示了这封邮件，<span class="green">并且<<he>>将其作为筹码。</span><<farm_yield 3>><<ggfarm>>
+		<br><br>
+
+		<<he>>笑着说道："我想我应该更经常检查我的电子邮件。"
+	<<else>>
+		<span class="green">你发现了一些可以省下的钱。</span><<farm_yield 3>><<ggfarm>>
+		<br><br>
+
+		"每一分钱都很重要。"，<<he>>拍了拍你的背说道： "干得好。"
+	<</if>>
+<<else>>
+	桌子上一团糟，<<his>>的笔记本电脑里的内容也很乱。你开始整理东西。<<mathsskill 2>><<ggmaths>>
+	<br><br>
+
+	"不管怎样，还是谢谢你。" 艾利克斯把电话靠近自己的脸说道："抱歉。你说什么来着？"
+<</if>>
+<br><br>
+
+<<link [[继续|Farm Alex Bedroom]]>><<endevent>><</link>>
+<br>
+
+:: Farm Phone Cuddle
+<<effects>>
+
+你坐在艾利克斯旁边，让自己感到舒适。
+<<switch random(1, 8)>>
+	<<case 1>>
+		<<Hes>>正在与供应商进行一场激烈的交谈，但看起来毫无不适。<<He>>用空闲的手臂搂住了你。
+	<<case 2>>
+		<<Hes>>正在与客户交谈，但看起来不介意。你偶尔看见<<him>>冲你露出微笑。
+	<<case 3>>
+		电话那头是等待音乐。<<he>>把你拉过来，在你的脸颊上亲了一下，露出微笑。
+	<<case 4>>
+		<<Hes>>正在拨号。"好时机,"<<he>>开玩笑地说道，抓住你的头发。 "这是风暴前的宁静。准备好了吗？"
+	<<case 5>>
+		<<he>>尽力让自己不去想电话。<<he>>的目光与你相遇。"我很高兴你过来。"，<<he>>微笑着说道。
+	<<case 6>>
+		你把脸颊贴在<<he>>的脸上，愉悦地听着<<he>>的声音。
+	<<case 7>>
+		你感到有些无聊，于是把头撞向<<hers>>的头。
+		<<if ($demon gte 2 and $transformationParts.demon.horns isnot "hidden") or ($cow gte 2 and $transformationParts.cow.horns isnot "hidden")>>
+			<<he>>因疼痛而向后退缩，你突然想起自己长了角。在你道歉之前，<<he>>也撞了回来。你们俩都笑了起来，双手放在额头上。
+		<<else>>
+			<<he>>也这样做了。这种互动持续了相当长的一段时间。
+		<</if>>
+	<<case 8>>
+		<<if $exposed gte 1>>
+			<<he>>被你的<<lewdness>>吸引住了。"<<he>>结结巴巴地说道："是的，我在听。"<<he>>明显地脸红了。
+		<<else>>
+			你看着<<his>>桌子上的杂物，不禁发出了叹息声。"<<he>>叹了口气，说道："我知道看起来很乱，但我还有更重要的事情要做。"<<he>>眨眨眼，用肩膀轻轻碰了碰你。
+		<</if>>
+<</switch>>
+<br><br>
+
+<<if Time.hour gte 21>>
+	<<He>>瞥了一眼<<his>>床头的钟，站起身来。"该睡觉了，"<<he>>说着，跟你交换了晚安吻。<<takeKissVirginity "Alex" "loveInterest">>
+<br><br>
+
+<<link [[起来|Farm Alex Bedroom]]>><<endevent>><</link>>
+<br>
+<<else>>
+<<link [[继续拥抱(0:30)|Farm Phone Cuddle 2]]>><<npcincr Alex love 1>><<pass 30>><</link>><<glove>>
+<br>
+<<link [[起来|Farm Alex Bedroom]]>><<endevent>><</link>>
+<br>
+<</if>>
+
+:: Farm Phone Cuddle 2
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+
+<<switch random(1, 10)>>
+	<<case 1>>
+		"你好强壮。" 你轻声说道，然后用手摸着<<his>>结实的手臂。艾利克斯在结束电话后鼓起了<<his>>的胸膛，然后也伸手摸了摸你的。<<npcincr Alex lust 1>><<glust>>
+		<br><br>
+
+		<<if $physique gte ($physiquesize / 7) * 6>>
+			"你更强壮，"<<he>>低声回答道，称赞着你的肌肉线条。"给我留下了深刻的印象。"<<He>>在你的脸颊上吻了一下。<<npcincr Alex dom -1>><<ldom>>
+		<<elseif $physique gte ($physiquesize / 7) * 5>>
+			"你也一样强壮。我们差不多。"<<he>>观察着你说道，然后在你的脸颊上亲了一口。
+		<<elseif $physique gte ($physiquesize / 7) * 4>>
+			"你也不错。可以搬更多的干草堆。"<<he>>开玩笑地说道，然后在你的脸颊上亲了一口。
+		<<else>>
+			"有点软弱。没关系。我够强壮，可以代替我们两个。"<<he>>评论道，然后在你的脸颊上亲了一口。<<npcincr Alex dom 1>><<gdom>>
+		<</if>>
+	<<case 2>>
+		你在艾利克斯的耳边轻声说着甜言蜜语。随着通话的进行，你的话语中也变得越来越淫秽。到最后，<<he>>鲜红的脸发出了热量。
+		<<he>>开始结巴起来，无法停止。<<npcincr Alex lust 1>><<glust>>
+		<br><br>
+
+		"抱歉，你能重复一遍吗？"，电话那头的声音说道。
+	<<case 3>>
+		电话等待音乐让艾利克斯感到不舒服。<<he>>抱怨道，
+		<<if _alex.dom gte 30>>
+			<<He>>把你搂到<<his>>的膝盖上，揉了揉你的头发。
+		<<elseif _alex.dom lte -30>>
+			<<he>>沉静地躺在你的腿上。你用手指梳理着<<he>>的刘海，而<<he>>则玩弄着你的头发。
+		<<else>>
+			<<he>>靠在你的身上，你们互相玩弄着对方的头发。
+		<</if>>
+		<br><br>
+
+		"坚持住，伙伴。"，你满意地叹了口气，<<he>>对你露出了微笑。
+	<<case 4>>
+		你对艾利克斯做出一些愚蠢的表情，看看<<he>>会有什么反应。<<he>>抑制住笑声，然后
+		<<if (_alex.dom + _alex.lust) gte 40>>
+			抓住你的下巴，把它倾斜了一下。<<he>>亲吻你，慢慢地离开，露出得意的笑容。"<<he>>说道："怎么了？难道你的脸被卡住了吗？"
+			<<takeKissVirginity "Alex" "loveInterest">><<arousal 100 "mouth">><<garousal>>
+		<<elseif _alex.dom lte -30>>
+			在你的下巴下面挠了挠，说道："别闹了，你这个傻瓜。除非你想接电话。"<<he>>差点把电话递给你，但决定不这样做，哈哈大笑。
+		<<else>>
+			严厉地看了你一眼，然后捏了捏你的脸颊。<<he>>说道："你这个傻瓜，我正在做生意。"
+		<</if>>
+	<<case 5>>
+		打完电话后，艾利克斯从桌子下拿出一瓶饮料，猛灌一口，然后瘫坐在你的腿上。"<<he>>说道："我真的很-"<<he>>又灌了一口。
+		"爱——"另一声。"你……"最后一声。"嘘，别那样看着我……"你把瓶子从<<him>>那里拿走。
+	<<case 6>>
+		你把头埋到艾利克斯的胸前，然后<<he>>抱住了你。"别太用力，"<<he>>笑着说道。"我知道我需要再洗一次澡。"
+		<br><br>
+
+		你睡着了，醒来时仍然抱在<<his>>的怀里。<<tiredness -6>><<ltiredness>>
+	<<case 7>>
+		当艾利克斯全神贯注于通话时，
+		<<if $speech_attitude is "meek">>
+			你把椅子转了一圈，扑到了<<him>>身上。<<him>>不情愿地抓住你。
+		<<elseif $speech_attitude is "bratty">>
+			你把你的腿放在<<his>>的椅子上，用你的脚轻轻地戳<<his>>的头。"呃——"<<he>>生气地说道。"就像我刚才说的——"
+		<<else>>
+			你在椅子上前后摇摆，抓住桌子以免摔倒。<<He>>催促你在受伤之前停下来。
+		<</if>>
+		<br>
+		你凑过去，<<if $speech_attitude is "meek">>温柔地<<elseif $speech_attitude is "bratty">>贪婪地<<else>>急切地<</if>>
+		<<if $player.breastsize gte 5>>
+			用你的<<breasts>>捂住<<his>>的脸，
+		<<else>>
+			把你的胸部压在<<his>>身上，
+		<</if>>
+		抓住<<his>>的全部注意力。<<his>>的脸涨得通红，<<he>>在恢复镇定之前差点把电话掉在地上。<<npcincr Alex lust 1>><<glust>>
+	<<case 8>>
+		"我坐得太久了，"艾利克斯一边说，一边把手机收起来。"我需要伸展一下。"<<He>>从<<his>>的椅子上站起来。
+		<br><br>
+
+		你注意到<<his>>的身体和暴露的皮肤，<<he>>从不同的姿势中呻吟着伸展身体。<<He>>感到困惑，同时责备你。<<npcincr Alex lust 1>><<glust>><<arousal 50>><<garousal>>
+	<<case 9>>
+	<<if _alex.dom lte -30 or $stress gte ($stressmax / 5) * 3>>
+		"介意帮我拿着这个吗?"艾利克斯边说边把电话递给你。<<He>>开始大力按摩你的肩膀，并向下按摩你的背部。
+		<br><br>
+
+		<<if $panicparalysis gte 1 and $controlled is 0>>
+			你完全僵住了，把手机掉在地上。<<He>>把它捡起来说:"没关系。"
+		<<elseif $panicattacks gte 1 and $controlled is 0>>
+			一开始你会退缩，但试着放松并深呼吸。
+		<</if>>
+		<<Hes>>熟练地使用<<his>>的手，尽管有点粗糙，施加适当的压力来把你的烦闷都赶走了。你停止了呻吟。
+		<<if _alex.lust gte 20 and _alex.dom gte 10>>
+			<<He>>一只手滑向你的<<bottom>>，摸索着，作为额外的肢体接触。<<arousal 200 "bottom">><<garousal>>
+		<</if>>
+		<br><br>
+
+		你向<<him>>道谢。<span class="green">感觉很满足。</span>"别客气，"<<he>>笑着说道。"你看起来很紧张。"<<stress -12>><<llstress>>
+	<<else>>
+		艾利克斯看起来又紧张又疲惫。为了安抚<<him>>，你开始<<handtext>>按摩<<his>>的肩膀和背部肌肉。
+			<<if $handskill gte 800>>
+				"我会给你回电话的，"<<he>>说着挂了电话。<<He>>倒在你身上，呼吸沉重，好像在恍惚中。
+			<<elseif $handskill gte 400>>
+				"等一下，"<<he>>放下电话说道。<<He>>向后靠，把<<his>>的脚放在桌子上，<<he>>完全在你的按摩下放松了。
+			<<else>>
+				<<His>>的表情没有太大变化，<<he>>继续对着电话讲话，但<<he>>似乎很感激你的努力。
+			<</if>>
+			<br><br>
+
+			<<if $speech_attitude is "meek">>
+				"你看起来很需要这个。我很担心你,"
+			<<elseif $speech_attitude is "bratty">>
+				"你过度劳累了。很明显你需要这个,"
+			<<else>>
+				"我知道你有能力控制自己，但我觉得你需要这个,"
+			<</if>>
+				你说着。
+			<br><br>
+
+		<<He>>点头，让你更靠近，共同喘息。"我不太感谢你，"<<he>>笑着说道。
+	<</if>>
+	<<case 10>>
+		你坐在艾利克斯的腿上。<<He>>用<<his>>的双臂环绕着你。
+		<<if _alex.dom gte 30>>
+			"你就是喜欢让我的工作变得困难，不是吗？"<<he>>低声说道。 "我喜欢我的<<girl>>这一点。你的一切都太可爱了。"
+		<<elseif _alex.dom lte -30>>
+			"该死，我不能在这种情况下工作。"<<His>>的声音有些颤抖："你总是让我不想工作，一直都是如此。"
+		<<else>>
+			"我应该怎么在这种情况下工作啊？"<<he>>笑了起来。 "那是我的<<if $player.gender_appearance is "f">>女<</if>>人，没错。总是那么特别和迷人。"
+		<</if>>
+<</switch>>
+<br><br>
+
+<<if Time.hour gte 21>>
+	<<He>>瞥了一眼<<his>>床头的钟，站起身来。"该睡觉了，"<<he>>说着，跟你交换了晚安吻。<<takeKissVirginity "Alex" "loveInterest">>
+<<else>>
+	你们互相拥抱了一下，然后决定起床。<<He>>分开时挥手微笑。
+<</if>>
+<br><br>
+
+<<link [[继续|Farm Alex Bedroom]]>><<endevent>><</link>>
+<br>
+
+:: Farm Alex Admin Crawl
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+<<set _genitals to (_alex.penis isnot "none" ? _alex.penisdesc : "小穴")>>
+
+你爬到了艾利克斯的桌子下面。你在<<his>>的膝盖之间偷偷窥视。<<Hes>>正在和一个<<if random(1,2) is 1>>供应商<<else>>客户<</if>>通电话。
+你不会让这阻止你的。
+<br><br>
+
+<<if $pronoun is "f">>
+	你掀起了<<his>>的裙子，露出了<<his>>的平角裤。
+<<else>>
+	你拉开了<<his>>的裤子拉链，露出了<<his>>的四角裤。
+<</if>>
+你直视着<<him>>的眼睛，用手指穿过衣服在<<his>>的_genitals上轻轻划过。<<He>>试图专注于自己的谈话，但是在你的触摸下，<<his>>的声音开始颤抖。
+<<promiscuity4>>
+
+你拉开了<<his>>的内裤。
+<br><br>
+
+<<link [[继续|Farm Alex Admin Oral]]>><<set $sexstart to 1>><</link>>
+<br>
+
+:: Farm Alex Admin Oral
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+
+	<<maninit>><<npcoral>><<set $NPCList[0].mouth to "none">>
+	<<set $enemytrust += 100>>
+<</if>>
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+艾利克斯继续通电话，试图保持<<his>>的声音稳定。
+<<switch random(1, 6)>>
+	<<case 1>>
+		<<if _alex.penis isnot "none" or $player.penisExist>>
+			"你不会失望的……我们非常有活力。"
+		<<else>>
+			"毫-毫无疑问……我们办事很靠谱的。"
+		<</if>>
+	<<case 2>>
+		<<if $player.penisExist>>
+			"我-我要挨操。妈-妈的，我想说的是我需要含艾草的有机肥！"
+		<<elseif _alex.penis isnot "none">>
+			"我-我要操死…啊对对，草饲，喂牛用的。"
+		<<else>>
+			"我-我们已经繁殖过很多次了。是-是的，我是指繁殖动物！"
+		<</if>>
+	<<case 3>>
+		"繁-繁殖是…啊啊…我们的专长之一……"
+	<<case 4>>
+		"认-认证，纯天然，绝无虚假……"
+	<<case 5>>
+		"你-你会对我们的质量满意的……我向你保证。"
+	<<case 6>>
+		"<<print either( "我会回复你的", "你在其他任何地方都找不到", "你可以把所有的…你可以要求")>>..."
+<</switch>>
+
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Farm Alex Admin Oral Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Farm Alex Admin Oral]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Farm Alex Admin Oral Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"你的热情很有说服力。"电话那头传来一个声音。<<He>>突然惊醒，好像想起自己正在进行一次电话交谈。<<He>>一边脸红一边继续交谈。<<glove>><<lllust>><<npcincr Alex love 1>><<npcincr Alex lust -10>><<gfarm>><<farm_yield 1>>
+	<br><br>
+	<<tearful>>你从桌子底下溜了出来。你在这里的工作已经完成了。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+<<elseif $enemyhealth lte 0>>
+	"噢，"艾利克斯说，把你抱在怀里。
+	<br><br>
+	"一切都好吗?"电话里有人问。
+	<br><br>
+	"是……是的，"<<he>>回答。"很好。"<<llove>><<lfarm>><<npcincr Alex love -1>><<farm_yield -1>>
+	<br><br>
+	<<tearful>>你从桌子下面爬出来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+<<else>>
+	艾利克斯继续谈话，电话那头的人一点也不知道。
+	<br><br>
+	<<tearful>>你从桌子下面爬出来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+<</if>>
+
+<<link [[继续|Farm Alex Bedroom]]>><</link>>
+<br>
+
+:: Farm Cottage Bailey
+<<effects>>
+
+<<npc Alex>><<person1>>
+<<if $phase is 3>>
+	你躲在厨房里。又是敲门声，这次更重。
+	<br><br>
+	"你他妈在这儿干什么?"艾利克斯说道。你看到<<him>>从窗户进来。另一个人影走过来迎接<<him>>。<span class="red">是贝利。</span>
+	<br><br>
+	"我的监护对象在这里，"贝利说道。"<<pShe>>欠我很多。我是来收钱的。"
+	<br><br>
+
+	<<link [[对抗贝利|Farm Cottage Bailey Confront]]>><</link>>
+	<br>
+	<<link [[让艾利克斯处理贝利|Farm Cottage Bailey Deal]]>><</link>>
+	<br>
+<<elseif $phase is 2>>
+	你打开门。<span class="red">是贝利。</span><<nnpc_he Bailey>>说:"是时候付钱了。"
+	<br><br>
+	你听到脚步声靠近。艾利克斯冲进小屋，站在你身边。"我支持你的任何决定，"<<he>>小声说道。
+	<br><br>
+
+	<<cottage_bailey_options>>
+<<elseif $phase is 1>>
+	艾利克斯打开门。<span class="red">是贝利。</span><<nnpc_He Bailey>>越过艾利克斯，直视着你。
+	<br><br>
+
+	"是时候付钱了，"<<nnpc_he Bailey>>说道。
+	<br><br>
+
+	当<<he>>站在你身边时，艾利克斯狠狠地瞪着贝利。"无论你做什么决定，我都会支持你，"<<he>>小声说道。
+	<br><br>
+	<<cottage_bailey_options>>
+<<else>>
+
+	你打开门。<span class="red">是贝利。</span>
+	<br><br>
+	"是时候付钱了，"<<nnpc_he Bailey>>说道。
+	<br><br>
+	艾利克斯来到你身边，怒视着贝利。"无论你做什么决定，我都会支持你，"<<he>>小声说道。
+	<br><br>
+	<<cottage_bailey_options>>
+<</if>>
+
+
+
+<<set $renttime to 7>><<set $rentday to Time.weekDay>>
+
+
+:: Farm Cottage Bailey Confront
+<<effects>>
+
+你打开前门。艾利克斯从贝利身边走过，站在你身边。"无论你做什么决定，我都会支持你，"<<he>>小声说道。
+<br><br>
+<<cottage_bailey_options>>
+
+:: Farm Cottage Bailey Deal
+<<effects>>
+
+"我们不会给你一分钱，"艾利克斯说道。"现在他妈的滚，离开
+<<if $NPCName[$NPCNameList.indexOf("Alex")].dom gte 20>>
+	我的
+<<else>>
+	我们的
+<</if>>
+产业。"
+<br><br>
+
+"很好，"贝利说道。"我的朋友们会很高兴的。"<<nnpc_He Bailey>>转身走开。
+<br><br>
+
+<<if $bailey_encroach gte 1>>
+	<span class="pink"><i>贝利将会给雷米更多的支持，让侵占的速度更快。<<nnpc_He Bailey>>也会在雷米进攻时派出增援部队。</i></span>
+<<else>>
+	<span class="pink"><i>贝利将支持雷米对农场的攻击，使入侵速度加快。<<nnpc_He Bailey>>也会在雷米进攻时派出增援部队。</i></span>
+<</if>>
+<br><br>
+
+<<link [[继续|Farm Cottage Bailey Refuse 2]]>><</link>>
+<br>
+
+
+:: Farm Cottage Bailey Pay
+<<effects>>
+
+<<rentpay>>
+
+艾利克斯瞪了贝利一眼，然后砰地一声关上了门。
+<<if $bailey_encroach is undefined>>
+	"这糟透了，"艾利克斯说道。"但我知道我们已经忙得不可开交了。"
+<<else>>
+	<<unset $bailey_encroach>>
+	"我讨厌向那个混蛋屈服，"<<he>>说道。"但有一些喘息的空间会很好。"
+<</if>>
+<br><br>
+
+<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+
+
+
+:: Farm Cottage Bailey Refuse
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我不付钱，"你说道。你无法直视贝利的目光。"走开。"
+<<elseif $speech_attitude is "bratty">>
+	"你一分钱都拿不到，"你说道。你怒视着贝利。"你在这里没有权力。"
+<<else>>
+	"我不会让你欺负我的，"你看着贝利的眼睛说道。"这不是你的钱。"
+<</if>>
+<br>
+
+艾利克斯把手放在你的肩膀上。"我们不会被勒索，"<<he>>说道。"他妈的滚，离开
+<<if $NPCName[$NPCNameList.indexOf("Alex")].dom gte 20>>
+	我的
+<<else>>
+	我们的
+<</if>>
+产业。"
+<br><br>
+
+"很好，"贝利说道。"我的朋友们会很高兴的。"<<nnpc_He Bailey>>转身走开。
+<br><br>
+
+<<if $bailey_encroach gte 1>>
+	<span class="pink"><i>贝利将会给雷米更多的支持，让侵占的速度更快。<<nnpc_He Bailey>>也会在雷米进攻时派出增援部队。</i></span>
+<<else>>
+	<span class="pink"><i>贝利将支持雷米对农场的攻击，使入侵速度加快。<<nnpc_He Bailey>>也会在雷米进攻时派出增援部队。</i></span>
+<</if>>
+<br><br>
+
+
+<<link [[继续|Farm Cottage Bailey Refuse 2]]>><</link>>
+<br>
+
+
+:: Farm Cottage Bailey Refuse 2
+<<effects>>
+<<set $baileypaychain to 0>>
+
+艾利克斯砰地关上了门。
+<<if $bailey_encroach is undefined>>
+	<<set $bailey_encroach to 1>>
+	"我们在一起，"<<he>>说道。"我不怕那个混蛋。"
+<<else>>
+	<<set $bailey_encroach += 1>>
+	"随<<nnpc_him Bailey>>做什么吧，<<nnpc_his Bailey>>不会得逞,"<<he>>说.
+<</if>>
+<br><br>
+
+<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+

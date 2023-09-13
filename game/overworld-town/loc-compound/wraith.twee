@@ -1,0 +1,629 @@
+:: Elk Compound Wraith Give
+<<effects>><<wraithPossess>>
+
+<<if C.npc["Ivory Wraith"].lust gt 10 and ($wraith.state is "haunt" or $wraith.offspring is "dead")>>
+	<<set $compoundWraith to "accepted">>
+	你无法确定祂是否在移动，但是残影仍然围绕着祂形成。你毫无反抗地跪倒在地。
+<<else>>
+	<<set $compoundWraith to "willing">><<canvas-model-override "mouth" "neutral">>
+	<<if $wraith.seen gte 5>>犹豫了一下，你<<else>>你<</if>>握住了那个身影的手，祂也轻轻地回握着你。触手冰凉。<<takeHandholdingVirginity "Ivory Wraith">>
+<</if>>
+<br><br>
+
+人影从下往上开始迅速消散为白雾。你的嘴惊讶的张着。你什么都感觉不到。
+<br><br>
+
+雾气进入你的嘴里，使你的整个身体感到寒冷和僵硬。人影消失了。你站起来，但双腿失去知觉。
+<br><br>
+
+<span class="nextLink"><<link [[继续|Elk Compound Possessed Intro]]>><</link>></span>
+
+:: Elk Compound Wraith Resist
+<<effects>><<set $compoundWraith to "resisted">>
+
+你把目光移开，试图把这些漩涡从你的脑海中驱走。苍白的身影
+<<if $wraith.state is "haunt" or $wraith.offspring is "dead">>
+	抽搐了几下。"<span class="wraith">然而，我并没有问。</span>"
+<<else>>
+	皱眉。<span class="wraith">就一次，你不能留下来吗?</span>"
+<</if>>
+<<initWraith "abomination">><<startWraith>>
+<span class="wraith">不管怎样。为了他们。</span>"
+<br><br>
+
+<<link [[继续|Elk Compound Wraith Fight]]>><<set $molestationstart to 1>><</link>>
+
+:: Elk Compound Wraith Fight
+<<if $struggle_start is 1>>
+	<<set $combat to 1>>
+	<<controlloss>>
+	<<violence 1>>
+	<<molested>>
+	<<if $player.penisExist>>
+		<<set $struggle.penis.creature to "pale slime">><<set $penisuse to "struggle">><<set $penisstate to "struggle">><<set $struggle.enemy[0].location to "penis">>
+	<<else>>
+		<<set $struggle.vagina.creature to "pale slime">><<set $vaginause to "struggle">><<set $vaginastate to "struggle">><<set $struggle.enemy[0].location to "vagina">>
+	<</if>>
+	<<unset $struggle_start>>
+<<elseif $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<set $enemytype to $wraith.type>>
+<</if>>
+<<effectsWraith>>
+
+<<switch $wraith.type>>
+	<<case "man">>
+		<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+			<span id="next"><<link [[继续|Elk Compound Wraith Fight Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Elk Compound Wraith Fight]]>><</link>></span><<nexttext>>
+		<</if>>
+	<<case "tentacles">>
+		<<if $tentacles.active lte ($tentacles.max / 2)>>
+			<span id="next"><<link [[继续|Elk Compound Wraith Fight Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Elk Compound Wraith Fight]]>><</link>></span><<nexttext>>
+		<</if>>
+	<<case "slime">>
+		<<if $struggle.done gte $struggle.number>>
+			<span id="next"><<link [[继续|Elk Compound Wraith Fight Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Elk Compound Wraith Fight]]>><</link>></span><<nexttext>>
+		<</if>>
+<</switch>>
+
+:: Elk Compound Wraith Fight Finish
+<<effects>>
+<<if !$wraithCount>>
+	<<if $wraith.state isnot "haunt" and !["dead","sold"].includes($wraith.offspring)>>
+		<<set $wraithCount to 1>><<set $wraithMax to 1>>
+	<<else>>
+		<<set $wraithCount to 0>>
+		<<set $wraithMax to 3>>
+		<<if ["dead","sold"].includes($wraith.offspring)>>
+			<<set $wraithMax++>>
+		<</if>>
+		<<if $tentacledisable is "t">>
+			<<set $wraithMax -->>
+		<</if>>
+	<</if>>
+<</if>>
+<<if $enemyhealth lte 0>>
+	当<<he>>踉踉跄跄地后退时，<<person>>震惊地低头看着你。
+	<<if $wraith.gen is "abomination">>
+		那些触手无力地掉落在地上，化为一股粉色的雾气。
+	<<elseif $wraith.gen is "arms">>
+		<<His>>额外的触手折回来。
+	<</if>>
+	<<His>>的头向后倾斜，随着一声短暂的尖叫声消散成了虚无。你的耳朵嗡嗡作响，你觉得自己听到了哭声。<<He>>说了些什么，但你听不清楚。
+	<br><br>
+	<<tearful>>你环顾四周，试图确定<<hes>>是不是真的离开了。
+	<<endRainWraith true>>
+	<<set $wraith.defeated++>>
+	<<clotheson>>
+	<<endcombat>><<endWraith>><<clearWraith>>
+	<<set $wraithCompoundCooldown to 10>>
+	<<set $wraithCompoundChance to 10>>
+	<<link [[继续|Elk Compound]]>><</link>>
+<<elseif $enemyarousal gte $enemyarousalmax or $pain gte 100 and $willpowerpain is 0 or ($wraith.type is "tentacles" and $tentacles.active lte ($tentacles.max / 2)) or ($wraith.type is "slime" and $struggle.done gte $struggle.number)>>
+	<<set $wraithCount++>>
+	<<ejacW>>
+	<<if $wraithCount gte $wraithMax>>
+		<<kissWraith "stress">>
+		<br><br>
+		<<if $pain gte 100 or $stress gte $stressmax>>
+			<<if $pain gte 100>>
+				<span class="red">你受伤太严重了，无法抗拒。</span>
+			<<else>>
+				一切太过沉重，你的精神再也无法承受。
+			<</if>>
+			人影从下往上开始迅速消散为白雾。你的嘴惊讶的张着。你什么都感觉不到。
+			<br><br>
+			雾气进入你的嘴里，使你的整个身体感到寒冷和僵硬。人影消失了。你站起来，但双腿失去知觉。
+			<br><br>
+			<<link [[继续|Elk Compound Possessed Intro]]>><<endWraith>><<clearWraith>><<clotheson>><<endcombat>><<wraithPossess>><</link>>
+			<br>
+		<<elseif $wraith.state is "haunt" or ["dead","sold"].includes($wraith.offspring)>>
+			那个人皱起了眉头："<span class="wraith">你从我这里拿走的还不够多吗？我会另找办法的。</span>"<<He>>消失在激流中。
+			<br><br>
+			<<tearful>>你环顾四周，试图确定<<hes>>是不是真的离开了。
+			<<endRainWraith true>>
+			<<clotheson>>
+			<<endcombat>><<endWraith>><<clearWraith>>
+			<<set $wraithCompoundCooldown to 10>>
+			<<set $wraithCompoundChance to 10>>
+			<<link [[继续|Elk Compound]]>><</link>>
+		<<else>>
+			人影皱起眉头。"<span class="wraith">就像从石头里挤出血。我会另找办法的。</span>"<<He>>消失在激流中。
+			<br><br>
+			<<tearful>>你环顾四周，试图确定<<hes>>是不是真的离开了。
+			<<endRainWraith true>>
+			<<clotheson>>
+			<<endcombat>><<endWraith>><<clearWraith>>
+			<<set $wraithCompoundCooldown to 10>>
+			<<set $wraithCompoundChance to 10>>
+			<<link [[继续|Elk Compound]]>><</link>>
+		<</if>>
+	<<else>>
+		<<continueWraith>>
+		<br><br>
+		<<link [[继续|Elk Compound Wraith Fight]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Elk Compound Possessed Intro
+<<effects>>
+<<set $wraithWillMessage to true>>
+<<set $wraithCompoundSeen to true>> /* currently unused */
+你<<wraithShamble>>走到水坑边，看着自己的倒影。一个有着<<wraithEyes>>眼睛的<<girl>>正盯着你。
+<br><br>
+你控制着手指来回晃动着，似乎在测试它们。
+<br><br>
+<<if $compoundWraith is "willing">>
+	你的头向一边倾斜，发出令人满意的砰的一声。你盯着中央大楼。
+	<br><br>
+	话从你嘴里说出来。
+	"<span class="wraith">我们向前飞。</span>"祂坚决地点点头。
+<<else>>
+	你的头迅速向一侧倾斜，发出令人毛骨悚然的咔嚓声。你盯着中心建筑看。
+	<br><br>
+	话从你嘴里说出来。
+	"<span class="wraith">向前飞。</span>"祂使你的嘴唇扭曲成一个微笑。
+<</if>>
+<br><br>
+<span class="nextLink"><<link [[继续.|Elk Compound Possessed]]>><</link>></span>
+<br>
+
+:: Elk Compound Possessed
+<<effects>>
+
+你正待在麋鹿街的大院里，这里有三座被铁围栏圈住的红砖建筑，而在大门口则有安保人员在来回巡逻着。
+<<if $compoundalarm gte 1>>
+	<span class="red">你现在属于非法入侵。</span>
+<</if>>
+<br><br>
+
+你<<wraithShamble>>向中央大楼走去，走到门口。你伸手去拿门把手，想把它拉开。它是锁着的。
+<br><br>
+
+<<if $compoundWraith is "willing">>
+	<<set $lock to 300>>
+	<<if currentSkillValue('skulduggery') gte $lock>>
+		<span class="green">这把锁看起来很容易撬。</span>你的手恢复了知觉。
+		<br><br>
+		<<link [[闯入(0:05)|Elk Compound Possessed 2]]>><<set $phase to 1>><<pass 5>><</link>>
+		<br>
+		<<link [[让苍白的身影来处理吧|Elk Compound Possessed 2]]>><<set $phase to 2>><</link>><<gtrauma>>
+	<<else>>
+		<span class="red">这把锁看起来超出了你的能力范围。</span>
+		<<skulduggeryrequired>>
+		<br><br>
+
+		苍白的身影清了清你的喉咙，让你无论如何都向前走，像穿过果冻一样穿过门。这是一种很奇怪的感觉。
+		<<trauma 6>><<gtrauma>>
+		<br><br>
+
+		<span class="nextLink"><<link [[继续.|Elk Compound Possessed 2]]>><<set $phase to 0>><</link>></span>
+	<</if>>
+<<else>>
+	苍白的身影让你仍然向前走，像穿越果冻一样走进门里。这是一种非常奇怪的感觉。
+	<<trauma 6>><<gtrauma>>
+	<br><br>
+
+	<span class="nextLink"><<link [[继续.|Elk Compound Possessed 2]]>><<set $phase to 0>><</link>></span>
+<</if>>
+
+:: Elk Compound Possessed 2
+<<effects>>
+
+<<if $phase is 1>>
+	你成功地撬开了锁，打开了门。"<span class="wraith">很灵活，</span>"你的声音说。一种莫名的满足感贯穿全身，使你内心感到温暖。
+	<<stress -6>><<trauma -6>><<lstress>><<ltrauma>>
+	<br><br>
+
+	当你向前迈进时，祂重新控制了你的身体。
+<<elseif $phase is 2>>
+	你轻轻地推了推那个苍白的身影，祂跟着你的喉咙咯咯地笑了起来，重新控制了自己。你向前一步，像穿过果冻一样穿过那扇门。这是一种很奇怪的感觉。
+	<<trauma 6>><<gtrauma>>
+	<br><br>
+<</if>>
+
+大楼的内部主要是一部大电梯。你不知道如何操作它，但你认为那个苍白的身影并不在乎。你走到电梯前，挥动你的手臂，电梯门被里面的一团雾强行打开了。
+<br><br>
+
+你一走进电梯，电梯就直线下降，门也不关。在你到达底部之前它会变慢，
+<<if $compoundWraith is "willing">>
+	轻轻地降落。
+<<else>>
+	虽然不足以保证完全无痛着陆。
+	<<pain 4>><<gpain>>
+<</if>>
+<br><br>
+
+在你面前是一系列有混凝土墙的走廊。荧光灯沿着天花板排列，尽管有很多都已经烧毁了，它们在暴露的管道和电线周围交错着。瓷砖地板在几个地方破裂和肮脏，至少你看到其中一个走廊直接通向一个洞穴。
+<br><br>
+
+<span class="nextLink"><<link [[继续.|Elk Compound Possessed 3]]>><</link>></span>
+
+:: Elk Compound Possessed 3
+<<effects>><<generate1>><<generate2>><<person1>>
+
+你把注意力集中在一个走廊上，大步朝它走去。大厅里没有人走动;有几个科学家在隔壁房间，但他们没有注意到你。
+<br><br>
+
+最终，你到达了你一直盯着的房间，默默地转过拐角。你看到几个金属板条箱靠墙堆放着，一个<<person2>><<person>>把一个板条箱搬到墙上，一个<<person1>><<person>>在旁边观察。
+<br><br>
+
+"这应该是最后一个，"<<person>>说。"小心他们。市长<b>奎恩</b>希望他们处于最佳状态。"
+<<stress 2>><<gstress>>
+<br><br>
+
+"去他妈的市长<b>奎恩</b>，"<<person2>><<person>>抱怨道。"妈的，这些东西好重。它们到底是什么?"
+<<stress 2>><<gstress>>
+<br><br>
+
+每次他们提到奎恩的名字，你内心都会涌起一股异样的愤怒。你怀疑那个苍白的身影有一些心结需要解决。
+<br><br>
+
+你走进房间，保安转过身看着你。<<person1>><<person>>立即将写字板放在一边，并按下<<his>>腰后的按钮。然后<<he>>和那个<<person2>><<person>>一齐向你走来。
+<br><br>
+
+<<if $compoundWraith is "willing">>
+	<span class="nextLink"><<link [[战斗.|Elk Compound Possessed Fight]]>><<set $fightstart to 1>><</link>></span>
+<<else>>
+	<span class="nextLink"><<link [[让他们倒下|Elk Compound Possessed Fight]]>><<set $fightstart to 1>><</link>></span>
+<</if>>
+
+:: Elk Compound Possessed Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>><<set $noAdmire to true>><<set $noBodyWriting to true>>
+	<<if $compoundWraith is "willing">>
+		"<span class="wraith">让我来照顾你，让我来照顾他们，</span>"你的声音低语着。
+	<<else>>
+		"<span class="wraith">越陷越深，</span>"你的声音嘲讽着。
+	<</if>>
+	<<if !$wraith.will>>
+		<<set $wraith.will to random(1300, 1700)>>
+	<</if>>
+	<br><br>
+<</if>>
+
+<<effects>>
+<<effectsman>><<man>>
+<<if _resist gte 1 and $compoundWraith is "willing">>
+	<<set $finish to 1>>
+	<span class="black">在你的抵抗下，那个苍白的身影闪过一阵困惑。</span>
+	<br><br>
+<<elseif _resist gte 1 and $compoundWraith is "accepted">>
+	<<set $compoundWraith to "resisted">>
+	<span class="black">在你的反抗下，那个苍白的身影闪过一丝轻蔑。</span>
+	<br><br>
+<</if>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or _controlRegain is 1>>
+	<span id="next" class="nextWraith"><<link [[继续.|Elk Compound Possessed Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next" class="nextWraith"><<link [[继续.|Elk Compound Possessed Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Elk Compound Possessed Fight Finish
+<<effects>>
+<<if $enemyhealth lte 0>>
+	保安们倒在地上，呻吟着。你从他们身边走开，踩在<<person1>><<persons>>握紧着拳的手臂上，并走向墙边码放的一堆箱子。
+	<br><br>
+
+	<<endcombat>><<clotheson>>
+	<<if $compoundWraith is "willing">>
+		<<canvas-model-override "mouth" "smile">>
+	<</if>>
+
+	<span class="nextLink"><<link [[继续.|Elk Compound Possessed Creatures]]>><<endevent>><<set $pain to 0>><</link>></span><<nexttext>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation "short">>
+
+	保安们倒在地上，呻吟着。你从他们身边走开，踩在<<person1>><<persons>>握紧着拳的手臂上，并走向墙边码放的一堆箱子。
+	<br><br>
+
+	<<endcombat>><<clotheson>>
+	<<if $compoundWraith is "willing">>
+		<<canvas-model-override "mouth" "smile">>
+	<</if>>
+
+	<span class="nextLink"><<link [[继续.|Elk Compound Possessed Creatures]]>><<endevent>><<set $pain to 0>><</link>></span><<nexttext>>
+<<elseif $finish is 1>>
+	<<wraithExorcise true true>>
+	你踉跄着向后退去，那个苍白的身影从你的胸膛里抽出来。"<span class="wraith">也许还有另一种方法。</span><span class="tentacle">两个人-</span>"
+	<br><br>
+
+	"这是什么鬼东西?!"<<person2>><<person>>尖叫着，试图爬开时差点摔倒。"那个——那个鬼东西是从<<pher>>胸口出来的!你看到了吧!"
+	<br><br>
+
+	"是的，我看到了，"<<person1>><<person>>说，<<his>>的眼睛转个不停。"市长告诉了我们这件事。靠近那混蛋——"<<he>>用拇指戳板条箱，"会让我们看到幻觉。忽略掉就行了。"
+	<br><br>
+
+	"你说得倒轻巧!"<<person2>><<person>>尖叫，苍白的身影绕着<<him>>，邪恶地笑着。<<person1>><<person>>叹气走向你，无视<<his>>同伴的哭声。
+	<br><br>
+
+	<<saveNPC 0 "compound_guard">>
+	<<endcombat>>
+	<<loadNPC 0 "compound_guard">><<clearNPC "compound_guard">>
+
+	<<link [[继续|Elk Compound No Longer Possessed Fight]]>><<set $fightstart to 1>><</link>>
+<<else>>
+	<<wraithExorcise true true>>
+	<span class="gold">你停下来。</span>你能感觉到它在推动你继续前进，继续奋斗，但你还是坚持下去，集中精力。你的身体回来了，你不打算放弃。当你停止战斗时，守卫们困惑地看着你。
+	<br><br>
+
+	你痛苦地弯下腰。祂知道自己被打败了，把自己从你体内抽了出来。你看到一对苍白的、半透明的手臂从你的胸膛冒了出来。通过大量的努力，祂从你身上被驱逐了出去。
+	<br><br>
+
+	祂的头向后倾斜，随着一声愤怒的咆哮消散成了虚无，在你的脑海中回荡着。你的耳朵嗡嗡作响，你听到祂的声音在你周围响起。"<span class="wraith">离成功如此之近，你居然还在顾着反抗我，太残忍了。</span>"保安们惊慌失措地向后退去，<<tearful>>你跑向走廊，他们也追了上来。
+	<br><br>
+
+	你设法在他们追上你之前到达电梯，门自动关闭。他们砰砰地敲门，但当你被电梯带上去时，砰砰声变得安静了。最后它停了下来，你跑出门回到院子里。
+	<br><br>
+
+	<<endcombat>><<clotheson>>
+	<<set $wraithCompoundCooldown to 10>>
+	<<set $wraithCompoundChance to 10>>
+
+	<<link [[继续|Elk Compound]]>><<unset $compoundWraith>><<endRainWraith>><<endWraith>><<clearWraith>><<set $compoundalarm += 5>><<set $eventskip to 1>><</link>>
+<</if>>
+
+:: Elk Compound No Longer Possessed Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>><<set $apologised to 1>>
+	<<set $enemynomax to 1>>
+	<<set $timer to 5>>
+<</if>>
+
+<<effects>>
+<<effectsman>><<man>>
+
+<<if $timer is 1>>
+	另一个守卫倒下了，痛苦地呻吟着。苍白的身影飘到你的身边，用手指在你的额头上划出一个形状，<span class="green">这动作抚慰了你，让你充满活力。</span>
+	<<set $pain to 0>><<llpain>>
+	<<person1>>
+	<br><br>
+<<elseif $timer lte 0>>
+	苍白的身影抚慰了你的身体。
+	<<set $pain to 0>><<llpain>>
+	<br><br>
+<</if>>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Elk Compound No Longer Possessed Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Elk Compound No Longer Possessed Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Elk Compound No Longer Possessed Fight Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+<</if>>
+<<person>>瘫倒在地，呻吟着。<<He>>试图站起来，但苍白的身影踩在<<his>>的手臂上。祂示意你跟着祂走，然后走到墙上，那里的板条箱排成一排。
+<br><br>
+
+<<endcombat>><<clotheson>>
+
+<<link [[继续|Elk Compound Possessed Creatures]]>><</link>>
+
+:: Elk Compound Possessed Creatures
+<<effects>>
+<<if $possessed and $compoundWraith is "willing">>
+	<<wraithExorcise true true>>
+	你停下脚步，感到胸口一阵紧绷。一个苍白的手臂出现了，接着又是另一个。那个苍白的身影从你的身体里面钻了出来，让你一时失足摇摇晃晃。
+	<br><br>
+<</if>>
+
+<<if $compoundWraith is "willing">>
+	那个苍白的身影一挥手，每个箱子的金属都扭曲变形了。一个箱子被撕裂开来，一个白色、几乎半透明的物质流了出来。它起伏着，从箱子里离开，向着那个身影慢慢爬去。<span class="gold">是一团苍白史莱姆。</span>
+	<br><br>
+
+	那个苍白的身影弯下腰，轻轻地拾起这团史莱姆，轻抚着它。越来越多的箱子被弄开了，里面露出了各种各样的生物，都苍白如象牙。有史莱姆生物、长触手的生物、长满触须的生物等等。
+	<<if $wraith.offspring is "sold">>
+		<span class="green">你甚至看到了被你卖掉的肤色苍白的孩子。</span>
+	<</if>>
+	它们都围着那个苍白的身影。祂的肩膀下垂，终于放松了。
+	<br>
+	有一只苍白的、皮革般的多肢生物，大概有半个你那么高，飞快地朝你爬过来。你本能地举起双臂自卫，但它并没有攻击你，反而轻轻地蹭着你的身体，然后吱吱叫着跳开了。
+	<<stress -6>><<lstress>>
+	<br><br>
+
+	最后，苍白的身影放下了史莱姆，挥了挥手。一个旋转的紫色圆盘出现在地板上，生物们毫无畏惧地跳了进去。一只手从背后轻轻地落在你的肩上;你知道它属于那个苍白的人影，尽管祂就站在你面前。
+	<<if $wraith.state is "haunt">>
+		"<span class="wraith">你想忏悔。</span>"
+	<<else>>
+		"<span class="wraith">你有着一颗慈悲的心。</span>"
+	<</if>>
+	<br>
+	<<if $museumAntiques.antiques.antiquehourglass isnot "found" and $museumAntiques.antiques.antiquehourglass isnot "talk" and $museumAntiques.antiques.antiquehourglass isnot "museum">>
+		<<set $antiquemoney += 1400>><<museumAntiqueStatus "antiquehourglass" "found">>
+		祂把手伸进一个板条箱，这个板条箱似乎根本没有装什么东西，然后祂拿出了一个用一种无法辨认的金属制成的华丽沙漏，边缘上刻有各种各样的铭文。博物馆馆长可能会对它感兴趣。"<span class="wraith">时光已经流逝，但他们也不应该承受这样的命运。紧紧抓住它，别让它从你手中溜走。</span>"
+	<<else>>
+		<<set $blackmoney += 1000>>
+		祂用触手从附近的墙上取下几个装置，递给了你。黑市上的某些人可能会感兴趣。"<span class="wraith">这是给你的谢礼，顺便也能给他们造成一些麻烦。</span>"
+	<</if>>
+	<<npcincr "Ivory Wraith" love 3>><<gglove>><<lobsession 1>>
+<<else>>
+	你打了一个响指，每个笼子的金属都扭曲变形了。一个箱子被撕裂开来，一个白色、几乎半透明的物质流了出来。它起伏着，从箱子里爬出，缓慢走向开阔的地方。<span class="gold">是一团苍白史莱姆。</span>
+	<br><br>
+
+	它似乎犹豫不决，但你的眼睛闪现出一抹<<wraithEyes>>光后，它便慢慢向你靠近。你拿起它，轻轻地抚摸它。越来越多的板条箱被打开，露出各种各样的生物，都像象牙一样苍白。有史莱姆生物、长触手的生物、长满触须的生物等等。
+	<<if $wraith.offspring is "sold">>
+		<span class="green">你甚至看到了被你卖掉的肤色苍白的孩子。</span>
+	<</if>>
+	它们都围着你。当你的身体终于放松时，你的肩膀下垂。
+	<br>
+	有一只苍白的、皮革般的多肢生物，大概有半个你那么高，飞快地朝你爬过来。你心里一阵犯紧张，但它并没有攻击你，反而轻轻地蹭着你的身体，然后吱吱叫着跳开了。
+	<br><br>
+
+	最后，你放下黏液，挥了挥手。一个旋转的紫色圆盘出现在地板上，生物们毫无畏惧地跳了进去。
+	<br><br>
+
+	<<if $compoundWraith is "accepted">>
+		<<if $wraith.state is "haunt">>
+			"<span class="wraith">盗墓贼。</span>"
+		<<else>>
+			"<span class="wraith">屠夫.</span>"
+		<</if>>
+		祂通过你的嘴说话，但这一次，祂听起来不像往常那种充满愤怒。"<span class="wraith">"忏悔，这是你的第一步。它不仅仅是一个工具，有一天会更多。</span>
+		<br>
+		<<if $museumAntiques.antiques.antiquehourglass isnot "found" and $museumAntiques.antiques.antiquehourglass isnot "talk" and $museumAntiques.antiques.antiquehourglass isnot "museum">>
+			<<set $antiquemoney += 1400>><<museumAntiqueStatus "antiquehourglass" "found">>
+			祂把手伸进一个板条箱，这个板条箱似乎根本没有装什么东西，然后祂拿出了一个用一种无法辨认的金属制成的华丽沙漏，边缘上刻有各种各样的铭文。博物馆馆长可能会对它很感兴趣。"<span class="wraith">我相信这个在你的手中比在他们的手中更安全。紧紧抓住它，别让它从你手中溜走。</span>"
+		<<else>>
+			<<set $blackmoney += 1000>>
+			祂用触手从附近的墙上取下几个装置，递给了你。黑市上的某些人可能会感兴趣。"<span class="wraith">这是给你的谢礼，顺便也能给他们造成一些麻烦。</span>"
+		<</if>>
+		<<npcincr "Ivory Wraith" love 1>><<glove>><<if $wraith.offspring is "sold">><<lobsession 1>><<else>><<lobsession 3>><</if>>
+	<</if>>
+<</if>>
+<<if $wraith.offspring is "sold">>
+	<<unset $wraithAngerCooldown>>
+	<<set $wraith.offspring to "">>
+<</if>>
+<<set $wraithCompoundCooldown to 30>>
+<<unset $wraithCompoundChance>>
+<br><br>
+
+<<if $possessed>>
+	<span class="nextLink"><<link [[继续.|Elk Compound Possessed Creatures 2]]>><</link>></span><<nexttext>>
+<<else>>
+	<<link [[继续|Elk Compound Possessed Creatures 2]]>><</link>><<nexttext>>
+<</if>>
+
+:: Elk Compound Possessed Creatures 2
+<<effects>><<generate1>><<generate2>><<generate3>><<person1>>
+
+突然的噪音引起了你的注意。三个卫兵在一个<<person>>的带领下跑进了房间。<<He>>看了一眼地上的卫兵，然后转向你。"抓住<<phim>>。"<<fullGroup>>前进。
+<br><br>
+
+<<switch $compoundWraith>>
+	<<case "willing">>
+		苍白的身影将一只手放在你的肩上，另两只手捂住了你的耳朵。"<span class="wraith">愿他们永远无法触碰到你，赶快离开吧，<<pcpetname "wraith">>。</span>"祂仍然用手捂着你的耳朵，祂的口中发出了刺耳的尖叫声。即使你被捂着耳朵，声音也非常大。你可以想象守卫们听到的声音有多大，他们全都踉跄着倒下了。
+		<br><br>
+
+		人影闭上嘴，移开双手，祂消失了。你跑进走廊，上了电梯，电梯门自动关上了。电梯带着你上升，你走出门，回到院子里。
+		<br><br>
+
+		<<link [[继续|Elk Compound]]>><<endevent>><<unset $compoundWraith>><<endRainWraith>><<endWraith>><<clearWraith>><<set $compoundalarm += 5>><<set $eventskip to 1>><</link>>
+	<<case "accepted">>
+		<<wraithExorcise true true>>
+		两只手臂从背后伸出，遮住了你的耳朵。"<span class="wraith">你帮我，我也帮你，<<pcpetname "wraith">>。</span>"祂仍然用手捂着你的耳朵，从你嘴里发出刺耳的尖叫声。即使你捂着耳朵，声音也非常大。你可以想象守卫们听到的声音有多大，他们全都踉跄着倒下了。你的喉咙觉得很痛。
+		<<pain 2>><<gpain>>
+		<br><br>
+
+		那个苍白的身影从你的背部离开了你的身体，让你跌跌撞撞地向前走。当那个身影消失时，你的踉跄变成了奔跑。你跑进走廊，上了电梯，电梯门自动关上了。电梯带着你上升，你走出门，回到院子里。
+		<br><br>
+
+		<<link [[继续|Elk Compound]]>><<endevent>><<unset $compoundWraith>><<endRainWraith>><<endWraith>><<clearWraith>><<set $compoundalarm += 5>><<set $eventskip to 1>><</link>>
+	<<case "resisted">>
+		<<set _wraithWill to Math.clamp(Math.floor(1 + $wraith.will) - $control, 1, 1000)>>
+		守卫包围你，抓住你的手臂。"带<<phim>>去审问，"<<person>>说。"<<pShe>>有很多需要回答的问题。"<span class="red">你试图挣脱，但那苍白的身影把你的身体拉住了。</span>
+		<br><br>
+
+		<<link [[尽你的全力去反抗|Elk Compound Possessed Guards]]>><<def 1>><<set $phase to 0>><<stress 12>><</link>><<willpowerdifficulty 1 _wraithWill>><<gstress>>
+		<br>
+		<span class="nextLink"><<link [[屈服.|Elk Compound Possessed Guards]]>><<sub 1>><<set $phase to 1>><</link>></span>
+<</switch>>
+
+:: Elk Compound Possessed Guards
+<<effects>><<unset $compoundWraith>><<wraithExorcise true true>>
+
+<<if $phase is 0>>
+	你为了夺回控制拼命反抗，
+	<<if $willpowerSuccess>>
+		<span class="green">你成功了。</span>你把警卫撞倒。那个苍白的身影从你的胸膛里钻出来，对你怒目而视。"<span class="wraith">好吧。如果你不会在我手下崩溃，那就在他们手下崩溃吧。</span>"祂消失在白雾中。
+		<br><br>
+
+		卫兵们聚精会神地向你逼近。
+		<br><br>
+
+		<<link [[继续|Elk Compound Possessed Guards Fight]]>><<set $fightstart to 1>><</link>>
+	<<else>>
+		<span class="red">但是失败了。</span>你的身体保持静止。"我们已经制服了入侵者，"<<person>>对着<<his>>的对讲机说。<<He>>碰了碰你的头，你全身一阵震动。苍白的身影离开了你的身体，在你失去知觉时向你挥手。
+		<br><br>
+
+		<<link [[继续|Elk Compound Experiment]]>><<upperruined>><<lowerruined>><<underruined>><<underupperruined>><<endWraith>><<clearWraith>><<endRainWraith>><</link>>
+	<</if>>
+<<else>>
+	<span class="pink">你让祂束缚了你。</span>"我们制服了入侵者"<<person>>对着<<his>>的对讲机说。<<He>>碰了碰你的头，你全身一阵震动。苍白的身影离开了你的身体，在你失去知觉时向你挥手。
+	<br><br>
+
+	<<link [[继续|Elk Compound Experiment]]>><<upperruined>><<lowerruined>><<underruined>><<underupperruined>><<endWraith>><<clearWraith>><<endRainWraith>><</link>>
+<</if>>
+
+:: Elk Compound Possessed Guards Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+	<<set $enemynomax to 1>>
+	<<set $timer to 4>>
+<</if>>
+
+<<effects>>
+<<effectsman>><<man>>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<<link [[继续|Elk Compound Possessed Guards Fight Finish]]>><</link>><<nexttext>>
+<<else>>
+	<<link [[继续|Elk Compound Possessed Guards Fight]]>><</link>><<nexttext>>
+<</if>>
+
+:: Elk Compound Possessed Guards Fight Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation "short">>
+	守卫们瘫倒在地呻吟，给了你想要的机会。<<tearful>>你泪流满面地跑进走廊，上了电梯，电梯门自动关上了。电梯带着你上升，你走出门，回到院子里。
+	<br><br>
+
+	<<endcombat>><<clotheson>>
+
+	<<link [[继续|Elk Compound]]>><<endWraith>><<clearWraith>><<endRainWraith>><<set $compoundalarm += 5>><<set $eventskip to 1>><</link>>
+<<elseif $enemyhealth lte 0>>
+	守卫们瘫倒在地呻吟，给了你想要的机会。<<tearful>>你泪流满面地跑进走廊，上了电梯，电梯门自动关上了。电梯带着你上升，你走出门，回到院子里。
+	<br><br>
+
+	<<endcombat>><<clotheson>>
+
+	<<link [[继续|Elk Compound]]>><<endWraith>><<clearWraith>><<endRainWraith>><<set $compoundalarm += 5>><<set $eventskip to 1>><</link>>
+<<else>>
+	<<tearful>>你倒在地上，伤得动弹不得。"我们已经制服了入侵者，"<<person1>><<person>>对着<<his>>的对讲机说。<<He>>碰了碰你的头，你全身一阵震动。你失去了意识。
+	<br><br>
+
+	<<endcombat>><<clotheson>>
+
+	<<link [[继续|Elk Compound Experiment]]>><<endWraith>><<clearWraith>><<endRainWraith>><</link>>
+<</if>>

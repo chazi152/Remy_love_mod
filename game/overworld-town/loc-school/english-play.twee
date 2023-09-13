@@ -1,0 +1,2925 @@
+:: English Play Intro Ignore
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<set $englishPlayLate to 7>>
+你选择待在原地不参与演出。其他的同学都表现出莫大的热情，他们都签上了名字。
+<br><br>
+
+<<if $kylarenglishstate is "watching">>
+	凯拉尔发现你不会去参与演出，<<nnpc_He "Kylar">>现在貌似也没那么想要参加了。
+	<br><br>
+<<elseif $kylarenglishstate is "active">>
+	凯拉尔沉默了几秒，带着一点失望。"好吧，我想这确实有点蠢。"
+	<br><br>
+<</if>>
+
+"对于那些不感兴趣的同学，"多伦清了清嗓子，"<span class="gold">你们有一周的时间改变主意。</span>如果有什么想法，可以在放学后来找我签名。"
+<br><br>
+
+<span class="gold">英语剧场演出已添加到日志中。你有一周的时间报名参加，或者在放学后去英语教室帮助其他学生排练。</span>
+<br><br>
+
+<<endevent>>
+<<link [[继续|English Lesson]]>><</link>>
+<br>
+
+:: English Play Intro Accept
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<set $phase to 0>><<set _playPronoun to ($player.gender_appearance is "m" ? "先生" : "女士")>>
+
+无需犹豫，你站起身来走向了多伦。
+<<if $kylarenglishstate isnot "absent">>
+	凯拉尔也马上从座位上跳了起来，冲到了你的身后。
+<</if>>
+<br><br>
+
+"很高兴知道你也要参加，我们会给你安排一出名为《圣诞圣心》的剧目。"
+这是一个双向奔赴的爱情故事，尽管富有的那方家长因为另一个孩子的卑贱身份而百般阻挠……所以你想演其中哪个角色呢？"
+<br><br>
+
+<<if playerBellyVisible()>>
+	多伦顿了一下，看向了你的肚子。"你肯定很适合去演泰勒这个角色。我们或许可以在其中加入怀孕的情节。"
+	<br><br>
+<</if>>
+
+<<link [[扮演卡斯：一名年轻的乞丐|English Play Role Select]]>><<set $phase to 1>><</link>>
+<br>
+<<link [[扮演泰勒——这是一名富裕家庭的子嗣|English Play Role Select]]>><<set $phase to 2>><</link>>
+<br>
+<<link [["扮演泰勒的家长斯特林" + _playPronoun + "——那个反对他们恋爱的人"|English Play Role Select]]>><<set $phase to 3>><</link>>
+<br>
+
+:: English Play Role Select
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+你签上了名，决定扮演
+<<switch $phase>>
+	<<case 1>>
+		卡斯，那位爱上了富家子弟泰勒的年轻乞丐。
+		<<set $englishPlayRoles to {
+			Player: "Cass",
+			Kylar: "Taylor",
+			Sydney: "Sterling",
+			KylarKnown: false,
+			KylarCount: 0,
+			SydneyKnown: false,
+			SydneyCount: 0
+		}>>
+	<<case 2>>
+		泰勒，那位爱上了年轻乞丐的富家子弟。
+		<<set $englishPlayRoles to {
+			Player: "Taylor",
+			Kylar: "Sterling",
+			Sydney: "Cass",
+			KylarKnown: false,
+			KylarCount: 0,
+			SydneyKnown: false,
+			SydneyCount: 0
+		}>>
+	<<case 3>>
+		<<set _playPronoun to ($player.gender_appearance is "m" ? "先生" : "女士")>>
+		斯特林<<print _playPronoun>>，泰勒的富有的父母，反对泰勒跟卡斯的恋情。
+		<<set $englishPlayRoles to {
+			Player: "Sterling",
+			Kylar: "Taylor",
+			Sydney: "Cass",
+			KylarKnown: false,
+			KylarCount: 0,
+			SydneyKnown: false,
+			SydneyCount: 0
+		}>>
+<</switch>>
+<<if C.npc.Kylar.state is "prison">>
+	<<set $englishPlayRoles.Kylar to "none">>
+<</if>>
+<br><br>
+
+"很好，"多伦说道，"这是剧目的册子，里面写了你跟你搭档的台词。"
+<span class="blue">我非常推荐你先跟他们见见面，然后一起排练一下台词</span>，你肯定不会想跟他们脱节的！一旦他们得到角色之后，我会叫他们来跟你一起练习的。"
+<br><br>
+
+<<if $kylarenglishstate isnot "absent">>
+	你离开老师的桌子，凯拉尔就马上靠了过去。<<nnpc_He "Kylar">>看着你，脸红了一下，然后写下了<<nnpc_his "Kylar">>名字。
+	<br><br>
+<</if>>
+
+<span class="gold">英语剧场演出已添加到日志中。你可以自己练习台词，也可以和你的搭档一起练习以获得更好的效果。你们可以在放学后在英语教室里见面。</span>
+<br><br>
+
+<<endevent>>
+<<link [[继续|English Lesson]]>><</link>>
+<br>
+
+:: English Play Late Signup
+<<schooleffects>><<effects>>
+<<set $phase to 0>><<set _playPronoun to ($player.gender_appearance is "m" ? "先生" : "女士")>>
+
+你走到了教室前面，所有的剧目报名都被贴在了那里，只有一个有空缺。
+名字叫《圣诞圣心》，貌似是关于一对年轻恋人双向奔赴的故事，但其中一位的父母对他们百般阻挠。他们中的一个非常富有，而另一个则是个乞丐。
+<br><br>
+
+你想要扮演哪个角色？
+<br><br>
+
+<<link [[扮演卡斯——一名年轻的乞丐|English Play Late Role]]>><<set $phase to 1>><</link>>
+<br>
+<<link [[扮演泰勒——这是一名富裕家庭的子嗣|English Play Late Role]]>><<set $phase to 2>><</link>>
+<br>
+<<link [["扮演泰勒的家长斯特林" + _playPronoun + "——那个反对他们恋爱的人"|English Play Late Role]]>><<set $phase to 3>><</link>>
+<br>
+<<link [[离开|English Classroom]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: English Play Late Role
+<<schooleffects>><<effects>>
+<<unset $englishPlayLate>>
+你签上了名，决定扮演
+<<switch $phase>>
+	<<case 1>>
+		卡斯，那位爱上了富家子弟泰勒的年轻乞丐。
+		<<set $englishPlayRoles to {
+			Player: "Cass",
+			Kylar: "Taylor",
+			Sydney: "Sterling",
+			KylarKnown: false,
+			KylarCount: 0,
+			SydneyKnown: true,
+			SydneyCount: 0
+		}>>
+	<<case 2>>
+		泰勒，那位爱上了年轻乞丐的富家子弟。
+		<<set $englishPlayRoles to {
+			Player: "Taylor",
+			Kylar: "Sterling",
+			Sydney: "Cass",
+			KylarKnown: false,
+			KylarCount: 0,
+			SydneyKnown: true,
+			SydneyCount: 0
+		}>>
+	<<case 3>>
+		<<set _playPronoun to ($player.gender_appearance is "m" ? "先生" : "女士")>>
+		斯特林<<print _playPronoun>>，泰勒的富有的父母，反对泰勒跟卡斯的恋情。
+		<<set $englishPlayRoles to {
+			Player: "Sterling",
+			Kylar: "Taylor",
+			Sydney: "Cass",
+			KylarKnown: false,
+			KylarCount: 0,
+			SydneyKnown: true,
+			SydneyCount: 0
+		}>>
+<</switch>>
+<<if C.npc.Kylar.state is "prison">>
+	<<set $englishPlayRoles.Kylar to "none">>
+<</if>>
+<br><br>
+
+<<if $englishPlayRoles.Kylar isnot "none">>
+	<<set $englishPlayRoles.KylarKnown to true>>
+	<<run statusCheck("Kylar")>>
+	<<npc Kylar>><<person1>>
+	你一放下签名的笔，就有个人凑了过来，马上在你的名字下面签了名。那是凯拉尔，你之前甚至没看到<<him>>在教室里。
+	<<if _kylarStatus.includes("Rage")>>
+		<<He>>深吸了一口气，然后看向了你。"这样我们就可以有更多时间在一起了，不是吗？‘’<<He>>朝你靠了过来。<span class="gold">我会在外面的老地方</span>。我们应该马上就开始排练。
+	<<else>>
+		<<He>>放下了笔，给了你一个紧张的笑容，"我觉得这挺有意思的。我会……<span class="gold">在后操场</span>。我们该开始排练了。"
+	<</if>>
+	<br><br>
+
+	凯拉尔看起来对英语教室里有这么多人感到不安，尤其是那些人正直直地盯着<<him>>的时候。<<He>>后退了一步，然后尽可能安静地离开了教室。
+	<br><br>
+	<<endevent>><<npc Sydney>><<person1>>
+
+	"有你就够了，"另一个声音说道。你转过身来，看到悉尼正在接近。"我一直在犹豫要不要参加，不过现在只剩下最后一个名额了。如果你和凯拉尔已经报名了，那么……"
+	<br><br>
+
+	<<He>>拿出了一支红色的马克笔，把名字签在了同一页纸上，还在旁边画了个笑脸。"如果你想排练的话，<span class="gold">我每天放学后都会在这里。</span>我们应该也把凯拉尔叫上！"
+	<br><br>
+
+	你拿起一本排练手册，低头看向里面的内容。<span class="blue">凯拉尔决定扮演<<print $englishPlayRoles.Kylar.replace("Sterling","斯特林") .replace("Cass","卡斯").replace("Taylor","泰勒")>>，悉尼决定扮演<<print $englishPlayRoles.Sydney.replace("Sterling","斯特林") .replace("Cass","卡斯").replace("Taylor","泰勒")>>。</span>
+<<else>>
+	<<npc Sydney>><<person1>>
+	<<if $sydneyromance is 1>>
+		一双手悄悄靠近，遮住了你的眼睛，吓了你一跳。"猜猜我是谁？"一个声音笑着问道，你马上就认了是谁，立马挣脱开来然后转身看向了悉尼。
+	<<else>>
+		"有你就够了，"另一个声音说道。你转过身来，看到悉尼正在靠近。
+	<</if>>
+	"我一直在犹豫要不要报名参加，不过现在只剩下最后一个名额了。如果你也报名了，那么……"
+	<br><br>
+
+	<<He>>拿出了一支红色的马克笔，把名字签在了同一页纸上，还在旁边画了个笑脸。"如果你想排练的话，<span class="gold">我每天放学后都会在这里。</span>
+	<br><br>
+
+	你拿起一本排练手册，低头看向里面的内容。<span class="blue">悉尼决定扮演<<print $englishPlayRoles.Sydney.replace("Sterling","斯特林") .replace("Cass","卡斯").replace("Taylor","泰勒")>>。</span>
+<</if>>
+<br><br>
+
+<span class="gold">英语剧场演出已添加到日志中。你可以自己练习台词，也可以和你的搭档一起练习以获得更好的效果。</span>
+<br><br>
+
+<<endevent>>
+<<link [[继续|English Classroom]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: English Play Intro Kylar
+<<schooleffects>><<effects>>
+<<set $englishPlayRoles.KylarKnown to true>>
+<<npc Kylar>><<person1>>
+你靠近凯拉尔。<<He>>看上去非常不自在，不过当<<He>>看到你时，神情缓和了起来。
+<br><br>
+
+"嘿…嘿，"凯拉尔轻轻地抓住你的手臂，"我有一个惊喜要给你，我们会一起表演舞台剧。"<<he>>从<<his>>包里拿出了一本小册子，把它翻给你看。
+<br><br>
+
+<<switch $englishPlayRoles.Kylar>>
+	<<case "Sterling">>
+		<<set _playPronoun to (C.npc.Kylar.pronoun is "m" ? "先生" : "女士")>>
+		"我将扮演斯特林_playPronoun，"<<he>>眨巴着眼睛："总会有人挡在我们的路上，但爱情最终总是会战胜一切，不是吗？"<<He>>说着向你靠近，但马上就意识到自己的行为有些不妥，便向后退了一步，"抱歉。"
+	<<default>>
+		"我会扮演一个有钱的，跟某个人坠入爱河的孩子，泰勒。"<<He>>红着脸看着你的眼睛："不过，我…我还不清楚会是谁。"
+<</switch>>
+<br><br>
+
+<<he>>腼腆地低下头。"或许我们应该花时间呆在一起？我-我是说，排练一下。"<<he>>似乎还想说些什么，但没说出口。
+<<if $weather is "rain" or $weather is "snow">>
+	"就…来看看我，好吗？<span class="gold">我会在图书馆里。</span>这里…有很多人。太多了。"
+<<else>>
+	"就…在外面见我，好吗？<span class="gold">我会呆在后操场的。</span>这里…有很多人，太多了。"
+<</if>>
+<br><br>
+
+<<He>>离开了，走的时候看了你最后一次。
+<br><br>
+
+<<endevent>>
+<<link [[继续|English Classroom]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: English Play Intro Sydney
+<<schooleffects>><<effects>>
+<<set $englishPlayRoles.SydneyKnown to true>>
+<<npc Sydney>><<person1>>
+你靠近悉尼。<<He>>看上去激动异常，笑着看向了你。
+"你肯定不会信的，我报名参加了圣诞节的舞台剧演出，看起来我们要一起表演了！"
+<<switch $englishPlayRoles.Sydney>>
+	<<case "Sterling">>
+		<<set _playPronoun to (C.npc.Sydney.pronoun is "m" ? "先生" : "女士")>>
+		我会扮演一个恶人，那个富二代的亲戚！"<<He>>顿了一下，打开了手册，快速扫了一眼，"不，不是……是父母，斯特林_playPronoun!"<<He>>紧张地对你笑了一下，"看起来，我还得再看几遍……"
+	<<default>>
+		我会扮演那个可怜的小乞丐，杰兹……还是杰克来着？"<<He>>打开了手册，快速扫了一眼，"原来是卡斯！"<<He>>试图用笑来蒙混过关，"我保证不会再搞混了。"
+<</switch>>
+<br><br>
+
+你花了点时间跟悉尼讨论角色。"对了！说到这个，"<<his>>看向了你，"我们应该一起练习一下台词！<span class="gold">放学后我基本都在英语教室。</span>"
+<br><br>
+
+<<endevent>>
+<<link [[继续|English Classroom]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: English Play Rehearse Alone
+<<schooleffects>><<effects>>
+
+你打开你的册子准备开始练习。你把对话从头到尾看了一遍，尽力去记住你的台词。你也看了其他角色的台词来搞清楚应该怎么衔接。
+<br><br>
+<<set _chair to Furniture.get('chair')>>
+<<if $location is "home" and _chair.type.includes("comfy")>>
+	你坐在你<span class="green">舒服的</span>椅子上背着你的台词。<<set $englishPlayReadiness += 6>>
+<<else>>
+	你在椅子上转来转去，<span class="red">但总是觉得不舒服</span>。<<if $location is "home">>如果你购买一张更为舒适的办公椅，你或许能够更专注于你的台词。<<else>>一张舒适的办公椅可能会有所帮助。<</if>><<set $englishPlayReadiness += 3>>
+<</if>>
+<<playReadiness>>
+<br><br>
+
+<<link [[继续|Bedroom]]>><</link>>
+<br>
+
+:: English Play Rehearse Kylar
+<<schooleffects>><<effects>><<set $bus to "rehearsal">>
+<<run statusCheck("Kylar")>>
+
+<<switch $englishPlayRoles.KylarCount>>
+	<<case 0>>
+		你朗诵着你的台词，然后等凯拉尔的念白。<<He>>看上去不需要什么帮助，也许是整个剧本本身就不是很长，<<He>>把自己的台词念得十分到位。
+		<br><br>
+
+		"能跟你一起表演我实在是太激动了！我们肯定会让他们大吃一惊的。"
+	<<case 1>>
+		你和凯拉尔一起排练。当你念台词的时候，<<he>>一直与你对视着，直到<<he>>自己的念白开始。<<he>>配合着复杂而花哨的手势念出了自己的台词，口音也模仿的相当到位。
+		<br><br>
+		你对那充满热情的表演扬起了眉毛。"别-别笑好吗？"<<he>>看起来相当的紧张。
+	<<case 2>>
+		你开始和凯拉尔一起排练。你在说台词时频繁地口吃，经过一番挣扎，你终于念出了正确的台词。但当轮到凯拉尔的时候，<<he>>看起来有些困惑，不时地改变台词顺序，表现得一脸懵逼。
+		<br><br>
+
+		……原来是你们把剧本给搞混了。你和凯拉尔笑的很开心。
+	<<case 3>>
+		<<switch $englishPlayRoles.Player>>
+			<<case "Cass">>
+				你和凯拉尔一起排练。你朗诵了一段极富感情与诗意的段落，<<he>>看起来有些紧张，四处乱瞥，眼神闪躲。你皱了皱眉头，看不懂<<he>>这是在干什么，于是<<he>>迅速地回过了神来。
+				<br><br>
+
+				"抱-抱歉，”<<he>>支支吾吾地说道，"但是听你在我面前念那-那些台词……"<<his>>脸红了，重又回到了恍惚的状态。
+			<<case "Taylor">>
+				你和凯拉尔一起排练。要是只是单纯的对着想象中的人念浪漫的台词，那很轻松——毕竟剧本中的第三个人目前并不在场。但当你念台词时，凯拉尔双手抱胸，皱起了眉头。
+				<br><br>
+
+				"另一个角色应该是我才对，"<<he>>十分的郁闷，不过很快就冷静了下来。"我-我肯定会比<<nnpc_him "Sydney">>做得更好的，绝对的。"
+			<<case "Sterling">>
+				你和凯拉尔开始排练。大概在排练到一半的时候，凯拉尔突然停下了。你问<<him>>怎么了，<<he>>叹了一口气。
+				<br><br>
+
+				"我只是不想对<<nnpc_him "Sydney">>说出那样的话，"<<he>>摇了摇头，用手捂住了嘴。"我知道这只是一部戏，但还是很尴尬，不是吗？"<<he>>又叹了口气，"如果是你就好了……"
+		<</switch>>
+	<<default>>
+		<<playLinePool>>
+		你打开你的剧本，开始和凯拉尔练习表演。
+		<br>
+		"<<print _englishPlayLinePool[$englishPlayRoles.Player].pluck()>>"
+		<br>
+		...
+		<br>
+		"<<print _englishPlayLinePool[$englishPlayRoles.Kylar].pluck()>>"
+		<br>
+<</switch>>
+<<set $englishPlayReadiness += 10>><<playReadiness>>
+<<set $englishPlayRoles.KylarCount += 1>>
+<br><br>
+
+当你们排练完的时候，学校已经要关门了。你跟凯拉尔一起离开了学校。
+<br><br>
+
+<<kylaroptions "notext">>
+
+:: English Play Rehearse Sydney
+<<schooleffects>><<effects>><<set $bus to "rehearsal">>
+<<run statusCheck("Sydney")>>
+<<npc Sydney>><<person1>>
+
+<<switch $englishPlayRoles.SydneyCount>>
+	<<case 0>>
+		你打开排练手册，与悉尼一起出演剧本片段。"谢谢你。我之前请了一些同学来帮忙，不过我觉得他们并没有多大兴致。"<<he>>拿出了<<his>>的手册。
+		你开始与悉尼排练台词。由于这部剧比较短，双方的对白并不多。悉尼被一些文本分散了注意力，但仍然兴致高涨，热情地演绎着<<his>>的角色。
+		<br><br>
+
+		"我可能得把其中一些写在手上才能记得住……"
+	<<case 1>>
+		<<switch $englishPlayRoles.Player>>
+			<<case "Cass">>
+				你开始与悉尼排练。“我简直不敢相信！我的孩子，竟然被一个肮脏的乞丐给迷住了？我们立刻离开这个地方，泰勒！回家后给我解释清楚。”悉尼读完了台词，但有些不自在。
+				<br><br>
+
+				悉尼把台词又重复了几遍。
+				<<if $englishtrait gte 3 or $submissive lte 500>>
+					你认为<<he>>的语气可以再居高临下一点。
+				<<else>>
+					还有一个人不在，所以泰勒的台词被跳过了。
+				<</if>>
+			<<case "Sterling">>
+				你扮演斯特林。“我简直不敢相信！我的孩子，竟然被一个肮脏的乞丐给迷住了？我们立刻离开这个地方，泰勒！回家后给我解释清楚。"
+				<br><br>
+
+				悉尼羞涩地转过头去，"真不忍心在圣诞前夜看到这么令人心碎的争执……不-不太行，让我再试一遍…"
+			<<case "Taylor">>
+				<<set _playPronoun to (C.npc.Kylar.pronoun is "m" ? "父亲" : "母亲")>>
+				你扮演泰勒。"_playPronoun，请你给我听好！我对卡斯的感觉绝非仅仅是一时兴起！我们是真心实意的！"你拽着悉尼的胳膊，表现得十分投入 。
+				<br><br>
+
+				悉尼羞涩地转过头去，"真不忍心在圣诞前夜看到这么令人心碎的争执……不-不太行，让我再试一遍…"
+		<</switch>>
+	<<case 2>>
+		你和悉尼开始排练，你们稍稍能适应你们的角色了。
+		<<if _sydneyStatus.includes("corrupt")>>
+			"这出戏本身有点......俗套，不过寓意是好的。我只是希望它能再戏剧化一点。比如，也许卡斯真的让泰勒怀孕了，斯特林被迫变成了奉子成婚也不是不行啊。"
+			<br><br>
+
+			悉尼顿了顿，笑了起来。"想给多伦来个即兴表演吗？"
+		<<else>>
+			"很有意思，不是吗？我很高兴学校能有一些这样的小表演，大家都能感受到圣诞的氛围，都很开心。"
+		<</if>>
+	<<case 3>>
+		你跟悉尼开始排练。某句台词很纠结，你咬到了舌头。
+		<<if _sydneyStatus.includes("corrupt")>>
+			<<He>>咯咯笑。
+			<br><br>
+
+			"很高兴有我能在这里给你一些私人辅导。"<<he>>笑了笑，"你最好努力一点，要不然有你受的了"<<he>>吐了吐舌头，"开个玩笑，大部分。"<<he>>眨了眨眼。
+		<<else>>
+			<<he>>关切地看着你。
+			<br><br>
+
+			"你还好吗？"<<he>>朝你走来，捏住了你的脸颊。"请小心一点！"
+		<</if>>
+	<<default>>
+		<<playLinePool>>
+		你打开剧本，开始和悉尼一起表演其中一个片段。
+		<br>
+		"<<print _englishPlayLinePool[$englishPlayRoles.Player].pluck()>>"
+		<br>
+		...
+		<br>
+		"<<print _englishPlayLinePool[$englishPlayRoles.Sydney].pluck()>>"
+		<br>
+<</switch>>
+<<set $englishPlayReadiness += 10>><<playReadiness>>
+<<set $englishPlayRoles.SydneyCount += 1>>
+<br><br>
+
+当你们排练完的时候，学校已经要关门了。你跟悉尼一起离开了学校。
+<br><br>
+
+<<sydneyOptionsLeave>>
+
+:: English Play Rehearse Sydney No Role
+<<schooleffects>><<effects>><<set $bus to "rehearsal">>
+<<run statusCheck("Sydney")>>
+<<npc Sydney>><<person1>>
+
+<<switch $englishPlayRoles.SydneyCount>>
+	<<case 0>>
+		你打开剧本，与悉尼一起表演其中的一个片段。"谢谢你。我之前请了一些同学来帮忙，不过我觉得他们并没有多大兴致。"<<he>>拿出了<<his>>手册。
+		你帮助悉尼排练<<his>>的角色。由于这部剧比较短，双方的对白并不多。悉尼被一些文本分散了注意力，但仍然兴致高涨，热情地演绎着<<his>>的角色。
+		<br><br>
+
+		"我可能得把其中一些写在手上才能记得住……"
+	<<case 1>>
+		你拿起剧本，开始扮演斯特林。“我简直不敢相信！我的孩子，竟然被一个肮脏的乞丐给迷住了？我们立刻离开这个地方，泰勒，回家后给我解释清楚。"
+		<br><br>
+
+		悉尼羞涩地转过头去，"真不忍心在圣诞前夜看到这么令人心碎的争执……不-不太行，让我再试一遍…"
+	<<default>>
+		<<playLinePool>>
+		你打开剧本，帮助悉尼表演其中一个片段。
+		<<set _tempRole to (random(0,1) ? "Taylor" : "Sterling")>>
+		你开始扮演 _tempRole。
+		<br>
+		"<<print _englishPlayLinePool[_tempRole].pluck()>>"
+		<br>
+		...
+		<br>
+		"<<print _englishPlayLinePool[$englishPlayRoles.Sydney].pluck()>>"
+		<br>
+<</switch>>
+<<set $englishPlayRoles.SydneyCount += 1>>
+<br><br>
+
+当你们排练完的时候，学校已经要关门了。你跟悉尼一起离开了学校。
+<br><br>
+
+<<sydneyOptionsLeave>>
+
+:: English Play Rehearse Others
+<<schooleffects>><<effects>>
+你走近一群学生，并主动提出帮他们排练。
+<<if $cool gte 240>>
+	他们热情地接受了你的帮助——虽然这有些让人手忙脚乱，你不得不将注意力分散在几个组之间——迅速转换到那么多不同的角色还是有点困难的。但是，大家的笑容，积极的反馈……你感觉很开心。<<stress -12>><<lstress>>
+<<elseif $cool gte 120>>
+	有一组人很乐意接受你的帮助，他们很高兴能有人来帮他们提高水平。
+<<else>>
+	大部分人无视了你，不过你找到了一个没有小组的学生，帮忙排练了一下角色。
+<</if>>
+<br><br>
+
+你们排练完的时候，学校已经要关门了。你跟其他学生一起离开了学校。
+<br><br>
+
+<<link [[离开|Oxford Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: English Play Rehearse Both
+<<schooleffects>><<effects>>
+<<set $englishPlayDoubleRehearsal to true>>
+<<run statusCheck("Sydney")>><<run statusCheck("Kylar")>>
+<<npc Sydney 1>><<npc Kylar 2>>
+
+你靠近凯拉尔和悉尼，他们还没注意到你，悉尼正在给凯拉尔指导。
+<br><br>
+
+<<switch $englishPlayRoles.Player>>
+	<<case "Cass">>
+		"让我听到更真切的绝望吧。‘<<if C.npc.Sydney.pronoun is "m">>父亲<<else>>母亲<</if>>，听着！我对卡斯的感觉绝非仅仅是一时兴起！我们是真心实意的！’你要和你的挚爱分开了，我打算他从你身边夺走。"
+		<br><br>
+
+		凯拉尔发现了悉尼身后的你，皱了皱眉头。“好吧，你说得对…我可以试试。”<<He "Kylar">>紧紧地盯着你。
+		"<<if C.npc.Sydney.pronoun is "m">>父亲<<else>>母亲<</if>>，请听好了！我对卡斯的感觉绝非仅仅是一时兴起！我们是真心实意的！"
+		<<He "Kylar">>从悉尼身边挤过，僵硬地抓住了你的手臂。
+		<br><br>
+
+		悉尼看起来很吃惊，“简直完美！在舞台上就这么表演。”<<He "Sydney">>转身对你笑了笑。
+	<<case "Taylor">>
+		"你要真正表达出一种失望的情绪。‘我的<<if $player.gender_appearance is "m">>儿子<<else>>女儿<</if>>，跟一个肮脏的乞丐在一起了！’直接对着我说，我就是那个毁了你一切的人，是我从你身边抢走了你的爱人。"
+		<br><br>
+
+		凯拉尔发现了悉尼身后的你，微微笑了笑。“好吧，你说得对…我可以试试。”<<He "Kylar">>紧紧地盯着你。
+		"我的孩子，竟然被一个肮脏的乞丐给迷住了？我们立刻离开这个地方，泰勒！回家后给我解释清楚。"
+		<<He "Kylar">>从悉尼身边挤过，僵硬地抓住了你的手臂。
+		<br><br>
+
+		悉尼看起来很吃惊，“简直完美！在舞台上就这么表演。”<<He "Sydney">>转身对你笑了笑。
+	<<case "Sterling">>
+		"让我听到更真切的绝望吧。‘<<if $player.gender_appearance is "m">>父亲<<else>>母亲<</if>>，听着！我对卡斯的感觉绝非仅仅是一时兴起！我们是真心实意的！’你即将失去你的生命中最爱的人了。"
+		<br><br>
+
+		凯拉尔紧张地看向别处，"我…不知道。我以为上次那个已经够好了。"
+		<br><br>
+
+		"当然，那已经'足够好'了，但是‘足够好’并不……足够好？"悉尼停下来思考了一会儿，"还记得你父母说过你不能-"凯拉尔瞬间僵住了。悉尼察觉到了凯拉尔的不对劲，立马停了下来，转头看向了你。
+		<br><br>
+<</switch>>
+
+"很高兴你来了，这样我们就可以在一起排练了。”你注意到了悉尼的额头上写着“<<print $englishPlayRoles.Sydney.replace("Sterling","斯特林") .replace("Cass","卡斯").replace("Taylor","泰勒")>>”。
+<br><br>
+
+<<link [[询问写着的东西|English Play Rehearse Both Ask]]>><</link>>
+<br>
+<<link [[排练|English Play Rehearse Both 2]]>><<pass 30>><</link>>
+<br>
+
+:: English Play Rehearse Both Ask
+<<schooleffects>><<effects>>
+<<if $speech_attitude is "meek">>
+	"你-你为什么要写在自己身上？"
+<<elseif $speech_attitude is "bratty">>
+	"这记号是怎么回事？等等，你他妈是怎么把那写在你自己身上的？"
+<<else>>
+	"你为什么要把‘<<print $englishPlayRoles.Sydney.replace("Sterling","斯特林") .replace("Cass","卡斯").replace("Taylor","泰勒")>>’写在自己的额头上？"
+<</if>>
+<br><br>
+
+<<He "Sydney">>眨了眨眼，“哦，凯拉尔有些记不住我的角色，所以我让<<him "Kylar">>写在我身上，这样<<him "Kylar">>就能一直看到了。"
+<br><br>
+
+凯拉尔看向了别处。你有点怀疑凯拉尔是不是真的忘记了悉尼的角色，还是单纯的不在乎。
+<br><br>
+
+<<link [[排练|English Play Rehearse Both 2]]>><<pass 30>><</link>>
+<br>
+
+:: English Play Rehearse Both 2
+<<schooleffects>><<effects>>
+<<run statusCheck("Sydney")>><<run statusCheck("Kylar")>>
+
+你开始与凯拉尔和悉尼排练。凯拉尔大部分时候都非常平静，表现得中规中矩。但一旦轮到与你的对手戏的部分，则表现出莫大的激情，情感演绎的十分热烈。悉尼则全程享受着<<nnpc_himself "Sydney">>的表演。
+<br><br>
+
+<<switch $englishPlayRoles.Player>>
+	<<case "Cass">>
+		剧本有一处关于你和泰勒非常浪漫的片段，凯拉尔渴望地看着你。
+		<br><br>
+
+		<<link [[全力以赴|English Play Rehearse Both 3]]>><<pass 30>><<stress 6>><<npcincr Kylar rage -5>><<set $phase to 1>><</link>><<gstress>><<llksuspicion>>
+		<br>
+		<<link [[敷衍了事|English Play Rehearse Both 3]]>><<pass 30>><<stress -12>><<set $phase to 2>><</link>><<llstress>>
+		<br>
+	<<case "Taylor">>
+		剧本有一处关于你和卡斯非常浪漫的片段，凯拉尔带着一丝厌恶看着你和悉尼表演。
+		<br><br>
+
+		<<link [[全力以赴|English Play Rehearse Both 3]]>><<pass 30>><<stress 6>><<npcincr Kylar rage 5>><<npcincr Sydney love 2>><<set $phase to 1>><</link>><<gstress>><<glove "Sydney">><<ggksuspicion>>
+		<br>
+		<<link [[敷衍了事|English Play Rehearse Both 3]]>><<pass 30>><<stress -12>><<set $phase to 2>><</link>><<llstress>>
+		<br>
+	<<case "Sterling">>
+		剧本有一处关于泰勒和卡斯的非常浪漫的片段，悉尼和凯拉尔面面相觑，犹豫了一下。
+		<br><br>
+
+		<<link [[鼓励凯拉尔|English Play Rehearse Both 3]]>><<pass 30>><<npcincr Kylar love 2>><<set $phase to 1>><</link>><<glove "Kylar">>
+		<br>
+		<<link [[鼓励悉尼|English Play Rehearse Both 3]]>><<pass 30>><<npcincr Sydney love 2>><<npcincr Kylar rage 2>><<set $phase to 2>><</link>><<glove "Sydney">><<gksuspicion>>
+		<br>
+		<<link [[鼓励二人|English Play Rehearse Both 3]]>><<pass 30>><<set $phase to 3>><</link>>
+		<br>
+<</switch>>
+
+:: English Play Rehearse Both 3
+<<schooleffects>><<effects>>
+<<run statusCheck("Sydney")>><<run statusCheck("Kylar")>>
+
+<<switch $englishPlayRoles.Player>>
+	<<case "Cass">>
+		<<if $phase is 1>>
+			你尽力表达出自己的情感。当你对斯特林诉说你爱上了泰勒的时候，凯拉尔的脸变得通红。
+			<br><br>
+
+			你完美收场，悉尼为你喝彩。“真是太棒了！观众们肯定会被迷住的，我打包票。"
+		<<else>>
+			你毫无波澜地对斯特林说你爱泰勒，没有任何的感情跟肢体语言。凯拉尔看上去很失望。
+			<br><br>
+
+			悉尼耷拉下了胳膊，"别啊，你肯定可以做得更好！告诉泰勒你爱<<him "Kylar">>，就跟真的一样！"
+		<</if>>
+	<<case "Taylor">>
+		<<if $phase is 1>>
+			你尽力表达出自己的情感。当你与斯特林对峙说你爱上卡斯的时候，悉尼的脸变得通红。凯拉尔在一旁紧握着拳头，把剧本揉得不成样子。
+			<br><br>
+
+			你完美收场，悉尼为你喝彩。“真是太棒了！观众们肯定会被迷住的，我打包票。"
+		<<else>>
+			你毫无波澜地对斯特林说你爱泰勒，没有任何的感情跟肢体语言。凯拉尔看上去表情缓和了一点。
+			<br><br>
+
+			<<if _sydneyStatus.includes("corrupt")>>
+				悉尼耷拉下了胳膊，"别啊，你肯定可以做得更好！告诉卡斯你爱<<him "Sydney">>，就跟真的一样！"
+			<<else>>
+				悉尼尴尬地看向了四周，"我…不至于那么难以接受……吧？"
+			<</if>>
+		<</if>>
+	<<case "Sterling">>
+		<<if $phase is 1>>
+			你轻轻推了一下凯拉尔。
+			<<if $speech_attitude is "meek">>
+				"别担心，如果你投入些感情我也不会放在心上的。"你拍了拍凯拉尔的肩膀。
+			<<elseif $speech_attitude is "bratty">>
+				"加油，假装站在那里的人是我，"你拍了拍凯拉尔的肩膀。
+			<<else>>
+				"你能做到的！尽你的全力！"
+			<</if>>
+			<br><br>
+
+			凯拉尔对你笑了笑，"好吧，我会去做的。"<<He "Kylar">>深吸一口气，非常浮夸地对悉尼示爱——尽管和悉尼根本没有任何眼神交流，而且念台词时经常瞥向你。
+			<br><br>
+
+			悉尼鼓起了掌，"真是太棒了，凯拉尔。你念得很好，就是再念顺畅点就好了。"
+		<<elseif $phase is 2>>
+			你靠近悉尼。
+			<<if _sydneyStatus.includes("corrupt")>>
+				<<if $speech_attitude is "meek">>
+					"你…你能做到的，你口才能力出众，"你拍了拍悉尼。
+				<<elseif $speech_attitude is "bratty">>
+					"你不是很会说骚话的嘛，浪漫的台词就不行了？”你拍了拍悉尼。
+				<<else>>
+					"就当是挑战自我，"你拍了拍悉尼。
+				<</if>>
+				<br><br>
+
+				悉尼咯咯笑了起来。<<He "Sydney">>加入了一些自由发挥的下流对白，让剧本变得有些尴尬，演着演着开始往凯拉尔身上靠。你在一旁看乐子看得津津有味。
+				凯拉尔大汗淋漓，眼神飘忽，直接僵在了原地。
+			<<else>>
+				<<if $speech_attitude is "meek">>
+					"我…我觉得只是表演的话应该没什么问题，所以不用担心得不得体。"你说道。
+				<<elseif $speech_attitude is "bratty">>
+					"别假正经了，只是表演而已。"你说道。
+				<<else>>
+					"加油，为了演出！"你说道。
+				<</if>>
+				<br><br>
+
+				悉尼点点头。<<He "Sydney">>出色地说出这句台词,恰到好处地加入了情感和肢体语言的表达，凯拉尔只是勉为其难地复述着对应的台词。
+			<</if>>
+		<<else>>
+			你抓住凯拉尔和悉尼肩膀，把他们拉到了一起。
+			<<if $speech_attitude is "meek">>
+				"我知道这有点尴尬，但是……这是为了演出，是吧？我相信你们两个都能做到的。"你说道。
+			<<elseif $speech_attitude is "bratty">>
+				"是时候和好了，恋人们，"你说道，"你们是卡斯和泰勒，就当你们就是他们一样表演，"
+			<<else>>
+				"只是场表演。有必要的话就把对方当成另一个人。"你说道。
+			<</if>>
+			<br><br>
+
+			他们都下定了决心，悉尼首先开始了,一边飙戏一边抓住凯拉尔的胳膊。
+			凯拉尔用台词回应了，也表现得很好，不过没能和悉尼全程保持眼神接触。
+		<</if>>
+<</switch>>
+<br><br>
+
+<<generates3>>
+<<if $englishPlayRoles.Player is "Sterling">>
+	另一群学生被你们组的骚动吸引了过来。其中一个是<<person3>><<person>>，
+	<<if $phase is 1>>
+		他走到凯拉尔面前。"真是出乎意料的表现，小怪胎。我都不知道你还有这本事？"其他学生们笑了起来。"为什么不换过来加入我们组呢？"
+		<br><br>
+
+		<<link [[霸凌凯拉尔|English Play Rehearse Both Students]]>><<npcincr Kylar love -5>><<npcincr Sydney love -1>><<status 5>><<set $phase2 to 1>><</link>><<ggcool>><<lllove "Kylar">><<llove "Sydney">>
+		<br>
+		<<link [[为凯拉尔说话|English Play Rehearse Both Students]]>><<status -5>><<npcincr Kylar love 2>><<set $phase2 to 2>><</link>><<lcool>><<glove "Kylar">>
+		<br>
+		<<link [[保持沉默|English Play Rehearse Both Students]]>><<npcincr Kylar love -1>><<set $phase2 to 3>><</link>><<llove "Kylar">>
+		<br>
+
+	<<elseif $phase is 2>>
+		走到悉尼面前说道，"表演得真好，你干嘛要跟那对"
+		<<if $cool lte 120>>
+			两个废物扎堆呢？"<<Hes>>指了指你跟凯拉尔。另一名学生笑了，"你为什么不过来加入我们组呢？"
+			<br><br>
+
+			悉尼立马反应过来，"别叫他们废——"
+			<br>
+			"别叫<<phim>>废物。"凯拉尔，悉尼异口同声。他们眨了眨眼，看向了彼此，然后又重新盯着那个<<person>>。
+			<br><br>
+			<<He>>紧张地笑了笑，后退了一步。"原来都是些怪胎啊，那算了，我们走吧。"<<He>>离开了，其他学生们还戏谑地推搡了他一下。
+			<br><br>
+
+			悉尼跟凯拉尔转向了你。悉尼清了清嗓子说道，"我们该回家了，时候也不早了。"凯拉尔点头表示赞同。
+			<br><br>
+
+			<<link [[继续|English Play Rehearse Both 4]]>><<endevent>><<pass 30>><</link>>
+			<br>
+
+		<<else>>
+			那个废物？"<<Hes>>指向了凯拉尔，其他学生笑了起来，"不如你来加入我们组怎么样？"
+			<br><br>
+
+			<<link [[霸凌凯拉尔|English Play Rehearse Both Students]]>><<npcincr Kylar love -5>><<npcincr Sydney love -1>><<status 1>><<set $phase2 to 1>><</link>><<gcool>><<lllove "Kylar">><<llove "Sydney">>
+			<br>
+			<<link [[为凯拉尔说话|English Play Rehearse Both Students]]>><<status -5>><<npcincr Kylar love 2>><<set $phase2 to 2>><</link>><<lcool>><<glove "Kylar">>
+			<br>
+			<<link [[保持沉默|English Play Rehearse Both Students]]>><<npcincr Kylar love -1>><<set $phase2 to 3>><</link>><<llove "Kylar">>
+			<br>
+
+		<</if>>
+	<<else>>
+		来到了凯拉尔和悉尼面前说道，"真是不错的表演，你们两个。"<<He>>把手搭在了他们两个的肩膀上。"你俩为什么不撇下这个废物来跟我们一起排练呢？我们会照顾好你们的。"其他的学生笑了起来。
+		<br><br>
+
+		"别叫<<phim>>废物，"凯拉尔和悉尼异口同声。他们眨了眨眼看向了彼此，然后又盯住了那个<<person>>。
+		<br><br>
+
+		<<He>>紧张地笑了笑，后退了一步。"原来都是些怪胎啊，那算了，我们走吧。"<<He>>离开了，其他学生们还戏谑地推搡了他一下。
+		<br><br>
+
+		悉尼跟凯拉尔转向了你。悉尼清了清嗓子说道，"我们该回家了，时候也不早了。"凯拉尔点头表示赞同。
+		<br><br>
+
+		<<link [[继续|English Play Rehearse Both 4]]>><<endevent>><<pass 30>><</link>>
+		<br>
+
+	<</if>>
+<<else>>
+	另一群学生被你们组的骚动吸引了过来。其中一个<<person3>><<person>>，来到了你面前。
+	<<if $phase is 1>>
+		"真是不错的表演，”<<He>>把手搭在你的肩膀上说道，“你干嘛要跟那对废物在一起呢？”<<Hes>>指了指凯拉尔跟悉尼，其他学生笑了起来。
+		<br><br>
+
+		<<link [[为他们说话|English Play Rehearse Both Students]]>><<status -5>><<npcincr Kylar love 2>><<npcincr Sydney love 2>><<set $phase2 to 2>><</link>><<lcool>><<glove "Kylar">><<glove "Sydney">>
+		<br>
+		<<link [[保持沉默|English Play Rehearse Both Students]]>><<set $phase2 to 3>><</link>>
+		<br>
+	<<else>>
+		"这什么垃圾演技，"<<he>>说道，"为什么你要浪费他们的时间？"<<He>>指向了凯拉尔和悉尼，"你们两个干脆撇下这废物然后—"
+		<br><br>
+
+		"别叫<<phim>>废物，"凯拉尔和悉尼异口同声。他们眨了眨眼看向了彼此，然后又盯住了那个<<person>>。
+		<br><br>
+
+		<<He>>紧张地笑了笑，后退了一步。"原来都是些怪胎啊，那算了，我们走吧。"<<He>>离开了，其他学生们还戏谑地推搡了他一下。
+		<br><br>
+
+		悉尼跟凯拉尔转向了你。悉尼清了清嗓子说道，"我们该回家了，时候也不早了。"凯拉尔点头表示赞同。
+		<br><br>
+
+		<<link [[继续|English Play Rehearse Both 4]]>><<endevent>><<pass 30>><</link>>
+		<br>
+
+	<</if>>
+<</if>>
+
+
+:: English Play Rehearse Both Students
+<<schooleffects>><<effects>>
+<<run statusCheck("Sydney")>><<run statusCheck("Kylar")>>
+
+<<if $englishPlayRoles.Player is "Sterling">>
+	<<if $phase2 is 1>>
+		<<if $speech_attitude is "meek">>
+			你点点头，"凯拉尔，你…你还是走吧。"
+		<<elseif $speech_attitude is "bratty">>
+			你粗鲁地把手放在了凯拉尔头上说道，"你拖我们后腿了。"
+		<<else>>
+			你点点头，"我们可从来没邀请过你加入这个小组，凯拉尔。"
+		<</if>>
+		<br><br>
+
+		凯拉尔的脸色暗淡了下了。悉尼轻轻拍了你的后脑勺一下，然后瞪着那个<<person>>。
+		<<if _sydneyStatus.includes("corrupt")>>
+			"别这样叫<<him "Kylar">>，没人要你插话，走开。"
+			<br><br>
+
+			<<person3>><<person>>冷笑了一声，退开了，"原来都是些怪胎啊，那算了，我们走吧。"<<He>>离开了，其他学生们还戏谑地推搡了他一下。
+		<<else>>
+			"我们组这样很好，谢谢。不介意的话，我们得继续彩排了。"
+			<br><br>
+
+			<<person3>><<person>>皱了皱眉头。“无所谓，我本来是想帮你个忙的。”<<He>>离开了，其他学生们还在戏谑地推搡着这个人。
+		<</if>>
+		<br><br>
+
+		悉尼清了清嗓子说道，“就先排练到这里吧，时候也不早了。”凯拉尔握紧了拳头。
+	<<elseif $phase2 is 2>>
+		你叉着手。
+		<<if $speech_attitude is "meek">>
+			"这，这太刻薄了，你不应该那样说的。"
+		<<elseif $speech_attitude is "bratty">>
+			"滚开，没人问你。"
+		<<else>>
+			"那太刻薄了，你不应该那样说的。"
+		<</if>>
+		<br><br>
+
+		悉尼点了点头，走上前去。
+		<<if _sydneyStatus.includes("corrupt")>>
+			"别这样叫<<him "Kylar">>，没人要你插话，走开。"
+		<<else>>
+			"我们组这样很好，谢谢。不介意的话，我们得继续彩排了。"
+		<</if>>
+		<br><br>
+
+		<<person3>><<person>>冷笑了一声，退开了，"原来都是些怪胎啊，那算了，我们走吧。"<<He>>离开了，其他学生们还戏谑地推搡了他一下。
+		<br><br>
+
+		悉尼清了清嗓子说道，"我们改在这里结束了，天色有点晚了。" 你似乎看见凯拉尔对你们两个微微一笑,但是你不是很确定。
+	<<else>>
+		你抱着肩膀保持沉默。那个<<person>>把凯拉尔拉得更近了些说道："得了吧，为什么我们不—"
+		<br><br>
+
+		悉尼快速走上前去，把<<persons>>的手拉开了。
+		<<if _sydneyStatus.includes("corrupt")>>
+			"别这样叫<<him "Kylar">>，没人要你插话，走开。"
+			<br><br>
+
+			<<person3>><<person>>冷笑了一声，退开了，"原来都是些怪胎啊，那算了，我们走吧。"<<He>>离开了，其他学生们还戏谑地推搡了他一下。
+		<<else>>
+			"我们组这样很好，谢谢。不介意的话，我们得继续彩排了。"
+			<br><br>
+
+			<<person3>><<person>>皱了皱眉头。“无所谓，我本来是想帮你个忙的。”<<He>>离开了，其他学生们还在戏谑地推搡着这个人。
+		<</if>>
+		<br><br>
+
+		悉尼跟凯拉尔转向了你。悉尼清了清嗓子说道，“就先排练到这里吧，时候也不早了。”凯拉尔用微妙的眼神看着悉尼。
+	<</if>>
+<<else>>
+	<<if $phase2 is 2>>
+		你摆脱了<<his>>手。
+		<<if $speech_attitude is "meek">>
+			"请-请不要这样说我的朋友。"你说道。
+		<<elseif $speech_attitude is "bratty">>
+			"滚开，他们是我朋友。"你吼道。
+		<<else>>
+			"他们是我的朋友，请不要这样说。”你说道。
+		<</if>>
+		<br><br>
+
+		<<person3>><<person>>皱了皱眉头。“无所谓，我本来是想帮你个忙的。”<<He>>离开了，其他学生们还在戏谑地推搡着这个人。
+		<br><br>
+
+		悉尼清了清嗓子说道，“就先排练到这里吧，时候也不早了。”凯拉尔点了点头表示赞同。
+	<<else>>
+		<<if $speech_attitude is "meek">>
+			你缩起身子，尽量让自己看上去不起眼，保持着沉默。"啊——，没必要害羞<<girl>>，来吧，我们会照顾好——"
+		<<elseif $speech_attitude is "bratty">>
+			你叉起双手，用不善的眼神看着<<him>>、"没必要这么激动，<<girl>>。来吧，我们会照顾好——"
+		<<else>>
+			你不安地轻轻扭动，一语不发。"不需要犹豫，<<girl>>。来吧，我们会照顾好——"
+		<</if>>
+		<br><br>
+
+		悄无预警地，悉尼和凯拉尔各自抓住<<his>>的一只手臂，把<<him>>从你身边拉开。<<He>>本能地退缩了一下，看起来像是要说些什么，却迎上了凯拉尔和悉尼盯着<<him>>的目光。
+		<br><br>
+
+		<<He>>冷笑了一声，"原来都是些怪胎啊，那算了，我们走吧。"<<He>>离开了，其他学生们还戏谑地推搡了他一下。
+		<br><br>
+
+		悉尼清了清嗓子说道，“就先排练到这里吧，时候也不早了。”凯拉尔点了点头表示赞同。
+	<</if>>
+<</if>>
+<br><br>
+
+<<link [[继续|English Play Rehearse Both 4]]>><<endevent>><<pass 30>><</link>>
+<br>
+
+:: English Play Rehearse Both 4
+<<schooleffects>><<effects>>
+<<run statusCheck("Sydney")>>
+<<npc Sydney>><<person1>>
+
+你们三人再次仔细阅读台本，真情实感如同演出现场。课室里只剩下几个学生，这让你们可以更加轻松的完成目标。
+<<set $englishPlayReadiness += 15>><<playReadiness>>
+<br><br>
+
+当你们排练完的时候，学校已经要关门了，你跟凯拉尔和悉尼一起离开了学校。
+<br><br>
+
+<<link [[继续|English Play Rehearse Both Oxford]]>><</link>>
+<br>
+
+:: English Play Rehearse Both Oxford
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "rehearsal">>
+<<run statusCheck("Sydney")>><<run statusCheck ("Kylar")>>
+
+你来到了牛津街，这里错落着各种各样的建筑物，不过最显眼的还是学校，
+<<if $weather is "rain">>
+	就算在下雨，这条街还是很热闹。
+<<elseif $weather is "snow">>
+	就算天气寒冷，街上还是很热闹。
+<<else>>
+	学生们在附近闲逛着。
+<</if>>
+<br><br>
+
+<<if $syndromekylar gte 1 and $sydneyromance is 1>>
+	凯拉尔和悉尼都看起来想对你说些什么，但都有些犹豫。过了一会，他们走了。
+	"我该回家了——"他们步调惊人的一致。
+	<br><br>
+
+	他们停下来互相凝视着，接着又走了几步，然后又停了下来。他们似乎不确定应该做些什么，你歪着头疑惑地看着他们。
+	<br><br>
+
+	凯拉尔看着你说道，"我…我们都住在同一条街。"
+	<br><br>
+
+	<<link [[跟他们一起走 (0:20)|English Play Both Walk]]>><<pass 20>><</link>>
+	<br>
+	<<link [[离开|Oxford Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	凯拉尔看了下<<his "Kylar">>手表说道："我得走了。"<<He>>看上去还想说点什么，不过注意到悉尼正在看着自己后停住了。<<He>>转过身离开了。
+	<br><br>
+
+	悉尼推了你一把。
+	<<if _sydneyStatus.includes("corrupt")>>
+		"我稍微有点担心<<him>>。我感觉我们应该跟着<<him>>，确保他平安回家。"
+	<<else>>
+		"我，我们应该…确保<<he>>能平安回家。"
+	<</if>>
+	<<person1>>
+	<br><br>
+
+	<<link [[跟凯拉尔一起走 (0:20)|English Play Kylar Walk]]>><<pass 20>><</link>>
+	<br>
+	<<set $skulduggerydifficulty to 600>>
+	<<link [[远远地跟着凯拉尔 (0:20)|English Play Kylar Follow]]>><<pass 20>><</link>><<skulduggerydifficulty>>
+	<br>
+	<<link [[让凯拉尔离开|English Play Dont Follow]]>><</link>>
+	<br>
+<</if>>
+
+:: English Play Dont Follow
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<run statusCheck("Sydney")>>
+<<if _sydneyStatus.includes("corrupt")>>
+	"感觉尾随<<nnpc_him "Kylar">>的话会有点奇怪。"
+<<else>>
+	"你，你确定吗？好吧，你说了算。"
+<</if>>
+悉尼让步了。
+<br><br>
+
+<<sydneyOptionsLeave>>
+
+:: English Play Both Walk
+<<effects>>
+
+你开始和他们一起走以缓解尴尬。走着走着，你来到了他们中间。
+
+"谢…谢了，"凯拉尔尴尬地看着你跟悉尼小声说道，"有…人陪着挺好的。"你们三人一路走道了多瑙河街。走着走着，悉尼开始变得紧张起来。
+<br><br>
+
+<<link [[继续|English Play Kylar Manor]]>><</link>>
+<br>
+
+:: English Play Kylar Walk
+<<effects>>
+<<run statusCheck("Sydney")>>
+
+你跟悉尼试着追上凯拉尔。
+<<if $syndromekylar gte 1>>
+	<<nnpc_He "Kylar">>很快注意到了你们，走慢了些让你们赶上。
+	<br><br>
+
+	"谢…谢了，”<<nnpc_He "Kylar">>尴尬地看着悉尼小声说道：“有…人陪着挺好的。"<<npcincr Kylar rage 1>><<gksuspicion>>
+	<br><br>
+
+	你们三人一路走道了多瑙河街。走着走着，悉尼开始变得紧张起来。
+	<br><br>
+
+	<<link [[继续|English Play Kylar Manor]]>><</link>>
+	<br>
+<<else>>
+	凯拉尔注意到你们跟着的时候，<span class="red"><<nnpc_he "Kylar">>突然开始冲向了多瑙河街</span>。<<npcincr Kylar rage 1>><<gksuspicion>>
+	<br><br>
+
+	<<if _sydneyStatus.includes("corrupt")>>
+		"<<nnpc_him "Kylar">>这是要干嘛呢？"悉尼问道。
+	<<else>>
+		"这下糟了，现在我们看上去像跟踪狂了！"悉尼说道。
+	<</if>>
+	"我们该怎么办？"
+	<br><br>
+
+	<<link [[追上去|English Play Kylar Chase]]>><</link>><<athleticsdifficulty 1 600>>
+	<br>
+	<<link [[让凯拉尔走|English Play Dont Follow]]>><</link>>
+	<br>
+<</if>>
+
+:: English Play Kylar Chase
+<<effects>>
+<<run statusCheck("Sydney")>>
+
+你开始追凯拉尔。迟疑了一下后，悉尼也跟了上来。
+<br><br>
+
+<<if $athleticsSuccess>>
+	你很快<span class="green">刚好能够追上</span>悉尼被落在了后面。
+	<br><br>
+
+	你来到了多瑙河街,正好看见凯拉尔消失在一个精致的拱门后面。你靠过去，看到了一座长满了藤蔓跟杂草，看起来像荒废了的庄园。
+	<br><br>
+
+	悉尼追上了，手撑在膝盖上喘着气。
+	<<if _sydneyStatus.includes("corrupt")>>
+		"我……他妈……讨厌跑步……"
+	<<else>>
+		"你……呼……太快了。"
+	<</if>>
+	<<He>>花了点时间把气喘匀，然后看向了拱门。"<<nnpc_he "Kylar">>……不可能还住在这里吧？"你跟着悉尼的目光，注意到有块连接到大门上的石头上，刻有神殿的标志。
+	<br><br>
+
+	<<link [["\"还住在?\""|English Play Manor Talk]]>><</link>>
+	<br>
+<<else>>
+	你很快，但是凯拉尔更快。<<nnpc_He "Kylar">>消失在了南丁格尔街附近的一条巷子里。你拐过弯，然而<span class="red">并没有看到<<nnpc_him "Kylar">></span>。
+	<br><br>
+
+	悉尼追上了，手撑在膝盖上喘着气。
+	<<if _sydneyStatus.includes("corrupt")>>
+		"我……他妈……讨厌跑步……"
+	<<else>>
+		"你……呼……太快了。"
+	<</if>>
+	<<He>>花了点时间把气喘匀。"凯拉尔是逃走了吗？"你点了点头作为回应。
+	<br><br>
+
+	悉尼低下头说道："我想搞清楚凯拉尔究竟经历了什么。<<nnpc_He "Kylar">>以前不是这样的……"悉尼看上去有点悲伤。
+	<br><br>
+
+	<<He>>摇了摇头，看向了周围。
+	<<set $bus to "nightingale">>
+	<<sydneyOptionsLeave>>
+<</if>>
+
+:: English Play Kylar Follow
+<<effects>>
+<<run statusCheck("Sydney")>>
+
+<<if $speech_attitude is "meek">>
+	"好吧……不过我们得先等一下，免得<<nnpc_he "Kylar">>发现我们。"
+<<elseif $speech_attitude is "bratty">>
+	"当然，这次就让<<nnpc_him "Kylar">>尝尝被跟踪是什么感觉吧。"
+<<else>>
+	"好吧，不如我们得先等一下。免得凯拉尔发现我们。"
+<</if>>
+悉尼犹豫了一下，不过最后还是点了点头。
+<br><br>
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+	你尽量混在人群或者小巷里，避开凯拉尔的视线<span class="green">你设法一路跟踪凯拉尔到了多瑙河街。</span>
+
+	<<if $skulduggery lte ($skulduggerydifficulty + 100)>>
+		<<skulduggeryskilluse>>
+	<<else>>
+		<span class="blue">这对你来说实在太简单了，你从中什么都没有学到。</span>
+		<br><br>
+	<</if>>
+
+	悉尼跟着你移动，差点在不平整的人行道上摔了一跤，几乎暴露了你们的踪迹。
+	<<if _sydneyStatus.includes("corrupt")>>
+		"你从哪学到这么好的跟踪技巧的？我以后走路得留意一点了。"<<he>>开玩笑地拍了拍你的脸颊后说道。
+	<<else>>
+		"希望我们看起来没太可疑，我们现在真的很像一对跟踪狂。"<<he>>紧张地笑道。
+	<</if>>
+	<br><br>
+
+	你看见凯拉尔消失在一个精致的拱门后面。你靠过去，看到了一座长满了藤蔓跟杂草，看起来荒废了的庄园。
+	悉尼花了点时间把气喘匀，然后看向了拱门。"<<nnpc_he "Kylar">>……不可能还住在这里吧？"你跟着悉尼的目光，注意到有块连接到大门上的石头上，刻有神殿的标志。
+	<br><br>
+
+	<<link [["\"还住在?\""|English Play Manor Talk]]>><</link>>
+	<br>
+
+<<else>>
+	你混在人群里，试着避开凯拉尔的视线，<span class="red">凯拉尔似乎注意到了你</span>。<<nnpc_He "Kylar">>穿过一条繁忙的街道，当你终于找到路径穿过去的时候<<nnpc_hes "Kylar">>已经消失了。<<npcincr Kylar rage 1>><<gksuspicion>>
+
+	<<if $skulduggery lte ($skulduggerydifficulty + 100)>>
+		<<skulduggeryskilluse>>
+	<<else>>
+		<span class="blue">这对你来说实在太简单了，你从中什么都没有学到。</span>
+		<br><br>
+	<</if>>
+
+	过了一会，悉尼追了上来。
+	"你追丢<<nnpc_him "Kylar">>了吗？"你点了点头。"那好吧，反正我们可能也有些越界了。如果凯拉尔可以这么轻松地摆脱我们，那<<nnpc_he "Kylar">>肯定可以平安回家的。"
+	<br><br>
+
+	悉尼似乎注意到了时间。
+	<<set $bus to "nightingale">>
+	<<sydneyOptionsLeave>>
+<</if>>
+
+:: English Play Kylar Manor
+<<effects>><<set $bus to "danube">>
+
+你们最后来到了庄园。悉尼看到你跟凯拉尔停在门口吃了一惊到："别告诉我……你还住在这里，凯拉尔？"
+<br><br>
+
+凯拉尔看着地面点了点头。悉尼从远处观察着庄园，注意到了入口柱子上的神殿标志。
+<<if $kylar_parents_trust gte 80>>
+	"它荒废了很长一段时间，不过现在看起来……开始有生活气息了。"
+<<elseif $kylar_parents_trust gte 40>>
+	"我还以为又谁要准备搬进去了，毕竟都荒废了这么久，不过却有人在打扫。"
+<<else>>
+	"这都……变成废墟了……你是怎么……"
+<</if>>
+<br><br>
+
+凯拉尔没有回应，走向了大门。<<nnpc_He "Kylar">>消失在庄园里之前，最后回头看了你一眼。
+悉尼脸上的表情让人捉摸不透。
+<br><br>
+
+<<link [["\"还住在?\""|English Play Manor Talk]]>><</link>>
+<br>
+
+:: English Play Manor Talk
+<<effects>><<set $bus to "danube">>
+"‘还住在’是什么意思？"你对悉尼问道。
+<br><br>
+
+"凯拉尔和我小时候，我们……”<<nnpc_he "Sydney">>顿了一下，“我们的父母很熟，我们……能经常见到面，以前我经常来这里，那时候……感觉很好。"
+<br><br>
+
+<<He>>再次检查了一下柱子上的神殿标志。"不过后来，我不再被允许来这。我<<sydneyOtherParent>>说……不，没什么，那不重要。"
+<<set $sydneySeen.pushUnique("Kylar manor")>>
+<br><br>
+
+<<nnpc_He "Sydney">>沉默了一段时间，然后摆了摆手，对你笑了下。
+<<sydneyOptionsLeave>>
+
+:: English Play Attend
+<<set $outside to 0>><<set $location to "town">><<effects>>
+你来到了市礼堂。几排横跨主厅的座位对着另一侧的大舞台。
+<br><br>
+
+<<if C.npc.Robin.init is 1 and getRobinLocation() is "englishPlay">>
+	<<npc Robin>><<person1>>
+	<<if $fromRobinRoom>>
+		<<unset $fromRobinRoom>>
+		罗宾叫你等<<him>>一下，然后冲进了旁边的房间换衣服。几分钟后，<<he>>作为一颗装饰精美的圣诞树出现了。
+		<<if C.npc.Robin.trauma gte 40>>
+			"看看他们让我穿上了什么。这应该不会很显眼，所以大概没什么问题。"
+		<<else>>
+			"看看他们让我穿上了什么，超有范儿不是吗？"
+		<</if>>
+	<<else>>
+		当你走近通向舞台的台阶时，你发现一棵装饰华丽的圣诞树挡在你的面前。你咳了一下，圣诞树转过身来，里面是一个穿着戏服的人，那是罗宾。
+		<br><br>
+
+		<<if C.npc.Robin.trauma gte 40>>
+			"噢。嗨-嗨！我……我想我应该参加的。看看他们让我穿什么了，不过这应该不会太引人注目，所以应该没问题。"
+		<<else>>
+			"噢，你好啊！"<<he>>笑道，"看看他们让我穿上了什么，很时髦不是吗？"
+		<</if>>
+	<</if>>
+		你跟<<him>>说了会话。
+	<<if $englishPlayRoles.Player isnot "none">>
+		<<He>>会表演另一出戏。"真糟糕，我估计会错过你们的演出。不过，祝你好运!"
+	<<else>>
+		如果你留下了的话，你会看到<<his>>的演出。"很高兴你来了，祝我好运吧！"
+	<</if>>
+	<<endevent>>
+	<br><br>
+<</if>>
+
+<<if $englishPlayRoles.Player isnot "none">>
+	<<npc Doren>><<person1>>
+	你到后台去找多伦，<<he>>正在跟一些同事说着话。"很高兴你能来。"<<he>>转过头来对你说道。
+	"你搭档刚到。<<if $englishPlayKylarReplace>>我们得在开始前找个人替代凯拉尔。<</if>>你应该跟他们说说话，准备好你们的表演。"
+	<br><br>
+
+	不少人进入了礼堂，座位逐渐被坐满了。演出马上就要开始了。
+	<<endevent>>
+	<br><br>
+
+	<<link [[去后台|English Play Backstage]]>><</link>>
+	<br>
+
+<<else>>
+	<<if Time.hour is 17>>
+		你找了个靠前的位置，有很多人进入了礼堂，演出马上就要开始了。
+	<<else>>
+		在一场演出快结束的时候，你安静地找了个座位。下一场估计很快就要开始了。
+	<</if>>
+	留下了看演出会增进你跟其他同学的感情。
+	<br><br>
+
+	<<link [[看一场表演 (0:20)|English Play Watch]]>><<trauma -2>><<tiredness 2>><<status 1>><<pass 20>><</link>><<ltrauma>><<gtiredness>><<gcool>>
+	<br>
+	<<link [[离开礼堂 (0:01)|Cliff Street]]>><<pass 1>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: English Play Backstage
+<<effects>>
+
+你在后台看到无数的道具和配件排列在柜台和墙壁上,许多学生穿着各种不同的衣服和装扮焦虑地踱步着。你看见你的搭档正在角落准备着表演。
+<br><br>
+
+<<if !$englishPlayKylarTalk>>
+	<<if $englishPlayRoles.Kylar is "none" or $englishPlayKylarReplace>>
+		<<switch $englishPlayRoles.Player>>
+			<<case "Cass" "Sterling">>
+				<<set $englishPlayRoles.Kylar to "Taylor">>
+			<<default>>
+				<<set $englishPlayRoles.Kylar to "Sterling">>
+		<</switch>>
+		<<set $englishPlayRoles.KylarKnown to false>>
+		<<set $englishPlayKylarReplace to true>>
+		<<link [["跟那个扮演"+ $englishPlayRoles.Kylar.replace("Sterling","斯特林") .replace("Cass","卡斯").replace("Taylor","泰勒") +"的学生说话"|English Play Kylar Talk Replace]]>><</link>>
+		<br>
+	<<elseif !$englishPlayRoles.KylarKnown>>
+		<<link [["跟那个扮演"+ $englishPlayRoles.Kylar.replace("Sterling","斯特林") .replace("Cass","卡斯").replace("Taylor","泰勒") +"的学生说话"|English Play Kylar Talk]]>><</link>>
+		<br>
+	<<else>>
+		<<link [[跟凯拉尔说话|English Play Kylar Talk]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+<<if !$englishPlaySydneyTalk>>
+	<<if !$englishPlayRoles.SydneyKnown>>
+		<<link [["跟那个扮演" + $englishPlayRoles.Sydney.replace("Sterling","斯特林") .replace("Cass","卡斯").replace("Taylor","泰勒") + "的学生说话"|English Play Sydney Talk]]>><</link>>
+		<br>
+	<<else>>
+		<<link [[与悉尼交谈|English Play Sydney Talk]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+<br>
+<<if $englishPlayRoles.KylarKnown and $englishPlayRoles.SydneyKnown>>
+	<<link [[准备演出|English Play Prep]]>><</link>>
+	<br>
+<</if>>
+
+:: English Play Kylar Talk
+<<effects>>
+<<set $englishPlayKylarTalk to true>>
+<<npc Kylar>><<person1>>
+<<run statusCheck("Kylar")>>
+<<if $englishPlayRoles.KylarKnown>>
+	你注意到了凯拉尔正独自坐在角落。
+<<else>>
+	<<set $englishPlayRoles.KylarKnown to true>>
+	你靠近那个扮演<<print $englishPlayRoles.Kylar.replace("Sterling","斯特林") .replace("Cass","卡斯").replace("Taylor","泰勒")>>的学生. 当你走近时，你认出了那是凯拉尔。
+<</if>>
+<<he>>整齐的头发以及干净的衬衫给了<<him>>一种异常正式的外观。
+<br><br>
+
+<<He>>焦虑地来回踱步着，小声地自言自语道："我为什么要报名……所有人都会看见我傻子一样的表演的，他们肯定会嘲笑我的，而且……"<<he>>看向你，"我做不到。"
+<br><br>
+
+<<link [[安抚凯拉尔|English Play Kylar Talk 2]]>><<set $phase to 1>><</link>>
+<br>
+<<link [[不屑一顾|English Play Kylar Talk 2]]>><<set $phase to 2>><<npcincr Kylar rage 5>><</link>><<ggksuspicion>>
+<br>
+
+:: English Play Kylar Talk 2
+<<effects>>
+
+<<if $phase is 1>>
+	<<if $speech_attitude is "meek">>
+		"别放弃，求你了，"你说道，"我们都指望你了，别让我们失望！"
+	<<elseif $speech_attitude is "bratty">>
+		"别慌了，"你说道，"你也想演出顺利吧？别像个懦夫，我们需要你全力以赴。"
+	<<else>>
+		"坚持住，凯拉尔，"你说道，"我们可以做到的，但是我们需要你控制住自己。"
+	<</if>>
+	<br><br>
+
+	<<He>>很快就恢复了。深深地看了你一眼，微笑道，"谢谢你这么信任我，我不会让你失望的。"
+<<else>>
+	<<if $speech_attitude is "meek">>
+		"求你了，别搞砸，"你说道，"如果你太紧张的话会毁了这场演出的。"
+	<<elseif $speech_attitude is "bratty">>
+		"那么就别上台，"你说道，"告诉多伦你病了，或许<<he>>能在最后一刻来找个人顶替你呢。"
+	<<else>>
+		"我不知道怎么跟你讲，"你说道，"你现在已经不能退缩了，所以你最好别搞砸了。"
+	<</if>>
+	<br><br>
+
+	"没问题的，"<<he>>说道，握紧拳头看着自己的脚，"不用担心我，我不会惹麻烦的。"
+<</if>>
+<br><br>
+
+<<link [[继续|English Play Backstage]]>><<endevent>><</link>>
+<br>
+
+:: English Play Kylar Talk Replace
+<<effects>>
+<<set $englishPlayKylarTalk to true>>
+<<set $englishPlayRoles.KylarKnown to true>>
+<<generates1>>
+<<saveNPC 0 actor_replacement>>
+你注意到一个<<person1>><<person>>在桌子旁休息。<<Hes>>正在跟别人说话。
+<<he>>没穿戏服，就简单地穿着平常的学校制服。
+<br><br>
+
+<<He>>在和<<his>>朋友闲聊说笑着，然后才注意到了你。<<He>>一开始没有注意到你，所以你咳嗽了一下来引起<<his>>注意。"你到底想干嘛？"<<he>>喊道，"我已经为那愚蠢的表演练习过了，别来烦我。"
+<br><br>
+
+<<link [[继续|English Play Backstage]]>><<endevent>><</link>>
+<br>
+
+:: English Play Sydney Talk
+<<effects>>
+<<set $englishPlaySydneyTalk to true>>
+<<npc Sydney>><<person1>>
+<<run statusCheck("Sydney")>>
+<<if $englishPlayRoles.SydneyKnown>>
+	你看见悉尼悲伤地在窗帘后面偷偷地看着外头，焦虑地摆弄着<<his>>项链。
+<<else>>
+	<<set $englishPlayRoles.SydneyKnown to true>>
+	你看见一名焦虑的学生正在幕帘后面望着外头,紧张地摆弄着<<his>>项链。你靠近了些，认出了那是悉尼。
+<</if>>
+<<if $englishPlayRoles.Sydney is "Cass">>
+	已经入戏，<<he>>头发凌乱，衣服邋遢。
+<<else>>
+	<<He>>耀眼的头发以及鲜艳的衣服让<<him>>在学生中脱颖而出。
+<</if>>
+<<Hes>>显然极其重视这个角色，以及相应的服装。
+<br><br>
+
+<<if _sydneyStatus.includes("corrupt")>>
+	"好多人在这里，"<<he>>说道，"你觉得我<<sydneymum>>已经来了吗？"<<He>>离开了窗户。这太尴尬了，我还以为我终于变得自信了起来，但是我还是没办法克服上台表演的恐惧。
+<<else>>
+	"我没想到会有那么多人，"<<he>>说道，"你觉得我<<sydneymum>>已经在这里了吗？这比我预计的还有可怕。"
+<</if>>
+<br><br>
+
+<<link [[安抚悉尼|English Play Sydney Talk 2]]>><<set $phase to 1>><</link>>
+<br>
+<<link [[吓唬悉尼|English Play Sydney Talk 2]]>><<set $phase to 2>><</link>>
+<br>
+
+:: English Play Sydney Talk 2
+<<effects>>
+<<run statusCheck("Sydney")>>
+
+<<if $phase is 1>>
+	<<if $speech_attitude is "meek">>
+		"噢，别担心。说实话我其实也挺害怕的，"你告诉<<him>>，"但我们得鼓起勇气！给他们一场永生难忘的表演。"
+	<<elseif $speech_attitude is "bratty">>
+		"别跟我胡说八道。看着我，"你说道，"你会在那里出现，接着你会有一场精彩绝伦的演出，然后你会令你<<sydneymum>>为你骄傲，明白了吗？"
+	<<else>>
+		"我明白你现在很紧张，但是现在已经不能回头了，"你跟<<him>>说道，"你都已经为今天练习了那么多了，我知道你肯定已经准备好了。"
+	<</if>>
+	<br><br>
+
+	<<if _sydneyStatus.includes("corrupt")>>
+		"好吧，就当我已经被激励了，"<<he>>说道，"我已经看了这么多遍台本了，我肯定行的。谢谢你的鼓励，让我们去给他们一点小小的震撼。"
+	<<else>>
+		"你，你说得对，"<<He>>笑道，"我都已经练习了这么多次了，我知道我能做到的。况且，只要你和我在一起，我就没什么好担心的。"
+	<</if>>
+<<else>>
+	<<if $speech_attitude is "meek">>
+		"我只希望他们不要太刻薄，"你说道，"我听说如果他们不满意的话，就会把我们轰下台。"
+	<<elseif $speech_attitude is "bratty">>
+		"那些人看起来相当愤怒，"你说道，"别念错台词了，不然我们出去的时候肯定会被痛揍一顿的。"
+	<<else>>
+		"你最好别搞砸，不如的话……"你警告<<him>>，"如果他们开始向我们扔烂水果，就找个掩体。"
+	<</if>>
+	<br><br>
+
+	<<if _sydneyStatus.includes("corrupt")>>
+		悉尼不可思议地盯着你道，"哈，你太他妈的搞笑了，就算我们搞砸了起码你也能得个喜剧奖。"<<He>>戏谑地推了你一下。
+	<<else>>
+		悉尼脸色苍白，一脸惊恐地看着你道："等等，你是在开玩笑的，对吧？"你注意到<<his>>额头上滴落了几滴冷汗。
+	<</if>>
+<</if>>
+<br><br>
+
+<<link [[继续|English Play Backstage]]>><<endevent>><</link>>
+<br>
+
+:: English Play Prep
+<<effects>>
+<!-- ToDo: Once homemaking is in, add a new factor to the play. The player has the option to prepare their own costume beforehand. -->
+你开始准备表演，穿上了设计好的戏服，也就是
+<<upperundress "play_upper">>
+<<lowerundress "play_lower">>
+<<switch $englishPlayRoles.Player>>
+	<<case "Cass">>
+		一件破旧的夹克和一条同样破旧的休闲裤，但尺寸却不太适合你。
+		<<upperwear 71>><<set $worn.upper.colour to "teal">><<set $worn.upper.integrity -= 90>>
+		<<lowerwear 88>><<set $worn.lower.integrity -= 60>>
+	<<case "Taylor">>
+		一件刚熨过的呢大衣以及配套的裤子，表明的你的教养。
+		<<upperwear 49>><<set $worn.upper.colour to "wine">>
+		<<lowerwear 23>><<set $worn.lower.colour to "black">>
+	<<case "Sterling">>
+		一件马术外套跟笔挺的长裤，表明了你的高身份。
+		<<upperwear 64>>
+		<<lowerwear 47>><<set $worn.lower.colour to "black">>
+<</switch>>
+
+拿着台本，你准备最后过一遍你的台词。你清了清嗓子，自己读了起来。
+<br><br>
+
+"好的，你们是下一个，"多伦说道 ，"向他们展示一下你们的成果，祝你们好运。"你的搭档首先走了出去，你紧跟着他们穿过了幕帘。
+<br><br>
+
+你深吸了一口气，穿过幕帘。你立刻就被外面的聚光灯以及观众的喝彩声刺激到了感官。从你站着的那个位置看，整个主厅仿佛大了三倍一般。
+<br><br>
+
+这个舞台属于你。
+<br><br>
+
+<<link [[第一幕|English Play Act One]]>><<pass 5>><</link>>
+<br>
+
+:: English Play Act One
+<<effects>>
+<<set $englishPlayPronouns to {
+	Cass: "",
+	Taylor: "",
+	Sterling: ""
+}>>
+<<set $englishPlayPronouns[$englishPlayRoles.Player] to $player.gender_appearance>>
+<<set $englishPlayPronouns[$englishPlayRoles.Sydney] to C.npc.Sydney.pronoun>>
+
+<<npc Sydney 1>>
+<<if $englishPlayKylarReplace>>
+	<<loadNPC 1 actor_replacement>>
+	<<set $englishPlayPronouns[$englishPlayRoles.Kylar] to $NPCList[1].pronoun>>
+<<else>>
+	<<npc Kylar 2>>
+	<<set $englishPlayPronouns[$englishPlayRoles.Kylar] to C.npc.Kylar.pronoun>>
+<</if>>
+
+随着喝彩声逐渐逐渐平息，礼堂逐渐安静了下来，你开始介绍你的角色。
+<<switch $englishPlayRoles.Player>>
+	<<case "Cass">>
+		你以卡斯的视角向观众介绍自己。你居无定所，一贫如洗，唯一的亲人是卧病在床的母亲。但是当你遇到了名为泰勒的素有教养，心地善良的富二代之后，一切都向着最好的方向发展。然而，泰勒的<<sterlingFather>>，并不打算让你们得偿所愿。
+	<<case "Taylor">>
+		你以泰勒的视角向观众介绍自己。你是一个优秀的年轻人，一个强大的商业帝国的继承人。你从小就被教导着诚实以及忠诚的价值观。但当你遇到贫困的青年卡斯之后，你单调的生活发生了改变。尽管你跟他属于两个世界，但你还是被他所吸引住了。然而，你的<<sterlingFather>>，永远也不会允许你们两个在一起。
+	<<case "Sterling">>
+		你以斯特林<<sterlingTitle>>的视角向观众介绍自己。你是一个无情的商人，在镇上飞黄腾达，成了最富有的公民之一。尽管你在商业上有着坚韧的头脑，但对你来说没有什么是比家人更重要的了。你突然发现你舒适奢华的生活正在受到威胁，你的<<taylorSon>>泰勒，跟一个名叫卡斯的泥腿子<<cassBoy>>好上了。
+<</switch>>
+<br><br>
+
+悉尼和<<if $englishPlayKylarReplace>><<person2>><<person>><<else>>凯拉尔<</if>>介绍了他们的角色，分别是<<print $englishPlayRoles.Sydney.replace("Sterling","斯特林") .replace("Cass","卡斯").replace("Taylor","泰勒")>>和<<print $englishPlayRoles.Kylar.replace("Sterling","斯特林") .replace("Cass","卡斯").replace("Taylor","泰勒")>>。
+<<switch $englishPlayRoles.Player>>
+	<<case "Cass">>
+		演出从你跟泰勒在圣诞前夜准备私奔开始。
+		<br><br>
+
+		剧本要求进行一段浪漫的对话。
+		<<if $promiscuity gte 15>>
+			<span class="lewd">一个下流的想法在你脑海里浮现。</span>
+		<<else>>
+			<span class="blue">你还没淫乱到去偏离剧本。</span>
+		<</if>>
+		<br>
+		<<link [[按照剧本来|English Play Act One Script]]>><</link>>
+		<br>
+		<<if $promiscuity gte 15>>
+			<<if $englishPlayKylarReplace>>
+				<<link [[咸猪手|English Play Act One Break]]>><</link>><<promiscuous2>>
+			<<else>>
+				<<link [[咸猪手|English Play Act One Break]]>><<npcincr Kylar rage -3>><<npcincr Kylar lust 1>><</link>><<llksuspicion>><<glust "凯拉尔">><<promiscuous2>>
+			<</if>>
+		<</if>>
+		<br>
+	<<case "Taylor">>
+		演出开始时，你正在计划跟卡斯在圣诞前夜私奔。
+		<br><br>
+
+		剧本要求进行一段浪漫的对话。
+		<<if $promiscuity gte 15>>
+			<span class="lewd">一个下流的想法在你脑海里浮现。</span>
+		<<else>>
+			<span class="blue">你还没淫乱到去偏离剧本。</span>
+		<</if>>
+		<br>
+		<<link [[按照剧本来|English Play Act One Script]]>><</link>>
+		<br>
+		<<if $promiscuity gte 15>>
+			<<if $englishPlayKylarReplace>>
+				<<link [[咸猪手|English Play Act One Break]]>><</link>><<promiscuous2>>
+			<<else>>
+				<<link [[咸猪手|English Play Act One Break]]>><<npcincr Kylar rage 5>><<npcincr Sydney lust 2>><</link>><<ggksuspicion>><<gslust>><<promiscuous2>>
+			<</if>>
+		<</if>>
+		<br>
+	<<case "Sterling">>
+		表演从你听说你的<<taylorSon>>跟一个泥腿子<<cassBoy>>一起消失开始。
+		<br><br>
+
+		你现在正在后台，你能听见凯拉尔挣扎地对悉尼念诵浪漫的台词，然而悉尼不为所动。
+		<br><br>
+
+		剧本要求你在一段简短的独白后，冲进那对情侣的藏身处。
+		<br>
+		<<link [[按照剧本来|English Play Act One Script]]>><</link>>
+		<br>
+		<<link [[把门柱踢倒|English Play Act One Break]]>><</link>><<athleticsdifficulty 1 700>>
+		<br>
+<</switch>>
+
+:: English Play Act One Script
+<<effects>><<run statusCheck("Kylar")>><<run statusCheck("Sydney")>>
+
+<<switch $englishPlayRoles.Player>>
+	<<case "Cass">>
+		<<if $englishPlayReadiness gte 70>>
+			"当镇上的人从我身边经过时，我被视为是一无所有的人。没错，我确实在这个世界上不拥有什么。但是，只要我还拥有着你，泰勒，我的挚爱，我就别无所求。"
+			<br>
+			<span class="green">你巧妙地说着浪漫的台词，并自己给它加上了更多的词汇与感情表达。</span>观众们为你喝彩。<<set $englishPlayApproval += 30>><<ggapproval>>
+			<br><br>
+
+			<<if $englishPlayKylarReplace>>
+				<<person2>><<persons>>的脸刷地变红了。<<He>>没有预料到是这种程度的表演，然后试图结结巴巴地把台词念出你的水平。
+				<br>
+				"我最亲爱的卡斯。就算你跟我的社会地位天差地别，但我却感觉与你无比接近。没有你，世上所有的财富都与粪土无异。"
+			<<else>>
+				凯拉尔的脸刷地变得通红，而<<person2>>结巴了一会儿才想起自己在扮演一个角色。<<npcincr Kylar rage -2>><<lksuspicion>>
+				<br>
+				"我…我最亲爱的卡斯，就算你跟我的社会地位天差地别，但我却感觉与你无比接…接近。没有你，世上所有的财富都与粪土无异。"
+			<</if>>
+		<<elseif $englishPlayReadiness gte 26>>
+			"我在这世上不拥有什么，但只要我还有你，泰勒，我别无所求。"
+			<br>
+			<span class="teal">你成功地念出了浪漫的对白。</span><<set $englishPlayApproval += 20>><<gapproval>>
+			<br><br>
+			<<if $englishPlayKylarReplace>>
+				<<person2>><<person>>以同样的方式回应。
+				<br>
+				"我最亲爱的卡斯。就算你跟我的社会地位天差地别，但我却感觉与你无比接近。没有你，世上所有的财富都与粪土无异。"
+			<<else>>
+				凯拉尔被你的话陶醉，渴望地看了你一会儿。<<person2>><<person>>花了点时间才想起来<<He>>还有个角色要扮演。
+				<br>
+				"我…我最亲爱的卡斯，就算你跟我的社会地位天差地别，但我却感觉与你无比接…接近。没有你，世上所有的财富都与粪土无异。"
+			<</if>>
+		<<else>>
+			"我，额…我没什么要说的…我的意思是，我没什么东西，但是，我…很高兴来到这里？"
+			<br>
+			<span class="red">你忘记了台词。</span> 观众们并不买账。<<set $englishPlayApproval += 10>><<lapproval>><<stress 6>><<trauma 12>><<gstress>><<ggtrauma>>
+			<br><br>
+			<<if $englishPlayKylarReplace>>
+				<<person2>><<person>>在回应之前，沮丧地叹了口气。
+				<br>
+				"我最亲爱的卡斯。就算你跟我的社会地位天差地别，但我却感觉与你无比接近。没有你，世上所有的财富都与粪土无异。"
+			<<else>>
+				你的失败让凯拉尔握紧了拳头。<<person2>><<person>>似乎在认为这是在针对<<He>>。<<npcincr Kylar rage 1>><<gksuspicion>>
+				<br>
+				"我…我最亲爱的卡斯，你为什么这么紧张？我真的有那么难以信任吗？"
+			<</if>>
+		<</if>>
+		<br><br>
+
+		演出在卡斯跟泰勒成功私奔后继续进行着。当你在跟泰勒一起在月色下享用圣诞晚餐时，斯特林<<sterlingTitle>>闯了进来，为这一幕落下了帷幕。
+	<<case "Taylor">>
+		"我在这世上不拥有什么，但只要我还有你，泰勒，我别无所求。"
+		<<if _sydneyStatus.includes("corrupt")>>
+			"你不愿意把自己献给我吗？"悉尼说着，出人意料地把你拉近了，"还是我必须乞求？"<span class="lewd">剧本上可没有这段。</span>
+		<<else>>
+			悉尼轻轻地牵着你的手，说道。
+		<</if>>
+		<br><br>
+
+		<<if $englishPlayReadiness gte 70>>
+			"我最亲爱的卡斯。就算我们之间的阶级跟身份是如此的遥远，但你仍是我最宝贵的财宝。是我在沙土里淘出的黄金。"
+			<span class="green">你巧妙地念出了浪漫的台词，并给它加上了更多的词汇与情感表达。</span>观众们为你喝彩。<<set $englishPlayApproval += 30>><<ggapproval>>
+			<br><br>
+
+			<<if _sydneyStatus.includes("corrupt")>>
+				就算是在<<person1>><<his>>即兴表演之后，悉尼还是对你的演技吃了一惊。
+			<<else>>
+				悉尼难掩<<person1>><<his>>脸红。
+			<</if>>
+			<<npcincr Sydney lust 2>><<gslust>>
+			<br><br>
+
+		<<elseif $englishPlayReadiness gte 26>>
+			"我最亲爱的卡斯。就算你跟我的社会地位天差地别，但我却感觉与你无比接近。没有你，世上所有的财富都与粪土无异。"
+			<br>
+			<span class="teal">你成功地念出了浪漫的对白。</span><<set $englishPlayApproval += 20>><<gapproval>>
+			<br><br>
+
+		<<else>>
+			"嘿，额…没问题，苏…嗯，卡斯。穷人也很可爱。"
+			<span class="red">你忘记了台词。</span> 观众们并不买账。<<set $englishPlayApproval += 10>><<lapproval>><<stress 6>><<trauma 12>><<gstress>><<ggtrauma>>
+			<br><br>
+
+			悉尼茫然地看了你一会，然后试图加快演出进程。
+		<</if>>
+		演出在卡斯跟泰勒成功私奔后继续进行着。当你在跟卡斯一起在月色下享用圣诞晚餐时，你的<<sterlingFather>>，斯特林<<sterlingTitle>>闯了进来，为这一幕落下了帷幕。
+	<<case "Sterling">>
+		<<if $englishPlayReadiness gte 70>>
+			在入场前，你仔细听着，并等待悉尼念完台词。
+			<br>
+			"泰勒！我把你养这么大不是为了让你这样！我不能容忍我的家人被乞丐玷污！"你对自己大喊，冲上台阶，气势汹汹地撞开门。
+			<br>
+			<span class="green">你巧妙地念出了独白，并给它加上了更多的词汇与情感表达。</span>观众们为你喝彩。<<set $englishPlayApproval += 30>><<ggapproval>>
+		<<elseif $englishPlayReadiness gte 26>>
+			在入场前，你仔细听着，并等待悉尼念完台词。
+			<br>
+			"泰勒……我对你这么好，你居然打算跟一个泥腿子私奔？我绝不会容忍的！"你朝自己喊道，大步走上舞台，冲进门里。
+			<br>
+			<span class="teal">你成功地念出了独白。</span><<set $englishPlayApproval += 20>><<gapproval>>
+		<<else>>
+			你尴尬地走到了舞台上正在对话的卡斯和泰勒之间。他们停了一下，然后假装没看到你。
+			"泰勒，我把…不是…嗯。和这个简单的农民在一起，你玷污了……"你试图压过他们说话的声音直到说服他们。
+			<br>
+			<span class="red">你的入场和独白都搞砸了</span>观众们并不买账。<<set $englishPlayApproval += 10>><<lapproval>><<stress 6>><<trauma 12>><<gstress>><<ggtrauma>>
+		<</if>>
+		<br><br>
+
+		这一幕在卡斯跟泰勒一起在月色下享用圣诞晚餐时结束了。
+<</switch>>
+<br><br>
+
+<<link [[第二幕|English Play Act Two]]>><<pass 5>><</link>>
+<br>
+
+:: English Play Act One Break
+<<effects>><<run statusCheck("Kylar")>><<run statusCheck("Sydney")>>
+
+<<switch $englishPlayRoles.Player>>
+	<<case "Cass">>
+		你比剧本上写的更加贴近<<if $englishPlayKylarReplace>><<person2>><<person>><<else>>凯拉尔<</if>>环绕着<<person2>><<him>>的双臂。你轻轻地摸着<<his>>的性器说道："不如我们就直接…跳过晚餐怎么样，我想吃点‘别的东西’。"<<promiscuity2>>
+
+		<<if $englishPlayKylarReplace>>
+			<<He>>在试图逃离你之前犹豫了一下，回应道："我最亲爱的卡斯，就算你我之间的社会地位天差地别，但我却感觉与你无比接近。没有你，世上所有的财富都与粪土无异。"
+		<<else>>
+			<<if _kylarStatus.includes("Lust")>>
+				<<He>>并不打算逃离你。“我最亲爱的卡斯，你我之间的距离……”<<he>>停顿了一下。"我要离你更近一些。"凯拉尔开始抚摸着你的后背，直到多伦狠狠瞪了你们才停下。<<arousal 50>><<garousal>>
+			<<else>>
+				<<He>>并不打算逃走。"我最亲爱的卡斯。你我之间的距离……"<<He>>没能念出下面的台词，不过似乎没人注意到。
+			<</if>>
+			<<npcincr Kylar lust 2>><<glust "Kylar">>
+		<</if>>
+		<br>
+		<span class="lewd">你听到了观众们的口哨声与欢呼声。</span><<set $englishPlayApproval += 15>><<gapproval>>
+		<br>
+		<<if _sydneyStatus.includes("corrupt")>>
+			你看到悉尼在后台咯咯笑着。
+		<<else>>
+			悉尼在后台瞪着你。<<npcincr Sydney love -1>><<npcincr Sydney purity -1>><<llove "Sydney">><<lspurity>>
+		<</if>>
+		<br><br>
+
+		演出在卡斯跟泰勒成功私奔后继续进行着。当你在跟泰勒一起在月色下享用圣诞晚餐时，斯特林<<sterlingTitle>>闯了进来，为这一幕落下了帷幕。
+	<<case "Taylor">>
+		"我在这世上不拥有什么，但只要我还有你，泰勒，我别无所求。"
+		<<if _sydneyStatus.includes("corrupt")>>
+			"你不愿意把自己献给我吗？"悉尼说着，出人意料地把你拉近了，"还是我必须乞求？"<span class="lewd">剧本上可没有这段。</span>
+		<<else>>
+			悉尼轻轻地牵着你的手，说道。
+		<</if>>
+		<br><br>
+
+		你把<<person1>><<him>>拉了过来。你轻轻地摸着<<his>>的性器说道："不如我们就直接…跳过晚餐怎么样。我想吃一些‘别的东西’。"<<promiscuity2>>
+		<<if _sydneyStatus.includes("corrupt")>>
+			悉尼领会了你的暗示，毫不掩饰地摸了回去。"没问题。来吧，我们可以直接在你<<sterlingFather>>的床上做。"你听到观众席上有人偷笑，听起来像是西里斯。
+		<<else>>
+			悉尼僵住了，然后才开始接着表演。"泰，泰勒，我们不能……不，不是在这里。别啊，我们至少得先吃完晚餐！"
+		<</if>>
+		<<npcincr Sydney lust 2>><<gslust>>
+		<br>
+		在成功地让演出回到正轨之后，<span class="lewd">你听到了观众们的口哨声与欢呼声。</span><<set $englishPlayApproval += 15>><<gapproval>>
+		<<if !$englishPlayKylarReplace>>
+			<br>
+			<span class="red">你也看到了凯拉尔在后台瞪着你。</span><<ggksuspicion>>
+		<</if>>
+		<br><br>
+
+		演出在卡斯跟泰勒成功私奔后继续进行着。当你在跟卡斯一起在月色下享用圣诞晚餐时，你的<<sterlingFather>>，斯特林<<sterlingTitle>>闯了进来，为这一幕落下了帷幕。
+	<<case "Sterling">>
+		<<if $athleticsSuccess>>
+			你完全放弃了独白，充满力量地登上了舞台，狠狠地踢向了道具们的正中央。<span class="green">门板从绞页上飞了起来</span>砰地砸到了地面上。
+			<br><br>
+
+			悉尼和<<if $englishPlayKylarReplace>><<person2>><<person>><<else>>凯拉尔<</if>>真的被你震惊到了，完全停下了他们的台词。你为了演出效果还加上了粗重的呼吸声。
+			<br>
+			观众们似乎也没有预料到这个，<span class="teal">不过根据他们的喝彩声，他们似乎喜欢这个。</span><<set $englishPlayApproval += 15>><<gapproval>>
+			<br>
+		<<else>>
+			你完全放弃了独白，充满力量地登上了舞台，尝试想把门踹开。<span class="red">然而门纹丝不动</span> 你又踢了一脚，什么也没有发生。
+			<br><br>
+
+			经过了一段非常尴尬的时间后，最终你只能普通地把门打开。<span class="red">观众们似乎没被打动。</span>其中有一些在嘲笑你的表现。<<set $englishPlayApproval += 10>><<lapproval>><<stress 6>><<trauma 12>><<gstress>><<ggtrauma>>
+		<</if>>
+		<br><br>
+
+		这一幕在卡斯跟泰勒一起在月色下享用圣诞晚餐时结束了。
+<</switch>>
+<br><br>
+
+<<link [[第二幕|English Play Act Two]]>><<pass 5>><</link>>
+<br>
+
+:: English Play Act Two
+<<effects>><<run statusCheck("Kylar")>><<run statusCheck("Sydney")>>
+
+短暂的道具更换过后，演出继续开始。帷幕拉开后，出现的是精心布置的卡斯和泰勒的月光晚餐。一棵小小的圣诞树位于舞台的角落。
+<br><br>
+
+<<switch $englishPlayRoles.Player>>
+	<<case "Cass">>
+		悉尼走上前来，双手紧握着拳头，假装愤怒地说道："我简直不敢相信！我的亲生<<taylorSon>>，居然被一个肮脏的乞丐迷上了？我们马上走，泰勒，你回家之后要给我好好解释解释。""
+		<br><br>
+
+		<<if $englishPlayKylarReplace>><<person2>><<person>><<else>>凯拉尔<</if>>也向前了一步，挡在你面前双臂做保护的姿态。“请您听我说，<<sterlingFather>>！我对卡西的感觉绝非仅仅是一时兴起！我们是真心实意的！<<if !$englishPlayKylarReplace>>凯拉尔比预期投入了更多的感情。<</if>>
+		<br><br>
+
+		你的台词很简单。你后退了一步，痛苦地蜷缩起来，凝视着观众。"我真不忍心在圣诞前夜看到这么令人心碎的争执！"
+	<<case "Taylor">>
+		<<if $englishPlayKylarReplace>>
+			<<person2>><<person>>上前一步，握着双拳假装在生气。
+		<<else>>
+			凯拉尔走上前来，愤怒地握紧了双拳。<<if _kylarStatus.includes("Rage")>>你怀疑那是真的愤怒。<</if>>
+		<</if>>
+		"我简直不敢相信！我的亲生<<taylorSon>>，居然被一个肮脏的乞丐给迷上了？我们马上就走，泰勒，你回家之后要给我好好解释解释。"<<if !$englishPlayKylarReplace>>凯拉尔在台词里投入了比预想得要多得多的感情。<</if>>
+		<br><br>
+
+		你的台词很简单。你也向前了一步，张开双臂作出保护悉尼的姿态。"请听好了，<<sterlingFather>>！我对卡斯的感觉绝非仅仅是一时兴起！我们是真心实意的！"
+		<br><br>
+
+		悉尼后退了一步，痛苦地蜷缩起来，凝视着观众。"我真不忍心在圣诞前夜看到这么令人心碎的争执！"
+	<<case "Sterling">>
+		你的台词很简单。你向前一步，握紧拳头假装愤怒道："我简直不敢相信！我的亲生<<taylorSon>>，居然被一个肮脏的乞丐迷上了？我们马上走，泰勒，你回家之后要给我好好解释解释。"
+		<br><br>
+
+		<<if $englishPlayKylarReplace>>
+			<<person2>><<person>>也向前了一步，张开双臂作出保护悉尼的姿态。"请听好了，<<sterlingFather>>！我对卡斯的感觉绝非仅仅是一时兴起！我们是真心实意的！"
+		<<else>>
+			凯拉尔也向前了一步。<<person2>><<He>>本来应该保护性地站在悉尼的前面，但凯拉尔的注意力全在你身上。"请听好了，<<sterlingFather>>！我对卡斯的感觉绝非仅仅是一时兴起！我们是真心实意的！" 凯拉尔的声音微不可闻。
+		<</if>>
+		<br><br>
+
+		悉尼后退了一步，痛苦地蜷缩起来，凝视着观众。"我真不忍心在圣诞前夜看到这么令人心碎的争执！"
+<</switch>>
+<br><br>
+
+在演出到达高潮的时候，你突然有了个大胆的想法。
+<br>
+<<link [[按照剧本来|English Play Act Two Script]]>><</link>>
+<br>
+<<link [[打破角色|English Play Act Two Break]]>><</link>><<if $englishPlayRoles.Player isnot "Sterling">><<promiscuous1>><</if>>
+<br>
+
+:: English Play Act Two Script
+<<effects>><<run statusCheck("Kylar")>><<run statusCheck("Sydney")>>
+<<switch $englishPlayRoles.Player>>
+	<<case "Cass">>
+		<<if $englishPlayReadiness gte 100>>
+			"拜托了<<sterlingSir>>，我求求你听我说，"你插入道："我知道我只是一个乞丐，我的话语跟我本身一样毫无价值，但是拜托了，请听听我无论如何都要说出来的话。在我的一生中，我都跟我卧病在床的母亲生活在一起，靠捡破烂勉强维持着生活。但恐怕我母亲她已经坚持不了多久了。泰勒是…"你用啜泣停顿了一下，试图让眼泪流出来。"泰勒是我唯一所剩下的了！我请您…"你跪倒在地上，泪水模糊了你的视线。"别把<<person2>><<him>>从我身边带走。就算只有一次也好，请让我跟我的爱人共度一夜吧。"
+			<br><br>
+
+			观众们在沉默中看着情节展开，你觉得你听到了后面有人在开始哭泣。<span class="green">他们如痴如醉。</span><<set $englishPlayApproval += 30>><<ggapproval>>
+			<br><br>
+
+			<<if $englishPlayKylarReplace>>
+				<<person2>><<person>>给你小小地鼓了个掌。
+			<<else>>
+				凯拉尔听了你的台词之后，脸变得通红。<<npcincr Kylar rage -2>><<lksuspicion>>
+				<br><br>
+			<</if>>
+			悉尼激动地颤抖着，抹了抹流下的眼泪，"我…我明白了。"<<person1>><<he>>惊讶于你无可挑剔的演技说道，"我很高兴看到我的<<taylorSon>>像你这么好的人。我祝福你，卡斯。"<<He>>伸出手，帮你站起来。
+		<<elseif $englishPlayReadiness gte 70>>
+			"拜托了<<sterlingSir>>，我求求你听我说，"你插入道："我知道作为一个乞丐，我的话毫无价值，但是拜托了，请听听我无论如何都要说出来的话。在我的一生中，我都跟我生病的母亲生活在一起，靠捡破烂勉强维持着生活。但恐怕我母亲已经没办法再陪我在这个世界上走多久了。我生命中唯一的其他慰藉就是泰勒。所以,我恳求您,就这一次,让我跟我最爱的人在一起度过这一夜吧。"
+			<br><br>
+
+			观众们沉默地看着情节展开。<span class="teal">他们都沉迷在剧情之中了。</span><<set $englishPlayApproval += 20>><<gapproval>>
+			<br><br>
+
+			<<if $englishPlayKylarReplace>>
+				<<person2>><<person>>心不在焉地凝视前方。
+			<<else>>
+				凯拉尔听了你的话后脸红了。
+			<</if>>
+			悉尼微微点头表示赞同。"明白了，"<<person1>><<he>>说。"我很高兴看到我的<<taylorSon>>找到了像你这样好的人。"
+		<<else>>
+			"嘿，听我说，"你说着，不确定该如何继续。"我可不是什么肮脏的乞丐！好吧……其实我是，但这并不意味着……"
+			<<if $englishPlayKylarReplace>>
+				我不爱……额，泰勒。
+			<<else>>
+				我不爱凯……额，泰勒。
+			<</if>>
+			那就滚开，好吗？
+			<br><br>
+
+			悉尼和<<if $englishPlayKylarReplace>><<person2>><<person>><<else>>凯拉尔<</if>>都恼火地叹了一口气。观众们嘲笑着你，让你滚下台。<span class="red">你的表演让人看出你毫无准备。</span><<set $englishPlayApproval += 10>><<lapproval>><<stress 6>><<trauma 12>><<gstress>><<ggtrauma>>
+		<</if>>
+	<<case "Taylor">>
+		<<if $englishPlayReadiness gte 70>>
+			<<if $englishPlayReadiness gte 100>>
+				"不，<<sterlingFather>>，听我说！"你要求道。"我一生都按照您告诉我的方式生活，做出您为我做出的选择。但是这不能再继续下去了。今晚，我要自己做决定，我的选择是和卡斯在一起，因为我爱<<person1>><<him>>。"那就是你应该停止的地方。但你被激励了，并且继续说道："如果您想因此恨我，请抛弃我！ 我会放弃斯特林姓氏，并更替为卡斯的姓氏！ 这样您就可以免于让一个<<taylorSon>>和一个乞丐结婚带来耻辱！这对您来说才是最重要的吧？！"
+				<br><br>
+
+				观众报以热烈的掌声。你听到有一边的观众在向你大声喝彩。<span class="green">他们喜欢这个展开！</span><<set $englishPlayApproval += 30>><<ggapproval>>
+				<br><br>
+			<<else>>
+				"不，<<sterlingFather>>，挺好了！"你坦白道："我这一辈子都是按照你的要求活着，我拒绝再这样了。今天晚上，我会做我自己，而我的选择是跟卡斯在一起，因为我爱<<person1>><<him>>，你要因为这个恨我那就恨吧！但无论如何我唯一想要的就是这个。"
+				<br><br>
+
+				观众报以热烈的掌声。<span class="teal"</span>他们都沉迷在剧情之中了！<<set $englishPlayApproval += 20>><<gapproval>>
+				<br><br>
+
+			<</if>>
+			<<if _sydneyStatus.includes("corrupt")>>
+				悉尼高兴地笑道："我都不知道你有这么爱我。谢谢，我的爱人，你让我大开眼界。"
+			<<else>>
+				悉尼高兴地笑道："我都不知道你居然这么关心我，我的爱人。有你在真是太幸福了！"
+			<</if>>
+			<br><br>
+
+			<<if $englishPlayKylarReplace>>
+				<<person2>><<person>>看向观众，然后才想起自己在哪。<<He>>转向你，对你点头表示赞同。还好你演技足够好到让观众注意不到<<him>>。
+			<<else>>
+				<<if _kylarStatus.includes("MaxRage") or (_kylarStatus.includes("Rage") and _kylarStatus.includes("Love") and $sydneyromance is 1)>>
+					凯拉尔安静地站在台上。<<person2>><<He>>凝视着虚空，然后快速地把手伸向了自己的口袋。<span class="red"><<He>>拿出了一把刀，冲向了悉尼。</span>
+					<br><br>
+
+					"我受够你了，"凯拉尔咆哮道，"都是你的错。我们两个人过得这么幸福又愉快……但你，你非要在这露出你那丑陋的脸。我不会让你从我身边夺走<<phim>>的。"
+					<br><br>
+
+					<<if _sydneyStatus.includes("corrupt")>>
+						悉尼轻笑道："怎么？你打算捅死我吗？等报社知道了这事，第二天早上的新闻标题肯定会是《商人斯特林<<sterlingTitle>>，在圣诞前夜残忍的杀害了一个年轻乞丐！》"
+						<<person1>><<Hes>>表现出一副无畏的表情，但你可以从<<hes>>后退中看出<<He>>事实上非常紧张。"我已经失去了这世上的一切，那么也把我的生命也夺走吧！"
+					<<else>>
+						悉尼震惊地后退了一步。然后盯着凯拉尔道："什…什么，你打算把我捅死？等报社知道了这事，第二天早上的新闻标题肯定得是《商人斯特林<<sterlingTitle>>，在圣诞前夜残忍地杀害了一个年轻乞丐！》"
+						<<person1>><<He>>没能藏得住<<his>>颤抖的声音，"我已经失去了这世上的一切，那么也把我的生命也夺走吧！"
+					<</if>>
+					<br><br>
+
+					<span class="red">凯拉尔向前扑去</span>，但在你能做任何事之前，悉尼又后退了一步，撞到了圣诞树。圣诞树来回摇晃着，然后正好倒在了<<person1>><<him>>跟正冲过来的凯拉尔身上。他们摔倒了一起，刀子哐当地跌落在地，观众们倒吸了一口凉气。
+					<br><br>
+
+					你冲到他们身边，多伦看起来也打算跑向舞台。凯拉尔完全呆住了，不过悉尼试着朝你跟多伦竖起大拇指，作出"继续"的嘴型。<span class="green">你完全明白了接下来该怎么做。</span>
+					<br><br>
+
+					你跪倒在地。"不……不！我这辈子都没想要过什么，但在这个圣诞前夜，我唯一的愿望都被夺走了！卡斯……<<sterlingFather>>……"你加上了一些啜泣来增加戏剧性。
+					"这就是作为乞丐的感觉吗，卡斯？这就是失去一切，一无所有的感觉？"你捡起了刀子。"那样的话，我会在虚无中陪伴着你的，我的爱人……"
+					<br><br>
+
+					你用戏剧性的动作，假装殉情，把刀捅在了胸口和手臂之间。你发出了一声痛苦的呼喊，然后倒在了地上。舞台灯光变暗了，随后帷幕缓缓落下。
+					<br><br>
+
+					<span class="gold">观众们都站了起来，献上最热烈的掌声跟欢呼，整个大厅都被喝彩声充满了。</span><<set $englishPlayApproval += 40>><<gggapproval>><<set _tragedyAhAhAhAh to true>>
+				<<elseif _kylarStatus.includes("Rage") or (_kylarStatus.includes("Sus") and _kylarStatus.includes("Love") and $sydneyromance is 1)>>
+					"跟…跟这个妓女？！"凯拉尔大声说道，"为什么？<<person1>><<He>>永远都不会像我一样爱你！你为什么看不出来？"<<npcincr Kylar rage 5>><<ggksuspicion>>
+					<br><br>
+
+					观众们狂热地看着，没有意识到凯拉尔脱离了剧本。
+					"我尝试了一遍又一遍，来向你证明我究竟有多么爱你。但你始终都是把我撇在一边，把我当成垃圾一样。这……太让我……伤心了……"凯拉尔继续说道。<<person2>><<His>>声音变得颤抖，留下了眼泪。
+					<br><br>
+
+					<span class="gold">观众们站起身来鼓掌。</span> 悉尼难以置信地看着观众，然后，加入了掌声。 凯拉尔看起来很困惑，但最终还是冷静了下来。<<set $englishPlayApproval += 20>><<gapproval>>
+					<br><br>
+
+					你们三个尝试挽救这出戏，在卡斯恳请只是跟泰勒多在一起一晚后，斯特林<<sterlingTitle>>勉强地跟他们和解了。
+				<<else>>
+					凯拉尔的手颤抖起来，<<person2>><<his>>脸愤怒地扭曲着。<<He>>竭力控制住自己。"我、我明白了……泰勒。那么，享受你跟……<<person1>><<him>>的夜晚吧。"凯拉尔目光转向悉尼，但避免着眼神接触。<<npcincr Kylar rage 5>><<ggksuspicion>>
+				<</if>>
+			<</if>>
+		<<else>>
+			"好吧，我不关心你到底想说什么，<<sterlingFather>>，"你尝试记起台词，但是失败了，"我爱西…我是说，卡斯，对吧？所以能别打扰我们吗？"
+			<br><br>
+
+			悉尼和<<if $englishPlayKylarReplace>><<person2>><<person>><<else>>凯拉尔<</if>>尴尬地站在一旁，不确定要怎么继续。<span class="red">观众大声嘲笑着，侮辱着你和这出戏，你的表演让人看出你毫无准备。</span><<set $englishPlayApproval += 10>><<lapproval>><<stress 6>><<trauma 12>><<gstress>><<ggtrauma>>
+		<</if>>
+	<<case "Sterling">>
+		<<if $englishPlayReadiness gte 100>>
+			"我的<<taylorSon>>，你是对的，"你吧手放在<<if $englishPlayKylarReplace>><<person2>><<persons>>的<<else>>凯拉尔的<</if>>肩膀上说道："自从我将你带到这世界上以来，我就一直希望着你能找到真正的幸福。然而我一直都只是自以为是，从来都没有意识到我只是在自我满足。我也是在一个目光短浅的父母的严厉管控下长大的，我不会犯同样的错误了。请原谅你愚蠢的<<sterlingFather>>，带着我的祝福去生活吧。"
+			<br><br>
+
+			你给这一幕加了很多台词，比原来的剧本多出了很多。<span class="green">你听到很多观众为你完美的表演赞不绝口。</span><<set $englishPlayApproval += 30>><<ggapproval>>
+			<br><br>
+
+			<<if $englishPlayKylarReplace>>
+				"谢、谢谢你<<sterlingFather>>,"<<he>>对你的表演印象深刻，说道："能收到您的祝福，我真的非常高兴。"
+			<<else>>
+				"谢、谢谢你<<sterlingFather>>,"凯拉尔被你的表演所触动，说道："能收到你的祝福我真的非常高兴。"<<person2>><<He>>轻蔑地看向悉尼，仿佛<<person1>><<his>>的存在破坏了这个场景。
+			<</if>>
+		<<elseif $englishPlayReadiness gte 70>>
+			"我的<<taylorSon>>，你是对的。"你把手放在<<if $englishPlayKylarReplace>><<person2>><<persons>>的<<else>>凯拉尔的<</if>>肩膀上说道，"打从你出生以来，我就一直希望着你能找到真正的幸福。但在我追求成功的过程中，从来都没有意识到我只是在自我满足。我也是在一个目光短浅的父母的严厉管控下长大的，我不会犯同样的错误了。我不会再打扰你们了。"
+			<br><br>
+
+			你把台词念得很好<span class="teal">你听了一些观众称赞你的演技。</span><<set $englishPlayApproval += 20>><<gapproval>>
+			<br><br>
+
+			<<if $englishPlayKylarReplace>>
+				"谢、谢谢你<<sterlingFather>>,"<<he>>对你的表演印象深刻，说道："能收到您的祝福，我真的非常高兴。"
+			<<else>>
+				"谢谢你<<sterlingFather>>,"凯拉尔对你的表演印象深刻，说道："能收到您的祝福，我真的非常高兴。"<<person2>><<He>>完全无视了悉尼。
+			<</if>>
+		<<else>>
+			<<if $englishPlayKylarReplace>>
+				"听着... 泰勒。"
+			<<else>>
+				"听着凯…泰勒。"
+			<</if>>
+			你差点说漏嘴"我真的不想让你这么难过，和你的朋友在一起吧……我完全不介意。"
+			<br><br>
+
+			观众发出嘘声。有些人对你骂了出来，怒斥你那糟糕的演技。<span class="red">你的表演让人看出你毫无准备。</span><<set $englishPlayApproval += 10>><<lapproval>><<stress 6>><<trauma 12>><<gstress>><<ggtrauma>>
+			<br><br>
+
+			<<if $englishPlayKylarReplace>>
+				"谢谢你<<sterlingFather>>，你真是太好了，"<<he>>说道。<<He>>表现得比你还要糟糕。大部分观众都在玩着手机，对表演完全没兴趣。"该死，你真的糟透了。"<<person>>小声地咕哝道。
+			<<else>>
+				凯拉尔疑惑地看了你一眼。"什、什么？"<<person2>><<he>>困惑地问道。你灾难般的表现让<<him>>措手不及。"我、我是说，谢谢你<<sterlingFather>>。这对我来说意义重大。"悉尼羞耻地捂住了自己的脸。<<person1>>
+			<</if>>
+		<</if>>
+<</switch>>
+<br><br>
+
+<<if _tragedyAhAhAhAh>>
+	当帷幕完全落下之后，多伦冲上了舞台，把圣诞树扶了起来，并检查凯拉尔跟悉尼有没受伤。
+	<br><br>
+
+	<<link [[谢幕|English Play Curtain Call Early]]>><<pass 10>><</link>>
+	<br>
+<<else>>
+	这一幕以斯特林<<sterlingTitle>>的离场结束。
+	帷幕落下。给了你们几人宝贵的几分钟休息时间。休息时间很快就过去了，随着帷幕再次拉开，最后一幕开始了。
+	<br><br>
+
+	<<link [[第三幕|English Play Act Three]]>><<pass 5>><</link>>
+	<br>
+<</if>>
+
+:: English Play Act Two Break
+<<effects>><<run statusCheck("Kylar")>><<run statusCheck("Sydney")>>
+<<switch $englishPlayRoles.Player>>
+	<<case "Cass">>
+		"恐怕已经太晚了，斯特林<<sterlingTitle>>。听着，我跟泰勒已经上过床了！"你伸出了舌头。
+		<<if $pregnancyspeechdisable is "f">>
+			"没错，我们都操过这么多次了，肯定已经有孩子了！"你宣布道。
+			<<if playerBellyVisible()>>
+				你拍了拍你的<<bellyDescription "pc">>作为强调。
+			<<elseif !playerCanBreedWith($NPCList[1])>>
+				你懒得去质疑逻辑的合理性。
+			<</if>>
+		<</if>>
+		观众们为这下流的转折欢呼。<<set $englishPlayApproval += 15>><<gapproval>><<promiscuity1>>
+
+		<<if $englishPlayKylarReplace>>
+			"你他妈在说些什么？"<<person2>><<person>>忍不住说道："按脚本来，你这蠢货。"
+		<<else>>
+			凯拉尔吃了一惊，不过还是决定配合。"对、对啊！"<<he>>结结巴巴说道<<if $pregnancyspeechdisable is "f">>，"我们生了那么多的孩子，都得买栋大房子给他们住了！"<</if>>
+		<</if>>
+		<br><br>
+
+		<<if _sydneyStatus.includes("corrupt")>>
+			悉尼一开始看起来很困惑，不过还是决定跟随你们的游戏。"泰勒，你个<<bastard>>!我为你做了那么多，你就这样回报我！？我从此跟你断绝关系，泰勒。你不再是我<<taylorSon>>了！"<<he>>宣告道。悉尼开玩笑地满口脏话咒骂着你离开了。
+		<<else>>
+			悉尼完全被震惊到了。："你、你什么了？！"<<person1>><<He>>尝试跟着<<his>>感觉去即兴表演。"我是说…你怎么能！好吧，如果你愿意的话就抱着这个异教徒吧，我不管了！"悉尼噘着嘴，匆匆离开了舞台。<<npcincr Sydney love -2>><<llove "Sydney">>
+		<</if>>
+		<<npcincr Sydney purity -2>><<lspurity>>
+	<<case "Taylor">>
+		"你现在什么也干不了了，<<sterlingFather>>，"你宣布到，"因为我跟卡斯已经订婚了，我们明年年初就结婚！"你吐出了舌头。
+		<<if $pregnancyspeechdisable is "f">>
+			"事实上，我们已经有了孩子。"你宣布道。
+			<<if playerBellyVisible()>>
+				你拍了拍你的<<bellyDescription "pc">>作为强调。
+			<<elseif !playerCanBreedWith($NPCList[1])>>
+				你懒得去质疑逻辑的合理性。
+			<</if>>
+		<</if>>
+		观众为你给表演增加了更加有趣的转折而欢呼。<<set $englishPlayApproval += 20>><<gapproval>><<promiscuity1>>
+
+		<<if _sydneyStatus.includes("corrupt")>>
+			悉尼笑了，愿意配着你玩一下。"没错！你得习惯着看这张脸了，因为从今以后你都会经常看到的！"<<he>>嘲弄道："希望你有子孙满堂的打算。"
+		<<else>>
+			悉尼疑惑地看向四周，"有…有吗？"<<person1>><<he>>问道，"我是说，对，确实！我们爱着对方，现在你干什么都无法分开我们。去你的，斯特林<<sterlingTitle>>!"
+		<</if>>
+		<br><br>
+
+		<<if $englishPlayKylarReplace>>
+			<<person2>><<person>>都迷惑地看着你，"你们两个蠢货都他妈不知道自己的台词吗？完美。"<<he>>说完就回到了后台。
+		<<else>>
+			<<if _kylarStatus.includes("MaxRage") or (_kylarStatus.includes("Rage") and _kylarStatus.includes("Love") and $sydneyromance is 1)>>
+				凯拉尔安静地站在台上。<<person2>><<He>>凝视着虚空，然后快速地把手伸向了自己的口袋。<span class="red"><<He>>拿出了一把刀，冲向了悉尼。</span>
+				<br><br>
+
+				"我受够你了，"凯拉尔咆哮道，"都是你的错。我们两个人过得这么幸福又愉快……但你，你非要在这露出你那丑陋的脸。我不会让你从我身边夺走<<phim>>的。"
+				<br><br>
+
+				<<if _sydneyStatus.includes("corrupt")>>
+					悉尼轻笑道："怎么？你打算捅死我吗？等报社知道了这事，第二天早上的新闻标题肯定会是《商人斯特林<<sterlingTitle>>，在圣诞前夜残忍的杀害了一个年轻乞丐！》"
+					<<person1>><<Hes>>表现出一副无畏的表情，但你可以从<<hes>>后退中看出<<He>>事实上非常紧张。"我已经失去了这世上的一切，那么也把我的生命也夺走吧！"
+				<<else>>
+					悉尼震惊地后退了一步。然后盯着凯拉尔道："什…什么，你打算把我捅死？等报社知道了这事，第二天早上的新闻标题肯定得是《商人斯特林<<sterlingTitle>>，在圣诞前夜残忍地杀害了一个年轻乞丐！》"
+					<<person1>><<He>>没能藏得住<<his>>颤抖的声音，"我已经失去了这世上的一切，那么也把我的生命也夺走吧！"
+				<</if>>
+				<br><br>
+
+				<span class="red">凯拉尔向前扑去</span>，但在你能做任何事之前，悉尼又后退了一步，撞到了圣诞树。圣诞树来回摇晃着，然后正好倒在了<<person1>><<him>>跟正冲过来的凯拉尔身上。他们摔倒了一起，刀子哐当地跌落在地，观众们倒吸了一口凉气。
+				<br><br>
+
+				你冲到他们身边，多伦看起来也打算跑向舞台。凯拉尔完全呆住了，不过悉尼试着朝你跟多伦竖起大拇指，作出"继续"的嘴型。<span class="green">你完全明白了接下来该怎么做。</span>
+				<br><br>
+
+				你跪倒在地。"不……不！我这辈子都没想要过什么，但在这个圣诞前夜，我唯一的愿望都被夺走了！卡斯……<<sterlingFather>>……"你加上了一些啜泣来增加戏剧性。
+				"这就是作为乞丐的感觉吗，卡斯？这就是失去一切，一无所有的感觉？"你捡起了刀子。"那样的话，我会在虚无中陪伴着你的，我的爱人……"
+				<br><br>
+
+				你用戏剧性的动作，假装殉情，把刀捅在了胸口和手臂之间。你发出了一声痛苦的呼喊，然后倒在了地上。舞台灯光变暗了，随后帷幕缓缓落下。
+				<br><br>
+
+				<span class="gold">观众们都站了起来，献上最热烈的掌声跟欢呼，整个大厅都被喝彩声充满了。</span><<set $englishPlayApproval += 40>><<gggapproval>><<set _tragedyAhAhAhAh to true>>
+			<<elseif _kylarStatus.includes("Rage") or (_kylarStatus.includes("Sus") and _kylarStatus.includes("Love") and $sydneyromance is 1)>>
+				"跟…跟这个妓女？！"凯拉尔大声说道，"为什么？<<person1>><<He>>永远都不会像我一样爱你！你为什么看不出来？"<<npcincr Kylar rage 5>><<ggksuspicion>>
+				<br><br>
+
+				观众们狂热地看着，没有意识到凯拉尔脱离了剧本。
+				"我尝试了一遍又一遍，来向你证明我究竟有多么爱你。但你始终都是把我撇在一边，把我当成垃圾一样。这……太让我……伤心了……"凯拉尔继续说道。<<person2>><<His>>声音变得颤抖，留下了眼泪。
+				<br><br>
+
+				<span class="gold">观众们站起身来鼓掌。</span> 悉尼难以置信地看着观众，然后，加入了掌声。 凯拉尔看起来很困惑，但最终还是振作了起来。<<set $englishPlayApproval += 20>><<gapproval>>
+				<br><br>
+
+				<<person2>><<He>>羞耻地看向了你俩，完全不知道怎么回应，<<person2>><<he>>最后冲向了后台。
+			<<else>>
+				凯拉尔羞耻地看向了你俩，完全不知道怎么回应，<<person2>><<he>>最后冲向了后台。<<npcincr Kylar rage 10>><<gggksuspicion>>
+			<</if>>
+		<</if>>
+	<<case "Sterling">>
+		"恐怕我不会允许，我的<<taylorSon>>，"你用严肃的语气说道，"听着，卡斯实际上是……你失散已久的亲人！"
+		<br><br>
+
+		观众们倒吸了一口凉气，完全没有预料到。<<if !$englishPlayKylarReplace>>凯拉尔开始惊恐地颤抖。<</if>><<set $englishPlayApproval += 15>><<gapproval>>
+		<br><br>
+
+		<<if _sydneyStatus.includes("corrupt")>>
+			悉尼笑着配合道，"这是真的，我，是<<taylorSibling>>。我会回到家里，去拿回我应得的财产！"
+		<<else>>
+			悉尼惊恐地看向四周，惊呼道"什、什么？！我失散已久的…嗯？"
+		<</if>>
+		<br><br>
+
+		<<if $englishPlayKylarReplace>>
+			<<person2>><<person>>轻蔑地看着你，"这出戏不是这么演的，你个自作聪明的家伙。"<<he>>啐了一口："滚开。"
+		<<else>>
+			为了修正这已经失控了的表演，凯拉尔插话道，"你、你错了，<<sterlingFather>>！我唯一的同辈很多年前已经死了，因为你粗心而造成的事故！现在离我们远点！"
+		<</if>>
+		<br><br>
+
+		你赶紧开溜，现在这出戏彻底乱套了。你把凯拉尔和悉尼丢下，让他们去对付观众。
+<</switch>>
+<br><br>
+
+<<if _tragedyAhAhAhAh>>
+	当帷幕完全落下之后，多伦冲上了舞台，把圣诞树扶了起来，并检查凯拉尔跟悉尼有没受伤。
+	<br><br>
+
+	<<link [[谢幕|English Play Curtain Call Early]]>><<pass 10>><</link>>
+	<br>
+<<else>>
+	这一幕以斯特林<<sterlingTitle>>的离场结束。
+	帷幕落下。给了你们几人宝贵的几分钟休息时间。休息时间很快就过去了，随着帷幕再次拉开，最后一幕开始了。
+	<br><br>
+
+	<<link [[第三幕|English Play Act Three]]>><<pass 5>><</link>>
+	<br>
+<</if>>
+
+:: English Play Act Three
+<<effects>><<run statusCheck("Kylar")>><<run statusCheck("Sydney")>>
+<<set $phase to 0>>
+<<switch $englishPlayRoles.Player>>
+	<<case "Cass">>
+		<<if $englishPlayKylarReplace>>
+			你跟<<person2>><<person>>一起登台演出最后一幕，悉尼这次不在。<<him>>得来说最后一句台词。
+			<br><br>
+
+			<<He>>面向你道："虽然很艰难，不过很高兴我们终于可以没人打扰地在一起了。"
+			作为结束的标志，这一幕以一个吻结束。你记得多伦说没必要真的吻下去，不过观众肯定会喜欢那个的。
+			<br><br>
+
+			<<link [[避免亲吻|English Play Act Three No Kiss]]>><</link>>
+			<br>
+			<<link [[亲脸颊|English Play Act Three Kiss]]>><<set $phase to 1>><</link>>
+			<br>
+			<<link [[亲嘴唇|English Play Act Three Kiss]]>><</link>><<kissvirginitywarning>>
+			<br>
+		<<else>>
+			你跟凯拉尔一起登台演出最后一幕，悉尼这次不在。最后的台词就看凯拉尔的了。
+			<br><br>
+
+			<<person2>><<He>>面对你说道："这一夜很长，不过我们终于单独在一起了。我<<sterlingFather>>是否赞成我们在一起并不重要，无论发生什么，我都不会离开你的。"
+			<br><br>
+
+			作为结束的标志，这一幕以一个吻结束。你记得多伦说没必要真的吻下去，不过观众肯定会喜欢那个的。
+			<br><br>
+
+			<<link [[避免亲吻|English Play Act Three No Kiss]]>><<npcincr Kylar rage 5>><</link>><<ggksuspicion>>
+			<br>
+			<<link [[亲凯拉尔的脸颊|English Play Act Three Kiss]]>><<set $phase to 1>><</link>>
+			<br>
+			<<link [[亲凯拉尔的嘴唇|English Play Act Three Kiss]]>><<npcincr Kylar rage -5>><</link>><<llksuspicion>><<kissvirginitywarning>>
+			<br>
+		<</if>>
+	<<case "Taylor">>
+		最后一幕开始了，悉尼站在你的身边。
+		<<if $englishPlayKylarReplace>>
+			<<person2>><<person>>不会参演最后的环节。
+		<<else>>
+			凯拉尔不会参演最后的环节。
+			<<if !isLoveInterest("Kylar")>>
+				你瞥了一眼后台确认<<person2>><<he>>是不是在看着。<span class="green">多伦给你竖起了大拇指。</span>
+			<</if>>
+		<</if>>
+		悉尼现在得说出最后一句台词。
+
+		"你不必担心,我亲爱的泰勒。只要我们对彼此的爱依然真挚，就没有什么大不了的。我不在乎其他人对我们婚姻的看法，我今晚只需要你的爱作为慰藉。"
+		<br><br>
+
+		作为结束的标志，这一幕以一个吻结束。你记得多伦说没必要真的吻下去，不过观众肯定会喜欢那个的。
+		<br><br>
+
+		<<link [[避免亲吻|English Play Act Three No Kiss]]>><</link>>
+		<br>
+		<<link [[亲悉尼的脸颊|English Play Act Three Kiss]]>><<npcincr Sydney love 1>><<set $phase to 1>><</link>><<glove "Sydney">>
+		<br>
+		<<link [[亲悉尼的嘴唇|English Play Act Three Kiss]]>><<npcincr Sydney love 5>><</link>><<gglove "Sydney">>
+		<br>
+
+	<<case "Sterling">>
+		你的角色在最后一幕并不登场，所以你得在后台等着。你得等到演出结束。你看到悉尼和<<if $englishPlayKylarReplace>><<person2>><<person>><<else>>凯拉尔<</if>>消失在帷幕的另一边。
+		<br><br>
+
+		你耐心地等待着表演继续，不过你开始感到好奇。演员逐渐安静下来，你透过帷幕看向舞台。
+		你轻轻地把沉重的帷幕挪开了一点点，刚好足够让你瞥见舞台。你看见<<if $englishPlayKylarReplace>><<person2>><<person>><<else>>凯拉尔<</if>>和悉尼紧张地站在一起，避免着眼神接触。
+		<br><br>
+
+		你记得这一部分。最后一幕要求卡斯跟泰勒接吻。<span class="blue">悉尼正盯着你。</span>多伦说没必要真的吻下去，不过观众肯定会对那个有更积极的反应。
+		<br><br>
+
+		<<if $englishPlayKylarReplace>>
+			<<link [[鼓励|English Play Act Three Kiss]]>><<npcincr Sydney purity -2>><</link>><<lspurity>><<gapproval>>
+			<br>
+		<<else>>
+			<<link [[鼓励|English Play Act Three Kiss]]>><<npcincr Kylar love -2>><<npcincr Sydney purity -2>><</link>><<llove "Kylar">><<lspurity>><<gapproval>>
+			<br>
+		<</if>>
+		<<link [[什么也不做|English Play Act Three No Kiss]]>><</link>><<lapproval>>
+		<br>
+<</switch>>
+
+:: English Play Act Three Kiss
+<<effects>><<run statusCheck("Kylar")>><<run statusCheck("Sydney")>>
+<<switch $englishPlayRoles.Player>>
+	<<case "Cass">>
+		<<if $englishPlayKylarReplace>>
+			<<if $phase is 1>>
+				你选择保持友善，脸颊上的亲一下就足够了。<<person2>><<person>>似乎对你表达的感情感到高兴<span class="teal">观众们似乎也是这么想的。</span><<set $englishPlayApproval += 10>><<gapproval>>
+			<<else>>
+				你靠近<<person1>>，以便给观众献上他们所期待的吻。"噢，操，真是太好了。"<<person2>><<person>>说道。拉近距离让你亲上，<span class="green">去得到观众的认可。</span>
+				<<He>>从你的吻中解脱出来之后，给了你一记响亮的耳光。
+				<<takeKissVirginity $NPCList[1] "consensual">>
+				<<set $englishPlayApproval += 20>><<ggapproval>>
+			<</if>>
+		<<else>>
+			<<if $phase is 1>>
+				你选择保持友善，脸颊上的亲一下就足够了。凯拉尔似乎对你表达的感情感到高兴<span class="teal">观众们似乎也是这么想的。</span><<set $englishPlayApproval += 10>><<gapproval>>
+			<<else>>
+				<<if _kylarStatus.includes("Love")>>
+					你觉得试试给观众们一场真正的表演了，从凯拉尔的眼神判断，<<person2>><<he>>也是这么想的。你转过来，向观众们展示你跟凯拉尔嘴唇的贴合。<<He>>变得更加大胆，把<<his>>舌头伸进了你的嘴里。这种状态一直持续到了你不能坚持为止。观众们兴奋地呐喊着。<span class="green">他们似乎在享受着每一秒。</span>
+				<<else>>
+					凯拉尔决定亲你的脸颊，但当<<person2>><<him>>准备亲到你脸上的时候，你突然把脸转了过来，亲上了<<his>>嘴唇。<<he>>一开始被震惊到了，不过很快就适应了起来。<<He>>慢慢地把你推开，是为了闭上<<his>>眼睛重新吻你一遍。<span class="green">观众们打出了响亮的喝彩声。</span> 他们能看出来这不是演戏。
+				<</if>>
+				<<takeKissVirginity "Kylar" `($kylarenglish gte 1?"loveInterest":"romantic")`>>
+				<<if _npcKissVirginTemp>>
+					<br><br>
+					"这，这是我的初吻，"<<his>>眼睛闪闪发光地低声说道，"这比我梦想的还要棒。"
+				<</if>>
+				<<set $englishPlayApproval += 20>><<ggapproval>>
+			<</if>>
+		<</if>>
+	<<case "Taylor">>
+		<<if $phase is 1>>
+			<<if _sydneyStatus.includes("corrupt")>>
+				悉尼满怀期待地看着你。你径直走上前去，在<<person1>><<his>>脸颊上亲了一口。<<He>>无声地笑着让你抱了一会。"你欠我一个真的吻。"<span class="teal">观众们都为这温馨的一幕陶醉不已。</span>
+			<<elseif $sydneyromance is 1>>
+				突如其来的安静让悉尼有些紧张。你利用这个机会拉近跟<<person1>><<his>>距离，在<<his>>脸颊上亲了一下。<<He>>用手环抱着你，咯咯地笑着。你把<<him>>紧紧地抱在怀里一段时间。<span class="teal">观众们都为这温馨的一幕陶醉不已。</span>虽然你们的行为纯洁无暇，但在这么多人的注视下，足以让悉尼脸红。
+			<<else>>
+				突如其来的安静让悉尼有些紧张。你利用这个机会拉近跟<<person1>><<his>>距离，在<<his>>脸颊上亲了一下。悉尼被震惊得一时忘记了呼吸。你把<<him>>紧紧地抱在怀里一段时间。<span class="teal">观众们都为这温馨的一幕陶醉不已。</span>虽然你们的行为纯洁无暇，但在这么多人的注视下，足以让悉尼脸红。
+			<</if>>
+			<<set $englishPlayApproval += 10>><<gapproval>>
+		<<else>>
+			<<if _sydneyStatus.includes("corrupt")>>
+				悉尼搂住了你的腰，把你拉了过来。"过来这里，我的爱人。"<<person1>><<He>>向前倾身吻了上来。你们的嘴唇相接，随后<<he>>变得更加大胆起来。<<He>>将舌头探进你的嘴里，与你的舌头缠绵在了一起，完全无视了<span class="green">正看着你们欢呼的观众。</span><<He>>一直吻到满足为止，"我想我可以习惯更频繁的上台表演。"<<he>>低声说道。
+			<<else>>
+				悉尼在你面前坐立不安。"所以……我们要——"你直接把<<person1>><<him>>拉近，吻上了<<his>>嘴唇来打断<<him>>。当你们的嘴唇相触时，<<he>>惊讶地瞪大了双眼。<span class="green">观众欢呼倾注着。</span>你满足之后，悉尼退了一步尝试去理解刚才发生了什么。<<his>>脸红程度代替<<him>>说明了<<him>>有多享受。
+			<</if>>
+			<<takeKissVirginity "Sydney" `($sydneyromance is 1?"loveInterest":"romantic")`>>
+			<<if _npcKissVirginTemp>>
+				<br><br>
+				<<if _sydneyStatus.includes("corrupt")>>
+					"也是我难忘的第一次。"<<he>>低声说道。
+				<<else>>
+					"那是我的初吻，"<<he>>低声对你说道，"而大家都看到了……"<<he>>害羞地微笑着看向别处。
+				<</if>>
+				<<npcincr Sydney love 10>><<gglove "Sydney">>
+			<</if>>
+			<<set $englishPlayApproval += 20>><<ggapproval>>
+		<</if>>
+	<<case "Sterling">>
+		你对悉尼快速地点了下头。<<person1>><<He>>领会到了暗示，抓住了机会。
+		<br><br>
+
+		悉尼深吸了一口气，快速移动到了<<if $englishPlayKylarReplace>><<person2>><<person>><<else>>凯拉尔<</if>>身边。
+		<<if _sydneyStatus.includes("corrupt") and C.npc.Sydney.virginity.kiss isnot true and (C.npc.Kylar.virginity.kiss isnot true or $englishPlayKylarReplace)>>
+			抓住了<<person2>><<his>>衣服。悉尼豁了出去，亲上了<<him>>的嘴唇。
+			<br><br>
+
+			<span class="green">观众们为他们喝彩。</span>
+			<<if $englishPlayKylarReplace>>
+				<<person2>><<person>>完全被震惊到了，不过还是挺高兴的。
+			<<else>>
+				<span class="red">凯拉尔看起来极其厌恶跟恐惧。</span>
+			<</if>>
+		<<else>>
+			然后给<<person2>><<his>>脸颊上亲了一下，让<<him>>吃了一惊。
+			<br><br>
+
+			<span class="green">观众们为他们喝彩</span>,
+			<<if $englishPlayKylarReplace>>
+				<<person2>><<person>>看上去很满意，不过显然渴求更进一步。
+			<<else>>
+				然而凯拉尔似乎完全被吓坏了。
+			<</if>>
+		<</if>>
+		<<set $englishPlayApproval += 20>><<gapproval>>
+<</switch>>
+<br><br>
+
+演出结束了，唯一剩下的就是演员登台致谢了。
+<br><br>
+
+<<link [[谢幕|English Play Curtain Call]]>><<pass 5>><</link>>
+<br>
+
+:: English Play Act Three No Kiss
+<<effects>><<run statusCheck("Kylar")>><<run statusCheck("Sydney")>>
+<<switch $englishPlayRoles.Player>>
+	<<case "Cass">>
+		<<if $englishPlayKylarReplace>>
+			<<person2>><<person>>逐渐向你靠近，但你躲开了<<his>>的吻，尽可能地跟<<him>>保持距离。"你个古板的骚货，"<<he>>低声说道："给观众们一点惊喜好吗？"
+		<<else>>
+			凯拉尔逐渐靠近你，但你躲开了<<person2>><<his>>的吻，尽可能地跟<<him>>保持距离。凯拉尔看起来很不安，但还是决定不让事情变得更加糟糕。
+		<</if>>
+	<<case "Taylor">>
+		<<if _sydneyStatus.includes("corrupt")>>
+			悉尼朝你接近，准备亲下去，不过你即时避开了<<person1>><<him>>。你跟设法<<him>>保持了一点距离，悉尼看上去有点失望。"啊，你真扫兴。"<<he>>低声说道，然后把你拉近了些紧紧地抱住了你。"记住，你欠我一个吻。"<<He>>轻笑道。
+		<<else>>
+			悉尼紧张地等着你的动作。你没有吻他，但是把<<person1>><<him>>拉近了，给了<<him>>一个快速地拥抱。你抱住了悉尼无比漫长的一段时间，最后才松开了<<him>>。你听到观众只有一些稀稀拉拉礼节性的掌声，可以明显看出他们的无聊。
+		<</if>>
+	<<case "Sterling">>
+		你就这样盯着两人。
+		<br><br>
+
+		悉尼在快速移动到<<if $englishPlayKylarReplace>><<person2>><<person>><<else>>凯拉尔<</if>>身边之前深吸了一口气，然后在隔了<<person2>><<him>>差不多二十厘米的距离，演了一个无比明显的假吻。
+		<br><br>
+
+		<<if $englishPlayKylarReplace>>
+			<<He>>看上去很失望，举起双手表示抗议。
+		<<else>>
+			凯拉尔看上去如释重负。
+		<</if>>
+<</switch>>
+<span class="red">观众们看上去很失望。</span>
+<br><br>
+
+演出结束了，唯一剩下的就是演员登台致谢了。
+<br><br>
+
+<<link [[谢幕|English Play Curtain Call]]>><<pass 5>><</link>>
+<br>
+
+:: English Play Curtain Call
+<<effects>>
+<<switch $englishPlayRoles.Player>>
+	<<case "Cass">>
+		过了一会儿，悉尼从幕后出现了，你跟他们并排在站在一起，鞠躬向观众致谢。
+	<<case "Taylor">>
+		随着演出继续，没过多久<<if $englishPlayKylarReplace>><<person2>><<person>><<else>>凯拉尔<</if>>就从后台出现，跟你和悉尼站在一起，向观众鞠躬致谢。
+	<<case "Sterling">>
+		随着演出终于结束，你从帷幕后面出现，跟悉尼和<<if $englishPlayKylarReplace>><<person2>><<person>><<else>>凯拉尔<</if>>站在一起，鞠躬向观众致谢。
+<</switch>>
+<<if $englishPlayApproval lte 50>>
+	<span class="red">你得到了一些嘲笑和同情的掌声。</span><<stress 12>><<trauma 6>><<ggstress>><<gtrauma>>
+<<elseif $englishPlayApproval lte 75>>
+	<span class="teal">大家以热烈的掌声欢迎你。</span><<stress -6>><<lstress>>
+<<else>>
+	<span class="green">大家都为你站起来鼓掌。</span><<trauma -24>><<lltrauma>>
+<</if>>
+<br><br>
+
+你跟他们两个回到后台，多伦跟你打了声招呼。
+<<npc Doren 3>><<person3>>
+<<if $englishPlayApproval lte 50>>
+	<<He>>以宽慰地笑容看着你们说道："你们只要记得这个就好了，你们登台不是为了表演什么让人最难忘的节日，而只是在把大家聚在一起，提醒他们节日的到来。"<<He>>不舒服地看了观众一眼，"重要的是你们尝试过了。"
+<<elseif $englishPlayApproval lt 75>>
+	"你们做得很棒！"<<he>>说道，"我可以看出观众每一秒都在享受着你们的表演。如果运气好的话 ，<<nnpc_Title "Leighton">>或许会允许我们明年有更多这样的节目，谢谢你们为演出做的练习。"<<npcincr Doren love 1>>
+<<else>>
+	"不敢相信，"<<he>>说道，"你们的演出无人能及，太完美了！"多伦骄傲地笑着"过来这边，你们太让我自豪了！"<<He>>给了你们一个热情的拥抱，紧紧地抱住了你们三个。<<npcincr Doren love 3>>
+<</if>>
+<<if $englishPlayApproval gte 75>>
+	<<set $englishPlayWell to 1>>
+	<<earnFeat "Rich Hearts">>
+	<<status 40>><<gggcool>>
+	<<famesocial 40>>
+<</if>>
+<br><br>
+
+你道别走下舞台，让下一组人上场。当你经过的时候，有些观众送上赞美,但另一些人的评论则没有那么温和。
+<br><br>
+
+<<link [[继续|English Play Curtain Call 2]]>><</link>>
+<br>
+
+:: English Play Curtain Call 2
+<<effects>><<run statusCheck("Kylar")>><<run statusCheck("Sydney")>>
+
+悉尼转身看向你，"你那边干得不错。"<<person1>><<he>>说道。
+<<if $englishPlayApproval lte 50>>
+	"考虑到各种问题的话，结果可能会还会更糟糕。"
+<<elseif $englishPlayApproval lte 75>>
+	"我觉得我们做的不错，我们所有人。"
+<<else>>
+	"我不觉得我们能干得更好了。"
+<</if>>
+<br><br>
+
+<<He>>想继续说下去，但是西里斯突然从后面拥住<<him>>，打断了<<his>>的话。"我简直不敢相信我的眼睛！我的小悉尼，真正的演员！"<<nnpc_he "Sirris">>满怀热情，"别告诉你的朋友们，在台上你无疑是最棒的那个。"<<nnpc_he "Sirris">>笑了起来。
+两人继续交谈着，直到西里斯准备把悉尼带走，悉尼犹豫了一下。"<<sydneymum>>我其实想留下来观看其他的演出。"西里斯看上去很惊讶，不过还是同意了。悉尼朝你挥了挥手，然后选了个位置。
+<br><br>
+
+<<if $englishPlayKylarReplace>>
+	你想听一听<<person2>><<person>>的感想，然而你哪里都找不到<<he>>。<<he>>肯定一演完就走了。
+<<elseif !$englishPlayKylarLeave>>
+	凯拉尔瞥了悉尼一眼，然后转向你，"我真的得走了，"<<person2>><<He>>说道，"我今天玩得很开心……我不过我很高兴这终于结束了。之后再跟你们聊天，好吗？"<<He>>拥抱了你一下，然后朝着出口匆匆离开了。
+<</if>>
+<<storeon "play_upper">>
+<<storeon "play_lower">>
+<<endevent>>
+<<clearNPC actor_replacement>>
+<br><br>
+
+你现在可以离开了，不过留下来支援你的同学会让他们更加亲近你。
+<br>
+<<link [[留下观看表演 (0:20)|English Play Watch]]>><<trauma -2>><<tiredness 2>><<status 1>><<pass 20>><</link>><<ltrauma>><<gtiredness>><<gcool>>
+<br><br>
+
+<<link [[离开市礼堂 (0:01)|Cliff Street]]>><<englishplayfinish>><<pass 1>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+
+:: English Play Curtain Call Early
+<<effects>><<run statusCheck("Kylar")>><<run statusCheck("Sydney")>>
+<<npc "Doren" 3>><<person3>>
+<<He>>在确认了凯拉尔和悉尼都还还之后，收起了刀子，帮他们两个站了起来。"我们之后再谈。在此之前你们得鞠躬致意。"<<He>>走到舞台上，示意让帷幕再次打开。
+<br><br>
+
+<span class="gold">观众们爆发出震耳欲聋的喝彩声，所有人都站起来为你们鼓掌，你看不到哪怕有一个人是坐着的。</span>你鞠了躬，悉尼紧跟着你。凯拉尔想块木板一样挺着，完全搞不清楚<<person2>><<he>>脸上的表情是什么意思。
+<br><br>
+
+你们都会带了后台，再次见到了多伦。<<person3>><<He>>一见到你们就展开双手抱紧了你们三个。
+
+"下次再干这种事之前记得先提醒我一下！我还以你真的要被捅穿了，<<nnpc_lass "Sydney">>，"<<he>>对悉尼说道。悉尼看起来也不太确定<<person1>><<himself>>。
+<br><br>
+
+<<if $englishPlayApproval gte 75>>
+	"真是太不可思议了，你们完全颠覆了这出戏，还成功了。你们生来就是要上舞台的人，你们所有人都是。"
+	<<set $englishPlayWell to 1>>
+	<<earnFeat "Rich Hearts">>
+	<<status 40>><<gggcool>>
+	<<famesocial 40>>
+<<else>>
+	"表演本身很糙，但在最后你们成功地震撼到了观众，干得漂亮！"
+<</if>>
+<br><br>
+
+多伦放开了你，凯拉尔一言不发地跑掉了。几分钟后，你听到了门被猛然打开又关上。多伦担忧地看着那边，但还是让你和悉尼先离开了。
+<br><br>
+
+<<link [[继续|English Play Curtain Call 2]]>><<set $englishPlayKylarLeave to true>><</link>>
+<br>
+
+:: English Play Watch
+<<effects>>
+
+<<if !$englishPlayWatch>>
+	<<set $englishPlayWatch to 0>>
+<</if>>
+<<set $englishPlayWatch ++>>
+<<switch $englishPlayWatch>>
+	<<case 1>>
+		<<randomPlay>>
+		<<if $englishPlayRoles.Player is "none" and !$englishPlaySydneyWatch and Time.hour lte 20>>
+			<br><br>
+			悉尼的演出就在下一场。
+		<</if>>
+	<<case 2>>
+		<<if $englishPlayRoles.Player is "none" and !$englishPlaySydneyWatch>>
+			<<set $englishPlaySydneyWatch to true>>
+			<<npc Sydney>><<person1>><<run statusCheck("Sydney")>>
+			悉尼参演了一部戏剧，那是关于一个乞丐跟一个富二代相爱的故事，这让那个富二代的父母很不高兴。
+			<br><br>
+
+			<<He>>扮演乞丐的角色，然后
+			<<if _sydneyStatus.includes("corrupt")>>
+				当<<he>>脱离剧本的时候，其他演员不知所措。
+				<<if $pregnancyspeechdisable is "f">>
+					<<if C.npc.Sydney.gender is "m">>
+						<<He>>当着<<he>>父母的面，大声地宣布了<<him>>怀孕了。
+					<<else>>
+						<<He>>当着<<he>>父母的面，大声地宣布了富二代让<<him>>怀孕了。
+					<</if>>
+				<<else>>
+					<<He>>大声地宣布，<<he>>跟<<his>>情人已经私奔并结合在一起了。
+				<</if>>
+				观众们为这一意料之外的转折欢呼喝彩着。其他演员花了一点时间反应过来，也跟着演了下去。
+				<br><br>
+
+				<<if $sydneyromance is 1 and isLoveInterest("Sydney")>>
+					你知道这只是表演，但当悉尼亲上了另一个演员的脸颊时，你不禁嫉妒了起来。
+				<<else>>
+					你情不自禁地被这展示逗乐了。
+				<</if>>
+			<<else>>
+				坚持剧本，尽<<him>>最大的努力去把情感和优雅融入角色。
+				一切如你所料，富二代的父母最终还是同意了这段关系。另一个演员在演出的最后亲了悉尼的脸颊一下，悉尼的脸变红了起来。
+				<br><br>
+
+				<<if $sydneyromance is 1 and isLoveInterest("Sydney")>>
+					你知道这只是表演，但你忍不住对这样的演出感到嫉妒。
+				<<else>>
+					悉尼的尴尬让你忍俊不禁。
+				<</if>>
+			<</if>>
+		<<else>>
+			<<randomPlay>>
+		<</if>>
+	<<case 3>>
+		<<randomPlay>>
+		<<if !$englishPlayRobinWatch and C.npc.Robin.init is 1 and getRobinLocation() is "englishPlay" and Time.hour lte 20>>
+			<br><br>
+			罗宾的演出在下一场。
+		<</if>>
+	<<case 4>>
+		<<if !$englishPlayRobinWatch and C.npc.Robin.init is 1 and getRobinLocation() is "englishPlay">>
+			<<set $englishPlayRobinWatch to true>>
+			<<npc Robin>><<person1>>
+				罗宾参与了一个演出，讲述了未来一场虚构战争中的圣诞日休战。<<He>>扮演了一棵圣诞树。
+				<br><br>
+
+				罗宾的角色第一个死了，你佩服<<him>>极其逼真的树木死亡音效。
+		<<else>>
+			<<randomPlay>>
+		<</if>>
+	<<default>>
+		<<randomPlay>>
+<</switch>>
+<<endevent>>
+<br><br>
+
+<<if Time.hour gte 21>>
+	随着演出结束，学生开始鞠躬谢幕，而大部分观众已经起身离开了。喝彩与嘈杂的人声充斥着大厅。
+	<br><br>
+
+	<<if C.npc.Robin.init is 1 and $robinmissing is 0 and $englishPlayRobinWatch>>
+		<<link [[跟罗宾一起走 (0:10)|English Play Leave Robin]]>><<englishplayfinish>><<pass 1>><<npcincr Robin love 2>><</link>><<glove "Robin">>
+		<br>
+	<</if>>
+	<<if $englishPlayRoles.Player isnot "none" or $englishPlaySydneyWatch>>
+		<<link [[等待悉尼 (0:10)|English Play Wait Sydney]]>><<englishplayfinish>><<pass 1>><<npcincr Sydney love 2>><</link>><<glove "Sydney">>
+		<br>
+	<</if>>
+	<<link [[跟其他学生一起离开 (0:10)|English Play Leave Students]]>><<englishplayfinish>><<status 5>><<pass 10>><</link>><<ggcool>>
+	<br><br>
+	<<link [[独自离开 (0:01)|Cliff Street]]>><<englishplayfinish>><<pass 1>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	<<link [[观看更多演出 (0:20)|English Play Watch]]>><<trauma -2>><<tiredness 2>><<status 1>><<pass 20>><</link>><<ltrauma>><<gtiredness>><<gcool>>
+	<br><br>
+	<<link [[离开市礼堂 (0:01)|Cliff Street]]>><<englishplayfinish>><<pass 1>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: English Play Leave Robin
+<<effects>>
+<<npc Robin>><<person1>>
+你跟观众们一起鼓掌，等待罗宾从后台出来。
+<br><br>
+
+<<He>>终于出现了，一看到你就笑了出来，"嘿！抱歉让你等了这么久，那套戏服太讨厌了。我表现得怎么样？"
+<br><br>
+
+<<link [[交谈 (0:15)|English Play Robin Normal]]>><<npcincr Robin love 1>><<pass 15>><</link>><<glove>>
+<br>
+<<link [[安抚 (0:15)|English Play Robin Reassure]]>><<npcincr Robin love 1>><<npcincr Robin trauma -2>><<pass 15>><</link>><<glove>><<lrtrauma>>
+<br>
+<<if $robinromance is 1>>
+	<<link [[对表演的奖励 (0:15)|English Play Robin Lewd]]>><<pass 15>><<npcincr Robin love 1>><</link>><<promiscuous1>><<glove>>
+	<br>
+<</if>>
+
+:: English Play Robin Normal
+<<set $location to "home">><<set $outside to 0>><<effects>>
+
+你跟罗比聊了下其他的演出。你们在会孤儿院的路上愉快地交谈着，<<He>>甚至没注意到你在转移话题。
+<br><br>
+
+<<robinoptions>>
+
+:: English Play Robin Reassure
+<<set $location to "home">><<set $outside to 0>><<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你、你干得很棒！非常棒，你是最好的那棵树。"你说道，在<<he>>面前手舞足蹈。
+<<elseif $speech_attitude is "bratty">>
+	"你是这世界上最可爱的那棵树。"你揉了揉<<his>>头发说道。
+<<else>>
+	"你是一棵很好的树，"你说道，"最好的那棵。"
+<</if>>
+<<He>>脸红了，你俩一起走回了孤儿院。
+<br><br>
+
+<<robinoptions>>
+
+:: English Play Robin Lewd
+<<set $location to "home">><<set $outside to 0>><<effects>>
+"你最为一棵树做得很好。"你把罗宾拉近说道。
+<<if C.npc.Robin.gender is "f">>
+	"为什么不给我展示一下你如何授粉的呢？"
+<<else>>
+	"为什么不给我展示一下木料究竟要多结实呢？"
+<</if>>
+<<promiscuity1>>
+
+<<He>>的脸完全红透了，在你们回到孤儿院的路上都一言不发。你一进到<<his>>卧室，就扑向了<<him>>。
+<br><br>
+
+<<link [[继续|English Play Robin Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+
+:: English Play Robin Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 200>><<npckiss>><<set $enemyarousalmax to 500>>
+
+	你把罗宾推到在床，爬到了<<his>>身上。在你们嘴唇相接时，<<him>>开始喘息。<<takeKissVirginity "Robin" `($robinromance is 1?"loveInterest":"romantic")`>>
+	<br><br>
+<</if>>
+
+<<set $enemyanger to 0>>
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|English Play Robin Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|English Play Robin Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: English Play Robin Sex Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	罗宾搂着你道，"我能有你真是太幸运了。"把<<his>>埋在了你脖子上。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+<<elseif $enemyhealth lte 0>>
+
+	"别这么粗鲁！"罗宾说道。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+<<elseif $finish is 1>>
+
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+<<npc Robin>><<person1>>
+
+<<robinoptions>>
+
+:: English Play Wait Sydney
+<<effects>><<run statusCheck("Sydney")>><<set $corruptionEvent to 1>>
+<<npc Sydney>><<person1>>
+你等待着悉尼。你最后在人群里找到了<<him>>。<<He>>看上去也在找着你，你挥舞着手让<<him>>过来。
+<br><br>
+
+<<He>><<if _sydneyStatus.includes("corrupt")>>迅速地<<else>>笨拙地<</if>>穿过了人群。
+"很高兴我不是唯一一个坚持看到最后的人，你喜欢其他的戏剧吗？"
+<<if _sydneyStatus.includes("corrupt")>>
+	真不敢相信其他演员们的性欲究竟有多强，但我敢肯定，其它的一些学生脑子里想的肯定也是那个。"
+<<else>>
+	我真替多伦感到难过，得对付那么多的熊孩子和…异教徒。"
+<</if>>
+<br><br>
+
+<<link [[交谈|English Play Leave Sydney]]>><<set $phase to 1>><<npcincr Sydney love 1>><</link>><<glove>>
+<br>
+<<if _sydneyStatus.includes("corrupt")>>
+	<<link [[赞美|English Play Leave Sydney]]>><<set $phase to 2>><<npcincr Sydney love 1>><<npcincr Sydney purity -5>><</link>><<glove>><<llspurity>>
+	<br>
+<<else>>
+	<<link [[赞美|English Play Leave Sydney]]>><<set $phase to 2>><<npcincr Sydney love 1>><<npcincr Sydney purity 5>><</link>><<glove>><<ggspurity>>
+	<br>
+<</if>>
+<<if $sydneyromance is 1>>
+	<<link [[拉悉尼到后台|English Play Backstage Sydney Pull]]>><<npcincr Sydney purity -2>><<npcincr Sydney lust 5>><</link>><<lspurity>><<gslust>><<promiscuous1>><<sydneyWarning>>
+	<br>
+<</if>>
+
+:: English Play Backstage Sydney Pull
+<<effects>><<run statusCheck("Sydney")>>
+<<if _sydneyStatus.includes("corrupt")>>
+	"性欲，嗯？我就给你看看什么是性欲。"
+<<else>>
+	"那么为什么不尝试一下融入呢？我们也可以成为异端。"
+<</if>>
+在<<he>>能回答之前，你牵着悉尼的手，把<<him>>拉过来后台的门。<<takeHandholdingVirginity "Sydney" "romantic">><<promiscuity1>>
+
+<<if $corruptionRollover is 1>>
+	<<unset $corruptionRollover>>
+	当你吧<<him>>摁在门上的时候，<<His>>脸变得通红。"现在？就在这里？这……"<<He>>看了下四周，确实只有你。"我的心跳的好快，我……好吧，我可以。"<span class="lewd">看起来欲望充斥着<<his>>。</span>
+<<elseif _sydneyStatus.includes("corrupt")>>
+	<<He>>笑道："你觉得有人在听着吗？我觉得可以给他们另一场表演。"
+<<else>>
+	<<His>>的脸变得通红。"在...在这里？！万一有人听到了——"你用吻止住了<<him>>的话语。<<takeKissVirginity "Sydney" `($sydneyromance is 1?"loveInterest":"romantic")`>>
+<</if>>
+<br><br>
+<<sydneyLewd>>
+<br><br>
+
+<<link [[继续|English Play Backstage Sydney Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+
+:: English Play Backstage Sydney Sex
+<<run statusCheck("Sydney")>><<set $corruptionEvent to 1>>
+<<if $sexstart is 1>>
+	<<set $daily.sydney.sex = ($daily.sydney.sex || 0) + 1>><<set $sydney.sexTotal += 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 500>>
+	<<set $enemyarousalmax to 600>>
+	<<if _sydneyStatus.includes("corrupt")>>
+		<<set $enemyarousalmax += 100>>
+	<<elseif _sydneyStatus.includes("pure")>>
+		<<set $enemyarousalmax -= 100>>
+	<</if>>
+	<<if _sydneyChastity and $NPCName[$NPCNameList.indexOf("Sydney")].chastity.anus.includes("shield")>>
+		<<set $enemyarousalmax -= 100>>
+	<</if>>
+<</if>>
+
+<<set $enemyanger to -10>>
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|English Play Backstage Sydney Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|English Play Backstage Sydney Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: English Play Backstage Sydney Sex Finish
+<<set $outside to 0>><<effects>><<run statusCheck("Sydney")>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<if $corruptionRollover is 1>>
+		<<unset $corruptionRollover>>
+		"那、那真是太不可思议了，"<<he>>喃喃自语道，"我想……我想再做一次，然后……再一次。"<<he>>凝视着你的眼睛 "<span class="lewd">我感觉我打开了新世界的大门。</span>"
+	<<else>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust">>
+				"那……那也是演出的一部分吗？"<<He>>笑道。
+			<<default>>
+				"谢谢你给我的私人表演。"<<he>>笑道。
+		<</switch>>
+	<</if>>
+	<<if _sydneyChastity and $sydneyChastityKnown>>
+		<<sydneyChastityMessage>><<npcincr Sydney lust 3>><<ggslust>>
+	<<else>>
+		<<npcincr Sydney lust -20>><<lllslust>>
+	<</if>>
+	<<npcincr Sydney purity -2>><<lspurity>>
+	<br>
+	<<sydneyFinish>>
+	<<tearful>>你站了起来，悉尼不情不愿地和你分开了。
+<<elseif $enemyhealth lte 0>>
+	<<if $corruptionRollover is 1>>
+		<<unset $corruptionRollover>>
+		悉尼发出了一声闷哼，然后迅速用手捂住了自己的嘴巴。"这、这真的……"<<He>>盯着你的眼睛。"我想我喜欢你粗暴地对待我。<span class="lewd">这太疯狂了。</span>"
+	<<else>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					悉尼发出了一声痛哼，然后迅速用手捂住了自己的嘴巴。<<He>>看上去很羞愧，"我……我觉得已经足够了……"
+				<<else>>
+					"嘿、嘿！停下！求你了！"悉尼迅速地和你分开了。"那、那真的有点痛……我是说，我确实有点喜欢，但是……"<<his>>脸红了，看向了旁边。"大……大概我们之后有时间……"
+				<</if>>
+			<<case "corrupt" "corruptLust">>
+				悉尼喘着粗气躲开了你，"我喜欢你粗暴地对我，"<<he>>说道，"不过我们留着之后再做。"
+			<<default>>
+				"哎哟！等等，太过了！"<<He>>迅速地从你身边退开了，"我觉得我们需要根据我能承受多少来拟定一个指导方案。"
+		<</switch>>
+	<</if>>
+	<<npcincr Sydney lust 5>><<gglust>>
+	<br><br>
+	<<tearful>>你站了起来，悉尼也慢慢地起身。
+<<else>>
+	<<if $corruptionRollover is 1>>
+		<<unset $corruptionRollover>>
+		"停……停下了？但是我们才……"<<he>>失望地撅起嘴。"我们可以……之后继续这个吗？求你了？我……<span class="lewd">感觉我打开了新世界的大门</span>我想要继续。"
+	<<else>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					"不…不做了？但是我…我还..."<<he>>仍紧紧拥着你，话语开始变得断断续续："好-好吧..."
+				<<else>>
+					悉尼紧张的看着你，"我没……做错什么，对吧？"
+				<</if>>
+			<<case "corrupt">>
+				悉尼撅起嘴，但还是离开了你，"我们之后继续，"<<he>>说道，"求你了？"
+			<<case "corruptLust">>
+				悉尼咕哝着： "太扫兴了！但行吧，我们可以下次。"
+			<<default>>
+				"噢，好吧，我们可以停下。"<<He>>看上去失望了一会儿，不过还是对你微笑。
+		<</switch>>
+	<</if>>
+	<<npcincr Sydney lust 5>><<npcincr Sydney purity 2>><<gglust>><<gspurity>>
+	<br><br>
+	<<tearful>>你站了起来，悉尼也慢慢地起身。
+<</if>>
+<br><br>
+<<clotheson>>
+<<endcombat>>
+<<npc Sydney>><<person1>>
+
+<<link [[继续|English Play Leave Sydney]]>><<set $phase to 3>><</link>>
+<br>
+
+:: English Play Leave Sydney
+<<effects>><<run statusCheck("Sydney")>>
+
+<<if $phase is 1>>
+	在出去的路上，你和悉尼聊着其他的表演，看起来大部分的学生都玩得挺开心。
+<<elseif $phase is 2>>
+	<<if $englishPlayRolePlayed isnot "none">>
+		"你干得很好，我应该找不到比你更好的搭档了。"
+		<br><br>
+
+		<<He>>害羞地低下了头，然后开心地抱住了你。"谢谢。"
+	<<else>>
+		<<if _sydneyStatus.includes("corrupt")>>
+			"那个转折你加得真好，剧本里不是那样写的，对吧？"你问道。
+			<br><br>
+
+			<<He>>自豪地看向你。"都是我原创的，也许我就是为登上舞台而生的！"
+		<<else>>
+			"我很高兴你能保持专业素养到最后，"你说道，"你比其他演员表现得要好多了。"
+			<br><br>
+
+			<<He>>害羞地低下了头，然后开心地抱住了你。"谢谢。"
+		<</if>>
+	<</if>>
+<<else>>
+	你和悉尼从后台溜了出来，抓紧最后一分钟整理好你们的衣服，尝试隐藏起你们的性奋。
+<</if>>
+<br><br>
+
+你们两个出到了峭壁街。
+<<set $bus to "cliff">>
+<<sydneyOptionsLeave>>
+
+:: English Play Leave Students
+<<effects>>
+你跟一群学生待在一起，他们跟你说笑着一些更加有趣的演出。
+<br><br>
+
+<<generates1>>
+其中一个学生，<<person1>><<person>>，似乎对你有兴趣。
+<<if $englishPlayRolePlayed isnot "none">>
+	<<if $englishPlayApproval gte 90>>
+		"你把戏剧的风头给抢了，"<<he>>说道，"你真棒，跟我们待一会儿怎么样？后台已经没人了，我可以……奖励你。"
+	<<elseif $englishPlayApproval gte 75>>
+		"你做得很好，"<<he>>说道，"跟我们待一会儿怎么样？后台已经没人了，我可以……奖励你。"
+	<<else>>
+		"别为那表演感到难过，"<<he>>说道。"没人真的会在乎这个的。说起来，后台应该已经没人了，我知道怎么让你感觉好些。"
+	<</if>>
+<<else>>
+	"我们都真的很感谢大家的帮助。"<<he>>说道，"说起来，为什么不多留一会儿呢？后台已经没人了，我向你展示一下我究竟有多享受。"
+<</if>>
+<br><br>
+
+<<link [[拒绝然后离开|Cliff Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+<<link [[接受|English Play Backstage Lewd]]>><<set $sexstart to 1>><</link>><<promiscuous1>>
+<br>
+<<if $promiscuity gte 55>>
+	<<link [[邀请整组人加入！|English Play Backstage Lewd]]>><<set $phase2 to 1>><<set $sexstart to 1>><</link>><<promiscuous4>>
+	<br>
+<</if>>
+
+:: English Play Backstage Lewd
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<if $phase2 is 1>>
+		<<generates2>><<generates3>><<generates4>><<famesex 10>>
+		"就你一个？为什么不是所有人呢？"你叉腰道。一些学生吹着口哨欢呼，"我们喜欢你的想法！"
+		<br><br>
+
+		你和大家一起溜到了后台，然后锁上了门。<<promiscuity4>>
+	<<else>>
+		你抓着那<<person>>的手臂，朝后台走去。然后锁上了门，<<promiscuity1>>
+	<</if>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 50>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|English Play Backstage Lewd Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|English Play Backstage Lewd]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: English Play Backstage Lewd Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	"那真是太棒了，"<<person1>><<person>>喘息着说道："我很高兴我们能这样互相帮助。"<<tearful>>你振作了起来。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+<<elseif $enemyhealth lte 0>>
+	<<person1>><<person>>摇摇晃晃地走出了房间。
+	<<if $phase2 is 1>>
+		<<his>>朋友们跟着<<he>>。他们看上去都很困惑和沮丧。
+	<<else>>
+		困惑而沮丧。
+	<</if>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+<<elseif $finish is 1>>
+	The
+	<<if $phase2 is 1>>
+		当<<person1>><<person>>整理着<<his>>衣服离开房间的时候，看上去很沮丧。
+	<<else>>
+		当人群穿上衣服并离开房间的时候，他们看起来很沮丧。
+	<</if>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+<br><br>
+
+所有人都被领出了市礼堂。
+<br><br>
+
+<<link [[继续|Cliff Street]]>><<set $eventskip to 1>><</link>>
+<br>

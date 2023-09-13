@@ -1,0 +1,698 @@
+:: Adult Shop Widgets [widget]
+
+<<widget "adultShopEvents">>
+	<<endevent>><<generateAdultShopCustomer 1>>
+
+	<<set _reactTone to either("嘲笑着","惊呼道","叹了一口气","用手捂住了脸","怒视着并翻了个白眼。")>>
+	<<set _reactSpeech to ["这不合适吧。"]>>
+	<<set _reactPerson to "Sirris">>
+	<<set _reactTitle to "科学老师">>
+
+	<<if $adultshopstate is "sydney" and random(0,1) is 1>>
+		<<set _reactSpeech to [
+			"我的天哪！",
+			"请问有什么需要帮忙的？",
+			"这样可不太好。",
+			"嗯？",
+			"嗯？",
+			"什-什么情…请小心。"
+		]>>
+		<<set _reactTone to either("嘲笑道","惊呼道","捂着<<nnpc_his \"Sydney\">>的眼睛小声抱怨","退到柜台后面")>>
+		<<run statusCheck("Sydney")>>
+		<<if _sydneyStatus.includes("corrupt")>>
+			<<set _reactPerson to "Sydney">>
+				<<set _reactSpeech to [
+					"这还真不错，",
+					"这样可不太好。",
+					"滚开，你这个败类，",
+					"不买东西就请离开，",
+					"不买东西就滚出去！",
+					"该死的！",
+					"淘气鬼！我该拿你怎么办？",
+					"哇哦！哇，",
+					"嘘，嘘，",
+					"见鬼！",
+					"需要推荐玩具吗？"
+				]>>
+			<<set _reactTone to either("嘲笑着","惊呼道","用手捂住了脸","失望地叹了口气","把东西拿了出来","瞪着并翻了个白眼","嘲弄道")>>
+		<</if>>
+		<<set _reactTitle to "这位 " + $NPCName[$NPCNameList.indexOf("Sydney")].title.replace("faithful", "信徒").replace("fallen", "堕落者") + ($NPCName[$NPCNameList.indexOf("Sydney")].gender is "m" ? " 男孩" : " 女孩")>>
+		<<set _reactTitle to "悉尼">>
+		<<set _reactPerson to "Sydney">>
+	<<else>>
+		<<set _reactSpeech.push(
+			"淘气鬼！我该拿你怎么办？",
+			"不会只有这点本事吧？太逊了！",
+			"需要帮忙吗？有没有兴趣看看我们的新款肛塞？",
+			"哦，规矩点！",
+			"我的天哪！",
+			"嘘，嘘，",
+			"小心其他顾客！"
+		)>>
+		<<set _reactTone to either("嗤笑道","惊呼道","捂脸道","轻声笑道","愠怒道","无奈地叹息道","建议道","咧嘴大笑道","用玩具指着说道","摇着手指说道")>>
+		<<set _reactPerson to "Sirris">>
+		<<set _reactTitle to "这位 " + $NPCName[$NPCNameList.indexOf("Sirris")].title.replace("science teacher", "科学老师")>>
+		<<set _reactTitle to "西里斯">>
+	<</if>>
+
+	<<if $adultshopintro is 0 or ($adultshopintro is 1 and random(2) is 0)>>
+		<<adultShopBackgroundEvent>>
+		<<if $adultshopstate is "sydney">>
+			<br><br>
+			<<set _reactPerson to (_reactPerson is "Sydney" ? "Sirris" : "Sydney")>>
+			<<adultShopPersonEvent>>
+		<</if>>
+	<<else>>
+		<<adultShopPersonEvent>>
+		<<if $adultshopstate is "sydney">>
+			<<set _reactPerson to (_reactPerson is "Sydney" ? "Sirris" : "Sydney")>>
+			<<adultShopPersonEvent>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "adultShopBackgroundEvent">>
+	<<endevent>><<generateAdultShopCustomer 1>>
+	/*<<set _reactTone to _args[0]>>
+	<<set _reactSpeech to _args[1]>>
+	<<set _reactPerson to _args[2]>>
+	<<set _reactTitle to _args[3]>>*/
+	<!-- Background event pool -->
+	<<switch random(0,12)>>
+		<<case 0 1>>
+			一名$NPCList[0].fullDescription色眯眯的用假阳具顶着你，眼神颇具暗示性。
+			<<if $adultshopstate is "sydney" and _sydneyStatus.includes("corrupt")>>
+				<<set _reactSpeech.push("不买东西就别挡道。","这可不合适。","真下头！")>>
+			<</if>>
+		<<case 2 3>>
+			一个<<person1>><<person>>鬼鬼祟祟的挪动着，一边呻吟一边拿着<<print either("一根假阳具","一张DVD","一本色情杂志","一个肛塞")>>在自己胯下摩擦着。
+			<<if $adultshopstate is "sydney" and _sydneyStatus.includes("corrupt")>>
+				<<set _reactSpeech to ["这可不合适。","真下头！","你最好给我好好付钱！","你最好给我好好付钱！","先买了再使用，傻逼！","不买东西就给我滚出去！","不买东西就别挡道。"]>>
+			<</if>>
+			<<if _reactPerson is "Sydney">>
+				<<set $_purityLoss to true>>
+			<</if>>
+		<<case 4 5>>
+			一个<<person1>><<person>>对_reactTitle<<print either("说","悄悄说","<<laughs>>")>>
+			<<print either("\"嘿亲爱的，试穿一下这个如何？\"",
+			"\"嘿宝贝，来示范一下这玩意怎么用吧？\"",
+			"\"你真漂亮，宝贝！\"<<He>>吹着口哨。")>>
+			<<if $adultshopstate is "sydney" and _sydneyStatus.includes("corrupt")>>
+				<<set _reactSpeech.push("这可不合适。","食我屁股啦，傻逼客人！","真下头！","做你的千秋大梦吧，傻逼！")>>
+			<<elseif $adultshopstate is "sirris">>
+				<<set _reactSpeech.push("这里发生什么事了？")>>
+			<</if>>
+			<<if _reactPerson is "Sydney">>
+				<<set $_purityLoss to true>>
+			<</if>>
+		<<case 6 7>>
+			一个<<person1>><<person>>偷偷地观察四周，把自己的大衣紧紧裹在身上。<<He>>跑向_reactTitle，猛地展开大衣，把自己的阴部暴露无遗。
+			<<if $adultshopstate is "sydney" and _sydneyStatus.includes("corrupt") and _reactPerson is "Sydney">>
+				<<set _reactSpeech.push("真下头！","操你他妈的！","禁了，禁了，禁了，快滚！")>>
+				<<set _reactTone to "捂住自己的脸，退到柜台后面">>
+			<<elseif $adultshopstate is "sydney" and _reactPerson is "Sydney">>
+				<<set _reactSpeech.push("妈的怎么又这样！")>>
+				<<set _reactTone to "捂住自己的脸，退到柜台后面">>
+			<</if>>
+			<<if _reactPerson is "Sydney">>
+				<<set $_purityLoss to true>>
+			<</if>>
+		<<case 8 9>>
+			一对情侣正在对比假阳具。<<person1>><<person>>调戏着拍了拍<<generateAdultShopCustomer 2 "couple">><<person2>><<person>>的脸。
+		<<case 10 11>>
+			一个<<person1>><<person>>看色情杂志看得太入迷，撞翻了一个摆满假阳具的货架。
+
+		<<case 12>>
+			<!-- Wraith? -->
+			<<rngWraith 1>>
+			<<if _wraithEvent is true>>
+				你听到有人在你耳边压低了声音，纵情呻吟着。
+				<br>
+				"<span class="wraith"><<print either("为汝魅力所伏，兜转宛如困兽","我们未死，我们永生","天穹之火已然湮灭","沧海桑田，苦痛思念","拥入吾怀，彷徨不再","吾为汝之寂寥祈祷","梦海之水，黑暗深邃","<<pcPetname \"Wraith\">>是我的")>>。</span>"
+				<br>
+				你被吓到了，撞翻了展示柜上的<<print either("润滑液","口球","飞机杯","假阳具")>>。你转过身，却没有人在你背后。
+				<<stress 12>><<ggstress>><<trauma 4>><<gtrauma>>
+			<<else>>
+				有什么东西戳了戳你的背。你转过身，看到一个<<person1>><<person>>正拿着一根假阳具戳着你，这家伙脸笑得都快裂开了。
+				<<stress 5>><<gstress>>
+			<</if>>
+			<<if $adultshopstate is "sydney" and $sydneyromance gte 1>>
+				<<set _reactSpeech to ["你还好吗？","这里还行吗？", "需要帮忙吗？"]>>
+				<<if $adultshopstate is "sydney" and $sydneyromance gte 1 and _reactPerson is "Sydney">>
+					<<set _reactTone to either("询问道","惊呼道","轻声笑道","无奈地叹息道","建议道","咧嘴大笑道")>>
+				<</if>>
+			<</if>>
+	<</switch>>
+	<br>
+
+	"<<print _reactSpeech.random()>>"<<print _reactPerson.replace("Sirris","西里斯").replace("Sydney","悉尼")>>_reactTone。
+	<<if $adultshopstate is "sydney" and $_purityLoss>>
+		<<npcincr Sydney purity -1>><<lspurity>>
+	<</if>>
+<</widget>>
+
+<<widget "adultShopPersonEvent">>
+	<<endevent>><<generateAdultShopCustomer 1>>
+	<<if _reactPerson is "Sirris">>
+		<<switch random(0,8)>>
+		<<case 0>>
+			<<set $_topic to either("自营业务","穿戴式假阳具","各种品牌润滑液","肛塞","卫生保健","身体涂鸦","假阳具","飞机杯","各种避孕套","震动按摩器","避孕套vs子宫帽")>>
+			<<if random(1) is 0>>
+			<<print _reactPerson.replace("Sirris","西里斯").replace("Sydney","悉尼")>>和一名<<person1>><<person>>讨论着$_topic的好处。
+			<<else>>
+			<<generateAdultShopCustomer 2 "partner">>
+			<<print _reactPerson.replace("Sirris","西里斯").replace("Sydney","悉尼")>>和<<fullGroup>>讨论着$_topic的好处。
+			<</if>>
+		<<case 1 2 3>>
+			<<print _reactPerson.replace("Sirris","西里斯").replace("Sydney","悉尼")>>正在收银。
+		<<case 4 5>>
+			<<print _reactPerson.replace("Sirris","西里斯").replace("Sydney","悉尼")>>正在向客人展示各种<<print either("假阳具","穿戴式假阳具","肛塞","润滑剂","口球","情趣服装","贞操锁")>>.
+		<<case 6>>
+			<<generateAdultShopCustomer 2 "partner">>
+			<<print _reactPerson.replace("Sirris","西里斯").replace("Sydney","悉尼")>>正在和<<fullGroup>>讨论着情侣间<<print either("穿戴假阳具","角色扮演","cosplay","使用假阳具","捆绑play")>>的话题。
+		<<case 7>>
+			<<print _reactPerson.replace("Sirris","西里斯").replace("Sydney","悉尼")>>签收了一个包裹。
+		<<case 8>>
+			<<print _reactPerson.replace("Sirris","西里斯").replace("Sydney","悉尼")>>埋头读着文件。
+		<</switch>>
+	<<else>>
+		<<switch random(0,7)>>
+		<<case 0 1 2>>
+			<<print _reactPerson.replace("Sirris","西里斯").replace("Sydney","悉尼")>>擦拭着柜台。
+		<<case 3>>
+			<<print _reactPerson.replace("Sirris","西里斯").replace("Sydney","悉尼")>>勤勉的擦着窗户。
+		<<case 3>>
+			<<print _reactPerson.replace("Sirris","西里斯").replace("Sydney","悉尼")>>正在补货。
+		<<case 4>>
+			<<print _reactPerson.replace("Sirris","西里斯").replace("Sydney","悉尼")>>推着一车货物从储藏间里走出来。
+		<<case 5>>
+			<<print _reactPerson.replace("Sirris","西里斯").replace("Sydney","悉尼")>>专心看着一个写字板。
+		<<case 6>>
+			<<if !_sydneyStatus.includes("corrupt")>>
+				<<print _reactPerson.replace("Sirris","西里斯").replace("Sydney","悉尼")>>躲开揩油的顾客，回到了柜台里。
+			<<else>>
+				<<print _reactPerson.replace("Sirris","西里斯").replace("Sydney","悉尼")>>打掉揩油顾客的手，继续工作着。
+			<</if>>
+		<<case 7>>
+			<<print _reactPerson.replace("Sirris","西里斯").replace("Sydney","悉尼")>>正在给货物拍灰。
+		<</switch>>
+	<</if>>
+<</widget>>
+
+<<widget "getadultshopstate">>
+	<<sydneySchedule>>
+	<<if Time.hour gte 21 or Time.weekDay is 1 or (Time.weekDay is 7 ? Time.hour lt 9 : Time.hour lt 16) or $adultshophelped is 1>>
+		<<set $adultshopstate to "closed">>
+	<<elseif _sydney_location is "shop">>
+		<<set $adultshopstate to "sydney">>
+	<<else>>
+		<<set $adultshopstate to "sirris">>
+	<</if>>
+<</widget>>
+
+<<widget "generateAdultShopCustomer">>
+	/* Generates random customers with descriptors unique to the store. _args[1] turns the NPC into a partner */
+
+	<<set $_customertype to [{description:"粗俗的",hp:220},{description:"阴暗的",hp:220},{description:"诡诈的",hp:220},{description:"圆胖的",hp:250},{description:"秃头的",hp:200},{description:"肌肉发达的",hp:275},{description:"大龄",hp:175},{description:"艳丽",hp:200},{description:"非常愚蠢的",hp:200},{description:"令人毛骨悚然的",hp:250},{description:"苗条",hp:200},{description:"傻笑着的",hp:200},{description:"瘦骨嶙峋的",hp:175}]>>
+
+	<<if _args[1] isnot undefined>>
+		<<set _generate_partner to 1>>
+	<</if>>
+	<<generateNPC _args[0]>>
+
+	<<set $_npc to $NPCList[_args[0]-1]>>
+	<<if $_npc.pronoun is "m">>
+		<<set $_customertype.push({description:"帅气的",hp:200},{description:"粗犷的",hp:250},{description:"蛮横的",hp:275},{description:"纨绔的",hp:175},{description:"健壮的",hp:250})>>
+	<<else>>
+		<<set $_customertype.push({description:"漂亮的",hp:200},{description:"可爱的",hp:200},{description:"富贵的",hp:250},{description:"胸部丰满的",hp:220},{description:"身材好的",hp:220})>>
+	<</if>>
+	<<set $_chosentype to $_customertype.random()>>
+	<<set $_npc.description to $_chosentype.description>>
+	<<set $_npc.fullDescription to $_chosentype.description + ($_npc.pronoun is "m" ? " man" : " woman")>>
+	<<set $_npc.healthmax to $_chosentype.hp>>
+<</widget>>
+
+<<widget "adultShopClear">>
+	<<set $adultshopintro to 0>>
+	<<endevent>>
+<</widget>>
+
+<<widget "adultshopentryevent">>
+	/* Events which take you to a specific passage instead of the usual store */
+	<<endevent>><<cleareventpool>><<getadultshopstate>>
+
+	<<addinlineevent "entershop" 20>>
+		<<adultshopicon>><<link [[成人用品店(0:01)|Adult Shop]]>><<pass 1>><</link>>
+	<</addinlineevent>>
+
+	<<if $adultshopstate is "sirris">>
+		<<addinlineevent "sirrisshopassist" 1>>
+			<<adultshopicon>><<link [[成人用品店(0:01)|Sirris Shop Assistant 1]]>><<pass 1>><</link>>
+		<</addinlineevent>>
+	<</if>>
+
+	<<if $adultshopstate is "sydney" and C.npc.Whitney.state is "active">>
+		<<addinlineevent "whitneydildothief" 1>>
+			<<adultshopicon>><<link [[成人用品店(0:01)|Whitney Dildo Thief]]>><<pass 1>><</link>>
+		<</addinlineevent>>
+	<</if>>
+
+	<<if $adultshopstate is "sydney">>
+		<<addinlineevent "customerdildoflirtingsydney" 1>>
+			<<adultshopicon>><<link [[成人用品店(0:01)|Adult Shop Customer Dildo Flirt Sydney]]>><<pass 1>><</link>>
+		<</addinlineevent>>
+	<</if>>
+
+	<<if $adultshopstate is "sydney" and !$daily.sydney.adultshop>>
+		<<addinlineevent "sydneybackroominvitation" 5>>
+			<<adultshopicon>><<link [[成人用品店(0:01)|Sydney Backroom Invitation Enter]]>><<pass 1>><</link>>
+		<</addinlineevent>>
+	<</if>>
+
+	<<runeventpool>>
+<</widget>>
+
+<<widget "giveNPCsextoy">>
+	/* args[0] = NPC index */
+	/* args[1] = Toy name. Possible toys: ("dildo","length of anal beads","riding crop","flog") */
+	/* args[2] = Hand. Left blank it will select a random hand */
+
+	<<if _args[0] isnot undefined and _args[1]>>
+		<<set $_npc to _args[0]>>
+		<<set $_toy to _args[1]>>
+
+		<<if _args[2] isnot undefined>>
+			<<set $NPCList[$_npc][_args[2]+"tool"] to $_toy>>
+			<<set $NPCList[$_npc][_args[2]+"hand"] to "dildo_reveal">>
+		<<else>>
+			<<if random(0,1) is 0>>
+				<<set $NPCList[$_npc].lefttool to $_toy>>
+				<<set $NPCList[$_npc].lefthand to "dildo_reveal">>
+			<<else>>
+				<<set $NPCList[$_npc].righttool to $_toy>>
+				<<set $NPCList[$_npc].righthand to "dildo_reveal">>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "adultshopclerkevents">>
+	<<cleareventpool>>
+	<<adultShopWage>>
+
+	<<addinlineevent "uneventful" 0.5>>
+		剩下的工作时间里无事发生。你赚到了<<moneyGain _wage>><<glove "Sirris">><<npcincr Sirris love 1>>
+		<br><br>
+		<<link [[返回|Adult Shop]]>><</link>>
+	<</addinlineevent>>
+
+	<<addinlineevent "uneventful2" 0.5>>
+		<<set $_tip to _wage>>
+		<<if $awareness gte 300 and $promiscuity gte 74>>
+			你轻松地与顾客们交流着，并为他们提供了良好的建议。<<control 1>><<stress -1>><<gcontrol>><<lstress>><<glove "Sirris">><<npcincr Sirris love 1>>
+			<<set $_tip to _wage+random(1,5)*(random(1,10)+($mathstrait / 4)+($allure/4000))>>
+		<<else>>
+			你试图和他们交谈，但他们还是感到不快。<<stress -1>><<lstress>><<gtiredness>><<tiredness 2>>
+		<</if>>
+		<br><br>
+		你赚到了<<moneyGain $_tip>>。
+		<br><br>
+		<<link [[返回|Adult Shop]]>><</link>>
+	<</addinlineevent>>
+
+	<<addinlineevent "vipnope" 0.1>>
+		一名<<generateAdultShopCustomer 1>><<person1>><<person>>走进了门，身上穿着的正装一看就价值不菲。你和<<he>>四目相对，<<his>>却吹了声口哨，转身走出店内。
+		<br><br>
+		你赚到了<<moneyGain _wage>>。<<npcincr Sirris love 1>><<glove "Sirris">>
+		<br><br>
+		<<link [[返回|Adult Shop]]>><</link>>
+	<</addinlineevent>>
+
+	<<addinlineevent "stockingshelves" 1>>
+		当你正在补货时，
+		<<set $_randomitem to either("some dildos","some anal beads","some ball gags","anal eggs","butt plugs","a patch of lube","bottles of lube")>>
+		<<if $worn.feet.type.includes("heels")>>
+			踩到了一个$_randomitem摔了一跤，扭伤了脚踝。<<gpain>><<gstress>><<pain 4>><<stress 5>>
+		<<elseif $worn.feet.type.includes("rugged")>>
+			你结实的鞋子踩碎了$_randomitem，不过你走运没有摔倒。<<gstress>><<stress 3>>
+		<<else>>
+			你踩到一个$_randomitem，差点摔倒。<<gstress>><<stress 3>>
+		<</if>>
+		<br><br>
+		你赚到了<<moneyGain _wage>>。<<glove "Sirris">><<npcincr Sirris love 1>><<gtiredness>><<tiredness 3>>
+		<br><br>
+		<<link [[返回|Adult Shop]]>><</link>>
+	<</addinlineevent>>
+
+	<<addinlineevent "outfitcompliment" 1>>
+		/*Customer compliments you on your costume/fetish wear/school uniform/formal outfit/compliments your service skills*/
+		<<generateAdultShopCustomer 1>><<person1>>
+		<<if $worn.upper.type.includes("fetish") or $worn.upper.type.includes("costume") or ($worn.upper.type.includes("school") and random(0,3) is 0)>>
+			"衣服不错嘛，真<<cute>>。"一个<<person>>说着，眼睛直勾勾的盯着你穿着的$worn.upper.cn_name_cap，和它包裹着的<<breasts>>。<<gstress>><<gcontrol>><<control 5>><<stress 3>>
+		<<elseif $worn.upper.type.includes("school")>>
+			"学生服，真不错！我来给你上一课！"<<He>><<laughs>>，手伸向腿间。<<gstress>><<stress 5>>
+		<<else>>
+			<<switch random(0,2)>>
+			<<case 0 1>>
+				"你干得不错。"一个<<person>>夸了夸你。<<lstress>><<gcontrol>><<control 5>><<stress -5>>
+			<<case 2>>
+				一个<<person>>盯着你的胸看。
+				<<stress 5>>
+				<<exposedcheck>>
+				<<if $player.perceived_breastsize lte 1>>
+					"真想舔舔你的乳头啊，小可爱。"<<he>>盯着你的胸。<<gstress>><<stress 5>><<insecurity "breasts_tiny" 5>><<ginsecurity "breasts_tiny">>
+				<<elseif $player.perceived_breastsize lte 5>>
+					"噢！瞧瞧你胸口这对这含苞待放的花蕾，真是可爱极了！"<<he>>喊着，放肆地笑了起来。<<gstress>><<stress 5>><<insecurity "breasts_small" 5>><<ginsecurity "breasts_small">>
+				<<elseif $player.perceived_breastsize lte 7>>
+					"分量挺足的嘛。"<<he>>盯着你的胸部讥笑道。<<gstress>><<stress 5>><<insecurity "breasts_big" 5>><<ginsecurity "breasts_big">>
+				<<else>>
+					"这巨乳真牛逼，真想抱着嘬上一整天。"<<he>>讥笑道，嘟起嘴做出吮吸的样子。<<gstress>><<stress 5>><<insecurity "breasts_big" 5>><<ginsecurity "breasts_big">>
+				<</if>>
+			<</switch>>
+		<</if>>
+		<br><br>
+		<<set $_tip to _wage+random(1,5)*(random(1,10)+($mathstrait / 4)+($allure/4000))>>
+		<<He>>给你留了点小费，你赚到了<<moneyGain $_tip>>。<<npcincr Sirris love 1>><<glove "Sirris">>
+		<br><br>
+		<<link [[返回|Adult Shop]]>><</link>>
+	<</addinlineevent>>
+
+	<<addinlineevent "customerthankyoutip" 1>>
+		/*tip is based on maths tip chance \$_shoptip*=random(1,10)+($mathstrait / 4)+($allure/4000)*/
+		<<generateAdultShopCustomer 1>><<person1>>
+		你在一个<<person>>身上花了不少时间，帮<<him>>挑选各种商品。<<He>>对你十分感激并试图揩油，但被你避开了。<<gstress>><<gtiredness>>
+		<br><br>
+		<<set $_tip to _wage+random(1,5)*(random(1,10)+($mathstrait / 4)+($allure/4000))>>
+		为了表达感激，<<he>>给了你一笔小费。你赚到了<<moneyGain $_tip>>。<<npcincr Sirris love 1>><<glove "Sirris">>
+		<br><br>
+		<<link [[返回|Adult Shop]]>><</link>>
+	<</addinlineevent>>
+
+	<<addinlineevent "students" 1>>
+		/* Low school status event */
+		<<generatey1>><<generatey2>><<generatey3>>
+		一小群学生进入了店里。你认出了他们，是学校的校友。
+		<br><br>
+		<<if $cool lte 80>>
+			"嘿，你就是那个校园传说！"一个<<person1>><<person>>讥笑道。
+			<br>
+			<<if $worn.upper.type.includes("school")>>
+				"还一直穿着校服呢，真是个蠢货！"一个<<person2>><<person>><<print either("嘲笑着","大笑着","偷笑着")>>。
+			<<else>>
+				"穿着这么丑的衣服上班？怪胎。"
+			<</if>>
+			<br>
+			"但<<pShe>>穿成这样还蛮<<cute>>的嘛，"一个<<person3>><<person>>插嘴说着，上下打量着你。
+			<br>
+			"闭嘴吧，<<pshes>>就是个怪胎！"一个<<person2>><<person>>反驳道。
+			<br>
+			"无所谓了，赶紧离开这个怪胎的店吧。"<<person1>><<person>>说道。<<gstress>><<gtrauma>><<trauma 5>><<stress 5>><<status -1>><<lcool>>
+			<br>
+		<<elseif $cool lt 140>>
+			"我是不是见过你？是在学校吗？嗯……"<<person1>><<person>><<if random(1) is 1>>自己<<laughs>>.<<else>>和一名<<person2>><<person>>一起<<laughs>>。<</if>><<gstress>><<stress 5>>
+			<br>
+		<<else>>
+			"看着不错嘛！"一名<<person1>><<person>>赞赏到。<<lstress>><<ltrauma>><<gcontrol>><<stress -5>><<trauma -5>><<control 5>>
+			<br>
+		<</if>>
+		<br>
+		你赚到了<<moneyGain _wage>>。<<npcincr Sirris love 1>><<glove "Sirris">>
+		<br><br>
+		<<link [[返回|Adult Shop]]>><</link>>
+	<</addinlineevent>>
+
+	<<addinlineevent "gimp1" 1>>
+		<<generateAdultShopCustomer 1>><<generateyv2>>
+		一名<<person2>><<person>>脖子上拴着皮带，被牵进了店里，目光下垂盯着地板。另一名<<person1>><<person>>似乎很喜欢趁<<person2>><<personsimple>>不注意猛地拉一把绳子。
+		<br>
+		<<person1>><<person>>买了几个<<print either("超大号假阳具","大号假阳具","假阳具","鞭子","大号肛塞和大号肛珠")>>。你一边收银，一边看着<<He>>对自己的同伴露出饥渴的微笑。
+		<<if $awareness gte 300>>
+			购物过程中，<<person2>><<personsimple>>的眼睛全程盯着地板，但你还是注意到<<he>>因性高潮而颤抖着。
+		<<else>>
+			整个购物过程中，<<person2>><<personsimple>>空洞的眼神一直死死的盯着地板。
+		<</if>>
+		<br><br>
+		<<set $_tip to _wage+random(1,5)*(random(1,10)+($mathstrait / 4)+($allure/4000))>>
+		<<person1>><<He>>给你留了点小费，你赚到了<<moneyGain $_tip>>。<<npcincr Sirris love 1>><<glove "Sirris">>
+		<br><br>
+		<<link [[返回|Adult Shop]]>><</link>>
+	<</addinlineevent>>
+
+	<<if $cool lt 80 or $debug is 1>>
+		/* school status event */
+		<<addinlineevent "studentbully" 1>>
+			<<endevent>>
+			<<generatey1>><<person1>>
+			一名<<person>>招手示意你过去。
+			<br><br>
+			"我认出你了，你是班上的人，居然在成人店上班！"<<He>>毫不忌讳的当面嘲笑着你，"我要把这件事告诉所有人！除非……"
+			<<He>>声音逐渐变小，上下打量着你。
+			<br><br>
+			<<if $promiscuity gte 55>>
+				<<link [[用肉体交易|Adult Shop School Bully Offer Your Body]]>><<stress 12>><<trauma 12>><</link>><<promiscuous4>><<ggstress>><<ggtrauma>>
+				<br>
+			<</if>>
+			<<if $speech_attitude is "bratty">>
+				<<link [[要求对方离开|Adult Shop School Bully Assertive]]>><<status -15>><<stress 5>><<control 5>><</link>><<llcool>><<gstress>><<gcontrol>>
+				<br>
+			<</if>>
+			<<link [[默默忍受|Adult Shop School Bully Endure]]>><<status -5>><<stress 5>><<trauma 5>><</link>><<lcool>><<gstress>><<gtrauma>>
+
+		<</addinlineevent>>
+	<</if>>
+
+	<<if $NPCName[$NPCNameList.indexOf("Whitney")].state isnot "dungeon" and $whitneyromance gte 1 and !$weekly.adultShopWhitney and $adultshopstate isnot "sydney" and $NPCName[$NPCNameList.indexOf("Whitney")].dom gte 10>>
+		<<addinlineevent "whitneytoysex" 1>>
+			/*Whitney arm locks you, forces you outside, spanks you with a flog.*/
+			<<set $weekly.adultShopWhitney to true>> /* this event will only happen once a week */
+			<<npc "Whitney">>
+			当你正在补货时，一只手从背后扭住你的手臂，烟味弥漫在你的鼻孔里。
+			<br><br>
+			"嘿，<<slut>>，"惠特尼嘲讽着，舔了舔你的耳朵。你感受到一根硬硬的东西顶住了你的<<bottom>>。<<pain 3>><<gpain>>
+			<<if $NPCName[$NPCNameList.indexOf("Whitney")].dom gte 15>>
+				"你得跟我走。"
+			<<elseif $NPCName[$NPCNameList.indexOf("Whitney")].dom gte 10 and $NPCName[$NPCNameList.indexOf("Whitney")].love gte 20>>
+				/*"Why don't you come along and let me use this on you?"*/
+				"你为什么就不能像个普通的荡妇那样，乖乖地跟我来一趟呢?"
+			<<else>>
+				"乖<<bitch>>，跟我来吧。"
+			<</if>>
+			<br>
+			<br>
+			<<link [[和惠特尼一起走|Adult Shop Whitney Spank Agree]]>><<npcincr Whitney dom 3>><<npcincr Whitney love 3>><<npcincr Sirris love -3>><</link>><<ggdom "Whitney">><<gglove "Whitney">><<llove "Sirris">>
+			<br>
+			<<link [[拒绝|Adult Shop Whitney Spank Refuse]]>><<npcincr Whitney dom -3>><<npcincr Whitney love 3>><</link>><<lldom "Whitney">><<lllove "Whitney">>
+		<</addinlineevent>>
+	<</if>>
+
+	<<if $adultshopstate is "sydney">>
+		<<addevent "sydneyEvent1AnalBeads" 1>>
+		<<addevent "sydneyEvent2CuffedSydney" 1>>
+		<<addevent "sydneyEvent3HumblePeddlerofHonestWares" 1>>
+		<<addevent "sydneyEvent4Backrooms" 1>>
+
+		<<addinlineevent "sydneyCustomerDildoFlirt" 1>>
+			<<generateAdultShopCustomer 1>><<person1>>
+			<<run statusCheck("Sydney")>>
+			<<npc "Sydney" 2>>
+			<<set _toy to randomSexToy("dildos and whips").replace("dildo","假阳具").replace("length of anal beads","肛门拉珠").replace("riding crop","马鞭").replace("flog","皮鞭").replace("stroker","飞机杯").replace("vibrator","震动棒").replace("bullet vibe","子弹型跳蛋").replace("pendant","吊坠").replace("marker","记号笔").replace("mud","泥").replace("pen","笔")>><<set $shoptoy to _toy>>
+
+			一名<<person>>进入了商店，挑选好了商品。<<his>>正向收银台走去，却停了下来，目光落在了你的身上。
+			<br><br>
+			"嘿，我想买这个，但我觉得吧……"<<He>>把<<print _toy.replace("dildo","假阳具").replace("length of anal beads","肛门拉珠").replace("riding crop","马鞭").replace("flog","皮鞭").replace("stroker","飞机杯").replace("vibrator","震动棒").replace("bullet vibe","子弹型跳蛋").replace("pendant","吊坠").replace("marker","记号笔").replace("mud","泥").replace("pen","笔")>>放在柜台上。"我一个人用肯定很无聊。要不你帮我试用一下，看符不符合我的需求？"
+			<br><br>
+			<<person2>>
+			<<if _sydneyStatus.includes("pure")>>
+				"我们不允许试用，但如果您有任何问题，我们都会尽力帮您解答。"悉尼走了出来，拿起了<<print _toy.replace("dildo","假阳具").replace("length of anal beads","肛门拉珠").replace("riding crop","马鞭").replace("flog","皮鞭").replace("stroker","飞机杯").replace("vibrator","震动棒").replace("bullet vibe","子弹型跳蛋").replace("pendant","吊坠").replace("marker","记号笔").replace("mud","泥").replace("pen","笔")>>，"我看看——"
+				悉尼读着包装上的字，涨红了脸。<<he>>靠向你，悄悄说着，"这东西真是用来这样的？"
+				<<set $phase to 0>>
+			<<elseif _sydneyStatus.includes("corrupt")>>
+				"我们不允许试用，但我们可以给您推荐产品。"悉尼走了出来，拿起了<<print _toy.replace("dildo","假阳具").replace("length of anal beads","肛门拉珠").replace("riding crop","马鞭").replace("flog","皮鞭").replace("stroker","飞机杯").replace("vibrator","震动棒").replace("bullet vibe","子弹型跳蛋").replace("pendant","吊坠").replace("marker","记号笔").replace("mud","泥").replace("pen","笔")>>，"我看看——"
+				<<He>>打量着手里的<<print _toy.replace("dildo","假阳具").replace("length of anal beads","肛门拉珠").replace("riding crop","马鞭").replace("flog","皮鞭").replace("stroker","飞机杯").replace("vibrator","震动棒").replace("bullet vibe","子弹型跳蛋").replace("pendant","吊坠").replace("marker","记号笔").replace("mud","泥").replace("pen","笔")>>，露出了微笑。<<he>>靠向你，悄悄说着，"这个好像会很好玩吧？"<<he>>轻轻推了推你，眨了眨眼，又转身应付顾客去了。
+				<<set $phase to 1>>
+			<<else>>
+				"我们不允许试用，但如果您有任何问题，我们都会尽力帮您解答。"悉尼走了出来，拿起了<<print _toy.replace("dildo","假阳具").replace("length of anal beads","肛门拉珠").replace("riding crop","马鞭").replace("flog","皮鞭").replace("stroker","飞机杯").replace("vibrator","震动棒").replace("bullet vibe","子弹型跳蛋").replace("pendant","吊坠").replace("marker","记号笔").replace("mud","泥").replace("pen","笔")>>，"我看看——"
+				<<He>>皱着眉，专心读着包装上的字。<<he>>靠向你，悄悄说着，"这款应该是最高快感款吧？"
+				<<set $phase to 3>>
+			<</if>>
+
+			<br><br>
+			<<link [[继续|Adult Shop Clerk Sydney Customer Dildo Flirt]]>><</link>>
+
+		<</addinlineevent>>
+	<</if>>
+
+	<<if Time.weekDay is 7 or Time.weekDay is 6>>
+		<<addinlineevent "adultshopleighton" 0.5>>
+			礼顿走进了商店。
+			<<npc "Leighton">><<person1>>
+			你觉得<<he>>认出你了，但<<he>>只是自顾自的浏览着<<print either("色情杂志","色情片","润滑剂")>>。<<He>>一直等到西里斯守柜台的时候才去结账。
+			<br><br>
+			剩下的工作时间里无事发生。你赚到了<<moneyGain 15>>。<<npcincr Sirris love 1>><<glove "Sirris">>
+			<br><br>
+			<<link [[返回|Adult Shop]]>><</link>>
+		<</addinlineevent>>
+	<</if>>
+
+	<<addinlineevent "dildolesson" 1>>
+		<<generateAdultShopCustomer 1>><<person1>>
+		一名<<person>>走近柜台，手里拿着一把假阳具。"嘿<<girl>>，我从没用过这些东西，给我演示看看吧。"
+		<br><br>
+		<<if $promiscuity gte 35 and $awareness gte 200>>
+			<<link [[提出私下为他们展示|Adult Shop Dildo Lesson Seduction]]>><<set $seductiondifficulty to 8000>><</link>><<seductiondifficulty>>
+			<br>
+		<</if>>
+		<<if $submissive lte 500>>
+			<<link [[生气|Adult Shop Dildo Lesson Refuse]]>><<set $phase to 1>><<def 1>><<trauma -6>><<stress -6>><<npcincr Sirris love -5>><</link>><<defianttext>><<ltrauma>><<lstress>><<llove "Sirris">>
+			<br>
+		<</if>>
+		<<link [[转移话题|Adult Shop Dildo Lesson Refuse]]>><<set $phase to 0>><</link>>
+		<br>
+
+	<</addinlineevent>>
+
+	<<addinlineevent "customerassistance" 1>>
+		<<generateAdultShopCustomer 1>><<person1>>
+		一名<<person>>走近柜台，一脸困惑尴尬的表情。
+		"呃，你好。能帮我找个……"<<he>>不知如何描述，用手在空中比划着。
+
+		<<if $awareness gte 300>>
+			<br><br>
+			<<if $speech_attitude is "bratty">>
+				<span class="lewd">你对<<personsimple>>露出了一副"我懂的"微笑。</span>"哦，你是好那一口啊……真是猜不到。"
+			<<else>>
+				<span class="lewd">你对着<<personsimple>>露出了微笑。</span>"我们有您要的产品。"
+			<</if>>
+			你指了指附近的一个货架，<<personsimple>>赶忙走了过去。
+			<br><br>
+			"对！就是这个！"<<He>>尴尬得涨红了脸，避开了目光。你帮<<he>>结了帐。
+			<br><br>
+			<<set $_tip to _wage+random(1,5)*(random(1,10)+($mathstrait / 4)+($allure/4000))>>
+			<<person1>><<He>>给你留了点小费，你赚到了<<moneyGain $_tip>>。<<npcincr Sirris love 1>><<glove "Sirris">>
+		<<else>>
+			<br><br>
+			<<if $wolfbuild gte 20 or $catbuild gte 20>>
+				你一边听<<he>>描述，一边点着头，但是你<span class="blue">根本不知道<<he>>想要什么。</span>
+			<<else>>
+				<span class="blue">你困惑的挠了挠头。</span>
+			<</if>>
+			"抱歉<<if $NPCList[0].pronoun is "m">>先生<<else>>女士<</if>>，我不知道您想要什么。"
+			<<personsimple>>脸涨得通红，比划的更看不懂了。你耸了耸肩
+			<br><br>
+			"拜托，咋就听不懂呢！你在这上班就该懂我意思的！"<<he>>喊着，你一言不发。"店老板呢？"<<gstress>><<stress 3>><<gtrauma>><<trauma 3>>
+			<br><br>
+			"出什么事了？"西里斯听到了叫喊，问道。
+			<<person>>继续描述着，一边还不忘指责你这个蠢货听不懂问题。西里斯从货架上取下一个商品，帮客户结了帐，又向你叹了口气，摇了摇头。<<llove "Sirris">><<npcincr Sirris love -2>>
+			<br><br>
+			事情并不顺利，但至少你学到了知识。你赚到了<<moneyGain _wage>>。<<gawareness>><<awareness 2>>
+		<</if>>
+		<br><br>
+
+		<<link [[返回|Adult Shop]]>><</link>>
+		<br>
+	<</addinlineevent>>
+
+	<<if $demon gte 6 or $angel gte 6 or $fallenangel gte 2>>
+		<<addinlineevent "divineconfrontation" 0.5>>
+			<<generateAdultShopCustomer 1>><<person1>>
+
+			一名<<person>>进入了商店。<<He>>在商店里走动着，仔细的浏览着商品。几分钟后，<<he>>选好了商品，但看见了你，便<span class="purple">停下脚步，瞪大眼睛盯着你看。</span>
+			<br><br>
+			<<he>>把商品放回了货架上，双手在胸前握在一起，匆匆的走出了商店。
+			<<if $angel gte 6>>
+				"请宽恕我。"
+			<<elseif $fallenangel gte 2>>
+				"希望我不要变成这样。"
+			<<elseif $demon gte 6>>
+				"我已经堕落到这种地步了吗？"
+			<</if>>
+			<<He>>大叫着，离开的时候嘴中念着祷词。
+			<br><br>
+			剩下的工作时间里无事发生，你赚到了<<moneyGain _wage>>。
+			<br><br>
+
+			<<link [[返回|Adult Shop]]>><</link>>
+			<br>
+		<</addinlineevent>>
+	<</if>>
+
+	<<if $angel gte 4 or $player.virginity.penile is true and $player.virginity.vaginal is true or $player.temple_virginity is true>>
+		<<addinlineevent "defilethepure" 0.5>>
+			<<set _sheila to ["<<girl>>","<<girl>>","<<lass>>"].pluck()>>
+			<<generateAdultShopCustomer 1>><<person1>>
+			<<set _toy to randomSexToy("dildos and whips").replace("dildo","假阳具").replace("length of anal beads","肛门拉珠").replace("riding crop","马鞭").replace("flog","皮鞭").replace("stroker","飞机杯").replace("vibrator","震动棒").replace("bullet vibe","子弹型跳蛋").replace("pendant","吊坠").replace("marker","记号笔").replace("mud","泥").replace("pen","笔")>>
+			<<giveNPCsextoy 0 _toy>>
+			一名<<person>>进入了商店。<<He>>朝你的方向瞥了一眼，停了下来，又瞥了一眼……<<he>>正流着口水饥渴的盯着你。<<gstress>><<stress 2>>
+			<br><br>
+			<<He>>拿起了一个<<print _toy.replace("dildo","假阳具").replace("length of anal beads","肛门拉珠").replace("riding crop","马鞭").replace("flog","皮鞭").replace("stroker","飞机杯").replace("vibrator","震动棒").replace("bullet vibe","子弹型跳蛋").replace("pendant","吊坠").replace("marker","记号笔").replace("mud","泥").replace("pen","笔")>>，走近了柜台。
+			"像你这样纯洁的_sheila在这种地方做什么？"
+			<<He>>扫了一眼商店，确认没有其他人后大笑了起来。"我很想蹂躏和玷污像你这样的人……"
+			<br><br>
+			还未等你发觉，<span class="red"><<he>>便把你拉到了柜台前。</span>
+			<br><br>
+			<<link [[继续|Adult Shop Clerk Angel Molestation]]>><<set $molestationstart to 1>><</link>>
+		<</addinlineevent>>
+	<</if>>
+
+	<<rngWraith 1>>
+	<<if _wraithEvent is true and $awareness gt 300 and $swarmdisable is "f">>
+		<<addinlineevent "wraithdildoswarm" 2>>
+			你正在往货架上摆假阳具时，却发现性玩具都颤抖了起来。你能感觉到有人对你耳语，却感觉不到那人的气息。
+			<br><br>
+			"<span class="wraith"><<print either(
+				"羊群也都环成一环；它们并不为我们感到羞惭。","我们不是对着聋者歌唱；树林于一切发出回响。","黑翼之上，玫瑰在绽放。","恶毒诅咒，扭曲蜷缩。","无底漩涡，血泪累牍。","心仍鼓动，便是赐福。","聆听回声，回声将至。")>></span>"
+			<br><br>
+			周围暗了下去，许多苍白的手抓住了你，将你拖入了黑暗的深渊。你发觉自己身处一间黑暗的房间内，你刚刚整理过的货架上散发着奇幻的光芒。假阳具扭动着，生长着，从上面长出了眼睛，<span class="purple">用淫荡的目光盯着你。</span>
+			<br><br>
+			<<link [[继续|Adult Shop Dildo Swarm]]>><<set $molestationstart to 1>><</link>>
+		<</addinlineevent>>
+	<</if>>
+
+	/* Event ideas: */
+	/* You help courier with packages, get gangraped */
+	/* High rape fame event */
+	/* Model fame event? */
+
+	<<runeventpool>>
+<</widget>>
+
+<<widget "passoutadultshop">>
+	<<if isPlayerNonparasitePregnancyEnding()>>
+		<<pregnancyWatersBrokenPassout "adultShop">>
+	<<else>>
+		<<link [[你眼前一黑…|Adult Shop Passout Bondage]]>><</link>>
+	<</if>>
+<</widget>>
+
+<<widget "adultShopWage">>
+	<<set _wage to 15>>
+<</widget>>
+
+<<widget "unlockAdultShop">>
+	<<set $adultshopunlocked to true>>
+	<<unset $adultshopgrandopening>>
+	<<unset $adultshopopeningevent>>
+	<<unset $adultshopopeningsydney>>
+	<<if $adultshopdegree is undefined>>
+		<<set $effectsmessage to 1>>
+		<<set $toy_message to 1>>
+		<<set $adultshopdegree to 1>>
+	<</if>>
+	<<if $adultshopcontribution>>
+		<<earnFeat "Opened Pandoras Box">>
+		<<if $adultshopcontribution gte 12>>
+			<<earnFeat "Opened Pandoras Cocks">>
+		<</if>>
+	<</if>>
+<</widget>>
+
+:: Adult Shop Lube Price [widget]
+<<widget lubePrice>>
+	<<if _args[0] lte 50>>
+		<<set _price to _args[0] * 2000 * .98>>
+	<<elseif _args lte 150>>
+		<<set _price to 50 * 2000 * .98 + (_args[0] - 50) * 2000 * .95>>
+	<<else>>
+		<<set _price to 50 * 2000 * .98 + 50 * 2000 * .95 + (_args[0] - 100) * 2000 * .92>>
+	<</if>>
+<</widget>>

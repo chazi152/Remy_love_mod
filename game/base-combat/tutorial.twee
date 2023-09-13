@@ -1,0 +1,163 @@
+:: Tutorial
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+
+	<<enable_rescue>>
+	<<maninit>>
+	<<set $NPCList[0].chest to "none">>
+	<<He>>向你伸出手。
+	<<set $NPCList[0].fullDescription to "教程" + ($NPCList[0].pronoun is "m"?"男":"女")>>
+<</if>>
+<<effects>>
+<<effectsman>><<man>>
+<<stateman>>
+<br><br>
+
+__<span class="red">游戏战斗教学</span>__
+<br>
+
+<<if $gamemode is "soft">>
+	<i>您的角色一开始会很被动。但随着您变得更加淫乱和自信，将会解锁更多的可用行为。
+	<br><br>
+	<span class="sub">自信</span>和<span class="meek">温顺</span>的行动会激发你的伴侣，让他们更接近高潮。这也会让他们更加信任你。
+	<br><br>
+	<span class="brat">抗拒</span>行为会激怒你的伴侣。过于频繁地使用的话，他们会变得更加粗暴和丧失对你的信任。
+	<br><br>
+	有些行动的成功几率，取决于你使用身体部位的技巧以及你的伴侣对你的信任程度。
+	<br><br>
+	你身体的每个部位每回合只能执行一个动作。选择你的操作，然后单击继续或者按enter键继续。</i>
+	<br><br>
+<<else>>
+	<i>有三种常见的方法可以摆脱攻击者；击退他们，满足他们的性需求，或者获救。
+	<span class="def">反抗</span>的行动会伤害他们。给予他们足够的伤害，你就能逃跑。然而，<span class="def">反抗</span>行动同时会激怒他们，使他们更加暴力。
+	<br><br>
+	他们很乐意把你当作一个被动的玩具，但<span class="sub">顺从</span>的行动会让他们更快高潮。一旦满足了，他们通常就不会再打扰你。一些<span class="sub">顺从</span>的行动会会占用他们的生殖器，这样他们就无法以更危险的方式使用生殖器。
+	<br><br>
+	<span class="meek">温顺</span>的行动会使他们更喜欢你，而不会直接发生性行为。<span class="meek">温顺</span>的行动会让他们更加信任你，而且通常会对你有所帮助。
+	<br><br>
+	<span class="brat">抗拒</span>行为以使用非暴力途径违背攻击者意志的方式来保护你。<span class="brat">抗拒</span>行为会减少对方的信任并增加其愤怒。
+	<br><br>
+	最后，你可以大声呼救。 这是否会有所帮助又或使事情变得更糟，取决于周围有谁能听到。 在晚上或在野外大叫，只会激怒攻击者。 如果攻击者把你的嘴堵住，你就无法大叫（或说话）。
+	在本次遭遇中，尖叫能让你获救。你身体的每个部位每回合只能执行一个动作。选择你的操作，然后单击继续或者按enter键继续。</i>
+	<br><br>
+<</if>>
+<br><br>
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[继续|Tutorial Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Tutorial]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Tutorial Finish
+
+<<effects>><<set $eventskip to 1>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<if $enemyanger gte 60>>
+		"这是你应得的下场，骚货。"<<He>>让你躺在地上。
+		<br><br>
+	<<else>>
+		"好<<girl>>。这是给你添麻烦的小补偿。"<<He>>让你躺在地上。
+		<br><br>
+		<<tearful>>你跪了下来。你获得了<<moneyGain 5>>。
+		<br><br>
+	<</if>>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<if $gamemode is "soft">>
+		<<generate1>><<person1>>一个<<person>>向你冲过来。"你没事吧？"<<He>>伸手扶你起来。
+		<br><br>
+	<<else>>
+		<<generate1>><<person1>><<person>>向你冲过来。"我看到那个恶魔对你做了什么，你没事吧？"<<He>>伸手扶你起来。
+		<br><br>
+	<</if>>
+	<i>每次被袭击，自控力都会受到损害。当你失去自控时（自控力过低），创伤会增长得更快。
+	具有"淫乱"、"露出癖" 或 "异种癖" 属性的行动会降低压力和创伤。同时还会恢复你的控制力。频繁地执行这些行动，将解锁更进一步的淫秽行动（较弱的行动无法解锁和提升）。如果你不加以注意，即使你不做出这类"大胆无耻"的行为，也可能失去自我控制。</i>
+	<br><br>
+	<<link [[调情|Tutorial Flirt]]>><<set $spraymax++>><<spray 5>><</link>><<promiscuous1>>
+	<br>
+	<<link [[感谢|Tutorial Thank]]>><<set $spraymax++>><<spray 5>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	<<person>>吃痛退开。 "你他妈的疯了，"<<he>>一边说着一边一瘸一拐地离开了，<<tearful>>你站起身来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<if $gamemode is "soft">>
+		<<generate1>><<person1>>一个<<person>>向你冲过来。"你没事吧？"<<He>>伸手扶你起来。
+		<br><br>
+	<<else>>
+		<<generate1>><<person1>><<person>>向你冲过来。"我看到那个恶魔对你做了什么，你没事吧？"<<He>>伸手扶你起来。
+		<br><br>
+	<</if>>
+	<i>每次被袭击，自控力都会受到损害。当你失去自控时（自控力过低），创伤会增长得更快。
+	具有"淫乱"、"露出癖" 或 "异种癖" 属性的行动会降低压力和创伤。同时还会恢复你的自控力。频繁地执行这些行动，将解锁更进一步的淫秽行动（较弱的行动无法解锁和提升）。如果你不加以注意，即使你不做出这类"大胆无耻"的行为，也可能失去自我控制。</i>
+	<br><br>
+	<<link [[调情|Tutorial Flirt]]>><<set $spraymax++>><<spray 5>><</link>><<promiscuous1>>
+	<br>
+	<<link [[感谢|Tutorial Thank]]>><<set $spraymax++>><<spray 5>><</link>>
+	<br>
+<<elseif $rescue is 1 and $alarm is 1>>
+	<<set $rescued += 1>>
+	<<He>>注意到有几个人对你的呼喊做出了回应，于是在匆忙逃跑之前放松了攻击。
+	<br><br>
+	<<tearful>>你站起身来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<if $gamemode is "soft">>
+		<<generate1>><<person1>>一个<<person>>向你冲过来。"你没事吧？"<<He>>伸手扶你起来。
+		<br><br>
+	<<else>>
+		<<generate1>><<person1>><<person>>向你冲过来。"我看到那个恶魔对你做了什么，你没事吧？"<<He>>伸手扶你起来。
+		<br><br>
+	<</if>>
+	<i>每次被袭击，自控力都会受到损害。当你失去自控时（自控力过低），创伤会增长得更快。
+	具有"淫乱"、"露出癖" 或 "异种癖" 属性的行动会降低压力和创伤。同时还会恢复你的自控力。频繁地执行这些行动，将解锁更进一步的淫秽行动（较弱的行动无法解锁和提升）。如果你不加以注意，即使你不做出这类"大胆无耻"的行为，也可能失去自我控制。</i>
+	<br><br>
+	<<link [[调情|Tutorial Flirt]]>><<set $spraymax++>><<spray 5>><</link>><<promiscuous1>>
+	<br>
+	<<link [[感谢|Tutorial Thank]]>><<set $spraymax++>><<spray 5>><</link>>
+	<br>
+<</if>>
+
+:: Tutorial Flirt
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<if $tutorialExit is undefined>><<set $tutorialExit to "Domus Street">><</if>>
+你抓住<<his>>的胳膊爬起来，靠在<<him>>身上，迫使<<him>>抱住你，以防你掉下去。你看着<<him>>的眼睛。"我现在觉得安全了，"你说道。
+<<promiscuity1>>
+<<He>>脸红了。"我、我很高兴你没事，"<<he>>一边说着一边慢慢地把手从你身上收回来。在确保你站稳后，<<He>>环顾四周。"给你，"<<he>>递给你一个小圆筒。"小心一点，这个是不合法的，而且只够用一次。"
+<<gspraymax>>
+<br><br>
+<<if $tutorialExit.includes("Robin")>>
+	"你最好回到你朋友身边，是<<nnpc_he "Robin">>叫我过来的。<<nnpc_He "Robin">>的脸色白得像鬼似的，几乎说不出完整的句子了。我得走了，你自己小心点。"
+<<else>>
+	"我得走了，你可要小心点。"
+<</if>>
+<br><br>
+
+<<link [[继续|$tutorialExit]]>><<endevent>><<set $eventskip to 1>><<unset $tutorialExit>><<set $tutorial to 1>><</link>>
+
+:: Tutorial Thank
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<if $tutorialExit is undefined>><<set $tutorialExit to "Domus Street">><</if>>
+你拉着<<his>>的胳膊，<<he>>帮你站起来。"谢谢，"你说道。"我现在没事了。"
+<br><br>
+<<He>>环顾四周。"给你，"<<he>>递给你一个小圆筒。"小心一点，这个是不合法的，而且只够用一次。"
+<<gspraymax>>
+<br><br>
+<<if $tutorialExit isnot "Domus Street">>
+	"你最好回到你朋友身边，是<<nnpc_he "Robin">>叫我过来的。<<nnpc_He "Robin">>的脸色白得像鬼似的，几乎说不出完整的句子了。我得走了，你自己小心点。"
+<<else>>
+	"我得走了，你可要小心点。"
+<</if>>
+<br><br>
+
+<<link [[继续|$tutorialExit]]>><<endevent>><<set $eventskip to 1>><<unset $tutorialExit>><<set $tutorial to 1>><</link>>

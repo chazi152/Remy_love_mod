@@ -1,0 +1,1222 @@
+:: Widgets Rent [widget]
+<<widget "rentdue">>
+	<<npc Bailey>><<person1>>
+	<<set $_robinWasInRoom to _args[0]>>
+
+	"是时候付钱了，"<<he>>说道。
+	<<if $baileydefeatedchain gte 3 or ($robinpaid is 1 and $robinromance gte 1 and $bus is "home" and $robinfirstrentfight isnot 1 and $renttime lte -14)>>
+		<<generateRole 1 0 "打手">><<generateRole 2 0 "打手">>
+		<<person2>><<person>>和<<person3>><<person>>站在<<person1>><<him>>的旁边。
+		<<person2>><<person>>捏着<<his>>的指关节，而<<person3>><<person>>挂着一副阴沉的笑脸。
+	<<elseif $baileydefeatedchain gte 1>>
+		<<generateRole 1 0 "打手">>
+		在<<person1>><<him>>的旁边站着一个长相粗犷的<<person2>><<person>>
+		<<person2>><<He>>捏响<<his>>的指关节。
+	<</if>>
+
+	<<if $_robinWasInRoom is 1>>
+		<br><br>
+
+		你四处张望，但没看见罗宾。
+		<br><br>
+
+		"别费心了，<<nnpc_hes "Robin">>已经被我们 安 全 地保护起来了，"贝利冷笑道。
+	<</if>>
+
+	<<if $baileyOfficeSeduced is 1>>
+		<<unset $baileyOfficeSeduced>>
+		<<set $_rentSeduce to true>>
+	<</if>>
+	<br><br>
+
+	<<if $babyIntros and $babyIntros.Bailey and $babyIntros.Bailey.length gt 0>>
+		<<set _homeBabyRent to true>>
+		<<homeBabyIntro>>
+	<</if>>
+	<<babyRent>>
+	<<if $money gte $rentmoney + ($babyRent or 0)>>
+		<<link [[支付|Rent Pay]]>><<set $phase to $_robinWasInRoom>><</link>>
+		<br>
+		<<link [[拒绝|Rent Refuse]]>><<def 1>><</link>>
+		<br>
+		<<if $baileyseduced isnot 1>>
+			<<if $promiscuity gte 15>>
+				<<link [[诱惑|Rent Seduce]]>><<set $phase to ($_rentSeduce ? 1 : 0)>><<trauma 3>><</link>><<promiscuous2>><<gtrauma>>
+				<br>
+			<<elseif $uncomfortable.prostituting is false>>
+				<<link [[诱惑|Rent Seduce]]>><<set $phase to ($_rentSeduce ? 1 : 0)>><<trauma 12>><<set $desperateaction to 1>><</link>><<promiscuous2>><<ggtrauma>>
+				<br>
+			<</if>>
+		<</if>>
+	<<else>>
+		<<person1>>
+		<<if $speech_attitude is "bratty">>
+			你坚定地盯着<<him>>。"我没钱能给你，何况就算我真的有钱，你也要不到。"
+		<<elseif $speech_attitude is "meek">>
+			想到付不出钱的后果，你害怕地低下头。
+		<<else>>
+			"我没钱。"语罢，你开始担心起自己的下场。
+		<</if>>
+		<br><br>
+
+		<<rentnopay true>>
+	<</if>>
+	<<set $renttime to 7>><<set $rentday to Time.weekDay>>
+<</widget>>
+
+<<widget "rentduerobin">>
+	<<set $_robinInRoom to _args[0]>>
+	<<npc Bailey>><<person1>>
+
+	"是时候付钱了，"<<he>>说道。
+	<<if $baileydefeatedchain gte 3>>
+		<<generateRole 1 0 "打手">><<generateRole 2 0 "打手">><<generateRole 3 0 "打手">>
+		<<person2>><<person>>和<<person3>><<person>>站在<<person1>><<him>>的旁边。
+		<<if $_robinInRoom>>
+			在他们身后，一个<<person4>><<person>>拿着一根绳子走了进来，冲向了罗宾。罗宾试图反抗，却收效甚微。
+		<<else>>
+			第三人站在他们身后，那是个<<person4>><<person>>，<<him>>将双手被捆住的<<nnpc_his "Robin">>带进房来。
+		<</if>>
+		<<person2>><<person>>捏着<<his>>的指关节，而<<person3>><<person>>挂着一副阴沉的笑脸。
+	<<elseif $baileydefeatedchain gte 1>>
+		<<generateRole 1 0 "打手">><<generateRole 2 0 "打手">>
+		<<person2>><<person>>和<<person3>><<person>>站在<<person1>><<him>>的旁边。
+		<<if $_robinInRoom>>
+			<<person3>><<person>>拿着一段绳子向罗宾冲去。罗宾试图反抗，但收效甚微。
+			<<person2>><<person>>捏响<<his>>的指节。
+		<<else>>
+			<<person2>><<person>>捏响<<his>>的指关节，而<<person3>><<person>>咧嘴笑着，将罗宾带了进来。
+			看起来<<nnpc_his "Robin">>的双手被捆住了。
+		<</if>>
+	<<else>>
+		<<generateRole 1 0 "打手">>
+		在<<person1>><<him>>的旁边站着一个长相粗犷的<<person2>><<person>>
+		<<if $_robinInRoom>>
+			<<person2>><<person>>拿着一段绳子向罗宾冲去。罗宾试图反抗，但收效甚微。
+		<<else>>
+			<<person2>><<person>>将罗宾带了进来。看起来<<nnpc_his "Robin">>的双手被捆住了。
+		<</if>>
+	<</if>>
+
+	<br><br>
+	<<if $baileyOfficeSeduced is 1>>
+		<<unset $baileyOfficeSeduced>>
+	<</if>>
+	<<if $babyIntros and $babyIntros.Bailey and $babyIntros.Bailey.length gt 0>>
+		<<set _homeBabyRent to true>>
+		<<homeBabyIntro>>
+	<</if>>
+	<<babyRent>>
+	<<if $money gte $rentmoney + ($babyRent or 0)>>
+		<<if $inRobinsRoom>>
+			<<link [[交钱|Rent Pay Robin]]>><<set $inRobinsRoom to true>><</link>>
+		<<else>>
+			<<link [[交钱|Rent Pay Robin]]>><</link>>
+		<</if>>
+		<br>
+		<<link [[拒绝|Rent Refuse Robin]]>><<def 1>><</link>>
+		<br>
+	<<else>>
+		<<set $baileypaychain to 0>>
+		<<if $speech_attitude is "bratty">>
+			你坚定地盯着<<him>>。"我没钱能给你，何况就算我真的有钱，你也要不到，别把罗宾牵扯进来。"
+		<<elseif $speech_attitude is "meek">>
+			想到付不出钱的后果，你害怕地低下头。"我对不起你，罗宾。"
+			<br><br>
+
+			"这……这不是你的错。"罗宾回应道。
+		<<else>>
+			"我没钱。"语罢，你开始担心起你们两个的下场。
+			<br><br>
+
+			罗宾看起来吓坏了。
+		<</if>>
+		<br><br>
+
+		"没关系，"<<he>>笑着说道。 "我已经安排好了，我不知道他们对你们两个有什么打算，不过说实话，我并不在乎。"
+		<<He>>拿出一个眼罩和一条绳子"别动."
+		<br><br>
+
+		<<link [[顺从|Rent Intro]]>><<endevent>><<set $phase to 1>><</link>>
+		<br>
+		<<if $bus is "hospital">>
+			<<link [[反抗|Rent Hospital Fight Robin]]>><<set $fightstart to 1>><</link>>
+			<br>
+		<<else>>
+			<<link [[反抗|Rent Robin Fight]]>><<set $fightstart to 1>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+	<<set $renttime to 7>><<set $rentday to Time.weekDay>>
+<</widget>>
+
+<<widget "rentnopay">>
+	<<set $baileypaychain to 0>>
+	<<set $_seduceAllowed to _args[0]>>
+	<<if $robinpaid is 1 and $robinromance is 1 and $bus is "home" and $robinfirstrentfight isnot 1 and ($baileydefeatedchain gte 3 or $renttime lte -14)>>
+		<<set $robinfirstrentfight to 1>>
+		贝利沉默了几秒钟，随后耸耸肩。"没关系，"<<nnpc_he "Bailey">>说道。
+		"我已经学会了，想直接从你这获利，根本是在作无用功。"
+		<br><br>
+
+		在贝利的暗示下，打手向你逼近。
+		<<person3>><<person>>向你抓来，虽然你堪堪躲过了<<his>>的攫取，但<<person2>><<person>>趁机抓住了你的手臂。
+		<<person3>><<person>>抓住你的另一只手臂，就这样，二人将你控制了起来。
+		<br><br>
+
+		<<link [[继续|Rent First Robin Fight]]>><<set $fightstart to 1>><<set $combatPhase to "talk">><<set $robinRentEvent to 1>><<set $timer to 5>><</link>>
+	<<else>>
+		<<person1>>
+		"没关系，"<<he>>笑着说道。"我已经安排好了，我不知道他们对你们两个有什么打算，不过说实话，我并不在乎。"
+		<<He>>拿出一个眼罩和一条绳子"别动."
+		<br><br>
+
+		<<link [[顺从|Rent Intro]]>><<endevent>><</link>>
+		<br>
+		<<if $bus is "hospital">>
+			<<link [[反抗|Rent Hospital Fight]]>><<set $fightstart to 1>><</link>>
+			<br>
+		<<else>>
+			<<link [[反抗|Rent Fight]]>><<set $fightstart to 1>><</link>>
+			<br>
+		<</if>>
+		<<if $baileyseduced isnot 1 and $_seduceAllowed>>
+			<<if $promiscuity gte 15>>
+				<<link [[勾引|Rent Seduce]]>><<trauma 3>><</link>><<promiscuous2>><<gtrauma>>
+				<br>
+			<<elseif $uncomfortable.prostituting is false>>
+				<<link [[勾引|Rent Seduce]]>><<trauma 12>><<set $desperateaction to 1>><</link>><<promiscuous2>><<ggtrauma>>
+				<br>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "babyRentDisplay">>
+<<babyRent true>><<if $babyRent>><<print _args[0]>><<printmoney $babyRent _args[2]>><<print _args[1]>><</if>>
+<</widget>>
+
+<<widget "babyRent">><<silently>>
+	<<set _skipReductions to _args[0]>>
+	<<set $_childrenRentCount to Object.values($children).reduce((prev, curr) => {
+		if(curr.location === "home") {
+			if(!(curr.localVariables.interactions >= 6)) {
+				if (!T.skipReductions) curr.localVariables.interactions = 0;
+				return prev + 1;
+			}
+			if (!T.skipReductions) curr.localVariables.interactions = 0;
+		}
+		return prev;
+	}, 0)>>
+	<<set $_milkRentReduction to Math.clamp(Math.floor($pregnancyStats.orphanageMilkBottles / 7), 0, Math.min(Math.floor($pregnancyStats.orphanageMilkBottles / 7), $_childrenRentCount))>>
+
+	<<set $_childrenRentCount -= $_milkRentReduction>>
+	<<if !_skipReductions>>
+		<<set $pregnancyStats.orphanageMilkBottles -= $_milkRentReduction * 7>>
+	<</if>>
+
+	<<set $babyRent to $_childrenRentCount * 10000>>
+<</silently>><</widget>>
+
+<<widget "rentmod">>
+	<<set $rentmoney to Math.floor($rentmoney * $rentmod)>>
+	<<if $robinpaid is 1>>
+		<<set $rentmoney *= 2>>
+	<</if>>
+<</widget>>
+
+<<widget "rentpay">>
+	<<set $money -= $rentmoney + ($babyRent or 0)>>
+	<<set $rentmoney to [10000,30000,50000,70000,100000,150000,200000][Math.clamp($rentstage,1,6)]>> <!-- note: clamping to 1 is intentional -->
+	<<rentmod>>
+
+	贝利从你手里夺过钱，开始清数。"很好，"<<nnpc_he "Bailey">>满意地说道，"你终于想通了。
+	<<if $rentstage is 1>>
+		下周我要<<printmoney $rentmoney "pink">><<babyRentDisplay "，如果你不照顾你的孩子，还要再加" "" "pink">>。你应该不会认为日子将会好起来吧？"
+	<<else>>
+		下周我要<<printmoney $rentmoney "pink">><<babyRentDisplay "，如果你不照顾你的孩子，还要再加" "" "pink">>。"
+	<</if>>
+	<br><br>
+
+	<<set $baileydefeatedchain to 0>>
+	<<set $baileypaychain to ($baileypaychain || 0) + 1>>
+	<<unset $bailey_encroach>>
+	<<set $rentstage += 1>>
+	<<if $robinpaid>>
+		<<npcincr Robin trauma -7>>
+	<</if>>
+<</widget>>
+
+<<widget "rentRobinPunishment">>
+	你走了很长一段时间，直到你感觉到草地的触感从脚下传来。一阵微风从你身边飘过，有一组脚步声逐渐逼近。
+
+	<<if !$robinPunishments.includes("docks") and $debug>>/* locked behind debug until further improvements */
+		<<generate2>><<generate3>>
+		"哦，<<nnpc_he "Robin">>太可爱了，真是完美的小旅伴，"一个陌生的<<person2>><<personsimple>>的声音说道。
+		<<if $NPCName[$NPCNameList.indexOf("Robin")].pronoun is $player.gender_appearance>>
+			你不知道他们说的是谁。
+		<</if>>
+
+		"交钱，"贝利要求道。
+		<br><br>
+
+		"真不敢相信，我们都要启航了，你还要我干这种事，"另一个<<person3>><<personsimple>>的声音响起。
+		<<robinPunishment "docks">>
+	<<else>>
+		"交钱，"贝利要求道。
+		<br><br>
+
+		除了衣服的沙沙声，没有人回应。
+		<br><br>
+
+		"给我拿来就对了。"贝利的声音听起来有些紧张。
+		<<robinPunishment "landfill">>
+	<</if>>
+	<br><br>
+
+	你听到纸张摩擦的沙沙声。
+	<<if _robin.dom gte 60>>
+		"放开我！"罗宾喊道。"<<pShe>>需要我，住手！"
+		<br><br>
+
+		距离渐渐拉长，罗宾的抗议声也慢慢淡出了。
+	<<else>>
+		"不，不要！"罗宾尖叫着。"放开我！"
+		<br><br>
+
+		罗宾的哭声渐渐消逝在远处。
+	<</if>>
+	而你被贝利拉到了别处。
+<</widget>>
+
+<<widget "rentEdenTrade">>
+	<<npc Eden>><<person1>>
+	你不会在那儿呆太久。
+	当<<if $syndromeeden gte 1>>熟悉<</if>><<personsimple>>的声音出现在你身边时，你的眼罩被扯掉了。
+
+	<<if $edenCagedEscape>>
+		"我警告过你，我会再次抓到你的！"当你被伊甸拽到地上的时候，<<he>>咆哮道，没有替你松绑。"你这次最好长长记性！"
+		<br><br>
+
+		你被粗暴地带着穿过树林，完全无力抵抗，直到你们到达小屋。 "欢迎回家。"伊甸冷笑道。
+		<<He>>拖着你走向睡觉的地方，一个金属笼子在那迎接你。
+		<br><br>
+
+		<<link [[继续 (0:30)|Eden Caged Intro]]>><<pass 30>><<set $phase to 2>><</link>>
+		<br>
+	<<elseif $edenfreedom gte 2 and $edendays gte 8>>
+		"我相信你不会辜负我的信任，"伊甸在说着的同时切断了你身上的束缚。随后你一屁股倒在地上。
+		"如果你不信任我，就会发生这种情况。这也是为了保护你。"<<He>>把你拉起来。"让我们回家吧。"
+		<br><br>
+
+		<<link [[继续 (0:30)|Eden Recaptured]]>><<pass 30>><</link>>
+		<br>
+	<<elseif $edenfreedom is 1 and $edendays gte 2>>
+		"我相信你不会辜负我的信任，"伊甸在说着的同时切断了你身上的束缚。随后你一屁股倒在地上。
+		"如果你不信任我，就会发生这种情况。这也是为了保护你。"<<He>>把你拉起来。"让我们回家吧。"
+		<br><br>
+
+		<<link [[继续 (0:30)|Eden Recaptured]]>><<pass 30>><</link>>
+		<br>
+	<<elseif $edenfreedom gte 1>>
+		"我就知道事情会变成这样，这座小镇实在太危险了，"伊甸边说便解开了你的束缚，并在你要跌倒的时候抱住了你， "我们回家吧。"
+		<br><br>
+
+		<<He>>带着你回到<<his>>的小屋。
+		<br><br>
+		<<endevent>>
+		<<link [[继续 (0:30)|Eden Cabin]]>><<pass 30>><</link>>
+		<br>
+	<<else>>
+		<<if $hunterintro is 1>>
+			"我就知道我能把你找回来。"
+		<<else>>
+			"猎物这么无助可不太寻常，但我是无所谓的。"
+		<</if>>
+		<<He>>悄无声息地爬到你身上。
+		<br><br>
+
+		<<endevent>>
+
+		<<link [[继续|Forest Hunter Intro]]>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "homeBabyIntro">>
+	<<set _fatherEvent to !!$babyIntros.Bailey.find(child => child.mother !== "pc")>>
+	<<set _motherEvent to !!$babyIntros.Bailey.find(child => child.mother === "pc")>>
+	<<set $_newChildrenCount to $babyIntros.Bailey.reduce((prev, curr) => prev + curr.children, 0)>>
+	<<set _playerBornChildren to []>>
+	<<set _playerChildrenBirthLocations to []>>
+	<<set _playerFatheredChildren to []>>
+	<<set _birthIds to $babyIntros.Bailey.reduce((prev, curr) => {
+		prev.pushUnique(curr.mother + curr.birthId);
+		return prev;
+	}, [])>>
+	<<run Object.values($children).forEach(child => {
+		if(T.birthIds.includes(child.mother + child.birthId)){
+			if(child.mother === "pc"){
+				T.playerBornChildren.push(child.childId);
+				T.playerChildrenBirthLocations.pushUnique(child.birthLocation);
+			} else {
+				T.playerFatheredChildren.push(child.childId);
+			}
+			child.localVariables.interactionsTotal = 0;
+			child.localVariables.interactions = 7 - Math.clamp(V.renttime, 0, 7);
+		}
+	})>>
+	<<person1>>
+	<<if _homeBabyRent>>
+		"在我们开始之前，我有消息要告诉你。"<<He>>掏出一张纸，并回头看向你。
+	<<else>>
+		<<He>>掏出一张纸，并回头看向你。
+	<</if>>
+	<<if $babyIntros.Bailey.length gte 5>>
+		"你他妈的一直在忙，或者说在忙于性交，总之，我要恭喜你
+	<<else>>
+		"首先，我要恭喜你
+	<</if>>
+	<<if _fatherEvent and _motherEvent>>
+		<span class="lewd">成为了一名母亲，同时也是父亲</span>。<span class="green"><<childrenNames _playerBornChildren>>从<<print formatList(_playerChildrenBirthLocations, "和", true,"、")>>安全送到了这里</span>。"
+	<<elseif _fatherEvent>>
+		<span class="lewd">你当父亲了</span>."
+	<<else>>
+		你要当妈妈了。<span class="green"><<childrenNames _playerBornChildren>>已经被安全地从<<print formatList(_playerChildrenBirthLocations, "和", true,"、")>>送到了这里</span>。"
+	<</if>>
+	<<if _fatherEvent>>
+		<<earnFeat "First Fatherhood">>
+		<<set _impregFame to (_playerFatheredChildren.length * 5)>>
+		<<fameimpreg _impregFame>>
+		<br><<He>>回头看向那张纸。<br>
+		<<for _key, _value range $babyIntros.Bailey.filter(child => child.mother !== "pc")>>
+			<!--
+			<<set _childIds to []>>
+			<<run Object.values($children).forEach(child => {
+				if(child.mother === T.value.mother && child.birthId === T.value.birthId){T.childIds.push(child.childId)}
+			})>> -->
+			<<switch _value.children>>
+				<<case 1>><<set _childrenText to "a brat">>
+				<<case 2>><<set _childrenText to "a pair of brats">>
+				<<default>><<set _childrenText to "a trio of brats">>
+			<</switch>>
+			<<if _continues>>
+				<br><<He>>继续。
+			<</if>>
+			<<if _value.mother is "Robin">>
+				"那个流浪儿蹦出来<<print _childrenText>>,并说那孩子是你的. 我比较相信是<<nnpc_him "Robin">>的，毕竟你们二人在一起的时间太长了."
+			<<elseif $NPCNameList.includes(_value.mother)>>
+				一个叫_value.mother的孩子被放在了门口<<print _childrenText>>，同时还附有一张写有你名字的亲子鉴定，上面的鉴定结果与你匹配。"
+			<<else>>
+				"一个叫_value.mother的孩子被放在了门口<<print _childrenText>>，同时还附有一张写有你名字的亲子鉴定。"
+			<</if>>
+			<<set _continues to true>>
+		<</for>>
+	<</if>>
+	<br><br>
+
+	"孩子已经被放进看护室了。
+	<<set _knownPregnancyCount to knowsAboutChildrenTotal("pc","Bailey","home")>>
+	<<if _knownPregnancyCount is 1 or !$ward_unlocked>>
+		你要负责照顾你的后代，"<<he>>说道，"我是被迫必须要照顾你的后代的，所以从现在开始，你每周要多交<span class="red">£100</span>，而且这些孩子永远不能离开看护室！"
+	<<elseif _knownPregnancyCount lte 4>>
+		你已经知道你有负责照顾你的后代了，"<<he>>说道，"我是被迫必须要照顾你的后代的，所以每个孩子每周都要额外交<span class="red">£100</span>，而且这些孩子永远不能离开看护室！"
+	<<else>>
+		<<he>>说道："你是一个不负责任的荡妇，记住，如果我必须干预照顾你的后代，每个婴儿你将需要额外支付<span class="red">£100</span>的费用。"
+	<</if>>
+	<<if $baileydefeatedchain gte 3>>
+		你看到<<him>>嗤笑了一下，但只持续了很短的一瞬间。<<him>>说：”我不想让别人照顾你的孩子，但如果你继续做个难缠的小东西，那就别想再见到你的孩子们了。"
+	<<elseif _homeBabyRent>>
+		你看到<<his>>的脸上闪过片刻的柔和，但其转瞬即逝，以至于你觉得可能是你看错了，"如果你还奢望这能够照顾你的孩子的话，你就得按时付钱。"
+	<</if>>
+	<br><br>
+
+	<<if !$ward_unlocked>>
+		<span class="gold">你现在可以进入幼儿看护室以及托儿所了。</span>
+		<br><br>
+	<</if>>
+	<<set $ward_unlocked to true>><<run delete $babyIntros.Bailey>>
+<</widget>>
+
+:: Rent Pay
+<<effects>>
+
+<<rentpay>>
+
+<<if $bus is "hospital">>
+	<<if $crime gte 1000>>
+		<<link [[继续|Hospital Arrest]]>><<pass 10>><<endevent>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续->Hospital front]]>><<pass 10>><<endevent>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<if $phase is 1>>
+		<<endevent>>
+		<<npc Robin>><<person1>>
+		当你离开<<his>>的房间时，你看到罗宾从拐角处向你跑来。"你没事！"<<He>>紧紧抱着你。
+		"贝利昨晚把我带走了，我还以为会发生可怕的事，"<<he>>心有余悸地说道。
+		<br><br>
+
+		回房间前，你们两个又拥抱了一下。
+		<br><br>
+
+	<</if>>
+	<<link [[继续|Bedroom]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Rent Pay Robin
+<<effects>>
+
+<<rentpay>>
+
+<<endevent>>
+<<npc "Robin">><<person1>>
+贝利离开后，罗宾轻轻抱着你。"对不起，"<<he>>说道。
+
+<<if $bus is "hospital">>
+	<br><br>
+
+	<<set $companion to "Robinrent">>
+	<<if $crime gte 1000>>
+		<<link [[继续|Hospital Arrest]]>><<pass 10>><<endevent>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Hospital front]]>><<pass 10>><<endevent>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<if $inRobinsRoom>>
+		<<He>>在<<his>>的床上坐下。"那太可怕了。"
+		<br><br>
+
+		你花了点时间，确认罗宾没事后，就离开房间回到大厅。
+		<br><br>
+
+		<<link [[继续|Orphanage]]>><<endevent>><</link>>
+	<<else>>
+		<<He>>最后还是离开了你的卧室，"你有什么需求，尽管告诉我。"
+		<br><br>
+
+		<<link [[继续|Bedroom]]>><<endevent>><</link>>
+	<</if>>
+	<br>
+<</if>>
+<<unset $inRobinsRoom>>
+
+:: Rent Refuse
+<<effects>>
+
+<<if $speech_attitude is "bratty">>
+	你坚定地盯着<<him>>，"我一个子都不付，管你要杀要剐，都放马过来吧。"
+<<elseif $speech_attitude is "meek">>
+	"不，不要，"你结结巴巴，同时有些讶异，自己竟有如此气概， "我，我不给。"
+<<else>>
+	"这钱不是给你的，"你说道，"我要留给自己。"
+<</if>>
+<br><br>
+
+<<rentnopay>>
+
+:: Rent Refuse Robin
+<<effects>><<set $baileypaychain to 0>>
+
+<<if $speech_attitude is "bratty">>
+	你坚定地盯着<<him>>，"我一个子都不付，管你要杀要剐，都放马过来，但别把罗宾牵扯进来。"
+<<elseif $speech_attitude is "meek">>
+	"不，不给，"你结结巴巴，同时有些讶异，自己竟有如此气概， "我，我不会让你伤害我们任何一个……"
+<<else>>
+	"这钱不是你的，"你说道。"我可以任你处置，但别把<<person2>><<him>>卷进来。"
+	<<person1>>
+<</if>>
+<br><br>
+
+"没关系，"<<he>>笑着说道。 "我已经安排好了，我不知道他们对你们两个有什么打算，不过说实话，我并不在乎。"
+<<He>>拿出一个眼罩和一条绳子"别动."
+<br><br>
+
+<<link [[顺从|Rent Intro]]>><<set $phase to 1>><<endevent "phaseless">><</link>>
+<br>
+<<if $bus is "hospital">>
+	<<link [[反抗|Rent Hospital Fight Robin]]>><<set $fightstart to 1>><</link>>
+	<br>
+<<else>>
+	<<link [[反抗|Rent Robin Fight]]>><<set $fightstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Rent Seduce
+<<effects>>
+<<set $baileyseduced to 1>>
+
+<<if $speech_attitude is "meek">>
+	"求，求求你了，<<sir>>，"你恳求道，"就没有其他偿债的办法了吗？"你不安地咬住嘴唇。
+<<elseif $speech_attitude is "bratty">>
+	"要知道，"你嘴上说着，双手抚过自己的身体，"还债也可以用点特别的方法，而且是特别到令人难忘的……"
+<<else>>
+	"能不能换个方式支付啊？"你舔着嘴唇问道，"相信我，绝对物超所值。"
+<</if>>
+<<promiscuity2>>
+
+<<if $phase is 1>>
+	贝利咧嘴一笑，<<His>>那冰冷的手滑过你的肩头与后脑，并开始抚摸起你的头发。
+	<br>
+	接下来，<<he>>毫无征兆地一把抓起你的头发，把你的脑袋拉了过去，紧紧摆在<<his>>的面前。
+	<br>
+	"很有想法，"<<he>>嘶声怒道，"但这样可没法让你脱身，至少这次不行。"
+	<br><br>
+
+	<<He>>放开你，伸手推了你的胸口一把。你蹒跚向后退去，贝利则迈步朝你走来，
+	<<if $money gte $rentmoney + ($babyRent or 0)>>
+		<<his>>期待地摊开手掌，"你的份，给我马上交出来。"
+		<br><br>
+
+		<<link [[偿还|Rent Pay]]>><</link>>
+		<br>
+		<<link [[拒绝|Rent Refuse]]>><<def 1>><</link>>
+		<br>
+	<<else>>
+		并开始解开绳子。"别担心，"<<he>>嘲讽道。"我会替你说句好话的。"
+		<br><br>
+
+		<<link [[顺从|Rent Intro]]>><<endevent>><</link>>
+		<br>
+		<<if $bus is "hospital">>
+			<<link [[反抗|Rent Hospital Fight]]>><<set $fightstart to 1>><</link>>
+			<br>
+		<<else>>
+			<<link [[反抗|Rent Fight]]>><<set $fightstart to 1>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<<else>>
+	"你可以付给我，"<<he>>冷笑道。"用钱。大概<span class="pink">£<<print $rentmoney / 100>>。</span><span class="red">你的身体就值这么多。</span>"
+	<br><br>
+
+	<<if $baileydefeatedchain gte 1>>
+		<<person2>>"我会把那当作报酬，"<<nnpc_him Bailey>>旁边的<<person>>说道。
+		<br><br>
+
+		贝利瞪了<<him>>一眼，<<he>>移开了视线。
+		<<person1>>
+		<br><br>
+	<</if>>
+	和贝利谈判已经太晚了。<<He>>现在只想要<<his>>的钱。
+
+	<<if $money gte $rentmoney + ($babyRent or 0)>>
+		<<He>>伸出<<his>>的手。
+		<br><br>
+
+
+		<<link [[偿还|Rent Pay]]>><</link>>
+		<br>
+		<<link [[拒绝|Rent Refuse]]>><<def 1>><</link>>
+		<br>
+
+	<<else>>
+		"现在，就像我说的那样。"<<He>>向你展示着手上的绳子，"別动。"
+		<br><br>
+
+		<<link [[顺从|Rent Intro]]>><<endevent>><</link>>
+		<br>
+		<<if $bus is "hospital">>
+			<<link [[反抗|Rent Hospital Fight]]>><<set $fightstart to 1>><</link>>
+			<br>
+		<<else>>
+			<<link [[反抗|Rent Fight]]>><<set $fightstart to 1>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<</if>>
+
+:: Rent Intro
+<<effects>>
+<<set $baileydefeatedchain to 0>><<set $soldCount += 1>>
+<<set _robin to statusCheck("Robin")>>
+<<unset $bailey_encroach>>
+<<npc Bailey 1>>
+
+<<set _robinIsPresent to ($phase is 1)>>
+<<set _andRobin to (_robinIsPresent ? "and Robin" : "")>>
+
+你的脑袋上被套上头罩，双手被绑在背后，随后你_andRobin被带下一段楼梯，沿着一条隧道走下去。
+路上你被绊了好几次，贝利将你拖了起来，愤怒地扇你巴掌。
+<br><br>
+
+<<if _robinIsPresent>>
+	"求你，别再伤害<<phim>>了！"罗宾恳求着说道，但贝利忽略了<<nnpc_him "Robin">>的诉求。
+	<br><br>
+<</if>>
+<<pass 20>>
+
+<<if $rentsale is 3>>
+	<<set $rentsale to 0>><<generate2>><<person2>>
+	在走了一段时间后，你听到了其他的脚步声正在靠近。
+	<<if _robinIsPresent>>
+		"把他们交出来，"一个<<personsimple>>的声音说道。
+		<br><br>
+
+		"先交钱，"贝利回答，"他们之后还能回来吗？"
+		<br><br>
+
+		"在我们玩完之后，你是不会想把他们要回去的。"
+		<br><br>
+	<<else>>
+		"把<<phim>>交出来，"一个<<personsimple>>的声音说道。
+		<br><br>
+
+		"先交钱，"贝利回答，"<<phim>>之后还能回来吗？"
+		<br><br>
+
+		"在我们玩完之后，你是不会想把<<phim>>要回去的。"
+		<br><br>
+	<</if>>
+
+	你在隧道内被拖拽着行进，你听到类似于纸张摩擦的沙沙声。
+	<br><br>
+	<<if _robinIsPresent>>
+		<<link [[继续|Underground Intro]]>><<set $baileySold to true>><<endevent "phaseless">><<set $phase to 1>><</link>>
+	<<else>>
+		<<link [[继续|Underground Intro]]>><<set $baileySold to true>><</link>>
+	<</if>>
+	<br>
+<<elseif $rentsale is 2>>
+	<<set $rentsale += 1>>
+	<<leash 21>>
+	<<if _robinIsPresent>>
+		你走了很长一段时间，直到你感觉到脚下传来水泥地的触感。这时你听见有一组脚步声逐渐逼近。
+		你以为你听到了警察腰带摩擦传来的沙沙声。
+		<br><br>
+
+		"把嫌疑犯交出来，"一个声音命令道。
+		<br><br>
+
+		"现金优先，没时间坐牢了。"贝利的愤怒是显而易见的，"我要<<nnpc_him "Robin">>完好无损的回来。"
+		<br><br>
+
+		"很好。反正我们还有其他计划。"你听到像是现金的沙沙声。
+		<br><br>
+
+		罗宾哭了出來。"我、我什么都没做！求求你！不要！"<<nnpc_His "Robin">>声音渐渐消失了。而贝利将你拖到别处。
+		<<robinPunishment "pillory">>
+		<br><br>
+
+		你再继续走了一段时间，
+	<<else>>
+		你继续走了一段时间，
+	<</if>>
+	直到你听到前面传来引擎的声音。这声音在隧道内回响并且离你越来越近，直到你感觉到它就在你周围。
+	"真是好货，"一个陌生的声音说，"想必能成为优秀的种牛。"
+	<br>
+	"钱，"贝利不耐烦地回道。
+	<br>
+	"啊，在这里。"一旁传来类似纸张摩擦的沙沙声，接着有人拽着你的皮带，将你向前拉去。
+	<br>
+	"合作愉快。"贝利说完就离开了。
+	<br><br>
+
+	"注意脚下，"那陌生的声音说道，你感觉脚下有些颠簸晃动，"坐。"
+	你在膝盖周围摸索，找到一个感觉像是长凳的地方。
+	你坐了下来，然后听到门的砰砰声，几分钟后，当脚下的地板开始移动时，你随之摇晃了起来。你意识到你现在正在车里。
+	<br><br>
+
+	<<link [[继续|Street Van Bailey]]>><<set $baileySold to true>><</link>>
+	<br>
+<<elseif $rentsale is 1>>
+	<<set $rentsale += 1>>
+	<<if _robinIsPresent>>
+		<<rentRobinPunishment>>
+		<<endevent>>
+		<<npc Bailey 1>><<person1>>
+		<br><br>
+
+		你和贝利的行程还在继续。
+	<<else>>
+		在走了一段时间后，你发现你来到了户外。
+	<</if>>
+	你听到风吹过树叶沙沙作响。
+	贝利将你举起，把你的绑带钩在你身后的某个东西上，让你悬在空中。
+	"哪儿都别想着去，你很快就会被抓起来的，"<<he>>说道。你听到<<him>>离开，只留下你一个人在这里。
+	<br><br>
+
+	<<endevent>>
+	<<rentEdenTrade>>
+<<else>>
+	<<set $rentsale to 1>>
+	<<generate2>><<person2>>
+	在走了一段时间后，你听到了另一串脚步声。 "这就是商品么？"一个<<personsimple>>的声音响起。
+	<br><br>
+	<<if _robinIsPresent>>
+		"不，我只是带着我的<<print (_robin.pronoun is $player.gender_appearance ? (_robin.pronoun is "m" ? "男孩" : "女孩") : "小孩")>>散散步，"
+	<<else>>
+		"不，我只是带我的<<girl>>散散步，"
+	<</if>>
+	贝利说着，<<person1>><<his>>的怒气几乎没法被那讽刺的口吻所掩盖。
+	把现金给我就行了。还有，我要他们完好无损地回来，你付的钱就只够做这些……
+	<br><br>
+
+	<<if _robinIsPresent>>
+		<<if _robin.dom lte 50>>
+			"求你了，让我们走吧！我们什么都没做——"
+		<<else>>
+			"等等！放开<<phim>>！请不要伤害我的<<girlfriend>>——"
+		<</if>>
+		罗宾的声音突然变小，令你感到害怕的是，你听到<<nnpc_him "Robin">>摔倒在地上。
+		<br><br>
+	<</if>>
+	片刻之后，你感觉到有人将什么东西按在你的嘴上，你的意识逐渐远去了。<<arousal 6000>><<gggarousal>>
+	<br><br>
+
+	<<link [[继续|Danube Meal]]>><<endevent>><<set $phase to (_robinIsPresent ? 1 : 0)>><</link>>
+	<br>
+<</if>>
+
+:: Rent Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+	"你以为我打不过你？"贝利说道。
+	<br><br>
+	<<set $phase to 1>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+
+<<if $phase is 1>>
+	<<set $phase to 2>>
+	孤儿们被噪音所吸引，前来观看战斗。
+	<br><br>
+<</if>>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Rent Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Rent Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Rent Robin Fight
+<<set _robin to statusCheck("Robin")>>
+<<if $fightstart is 1>>
+	<<if $baileydefeatedchain gte 3>>
+		<<set $enemyno to 3>>
+		<<set $enemynomax to 3>>
+	<<elseif $baileydefeatedchain gte 1>>
+		<<set $enemyno to 2>>
+		<<set $enemynomax to 2>>
+	<<else>>
+		<<set $enemyno to 1>>
+		<<set $enemynomax to 1>>
+	<</if>>
+	<<set $fightstart to 0>>
+
+	<<neutral 1>>
+
+	<<maninit>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+	"那个谁，抓住那家伙，"贝利命令道。<<personselect $enemynomax>><<person>>点点头，然后抓住了罗宾，
+	而贝利将<<person1>><<his>>的目光转回到你身上。
+	<<set $phase to 1>>
+
+	<<if _robin.dom gte 80>>
+		<<set $timer to 4>>
+	<<elseif _robin.dom gte 60>>
+		<<set $timer to 3>>
+	<<elseif _robin.dom gte 40>>
+		<<set $timer to 2>>
+	<<else>>
+		<<set $timer to 1>>
+	<</if>>
+<</if>>
+
+<<effects>>
+<<effectsman>><<man>>
+
+<<if $phase is 1>>
+	<<set $phase to 2>>
+	<br><br>
+	孤儿们被噪音所吸引，前来观看战斗。
+	<br><br>
+<</if>>
+
+<<personselect $enemynomax>>
+<<if $timer gt 1>>
+	<span class="green">
+	<<if $rng gte 81>>
+		罗宾在<<nnpc_his "Robin">>被束缚的情况下努力挣扎着。
+	<<elseif $rng gte 61>>
+		罗宾告诉你不要放弃。
+	<<elseif $rng gte 41>>
+		罗宾用脚踢着<<person>>的脚后跟。
+	<<elseif $rng gte 21>>
+		罗宾告诉你不要担心<<nnpc_him "Robin">>。
+	<<else>>
+		Robin咬住了<<person>>用来抓着<<nnpc_him "Robin">>的手。
+	<</if>></span>
+<<elseif $timer is 1>>
+	<<person>>设法用<<his>>的手臂搂住罗宾的喉咙。<span class="red">罗宾痛苦地大叫着。</span>
+<<else>>
+	<span class="red">
+	<<if $rng gte 81>>
+		<<person>>缠住罗宾的脖子。
+	<<elseif $rng gte 61>>
+		你可以听到罗宾将要窒息而发出的呜咽声。
+	<<elseif $rng gte 41>>
+		<<person>>在勒住<<nnpc_him "Robin">>的同时朝罗宾的眼睛吐口水
+	<<elseif $rng gte 21>>
+		罗宾试图屈服，但<<person>>并没有松开。
+	<<else>>
+		<<person>>在拳打罗宾的同时，掐住了<<nnpc_him "Robin">>的脖子。
+	<</if>>
+	</span>
+	<<npcincr Robin trauma 2>><<grtrauma true>>
+<</if>>
+<br><br>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Rent Robin Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Rent Robin Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Rent Robin Fight Finish
+<<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation "short">><<set $baileydefeatedlewd += 1>><<set $baileydefeatedchain += 1>><<earnFeat "Bailey's Trouble Maker">>
+
+	<<person1>>旁观的一个孤儿咯咯地笑。贝利转身寻找笑声来源，但另一个家伙在<<him>>身后放声大笑。
+	很快，整个房间都充满了笑声。<<He>>回头看着你。 "你会为此付出代价的，"<<he>>在说完之后冲出了房间。
+	<br><br>
+
+	<<if $baileydefeatedchain gte 2>>
+		<<person2>><<person>>跟着<<person1>><<him>>溜走了。
+		<br><br>
+	<</if>>
+	你走到罗宾身边，解开了<<nnpc_his "Robin">>身上的捆绑，<<nnpc_He "Robin">>给了你一个热烈的拥抱。"谢谢你，我的英雄！"<<nnpc_he "Robin">>在你的<<if _robin.lust gte 60>>嘴唇上<<else>>脸颊上<</if>>啄了一下后，起身离开了这里。
+	<br><br>
+
+	孤儿们为你击败暴君而欢呼。 但<<He>>一定会回来的，就像坏人总是会再次出现，你在内心暗暗想到
+	<<greb>><<ghope>><<reb 1>><<hope 1>><<ltrauma>><<lstress>><<trauma -6>><<stress -12>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Bedroom]]>><</link>>
+<<elseif $enemyhealth lte 0>>
+	<<set $baileydefeated += 1>><<set $baileydefeatedchain += 1>>
+
+	<<person1>><<He>>后退了几步，护着瘀伤，对你的攻击性感到惊讶。
+	<<He>>注意到大厅周围的人群。 "你会为此付出代价的。记好了。"在撂下狠话后，<<He>>冲了出去。
+	<br><br>
+
+	<<if $baileydefeatedchain gte 2>>
+		<<person2>><<person>>跟着<<person1>><<him>>溜走了。
+		<br><br>
+	<</if>>
+	你走到罗宾身边，解开了<<nnpc_his "Robin">>身上的捆绑，<<nnpc_He "Robin">>给了你一个热烈的拥抱。"谢谢你，我的英雄！"
+	<br><br>
+
+	<<if _robin.lust gte 60>>
+		罗宾在你的嘴唇上轻轻一啄，然后才转身离开。
+	<<else>>
+		罗宾在你的脸颊上轻轻一啄，然后才转身离开。
+	<</if>>
+	<br><br>
+
+	贝利的离开让旁观的孤儿们倍感压力，不过孤儿们还是为你击败暴君而欢呼。 但<<He>>一定会回来的，就像坏人总是会再次出现，你在内心暗暗想到。
+	<<greb>><<ghope>><<reb 1>><<hope 1>><<ltrauma>><<lstress>><<trauma -6>><<stress -12>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Bedroom]]>><</link>>
+
+<<else>>
+	<<set $baileydefeatedchain to 0>>
+	<<unset $bailey_encroach>>
+
+
+	你倒在地上，因为受伤而动弹不得。
+	罗宾挣扎着，直到贝利重重地击中了<<nnpc_him "Robin">>的头部。这让<<nnpc_He "Robin">>直接倒在了你身边。
+	<<lreb>><<reb -1>>
+	<br><br>
+
+	<<set $upperoff to 0>>
+	<<set $loweroff to 0>>
+	<<set $underloweroff to 0>>
+	<<set $underupperoff to 0>>
+	<<endcombat>>
+
+	<<link [[继续|Rent Intro]]>><<endevent>><<set $phase to 1>><</link>>
+<</if>>
+
+:: Rent Fight Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation "short">><<set $baileydefeatedlewd += 1>><<set $baileydefeatedchain += 1>><<earnFeat "Bailey's Trouble Maker">>
+
+	<<person1>>旁观的一个孤儿咯咯地笑。贝利转身寻找笑声来源，但另一个家伙在<<him>>身后放声大笑。
+	很快，整个房间都充满了笑声。<<He>>回头看着你。 "你会为此付出代价的，"<<he>>在说完之后冲出了房间。
+	<br><br>
+
+	<<if $baileydefeatedchain gte 2>>
+		<<person2>><<person>>跟着<<person1>><<him>>溜走了。
+		<br><br>
+	<</if>>
+
+	孤儿们为你击败暴君而欢呼。 但<<He>>一定会回来的，就像坏人总是会再次出现，你在内心暗暗想到
+	<<greb>><<ghope>><<reb 1>><<hope 1>><<ltrauma>><<lstress>><<trauma -6>><<stress -12>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Bedroom]]>><</link>>
+<<elseif $enemyhealth lte 0>>
+	<<set $baileydefeated += 1>><<set $baileydefeatedchain += 1>>
+
+	<<person1>><<He>>后退了几步，护着瘀伤，对你的攻击性感到惊讶。
+	<<He>>注意到大厅周围的人群。 "你会为此付出代价的。记好了。"在撂下狠话后，<<He>>冲了出去。
+	<br><br>
+
+	<<if $baileydefeatedchain gte 2>>
+		<<person2>><<person>>跟着<<person1>><<him>>溜走了。
+		<br><br>
+	<</if>>
+
+	<<His>>的离开让旁观的孤儿们倍感压力，不过孤儿们还是为你击败暴君而欢呼。 但<<He>>一定会回来的，就像坏人总是会再次出现，你在内心暗暗想到。
+	<<greb>><<ghope>><<reb 1>><<hope 1>><<ltrauma>><<lstress>><<trauma -6>><<stress -12>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Bedroom]]>><</link>>
+
+<<else>>
+	<<set $baileydefeatedchain to 0>>
+	<<unset $bailey_encroach>>
+
+
+	你倒在地上，因为受伤而动弹不得。
+	<<lreb>><<reb -1>>
+	<br><br>
+
+	<<set $upperoff to 0>>
+	<<set $loweroff to 0>>
+	<<set $underloweroff to 0>>
+	<<set $underupperoff to 0>>
+	<<endcombat>>
+
+	<<link [[继续|Rent Intro]]>><</link>>
+<</if>>
+
+:: Rent First Robin Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<set $enemyno to 1>>
+	<<set $head to "grappled">>
+	<<set $leftarm to "grappled">><<set $rightarm to "grappled">><<set $NPCList[0].lefthand to "arms">><<set $NPCList[0].righthand to "arms">>
+	<<neutral 1>>
+
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+<</if>>
+
+<<effects>><<effectsman>>
+<br>
+<<person1>>
+<<if $combatPhase is "talk">>
+	<<switch $timer>>
+		<<case 4>>
+			贝利盯着你。
+		<<case 3>>
+			贝利转身离开。
+		<<case 2>>
+			贝利走出大厅，在拐了个弯后就看不见身影了。
+		<<case 1>>
+			你听到贝利说了些什么，<span class="purple">接着传来<<nnpc_gendery "Robin">>的尖叫声</span>。
+		<<default>>
+			贝利从走廊出来，<span class="red">手里抓着罗宾的头发，将<<nnpc_his "Robin">>拖了出来</span>。
+			<<set $combatPhase to "Robin">><<set $timer to 2>><<set $baileySpoke to 0>>
+	<</switch>>
+	<br>
+	<span class="red"><<person2>><<person>>和<<person3>><<person>>按住了你。</span>
+<<elseif $combatPhase is "Robin">>
+	<<if $timer gte 1>>
+		<<switch $baileySpoke>>
+			<<case 2>>
+				<<if $speechplead is 1 or $speechapologiseno is 1 or $speechscream is 1 or $speechdemand is 1>>
+					"省点力气，"贝利说道，"如果你真的想救<<nnpc_him "Robin">>的话，现在交钱还不算晚。"
+				<<else>>
+					"我早就告诉过你了，"贝利说，"把我的钱给我——否则我会想尽办法从你身上榨取价值。"
+				<</if>>
+			<<case 1>>
+				<<if $speechplead is 1 or $speechapologiseno is 1>>
+					贝利翻了个白眼。"如果你按时付钱给我，也许你现在就不会在这哭泣了。"
+					<<set $baileySpoke++>>
+				<<elseif $speechscream is 1 or $speechdemand is 1>>
+					"你以为你光喊就能说服我？"贝利冷笑道。
+					<<set $baileySpoke++>>
+				<<else>>
+					"如果你还没准备好还债，那你为什么要背负这个孤儿的债务，"贝利冷笑道。
+				<</if>>
+			<<default>>
+				<<if $speechplead is 1 or $speechapologiseno is 1>>
+					贝利嘲笑你。"哦，现在你后悔了？那么后果呢？"
+					<<set $baileySpoke++>>
+				<<elseif $speechscream is 1 or $speechdemand is 1>>
+					"闭嘴，"贝利冲你吼道。 "你没有付出相应的代价，所以要让<<nnpc_he "Robin">>来支付。"
+					<<set $baileySpoke++>>
+				<<else>>
+					"你看到了吗？"贝利看着罗宾说道。"<<pShe>>没有付出代价，所以将会由你来支付。"
+				<</if>>
+		<</switch>>
+		<<if $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 20 or $NPCName[$NPCNameList.indexOf("Robin")].dom lte 30>>
+			<<print either("罗宾眼中含泪地盯着你。","罗宾抽泣着。","罗宾无力地在贝利的手中挣扎。","罗宾向你伸出手。")>>
+		<<else>>
+			<<print either("罗宾一副勇敢的表情。","罗宾紧咬着牙。","罗宾在贝利的手中挣扎。","罗宾几乎要挣开了贝利的手。")>>
+		<</if>>
+	<<else>>
+		"你想让<<nnpc_him "Robin">>安全吗？"贝利问道。 "我直说吧，从现在开始，你要继续付钱给我。"
+		<<if $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 1 or $NPCName[$NPCNameList.indexOf("Robin")].dom lte 30>>
+			罗宾哽咽着.
+		<<else>>
+			罗宾摇了摇头。
+		<</if>>
+		<<set $combatPhase to "pay">><<set $timer to 2>>
+	<</if>>
+	<br>
+	<span class="red"><<person2>><<person>>和<<person3>><<person>>按住了你。</span>
+<<elseif $combatPhase is "pay">>
+	<<if $speechpay is 1>>
+		"给我，"贝利冷笑道。 "就有那么难吗？"<<He>>对<<his>>的打手们做了个手势，他们松开了你的手臂。
+		<<set _fin to 1>>
+	<<elseif $speechpay is -1>>
+		"嗯，这不是一种耻辱，"贝利冷笑道。 "但我感觉自己很慷慨。现在你仍然可以拯救<<nnpc_him "Robin">>。别动！"
+		<br>
+		罗宾拼命地摇了摇头。
+		<<set $combatPhase to "still">><<set $timer to 2>>
+	<<elseif $timer is 1>>
+		贝利假装在看<<his>>的手表。 "我很忙<<personsimple>>。如果你不<i>付钱</i>，那我就走了。"
+		<br>
+		<span class="red"><<person2>><<person>>和<<person3>><<person>>按住了你。</span>
+	<<else>>
+		"我受够了，"贝利嘲笑道。 "如果你不想为<<nnpc_him "Robin">>付钱，你一开始就不应该浪费我的时间。"
+		<<set $finish to 1>><<set _fin to 1>>
+	<</if>>
+<<elseif $combatPhase is "still">>
+	<<if _defiance is undefined>>
+		"很好，"贝利说完后，<<He>>对着抓着你胳膊的打手点了点头，然后这些家伙将你带出了孤儿院。
+		<br><br>
+		<span class="red">当你被带出去的时候，罗宾哭喊地叫着你的名字.</span>
+		<<set _fin to 1>>
+	<<elseif $timer is 1>>
+		"你听到了吗？"贝利咆哮道。 "如果你不想让<<nnpc_him "Robin">>挨骂，那就<i>停止挣扎</i>。不要动！"
+		<br>
+		<span class="red"><<person2>><<person>>和<<person3>><<person>>死死地抓住你。</span><<person2>><<persons>>握的更紧。
+	<<else>>
+		贝利皱眉。 "我没什么时间。如果你不想为<<nnpc_him "Robin">>付钱单，你一开始就不应该浪费我的时间。"
+		<<set $finish to 1>><<set _fin to 1>>
+	<</if>>
+<</if>>
+<br><br>
+<<if _fin isnot 1>>
+	<<actionsman>>
+<</if>>
+
+<<if $combatPhase is "pay" and $speechpay is 1>>
+	<span id="next"><<link [[继续|Rent First Robin Fight Finish]]>><<endevent>><<set $phase to "pay">><</link>></span><<nexttext>>
+<<elseif $combatPhase is "still" and _defiance is undefined>>
+	<span id="next"><<link [[继续|Rent First Robin Fight Finish]]>><<endevent>><<set $phase to "still">><</link>></span><<nexttext>>
+<<elseif $finish is 1>>
+	<span id="next"><<link [[继续|Rent First Robin Fight Finish]]>><<endevent>><<set $phase to "finish">><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Rent First Robin Fight]]>><</link>></span><<nexttext>>
+<</if>>
+<<turnend>>
+
+:: Rent First Robin Fight Finish
+<<effects>>
+<<unset $robinRentEvent>>
+<<set _robin to statusCheck("Robin")>>
+<<npc Robin 1>><<person1>>
+
+<<if $phase is "pay">>
+	贝利放开罗宾，罗宾跑过来拥抱你<<He>>轻轻地抽泣着
+	<br><br>
+	<<rentpay>>
+
+	贝利离开了，但罗宾依旧依偎在你身上。
+	<<if _robin.trauma gte 40>>
+		"我以为……"<<he>>哽咽着将你抱得更紧了。
+	<<else>>
+		"我以为我会失去你，"<<he>>过了许久才说道。
+	<</if>>
+	<br><br>
+
+	你轻轻握住<<his>>的手，随之在<<him>>的额头上轻轻一吻。
+	<<takeHandholdingVirginity "Robin">>
+	<br><br>
+
+	罗宾努力让自己冷静下来，然后将眼泪止住了。
+	<<if _robin.dom gte 30>>
+		"我需要变得更强……"<<he>>在喘气时轻声说道，随后摇了摇<<his>>的头。
+	<</if>>
+	"谢谢你为我做的一切，"<<he>>说道。 过了一会，<<He>>松开了<<his>>的胳膊，回到了<<his>>的房间。
+	<br><br>
+
+	<<robinRentUnsafeMessage>>
+
+	<<endcombat>><<clotheson>>
+
+	<<link [[继续|Orphanage]]>><</link>>
+<<elseif $phase is "still">>
+	暴徒将你拖走，而你能听到罗宾为你哭泣。当你离开孤儿院时，<<His>>的哭声越来越小直到消失，现在你与贝利面对面。
+	<br><br>
+
+	<<npc Bailey 2>><<person2>>
+	"还钱有这么难吗？"贝利冷笑着，<<he>>捂住了你的脑袋，绑住了你的手臂。 "你这次救了你的小朋友"
+	<br><br>
+
+	<<robinRentUnsafeMessage>>
+
+	<<endcombat>><<clotheson>>
+
+	<<link [[继续|Rent Intro]]>><</link>>
+<<else>>
+	<<robinPunishment "mansion">>
+	贝利拉着罗宾离开。你在暴徒的控制下努力挣扎，但还是无法挣脱。
+	<br><br>
+
+	最终贝利回来了，并且开始嘲笑你。"既然我是个慷慨的人，所以这次将只是一个警告。把钱给我，否则<<he>>会付出代价的。"
+	<br><br>
+
+	<<robinRentUnsafeMessage>>
+
+	<<endcombat>><<clotheson>>
+
+	<<link [[继续|Orphanage]]>><</link>>
+<</if>>

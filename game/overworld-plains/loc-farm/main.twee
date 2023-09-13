@@ -1,0 +1,2842 @@
+:: Farmland
+<<set $outside to 1>><<set $location to "farm">><<set $bus to "farm">>
+<<if $slimeFarmNakedStored is true>>
+	<<storeon "farmHidingSpot">>
+	<<unset $slimeFarmNakedStored>>
+<</if>>
+<<effects>>
+你在农田里。
+<<if Time.dayState is "night">>
+	<<if $weather is "rain">>
+		雨水浸没了田地。
+	<<elseif $weather is "overcast">>
+		你在黑暗中看不见多少东西。
+	<<elseif $weather is "snow">>
+		雪掩埋了田地。
+	<<else>>
+		星星在田地上空闪烁。
+	<</if>>
+<<elseif Time.dayState is "dawn">>
+	<<if $weather is "rain">>
+		雨水冲刷着田地。
+	<<elseif $weather is "overcast">>
+		浓雾笼罩着田地。
+	<<elseif $weather is "snow">>
+		雪掩盖着田地。
+	<<else>>
+		田地迎着地平线上的朝阳。
+	<</if>>
+<<elseif Time.dayState is "dusk">>
+	<<if $weather is "rain">>
+		渐暗的天空中飘动着海上刮来的雨水。
+	<<elseif $weather is "overcast">>
+		已经开始看不清田地了。
+	<<elseif $weather is "snow">>
+		雪在田间飞舞。
+	<<else>>
+		太阳在田地的那头落下。
+	<</if>>
+<<else>>
+	<<if $weather is "rain">>
+		雨水灌溉着周围的田地。
+	<<elseif $weather is "overcast">>
+		四周的天空都灰蒙蒙的。
+	<<elseif $weather is "snow">>
+		雪覆盖着田地。
+	<<else>>
+		阳光照耀着肥沃的田地。
+	<</if>>
+<</if>>
+<br><br>
+
+<<if $farm_stage is undefined>>
+	一条通往农舍的土路边上立着一个牌子。它宣传新鲜鸡蛋、胡萝卜和其他产品。有一行是用比其他的更深的油漆写的。它写道："需要农工。有意者面谈。"<<if Time.dayState is "night">>你需要在白天再来。<</if>>
+	<br><br>
+<</if>>
+
+<<if $exposed gte 1 and Time.dayState is "night">>
+	你躲在一捆干草后面，掩盖你的下流行径。
+	<br><br>
+<</if>>
+
+<<if $stress gte $stressmax>>
+	<<passoutfarmroad>>
+<<elseif $exposed gte 1 and Time.dayState isnot "night" and $eventskip isnot 1>>
+	<<events_farm_exhibitionism>>
+<<else>>
+	<<if Time.dayState isnot "night">>
+		<<if $farm_stage is undefined and $exposed lte 0>>
+			<<link [[咨询农场的工作 (0:30)|Farm Intro]]>><<pass 30>><<set $farm_stage to 1>><</link>>
+			<br>
+		<<elseif $farm_stage is 1 and $exposed lte 0>>
+			<<link [[接受农场的工作 (0:05)|Farm Intro Accept 2]]>><<pass 5>><<set $farm_stage to 2>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+	<<if $farm_stage gte 2>>
+		<<link [[农场 (0:05)|Farm Work]]>><<pass 5>><</link>>
+		<br>
+	<</if>>
+	<<if $exposed lte 0>>
+		<<if Time.dayState is "night">>
+			<<link [[骑术学校|Riding School Lock]]>><</link>>
+			<br>
+		<<elseif Time.hour is $closinghour>>
+			骑术学校今天没有开门，马都被关在马厩中。
+			<br><br>
+		<<else>>
+			<<link [[骑术学校 (0:01)|Riding School]]>><<pass 1>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+	<<link [[草地 (0:10)|Meadow]]>><<pass 10>><</link>>
+	<br><br>
+	<<link [[进入荒原 (0:05)|Moor]]>><<set $moor to 0>><<unset $moor_hunt>><<pass 5>><<set $eventskip to 1>><</link>>
+	<br>
+	<<link [[朝小镇走 (0:05)|Farm Road 6]]>><<set $phase to 0>><<pass 5>><</link>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Farm Intro
+<<set $outside to 0>><<set $location to "alex_cottage">><<effects>>
+
+<<npc Alex>><<person1>>
+你向农舍走去。农舍的正对面有一个鸡笼。有个<<nnpc_gendery "Alex">>从那后面走出来，<<his>>肩上还扛着一大捆干草。<<He>>注意到你，朝你露出微笑。"嘿，"<<he>>说，"我马上就来。"
+<br><br>
+
+你站在门廊下，而<<nnpc_gendery "Alex">>把<<his>>的东西搬到了旁边的小屋里。<<He>>把它放在里面，干草落地时激起一阵灰尘。
+<br><br>
+
+<<nnpc_gendery "Alex">>朝你走来时伸展了一下腰背，
+<<if $weather is "rain">>
+	从<<his>>眼睛上拨开红色的刘海，说道："先进来避避雨吧。"接着打开了门。
+<<elseif $weather is "snow">>
+	从<<his>>眼睛上拨开红色的刘海，说道："先进来避避寒吧。"接着打开了门。
+<<else>>
+	汗水在<<his>>额头上闪闪发光。<<He>>拨开了眼睛上的刘海，打开了门。
+<</if>>
+<<if playerBellyVisible()>>
+	<<setKnowsAboutPregnancy "pc" "Alex">>
+	"我去烧点水，茶还是……？"<<He>>看了看你的<<bellyDescription "pc">>，"茶，我去泡杯茶。"
+	<br><br>
+
+	<<link [[继续|Farm Intro 2]]>><<set $phase to 0>><<stress -6>><</link>><<lstress>>
+	<br>
+<<else>>
+	"我去烧壶水，茶还是咖啡？"
+	<br><br>
+
+	<<link [[茶|Farm Intro 2]]>><<set $phase to 0>><<stress -6>><</link>><<lstress>>
+	<br>
+	<<link [[咖啡|Farm Intro 2]]>><<set $phase to 1>><<tiredness -6>><</link>><<ltiredness>>
+	<br>
+<</if>>
+
+
+
+
+:: Farm Intro 2
+<<effects>>
+
+农舍的内饰质朴而舒适。<<nnpc_gendery "Alex">>坚持在准备好给你的<<if $phase is 0>>茶<<else>>咖啡<</if>>后才开始问起你的来意。<<Hes>>差不多和你同龄，但你从未在学校见过<<him>>。
+<br><br>
+
+<<if $leftarm is "bound" and $rightarm is "bound">>
+	<<unbind>>
+	<<He>>递给你一个马克杯。你转过身给他看你被束缚的手臂。你听见<<him>>的笑声。"你怎么不说呢？"<<He>>放下马克杯。你感觉自己的手臂被松开了。
+	<br><br>
+
+	"那么，"<<he>>在你抿了第一口之后说道，"<span class="green">我是艾利克斯。</span>还有什么别的事吗？还是说你只是需要一点帮助？"
+<<else>>
+	"那么，"<<he>>在你抿了第一口之后说道，"<span class="green">我是艾利克斯。</span>我能为你做些什么？要不要买点我们的鸡蛋？"
+<</if>>
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"我……我来应聘的，"你说，"告示牌说你需要帮手。"
+<<elseif $speech_attitude is "bratty">>
+	"我是来找工作的。"你说道。
+<<else>>
+	"告示牌上说你需要帮手。"你说道。
+<</if>>
+<br><br>
+
+<<if playerBellyVisible()>>
+	<<he>>顿了一下，"你知道我挂出的那个招工牌子是为招人干活吧......"？<<he>>说着，又看了一眼你的肚子。
+	<br><br>
+
+	<<He>>哼了一声，忍住笑容。喝了一口茶，向你招手道，"你让我想起了我妈妈。跟我来。我带你四处看看，看看能不能找到些适合你的工作。"
+<<else>>
+	"太好了，"<<he>>微笑着抿了一口<<his>>的茶。"来吧，我带你转转。"
+<</if>>
+<br><br>
+
+<<link [[继续|Farm Intro 3]]>><</link>>
+<br>
+
+
+:: Farm Intro 3
+<<set $location to "alex_farm">><<effects>>
+
+"这是我<<if $pronoun is "m">>爸爸的<<else>>妈妈的<</if>>农场，"<<he>>说着把你带到外面。"有好几个农场，而这一个被交给了我。没有帮手的话有点难办。光是照顾那些动物就够忙的。还有几块田已经开始荒废了。"
+<br><br>
+
+你们来到了鸡笼。"这些女孩们挺好管的。只要每天喂一次就行，然后放他们到院子里去，至少一小时左右吧。"
+<br><br>
+
+<<link [[继续|Farm Intro 4]]>><</link>>
+<br>
+
+
+:: Farm Intro 4
+<<effects>>
+
+
+艾利克斯带你绕过鸡笼，走向一座长形的石质建筑。你听见猪在里面哼哼。"猪都很难喂饱，它们全是饿死鬼。喂猪算是个艰巨的任务。"你们走进猪圈。
+<!-- Modified for monster people -->
+<<if ($monsterchance gte random(1, 100) and ($hallucinations gte 1 or $monsterhallucinations is "f")) or ($bestialitydisable is "t")>>
+	<<if beastMaleChance() gte 100>>
+		几个猪男孩坐在圈舍里。
+	<<elseif beastMaleChance() gte 1>>
+		几个猪男孩和女孩坐在圈舍里。
+	<<else>>
+		几个猪女坐在圈舍里。
+	<</if>>
+<<else>>
+	几只猪被关在圈舍里。
+<</if>>
+一些看起来困惑又滑稽，另一些则只是侧身躺着。
+<br><br>
+
+"有一个供它们放风的区域。它们不需要太多的空间。"
+<br><br>
+
+<<link [[继续|Farm Intro 5]]>><</link>>
+<br>
+
+:: Farm Intro 5
+<<effects>>
+
+<<He>>带着你离开猪圈，穿过一扇旧木门走上一条铺好的道路。你看到前面有一个马厩。
+<!-- Modified for monster people -->
+<<if ($monsterchance gte random(1, 100) and ($hallucinations gte 1 or $monsterhallucinations is "f")) or ($bestialitydisable is "t")>>
+	<<if beastMaleChance() lte $rng>>
+		<<set _horse_gender to "f">>
+	<<else>>
+		<<set _horse_gender to "m">>
+	<</if>>
+	半人马们从马厩里探出身子，支着手肘歇息。
+	<<if _horse_gender is "f">>
+		"嘿，艾利克斯，"当你们走近时，其中一个开口了。她对自己暴露的乳房毫不在意，但对你投来警惕的目光。"何时才能放我们出去？"
+	<<else>>
+		"嘿，艾利克斯，"当你们走近时，其中一个开口了。他对你投以警惕的目光。"何时才能放我们出去？"
+	<</if>>
+	<br><br>
+
+	"抱歉，"艾利克斯答道，挠了挠半人马的鼻子。"我有位客人。"<<He>>打开了马厩。"是个我希望你们都喜欢上的人。"
+	<br><br>
+
+<<else>>
+
+	马从马厩里观望。当你走近时，其中一匹马嘶鸣。
+	<br><br>
+
+	"抱歉，"艾利克斯说道，挠了挠那匹马的鼻子。"我有位客人。"<<He>>打开了马厩。"是个我希望你们都喜欢上的人。"
+	<br><br>
+
+<</if>>
+
+"这些马需要大量的照顾，"你们沿着小径走向另一扇大门时，<<he>>说道。"每天都要刷毛，然后每天得喂两次。他们也需要大量的运动。"<<He>>打开了大门，马群嘶鸣着，隆隆地奔向远处的田野。
+<br><br>
+
+<<link [[继续|Farm Intro 6]]>><</link>>
+<br>
+
+
+:: Farm Intro 6
+<<effects>>
+
+你跟随艾利克斯穿过农田，走向一个牛棚。一只狗坐在外面，张开嘴巴耷拉着舌头。
+<br><br>
+<!-- Modified for monster people -->
+<<if ($monsterchance gte random(1, 100) and ($hallucinations gte 1 or $monsterhallucinations is "f")) or ($bestialitydisable is "t")>>
+	<<if beastMaleChance() gte 100>>
+		在里面，有许多公牛男孩四肢着地，每个人的阴茎都连着管子。他们发出快慰的哞哞声。
+	<<elseif beastMaleChance() lte 0>>
+		在里面，有许多母牛女孩四肢着地，每个人的乳房都连着两根管子。她们发出快慰的哞哞声。
+	<<else>>
+		在里面，有许多母牛女孩和公牛男孩四肢着地，每个人都被连接到了一个挤奶机上。他们发出快慰的哞哞声。
+	<</if>>
+
+<<else>>
+	<<if beastMaleChance() gte 100>>
+		几头公牛站在里面，每头都被连接到一个挤奶机上。
+	<<elseif beastMaleChance() lte 0>>
+		几头母牛站在里面，每头都被连接到一个挤奶机上。
+	<<else>>
+		几只牛站在里面，每只牛都被连接到一个挤奶机上。
+	<</if>>
+
+<</if>>
+
+"他们每天需要挤奶三次，"艾利克斯说道。"它们更喜欢手挤，但这太耗时间了。"
+<br><br>
+
+"我很快就回来，"<<he>>对着牛群说道，"只是带我们的新朋友到处逛逛。"你跟着<<him>>走出了门外。
+<br><br>
+
+<<link [[继续|Farm Intro 7]]>><</link>>
+<br>
+
+:: Farm Intro 7
+<<effects>>
+
+艾利克斯用一只手撑着自己越过了栅栏，来到前方的一片田地里。那儿整齐地排列着许多绿色植物，每株的顶端都开着白色小花。
+<br><br>
+<<He>>自豪地笑了笑。"这些是我的土豆，"<<he>>说道。"虽然过程很辛苦，但我还是想办法让它们生根发芽了。它们已经快长到一半了。"
+<br><br>
+<<He>>指着农田对面说道："我们还有八块像这样的田，但都被杂草占据了。照看动物是首要任务，要兼顾好它们可不容易。"
+<br><br>
+<<if playerBellyVisible()>>
+	<<He>>扫了一眼你的肚子。"确保定期休息，或者只关注动物。我不想让你累坏了。没必要因为能够推迟的工作而逼坏自己。"
+	<br><br>
+<</if>>
+
+<<link [[继续|Farm Intro 8]]>><</link>>
+<br>
+
+
+:: Farm Intro 8
+<<set $location to "alex_cottage">><<effects>>
+
+艾利克斯带着你回到农舍，说道："这就是我们的情况。一点小帮助应该会让事情变得更加顺畅。也许我还能够让其它田地也运作起来。"
+<br><br>
+
+"说起来，你住在哪里？"
+<br><br>
+
+<<link [[说你住在孤儿院|Farm Intro 9]]>><<set $phase to 0>><</link>>
+<br>
+<<link [[说你住在城里|Farm Intro 9]]>><<set $phase to 1>><</link>>
+<br>
+<<link [[拒绝回答这个问题|Farm Intro 9]]>><<set $phase to 2>><</link>>
+<br>
+
+
+:: Farm Intro 9
+<<effects>>
+
+
+<<if $phase is 0>>
+	艾利克斯看起来有些局促。"对不起，"<<he>>说道。"我想你有学校和其他事情要忙吧？日出之后，日落之前，你都可以挑喜欢的时间来工作。我会付你每小时<<printmoney 1500>>。"
+<<elseif $phase is 1>>
+	"我猜也是，"艾利克斯说道。"我想你有学校和其他事情要忙吧？日出之后，日落之前，你都可以挑喜欢的时间来工作。我会付你每小时<<printmoney 1500>>。"
+<<else>>
+	"没问题，"艾利克斯微笑着说道。"不过我能看出你是城里人。我想你有学校和其他事情要忙吧。日出之后，日落之前，你都可以挑喜欢的时间来工作。我会付你每小时<<printmoney 1500>>。"
+<</if>>
+<br><br>
+
+"我会付更多钱的，"<<he>>继续说道，"但农场刚刚达到收支平衡。我希望在你的帮助下情况会有所改变。我不想撒谎，但这是一项很辛苦的工作。<<if playerBellyVisible()>>我不希望你把自己逼得太死，知道吗？如果你肯上工努力工作，你就会得到与你劳动成果相匹配的报酬。<</if>>"
+<br><br>
+
+<i>艾利克斯有着和你相同的所有农务选项。你帮忙做农务会让<<him>>有时间去做其他事情。使其它田地运作起来会提高你的工资。如果有出色的收成，艾利克斯可能也会分你一部分的利润。
+<br><br>
+有些选项只在特定的时间段内才可用。
+</i>
+<br><br>
+
+<<link [[继续|Farm Intro 10]]>><</link>>
+<br>
+
+
+:: Farm Intro 10
+<<effects>>
+
+"这里还有很多东西需要讲解，但你可以边学边做。怎么样？愿意帮忙吗？"艾利克斯停在门廊前问道。<<he>>微笑着说："如果你需要时间考虑也没关系。"
+<br><br>
+
+<<link [[接受|Farm Intro Accept]]>><<set $farm_stage to 2>><</link>>
+<br>
+<<link [[拒绝|Farm Intro Refuse]]>><</link>>
+<br>
+
+
+:: Farm Intro Accept
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我……我很乐意帮忙。"你点点头。
+<<elseif $speech_attitude is "bratty">>
+	"好的，听起来不错。"你说道。"我愿意帮忙。"
+<<else>>
+	"我想帮忙。"你点点头。
+<</if>>
+<br><br>
+
+"太好了！"艾利克斯微笑着说道。"你可以随时开始，不要害怕问问题。"
+<br><br>
+
+<<farm_init>>
+
+<<link [[继续|Farmland]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Intro Refuse
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我……我需要时间考虑一下。"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"我会考虑的。"你说道。"我原本期望薪水能更高。"
+<<else>>
+	"我会考虑的。"你说道。
+<</if>>
+<br><br>
+艾利克斯点点头。"我理解。你准备好的时候再来吧。"
+<br><br>
+
+<<link [[继续|Farmland]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Intro Accept 2
+<<effects>>
+
+<<npc Alex>><<person1>>
+你来到艾利克斯的农场，看到<<Hes>>拎着两个沉重的桶穿过院子，但当<<he>>看到你时，<<he>>微笑着把它们放在地上。"很高兴再次见到你，"<<he>>说道。
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"我来是关于你的工作邀请的，"你说道，"我想帮忙。"
+<<elseif $speech_attitude is "bratty">>
+	"我是来工作的，"你说道，"我愿意干。"
+<<else>>
+	"我来是关于你的工作邀请的，"你说道，"我想帮忙。"
+<</if>>
+<br><br>
+
+艾利克斯露出笑容。"太好了！你随时可以开始，不要害怕问问题。"
+<br><br>
+
+
+<<farm_init>>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+:: Farm Stage Widgets [widget]
+<<widget "farmVisitor">>
+	<<npc Alex>><<generate2>><<person2>>
+	"瞧瞧这是谁呀？"一个声音说道，你转身看去，一个<<person>>正倚靠在农田边缘的栅栏上，"艾利克斯为<<person1>><<himself>>找了一个助手，而且还是个可爱的小家伙。你为什么不把屁股挪过来让我好好瞧瞧呢？"
+	<br><br>
+
+	"滚开！"另一个声音说道。那是艾利克斯。<<He>>瞪着那个<<person2>><<person>>。"我告诉过你，如果你再闯进来，会有什么后果。"
+	<br>
+	<<person>>举起了<<his>>的手，但<<his>>的脸上并没有恐惧的表情。"我可没闯进来。你瞧，<<if $pronoun is "f">>女孩们<<else>>男孩们<</if>>和我只是想知道你是否重新考虑了我们的提议。"
+	<br>
+	"我不需要你的帮助，"艾利克斯答道，站到了你的身边。
+	<br>
+	"你觉得有这个城里<<girl>>就足够了吗？真有意思。"<<He>>转身沿着小路走来。
+	<br><br>
+
+	<<link [[继续|Farm Visitor]]>><<set $farm_stage to 3>><</link>>
+	<br>
+<</widget>>
+
+<<widget "farmStage4">>
+	<<npc Alex>><<person1>>
+	"我们做到了，"艾利克斯说道。<<He>>听起来很累，<<his>>的衣服破了，<<his>>的头发被汗水打湿，但是笑容却绽放在<<his>>的脸上。"我们清理了第二块田地。"
+	<br><br>
+
+	<<He>>带你去了那块田地，停在栅栏旁边。<<He>>示意你跟着<<he>>坐下。"如果没有你在，我是不可能做到这一切的。"<<he>>说着，拿起玻璃瓶喝了一口。
+	<<if playerBellyVisible()>>
+		<<He>>从<<his>>的口袋里又掏出一个瓶子，但马上看到了你的<<bellyDescription "pc">>，皱起了眉头。
+		<br><br>
+
+		<<link [[继续|Farm Stage 4]]>><<set $phase to 1>><<set $farm_stage to 4>><<set $farm.clearing to 100>><</link>>
+		<br>
+	<<else>>
+		<<He>>从<<his>>口袋里掏出另一个，递给了你。
+		<br><br>
+
+		<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+			<span class="blue">你知道自己怀孕了，不能喝酒。</span>
+		<<else>>
+			<<link [[喝|Farm Stage 4]]>><<set $phase to 0>><<stress -6>><<set $farm_stage to 4>><<set $farm.clearing to 100>><</link>><<lstress>>
+		<</if>>
+		<br>
+		<<link [[拒绝|Farm Stage 4]]>><<set $phase to 1>><<set $farm_stage to 4>><<set $farm.clearing to 100>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "farmStage5">>
+	<<npc Alex 1>><<npc Remy 2>><<person1>>
+	"完成了，"艾利克斯靠在农舍的墙上说道。"又有一块田地可以种植了。"<<He>>正伸手进口袋，但在听到小路上接近的马蹄声时，停下了动作。
+	<br><br>
+	<<person2>>
+	<<if $remy_seen is "livestock">>
+		一匹<<farm_text horse>>骑进了农场。在它的背上坐着雷米，<<if $pronoun is "m">><<his>>淡棕色的头发在微风中飘舞<<else>><<his>>淡棕色的头发被扎成一个整齐的发髻<</if>>。你感到很紧张，回忆起在<<his>>的农场受到的待遇。然而，这一次<<his>>的眼中没有盛气凌人的恶意，甚至可以说没有认出你。
+		<br><br>
+		<<He>>下马，脱下手套。<<his>>朝你微笑，然后朝艾利克斯微笑。<<His>>的绿眼睛闪烁着光芒。
+		<br><br>
+		"很抱歉没事先通知，"<<he>>说道。"因为一直都联系不上你。我来是为了商谈生意的。"
+		<br><br>
+	<<elseif $remy_seen is "riding_school">>
+		一匹<<farm_text horse>>骑进了农场。在它的背上坐着雷米，是附近骑术学校的老板。<<if $pronoun is "m">><<His>>淡棕色的头发在微风中飘动<<else>><<His>>淡棕色的头发被扎成一个整齐的发髻<</if>>。
+		<br><br>
+		<<He>>下马，脱下手套。<<his>>朝你微笑，然后朝艾利克斯微笑。<<His>>的绿眼睛闪烁着光芒。
+		<br><br>
+		"很抱歉没事先通知，"<<he>>说道。"因为一直都联系不上你。我来是为了商谈生意的。"
+		<br><br>
+	<<else>>
+		一匹<<farm_text horse>>踏进了农场。一个<<if $pronoun is "m">>长着淡棕色短发，发丝随着风飘扬的男人<<else>>系着整齐发髻的淡棕色头发女人<</if>>坐在<<farm_his horse>>背上。艾利克斯的笑容消失了。
+		<br><br>
+		<<personsimple>>下马，脱掉手套。<<He>>对你微笑。<<His>>的绿色眼睛闪闪发光。
+		<br><br>
+		"我想我们之前没见过，"<<he>>说着看向你。"我是雷米。经营着附近的骑术学校和自己的农场。"<<He>>转向艾利克斯。"很抱歉没有事先通知你，但我联系不上你。我是来商谈生意的。"
+		<br><br>
+
+	<</if>>
+	<<person1>>
+	艾利克斯看起来很矛盾，但最后<<him>>还是选择了礼貌点。"茶还是咖啡？"
+	<br><br>
+
+	<<link [[茶|Farm Stage 5]]>><<set $phase to 0>><<stress -6>><<set $farm_stage to 5>><<set $farm.clearing to 100>><</link>><<lstress>>
+	<br>
+	<<link [[咖啡|Farm Stage 5]]>><<set $phase to 1>><<tiredness -6>><<set $farm_stage to 5>><<set $farm.clearing to 100>><</link>><<ltiredness>>
+	<br>
+<</widget>>
+
+<<widget "farmStage6">>
+	<<npc Alex>><<person1>>你听到了快速的脚步声。你转过身，看到艾利克斯冲着你跑来。
+	<<if $weather is "rain" or $weather is "snow">>
+		尽管浑身是泥，<<Hes>>还是在微笑。
+	<<else>>
+		尽管荨麻粘在<<his>>的衣服上，<<Hes>>还是在微笑。
+	<</if>>
+	<br><br>
+
+	"完成了，"<<he>>说道。"最后一块田地。我们重建了农场。"
+	<br><br>
+
+	<<He>>倒在了农舍的门廊上，看着你。"要是<<if $pronoun is "m">>父亲<<else>>母亲<</if>>知道这有多危险，就不会让我独自一人来干这些了—"<<he>>转过头。"我想证明没有他们我也能做到这一步。现在我做到了。"
+	<br><br>
+
+	<<He>>站起来。"我得告诉他们这个消息，现在立刻。"<<He>>消失在农舍里。
+	<br><br>
+
+	<<link [[继续|Farm Stage 6]]>><<set $farm_stage to 6>><<set $farm.clearing to 100>><</link>>
+	<br>
+<</widget>>
+
+:: Farm Visitor
+<<effects>>
+
+<<person2>>
+<<person>>走了之后，艾利克斯似乎没有那么紧张了。<<person1>>"对不起，"<<he>>转向你说道:"你不是第一个被吸引过来的人，周围有些很糟糕的家伙们，尽量离他们远一点。"
+<br><br>
+
+<<He>>倚在篱笆上，望着通向远方的小路。"你出现的时候，我松了一口气。"<<he>>笑了。"来吧，我们回去工作。"
+<br><br>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+:: Farm Stage 4
+<<effects>>
+
+<<if $phase is 0>>
+	<<alcohol 60>>
+	你接过瓶子，喝了一大口。这是一种苦涩的酒精饮料。
+<<else>>
+	艾利克斯把瓶子收好。
+<</if>>
+"工作会多起来，"<<he>>继续说道。"但我们将获得稳定的利润。从现在开始，你每小时可以得到<<moneyGainDisplay 30>>。"
+<br><br>
+<<He>>指着空地外的篱笆，看着篱笆外的一片狼藉。"那是下一个目标。"<<He>>从篱笆上下来。"我迫不及待地想开始了。"<<gglove>><<npcincr Alex love 3>>
+<br><br>
+
+<<set $farm.wage to 30>>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Stage 5
+<<set $location to "alex_cottage">><<set _drink to $phase is 0 ? "tea" : "coffee">><<effects>>
+
+
+在你进去时，艾利克斯还是在继续之前制作的饮料。
+<br><br>
+
+<<person2>>
+
+"谢谢你的款待，"雷米啜了一口<<his>>的<<print _drink.replace("tea","茶").replace("coffee","咖啡")>>后说道。
+<br>
+"有话直说，"艾利克斯说道，"我还有工作要做。"
+<br>
+"如你所愿。我是来提供帮助的。我想——"
+<br>
+"我已经得到了我需要的帮助，"艾利克斯打断了话，指着你说道。"我们正一点一点地开垦着土地，一切都很顺利，而你却分不到一杯羹。这才是你来这里的真正目的，不是吗?"
+<br><br>
+
+<<link [[继续|Farm Stage 5 2]]>><</link>>
+<br>
+
+
+:: Farm Stage 5 2
+<<effects>><<set _drink to $phase is 0 ? "tea" : "coffee">>
+
+<<person2>>雷米没有立即做出回应，而是又加了一勺糖说道，"别犯傻了。"<<his>>声音变得严厉了起来，"就你们两个吗？我大可以提供更多的帮助。更别提安全——"
+<br>
+<<person1>>"喝完你的<<print _drink.replace("tea","茶").replace("coffee","咖啡")>>，"艾利克斯再次打断了，"然后就请离吧。"
+<br>
+<<person2>>雷米又喝了一口，转向了你。
+
+<<if $ridingschoolintro is undefined>>
+	"你应该去骑术学校看看，我应该能教你些东西。"<<he>>说道。
+<<elseif $livestock_intro isnot undefined and $cow gte 6>>
+	"你应该更明智地选择雇主，"<<he>>说道，"我可以保护你。"<<his>>的话将你从现实中带离。你眼前浮现出宁静的田野，还有自己被虐待的记忆。<<gstress>><<stress 6>>
+	<br>
+	"你在胡言乱语什么，"艾利克斯的话打断了你的思绪，"看来你不仅是个暴徒，还是个脑子有问题的家伙。"
+<<else>>
+	"你应该更明智地选择雇主，"<<he>>说道，"这边这个没有什么未来的。"
+<</if>>
+<br><br>
+雷米把空杯子放在盘子上。"谢谢你，"<<he>>起身说，"你有时间重新考虑。我希望你这么做，为了你自己。"
+<br><br>
+
+<<link [[继续|Farm Stage 5 3]]>><</link>>
+<br>
+
+
+
+:: Farm Stage 5 3
+<<effects>>
+
+<<person1>>
+"我很抱歉。"在雷米走后，艾利克斯说道，"恐怕在我们开始盈利后，会继续遭遇这样的访问。卑鄙的家伙。"
+<br><br>
+
+<<Hes>>太紧张了，在擦杯子时打碎了个杯子，于是你接替他洗碗。<<He>>平静了一些，笑了。"我可能太依赖你了。"<<gglove>><<npcincr Alex love 3>>
+<br><br>
+
+"我不知道雷米会做什么尝试，"<<he>>继续说道，"但是为我工作可能会很危险。如果你不想继续，我也能理解，不过如果你想，我可以付你每小时<<moneyGainDisplay 45>>。"
+<br><br>
+
+<<person2>>
+<i>雷米将从荒原上的庄园发起攻击。除非你向<<him>>发起反击，否则这些攻击会逐渐加剧。</i>
+<br><br>
+
+<<person1>>
+<<He>>笑了。"我不会让那个白痴把我打倒的。来吧，事情进展得很顺利，还有更多的事要做呢。"
+<br><br>
+<<set $farm.wage to 45>>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Stage 6
+<<set $location to "alex_cottage">><<effects>>
+
+你听着艾利克斯与<<his>>的<<if $pronoun is "m">>父亲<<else>>母亲<</if>>打着电话。<<He>>试图保持冷静，但无法抑制住兴奋的情绪。
+<br><br>
+
+<<He>>挂断电话，转向你。"<<Hes>>在附近，想过来一趟，"<<he>>说着，不再试图掩饰<<his>>的兴奋。"我得去烧点开水。"
+
+<<if $exposed gte 1>>
+	<<He>>看了看你的<<lewdness>>，脸红了起来，就好像刚刚才想起来。"你需要穿点什么。"<<He>>赶紧爬上楼梯。
+
+	不一会儿，一叠东西从楼梯口掉了下来。
+
+	<<if $worn.upper.type.includes("naked") and $worn.lower.type.includes("naked")>>
+		是一件棋盘格衬衫。<<upperwear 33>>
+		<<if $NPCName[$NPCNameList.indexOf("Alex")].dom gte $npcdomhigh and $NPCName[$NPCNameList.indexOf("Alex")].lust gte 10>>
+			接着是另一小叠东西，一条牛仔短裤。<<lowerwear 31>>
+		<<elseif playerBellySize() gte 8>>
+			又一包东西在你面前砰然落地。是一条运动裤。<<lowerwear 67>>
+		<<else>>
+			另一叠东西掉在你眼前，是一条牛仔裤。<<lowerwear 22>>
+		<</if>>
+	<<elseif $worn.upper.type.includes("naked")>>
+		是一件棋盘格衬衫。<<upperwear 33>>
+	<<else>>
+		<<if $NPCName[$NPCNameList.indexOf("Alex")].dom gte $npcdomhigh and $NPCName[$NPCNameList.indexOf("Alex")].lust gte 10>>
+			是一条牛仔短裤。<<lowerwear 31>>
+		<<elseif playerBellySize() gte 8>>
+			是一条运动裤。<<lowerwear 67>>
+		<<else>>
+			是一条牛仔裤。<<lowerwear 22>>
+		<</if>>
+	<</if>>
+	<<if $upperwetstage gte 1 or $lowerwetstage gte 2>>
+		接着掉下来的是一条卷起来的毛巾。"擦干身体用的，"艾利克斯喊道。
+		<<dry>>
+	<</if>>
+	<br><br>
+
+	你在厨房里穿好了衣服。艾利克斯爬下了楼梯。
+<</if>>
+
+<<He>>看了看自己沾满<<if $weather is "snow" or $weather is "rain">>泥巴<<else>>草<</if>>的衣服。"该死，我需要换一套衣服。还得冲个澡。"
+<br><br>
+
+<<link [[继续|Farm Stage 6 2]]>><</link>>
+<br>
+
+:: Farm Stage 6 2
+<<effects>>
+
+艾利克斯去洗澡的时候，你开始烧水。但<<Hes>>只用了一分多钟。你看见<<him>>裹着浴巾向农舍走来，<<He>>肯定是直接把自己的脏衣服丢在外面了。
+<br><br>
+
+"别看，"<<he>>进入厨房之前说道。
+<br><br>
+
+<<link [[看|Farm Stage 6 Look]]>><<npcincr Alex love -1>><<npcincr Alex dom -1>><<arousal 600>><</link>><<llove>><<ldom>><<garousal>>
+<br>
+<<link [[不看|Farm Stage 6 No Look]]>><<npcincr Alex love 1>><</link>><<glove>>
+<br>
+<<link [[拉开毛巾|Farm Stage 6 Pull]]>><<npcincr Alex love -3>><<npcincr Alex dom -3>><<npcincr Alex lust 1>><</link>><<lllove>><<lldom>><<glust>><<promiscuous1>>
+<br>
+
+:: Farm Stage 6 Look
+<<effects>>
+
+你从窗边挪开，更仔细地看着裹着毛巾的艾利克斯。
+<<if $pronoun is "m">>
+	毛巾围着<<his>>的腰系得很低，勉强能包住<<him>>的身子。腰间绷得很紧，<<him>>面向你那侧的整个大腿都露出来了。你瞥见了<<his>>结实的屁股。
+<<else>>
+	<<if $NPCList[0].breastsize gte 1>>
+		毛巾围着<<his>>的胸口系得很低，露出了<<his>>的<<print $NPCList[0].breastsdesc>>的上半部分，勉强能包住<<his>>的身子。上面绷得很紧，面向你的那一侧都露出来了。你瞥见了<<his>>结实的屁股。
+	<<else>>
+		毛巾围着<<his>>的胸口系得很低，几乎要露出<<his>>的乳头，勉强能包住<<his>>的身子。上面绷得很紧，面向你的那一侧都露出来了。你瞥见了<<his>>结实的屁股。
+	<</if>>
+<</if>>
+<br><br>
+
+<<He>>再次把毛巾紧紧裹在身上。"别耍流氓！"<<He>>匆匆走过厨房，从篮子里拿出一套新衣服，然后沿着来时的路离开。你听到了<<he>>上楼梯的声音。
+<br><br>
+
+<<link [[继续|Farm Stage 6 3]]>><</link>>
+<br>
+
+:: Farm Stage 6 No Look
+<<effects>>
+
+你望向窗外，听到艾利克斯在你身后走过厨房。<<He>>在篮子里翻找新的衣服，然后沿着来时的路离开。你听到他爬上了楼梯。
+<br><br>
+
+<<link [[继续|Farm Stage 6 3]]>><</link>>
+<br>
+
+:: Farm Stage 6 Pull
+<<effects>>
+
+你听到艾利克斯在你身后走过厨房，然后在篮子里翻找新的衣服。
+<br><br>
+你转过身，看到<<him>>正在翻找篮子，然后拿出了一条毛巾包裹在自己的身上。
+
+<<if $pronoun is "m">>
+	毛巾围着<<his>>的腰系得很低，勉强能包住<<him>>的身子。腰间绷得很紧，<<him>>面向你那侧的整个大腿都露出来了。你瞥见了<<his>>结实的屁股。
+<<else>>
+	<<if $NPCList[0].breastsize gte 1>>
+		毛巾围着<<his>>的胸口系得很低，露出了<<his>>的<<print $NPCList[0].breastsdesc>>的上半部分，勉强能包住<<his>>的身子。上面绷得很紧，面向你的那一侧都露出来了。你瞥见了<<his>>结实的屁股。
+	<<else>>
+		毛巾围着<<his>>的胸口系得很低，几乎要露出<<his>>的乳头，勉强能包住<<his>>的身子。上面绷得很紧，面向你的那一侧都露出来了。你瞥见了<<his>>结实的屁股。
+	<</if>>
+<</if>>
+<br><br>
+
+你悄悄走到<<him>>身后，抓住毛巾的一边，将毛巾从<<his>>的身上扯下来。
+<br><br>
+
+
+<<link [[继续|Farm Stage 6 Pull 2]]>><</link>>
+<br>
+
+:: Farm Stage 6 Pull 2
+<<effects>>
+
+毛巾轻易就被扯掉了。"操！"艾利克斯向后伸手想要拽回毛巾，但你从<<his>>的手中夺走了它。
+
+<<if $pronoun is "m">>
+	<<He>>在这个过程中半转过身，露出<<his>>结实的胸部和腹部。<<He>>用一只手盖住<<his>>的下体，然后面向你。
+<<else>>
+	<<He>>在这个过程中半转过身，露出<<his>>的<<print $NPCList[0].breastsdesc>>。<<He>>用一只手盖住<<his>>的胸部，另一只手盖住<<his>>的下体，然后面向你。
+<</if>>
+<br><br>
+
+"臭、臭流氓，"<<he>>脸红得像个苹果,"还回来。然后转过去。"
+<br><br>
+
+<<link [[归还毛巾|Farm Stage 6 Pull Return]]>><<npcincr Alex love 1>><</link>><<glove>>
+<br>
+<<link [[拒绝|Farm Stage 6 Pull Refuse]]>><<npcincr Alex love -1>><<npcincr Alex dom -1>><<npcincr Alex lust 1>><</link>><<llove>><<ldom>><<glust>>
+<br>
+
+
+:: Farm Stage 6 Pull Return
+<<effects>>
+
+你捂住眼睛，递过毛巾。艾利克斯从你手中把它拽走。
+<br><br>
+
+你转向窗户。你听到艾利克斯在篮子里继续翻找，然后穿过厨房走回来。你听到<<him>>爬楼梯的声音。
+<br><br>
+
+<<link [[继续|Farm Stage 6 3]]>><</link>>
+<br>
+
+
+:: Farm Stage 6 Pull Refuse
+<<effects>>
+
+
+<<if $speech_attitude is "meek">>
+	"因、因为你太辣了，"你呜咽着，继续抓住毛巾。
+<<elseif $speech_attitude is "bratty">>
+	"我更喜欢你这样，"你坏笑着，继续抓住毛巾。
+<<else>>
+	"你这样看起来很不错，"你说着，继续抓住毛巾。
+<</if>>
+<br><br>
+艾利克斯向窗外紧张地扫了一眼，然后转回篮子。<<He>>一只手在里面翻找，另一只手则遮着<<his>>的屁股。
+<br><br>
+
+<<He>>把衣服拿在身前，离开厨房，爬上楼梯。
+<br><br>
+
+
+
+<<link [[继续|Farm Stage 6 3]]>><</link>>
+<br>
+
+
+:: Farm Stage 6 3
+<<set $location to "alex_farm">><<effects>>
+
+<<pass 5>>
+几分钟后，一辆车停在院子里，艾利克斯刚好爬下了楼梯。"<<him>>来了，"<<he>>说道。"我希望我看起来还行。"
+<br><br>
+
+你和艾利克斯一起离开农舍。前方，从车里下来的是一个更年长、更壮实版本的艾利克斯。
+<br><br>
+
+"<<if $pronoun is "m">>嗨，爸爸<<else>>嗨，妈妈<</if>>，”艾利克斯说道。
+<br><br>
+他们面对彼此，尴尬地沉默了一会儿，然后<<if $pronoun is "m">>父亲<<else>>母亲<</if>>向前迈出一步，抓住艾利克斯的肩膀。<<lcontrol>><<control -10>>
+<br><br>
+
+<<link [[继续|Farm Stage 6 4]]>><</link>>
+<br>
+
+
+:: Farm Stage 6 4
+<<effects>>
+
+然后他们分开怀抱。"我知道你能行，"<<if $pronoun is "m">>父亲<<else>>母亲<</if>>说道。<<He>>透过<<his>>的<<daughter>>的肩膀看着你。"你一定是那个城里人，艾利克斯告诉我你的一切了。"
+<br><br>
+
+艾利克斯转过身。"没错，"<<he>>说着，伸出一只手放在你的肩膀上。"<<pShes>>很擅长照顾动物。"
+<br>
+<<his>>的<<if $pronoun is "m">>父亲<<else>>母亲<</if>>点了点头。"只靠两个人就建起这么大的农场？真了不起。快带我四处看看。不过，首先——"
+<br>
+艾利克斯已经朝农舍走去。<<He>>停在门口。"茶还是咖啡？"
+<br>
+"你知道答案。"
+<br><br>
+
+<<link [[茶|Farm Stage 6 5]]>><<stress -6>><</link>><<lstress>>
+<br>
+<<link [[咖啡|Farm Stage 6 5]]>><<tiredness -6>><</link>><<ltiredness>>
+<br>
+
+
+
+:: Farm Stage 6 5
+<<set $location to "alex_cottage">><<effects>>
+
+你和艾利克斯的<<if $pronoun is "m">>父亲<<else>>母亲<</if>>坐在厨房桌前。"看到一个城里人如此乐意帮忙，真是惊—"
+<br>
+"<<if $pronoun is "m">>爸爸<<else>>妈妈<</if>>，”艾利克斯打断道。
+<br>
+"更惊讶的是你还长得这么可爱—"
+<br>
+"<<if $pronoun is "m">>爸爸！<<else>>妈妈！<</if>>" 艾利克斯再次说道，把一杯茶砰地放在年长的<<if $pronoun is "m">>男人<<else>>女人<</if>>面前。
+<br>
+"对不起，"<<he>>笑着说道。"谢谢你的茶。"
+<br><br>
+
+<<link [[继续|Farm Stage 6 6]]>><</link>>
+<br>
+
+
+:: Farm Stage 6 6
+<<set $location to "alex_farm">><<effects>>
+
+艾利克斯带着<<his>>的<<if $pronoun is "m">>父亲<<else>>母亲<</if>>去参观农场，并坚持让你一起来。这个年长的<<if $pronoun is "m">>男人<<else>>女人<</if>>停下来检查每一只动物，似乎对<<he>>所看到的感到满意。
+<br><br>
+你们到达田野时，艾利克斯充满自豪地笑了。前三个田地都种满了绿色的土豆植株，最后一个田地是空的，但是都已经清理干净了，随时准备种植。
+<br><br>
+
+你们回到农舍。"你做得很好，"艾利克斯的<<if $pronoun is "m">>父亲<<else>>母亲<</if>>说道。"保持下去。很抱歉，我不能经常来这里。你知道怎么回事。"<<He>>伸手进兜里。"我的钥匙落在厨房里了。你能去拿一下吗？"
+<br><br>
+艾利克斯走进农舍。
+<br><br>
+
+<<link [[继续|Farm Stage 6 7]]>><</link>>
+<br>
+
+
+
+:: Farm Stage 6 7
+<<effects>>
+
+现在独自一人，这位年长的<<if $pronoun is "m">>男人<<else>>女人<</if>>转向你。"这是给你的，"<<he>>从<<his>>口袋里拿出一个信封，递给你。
+<br><br>
+
+"等我走了再打开它，"<<he>>继续说道。"不要告诉艾利克斯。"
+<br><br>
+
+艾利克斯从农舍里出来，递出钥匙。"谢谢，"<<his>>的<<if $pronoun is "m">>父亲<<else>>母亲<</if>>说道。"我会把你的问候转达给家里其他人的。"<<He>>上车，然后开车离开了。
+<br><br>
+
+<<link [[继续|Farm Stage 6 8]]>><</link>>
+<br>
+
+:: Farm Stage 6 8
+<<effects>>
+
+艾利克斯一直注视着车子，直到那辆车消失在视线中。"很高兴你能见到<<him>>，"<<he>>说，转身向农场。"走吧，还有工作要做。还有更多土地要开垦。让我们把农场做得更大。"
+<br><br>
+
+你点了点头，但直到艾利克斯消失在猪舍你都停留在原地。你打开了信封，里面有一叠钞票和一张纸条。
+<br><br>
+
+<i>"谢谢你照顾我的<<if $pronoun is "m">>儿子<<else>>女儿<</if>>，这是给你的小礼物。不要告诉艾利克斯，也不要让<<him>>逼你做什么。<<Hes>>是个不错的<<nnpc_gendery "Alex">>，就是很固执。"
+</i>
+<br><br>
+你数了数钱。总共有<<moneyGain 10000>>。
+<br><br>
+
+<<set $farm.wage to 60>>
+
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+:: Farm Stage 7
+<<set $outside to 0>><<effects>>
+
+
+
+你走进艾利克斯放工具的小屋。门关上时发出咔嗒一声，你推了推它，但它一动不动。<span class="red">你被锁在里面了。</span>
+<br><br>
+
+<<endevent>>
+<<npc Remy>>
+一张脸出现在小窗户前，挡住了你看向院子的视线。是雷米。<<He>>边戴上自己的黑手套边看了你一会儿，然后走开了。<<His>>的手下争着挤过来想瞅你一眼。
+<br><br>
+
+<<endevent>><<npc Alex>><<generate2>><<generate3>><<generate4>><<generate5>><<generate6>><<person1>>
+<<link [[警告艾利克斯|Farm Stage 7 Warn]]>><</link>>
+<br>
+<<link [[试着砸门|Farm Stage 7 Break]]>><</link>>
+<br>
+
+
+:: Farm Stage 7 Warn
+<<effects>>
+
+"艾利克斯！"你喊道。"我们遭到了攻击！"你不确定你的声音传得有多远。过了一会儿，艾利克斯出现在视野中，<span class="red">挣扎着想要逃脱一个<<person2>><<person>>和一个<<person3>><<person>>的控制，</span>俩人各自按住艾利克斯的一边肩膀，逼着<<person1>>艾利克斯跪下。
+<br><br>
+
+雷米蹲在艾利克斯前面，用手捏着<<his>>的下巴。雷米开口说了些什么，年轻的农民恶狠狠地朝着<<nnpc_his "Remy">>脸上吐了口水。
+<br><br>
+雷米用一个大巴掌回应了过去。从你的位置都能听到那清脆的声响，但艾利克斯依然毫不示弱。
+<br><br>
+
+<<link [[继续|Farm Stage 7 2]]>><</link>>
+<br>
+
+
+:: Farm Stage 7 Break
+<<effects>>
+
+你用力撞在木门上。它动了一下，但依旧很坚固。你正准备后退再加把劲的时候，你透过窗户看到了动静。艾利克斯<span class="red">挣扎着想要逃脱一个<<person2>><<person>>和一个<<person3>><<person>>的控制，</span>俩人各自按住艾利克斯的一边肩膀，逼迫<<person1>><<him>>跪在雷米面前。
+<br><br>
+
+雷米蹲在艾利克斯前面，用手捏着<<his>>的下巴。雷米开口说了些什么，年轻的农民恶狠狠地朝着<<nnpc_his "Remy">>脸上吐了口水。
+<br><br>
+雷米用一个大巴掌回应了过去。从你的位置都能听到那清脆的声响，但艾利克斯依然毫不示弱。
+<br><br>
+
+<<link [[继续|Farm Stage 7 2]]>><</link>>
+<br>
+
+
+:: Farm Stage 7 2
+<<effects>>
+
+雷米骑上<<nnpc_his Remy>>的马离开了，<<nnpc_his Remy>>的手下继续围攻艾利克斯。年轻的农民设法腾出一只手臂，并狠狠地打了一个袭击者的脸。这一击让<<person2>><<person>>摇摇欲坠，但其他暴徒似乎并无所谓。
+<br><br>
+
+<<person3>><<person>>从背后抓住了艾利克斯。
+<br><br>
+
+<i>艾利克斯一个人打不过他们。你需要打开门。你也可以分散那些暴徒的注意力，让艾利克斯有些喘息的空间。</i>
+<br><br>
+
+<<farm_fight_init>>
+<<farm_fight_options>>
+
+:: Farm Fight
+<<effects>>
+
+<<switch $farm_fight.action>>
+<<case "breasts" "chest">>
+	<<set $farm_fight.distraction to 2>>
+	你走到窗户前，
+	<<if $worn.over_upper.type.includes("naked") and $worn.upper.type.includes ("naked") and $worn.under_upper.type.includes("naked")>>
+		<span class="lewd">炫耀你的<<breasts>>。</span>
+	<<else>>
+		<span class="lewd">展示你的<<breasts>>。</span>
+	<</if>>
+	你同时还敲了敲窗户，但暴徒们已经从艾利克斯身上转移注意力了。
+	<br><br>
+
+	<<if $farm_fight.stage gte 5>>
+		<span class="green">艾利克斯挣脱了<<person6>><<persons>>的控制，</span>然后让<<nnpc_himself "Alex">>和那些虎视眈眈的暴徒拉开了距离。
+		<br><br>
+	<<else>>
+		<span class="green">他们太专注于你，没有注意到艾利克斯拉开了距离，准备<<person1>><<himself>>发动猛攻。</span>
+	<</if>>
+<<case "bottom">>
+	<<set $farm_fight.distraction to 2>>
+	你爬上窗前的一个板条箱，
+	<<if $worn.over_lower.type.includes("naked") and $worn.lower.type.includes("naked") and $worn.under_lower.type.includes("naked")>>
+		<span class="lewd">把你的<<bottom>>贴到窗口外。</span>
+	<<else>>
+		<span class="lewd">暴露你的<<bottom>>.</span>
+	<</if>>
+	这引起了暴徒们的注意。
+	<br><br>
+
+	<<if $farm_fight.stage gte 5>>
+		<span class="green">艾利克斯挣脱了<<person6>><<persons>>的控制，</span>然后让<<nnpc_himself "Alex">>和那些虎视眈眈的暴徒拉开了距离。
+		<br><br>
+	<<else>>
+		<span class="green">他们太专注于你，没有注意到艾利克斯拉开了距离，准备<<person1>><<himself>>发动猛攻。</span>
+	<</if>>
+<<case "penis" "vagina">>
+	<<set $farm_fight.distraction to 2>>
+	你爬上窗前的一个板条箱。
+	<<if $worn.over_lower.type.includes("naked") and $worn.lower.type.includes("naked") and $worn.under_lower.type.includes("naked")>>
+		<span class="lewd">你炫耀你的<<genitals>>.</span>
+	<<else>>
+		<span class="lewd">你暴露你的<<genitals>>.</span>
+	<</if>>
+	暴徒们放下手头的一切盯着你看。
+	<br><br>
+
+	<<if $farm_fight.stage gte 5>>
+		<span class="green">艾利克斯挣脱了<<person6>><<persons>>的控制，</span>然后让<<nnpc_himself "Alex">>和那些虎视眈眈的暴徒拉开了距离。
+		<br><br>
+	<<else>>
+		<span class="green">他们太专注于你，没有注意到艾利克斯拉开了距离，准备<<person1>><<himself>>发动猛攻。</span>
+	<</if>>
+<<case "hammer">>
+	<<physiquedifficulty 5000 15000 no_text>>
+	<<if $physiqueSuccess is 1>>
+		你用锤子敲打门。<span class="green">每一击都重重打在了木头上。</span>
+		<<set $farm_fight.door -= 2>>
+		<br><br>
+	<<else>>
+		你用锤子敲打门。<span class="red">你的每一击都没有什么影响，只是弹了回来。</span>
+		<br><br>
+		<<set $farm_fight.door -= 1>>
+	<</if>>
+	<<set $farm_fight.weapon to "hammer">>
+<<case "unscrew">>
+	在窗外正在发生攻击的情况下，你很难保持手稳，但你设法拆下了一个螺丝。
+	<br><br>
+	<<set $farm_fight.weapon to "screwdriver">>
+	<<set $farm_fight.screws -= 1>>
+<<case "science">>
+	<<if currentSkillValue('science') gte random(1, 700)>>
+		你检查了一下链锯，找到一个能打开的盖子。你打开了它，里面是空的。<span class="green">链锯需要燃料。</span>
+		<br><br>
+		<<set $farm_fight.chainsaw to 1>>
+	<<else>>
+		你再次拉动拉扣，但没有任何反应。也许你的方法不对？你仔细检查这台机器，小心着不碰到刀片，<span class="red">但没有发现任何问题。</span>
+		<br><br>
+	<</if>>
+<<case "refuel">>
+	你将汽油倒入链锯中，盖回盖子。
+	<<set $farm_fight.chainsaw to 2>>
+	<br><br>
+<<case "chainsaw">>
+	你拉动拉扣，链锯嗡嗡作响。你再拉了一次，锯齿咆哮着发动起来。<<person2>><<person>>向棚子投来了一个担忧的眼神。
+	<br><br>
+
+	你锯向木门时闭上了眼睛。很快木门就被链锯切割成了一堆碎片和破损的木条。
+	<br><br>
+	<<set $farm_fight.weapon to "chainsaw">>
+	<<set $farm_fight.door to 0>>
+<<case "bash">>
+	<<physiquedifficulty 10000 20000 no_text>>
+	<<if $physiqueSuccess is 1>>
+		你用拳头猛击门。<span class="green">你感到木头在你的攻击下裂开。</span>
+		<br><br>
+		<<set $farm_fight.door -= 2>>
+	<<else>>
+		你用拳头猛击门。<span class="red">每一击都使门发出嘎吱嘎吱的声音，但并没有变得更加脆弱。</span>
+		<br><br>
+		<<set $farm_fight.door -= 1>>
+	<</if>>
+	<<set $farm_fight.weapon to "fists">>
+<</switch>>
+<<set $farm_fight.action to 0>>
+
+
+<<if $farm_fight.screws lte 0>>
+	最后一个螺丝钉落地，门开了，只剩锁着的门栓还将它固定在框架上。<span class="red">烟味扑鼻而来。</span>
+	<br><br>
+	<<link [[继续|Farm Fight End]]>><</link>>
+	<br>
+<<elseif $farm_fight.door lte 0>>
+	<<if $farm_fight.weapon is "chainsaw">>
+		你踢开了剩下的木头，穿过门。
+		<br><br>
+	<<elseif $farm_fight.weapon is "hammer">>
+		最后一次猛击，你打碎了一块门板。你伸手穿过去，打开门锁，然后用脚踢开了门。<span class="red">烟味扑鼻而来。</span>
+		<br><br>
+	<<else>>
+		你最后一次猛击，你的拳头直接穿过了木头。你摸索着找到门栓，打开了门锁，然后用脚踢开了门。<span class="red">烟味扑鼻而来。</span>
+		<br><br>
+	<</if>>
+	<<link [[继续|Farm Fight End]]>><</link>>
+	<br>
+<<else>>
+	<<farm_fight_alex>>
+	<br><br>
+	<<farm_fight_door>>
+	<br><br>
+	<<farm_fight_options>>
+<</if>>
+
+:: Farm Fight Search
+<<effects>>
+
+你在小屋里四处寻找能够帮助自己的东西。
+<br><br>
+
+<<if $farm_fight.shelf isnot 1>>
+	<<link [[搜索货架|Farm Fight Search Shelf]]>><<set $farm_fight.shelf to 1>><</link>>
+	<br>
+<</if>>
+<<if $farm_fight.toolbox isnot 1>>
+	<<link [[搜索工具箱|Farm Fight Search Toolbox]]>><<set $farm_fight.toolbox to 1>><</link>>
+	<br>
+<</if>>
+<<if $farm_fight.cupboard isnot 1>>
+	<<link [[搜索橱柜|Farm Fight Search Cupboard]]>><<set $farm_fight.cupboard to 1>><</link>>
+	<br>
+<</if>>
+<<if $farm_fight.rakes isnot 1>>
+	<<link [[搜索耙子|Farm Fight Search Rakes]]>><<set $farm_fight.rakes to 1>><</link>>
+	<br>
+<</if>>
+<<if $farm_fight.sheet isnot 1>>
+	<<link [[搜索盖着布的物体|Farm Fight Search Sheet]]>><<set $farm_fight.sheet to 1>><</link>>
+	<br>
+<</if>>
+
+
+
+
+
+
+:: Farm Fight Search Shelf
+<<effects>>
+
+你扫视货架。有一些小袋子装着种子，还有一把泥铲，<span class="pink">但是锈的太厉害了无法使用。</span>
+<br><br>
+
+<<link [[继续|Farm Fight]]>><</link>>
+<br>
+
+
+:: Farm Fight Search Toolbox
+<<effects>>
+
+你翻开工具箱。工具箱里存货充足，但有两件物品引起了你的注意。<span class="green">一把大锤和一把螺丝刀。</span>你可以用大锤砸开门，也可以拆下门上的螺丝来打开它。
+<br><br>
+
+<<link [[继续|Farm Fight]]>><</link>>
+<br>
+
+:: Farm Fight Search Cupboard
+<<effects>>
+
+你把橱柜打开，一阵灰尘扬起，你不由地眯起了眼睛。你检索着黑漆漆的柜内。好像有几袋很重的东西。摸起来像沙子。<span class="green">还有一罐汽油。</span>烧门是不明智的，但也许燃料有其他用途。
+<br><br>
+
+<<link [[继续|Farm Fight]]>><</link>>
+<br>
+
+:: Farm Fight Search Rakes
+<<effects>>
+
+你在角落里的一堆耙子里翻找。耙子本身对于砸门没有什么用处，但你想看看它们中间是否藏着别的东西。<span class="pink">然而并没有。</span>
+<br><br>
+
+<<link [[继续|Farm Fight]]>><</link>>
+<br>
+
+:: Farm Fight Search Sheet
+<<effects>>
+
+一个东西靠在墙上，藏在了一块布下面。你把布料拿掉，<span class="green">下面是一把链锯。</span>
+<br><br>
+
+你拉了拉拉扣，但什么也没发生。
+<br><br>
+
+<<link [[继续|Farm Fight]]>><</link>>
+<br>
+
+:: Farm Fight End
+<<set $outside to 0>><<effects>>
+<<person1>>
+<<if $farm_fight.weapon is "chainsaw">>
+	<<if $farm_fight.stage gte 9>>
+		打手们从你身边退去，也放开了艾利克斯，尽管<<he>>还躺在地上。
+	<<else>>
+		打手们从你身边退去，也放开了艾利克斯。
+	<</if>>
+	他们盯着你手中咆哮着的链锯，不敢再靠近。
+	<br><br>
+
+	"我、我靠，"那个<<person2>><<person>>颤抖道，"<<pshe>>狗日的是从哪弄到的？"
+	<br>
+	"放松点<<girl>>，"那个<<person3>><<person>>说道，<<He>>听起来冷静了一些，走近了一步，"把那玩具放下吧。"
+	<br><br>
+
+<<elseif $farm_fight.weapon is "hammer">>
+	<<if $farm_fight.stage gte 9>>
+		打手们转身面向你，留下艾利克斯躺在原地。
+	<<else>>
+		打手们转身面向你，让艾利克斯有了些许喘息空间。
+	<</if>>
+	他们走得更近了，虽然还是时不时瞥一眼你的锤子。
+	<br><br>
+
+	"<<girl>>给<<pherself>>找到了个玩具，"<<person2>><<person>>说道。
+	<br>
+	"把它放下，"<<person3>><<person>>靠近了一步补充道，"我们不会对你做什么的。"
+	<br><br>
+
+<<elseif $farm_fight.weapon is "screwdriver">>
+	<<if $farm_fight.stage gte 9>>
+		打手们转身面向你，留下艾利克斯躺在原地。
+	<<else>>
+		打手们转身面向你，让艾利克斯有了些许喘息空间。
+	<</if>>
+	他们靠近你，似乎并不在意你手里的螺丝刀。
+	<br><br>
+
+	"小麻烦从笼子里跑出来了。"那个<<person2>><<person>>说道。
+	<br>
+	"<<pShe>>很快就会后悔的，"<<person3>><<person>>补充道，靠了过来。
+	<br><br>
+
+<<else>>
+	<<if $farm_fight.stage gte 9>>
+		打手们转身面向你，留下艾利克斯躺在原地。
+	<<else>>
+		打手们转身面向你，让艾利克斯有了些许喘息空间。
+	<</if>>
+	他们走近了。
+	<br><br>
+
+	"这<<girl>>是那种难搞的类型，"<<person2>><<person>>说道，"也许能弄去给雷米<<phim>>工作。"
+	<br>
+	"不行，"<<person3>><<person>>靠近着补充道，"我们搞定<<phim>>后，这家伙应该连路都走不了了。"
+	<br><br>
+
+<</if>>
+
+<span class="red">"够了，"</span>一个熟悉的声音从左侧传来，暴徒们僵住了，他们的注意力转移到了新来的人身上。你也僵住了，那是贝利。
+<br><br>
+
+<<link [[继续|Farm Fight End 2]]>><</link>>
+<br>
+
+
+:: Farm Fight End 2
+<<effects>>
+
+"这<<girl>>是我的，"贝利继续说道，"这事就这么结了。"打手们没做任何抗议。他们沿着农场的小路离开了。
+<br><br>
+<<if $farm_fight.stage gte 9>>
+	<span class="pink">艾利克斯还躺在地上。</span>
+	<br><br>
+	<<link [[冲向艾利克斯|Farm Fight End Rush]]>><<npcincr Alex dom -1>><</link>><<ldom>>
+	<br>
+	<<link [[面对贝利|Farm Fight End Confront]]>><</link>>
+	<br>
+	<<link [[威胁贝利|Farm Fight End Threaten]]>><</link>>
+	<br>
+<<else>>
+	艾利克斯冲过来，一只手搭在你的肩膀上说道，"谢谢你，"<<person1>><<he>>喘着气，"我不知道他们会做到这份上。"<<He>>转向贝利，"也谢谢你，陌生人。"
+	<br><br>
+	贝利盯着艾利克斯。"不客气，"<<nnpc_he Bailey>> 说，"就是来看看我的被监护人。"
+	<br><br>
+	艾利克斯看起来很震惊，"我、我现在去烧壶开水——"
+	<br><br>
+	贝利摇了摇头道，"我要走了。"<<nnpc_He Bailey>>转过身背对着你，<span class="red">"我会时常回来拜访的。"</span>说完大步离开了。
+	<br><br>
+	"这个味道…"艾利克斯说道，然后看向小屋的屋顶，<span class="red">不远处升起了一缕烟雾。</span>"田地，我们得检查一下田地！"
+	<br><br>
+	<<link [[继续|Farm Fight End 3]]>><</link>>
+	<br>
+<</if>>
+
+:: Farm Fight End Rush
+<<effects>>
+
+你冲到艾利克斯旁边，<<person1>><<Hes>>还有意识，当你帮助<<him>>站起来时，<<He>>痛苦地龇着牙。
+<br><br>
+
+"谢谢，"艾利克斯倚在你身上说道，<<He>>看向贝利，"也谢谢你，陌生人。"
+<br><br>
+贝利盯着艾利克斯。"不客气，"<<nnpc_he Bailey>> 说，"就是来看看我的被监护人。"
+<br><br>
+艾利克斯看起来很震惊，"我、我现在去烧壶开水——"
+<br><br>
+贝利摇了摇头道，"我要走了。"<<nnpc_He Bailey>>转过身背对着你，<span class="red">"我会时常回来拜访的。"</span>说完大步离开了。
+<br><br>
+艾利克斯揉着自己肋部的伤处，"这个味道…"<<he>>说着，看向屋顶，<span class="red">不远处升起了一缕烟雾。</span>"田地，我们得检查一下田地！"
+<br><br>
+<<link [[继续|Farm Fight End 3]]>><</link>>
+<br>
+
+
+:: Farm Fight End Confront
+<<effects>>
+
+
+<<if $speech_attitude is "meek">>
+	"为、为什么你会过来？"你问道。
+<<elseif $speech_attitude is "bratty">>
+	"你他妈来这里干嘛？"你问道。
+<<else>>
+	"你到底想干嘛？"你问道。
+<</if>>
+<br><br>
+
+"我来这里看看我的被监护人，"贝利说道："你的朋友需要帮忙。"<span class="red">我会时常回来拜访的。</span>"<<nnpc_He Bailey>>大步离开了。
+<br><br>
+<<person1>>
+你检查了艾利克斯的情况，<<Hes>>还有意识。你帮助<<him>>站起来时，<<He>>痛苦得龇牙。"这个味道…"<<he>>说着，看向屋顶，<span class="red">不远处升起了一缕烟雾。</span>"田地，我们得检查一下田地！"
+<br><br>
+
+<<link [[继续|Farm Fight End 3]]>><</link>>
+<br>
+
+:: Farm Fight End Threaten
+<<effects>>
+
+<<if $farm_fight.weapon is "hammer">>
+	你紧握着你手里的锤子盯着贝利，随时准备攻击。
+<<elseif $farm_fight.weapon is "screwdriver">>
+	你像拿匕首一样攥着螺丝刀，瞪着贝利。
+<<elseif $farm_fight.weapon is "chainsaw">>
+	你把嗡嗡作响的链锯对准贝利。
+<<else>>
+	你盯着贝利。
+<</if>>
+<<if $speech_attitude is "meek">>
+	"我、我不会让你欺负我的，"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"离开，"你说道，"马上。"
+<<else>>
+	"我不会让你欺负我的，"你说道。
+<</if>>
+<br><br>
+
+<<if $farm_fight.weapon isnot "fists">>
+	贝利瞥了一眼你的武器，说道，"我来看看你，"你分不清<<nnpc_hes Bailey>>是否有被威慑到，<span class="red">"我会时常回来拜访的。" </span><<nnpc_He Bailey>>说完大步离开了。
+<<else>>
+	贝利说道，"我来看看你，"<span class="red">"我会时常回来拜访的。" </span><<nnpc_He Bailey>>说完大步离开了。
+<</if>>
+<br><br>
+<<person1>>
+你检查了艾利克斯的情况，<<Hes>>还有意识。你帮助<<him>>站起来时，<<He>>痛苦得龇牙。"这个味道…"<<he>>说着，看向屋顶，<span class="red">不远处升起了一缕烟雾。</span>"田地，我们得检查一下田地！"
+<br><br>
+
+<<link [[继续|Farm Fight End 3]]>><</link>>
+<br>
+
+:: Farm Fight End 3
+<<set $outside to 0>><<effects>>
+<<pass 5>>
+离近后气味变得更糟糕。
+<<person1>>
+<<if $farm_fight.stage gte 9>>
+	艾利克斯将一只手搭在你肩上，一瘸一拐地靠在你身边。你们爬上一个土坡，看向了远处的田野。<span class="red">一片焦黑，</span>边缘还在轻微燃烧着。艾利克斯一下跪在了地上，用手捂住了脸。
+<<else>>
+	艾利克斯跑在前面，你看见<<him>>跪倒在田地的边上，用手捂着自己的脸。<span class="red">前面的田地一片焦黑，</span>边缘还在轻微燃烧着。
+<</if>>
+<br><br>
+
+"我、我的土豆，"艾利克斯声音嘶哑地说道，"我<<if $pronoun is "m">>哥哥<<else>>姐姐<</if>>是对的，我做不到。"
+<br><br>
+
+庄稼可能都没了，不过田地本身应该还能种。边缘围着的沙子阻止了火势进一步蔓延。破坏者小心翼翼地限制了破坏规模。
+<br><br>
+
+<<link [[鼓励|Farm Fight End Rational]]>><</link>>
+<br>
+<<link [[泡一杯茶|Farm Fight End Tea]]>><</link>>
+<br>
+
+:: Farm Fight End Rational
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你、你可以种更多的土豆，"你说道，"他们的目的不是破坏农场。他们想要的是打击你。"
+<<elseif $speech_attitude is "bratty">>
+	"说以只是歉收罢了，"你说道，"种更多，然后下次我们会准备好的。"
+<<else>>
+	"你可以种更多的土豆，"你说道，"这是一次挫折，但下次我们会做好准备的。"
+<</if>>
+<br><br>
+
+艾利克斯斜靠在篱笆上爬了起来。<<He>>没有面对你。"我不希望你看到这个样子的我，"<<he>>说道，"对不起，让我们去小屋那边吧。"
+<br><br>
+
+<<link [[继续|Farm Fight End 4]]>><</link>>
+<br>
+
+
+:: Farm Fight End Tea
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我、我能给你泡杯茶吗？"你问道。
+<<elseif $speech_attitude is "bratty">>
+	"回去吧，"你说道，"我来烧壶水。"
+<<else>>
+	"我来给你泡杯茶吧，"你说道。
+<</if>>
+<br><br>
+
+艾利克斯笑了起来，"我需要那个，"<<he>>说道。斯斜靠在篱笆上爬了起来，没有面对你，"我不希望你看到这个样子的我，"<<he>>说道。"对不起，让我们去小屋吧。"
+<br><br>
+<<link [[继续|Farm Fight End 4]]>><</link>>
+<br>
+
+
+:: Farm Fight End 4
+<<set $location to "alex_cottage">><<set $outside to 0>><<effects>>
+
+<<if $farm_fight.stage gte 9>>
+	你给Alex泡了一杯茶，<<he>>坐在厨房餐桌旁处理<<his>>的伤口。
+<<else>>
+	艾利克斯坐在厨房餐桌旁，你给<<him>>泡了杯茶。
+<</if>>
+你把茶杯放在了桌子上。<<He>>把杯子拿起来暖着手，凝视着茶水。<<He>>长长地啜饮了一口。
+<br><br>
+
+"那个<<nnpc_gender "Bailey">>，"<<he>>说道，"那是负责孤儿院的贝利吗？"你点了点头。艾利克斯则摇了摇头，"我不应该对雷米做这样的事感到惊讶。"<br><br>
+
+<<link [[问艾利克斯对贝利有多少了解|Farm Fight End Ask]]>><</link>>
+<br>
+<<link [[道歉|Farm Fight End Apologise]]>><<sub 1>><</link>>
+<br>
+<<link [[建议组队|Farm Fight End Suggest]]>><<def 1>><</link>>
+<br>
+
+
+:: Farm Fight End Ask
+<<effects>>
+
+"不是很多，"艾利克斯说道，"只是一些传言。鉴于<<nnpc_he Bailey>>今天的所作所为，有些可能是真的。"
+<br><br>
+
+<<link [[道歉|Farm Fight End Apologise]]>><<sub 1>><</link>>
+<br>
+<<link [[建议组队|Farm Fight End Suggest]]>><<def 1>><</link>>
+<br>
+
+:: Farm Fight End Apologise
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"都、都是我的错，"你说道，"贝利来这里只是因为——"
+<<elseif $speech_attitude is "bratty">>
+	"是我太不小心了，"你说道，"贝利来是为了——"
+<<else>>
+	"很抱歉，"你说道，"贝利来是为了——"
+<</if>>
+<br><br>
+"不！"艾利克斯猛地把<<his>>的杯子砸在桌上，"这不是你的错。那些打手没有权利威胁你。如果不是因为你，我现在还在为一块田地苦苦挣扎。"
+<br><br>
+
+"我已经决定了，"<<he>>继续说道，"<span class="gold">我想和你共同管理这个农场。</span>"
+<br><br>
+
+<<link [[感谢|Farm Fight End Accept]]>><</link>>
+<br>
+<<link [[反对|Farm Fight End Refuse]]>><</link>>
+<br>
+
+
+
+:: Farm Fight End Suggest
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我、我感觉和你一起对付贝利和雷米会安全些。"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"如果贝利跟雷米开始联手，"你说道，"我们也应该这样。"
+<<else>>
+	"我们应该相互帮助，"你说道。
+<</if>>
+<br><br>
+
+艾利克斯点了点头。"你是对的，"<<he>>说道，"有你在我身边，我会变得更强大。<span class="gold">我想跟你一起管理这座农场。</span>"
+<br><br>
+
+<<link [[感谢|Farm Fight End Accept]]>><</link>>
+<br>
+<<link [[反对|Farm Fight End Refuse]]>><</link>>
+<br>
+
+
+:: Farm Fight End Accept
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"谢、谢谢，"你说道，"我会努力做到最好的。"
+<<elseif $speech_attitude is "bratty">>
+	"不错，"你说道，"我也要有自己的事业了。"
+<<else>>
+	"谢谢，"你说道，"我不会让你失望的。"
+<</if>>
+<br><br>
+
+"这是你应得的回报，"艾利克斯说道，"虽然小屋不大，<span class="gold">但应该有足够的空间让你也能住在这里。</span>"
+<br><br>
+艾利克斯犹豫了一下，"从现在开始，你能负责田地吗？我……"<<he>>喝完了茶，"我不想再看到它们了。我做不到。"
+<br><br>
+
+
+<span class="red">雷米将于30天后发起袭击，试图再次放火烧毁田地。</span>
+<br>
+<span class="blue">艾利克斯会自己保护田地，不过要是有你帮忙的话，成功的几率会更大。</span>
+<br><br>
+<<set $farm_attack_timer to 30>>
+<<fields_init>>
+<<set $farm_fields_intro to 1>>
+<<farm_stock_init>>
+
+<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Fight End Refuse
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"这、这样的责任太大了。"你反对道。
+<<elseif $speech_attitude is "bratty">>
+	"这个农场已经够忙了，"你说道。
+<<else>>
+	"那要做的事情太多了，"你说道，"我不确定我能不能做到。"
+<</if>>
+<br><br>
+
+"我明白了，"艾利克斯说道，"邀请的大门一直都会敞开。虽然小屋不大，<span class="gold">但应该有足够的空间让你也能住下。</span>这样你的通勤会没那么麻烦。"
+我至少需要有人负责田地。我……"<<he>>喝完了茶，"我不想再看到它们。我做不到。"
+<br><br>
+
+<span class="red">雷米将于30天后发起袭击，试图再次放火烧毁田地。</span>
+<br>
+<span class="blue">艾利克斯会自己保护田地，不过要是有你帮忙的话，成功的几率会更大。</span>
+<br><br>
+<<set $farm_attack_timer to 30>>
+<<fields_init>>
+<<set $farm_fields_intro to 1>>
+<<farm_stock_init>>
+
+<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+:: Farm Shed
+<<set $outside to 0>><<effects>>
+你在带淋浴的小屋里。
+<br>
+<<link [[冲个澡 (0:10)|Farm Shower]]>><<pass 10>><</link>>
+<br>
+<<if $pbdisable is "f" and ($pblevel gte 2 or $pbstrip gte 1 or $pblevelballs gte 2)>>
+<<link [[修剪阴毛|Farm Shave]]>><</link>>
+<br>
+<</if>>
+<<link [[离开(0:01)|Farm Work]]>><<endevent>><<pass 1>><</link>>
+<br>
+
+:: Farm Shave
+<<effects>>
+<<dontHideForNow>><<shavestrip>>
+你脱了衣服然后看向你的<<genitals>>。
+<br>
+<<if $worn.genitals.name is "chastity belt" or $worn.genitals.name is "gold chastity belt">>
+贞操带紧贴着你的身体，似乎完全没办法剃到阴毛。
+<br>
+<<link [[穿上衣服 ->Farm Shed]]>><<clotheson>><<dontHideRevert>><</link>>
+<br>
+<<else>>
+<<if $worn.genitals.name is "chastity cage">>
+你的阴茎被锁在了笼子里。剃掉周围的毛会有点麻烦，不过没什么大问题。
+<br>
+<</if>>
+<<if $pblevel gte 2 or $pbstrip gte 1 or $pblevelballs gte 2>>
+	<<link [[剃干净 (0:15)->Farm shave clean]]>><<pass 15>><<arousal 100>><<set $pblevel to 0>><<set $pbgrowth to 0>><<set $pblevelballs to 0>><<set $pbgrowthballs to 0>><<set $pbstrip to 0>><<set $makeup.pbcolour to 0>><</link>>
+	<br>
+<</if>>
+<<if $pblevel gte 5 or $pbstrip gte 2 or ($pbstrip is 1 and $pblevel gte 2)>>
+	<<link [[剃成条状 (0:15)->Farm shave strip]]>><<pass 15>><<arousal 100>><<set $pbstripName to "neat landing strip">><<set $pblevel to 0>><<set $pbgrowth to 0>><<set $pbstrip to 1>><</link>>
+	<br>
+<</if>>
+<<if $pblevel gte 5 or $pbstrip gte 3 or ($pbstrip gte 2 and $pblevel gte 2)>>
+	<<link [[剃成心形 (0:15)->Farm shave strip]]>><<pass 15>><<arousal 100>><<set $pbstripName to "cute heart shape">><<set $pblevel to 0>><<set $pbgrowth to 0>><<set $pbstrip to 2>><</link>>
+	<br>
+<</if>>
+<<if $pblevel gte 5 or $pbstrip gte 4 or ($pbstrip gte 3 and $pblevel gte 2)>>
+	<<link [[剃成一个箭头 (0:15)->Farm shave strip]]>><<pass 15>><<arousal 100>><<set $pbstripName to "neat triangle">><<set $pblevel to 0>><<set $pbgrowth to 0>><<set $pbstrip to 3>><</link>>
+	<br>
+<</if>>
+<<if $player.ballsExist is true>>
+	<<if $pblevel gte 2 or $pbstrip gte 1>>
+		<<link [[只刮阴毛 (0:10)->Farm shave pubis]]>><<pass 10>><<arousal 50>><<set $pblevel to 0>><<set $pbgrowth to 0>><<set $pbstrip to 0>><<if $pblevelballs is 0>><<set $makeup.pbcolour to 0>><</if>><</link>>
+		<br>
+	<</if>>
+	<<if $pblevelballs gte 3>>
+		<<link [[只刮蛋蛋 (0:05)->Farm shave balls]]>><<pass 5>><<arousal 50>><<set $pblevelballs to 0>><<set $pbgrowthballs to 0>><<if $pblevel is 0 and $pbstrip is 0>><<set $makeup.pbcolour to 0>><</if>><</link>>
+		<br>
+	<</if>>
+<</if>>
+<<if $pblevel gt 5 or $pblevelballs gt 5>>
+	<<link [[刮短 (0:10)->Farm shave trim]]>><<pass 10>><<arousal 100>>
+		<<if $pblevel gte 5>>
+			<<set $pblevel to 5>><<set $pbgrowth to 7>><<set $pbstrip to 0>>
+		<</if>>
+		<<if $pblevelballs gte 5>>
+			<<set $pblevelballs to 5>><<set $pbgrowthballs to 10>>
+		<</if>>
+	<</link>>
+	<br>
+<</if>>
+<<if $worn.genitals.name isnot "chastity belt">>
+	<<link [[给阴毛染色 |Farm Dye]]>><</link>><br>
+<</if>>
+<<link [[什么也不刮|Farm Shed]]>><<clotheson>><<dontHideRevert>><</link>>
+<</if>>
+
+:: Farm shave clean
+<<effects>>
+
+你拿起了一些剃须膏、一把剃须刀，靠在了墙边。
+<br>
+你分开双腿，小心地刮着你的阴毛。几分钟后，你刮完了。你的<<genitals_are 2>>现在干净整洁。
+<br><br>
+<<link [[继续|Farm Shed]]>><<clotheson>><<dontHideRevert>><</link>>
+
+:: Farm shave pubis
+<<effects>>
+
+你拿起了一些剃须膏、一把剃须刀，靠在了墙边。
+<br>
+你分开双腿，小心地剃去毛发。几分钟后，你完成了，你的阴部现在变得光滑而干净。
+<br><br>
+<<link [[继续|Farm Shed]]>><<clotheson>><<dontHideRevert>><</link>>
+
+:: Farm shave balls
+<<effects>>
+
+你拿起了一些剃须膏、一把剃须刀，靠在了墙边。
+<br>
+你分开双腿，小心地剃你的蛋蛋。几分钟后，你完成了，你的睾丸变得光滑而干净。
+<br><br>
+<<link [[继续|Farm Shed]]>><<clotheson>><<dontHideRevert>><</link>>
+
+:: Farm shave strip
+<<effects>>
+
+你拿起了一些剃须膏、一把剃须刀，靠在了墙边。
+<br>
+你分开双腿，小心地刮着你的阴毛。几分钟后，你刮完了。你的<<genitals_are 2>>现在干净整洁，而且有一个<<print $pbstripName>>装饰着你的阴部。
+<br><br>
+<<link [[继续|Farm Shed]]>><<clotheson>><<dontHideRevert>><</link>>
+
+:: Farm shave trim
+<<effects>>
+
+你拿起一把梳子和剪刀，靠在墙边。
+<br>
+你分开双腿，小心地修剪你的阴毛。几分钟后，你完成了，现在你<<genitals 2>>周围的毛发变得整齐划一。
+<br><br>
+<<link [[继续|Farm Shed]]>><<clotheson>><<dontHideRevert>><</link>>
+
+:: Farm Dye
+<<effects>>
+
+<<set _ownedColours = $makeup.owned.hairdye.filter(x => x.count > 0)>>
+<<if _ownedColours.length == 0>>
+	你没有任何染发剂。也许你应该去化妆品店买一些。
+	<br>
+<<else>>
+	你想染成什么颜色？<br>
+	<<set _choice = _ownedColours[0].colour>>
+	<<for _i, _item range _ownedColours>>
+		<label><span class="grey-shadow"><span @class="'hair-' + _item.colour.replace(/ /g, '-')"><span class="colour-hair"><span style="color:#FD6064;"><<hairmapcolourtext _item.colour>></span></span></span></span>&nbsp;<<print '<<radiobutton "_choice" "'+_item.colour+'" ' + (_choice is _item.colour ? "checked" : "") + '>>'>></label>
+		&nbsp;x&nbsp;_item.count |
+	<</for>>
+
+	<br><br>
+	<<link [[用选定的颜色给阴毛染色 (0:30)|Farm dye pubic hair Finish]]>><<pass 30>><<set $makeup.owned.hairdye.find(x => x.colour == _choice).count -= 1>><<set $makeup.pbcolour = _choice>><</link>>
+<</if>>
+<br>
+<<link [[返回|Farm Shave]]>><</link>>
+
+:: Farm dye pubic hair Finish
+<<effects>>
+
+你涂上凡士林来保护你最敏感的部位，然后准备染发剂。
+你用一把小刷子小心地涂上化学染发剂，等待它们渗透进去。
+<<arousal 100>>
+<br><br>
+几分钟呼，你用水冲洗你的私处，然后拿出<<hairmapcolourtext $makeup.pbcolour>>观察你的<<genitals 2>>。
+<br><br>
+<<link [[继续|Farm Shed]]>><<clotheson>><<dontHideRevert>><</link>>
+
+:: Farm Shower
+<<set $outside to 0>><<effects>>
+<<strip>>
+你脱掉衣服开始洗澡，直到洗得一干二净为止。<<wash>>
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - ($allure / 2)) and Time.dayState isnot "night">>
+	<<npc Alex>><<person1>>
+	<<if random(1, 2) is 2>>
+		你听到门吱呀一声开了，光线透进来。<<covered>>是艾利克斯。<<He>>移开了目光，但又偷偷瞟向了你。<<gstress>><<stress 6>>
+		<br><br>
+
+		"抱、抱歉，"<<he>>说道，"我不知道你在这里。"
+		<br><br>
+
+		<<link [[尖叫|Farm Shower Scream]]>><<npcincr Alex love -1>><<stress -6>><</link>><<llove>><<lstress>>
+		<br>
+		<<link [[让艾利克斯离开|Farm Shower Leave]]>><</link>>
+		<br>
+		<<if $exhibitionism gte 55>>
+			<<link [[让艾利克斯看着 (0:05)|Farm Shower Watch]]>><<npcincr Alex lust 5>><<pass 5>><</link>><<exhibitionist4>><<glust>>
+			<br>
+		<</if>>
+	<<else>>
+		你听到门吱呀一声开了，光线透进来。<<covered>>是艾利克斯。<<He>>移开了目光，但又偷偷瞟向了你。<<gstress>><<stress 6>>
+		<br><br>
+
+		<<He>>过了一会儿，关上了门，恢复了你的隐私。
+		<<if $player.penisExist and ($player.penissize lte 1 or $player.penissize is 4) and random(0,9) gte 6>>
+			<<if $player.penissize lte 1>>
+				"也太<<EZsmall>>了，"<<he>>一边喃喃自语一边关上门。你低头看向自己的<<penis>>羞耻地脸红了。
+			<<elseif $player.penissize is 4>>
+				"也太<<EZbig>>了，"<<he>>一边喃喃自语一边关上门。你低头看向自己的<<penis>>羞耻地脸红了。
+			<</if>>
+
+			<<incgpenisinsecurity>>
+			<br><br>
+		<<else>>
+			<br><br>
+		<</if>>
+
+		<<link [[继续|Farm Work]]>><<clotheson>><<endevent>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<link [[自慰|Farm Shower Masturbation]]>><<set $masturbationstart to 1>><</link>>
+	<br>
+	<<link [[离开|Farm Work]]>><<clotheson>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Farm Shower Scream
+<<effects>>
+
+你尖叫起来。艾利克斯惊慌失措地砰地一声关上门。"对、对不起，"<<he>>在门外大声喊道，匆忙地离开了小屋。
+<br><br>
+<<tearful>>你抓住你的衣服。
+<br><br>
+
+<<link [[继续|Farm Work]]>><<clotheson>><<endevent>><</link>>
+<br>
+
+:: Farm Shower Leave
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"别，别看，"你说道，"请离开。"
+<<elseif $speech_attitude is "bratty">>
+	"走开，"你说道，"变态。"
+<<else>>
+	"请离开，"你说道。
+<</if>>
+<br><br>
+
+<<if $NPCName[$NPCNameList.indexOf("Alex")].dom gte 20>>
+	艾利克斯犹豫了一下，然后走向前，关上了<<him>>身后的门。"你确定？"<<he>>说着，将你推到了墙上。
+	<br><br>
+
+	<<if $promiscuity gte 15>>
+		<<link [[接受|Farm Shower Sex]]>><<set $sexstart to 1>><<npcincr Alex dom 1>><<npcincr Alex love 1>><</link>><<gdom>><<glove>>
+		<br>
+	<</if>>
+	<<link [[推开|Farm Shower Shove]]>><<npcincr Alex dom -1>><<npcincr Alex love -1>><</link>><<llove>><<ldom>>
+	<br>
+<<else>>
+	艾利克斯犹豫了一下，然后关上了门。你穿过小屋去擦干身子。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><<clotheson>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Farm Shower Sex
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>><<promiscuity2>>
+<</if>>
+<<effects>>
+水像瀑布一样顺着你的身体流淌下去。
+<br><br>
+
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Farm Shower Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Farm Shower Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Farm Shower Sex Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>靠在屋墙上，喘着粗气。"我忍不住了，"<<he>>说，"看见你这样满身泡沫。"<<He>>离开了小屋。<<glove>><<llllust>><<npcincr Alex lust -10>><<npcincr Alex love 1>>
+	<br><br>
+	<<tearful>>你关上了水。
+	<br><br>
+
+	<<endcombat>>
+	<<link [[继续|Farm Work]]>><<clotheson>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	你推了艾利克斯一把，<<He>>撞在小屋的墙上，然后瘫倒在地。"抱歉，"<<he>>站起来说道，"我误会了。"<<He>>离开了小屋。
+	<br><br>
+	<<tearful>>你关上了水。
+	<br><br>
+
+	<<endcombat>>
+	<<link [[继续|Farm Work]]>><<clotheson>><</link>>
+<<else>>
+	艾利克斯举起双手，"抱歉，"<<he>>说道，"我误会你了。"<<He>>离开了小屋。<<llove>><<npcincr Alex love -1>>
+	<br><br>
+	<<tearful>>你关上了水。
+	<br><br>
+
+	<<endcombat>>
+	<<link [[继续|Farm Work]]>><<clotheson>><</link>>
+<</if>>
+
+<<wash>>
+
+:: Farm Shower Masturbation Sex
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>><<promiscuity2>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Farm Shower Masturbation Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Farm Shower Masturbation Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Farm Shower Masturbation Sex Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>靠在屋墙上，喘着粗气。"我忍不住了，"<<he>>说，"看着你自慰的样子。"<<He>>离开了小屋。<<glove>><<llllust>><<npcincr Alex lust -10>><<npcincr Alex love 1>>
+	<br><br>
+	<<tearful>>你关上了水。
+	<br><br>
+
+	<<endcombat>>
+	<<link [[继续|Farm Work]]>><<clotheson>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	你推了艾利克斯一把，<<He>>撞在小屋的墙上，然后瘫倒在地。"抱歉，"<<he>>站起来说道，"我误会了。"<<He>>离开了小屋。
+	<br><br>
+	<<tearful>>你把自己洗干净了。
+	<br><br>
+
+	<<endcombat>>
+	<<link [[继续|Farm Work]]>><<clotheson>><</link>>
+<<else>>
+	艾利克斯举起双手，"抱歉，"<<he>>说道，"我误会你了。"<<He>>离开了小屋。<<llove>><<npcincr Alex love -1>>
+	<br><br>
+	<<tearful>>你把自己洗干净了。
+	<br><br>
+
+	<<endcombat>>
+	<<link [[继续|Farm Work]]>><<clotheson>><</link>>
+<</if>>
+
+<<wash>>
+
+:: Farm Shower Shove
+<<effects>>
+
+你将艾利克斯推开，<<he>>踉跄倒在地上。"抱歉，"<<he>>爬起身来说道，"我误会了。"<<He>>关上了门。
+<br><br>
+
+<<link [[继续|Farm Work]]>><<clotheson>><<endevent>><</link>>
+<br>
+
+
+
+:: Farm Shower Watch
+<<effects>>
+你继续慢慢地清洗身体。你转身给艾利克斯展示了一个不同的角度。
+<<exhibitionism4>>
+
+<<He>>尴尬而渴望地凝视着。
+<br><br>
+
+<<link [[邀请帮你洗澡|Farm Shower Invite]]>><<npcincr Alex lust 5>><</link>><<exhibitionist4>><<gglust>>
+<br>
+<<link [[结束|Farm Shower Finish]]>><</link>>
+<br>
+
+
+:: Farm Shower Invite
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你，你想要帮我洗澡吗？"你拿着一块海绵向艾利克斯问道，"我有一些地方够不着。"
+<<elseif $speech_attitude is "bratty">>
+	"找点事情做吧，"你说着，扔给了艾利克斯一块海绵。
+<<else>>
+	"你能帮我洗一下吗？"你问艾利克斯，递过一块海绵。"有些地方我够不着。"
+<</if>>
+<<exhibitionism4>>
+
+艾利克斯想要回答，不过想不到该说些什么。<<He>>靠近你，然后关上了身后的门。
+<br><br>
+
+<<He>>站在稍远的地方，以免<<his>>的衣服被溅湿，然后用海绵在你的背上来回擦拭。你感觉很舒服，不由地微微颤抖了一下。
+<br><br>
+
+<<if $NPCName[$NPCNameList.indexOf("Alex")].lust gte 10>>
+	没有提醒，<<he>>向前步了一步，抓住了你的胸口，忘了担心会弄湿衣服。
+	<br><br>
+
+	<<if $promiscuity gte 15>>
+		<<link [[接受|Farm Shower Sex]]>><<set $sexstart to 1>><<npcincr Alex dom 1>><<npcincr Alex love 1>><</link>><<promiscuous2>><<gdom>><<glove>>
+		<br>
+	<</if>>
+	<<link [[推开|Farm Shower Shove]]>><<npcincr Alex dom -1>><<npcincr Alex love -1>><</link>><<llove>><<ldom>>
+	<br>
+<<else>>
+	你转过身来，让<<him>>也洗你的前面。你已经很干净了，但这感觉太好了不能错过。当海绵在你的<<genitals>>上划过时，他屏住了呼吸。<<ggarousal>><<arousal 1200>>
+	<br><br>
+
+	<<if $arousal gte $arousalmax>>
+		你的身体颤抖着。<<orgasm>>
+		艾利克斯并没有感到惊讶，反而因为你的高潮而更加大胆。"你真是个变态，"<<he>>说着，将你的身体拉向<<hers>>。
+		<br><br>
+
+		<<if $promiscuity gte 15>>
+			<<link [[接受|Farm Shower Sex]]>><<set $sexstart to 1>><<npcincr Alex dom 1>><<npcincr Alex love 1>><</link>><<promiscuous2>><<gdom>><<glove>>
+			<br>
+		<</if>>
+		<<link [[推开|Farm Shower Shove]]>><<npcincr Alex dom -1>><<npcincr Alex love -1>><</link>><<llove>><<ldom>>
+		<br>
+	<<else>>
+
+		<<if $promiscuity gte 15>>
+			<<link [[诱惑|Farm Shower Seduce]]>><<npcincr Alex love 1>><</link>><<promiscuous2>><<glove>>
+			<br>
+		<</if>>
+		<<link [[结束|Farm Shower Finish]]>><</link>>
+		<br>
+	<</if>>
+
+	<<link [[继续|Farm Work]]>><<clotheson>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+:: Farm Shower Seduce
+<<effects>>
+
+你抱住艾利克斯，将<<him>>拽入流水下。这时<<He>>已经不再在意自己被弄湿了。
+<<promiscuity2>>
+
+<<link [[继续|Farm Shower Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+
+
+:: Farm Shower Finish
+<<effects>>
+
+你关掉淋浴，穿过房间去擦干自己。艾利克斯的目光一直在跟随着你，直到你用毛巾把身体裹起来。<<he>>红着脸，关上了门。
+<br><br>
+
+<<link [[继续|Farm Work]]>><<clotheson>><<endevent>><</link>>
+<br>
+
+:: Farm Stage 8
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"那，那是什么？"你问道，"出什么事了吗？"
+<<elseif $speech_attitude is "bratty">>
+	"刚才那是怎么回事？"你问道，"我应该担心吗？"
+<<else>>
+	"有什么需要担心的吗？"你问道。
+<</if>>
+<br><br>
+<<person1>>
+艾利克斯摇了摇头道，"我正在考虑安保项目。我本来想建一面更高的围墙，但是那个<<person2>><<if $pronoun is "f">>女士<<else>>先生<</if>>向我推荐了一座瞭望塔。要不是它太贵，我就被<<he>>说服了。"
+<br><br>
+<<person1>>
+艾利克斯从一个没有标签的瓶子里喝了一口，"我们还需要人手来管理它，"<<he>>继续说道，"如果你想看的话，详细信息在我的桌子上。我相信你会妥善处理这笔钱。"
+<br><br>
+
+<span class="gold">你现在可以在艾利克斯的卧室里购买农场进一步的升级。</span>
+<br>
+<span class="pink">你的繁荣并没有被忽视。雷米会在<<nnpc_his Remy>>攻击期间投入更多资源。</span>
+<br><br>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+:: Farm Stage 9 Catch
+<<effects>>
+
+<<if $danceSuccess>>
+	你扑向那个生物，<span class="green">设法用前臂将其按住，艾利克斯这才赶上来。</span><<He>>把笼子猛地扣在它身上，然后盖上了一块布。<<glove>><<npcincr Alex love 1>>
+	<br><br>
+	"谢了，"<<he>>说道，"出了点意外。"
+	<br><br>
+
+	<<if $speech_attitude is "meek">>
+		"那、那是——"你看着哪个笼子想说点什么。
+	<<elseif $speech_attitude is "bratty">>
+		"是那些奇怪的东西之一，"你说道，"究竟是什么？"
+	<<else>>
+		"那是什么？"你看着被盖住的笼子问道。
+	<</if>>
+	<br><br>
+	"它们生活在荒原上，"艾利克斯说道，"光线会刺激到它们。我应该告诉你更多的。帮我把它拿进去。"
+	<br><br>
+	<<link [[继续|Farm Stage 9 Caught]]>><</link>>
+	<br>
+
+<<else>>
+	你扑向那个生物，<span class="red">但它突然朝一边蹿开，</span>你摔倒在<<if $weather is "snow">>雪地<<elseif $weather is "rain">>泥泞<<else>>土地<</if>>上。它消失在了一堆树篱下。<<gpain>><<pain 4>><<gdom>><<npcincr Alex dom 1>>
+	<br><br>
+
+	艾利克斯帮你站了起来。
+	<br><br>
+
+	<<if $speech_attitude is "meek">>
+		"那、那是——"你想说点什么。
+	<<elseif $speech_attitude is "bratty">>
+		"那是那些奇怪的东西之一，"你说道，"究竟是什么？"
+	<<else>>
+		"那是什么？"你问道。
+	<</if>>
+	<br><br>
+	"它们生活在荒原，"艾利克斯说道，"有些东西我应该给你看看。"
+	<br><br>
+	<<link [[继续|Farm Stage 9 Empty]]>><</link>>
+	<br>
+<</if>>
+
+:: Farm Stage 9 Leave
+<<effects>>
+
+艾利克斯拿起笼子，跳起来抓那个生物，但是没能抓住。它消失在了一堆树篱下。
+<br><br>
+
+你帮<<him>>站了起来。
+<<if $speech_attitude is "meek">>
+	"那、那是——"你想说点什么。
+<<elseif $speech_attitude is "bratty">>
+	"那是那些奇怪的东西之一，"你说道，"究竟是什么？"
+<<else>>
+	"那是什么？"你问道。
+<</if>>
+<br><br>
+"它们生活在荒原，"艾利克斯说道，"有些东西我应该给你看看。"
+<br><br>
+<<link [[继续|Farm Stage 9 Empty]]>><</link>>
+<br>
+
+:: Farm Stage 9 Empty
+<<effects>>
+
+你跟着艾利克斯走进了石头小屋。一股刺鼻的气味扑鼻而来。一张长桌子摆在边上，上面堆满了各种科学设备。地面散落着碎玻璃，奇怪的紫色液体从天花板滴下。
+<br><br>
+
+"这是我的实验室，"艾利克斯双手叉腰，转过身面对你。一个烧杯滚落到地上摔碎了。"爆炸之前这里很整洁，"<<he>>补充道。
+<br><br>
+
+<<link [[印象深刻|Farm Stage 9 Impressed]]>><<npcincr Alex love 1>><</link>><<glove>>
+<br>
+<<link [[很好奇|Farm Stage 9 Curious]]>><<npcincr Alex love 1>><</link>><<glove>>
+<br>
+<<link [[不屑一顾|Farm Stage 9 Dismissive]]>><<npcincr Alex love -1>><<npcincr Alex dom -3>><</link>><<llove>><<lldom>>
+<br>
+
+:: Farm Stage 9 Caught
+<<effects>>
+
+艾利克斯拿来一个更牢固的笼子来装那个生物，带你走进了石头小屋。一张长桌子摆在边上，上面堆满了各种科学设备。地面散落着碎玻璃，奇怪的紫色液体从天花板滴下。
+<br><br>
+
+"这是我的实验室，"艾利克斯把笼子放到了桌上，转过身面对你。一个烧杯滚落到地上摔碎了。"爆炸之前这里很整洁，"<<he>>补充道。
+<br><br>
+
+<<link [[印象深刻|Farm Stage 9 Impressed]]>><<npcincr Alex love 1>><</link>><<glove>>
+<br>
+<<link [[很好奇|Farm Stage 9 Curious]]>><<npcincr Alex love 1>><</link>><<glove>>
+<br>
+<<link [[不屑一顾|Farm Stage 9 Dismissive]]>><<npcincr Alex love -1>><<npcincr Alex dom -3>><</link>><<llove>><<lldom>>
+<br>
+
+:: Farm Stage 9 Impressed
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你很聪明。"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"还行，"你说道，"我喜欢有秘密的<<personsimple>>。"
+<<else>>
+	"我都不知道你还会这些，"你说道，"你很博学。"
+<</if>>
+<br><br>
+
+艾利克斯的胸口微微挺起。"一开始我是用它来做别的事情的，"<<he>>承认道。
+<br><br>
+
+<<link [[继续|Farm Stage 9 Lab]]>><</link>>
+<br>
+
+:: Farm Stage 9 Curious
+<<effects>>
+
+你检查了一下设备。大多数玻璃器皿都是裂开或碎裂的，但是角落里有一个大金属蒸馏器还保持完好。艾利克斯跟着你的目光看过去。"需要更换些器具，"<<he>>说道，"这不是第一次了。"
+<br><br>
+
+<<link [[继续|Farm Stage 9 Lab]]>><</link>>
+<br>
+
+:: Farm Stage 9 Dismissive
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我、我还以为你在这是在做一些有用的东西。"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"所以我在外面拼命工作的时候，你就在这浪费时间？"你说道。
+<<else>>
+	"你在农场里干些活会更有意义。"你说道。
+<</if>>
+<br><br>
+
+艾利克斯有点气馁。"我的工作是有用的，"<<he>>说，"或者很快就会有用了。"
+<br><br>
+
+<<link [[继续|Farm Stage 9 Lab]]>><</link>>
+<br>
+
+
+:: Farm Stage 9 Lab
+<<effects>>
+
+"这些生物，"艾利克斯继续说道。"雷米在捕猎它们。我想知道原因。我尝试着吃了一个，感觉就像吃皮革。但是它们能分泌出这种液体。"<<He>>从桌子下面拿出一个金属盒子。紫色的光芒照亮了<<his>>的脸庞。
+<br><br>
+
+"这种液体在离开他们的身体后就瞬间会凝固，"<<he>>说道，"但我已经解决了如何使其保持稳定。"这瓶液体在<<his>>手中发出光芒。"你知道这是什么吗？"
+<br><br>
+
+<<if $awarelevel gte 2>>
+	<<link [[知道|Farm Stage 9 Yes]]>><<npcincr Alex dom -1>><</link>><<ldom>>
+	<br>
+<</if>>
+<<link [[不知道|Farm Stage 9 No]]>><<npcincr Alex dom 1>><</link>><<gdom>>
+<br>
+
+
+:: Farm Stage 9 Yes
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"这、这是一种药物，"你说道，"也是一种媚药。"
+<<elseif $speech_attitude is "bratty">>
+	"看起来像是在这附近流行的药物，"你说道，"那种媚药。"
+<<else>>
+	"这是一种药物，"你说道，"以及催情剂。"
+<</if>>
+<br><br>
+
+"对！"艾利克斯兴奋地说道，"我是说，我不知道它有没有催情作用，但它确实是一种药品。雷米一定因此赚了大钱。我们也会的。"
+<br><br>
+
+<<link [[同意|Farm Stage 9 Agree]]>><</link>>
+<br>
+<<link [[反对|Farm Stage 9 Object]]>><<npcincr Alex love -1>><</link>><<llove>>
+<br>
+
+
+:: Farm Stage 9 No
+<<effects>>
+
+你摇了摇头，"这是种药物，"艾利克斯说道，"雷米肯定靠这个挣了大钱，我们也会的。"
+<br><br>
+
+<<link [[同意|Farm Stage 9 Agree]]>><</link>>
+<br>
+<<link [[反对|Farm Stage 9 Object]]>><<npcincr Alex love -1>><</link>><<llove>>
+<br>
+
+:: Farm Stage 9 Agree
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我、我们确实需要钱。"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"该轮到我们分一杯羹了。"你说道。
+<<else>>
+	"我们可以赚这笔钱。"你说道。
+<</if>>
+<br><br>
+
+艾利克斯点了点头。"我已经联系了一个买家。镇上有一家公司，他们在<span class="gold">麋鹿街</span>有一个厂区。他们一定是用它来制药。他们愿意就为了这个出价<<printmoney 100000>>。"<<He>>递给你。"下次你去镇上的时候可以帮我送过去吗？"
+<br><br>
+
+你拿着小瓶子。你感觉手掌暖暖的。
+<br><br>
+
+<<set $phials_held to 1>>
+<<set $phials_stored to 0>>
+
+<<link [[继续|Farm Still]]>><<endevent>><</link>>
+<br>
+
+:: Farm Stage 9 Object
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我、我不想跟药物扯上关系，"你说道，"听起来很危险。"
+<<elseif $speech_attitude is "bratty">>
+	"你疯了吗？"你问道，"贩卖药物是在自找麻烦。"
+<<else>>
+	"我不喜欢这个，"你说道，"药物只是麻烦。"
+<</if>>
+<br><br>
+"这不是那种药物，"艾利克斯抗议道，"我是说，我认为不是。我已经联系了一个买家。镇上有一家公司，他们在<span class="gold">麋鹿街</span>有一个厂区。他们一定是用它来制药。他们愿意就为这些出价<<printmoney 100000>>。"
+<br><br>
+
+艾利克斯把瓶子放回盒子里，然后将其滑到桌子下面。"如果你不愿意，我也不会勉强你，"<<he>>说道，"但我希望你能改变主意。在此期间我会把瓶子放在这里。"
+<br><br>
+
+<<set $phials_held to 0>>
+<<set $phials_stored to 1>>
+
+<<link [[继续|Farm Still]]>><<endevent>><</link>>
+<br>
+
+:: Farm Still
+<<effects>>
+<<farm_work_update>>
+你在艾利克斯的实验室里。
+
+<<if $farm_work.alex is "still">>
+	艾利克斯摆弄着仪器。
+<</if>>
+
+<<if $lurkers_stored gte 2>>
+	<<Number $lurkers_stored>>个笼子嘎吱作响。
+<<elseif $lurkers_stored is 1>>
+	笼子嘎嘎作响。
+<<else>>
+	笼子都空着。
+<</if>>
+
+<<if $phials_stored gte 2>>
+	有<<number $phials_stored>>瓶媚药放在了桌子下。
+	<br><br>
+	<<link [[拿走 (0:01)|Farm Work]]>><<pass 1>><<set $phials_held += $phials_stored>><<set $phials_stored to 0>><</link>>
+	<br>
+<<elseif $phials_stored is 1>>
+	桌子下面放着一个药瓶。
+	<br><br>
+	<<link [[拿走 (0:01)|Farm Work]]>><<pass 1>><<set $phials_held += $phials_stored>><<set $phials_stored to 0>><</link>>
+	<br>
+<<else>>
+	<br><br>
+<</if>>
+
+<<if $lurkers_held gte 1>>
+	<<link [[把你的潜伏者放到笼子里|Farm Still Cage]]>><<set $lurkers_stored += $lurkers_held>><<set $lurkers_held to 0>><</link>>
+	<br>
+<</if>>
+
+<<link [[离开 (0:01)|Farm Work]]>><<pass 1>><</link>>
+<br>
+
+
+:: Farm Still Cage
+<<effects>>
+
+你把那生物锁在笼子里，然后将网从栅栏间拉了出来。这需要时间，但艾利克斯足够生产出一瓶媚药。<<nnpc_He "Alex">>准备好后会把它放在实验室里。
+<br><br>
+
+<<if $farm.still_timer lte 0 or $farm.still_timer is undefined>>
+	<<set $farm.still_timer to 7>>
+<</if>>
+
+<<link [[继续|Farm Still]]>><</link>>
+<br>
+
+
+:: Farm Stage 10 Impressed
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"这太酷了。"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"不错，"你说。
+<<else>>
+	"这很酷。"你说道。
+<</if>>
+<br><br>
+
+艾利克斯开心地笑了。"很高兴你这么想，"<<he>>说道。"我给你做了一个。"<<He>>从肩上取下第二个网，递给了你，它很轻。
+<br><br>
+
+<<link [[继续|Farm Stage 10 Explain]]>><</link>>
+<br>
+
+:: Farm Stage 10 Dismiss
+<<effects>>
+<<set $lurkers_stored to 0>>
+<<set $lurkers_held to 0>>
+<<if $speech_attitude is "meek">>
+	"我、我不觉得我能扔好，"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"一根棍子大概会更有用，"你说道。
+<<else>>
+	"看上去不是很现实，"你说道。
+<</if>>
+<br><br>
+
+艾利克斯消气。"网络起作用了，"<<he>>说道。"相信我。我给你做了一个。"<<He>>把第二张网从<<his>>的肩膀上甩下来，递给你。它很轻。
+<br><br>
+
+<<link [[继续|Farm Stage 10 Explain]]>><</link>>
+<br>
+
+
+
+:: Farm Stage 10 Explain
+<<effects>>
+
+<<set $lurkers_stored to 0>>
+<<set $lurkers_held to 0>>
+"如果你看到农场周围有虫害，"艾利克斯说道。"抓住它们，<span class="gold">把它们带到实验室去。</span>它们被囚禁的时间不会长，但我应该能从它们身上提取一些有价值的东西。<span class="blue">你一次只能携带一个。" </span>
+<br><br>
+"还要留意一下沼地，"艾利克斯补充道。"但是不要无缘无故地去那里。"
+<br><br>
+
+<span class="gold">你获得了"捕捉"技能，在遭遇潜伏者时可用。</span> <i>必须在设置中启用兽交和潜伏者开关才能显示潜伏者遭遇。</i>
+<<if $prof.net is undefined>>
+	<<set $prof.net to 0>>
+<</if>>
+<br>
+<span class="pink">你的繁荣并没有被忽视。雷米会在<<nnpc_his Remy>>攻击期间投入更多资源。</span>
+<br><br>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+:: Farm Love Get
+<<effects>>
+
+你把艾利克斯推到一边，把<<him>>推倒在地。<<He>>笑着拉着你。你们一起翻滚，直到最后，
+<<if $physiqueSuccess>>
+	<span class="green">你把<<him>>压着。</span><<He>>试图推开你，但你按住了<<him>>。<<ldom>><<npcincr Alex dom -1>>
+	<br><br>
+
+	<<if $speech_attitude is "meek">>
+		"我不知道接下来该怎么办，"你承认。
+	<<elseif $speech_attitude is "bratty">>
+		"就在你该待的地方，"你说道。"现在我该拿你怎么办呢?"
+	<<else>>
+		"我赢了，"你说道。"现在我该如何奖赏自己呢?"
+	<</if>>
+	<br><br>
+	"你应该好好利用，"艾利克斯说道。<<He>>停顿了一下，然后靠过去，闭上了<<his>>的眼睛。
+	<br><br>
+
+<<else>>
+	<span class="red"><<he>>又把你压在地上了。</span>这一次<<he>>用更多的重量按住你。<<gdom>><<npcincr Alex dom 1>>
+	<br><br>
+	"就在我需要你的地方，"<<he>>说道。<<He>>倾身向前，闭上<<his>>的眼睛。
+	<br><br>
+
+<</if>>
+
+<<link [[接吻|Farm Love Kiss]]>><<npcincr Alex love 10>><</link>><<kissvirginitywarning>><<ggglove>>
+<br>
+<<link [[把头转开|Farm Love Turn]]>><<npcincr Alex love -10>><</link>><<llllove>>
+<br>
+
+
+
+:: Farm Love Annoyed
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你吓到我了，"你说道。"我还以为你是不速之客呢。"
+<<elseif $speech_attitude is "bratty">>
+	"别偷偷靠近我，"你说道。"我真想揍你一拳。"
+<<else>>
+	"你吓到我了，"你说道。"我还以为你是不速之客呢。"
+<</if>>
+<br><br>
+
+"如果有入侵者找你，"艾利克斯说道。"他们得先过我这一关。"<<He>>停顿了一下，然后靠过去，闭上了<<his>>的眼睛。
+<br><br>
+
+<<link [[接吻|Farm Love Kiss]]>><<npcincr Alex love 10>><</link>><<kissvirginitywarning>><<ggglove>>
+<br>
+<<link [[把头转开|Farm Love Turn]]>><<npcincr Alex love -10>><</link>><<llllove>>
+<br>
+
+
+:: Farm Love Flirt
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我为什么要挣脱?"你说道。"我喜欢你在上面。"
+<<elseif $submissive gte 850>>
+	"挣脱?"你说道。"只要我能让你干活就不会。"
+<<else>>
+	"也许我喜欢这个位置，"你说道。
+<</if>>
+<<promiscuity1>>
+<<if $NPCName[$NPCNameList.indexOf("Alex")].dom lte -30>>
+"那你不会介意我承认我是你的吧,"
+<<else>>
+"那你不会介意我认你是我的吧,"
+<</if>>
+艾利克斯说，<<his>>靠得更近了，闭上了眼睛。
+<br><br>
+
+<<link [[接吻|Farm Love Kiss]]>><<npcincr Alex love 10>><</link>><<kissvirginitywarning>><<ggglove>>
+<br>
+<<link [[把头转开|Farm Love Turn]]>><<npcincr Alex love -10>><</link>><<llllove>>
+<br>
+
+
+
+
+
+:: Farm Love Kiss
+<<effects>>
+
+你们的双唇相遇。艾利克斯的身体紧张，心跳加速，但当你一次又一次地亲吻时，<<he>>放松了。在你们分开的时候<<Hes>>脸红了。<<takeKissVirginity "Alex" "loveInterest">>
+<br><br>
+<<if $NPCName[$NPCNameList.indexOf("Alex")].dom lte -30>>
+"我是你的<<if $pronoun is "f">>女人<<else>>男人<</if>>,"
+<<else>>
+"你是我的<<if $player.gender_appearance is "f">>女人<<else>>男人<</if>>,"
+<</if>>
+<<he>>说道。<<He>>的眼睛和手指顺着你的胸膛往下移。"我太幸运了。"
+<br><br>
+
+你们一起回去工作。
+<br><br>
+
+<<if $loveInterest.primary is "None">>
+	<<set $loveInterest.primary to "Alex">>
+	<span class = "gold">艾利克斯现在是你的爱人了!毕竟你们可以住在一起。</span>
+	<br><br>
+<<else>>
+	<span class = "gold">艾利克斯现在可以作为你的爱人了！终于，你可以跟<<he>>一起生活了。<br>你可以在"态度"菜单中改变你的爱情对象。</span>
+	<br><br>
+<</if>>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+
+
+:: Farm Love Turn
+<<effects>>
+
+艾利克斯靠过来时，你转过头。<<His>>的嘴唇在<<he>>注意到之前亲到了你的脸颊上。<<He>>看向别处，垂头丧气了一会儿，然后又恢复了<<his>>的镇静。"我不会放弃的，"<<he>>说道。"你迟早会属于我。"<br><br>
+
+<<He>>站起身回去工作.
+<br><br>
+
+<span class = "gold">艾利克斯现在可以作为你的爱人了！终于，你可以跟<<he>>一起生活了。<br>你可以在"态度"菜单中改变你的爱情对象。</span>
+<br><br>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+
+
+
+:: Farm Builders Tea
+<<effects>>
+
+你问<<person>>是否要糖，然后给<<him>>泡了一杯茶。<<He>>喝了一口。"干杯。"
+<br><br>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+:: Farm Builders Tea Chat
+<<effects>>
+
+你问<<person>>是否要糖，然后给<<him>>泡了一杯茶。<<He>>喝了一口。"干杯。"
+<br><br>
+
+<<if $rng gte 81>>
+	你们聊了一会儿<<his>>的工作。"天气不重要，"<<he>>自豪地说道。"我会把工作做完的。"
+<<elseif $rng gte 61>>
+	你们聊了一会儿。"我住在城里，"<<he>>说道。"偶尔出来走走真好。"
+<<elseif $rng gte 41>>
+	你们聊了一会儿。"我住在附近，"<<he>>说道。"上下班很方便。"
+<<elseif $rng gte 21>>
+	你们聊了一会儿。"如果你要去沼地，注意要小心，"<<he>>带着一丝欢笑说道。"龙会抓住你的。"
+<<else>>
+	你们聊了一会儿。"你这地方不错，"<<he>>说道。"我想买一些你的<<print either("牛奶", "蛋", "农产品", "松露", "蔬菜")>>."
+<</if>>
+<br><br>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+:: Farm Builders Tea Angry
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"不，不，"你说道。"我不想给你泡茶。"
+<<elseif $speech_attitude is "bratty">>
+	"我不是你的仆人，"你说道。"你自己做吧。"
+<<else>>
+	"我很忙，"你说道。"自己沏茶吧。"
+<</if>>
+<br><br>
+
+"我会自己做的，"那个<<person>>耸耸肩。"但我不想踩着你漂亮的小屋。"
+<br><br>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Stock
+<<effects>>
+
+你检查农场的库存。艾利克斯将出售农产品，以满足农场的协议，并支付日常开支。多余的农产品会保存在冰箱里，供你拿去城里卖。
+<br><br>
+
+无人认领的农产品会慢慢过期。
+<br><br>
+
+松露: $farm.stock.truffles
+<br>
+<<if $farm.stock.truffles gte 1>>
+	<<set _farm_stocked to true>>
+	<<link [[收获|Farm Stock]]>><<tending_give truffle $farm.stock.truffles>><<set $farm.stock.truffles to 0>><</link>>
+	<br>
+<</if>>
+<br>
+鸡蛋: $farm.stock.eggs
+<br>
+<<if $farm.stock.eggs gte 1>>
+	<<set _farm_stocked to true>>
+	<<link [[收获|Farm Stock]]>><<tending_give chicken_egg $farm.stock.eggs>><<set $farm.stock.eggs to 0>><</link>>
+	<br>
+<</if>>
+<br>
+瓶装牛奶: $farm.stock.milk
+<br>
+<<if $farm.stock.milk gte 1>>
+	<<set _farm_stocked to true>>
+	<<link [[收获|Farm Stock]]>><<tending_give bottle_of_milk $farm.stock.milk>><<set $farm.stock.milk to 0>><</link>>
+	<br>
+<</if>>
+<br>
+
+<<if _farm_stocked is true>>
+	<<link [[收获全部|Farm Cottage]]>>
+		<<if $farm.stock.truffles gte 1>>
+			<<tending_give truffle $farm.stock.truffles>><<set $farm.stock.truffles to 0>>
+		<</if>>
+		<<if $farm.stock.eggs gte 1>>
+			<<tending_give chicken_egg $farm.stock.eggs>><<set $farm.stock.eggs to 0>>
+		<</if>>
+		<<if $farm.stock.milk gte 1>>
+			<<tending_give bottle_of_milk $farm.stock.milk>><<set $farm.stock.milk to 0>>
+		<</if>>
+	<</link>>
+	<br>
+<</if>>
+
+<<link [[离开|Farm Cottage]]>><</link>>
+<br>
+
+
+:: Farm Stage 11 Confident
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我可以试试，"你说道。"这里的土壤很好。"
+<<elseif $speech_attitude is "bratty">>
+	"我可以在任何地方种任何东西，"你自夸道。
+<<else>>
+	"我们已经知道它生长在这里，"你说道。"所以我们应该能够做到。"
+<</if>>
+<br><br>
+
+艾利克斯拿出种子。一股甜甜的香味飘了起来。"希望能够好运。"<<drugs 30>><<garousal>>
+<br><br>
+
+<<set $plants_known.push("strange_flower")>>
+<span class="gold">你现在可以种植<<icon "tending/strange_flower.png">>奇怪的花朵了。</span>
+<br><br>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+:: Farm Stage 11 Caution
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"这让我觉得怪怪的，"你说道。"如果雷米在种植它们，它们可能很危险。"
+<<elseif $speech_attitude is "bratty">>
+	"这些植物很危险，"你说道。"你确定要惹他们吗?"
+<<else>>
+	"这些植物可能很危险，"你说道。
+<</if>>
+<br><br>
+
+艾利克斯耸了耸肩，拿出了种子。"农场需要钱，"<<he>>说道。"这取决于你。你负责田地。"<<garousal>><<drugs 30>>
+<br><br>
+
+<<set $plants_known.push("strange_flower")>>
+<span class="gold">你现在可以种植<<icon "tending/strange_flower.png">>奇怪的花朵了。</span>
+<br><br>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+:: Farm Stage 12 Hands
+<<effects>>
+
+你摸着艾利克斯的手，把它握在自己的手里。<<He>>向后挤，然后把头靠在你的肩膀上。<<takeHandholdingVirginity "Alex" "romantic">>
+<br><br>
+
+"修复旧田地是一个奇迹。我不确定最后一次种植是什么时候。我——"<<he>>停顿了一下。"对不起，我没帮上什么忙。"你看着<<him>>，而<<he>>避开了<<his>>的凝视。
+<br><br>
+
+<<link [[安抚|Farm Stage 12 Reassure]]>><<npcincr Alex love 1>><</link>><<glove>>
+<br>
+<<link [[鼓励|Farm Stage 12 Embolden]]>><<npcincr Alex dom 1>><</link>><<gdom>>
+<br>
+
+:: Farm Stage 12 Pat
+<<effects>>
+
+你拍拍艾利克斯的背。"恢复旧田是一个奇迹。"，<<he>>说:"我不确定这整个地方最后一次被耕种是什么时候。我——"<<he>>停顿了一下。"对不起，我没帮上什么忙。"你看着<<him>>，而<<he>>避开了<<his>>的凝视。
+<br><br>
+
+
+<<link [[安抚|Farm Stage 12 Reassure]]>><<npcincr Alex love 1>><</link>><<glove>>
+<br>
+<<link [[鼓励|Farm Stage 12 Embolden]]>><<npcincr Alex dom 1>><</link>><<gdom>>
+<br>
+
+:: Farm Stage 12 Reassure
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"那不是真的，"你说道。"这是一个团队的努力。"
+<<elseif $speech_attitude is "bratty">>
+	"这不像你，"你说道。"你知道这是一个团队的努力。"
+<<else>>
+	"这是一个团队的努力，"你说道。"你可够忙的。"
+<</if>>
+<br><br>
+
+你听到了马蹄声。"你说得对，"艾利克斯点点头。"谢谢你——"<<he>>打断了<<he>>的话头，从你的肩膀上看过去。你转过身。雷米在两个骑着马的打手的跟随下走过来。
+<br><br>
+
+<<link [[继续|Farm Stage 12 Remy]]>><</link>>
+<br>
+
+:: Farm Stage 12 Embolden
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我指望你了，"你说道。"你对自己太苛刻了。"
+<<elseif $speech_attitude is "bratty">>
+	"自怜不适合你，"你说道。"你知道你在这里至关重要。"
+<<else>>
+	"农场就靠你了，"你说道。"你对自己太苛刻了。"
+<</if>>
+<br><br>
+
+你听到了马蹄声。"你说得对，"艾利克斯点点头。"谢谢你——"<<he>>打断了<<he>>的话头，从你的肩膀上看过去。你转过身。雷米在两个骑着马的打手的跟随下走过来。
+<br><br>
+
+<<link [[继续|Farm Stage 12 Remy]]>><</link>>
+<br>
+
+:: Farm Stage 12 Remy
+<<effects>>
+
+"你想要什么?"艾利克斯说道。"说出来，然后给我滚出<<if $NPCName[$NPCNameList.indexOf("Alex")].dom gte 20>>我的<<else>>我们的<</if>>地盘。"
+<br>
+"我的错，我的错，"雷米回答。"不请我喝茶吗?我还以为你是一位和蔼可亲的主人呢。"
+<br>
+"我才不会对一只老鼠献殷勤呢。"
+<br>
+雷米没有理会艾利克斯的态度。"你重新考虑过我的提议了吗?我听说你遇到了麻烦。有关流氓。"<<nnpc_He Remy>>看着你。"镇上来的流氓。我以为你和艾利克斯交朋友是在犯一个危险的错误。这个错误是<<hers>>带来的吗?"
+<br><br>
+
+<<link [[调停|Farm Stage 12 Intercede]]>><<npcincr Alex dom -1>><</link>><<ldom>>
+<br>
+<<link [[让艾利克斯来处理|Farm Stage 12 Alex]]>><<npcincr Alex dom 1>><</link>><<gdom>>
+<br>
+
+
+
+:: Farm Stage 12 Intercede
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你听到艾利克斯的声音了，"你说道。"滚出我们的地盘。"
+<<elseif $speech_attitude is "bratty">>
+	"我受够了，"你说道。"我要呼叫支援。"
+<<else>>
+	"我已经警告过你了，"你说道。"我在叫支援。"
+<</if>>
+你把手指放在嘴唇上，吹口哨。
+<br><br>
+
+猎狗吠叫作为回应。几只<<farm_text_many dog>>跑过拐角。
+
+<<if $farm.kennel gte 1>>
+	它们从你和艾利克斯的侧翼攻击入侵者。雷米看起来很镇定，<span class="green">但是<<nnpc_his Remy>>的马后退了几步。</span>
+<<else>>
+	它们从你和艾利克斯的侧翼，好奇地看着入侵者。<span class="red">雷米和<<nnpc_his Remy>>的马看起来都很镇定。</span>
+<</if>>
+<br><br>
+
+"如你所愿，"雷米说道。"祝你好运。"<<nnpc_He Remy>>转身离开，<<nnpc_his Remy>>的打手紧跟在后面。
+<br><br>
+
+<<link [[继续|Farm Stage 12 End]]>><</link>>
+<br>
+
+:: Farm Stage 12 Alex
+<<effects>>
+
+艾利克斯把<<his>>的手指放在<<his>>的嘴唇上，吹了口哨。
+<br><br>
+
+猎狗吠叫作为回应。几只<<farm_text_many dog>>跑过拐角。
+
+<<if $farm.kennel gte 1>>
+	它们从你和艾利克斯的侧翼攻击入侵者。雷米看起来很镇定，<span class="green">但是<<nnpc_his Remy>>的马后退了几步。</span>
+<<else>>
+	它们从你和艾利克斯的侧翼，好奇地看着入侵者。<span class="red">雷米和<<nnpc_his Remy>>的马看起来都很镇定。</span>
+<</if>>
+<br><br>
+
+"如你所愿，"雷米说道。"祝你好运。"<<nnpc_He Remy>>转身离开，<<nnpc_his Remy>>的打手紧跟在后面。
+<br><br>
+
+<<link [[继续|Farm Stage 12 End]]>><</link>>
+<br>
+
+
+:: Farm Stage 12 End
+<<effects>>
+
+艾利克斯猛击了<<him>>旁边的木桩，吓到了那只<<farm_text_many dog>>。"无论雷米使用什么<<nnpc_he Remy>>想到的肮脏手段，"<<he>>说道。"<<nnpc_He Remy>>都不会赢。只要我有你，就不会。"
+<br><br>
+
+<span class="pink">雷米对你的农场不再感兴趣了。你已经成了威胁。<<nnpc_He Remy>>将在<<nnpc_his Remy>>攻击期间犯下更多罪行。</span>
+<br><br>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>

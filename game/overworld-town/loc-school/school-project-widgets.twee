@@ -1,0 +1,326 @@
+:: Widgets School Projects [widget]
+<<widget "scienceprojectstart">>
+	<<set $sciencelichentemple to 0>>
+	<<set $sciencelichenpark to 0>>
+	<<set $sciencelichenlake to 0>>
+	<<set $sciencelichendrain to 0>>
+
+	<<set $sciencelichentempleready to 0>>
+	<<set $sciencelichenparkready to 0>>
+	<<set $sciencelichenlakeready to 0>>
+	<<set $sciencelichendrainready to 0>>
+
+	<<set $scienceshroomwolf to 0>>
+	<<set $scienceshroomheart to 0>>
+
+	<<set $scienceshroomwolfready to 0>>
+	<<set $scienceshroomheartready to 0>>
+
+	<<set $sciencephallusready to 0>>
+
+	<<set $sciencephallus to 0>>
+
+	<<set $sciencephalluspenis to 0>>
+	<<set $sciencephallusclit to 0>>
+
+	<<set $sciencefaircheat to 0>>
+<</widget>>
+
+<<widget "scienceprojectfinish">>
+	<<unset $sciencelichentemple>>
+	<<unset $sciencelichenpark>>
+	<<unset $sciencelichenlake>>
+	<<unset $sciencelichendrain>>
+
+	<<unset $sciencelichentempleready>>
+	<<unset $sciencelichenparkready>>
+	<<unset $sciencelichenlakeready>>
+	<<unset $sciencelichendrainready>>
+
+	<<unset $scienceshroomwolf>>
+	<<unset $scienceshroomheart>>
+
+	<<unset $scienceshroomwolfready>>
+	<<unset $scienceshroomheartready>>
+
+	<<unset $sciencephallus>>
+
+	<<unset $sciencephallusready>>
+
+	<<unset $sciencephalluspenis>>
+	<<unset $sciencephallusclit>>
+
+	<<unset $sciencefaircheat>>
+	<<unset $sciencelichenchance>>
+	<<unset $scienceshroomchance>>
+	<<unset $sciencephalluschance>>
+
+	<<unset $scienceprojectwarning>>
+<</widget>>
+
+<<widget "mathsprojectstart">>
+	<<set $mathschance to 0>>
+		<<if $mathsstim is undefined>>
+		<<set $mathsstim to 0>>
+		<</if>>
+	<<set $mathsstimused to 0>>
+	<<set $mathsstimbought to 0>>
+	<<set $mathsstimstolen to 0>>
+	<<set $mathsinfo to 0>>
+<</widget>>
+
+<<widget "mathsprojectfinish">>
+	<<unset $mathschance>>
+
+	<<unset $mathsprojectdays>>
+	<<unset $mathsstimused>>
+	<<unset $mathsstimbought>>
+	<<unset $mathslibraryknown>>
+	<<unset $mathsdruggedstudent>>
+	<<unset $mathsinfo>>
+	<<unset $mathsstimstolen>>
+	<<unset $mathsstimrobin>>
+	<<unset $mathsstimbeg>>
+	<<unset $mathsprojectwhitney>>
+	<<unset $mathschancestart>>
+	<<unset $river_help>>
+	<<unset $mathsprojectwarning>>
+<</widget>>
+
+<<widget "englishplaystart">>
+	<<set $englishPlayReadiness to 0>>
+	<<set $englishPlayApproval to 0>>
+		<<set $englishPlayRoles to {
+			Player: "none",
+			Kylar: "none",
+			Sydney: "none",
+			KylarKnown: false,
+			KylarCount: 0,
+			SydneyKnown: false,
+			SydneyCount: 0
+		}>>
+<</widget>>
+
+<<widget "englishplayfinish">>
+	<<unset $englishPlayDays>>
+	<<unset $englishPlayReadiness>>
+	<<unset $englishPlayWarning>>
+	<<set $englishPlayRolePlayed to $englishPlayRoles.Player>>
+	<<unset $englishPlayRoles>>
+	<<unset $englishPlayKylarReplace>>
+	<<unset $englishPlayKylarTalk>>
+	<<unset $englishPlaySydneyTalk>>
+	<<unset $englishPlaySydneyWatch>>
+	<<unset $englishPlayRobinWatch>>
+	<<unset $englishPlayWatch>>
+	<<unset $randomPlayPool>>
+	<<unset $englishPlayPronouns>>
+	<<unset $englishPlayKylarLeave>>
+	<<set $englishPlay to "done">>
+<</widget>>
+
+<<widget "projectoptions">>
+	<<if $scienceproject is "ongoing">>
+		<<icon "projectScience.png">><<link [[准备科学项目|Science Project]]>><</link>>
+		<br>
+	<</if>>
+	<<if $mathsproject is "ongoing">>
+		<<icon "projectMaths.png">><<link [[准备数学项目|Maths Project]]>><</link>>
+		<br>
+	<</if>>
+	<<if $englishPlay is "ongoing" and $englishPlayRoles.Player isnot "none" and $location is "home">>
+		<<icon "projectEnglish.png">><<link [[排练你的角色(2:00)|English Play Rehearse Alone]]>><<pass 2 hours>><<englishskill 6>><</link>><<genglish>><<greadiness>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "scienceprojectchance">>
+	<<set $sciencelichenchance to $sciencelichenparkready * 25 + $sciencelichenlakeready * 25 + $sciencelichendrainready * 25 + $sciencelichentempleready * 25>>
+	<<set $scienceshroomchance to $scienceshroomwolfready * 10 + $scienceshroomheartready * 10>>
+	<<set $sciencephalluschance to $sciencephallusready * 10>>
+<</widget>>
+
+<<widget "mathsphone">>
+	他们比较着他们拍的照片。其中两个人把手机伸到你面前。
+	<br><br>
+
+	<<if $mathsab1 is "smile">>
+	第一张照片里你微笑着，用你的手做着和平的手势。不知道的话是不可能看出这张照片是被胁迫拍摄的。
+	<<elseif $mathsab1 is "frown">>
+	第一张照片上你皱着眉头，用手对着镜头做出冒犯的手势。
+	<<elseif $mathsab1 is "cover">>
+	第一张照片上你捂着脸。你觉得没人能看出来照片上的人是你。
+	<<elseif $mathsab1 is "tearsmile">>
+	第一张照片里你微笑着，用你的手做着和平的手势。泪水打湿了你的脸，笑容也远谈不上真诚。
+	<<elseif $mathsab1 is "tearfrown">>
+	第一张照片上你皱着眉头，怒目含泪，用手对着镜头做出冒犯的手势。
+	<<elseif $mathsab1 is "tearcover">>
+	第一张照片上你捂着脸，眼泪在你双手的遮挡下流淌。
+	<</if>>
+	一段时间后拍摄的第二张照片里，你看起来凌乱得多。你的身上裹着一层光滑、反光的东西。
+	<<if $mathsab2 is "smile">>
+	你的脸上带着笑容，但你的眼神有点奇怪。
+	<<elseif $mathsab2 is "frown">>
+	你的脸上充斥着愤怒和挑衅。
+	<<elseif $mathsab2 is "cover">>
+	你的脸被遮住了。
+	<<elseif $mathsab2 is "tearsmile">>
+	你的脸上带着微笑，但眼泪却泄露了真实的故事。
+	<<elseif $mathsab2 is "tearfrown">>
+	你的脸上充满了泪水，却又充斥着愤怒和挑衅。
+	<<elseif $mathsab2 is "tearcover">>
+	你的脸被遮住了，但泪痕依然清晰可见。
+	<</if>>
+	<br><br>
+<</widget>>
+
+<<widget "greadiness">>
+	<<if $statdisable is "f">> |
+		<span class="green">+ 准备</span>
+	<</if>>
+<</widget>>
+
+<<widget "ggreadiness">>
+	<<if $statdisable is "f">> |
+		<span class="green">+ +准备</span>
+	<</if>>
+<</widget>>
+
+<<widget "gggreadiness">>
+	<<if $statdisable is "f">> |
+		<span class="green">+ + +准备</span>
+	<</if>>
+<</widget>>
+
+<<widget "gapproval">>
+	<<if $statdisable is "f">> |
+		<span class="teal">+观众满意</span>
+	<</if>>
+<</widget>>
+
+<<widget "ggapproval">>
+	<<if $statdisable is "f">> |
+		<span class="teal">+ +观众满意</span>
+	<</if>>
+<</widget>>
+
+<<widget "gggapproval">>
+	<<if $statdisable is "f">> |
+		<span class="teal">+ + +观众满意</span>
+	<</if>>
+<</widget>>
+
+<<widget "lapproval">>
+	<<if $statdisable is "f">> |
+		<span class="red">- 观众满意</span>
+	<</if>>
+<</widget>>
+
+<<widget "llapproval">>
+	<<if $statdisable is "f">> |
+		<span class="red">- - 观众满意</span>
+	<</if>>
+<</widget>>
+
+<<widget "lllapproval">>
+	<<if $statdisable is "f">> |
+		<span class="red">- - - 观众满意</span>
+	<</if>>
+<</widget>>
+
+<<widget "playReadiness">>
+<<set $englishPlayReadiness = Math.clamp($englishPlayReadiness, 0, 100)>>
+<<if $englishPlayReadiness is 0>>
+	<span class="black">你还没开始排练呢。</span>
+<<elseif $englishPlayReadiness lte 10>>
+	<span class="pink">你需要不断地重读，而且大部分的台词都让你舌头打结。</span>
+<<elseif $englishPlayReadiness lte 25>>
+	<span class="purple">有些部分很复杂，但你正在慢慢掌握窍门。</span>
+<<elseif $englishPlayReadiness lte 55>>
+	<span class="blue">你现在对剧本有了更好的理解，你已经记住不少台词了。</span>
+<<elseif $englishPlayReadiness lte 69>>
+	<span class="lblue">除了几句最难背诵的台词外，大多数对白你都记住了。</span>
+<<elseif $englishPlayReadiness lte 99>>
+	<span class="teal">你准备好扮演你的角色了。你已经记熟了台词并能自然地表达出来。</span>
+<<else>>
+	<span class="green">你能将台词倒背如流，对这次的表演充满了信心。</span>
+<</if>>
+<</widget>>
+
+<<widget "playLinePool">>
+	<<set _englishPlayLinePool to {
+		Cass: [
+			"在圣诞节前夕目睹这样一场令人心碎的争端，我不忍心看！",
+			"我知道我只是一个乞丐，我的话语跟我本身一样毫无价值，但是请听听我无论如何都要说出来的话。",
+			"在我的一生中，我都跟我生病的母亲生活在一起…",
+			"我生命中唯一的其他慰藉就是泰勒。所以,我恳求您,就这一次,让我跟我最爱的人在一起度过这一夜吧。"
+		],
+		Taylor: [
+			"请听好了! 我对卡斯的感觉绝非仅仅是一时兴起！我们是真心实意的！",
+			"我这一辈子都是按照你的要求活着，过着你为我做的选择。",
+			"你要因为这个恨我那就恨吧！但无论如何我唯一想要的就是这个。",
+			"能收到您的祝福，我真的非常高兴。"
+		],
+		Sterling: [
+			"我简直不敢相信...我自己的孩子，居然被一个肮脏的乞丐迷上了？我们马上就走，泰勒。你回家之后要给我好好解释解释。",
+			"自从我将你带到这世界上以来，我就一直希望着你能找到真正的幸福。",
+			"我也是在一个目光短浅的父母的严厉管控下长大的…",
+			"…然而我一直都只是自以为是，从来都没有意识到我只是在自我满足。"
+		]
+	}>>
+<</widget>>
+
+<<widget "randomPlay">><<silently>>
+	<<generates1>><<person1>>
+	<<if !$randomPlayPool>>
+		<<set $randomPlayPool to [
+			"这出戏搞得一团糟，因为主角<<actor>>没有记住<<his>>的台词。多伦失望地跳了进来，打断了这次的排练。",
+			"这部浪漫的戏原来是两位主角在舞台上亲热的借口。多伦不得不把他们分开，迫使他们继续他们的路线。",
+			"这出戏是关于吸血鬼的，学生们为此化了浓妆。你肯定会在洗手间里发现他们中的一些人，试图把它们全部洗掉。",
+			"这出戏很快就结束了，主角<<actor>>生病了。",
+			"这出戏被多伦提前结束了，因为<<actor>><<actorAroused>>",
+			"这出戏是根据一些儿童故事改编的，但由于它的残酷性质，你会认为原故事是出自德国。",
+			"演员们在这出戏中忘记了大部分台词，决定即兴发挥。一旦他们开始专门讲笑话和打破角色，多伦就会介入，让他们照着剧本读。",
+			"主角<<actor>>在戏中表现出色，非常乐意展示<<his>>自制的服装。很明显，多伦事先没有批准这套服装。",
+			"出乎意料的是，主角<<actor>>在最后一幕脱了衣服。多伦没有机会插嘴，因为戏剧已经结束了。",
+			"这出戏讲述了一场大战的故事，演员们穿着临时的中世纪盔甲。",
+			"演员们在一部短剧中表演了一位家庭主妇的故事，她对丈夫的幻想破灭了，离开丈夫去寻求更多的生活。",
+			"演出过程中，一位演员的戏服破了，让房间里的每个人都瞪大了双眼。多伦赶紧把毯子扔到<<him>>身上，把<<him>>赶到后台。",
+			"戏剧延长了时间，因为一个学生决定进行一段比剧本上写的长得多的独白。",
+			"在演出过程中，一名学生在另一名<<actor>>碰了<<him>>之后尖叫起来，迫使多伦提前结束演出，把另一名学生送回家。",
+			"在戏剧进行到一半时，一名<<actor>>的衣服出了问题，导致<<his>>衣服滑落，让整场观众瞪大了双眼。",
+			"演出进行到一半时，背景中的一个学生看到了<<his>>机会，脱下了<<his>>裤子。多伦抓住了<<him>>，接下来的戏剧就像计划的那样结束了。",
+			"这出戏描绘了20世纪20年代一个家庭的斗争，演员们穿着肮脏的衣服和破衣服。",
+			"这出戏最后变成了一部黑色喜剧，讲述了一个不正常的家庭聚在一起过节的故事。",
+			"学生们表演了一出政治讽刺剧，内容是关于一位市长陷入性丑闻。它引起了一些观众的特别兴趣。",
+			"学生们一边努力在喜剧节目中表现得严肃，一边努力不打破角色。不过，这场演出反响不错。",
+			"当两名学生躲在毯子下进行一场戏时，一部浪漫喜剧的气氛突然变得性感起来。很明显他们在公共场所交媾。",
+			"这出戏似乎进行得很顺利，直到主要<<actor>>在独白中脱下了裤子。多伦用毯子盖住了<<him>>，护送<<him>>离开了舞台。"
+		]>>
+	<</if>>
+	<<set _randomPlay to $randomPlayPool.pluck()>>
+<</silently>><<print _randomPlay>><</widget>>
+
+<<widget "sterlingTitle">><<silently>>
+	<<set _text_output to ($englishPlayPronouns.Sterling is "m" ? "先生" : "女士")>>
+<</silently>><<print _text_output>><</widget>>
+
+<<widget "sterlingFather">><<silently>>
+	<<set _text_output to ($englishPlayPronouns.Sterling is "m" ? "父亲" : "母亲")>>
+<</silently>><<print _text_output>><</widget>>
+
+<<widget "sterlingSir">><<silently>>
+	<<set _text_output to ($englishPlayPronouns.Sterling is "m" ? "先生" : "夫人")>>
+<</silently>><<print _text_output>><</widget>>
+
+<<widget "taylorSon">><<silently>>
+	<<set _text_output to ($englishPlayPronouns.Taylor is "m" ? "儿子" : "女儿")>>
+<</silently>><<print _text_output>><</widget>>
+
+<<widget "taylorSibling">><<silently>>
+	<<set _text_output to ($englishPlayPronouns.Taylor is "m" ? "兄弟" : "姐妹")>>
+<</silently>><<print _text_output>><</widget>>
+
+<<widget "cassBoy">><<silently>>
+	<<set _text_output to ($englishPlayPronouns.Cass is "m" ? "男孩" : "女孩")>>
+<</silently>><<print _text_output>><</widget>>

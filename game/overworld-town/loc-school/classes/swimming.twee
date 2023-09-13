@@ -1,0 +1,935 @@
+:: School Pool
+<<set $outside to 0>><<set $location to "pool">><<schooleffects>><<effects>>
+
+<<if $poolroomstate is "own">>
+	<<if Time.minute gte 45>>
+		<<if $daily.school.attended.swimming>>
+			你走进游泳馆。
+			<br><br>
+			游泳课刚刚结束，一些出来较晚的家伙们正在往更衣室走，而梅森正在收拾那些被遗落的毛巾。
+			<br><br>
+			<<if $exposed lte 0>>
+				<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><</link>>
+				<br>
+				<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><</link>>
+			<<elseif $exposed gte 1>>
+				<<maleicon>><<link [[拿一条毛巾裹住身体并进入男更衣室|School Boy Changing Room]]>><<towelupm>><</link>>
+				<br>
+				<<femaleicon>><<link [[拿一条毛巾裹住身体并进入女更衣室|School Girl Changing Room]]>><<towelup>><</link>>
+			<</if>>
+		<<else>>
+			<<include "School Swimming Late">>
+			<<set $daily.school.swimmingLate to true>><!-- still a missed lesson -->
+		<</if>>
+	<<elseif $exposed gte 2 and $swimall is 1>>
+		<<npc Mason>><<person1>>
+		<<if $daily.school.attended.swimming>>
+			你重新加入了游泳课。
+			<<if $rightarm is "bound" or $leftarm is "bound" or $feetuse is "bound">>
+				梅森一下子就注意到了你被绑住的<<if $rightarm is "bound" or $leftarm is "bound">>胳膊<</if>><<if ($rightarm is "bound" or $leftarm is "bound") and $feetuse is "bound">>和<</if>><<if $feetuse is "bound">>腿<</if>>."让你这样子去游泳的话是很不安全的。"
+				<br>
+				<<He>>走到了你的身后，<span class="green">你感觉你的四肢终于自由了.</span><<unbind>>
+			<</if>>
+			<br><br>
+			<<link [[继续|Swimming Lesson]]>><<endevent>><</link>>
+			<br>
+		<<elseif Time.minute lte 5>>
+			你走进游泳馆。
+			梅森正站在泳池边，那遮住了<<his>>的大部分身体，虽然<<he>>试图鼓励学生们做伸展运动，但班里的其他人选择了直接入水。
+			<<if $rightarm is "bound" or $leftarm is "bound" or $feetuse is "bound">>
+				<<He>>注意到了你被绑住的<<if $rightarm is "bound" or $leftarm is "bound">>胳膊<</if>><<if ($rightarm is "bound" or $leftarm is "bound") and $feetuse is "bound">>和<</if>><<if $feetuse is "bound">>腿<</if>>."这......这有点过分了。"
+				<br>
+				<<He>>走到了你的身后，<span class="green">你感觉你的四肢终于自由了.</span><<unbind>>
+			<</if>>
+			<br><br>
+
+			<<link [[继续|Swimming Lesson]]>><<endevent>><</link>>
+			<br>
+
+		<<else>>
+			你走进游泳馆。
+
+			梅森和全班同学已经在泳池中了。
+			<<if $daily.school.swimmingExcused>>
+				<<run delete $daily.school.swimmingExcused>>
+				"你在这里啊，"<<he>>在说着的同时对你招了招手。"别担心，我不会处罚你的，快进来吧！"
+			<<else>>
+				"你能加入我们真是太好了！"<<he>>在说着的同时对你招手。
+				<<gdelinquency>><<detention 1>>
+			<</if>>
+			<br><br>
+			<<if $rightarm is "bound" or $leftarm is "bound" or $feetuse is "bound">>
+				梅森一下子就注意到了你被绑住的<<if $rightarm is "bound" or $leftarm is "bound">>手臂<</if>><<if ($rightarm is "bound" or $leftarm is "bound") and $feetuse is "bound">>和<</if>><<if $feetuse is "bound">>腿<</if>>."等等！你这样子去游泳是很不安全的。"
+				<br>
+				<<He>>走到了你的身后，<span class="green">你感觉你的四肢终于自由了.</span><<unbind>>
+			<</if>>
+			你在梅森继续上课的时候爬进了泳池中。
+			<br><br>
+			<<link [[继续|Swimming Lesson]]>><<endevent>><</link>>
+			<br>
+		<</if>>
+	<<elseif $exposed gte 2 and $swimall isnot 1>>
+		<<schoolpoolexposed>>
+		<<if $exhibitionism gte 75 and $swimall isnot 1>>
+			<<link [[要求裸体游泳|School Pool Ask Naked]]>><<fameexhibitionism 15>><<endevent>><<set $swimnudecounter += 1>><</link>><<exhibitionist5>>
+			<br>
+		<</if>>
+	<<elseif $swimall is 1>>
+		<<npc Mason>><<person1>>
+		<<if $daily.school.attended.swimming>>
+			你重新加入了游泳课。
+			<<if $rightarm is "bound" or $leftarm is "bound" or $feetuse is "bound">>
+				梅森一下子就注意到了你被绑住的<<if $rightarm is "bound" or $leftarm is "bound">>胳膊<</if>><<if ($rightarm is "bound" or $leftarm is "bound") and $feetuse is "bound">>和<</if>><<if $feetuse is "bound">>腿<</if>>."嗯......显然，让你这样游泳是不安全的。"
+				<br>
+				<<He>>走到了你的身后，<span class="green">你感觉你的四肢终于自由了.</span><<unbind>>
+			<</if>>
+			<br>
+		<</if>>
+		你走进游泳馆。
+		梅森站在泳池边，鼓励学生们在等待其他同学时进行一下热身。
+		<<if $exposed gte 2>>
+			<br><br>
+			<<link [[继续|Swimming Lesson]]>><<endevent>><</link>>
+		<<else>>
+			<br><br>
+			<<He>>瞪着你。"所以，多亏了某个人，我不能允许你进入游泳池，除非你全裸。"
+			<br><br>
+			<<link [[裸泳|Swimming Lesson]]>><<schoolpoolundress>><<endevent>><</link>>
+		<</if>>
+	<<elseif ($worn.under_lower.type.includes("swim") or $worn.lower.type.includes("swim"))
+	and ($worn.under_upper.type.includes("swim") or $worn.upper.type.includes("swim") or ($worn.under_upper.type.includes("naked") and $worn.upper.type.includes("naked") and ($player.gender_appearance is "m" or $daily.swimCrossdressPermission)))
+	and (($worn.upper.type.includes("naked") or $worn.upper.type.includes("swim")) and ($worn.lower.type.includes("naked") or $worn.lower.type.includes("swim")))>>
+		<<npc Mason>><<person1>>
+		<<if $daily.school.attended.swimming>>
+			你重新加入了游泳课。
+			<<if $rightarm is "bound" or $leftarm is "bound" or $feetuse is "bound">>
+				梅森一下子就注意到了你被绑住的<<if $rightarm is "bound" or $leftarm is "bound">>胳膊<</if>><<if ($rightarm is "bound" or $leftarm is "bound") and $feetuse is "bound">>和<</if>><<if $feetuse is "bound">>腿<</if>>."嗯......显然，让你这样游泳是不安全的。"
+				<br>
+				<<He>>走到了你的身后，<span class="green">你感觉你的四肢终于自由了.</span><<unbind>>
+			<</if>>
+			<br><br>
+			<<link [[继续|Swimming Lesson]]>><<endevent>><</link>>
+			<br>
+		<<elseif Time.minute lte 5>>
+			你走进游泳馆。
+			梅森站在泳池边，鼓励学生们在等待其他同学时进行一下热身。
+			<<if $rightarm is "bound" or $leftarm is "bound" or $feetuse is "bound">>
+				<<He>>注意到了你被绑住的<<if $rightarm is "bound" or $leftarm is "bound">>胳膊<</if>><<if ($rightarm is "bound" or $leftarm is "bound") and $feetuse is "bound">>和<</if>><<if $feetuse is "bound">>腿<</if>>."我不能让你这样游泳。"
+				<br>
+				<<He>>走到了你的身后，<span class="green">你感觉你的四肢终于自由了.</span><<unbind>>
+			<</if>>
+			<br><br>
+
+			<<link [[继续|Swimming Lesson]]>><<endevent>><</link>>
+			<br>
+
+		<<else>>
+			你走进游泳馆。
+
+			梅森和全班同学已经在泳池中了。
+			<<if $daily.school.swimmingExcused>>
+				<<run delete $daily.school.swimmingExcused>>
+				"你在这里啊，"<<he>>在说着的同时对你招了招手。"别担心，我不会处罚你的，快进来吧！"
+			<<else>>
+				"你能加入我们真是太好了！"<<he>>在说着的同时对你招手。
+				<<gdelinquency>><<detention 1>>
+			<</if>>
+			<br><br>
+			<<if $rightarm is "bound" or $leftarm is "bound" or $feetuse is "bound">>
+				梅森一下子就注意到了你被绑住的<<if $rightarm is "bound" or $leftarm is "bound">>手臂<</if>><<if ($rightarm is "bound" or $leftarm is "bound") and $feetuse is "bound">>和<</if>><<if $feetuse is "bound">>腿<</if>>."等等！你这样子去游泳是很不安全的。"
+				<br>
+				<<He>>走到了你的身后，<span class="green">你感觉你的四肢终于自由了.</span><<unbind>>
+			<</if>>
+			你在梅森继续上课的时候爬进了泳池中。
+			<br><br>
+
+			<<link [[继续|Swimming Lesson]]>><<endevent>><</link>>
+			<br>
+
+		<</if>>
+	<<else>>
+		你走进游泳馆。
+		<<npc Mason>><<person1>>
+		<<if $daily.school.swimmingExcused>>
+			"你已经被原谅了，但你仍然需要穿上衣服才能出去。
+		<<else>>
+			"你不能穿成这样游泳！
+		<</if>>
+		去换衣服。"
+		<br><br>
+
+		<<if $exhibitionism gte 75 and $swimall isnot 1>>
+			<<link [[要求裸体游泳|School Pool Ask Naked]]>><<fameexhibitionism 15>><<endevent>><<set $swimnudecounter += 1>><</link>><<exhibitionist5>>
+			<br>
+		<</if>>
+		<<if $player.gender is "f" or ($player.gender is "h" and $player.gender_appearance is "f")>>
+			<<if !$daily.swimCrossdressPermission>>
+				<<link [[说你只有一件男孩的泳衣|School Pool Wrong]]>><</link>>
+				<br>
+			<</if>>
+			<<link [[说你没有东西可换|School Pool Spare]]>><</link>>
+			<br>
+		<<else>>
+			<<if !$daily.swimCrossdressPermission>>
+				<<if ($worn.upper.type.includes("naked") and $worn.under_upper.type.includes("naked")) and
+				($worn.lower.type.includes("swim") or ($worn.lower.type.includes("naked") and $worn.under_lower.type.includes("swim")))>>
+					<<link [[说你只有一件男孩的泳衣|School Pool Wrong]]>><<set $phase to 1>><</link>>
+				<<else>>
+					<<link [[说你只有一件女孩的泳衣|School Pool Wrong]]>><</link>>
+				<</if>>
+				<br>
+			<</if>>
+			<<link [[说你没有东西可换|School Pool Spare]]>><</link>>
+			<br>
+		<</if>>
+		<br>
+		<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><<endevent>><</link>>
+		<br>
+		<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><<endevent>><</link>>
+		<br><br>
+	<</if>>
+
+<<elseif $poolroomstate is "other">>
+	<<if $exposed gte 1>>
+		<<schoolpoolexposed>>
+	<<else>>
+		你走进游泳馆。
+		<<if $daily.school.swimmingInterrupted is 1>>
+			<<npc Mason>><<person1>>你走进游泳馆，梅森停下了动作并直勾勾的看向你。"我有一节课要教。
+			不要再打扰我们了。"<<He>>在说完之后指向了出口。
+			<<gdelinquency>>
+			<br><br>
+			<<detention 1>>
+
+			<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><<endevent>><</link>>
+			<br>
+			<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><<endevent>><</link>>
+			<br>
+		<<else>>
+			<<npc Mason>><<person1>>
+			当你走进泳池室，梅森停下了动作并对你笑了笑。"你是迷路了吗？还是说你有什么事要告诉我？"
+			看来你已经打断了上课。
+			<br><br>
+			<<set $daily.school.swimmingInterrupted to 1>>
+
+			<<link [[道歉|Swimming Classroom Apology]]>><<trauma 1>><<stress 1>><</link>><<gstress>><<gtrauma>>
+			<br>
+			<<if $trauma gte 1>>
+				<<link [[嘲笑|Swimming Classroom Mock]]>><<status 1>><<stress -12>><</link>><<lstress>><<gcool>><<gdelinquency>>
+				<br>
+			<</if>>
+		<</if>>
+	<</if>>
+<<else>><!-- $poolroomstate is "empty" -->
+	你正待在游泳馆里，这里充满了氯气的味道。
+	<br><br>
+	<<if $arousal gte $arousalmax>>
+		<<orgasmLocation "emptySwimClassroom">>
+	<</if>>
+
+	<<exhibitionclassroom>>
+
+	<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><<endevent>><</link>>
+	<br>
+	<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: School Pool Ask Naked
+<<set $outside to 0>><<set $location to "pool">><<schoolpoolundress>><<schooleffects>><<effects>><<exposure>>
+
+<<if $swimnudecounter lte 1>>
+	<<npc Mason>>
+
+	<<if $speech_attitude is "meek">>
+		"我可以裸体游泳吗？"你问道。"这个水的感觉真的很好。"
+	<<elseif $speech_attitude is "bratty">>
+		"我正在裸泳。"你宣布道。
+	<<else>>
+		"我可以裸泳吗？"你问道。
+	<</if>>
+	<br><br>
+
+	<<person1>><<His>>的脸更红了，全班同学都兴奋起来。"行-行吧，"<<he>>说道。<<He>>转身，并继续做<<his>>
+	最好是让其他学生安静下来。
+	<br><br>
+<<elseif $swimnudecounter lte 2>>
+	<<npc Mason>><<generatey2>>
+
+	<<if $speech_attitude is "meek">>
+		"我可以裸体游泳吗？"你问道。"这个水的感觉真的很好。"
+	<<elseif $speech_attitude is "bratty">>
+		"我正在裸泳。"你宣布道。
+	<<else>>
+		"我可以裸泳吗？"你问道。
+	<</if>>
+	<br><br>
+
+	<<person1>><<His>>脸愈发通红了，同时全班都陷入了兴奋之中。"又......又一次？"<<he>>尖声道。在<<he>>转身之前，
+	一个<<person2>><<person>>也裸体离开了更衣室。
+	<br><br>
+
+	<<person2>>"如果只有<<pshe>>能裸泳，那也太不公平了，"<<he>>说道。梅森被<<he>>的话惊呆了，无法做出任何反应，只好让你们俩都进入游泳池。
+	<br><br>
+<<elseif $swimnudecounter lte 3>>
+	<<npc Mason>><<generatey2>><<generatey3>><<generatey4>>
+
+	当你离开时，一个<<person2>><<person>>和另一个<<person3>><<person>>还有那个<<person4>><<person>>已经在房间里裸体了。
+	这让泳池里的学生们很是高兴，同时也让梅森感到害怕。
+	<br><br>
+
+	<<person1>>当全班为第四个愿意裸露的学生鼓掌时，梅森的脸涨的更红了"你们成员又变多了？"
+	<<he>>在说着的同时摇了摇头。
+	<br><br>
+
+	<<if $speech_attitude is "meek">>
+		"我会一直坚持着，直到最后一个人加入到我们"英勇无畏"的组织当中来！" 你回答到.
+	<<elseif $speech_attitude is "bratty">>
+		"看来支持你的人已经开始倒戈了，"你说道。
+	<<else>>
+		"我不是唯一 一个讨厌这些泳装的人"，你回答道。
+	<</if>>
+	<br><br>
+<<elseif $swimnudecounter lte 4>>
+	<<npc Mason>><<generatey2>><<generatey3>><<generatey4>>
+
+	当你进入游泳池时，只见比上次更多的裸体学生已经在那里了，而且还有几个裸体的学生在你后面出来。
+	大概全班有一半的人都选择了裸泳。
+	<br><br>
+
+	一个<<person2>><<person>>正坐在池边用腿划水，<<his>>在看见你之后挥手致意。而<<person1>>梅森正试图
+	将那些还穿着泳衣的学生的目光从那些赤身裸体的学生的身上分散开来。
+	<br><br>
+
+	<<if $cool gte 80>>
+		他们中的几个人在游泳池边做伸展运动，其中那个<<person3>><<person>>发现了你，
+		并将你指给<<person4>><<person>>看，那几个人都在向你招手。
+		<br><br>
+	<</if>>
+<<elseif $rng gte 51>>
+	<<npc Mason>><<generatey2>><<generatey3>>
+
+	<<person1>>现在几乎全班都在裸泳，只有那个<<person2>><<person>>还有那个<<person3>><<person>>依旧坚持穿泳衣，
+	梅森正试图教导这二人不要去看那些赤身裸体的学生。
+	<br><br>
+<<else>>
+	<<npc Mason>><<generatey2>><<generatey3>>
+
+	<<person1>>现在几乎全班都在裸泳，只有那个<<person2>><<person>>还有那个<<person3>><<person>>依旧坚持穿泳衣，
+	梅森正试图教导这二人不要去看那些赤身裸体的学生。
+	<br><br>
+<</if>>
+
+<<person1>><<He>>的话对这些群情激奋的学生来说完全没有压制作用.
+<<if $exposed gte 2>>
+	<<flaunting>>当你跳进水中时，你察觉到其他人的目光都聚焦在你身上。
+<<else>>
+	<<flaunting>>你能感觉到他们的眼神都黏在了你的身上，在你<<nervously>>脱成<<lewdness>>，滑进泳池之前。<<covered>>
+<</if>><<exhibitionism5>>
+
+<<link [[继续|Swimming Lesson]]>><<endevent>><</link>>
+
+:: Pool Leighton Nude Punishment
+<<set $outside to 0>><<set $location to "pool">><<schooleffects>><<effects>><<set $swimall to 1>><<underlowerstrip>><<underupperstrip>>
+
+礼顿要求学生们脱光衣服。在学生们照做之后，礼顿又转身盯着梅森。
+<br>
+"甚，甚至我？"
+<br>
+"你已经失去了对你班级的控制，你还是感谢我没有开除你吧。"
+<br>
+在脱完之后，礼顿将泳装放在了一个篮子里。
+<br>
+"从今往后，你们这个班都必须裸泳，明白吗？" 随后<<he>>看向梅森。"还有你，即使不在这个班上，你也要裸体教学！"
+<br>
+"为什么？"一个学生问道。
+<br>
+"这就要问你的同学了，既然想在上课时裸泳的话，那么以后的课程都裸泳吧。"
+<br><br>
+<<link [[继续|Swimming Lesson]]>><<endevent>><</link>>
+
+:: Swimming Lesson
+<<set $outside to 0>><<set $location to "pool">><<schooleffects>><<effects>><<set $phase to 0>>
+<<set $daily.school.attended.swimming to true>>
+
+<<if $swimnudecounter gte 10 and $swimall isnot 1>>
+	<<npc Leighton>><<person1>>礼顿冲进游泳馆并开始大发雷霆："梅森!!!"<<he>>怒吼到："解释一下吧! 为什么这个班会在 裸  体  游  泳 ？"
+	<br><br>
+
+	<<endevent>><<npc Mason>><<person1>>
+	"我，我不能......" 梅森看向你，但却不知该说些什么。而礼顿则顺着<<his>>的目光看向了你。
+	<br><br>
+
+	<<endevent>><<npc Leighton>><<person1>>
+	"好，好啊！"<<he>>咆哮道："所有人，都给我从游泳池里出来！"
+	<br><br>
+
+	<<link [[继续|Pool Leighton Nude Punishment]]>><<pass 5>><</link>>
+<<else>>
+	<<if Time.minute lte 5>>
+		<<if $swimall is 1 and $exposed gte 2>>
+			你根本就不用担心你的<<lewdness>>，因为这个时候的每个人都在赤身裸体。
+			<br><br>
+		<<elseif $exposed gte 1>>
+			你将你的<<lewdness>>藏在水面以下，但你仍然感到暴露和不安全感。
+			当班上的其他同学认为你看不到他们时，他们就会偷偷地盯着你看。
+			<br><br>
+		<</if>>
+		<<if $arousal gte $arousalmax>>
+			<<orgasmLocation "swimClassroom">>
+		<</if>>
+		游泳课开始了，你想如何表现自己?
+		<br><br>
+	<<else>>
+		<<if $swimall is 1 and $exposed gte 2>>
+			你根本就不用担心你的<<lewdness>>，因为这个时候的每个人都在赤身裸体。
+			<br><br>
+		<<elseif $exposed gte 1>>
+			水有助于隐藏你的身形，但你仍然感到暴露和不安全感。当班上的其他同学认为你看不到他们时，他们就会偷偷地盯着你看。
+			<br><br>
+		<</if>>
+		<<if $arousal gte $arousalmax>>
+			<<orgasmLocation "swimClassroom">>
+		<</if>>
+		游泳课继续，你想如何表现自己?
+		<br><br>
+	<</if>>
+
+	<<link [[专注于课程|Swimming Lesson Focus]]>><</link>><<gstress>><<gswimming>><<gtiredness>>
+	<br>
+	<<link [[与同学们进行交流|Swimming Lesson Socialise]]>><</link>><<gcool>><<ltrauma>><<lstress>><<gharass>>
+	<br>
+	<<if $exposed gte 2 and $exhibitionism gte 75>>
+		<<link [[练习仰泳|Swimming Lesson Naked Backstroke]]>><</link>><<gswimming>><<gtiredness>><<exhibitionist5>>
+		<br>
+	<</if>>
+	<<link [[睡大觉|Swimming Lesson Daydream]]>><</link>><<lstress>><<lharass>>
+	<br>
+	<<if $exhibitionism gte 55>>
+		<<link [[手淫|Swimming Lesson Masturbate]]>><<set $masturbationstart to 1>><</link>><<exhibitionist4>>
+		<br>
+	<</if>>
+<</if>>
+
+:: School Pool Wrong
+<<set $outside to 0>><<set $location to "pool">><<set $daily.swimCrossdressPermission to true>><<set _alreadyWearing to false>><<schooleffects>><<effects>>
+
+你说话的声音很小，所以只有老师才能听到你说的话。
+
+<<if $player.gender is "f" or ($player.gender is "h" and $player.gender_appearance is "f") or $phase is 1>>
+	<<if $player.gender_appearance is "f" or $genderknown.includes("Mason") or $phase is 1>>
+		<<set $phase to 0>>
+		"我只有一​​条男孩的短裤，<<sir>>
+		<br><br>
+		<<He>>的脸一下子红了起来。"哦，那，那总比没有好。
+		<<if ($worn.upper.type.includes("naked") and $worn.under_upper.type.includes("naked")) and
+			($worn.lower.type.includes("swim") or ($worn.lower.type.includes("naked") and $worn.under_lower.type.includes("swim")))>>
+			去吧。" 你回到了班上的其他同学中。<<set _alreadyWearing to true>>
+		<<else>>
+			去换衣服吧。"<<He>>转身投入到了课堂当中。
+		<</if>>
+		<br><br>
+	<<else>>
+		"我只有一​​条男孩的短裤，<<sir>>
+		<br><br>
+		<<He>>茫然地看着你。 "我没看到……"随后，<<He>>才意识到是因为<<his>>那张略显稚嫩的脸，这也让<<He>>一下子脸红了起来。
+		"哦，那总比没有好，而且你穿成男孩也不像是有什么问题。
+		<<if ($worn.upper.type.includes("naked") and $worn.under_upper.type.includes("naked")) and
+			($worn.lower.type.includes("swim") or ($worn.lower.type.includes("naked") and $worn.under_lower.type.includes("swim")))>>
+			去吧。" 你回到了班上的其他同学中。<<set _alreadyWearing to true>>
+		<<else>>
+			去换衣服吧。"<<He>>转身投入到了课堂当中。
+		<</if>>
+		<<set $genderknown.pushUnique("Mason")>>
+		<br><br>
+	<</if>>
+<<else>>
+	<<if $player.gender_appearance is "m" or $genderknown.includes("Mason")>>
+		"我只有一套女生的衣服，<<sir>>"
+		<br><br>
+		<<He>>的脸一下子红了起来。"哦，那总比没有好。去换衣服吧。"<<He>>转身投入到了课堂当中。
+		<br><br>
+	<<else>>
+		"我只有一套女生的衣服，<<sir>>"
+		<br><br>
+		<<He>>茫然地看着你。 "我没看到……"随后，<<He>>才意识到是因为<<his>>那张略显稚嫩的脸，这也让<<He>>一下子脸红了起来。
+		"哦，那总比没有好，而且你穿成女孩也不像是有什么问题。去换衣服吧。"<<He>>转身投入到了课堂当中。
+		<<set $genderknown.pushUnique("Mason")>>
+		<br><br>
+	<</if>>
+<</if>>
+
+<<if _alreadyWearing>>
+	<<link [[继续|Swimming Lesson]]>><<endevent>><</link>>
+<<else>>
+	<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><<endevent>><</link>>
+	<br>
+	<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: School Pool Spare
+<<set $outside to 0>><<set $location to "pool">><<schooleffects>><<effects>>
+我没有泳装，<<sir>>"
+<br><br>
+
+<<He>>叹了口气然后爬出水池。"来吧，我们可能有一些备用的。"
+<br><br>
+
+<<He>>将你带到一个小房间里，然后在一个柜子里翻找着。
+
+<<if $rng gte 81 and $delinquency gte 200>>
+	"我很抱歉，我这也没有多余的了，你只能裸泳了。"
+	<br><br>
+	<<He>>不等你把你的焦虑说出来，抢先说道："班上的其他人会分心，你只要悄悄地溜进水里就可以了。
+	一旦你进去了，就没有人能看到任何东西。"
+	<br><br>
+
+	<<link [[接受|School Pool Nude]]>><<schoolpoolundress>><<endevent>><<exposure>><</link>>
+	<br>
+	<<link [[拒绝 (0:05)|School Pool Refuse]]>><<pass 5>><<detention 6>><<endevent>><</link>><<gdelinquency>>
+<<elseif $rng gte 41 or $forcedcrossdressingdisable is "t">>
+	<<if $player.gender_appearance is "f">>
+		<<He>>拿出一个布包裹递给你。
+		<br><br>
+		"别太久了！"<<he>>在说完之后将你单独地留在房间里。
+		<br><br>
+		你掀开布料，里面是一件相当破烂的泳装。
+		<br><br>
+
+		<<link [[换衣服|School Pool Crossdress]]>><<schoolpoolundress>><<spareschoolswimsuit>><<endevent>><<exposure>><<set $phase to 1>><</link>>
+	<<else>>
+		<<He>>拿出一个布包裹递给你。
+		<br><br>
+		"别太久了！"<<he>>在说完之后将你单独地留在房间里。
+		<br><br>
+
+		你掀开包裹，里面只有一条相当破烂的游泳短裤。
+		<br><br>
+
+		<<link [[换衣服|School Pool Crossdress]]>><<schoolpoolundress>><<spareschoolswimshorts>><<endevent>><<exposure>><<set $phase to 0>><</link>>
+		<!-- A crossdressing girl may now have her assets on display, "School Pool Crossdress" will handle that -->
+	<</if>>
+<<elseif $rng gte 1>>
+	<<if $player.gender_appearance is "f">>
+		<<He>>拿出一个布包裹递给你。
+		<br><br>
+		"别太久了！"<<he>>在说完之后将你单独地留在房间里。
+		<br><br>
+
+		你掀开包裹，里面只有一条相当破烂的男孩游泳短裤。你继续在柜子里翻找，但没有找到任何衣服。
+		要不就穿短裤，要不就什么都不穿。
+		<br><br>
+
+		<<link [[穿短裤|School Pool Crossdress]]>><<schoolpoolundress>><<spareschoolswimshorts>><<endevent>><<exposure>><<set $phase to 0>><</link>>
+		<br>
+		<<link [[逃课 (0:05)|School Pool Refuse]]>><<pass 5>><<detention 6>><<endevent>><</link>><<gdelinquency>>
+	<<else>>
+		<<He>>拿出一个布包裹递给你。
+		<br><br>
+		"别太久了！"<<he>>在说完之后将你单独地留在房间里。
+		<br><br>
+
+		你掀开包裹，里面只有一条相当破烂的女性泳装。你在柜子里翻找，但没有找到任何一件衣服。
+		要不就穿泳装，要不就什么都不穿。
+		<br><br>
+
+		<<link [[穿上泳装|School Pool Crossdress]]>><<schoolpoolundress>><<spareschoolswimsuit>><<endevent>><<exposure>><<set $phase to 1>><</link>>
+		<br>
+		<<link [[逃课 (0:05)|School Pool Refuse]]>><<pass 5>><<detention 6>><<endevent>><</link>><<gdelinquency>>
+	<</if>>
+<</if>>
+
+:: Swimming Classroom Apology
+<<set $outside to 0>><<set $location to "pool">><<schooleffects>><<effects>>
+
+不好意思，你道歉并离开。
+<br><br>
+
+<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><<endevent>><</link>>
+<br>
+<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><<endevent>><</link>>
+<br>
+
+:: Swimming Classroom Mock
+<<set $outside to 0>><<set $location to "pool">><<schooleffects>><<effects>>
+
+你嘲笑老师。"打扰一下，<<sir>>，我是想看看你的
+<<if $pronoun is "f">>那件贴身泳衣<<else>>那些紧身裤<</if>>。"有些学生笑了起来，其他人则脸蛋通红。
+<br><br>
+
+梅森也脸红了。"我，我就当没听见。"<<He>>指了指更衣室，然后迅速把目光从你身上移开。
+<<gdelinquency>>
+<br><br>
+<<detention 1>><<npcincr Mason love -1>>
+<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><<endevent>><</link>>
+<br>
+<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><<endevent>><</link>>
+<br>
+
+:: School Pool Nude
+<<set $outside to 0>><<set $location to "pool">><<schooleffects>><<effects>>
+
+你<<nervously>>脱掉衣服并将其塞进柜子里。你稍微打开了一道门缝并窥视了起来。
+三十来个学生再加上老师，如果你不去上课的话你一定会有麻烦的，但你真的能劝服自己在这么多人面前赤身裸体么？
+<br><br>
+
+<<link [[这是错误的！|School Pool Refuse]]>><</link>>
+<br>
+<<link [[我别无选择|School Pool Nude Entry]]>><</link>>
+
+:: School Pool Refuse
+<<set $outside to 0>><<set $location to "pool">><<schooleffects>><<effects>>
+
+你不可能这么做的。你要离开泳池，穿上衣服，保持尊严，但拒绝老师一定会有相应的后果。
+<br><br>
+
+<<link [[继续|School Pool Entrance]]>><</link>>
+
+:: School Pool Crossdress
+<<set $outside to 0>><<set $location to "pool">><<schooleffects>><<effects>>
+<!-- phase 0 is shorts, 1 is a swimsuit, 2 is internal looping -->
+
+<!-- Note that the gender_appearance may have changed with the ersatz swimwear and the player may have crossdressed before and isn't anymore -->
+<<if $player.gender_appearance isnot $player.gender>>
+	<<if $phase is 2>>
+		<<set $phase to 0>>
+		你强打起精神并走进门，<<lewdness>>赤裸裸的暴露着，你设法在水面那脆弱的保护下钻过去。
+		但不是在班上其他同学意识到你的状态之前。
+		<<garousal>><<arousal 600>>
+		<br><br>
+
+		<<link [[继续|Swimming Lesson]]>><</link>>
+		<br>
+	<<elseif $exposed gte 1>>
+		你<<nervously>>脱衣并塞到衣柜里，之后迅速穿上破烂的<<if $phase is 1>>女式泳衣<<else>>泳裤<</if>>。
+		你低头看着你的<<breasts>>；你不可能像个男孩那样出门。你轻轻打开门，从缝隙里偷看。
+		三十来个学生再加上老师，如果你不去上课的话你一定会有麻烦的，但你真的能劝服自己在这么多人面前赤身裸体么？
+		<br><br>
+
+		<<link [[这是错误的！|School Pool Refuse]]>><</link>>
+		<br>
+		<<link [[我别无选择|School Pool Crossdress]]>><<set $phase to 2>><</link>>
+	<<elseif $exposed lte 0>>
+		你<<nervously>>脱衣并塞到衣柜里，之后迅速穿上破烂的<<if $phase is 1>>女式泳衣<<else>>泳裤<</if>>。
+		<br><br>
+
+		你进入了泳池室，有几个人转过头来，但当你爬进水里的时候，没有人再多看你一眼。
+		<br><br>
+
+		<<link [[继续|Swimming Lesson]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	你穿上破旧的<<if $phase is 9>>泳衣<<else>>泳裤<</if>>，然后在将衣服放在更衣柜后，你前去上课。
+	<br><br>
+
+	<<link [[继续|Swimming Lesson]]>><</link>>
+<</if>>
+
+
+:: School Pool Nude Entry
+<<set $outside to 0>><<set $location to "pool">><<schooleffects>><<effects>>
+
+你在强撑起精神并走进门同时尽力遮掩你的<<nudity>>。
+你在班上其他同学意识到你的状态之前设法遁入了水中。
+<<garousal>><<arousal 600>>
+<br><br>
+
+<<link [[继续|Swimming Lesson]]>><</link>>
+<br>
+
+:: Swimming Lesson Focus
+<<set $outside to 0>><<set $location to "pool">><<schooleffects>><<water>><<effects>>
+
+<<if $exposed lte 0 or $swimall is 1>>
+	你专注于遵循梅森的指示并为此而努力。虽然这很困难，但你认为你正在取得进展。
+	<<physique 3>><<swimmingskilluse>>
+<<elseif $exposed gte 1>>
+	你专注于听从梅森的指示并为此而努力。事实证明，在让你的身体隐藏在水底的情况下这样做是很困难的。
+	<<physique 3>><<swimmingskilluse>>
+<</if>>
+<br><br>
+
+<<advancelesson>>
+<<stress _lesson_progress>>
+<<tiredness _lesson_progress>>
+
+<<if $phase is 1>>
+	<<set $phase to 0>>
+	<<if $swimall is 1>>
+		<<if playerBellyVisible()>>
+			下课铃响了，意味着课程结束。梅森一声令下，你爬出了泳池，<<nnpc_he "Mason">>靠近，拉你出来。尽管每个人都赤身裸体，但似乎并没有人在意。一个<<generatey1>><<person1>>在其他学生经过时给他们递毛巾，尽量避免着目光接触。
+		<<else>>
+			当下课的铃声响起时，你爬出了游泳池。尽管每个人都是赤身裸体的状态，但似乎没有人关心这个。只有梅森会在每个学生经过的时候递上毛巾并尽量避免目光接触。
+		<</if>>
+		<br><br>
+	<<elseif $exposed gte 1>>
+		<<if playerBellyVisible()>>
+			当下课的铃声响起时，你继续待在泳池中以等待其他学生的离开。在梅森的示意下，你爬出了游泳池，而<<nnpc_he "Mason">>也在你的旁边协助着你。但有一些学生依旧徘徊不前，毫无疑问，那些家伙希望在你爬出来的时候能看到独特的风景线，但梅森把那些家伙都赶走了，以此来为你留下一些隐私。
+		<<else>>
+			当下课的铃声响起时，你继续待在泳池中以等待其他学生的离开，但有一些学生依旧徘徊不前。
+			毫无疑问，那些家伙希望在你爬出来的时候能看到独特的风景线，但梅森把那些家伙都赶走了，以此来为你留下一些隐私。
+		<</if>>
+		<br><br>
+	<<elseif $exposed lte 0>>
+		<<if playerBellyVisible()>>
+			下课的铃声响起了，在梅森的示意下，你爬出了游泳池，而<<nnpc_he "Mason">>也在你的旁边协助着你。
+		<<else>>
+			当下课的铃声响起时，你爬出了游泳池。
+		<</if>>
+		<br><br>
+	<</if>>
+	<<if $exposed lte 0>>
+		<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><</link>>
+		<br>
+		<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><</link>>
+		<br><br>
+	<<elseif $exposed gte 1>>
+		<<maleicon>><<link [[拿一条毛巾裹住身体并进入男更衣室|School Boy Changing Room]]>><<towelupm>><</link>>
+		<br>
+		<<femaleicon>><<link [[拿一条毛巾裹住身体并进入女更衣室|School Girl Changing Room]]>><<towelup>><</link>>
+		<br><br>
+	<</if>>
+<<else>>
+	<<if $exposed gte 1>>
+		<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $danger gte (8900 - $allure)>>
+			<<eventsswimming>>
+		<<else>>
+			<<eventsswimmingsafe>>
+		<</if>>
+	<<elseif $exposed lte 0>>
+		<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $danger gte (8900 - ($allure / 5))>>
+			<<eventsswimming>>
+		<<else>>
+			<<eventsswimmingsafe>>
+		<</if>>
+	<</if>>
+<</if>>
+	<<if Time.minute gte 5 and Time.minute lte 57>>
+	<<else>>
+		<<if $player.gender_appearance is "m">>
+			<<link [[等女孩们离开 (0:05)|School Pool]]>><<pass 5>><</link>>
+			<br><br>
+		<</if>>
+		<<if $player.gender_appearance is "f">>
+			<<link [[等男孩们离开 (0:05)|School Pool]]>><<pass 5>><</link>>
+			<br><br>
+		<</if>>
+	<</if>>
+
+
+:: Swimming Lesson Naked Backstroke
+<<set $outside to 0>><<set $location to "pool">><<schooleffects>><<water>><<effects>>
+
+你对课程教授的内容不感兴趣，而是选择练习仰泳。
+<<swimmingskilluse>>
+<br><br>
+当同学们看到你全裸着仰泳，向上展示着你的<<if playerBellyVisible()>>怀孕肚<<if $player.penisExist and $player.vaginaExist>>，<<else>>和<</if>><</if>><<genitals>>时，都忍不住惊叹起来。
+<<exhibitionism5>>
+
+梅森似乎对你选择的自由活动很不满意。
+<<if $player.penisExist>>
+	<<if $player.vaginaExist>>
+		梅森似乎对你选择的自由活动很不满意。
+	<<elseif $player.penissize lte 0>>
+		一些男孩和女孩都对你独特的<<incgpenisinsecurity>>感到敬畏。
+	<<elseif $player.penissize is 4>>
+		一些女孩看到这一幕后咯咯直笑，而几个男孩则皱起眉头。
+		<<if random(1,5) gte 4>>
+			有几个男孩的目光相比于其他人多停留了一会儿。
+		<</if>>
+		<<incgpenisinsecurity>>
+	<<else>>
+		一些学生的目光在你的裸体上稍作停留，而有几个女孩在看到这一幕后咯咯笑了起来。
+	<</if>>
+<<else>>
+	一些女孩看到这一幕后咯咯的笑了起来，而几个女孩则皱起眉头。
+	<<if random(1,5) gte 4>>
+		有几个女孩的目光相比于其他人更多停留了一会儿。
+	<</if>>
+<</if>>
+<br><br>
+
+<<status 1>>
+
+<<advancelesson>>
+<<set _stress to _lesson_progress * -1>>
+<<stress _stress>>
+<<set _trauma to _lesson_progress * -0.5>>
+<<trauma _trauma>>
+
+<<if $phase is 1>>
+	<<set $phase to 0>>
+	<<if $swimall is 1>>
+		当下课的铃声响起时，你爬出了游泳池。尽管每个人都是赤身裸体的状态，但似乎没有人关心这个。只有梅森会在每个学生经过的时候递上毛巾并尽量避免目光接触。
+		<br><br>
+	<<elseif $exposed gte 1>>
+		当下课的铃声响起时，你继续待在泳池中以等待其他学生的离开，但有一些学生依旧徘徊不前。
+		毫无疑问，那些家伙希望在你爬出来的时候能看到独特的风景线，但梅森把那些家伙都赶走了，以此来为你留下一些隐私。
+		<br><br>
+	<<elseif $exposed lte 0>>
+		当下课的铃声响起时，你爬出了游泳池。
+		<br><br>
+	<</if>>
+	<<if $exposed lte 0>>
+		<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><</link>>
+		<br>
+		<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><</link>>
+		<br><br>
+	<<elseif $exposed gte 1>>
+		<<maleicon>><<link [[拿一条毛巾裹住身体并进入男更衣室|School Boy Changing Room]]>><<towelupm>><</link>>
+		<br>
+		<<femaleicon>><<link [[拿一条毛巾裹住身体并进入女更衣室|School Girl Changing Room]]>><<towelup>><</link>>
+		<br><br>
+	<</if>>
+<<else>>
+	<<if $exposed gte 1>>
+		<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $danger gte (8900 - ($allure / 2))>>
+			<<eventsswimming>>
+		<<else>>
+			<<eventsswimmingsafe>>
+		<</if>>
+	<<elseif $exposed lte 0>>
+		<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $danger gte (8900 - ($allure / 10))>>
+			<<eventsswimming>>
+		<<else>>
+			<<eventsswimmingsafe>>
+		<</if>>
+	<</if>>
+<</if>>
+
+:: Swimming Lesson Socialise
+<<set $outside to 0>><<set $location to "pool">><<schooleffects>><<water>><<effects>>
+
+<<if $exposed gte 1 and $swimall isnot 1>>
+	你没有专心听课，而是与你的同学们聊天。当你试图参与聊天时，有些人羞愧地看向另一边。
+	但你发现他们总是时不时地偷看。
+	<br><br>
+<<elseif $exposed lte 0>>
+	你没有专心听课，而是与你的同学们聊天。
+	<br><br>
+<</if>>
+
+<<status 1>>
+
+<<advancelesson>>
+<<set _stress to _lesson_progress * -1>>
+<<stress _stress>>
+<<set _trauma to _lesson_progress * -0.5>>
+<<trauma _trauma>>
+
+<<if $phase is 1>>
+	<<set $phase to 0>>
+	<<if $swimall is 1>>
+		当下课的铃声响起时，你爬出了游泳池。尽管每个人都是赤身裸体的状态，但似乎没有人关心这个。只有梅森会在每个学生经过的时候递上毛巾并尽量避免目光接触。
+		<br><br>
+	<<elseif $exposed gte 1>>
+		当下课的铃声响起时，你继续待在泳池中以等待其他学生的离开，但有一些学生依旧徘徊不前。
+		毫无疑问，那些家伙希望在你爬出来的时候能看到独特的风景线，但梅森把那些家伙都赶走了，以此来为你留下一些隐私。
+		<br><br>
+	<<elseif $exposed lte 0>>
+		当下课的铃声响起时，你爬出了游泳池。
+		<br><br>
+	<</if>>
+	<<if $exposed lte 0>>
+		<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><</link>>
+		<br>
+		<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><</link>>
+		<br><br>
+	<<elseif $exposed gte 1>>
+		<<maleicon>><<link [[拿一条毛巾裹住身体并进入男更衣室|School Boy Changing Room]]>><<towelupm>><</link>>
+		<br>
+		<<femaleicon>><<link [[拿一条毛巾裹住身体并进入女更衣室|School Girl Changing Room]]>><<towelup>><</link>>
+		<br><br>
+	<</if>>
+<<else>>
+	<<if $exposed gte 1>>
+		<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $danger gte (8900 - ($allure * 2))>>
+			<<eventsswimming>>
+		<<else>>
+			<<eventsswimmingsafe>>
+		<</if>>
+	<<elseif $exposed lte 0>>
+
+		<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $danger gte (8900 - ($allure / 2))>>
+			<<eventsswimming>>
+		<<else>>
+			<<eventsswimmingsafe>>
+		<</if>>
+	<</if>>
+<</if>>
+
+:: Swimming Lesson Daydream
+<<set $outside to 0>><<set $location to "pool">><<schooleffects>><<water>><<effects>>
+
+<<if $trauma gte (($traumamax / 10) * 7)>>
+	你全神贯注的警惕着周围，害怕会因为一个错误的举动而导致全班人都来调戏你。
+<<elseif $trauma gte (($traumamax / 10) * 2)>>
+	你专注于你自己的想法，试图控制住不断蔓延的焦虑。
+<<else>>
+	<<if $swimall is 1>>
+		尽管每个人都很容易被骚扰，但你并没有真正的去注意听这一课，而是懒洋洋地划着水并炫耀你的<<lewdness>>。你想知道是否有人在乎它。
+	<<elseif $exposed gte 1>>
+		尽管你很容易被袭击，但你并没有吸取到教训，而是懒洋洋地划着水，以此来掩盖你的<<lewdness>>。
+	<<elseif $exposed lte 1>>
+		你并没有认真听课，而是无所事事地划水，并开始思考放学后要做些什么。
+	<</if>>
+<</if>>
+<br><br>
+
+<<status 1>>
+
+<<advancelesson>>
+<<set _stress to _lesson_progress * -1>>
+<<stress _stress>>
+<<set _trauma to _lesson_progress * -0.5>>
+<<trauma _trauma>>
+
+<<if $phase is 1>>
+	<<set $phase to 0>>
+	<<if $swimall is 1>>
+		当下课的铃声响起时，你爬出了游泳池。尽管每个人都是赤身裸体的状态，但似乎没有人关心这个。只有梅森会在每个学生经过的时候递上毛巾并尽量避免目光接触。
+		<br><br>
+	<<elseif $exposed gte 1>>
+		当下课的铃声响起时，你继续待在泳池中以等待其他学生的离开，但有一些学生依旧徘徊不前。
+		毫无疑问，那些家伙希望在你爬出来的时候能看到独特的风景线，但梅森把那些家伙都赶走了，以此来为你留下一些隐私。
+		<br><br>
+	<<elseif $exposed lte 0>>
+		当下课的铃声响起时，你爬出了游泳池。
+		<br><br>
+	<</if>>
+	<<if $exposed lte 0>>
+		<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><</link>>
+		<br>
+		<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><</link>>
+		<br><br>
+	<<elseif $exposed gte 1>>
+		<<maleicon>><<link [[拿一条毛巾裹住身体并进入男更衣室|School Boy Changing Room]]>><<towelupm>><</link>>
+		<br>
+		<<femaleicon>><<link [[拿一条毛巾裹住身体并进入女更衣室|School Girl Changing Room]]>><<towelup>><</link>>
+		<br><br>
+	<</if>>
+<<else>>
+	<<if $exposed gte 1>>
+		<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $danger gte (8900 - ($allure / 2))>>
+			<<eventsswimming>>
+		<<else>>
+			<<eventsswimmingsafe>>
+		<</if>>
+	<<elseif $exposed lte 0>>
+		<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $danger gte (8900 - ($allure / 10))>>
+			<<eventsswimming>>
+		<<else>>
+			<<eventsswimmingsafe>>
+		<</if>>
+	<</if>>
+<</if>>

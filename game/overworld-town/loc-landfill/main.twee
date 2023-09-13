@@ -1,0 +1,1002 @@
+:: Trash Intro
+<<set $location to "landfill">><<set $bus to "elk">><<set $outside to 1>><<effects>>
+
+你仰面醒来.被堆积如山的垃圾包围.你身处于垃圾填埋场.
+<br><br>
+<<tearful>>你站起身来并环顾四周，周围并没有出路。无论你看向哪里，哪里都只有垃圾。你听到附近某处传来重型机器的咔嚓声。
+<br><br>
+
+<<pass 60>>
+
+<<set $trash to 50>>
+
+<<link [[继续|Trash]]>><</link>>
+
+:: Trash
+<<set $location to "landfill">><<set $outside to 1>><<effects>>
+
+你正待在麋鹿街的垃圾填埋场这里.
+<<if $trash gte 100>>
+	你正待在垃圾堆的深处，一台巨大的垃圾压缩机坐落在一片空地上，由几条传送带源源不断的将垃圾输送进去。
+<<elseif $trash gte 50>>
+	四周到处都是垃圾堆积起来的小山.
+<<elseif $trash gte 30>>
+	一些堆积起来的垃圾在你面前高高耸立着。
+<<elseif $trash gte 10>>
+	离街道越远，垃圾堆越高。
+<<else>>
+	你正待在垃圾场的前门这里，在这你可以看到另一边的麋鹿街。而在旁边的一块牌子上写着： "这片土地和其中的所有物品都是私人财产"。
+<</if>>
+
+<<if $robinmissing is "landfill" and $robinmistknown>>
+	<<print either(
+		"你呼喊罗宾的名字， 没有任何回应.",
+		"你试图寻找罗宾的身影，但是没有任何收获.",
+		"你试图爬上附近的垃圾堆以获得更好的视野来寻找罗宾，可惜的是你并没有看见罗宾的身影。",
+		"你大声呼唤着罗宾的名字，声音回荡在整个垃圾场。"
+	)>>
+<</if>>
+<br><br>
+
+<<set $danger to random(1, 10000)>>
+<<if $stress gte $stressmax>>
+	<<passouttrash>>
+<<elseif $arousal gte $arousalmax>>
+	你体内那股莫名的温暖感正在不断地增长，很快就超过了你所容忍的极限，你的双腿不受控制地弯了下去。<<orgasm>>
+
+	<<if $rng gte 51 and $parasitedisable is "f" and ($parasite.left_ear.name is undefined or $parasite.right_ear.name is undefined) and $slimedisable is "f" and $hallucinations gte 1>>
+		废墟里有什么东西被你的性高潮所吸引，它从一座垃圾堆的深处渗出，在硬化路面上蠕动着。你在它冲向你之前就看清了它是什么，一个活生生的史莱姆。它在你的背上来回跳跃着，然后它落到了你的脖子上。你试着伸手去抓住它，但它实在太快了。
+		<br><br>
+
+		<<if $parasite.left_ear.name is undefined>>
+			<span class="lewd">它蠕动着钻进了你的左耳，</span>很快就不见了踪影.
+			<<parasite left_ear slime>>
+		<<elseif $parasite.right_ear.name is undefined>>
+			<span class="lewd">它蠕动着钻进了你的右耳，</span>很快就不见了踪影.
+			<<parasite right_ear slime>>
+		<</if>>
+		<br><br>
+		<<tearful>>你站起身来，尽管你刚刚高潮过不久，但你的身体还是传来了一阵不自然的亢奋感，随后这种感觉愈演愈烈，直到<span class="lewd">一种超级强烈的淫荡欲望彻底压倒了你的理性。</span>
+		<br><br>
+		<<if !$corruption_slime>>
+			<i>在"属性"选项栏中出现了一个新的堕落条。</i>
+			<br><br>
+		<</if>>
+
+		<<link [[继续|Trash Slime]]>><</link>>
+		<br>
+	<<else>>
+		在这样的地方高潮!？<<llcontrol>><<gtrauma>><<trauma 6>><<control -25>>
+		<br><br>
+
+		<<link [[继续|Trash]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<<elseif $danger gte (9900 - $allure) and $eventskip is 0>>
+	<<eventstrash>>
+<<else>>
+
+	<<link [[搜索贵重物品 (1:00)|Trash Search]]>><<pass 60>><</link>><<crime>>
+	<br>
+
+	<<if $trash lte 0>>
+		<<if $trash_unlocked is 1>>
+			<<link [[麋鹿街 (0:10)|Elk Street]]>><<pass 10>><</link>>
+			<br>
+		<<else>>
+			<<if $trash_key is 1>>
+				<<link [[使用钥匙 (0:10)|Trash Leave]]>><<pass 10>><<set $trash_unlocked to 1>><</link>>
+				<br>
+			<<else>>
+				<<link [[试试这扇门 (0:05)|Trash Gate Leave]]>><<pass 5>><</link>>
+				<br>
+			<</if>>
+		<</if>>
+	<</if>>
+	<<if $trash gte 1>>
+		<<link [[朝有着车辆行驶声音的方向走去 (0:10)|Trash]]>><<pass 10>><<set $trash -= 10>><</link>>
+		<br>
+	<</if>>
+	<<if $trash lte 99>>
+		<<link [[朝着有着重型机械声音的方向走去 (0:10)|Trash]]>><<pass 10>><<set $trash += 10>><</link>>
+		<br>
+	<<elseif $trash gte 100 and $robinmissing is "landfill" and $robinmistknown>>
+		<<link [[朝着有着重型机械声音的方向走去 (0:10)|Robin Mist Intro]]>><<pass 10>><</link>>
+		<br>
+	<</if>>
+<</if>>
+<<set $eventskip to 0>>
+
+:: Trash Gate Enter
+<<set $location to "landfill">><<set $outside to 1>><<effects>>
+
+大门被一把重型挂锁给锁住了。
+<br><br>
+
+<<if $robinmissing is "landfill" and $robinmistknown>>
+	你仔细检查了一下挂锁，它并没有被锁上，看来是有人想让你到这里来。
+	<br><br>
+
+	<<link [[进入|Trash]]>><<set $trash to 0>><</link>>
+	<br>
+<<else>>
+	<<set $lock to 800>>
+	<<if $trash_key is 1>>
+		<span class="green">它看起来与你找到的钥匙完美匹配.</span>
+		<br><br>
+
+		<<link [[用钥匙开门 (0:05)|Trash Enter]]>><<set $trash_unlocked to 1>><<pass 5>><</link>>
+		<br>
+	<<elseif currentSkillValue('skulduggery') gte $lock>>
+		<span class="green">这把锁看起来很容易撬开。</span>
+		<br><br>
+
+		<<link [[撬锁 (0:05)|Trash Lock Enter]]>><<pass 5>><<crimeup 1>><</link>><<crime>>
+		<br>
+	<<else>>
+		<span class="red">这个锁看起来已经超出了你的能力范围。</span><<skulduggeryrequired>>
+		<br><br>
+		<span class="blue"><i>一定有一把钥匙可以打开这个锁，但你不知道在哪里可以找到它。</i></span>
+		<br><br>
+	<</if>>
+<</if>>
+
+<<link [[离开|Elk Street]]>><</link>>
+<br>
+
+:: Trash Gate Leave
+<<set $location to "landfill">><<set $outside to 1>><<effects>>
+
+大门被铁链和挂锁牢牢锁住。你想知道这附近是否有一把钥匙可以打开它。
+<br><br>
+
+<<set $lock to 800>>
+
+	<<if currentSkillValue('skulduggery') gte $lock>>
+	<span class="green">这把锁看起来很容易撬开。</span>
+	<br><br>
+
+	<<link [[撬锁 (0:05)|Trash Lock Leave]]>><<pass 5>><<crimeup 1>><</link>><<crime>>
+	<br>
+	<<else>>
+	<span class="red">这把锁已经超出了你的能力范围。</span><<skulduggeryrequired>>
+	<br><br>
+	<</if>>
+
+<<link [[离开|Trash]]>><</link>>
+
+:: Trash Lock Enter
+<<set $location to "landfill">><<set $outside to 1>><<effects>>
+
+你成功撬开了锁并走进了垃圾填埋场。
+<br><br>
+
+<<link [[继续|Trash]]>><<set $trash to 0>><</link>>
+<br>
+
+:: Trash Enter
+<<set $location to "landfill">><<set $outside to 1>><<effects>>
+
+大门被一条铁链和挂锁锁住了。当你把钥匙插入挂锁时，铁链松动了起来，你轻而易举的走进了垃圾填埋场。
+<br><br>
+
+<<link [[继续|Trash]]>><<set $trash to 0>><</link>>
+<br>
+
+:: Trash Lock Leave
+<<set $location to "landfill">><<set $outside to 1>><<effects>>
+
+你成功撬开了锁并走到麋鹿街上。
+<br><br>
+
+<<link [[继续|Elk Street]]>><</link>>
+<br>
+
+:: Trash Leave
+<<set $location to "landfill">><<set $outside to 1>><<effects>>
+
+大门被一条铁链和挂锁锁住了。当你把钥匙插入挂锁时，铁链松动了起来，你走到了麋鹿街上。
+<br><br>
+
+<<link [[继续|Elk Street]]>><</link>>
+<br>
+
+:: Trash Search
+<<set $location to "landfill">><<set $outside to 1>><<effects>>
+
+你在成堆的垃圾当中寻找任何有价值的东西。
+
+<br><br>
+
+
+
+<<if $trash_key isnot 1 and $trash_unlocked isnot 1>>
+	你找到一把大的铁钥匙，你想知道它是否能打开附近的什么东西。
+	<<set $trash_key to 1>>
+
+<<elseif $trash gte 100>>
+	<<if $brothel_machine_repair is 2>>
+		你注意到垃圾压缩机的底部有粉红色的光，你前去检查了一下，发现了一个小罐子。透过它侧面的那片玻璃，你看到里面那发亮的粉红色凝胶。<span class="gold">这一定是妓院那个性爱机器人所要使用的燃料.</span>
+		<<set $brothel_machine_repair to 3>>
+	<<elseif $rng gte 80>>
+		你发现了一个看起来就很有年代感的香炉，这显然是一个古董。你不知道为什么有人会把它扔掉。
+		<<set $antiquemoney += 100>><<museumAntiqueStatus "antiquetrashburner" "found">><<crimeup 100>>
+
+	<<elseif $rng gte 60>>
+		<<rng>>
+		<<if $rng gte 81>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 100 true true>>。
+		<<elseif $rng gte 61>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 80 true true>>。
+		<<elseif $rng gte 41>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 60 true true>>。
+		<<elseif $rng gte 21>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 40 true true>>。
+		<<else>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 20 true true>>。
+		<</if>>
+	<<elseif $rng gte 30>>
+		垃圾发生了小规模的崩塌，<span class="red">露出一只凶恶的眼睛。</span>它的目光穿透了你，然后消失在山中。这一切发生得如此之快，以至于你可能认为自己是在幻想，但当你闭上眼睛时，它仍在那里注视着你。<<ghallucinogens>><<ggstress>><<set $hallucinogen += 90>><<stress 12>>
+	<<else>>
+		你没有找到任何东西。
+	<</if>>
+<<elseif $trash gte 50>>
+	<<if $rng gte 80>>
+		你发现了一个满满当当的信封，这里面装满了某人的个人信息。银行的详细资料，社会保险号码，等等私人信息。你想应该有人愿意为它付钱。
+		<<crimeup 50>><<set $blackmoney += 50>>
+
+		<br><br>
+	<<elseif $rng gte 60>>
+		<<rng>>
+		<<if $rng gte 81>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 50 true true>>。
+		<<elseif $rng gte 61>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 40 true true>>。
+		<<elseif $rng gte 41>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 30 true true>>。
+		<<elseif $rng gte 21>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 20 true true>>。
+		<<else>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 10 true true>>。
+		<</if>>
+	<<elseif $rng gte 30>>
+		"你发现了一个被丢弃的容器，上面印有附近某个化合物的标志。当你打扰它的时候，容器内的化学反应完成，让盖子飞向天空，并填充了空气中的甜美、粉色的雾。
+		<br><br>
+
+		你咳嗽着后退，<span class="pink">感觉到一股奇怪的温暖。</span><<gdrugged>><<garousal>><<arousal 600>><<set $drugged += 90>>
+	<<else>>
+		你没有找到任何东西。
+	<</if>>
+<<elseif $trash gte 30>>
+	<<if $rng gte 80>>
+		你找到一张银行卡，有人在扔掉它之前特意把它掰弯了，但你把它折回了原状。毕竟对懂行的人来说这玩意应该还是有价值的。
+		<<crimeup 30>><<set $blackmoney += 30>>
+
+		<br><br>
+	<<elseif $rng gte 60>>
+		<<rng>>
+		<<if $rng gte 81>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 40 true true>>。
+		<<elseif $rng gte 61>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 30 true true>>。
+		<<elseif $rng gte 41>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 20 true true>>。
+		<<elseif $rng gte 21>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 15 true true>>。
+		<<else>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 10 true true>>。
+		<</if>>
+	<<elseif $rng gte 30>>
+		你没有发现任何有趣的东西，除了一些奇怪的黏液。<<random_goo>>
+	<<else>>
+		你没有找到任何东西。
+	<</if>>
+<<elseif $trash gte 10>>
+	<<if $rng gte 80>>
+		你找到一个满是污渍的金属杯，在你把上面的污垢擦掉之后，杯子在你面前闪烁着耀眼的银色光泽，它看起来像是属于博物馆的东西。
+		<<set $antiquemoney += 50>><<museumAntiqueStatus "antiquetrashcup" "found">><<crimeup 20>>
+	<<elseif $rng gte 60>>
+		<<rng>>
+		<<if $rng gte 81>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 30 true true>>。
+		<<elseif $rng gte 61>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 25 true true>>。
+		<<elseif $rng gte 41>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 20 true true>>。
+		<<elseif $rng gte 21>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 15 true true>>。
+		<<else>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 10 true true>>。
+		<</if>>
+	<<elseif $rng gte 30>>
+		除了一本旧的、毫无价值的色情杂志，你什么都没找到。<<garousal>><<arousal 600>>
+	<<else>>
+		你没有找到任何东西。
+	<</if>>
+<<else>>
+	<<if $rng gte 80>>
+		你找到一个旧的，但还可以使用的手机，它看起来至少还值那么一点钱。
+		<<crimeup 30>><<set $blackmoney += 30>>
+		<i>也许在填埋场的更深处可以找到更大更好的贵重物品。</i>
+	<<elseif $rng gte 60>>
+		<<rng>>
+		<<if $rng gte 81>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 25 true true>>。
+		<<elseif $rng gte 61>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 20 true true>>。
+		<<elseif $rng gte 41>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 15 true true>>。
+		<<elseif $rng gte 21>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 10 true true>>。
+		<<else>>
+			你找到一个被丢弃的钱包，里面还有<<moneyGain 5 true true>>。
+		<</if>>
+	<<elseif $rng gte 30>>
+		你的手指碰到了尖锐的东西。<<gpain>><<pain 1>>
+	<<else>>
+		你没有找到任何东西。
+	<</if>>
+<</if>>
+<br><br>
+
+<<rng>>
+<<if $rng gte 91 and $exposed is 0>>
+	<<generatey1>><<generatey2>><<generatey3>><<generatey4>><<generatey5>><<generatey6>>
+	你听到远处传来的<<group>>的声音。
+	<br><br>
+	<<link [[调查声音的来源|Trash Compare]]>><</link>>
+	<br>
+	<<link [[无视|Trash]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<link [[继续|Trash]]>><</link>>
+	<br>
+<</if>>
+
+:: Trash Compare Widgets [widget]
+
+<<widget "TrashComparePlayerChastity">>
+	<<group>>一看到你的<<print $worn.genitals.cn_name_cap>>就失望的呻吟起来．"这tm什么鬼？"<<trashSelect>><<person>>问道．<<his>>失望的在你的$worn.genitals.cn_name_cap上挥舞着武器．"愚蠢的白莲花"
+	<br><br>
+	<<He>>上前，指着你。"我觉得我们应该撕掉它，只是为了给你一个教训。"<<He>>挡着你的路。
+	<<stress 6>><<gstress>>
+	<br><br>
+	<<Hes>>被<<trashSelect>><<person>>拉了回来， 哼了一声。 "什么？不，我们不会做这个的。那太傻了。我不参与其中。"
+<</widget>>
+
+<<widget "TrashComparePlayerBreastsReact">>
+	<<switch $player.breastsize>>
+		<<case 0>>
+			那些<<group>>爆发出一阵大笑。"<<pShes>>平的像块板!"<<trashSelect>><<person>>嘲笑道。
+			<<set _notInsecure to $player.gender is "m" or $acceptance_breasts_tiny gte 1000>>
+			<<set _insecurityType to "breasts_tiny">>
+		<<case 1 2 3>>
+			那些<<group>>在检查你的<<breasts>>时轻笑。"有点偏小，"<<trashSelect>><<person>>说道。
+			<<set _notInsecure to $player.gender is "m" or $acceptance_breasts_small gte 1000>>
+			<<set _insecurityType to "breasts_small">>
+		<<case 4 5 6>>
+			那些<<group>>看到你的<<breasts>>就讨论不停。"非常好，"<<trashSelect>><<person>>微笑着说道。"合适的大小。" 其他人点头同意。
+			<<set _notInsecure to $player.gender is "f" or $acceptance_breasts_big gte 1000>>
+			<<set _insecurityType to "breasts_big">>
+			<<set _kind to true>>
+		<<case 7 8 9>>
+			<<group>>惊叹了几声.<<trashSelect>><<person>>轻轻地吹了一声口哨. "这才是有料的奶子"
+			<<set _notInsecure to $player.gender is "f" or $acceptance_breasts_big gte 1000>>
+			<<set _insecurityType to "breasts_big">>
+		<<case 10 11 12>>
+			"我靠，" 那个<<trashSelect>><<person>>惊呼。 那<<group>>的其他成员也跟着惊呼起来。 那<<person>>咧嘴一笑，模仿挤牛奶的动作。 "<<pShes>>水好多。你甚至可以淹死在那些东西里!"
+			<<set _notInsecure to $acceptance_breasts_big gte 1000>>
+			<<set _insecurityType to "breasts_big">>
+			<<set _breastEnvy to !_noFollowUp and $trashCompare.enviousBreastIds.length gte 1 and $deviancy gte 55>>
+	<</switch>>
+	<br><br>
+
+	<<if _notInsecure>>
+		你并没怎么在意。
+	<<else>>
+		<<if _kind>>尽管<<his>>语气亲切，羞耻感却油然而生<<else>>羞耻感油然而生<</if>>，涨红了脸。
+		<<insecurity _insecurityType 2>><<ginsecurity _insecurityType>>
+	<</if>>
+
+	<<if _breastEnvy>>
+		<br><br>
+		<<set _result to "breastEnvy">>
+		<<personselect $trashCompare.enviousBreastIds.pluck()>>
+		你注意到<<person>>正羡慕地盯着你。<span class="lewd">一个淫荡的念头在脑海中闪过。</span>你也许可以帮助<<personsimple>>。 你甚至可以从中赚点小钱。
+	<</if>>
+<</widget>>
+
+<<widget "TrashComparePlayerPenisReact">>
+	<<switch $player.penissize>>
+		<<case -2>>
+			那些<<group>>爆发出无法控制的笑声。"这是我见过的最小的东西!"<<trashSelect>><<person>>哄笑道。 "哎呦，看看这个小家伙？它甚至能勃起吗?"
+			<<set _notInsecure to $acceptance_penis_tiny gte 1000>>
+			<<set _insecurityType to "penis_tiny">>
+		<<case -1 0>>
+			那些<<group>>面面相觑，然后大笑起来。"谁有显微镜?"<<trashSelect>><<person>>开玩笑道。
+			<<set _notInsecure to $acceptance_penis_tiny gte 1000>>
+			<<set _insecurityType to "penis_tiny">>
+		<<case 1>>
+			那些<<group>>低头看着你的<<penis>>，一对情侣发出轻笑。"有点偏小，"<<trashSelect>><<person>>说道。"没什么大不了的。"
+			<<set _notInsecure to $acceptance_penis_small gte 1000>>
+			<<set _insecurityType to "penis_small">>
+		<<case 2>>
+			那些<<group>>低头看着你的<<penis>>，喃喃自语。"大小不错，"<<trashSelect>><<person>>说道。"不算大，但也不算小。"
+		<<case 3>>
+			那些<<group>>低头看着你的<<penis>>，有几个人发出了轻微的喘息声。"比我想象的要大，"<<trashSelect>><<person>>说道。"这倒不是什么坏事。"
+			<<set _notInsecure to $acceptance_penis_big gte 1000>>
+			<<set _insecurityType to "penis_big">>
+			<<set _kind to true>>
+		<<case 4>>
+			"我靠，"<<trashSelect>><<person>>低喃道。"真他妈的怪物。"那个<<group>>的其他人震惊地瞪大了眼睛。
+			<<set _notInsecure to $acceptance_penis_big gte 1000>>
+			<<set _insecurityType to "penis_big">>
+			<<set _penisEnvy to !_noFollowUp and $trashCompare.enviousPenisIds.length gte 1 and $deviancy gte 55>>
+	<</switch>>
+	<<if $player.penissize isnot 2>>
+		<br><br>
+		<<if _notInsecure>>
+			<<if _kind>>你很高兴他们对你印象深刻.<<else>>尽管你并不是特别在意.<</if>>
+		<<else>>
+			<<if _kind>>尽管<<his>>语气亲切，羞耻感却油然而生<<else>>羞耻感油然而生<</if>>，涨红了脸。
+			<<insecurity _insecurityType 2>><<ginsecurity _insecurityType>>
+		<</if>>
+	<</if>>
+
+	<<if $player.vaginaExist>>
+		<br><br>
+		<<set _result to "herm">>
+		"嘿，等等！"<<trashSelect>><<person>>喊道。"看！<<pShe>>也有小穴！"当<<group>>的其他人挪动脚步以获得更好的角度看清时发出了零星的惊讶声。
+	<</if>>
+
+	<<if _penisEnvy>>
+		<br><br>
+		<<set _result to "penisEnvy">>
+		<<personselect $trashCompare.enviousPenisIds.pluck()>>
+		你注意到<<person>>正羡慕地盯着你。<span class="lewd">一个淫荡的念头在脑海中闪过。</span>你也许可以帮助<<personsimple>>。 你甚至可以从中赚点小钱。
+		<<set _boy to _text_output>>
+	<</if>>
+<</widget>>
+
+:: Trash Compare
+<<effects>>
+<<set $trashCompare to {girl: 0, penis: 0}>>
+<<for _i = 0; _i lt $enemyno; _i++>>
+	<<if $NPCList[_i].pronoun is "f">>
+		<<set $trashCompare.girl++>>
+	<</if>>
+	<<if $NPCList[_i].penis isnot "none">>
+		<<set $trashCompare.penis++>>
+	<</if>>
+<</for>>
+<<person1>>
+
+你循着声音寻找，直到你遇到一群待在废墟里的<<group>>，这些家伙们互相挤在一起。虽然你看不太清这些家伙到底在做什么，但你能听到他们彼此之间的窃窃私语。
+<br><br>
+<<link [[继续窥视|Trash Compare Spy]]>><</link>>
+<br>
+<<link [[走向这些家伙|Trash Compare Greet]]>><</link>>
+
+:: Trash Compare Spy
+<<effects>>
+你爬到一个较高的位置，希望能偷看到他们到底在做些什么。在找到一个可以藏身的垃圾堆后，当你从上面偷看起了这个<<group>>，这不看不知道，一看吓一跳。
+<<if $trashCompare.girl gte 1 and $trashCompare.penis gte 1>>
+	/* At least one girl, and at least one NPC with a penis */
+	<span class="lewd">这些家伙竟正在比较乳房和肉棒的大小。</span>
+<<elseif $trashCompare.girl gte 1>>
+	/* At least one girl */
+	<span class="lewd">这些家伙正在比较乳房的大小.</span>
+<<elseif $trashCompare.penis gte 1>>
+	/* At least one NPC with a penis */
+	<span class="lewd">这些家伙正在比较肉棒的大小.</span>
+<<else>>
+	/* Six boys with vaginas */
+	<span class="lewd">这些家伙正在比较小穴.</span>
+<</if>>
+<<arousal 1000>><<garousal>>
+<br><br>
+
+<<link [[走向这些家伙|Trash Compare Greet]]>><</link>>
+<br>
+<<link [[离开|Trash Compare Leave]]>><</link>>
+
+:: Trash Compare Leave
+<<effects>>
+你不想被发现你正在偷看<<group>>，于是你小心翼翼地溜走了。
+<br><br>
+
+<<link [[继续|Trash]]>><<endevent>><</link>>
+
+:: Trash Compare Greet
+<<effects>>
+当你走向这群人后，你开始仔细观察起了他们，你看见了<<fullGroup>>。 他们在听到你的声音后一下子安静了下来，然后慌乱地摸索着什么。当你走到他们面前时，他们似乎已经把那些东西都藏起来了，因为这些人才转过身面向你。"你想要什么？"那个<<person1>><<person>>问你。
+<br><br>
+"我在填埋场听到了你的声音，所以想来看看你们都在做些什么，我可没想到会在这里遇到任何人。"
+<br><br>
+<<if $beauty gte 2000>>
+	<<person4>><<person>>对前面的<<person1>><<person>>小声说了些什么。<<person1>><<person>>疑惑地看了一眼<<him>>和其他人，他们向<<him>>紧张地点了点头。"我们会告诉你的，"<<person1>><<person>>说道，"但前提是你同意不把这件事告诉任何人。还有，你最好也按我们说的做。如果我们给你看的话，你就得加入我们。"
+	<br><br>
+	<<link [[接受|Trash Compare Others]]>><<set $phase to 0>><</link>>
+	<br>
+	<<link [[拒绝|Trash Compare Refuse]]>><</link>>
+<<else>>
+	"这里没有你感兴趣的东西，丑八怪。"<<person3>><<person>>说着的同时转身和<<his>>的朋友们离开了。
+	<<trauma 6>><<gtrauma>>
+	<br><br>
+	<<link [[继续|Trash]]>><<endevent>><<unset $trashCompare>><<set $eventskip to 1>><</link>>
+<</if>>
+
+:: Trash Compare Refuse
+<<effects>>
+在听了他们的提议之后，你选择了拒绝并告辞离开。而<<group>>就那样一直注视着你，显然是想在他们回去做什么之前确定你已经离开了。
+<br><br>
+<<link [[继续|Trash]]>><<endevent>><<unset $trashCompare>><<set $eventskip to 1>><</link>>
+
+:: Trash Compare Others
+<<set _selectCount to 0>>
+<<effects>>
+<<if $phase is 0>>
+	<<set $trashCompare.phasePool to [0,1,2,3,4,5]>>
+	<<set $trashCompare.enviousPenisIds to []>>
+	<<set $trashCompare.enviousBreastIds to []>>
+	他们紧张地示意你走近些，然后把你带进他们在你出现之前所围成的圈子里。"好吧，那么事情是这样的，"<<person1>><<person>>在圈子的正对面面向你的位置说道："你有没有想知道别人的那里是什么样的？比如......"
+	<<if $trashCompare.girl gte 1 and $trashCompare.penis gte 1>>
+		<<He>>拍了拍<<his>>的胸部。"这里，还有..."<<He>>用另一只手指了指<<his>>的裆部。"这里。"
+	<<elseif $trashCompare.girl gte 1>>
+		<<He>>拍了拍<<his>>的胸部。"这里。"
+	<<else>>
+		<<He>>指了指<<his>>的裆部。"这里。"
+	<</if>>
+	<br><br>
+
+	<<if $promiscuity lt 75>>
+		你震惊地看着<<him>>，你没料到是要做这样的事情。
+		<<if $promiscuity lt 35>>
+			"不-不了，"你结结巴巴地说道。
+			<br><br>
+			"好吧，但是你做了一个承诺，"那个<<person>>说道，"你最好不要退缩。"
+		<<else>>
+			你避免直视<<his>>眼睛，开始紧张地坐立不安。过了一会儿，你才设法结结巴巴地说出 "有点"。
+			<br><br>
+			"好吧，这就是我们要做的。"那个<<person>>说着的同时挺起了<<his>>的胸膛，以此来装出一副很有自信的样子。
+		<</if>>
+	<<else>>
+		你对<<him>>嘲笑道： "当然了," 你在说着的同时对其露出一个了然于心的笑容。
+		<br><br>
+		"嗯，那么好，这就是我们要做的。就这样，"那个<<person>>回答道，你听出了<<he>>话里那一抹慌乱感。
+	<</if>>
+	<br><br>
+	"既然大家都是一艘船上的人了，"那个<<person>>地说道，"那就让我先来开个头吧。"
+<</if>>
+
+<<personselect $phase>><<set _npc to clone($NPCList[$phase])>>
+<<set _audience to [0,1,2,3,4,5]>><<run _audience.deleteAt($phase)>>
+<<set _randomLine to $trashCompare.phasePool.pluck()>>
+
+<!-- TODO: Add lactation variants for more breastsizes? -->
+<<if $pronoun is "f">>
+	说罢，那个<<person>><<npcUndressText _npc "upper" "self">>,<<npcRevealText _npc "upper">>.
+	<<switch _npc.breastsize>>
+		<<case 0>>
+			<<group>>爆出一阵笑声，你也跟着笑了起来。"看看<<his>>的那个小乳房！"<<trashSelect>><<person>>嘲笑道。
+			<br><br>
+			<<personselect $phase>><<person>>满脸通红地捂着<<his>>的胸部，"我，我就是喜欢它们这个样子！"<<he>>抗议道。但你认为<<hes>>甚至都不能说服<<himself>>，更不用说你和其他人了。
+			<<set $trashCompare.enviousBreastIds.push($index, $index, $index)>>
+		<<case 1 2 3>>
+			你看着那些人，因为<<group>>在讨论着眼前的事物。"有点偏小，"<<trashSelect>><<person>>笑着说道。
+			<br><br>
+			<<trashSelect>><<person>>摇了摇头。"不，我不介意这个尺寸。它们很完美，真的。"<<He>>说着的同时用手做出一个十分下流的姿势。
+			<br><br>
+			"我不知道我更喜欢你们中的哪一个，"<<personselect $phase>><<person>>嘟囔着，这又引来了一阵笑声。
+			<<set $trashCompare.enviousBreastIds.push($index, $index)>>
+		<<case 4 5 6>>
+			你看着那些人，因为<<group>>在正经的讨论着面前的东西。"那就像是，理想中的胸部"<<trashSelect>><<person>>说道。 "它就像是会出现在杂志封面那样的存在."
+			<br><br>
+			"...谢，谢谢你...?"<<personselect $phase>><<person>>结结巴巴地回答道,看起来这家伙不太确定该干嘛.
+			<<set $trashCompare.enviousBreastIds.push($index)>>
+		<<case 7 8 9>>
+			当那个<<group>>发出惊叹时，你惊讶地张大了嘴巴。"这才是我说的东西!" 那里<<trashSelect>><<person>>欢呼道。"令人印象深刻的东西。"
+			<br><br>
+			<<personselect $phase>><<person>>微微挺起<<his>>的胸膛，虽然<<his>>看起来很是享受备受关注的感觉，但其任因过分地裸露身体而感到紧张。
+			<<set $trashCompare.enviousBreastIds.push($index)>>
+		<<case 10 11 12>>
+			你和<<group>>毫不遮掩的喘息了起来。"我靠，"<<trashSelect>><<person>>喘着粗气说道："那些是......它们只是......"<<He>>咽了咽口水。"天呐，那对东西，它可以挤出奶水吗？"
+			<br><br>
+			"为什么?"<<personselect $phase>><<person>>呜咽着，紧紧抓住<<his>>的 _npc.breastsdesc 。 "你为什么要这么说?!"
+			<<if _npc.lactation is 1>>
+				仿佛是在暗示，<span class="lewd">一股细细的奶水从<<his>>的乳头上滴下来</span>。<<His>>尖叫几乎被人群兴奋的大喊淹没了。
+			<</if>>
+	<</switch>>
+
+	<<if _npc.penis isnot "none">>
+		<br><br>
+		<<if $phase is 5>>
+			另外的<<group>>转过来看向你。
+		<<else>>
+			<<personselect `$phase+1`>><<person>>伸手去拿<<his>>的衣物,
+		<</if>>
+		但<<personselect $phase>><<person>>却咳嗽起来. "其实我还有更多." 那个<<group>>急切地回头看向<<him>>.
+		<br><br>
+	<</if>>
+<</if>>
+
+<!-- TODO: add more reactions based on _randomLine. Each line should have variations that express different personalities. -->
+<!-- Example: lines where the NPC is embarassed, or confident/proud, or aroused, or embarassed AND aroused, or way too aroused -->
+<!-- This should also be done for the breast lines as well. -->
+<<if _npc.penis isnot "none">>
+	那个<<person>><<npcUndressText _npc "lower" "self">>，<<npcRevealText _npc "lower">>。
+	<<switch _npc.penissize>>
+		<<case -1 0>>
+			/* Currently unused. Prepared for if micropenis NPCs ever become a thing */
+			你努力不让自己笑出声来。<<group>>爆发出一阵笑声,  那个<<person>>涨红了脸。"我-它没那么小，"<<he>>小声辩解道。
+			<br><br>
+			"哦，那就是了"，<<trashSelect>><<person>>咯咯笑起来。"这几乎就是一个阴蒂!"
+		<<case 1>>
+			你抑制住笑意，和<<group>>在咯咯地笑。"别担心，"<<trashSelect>><<person>>安慰道。"它总有一天会长大的。
+			<br><br>
+			<<personselect $phase>><<person>>撅着嘴转身离开，"也许我喜欢这个尺寸"，<<he>>他嘟囔着。
+			<<set $trashCompare.enviousPenisIds.push($index, $index, $index)>>
+		<<case 2>>
+			在那群<<group>>喋喋不休的同时你一直盯着它，"没什么特别的。"<<trashSelect>><<person>>打了个呵欠。"我们能继续吗？"
+			<br><br>
+			"嘿!"<<personselect $phase>><<person>>抗议道。"我刚给你看了我的下体，你说一句‘没什么特别的’就打算完了吗?" 快点!"
+			<<set $trashCompare.enviousPenisIds.push($index, $index)>>
+		<<case 3>>
+			当<<group>>发出惊叹时，你惊讶的张大了嘴巴。"这才能叫鸡巴，"<<trashSelect>><<person>>咧嘴一笑。"有小鸡鸡，就有鸡巴。这正是鸡巴。"
+			<br><br>
+			<<personselect $phase>><<person>>将<<his>>手放在<<his>>的脑后假装很无聊的样子。"我甚至没有完全勃起。你还什么都没有看到呢。"
+			<<set $trashCompare.enviousPenisIds.push($index)>>
+		<<case 4>>
+			/* Currently unused. Prepared for if max-size penis student NPCs ever become a thing */
+			你和那群<<group>>一起大声喘气。大家似乎都不知道该说些什么。<<person>>得意洋洋地挺动着自己的骨盆。
+	<</switch>>
+
+<<elseif $pronoun is "m">>
+	/* For boys with pussies, who have no penis and no reason to show off their nipples.
+	To ensure variety despite NPC pussies having no variable traits, phase determines variation of scene */
+	那个<<person>><<npcUndressText _npc "lower" "self">>，<<npcRevealText _npc "lower">>。
+	<<switch _randomLine>>
+		<<case 0>>
+			那个<<group>>看到这一幕发出了'哦'的惊叹声。"非常漂亮，"<<trashSelect>><<person>>毫不羞愧地宣布。
+		<<case 1>>
+			<<group>>见状皱起了眉头。"老兄，"<<trashSelect>><<person>>喃喃自语到，"你穿内衣的品味真......真差。"
+			<br><br>
+			"嘿！他们很舒服!"<<personselect $phase>><<person>>呜咽道。"离我远点。"
+		<<case 2>>
+			那群<<group>>争论不休，然后<<trashSelect>><<person>>走了出来。 "不错，"<<he>>说道, 竖起了一个大拇指。"干得好。"
+			<br><br>
+			"谢谢!"<<personselect $phase>><<person>>眨了眨眼。 "等等。我到底在哪方面干得好？"
+		<<case 3>>
+			<br><br>
+			"现在给我们看看你的屁股，"<<trashSelect>><<person>>立刻说道。
+			<<set _firstPerson to $index>>
+			<br><br>
+			那<<personselect $phase>><<person>>，和<<group>>的其他人都向<<personselect _firstPerson>><<him>>投来奇怪的目光，但那个<<personselect $phase>><<person>>还是转过身来而把屁股露了出来。
+			<<His>><<if $NPCList[$index].penis isnot "none">>$NPCList[$index].阴茎被<<his>>的大腿紧紧夹住，<<his>>的<</if>>阴部完全展现在面前。<<He>>似乎被这个要求和<<his>>自己的不抵抗所迷惑。
+			另一方面<<personselect _firstPerson>><<person>>发出了平静的喘息声。
+		<<case 4>>
+			<<He>>竟然撑开了<<his>>的阴道，让你和大家看里面。有一些零星的赞赏声，但没有人说什么。
+			<br><br>
+
+			"等下，等下，等下”<<trashSelect>><<person>>大声说道。"再来一次，我喜欢这样，非常喜欢"
+			<<set _firstPerson to $index>><<personselect $phase>>
+			<br><br>
+
+			<<if $trashCompare.phasePool.contains(_firstPerson)>>
+				"你做了？好!" 那个<<person>>露出了灿烂的笑容。当<<he>>热情地为<<personselect _firstPerson>><<person>>打开<<his>>的阴道时，<<his>>的脸上泛起了红晕。
+				那<<person>>瞪大了眼睛，那个<<personselect $phase>><<person>>慢慢地越来越兴奋，直到<<trashSelect>><<person>>一声细微的咳嗽打断了暧昧的氛围。
+			<<else>>
+				"是你吗？嗯~"那<<person>>看了<<personselect _firstPerson>><<person>>一眼，先是<<his>>的眼睛，然后又看了<<his>>的
+				<<if $pronoun is "f">>exposed $NPCList[$index].breastsdesc<<else>><<npcGenitals>><</if>>。"当然，"<<he>>笑着说，"做完这件事后，我们出去逛逛吧。"
+				<br><br>
+				那个<<trashSelect>><<person>>大声清了清<<his>>的喉咙。
+			<</if>>
+		<<case 5>>
+			"你在滴水!"<<trashSelect>><<person>>笑着说。事实上，<<personselect $phase>><<person>>也性奋得在滴水。
+			<br><br>
+			<<if $trashCompare.girl gte 1 or ($pronoun is "m" and maleChance($pronoun) lt 100) or ($pronoun is "f" and maleChance($pronoun) gt 0)>>
+				"我！我的意思是..."<<He>>瞥了一眼<<trashSelect>><<persons>>暴露的
+				<<if $pronoun is "f">>
+					<<print $NPCList[$index].breastsdesc>>.
+				<<else>>
+					<<npcGenitals>>.
+				<</if>>
+				"我怎么可能不想要呢?"<<person>>看起来有些不自在，但又有些受宠若惊。
+			<<else>>
+				<<He>>红着脸。"那个，我只是......一想到人们在看我，我就......很高兴。<<group>>笑了起来
+			<</if>>
+	<</switch>>
+<</if>>
+<br><br>
+
+<<if $phase is 5>>
+	<<personselect $phase>>
+	<<group>>转身期待着看着你。 "来吧，"<<person>>说。 "轮到你了。
+	<<if $player.gender_appearance is "f">>
+		给我们看看你的胸部。"
+	<<else>>
+		让我们看看你的垃圾。"
+	<</if>>
+	<br><br>
+
+	<<link [[尝试但是放弃|Trash Compare Back Out]]>><</link>>
+	<br>
+	<<if $exhibitionism gte 55>>
+		<<link [[展示给他们看|Trash Compare Show]]>><</link>><<exhibitionist4>>
+		<br>
+	<</if>>
+<<else>>
+	<<link [[继续|Trash Compare Others]]>><<set $phase++>><</link>>
+<</if>>
+
+:: Trash Compare Back Out
+<<effects>>
+"不，我宁愿不要，" 你对<<group>>说。
+<br><br>
+"你承诺过的，"<<person1>><<person>>走上前愤怒的反驳道。"现在你要么自己脱了，要么我们来帮你脱。"<<He>>交叉着<<his>>的双臂。"你觉得有点尴尬也没事，但是承诺就是承诺。
+<<if $player.gender_appearance is "f">>
+	所以赶紧把你的胸部给我露出来。"
+<<else>>
+	所以把你的肉棒拿出来。"
+<</if>>
+<<stress 6>><<gstress>>
+<br><br>
+<<if $exhibitionism gte 55>>
+	<<link [[脱衣服|Trash Compare Show]]>><</link>><<exhibitionist4>>
+<<else>>
+	<<link [[不情愿的脱衣服|Trash Compare Show]]>><<set $desperateaction to 2>><</link>><<exhibitionist4>>
+<</if>>
+<br>
+<<link [[拒绝|Trash Compare Forced Strip]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Trash Compare Show
+<<effects>>
+<<set _audience to [0,1,2,3,4,5]>>
+
+<<if $player.gender_appearance is "f">>
+	<<if $exhibitionism gte 55>>
+		"我的回合，" 你轻笑着说，然后抓起你的$worn.upper.cn_name_cap。
+	<<else>>
+		你紧张地抓着你的$worn.upper.cn_name_cap。
+	<</if>>
+	<<pullupall>><<flaunting>>你观察着他们的反应。
+	<<upperstrip>><<exposure>>
+	<<exhibitionism4>>
+
+	<<TrashComparePlayerBreastsReact>>
+
+<<else>>
+	<<if $exhibitionism gte 55>>
+		"我的回合，" 你轻笑着说，然后抓起你的$worn.lower.cn_name_cap。
+	<<else>>
+		你紧张地抓着你的$worn.lower.cn_name_cap。
+	<</if>>
+	<<pulldownall>><<flaunting>>你观察着他们的反应。
+	<<lowerstrip>><<exposure>>
+	<<exhibitionism4>>
+
+	<<if playerChastity()>>
+		<<TrashComparePlayerChastity>>
+	<<elseif $player.penisExist>>
+		<<TrashComparePlayerPenisReact>>
+	<<else>>
+		<<set _result to "vagina">>
+		那些<<group>>对你的<<genitals>>感到惊讶。"哇，你是女生?"<<trashSelect>><<person>>说。 <<trashSelect>><<person>>似乎既恼怒又激动，显然对你的欺骗行为感到不满，但因为你公平竞争，所以愿意放手。 他们看起来几乎被你的<<pussy>>迷住了，无法将视线从它身上移开。
+	<</if>>
+<</if>>
+<br><br>
+
+<<if _result is "vagina" or _result is "herm">>
+	<<trashSelect>><<person>>满怀希望地看着你。"嘿，既然我们展示了一切……你能把你的胸部也展示给我们吗?"<<He>>挠了挠<<his>>的后颈。
+	<<if _result is "vagina">>
+		"如果我们知道你是女孩，我们会第一时间要求你脱掉你的上衣。"
+	<<else>>
+		"如果你两个都有，那你也有胸部吗?"
+	<</if>>
+	<br><br>
+
+	<<link [[拒绝|Trash Compare Show Refuse]]>><<set $phase to 2>><</link>>
+	<br>
+	<<if $exhibitionism gte 55>>
+		<<link [[展示给他们看|Trash Compare Breasts Show All]]>><</link>><<exhibitionist4>>
+	<</if>>
+
+<<elseif _result is "flat">>
+	<<trashSelect>><<person>>交叉<<his>>的双臂。"我不知道你们其他人怎么想，但我怀疑<<pher>>的胸部。<<pShes>>的真的非常非常平。"<<His>>眯起眼睛。"像男孩一样平。"
+	<br><br>
+
+	<<He>>向前迈出一步。 "让我们看看你的阴部。或者，如果我是对的……你的阴茎。"
+	<br><br>
+
+	<<link [[拒绝|Trash Compare Show Refuse]]>><<set $phase to 1>><</link>>
+	<br>
+	<<if $exhibitionism gte 55>>
+		<<link [[展示给他们看|Trash Compare Penis Show All]]>><</link>><<exhibitionist4>>
+	<</if>>
+
+<<elseif _result is "breastEnvy">>
+	<<link [[为那个羡慕的女孩提供帮助|Trash Compare Secret]]>><<set $phase to 0>><</link>>
+	<br>
+	<<link [[收拾东西|Trash Compare Wrap It Up]]>><</link>>
+
+<<elseif _result is "penisEnvy">>
+	<<link [[`为妒忌的 ${_boy} 提供有偿帮助`|Trash Compare Secret]]>><<set $phase to 1>><</link>>
+	<br>
+	<<link [[收拾东西|Trash Compare Wrap It Up]]>><</link>>
+
+<<else>>
+	"嗯，我想我们现在都见过彼此了，"<<trashSelect>><<person>>一边说，一边整理着<<his>>的衣服。 "我想我会出去的。"
+	<br><br>
+
+	"是的，我也是，"<<trashSelect>><<person>>表示同意。<<group>>的其他人点头同意并跟随<<him>>重新穿好衣服。你跟着他们穿好衣服，感觉有点尴尬。<<person>>最后看了你一眼，然后向你眨了眨眼，然后加入了其他人。
+	<br><br>
+	<<link [[离开|Trash]]>><<endevent>><<clotheson>><<unset $trashCompare>><<set $eventskip to 1>><</link>>
+<</if>>
+
+:: Trash Compare Secret
+<<effects>><<set _audience to [0,1,2,3,4,5]>>
+<<set _target to ($phase is 1 ? "肉棒" : "乳房")>><<set _it to ($phase is 1 ? "它" : "它们")>>
+"我能想个方法帮你"，你对嫉妒的<<personsimple>>说。
+所有<<group>>的耳朵都竖了起来，显然你引起了他们的兴趣。"有一种方法可以让你的_target永久增长，"你自信地说。"我会告诉你们的，但你们要付出代价"。
+<br><br>
+
+<<set _offer to random(3001, 8999)>>
+<<group>>最初是很想生气，但很快就意识到这个提议是值得的。
+<<if ($phase is 1 ? $trashCompare.penis lte 5 : $trashCompare.girl lte 5)>>其他人也表现出了也对这件事的兴趣, 于是把他们也纷纷慷慨解囊.<</if>>
+他们一起交谈，搜索自己的口袋，设法从口袋里的零钱中拿出了总计<<printmoney _offer>>。"这就是我们的全部，"<<trashSelect>><<person>>说道。
+<br><br>
+
+你咧嘴一笑，收下了他们的钱。你告诉他们可以在海里找到海胆寄生虫，以及如果让它停留在你的_target上，它会如何让其成长。不过你略过了寄生虫性欲太强的部分。
+你可以想象,他们在尝试这样做之后才惊恐地意识到这对他们造成了什么影响,如果不向医生展示他们的_target，他们就无法摆脱.
+<<arousal 1000>><<garousal>>
+<<set $money += _offer>>
+<br><br>
+
+<<if $trashCompare.girl is 6 and $phase is 0>>
+	感激之情溢于言表，毫无疑问，她们对胸前摇曳的巨乳充满了憧憬，那<<group>>穿戴整齐后离开了。
+<<elseif $trashCompare.penis is 6 and $phase is 1>>
+	感激之余，他们满怀憧憬地想象着巨大的阴茎在两腿间摇摆，那<<group>>穿戴整齐后离开了。
+<<else>>
+	感激之情溢于言表，毫无疑问，他们满怀憧憬地想着巨大的阴茎在他们的双腿间摆动，或者巨大的乳房在他们的胸前挺立，那<<group>>穿戴整齐后离开了。
+<</if>>
+你照着做，自己穿好了衣服。
+<br><br>
+
+<<link [[离开|Trash]]>><<endevent>><<clotheson>><<unset $trashCompare>><<set $eventskip to 1>><</link>>
+
+:: Trash Compare Wrap It Up
+<<effects>><<set _audience to [0,1,2,3,4,5]>>
+"嗯，我想我们现在都见过彼此了，" 你一边说，一边整理着你的衣服。
+<br><br>
+
+"是的，我也是，"<<trashSelect>><<person>>表示同意。<<group>>的其他人点头同意并跟随<<him>>重新穿好衣服。你跟着他们穿好衣服，感觉有点尴尬。<<person>>最后看了你一眼，然后向你眨了眨眼，然后加入了其他人。
+<br><br>
+
+<<link [[离开|Trash]]>><<endevent>><<clotheson>><<unset $trashCompare>><<set $eventskip to 1>><</link>>
+
+:: Trash Compare Show Refuse
+<<effects>><<set _audience to [0,1,2,3,4,5]>>
+你<<if $phase is 1>>捂住裆部<<else>>捂胸<</if>>。"我不要，"你说。
+<br><br>
+
+<<person>>看起来很失望，但点点头表示理解。 "抱歉，"<<he>>说道。"我们只是好奇。" 另一个<<group>>点头表示同意，显然是想尊重你的界限，这让你松了一口气。
+<br><br>
+
+"我们该出去了，"<<trashSelect>><<person>>说道。<<group>>的其他人点头同意并跟随<<him>>重新穿好衣服。你跟着他们穿好衣服，感觉有点尴尬。<<person>>最后看了你一眼，然后向你眨了眨眼，然后加入了其他人。
+<br><br>
+<<link [[离开|Trash]]>><<endevent>><<clotheson>><<unset $trashCompare>><<set $eventskip to 1>><</link>>
+
+:: Trash Compare Breasts Show All
+<<effects>><<set _audience to [0,1,2,3,4,5]>>
+
+你咧嘴一笑，然后抓起你的$worn.upper.cn_name_cap。
+<<pullupall>><<flaunting>>你观察着他们的反应。
+<<upperstrip>><<exposure>>
+<<exhibitionism4>>
+<<set _noFollowUp to true>>
+
+<<TrashComparePlayerBreastsReact>>
+
+"嗯，我想我们现在都见过彼此了，" 你一边说，一边整理着你的衣服。
+<br><br>
+
+"是的，我也是，"<<trashSelect>><<person>>表示同意。<<group>>的其他人点头同意并跟随<<him>>重新穿好衣服。你跟着他们穿好衣服，感觉有点尴尬。<<person>>最后看了你一眼，然后向你眨了眨眼，然后加入了其他人。
+<br><br>
+
+<<link [[离开|Trash]]>><<endevent>><<clotheson>><<unset $trashCompare>><<set $eventskip to 1>><</link>>
+
+:: Trash Compare Penis Show All
+<<effects>><<set _audience to [0,1,2,3,4,5]>>
+
+"我的回合，" 你轻笑着说，然后抓起你的$worn.lower.cn_name_cap。
+<<pulldownall>><<flaunting>>你观察着他们的反应。
+<<lowerstrip>><<exposure>>
+<<exhibitionism4>>
+<<set _noFollowUp to true>>
+
+<<if playerChastity()>>
+	<<TrashComparePlayerChastity>>
+<<elseif $player.penisExist>>
+	<<TrashComparePlayerPenisReact>>
+<<else>>
+	<<group>>对你的<<genitals>>感到惊讶。 "哇，你居然是女生？"<<trashSelect>><<person>>说。 "抱歉，鉴于你如此平，我们认为你确实……很好。"
+<</if>>
+<br><br>
+
+"嗯，我想我们现在都见过彼此了，" 你一边说，一边整理着你的衣服。
+<br><br>
+
+"是的，我也是，"<<trashSelect>><<person>>表示同意。<<group>>的其他人点头同意并跟随<<him>>重新穿好衣服。你跟着他们穿好衣服，感觉有点尴尬。<<person>>最后看了你一眼，然后向你眨了眨眼，然后加入了其他人。
+<br><br>
+
+<<link [[离开|Trash]]>><<endevent>><<clotheson>><<unset $trashCompare>><<set $eventskip to 1>><</link>>
+
+:: Trash Compare Forced Strip
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $outside to 1>><<effects>>
+
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+
+	<<maninit>><<npcidlegenitals>><<npcstrip>>
+	<<set $enemyanger to 50>><<set $enemytrust to -50>><<set $noBodyWriting to true>>
+
+	"你要信守诺言，"<<person1>><<person>> 说。"不管你愿不愿意。"
+	<br><br>
+<</if>>
+
+<<effects>>
+<<effectsman>><<man>>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if $worn.upper.type.includes("naked") and $worn.lower.type.includes("naked") and $worn.under_lower.type.includes("naked") and $worn.under_upper.type.includes("naked")>>
+	<span id="next"><<link [[继续|Trash Compare Combat Loss]]>><</link>></span><<nexttext>>
+<<elseif $enemyhealth lte 0 or $enemyarousal gte $enemyarousalmax>>
+	<span id="next"><<link [[继续|Trash Compare Combat Win]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Trash Compare Forced Strip]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Trash Compare Combat Win
+<<effects>>
+
+你把<<group>>从你身边推开。<<tearful>>你跑到安全的地方。
+<br><br>
+
+<<endcombat>>
+<<clotheson>>
+
+<<link [[继续|Trash]]>><<unset $trashCompare>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Trash Compare Combat Loss
+<<effects>><<set _audience to [0,1,2,3,4,5]>>
+<<set _noFollowUp to true>>
+<<group>>抓住你的手放在你的背后。"你应该信守诺言，这样我们就不必这样做了。"<<person1>><<person>>说道。
+<br><br>
+他们围拢过来为了好好看看你的裸体。
+<!-- TODO: Figure out a logical way to address the player having breasts and a penis; both would be equally noticeable here. -->
+<<if $player.gender_appearance is "f">>
+	<<TrashComparePlayerBreastsReact>>
+<<else>>
+	<<if playerChastity()>>
+		<<TrashComparePlayerChastity>>
+	<<elseif $player.penisExist>>
+		<<TrashComparePlayerPenisReact>>
+	<<else>>
+		那些<<group>>对你的<<genitals>>感到惊讶。"哇，你是女生?"<<trashSelect>><<person>>说。 <<trashSelect>><<person>>似乎既恼怒又激动，显然对你的欺骗行为感到不满。 他们看起来几乎被你的<<pussy>>迷住了，无法将视线从它身上移开。
+	<</if>>
+<</if>>
+<br><br>
+
+"我们该出去了，"<<trashSelect>><<person>>说道。<<group>>的其他人点头同意并跟随<<him>>重新穿好衣服。你跟着他们穿好衣服，感觉有点尴尬。<<person>>最后看了你一眼，然后向你眨了眨眼，然后加入了其他人。
+<br><br>
+
+<<endcombat>>
+<<link [[继续|Trash]]>><<endevent>><<clotheson>><<unset $trashCompare>><<set $eventskip to 1>><</link>>

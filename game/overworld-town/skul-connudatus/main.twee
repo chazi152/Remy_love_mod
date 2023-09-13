@@ -1,0 +1,548 @@
+:: Connudatus Street Thievery
+
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "high">>
+你扫视了一下人群。
+<<if Time.dayState is "night">>
+	这么多的人在这个时候都喝醉了，所以这应该不是什么难事。
+<</if>>
+<<if $rng gte 80>>
+	<<if Time.dayState is "night">>
+		<<generate1>><<person1>>一个<<person>>摇摇晃晃地摔倒在你面前。"我有些太笨手笨脚了，"<<he>>含糊不清地说着，虽然<<he>>试图站起来，但却没能成功。
+		<<if $pronoun is "m">>
+			看起来<<he>>把<<his>>的衬衫不小心丢在哪里了，但<<he>>似乎并不关心，甚至可能压根没意识到这件事。
+		<<else>>
+			<<His>>的低胸礼服松松垮垮地挂着，随后<<he>>向前倾倒，向你展示着<<his>>那不雅的乳房。<<He>>似乎并不在意，甚至可能没有意识到。
+		<</if>>
+		<br><br>
+		<<link [[抢劫|Connudatus Drunkard Rob]]>><<crimeup 5>><</link>><<crime>>
+		<br>
+		<<link [[将其扶起来|Connudatus Drunkard]]>><</link>>
+		<br>
+	<<else>>
+		<<generate1>><<person1>>一个<<person>>正在一个摊位前弯着腰看着面前的显示屏，而你则注意到<<His>>的<<wallet>>正挂在<<him>>身后的一条细绳上。
+		<br><br>
+		<<link [[抢走钱包|Connudatus Snatch]]>><<crimeup 5>><</link>><<crime>>
+		<br>
+		<<link [[放弃这个目标|Connudatus Street]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<<elseif $rng gte 60>>
+	<<generate1>><<generate2>>一群<<fullGroup>>坐在一家餐馆外面，那个<<person1>><<persons>>的<<wallet>>放在<<his>>腿边的一个袋子上。
+	<br><br>
+	<<link [[拿走它|Connudatus Thievery Restaurant]]>><<crimeup 5>><</link>><<crime>>
+	<br>
+	<<link [[放弃这个目标|Connudatus Street]]>><<endevent>><</link>>
+	<br>
+<<elseif $rng gte 45>>
+	<<generate1>><<person1>>你发现一个游客正在拍照，<<He>>也许钱多的烧得慌。
+	<br><br>
+	<<link [[偷窃相机|Connudatus Camera]]>><</link>>
+	<br>
+	<<link [[离开|Connudatus Street]]>><<endevent>><</link>>
+	<br>
+<<elseif $rng gte 20>>
+	一辆汽车停在一家商店前面，<<generate1>><<person1>>一个<<person>>下车并进入商店，<<his>>的车门就那样敞开着，而<<his>>的<<wallet>>就放在座位上。
+	<br><br>
+	<<link [[拿走|Connudatus Car]]>><<crimeup 5>><</link>><<crime>>
+	<br>
+	<<link [[放弃这个目标|Connudatus Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<generate1>><<person1>>一个<<person>>正坐在长椅上，而这家伙的<<wallet>>就放在了旁边的位置。
+	<br><br>
+	<<link [[拿走|Connudatus Street Bench]]>><<crimeup 5>><</link>><<crime>>
+	<br>
+	<<link [[放弃这个目标|Connudatus Street]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Connudatus Drunkard
+
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "high">>
+<<famegood 1>>
+你向<<person>>伸出手，帮助<<him>>站起来。<<He>>花了点时间才站稳身形,一群人在不远处向<<him>>挥手，<<he>>也挥手回应那些家伙。"谢谢你，善良的天使，"<<he>>在说完之后蹒跚着走到了<<his>>的朋友面前。
+<br><br>
+<<endevent>>
+<<link [[继续|Connudatus Street]]>><</link>>
+<br>
+
+:: Connudatus Drunkard Rob
+
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "high">>
+你俯下身子，用一只手握住<<his>>的胳膊，然后用另一只手拿着<<his>>的<<wallet>>。你让<<him>>坐了起来，然后让<<he>>紧靠着你。
+<br><br>
+<<if $skulduggery lte 300>>
+	<<skulduggeryskilluse>>
+<<else>>
+	<span class="blue">你无法在这样简单的目标身上学到任何东西。</span>
+<</if>>
+"我能感觉到你在触摸我，"<<he>>说道，"我知道你想要什么。"<<He>>在说完之后伸手摸向了你的<<groin>>。
+<br><br>
+<<if $promiscuity gte 55>>
+	<<link [[充分利用这个机会|Connudatus Drunkard Sex]]>><<set $sexstart to 1>><</link>><<promiscuous4>>
+	<br>
+<</if>>
+<<link [[推开|Connudatus Drunkard Push]]>><</link>>
+<br>
+
+:: Connudatus Drunkard Sex
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<promiscuity4>>
+	<<enable_rescue>>
+<<elseif $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<enable_rescue>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Connudatus Drunkard Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Connudatus Drunkard Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Connudatus Drunkard Push
+
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "high">>
+你把那个<<person>>从你身边推开。
+<<if $rng gte 71>>
+	"嘘，白痴！"<<he>>骂道："做一个好<<girl>>，就这样保持沉默。"
+	<br><br>
+	<<link [[继续|Connudatus Drunkard Sex]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	<<He>>差点又摔倒一次。"哎，"一个声音喊道，"别管那个可怜的<<girl>>了，快过来。" 那个<<person>>看向说话的人，然后笑着挥了挥手。<<He>>回到了<<his>>的朋友身边。
+	<br><br>
+	<<connudatuswallet>>
+	<<endevent>>
+<</if>>
+
+:: Connudatus Drunkard Sex Finish
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"喂！"一个声音喊道。"别纠缠那个可怜的<<girl>>了。"<<person>>朝声音传来的方向看去。似乎忘记了你的存在，<<he>>转身走向<<his>>的朋友。
+	<br><br>
+	<<clotheson>>
+<<elseif $enemyhealth lte 0>>
+	你将<<him>>推倒在地，<<He>>挣扎着想要站起来。<<tearful>>你流着泪逃到了安全的地方。
+	<br><br>
+	<<clotheson>>
+<<elseif $alarm is 1>>
+	"喂！"一个声音喊道。"别纠缠那个可怜的<<girl>>了。"<<person>>朝声音传来的方向看去。似乎忘记了你的存在，<<he>>转身走向<<his>>的朋友。
+	<br><br>
+	<<clotheson>>
+<<elseif $finish is 1>>
+	<<He>>向你身后蹒跚而去。
+	<br><br>
+	<<clotheson>>
+<</if>>
+<br><br>
+<<connudatuswallet>>
+<<endcombat>>
+
+:: Connudatus Snatch
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<if $skulduggery lte 300>>
+	<<skulduggeryskilluse>>
+<<else>>
+	<span class="blue">你无法在这样简单的目标身上学到任何东西。</span>
+<</if>>
+你走过去时顺手抓了<<wallet>>。
+<<if $rng gte 61>>
+	皮带绷紧并卡住了。<<person>>转身抓住你的肩膀。"你这个小混蛋，"<<he>>说着。"我会教你尊重的。"
+	<br><br>
+	<<link [[继续|Connudatus Snatch Molestation]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	它从皮带上脱落了。你走开了，不改变你的速度。
+	<br><br>
+	<<connudatuswallet>>
+	<<endevent>>
+<</if>>
+
+:: Connudatus Snatch Molestation
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>><<set $enemyanger += 200>><<npcidlegenitals>>
+	<<enable_rescue>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or $enemyanger lte 50>>
+	<span id="next"><<link [[继续|Connudatus Snatch Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Connudatus Snatch Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Connudatus Snatch Molestation Finish
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<he>>喘着气靠在货摊上，"你这个小荡妇，"<<tearful>>你趁机逃跑，泪流满面。<<He>>回过头看你，但你已经远去了。<<his>>的<<wallet>>也不见了。
+	<br><br>
+	<<clotheson>>
+<<elseif $enemyhealth lte 0>>
+	你将<<him>>推进小隔间，<<him>>砰地一声摔倒。<<tearful>>你抱着钱包逃离现场。
+	<br><br>
+	<<clotheson>>
+<<elseif $enemyanger lte 50>>
+	那个<<person>>倚在隔间上，喘着气，"那让<<phim>>明白的，嗯，"<<he>>说。<<tearful>>你趁机逃跑。当<<He>>回过头看你时，但你已经无影无踪。<<his>>的<<wallet>>也不见了。
+	<<clotheson>>
+<<else>>
+	<<generate2>><<person2>>"你怎么了？"一个<<person>>大喊，<<He>>抓住那个<<person1>><<person>>，阻止<<him>>。
+	<br><br>
+	"你个白痴，"那个<<person>>尖叫着推搡着闯入者，"这个<<girl>>想偷我的<<wallet>>，你瞎了吗？"<<he>>环顾四周，愤怒地瞪着眼睛。但是<<he>>找不到你，也找不到<<he>>的<<wallet>>。
+	<<clotheson>>
+<</if>>
+<br><br>
+<<connudatuswallet>>
+<<endcombat>>
+
+:: Connudatus Thievery Restaurant
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<if $skulduggery lte 300>>
+	<<skulduggeryskilluse>>
+<<else>>
+	<span class="blue">你无法在这样简单的目标身上学到任何东西。</span>
+<</if>>
+<<person1>>你跪下来假装系鞋带，当你站起来时，你拿起那个人的<<wallet>>。
+<<if $rng gte 61>>
+	"那个<<pShes>>抢你的钱包！"那个<<person2>><<person>>看到了你，"看呐！"<<he>>喊道。
+	<<gstress>><<stress 6>>
+	<br><br>
+	<<set $skulduggerydifficulty to 400>>
+	<<link [[跑|Connudatus Thievery Restaurant Run]]>><<crimeup 30>><<tiredness 12>><</link>><<crime>><<gtiredness>>
+	<br>
+	<<link [[糊弄过去|Connudatus Thievery Restaurant Bluff]]>><</link>><<skulduggerydifficulty>>
+	<br>
+<<else>>
+	<br><br>
+	<<connudatuswallet>>
+	<<endevent>>
+<</if>>
+
+:: Connudatus Thievery Restaurant Run
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+你飞快地逃离，甚至他们还没能站起来。他们确实看清了你。
+<br><br>
+<<connudatuswallet>>
+<<endevent>>
+
+:: Connudatus Thievery Restaurant Bluff
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<if $speech_attitude is "meek">>
+	"对不起！"你把<<person1>><<wallet>>放在桌子上，在他们之间来回看。 "我的视力不是很好，我以为是我的。"
+<<elseif $speech_attitude is "bratty">>
+	"事实上，"你把<<person1>><<wallet>>放在桌子上，"我只是在把它还给你。有人把它拿走了，我追了过来。你不应该这样指责别人。"
+<<else>>
+	"我在这里工作，"你把<<person1>><<wallet>>放在桌子上。"让顾客把他们的贵重物品放在容易被取走的地方，这是违反公司政策的。你将来应该更加小心。"
+<</if>>
+<br><br>
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+	<<person>>面向<<person2>><<person>>. "你总是闹出一场场的事情。"
+	<br><br>
+	"闹出事情？那我看到你被抢劫还是保持安静吧？"
+	<br><br>
+	<span class="green">你离开他们的争吵，带着<<person1>><<wallet>>离开了。</span>
+	<br><br>
+	<<connudatuswallet>>
+	<<endevent>>
+<<else>>
+	<span class="red">那个<<person>>拿起<<wallet>>收好了。</span>"好的，"<<he>>怀疑地看着你说。这次你只能空手而回了。
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Connudatus Street]]>><</link>>
+	<br>
+<</if>>
+
+:: Connudatus Camera
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<if $speech_attitude is "meek">>
+	"对不起，<<sir>>，"你拍了拍<<his>>的袖子。 "我喜欢帮忙。我可以为你拍张照吗？"
+<<elseif $speech_attitude is "bratty">>
+	"是新来的吗？"你说。 "看起来你需要帮助。我可以为你拍照吗？"
+<<else>>
+	"你好，"你说。 "我可以为你拍张照吗？"
+<</if>>
+<br><br>
+<<He>>微笑着说: "你真好心，给你。"<<he>>递给你相机，退到你的几英尺之外。
+<<if $skulduggery lte 300>>
+	<<skulduggeryskilluse>>
+<<else>>
+	<span class="blue">你无法在这样简单的目标身上学到任何东西。</span>
+<</if>>
+<br><br>
+<<if $rng gte 61>>
+	<<He>>比你预想的要早转身。 "嘿!"<<he>>喊道。 "把那个还给我!" 你开始奔跑，<<he>>在你后面追赶。
+	<<gstress>><<stress 6>><<tiredness 12>><<gtiredness>>
+	<br><br>
+	<<athleticsdifficulty 1 1000 true>>
+	<<if $athleticsSuccess>>
+		你绕着摊位跑，试图甩掉<<him>>，<span class="green">成功了</span>。你找到一个安静的地方，检查相机。
+		<<if $rng gte 81>>
+			相机看起来相当昂贵。你应该能拿到一些钱。
+			<<set $blackmoney += 30>><<crimeup 30>>
+		<<elseif $rng gte 61>>
+			这相机很普通，但应该还值得一些钱。
+			<<set $blackmoney += 15>><<crimeup 25>>
+		<<elseif $rng gte 41>>
+			这相机很普通，但应该还值得一些钱。
+			<<set $blackmoney += 10>><<crimeup 10>>
+		<<elseif $rng gte 21>>
+			它看起来相当俗气，不值很多钱。
+			<<set $blackmoney += 5>><<crimeup 5>>
+		<<else>>
+			这是一件俗气的东西，不值得制造它用的塑料。
+		<</if>>
+		<br><br>
+		<<endevent>>
+		<<link [[继续|Connudatus Street]]>><</link>>
+		<br>
+	<<else>>
+		你绕着摊位跑，试图甩掉<<him>>，但<span class="red">失败了</span>。<<him>>把你追到了一个小巷里。你绕过一个拐角，发现有一扇篱笆挡住了你的去路。那个<<person>>站在你身后。
+		<br><br>
+		"他们说这个城镇的<<girls>>都很软弱，很顺从，"<<he>>卷起袖子说。 "我想我需要给你看看你的地位。"
+		<br><br>
+		<<link [[扔掉相机|Connudatus Camera Throw]]>><</link>>
+		<br>
+		<<link [[继续拿着|Connudatus Camera Molestation]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<He>>及时转身，看到你消失在人群中。
+	<br><br>
+	你找到一个安静的地方，检查相机。
+	<<if $rng gte 81>>
+		相机看起来相当昂贵。你应该能拿到一些钱。
+		<<set $blackmoney += 30>><<crimeup 30>>
+	<<elseif $rng gte 61>>
+		这相机很普通，但应该还值得一些钱。
+		<<set $blackmoney += 15>><<crimeup 25>>
+	<<elseif $rng gte 41>>
+		这相机很普通，但应该还值得一些钱。
+		<<set $blackmoney += 10>><<crimeup 10>>
+	<<elseif $rng gte 21>>
+		它看起来相当俗气，不值很多钱。
+		<<set $blackmoney += 5>><<crimeup 5>>
+	<<else>>
+		这是一件俗气的东西，不值得制造它用的塑料。
+	<</if>>
+	<<endevent>>
+	<br><br>
+	<<link [[继续|Connudatus Street]]>><</link>>
+	<br>
+<</if>>
+
+:: Connudatus Camera Throw
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+你把相机扔到了<<him>>身后，<<He>>追了过去。"你要是摔坏了，我就摔了你。"<<He>>说着，相机在地上弹跳着。你爬上栅栏，从<<He>>分心的地方翻过去。<<He>>转过身来时，你早已消失无踪。
+<br><br>
+<<link [[继续|Connudatus Street]]>><<endevent>><</link>>
+<br>
+
+:: Connudatus Camera Molestation
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>><<set $enemyanger += 150>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Connudatus Camera Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Connudatus Camera Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Connudatus Camera Molestation Finish
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"这就是了，"<<he>>说道。"这就是我来这里的原因。相机你这个荡妇可以留下，我会再买一个。"<<he>>沿着他来的路离开了。
+	<br><br>
+	<<clotheson>>
+<<elseif $enemyhealth lte 0>>
+	你把<<him>>推倒在地，开始爬栅栏。等<<him>>站起来的时候，你已经逃离了。你继续向前走了一段时间，找到一个安静的地方，不会被打扰。
+	<br><br>
+	<<clotheson>>
+<<else>>
+<</if>>
+<br><br>
+你检查了相机。
+<<if $rng gte 81>>
+	相机看起来相当昂贵。你应该能拿到一些钱。
+	<<set $blackmoney += 30>><<crimeup 30>>
+<<elseif $rng gte 61>>
+	这相机很普通，但应该还值得一些钱。
+	<<set $blackmoney += 15>><<crimeup 25>>
+<<elseif $rng gte 41>>
+	这相机很普通，但应该还值得一些钱。
+	<<set $blackmoney += 10>><<crimeup 10>>
+<<elseif $rng gte 21>>
+	它看起来相当俗气，不值很多钱。
+	<<set $blackmoney += 5>><<crimeup 5>>
+<<else>>
+	这是一件俗气的东西，不值得制造它用的塑料。
+<</if>>
+<br><br>
+<<endcombat>>
+<<link [[继续|Connudatus Street]]>><</link>>
+
+:: Connudatus Car
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<if $skulduggery lte 300>>
+	<<skulduggeryskilluse>>
+<<else>>
+	<span class="blue">你无法在这样简单的目标身上学到任何东西。</span>
+<</if>>
+<<if $rng gte 51>>
+	你走到开着的车旁，像你有权利一样拿起了<<wallet>>，就在那个<<person>>走出建筑物的时候。<<He>>还没有注意到你，但很快就会。
+	<<gstress>><<stress 6>>
+	<br><br>
+	<<link [[跑|Connudatus Car Run]]>><<crimeup 30>><</link>><<crime>>
+	<br>
+	<<link [[藏在车里|Connudatus Car Hide]]>><</link>>
+	<br>
+	<<link [[放弃这个目标|Connudatus Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	你走到开着的车旁，像你有权利一样拿起了<<wallet>>。当那个<<person>>返回时，<<he>>没有注意到自己的钱包已经不见了。
+	<br><br>
+	<<connudatuswallet>>
+	<<endevent>>
+<</if>>
+
+:: Connudatus Car Run
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+你跑着，手里拿着<<wallet>>。那个<<person>>需要一会儿才能反应过来，这给了你足够的时间在拥挤的街道上消失。
+<br><br>
+<<connudatuswallet>>
+<<endevent>>
+
+:: Connudatus Car Hide
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+拿着<<wallet>>，你潜入车内，爬到后座下面。
+<<if $rng gte 51>>
+	那个<<person>>坐下来，打开引擎，毫不知情地发现自己的<<wallet>>不见了或者说有了一个乘客。
+	<br><br>
+	当车在路上颠簸时，你躲在座位下面。不久之后，<<he>>停了下来。你听到一个门打开，车再次行驶了一段路，然后再次停下。这次司机离开了车，关上了门。
+	<br><br>
+	你从窗户往外看，你在麋鹿街的一个场所里。一道链式围栏环绕着边缘，保护着几座红砖建筑。你爬出了车。
+	<br><br>
+	<<pass 5>>
+	你打开<<wallet>>，里面是空的。
+	<br><br>
+	<<endevent>>
+	<<link [[环顾四周|Elk Compound]]>><</link>>
+	<br>
+<<else>>
+	那个<<person>>坐下来，看了看周围，然后爬了出去。<<He>>一定认为自己的<<wallet>>落在了建筑物里。
+	<br><br>
+	当<<he>>回来之前，你从藏匿的地方爬出来逃离了车。
+	<br><br>
+	<<connudatuswallet>>
+	<<endevent>>
+<</if>>
+
+:: Connudatus Street Bench
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<if $rng gte 61>>
+	你走到长椅后面，伸手从座位上拿起<<wallet>>。
+	<<stress 6>><<gstress>>
+	<<if $worn.upper.type.includes("naked") and $worn.over_upper.type.includes("naked")>>
+		那个<<person>>试图抓住你，但你甩开了<<him>>，跑到了安全的地方。
+		<br><br>
+	<<elseif !$worn.over_upper.type.includes("naked")>>
+		那个<<person>>抓住了你的$worn.over_upper.cn_name_cap。
+		<<set $worn.over_upper.integrity -= 10>>
+		<<if $worn.over_upper.integrity lte 0>>
+			你挣脱了<<him>>的手，但你的衣服在<<his>>的掌握中被撕裂了。<<integritycheck>><<exposure>><<if $exposed gte 1>><<covered>><</if>>你跑到了安全的地方。
+		<<else>>
+			你挣脱了<<him>>的手，但你听到你的$worn.upper.cn_name_cap被撕裂了一点。你跑到了安全的地方。
+		<</if>>
+		<br><br>
+	<<else>>
+		那个<<person>>抓住了你的$worn.upper.cn_name_cap。
+		<<set $worn.upper.integrity -= 10>>
+		<<if $worn.upper.integrity lte 0>>
+			你挣脱了<<him>>的手，但你的衣服在<<his>>的掌握中被撕裂了。<<integritycheck>><<exposure>><<covered>>你跑到了安全的地方。
+		<<else>>
+			你挣脱了<<him>>的手，但你听到你的$worn.upper.cn_name_cap被撕裂了一点。你跑到了安全的地方。
+		<</if>>
+		<br><br>
+	<</if>>
+	<<if $skulduggery lte 300>>
+		<<skulduggeryskilluse>>
+	<<else>>
+		<span class="blue">你无法在这样简单的目标身上学到任何东西。</span>
+	<</if>>
+	<br><br>
+	<<connudatuswallet>>
+	<<endevent>>
+<<else>>
+	你走到长椅后面，伸手过去取出<<wallet>>，那个<<person>>甚至没有注意到。
+	<br><br>
+	<<if $skulduggery lte 300>>
+		<<skulduggeryskilluse>>
+	<<else>>
+		<span class="blue">你无法在这样简单的目标身上学到任何东西。</span>
+	<</if>>
+	<br><br>
+	<<connudatuswallet>>
+	<<endevent>>
+<</if>>

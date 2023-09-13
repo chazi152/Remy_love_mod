@@ -1,0 +1,2969 @@
+:: Domus House Knock
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+你走到其中一户人家，敲了敲门。
+<br><br>
+
+<<if $rng gte 96>><!-- Modified for Beast People -->
+	<<beastNEWinit 1 dog>>
+
+	你听到一声吠叫。一只<<beasttype>>从狗窝里窜出来，朝你跑来。<<bHis>>链条绷得紧紧的，让<<bhim>>没法再靠近。
+	<<if $monster is 1>>
+		"敌人！敌人！朋友？"
+	<</if>>
+	<br><br>
+	<<if $monster is 1 or $bestialitydisable is "f">>
+		<<link [[挑逗|Domus House Tease]]>><<transform cat 2>><</link>><<deviant1>>
+		<br>
+	<</if>>
+	<<link [[忽略|Domus House Ignore]]>><</link>>
+	<br>
+
+<<elseif $rng gte 91>><!-- Modified for Beast People -->
+	<<beastNEWinit 1 dog>>
+
+	你听到一声咆哮。一只<<beasttype>>从狗窝里朝你走过来。
+	<<if $monster is 1>>
+		"没人在家，快点离开吧。"
+	<</if>>
+	<br><br>
+
+	<<link [[爱抚它|Domus Entrance Pet]]>><</link>>
+	<br>
+	<<link [[跑|Domus Entrance Run]]>><<transform cat 1>><</link>>
+	<br>
+
+<<elseif $rng gte 76>> /*~15%*/
+	没有回应。
+	<br><br>
+
+	<<link [[闯入|Domus House Lock]]>><</link>>
+	<br>
+	<<link [[去下一家 (0:02)|Domus House Knock]]>><<pass 2>><</link>>
+	<br>
+	<<link [[停止|Domus Street]]>><</link>>
+	<br>
+
+<<elseif $rng gte 66>> /*10%*/
+	<<generate1>><<person1>>
+	一个<<person>>打开了门。"你不——"<<he>>停顿了一下，"你是来做人体模特的吗？"<<he>>问道。
+	<br><br>
+
+	<<link [[点头|Domus Model Intro]]>><</link>>
+	<br>
+	<<link [[说你敲错门了，然后离开|Domus Street]]>><<endevent>><</link>>
+	<br>
+
+<<elseif $rng gte 56>> /*10%*/
+	<<generate1>><<person1>>
+	一个<<person>>打开了门，<<He>>对你眨眨眼："你好？"
+	<br>
+	有人在后面的房间里欢呼。
+	<br><br>
+
+	<<link [[请求工作|Domus Errand Intro]]>><</link>>
+	<br>
+	<<link [[说你敲错门了，然后离开|Domus Street]]>><<endevent>><</link>>
+	<br>
+
+<<elseif $rng gte 51>> /*5%*/
+	<<generate1>><<person1>>
+	一个<<person>>打开了门。"你好？有什么事吗？"<<he>>问道。
+	<br><br>
+
+	<<link [[请求工作|Domus Shy Intro]]>><</link>>
+	<br>
+	<<link [[说你敲错门了，然后离开|Domus Street]]>><<endevent>><</link>>
+	<br>
+
+<<elseif $rng gte 41>>
+	<<generate1>><<person1>>
+	一个<<person>>打开了门。"有什么事吗？"<<he>>问道。
+	<br><br>
+
+	<<link [[请求工作|Domus Gutters Intro]]>><</link>>
+	<br>
+	<<link [[说你敲错门了，然后离开|Domus Street]]>><<endevent>><</link>>
+	<br>
+
+<<elseif $rng gte 31>>
+	<<generate1>><<person1>>
+	一个<<person>>打开了门。"你想做什么？"<<he>>问道。
+	<br><br>
+
+	<<link [[请求工作|Domus Lounge Intro]]>><</link>>
+	<br>
+	<<link [[说你敲错门了，然后离开|Domus Street]]>><<endevent>><</link>>
+	<br>
+
+<<elseif $rng gte 26>>
+	<<generate1>><<person1>>
+	一个<<person1>><<person>>打开了门。<<He>>似乎很生气。“什么事?"
+	<br><br>
+
+	<<link [[请求一份工作|Domus Tech Support Intro]]>><</link>>
+	<br>
+	<<link [["说你记错地址了然后离开"|Domus Street]]>><<endevent>><</link>>
+
+<<elseif $rng gte 21>>
+	<<generate1>><<person1>>
+	一个<<person>>打开了门。"哦，你真可爱。"<<he>>说道，"我能为你做点什么吗？"
+	<br><br>
+
+	<<link [[请求工作|Domus Delivery Intro]]>><</link>>
+	<br>
+	<<link [[说你敲错门了，然后离开|Domus Street]]>><<endevent>><</link>>
+	<br>
+
+<<elseif $rng gte 16>>
+	<<generate1>><<person1>>
+	你敲了敲门。一个<<person>>打开了门。
+	<br><br>
+
+	"这是最后一次了，你的钱我马上-等等。你不是我的债主。"<<He>>说道。<<He>>看起来很疲惫，<<his>>的衣服简直一团糟。
+	<br><br>
+
+	你好像听到了后面的房间传来微弱的低语声。
+	<br><br>
+
+	<<link [[询问是否有工作|Domus Babysitting Intro]]>><</link>>
+	<br>
+	<<link [[说你敲错门了，然后离开|Domus Street]]>><<endevent>><</link>>
+
+<<elseif $rng gte 11>>
+	<<generate1>><<generatep2>><<person1>>
+	一个<<person>>打开了门。"您好？"<<he>>说。
+	<br><br>
+
+	你还没来得及回应，一个<<person2>><<person>>就喊道："是谁？"<<his>>头埋在报纸里。
+	<br><br>
+
+	<<if $fame.prostitution gte 600 and $rng%2>>
+		"是贝利家的那条狗，"这名<<person1>><<person>>说。
+		<br><br>
+		<<if $rng % 4>>
+			"行吧……你一下子就能认出<<phim>>，说明……"
+		<<else>>
+			"噢！就瞟一眼的事，你还能不认识你的狗吗？"
+		<</if>>
+		<br><br>
+
+		"闭嘴，"<<he>>转动眼睛，然后转向你:"你是？"
+	<<elseif $fame.exhibitionism gte 600 and $rng%2>>
+		"是孤儿院里的那个暴露狂<<girl>>。" <<person1>><<person>>说。
+	<<else>>
+		"只是一个 <<girl>>。"<<person1>><<person>>说。
+	<</if>>
+	<br><br>
+
+	<<link [[请求工作|Domus Painting Intro]]>><</link>>
+	<br>
+	<<link [[说你敲错门了，然后离开|Domus Street]]>><<endevent>><</link>>
+	<br>
+
+
+<<else>>
+	<<generatey1>><<person1>>
+	一个<<person>> 打开了门。"你好呀！"<<he>> 说。
+	<br><br>
+
+	<<link [[请求工作|Domus Homework Intro]]>><</link>>
+	<br>
+	<<link [[说你敲错门了，然后离开|Domus Street]]>><<endevent>><</link>>
+	<br>
+
+<</if>>
+
+:: Domus Babysitting Intro
+<<set $outside to 0>>
+<<effects>>
+
+这<<personsimple>>刚开始有些犹豫，但看过你的脸后还是下定了决心。<br><br>
+
+"我有份工作给你，十万火急。我的孩子们还太小，没办法独自待在家里，但任何一个邻居我都不放心。你能照看他们大概三个小时吗？时薪<<printmoney 300>>，不能再多了。"
+<br><br>
+
+<<link [[接受 (3:00)|Domus Babysitting Accept]]>><</link>>
+<br>
+<<link [[拒绝|Domus Babysitting Refuse]]>><</link>>
+
+:: Domus Babysitting Accept
+
+<<effects>>
+"很好，"他说道。"谢谢你。快进来吧，他们又不会咬你。"
+<br><br>
+
+你进入小房子，遇见了正在后面房间里玩的孩子们。他们真的还太小了。老二甚至都不会说话。他们的父母离开前嘱咐了你几句。
+<br><br>
+
+"这是我的联系方式，遇到紧急情况再来找我。不要给除我以外的任何人开门。小孩子没什么需求，你只需要确保他们不会用蜡笔或者其他什么东西弄伤自己就行。还有拜托你了，看在上帝的份上，千万别在他们面前骂人。"
+<br><br>
+
+"我一般不会把小孩子丢给陌生人，但我现在实在是麻烦缠身"<<he>>补充道，"并且你人看起来不错。我相信你，懂吗？别让我后悔做这个决定。"
+<br><br>
+
+<<link [[照看孩子们|Domus Babysitting The Kids]]>><<pass 180>><</link>>
+
+
+:: Domus Babysitting The Kids
+
+<<effects>>
+
+一切都很顺利。孩子们太小，也没法惹什么麻烦。你只需要确保他们唱家庭适宜的童谣，用蜡笔在纸上而不是对方的脸上画画就好了。
+<br><br>
+
+显然，他们已经习惯了<<personsimple>>的突然离去，<<his>>的消失都不会吓到他们。这肯定很困难。但至少他们父母中的一个还能照顾他们。
+<br><br>
+
+和孩子们共度时光莫名地让人神清气爽。你和他们一起歌唱，一起欢笑。这真美好。<<lstress>><<stress -10>>
+<br><br>
+
+<<link [[继续|Domus Babysitting End]]>><</link>>
+<br>
+
+:: Domus Babysitting End
+<<effects>>
+
+这个<<person>>按照约定在三小时后回来了。<<He>>看起来精疲力尽，但当<<his>>的两个孩子跑来迎接时，<<him>>还是笑了出来。<<Hes>>非常感激。
+<br><br>
+
+"他们看起来都很好。你真是大救星啊。这是说好给你的钱"。"你有没有......噢，看我这记性。我忘了跟你说可以从冰箱里拿点零食。给，这是额外的奖励。这应该够你去......海风餐厅或者其他什么地方买杯咖啡了。回家路上注意安全，好吗？"
+<br><br>
+
+你收下了<<moneyGain 11>>。当你离开屋子时，你的内心深处希望这个小家庭一切安好。
+<br><br>
+
+<<link [[继续|Domus Street]]>><<endevent>><</link>>
+
+:: Domus Babysitting Refuse
+<<effects>>
+
+听完你的拒绝之词后，<<He>>看上去有些绝望。但你仍然调头回到了宅邸街，让<<him>>自己去处理<<his>>的问题吧。
+<br><br>
+
+<<link [[继续|Domus Street]]>><<endevent>><</link>>
+
+:: Domus Tech Support Intro
+<<effects>>
+
+"我的电视机坏了，”<<he>>说道。“如果你能修好，我可以付给你<<printmoney 1000>>。"
+<br><br>
+
+<<link [[同意(0:15)|Domus Tech Support Accept]]>><</link>>
+<br>
+<<link [[拒绝|Domus Street]]>><<endevent>><</link>>
+
+:: Domus Tech Support Accept
+<<effects>><<set $outside to 0>>
+<<He>>带你到客厅。咖啡桌上放着一本手册。
+<br><br>
+
+你按照手册中的故障排除指南，一步接一步地操作，直到找出问题所在： 
+<<switch random(1,5)>>
+    <<case 1>>
+        插头没有插在墙上。
+        <br><br>
+    <<case 2>>
+        遥控器需要新电池。
+        <br><br>
+    <<case 3>>
+        它插的插线板开关没开。
+        <br><br>
+    <<case 4>>
+        <<he>>把电视遥控器和DVD播放器遥控器搞混了。
+        <br><br>
+    <<case 5>>
+        <<he>>把遥控器拿反了。
+        <br><br>
+<</switch>>
+
+<<cleareventpool>>
+
+<<addinlineevent "tech_support_normal" 4>>
+
+	你打开电视机确认。电视上正在放 
+    <<switch random(1,4)>>
+        <<case 1>>
+            新闻广播
+        <<case 2>>
+            动画片
+        <<case 3>>
+            肥皂剧
+        <<case 4>>
+            动作片
+    <</switch>>
+    ，这正是屋主之前调的频道。
+    <br><br>
+
+    <<link [[继续|Domus Tech Support Normal]]>><</link>>
+
+<</addinlineevent>>
+
+<<addinlineevent "tech_support_lewd" 1>>
+
+	<<if $awareness gte 200>>
+        你打开电视机确认。电视上正在放色情片。<<garousal>><<gtrauma>><<arousal 600>><<trauma 1>>
+        <br><br>
+    <<else>>
+        你打开电视机确认。电视上正在放像是自然纪录片的东西，但里面的主角是人，而不是动物。<<gtrauma>><<trauma 1>>
+        <br><br>
+    <</if>>
+
+    <<link [[继续|Domus Tech Support Lewd]]>><</link>>
+
+<</addinlineevent>>
+<<runeventpool>>
+
+:: Domus Tech Support Normal
+<<effects>>
+<<person1>><<person>>用手掌拍了拍<<his>>的额头。"嗯，原来如此！现在我觉得自己真傻啊，谢谢你，＂<<he>>说着，把<<he>>答应给你的钱递给你，然后<<he>>护送你离开了。
+<br><br>
+
+你赚了<<moneyGain 10>>。
+<br><br>
+
+<<link [[继续|Domus Street]]>><<endevent>><<pass 15>><</link>>
+
+:: Domus Tech Support Lewd
+<<effects>>
+<<person1>><<person>>僵住了。<<He>>看起来吓坏了。
+<br><br>
+
+<<if $promiscuity gte 55 and $awareness gte 200>>
+    <<link [[勾引|Domus Tech Support Seduce]]>><</link>><<promiscuous4>>
+    <br>
+<</if>>
+<<link [[要封口费|Domus Tech Support Ask]]>><</link>>
+
+:: Domus Tech Support Seduce
+<<effects>>
+<<set $seductiondifficulty to (6000)>>
+<<seductioncheck>>
+<br><br>
+<<if $seductionskill lt 1000>><span class="gold">你对自己的诱惑力更有信心了。</span><</if>><<seductionskilluse>>
+
+你走到<<person1>><<person>>面前跪下来，头放在<<his>>两腿之间，试图模仿电视上的<<if $player.gender_appearance is "m">>男人<<else>>女人<</if>>的动作。
+<br><br>
+
+<<if $seductionrating gte $seductionrequired>>
+    <<He>>伸手抚摸你的脸颊。“你知道，电视不是唯一需要维修的东西，”<<he>>笑着说。
+    <br><br>
+
+    <<link [[继续|Domus Tech Support Sex]]>><<set $sexstart to 1>><</link>>
+
+<<else>>
+    <<He>>无视了你滑稽的动作。“谢谢你帮我修电视!”<<he>>说着像赶苍蝇一样把你送了出去，在被推出门的同时一叠钞票被塞到了你手里。
+    <br><br>
+
+    你赚了<<moneyGain 10>>。
+    <br><br>
+    
+    <<link [[继续|Domus Street]]>><<pass 15>><<endevent>><</link>>
+
+<</if>>
+
+:: Domus Tech Support Sex
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+    <<npcoral>>
+	<<set $enemytrust += 100>>
+<</if>>
+<<set $position to "doggy">>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Domus Tech Support Sex End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Domus Tech Support Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Domus Tech Support Sex End
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax and $consensual is 1>>
+    <<ejaculation>>
+    <<He>>站起来关掉电视，帮你站起来。“太可爱了，”<<he>>边说边把你送到门口。“我知道下次电视出问题时该叫谁了，嗯?”<<He>>把一叠钞票塞到你手里。“拿去吧。我请客。"
+    <br><br>
+
+    你赚到了<<moneyGain 50>>。
+    <br><br>
+
+    <<endcombat>>
+    <<clotheson>>
+    
+    <<link [[继续|Domus Street]]>><<pass 15>><</link>>
+
+<<elseif $enemyarousal gte $enemyarousalmax and $consensual is 0>>
+    <<ejaculation>>
+	<<He>>拖着你站起来，把你拖到门口。“你真是个怪人，随便走进一个陌生人的家，让<<him>>操你，然后还半路让<<him>>停下来。你该庆幸我不是那种会占你便宜的人。
+	<br><br>
+
+    你被赶出了门。它在你身后砰地关上。
+    <br><br>
+
+    <<endcombat>>
+    <<clotheson>>
+
+    <<link [[继续|Domus Street]]>><<pass 15>><</link>>
+
+<<elseif $finish is 1>>
+    <<He>>皱眉。“哦。我以为你想……"
+    <br><br>
+
+    <<He>>迅速站起来。“对……对不起!谢谢你帮我修电视，”<<he>>一边说，一边匆匆送你出去。在被推出门的同时一叠钞票被塞到了你手里。
+    <br><br>
+
+    你赚了<<moneyGain 10>>。
+
+    <<endcombat>>
+    <<clotheson>>
+
+    <<link [[继续|Domus Street]]>><<pass 15>><</link>>
+
+<<elseif $enemyhealth lte 0>>
+    <<He>>跌倒在咖啡桌上，你趁机跑向前门。谢天谢地，<<person1>><<person>>没有跟着你。
+    <br><br>
+
+    <<endcombat>>
+    <<clotheson>>
+
+    <<link [[继续|Domus Street]]>><<pass 15>><</link>>
+
+<</if>>
+
+:: Domus Tech Support Ask
+<<effects>>
+你把电视关掉，期待地看着<<person1>><<person>>。
+<br><br>
+
+<<him>>花了一会儿时间，但最终恢复了镇静并护送你到门口。“呃，很抱歉让你看到那个场面。”<<he>>说着，递给你一叠钞票，“多出来的就当是对你的补偿吧。"
+<br><br>
+
+你赚到了<<moneyGain 15>>。
+<br><br>
+
+<<link [[继续|Domus Street]]>><<pass 15>><<endevent>><</link>>
+
+:: Domus Gutters Intro
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<if $rng gte 1>>
+	"我确实需要帮忙，"<<he>>说："我的排水沟该清理了，大概需要几个小时，给你£25。"
+	<br><br>
+
+	<<link [[接受|Domus Gutters]]>><<housekeeping 1 100>><</link>><<ghousekeeping 100>>
+	<br>
+	<<link [[拒绝|Domus Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	"对不起，"<<he>>说："我没有要找人做的事，再见。"
+	<br><br>
+
+	<<link [[再找一家试试|Domus House Knock]]>><<endevent>><</link>>
+	<br>
+	<<link [[停止|Domus Street]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Domus Lounge Intro
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<if $rng gte 1>>
+	"好吧，我确实还有事情需要做。"<<he>>说，"如果你能帮我打扫休息室，我就给你£10。这可能要花上一个小时。"
+	<br><br>
+
+	<<link [[接受|Domus Lounge]]>><<housekeeping 1 100>><</link>><<ghousekeeping 100>>
+	<br>
+	<<link [[拒绝|Domus Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	"这用不上你，"<<he>>一边说，一边搔着手臂："滚吧。"
+	<br><br>
+
+	<<link [[再找一家试试|Domus House Knock]]>><<endevent>><</link>>
+	<br>
+	<<link [[停止|Domus Street]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Domus Delivery Intro
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<if $rng gte 1>>
+	<<person>>思考了一会儿。"我需要送一件东西，"<<he>>说，"往返只要10分钟，你能赚到£5。"
+	<br><br>
+
+	<<link [[接受|Domus Delivery]]>><<housekeeping 1 100>><</link>><<ghousekeeping 100>>
+	<br>
+	<<link [[拒绝|Domus Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	"我什么都不需要，"<<he>>倚着门框说，"你还是小心点吧，像你这么可爱的家伙很惹人注意的。"
+	<br><br>
+
+	<<link [[再找一家试试|Domus House Knock]]>><<endevent>><</link>>
+	<br>
+	<<link [[停止|Domus Street]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Domus Painting Intro
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<if $rng gte 1>>
+	这个<<person>>转身问<<person2>><<person>>："我们有什么活给人干吗？"
+	<br><br>
+
+	"你还没粉刷那个房间，不是么？"<<person>>回答："不如让<<phim>>去刷。"
+	<br><br>
+
+	<<person1>><<person>>回头看向你："好主意，我们出£50，你来粉刷空房间，刷完大概要6小时。"
+	<br><br>
+
+	<<link [[接受|Domus Painting]]>><<housekeeping 1 100>><</link>><<ghousekeeping 100>>
+	<br>
+	<<link [[拒绝|Domus Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	这个<<person>>转身问<<person2>><<person>>："我们有什么活给人干吗？"
+	<br><br>
+
+	"我才不会相信一个不知哪来的街头流浪儿。"<<person2>><<person>>回道。
+	<br><br>
+
+	<<he>>把门甩在你脸上。"别这么粗鲁。"那个<<person1>><<person>>说。
+	<br><br>
+
+	<<link [[再找一家试试|Domus House Knock]]>><<endevent>><</link>>
+	<br>
+	<<link [[停止|Domus Street]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Domus Homework Intro
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<if $rng gte 1>>
+	"我有些作业不会写，"<<he>>说："如果你帮我，我就给你£5。"
+	<br><br>
+
+	<<link [[接受 (1:00)|Domus Homework]]>><<housekeeping 1 100>><</link>><<ghousekeeping 100>>
+	<br>
+	<<link [[拒绝|Domus Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	"我不好说，"<<he>>说，"你得等我父母在家的时候再来。"
+	<br><br>
+
+	<<link [[再找一家试试|Domus House Knock]]>><<endevent>><</link>>
+	<br>
+	<<link [[停止|Domus Street]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Domus Model Intro
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<if $rng gte 1>>
+	"你打电话的声音听起来年纪要大一些。"<<he>> 说。
+	"但不管怎样，这都是我们说好的。£30，当两个小时的人体模特，当然是裸体。你可以把衣服放在那边的浴室里。
+	<<if $exhibitionism lte 35>>
+		画师都在那扇门后面的工作室里等着。"
+		<br><br>
+		"非常专业。"<<he>>笑着拍拍你的肩膀。
+		"别这么紧张，这是一个美术俱乐部，我很了解这帮人。我们画过很多
+		<<if $player.gender_appearance is "f">>
+			你这样的女孩，还有男孩。
+		<<else>>
+			你这样的男孩，还有女孩。
+		<</if>>
+		真的，不管什么尺寸什么形状，无论是分开还是一起的，我们都画过了。我没骗你。
+		没事，这只是艺术。但是你已经迟到了，所以请不要闲逛。"
+	<<else>>
+		画师都在那扇门后面的工作室等着。你已经迟到了，就别闲逛了。"
+	<</if>>
+	<br><br>
+
+	<<He>>穿过那道门。你看到那边的人们对着画架，围坐在一个小舞台边上。
+	<br><br>
+
+	<<if $exhibitionism lt 15>>
+		你不够下流，不能全裸当模特。
+		<br>
+	<<elseif playerChastity()>>
+		你不能只穿着$worn.genitals.cn_name_cap行走。
+		<br>
+	<<else>>
+		<<link [[接受并脱光衣服(2:00)|Domus Model]]>><</link>>
+	<</if>>
+	<br>
+	<<link [[偷偷溜走|Domus Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	"恐怕你不适合，"<<he>>说："我认为我那些画师不会喜欢画你。"
+	<br><br>
+
+	<<link [[再找一家试试|Domus House Knock]]>><<endevent>><</link>>
+	<br>
+	<<link [[停止|Domus Street]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Domus Errand Intro
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<if $rng gte 1>>
+	"来得真是时候，"<<he>>说道。"我在街角的店里订了些啤酒。钱已经付清了，但他们还没有派人把酒送过来，而且现在比赛都已经开始了。
+	谁也不想错过比赛。你发发善心帮我们把酒拎过来，要不了10分钟，我就会付给你£5。"
+	<br><br>
+
+	<<link [[接受 (0:10)|Domus Errand]]>><<housekeeping 1 100>><</link>><<ghousekeeping 100>>
+	<br>
+	<<link [[拒绝|Domus Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	"什么？工作？没有。"<<he>>关上门。
+	<br><br>
+
+	<<link [[再找一家试试|Domus House Knock]]>><<endevent>><</link>>
+	<br>
+	<<link [[停止|Domus Street]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Domus Shy Intro
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<if $rng gte 1>>
+	"我的孩子很害羞，"<<he>>说，"如果你能辅导他一个小时左右，我会给你£10。如果你教得好就更多。"
+	<br><br>
+
+	<<link [[接受 (1:00)|Domus Shy]]>><</link>>
+	<br>
+	<<link [[拒绝|Domus Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	"恕我冒昧，孩子，"<<he>>说，"烦别的人去吧。"
+	<br><br>
+
+	<<link [[再找一家试试|Domus House Knock]]>><<endevent>><</link>>
+	<br>
+	<<link [[停止|Domus Street]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Domus Gutters
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+你爬梯子上了屋顶，然后开始清理苔藓。
+<<pass 1 hour>>
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure)>>
+
+	<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+		在你开始工作约一小时后，你发现<<person>>站在你下方，手机摄像头对着你。
+		你一时困惑，然后意识到<<he>>看光了你的裙底。你伸出一只手遮在大腿之间。
+		"别害羞啊，"<<he>>笑着说。
+		<<if $worn.under_lower.type.includes("naked")>>
+			"你真是个下流的东西，不穿内裤就在这攀来爬去。"
+		<<elseif playerChastity()>>
+			"漂亮的$worn.genitals.cn_name_cap，钥匙在谁那里呢?"
+		<<else>>
+			<<set $worn.under_lower.name_simple to setup.clothes.under_lower[clothesIndex('under_lower', $worn.under_lower)].name_simple>>
+			"你那里有着<<print ($worn.under_lower.plural is 1 ? "一些" : "一个")>>漂亮的$worn.under_lower.cn_name_cap。"
+		<</if>>
+		<<He>>笑起来，走回了屋里。
+		<br><br>
+		<<pass 2 hour>>
+		排水沟一打扫干净，你就爬下来，找<<person>>结账。
+		你发现<<him>>在厨房里等你，一手拿着你的钱，一手拿着手机，整幅画面相当惹人怀疑。
+		<br><br>
+
+		"做个交易，"他说，"我让你删除这些照片，相应地，我会更亲密地了解你。
+
+		<<if !playerChastity() and $worn.under_lower.vagina_exposed is 1>>
+			<<if $player.gender is "h">>
+				你不希望别人知道你有男女两套衣服，不是吗？"
+			<<elseif $player.gender_appearance isnot $player.gender>>
+				你不希望别人知道你喜欢打扮成<<print ($player.gender_appearance is "m" ? "男孩" : "女孩")>>，不是吗？"
+			<<else>>
+				我敢说肯定有很多变态喜欢看你的<<genitals>>。"
+			<</if>>
+		<<else>>
+			我敢说肯定有很多变态想要你的裙底照。"
+		<</if>>
+		<br><br>
+		<<link [[接受|Domus Gutters Molestation]]>><<set $molestationstart to 1>><</link>>
+		<br>
+		<<link [[拒绝胁迫|Domus Gutters Refuse]]>><</link>>
+		<br>
+
+	<<else>>
+		大约一小时后，一只鸟从附近的烟囱里飞了出来。你吓了一跳，滑倒了，差点从屋顶上掉下来。
+		<<gstress>><<stress 6>>
+		<br><br>
+
+		排水沟一打扫干净，你就爬下来，找<<person>>结算报酬。
+		"干得漂亮，"<<he>>说，注视着你的工作成果。"这是你的报酬，不会亏待你的。"
+		<br><br>
+		<<pass 2 hour>>
+
+		你赚到了<<moneyGain 25>>。
+		<br><br>
+
+		<<link [[继续|Domus Street]]>><<endevent>><</link>>
+		<br>
+
+	<</if>>
+<<else>>
+
+	排水沟一打扫干净，你就爬下来，找<<person>>结算报酬。
+	"干得漂亮，"<<he>>说，注视着你的工作成果。"这是你的报酬，不会亏待你的。"
+	<br><br>
+	<<pass 2 hour>>
+
+	你赚到了<<moneyGain 25>>。
+	<br><br>
+
+	<<link [[继续|Domus Street]]>><<endevent>><</link>>
+	<br>
+
+<</if>>
+
+:: Domus Lounge
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+你走进休息室，空瓶子和披萨饼盒散落在房间里。<<person>>懒洋洋地躺在沙发上，开始看电视，仿佛你并不存在。
+<<pass 30>>
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure)>>
+
+	你弯腰去捡一个卡在椅子下面的披萨饼盒，<<person>>从后面抓住了你。
+	<br><br>
+
+	<<link [[继续|Domus Lounge Molestation]]>><<set $molestationstart to 1>><</link>>
+	<br>
+
+<<else>>
+
+	<<pass 30>>
+	一小时过去，你清除了最碍事的碎屑，看起来足以让<<him>>满意。"干得好，给你。"
+	<br><br>
+
+	你赚到了<<moneyGain 10>>。
+	<br><br>
+
+	<<link [[离开|Domus Street]]>><<endevent>><</link>>
+	<br>
+
+<</if>>
+
+:: Domus Lounge Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Domus Lounge Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Domus Lounge Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Domus Lounge Molestation Finish
+<<if $enemyhealth lte 0>>
+
+	<<person1>><<person>>瘫回椅子里。<<tearful>>你逃了出去。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Domus Street]]>><</link>>
+
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	"干得好，"<<he>>说："给你。"<<tearful>>你摇摇晃晃地走出这栋楼。
+	<br><br>
+
+	你获得了<<moneyGain 10>>。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Domus Street]]>><</link>>
+
+<</if>>
+
+:: Domus Delivery
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+<<person>>递给你一个棕色信封并给你了地址："他们会付你钱的，谢谢帮忙。"
+<br><br>
+<<endevent>>
+你一转过拐角，就又更仔细地看了一遍信封。它没有标记，除了纸，你摸不出里面有任何东西。
+<br><br>
+
+<<set $skulduggerydifficulty to 1>>
+<<link [[拆开它|Domus Delivery2]]>><<set $phase to 2>><<crimeup 1>><</link>><<skulduggerydifficulty>><<crime>>
+<br>
+<<link [[不要拆|Domus Delivery3]]>><<set $phase to 1>><</link>>
+<br>
+
+:: Domus Painting
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+<<person1>><<person>>把你带到二楼，进了一个小而空的房间。一罐油漆放在梯子上，旁边是一堆刷子，一个滚筒。
+<br><br>
+
+"这就是你要用到的全部工具，"<<he>>说，"我们就在楼下。"
+<br><br>
+
+<<pass 2 hours>>你开始粉刷房间。
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure)>>
+
+	你刷完一堵墙，试着往后站，欣赏你的作品，但你感觉大腿上有一股拉力。往下一看，你的$worn.lower.cn_name_cap粘在墙上。你试图挣脱，但它还是粘在上面。
+	<br><br>
+
+	<<link [[再用力些|Domus Painting Force]]>><</link>>
+	<br>
+
+<<else>>
+
+	<<pass 4 hours>>几个小时的艰苦工作之后，你站回原处，以欣赏你刚完成的作品。
+	<br><br>
+
+	你赚到了<<moneyGain 50>>。
+	<br><br>
+
+	<<link [[继续|Domus Street]]>><<endevent>><</link>>
+	<br><br>
+
+<</if>>
+
+:: Domus Painting Force
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+你往外拉扯，随着一声撕裂，你离开墙滚到了地上。
+<<if !$worn.over_lower.type.includes("naked")>>
+	<<set $worn.over_lower.integrity -= 30>>
+	<<if $worn.over_lower.integrity lte 0 and $worn.lower.type.includes("naked")>>
+		你抬头一看，发现你的$worn.over_lower.cn_name_cap还粘在油漆上，整个被撕得四分五裂。
+		<<overlowerruined>><<clothesruinstat>><<set $loweroff to 0>>
+
+		"里面没事吧？"你听到<<person1>><<person>>问。"我好像听到……"<<he>>走进房间，看到你躺在那里，露出你的<<undies>>，不禁闭上了嘴。你脸红地遮住自己的<<lewdness>>，站起来。"我去拿点东西来给你裹上，"<<he>>说，显然是在憋笑。
+		<br><br>
+
+		<<He>>离开了一会，然后拿着毛巾回来了。"别担心，"<<he>>指着你衣服的残片说道。"待会儿我来把它弄掉。"
+		<br><br>
+
+		<<He>>让你回去工作。毫无疑问，<<he>>忍不住要把刚刚目睹的一切告诉<<person2>><<person>>。<<person1>>
+		<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+		<br><br>
+
+		<<towelup>>
+	<<else>>
+		你的衣服没有得到很好的处理，但至少它们仍然是完整的。
+		<br><br>
+	<</if>>
+<<else>>
+	<<set $worn.lower.integrity -= 30>>
+	<<if $worn.lower.integrity lte 0>>
+		你抬起头来，看到你的$worn.lower.cn_name_cap还粘在油漆上，整个东西被撕开，毁了。
+		<<lowerruined>><<clothesruinstat>><<set $loweroff to 0>>
+
+		"里面没事吧？"你听到<<person1>><<person>>问。"我好像听到……"<<he>>走进房间，看到你躺在那里，露出你的<<undies>>，不禁闭上了嘴。你脸红地遮住自己的<<lewdness>>，站起来。"我去拿点东西来给你裹上，"<<he>>说，显然是在憋笑。
+		<br><br>
+
+		<<He>>离开了一会，然后拿着毛巾回来了。"别担心，"<<he>>指着你衣服的残片说道。"待会儿我来把它弄掉。"
+		<br><br>
+
+		<<He>>让你回去工作。毫无疑问，<<he>>忍不住要把刚刚目睹的一切告诉<<person2>><<person>>。<<person1>>
+		<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+		<br><br>
+
+		<<towelup>>
+	<<else>>
+		你的衣服没有得到很好的处理，但至少它们仍然是完整的。
+		<br><br>
+	<</if>>
+<</if>>
+
+<<pass 4 hours>>几个小时的艰苦工作之后，你站回原处，以欣赏你刚完成的作品。
+<br><br>
+
+你赚到了<<moneyGain 50>>。
+<br><br>
+
+<<link [[继续|Domus Street]]>><<endevent>><</link>>
+<br><br>
+
+:: Domus Homework
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+你尝试辅导<<person>>完成<<his>>的作业，但<<he>>并不感兴趣，结果更像是你在替<<him>>完成作业。
+<<pass 30>>
+
+<<if $school gte 1600>>
+	这种方式至少更快。
+<<elseif $school gte 1200>>
+
+<<else>>
+	你尽力而为，但仍然有些吃力。
+<</if>>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure) and !$worn.upper.type.includes("naked")>>
+	<br><br>
+
+	"我好无聊，"大概三十分钟后，<<he>>发起了牢骚。突然，<<his>>眼前一亮。
+	"我有个主意。如果你把你的上衣脱掉，我就能轻松地集中注意力了。"<<He>>看着你，眼睛里充满了希望。
+	<br><br>
+
+	<<if $player.gender_appearance is "m" and $player.breastsize lte 2>>
+		<<link [[把你的上衣脱掉|Domus Homework Strip]]>><<set $phase to 1>><</link>><<exhibitionist1>>
+		<br>
+	<<elseif $exhibitionism gte 35>>
+		<<link [[把你的上衣脱掉|Domus Homework Strip]]>><<set $phase to 2>><</link>><<exhibitionist3>>
+		<br>
+	<</if>>
+	<<link [[拒绝|Domus Homework 2]]>><</link>>
+	<br>
+<<else>>
+	<<if $worn.upper.type.includes("naked")>>
+		<<He>>一直在斜瞟你裸露的胸部，以为你注意不到<<he>>。
+	<<else>>
+		<<He>>把<<his>>的头靠在桌子上，看上去百无聊赖。
+	<</if>>
+	<br><br>
+
+	<<link [[调情|Domus Homework Flirt]]>><</link>><<promiscuous1>>
+	<br>
+	<<link [[结束工作|Domus Homework 2]]>><</link>>
+	<br>
+<</if>>
+
+:: Domus Homework Flirt
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+你把手放在<<hers>>的头顶，并靠了上去。"别担心，"你耳语到。"我会让这变得不无聊的。"你更加靠近一步，在坐回原位之前轻咬了一下<<his>>的耳朵。<<He>>在剩下的时间里都安安静静地坐着，红着脸。
+<<promiscuity1>>
+
+你赚到了<<moneyGain 5>>。
+<br><br>
+<<pass 30>>
+
+<<link [[继续|Domus Street]]>><<endevent>><</link>>
+<br>
+
+:: Domus Homework 2
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+你对如何保持<<his>>的注意力束手无策，<<person>>仍然对<<his>>的家庭作业毫无兴趣。接下来的时间里无事发生。
+<br><br>
+
+你赚到了<<moneyGain 5>>。
+<<pass 30>>
+<br><br>
+
+<<link [[继续|Domus Street]]>><<endevent>><</link>>
+<br>
+
+:: Domus Homework Strip
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+<<if $phase is 1>>
+	<<if $worn.upper.set is $worn.lower.set>>
+		你<<nervously>>拉下你的$worn.upper.cn_name_cap，露出你的胸部。
+	<<else>>
+		你<<nervously>>脱下你的$worn.upper.cn_name_cap，露出你的胸部。
+	<</if>>
+	那个<<person>>公然目不转睛地看着你，但似乎很满意。
+	<<exhibitionism1>>
+
+	在接下来的时间里<<He>>一点也没有感到无聊，尽管你不知道这是否是一件好事。
+	当你完成工作并整理好衣服后，<<He>>露出了失望的神色。
+	<br><br>
+
+<<else>>
+	<<if $worn.upper.set is $worn.lower.set>>
+		你<<nervously>>拉下你的$worn.upper.cn_name_cap，露出你的<<breasts>>。你感觉自己的乳头变硬了。
+	<<else>>
+		你<<nervously>>脱下你的$worn.upper.cn_name_cap，露出你的<<breasts>>。你感觉自己的乳头变硬了。
+	<</if>>
+
+	那个<<persons>>瞪大双眼，目不转睛地盯着你。
+	<<if !($leftarm is "bound" and $rightarm is "bound")>>
+		当你回到作业中时，你用一只手遮住自己，但你仍然感到敏锐的暴露。
+	<</if>>
+	<<exhibitionism3>>
+
+	在接下来的时间里<<He>>一点也没有感到无聊，尽管你不知道这是否是一件好事。
+	当你完成工作并整理好衣服后，<<He>>露出了失望的神色。
+	<br><br>
+
+<</if>>
+
+你赚到了<<moneyGain 5>>。
+<<pass 30>>
+<br><br>
+
+<<link [[继续|Domus Street]]>><<endevent>><</link>>
+<br>
+
+:: Domus Delivery2
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+<<if $rng gte 81>>
+	你打开信封，调查其内容。里面有一张外语的纸条，还有一叠现金。
+	你可能会侥幸拿下一些，但你拿得越多，就越不可能成功。
+	<br><br>
+
+	<<set $skulduggerydifficulty to 300>>
+	<<link [[拿走 £10|Domus Delivery3]]>><<set $phase to 3>><<set $money += 1000>><</link>><<skulduggerydifficulty>>
+	<br>
+	<<set $skulduggerydifficulty to 500>>
+	<<link [[拿走 £30|Domus Delivery3]]>><<set $phase to 4>><<set $money += 3000>><</link>><<skulduggerydifficulty>>
+	<br>
+	<<set $skulduggerydifficulty to 700>>
+	<<link [[拿走 £100|Domus Delivery3]]>><<set $phase to 5>><<set $money += 10000>><</link>><<skulduggerydifficulty>>
+	<br>
+	<<link [[什么也不拿|Domus Delivery3]]>><</link>>
+	<br>
+<<else>>
+	你打开信封并查看里面的内容。里面只有一张外文便条。
+	<br><br>
+
+	<<link [[继续|Domus Delivery3]]>><</link>>
+	<br>
+<</if>>
+
+:: Domus Delivery3
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<pass 5>>
+<<generate1>><<generate2>><<person2>>
+你到达了目的地，是多瑙河街上一座宏伟的庄园。你敲了敲门，应门的是一个<<person>>。
+"啊，我家<<person1>><<print ($pronoun is "m" ? "老爷" : "夫人")>>一直在等您，"<<person2>><<he>>说，"请进。"
+<br><br>
+
+你走进豪华的前厅，一个<<person1>><<person>>从楼梯上下来，察看了信封。
+你把信封递给<<him>>，<<he>>说："很好，我们一直在等你。"
+<<He>>从口袋里拿出一把小刀，向<<person2>><<person>>做了个手势："付钱给这位<<girl>>。"
+<br><br>
+
+<<if $phase is 1>>
+	<<He>>把说好的<<moneyGain 5>>交给你，然后一言不发地将你引到门外。
+	<br><br>
+
+	<<link [[继续|Danube Street]]>><<endevent>><</link>>
+	<br>
+<<elseif $phase is 2>>
+	<<set $skulduggerydifficulty to 100>><<skulduggerycheck>>
+	<<if $skulduggerysuccess is 1>>
+		<<He>>把说好的<<moneyGain 5>>交给你，然后一言不发地将你引到门外。
+		<br><br>
+
+		<<skulduggeryuse>>
+		<<link [[继续|Danube Street]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		<<He>>正要给你钱，但<<person1>><<person>>打断了<<person2>><<him>>。
+		"这个信封被人打开过了，"<<person1>><<he>>盯着你说，"还好，我觉得你看不懂内容，不然你会惹上真正的麻烦。"
+		<<He>>对着<<person2>><<person>>点了点头，后者把你推出门外，没有给你钱。
+		<br><br>
+
+		<<skulduggeryuse>>
+		<<link [[继续|Danube Street]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<<elseif $phase gte 3>>
+	<<if $phase is 3>>
+		<<set $skulduggerydifficulty to 300>>
+	<<elseif $phase is 4>>
+		<<set $skulduggerydifficulty to 500>>
+	<<elseif $phase is 5>>
+		<<set $skulduggerydifficulty to 700>>
+	<</if>>
+	<<skulduggerycheck>>
+	<<if $skulduggerysuccess is 1>>
+		<<He>>把说好的<<moneyGain 5>>交给你，然后一言不发地将你引到门外。
+		<br><br>
+
+		<<skulduggeryuse>>
+		<<link [[继续|Danube Street]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		<<He>>正要给你钱，但<<person1>><<person>>打断了<<person2>><<him>>。
+		"这个信封被人打开过了，"<<person1>><<he>>盯着你说，"里面东西也被拿走了。我想你需要上一堂礼仪课。"
+		<<He>>对着<<person2>><<person>>点点头，于是后者挡在了你和门之间。
+		<br><br>
+
+		<<skulduggeryuse>>
+
+		两人开始摸索你的衣服。"快说，你把它藏在哪儿了？"
+		<br><br>
+
+		<<link [[继续|Danube Delivery Molestation]]>><<set $molestationstart to 1>><</link>>
+		<br>
+
+	<</if>>
+<</if>>
+
+:: Danube Delivery Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>><<npcstrip>><<npcidlegenitals>><<set $enemytrust -= 100>><<set $enemyanger += 40>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or
+	($worn.upper.type.includes("naked") and $worn.lower.type.includes("naked") and $worn.under_lower.type.includes("naked")) or
+	($worn.upper.type.includes("naked") and $worn.lower.type.includes("naked") and playerChastity())
+>>
+	<span id="next"><<link [[继续|Danube Delivery Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Danube Delivery Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Danube Delivery Molestation Finish
+<<if $enemyhealth lte 0>>
+
+	你想尽办法推开了挡路的<<person2>><<person>>。<<tearful>>你逃出了楼房。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><</link>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	"我找到钱了。" <<person2>><<person>>喘着气说。
+	<br><br>
+
+	"今天放你一马。"<<person1>><<person>>说，<<person2>><<person>>把你推出门外。<<tearful>>你站了起来。
+	<br><br>
+
+	<<if $phase is 3>>
+		<<set $money -= 1000>>
+	<<elseif $phase is 4>>
+		<<set $money -= 3000>>
+	<<elseif $phase is 5>>
+		<<set $money -= 10000>>
+	<</if>>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><</link>>
+
+<<else>>
+
+	"我找到钱了。"<<person2>><<person>>说。
+	<br><br>
+
+	"好，"<<person1>><<person>>说，"把<<phim>>扔出去。"
+	<br><br>
+
+	<<person2>><<person>>把你推出门外。<<tearful>>你站起来，尽可能掩盖你的<<lewdness>>。
+	<br><br>
+
+	<<if $phase is 3>>
+		<<set $money -= 1000>>
+	<<elseif $phase is 4>>
+		<<set $money -= 3000>>
+	<<elseif $phase is 5>>
+		<<set $money -= 10000>>
+	<</if>>
+
+	<<stealclothes>>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><</link>>
+
+<</if>>
+
+:: Domus Entrance Pet
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure) and ($monster is 1 or $bestialitydisable is "f")>>
+
+	你跪下来，伸出一只手。<<bHe>>停止了咆哮，但似乎又变得有些太亲昵了。<<bHe>>试图爬跨到你身上。
+	<<if $monster is 1>>
+		"如果你想和我成为朋友，就别动。"
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Domus Entrance Dog]]>><<set $molestationstart to 1>><</link>>
+	<br>
+
+<<else>>
+
+	<<beasttypes>>的行为随着你表现出的爱意而改变，<<bHe>>舔你的手，接着小跑回了<<bhis>>狗窝。没有人应门。
+	<<if $monster is 1>>
+		"我跟你说了，家里没人。明天再来吧。"
+	<</if>>
+	<br><br>
+
+	<<link [[闯入|Domus House Lock]]>><</link>>
+	<br>
+	<<link [[去下一家 (0:02)|Domus House Knock]]>><<pass 2>><</link>>
+	<br>
+	<<link [[停止|Domus Street]]>><</link>>
+	<br>
+	<<endevent>>
+
+<</if>>
+
+:: Domus Entrance Run
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<if $rng gte 91 and ($monster is 1 or $bestialitydisable is "f")>>
+	你转身想跑，但被软管绊倒了，俯身栽倒在地。<<beasttype>>跳到了你身上。
+	<<if $monster is 1>>
+		"我改变主意了，再呆一会儿！"
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Domus Entrance Dog]]>><<set $molestationstart to 1>><<set $phase to 1>><</link>>
+
+<<else>>
+	你跑出房子，关上身后的大门。
+	<<if $monster is 1>>
+		<<bHe>>懒懒地走回<<bhis>>狗窝，"不管怎么说。害怕一点，逃跑吧，像其他人那样。"
+	<</if>>
+	<br><br>
+	<<endevent>>
+	<<domusquick>>
+<</if>>
+
+:: Domus Entrance Dog
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+
+	<<if $phase is 1>>
+		<<set $NPCList[0].stance to "top">>
+		<<set $enemyanger += 40>>
+		<<set $enemytrust -= 40>>
+	<</if>>
+	<<enable_rescue>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Domus Entrance Dog Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Domus Entrance Dog]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Domus Entrance Dog Finish
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<beastejaculation>>
+
+	满意了，<<beasttype>>回到了它的狗窝。
+	<<if $monster is 1>>
+		"谢谢你的乐趣。明天再来吧，也许有人会应门。或者没有。然后我们可以有更多的乐趣。"
+	<</if>>
+
+	<<tearful>>你站了起来。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	没有人应门。
+	<br><br>
+
+	<<link [[闯入|Domus House Lock]]>><</link>>
+	<br>
+	<<link [[去下一家 (0:02)|Domus House Knock]]>><<pass 2>><</link>>
+	<br>
+	<<link [[停止|Domus Street]]>><</link>>
+	<br>
+
+<<elseif $enemyhealth lte 0>>
+
+	<<beasttype>>逃回了它的狗窝。
+	<<if $monster is 1>>
+		"太粗鲁了！我只是想玩玩而已！"
+	<</if>>
+
+	<<tearful>>你站了起来。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	没有人应门。
+	<br><br>
+
+	<<link [[闯入|Domus House Lock]]>><</link>>
+	<br>
+	<<link [[去下一家 (0:02)|Domus House Knock]]>><<pass 2>><</link>>
+	<br>
+	<<link [[停止|Domus Street]]>><</link>>
+	<br>
+
+<<elseif $alarm is 1>><<set $rescued += 1>>
+	<<if $rapeavoid is 0 and $NPCList[0].stance is "top">>
+		<<famebestiality 1>>
+
+		<<generate2>><<person2>>
+		"我在来了！"你听到一个<<person>>一边叫着一边从路上跑过来。<<He>>靠在大门上，瞪大眼睛盯着你。
+		<br><br>
+
+		<<if $speech_attitude is "bratty">>
+			"别盯着看了，白痴，把这个<<beasttype>>从我身上拿开，"你说。
+		<<elseif $speech_attitude is "meek">>
+			"帮，帮帮我，我不想变成被狗日的碧池，"你说道。
+		<<else>>
+			"请帮帮忙，"你说道。
+		<</if>>
+		<br><br>
+
+		<<He>>从震惊中缓过神来，抓住了<<beasttype 0>>的项圈。<<He>>把它从你身上拽下来并赶回了<<bhis 0>>的狗窝。"你这坏<<beasttype 0>>！"<<he>>呵斥道。
+		<<if $monster is 1>>
+			"你刚才又不在家，我在帮你看门呢，白痴，"<<bhe 0>>坐在原地，大叫着回应。
+		<</if>>
+		<<tearful>>你挣扎着站了起来。
+
+		<<if $speech_attitude is "bratty">>
+			"你不要告诉任何人这件事，"你说。
+		<<elseif $speech_attitude is "meek">>
+			"不要让任何人知道，"你咕哝着，盯着你的脚。
+		<<else>>
+			"请不要告诉任何人，"你说。
+		<</if>>
+		<<He>>点了点头，但你有种预感，<<he>>大概率会食言。
+		<br><br>
+
+	<<elseif $exposed gte 1>>
+		<<fameexhibitionism 1>>
+
+		<<generate2>><<person2>>
+		"我在来了！"你听到一个<<person>>一边叫着一边从路上跑过来。<<He>>靠在大门上，瞪大眼睛盯着你。
+		当<<he>>打开大门时，你感觉<<his>>的目光直直射向你的<<lewdness>>。
+		<br><br>
+
+		<<if $speech_attitude is "bratty">>
+			"别盯着看了，把这个<<beasttype 0>>从我身上拿开，"你说道。
+		<<elseif $speech_attitude is "meek">>
+			"帮...帮帮我，"你说道。
+		<<else>>
+			"请帮帮忙，"你说道。
+		<</if>>
+		<br><br>
+
+		<<He>>从震惊中缓过神来，抓住了<<beasttype>>的项圈。<<He>>把它从你身上拽下来并赶回了它的狗窝。"你这坏<<beasttype 0>>！"<<he>>呵斥道。
+		<<if $monster is 1>>
+			"你个多管闲事的蠢货害人精，坏了我的好事，"<<bhe 0>>坐在原地，大叫着回应。
+		<</if>>
+		<<tearful>>你挣扎着站了起来。
+
+		<<if $speech_attitude is "bratty">>
+			"我说不要再盯着看了！"你说，脸涨得通红。
+		<<elseif $speech_attitude is "meek">>
+			"求求你……别看我……”你说。
+		<<else>>
+			你掩饰自己以逃避<<his>>的注视。
+		<</if>>
+		<<He>>望着你，但在<<he>>离开时不断偷瞄。
+		<br><br>
+
+	<<else>>
+
+		<<generate2>><<person2>>
+		"我在来了！"你听到一个<<person>>一边叫着一边从路上跑过来。<<He>>靠在大门上，瞪大眼睛盯着你。
+		<br><br>
+
+		<<if $speech_attitude is "bratty">>
+			"别盯着看了，把这个<<beasttype 0>>从我身上拿开，"你说道。
+		<<elseif $speech_attitude is "meek">>
+			"帮...帮帮我，"你说道。
+		<<else>>
+			"请帮帮忙，"你说道。
+		<</if>>
+		<br><br>
+
+		<<He>>从震惊中缓过神来，抓住了<<beasttype 0>>的项圈。<<He>>把它从你身上拽下来并赶回了它的狗窝。<<tearful>>你挣扎着爬起来。"你还好吗？"<<he>>关切地问道。
+		<br><br>
+
+		<<if $speech_attitude is "bratty">>
+			"花了你很长时间，"你说道。当<<his>>的工作完成后，<<he>>满意地离开了场所。
+		<<elseif $speech_attitude is "meek">>
+			"是的，谢谢你，"你说道。当<<his>>的工作完成后，<<he>>满意地离开了场所。
+		<<else>>
+			"是的，谢谢，"你说道。当<<his>>的工作完成后，<<he>>满意地离开了场所。
+		<</if>>
+		<br><br>
+
+	<</if>>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<domusquick>>
+<</if>>
+
+:: Domus Gutters Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $enemytrust -= 40>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Domus Gutters Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Domus Gutters Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Domus Gutters Refuse
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+<<if $worn.under_lower.type.includes("naked")>>
+	<<fameexhibitionism 10 "pic">>
+<<else>>
+	<<fameexhibitionism 5 "pic">>
+<</if>>
+<<def 1>>
+<<if $speech_attitude is "bratty">>
+	"去死吧，"你说，伸出你的手。"我的钱。"<<He>>看起来大吃一惊，但还是把欠你的钱递给你。
+<<elseif $speech_attitude is "meek">>
+	"我、我才不要。"你说。<<He>> 耸耸肩。
+<<else>>
+	"你要我干，我偏不干。"你挑衅道。<<He>>失望地叹了口气。
+<</if>>
+<br><br>
+
+"你好自为之……"<<he>>正要说些什么，但你已经离开了。
+<br><br>
+
+你赚到了<<moneyGain 25>>。
+<br><br>
+<<endevent>>
+<<domusquick>>
+
+:: Domus Gutters Molestation Finish
+<<if $enemyhealth lte 0>>
+
+	你把<<person>>撞向一个柜子，柜子里的东西全都崩落在<<him>>身上。<<tearful>>你抓起掉下的手机，趁<<he>>还没恢复，删除了照片。离开时你还拿走了一些钱。
+	<br><br>
+
+	你赚到了<<moneyGain 25>>。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Domus Street]]>><</link>>
+
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	"给。"<<He>>把电话扔给你。<<tearful>>趁<<he>>还没反悔，你删除了照片。"还有你的钱，也给你。我是个守信用的<<personsimple>>。"
+	<br><br>
+
+	你赚到了<<moneyGain 25>>。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Domus Street]]>><</link>>
+
+<</if>>
+
+:: Domus House Tease
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+你转身背对<<beasttype>>，弯下腰，摆动<<bottom>>，这让<<bHe>>绷紧了链条，再次爆发出疯狂的活力。
+<<deviancy1>>
+<<if $monster is 1>>
+	"来打架，来玩啊！"<<bHe>>喊道。
+<</if>>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure)>>
+
+	链条从拴系处挣脱，<<beasttype>>向你扑来。
+	<br><br>
+
+	<<link [[继续|Domus Entrance Dog]]>><<set $molestationstart to 1>><</link>>
+	<br>
+
+<<else>>
+	<<endevent>>
+	你转身回到门口。
+	<br><br>
+
+	<<link [[闯入|Domus House Lock]]>><</link>>
+	<br>
+	<<link [[去下一家 (0:02)|Domus House Knock]]>><<pass 2>><</link>>
+	<br>
+	<<link [[停止|Domus Street]]>><</link>>
+	<br>
+
+<</if>>
+
+
+:: Domus House Ignore
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+你无视了<<beasttype>>，返回门口，<<bHe>>慢慢平静了下来。
+<br><br>
+
+<<link [[闯入|Domus House Lock]]>><</link>>
+<br>
+<<link [[去下一家 (0:02)|Domus House Knock]]>><<pass 2>><</link>>
+<br>
+<<link [[停止|Domus Street]]>><</link>>
+<br>
+<<endevent>>
+
+:: Domus Model
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<rng>>
+
+这是一间<<print either("小小","很小","非常干净")>>的浴室。
+<<if $exhibitionism lte 34>>
+
+	你脱得干干净净，就差一点，但你做不到。你不能让自己一丝不挂，走进一屋子陌生人当中。
+	<br><br>
+	你正要进去，<<person>>拦住了你："抱歉，但是每一件都要脱掉，这是人体艺术。"
+	<br>
+	你在一个角落里脱光衣服，如坐针毡。即使似乎没人注意到。
+
+<<else>>
+	你脱掉所有的衣服，直到全身赤裸。赤身裸体穿过走廊，进入繁忙的工作室的时候，你感到一阵强烈的兴奋。
+<</if>>
+<br><br>
+<<if (random(1, 10000) lt (9900 - $allure)) or ($rng % 12 gte 6)>> /* Mild events will run 50% (6 times in 12)*/
+	<<strip>>
+	<<pass 2 hour>>
+	<<if $player.penisExist and $player.vaginaExist>>
+		<<if $fame.exhibitionism gte 600>>
+			你走上舞台，一个<<personsimple>>笑了："你花钱让<<phim>>脱衣服？！我好像还从没见过<<phim>>穿衣服的样子呢。"
+			<br><br>
+
+			"这也算好事，"另一个人补充道，"这么可爱的小鸡鸡和小穴如果没人欣赏也是一种悲哀。"
+		<<elseif $fame.exhibitionism gte 40>>
+			你走上舞台，<<personsimple>>多看了你一眼，说:"<<pShes>>在这方面有些名气，我印象很深。"
+			<br><br>
+
+			"一点也不奇怪，"另一个人盯着你的生殖器，补充道，"如果我有这种福气，我也会炫耀它。"
+		<<else>>
+			众人观摩着你的生殖器，兴奋地窃窃私语。一个<<personsimple>>鼓掌："你找到的人还真有意思。"
+		<</if>>
+	<<else>>
+		<<if $fame.model gte 600>>
+			你走上舞台，一个<<personsimple>>仔细多看了你一眼，说："我一定是在做梦。没想到我会在这里见到像<<phim>>这样著名的模特。"
+			<br><br>
+		<<elseif $fame.exhibitionism gte 600>>
+			你走上舞台，一个<<personsimple>>笑了："你花钱让<<phim>>脱衣服？！我好像还从没见过<<phim>>穿衣服的样子呢。"
+			<br><br>
+		<<elseif $fame.model gte 400>>
+			你走上舞台，一个<<personsimple>>惊讶了一下，才说，"令人印象深刻，<<pShes>>有些名气，不止是效仿你的普通模特。"
+			<br><br>
+		<<elseif $fame.exhibitionism gte 400>>
+			你走上舞台，<<personsimple>>多看了你一眼，说:"<<pShes>>在这方面有些名气，我印象很深。"
+		<</if>>
+	<</if>>
+	<br><br>
+	<<if $rng gte 66>>
+		在接下来的两个小时里，你摆出各种姿势，一屋子的人都在画你。
+		<<if $exhibitionism lte 34>>
+			这么多人这么专注地盯着你的裸体，让你感到不舒服。然而，尽管你起初很紧张
+		<<else>>
+			这么多人这么专注地盯着你的裸体，让你非常兴奋。然而，在最初的刺激感过后
+		<</if>>
+		现在却有点无聊。他们的神情超脱、冷静、不带有性的色彩。
+		仿佛他们正在画的是一碗水果。
+		<<larousal>><<arousal -2>>
+		<br>
+		画出来的作品非常漂亮且富于艺术性。
+		<<lstress>><<stress -1>><<fameexhibitionism 5 "pic">><<famemodel 5 art>>
+		<br>
+	<<elseif $rng gte 33>>
+		他们让你做的姿势一开始很正常，但慢慢滑向了淫荡的方向：张开腿和弯腰的姿势越来越多。
+		<<if $exhibitionism lte 34>>
+			哪怕一开始很紧张，
+		<<else>>
+			如你所料，
+		<</if>>
+		你很快从中发现了莫大的乐趣：你喜欢展示自己的身体，他们也确实很爱看。
+		房间里弥漫着淫靡的气氛，你很享受与观众调情的过程。
+		<<promiscuity2>>
+
+		创作的画作多种多样，但主要集中在你的<<if playerBellyVisible()>>腹部，<</if>><<breasts>>和<<genitals>>。
+		<<fameexhibitionism 10 "pic">><<famemodel 2 art>>
+	<<else>>
+		虽然在场画师仍然假装这是人体艺术，但很明显，这些人喜欢的其实只是让一名
+		<<if $player.gender is "h">>
+			扶她
+		<<else>>
+			<<girl>>
+		<</if>>
+		以他们喜欢的下流姿势暴露<<pherself>>。
+		许多人连假装画画都不装了，然而，<<person>>还是控制着每个人，使其不逾矩。
+		<<if $exhibitionism lte 34>>
+			如果你不是那么紧张，你甚至可能会喜欢这样。
+		<<else>>
+			这很有趣。
+			<<lstress>><<stress -2>>
+		<</if>>
+		<br>
+		完成的几张作品，大多只是粗糙地素描了你的
+		<<if $player.gender is "f">>
+			乳房和阴部，
+		<<elseif $player.gender is "h">>
+			肉棒，小穴和屁股，
+		<<else>>
+			肉棒和屁股，
+		<</if>>
+		不过一位富有想象力的"艺术家"描绘了你被各种各样的人、动物和神话生物轮奸的场景。
+		<<garousal>><<arousal 200>><<fameexhibitionism 10 "pic">>
+	<</if>>
+	<br>
+
+<<elseif $rng % 12 gte 1>> /*lewd - if we get here, lewd will trigger 5 times in 6. It will fall to bad ~1 in 6*/
+	<<strip>>
+	<<pass 2 hour>>
+	<<if $rng gte 50>>
+		<<generates2>><<generate3>>
+		<<person2>>
+		当你爬上舞台的时候，另一扇门打开了，一个和你差不多年龄的<<person>>走进房间，和你一样赤身裸体。<<He>>向你点点头，也爬上舞台。
+		<br>
+		"很高兴见到你，"<<he>>小声说，
+		<<if $beauty gte ($beautymax / 7) * 2>>
+			<<if $beauty gte ($beautymax / 7) * 4>>
+				"你真是<<print either("美丽动人！","魅力摄人","太漂亮了！","太特么性感了！","比之前的好看十倍！")>>
+			<<else>>
+				"你还算<<print either("漂亮。","不错。","可爱。","好看。","迷人。","比之前的好些。")>>
+			<</if>>
+			<<if playerBellyVisible()>>怪不得你怀孕了.<</if>>
+			总之，和你共事应该很愉快。"
+			<br><br>
+		<<else>>
+			<<He>>看起来有些失望。
+		<</if>>
+		<<He>>站在你旁边，望着<<he>>进来的门："那么谁是三号？"
+		<br>
+		"三号？"你问。
+		<br>
+		<<He>>正要张嘴回答，门又开了，一个年纪大得多的<<person3>><<person>>也赤身裸体地走进来。
+		<<He>>看着你们俩，向观众竖起了夸张的大拇指。
+		<br>
+		"又是<<Him>>。" <<person2>><<person>>小声说。
+		<<switch random(1, 9)>>
+			<<case 1>><<He>>叹气。
+			<<case 2>><<He>>向你露出笑容。
+			<<case 3>><<He>>皱着眉。
+			<<case 4>><<He>>舔了舔<<his>>的嘴唇。
+			<<case 5>><<He>>翻了个白眼。
+			<<case 6>><<He>>推开<<his>>的头发。
+			<<case 7>><<He>>低声咒骂。
+			<<case 8>><<He>>收腹。
+			<<default>>
+				<<if $NPCList[1].penis isnot "none">>
+					<<His>>的阴茎明显勃起了。
+				<<else>>
+					<<He>>抚摸着自己的小穴。
+				<</if>>
+		<</switch>>
+		<br>
+		<<person3>><<person>>也登上舞台，走到你们当中。
+		<br><br>
+
+		在接下来的几小时里，你们三人在<<person1>><<person>>的指导下摆出无数个姿势。
+		大多数姿势都很淫秽，模拟的是在迷幻的痛苦中，以<<person3>><<person>>为核心的三人性爱。
+		在画家作画时保持更诱惑的姿势，对每个人的肌肉都是一种负担。有几次你的面部甚至被<<if $NPCList[1].pronoun is "f">>胸部<<else>>胸毛<</if>>,下阴又或是<<if $NPCList[2].pronoun is "f">>老女人的<<else>>老男人的<</if>><<if $NPCList[2].gender is "f">>阴户<<else>>睾丸<</if>>压住，
+		，因为有人坚持不住脱力了。
+
+		<<if $promiscuity gte 55>>
+			<br>
+			<<rng>>
+			你忍不住冒出了一个念头。你注意到<<person2>><<persons>>的脸就在你的<<genitals>>正下方
+			，对方睁大眼睛，作势欲舔。于是你"不小心"滑倒了，
+			<<if $player.gender is "f" or ($rng gte 51 and $player.gender is "h")>>
+				小穴恰好压在<<his>>伸出的舌头上。
+			<<else>>
+				肉棒恰好戳进<<his>>张开的嘴里。
+			<</if>>
+			<br><br>
+
+			"别动！"<<person1>><<person>>喊道，"太好了，保持原样。各位艺术家-描吧，画吧，捕捉这一刻。"
+			<br><br>
+
+			<<person2>><<person>>看起来很委屈，随即，<<his>>眼中闪过调皮的光。
+			<<if $player.gender is "f" or ($rng gte 51 and $player.gender is "h")>>
+				你感到<<his>>的舌头开始在你的穴口移动<<if $player.gender is "f">>，按摩你的阴蒂<</if>>。
+			<<else>>
+				你感到<<his>>的开始吮吸起你的下体，舌头在你的龟头上舔舐起来。
+			<</if>>
+			缓慢，微妙却无情的舔舐持续了几分钟。
+			<br>
+			<<Hes>>要让你在大庭广众之下高潮！
+			<<arousal 5000 "genitals">>
+			<<if $arousal gte $arousalmax>>
+				你试图忍住，但终究还是失败了。真丢人。
+				<br>
+				<<orgasm>>
+
+				有的人停下来观看，其他人则猛画起来。
+				<<gstress>><<stress 2>>
+			<<else>>
+				<br>
+				<<he>>终于停了下来。这让你很舒服。
+				<<lstress>><<stress -2>>
+				<br><br>
+			<</if>>
+		<</if>>
+		<<famemodel 2 art>>
+	<<else>>
+		<<generate2>>
+		<<if $awareness lt 200>>
+			你登上舞台，发现有许多古代的武器和刑具，看起来很吓人。
+		<<else>>
+			你登上舞台，发现有各种各样的BDSM玩具。
+		<</if>>
+		<<person1>><<person>>在房间里演说道。
+		<br>
+		"不管是什么原因，"<<he>>说，"这个小镇莫名地吸引着世上最黑暗原始的性。
+		令人悲哀的是，权力、强奸和虐待无处不在。今天，我们将在艺术中探索这个话题。
+		<br>
+		"尽管我们的<<pher>>看起来很年轻，但她是一个经验丰富的专业人士，可以完美地安全使用所有这些设备。
+		无论看起来是什么样子 - <<pshe>>有安全词和信号，并且完全掌控局面。这只是一场表演。所以开始绘画吧，记录这一刻。
+		而且，借用一句老话，请不要在家里尝试这样做！这是不可能的！
+		<br>
+		"我的朋友在这里，"<<he>>指着一个出现在你身边的<<person2>><<person>>，"会提供帮助。所以准备好你们的画笔，我们开始画吧。"
+		<br><br>
+
+		接下来的几小时里，<<person>>夸张地鞭打并殴打你，弄出了许多声响，但几乎不痛。
+		<<if playerBellyVisible()>>
+			虽然要格外小心肚子周围，<<he>>的
+		<<else>>
+			<<He>>
+		<</if>>
+		使用现有设备让你做各种压力姿势。这包括让你跪在地上，双手被铐在脚上、
+		将你捆绑在桌子上，用桨板抽打你的屁股，把你四肢张开绑在地板上，把<<his>>的裆部磨擦在你的脸上，
+		最后球口枷锁住你，把你放进枷锁架里，假装强迫<<if $pronoun is "f">>她的穿戴式假阳具<<else>>他的肉棒<</if>>插入你的身体。
+		你无助的屁股。这群人一丝不苟地描绘着这一幕。
+		<br><br>
+
+		<<if currentSkillValue('english') gte 500>>
+			"那张脸！"<<person1>><<person>>喊道。"艺术家们，捕捉那一刻。那个表情。那是真实的。"
+			<<famemodel 2 art>>
+		<<elseif currentSkillValue('english') gte 250>>
+			"画画，艺术家。画画。"<<person1>><<person>>不耐烦地双手抱胸，"<<print either("快把整个场景画进去。","把你看到的都画进去。","让这一刻被永远留存。")>>"
+			<<famemodel 1 art>>
+		<<else>>
+			"画吧，艺术家们。画吧。"<<person1>><<person>>蹲在你旁边，尖声在你耳边低语。
+			"开始表现得像这是真的，否则我可能会要求<<person2>><<him>>真的这么做！"
+		<</if>>
+	<</if>>
+<<else>>
+	<<strip>>
+	<<set _rape_triggered to 1>>/*bad - occurs 1/12 time for non-virgins (i.e. when rng divisible by 12)*/
+	<<if $rng gte 50>><<pass 5>>
+		<<generate2>><<generate3>><<generate4>><<generate5>><<generate6>>
+		你刚进门，他们就向你扑来。
+		<br><br>
+		<<link [[继续|Domus Model Gang Rape]]>><<set $molestationstart to 1>><</link>>
+	<<else>>
+		<<pass 1 hour>>
+		<<generate2>>
+		<<if $awareness lt 200>>
+			你登上舞台，发现有许多古代的武器和刑具，看起来很吓人。
+		<<else>>
+			你登上舞台，发现有各种各样的BDSM玩具。
+		<</if>>
+		<<person1>><<person>>在房间里演说道。
+		<br>
+		"不管是什么原因，"<<he>>说，"这个小镇莫名地吸引着世上最黑暗原始的性。
+		令人悲哀的是，权力、强奸和虐待无处不在。今天，我们将在艺术中探索这个话题。
+		<br>
+		"尽管<<pher>>看起来年轻，我们的模特是一位经验丰富的专业人士，来展示这些工具的使用。为了帮助<<phim>>，我的助手，"<<he>>指着一个出现在你身边的<<person2>><<person>>，"会提供帮助。所以准备好你们的画笔，我们开始画吧。"
+		<br>
+		那个<<person>>疑惑地看着你。你不确定为什么。
+		<br><br>
+
+		在接下来的一个小时里，那个<<person>>戏剧性地鞭打和抽打你，发出很大的声响，但几乎没有造成任何疼痛。
+		<<if playerBellyVisible()>>
+			虽然要格外小心肚子周围，<<he>>的
+		<<else>>
+			<<He>>
+		<</if>>
+		使用现有设备让你做各种压力姿势。这包括让你跪在地上，双手被铐在脚上、
+		将你捆绑在桌子上，用桨板抽打你的屁股，把你四肢张开绑在地板上，把<<his>>的裆部磨擦在你的脸上，
+		最后球口枷锁住你，把你放进枷锁架里，假装强迫<<if $pronoun is "f">>她的穿戴式假阳具<<else>>他的肉棒<</if>>插入你的身体。
+		你无助的屁股。这群人一丝不苟地描绘着这一幕。
+		<br><br>
+
+		<<if currentSkillValue('english') gte 500>>
+			"演得不错，"<<person1>><<person>>说道。"但我认为<span class="red">到了尝试更加真实的时候了。</span>"
+			<br>
+			<<He>>对<<person2>><<person>>点头。"开始吧。"
+			<<famemodel 2 art>>
+		<<else>>
+			"不行。<span class="red">那个表情，我不相信。</span>"<<person1>><<person>>对着你身后的<<person2>><<person>>点头。"你能做点什么让这更加真实吗？"
+		<</if>>
+		<br><br>
+		<<set $model_host to clone($NPCList[0])>>
+		<<set $model_dom to clone($NPCList[1])>>
+		<<if $rng gte 50 and ($bestialitydisable is "f" or $monsterchance gte 100 and ($hallucinations gte 1 or $monsterhallucinations is "f"))>><!-- Modified for Monster People -->
+			<<endevent>>/*clears out the people*/
+			<<beastNEWinit 1 dog>>
+			"真实？<span class="red">我正好有个主意。</span>"你感觉到手松开了你的腰，然后听到了身后的脚步声。门开了。一声哨响。
+			一会儿，一个<<beasttype>>跳了进来，向你冲过来。
+			<br><br>
+			<<link [[继续|Domus Model Dog]]>><<set $molestationstart to 1>><<bind>><<facewear 4>><</link>>
+		<<else>>
+			"终于，"<<person2>><<person>>咕哝道。你感觉到有硬物刷过你的屁股。
+			<br><br>
+			<<endevent>> /* clears out the initial person1 from combat */
+			<<generate1>><<set $NPCList[0] to clone($model_dom)>> /* sets the dom character to person1*/
+			<<if $NPCList[0].gender is "f">><<npcstrapon 0>><</if>>
+			<<link [[继续|Domus Model BDSM Rape]]>><<set $molestationstart to 1>><<bind>><<facewear 4>><</link>>
+		<</if>>
+	<</if>>
+<</if>>
+<<if not _rape_triggered>>
+	<<set _vagin to setup.bodyliquid.combined("vagina")>><<set _vagout to setup.bodyliquid.combined("vaginaoutside")>>
+	<<set _assin to setup.bodyliquid.combined("anus")>><<set _assout to setup.bodyliquid.combined("bottom")>>
+	<<set _face to setup.bodyliquid.combined("face")>><<set _chest to setup.bodyliquid.combined("chest")>>
+
+	<<if (_vagin + _assin + _vagout + _assout + _face + _chest) gte 1>>
+		<br><br>
+		一些艺术家注意到这些淫秽的液体
+		<<if (_vagin + _assin + _vagout) gte (_assout + _face + _chest)>>
+			<<if _vagin gte (_assin + _vagout)>>
+				你的阴道仍然在渗出液体。
+			<<elseif _assin gte _vagout>>
+				你的屁股仍然在渗出液体。
+			<<else>>
+				围绕着你的阴部
+			<</if>>
+		<<else>>
+			<<if _assout gte (_face + _chest)>>
+				在你屁股上
+			<<elseif _face gte _chest>>
+				在你的脸上
+			<<else>>
+				覆盖在你的<<breasts>>上。
+			<</if>>
+		<</if>>
+		并将这个场景画在了在他们的画作中。
+		<br>
+		你
+		<<if $exhibitionism lte 34>>
+			羞愧难当
+		<<elseif $exhibitionism lte 75>>
+			觉得好玩
+		<<else>>
+			很激动
+		<</if>>
+		<<print either("看起来太下流了。","看这画面有多猥琐。","他们对细节很关注。")>>
+		<br><br>
+	<</if>>
+	摆姿势的努力让你得到了相当大的锻炼。
+	<<gtiredness>><<tiredness 2>><<physique 2>>
+
+	<br><br>
+	<<link [[继续|Domus Model End]]>><</link>>
+	<br>
+<</if>>
+
+:: Domus Model End
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+你回到浴室去穿衣服。
+<<clotheson>>
+在离开时，<<person1>><<person>>把钱递给了你。
+你赚到了<<moneyGain 30>>。
+<br><br>
+<<link [[继续|Domus Street]]>><<endevent>><</link>>
+<br>
+
+:: Domus Model Gang Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<maninit>>
+<</if>>
+<<if $enemyarousal gte ($enemyarousalmax / 4) * 3>>
+	只有少数专门的艺术家还在作画，大多数人只是在看热闹。更多的人在偷偷摸摸地自慰。
+<<elseif $enemyarousal gte ($enemyarousalmax /4 ) * 2>>
+	有几位艺术家仍在画你的侵犯，但许多人现在<<print either("只在是观看。","只是在盯着你。","只是在偷偷看。","只是在手淫。")>>
+<<elseif $enemyarousal gte ($enemyarousalmax / 4)>>
+	一些艺术家正在兴奋地画下你被袭击的场景。
+<<else>>
+	一些艺术家坐在他们的画架前观看。他们在等待事情的开始。
+<</if>>
+<<if $pain gte 40 and (random(0,9)%3 is 0)>>
+	<br>
+	"记住：我们学习了画眼泪的技巧。使用它们。"
+<<elseif $mouthstate is "penetrated" and random(0,1)>>
+	<br>
+	"注意光影，大家。一定要画出喉咙的隆起。"
+<</if>>
+
+<<effects>>
+<<effectsman>>
+
+<<if $alarm is 1>>
+	你身处一个私人住宅的深处。<span class="red">没有任何可能听到你呼救的人。</span>
+	<<set $alarm to 0>>
+	<br><br>
+<</if>>
+
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续->Domus Model Rape Climax]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续->Domus Model Gang Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+
+:: Domus Model Rape Climax
+<<effects>>
+<<if $enemyhealth lte 0>>
+	他们痛苦地退缩，不愿意靠近，给了你可乘之机。<<tearful>>你逃出工作室，拿起你的衣服，逃离房子。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Domus Street]]>><</link>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<pass 10>>
+	当你躺在地上的时候，他们回到他们的画架上，开始为你写生和作画。
+	一段时间后，你爬起来，踉踉跄跄地走出了房间。
+	<br>
+	<<person1>><<person>>冲过来帮忙。
+	<br><br>
+	"谢谢你今天的出色工作，"<<he>>说道。"我很抱歉这让你很震惊，但是
+	<<print either("这是为了艺术。","你激励了所有人。","艺术必须真实。","没有别的办法。它必须是真实的。")>>
+	你应该看看你的脸。精致。"
+	<br><br>
+	"去穿衣服。很明显，会有奖金。还有团体的感谢礼物。如果你愿意，可以洗个澡。你需要多长时间就多长时间，你今天做得很好。"
+	<<lstress>><<stress -2>>
+	<br><br>
+	<<link [[继续|Domus Model Rape End]]>><</link>>
+<</if>>
+
+
+:: Domus Model BDSM Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $position to "wall">>
+	<<set $walltype to "pillory">>
+	<<set $head to "grappled">>
+	<<set $NPCList[0].penis to "anusentrance">><<set $anusstate to "entrance">><<set $anustarget to 0>>
+<</if>>
+<<if $enemyarousal gte ($enemyarousalmax / 3) * 3>>
+	只有少数敬业的艺术家还在画画，大多数人只是在看。更多的人在偷偷摸摸地自慰。
+<<elseif $enemyarousal gte ($enemyarousalmax /3) * 2>>
+	有几位艺术家还在画你被侵犯的画面，但很多人现在只是呆呆地看着。
+<<elseif $enemyarousal gte ($enemyarousalmax /3)>>
+	有很多艺术家画你被性侵的画面。
+<<else>>
+	全班同学再次饶有兴趣地观看。
+<</if>>
+<br><br>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Domus Model BDSM Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Domus Model BDSM Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Domus Model BDSM Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<ejaculation>>
+	艺术小组继续兴奋地作画。
+	<br><br>
+
+	<<endcombat>>
+	<<set $phase to 0>>
+
+	<<link [[继续|Domus Model Pillory Wait]]>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	助手痛苦地哼了一声，走开了，很快拿着一把大画笔回来了。过了一会儿，你觉得它深深地塞进了你的屁眼。<<gpain>><<pain 5>>
+	<br>
+	你本能地试图在被塞住嘴的情况下喘气，这在房间里引起了一些笑声。<<gstress>><<stress 1>>。
+	<br>
+	"母狗需要尾巴，对吧?"
+	<br><br>
+	艺术小组继续兴奋地作画。
+	<br><br>
+
+	<<endcombat>>
+	<<set $phase to 1>>
+
+	<<link [[继续|Domus Model Pillory Wait]]>><</link>>
+	<br>
+<<else>>
+	艺术小组继续兴奋地作画。
+	<br><br>
+
+	<<endcombat>>
+	<<set $phase to 0>>
+
+	<<link [[继续|Domus Model Pillory Wait]]>><</link>>
+	<br>	
+<</if>>
+
+
+:: Domus Model Dog
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $position to "wall">>
+	<<set $walltype to "pillory">>
+	<<set $head to "grappled">>
+<</if>>
+<<if $enemyarousal gte ($enemyarousalmax / 4) * 3>>
+	只有少数敬业的艺术家还在画画，大多数人只是在看。更多的人在偷偷摸摸地自慰。
+<<elseif $enemyarousal gte ($enemyarousalmax / 4) * 2>>
+	有几位艺术家还在画你被侵犯的画面，但很多人现在只是呆呆地看着。
+<<elseif $enemyarousal gte ($enemyarousalmax / 4)>>
+	有很多艺术家画你被性侵的画面。
+<<else>>
+	助手帮助稳定了<<beasttype>>，而全班则重新燃起了兴趣。
+<</if>>
+<<if (random(0,9)%3 ==0)>>
+	<br>
+	助手<<print either("扇了你一耳光.","抓住你的乳头，慢慢扭动.","用皮带抽打你的大腿内侧.")>>
+	<<gpain>><<pain 2>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Domus Model Dog Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Domus Model Dog]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Domus Model Dog Finish
+<<set $location to "town">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+	当艺术小组继续兴奋地画画时，<<beasttype>>深情地舔着你的背和脖子。
+	<br><br>
+	<<endcombat>>
+	<<set $phase to 0>>
+
+	<<link [[继续|Domus Model Pillory Wait]]>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	<<beasttype>>尖叫着跑开了。一些人笑或欢呼，其他人听起来很失望。
+	<br>
+	<<endcombat>>
+	艺术小组继续兴奋地作画。
+	<br><br>
+	<<set $phase to 1>>
+	<<link [[继续|Domus Model Pillory Wait]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Domus Model Pillory Wait
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<generate1>><<generate2>><<pass 30>>
+被锁在颈手枷上
+<<set $NPCList[0] to clone($model_host)>><<set $NPCList[1] to clone($model_dom)>><<unset $model_host>><<unset $model_dom>>
+<<if $phase is 0>>
+	<<if $stress gte (($stressmax / 5) * 3)>>
+		被利用，被虐待，无计可施，
+	<<else>>
+		被利用，被虐待，
+	<</if>>
+	你甚至无法掩饰，因为全班同学都在热切地描绘你。
+	<br>
+<<else>>
+	你瞪着他们，期待着进一步的侵犯。但是没有，他们似乎沉浸在绘画中了。
+	<br>
+<</if>>
+被堵住嘴，你甚至不能抱怨。你没有选择，只能等待。每隔一段时间，<<person1>><<person>>就会出现。
+在你面前摆着另一幅你被虐待的画。
+<<gstress>><<stress 1>>
+<br><br>
+<<person1>><<person>>最终结束谈话。<<person2>><<person>><<print either("轻轻拍打你的屁股","快速挤压你的乳头","把你的头发往后拉，轻轻地吻你的额头")>>
+然后把你从枷锁中解脱出来，<<himself>>忙着整理舞台。美术课收工了。
+<br><br>
+
+<<person1>><<person>>帮你解开口球，同时带着你离开了房间。
+<br>
+"好一场演出！" 一旦你们走到走廊的隐私处，<<he>>就会赞叹不已。"你很出色。我想他们中的大多数人都相信这是真的。我的意思是，这是一个老生常谈的问题------。
+'模特儿变坏了'--但你和你的伙伴真的很有说服力。我几乎相信了它--即使在我们花了那么多钱之后
+在电话中安排的时间。这样的化学反应! 这样的演技! 令人瞩目的... 你会发现你的工资里有一点额外的东西。"
+<br><br>
+<<He>>向浴室挥手。"慢慢来吧。你今天表现得很好。哇。"
+<<lstress>><<stress -2>>
+<br><br>
+<<link [[进入浴室|Domus Model Rape End]]>><<set $worn.face.type.push("broken")>><<faceruined>><<endevent>><<unbind>><</link>>
+
+
+:: Domus Model Rape End
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<pass 20>>
+你去卫生间穿衣服，恢复体力。
+<<clotheson>>
+<<link [[继续|Domus Model Rape Leave]]>><</link>>
+
+
+:: Domus Model Rape Leave
+<<set _payout to random(110,180)>>
+当你打开浴室门准备离开时，你发现外面的凳子上放着一只大碗。他们给你留了£_payout现金，
+<<print either("一张“早日康复”的卡片，","一朵玫瑰，","一张感谢卡，","一朵纸叠的花，","你被强奸的素描，","一段极具攻击性的诗词，","一首下流涩情的小诗，")>>
+还有一些看起来很贵的珠宝。<<tearful>>你离开了。
+<<lstress>><<stress -1>>
+<<set $money += (_payout * 100)>><<set $blackmoney += random(30,70)>>
+<br><br>
+<<link [[继续|Domus Street]]>><<endcombat>><<endevent>><</link>>
+<br>
+
+
+:: Domus Errand
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "domus">><<pass 5>>
+<<person1>><<He>>把订单递给你。"给他们看看就可以了。谢谢。"
+<br><br>
+<<generate2>><<person2>>
+你快步走到街角的商店。
+<<if $weather is "clear">>
+	除了买雪糕和冰沙的孩子们之外，这里很安静。人们可能都在室内或外面的酒吧里观看比赛。孩子们带着糖果离开了。
+<<elseif $weather is "rain">>
+	里面一片空荡荡。在糟糕的天气和比赛之间，所有人都会选择待在家里。
+	<br>
+	"外面在下雨吗?"店员问道。
+	<br>
+	你站在门口衣服还正滴着水，不确定<<hes>>问这话是否是认真的。
+	<br>
+<<elseif $weather is "overcast">>
+	它是空的。人们可能在室内观看比赛。
+<<elseif $weather is "snow">>
+	它是空的。人们可能在躲避寒冷。
+<</if>>
+<br>
+你把订单交给柜台后面那<<person>>。
+<br><br>
+
+"好的，"<<he>>说，"这是酒。我需要看一下你的身份证。"
+<br>
+<<if $id is 0>>
+	"这不是给我喝的。我只是替别人取货。"
+	<br>
+	"抱歉，"<<he>>耸耸肩。
+	<br>
+	"但是…那些人让我帮忙来拿的。"
+	<br>
+	"抱歉，不过……"<<he>>环顾了一下商店周围。现在空无一人。"除非你能以其他方式证明你的年龄。"
+	<br>
+	"其他方式证明？"
+	<br>
+	<<if $player.gender_appearance is "f">>
+		"要不让我检查一下你的乳房？"
+		<br>
+		<<if $exhibitionism gte 35>><<link [[允许|Domus Errand Proof]]>><<set $phase to 1>><</link>><</if>>
+		<br>
+		<<link [[拒绝|Domus Errand Proof]]>><<set $phase to 0>><</link>>
+		<br>
+	<<else>>
+		"要不让我检查一下你的阴茎？"
+		<br><br>
+		<<if $exhibitionism gte 35>>
+			<<if playerChastity()>>
+				你不能遵从，因为你带着贞操带。
+			<<else>>
+				<<link [[接受|Domus Errand Proof]]>><<set $phase to 2>><</link>>
+			<</if>>
+			<br>
+		<</if>>
+		<<link [[拒绝|Domus Errand Proof]]>><<set $phase to 0>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	你把身份证递过去。<<He>>看了一会儿，把它还给你，然后搬来了一大箱啤酒。
+	<br>
+	"祝你有愉快的一天。"
+	<br><br>
+	<<link [[继续|Domus Errand End]]>><<set $phase to 1>><</link>>
+	<br>
+<</if>>
+
+:: Domus Errand Proof
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<if $phase is 0>>
+	<<He>>举起了双手。"我不能给你提供酒精饮料。还需要别的吗？"
+	<br>
+	你摇了摇头。
+	<br>
+	"祝你有愉快的一天。"
+	<br>
+	你离开了。
+	<br><br>
+	<<link [[继续|Domus Errand End]]>><<set $phase to 0>><</link>>
+	<br>
+<<elseif $phase is 1>>
+	周围没有其他人，所以你同意暴露你的<<if $player.gender is "m">>胸部<<else>>胸部<</if>>。
+	<<if $player.breastsize lte 2>>
+		<<He>>伸出手轻轻地揉了揉你的<<breasts>>。
+		<br>
+		"抱歉……"<<he>>说道。"没有身份证我不能给你酒。"
+		<<insecurity "breasts_small" 1>><<ginsecurity "breasts_small">>
+		<br>
+		你把自己掩盖起来。
+		<br>
+		"认为这是一件好事。还有什么事吗？"
+		<br>
+		你摇了摇头。
+		<br>
+		"祝你有愉快的一天。"
+		<br>
+		你离开了。
+		<br><br>
+		<<link [[继续|Domus Errand End]]>><<set $phase to 0>><</link>>
+		<br>
+	<<else>>
+		<<He>>伸出双手，轻轻地摸着你的胸部。
+		<<garousal>><<arousal 100 "breasts">>
+		<br>
+		"好吧，"<<he>>说道。"我可以接受这个作为年龄证明。"
+		<br>
+		<<He>>又摸了你一会儿，然后转身去拿饮料。
+		<br>
+		你把自己掩盖起来。
+		<br>
+		<<He>>递给你一大箱啤酒。"祝你今天愉快。"
+		<br><br>
+		<<link [[继续|Domus Errand End]]>><<set $phase to 1>><</link>>
+		<br>
+	<</if>>
+<<elseif $phase is 2>>
+	周围没有人，你走近柜台，让<<him>>把手伸进你的
+	<<if playerChastity()>>
+		$worn.genitals.cn_name_cap。
+	<<else>>
+		<<crotch>>.
+	<</if>>
+	<br>
+	<<if $player.penisExist>>
+		你感觉有一只手抓住了你的阴茎。
+		<br>
+		<<if $player.penissize lte 1>>
+			突然间<<he>>笑了。
+			<br>
+			"那是……？啊，对不起，不好意思，"<<he>>笑了笑。"我不能把那个作为证据接受。"
+			<<insecurity "penis_small" 1>><<ginsecurity "penis_small">>
+			<br>
+			<<He>>把手拿开了。
+			<br>
+			"还有什么事吗？"<<he>>笑着说。
+			<br>
+			你摇了摇头。
+			<br>
+			"祝你有愉快的一天。"
+			<br>
+			你离开了。
+			<br><br>
+			<<link [[继续|Domus Errand End]]>><<set $phase to 0>><</link>>
+			<br>
+		<<else>>
+			<<if $player.penissize gte 3>>
+				"哇!"<<he>>看了你一眼。"你在收拾东西。"
+				<br>
+				<<He>>揉了一下。
+				<<garousal>><<arousal 100 "genitals">>
+				<br>
+			<</if>>
+			"好吧，"<<he>>说道。"我可以接受这个作为年龄证明。"
+			<br>
+			<<He>>摸了你一会儿，然后缩回<<his>>的手。
+			<br>
+			<<He>>递给你一大箱啤酒。"祝你今天愉快。"
+			<br><br>
+			<<link [[继续|Domus Errand End]]>><<set $phase to 1>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		你感觉有一只手在摸你的阴部。
+		<br>
+		<<if $rng % 2>>
+			"一个阴道，"<<He>>笑着说道。"我想我会找到其中的一个。"
+			<br>
+			<<He>>在你的阴蒂周围摩擦<<his>>的手指。
+			<<garousal>><<arousal 100 "genitals">>
+			<br>
+			"别担心，我不会告诉任何人的，"<<he>>边说边揉。"这里有很多变态。"
+			<br>
+			<<He>>把手指塞进你的阴部。"变态这么多。"
+			<<garousal>><<arousal 100 "genitals">>
+			<br>
+			<<He>>收回<<his>>的手。"你太不小心了。"
+			<br><br>
+			<<He>>递给你一大箱啤酒。"祝你今天愉快。"
+			<br><br>
+			<<link [[继续|Domus Errand End]]>><<set $phase to 1>><</link>>
+			<br>
+		<<else>>
+			<<He>>缩回<<his>>的手，好像被咬了一样。
+			<br>
+			"变态"，<<his>>的脸涨得通红。"你觉得好笑吗?!"
+			<br>
+			你退后一步.
+			<br>
+			"跟愚蠢的店主开玩笑，嗯？滚出我的车站，"<<he>>喊道。"出去。"
+			<br><br>
+			你离开了。
+			<br><br>
+			<<link [[继续|Domus Errand End]]>><<set $phase to 0>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<<else>>
+	店主自发地唱起了歌。不知道该怎么办，你尴尬地退开。(这是个错误，请报告）。
+	<<link [[继续|Domus Errand End]]>><<set $phase to 0>><</link>>
+	<br>
+<</if>>
+
+:: Domus Errand End
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "domus">><<pass 5>>
+<<person1>>
+<<if $phase is 0>>
+	你两手空空地回到房子里，敲了敲门。
+	<br><br>
+	那个<<person>>茫然地看着你。"酒在哪里？"
+	<br>
+	"那家商店不肯招待我。"
+	<br>
+	"该死，"<<he>>说道。
+	<<if $weather is "rain">>
+		<<He>>看了看你湿漉漉的衣服和乱糟糟的头发。"好吧，显然你已经尽力了。"
+		<br>
+		带着怜悯的神情，<<he>>递给你<<moneyGain 5>>。
+	<<elseif $rng % 2>>"我想你已经努力过了。"
+		<br>
+		<<He>>不情愿地递给你<<moneyGain 5>>。
+	<<else>>
+		"那么你为什么在这里？你以为我花钱请你来散步吗！？滚蛋吧！"
+	<</if>>
+<<elseif $phase is 1>>
+	你把板条箱搬回屋里。它比看起来要重
+	<<switch $weather>>
+		<<case "clear">>在太阳的照射下，你出了不少汗。
+		<<case "rain">>雨水打在你身上，真的没有帮助。
+		<<case "overcast">>但你能做到。
+		<<case "snow">>和冰冷的地面并没有帮助。
+	<</switch>>
+	<br><br>
+	回来后，<<person1>><<person>>递给你<<moneyGain 5>>并拿走了板条箱。
+	<<if $rng % 3 is 0>>
+		这时，屋内传来一声巨大的轰鸣声，接着是
+		<<if $rng % 2>>
+			响亮的欢呼声和鼓掌声。
+		<<else>>
+			嘲笑、嘘声和一些非常粗俗的咒骂声。
+		<</if>>
+		<br>
+		"他妈的，"<<he>>破口大骂，砰的一声关上门，冲回屋里。
+	<<else>>
+		<br>
+		"谢谢。救世主，"<<he>>说，关上了门。
+	<</if>>
+<<else>>
+	你把薛定谔的啤酒搬回屋里去。 (这是一个错误，请报告)
+<</if>>
+<br><br>
+<<link [[继续|Domus Street]]>><<endevent>><</link>>
+<br>
+
+:: Domus Shy
+
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<rng>><<generates2>>
+<<set $NPCList[1].virginity to setup.NPCVirginityTypesVirgin>>
+
+<<if fameSum("sex","rape","prostitution") gte 400>>
+	就在门里面，<<person1>><<person>>把你拉到一边。
+	<br>
+	"听着，"<<he>>几乎是低声说道。
+	"我要在这里坦诚地告诉你。我见过你。你因为……性方面的行为比较出名。"
+	<br><br>
+
+	<<He>>紧张地瞥着一扇内门。
+	<br>
+	"你看，我<<person2>><<daughter>>是个长得不错的<<personsimple>>，而且非常性感，但是……"
+	<<if $pronoun is $player.gender_appearance>>
+		我想，<<hes>>是同性恋。还有困惑？矛盾的？我不知道，但
+	<<else>>
+		<<hes>>非常害羞。如果让<<himself>>自己来的话，
+	<</if>>
+	<<he>>永远不会主动出击。<<He>>需要有人来指导<<him>>。
+	<br><br>
+
+	<<person1>><<person>>指向门口。
+	<br>
+	"你进去诱惑<<person2>><<him>>。帮助<<him>>。我现在就给你£20，如果你让<<him>>有一个美妙的初夜，我再给你£100。成交吗？"
+	<br><br>
+
+	<<link [[同意|Domus Shy Seduce]]>><<set $money += 2000>><</link>>
+	<br>
+	<<link [[拒绝并离开|Domus Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<generateBEAST 3 dog>>
+	<<person1>><<person>>带你穿过客厅，一个看起来很害羞的<<person2>><<person>>坐在那里，不自在地摸着一只
+	<<beasttype 2>>.<!-- sic! beasttype/bhim/... take 0-based indices -->
+	<br>
+	"我给你带了一个可以说话的人。看起来和你差不多大。"
+	<br>
+
+	<<person>>抬起头，
+	<<if $seductionskill gte 600 and $rng gte 67>>
+		<<pass 60>>
+		脸红了，接着低下头看地面。
+		<br>
+		"你们谈谈吧。比如说你们现在都在研究的东西。就是那个……你知道的吧？那个在互联网上很流行的东西，连新闻都在报道。"
+		<br>
+		那个<<person>>继续盯着一块地毯。
+		<br>
+		"你知道的，对吧？"<<person1>><<person>>看向你。
+		<br>
+		你耸耸肩。
+		<br><br>
+
+		时间过得很慢。因为无聊，你试着和<<person2>><<person>>调情。这招不管用，但确实引起了<<his>>的注意。
+		在一次特别明显的示爱后，<<person1>><<person>>看起来<<print either("不自在","兴奋","相当尴尬")>>，
+		但是<<person2>><<person>>打开了。
+		<br>
+		<<He>>开始跟你讲学校的事，说以前还好，但现在<<hes>>害怕跟任何人说话，因为<<hes>>担心别人会发现<<hes>>喜欢<<personsimple>>。
+		这在<<his>>的大家庭中是不允许的。也许在家里也不行。
+		<<He>>看着<<his>>的<<person1>><<father>>.
+		<br>
+		那个<<person>>什么也没说，也没离开。
+		<br><br>
+
+		<<person2>><<person>>告诉你
+		<<if $player.gender_appearance is $pronoun>>
+			<<he>>认为你很可爱，终于可以这么说了，这让我松了一口气。
+		<<else>>
+			<<he>>认为你很可爱，并且<<he>>很欣赏你的关注，但现在<<he>>终于可以诚实地说，你不是<<he>>想要的。
+		<</if>>
+		<br><br>
+
+		<<He>>开始告诉你<<his>>的爱好和兴趣。<<He>>谈论书籍，游戏和网络小组。
+		<<He>>说终于有人说话了，这是一种解脱。<<He>>甚至感觉不能和<<his>>父母说话。
+		<br>
+		<<person1>><<person>>什么也没说，但看起来有些悲伤。
+		<br><br>
+
+		在这之后不久，<<person1>><<person>>带你走出房间。
+		<br>
+		"谢谢你，"<<he>>说道。
+		<<if $rng %2>>
+			"哇。我没想到会这样。我自己的<<person2>><<daughter>>。不过，这仍然是一个突破。<<He>>好多年没这么说过了。谢谢你。"
+		<<else>>
+			"多年来我们一直怀疑。但是现在<<person2>><<hes>>终于有勇气说出来了。真是松了一口气。非常感谢。"
+		<</if>>
+		<br><br>
+
+		<<person1>><<He>>在带你出去的时候，递给你<<moneyGain 40>>。
+		<br><br>
+
+		<<link [[继续|Domus Street]]>><<endevent>><</link>>
+		<br>
+	<<elseif $deviancy gte 35 and $rng lte 33 and ($monster is 1 or $bestialitydisable is "f")>><!-- Modified for Beast People -->
+		<<pass 60>>
+		脸红了，接着低下头看地面。
+		<br>
+		"你们谈谈吧。比如说你们现在都在研究的东西。就是那个……你知道的吧？那个在互联网上很流行的东西，连新闻都在报道。"
+		<br>
+		<<person>>继续抚摸<<beasttype 2>>，同时盯着一小块地毯。
+		<br>
+		你注意到 "他<<he>>抚摸<<beasttype 2>>的方式有些异常亲密。
+		<br>
+		"那是一只美丽的<<beasttype 2>>，"你说道。<<beasttype 2>>听到你的话后，耳朵竖了起来。
+		你注意到<<bhim 2>>靠近<<person>>，几乎要拥抱<<him>>。
+		"我可以抚摸<<bhim 2>>吗?"
+		<br><br>
+
+		在你聊天的过程中，你开始抚摸那只<<beasttype 2>>。
+		<<person1>><<person>>没有注意到，但是<<person2>><<persons>>睁大了眼睛。
+		<<if $NPCList[2].monster is "monster">><<beasttype 2>>的脸涨红了。<</if>>
+		<<He>>变得更加兴奋。
+		<br><br>
+
+		"你说："每个人都说他们爱动物，但很少有人真正做到。
+		<br>
+		<<person>>兴奋地点点头，而<<person1>><<person>>打了个呵欠。
+		<br><br>
+
+		你和<<person2>><<person>>在剩下的时间里讨论你们对动物的共同热爱。
+		<br><br>
+
+		当你离开时<<person1>><<person>>阻止了你。
+		<br>
+		"我不知道怎么做到的，"<<he>>说道。"但你说服了<<person2>><<him>>。"
+		<br><br>
+
+		<<He>>给了你<<moneyGain 30>>。
+		<br><br>
+
+		<<link [[继续|Domus Street]]>><<endevent>><</link>>
+		<br>
+	<<elseif $hairlength gte 500 and ($rng % 4)>>/*75% chance if here with long hair*/
+		<<pass 5>>
+		停了下来。盯着你看了很久。
+		<br><br>
+
+		"你的头发，"<<he>>小声说道。
+		<br>
+		"什么?"
+		<br>
+		"你的头发这么长，这么漂亮，"<<he>>轻声说。"就像... 我可以把它编成辫子吗。求你了。你会让我编辫子吗？"
+		<br>
+		<<person1>><<person>>期待地看着你。
+		<br><br>
+
+		<<link [[接受|Domus Braid]]>><<set $phase to 1>><</link>>
+		<br>
+		<<link [[拒绝|Domus Braid]]>><<set $phase to 0>><</link>>
+		<br>
+	<<else>>
+		<<pass 60>>
+		脸红了，接着低下头看地面。
+		<br>
+		"你们谈谈吧。比如说你们现在都在研究的东西。就是那个……你知道的吧？那个在互联网上很流行的东西，连新闻都在报道。"
+		<br>
+		那个<<person>>继续盯着一块地毯。
+		<br>
+		"你知道的，对吧？"<<person1>><<person>>看向你。
+		<br>
+		你耸耸肩。
+		<br><br>
+
+		时间似乎变得漫长无比。这一小时也许相当几十年。缓慢、尴尬、痛苦的几十年，
+		在这期间<<person>>与你费力地拉扯话题，<<person2>><<person>>也只是偶尔从口中勉强挤出几个单词。
+		你试图继续说话，但尴尬得令人痛苦。
+		<br><br>
+
+		最后，在一个小时结束时，<<person1>><<he>>带你回到门口。耸了耸肩。
+		<br>
+		"好吧。"<<he>>叹了口气，递给你<<moneyGain 10>>，"谢谢你的努力。"
+		<br><br>
+
+		<<link [[继续|Domus Street]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<</if>>
+<<unset $shy_dog>>
+
+:: Domus Shy Seduce
+
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<set $parentNPC to clone($NPCList[0])>>
+<<set $shyNPC to clone($NPCList[1])>>
+<<endevent>><<generates1>><<set $NPCList[0] to clone($shyNPC)>>/*endevent is required to stop BOTH npcs turning up for sexy time. pers1 is now shynpc*/
+你进入房间，发现一个<<person1>><<person>>坐在一张大桌子旁。<<He>>抬头看着你。困惑掠过<<his>>的脸。
+<br>
+"你，你在做什么......？"
+<br>
+当你接近<<him>>时，你把手指放在嘴唇上，眼睛里充满了欲望。
+<br><br>
+
+<<set $seductiondifficulty to 4000>>
+<<seductioncheck>>
+<br><br>
+
+<<if $seductionskill lt 1000>>
+	<span class="gold">你对自己的诱惑力更有信心了。</span>
+<</if>>
+<<seductionskilluse>>
+<br>
+利用你的诱惑力，你抚摸<<his>>的脖子，亲吻<<him>>，同时用你的手暗示性地擦过你的身体。你诱人地爬上<<print either("桌子","沙发","椅子")>>，向<<him>>招手来加入你。
+<br><br>
+
+<<if $seductionrating gte $seductionrequired>>
+	你毫不费力地勾引了那个<<person>>.<<He>>急切地加入你。
+	<br><br>
+	<<link [[继续|Domus Shy Sex]]>><<set $sexstart to 1>><</link>>
+<<else>>
+	<<generate2>><<set $NPCList[1] to clone($parentNPC)>>
+	"救命！"<<he>>尖叫着。<<person2>>"<<if $pronoun is "m">>爸爸！<<else>>妈妈！<</if>>这里有个怪人在家具上爬！"
+	<br>
+	<<person>>出现了，把你带出了房子。
+	<br><br>
+
+	"谢谢你的努力，"<<he>>透过关闭的门叹息道。
+	<br><br>
+
+	<<link [[继续|Domus Street]]>><<unset $parentNPC>><<unset $shyNPC>><<endevent>><</link>>
+<</if>>
+<br>
+
+:: Domus Shy Sex
+
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<person1>>
+	<<if $cool gte 160>>
+		"你......你是学校里最酷的<<girl>>。"
+	<<elseif $fame.sex gte 400>>
+		"我听说了你的事。我... 我一直希望有一天会轮到我。"
+	<<elseif $beauty gte ($beautymax / 7) * 4>>
+		"但你是如此的性感。"
+	<<else>>
+		"你不是在胡闹？"
+	<</if>>
+	<<he>>说。"你... 你真的想要我？"
+	<br>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Domus Shy Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Domus Shy Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Domus Shy Sex Finish
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	<<person>>深情地对你微笑。"太神奇了。"
+	<br><br>
+
+	<<tearful>>你缓了过来。
+	<br><br>
+
+	<<clotheson>>
+
+	<<link [[继续|Domus Shy Sex 2]]>><<set $phase to 0>><</link>>
+
+<<elseif $enemyhealth lte 0>>
+
+	离开那个受伤和困惑的<<person>>，你从窗户逃了出去。
+	<br><br>
+
+	<<tearful>>你缓了过来。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Domus Street]]>><<unset $parentNPC>><<unset $shyNPC>><<endevent>><</link>>
+
+<<else>>
+
+	"我......我以为你喜欢我，"那个<<person>>哭了。"我以为你想要我。我是如此丑陋、愚蠢的白痴。"
+	<br><br>
+
+	<<tearful>>你缓了过来。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Domus Shy Sex 2]]>><<set $phase to 1>><</link>>
+
+<</if>>
+
+:: Domus Shy Sex 2
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<if $phase is 0>>
+	在临别之吻中，你离开了<<person>>，看起来非常高兴。
+	<br><br>
+
+	在走廊里，你发现门边的桌子上有<<moneyGain 100>>。你出去的时候拿着。
+	<br>
+	父母不知所踪。
+	<br><br>
+
+	<<endcombat>>
+	<<link [[继续|Domus Street]]>><<unset $parentNPC>><<unset $shyNPC>><</link>>
+	<br>
+<<elseif $phase is 1>>
+	<<generate1>><<set $NPCList[0] to clone($shyNPC)>>
+	<<generate2>><<set $NPCList[1] to clone($parentNPC)>>
+	一只手夹住了你的脖子。
+	<br><br>
+
+	"不，<<person1>><<personsimple>>，"<<person2>><<person>>坚定地说。"不要生气。你必须学会读懂字里行间的意思。当他们引诱你，让你热血沸腾的时候、
+	然后突然说'停'，这只意味着他们想要一个能控制的人。要有点力度。现在来吧。让我们一起做这个。"
+	<br><br>
+
+	<<link [[继续|Domus Shy Rape]]>><<set $molestationstart to 1>><</link>>
+<</if>>
+
+:: Domus Shy Rape
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $rescue to 0>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+
+<<if $alarm is 1>>
+	<<set $alarm to 0>>
+	没有人来帮你。
+	<br><br>
+<</if>>
+
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Domus Shy Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Domus Shy Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Domus Shy Rape Finish
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	<<person2>><<person>>对你微笑，并俯身在你耳边低语。
+	"谢谢。那是很好的演技。完美的工作。正是<<person1>><<he>>需要的。钱在大厅里。"
+	<br><br>
+
+	<<tearful>>你缓了过来。
+	<br><br>
+
+	你在出门的时候拿走了钱。
+	<<set $money += 10000>>
+
+	<<clotheson>>
+	<<endcombat>><<unset $parentNPC>><<unset $shyNPC>>
+
+	<<link [[继续|Domus Street]]>><</link>>
+
+<<elseif $enemyhealth lte 0>>
+
+	留下他们两个人受伤和迷惑，你从窗户逃走了。
+	<br><br>
+
+	<<tearful>>你缓了过来。
+	<br><br>
+	不知怎么的，你保住了你的衣服。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>><<unset $parentNPC>><<unset $shyNPC>>
+
+	<<link [[继续|Domus Street]]>><</link>>
+
+<</if>>
+
+:: Domus Braid
+
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "domus">>
+<<if $phase is 0>>
+	<<pass 55>>
+	你礼貌地拒绝。你不想让一些乱七八糟的<<personsimple>>弄乱你的头发吧。
+	<br>
+	<<person>>看起来很失望。
+	<br><br>
+
+	"你们谈谈吧。比如说你们现在都在研究的东西。就是那个……你知道的吧？那个在互联网上很流行的东西，连新闻都在报道。"
+	<br>
+	<<person2>><<person>>继续盯着一块地毯。
+	<br>
+	"你知道的，对吧？"<<person1>><<person>>看向你。
+	<br>
+	你耸耸肩。
+	<br><br>
+
+	时间似乎变得漫长无比。这一小时也许相当几十年。缓慢、尴尬、痛苦的几十年，
+	在这期间<<person>>与你费力地拉扯话题，<<person2>><<person>>也只是偶尔从口中勉强挤出几个单词。
+	你试图继续说话，但尴尬得令人痛苦。
+	<br><br>
+
+	最后，在一个小时结束时，<<person1>><<person>>带你回到门口，把<<moneyGain 10>>塞在你手里，然后把门打开。
+	"谢谢你。"
+	<br><br>
+
+	你离开了。
+<<elseif $phase is 1>>
+	<<pass 55>>
+	<<set $hairtype to "braid left">>
+	在接下来的一个小时里，<<person2>><<person>>给你编辫子。当<<He>>这样做时，<<he>>笑了。
+	<<if $rng gte 67 and $o_long_and_beautiful is 0>>
+		<<set $o_long_and_beautiful to 1>><<set $hy_sibling to clone($NPCList[1])>><<set $hy_parent to clone($NPCList[0])>>
+		<<set $long_hair_meet_day to $day>><<set $misbehaviour_day to $day>>
+		几分钟后，<<he>>开始唱去年流行的一首欢快的歌曲。
+		当<<he>>唱完后，<<he>>笑了笑，然后陷入了沉默。
+		<br><br>
+
+		然后，<<he>>用几乎是耳语的声音告诉你，<<his>>的姐姐曾经很喜欢那首歌。
+		<<he>>曾经在给<<he>>姐姐编发时唱这首歌。<<His>>的姐姐以前很照顾<<him>>。
+		她总是帮助<<him>>做作业，保护<<him>>不受欺负，总是支持<<him>>。总是这样。
+		<br><br>
+
+		现在<<his>>的姐姐走了，很多人霸凌<<him>>。他们知道<<his>>的姐姐是怎么在海滩派对上被性侵的。
+		有些人用手机拍摄了视频。这些视频现在被传播得到处都是。不只是私下传播，他们还总是对姐姐指指点点，对着她说下流的笑话。
+		他们谈论着要给这个"荡妇"一个教训。开玩笑的说她哭泣和乞求的时候会是什么表情。
+		有时他们还喜欢给<<person>>看<<his>>姐姐被侵犯的视频。
+		无聊的时候他们还喜欢在午餐时间在食堂里播放视频，让<<he>>能听到。让每个人都能听到。
+		<br>
+		太疯狂了，<<him>>对那些人恨之入骨。到底是为什么，为什么他们就认为他们可以为所欲为。他们就认为<<he>>不会报复他们。
+		<br><br>
+
+		有一次他们用电脑从视频中截取片段打印出来做成海报，把那些海报贴满了整个学校的布告栏。
+		每个人都看到了<<his>>美丽的姐姐被羞辱的可怜样子。那些老师们有做什么吗？没有，校长最后撕掉了那些海报作为"证据"，但是有什么意义呢？什么也没有改变。
+		没有正义，没有光明。羞辱还在继续。为了维护姐姐的名誉<<persons>>到现在都在跟人打架。必须有人为了姐姐站出来，没有人帮忙，那就自己帮自己。那些恶霸们一直都合伙欺负他。
+		他们认为没人能阻止他们。
+		<br><br>
+
+		<<person>>告诉你<<his>>姐姐现在住在一个平静的地方。一个在森林深处有花园的地方。还有医生。她现在又能开口说话了。
+		偶尔她会说几句话，但是大部分的时候还是在流泪。医生说她还需要时间。
+		<br><br>
+
+		"那些恶霸认为我阻止不了他们，"<<person>>低声说道。"但是我可以。我现在有刀了，13把漂亮的刀。"
+		<<He>>认真地看着你。"别担心。我会阻止坏人的。他们不会再伤害你了。"
+		<br><br>
+
+		"编好了，"<<he>>笑着说道。"你的头发又长又漂亮。就像她的一样。"
+		<br><br>
+
+		当<<person1>><<person>>领着你走向门口时，<<he>>看起来像是受到了惊吓。<<he>>盯着墙壁。
+		<br>
+		"嗯……"，<<he>>停顿了一下："真是太激烈了。我知道<<person2>><<he>>很难受，但是……"<<person1>><<he>>停顿了一下。
+		"好吧。我会解决的。这是<<moneyGain 80>>。这是我的全部。请不要告诉任何人这件事。我会想办法解决的。"
+		<br><br>
+		门关上了。
+	<<else>>
+		<<He>>看起来很开心.
+		<br><br>
+
+		在一个小时结束时，<<person1>><<person>>带你回到门口。耸了耸肩。
+		<br>
+		"给，"<<he>>说着递给你<<moneyGain 20>>。"至少看起来那让<<person2>><<him>>开心了一点。谢谢。"
+	<</if>>
+<<else>>
+	"我看到死人了，"<<he>>说道。
+	<<He>>试图给你编辫子，但是头发从<<his>>的手指间滑落。原来你一直都是死人。(这是一个错误，请报告)
+<</if>>
+<br><br>
+<<link [[继续|Domus Street]]>><<endevent>><</link>>
+<br>

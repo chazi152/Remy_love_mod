@@ -1,0 +1,1767 @@
+:: Police Community Start
+<<set $outside to 1>><<effects>>
+
+<<set $crime to 0>>
+
+你跟着<<person1>><<person>>引导穿过车站，把你带到了建筑物的另一边。
+<br><br>
+
+"记住<<girl>>,"<<he>>露出一丝笑容. "从明天开始. 每天都要记得. 直到你的罪行得到赎罪."<<He>>说完关上了门.
+<br><br>
+
+<<link [[继续|Barb Street]]>><<endevent>><</link>>
+<br>
+
+
+:: Police Community
+<<effects>>
+
+当你靠近时<<person>>抬起头来看着你。
+<<if $rng gte 81>>
+	"这不是那个小鬼<<girl>>吗,"<<he>>说道. "来为你服务了."
+<<elseif $rng gte 61>>
+	"他们刚准备好,"<<he>>说.
+<<elseif $rng gte 41>>
+	"很高兴你能来,"<<he>>说.
+<<elseif $rng gte 21>>
+	"Oh,"<<he>>说. "他们会喜欢你的."
+<<else>>
+	"准备好怎么弥补了吗?"<<he>>说.
+<</if>>
+<<He>>指着<<his>>右边的一扇门："过去吧。"
+<br><br>
+<<endevent>>
+<<generatePolice 1>><<person1>>
+你进入一个有长椅的房间。入眼的是一些长相粗野的<<people>>他们各坐两边。<<person>>穿着警察制服站在中央，双手叉腰。
+<br><br>
+<<rng 3>>
+<<if $rng gte 3>>
+	<<generate2>>
+	"对了, 你们这些混蛋,"<<he>>说. "今天我们要清理镇子入口处道路上的垃圾. 记住,老实人们不想被你们这样的垃圾打扰, 所以专注于你们的工作."<<He>>打开了<<him>>. "身后的门,我们走吧。"
+	<br><br>
+
+	你和其他罪犯一起拖着脚步走过去. 里面有一辆大面包车.  那个<<person>>押着你上车.
+	<br><br>
+
+	<<link [[继续|Police Community Clean]]>><<set $community_service -= 1>><<set $community_service_done to 1>><<pass 20>><</link>>
+	<br>
+<<elseif $rng is 2>>
+	<<generate2>>
+	"对了, 你们这些混蛋,"<<he>>顿了顿. "T今天我们要在镇外清理一些荒地. 这将是一项艰苦的工作, 但这是你活该."<<He>>打开了<<him>>. "他身后的门,出发吧."
+	<br><br>
+
+	你和其他罪犯一起拖着脚步走过去. 里面有一辆大面包车.  那个<<person>>押着你上车.
+	<br><br>
+
+	<<link [[继续|Police Community Wasteland]]>><<set $community_service -= 1>><<set $community_service_done to 1>><<pass 20>><</link>>
+	<br>
+<<else>>
+	"对了, 你们这些混蛋,"<<he>>顿了顿. "今天我们要清理小巷墙壁上的涂鸦. 我敢打赌这里面肯定有你们某些人的作品. 你们要带着自己的水桶和刷子."<<He>>打开了<<him>>. "身后的门，出发吧."
+	<br><br>
+
+	你和其他罪犯一起拖着脚步走出了室内.
+	<br><br>
+
+	<<link [[继续|Police Community Graffiti]]>><<set $community_service -= 1>><<set $community_service_done to 1>><<pass 20>><</link>>
+	<br>
+<</if>>
+
+/*
+<<if $rng gte 21>>
+	"Right, you scum," <<he>> says. "Today we'll be prettying up a public building. Applying a fresh layer of paint." <<He>> opens a set of double doors behind <<him>>. "Let's move out."
+	<br><br>
+
+	You shuffle through with the other criminals, and emerge outside
+	<br><br>
+
+	<<link [[继续|Police Community Paint]]>><<set $community_service -= 1>><<set $community_service_done to 1>><<pass 20>><</link>>
+	<br>
+<<else>>
+	"Right, you scum," <<He>> says. "Today we'll be tidying up a forest trait. Cutting back the foliage." <<He>> opens a set of double doors behind <<him>>. "Let's move out."
+	<br><br>
+
+	你和其他罪犯一起拖着脚步走出了室内.
+	<br><br>
+	<<link [[继续|Police Community Forest]]>><<set $community_service -= 1>><<set $community_service_done to 1>><<pass 20>><</link>>
+	<br>
+<</if>>
+*/
+
+
+:: Police Community Graffiti
+<<set $location to "alley">><<set $bus to "commercial">><<effects>>
+
+那个<<person>>带领你和其他罪犯穿过马路，进入迷宫般的商业街小巷。<<He>>在一堵水泥墙旁拦住你。墙壁上布满了涂鸦。
+<br><br>
+
+"好了,"<<he>>说. "今天我们要帮助一个当地企业. 用这根水管把这些水桶装满然后出发吧."
+<br><br>
+
+只用水和粗刷子清除油漆是很困难的。<<person>>在巷子里来回走动检查。
+<br><br>
+
+<<link [[继续|Police Community Graffiti 2]]>><</link>>
+<br>
+
+
+
+:: Police Community Graffiti 2
+<<effects>>
+<<pass 20>>
+<<if $police_graffiti gte 3 and random(1, 2) is 2 and $fame.rape gte 100>>
+	<<if $police_graffiti is 3>>
+		<<set $police_graffiti to 4>>
+	<</if>>
+	<<generate2>><<person2>>
+	<<person>>进入小巷，与警察聊天。他们的目光都盯着你。
+	<br><br>
+	<<if currentSkillValue('skulduggery') gte 400>>
+		<span class="green">你注意到<<person2>><<person>>递给警官一些现金，</span>他们便都走远了。
+	<<else>>
+		他们都走了过来.
+	<</if>>
+	一名警官带着一副手铐，"伸出你的手<<girl>>，"<<person1>><<he>>说道："这位好市民希望你在里面帮忙。收铐只是一种预防措施。"<<person2>><<person>>笑了笑。
+	<br><br>
+
+	<<link [[伸出你的双手|Police Community Graffiti Hold]]>><<sub 1>><</link>>
+	<br>
+	<<link [[拒绝|Police Community Graffiti Hold Refuse]]>><<def 1>><</link>>
+	<br>
+	<<if currentSkillValue('skulduggery') gte 400 and $awareness gte 200>>
+		<<link [[控告|Police Community Graffiti Accuse]]>><<def 1>><</link>>
+		<br>
+	<</if>>
+<<elseif $police_graffiti gte 2 and random(1, 2) is 2>>
+	<<if $police_graffiti is 2>>
+		<<set $police_graffiti to 3>>
+	<</if>>
+	<<generate2>><<generatev3>><<person2>>
+	一个<<person>>进入小巷, 与警察聊天. 他们都盯着<<person3>><<person>>在你身边工作的.<<He>>向他们投去偷偷摸摸的目光.
+	<br><br>
+	<<if currentSkillValue('skulduggery') gte 400>>
+		<span class="green">你注意到<<person2>><<person>>递给警官一些现金，</span>他们便都走开了。他们在<<person3>><<person>>。身边停下拿出一副手铐。
+	<<else>>
+		他们都走过去在<<person>>身边停下，警官拿着一副手铐。
+	<</if>>
+	<br><br>
+	"把手伸出来,"<<he>>要求. 当<<person3>><<person>>戴上手铐<<his>>低着头看着自己的脚时<<him>>. " 别那么沮丧,你只是要来……帮助这位优秀公民而已. 脚镣只是一种预防措施."
+	<br><br>
+
+	<<if currentSkillValue('skulduggery') gte 400 and $awareness gte 200>>
+		<<link [[干涉|Police Community Graffiti Intervene]]>><<famegood 10>><</link>>
+		<br>
+		<<link [[继续工作|Police Community Graffiti Intervene Work]]>><</link>>
+		<br>
+	<<else>>
+		那个<<person2>><<person>>抓住<<person3>><<person>>的手铐, 带领<<him>>通过一段石阶进入大楼.
+		<br><br>
+
+		<<link [[继续|Police Community Graffiti End]]>><</link>>
+		<br>
+	<</if>>
+<<elseif $police_graffiti gte 1 and random(1, 2) is 2>>
+	<<if $police_graffiti is 1>>
+		<<set $police_graffiti to 2>>
+	<</if>>
+	<<generate2>><<person2>>
+	一个<<person>>进入小巷, 与警察聊天. 他们的目光都盯着你.
+	<br><br>
+	<<if $bodywritingLvl gte 2>>
+		他们接近你。"你应该休息一下，"警官说："这位是这家机构的老板。<<Hes>>同意帮助你康复。"
+		<br><br>
+		"过来<<girl>>。"<<person>>说着<span class="pink">掀开了一个永久记号笔的笔盖。</span>
+		<br><br>
+
+		<<link [[按要求执行|Police Community Graffiti Pen]]>><<sub 1>><</link>><<if !$worn.face.type.includes("mask")>><<gbodywriting>><</if>>
+		<br>
+		<<link [[拒绝|Police Community Graffiti Refuse]]>><<def 1>><</link>>
+		<br>
+	<<else>>
+		他们不走近。
+		<br><br>
+
+		<<link [[继续|Police Community Graffiti End]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<if $police_graffiti is undefined>>
+		<<set $police_graffiti to 1>>
+	<</if>>
+	<<generate2>><<person2>>
+	一个<<person>>走进巷子，和警察聊天。<<He>>在你工作时向你抛媚眼，但不会靠近。
+	<br><br>
+	<<link [[继续|Police Community Graffiti End]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Police Community Graffiti Hold
+<<set $location to "shopping_centre">><<set $outside to 0>><<effects>>
+
+<<bind>>
+你让警察把你铐起来，把你的手腕交给<<person2>><<person>>。<<He>>带着你远离其他罪犯，走下一段石阶，进入混凝土建筑。
+<br><br>
+
+你进入一个小房间，中间只有一盏没有阴影的灯。一扇厚厚的木门半开着。你听到远处的声音，但那个<<person>>并没有把你引向那个方向。<<He>>抬起你的手臂，直到你踮起脚尖，把你的袖口挂在墙上的钩子上。
+<br><br>
+
+"像你这样可爱的人可不常见，"那个<<person>>说着，一边环视着你的全身，一边关上了门，将外面的嘈杂声隔绝开来。"最好做个乖巧的<<girl>>。"
+<br><br>
+
+<<saveNPC 0 "community_police">>
+<<saveNPC 1 "community_citizen">>
+<<endevent>>
+<<loadNPC 0 "community_citizen">>
+
+
+<<link [[继续|Police Community Graffiti Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+
+:: Police Community Graffiti Rape
+<<effects>>
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Police Community Graffiti Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Police Community Graffiti Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Police Community Graffiti Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>从钩子上取下你的袖口。"我喜欢尽我的一份力量来改造像你这样的妓女，"<<he>>说道。"我们带你去见警官吧。"
+	<br><br>
+	<<clothesontowel>>
+	<<endcombat>>
+
+	<<loadNPC 0 "community_police">>
+	<<loadNPC 1 "community_citizen">>
+	<<clearNPC "community_police">>
+	<<clearNPC "community_citizen">>
+	<<person2>>
+	<<tearful>>你跟着<<him>>往外走. 警官在楼梯上打开了你的手铐.<<unbind>>
+	<br><br>
+	"我相信我们的流氓帮了忙吧?"
+	<br>
+	"好的。向局长问好。"
+	<br>
+	"好的。"警官转向你。"回去工作吧。"
+	<br><br>
+	<<link [[继续|Police Community Graffiti End]]>><</link>>
+	<br>
+
+<<else>>
+	<<person>>离开你，摸索门把手。<<He>>打开门，跑上台阶。你设法把手铐从钩子上解开了。
+	<br><br>
+
+	<<clothesontowel>>
+	<<endcombat>>
+
+	<<loadNPC 0 "community_police">>
+	<<loadNPC 1 "community_citizen">>
+	<<clearNPC "community_police">>
+	<<clearNPC "community_citizen">>
+	<<person2>>
+	<<tearful>>你自己爬台阶。那个<<person>>站在楼顶，和警察争吵。
+	<br><br>
+	"我要求退款，"<<he>>说道。"你说<<pshe>>很温顺。"
+	<br>
+	"<<pShe>>很温顺，"警官回答。"否则，<<pshe>>就会被关起来了。"
+	<br>
+	"那个<<bitch>>差点把我的胳膊弄断了。"
+	<br><br>
+	当你经过时，警察抓住了你的手铐，并打开了手铐。<<unbind>>"攻击公众成员，"<<person1>><<he>>说道。"<span class="red">那至少是多一天的社区服务，</span>。我得通知车站。回去工作吧。"<<crimeup 100>><<crime>>
+	<br><br>
+
+	你回到墙边。至少其他罪犯看起来很开心。
+	<br><br>
+
+	<<link [[继续|Police Community Graffiti End]]>><</link>>
+	<br>
+
+<</if>>
+
+
+
+:: Police Community Graffiti Hold Refuse
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我不会和<<person2>><<him>>一起去的，"你说道。"这不是对我的惩罚。"
+<<elseif $speech_attitude is "bratty">>
+	"滚开，"你说道。"我不是傻瓜。"
+<<else>>
+	"不，"你说道。"这不是对我的惩罚。"
+<</if>>
+<br><br>
+
+"如果你这么难搞，"<<person1>>警官回答，<span class="red">"那么你可以再享受一天的社区服务。"</span><<He>>走开了，<<person2>><<person>>紧跟在后面。
+<br><br>
+<<set $community_service += 1>>
+
+<<link [[继续|Police Community Graffiti End]]>><</link>>
+<br>
+
+
+:: Police Community Graffiti Accuse
+<<effects>>
+<<earnFeat "Bent Copper">>
+<<if $speech_attitude is "meek">>
+	"我看到<<person2>><<him>>付钱给你了，"你说道。"你不能就这样把我们出卖。"
+<<elseif $speech_attitude is "bratty">>
+	"你会侥幸逃脱的，"你说道。"但你受贿是逃不掉的。"
+<<else>>
+	"我看见你受贿了，"你说道。"我怀疑我是唯一一个看到的。"
+<</if>>
+<br>
+"去你的骗子，"<<person1>>警官回答，但<<his>>的声音在发抖。<<He>>摸索着<<his>>的警棍。"退后。我不会再说第二遍的。"
+<br>
+"去他妈的，"<<person2>><<person>>插话。"你应该小心谨慎的。我想要回我的钱。"
+<br><br>
+
+警官松开警棍。"没有钱，"<<he>>说，<<his>>的声音像冰一样冷。"如果有问题，那就有问题了，不是吗?"
+<br><br>
+
+<<He>>走开了，<<person2>><<person>>紧跟在后面。
+<br><br>
+
+<<link [[继续|Police Community Graffiti End]]>><</link>>
+<br>
+
+:: Police Community Graffiti Intervene
+<<effects>>
+
+<<person2>><<person>>试图抓住<<person3>><<person>>的袖口，但是你挡了道。
+<br><br>
+<<person1>>警官摸索<<his>>的警棍。"回来，"<<he>>说道。"不然我就把你揍个半死。"
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"我看到<<person2>><<him>>付钱给你了，"你说道。"你不能就这样把我们出卖。"
+<<elseif $speech_attitude is "bratty">>
+	"你会侥幸逃脱的，"你说道。"但你受贿是逃不掉的。"
+<<else>>
+	"我看见你受贿了，"你说道。"我怀疑我是唯一一个看到的。"
+<</if>>
+<br>
+"他妈的骗子，"<<person1>><<person>>回答，但<<his>>的声音颤抖。"回来。我不会再问了。"
+<br>
+"去他妈的，"<<person2>><<person>>插话。"你应该小心谨慎的。我想要回我的钱。"
+<br><br>
+
+警官松开警棍。"没有钱，"<<he>>说，<<his>>的声音现在平静了。<<He>>从<<person3>><<person>>取下手铐。"如果有问题，那就有问题了，不是吗?"
+<br><br>
+
+<<link [[继续|Police Community Graffiti Intervene 2]]>><</link>>
+<br>
+
+:: Police Community Graffiti Intervene 2
+<<effects>>
+
+<<earnFeat "Bent Copper">>
+警官走开了，<<person2>><<person>>紧跟在后面。
+<br><br>
+"谢谢你，"当他们离开后，<<person3>><<person>>低声说道。"刚刚就像地狱一样。"
+<br><br>
+
+<<link [[继续|Police Community Graffiti End]]>><</link>>
+<br>
+
+:: Police Community Graffiti Intervene Work
+<<effects>>
+
+那个<<person2>><<person>>抓住<<person3>><<person>>的手铐, 带领<<him>>通过一段石阶进入大楼.
+<br><br>
+
+<<link [[继续|Police Community Graffiti End]]>><</link>>
+<br>
+
+:: Police Community Graffiti Pen
+<<effects>>
+
+你走近了。<<person2>>
+<<if !$skin.left_cheek.pen>>
+	<<set $phase to 0>>
+	<<if $worn.face.type.includes("mask")>>
+		"摘下你的面罩，"警官要求。
+		<br><br>
+
+		<<link [[脱下它|Police Community Graffiti Take]]>><<sub 1>><<trauma 6>><</link>><<gtrauma>><<gbodywriting>>
+		<br>
+		<<link [[拒绝|Police Community Graffiti Refuse]]>><<def 1>><</link>>
+		<br>
+	<<else>>
+		<<person>>写在你的左脸颊上。<<bodywriting_criminal "left_cheek" marker>>
+		<br><br>
+		警察微笑着看着。"现在感谢这位好公民帮你还债。"
+		<br><br>
+
+		<<link [[感谢|Police Community Graffiti Thank]]>><<trauma 6>><<sub 1>><</link>><<gtrauma>>
+		<br>
+		<<link [[乖乖回去工作|Police Community Graffiti Work]]>><<def 1>><</link>>
+		<br>
+	<</if>>
+<<elseif !$skin.right_cheek.pen>>
+	<<set $phase to 1>>
+	<<if $worn.face.type.includes("mask")>>
+		"摘下你的面罩，"警官要求。
+		<br><br>
+
+		<<link [[脱下它|Police Community Graffiti Take]]>><<sub 1>><<trauma 6>><</link>><<gtrauma>><<gbodywriting>>
+		<br>
+		<<link [[拒绝|Police Community Graffiti Refuse]]>><<def 1>><</link>>
+		<br>
+	<<else>>
+		<<person>>写在你的右脸颊上。<<bodywriting_criminal "right_cheek" marker>>
+		<br><br>
+		警察微笑着看着。"现在感谢这位好公民帮你还债。"
+		<br><br>
+
+		<<link [[感谢|Police Community Graffiti Thank]]>><<trauma 6>><<sub 1>><</link>><<gtrauma>>
+		<br>
+		<<link [[乖乖回去工作|Police Community Graffiti Work]]>><<def 1>><</link>>
+		<br>
+	<</if>>
+<<elseif !$skin.forehead.pen>>
+		<<person>>写在你的额头上。<<bodywriting_criminal "forehead" marker>>
+		<br><br>
+		警察微笑着看着。"现在感谢这位好公民帮你还债。"
+		<br><br>
+
+		<<link [[感谢|Police Community Graffiti Thank]]>><<trauma 6>><<sub 1>><</link>><<gtrauma>>
+		<br>
+		<<link [[乖乖回去工作|Police Community Graffiti Work]]>><<def 1>><</link>>
+		<br>
+<<else>>
+	"啊，"<<person>>说道。"已经有字了。我可不想毁了别人的手艺。"<<He>>把笔收起来。"下次"。
+	<br><br>
+	"你听到<<him>>说的话了，"警官说道。"回去工作吧。"
+	<br><br>
+
+	<<link [[继续|Police Community Graffiti End]]>><</link>>
+	<br>
+<</if>>
+
+:: Police Community Graffiti Take
+<<effects>>
+
+你摘下你的面罩。
+
+<<if $phase is 0>>
+	<<person>>写在你的左脸颊上。<<bodywriting_criminal "left_cheek" marker>>
+	<br><br>
+<<else>>
+	<<person>>写在你的右脸颊上。<<bodywriting_criminal "right_cheek" marker>>
+	<br><br>
+<</if>>
+
+警察微笑着看着。"现在感谢这位好公民帮你还债。"
+<br><br>
+
+<<link [[感谢|Police Community Graffiti Thank]]>><<trauma 6>><<sub 1>><</link>><<gtrauma>>
+<br>
+<<link [[乖乖回去工作|Police Community Graffiti Work]]>><<def 1>><</link>>
+<br>
+
+:: Police Community Graffiti Thank
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"谢谢你帮助我成为一个更好的人，"你说道。
+<<elseif $speech_attitude is "bratty">>
+	你握紧拳头。"谢谢，"你勉强说道。
+<<else>>
+	"谢谢"你说道。
+<</if>>
+<br><br>
+
+"好<<girl>>，"警官说道。"现在回去工作吧。"
+<br><br>
+
+<<link [[继续|Police Community Graffiti End]]>><</link>>
+<br>
+
+:: Police Community Graffiti Work
+<<effects>>
+
+<<person2>><<person>>在你转身离开时发出呜呜声。"没有感激之情。"
+<br><br>
+"不能对这批人期望太高，"警官回答。"就像我说的，再投几个鲍勃进去，然后——"<<his>>的声音消失在嘈杂的车流中。
+<br><br>
+
+<<link [[继续|Police Community Graffiti End]]>><</link>>
+<br>
+
+:: Police Community Graffiti Refuse
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"不，不，"你说道。"这不是一种恰当的惩罚。"
+<<elseif $speech_attitude is "bratty">>
+	"离我远点，"你说道。"不然我就把它塞进你屁股里。"
+<<else>>
+	"不，"你说道。"你不能随意制定惩罚。"
+<</if>>
+<br><br>
+
+"好吧，"警官说道。<span class="red">"我要给你再加一天的社区服务。也许明天你会更合作一些。"</span><<set $community_service += 1>>
+<br><br>
+
+当<<he>>把笔盖盖上时，<<person>>看起来很失望。
+<br><br>
+
+<<link [[继续|Police Community Graffiti End]]>><</link>>
+<br>
+
+:: Police Community Graffiti End
+<<set $location to "police_station">><<set $bus to "barb">><<effects>>
+
+"够了，"过了一会儿，警察喊道:"你做得很糟糕，但我也没想你能做好。"
+<br><br>
+
+你跟着警察和其他罪犯，直到你回到警察局。
+<br><br>
+<<link [[继续|Police Community End]]>><<pass 20>><<endevent>><</link>>
+<br>
+
+
+:: Police Community Wasteland
+<<set $location to "moor">><<effects>>
+
+<<person2>>
+货车隆隆地开动了。坐在你旁边的<<person>>把手放在你的大腿上。
+<br><br>
+
+<<link [[生气|Police Community Wasteland Angry]]>><<crimeup 1>><<trauma -6>><</link>><<crime>><<ltrauma>>
+<br>
+<<link [[无视|Police Community Wasteland Ignore]]>><<stress 6>><<arousal 600>><</link>><<gstress>><<garousal>>
+<br>
+<<if $promiscuity gte 15>>
+	<<link [[摸回去|Police Community Wasteland Grope]]>><</link>><<promiscuous2>>
+	<br>
+<</if>>
+
+:: Police Community Wasteland Angry
+<<effects>>
+
+你拍<<person>>的手。<<He>>收回手，好像被蜇了一样。其他乘客都笑了。
+<br><br>
+
+你听到车头砰的一声。"别在后面胡闹了，"警官说道。"否则你们的刑期都要加一天。"
+<br><br>
+
+货车隆隆地停了下来，车门打开了。
+<br><br>
+
+<<link [[继续|Police Community Wasteland 2]]>><</link>>
+<br>
+
+
+:: Police Community Wasteland Ignore
+<<effects>>
+
+你忽略了<<persons>>那只蠢蠢欲动的手。
+<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+	<<He>>撩起你的裙摆，有那么一刻你害怕<<he>>的意思是把你暴露在整个面包车里，但<<he>>只是捏了你的大腿。
+<<else>>
+	有那么一刻，你害怕<<he>>想摸你的<<genitals>>，但<<he>>只捏了你的大腿。
+<</if>>
+<br><br>
+
+货车隆隆地停了下来，车门打开了。
+<br><br>
+
+<<link [[继续|Police Community Wasteland 2]]>><</link>>
+<br>
+
+:: Police Community Wasteland Grope
+<<effects>>
+
+你把你的手放在<<persons>>的大腿上，并顽皮地捏了一下。其他乘客都在看着。你打了个哆嗦。
+<<promiscuity2>>
+
+货车隆隆地停了下来，车门打开了。
+<br><br>
+
+<<link [[继续|Police Community Wasteland 2]]>><</link>>
+<br>
+
+:: Police Community Wasteland 2
+<<effects>>
+<<pass 20>>
+你和其他罪犯站在路边，在一座小山前。棕色的荆棘一直延伸到山顶。
+<br><br>
+
+<<person1>>
+"好吧，你们这些人渣，"警察说，把一盒园艺工具扔在<<his>>的脚边。"今天我们要清理这些灌木。让他们远离道路。你们能做到吗?"
+<<if $leftarm is "bound" or $rightarm is "bound">>
+	<<He>>移除你手臂上的束缚。
+	<<unbind>>
+<</if>>
+<br><br>
+
+<<if $police_wasteland gte 2 and random(1, 2) is 2 and $fame.scrap gte 100>>
+	<<if $police_wasteland is 2>>
+		<<set $police_wasteland to 3>>
+		当<<he>>分发工具时，你在警官前面排队。<<He>>很看重你。"我认为你可以处理这个，"<<he>>说着递给你一把斧头。"小心点。"
+	<<else>>
+		当<<he>>分发工具时，你在警官前面排队。<<He>>递给你一把斧头。"开始砍吧。"
+	<</if>>
+	<br><br>
+	你开始工作，用大剪刀砍那些罪犯露出来的箱子。这个<<person>>在路上走来走去，注意任何偷懒的人。
+	<br><br>
+	<<generate3>><<person3>>
+	一个<<person>>抓住你的腰，从后面把他们的身体推到你身上。"像你这样的荡妇怎么会被判刑?"<<he>>问道。
+	<<if $fame.bestiality gte 400>>
+		"被抓到和狗乱搞?"
+	<</if>>
+	<<if $NPCList[2].penis isnot "none">>
+		你可以看到<<his>>的<<print $NPCList[2].penisdesc>>对着你的<<bottom>>。
+	<</if>>
+	<<gstress>><<garousal>><<stress 6>><<arousal 600 "bottom">>
+	<br><br>
+
+	<<link [[忍耐|Police Community Wasteland Endure]]>><<trauma 6>><<sub 1>><</link>><<gtrauma>>
+	<br>
+	<<set $skulduggerydifficulty to 600>>
+	<<link [[威胁|Police Community Wasteland Threaten]]>><<def 1>><</link>><<skulduggerydifficulty>>
+	<br>
+<<elseif $police_wasteland gte 1 and random(1, 2) is 1>>
+	<<if $police_wasteland is 1>>
+		<<set $police_wasteland to 2>>
+		当<<he>>分发工具时，你在警官前面排队。<<He>>很看重你。"让我们试试这个，"<<he>>说着递给你一把铲子。"其中一些扎根很深。"
+		<br><br>
+	<<else>>
+		当<<he>>分发工具时，你在警官前面排队。<<He>>递给你一把铲子。"使劲干吧。"
+	<</if>>
+	<br><br>
+	你在较厚的树干周围挖。这个<<person>>在路上走来走去，注意任何偷懒的人。
+	<br><br>
+
+	你弯下腰去拔荆棘的根。"不错，"货车上的<<person2>><<person>>说道。<<He>>拍了一下你的屁股。<<gstress>><<gpain>><<stress 6>><<pain 4>>
+	<br><br>
+
+	<<link [[无视|Police Community Wasteland Ignore 2]]>><<trauma 6>><<sub 1>><</link>><<gtrauma>>
+	<br>
+	<<set $skulduggerydifficulty to 400>>
+	<<link [[重击|Police Community Wasteland Whack]]>><<def 1>><</link>><<skulduggerydifficulty>>
+	<br>
+<<else>>
+	<<if $police_wasteland is undefined>>
+		<<set $police_wasteland to 1>>
+		当<<he>>分发工具时，你在警官前面排队。<<He>>很看重你。"这是你第一次来?坚持用这些。"<<He>>给你一把剪刀。
+	<<else>>
+		当<<he>>分发工具时，你在警官前面排队。<<He>>给你一把剪刀。
+	<</if>>
+	<br><br>
+	你的工作是砍掉带刺的树枝，为那些使用重型工具的人扫清道路。这个<<person>>在路上走来走去，注意任何偷懒的人。
+	<br><br>
+
+	<<if $worn.upper.name isnot "naked" and random(1, 2) is 2>>
+		你的$worn.upper.cn_name_cap被刺住了。要花一分钟才能取下，警察可能会认为这是偷懒。
+		<br><br>
+
+		<<link [[小心地取|Police Community Wasteland Careful]]>><</link>><<difficulty 50>>
+		<br>
+		<<link [[挣脱|Police Community Wasteland Upper Tear]]>><</link>>
+		<br>
+	<<elseif $worn.lower.name isnot "naked" and random(1, 2) is 2>>
+		你的$worn.lower.cn_name_cap被荆棘夹住。要花一分钟才能取下，警察可能会认为这是偷懒。
+		<br><br>
+
+		<<link [[小心地取|Police Community Wasteland Careful]]>><</link>><<difficulty 50>>
+		<br>
+		<<link [[挣脱|Police Community Wasteland Lower Tear]]>><</link>>
+		<br>
+	<<else>>
+		"你在荆棘上划破了手臂，但整个过程除此之外并没有什么特别的，尽管很辛苦。<<gpain>><<gtiredness>><<pain 4>><<tiredness 6>>
+		<br><br>
+
+		<<link [[继续|Police Community Wasteland End]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Police Community Wasteland Endure
+<<effects>>
+
+你忍受着<<persons>>的骚扰。<<He>>的手环绕你的胸部，挤压你的<<breasts>>。
+<br><br>
+
+"别偷懒!"路上的警察喊道。
+<br><br>
+那个<<person>>从你身边抽离。"我得找个时间在布莱尔的店里找你。我猜你在那里工作。"<<He>>在走开之前扇了你的<<bottom>>。
+<br><br>
+
+剩下的过程是平淡无奇的。
+<br><br>
+
+<<link [[继续|Police Community Wasteland End]]>><</link>>
+<br>
+
+:: Police Community Wasteland Threaten
+<<effects>>
+
+你挣脱了<<persons>>的掌控，站在一边，举起你的斧头。
+<<if $speech_attitude is "meek">>
+	"退后，"你说道。"我不是无害的。"
+<<elseif $speech_attitude is "bratty">>
+	"再碰我一下，"你说道。"你会失去一只手。"
+<<else>>
+	"退后，"你说道。"我受够了你这样的变态。"
+<</if>>
+<br><br>
+其他罪犯都笑了，但是那个<<person>>举起手走开了。
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+	"便宜的<<girl>>，"<<he>>说道。<span class="green"><<He>>听起来很谨慎。</span>"我只是说你是一个性感的-"<<He>>被树根绊倒了，当<<he>>掉进荆棘里时大喊。更多的笑声出现了。
+	<br><br>
+
+	<<if $hallucinations gte 2>>
+		<<skulduggeryuse>>
+		<<person>>尖叫。树枝缠绕着<<his>>的四肢，似乎把<<him>>拖进了更深的植被中。笑声停止了。
+		<br><br>
+		<<link [[救援|Police Community Wasteland Rescue]]>><</link>><<willpowerdifficulty 1 1000>>
+		<br>
+		<<link [[呼救|Police Community Wasteland Help]]>><</link>>
+		<br>
+	<<else>>
+		警察冲过去调查，<span class="green">但你已经回去工作了。</span><<ltrauma>><<trauma -6>>
+		<br><br>
+		<<skulduggeryuse>>
+		<<person1>>
+		<<link [[继续|Police Community Wasteland End]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<br><br>
+	<<person1>>
+	警察冲过去调查，<span class="red">发现你还在挥舞着斧头当武器。</span><<person1>>"无法接受!"<<he>>大喊。<span class="red">"加一天的社区服务，</span>我会通知警局的。"<<crime>><<crimeup 100>><<set $community_service += 1>>
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	剩下的过程是平淡无奇的。
+	<br><br>
+
+	<<link [[继续|Police Community Wasteland End]]>><</link>>
+	<br>
+
+
+<</if>>
+
+
+:: Police Community Wasteland Rescue
+<<effects>>
+
+你在纠结，小心不要伤害到<<person>>。一根树枝向你扑来，
+
+<<if $willpowerSuccess>>
+	<<famescrap 10>>
+	<span class="green">但你站到一边，把它弄干净。</span><<generate4>><<person4>>另一个枝条向你袭来，但<<person>>上前用<<his>>自己的斧头砍了它。其他人也加入进来，用斧头、铲子，甚至剪刀在植物上砍来砍去。
+	<br><br>
+
+	它的树枝被毁了，植物松开了对<<person3>><<person>>的控制。<<He>>挣扎着站起来，然后踉跄着倒在几英尺远的地方，喘着气。
+	<br><br>
+
+	<<link [[继续|Police Community Wasteland Rescue 2]]>><</link>>
+	<br>
+<<else>>
+	缠绕在你的斧柄上，<span class="red">把它从你手中拉出来。</span>其他罪犯默默地惊恐地看着斧头和<<person>>消失在植被中.<<gtrauma>><<gstress>><<ggwillpower>><<willpower 6>>
+	<br><br>
+
+	警察到达了现场。"总是有人跑，"<<he>>说道。"你们这些人渣站在这儿干什么?回去工作吧。"
+	<br><br>
+
+	剩下的过程是平淡无奇的。每个人都有意识的远离荆棘。
+	<br><br>
+	<<person1>>
+	<<link [[继续|Police Community Wasteland End]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Police Community Wasteland Rescue 2
+<<effects>>
+
+"你他妈的救了我的命，"那个<<person>>说道。"那是什么?"当<<He>>听到警察走近时，<<he>>爬了起来，但是太晚了。
+<br><br>
+
+<<person1>>
+"在工作的时候睡觉，是不是?"警官说道。"那又得给你一天的服务。"
+<br>
+"但是——但是那些植物攻击了——"
+<br>
+"那些植物什么?"警察吐唾沫。"你是在耍我吗，还是我该给精神病院打个电话?"
+<br><br>
+没有人再提起这件事，事件的其余部分也平安无事。每个人都有意识的远离荆棘。
+<br><br>
+
+<<link [[继续|Police Community Wasteland End]]>><</link>>
+<br>
+
+:: Police Community Wasteland Help
+<<effects>>
+
+你叫来了警察，警察及时赶到，看到那个<<persons>>的脚消失在灌木丛中。其他罪犯现在都沉默了。<<person1>>
+<br><br>
+"总是有人跑，"<<he>>说道。"你们这些人渣站在这儿干什么?回去工作吧。"
+<br><br>
+
+剩下的过程是平淡无奇的。每个人都有意识的远离荆棘。
+<br><br>
+
+<<link [[继续|Police Community Wasteland End]]>><</link>>
+<br>
+
+
+:: Police Community Wasteland Ignore 2
+<<effects>>
+
+你忽略<<person2>><<person>>。<<He>>看了警官一眼，决定不再骚扰你。
+<br><br>
+
+剩下的过程虽然艰难，但平淡无奇。<<gtiredness>><<tiredness 6>>
+<br><br>
+
+<<link [[继续|Police Community Wasteland End]]>><</link>>
+<br>
+
+:: Police Community Wasteland Whack
+<<effects>>
+
+你猛地站起来，用铲子猛击那个<<person>>的胸部。<<He>>在其他罪犯的笑声中跌跌撞撞地走了。<<famescrap 5>>
+<br><br>
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+
+	警察冲过去调查，<span class="green">但你已经回去工作了。</span><<ltrauma>><<trauma -6>>
+	<br><br>
+
+	<<skulduggeryuse>>
+
+
+<<else>>
+	<<person1>>
+	警察冲过去调查，<span class="red">发现你还像挥舞武器一样挥舞着铲子。</span><<person1>>"无法接受!"<<he>>大喊。<span class="red">"加一天的社区服务，</span>我会通知警局的。"<<crime>><<crimeup 100>><<set $community_service += 1>>
+	<br><br>
+
+	<<skulduggeryuse>>
+
+<</if>>
+
+剩下的过程是平淡无奇的。
+<br><br>
+
+<<link [[继续|Police Community Wasteland End]]>><</link>>
+<br>
+
+:: Police Community Wasteland Careful
+<<effects>>
+
+<<if random(1, 2) is 2>>
+	你撬开布料上的刺，用剪刀剪掉最后一根。<span class="green">警察没有注意到。</span>
+	<br><br>
+
+	剩下的过程是平淡无奇的。
+	<br><br>
+
+	<<link [[继续|Police Community Wasteland End]]>><</link>>
+	<br>
+<<else>>
+	你撬开布料上的刺。<span class="red">"在偷懒是不是?"</span>警察大喊。<<Hes>>正看着你呢。<span class="red">"你可以多做一天社区服务作为补偿。"</span><<set $community_service += 1>>
+	<br><br>
+
+	剩下的过程是平淡无奇的。
+	<br><br>
+
+	<<link [[继续|Police Community Wasteland End]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Police Community Wasteland Upper Tear
+<<effects>>
+
+你把织物从荆棘上撕下来。
+<<set $worn.upper.integrity -= 20>>
+<<if $worn.upper.integrity lte 0>>
+	当你感受到微风拂过你的胸部时，你的心脏漏了一拍。<span class="pink">你身上$worn.upper.cn_name_cap所残留的碎片仍然挂在布莱尔上。</span>
+	<<integritycheck no_text>><<exposure>>
+	<<covered>>
+	<br><br>
+	"别偷懒，"那个警察咆哮道:"我不在乎你是不是光着身子，现在是你的工作时间！"
+	<<if $player.gender_appearance is "f">>
+		罪犯中的一员对着你吹了个口哨，更多的则是色迷迷地盯着你看。<<gstress>><<garousal>><<arousal 600>><<stress 6>>
+		<br><br>
+		<<fameexhibitionism 10>>
+		<<link [[继续|Police Community Wasteland Topless]]>><</link>>
+		<br>
+	<<else>>
+		<<if $player.gender is "f">>
+			你听见了笑声，并且感受到了其他罪犯们的视线，但是他们似乎认为你是个男孩。<<gstress>><<garousal>><<arousal 600>><<stress 6>>
+			<br><br>
+		<<else>>
+			你听见了笑声，并且感受到了其他罪犯们正在猥亵地注视你。
+			<br><br>
+		<</if>>
+
+		剩下的过程是平淡无奇的。
+		<br><br>
+
+		<<link [[继续|Police Community Wasteland End]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	你自由了，但是你的$worn.upper.cn_name_cap<<upperplural>>磨损得更严重了。
+	<br><br>
+
+	你回到了工作之中。下的过程是平淡无奇的。
+	<br><br>
+
+	<<link [[继续|Police Community Wasteland End]]>><</link>>
+	<br>
+<</if>>
+
+:: Police Community Wasteland Lower Tear
+<<effects>>
+
+你把织物从荆棘上撕下来。
+<<set $worn.lower.integrity -= 20>>
+<<if $worn.lower.integrity lte 0>>
+	当你感受到微风吹拂过你的<<bottom>><span class="pink">时，你的心脏漏了一拍。你身上$worn.lower.cn_name_cap所残留的碎片仍然挂在布莱尔上。</span>
+	<<integritycheck no_text>><<exposure>>
+	<<covered>>
+	<br><br>
+	"别偷懒，"警察咆哮道。"我不在乎你是不是光着身子，你正在干活。"罪犯中的一员对着你吹了个口哨，更多的人则是色迷迷地盯着你看。<<gstress>><<garousal>><<arousal 600>><<stress 6>>
+	<br><br>
+	<<fameexhibitionism 10>>
+	<<link [[遮掩你的正面|Police Community Wasteland Bottomless]]>><</link>>
+	<br>
+	<<link [[遮掩你的下身|Police Community Wasteland Bottomless Back]]>><</link>>
+	<br>
+<<else>>
+	你自由了，但是你的$worn.lower.cn_name_cap<<lowerplural>>磨损得更严重了。
+
+	你回到了工作之中。下的过程是平淡无奇的。
+	<br><br>
+
+	<<link [[继续|Police Community Wasteland End]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Police Community Wasteland Topless
+<<effects>>
+
+当你工作时，你一直用一只胳膊遮掩住自己的胸部，但是这使得操作剪刀变得十分困难。你能感受到其他人正在注视你。一小部分家伙因为看得入了迷，被增加了额外一天社会服务作为它们偷懒的惩罚。
+<br><br>
+
+除开你的暴露，剩下的过程是平淡无奇的。
+<br><br>
+
+<<link [[继续|Police Community Wasteland End]]>><</link>>
+<br>
+
+:: Police Community Wasteland Bottomless
+<<effects>>
+
+<<if $worn.upper.state is "waist">>
+	当你工作时，你试图将你的$worn.upper.cn_name_cap拉到大腿之间遮掩一番，但这种举动使得你很难操纵剪刀，并且对于遮住你的<<bottom>>于事无补。
+<<elseif $worn.under_upper.state is "waist">>
+	当你工作时，你试图将你的$worn.under_upper.cn_name_cap拉到大腿之间遮掩一番，但这种举动使得你很难操纵剪刀，并且对于遮住你的<<bottom>>于事无补。
+<<else>>
+	当你工作时，你用一只手捂住你大腿之间，但这种举动使得你很难操纵剪刀，并且对于遮住你的<<bottom>>于事无补。
+<</if>>
+<br><br>
+
+
+
+你能感受到其他人正在注视你。一小部分家伙因为看得入了迷，被增加了额外一天社会服务作为它们偷懒的惩罚。
+<br><br>
+
+除开你的暴露，剩下的过程是平淡无奇的。
+<br><br>
+
+<<link [[继续|Police Community Wasteland End]]>><</link>>
+<br>
+
+
+:: Police Community Wasteland Bottomless Back
+<<effects>>
+
+<<if $worn.upper.state is "waist">>
+	当你工作时，你将你的$worn.upper.cn_name_cap拉扯着盖过你的<<bottom>>，但是这使得你很难去操作剪刀，并且这使得你的身体前方没有遮蔽。你只能希望这些灌木丛足够多。
+<<elseif $worn.under_upper.state is "waist">>
+	当你工作时，你将你的$worn.under_upper.cn_name_cap拉过你的<<bottom>>，但是这使得你很难去操作剪刀，并且这使得你的身体前方没有遮蔽。你只能希望这些灌木丛足够多。
+<<else>>
+	当你工作时，你把手伸到了背后去遮蔽你的<<bottom>>，但是这使得你很难去操作剪刀，并且这使得你的身体前方没有遮蔽。你只能希望这些灌木丛足够多。
+<</if>>
+<br><br>
+
+你能感受到其他人正在注视你。一小部分家伙因为看得入了迷，被增加了额外一天社会服务作为它们偷懒的惩罚。
+<br><br>
+
+除开你的暴露，剩下的过程是平淡无奇的。
+<br><br>
+
+<<link [[继续|Police Community Wasteland End]]>><</link>>
+<br>
+
+
+:: Police Community Wasteland End
+<<effects>>
+<<person1>>
+"这样就够了，"警察喊道:"归还那些工具，我知道都是谁拿着。"
+<br><br>
+
+<<if $exposed gte 1>>
+	你在后面排队。"眼睛看向前方！"当<<person2>><<person>>试着向你献媚时，警察如此吼道。<<person1>><<He>>清点工具，把关上的箱子弄得咔哒响，并且打开了货车的门。你在其他人后面曳步而行。
+	<br><br>
+	<<covered>>就这样回车站让你很尴尬的，但路途还算顺利。<<gstress>><<stress 6>>
+	<br><br>
+<<else>>
+	<<He>>清点工具，把关上的箱子弄得咔哒响，并且打开了货车的门。你在其他人后面曳步而行。
+	<br><br>
+	回到车站的旅途平安无事。
+	<br><br>
+<</if>>
+
+<<link [[继续|Police Community End]]>><<pass 20>><<endevent>><</link>>
+<br>
+
+:: Police Community Clean
+<<set $location to "town">><<effects>>
+
+货车隆隆作响。你瞧见坐在你对面的<<person2>><<person>>正在打量你。
+<<if random(1, 2)>>
+	当<<He>>注意到你的目光<<he>>将眼神移开。<<set $phase to 0>>
+<<else>>
+	当<<He>>注意到你的目光时<<he>>对你咧嘴一笑。<<set $phase to 1>>
+<</if>>
+<br><br>
+
+<<link [[生气|Police Community Clean Angry]]>><<crimeup 1>><<trauma -6>><</link>><<crime>><<ltrauma>>
+<br>
+<<link [[无视|Police Community Clean Ignore]]>><<stress 6>><</link>><<gstress>>
+<br>
+<<if $exhibitionism gte 15>>
+	<<link [[挑逗|Police Community Clean Tease]]>><</link>><<exhibitionist2>>
+	<br>
+<</if>>
+
+
+:: Police Community Clean Tease
+<<effects>>
+
+<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+	你将你的双脚交错，露出你那成片的大腿风光并几乎将你的<<undies>>完全展示出来。
+<<elseif $player.penisExist and calculatePenisBulge()>>
+	你伸展开你的双腿，并且着重凸显出了你那$worn.lower.cn_name_cap之下的凸起部分。
+<<else>>
+	你伸展开你的双腿，然后轻咬你的下唇。
+<</if>>
+<<if $phase is 1>>
+	<<person>>完全不能移开<<his>>的目光。
+<<else>>
+	<<person>>忍不住看了看。
+<</if>>
+<<exhibitionism2>>
+
+货车隆隆地停了下来，然后<<person1>><<person>>打开了车门。
+<br><br>
+
+<<link [[继续|Police Community Clean 2]]>><</link>>
+<br>
+
+:: Police Community Clean Angry
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"请-请不要未经允许就乱瞧！"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"把你那下流的眼神移开，"你说道。
+<<else>>
+	"我可没说过你能随便看，"你说道。
+<</if>>
+<<if $phase is 1>>
+	<<person>>伸出<<his>>舌头。
+<<else>>
+	<<person>>涨红了脸。
+<</if>>
+<br><br>
+
+你听见一声重响从前方框架那里传来，这是提醒你应该保持安静。货车隆隆地停了下来，然后<<person1>><<person>>打开了车门。
+<br><br>
+
+<<link [[继续|Police Community Clean 2]]>><</link>>
+<br>
+
+:: Police Community Clean Ignore
+<<effects>>
+
+<<if $phase is 1>>
+	你无视了<<person>>，并在剩下的旅途中忍耐着<<his>>凝视。
+<<else>>
+	你无视了<<person>>，接下来的旅途平安无事。
+<</if>>
+<br><br>
+
+货车隆隆地停了下来，然后<<person1>><<person>>打开了车门。
+<br><br>
+
+<<link [[继续|Police Community Clean 2]]>><</link>>
+<br>
+
+:: Police Community Clean 2
+<<set $bus to "harvest">><<effects>>
+<<person1>>
+你在街道的一边排队，吸引着众多路人的目光。这里的排水沟充斥着垃圾。"没错，你堕落了，"<<person>>说道。
+<<if $leftarm is "bound" or $rightarm is "bound">>
+	当<<He>>说话时，<<he>>移除你手臂上的束缚带。
+<</if>>
+你们每个人都要拿一根棍子和一个袋子。你们要清理这个混乱的地方。使出你们最大的努力。等你们完成后，我会检查你们的袋子。如果我不满意，我会把你们标记为缺席。现在开始吧。
+<br><br>
+
+你拿起一根棍子去工作。
+<<pass 20>>
+
+<<if random(1, 2) is 2 and $police_trash gte 2 and $fame.prostitution gte 100>>
+	/*Police trash can be set to 3 later during this event.*/
+	你和其他罪犯在街上行走，被<<person>>观察着。<<person2>><<person>>，那个曾在车上盯着你看的人和你一起工作。<<He>>工作很快，很快就装满了一个袋子。
+	<br><br>
+
+	"嘿，<<girl>>，"<<he>>说道，将<<his>>手放在你的<<bottom>>上。"让我们来做个交易如何？当我们做剩下的工作时，你带上这个鼓鼓囊囊的背包然后滚蛋。"<<He>>挤过来。"作为回报，你将和我享受一会独处的时光。"<<He>>朝着一条附近的小巷点了点头。<<gstress>><<garousal>><<stress 6>><<arousal 6 "bottom">>
+	<br><br>
+	警察忙于接电话，不会注意到短暂的缺席。
+	<br><br>
+	<<if $promiscuity gte 35>>
+		<<link [[接受|Police Community Clean Accept]]>><<set $phase to 0>><</link>><<promiscuous3>>
+		<br>
+	<</if>>
+	<<link [[拒绝|Police Community Clean Refuse]]>><</link>>
+	<br>
+<<elseif random(1, 2) is 2 and $police_trash gte 1>>
+	<<if $police_trash is 1>>
+		<<set $police_trash to 2>>
+	<</if>>
+	你和其他罪犯在街道上行走着，同时被<<person>>所注视
+	当你把手伸进下水道时，你感觉到了$worn.lower.cn_name_cap被什么东西轻轻地扯了一下。
+	<<person2>>
+	<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+		过了一会，<span class="lewd">有人翻起了下摆，暴露出你的
+		<<if $worn.under_lower.type.includes("naked")>>
+			<<bottom>>。<<fameexhibitionism 5>>有个家伙吹了个口哨。
+		<<else>>
+			$worn.under_lower.cn_name_cap
+		<</if>>
+		</span>
+		<br><br>
+		你遮住你自己，然后转而面向袭击者。
+	<<elseif $worn.upper.set isnot $worn.lower.set>>
+		过了一会，<span class="lewd">有个家伙把碎料从你大腿上扯下来，露出你的<<undies>>。</span>
+		<<if $worn.under_lower.type.includes("naked")>>
+			有个家伙吹了吹口哨。<<fameexhibitionism 5>>
+		<</if>>
+		<br><br>
+		你遮住你自己，然后转而面向袭击者。
+	<<else>>
+		过了一会，<span class="lewd">有个家伙掐了掐你的<<bottom>>.</span><<gpain>><<pain 1>>
+		<br><br>
+		你拍了拍你的屁股，然后转身面向袭击者。
+	<</if>>
+	<<if $phase is 1>>
+		<<person>>用<<his>>棍子点了点你，然后咧嘴笑了起来。
+		<br><br>
+	<<else>>
+		<<person>>将棍子藏在<<his>>的后面
+		<br><br>
+	<</if>>
+
+	<<link [[告诉警察|Police Community Clean Tell]]>><<stress 6>><</link>><<gstress>>
+	<br>
+	<<link [[扳回一城|Police Community Clean Even]]>><<trauma -6>><</link>><<ltrauma>>
+	<br>
+	<<link [[无视|Police Community Clean Ignore 2]]>><<trauma 6>><</link>><<gtrauma>>
+	<br>
+<<else>>
+	<<if $police_trash is undefined>>
+		<<set $police_trash to 1>>
+	<</if>>
+
+	你和其他罪犯在街道上行走着，同时被<<person>>所注视
+	<br><br>
+
+	<<link [[努力工作|Police Community Clean Work]]>><<tiredness 6>><<stress 6>><</link>><<gtiredness>><<gstress>>
+	<br>
+	<<set $skulduggerydifficulty to 400>>
+	<<link [[轻松点，并偷点垃圾|Police Community Clean Laze]]>><</link>><<skulduggerydifficulty>>
+	<br>
+<</if>>
+
+
+:: Police Community Clean Accept
+<<effects>>
+
+
+
+<<if $phase is 1>>
+	<<set _phase to 1>>
+<</if>>
+<<saveNPC 0 "community_police">>
+<<saveNPC 1 "community_criminal">>
+<<endevent>>
+<<loadNPC 0 "community_criminal">>
+<<person1>>
+
+<<if _phase is 1>>
+	<<set $phase to 1>>
+<<else>>
+	<<set $phase to 0>>
+<</if>>
+
+<<person>>带着你进入了小巷。其他罪犯中的一些只是在你离开时匆匆扫过一眼，但是没人阻止你。
+<<promiscuity3>>
+
+<<He>>将你推到垃圾箱的边上，用来阻隔街道上的视线。
+<br><br>
+
+<<link [[继续|Police Community Clean Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+
+:: Police Community Clean Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>>
+	<<enable_rescue>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Police Community Clean Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Police Community Clean Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Police Community Clean Sex Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<ejaculation>>
+	<<if $phase is 1>>
+		"这些垃圾都是你的了，"<<person>>笑着说道。"这些也是。"<<He>>递给你<<moneyGain 50>>。<<fameprostitution 5>>
+	<<else>>
+		"这些垃圾归你了，"<<person>>笑着说道："我能搞到更多。"
+	<</if>>
+	<br><br>
+
+	<<if $police_trash gte 3 and random(1, 2) is 2>>
+		<<clotheson>>
+		<<endcombat>>
+		<<generate1>><<generate2>><<generate3>>
+		你想回到队伍中，但是<<fullGroup>>挡住了你的去路。"我们是在交易吗？"<<person1>><<person>>说道，"我想我们亲爱的警官听到这事可能会不高兴。"<<He>>向前迈出一步。"也许你应该考虑给我们一些好处，这样才能让我们保持安静。"
+		<br><br>
+
+		<<link [[接受|Police Community Clean Rape Accept]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+		<br>
+		<<link [[尖叫|Police Community Clean Rape Scream]]>><</link>>
+		<br>
+	<<else>>
+		<<clotheson>>
+		<<endcombat>>
+		<<if $police_trash is 2>>
+			<<set $police_trash to 3>>
+		<</if>>
+		<<tearful>>你回到了队伍中。警察没有注意到你。
+		<br><br>
+
+		<<loadNPC 0 "community_police">>
+		<<loadNPC 1 "community_criminal">>
+		<<person1>>
+		<<clearNPC "community_police">>
+		<<clearNPC "community_criminal">>
+
+		<<link [[继续|Police Community Clean Work]]>><</link>>
+		<br>
+	<</if>>
+<<elseif $enemyhealth lte 0>>
+	你把<<person>>推向垃圾箱。<<tearful>>你在<<he>>能报复你之前回到了大街上。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<loadNPC 0 "community_police">>
+	<<loadNPC 1 "community_criminal">>
+	<<person1>>
+	<<clearNPC "community_police">>
+	<<clearNPC "community_criminal">>
+	你继续收集着属于你的垃圾。警察没有注意到任何事。<<gtiredness>><<gstress>><<tiredness 6>><<stress 6>>
+	<br><br>
+	<<link [[继续|Police Community Clean Work]]>><</link>>
+	<br>
+<<elseif $rescue is 1 and $alarm is 1>>
+	"你们这些畜生难道连好好表现一个小时都做不到吗？"作为对你哭喊的回应，警察来到你的旁边，抓住<<person>>的项圈，并且把<<him>>推回大街之上。<<tearful>>你跟上去。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<loadNPC 0 "community_police">>
+	<<loadNPC 1 "community_criminal">>
+	<<person1>>
+	<<clearNPC "community_police">>
+	<<clearNPC "community_criminal">>
+	你刚出来就看到<<person1>><<person>>把<<person2>><<person>>推入了货车后面，无视<<his>>的抗议。于是你顺走了<<his>>那无人看管的垃圾袋。
+	<br><br>
+	<<person1>>
+
+	<<link [[继续|Police Community Clean Work]]>><</link>>
+	<br>
+<<else>>
+	"该死的婊子"那个<<person>>骂道。"明明自己引诱别人还表现得像被强奸了一样。"<<He>>回到街上。
+
+	<<if $police_trash gte 3 and random(1, 2) is 2>>
+		<<clotheson>>
+		<<endcombat>>
+		<<generate1>><<generate2>><<generate3>>
+		你想回到队伍中，但是<<fullGroup>>挡住了你的去路。"我们是在交易吗？"<<person1>><<person>>说道，"我想我们亲爱的警官听到这事可能会不高兴。"<<He>>向前迈出一步。"也许你应该考虑给我们一些好处，这样才能让我们保持安静。"
+		<br><br>
+
+		<<link [[接受|Police Community Clean Rape Accept]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+		<br>
+		<<link [[尖叫|Police Community Clean Rape Scream]]>><<set $rescued to 1>><</link>>
+		<br>
+	<<else>>
+
+		<<tearful>>你照做。
+		<br><br>
+		<<clotheson>>
+		<<endcombat>>
+
+		<<loadNPC 0 "community_police">>
+		<<loadNPC 1 "community_criminal">>
+		<<person1>>
+		<<clearNPC "community_police">>
+		<<clearNPC "community_criminal">>
+		你继续收集着属于你的垃圾。警察没有注意到任何事。<<gtiredness>><<gstress>><<tiredness 6>><<stress 6>>
+		<br><br>
+		<<link [[继续|Police Community Clean Work]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+
+:: Police Community Clean Rape Scream
+<<effects>>
+
+你尖叫着寻求帮助。罪犯马上转身逃跑，直接撞见了警察。
+<br><br>
+<<endevent>>
+<<loadNPC 0 "community_police">>
+<<loadNPC 1 "community_criminal">>
+<<person1>>
+<<clearNPC "community_police">>
+<<clearNPC "community_criminal">>
+
+那些家伙结结巴巴地找着借口，通知<<him>>说你通过卖淫来摆脱工作。<<He>>询问那个正忙着吹嘘如何操你的<<person2>><<person>>，一时无法从<<his>>的声明中回过神来。
+<br><br>
+
+<span class="red">"你们俩，社区服务再加一天，"</span>那个<<person1>>警察说道。"放心，这没什么大不了的。"
+<br><br>
+<<set $community_service += 1>>
+
+<<if $speech_attitude is "meek">>
+	害怕情况恶化，你拿起你的垃圾棒，继续工作。
+<<elseif $speech_attitude is "bratty">>
+	你把你的怨气留给自己，拿起你的垃圾棒，然后继续工作。
+<<else>>
+	不想使情况恶化，你拿起你的垃圾棒，继续工作。
+<</if>>
+<br><br>
+
+<<link [[继续|Police Community Clean Work]]>><</link>>
+<br>
+
+
+:: Police Community Clean Rape Accept
+<<effects>>
+
+你走回垃圾箱后面的遮蔽区，但在你到达之前，<<person1>><<person>>把你推到墙上。
+<br><br>
+
+
+<<link [[继续|Police Community Clean Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+
+:: Police Community Clean Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+
+	<<enable_rescue>>/*Remove line if rescue is impossible*/
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Police Community Clean Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Police Community Clean Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Police Community Clean Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"差不多值回票价了，"<<person>>一边说，一边穿好<<his>>的衣服。"回头见，婊子。"
+	<br><br>
+	<<tearful>>你跟着他们回到了街上。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<loadNPC 0 "community_police">>
+	<<loadNPC 1 "community_criminal">>
+	<<person1>>
+	<<clearNPC "community_police">>
+	<<clearNPC "community_criminal">>
+	<<link [[继续|Police Community Clean Work]]>><</link>>
+	<br>
+
+<<elseif $enemyhealth lte 0>>
+	你把<<person1>><<person>>推到墙上，并在冲回街道时躲开了另外两个人。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+	罪犯跟在你后面，但在他们从巷子里冲出来时引起了警察的注意力，并决定不推。<<tearful>>你回到了工作岗位。
+	<br><br>
+	<<loadNPC 0 "community_police">>
+	<<loadNPC 1 "community_criminal">>
+	<<person1>>
+	<<clearNPC "community_police">>
+	<<clearNPC "community_criminal">>
+	<<link [[继续|Police Community Clean Work]]>><</link>>
+	<br>
+
+<<else>>
+	<<set $rescued += 1>>/*Unnecessary if rescue is impossible*/
+	"你他妈的在干什么？"警察在巷口说道。<<person1>><<person>>和<<his>>的同事远离你。"这个荡妇在卖<<pherself>>，"<<he>>结结巴巴地说道。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<loadNPC 0 "community_police">>
+	<<loadNPC 1 "community_criminal">>
+	<<person1>>
+	<<clearNPC "community_police">>
+	<<clearNPC "community_criminal">>
+	<span class="red">"这是社区服务的又一天，"</span>警官说道。"为了你们所有人。重新排队。"
+	<br><br>
+	<<set $community_service += 1>>
+
+	<<if $speech_attitude is "meek">>
+		害怕情况恶化，你拿起你的垃圾棒，继续工作。
+	<<elseif $speech_attitude is "bratty">>
+		你把你的怨气留给自己，拿起你的垃圾棒，然后继续工作。
+	<<else>>
+		不想使情况恶化，你拿起你的垃圾棒，继续工作。
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Police Community Clean Work]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Police Community Clean Refuse
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我，我不是那种<<girl>>，"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"滚开，"你说道:。"我不会为了一袋垃圾而出卖自己。"
+<<else>>
+	"我不会为了一袋垃圾而出卖自己，"你说道:。
+<</if>>
+<br><br>
+
+<<person>>拉开<<his>>的手，但狠狠地打了一下你的<<bottom>>。<<gpain>><<garousal>><<pain 4>><<arousal 600 "bottom">>
+<br><br>
+
+"不用，小骚货，"<<he>>说道。"你用更低的价格出卖了自己。不过我心情很好。"<<He>>从<<his>>的口袋里掏出<span class="gold">£50</span>的钞票，放在你面前。"我会给你更多。"
+<br><br>
+
+<<if $promiscuity gte 35>>
+	<<link [[接受|Police Community Clean Accept]]>><<set $phase to 1>><</link>><<promiscuous3>>
+	<br>
+<<elseif $uncomfortable.prostituting is false>>
+	<<link [[接受|Police Community Clean Accept]]>><<set $phase to 1>><<set $desperateaction to 1>><</link>><<promiscuous3>>
+	<br>
+<</if>>
+<<link [[拒绝|Police Community Clean Refuse 2]]>><<tiredness 6>><<stress 6>><</link>><<gtiredness>><<gstress>>
+<br>
+
+:: Police Community Clean Refuse 2
+<<effects>>
+
+你逃离了<<person>>。"行，"<<he>>说道。"我在任何地方都能找到像你这样的骚货。"<<He>>走开了。你回到工作岗位，现在已经没有骚扰了。
+<br><br>
+
+<<link [[继续|Police Community Clean Work]]>><</link>>
+<br>
+
+
+:: Police Community Clean Tell
+<<effects>>
+
+<<person2>>
+<<if $speech_attitude is "meek">>
+	"警，警官！"你喊道。"这<<personsimple>>是在骚扰我。"
+<<elseif $speech_attitude is "bratty">>
+	"哎，警官！"你喊道。"给你找了个变态。"
+<<else>>
+	"警官！"你喊道。"这<<personsimple>>是在骚扰我。"
+<</if>>
+<br><br>
+<<person1>><<person>>走过来。"这是真的吗？"<<he>>问道。<<person2>><<person>>摇了摇<<his>>的头，但其他罪犯咧嘴笑着点头。<<person1>>说"上车。以这种速度，你会被关起来的。"
+<br><br>
+
+你回到工作岗位，现在已经没有骚扰了。
+<br><br>
+
+<<link [[继续|Police Community Clean Work]]>><</link>>
+<br>
+
+
+:: Police Community Clean Even
+<<effects>>
+
+<<if $pronoun is "f">>
+	你伸出自己的小棍子，钩住<<persons>>的裙子下摆，然后提起来。<<He>>赶紧遮住<<himself>>。
+	<<if $rng gte 81>>
+		看见<<his>>的丁字裤露了出来，其他罪犯不禁欢呼。<<He>>赶紧遮住<<himself>>。
+	<<elseif $rng gte 61>>
+		随着<<his>>的丁字裤露出，其他罪犯欢呼起来。<<He>>连忙遮住<<himself>>。
+	<<elseif $rng gte 41>>
+		看见<<his>>的蕾丝内裤露了出来，其他罪犯不禁欢呼。<<He>>赶紧遮住<<himself>>。
+	<<elseif $rng gte 21>>
+		看见<<his>>的男士短裤露了出来，其他罪犯不禁欢呼。<<He>>赶紧遮住<<himself>>。
+	<<else>>
+		<span class="lewd"><<Hes>>下面什么都没穿。</span>。<<he>>拼命想遮住<<his>>的屁股和<<if $NPCList[1].penis isnot "none">><<print $NPCList[1].penisdesc>><<else>>小穴<</if>>，其他犯人不禁欢呼了起来。<<garousal>><<arousal 6>>
+	<</if>>
+<<else>>
+	你伸出自己的小棍子，钩住<<persons>>的裤子下摆，把它拖下来。
+	<<if $rng gte 81>>
+		随着<<his>>的三角裤露出，其他罪犯欢呼起来。<<He>>连忙遮住自己。
+	<<elseif $rng gte 61>>
+		随着<<his>>的四角裤露出，其他罪犯欢呼起来。<<He>>连忙遮住自己。
+	<<elseif $rng gte 41>>
+		随着<<his>>的四角内裤露出，其他罪犯欢呼起来。<<He>>连忙遮住自己。
+	<<elseif $rng gte 21>>
+		随着<<his>>的丁字裤露出，其他罪犯欢呼起来。<<He>>连忙遮住<<himself>>。
+	<<else>>
+		<span class="lewd"><<Hes>>下面什么都没穿。</span>。<<he>>拼命想遮住<<his>>的<<if $NPCList[1].penis isnot "none">><<print $NPCList[1].penisdesc>><<else>>小穴<</if>>，其他犯人不禁欢呼了起来。<<garousal>><<arousal 6>>
+	<</if>>
+<</if>>
+<br><br>
+
+你发动了另一次攻击，但<<person>>已经准备好了，并用<<hers>>的棍子格开了你的棍子。在<<person1>><<person>>来拆散你们之前，你占据了上风。<<He>>将<<person2>><<person>>送到了线的另一侧。
+<br><br>
+
+<<person1>>
+你回到工作岗位，现在已经没有骚扰了。
+<br><br>
+
+<<link [[继续|Police Community Clean Work]]>><</link>>
+<br>
+
+
+
+:: Police Community Clean Ignore 2
+<<effects>>
+
+你离开了<<person>>，并在工作时密切关注<<him>>。你不会再被骚扰了。
+<br><br>
+
+<<link [[继续|Police Community Clean Work]]>><</link>>
+<br>
+
+
+:: Police Community Clean Work
+<<effects>>
+
+你在过马路之前到达了街道的尽头，并开始在另一边工作。对面的水沟里已经有了更多的垃圾，是从南方吹来的。
+<br><br>
+
+"搞定，"<<person1>><<person>>说道。<<He>>检查了每一个袋子，然后把它们捆起来。"把它们送到垃圾填埋场。不远。"
+<br><br>
+
+垃圾填埋场本身是很大的，但外面有一个小区域可以让市民将垃圾放入大型金属容器中。你爬上台阶，把包扔进去。
+<br><br>
+
+回到车站的旅途平安无事。
+<br><br>
+
+<<link [[继续|Police Community End]]>><<pass 20>><<endevent>><</link>>
+<br>
+
+
+:: Police Community Clean Laze
+<<effects>>
+
+你靠在棍子上找人偷东西。在面包车里盯着你看的<<person2>><<person>>一直在偷瞄你。就是那个<<Hes>>分心了。
+<br><br>
+
+你站在<<he>>工作的地方旁边，把你几乎空着的袋子放在<<persons>>旁边。
+
+<<if $phase is 1>>
+	<<He>>靠在<<his>>棍子上试图搭讪警官，直到警官让<<him>>闭嘴。<<He>>回到工作岗位，但<<his>>一直盯着你。
+<<else>>
+	<<He>>假装移开视线，但还是再偷偷看你的身体。
+<</if>>
+
+
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+
+	该继续前进时，<<Hes>>被引开了注意，以至于<span class="green"><<he>>没有注意到</span>你拿走的是<<his>>的包而不是你的包。
+	<br><br>
+
+
+	<<skulduggeryuse>>
+
+	"搞定，"<<person1>><<person>>说道。
+	<br>
+	"呃，"<<person2>><<person>>打断了他的话。"我丢失了我的垃圾。"
+	<br>
+	"当然，"<<person1>><<person>>回答。"你可以在额外一天的社区服务中找到它。上车。"
+	<br><br>
+	<<person2>><<person>>试图争论，但<<person1>><<person>>听不见。<<He>>检查每个袋子，然后绑好并递给对方。"把它们送到垃圾填埋场。不远。"
+	<br><br>
+
+	垃圾填埋场本身是很大的，但外面有一个小区域可以让市民将垃圾放入大型金属容器中。你爬上台阶，把包扔进去。
+	<br><br>
+
+	回到车站的旅途平安无事。
+	<br><br>
+
+	<<link [[继续|Police Community End]]>><<pass 20>><<endevent>><</link>>
+	<br>
+
+<<else>>
+
+	当该继续前进时，你试着去拿<<his>>的包而不是你的包，<span class="red">但<<he>>抓住了你的手腕</span>"干得不错，"<<he>>笑着说道。"差点成了。"
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	"完成了，"<<person1>><<person>>说道。<<He>>检查每一个袋子，但当<<he>>查到你的袋子时停了下来。"还不够好。<span class="red">你可以通过另一天的社区服务来弥补。"</span><<set $community_service += 1>>
+	<br><br>
+
+	回到车站的旅途平安无事。
+	<br><br>
+
+	<<link [[继续|Police Community End]]>><<pass 20>><<endevent>><</link>>
+	<br>
+
+<</if>>
+
+
+
+:: Police Community End
+<<set $location to "police_station">><<effects>>
+
+你回到车站。
+
+<<generatePolice 1>><<person1>>
+<<if $community_service lte 0>>
+	<<unset $community_service>>
+	<<unset $commuity_service_done>>
+	接待处的警察在你出去的路上拦住了你。<span class="gold">"看起来你已经偿还了对社会的债务，"</span><<he>>说道。"祝贺你。"
+	<<earnFeat "Social Contract">>
+<<else>>
+	接待处的警官出去的时候记下了你的名字。
+	<<if $community_service gte 2>>
+		"看起来你还有<span class="pink">$community_service</span>天，"<<he>>说道。"明天一定要来。"
+	<<else>>
+		"看起来你差不多完成了，"<<he>>说道。"只剩下<span class="purple">一天</span>了。一定要来。"
+	<</if>>
+<</if>>
+<br><br>
+
+
+<<if $exposed gte 1>>
+	<<link [[索要一些东西来盖住|Police Station Cover]]>><</link>>
+	<br>
+	<<link [[离开|Barb Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<link [[继续|Police Station]]>><</link>>
+	<br>
+<</if>>
+
+:: Police Station Cover
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你，你能给我点东西遮一下吗?"你问，"求你了，就算是毛巾也... ..."
+<<elseif $speech_attitude is "bratty">>
+	"你要让我毫无遮掩地离开这里吗?"你问。
+<<else>>
+	"我可以用什么东西遮盖吗?"你问。
+<</if>>
+<br><br>
+"这不是我要考虑的问题，"<<person>>回答道："在我以公然猥亵罪逮捕你之前滚出去。"
+<br><br>
+
+你从门缝中往外瞧。外面不算热闹。也许你不会被发现。如果你动作快的话。
+<br><br>
+
+你离开大楼，跑到拐角处，躲进一条小巷里。
+<br><br>
+
+<<link [[离开|Barb Street]]>><<endevent>><</link>>

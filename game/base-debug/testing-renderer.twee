@@ -1,0 +1,177 @@
+:: Renderer Test Page [exitCheckBypass]
+
+<<link [[Return|$lastPassage]]>>
+	<<unset $lastPassage>>
+<</link>>
+<br><br>
+
+Report errors on this page, unsupported features, or if generated and reference images look different.
+<br>
+<div id="useragent">
+<b>User-Agent (browser & OS versions)</b>: <<print navigator.userAgent>>.
+<<link "Hide">><<remove '#useragent'>><</link>>
+<br><br>
+</div>
+
+1. <b>globalCompositeOperation</b>:
+
+<<twinescript>>
+let c2d = Renderer.createCanvas(16, 16);
+_gcoSupported = 'globalCompositeOperation' in c2d && typeof c2d.globalCompositeOperation is 'string';
+_gaSupported = 'globalAlpha' in c2d && typeof c2d.globalAlpha is 'number';
+<</twinescript>>
+
+<<if _gcoSupported>>
+	<span class="green">supported</span>.
+<<else>>
+	<span class="red">not supported</span>. Most of the renderer features will not work.
+<</if>>
+<br>
+
+<<dynamicblock delay "id=ontestimageloaded">>
+
+2. <b>getImageData</b>:
+
+<<twinescript>>
+_gidSupported = false;
+let c2d = Renderer.createCanvas(_width, _height);
+c2d.drawImage(_testimg, 0, 0);
+try {
+	c2d.getImageData(0, 0, _width, _height);
+	_gidSupported = true;
+} catch (e){
+	console.debug(e);
+}
+<</twinescript>>
+
+<<if _gidSupported>>
+	<span class="green">supported</span>. That's surprising.
+<<else>>
+	not supported. That's the expected result.
+<</if>>
+<br>
+
+3. <b>Composition modes</b>
+<br>
+
+<<if _gcoSupported>>
+
+<div style="background:#8000ff;display:inline-block">
+	<<twinescript>>
+
+	let c2d = Renderer.createCanvas(_width*7, _height);
+
+	function testOneMode(index, mode, fill) {
+		c2d.globalCompositeOperation = 'source-over';
+		c2d.fillStyle = fill;
+		c2d.fillRect(_width*index, 0, _width, _height);
+		c2d.globalCompositeOperation = mode;
+		c2d.drawImage(_testimg, _width*index, 0);
+	}
+	testOneMode(0, 'destination-in', '#00ff80');
+	testOneMode(1, 'saturation', '#ff0000');
+	testOneMode(2, 'multiply', '#808080');
+	testOneMode(3, 'screen', '#404040');
+	testOneMode(4, 'hard-light', '#00ff80');
+	testOneMode(5, 'color-dodge', '#404040');
+	testOneMode(6, 'color-burn', '#808080');
+
+	output.append(c2d.canvas);
+
+	<</twinescript>>
+</div>
+- generated image
+<br>
+
+<div style="background:#8000ff;display:inline-block;">
+	<img src="img/testref1.png" style="vertical-align:middle">
+</div>
+- reference image
+<br>
+
+<i>Composition modes, left-to-right: destination-in, saturation, multiply, screen, hard-light, color-dodge, color-burn</i>
+<br>
+
+<<else>>
+	<span class="red">not supported</span><br>
+<</if>>
+
+4. <b>globalAlpha</b>
+<br>
+
+<<if _gaSupported>>
+
+<<twinescript>>
+
+let c2d = Renderer.createCanvas(_width, _height);
+
+c2d.fillStyle = '#00ff80';
+c2d.fillRect(0, 0, _width, _height);
+c2d.globalAlpha = 0.5;
+c2d.drawImage(_testimg, 0, 0);
+
+output.append(c2d.canvas);
+
+<</twinescript>>
+- generated image
+<br>
+
+<img src="img/testref2.png" style="vertical-align:middle">
+- reference image
+<br>
+
+<<else>>
+	<span class="red" not supported</span><br>
+<</if>>
+
+<</dynamicblock>>
+
+<<twinescript>>
+let image = new Image();
+image.onload = ()=>{
+	_testimg = image;
+	_width = Number(image.width);
+	_height = Number(image.height);
+	Dynamic.render("ontestimageloaded");
+}
+image.src = "img/test0.png";
+<</twinescript>>
+
+5. <b>Model test run</b>
+<br>
+
+<div style="display:flex">
+	<div style="margin:0 2px">
+		Generated image:<br>
+		<div style="width:160px;height:192px;overflow:hidden;background:#8000ff;">
+			<<selectmodel "main">>
+			<<set _modeloptions.mouth to 'neutral'>>
+			<<set _modeloptions.skin_tone to 1>>
+			<<set _modeloptions.worn_head to 2>>
+			<<set _modeloptions.worn_head_colour to 'custom'>>
+			<<set _modeloptions.filters.worn_head_custom to {blend:{gradient:'linear',values:[110,60,130,30],colors:['#000000','#FF0000']},blendMode:'hard-light'}>>
+			<<set _modeloptions.worn_upper to 1>>
+			<<set _modeloptions.worn_upper_alpha to 0.7>>
+			<<set _modeloptions.worn_upper_colour to "custom">>
+			<<set _modeloptions.filters.worn_upper_custom to getCustomClothesColourCanvasFilter(90,1,4,2)>>
+			<<set _modeloptions.worn_under_lower to 1>>
+			<<set _modeloptions.worn_under_lower_colour to 'red'>>
+			<<set _modeloptions.worn_lower to 1>>
+			<<set _modeloptions.worn_lower_alpha to 0.7>>
+			<<set _modeloptions.worn_lower_colour to _modeloptions.worn_upper_colour>>
+			<<set _modeloptions.filters.worn_lower_custom to _modeloptions.filters.worn_upper_custom>>
+			<<rendermodel>>
+		</div>
+	</div>
+	<div>
+		Reference image:<br>
+		<div style="width:160px;height:192px;overflow:hidden;background:#8000ff;">
+			<img src="img/testref3.png">
+		</div>
+	</div>
+</div>
+
+<br>
+<<link [[Return|$lastPassage]]>>
+	<<unset $lastPassage>>
+<</link>>

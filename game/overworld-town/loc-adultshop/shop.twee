@@ -1,0 +1,377 @@
+:: Adult clothing shop widgets [widget]
+
+<<widget "adultShop-main">>
+	<<if $tryOn.autoReset isnot false>><<tryOnReset>><</if>><<unset $tempDisable>>
+	<<set $outside to 0>><<set $location to "adult_shop">><<effects>>
+	<<set $shopName = "adult">>
+
+	你在一家成人用品店里，这里有各种各样的情趣服装和仿真阳具供选择。
+	<br><br>
+
+	<<if $stress gte $stressmax>>
+	<<passoutadultshop>>
+	<<else>>
+		<<if Time.hour is 21 and Time.minute lt 10>>
+			已经到了关店的时间，西里斯正在清场。<<if $exposed gte 1>>你意识到如果西里斯发现你穿成这样，会变成怎样，你内心感到一阵慌乱。<</if>>
+			<br><br>
+
+			<<set $adultshopstate to "closed">>
+			<<if $exposed lte 0>>
+				<<link [[出去|Elk Street]]>><<adultShopClear>><</link>>
+				<br>
+			<<else>>
+				<<link [["躲起来直到事情结束 (1:00)"|Adult Shop]]>><<pass 1 hour>><</link>>
+			<</if>>
+		<<else>>
+			<div id="tryonstats-div"><<tryOnStats>></div>
+			<<unset $shopListStartCount>>
+			<<unset $clothes_choice>>
+			<<set $shopPage = 0>>
+
+			<<if Time.dayState is "night">>
+				你独自一人在黑暗中。
+				<br><br>
+			<<elseif $exposed gte 1>>
+				你藏在一排紧身衣后面以捍卫可怜的尊严。
+				<br><br>
+			<</if>>
+
+			<span>保暖度:</span>
+			<<warmthscale>>
+			<div id="warmth-description">
+				<<warmth_description>>
+			</div>
+			<br><br>
+			<<if $debug is 1>>
+				<<clothingcategoryicon "overoutfit">>
+				<<link "浏览外套">><<replace "#clothingShop-div">><<OverOutfitShop>><</replace>><</link>>
+				<br>
+				<<clothingcategoryicon "overoutfit">>
+				<<link "浏览头套">><<replace "#clothingShop-div">><<OverTopShop>><</replace>><</link>>
+				<br><br>
+			<</if>>
+			<<clothingcategoryicon "outfit">>
+			<<link "查看套装">><<replace "#clothingShop-div">><<OutfitShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "upper">>
+			<<link "查看上装">><<replace "#clothingShop-div">><<TopShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "lower">>
+			<<link "查看下装">><<replace "#clothingShop-div">><<BottomShop>><</replace>><</link>>
+			<br><br>
+			<<clothingcategoryicon "underoutfit">>
+			<<link "查看内衣（套装）">><<replace "#clothingShop-div">><<UnderOutfitShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "underupper">>
+			<<link "查看内衣（上衣）">><<replace "#clothingShop-div">><<UnderTopShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "underlower">>
+			<<link "查看内衣（下衣）">><<replace "#clothingShop-div">><<UnderBottomShop>><</replace>><</link>>
+			/* Left here for future expansion */
+			/*<br>
+			<<clothingcategoryicon "genitals">>
+			<<link "View Genital wear">><<replace "#clothingShop-div">><<GenitalShop>><</replace>><</link>>*/
+			<br><br>
+			<<clothingcategoryicon "head">>
+			<<link "查看头饰">><<replace "#clothingShop-div">><<HeadShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "face">>
+			<<link "查看面饰">><<replace "#clothingShop-div">><<FaceShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "neck">>
+			<<link "查看颈饰">><<replace "#clothingShop-div">><<NeckShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "hand">>
+			<<link "查看手饰">><<replace "#clothingShop-div">><<HandsShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "legs">>
+			<<link "查看袜子">><<replace "#clothingShop-div">><<LegsShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "feet">>
+			<<link "查看鞋子">><<replace "#clothingShop-div">><<FeetShop>><</replace>><</link>>
+			<br><br>
+			<<run linkifyDivs('.button-back-to-shop')>>
+
+			/*<<if $clothingrebuy is 1>>
+				[[Disable automatic clothing rebuy|Rebuy Shop]]
+				<br>
+			<<else>>
+				[[Enable automatic clothing rebuy|Rebuy Shop]]
+				<br>
+			<</if>>*/
+
+			<<if Time.dayState is "night" and Time.hour isnot $closinghour and !$weekly.theft.adultShop>>
+				<<link [[检查收银机|Adult Shop Register]]>><</link>>
+				<br>
+			<</if>>
+
+			<br>
+
+			<<if Time.dayState is "night" or $tryOn.value is 0>>
+				<<if Time.dayState is "night" and $adultShop.spotted is true and $adultShop.stolenClothes gt 0>>
+					<<link [[离开|Adult Shop Night Guard Found]]>>
+						<<shopClothingFilterReset>>
+						<<ShowUnderEquip "normal">>
+						<<ShowUnderEquip "over">>
+						<<set $tryOn.autoReset to true>>
+						<<crimeup `$tryOn.value / 100`>>
+						<<set $adultshopstate to "closed">>
+					<</link>>
+				<<else>>
+					<<link [[离开|Adult Shop]]>>
+						<<shopClothingFilterReset>>
+						<<ShowUnderEquip "normal">>
+						<<ShowUnderEquip "over">>
+						<<set $tryOn.autoReset to true>>
+						<<crimeup `$tryOn.value / 100`>>
+						<<set $adultshopstate to "closed">>
+					<</link>>
+				<</if>>
+				<<if $tryOn.value gt 0>>
+					<<crime>>
+				<</if>>
+				<br><br>
+			<<elseif $tryOn.value gt 0>>
+				<<link "放回衣服">><<clothingReset>>
+					<<updatesidebarimg>>
+					<<updatesidebardescription>>
+					<<updateallure>>
+					<<updatewarmthscale>>
+					<<updatewarmthdescription>>
+					<<updateclothingshop>>
+					<<run updateMoment()>>
+				<</link>>
+				<br>
+				<<if $tryOn.value lt $money>>
+					<<sendItemsToDropdown>>
+					<<link "买下衣服">><<buyTryOnClothes "wear">><<updateclothingshop>><</link>>
+					<br>
+					<<link "买下衣服并送到衣柜中">>
+						<<buyTryOnClothes "wardrobe">>
+						<<updatesidebarmoney>>
+						<<updatesidebarimg>>
+						<<updatesidebardescription>>
+						<<updateallure>>
+						<<updatewarmthscale>>
+						<<updatewarmthdescription>>
+						<<updateclothingshop>>
+						<<run updateMoment()>>
+					<</link>>
+					<br>
+				<</if>>
+				<<link [[带着偷到的衣服离开|Stolen Adult Shop Result]]>><<shopClothingFilterReset>><</link>>
+				<br>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+
+:: Stolen Adult Shop Result
+<<effects>>
+<<ShowUnderEquip "over">>
+<<ShowUnderEquip "normal">>
+<<if currentSkillValue('skulduggery') lt 90>>
+	西里斯用眼角的余光观察着入口处。没有其他路能出去，所以你在离开前把所有东西都放了回去。
+	<<clothingReset>>
+<<else>>
+	<<rng>>
+	<<if $crime gte 50000 or ($crime gte 40000 and $rng * 20 gte currentSkillValue('skulduggery')) or ($crime gte 25000 and $rng * 10 gte $skulduggery)
+	or ($crime gte 10000 and $rng * 5 gte currentSkillValue('skulduggery'))>>
+		<<generate1>><<person1>>
+		西里斯用眼角的余光观察着入口处。当你试图走过去时，<<nnpc_he "Sirris">>拦下了你。
+		<br><br>
+		"嗯—我一直在盯着你，"<<he>>瞥了你一眼，"这次我放你走，但这些天你
+		被禁止进入这里……希望能让你学会为什么不能偷东西。"
+		<<if $adultShop.banCount lt 4>>
+			<<set $adultShop.ban to 7>>
+		<<elseif $adultShop.banCount lt 8>>
+			<<set $adultShop.ban to 10>>
+		<<else>>
+			<<set $adultShop.ban to 14>>
+		<</if>>
+		<<crime>>
+		<<set $adultShop.banCount++>>
+	<<else>>
+		西里斯用眼角的余光观察着入口处。万幸你身手敏捷，不留一丝痕迹。
+		<<crime>>
+	<</if>>
+	<<set _crime to ($tryOn.value / 100)>>
+	<<crimeup _crime>>
+<</if>>
+<br><br>
+<<link [[继续|Elk Street]]>><<set $tryOn.autoReset to true>><<adultShopClear>><</link>>
+
+:: Adult Shop Guard
+<<effects>>
+<<generate1>><<person1>>
+西里斯用眼角的余光观察着入口处，<<nnpc_He "Sirris">>突然发现了你。<<nnpc_He "Sirris">>对一个你看不见的人说了几句话，然后向你走来。
+<br><br>
+"抱歉，不能让你进去，"<<he>>看了你一眼，"还有<<if $adultShop.ban gt 1>><<number $adultShop.ban>>天<<else>>一天<</if>>
+，你的逐出令就解除了。"
+<br><br>
+
+<<link [[继续|Elk Street]]>><<adultShopClear>><</link>>
+
+:: Adult Shop Sneak Guard
+<<effects>>
+你发现西里斯就在入口处——看起来你不可能偷偷溜过去。
+
+<<link [[继续|Elk Street]]>><<adultShopClear>><</link>>
+
+:: Adult Shop Night Guard Found
+<<effects>>
+<<generate1>><<person1>>
+<<set $adultShop.banCount++>>
+<<set $adultShop.spotted to false>>
+在保证自己尽可能安静的关好门之后，你一个回头，惊讶地
+发现一个<<person>>正面对着你。在你反应过来之前，<<He>>摁住了你的肩膀。
+<br><br>
+"看看我们抓到了什么？一只小老鼠，想来偷点大人的玩具？"<<he>>伸手想抓住你。
+不以为然的语气说道，"我会把这里的情况告诉这家店主。"
+<br><br>
+<<He>>拿出了手机，看起来是要打给西里斯。
+<<if $adultShop.ban gt 0>>
+	<<set $adultShop.banExtension to true>>
+	<<set $adultShop.ban += 7>>
+	"啊哈！所以你已经有禁令了，"<<he>>好笑地看着你，"他们确实有一个相当严格的禁令政策，
+	所以你要进去还要在等一段时间喽。"
+<<else>>
+	<<if $adultShop.banCount lt 4>>
+		<<set $adultShop.ban to 7>>
+	<<elseif $adultShop.banCount lt 8>>
+		<<set $adultShop.ban to 10>>
+	<<else>>
+		<<set $adultShop.ban to 14>>
+	<</if>>
+	"行吧，"<<he>>耸耸肩，"好吧，你将在相当长的一段时间内都不能进入这里，
+	希望这能给你一个教训。"
+<</if>>
+<br><br>
+"现在跟着我，我会陪同你离开这里。你很幸运，我没有直接把你带到市长那地方。"
+
+<br><br>
+<<link [[逃跑|Adult Shop Night Guard Found Run]]>><</link>><<athleticsdifficulty 500>>
+<br>
+<<link [[跟随保安|Adult Shop Night Guard Found Follow]]>><</link>>
+
+:: Adult Shop Night Guard Found Run
+<<effects>>
+你决定逃跑并躲藏起来。
+<<if $athleticsSuccess>>
+	<<combatperson>>试图抓住你，但你敏捷地避开了<<him>>，等<<he>>回过神，你已经溜了。
+	你跑进了一条小巷，<<him>>在远处叫喊着。
+	<br><br>
+	<<link [[逃跑|Elk Street]]>><<adultShopClear>><</link>>
+<<else>>
+	你速度不够快，在你能溜走前，那<<combatperson>>一把揪住了你。你摔倒在地上。
+	<br><br>
+	"你会后悔尝试从我这里逃跑的，"<<he>>笑了起来，"这里可没有任何的摄像头。"
+	<br><br>
+	<<link [[继续|Adult Shop Night Guard Molestation]]>><<set $molestationstart to 1>><</link>>
+<</if>>
+
+:: Adult Shop Night Guard Found Follow
+<<effects>>
+<<He>>引导你向出口走去。
+<<if random(0,100) gte 50>>
+	"你知道吗？"<<he>>笑了起来，"这里可没有任何的摄像头。"
+	<br><br>
+	在<<he>>抓住你之前，你的脸上闪过一丝担忧。
+	<br><br>
+	<<link [[继续|Adult Shop Night Guard Molestation]]>><<set $molestationstart to 1>><</link>>
+<<else>>
+	你们沉默着在街上走着，来到了麋鹿街街角。
+	<<combatperson>>转身面对你。
+	<br><br>
+	"希望这对你来说是个好教训，"<<He>>笑着说，"你应该寻找更正当的
+	赚钱方式……这样对每个人来说都会少些麻烦。"
+	<br><br>
+	你离开了，<<He>>在背后朝你竖了个中指。
+	<br><br>
+	<<link [[离开|Elk Street]]>><<adultShopClear>><</link>>
+<</if>>
+
+:: Adult Shop Night Guard Molestation
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $enemytrust -= 40>>
+	<<set $enemyanger += 40>>
+	<<set $NPCList[0].lefthand to "arms">>
+	<<set $leftarm to "grappled">>
+	<<set $rightarm to "grappled">>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Adult Shop Night Guard Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Adult Shop Night Guard Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Adult Shop Night Guard Molestation Finish
+
+<<if $enemyhealth lte 0>>
+	你身手不错，趁着打到<<he>>的间隙，<<tearful>>你逃离了商店。
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[逃脱|Elk Street]]>><<adultShopClear>><</link>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"好吧，有意思，"<<he>>瞥了你一眼，"但我想你该离开了。"
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[离开|Elk Street]]>><<adultShopClear>><</link>>
+<</if>>
+
+:: Adult Shop Register
+
+<<set $outside to 0>><<effects>><<set $lock to 250>>
+柜台上有一台普通收银机，收银机锁得死死的。
+<br><br>
+<<if currentSkillValue('skulduggery') gte $lock>>
+	<span class="green">不过你可以撬开。</span>
+	<br><br>
+	<<lockpickicon>><<link [[撬开它 (0:10)|Adult Shop Register Sneak]]>><<pass 10>><<crimeup 1>><</link>><<crime>>
+	<br>
+<<else>>
+	<span class="red">这把锁超出了你的能力范围。</span><<skulduggeryrequired>>
+	<br><br>
+<</if>>
+<<ind>><<link [[离开|Adult Shop]]>><</link>>
+<br>
+
+:: Adult Shop Register Sneak
+
+<<set $outside to 0>><<effects>><<set $lock to 200>>
+<<set $weekly.theft.adultShop to true>>
+<<set $tip to random(4000, 10000)>>
+你熟练的打开了收银机，数着里面的钱。
+一共有<<printmoney $tip>>。
+<br><br>
+<<if currentSkillValue('skulduggery') lt 300>>
+	<<skulduggeryskilluse>>
+<<else>>
+	<span class="blue">这么简单的锁已经不能磨练你的技巧了。</span>
+<</if>>
+<br><br>
+<<if $rng gte 86>>
+	<<skulshopevents>>
+<<else>>
+	<<link [[拿上|Adult Shop]]>><<set $money += $tip>><<crimeup `$tip / 100`>><</link>><<crime>>
+	<br>
+	<<link [[不管|Adult Shop]]>><</link>>
+	<br>
+<</if>>

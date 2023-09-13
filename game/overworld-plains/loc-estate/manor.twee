@@ -1,0 +1,97 @@
+:: Estate Manor
+<<effects>>
+
+雷米的庄园位于一个一条蜿蜒小路的尽头的悬崖上。大多数工作人员被混乱弄的焦头烂额，无暇顾及一位<<girl>>,但有六个神情警觉的门卫还在站岗。
+<br><br>
+
+<<link [[接近守卫|Estate Manor Approach]]>><</link>>
+<br>
+<<link [[攀爬悬崖 (0:15)|Estate Manor Scale]]>><</link>>
+<br><br>
+
+<<link [[离开|Estate]]>><</link>>
+<br>
+
+:: Estate Manor Approach
+<<effects>>
+
+<<generate1>><<generate2>><<generate3>><<generate4>><<generate5>><<generate6>>
+<<person1>>
+一个<<person>>伸手阻拦了你前进的道路。<<He>>懒散的表情和庄园里的混乱显得格格不入。<<him>>："没人能通过这里，"<<he>>说完后看着你："请回去，<<lass>>。"
+<br><br>
+
+<<link [[争执|Estate Manor Approach Fight]]>><<set $fightstart to 1>><</link>>
+<br>
+<<link [[说服|Estate Manor Approach Convince]]>><</link>><<englishdifficulty 500 1000>>
+<br><bR>
+<<link [[离开|Estate]]>><<endevent>><</link>>
+<br>
+
+
+:: Estate Manor Approach Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Estate Manor Approach Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Estate Manor Approach]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Estate Manor Approach Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	昏昏沉沉的保安们没办法继续追逐你沿着小路跑向庄园。你能听见<<person1>>与<<person>>在提醒其他保安。<<ggsecurity>><<estate_security 3>>
+	<br><br>
+	<<tearful>>你跑进了前门里。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Estate Manor Intro Entrance]]>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	保安们后退了几步，虽然他们没人受伤，但还是留出了你赢得的，能让你冲上通往庄园的路。你能听见<<person1>>与<<person>>在提醒其他保安。<<ggsecurity>><<estate_security 3>>
+	<br><br>
+	<<tearful>>你跑进了前门里。
+	<br><br>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Estate Manor Intro Entrance]]>><</link>>
+	<br>
+
+<<else>>
+
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Estate Manor Approach Defeat]]>><</link>>
+
+<</if>>
+
+
+:: Estate Manor Approach Convince
+<<effects>>
+
+<<if $englishSuccess>>
+
+<<else>>
+
+<</if>>
+
+:: Estate Manor Scale
+<<effects>>
+

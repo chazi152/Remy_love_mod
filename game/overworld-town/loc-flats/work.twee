@@ -1,0 +1,1247 @@
+:: Flats Knock
+<<effects>>
+
+<<if $flats_progress is 1 and random(1, 10) is 10>>
+    你走近一个公寓准备要敲门。然后你注意到了门把手，<span class="purple">它像一朵莲花一样，</span>你记起了那个警告。据说这里住着坏人。
+    <br><br>
+    <<link [[无论如何都要敲门|Flats Lotus]]>><<set $flats_progress to 2>><</link>>
+    <br>
+    <<link [[走开|Flats]]>><</link>>
+    <br>
+<<else>>
+    <<cleareventpool>>
+
+    <<addinlineevent "flats_vacant" 2>>
+        你走近其中一间公寓，敲了敲门。没有人回答。
+        <br><br>
+
+        <<link [[闯入|Flats Lock]]>><</link>>
+        <br>
+        <<link [[去下一个公寓(0:01)|Flats Knock]]>><<pass 1>><</link>>
+        <br>
+        <<link [[停止|Flats]]>><</link>>
+        <br>
+    <</addinlineevent>>
+
+    <<addinlineevent "flats work_1" 1>>
+        <<generate1>><<person1>>
+        你走近一个公寓，敲了敲门。门开了，露出一个<<person>>。<<He>>靠在门框上。"多可爱的客人啊，"<<he>>说。"有什么可以帮你的吗？"
+        <br><br>
+        <<link [[说你想要一份工作|Flats Lecherous Ask]]>><</link>>
+        <br>
+        <<link [[说你敲错门了，然后离开|Flats]]>><<endevent>><</link>>
+        <br>
+    <</addinlineevent>>
+
+    <<addinlineevent "flats work_2" 1>>
+        <<generate1>><<person1>>
+        你走近一个公寓，敲了敲门。你听到一只狗的叫声。
+        <br><br>
+        "安静点！"一个<<personsimple>>喊道。"愚蠢的杂种。"门开了，露出一个<<person>>。<<him>>身后的地板散落着乱七八糟的杂物。"有什么事吗？"
+        <br><br>
+        <<link [[说你想要一份工作|Flats Dog Ask]]>><</link>>
+        <br>
+        <<link [[说你敲错门了，然后离开|Flats]]>><<endevent>><</link>>
+        <br>
+    <</addinlineevent>>
+
+    <<addinlineevent "flats work_3" 1>>
+        <<generate1>><<person1>>
+        你走近一个公寓，敲了敲门。门开了，露出一个<<person>>。<<He>>靠在门框上。"多可爱的客人啊，"<<he>>说。"有什么可以帮你的吗？"
+        <br><br>
+        <<link [[说你想要一份工作|Flats Kitchen Ask]]>><</link>>
+        <br>
+        <<link [[说你敲错门了，然后离开|Flats]]>><<endevent>><</link>>
+        <br>
+    <</addinlineevent>>
+
+    <<addinlineevent "flats work_4" 1>>
+        <<generate1>><<person1>>
+        你走到一个公寓前敲响了门。门打开了，露出一个穿着得体的<<person>>。"不是我想见的人，"<<he>>说道。"你有什么事吗？"
+        <br><br>
+        <<link [[说你想要一份工作|Flats Laundry Ask]]>><</link>>
+        <br>
+        <<link [[说你敲错门了，然后离开|Flats]]>><<endevent>><</link>>
+        <br>
+    <</addinlineevent>>
+
+    <<addinlineevent "flats work_5" 1>>
+        <<generate1>><<generate2>><<person1>>
+        你还没走到门口就听到了声音。你敲门，门开了，露出了一个<<person>>。
+        <br><br>
+        "是谁啊？"从深处传来了<<person2>><<persons>>的声音。
+        <br>
+        "是个<<girl>>,"<<person1>><<person>>回答。
+        <br><br>
+
+        <<link [[说你想要一份工作|Flats Pair Ask]]>><</link>>
+        <br>
+        <<link [[说你敲错门了，然后离开|Flats]]>><<endevent>><</link>>
+        <br>
+    <</addinlineevent>>
+
+    <<runeventpool>>
+<</if>>
+
+
+:: Flats Lotus
+<<effects>>
+
+<<npc "Bailey">><<person1>><<generate2>>
+当你敲门时，莲花形状的门把手发出咔嗒声。脚步声越来越近，门开了。一个人站在那里，<<his>>的嘴里叼着未点燃的香烟。你认出<<him>>是孤儿院里的一个人，<<He>>也认出了你。<span class="pink">那是贝利。</span>
+<br><br>
+<<He>>用平静的目光注视着你。"从你那愚蠢的表情中我就可以看出来，"<<he>>说。"你没想到会见到我。很好，以后别再来打扰我了。"<<He>>猛地关上了门。
+<br><br>
+<<link [[继续|Flats]]>><<endevent>><</link>>
+<br>
+
+
+:: Flats Lecherous Ask
+<<effects>>
+
+"事实上，我需要你的帮忙，"<<person1>><<person>>说着，给你让出了一些空间。"昨晚开了个派对，阳台弄得乱七八糟的。我愿意支付<span class="gold">10英镑</span>给你。"
+<br><br>
+
+<<link [[接受(1:00)|Flats Lecherous]]>><<housekeeping 1 200>><</link>><<ghousekeeping 200>>
+<br>
+<<link [[拒绝|Flats]]>><<endevent>><</link>>
+<br>
+
+:: Flats Lecherous
+<<effects>>
+
+你进入公寓，看到了一片混乱的景象。阳台的门被几个空的威士忌瓶撑开。空啤酒罐、比萨盒和其他垃圾散落在桌子上。还有一个瓶子被打碎了，碎玻璃散落在地上。
+<br><br>
+
+"是一个很有趣的夜晚，"<<person>>自豪地说。"我去烧壶水。"
+<br><br>
+
+你清理了碎玻璃，把瓶子拿去回收，然后把其他垃圾扔掉了。
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if ($danger gte (9900 - $allure) or $eventforced) and $eventskip is 0>>
+    当你擦拭栏杆时，那个<<person>>走到阳台上，<<his>>靠在你的身边，把手臂放在你的两侧。"从这里看风景很不错，"<<he>>说着将<<his>>的下体顶在了你的<<bottom>>上。
+    <<if $NPCList[0].penissize gte 2>>
+        <span class="lewd">你透过衣服感受到了<<his>>的<<npcPenis>>。</span>
+    <</if>>
+    <<gtrauma>><<trauma 6>><<gstress>><<stress 6>><<garousal>><<arousal 600>>
+    <br><br>
+    虽然从这里可以看到城镇的许多景色，从码头到森林，但现在很难欣赏。
+    <br><br>
+
+    <<link [[生气|Flats Lecherous Angry]]>><<def 1>><<trauma -6>><<stress 6>><</link>><<gstress>><<ltrauma>>
+    <br>
+    <<link [[忍受|Flats Lecherous Endure]]>><<sub 1>><<trauma 6>><<arousal 600>><</link>><<gtrauma>><<garousal>>
+    <br>
+    <<if $promiscuity gte 15>>
+        <<link [[要钱|Flats Lecherous Rub]]>><</link>><<promiscuous2>>
+        <br>
+    <</if>>
+<<else>>
+    当你完成清理后，阳台变得一尘不染，比派对前更加干净了。那个<<person>>拿着一杯茶走出来，伸了个懒腰。
+    <br><br>
+
+    "好多了，"<<he>>说。"来，这是你的报酬。"你获得了<<moneyGain 10>>。
+    <br><br>
+
+    你喝完最后一杯酒，走到外面。
+    <br><br>
+
+    <<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+    <br>
+<</if>>
+
+:: Flats Lecherous Angry
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+    "请——请不要，"你说。"就让我安静地工作吧。"
+<<elseif $speech_attitude is "bratty">>
+    "离我远点，"你怒骂。"变态。"
+<<else>>
+    "离我远点!"你说。
+<</if>>
+<br><br>
+
+<<if random(1, 2) is 2>>
+    "是我失礼了，"那个<<person>>说着，<<he>>离开的时候手还在你的肩膀上依依不舍的摸了两把。"对不起。"<<He>>没有再骚扰你。
+    <br><br>
+    当你完成清理后，阳台变得一尘不染，比派对前更加干净了。那个<<person>>拿着一杯茶走出来，伸了个懒腰。
+    <br><br>
+
+    "好多了，"<<he>>说。"来，这是你的报酬。"你获得了<<moneyGain 10>>。
+    <br><br>
+
+    你喝完最后一杯酒，离开了公寓。
+    <br><br>
+
+    <<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+    <br>
+<<else>>
+    "像你这样聪明的<<girl>>肯定知道某些潜规则吧？"<<he>>说着伸手进口袋里。<<He>>在你面前挥舞着另外一张<span class="gold">10英镑</span>钞票。"你想要钱，对吧？"
+    <br><br>
+
+    <<link [[忍受|Flats Lecherous Endure]]>><<sub 1>><</link>>
+    <br>
+    <<link [[踩脚|Flats Lecherous Stomp]]>><<def 1>><<famescrap 1>><<trauma -6>><<stress -6>><</link>><<ltrauma>><<lstress>>
+    <br>
+<</if>>
+
+
+:: Flats Lecherous Stomp
+<<effects>>
+
+你踩了<<persons>>的脚。<<He>>发出一声尖叫。"他妈的，你是不是疯了!"<<he>>痛的跳了起来。"滚出我的公寓！"
+<br><br>
+
+你喝完最后一杯酒，离开了公寓。
+<br><br>
+
+<<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+<br>
+
+:: Flats Lecherous Endure
+<<effects>>
+
+你忍受着那个<<person>>的动作，<<his>>肆无忌惮的把下体顶在你的<<bottom>>上。"所有景色中我最喜欢的就是海，"<<he>>说着把手放在你的手上。"还有海风。"<<he>>离开的时候手还在你的肩膀上依依不舍的摸了两把。
+<br><br>
+
+"你打扫的很干净，"<<he>>说。"这是一点额外的费用，作为麻烦了你的补偿。"你获得了<<moneyGain 20>>。
+<br><br>
+
+你喝完最后一杯酒，离开了公寓。
+<br><br>
+
+<<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+<br>
+
+:: Flats Lecherous Rub
+<<effects>>
+
+你把手放在<<his>>的手上，将你的<<bottom>>顶在了<<his>>的裆部。"这种清洁是额外的，"你说。"需要多付<span class="gold">20英镑</span>。"
+<<promiscuity2>>
+
+"听起来不错，"<<he>>眯眼笑。
+
+<<if $NPCList[0].penis isnot "none">>
+    你感觉到<<his>><<print setup.npcClothesSets.find(item => item.name === $NPCList[0].clothes.set).clothes.lower.desc>>里的<<print $NPCList[0].penisdesc>>慢慢变硬。你把它吞进了口中，蹲在地上用舌头和口腔不断地舔动摩擦。<<He>>弯着腰，把手放在你的头上，<<he>>配合你的节奏，直到<<he>>身体颤抖着进入高潮。
+<<else>>
+    你隔着<<his>>的<<print setup.npcClothesSets.find(item => item.name === $NPCList[0].clothes.set).clothes.lower.desc>>慢慢摩擦<<his>>的小穴。你的手指像是钢琴家弹动琴键一样的熟练，你不断地抽插，抚弄，摩擦。<<He>>弯着腰，紧紧的咬着嘴唇不想出声，<<he>>配合着你的节奏，直到<<he>>身体颤抖着进入高潮。
+<</if>>
+<br><br>
+
+<<He>>瘫坐在椅子上。你从<<his>>的口袋里拿出了<<moneyGain 30>>，然后离开了公寓。
+<br><br>
+
+<<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+<br>
+
+:: Flats Dog Ask
+<<effects>>
+
+那个<<person>>抚摸着<<his>>的下巴思考。这时你们旁边一扇关闭的门后传来了一声狗叫。<<person>>转身对着那扇门大喊。"我说让你安静！"<<he>>无奈的叹了口气。"不听话的狗东西……我给你<span class="gold">10英镑</span>，你帮我把那只狗弄脏的家具清理干净。"
+<br><br>
+
+<<link [[接受(1:00)|Flats Dog]]>><<housekeeping 1 200>><</link>><<ghousekeeping 200>>
+<br>
+<<link [[拒绝|Flats]]>><<endevent>><</link>>
+<br>
+
+:: Flats Dog
+<<effects>>
+
+你进入公寓，那个<<person>>放开了狗绳，
+<<saveNPC 0 "flats_2">>
+<<endevent>>
+<<beastNEWinit 1 "dog">>
+一只<<beasttype>>.
+<br><br>
+
+被释放出来后，<<bhe>>绕着你的腿跑了一圈，然后冲进了厨房。
+<br><br>
+
+你将倒下的桌子扶正，把灯放回原位并测试了一下，然后开始清理被撕碎的装饰物。沙发已经毁了，但你可以让房间看起来整洁一些。
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if ($danger gte (9900 - $allure) or $eventforced) and $eventskip is 0>>
+    <<if $bestialitydisable is "f" or $monster is 1>>
+        你用一个垃圾袋装满碎布，然后蹲下来清理沙发下面的空间。沙发离地面有一定的高度，刚好可以放得下你的身体。
+        <br><br>
+        当你蹲下时，你感觉到有什么东西戳了一下你的下体。那只<<beasttype>>爬到了你身上。
+        <br><br>
+
+        <<link [[继续|Flats Dog Rape]]>><<set $molestationstart to 1>><</link>>
+        <br>
+    <<else>>
+        你用了好几个垃圾袋，终于把房间打扫干净了。然而当你转身离开时，你发现那只<<beasttype>>正面对着你。<<bHe>>咆哮着，<span class="pink">然后扑了过来。</span>
+        <br><br>
+
+        你设法逃到了卧室的安全地带，但不是没有受伤。<<beastescape>>
+        <br><br>
+
+        <<endevent>>
+        <<loadNPC 0 "flats_2">>
+        <<clearNPC "flats_2">>
+        "坏狗！"<<person1>><<person>>生气的说道。你听到了一声沉闷的撞击声，然后是一声哀鸣，卧室的门打开了。"对不起，"<<he>>说。"这是你的报酬，还有一些小费，就当是给你的补偿吧。"你获得了<<moneyGain 15>>。
+        <br><br>
+        <<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+        <br>
+    <</if>>
+<<else>>
+    你工作时那只<<beasttype>>一直都带着好奇的表情盯着你。你用了好几个垃圾袋，终于把房间打扫干净了。
+    <<endevent>>
+    <<loadNPC 0 "flats_2">>
+    <<clearNPC "flats_2">>
+    "干得好，"<<person1>><<person>>说道。"这是你的报酬。"你获得了<<moneyGain 10>>。
+    <br><br>
+
+    <<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+    <br>
+<</if>>
+
+:: Flats Dog Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+    <<enable_rescue>>
+    <<set $NPCList[0].stance to "top">>
+    <<set $position to "doggy">>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Flats Dog Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Dog Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Dog Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<beastejaculation knot>>
+    <<if _knotted>>
+        那只<<beasttype>>扭动着<<bhis>>的臀部，试图将<<bhis>>的阴茎拔出来。然而，它卡在了你的身体里面。肉棒没拔出来，你的身体却是被<<bhe>>的力道从沙发里拖了出来，你被<<bhe>>带着拖过了地毯。
+        <br><br>
+        "你在里面怎么样?"一个声音从厨房传来。听到主人的声音，<<beasttype>>的耳朵竖了起来。<<bhis>>汪汪叫着冲向厨房，拖着你的身体一起，<span class="pink">你们仍然被<<bhis>>的$NPCList[0].penisdesc连在一起。</span>
+        <br><br>
+        <<link [[抓住什么|Flats Dog Rape Physique]]>><</link>><<physiquedifficulty 1 16000>>
+        <br>
+        <<link [[让它停下来|Flats Dog Rape Tending]]>><</link>><<tendingdifficulty 1 300>>
+        <br>
+        <<link [[振作起来|Flats Dog Rape Caught]]>><<trauma 12>><<stress 6>><<famebestiality 1>><<set $phase to 1>><</link>><<ggtrauma>><<gstress>>
+        <br>
+    <<else>>
+        <<beasttype>>离开你。<<tearful>>你从沙发下面逃了出来。
+        <br><br>
+
+        <<link [[继续|Flats Dog Rape Escape]]>><</link>>
+        <br>
+    <</if>>
+
+<<elseif $enemyhealth lte 0>>
+	<<beasttype>>尖叫着离开你。<<tearful>>你从沙发下面逃了出来。
+	<br><br>
+
+    <<link [[继续|Flats Dog Rape Escape]]>><</link>>
+    <br>
+
+<<else>><<set $rescued += 1>>
+    <<if $rapeavoid is 0 and $NPCList[0].stance is "top">>
+        "来了!"<<bhis>>不理会主人的声音，继续强迫着你做爱。你试图推开<<bhim>>，但无济于事。
+
+        <<endcombat>>
+
+        <<loadNPC 0 "flats_2">>
+        <<clearNPC "flats_2">>
+
+        <<person1>><<person>>赶过来时发现你被半困在破沙发下面，还被<<his>>的宠物压着狂操。
+        <br><br>
+
+        <<if random(1, 2) is 2>>
+            <<He>>笑了，<span class="pink">掏出手机正对着你。</span>"真是只坏狗。"随着一声"咔嚓"声后<<he>>放下手机，<<He>>用力抓住<<his>>宠物的耳朵，把它从你身边拉开。"坏狗!"<<He>>在你挣扎着从沙发下面爬出来的时候把它拖进卧室，锁在了里面。
+            <br><br>
+
+            <<link [[继续|Flats Dog Rape Caught 2]]>><</link>>
+            <br>
+        <<else>>
+            <<He>>从<<his>>的震惊中恢复过来，抓住宠物的项圈，把它从你身边拽开。<<He>>在你挣扎着从沙发下面爬出来的时候把它拖进卧室，锁在了里面。
+            <br><br>
+            <<clotheson>>
+            <<exposure>>
+            "我很抱歉，"<<he>>无法直视你的眼睛。
+            <<if $exposed gte 1>>
+                <<towelup>>
+                <<He>>递给你一些毛巾。
+            <</if>>
+            "发生这种事我很抱歉，就当是补偿吧。"<<He>>递给你<<moneyGain 30>>。
+            <br><br>
+
+            <<tearful>>你离开了公寓
+            <br><br>
+
+            <<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+            <br>
+        <</if>>
+    <<else>>
+        "来了!"<<beasttype>>听到主人的声音后直接丢下了你。<<tearful>>你在沙发下面挣扎。
+        <br><br>
+        <<endcombat>>
+        <<clotheson>>
+        <<exposure>>
+
+        <<loadNPC 0 "flats_2">>
+        <<clearNPC "flats_2">>
+        <<person1>>
+        <<if $exposed gte 1>>
+            <<towelup>>
+            在那个<<person>>走进来之前，你找了几条毛巾盖住自己。<<He>>对你的穿着皱眉，但没有说些什么。
+        <<else>>
+            <<person>>走进房间，环顾四周，似乎很满意。
+        <</if>>
+        <br><br>
+        "那只蠢狗给你添麻烦了?"<<he>>叹了口气。"对不起，不过你把这地方打扫的很干净。这是工资，多给的就当是补偿吧。"你获得了<<moneyGain 15>>
+        <br><br>
+
+        <<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+        <br>
+    <</if>>
+
+<</if>>
+
+:: Flats Dog Rape Physique
+<<effects>>
+
+你抓住沙发腿，试图与那只<<beasttype>>抗衡。
+<<if $physiqueSuccess>>
+    突然随着"啵"的一声，<span class="green"><<print $NPCList[0].penisdesc>>从你身体里拔了出来。</span>那只<<beasttype>>继续往厨房走。<<tearful>>你挣扎着站了起来。
+    <br><br>
+    <<link [[继续|Flats Dog Rape Escape]]>><</link>>
+    <br>
+<<else>>
+    紧张的气氛越来越浓厚，沙发腿被你<span class="red">扯断了。</span>你被<<print $NPCList[0].penisdesc>>拖着穿过房间，进入了厨房。
+    <br><br>
+
+    <<link [[继续|Flats Dog Rape Caught]]>><</link>>
+    <br>
+<</if>>
+
+:: Flats Dog Rape Tending
+<<effects>>
+
+<<if $tendingSuccess>>
+    "坏狗！"你说道。"坐下！"<span class="green">那只<<beasttype>>听从了你的命令，尽管你的下体还连在<<bhis>>的<<print $NPCList[0].penisdesc>>上。</span>
+    <br><br>
+    从这个角度，你可以够到那个家伙的阴茎。你设法逃脱了。那只<<beasttype>>继续往厨房走。
+    <br><br>
+
+    <<link [[继续|Flats Dog Rape Escape]]>><</link>>
+    <br>
+<<else>>
+    "坏狗，"你说道。"立刻放开我！"那只<<beasttype>>的主人再次从厨房里喊叫。<span class="red"><<bHe>>忽视了你，继续往前走。</span>
+    <br><br>
+
+    <<link [[继续|Flats Dog Rape Caught]]>><</link>>
+    <br>
+<</if>>
+
+
+
+
+:: Flats Dog Rape Escape
+<<effects>>
+
+<<clotheson>>
+<<endcombat>>
+<<exposure>>
+
+<<loadNPC 0 "flats_2">>
+<<clearNPC "flats_2">>
+<<person1>>
+<<if $exposed gte 1>>
+    <<towelup>>
+    在那个<<person>>走进来之前，你找了几条毛巾盖住自己。<<He>>对你的穿着皱眉，但没有说些什么。
+<<else>>
+    <<person>>走进房间，环顾四周，似乎很满意。
+<</if>>
+"干得好，"<<he>>说着。"这是你的报酬。"你获得了<<moneyGain 10>>。
+<br><br>
+
+<<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+<br>
+
+
+:: Flats Dog Rape Caught
+<<effects>>
+
+<<beasttype>>把你拖到了<<bhis>>震惊的主人面前。
+<<if $phase isnot 1>>
+    <<ggtrauma>><<ggstress>><<famebestiality 1>>
+<</if>>
+<<endcombat>><<clotheson>>
+
+<<loadNPC 0 "flats_2">>
+<<clearNPC "flats_2">>
+<<person1>>
+
+<<if random(1, 2)>>
+    <<He>>的表情很快就恢复了过来，<<his>>微笑着拍了拍宠物的脑袋。"真是个坏狗狗，"<<he>>说道。"还是说你想让我也看看？"<<He>>从柜台上拿起了<<his>>的手机，正对着你的脸拍了一张照片，然后蹲下来拍了一个细节特写。
+    <br><br>
+
+    "别担心，狗狗的肉棒很快就会缩小了，"<<Hes>>说。很快的，就像是验证<<he>>说的话一样。原本连着你下体的大肉棒啵的一声滑了出来。随着肉棒的抽出精液和爱液一起涌出，在你身下聚集成了一个淫荡的小水池。
+    <br><br>
+    "坏狗!"<<he>>把<<his>>的宠物踢出房间，然后用力地关上了门。
+    <br><br>
+    <<link [[继续|Flats Dog Rape Caught 2]]>><</link>>
+    <br>
+<<else>>
+    <<He>>从震惊中恢复了过来，然后用力地抱住了<<his>>宠物的腰往后拖。连接着你下体的大肉棒啵的一声拔了出来，随着肉棒的抽出精液和爱液一起涌出，在你身下聚集成了一个淫荡的小水池。
+    <br><br>
+
+    <<clotheson>>
+    <<exposure>>
+
+    <<He>>把那只狗拖出房间，砰地关上了门，
+    <<if $exposed gte 1>>
+        <<towelup>>
+        <<he>>不敢看你一片狼藉的身体，沉默的递给了你一条毛巾。
+    <<else>>
+        <<he>>转过了身，一直都避免和你眼神接触。
+    <</if>>
+    "我很抱歉，"<<he>>说。"这是你的钱，多出来的就当是对你的补偿吧。"你赚了<<moneyGain 30>>。
+    <br><br>
+    <<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+    <br>
+<</if>>
+
+:: Flats Dog Rape Caught 2
+<<effects>>
+
+<<He>>蹲在你面前，笑着晃了晃<<his>>的手机。“你说，我把这个上传到网上怎么样？”<<he>>沉思着说。“我知道一个好网站，标题就叫坏狗狗狂上小保姆，说不定还能帮你做上个小网红呢。”你害怕的摇头，伸手想抢<<his>>的手机。<<he>>笑着举高手臂，“急什么，一点儿娱乐精神都没有，不上传也行，但是你总得给我一点儿报酬吧？”<<He>>拍了拍<<his>>的裆部。“当然是用你的嘴，你的下面要留给我的乖狗狗。"
+<br><br>
+
+<<link [[同意|Flats Dog Rape Oral]]>><<set $molestationstart to 1>><</link>>
+<br>
+<<link [[拒绝|Flats Dog Rape Refuse]]>><</link>>
+<br>
+<<set $skulduggerydifficulty to 300>>
+<<link [[假装同意|Flats Dog Rape Deceive]]>><</link>><<skulduggerydifficulty>>
+<br>
+
+:: Flats Dog Rape Refuse
+<<effects>>
+
+<<famebestiality 10>>
+"切，不同意就不同意，"<<he>>说。"这是你的钱，贱货。"你赚了<<moneyGain 10>>。
+<br><br>
+
+<<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+<br>
+
+:: Flats Dog Rape Deceive
+<<effects>>
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+    你死死地盯着那个<<person>>的眼睛，然后张开嘴。<<He>>急切地放下手机，脱掉了<<his>>的<<print setup.npcClothesSets.find(item => item.name === $NPCList[0].clothes.set).clothes.lower.desc>>。你猛地一推，<<him>>失去平衡倒在了地上，你快速的跑向门口。
+    <br><br>
+    "下贱的流浪狗!"<<he>>大叫着，被<<his>>脱了一半的衣服绊倒了。你跑下楼梯，绕过一个拐角。你听到<<his>>的脚步声在你身后响起，<span class="green">但<<he>>错过了你的藏身之处。</span>
+    <br><br>
+    你删掉了手机上的黄色视频，然后开始思考怎么处理它。它也许值点钱。
+    <br><br>
+
+	<<if $skulduggery lte ($skulduggerydifficulty + 100)>>
+		<<skulduggeryskilluse>>
+	<<else>>
+		<span class="blue">这对你来说实在太简单了，你从中什么都没有学到。</span>
+		<br><br>
+	<</if>>
+
+    <<link [["把它放在" + $NPCList[0].pronouns.he + "能找到的地方"|Flats]]>><<pass 60>><<famegood 1>><<endevent>><</link>>
+    <br>
+    <<link [[留在身上|Flats]]>><<pass 60>><<set $blackmoney += 50>><<endevent>><</link>>
+    <br>
+<<else>>
+    你张开嘴，假装同意了<<person>>的威胁。<<he>>着急的放下手机然后脱掉了<<his>>的<<print setup.npcClothesSets.find(item => item.name === $NPCList[0].clothes.set).clothes.lower.desc>>。你想抢走手机，<span class="red">但是被<<he>>抓住了手腕。</span>
+    <br><br>
+    "别着急，荡妇。"<<He>>抓住你的后脑勺，把你拉向<<his>>的腹股沟。
+    <br><br>
+
+	<<if $skulduggery lte ($skulduggerydifficulty + 100)>>
+		<<skulduggeryskilluse>>
+	<<else>>
+		<span class="blue">这对你来说实在太简单了，你从中什么都没有学到。</span>
+		<br><br>
+	<</if>>
+
+    <<link [[继续|Flats Dog Rape Oral]]>><<set $molestationstart to 1>><</link>>
+    <br>
+<</if>>
+
+:: Flats Dog Rape Oral
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+    <<npcoral>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Flats Dog Rape Oral Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Dog Rape Oral]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Dog Rape Oral Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"打扫得不错，"<<he>>说着，把一些钱放在你手里。"多出来的是给你的小费，你可以走了。"你获得了<<moneyGain 30>>。
+	<br><br>
+	<<tearful>>你离开了公寓。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+    <<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+    <br>
+
+<<else>>
+	你推开<<person>>，夺走<<his>>的手机，然后猛冲向门口。<<He>>试图追赶，但<<his>>的宠物跑到你们中间，然后扑到了<<him>>身上。
+	<br><br>
+    "滚开，你这条蠢狗！"<<tearful>>你逃离了公寓。
+    <br><br>
+
+    你跑下楼梯，绕过一个拐角。你听到<<his>>的脚步声在你身后响起，<span class="green">但<<he>>错过了你的藏身之处。</span>
+    <br><br>
+    你删掉了手机上的黄色视频，然后开始思考怎么处理它。它也许值点钱。
+    <br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+    <<link [[把它留在别人能看到的地方|Flats]]>><<pass 60>><<famegood 1>><</link>>
+    <br>
+    <<link [[带在身上|Flats]]>><<pass 60>><<set $blackmoney += 50>><</link>>
+
+<</if>>
+
+:: Flats Kitchen Ask
+<<effects>>
+
+"厨房里一团糟，"<<person>>说道。"如果你打扫干净，我可以给你<span class="gold">15英镑</span>报酬。你觉得怎么样？"
+<br><br>
+
+<<link [[接受(1:00)|Flats Kitchen]]>><<housekeeping 1 200>><</link>><<ghousekeeping 200>>
+<br>
+<<link [[拒绝|Flats]]>><<endevent>><</link>>
+<br>
+
+:: Flats Kitchen
+<<effects>>
+
+你走进<<persons>>的公寓，穿过一个一尘不染的客厅，来到一个肮脏的厨房。一堆盘子塞满了水槽，面包屑覆盖了所有的柜台。
+<br><br>
+"别鄙视我，我知道很脏乱差……"<<He>>的表情看起来很尴尬。"我的爸妈很快就要回来了。你来得正是时候。"<<He>>打开冰箱，从里面取出一罐苹果酒。"打扫完了直接来客厅找我吧，我会一直待在那里看电视。"
+<br><br>
+
+地板粘乎乎的。你从那里开始，用拖把擦干净。然后用簸箕和刷子清理柜台，然后再擦拭。
+<br><br>
+
+洗碗要花些时间。有些碟子破损严重，比孤儿院的破的还厉害，但你还是努力的清洗它们。
+<br><br>
+
+<<link [[继续|Flats Kitchen 2]]>><</link>>
+<br>
+
+:: Flats Kitchen 2
+<<effects>>
+
+你走进客厅。"怎么了吗?"<<he>>看了你一眼，然后伸着懒腰从电视机前站起来。
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if ($danger gte (9900 - $allure) or $eventforced) and $eventskip is 0>>
+    "啊，该付钱了啊。真是不好意思，我是个一贫如洗的穷光蛋。"<<He>>带着歉意的微笑耸了耸肩。"我浑身上下就只有五英镑。"
+    <br><br>
+    <<link [[接受5英镑的报酬|Flats Kitchen Fiver]]>><</link>>
+    <br>
+    <<if $promiscuity gte 35>>
+        <<link [[勾引|Flats Kitchen Seduce]]>><</link>><<promiscuous3>>
+        <br>
+    <<else>>
+        <span class="blue">你还没放荡到可以"谈判"。</span>
+        <br>
+    <</if>>
+    <<if $submissive lte 500>>
+        <<link [[威胁要拿走电视机|Flats Kitchen Threaten]]>><<lstress>><</link>><<defianttext>><<stress -6>>
+        <br>
+    <<else>>
+        <span class="blue">你还没有强势到能恐吓他人的地步。</span>
+        <br>
+    <</if>>
+<<else>>
+    "啊，该付钱了啊。真是不好意思，我是个一贫如洗的穷光蛋。"<<He>>带着歉意的微笑耸了耸肩，似乎在等待你的反应。"开玩笑的，给你。"<<He>>递给你钱。
+    <br><br>
+
+    你获得了<<moneyGain 15>>.
+    <br><br>
+
+    <<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+    <br>
+<</if>>
+
+
+:: Flats Kitchen Fiver
+<<effects>>
+
+那个<<person>>递给你一张5英镑的钞票。你赚了<<moneyGain 5>>。
+<br><br>
+
+当你离开公寓时，<<He>>再次向你道歉。
+<br><br>
+
+<<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+<br>
+
+:: Flats Kitchen Seduce
+<<effects>>
+
+
+<<set $seductiondifficulty to 6000>>
+<<seductioncheck>>
+<br><br>
+<<if $seductionskill lt 1000>>
+	<span class="gold">你对自己的诱惑力更有信心了。</span>
+	<br><br>
+<</if>>
+<<seductionskilluse>>
+
+"钱还可以再赚，"你说着用手指轻抚着<<his>>的胸膛。"我会让你觉得这是值得的。"
+<<promiscuity3>>
+
+<<if $seductionrating gte $seductionrequired>>
+
+	<span class="green">"我，我可能确实有一些现金，"</span><<he>>边说边颤抖的摸<<his>>的口袋。几张现金掉了出来，看起来有<span class="gold">50英镑</span>。你将<<him>>推倒在沙发上。
+	<br><br>
+
+    <<link [[继续|Flats Kitchen Sex]]>><<set $sexstart to 1>><</link>>
+    <br>
+<<else>>
+
+	<<person1>><<person>>啧了一声。"该死，"<<he>>说道：<span class="red">"如果我是个有钱人就好了。对不起，亲爱的。"</span><<He>>递给你一张五英镑的现金。你接过钞票离开了。
+	<br><br>
+
+    你获得了<<moneyGain 5>>
+    <br><br>
+
+    <<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+    <br>
+<</if>>
+
+:: Flats Kitchen Threaten
+<<effects>>
+
+"你很穷？"你看向房间里的电视机。"没关系啊，你可以用你的其他东西来付款。我不介意带着它走。"
+<br><br>
+
+那个<<person>>用一种保护性的姿势把<<his>>的双臂拦在你和电视机之间。"等等！"<<he>>说。"也许我确实把钱藏在某个地方。"‘某个地方’原来是指‘我的口袋里’。你拿了钱，离开了公寓。
+<br><br>
+
+你获得了<<moneyGain 15>>.
+<br><br>
+
+<<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+<br>
+
+
+:: Flats Kitchen Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[继续|Flats Kitchen Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Kitchen Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Kitchen Sex Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	你把掉在地上的钱捡起来，把那个精疲力尽的<<person>>留在了沙发上。
+	<br><br>
+    <<tearful>>你离开了公寓。<<moneyGain 50>>
+    <br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<else>>
+	<<tearful>>你逃出了公寓。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+
+<<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+<br>
+
+:: Flats Laundry Ask
+<<effects>>
+
+"你来得正是时候，"<<he>>说。"我的衣服需要熨烫。如果你能熨完所有的衣服，我会给你<span class="gold">20英镑</span>。"
+<br><br>
+
+<<link [[接受(1:00)|Flats Laundry]]>><<housekeeping 1 200>><</link>><<ghousekeeping 200>>
+<br>
+<<link [[拒绝|Flats]]>><<endevent>><</link>>
+<br>
+
+:: Flats Laundry
+<<effects>>
+
+你进入了<<person>>的公寓。客厅虽小，但装饰得很奢华。一张桌子上放着一本打开的书，旁边是一把高椅子，下面是一座落地钟。
+<br><br>
+
+<<He>>带着你穿过一个干净的厨房，沿着一条狭窄的走廊走进了一个小房间。一张熨衣板置于中央，旁边是一个装满了新洗好的衣服的挂衣架。
+<br><br>
+
+"我估计要一个小时。我给你倒杯茶好吗?"
+<br><br>
+
+<<link [[喝茶|Flats Laundry Tea]]>><<stress -6>><</link>><<lstress>>
+<br>
+<<link [[说你更喜欢喝咖啡|Flats Laundry Coffee]]>><<stress -6>><</link>><<lstress>>
+<br>
+<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+	<span class="blue">你知道自己怀孕了，你不能喝酒。</span>
+<<else>>
+    <<link [[说你更喜欢喝酒|Flats Laundry Booze]]>><<set $drunk += 120>><</link>>
+<</if>>
+<br>
+<<link [[不喝|Flats Laundry Refuse]]>><</link>>
+<br>
+
+
+:: Flats Laundry Tea
+<<effects>>
+
+你开始工作，熨平衣服并将它们整齐地叠放在一堆。<<person>>拿着托盘回来了，托盘上有一个茶壶、一小罐牛奶、一碗糖和一个瓷质茶杯。茶闻起来很香。
+<br><br>
+
+<<link [[继续|Flats Laundry Drink]]>><</link>>
+<br>
+
+
+:: Flats Laundry Coffee
+<<effects>>
+
+你开始工作，熨平衣服并将它们整齐地叠放在一堆。<<person>>拿着一杯咖啡回来了。"很抱歉，这是速溶咖啡。我只为客人准备了这种咖啡。"它的味道还不错。
+<br><br>
+
+<<link [[继续|Flats Laundry Drink]]>><</link>>
+<br>
+
+:: Flats Laundry Booze
+<<effects>>
+
+你开始工作，熨平衣服并将它们整齐地叠放在一堆。<<person>>拿着一杯香槟回来了。"这好像和熨衣服不太搭配，"<<he>>说。"是我的客人之前带来的，还剩下半瓶。"这个香槟很昂贵很好喝。
+<br><br>
+
+<<link [[继续|Flats Laundry Drink]]>><</link>>
+<br>
+
+
+:: Flats Laundry Refuse
+<<effects>>
+
+你拒绝了那杯饮料，开始工作，熨平衣服并将它们整齐地叠放在一堆。
+<br><br>
+
+<<link [[继续|Flats Laundry No Drink]]>><</link>>
+<br>
+
+:: Flats Laundry Drink
+<<effects>>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if ($danger gte (9900 - $allure) or $eventforced) and $eventskip is 0>>
+    当你完成工作时，你开始感到有些热了。这是一个小房间，而且熨斗很热，但这种感觉并不对。淫荡的想法袭击了你的脑海，你努力保持站立。
+    <<if $awareness gte 200>>
+        <span class="pink">饮料被加料了。</span>
+    <</if>>
+    <<ggarousal>><<set $drugged += 120>><<arousal 1200>>
+    <br><br>
+
+    你跌跌撞撞地走出房间，跌入了<<person>>的怀抱。"你看起来更加可爱了，"<<he>>笑着说道，<<he>>原来彬彬有礼的做派消失得一干二净。<<he>>推着你走到了走廊的角落，然后把你压在了身下。
+    <br><br>
+
+    <<link [[继续|Flats Laundry Rape]]>><<set $molestationstart to 1>><</link>>
+    <br>
+<<else>>
+    你完成了工作回到客厅。你发现<<person>>正坐在椅子上，<<he>>推了推鼻梁上的眼镜。"啊哈，"<<his>>说道。"已经完成了？我把你的钱放在鞋架旁边了。感谢你的帮助。"
+    <br><br>
+
+    你获得了<<moneyGain 20>>.
+    <br><br>
+
+    <<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+    <br>
+<</if>>
+
+:: Flats Laundry No Drink
+<<effects>>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if ($danger gte (9900 - $allure) or $eventforced) and $eventskip is 0>>
+    你完成了工作，然后发现<<person>>正站在外面的走廊里。<<He>>拉着你的手，让你不得不往后退。"我还需要你做一件事，臭婊子，"<<he>>原来彬彬有礼的做派消失得一干二净。<span class="purple"><<he>>将你推到一个死胡同里，</span>然后把你压在了身下。<<His>>的眼中充满了欲望。
+    <br><br>
+    <<link [[忍受|Flats Laundry Rape]]>><<set $molestationstart to 1>><</link>>
+    <br>
+    <<link [[扇耳光|Flats Laundry Slap]]>><<trauma -6>><</link>><<ltrauma>><<physiquedifficulty 1 16000>>
+    <br>
+<<else>>
+    你完成了工作回到客厅。你发现<<person>>正坐在椅子上，<<he>>推了推鼻梁上的眼镜。"啊哈，"<<his>>说道。"已经完成了？我把你的钱放在鞋架旁边了。感谢你的帮助。"
+    <br><br>
+
+    你获得了<<moneyGain 20>>.
+    <br><br>
+
+    <<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+    <br>
+<</if>>
+
+:: Flats Laundry Slap
+<<effects>>
+
+<<if $physiqueSuccess>>
+    你狠狠地扇了<<persons>>一耳光。<span class="green"><<he>>向后退缩，</span>差点跌倒在地。"我，我很抱歉，"<<he>>结结巴巴地说，"我不知道我在做什么。我把你的工资放在鞋架旁边了。"
+    <br><br>
+
+    你离开了<<him>>，<<him>>靠在厨房的柜台上揉着眼睛。
+    <br><br>
+
+    你获得了<<moneyGain 20>>
+    <br><br>
+
+    <<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+    <br>
+<<else>>
+    你想扇<<person>>一耳光，<span class="red">但是<<he>>抓住了你的手腕。</span>"不听话的小辣椒啊，"<<he>>说道。"没关系，我就好这一口。"
+    <br><br>
+
+    <<link [[继续|Flats Laundry Rape]]>><<set $molestationstart to 1>><</link>>
+    <br>
+<</if>>
+
+:: Flats Laundry Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Flats Laundry Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Laundry Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Laundry Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+    "我把你的钱放在鞋架旁边了。"<<he>>气喘吁吁地靠在墙上。"这是你应得的，小婊子。"
+	<br><br>
+	<<tearful>>你离开了公寓。你获得了<<moneyGain 20>>.
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<else>>
+	你将<<person>>推进小房间，然后砰地一声关上了门。
+	<br><br>
+	<<tearful>>你逃离了公寓。你在门口找到了<<he>>答应给你的钱。你获得了<<moneyGain 20>>。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+
+<<link [[继续|Flats]]>><</link>>
+<br>
+
+:: Flats Pair Ask
+<<effects>>
+
+"我们没什么需要的，"<<person1>><<person>>说。
+<br><br>
+"等等！"另一个声音喊道。"给<<phim>><span class="gold">10英镑</span>把这里打扫干净。你这个懒鬼平时根本不打扫房间。"
+<br><br>
+<<person1>><<person>>看起来想争辩些什么，但最终屈服了。"好吧。"<<He>>转向你。"我想你也听到刚刚的话了吧。"
+<br><br>
+
+<<link [[接受(1:00)|Flats Pair]]>><<housekeeping 1 200>><</link>><<ghousekeeping 200>>
+<br>
+<<link [[拒绝|Flats]]>><<endevent>><</link>>
+<br>
+
+:: Flats Pair
+<<effects>>
+
+你走进客厅。刚刚的声音是<<person2>><<person>>发出的。<<He>>对你挥手示意了一下，但并没有抬头，因为<<him>>的注意力被棋盘完全吸引住了。
+<br><br>
+
+"地毯需要清洁，"<<person1>><<person>>说道。"还有银器需要擦亮。"<<He>>指着一个摆放着许多装饰品的架子。
+<br><br>
+
+你无法使用吸尘器，因为噪音会打扰他们的游戏，所以你拿起了一个簸箕和扫帚，开始清洁地毯。
+<br><br>
+
+<<link [[继续|Flats Pair 2]]>><</link>>
+<br>
+
+
+:: Flats Pair 2
+<<effects>>
+
+<<person1>><<person>>和<<person2>><<person>>一动不动地坐在那里，盯着他们面前的棋盘。你完成了地毯的清洁，然后开始擦拭银器。
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if ($danger gte (9900 - $allure) or $eventforced) and $eventskip is 0>>
+    你听到了棋盘上传来一个决定性的响声。"将军！"
+    <br>
+    "该死，"<<person1>><<person>>用手撑着额头。"都怪那个<<girl>>分散了我的注意力。"
+    <br>
+    "你已经打扫完了。"
+    <br>
+    <<person>>生气的掀翻棋盘，棋子散落一地。<<person2>><<person>>笑了起来。"你这暴脾气不改改以后谁受得了，不好意思啦，又多了一份工作给你，<<girl>>。如果你把这个也打扫干净，我可以多给你<span class="gold">10英镑</span>。"
+    <br><br>
+    <<person1>><<person>>在房间里愤怒的来回踱步。
+    <br><br>
+
+    <<link [[同意|Flats Pair 3]]>><</link>>
+    <br>
+    <<link [[拒绝|Flats Pair 2 Refuse]]>><</link>>
+    <br>
+<<else>>
+    你完成了清洁工作，转过身来发现他们仍在继续他们的游戏。<<person2>><<person>>没有抬头，伸手把钱递给了你。你获得了<<moneyGain 10>>。
+    <br><br>
+
+    <<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+    <br>
+<</if>>
+
+
+:: Flats Pair 2 Refuse
+<<effects>>
+
+"辛苦了，"<<person2>><<person>>说着从口袋里掏出钱来。"给你。"你获得了<<moneyGain 10>>。
+<br><br>
+
+<<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+<br>
+
+:: Flats Pair 3
+<<effects>>
+
+你趴在地上，开始寻找棋子。很多棋子都飞到了家具下面。
+<br><br>
+
+<<person1>><<person>>抓住你的头发，把你的头转过来面对<<him>>。"这都是你的错。"<<gtrauma>><<gstress>><<gpain>><<trauma 6>><<stress 6>><<pain 4>>
+<br>
+"我不知道你是个输不起的人，"<<person2>><<person>>插话道。
+<br>
+"那是你对我不够了解，我知道什么能让我高兴起来，"<<person1>><<person>>对好友翻了个白眼，然后眯眼盯着你的身体。
+<br>
+<<person2>><<person>>叹了口气。"如果你让我的朋友发泄一下<<his>>的挫败感，我可以再额外给你<span class="gold">50英镑</span>。"
+<br><br>
+
+<<if $promiscuity gte 35>>
+    <<link [[同意|Flats Pair Agree]]>><</link>><<promiscuous3>>
+    <br>
+    <<link [[说50太少了，你要100|Flats Pair Seduce]]>><</link>><<promiscuous3>>
+    <br>
+<<elseif $uncomfortable.prostituting is false>>
+    <<His>>的提议让你反感，但你需要钱。
+    <br><br>
+     <<link [[同意|Flats Pair Agree]]>><<set $desperateaction to 1>><</link>><<promiscuous3>>
+    <br>
+    <<link [[说50太少了，你要100|Flats Pair Seduce]]>><<set $desperateaction to 1>><</link>><<promiscuous3>>
+    <br>
+<</if>>
+<<link [[拒绝|Flats Pair 3 Refuse]]>><</link>>
+<br>
+
+
+:: Flats Pair 3 Refuse
+<<effects>>
+
+"好吧……"<<person2>><<person>>叹息道。"把你的手从那个<<girl>>身上拿开。"<<person1>><<person>>放开了你，<<person2>><<person>>从<<his>>口袋里掏钱。你获得了<<moneyGain 20>>。
+<br><br>
+
+<<link [[继续|Flats]]>><<pass 60>><<endevent>><</link>>
+<br>
+
+
+:: Flats Pair Agree
+<<effects>>
+
+"那么我就不打扰你们了，"<<person2>><<person>>说。"我会把钱放在门边，等会儿你走的时候直接过去就行。"
+<br><br>
+<<saveNPC 0 "flats_5">>
+<<endevent phaseless>>
+<<loadNPC 0 "flats_5">>
+<<clearNPC "flats_5">>
+<<person1>>
+<<person>>重重的撞了一下你的<<bottom>>。
+<br><br>
+
+<<link [[继续|Flats Pair Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+
+:: Flats Pair Seduce
+<<effects>>
+
+<<set $seductiondifficulty to 8000>>
+<<seductioncheck>>
+<br><br>
+<<if $seductionskill lt 1000>>
+	<span class="gold">你对自己的诱惑力更有信心了。</span>
+	<br><br>
+<</if>>
+<<seductionskilluse>>
+
+<<if $speech_attitude is "meek">>
+    "给我100英镑我就做，"你说。"这个<<personsimple>>太可怕了。"
+<<elseif $speech_attitude is "bratty">>
+    "不给我100英镑，别想让我帮忙，"你说。
+<<else>>
+    "我同意，"你说。"但是你们必须给我100英镑。"
+<</if>>
+<<promiscuity3>>
+
+<<if $seductionrating gte $seductionrequired>>
+    <<set $phase to 1>>
+
+	<<person1>><<person>>似乎很急躁。<<person2>><<person>>听了你的话后表情看起来很生气，<<his>>想指责你厚颜无耻，但在看到友人的状态后<<he>>叹了口气，"好，<span class="green">£100就£100吧</span>，做好你该做的事。"
+	<br><br>
+
+    <<link [[继续|Flats Pair Agree]]>><<set $phase to 1>><</link>>
+    <br>
+
+<<else>>
+
+	<<person1>><<person>>似乎很急躁。<span class="red">但是<<person2>><<person>>摇了摇头。</span>"我花这钱给<<person1>><<he>>嫖妓还不如买酒和<<he>>一起喝一杯呢，没得商量，£50，要不要随你。"
+	<br><br>
+
+    <<link [[接受|Flats Pair Agree]]>><</link>>
+    <br>
+    <<link [[离开此处|Flats Pair 3 Refuse]]>><</link>>
+    <br>
+
+<</if>>
+
+:: Flats Pair Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemyanger += 100>><<promiscuity3>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[继续|Flats Pair Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Pair Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Pair Sex Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"我想我准备好原谅你了，"<<person>>说道。"把你的钱拿走然后离开。"
+	<br><br>
+	<<tearful>>你离开了公寓。你在前门的桌子上找到了<<person>>的朋友留下的钱。
+    你获得了
+    <<if $phase is 1>>
+        <<moneyGain 120>>.
+    <<else>>
+        <<moneyGain 70>>.
+    <</if>>
+<<elseif $enemyhealth lte 0>>
+	<<person>>向后踉跄，踩到了一个棋子，跌倒在地。
+	<br><br>
+	<<tearful>>你逃离了公寓。你从前门的桌子上拿走了钱。
+    你获得了
+    <<if $phase is 1>>
+        <<moneyGain 120>>.
+    <<else>>
+        <<moneyGain 70>>.
+    <</if>>
+<<else>>
+    <<person1>><<person>>陪你走到门口，把一些现金塞到你手里，然后把你推到外面。
+    <br><br>
+    你获得了<<moneyGain 70>>
+<</if>>
+<br><br>
+
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Flats]]>><<pass 60>><</link>>
+<br>

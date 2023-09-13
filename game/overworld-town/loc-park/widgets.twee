@@ -1,0 +1,342 @@
+:: Widgets Park [widget]
+<<widget "passoutpark">>
+	<<if isPlayerNonparasitePregnancyEnding()>>
+		<<pregnancyWatersBrokenPassout "park">>
+	<<else>>
+		<<link [[你眼前一黑…->Passout park]]>><</link>>
+	<</if>>
+<</widget>>
+
+<<widget "park">>
+	<<if $nextPassageCheck is "Park">>
+		<<add_link "<span class='nextLink'><<parkicon>><<link [[公园 (0:05)|Park]]>><<pass 5>><</link>></span><br>">>
+	<<else>>
+		<<add_link "<<parkicon>><<link [[公园 (0:05)|Park]]>><<pass 5>><</link>><br>">>
+	<</if>>
+	<<hideDisplay true>>
+<</widget>>
+
+<<widget "parkquick">>
+	<<link [[公园|Park]]>><</link>>
+<</widget>>
+
+<<widget "parkeventend">>
+	<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+<</widget>>
+
+<<widget "parkrun">>
+	<<if $rng gte $park_fame>>
+		<<rng>>
+		<<if $rng gte 91>>
+			<<generate1>><<person1>>
+			你听见来自身后的脚步声，并从肩膀旁的余光下投下一瞥。一个<<person>>跟着你，<span class="pink">追赶着你。</span>
+			<br><br>
+
+			<<link [[继续|Park Run Stalk]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<<elseif $rng gte 86>>
+			奔跑时，你不得不穿过一些灌木丛。
+			<<if $worn.lower.type.includes("naked")>>
+				你穿过灌木丛时，一根枝桠扎进了你的<<undies>>，刺疼了你。
+			<<else>>
+				你穿过灌木丛时，一丛荆棘扎到了你裸露的<<if $player.breastsize is 0>>胸口<<else>>乳房<</if>>。
+				<<gpain>>
+			<</if>>
+			<<pain 5>>
+			<br><br>
+			<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+		<<elseif $rng gte 81>>
+			<<generate1>><<person1>>你奔跑着与一位<<person>>擦肩而过。<<He>>微笑着看着你越过了一个
+
+			<<if $worn.upper.type.includes("naked")>>
+				齐肩高的篱笆隔开了你们。<<He>>没注意到你是如此暴露。
+			<<else>>
+				齐腰高的篱笆隔开了你们，挡住了你的<<undies>>。<<He>>没注意到你是如此暴露。
+			<</if>>
+			<br><br>
+
+			<<link [[微笑回应|Park]]>><<set $eventskip to 1>><<endevent>><</link>>
+			<br>
+			<<if $exhibitionism gte 15>>
+				<<link [[承认你的秘密|Park Run Secret]]>><</link>><<exhibitionist2>>
+				<br>
+			<</if>>
+
+		<<elseif $rng gte 71>>
+			<<generate1>><<generate2>>
+			<<print either("在一棵树下，","在灌木丛之间，","在一览无余的入口处，","在公园的凉亭里，","在一盏路灯下，","在秋千上，在空旷的儿童游乐区里，")>>
+			一位<<person1>><<person>>正在<<if $NPCList[1].pronoun is "m">>为<<his>>男朋友口交。<<else>>为<<his>>女朋友口交。<</if>>
+			被服务的那位，<<if $NPCList[0].description == $NPCList[1].description && $NPCList[0].pronoun == $NPCList[1].pronoun>>另一个<<else>>一个<</if>><<person2>><<person>>，注视着你跑过。<<He>>脸上露出极乐的神情，<<his>>的
+			<<if $NPCList[0].pronoun is "m">>男朋友的<<else>>女朋友的<</if>><<if $pronoun is "m">>头在他两腿间晃动。<<else>>头在她两腿之间轻触。<</if>>
+			<br><br>
+
+			<<endevent>>
+			<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+		<<elseif $rng gte 61>>
+			你遇到了一只流浪狗。它跟着你的脚步声跑来。
+			<br><br>
+
+			<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+		<<elseif $rng gte 51>>
+			<<if $weather is "rain">>
+				<<generatef1>><<person1>>站在大雨中，一个<<person>>滑倒，掉进了水坑里。水瞬间浸透了<<his>>
+				<<print either("T恤","休闲衬衫","夏季连衣裙","上衣","背心")>>脱下露出了<<his>>的$NPCList[0].breastsdesc.
+				<br>
+				<<if $rng % 2>>
+					受到如此羞辱，<<he>>不得不用<<his>>手臂盖住自己，跑出公园。
+				<<else>>
+					<<He>>或许是没注意到，又或许是不在乎。这个<<person>>继续<<his>>的奔跑，去附近找乐子。
+				<</if>>
+			<<else>>
+				当<<generate1>><<person1>><<person>>和<<generate2>><<person2>><<person>>路过时，你躲在一棵树后。
+			<</if>>
+			<<endevent>>
+
+			<br><br>
+			<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+		<<elseif $rng gte 41>>
+			<<if $weather is "rain" or $weather is "snow">> /*10% chance if running naked in the park at night during rain or snow.*/
+				在你经过<<print either("排水沟附近","湖上的桥","湖","湖边的树","排水沟旁的灌木丛")>>时，
+				有东西抓住了你的腿，把你拖了下去。
+				<!-- Modified for Monster People -->
+				<<beastNEWinit 1 lizard>>
+				<br>
+				<<if $monster is 1 or $bestialitydisable is "f">>
+					在你能反应过来之前，一只巨大的下水道<<beasttype>>已经爬到了你身上。
+					<br><br>
+					<<link [[继续|Park Lizard Rape]]>><<set $molestationstart to 1>><</link>>
+					<br>
+				<<else>>
+					是一只巨大的蜥蜴。
+					<br>
+					你勉强挣脱了巨大蜥蜴的爪子，跑开了。你往后看一眼，能看到它正向后冲去。<<beastescape>>
+					<br><br>
+					<<link [[继续|Park]]>><<endevent>><<set $eventskip to 1>><</link>>
+				<</if>>
+			<<else>>
+				你没有遇到任何人。
+				<br><br>
+				<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+			<</if>>
+		<<elseif $rng gte 31>>
+			你听到身后有脚步声。<<generate1>><<person1>><<person>>穿过小路。<<He>>没有转身也没注意到你，你差一点就被发现了。
+			<<ltrauma>><<trauma -1>><<garousal>><<arousal 100>>
+			<br><br>
+
+			<<endevent>>
+			<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+		<<elseif $rng gte 21>>
+			你几乎直接撞见在一个旧防空洞里抽烟的学生们。你绕着他们走路。
+			<br><br>
+
+			<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+		<<elseif $rng gte 15>>
+			<<rng>>
+			<<if ndef $park_run_seen_by>><<set $park_run_seen_by to []>><</if>>
+			<<if $rng gte 81 and C.npc.Whitney.init is 1 and $NPCName[$NPCNameList.indexOf("Whitney")].state isnot "dungeon" and $pillory_tenant.special.name isnot "Whitney">>
+				你几乎直接撞见在一个旧防空洞里抽烟的学生们。当看到站在中心的人时，你认出了他们。是惠特尼。
+				<br>
+				<<npc Whitney>><<person1>>闭着眼睛，<<he>>呼出一团烟雾。
+				<<set $phase to 1>>
+			<<elseif $rng gte 61 and C.npc.Leighton.init is 1 and $pillory_tenant.special.name isnot "Leighton">>
+				一个人影潜伏在凉亭附近的阴影里。当他靠近灯光时，你认出了他。是礼顿。
+				<br>
+				<<npc Leighton>><<person1>><<He>>好像在找什么东西。或者什么人。
+				<<set $phase to 2>>
+			<<elseif $rng gte 41 and C.npc.Doren.init is 1>>
+				另一个人影从前面的路灯下跑过——那是多伦。
+				<br>
+				<<npc Doren>><<person1>><<set $phase to 3>>
+			<<elseif $rng gte 21 and C.npc.Harper.init is 1>>
+				当你经过医院附近的区域时，你认出了坐在前面的长椅上的哈珀医生。
+				<br>
+				<<npc Harper>><<person1>>陷入了沉思，<<he>>似乎正在阅读什么文件。
+				<<set $phase to 4>>
+			<<elseif C.npc.Bailey.init is 1>>
+				你听到附近有一个熟悉的声音，于是你急忙停下来。
+				<br>
+				"......完整地回来。明白了吗？"
+				<br>
+				<span class="purple">是贝利。</span>
+				<br><br>
+				"当然。"另一个声音响起。"还有，谢谢，<<print either("很可爱的小东西。但没关系，","肯定会很愉悦的。不过别担心，","小家伙很活泼好动，但是")>>我们会很温柔的。"
+				<br>
+				"钱."
+				<br>
+				"好，给你。都在这里了。"
+				<br>
+				"很好。"
+				<br>
+				<<npc Bailey>><<person1>>贝利从附近的灌木丛中走出来数钱。
+				<<set $phase to 5>>
+			<<else>>/*Here in case Bailey is ever dropped out of the intro scene.*/
+				让人心跳加速的一瞬间，你以为看到了一个熟悉的面孔。结果发现那只是一个陌生人。
+				<br>
+				<<set $phase to 6>>
+			<</if>>
+			<<if $phase isnot 6>>
+				<<He>>还没有看到你。然而。
+				<br><br>
+				<<link [[躲起来|Park Run NPC Hide]]>><</link>>
+				<br>
+				<<if $exhibitionism gte 15>>
+					<<link [[暴露出来|Park Run NPC Show]]>><<endevent phaseless>><</link>><<exhibitionist2>>
+					<br>
+				<</if>>
+			<<else>>
+				<<endevent>>
+				<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+			<</if>>
+		<<elseif $rng gte 7>>
+			前面有一对老夫妇手拉手慢慢地走过公园。你悄悄地从他们身后经过。你想知道如果他们知道你在那里，他们会有什么反应。
+			<br><br>
+			<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+		<<else>>
+			你偷偷地躲在一个长椅后面，有<<generate1>><<generate2>><<fullGroup>>正坐在那里。你离得很近，他们一伸手就能直接抓住你。
+			<<garousal>><<arousal 600>>
+			<br><br>
+			<<endevent>>
+			<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+		<</if>>
+	<<else>>
+		<<rng>>
+		<<if $rng gte 81>>
+			<<generate1>><<person1>>一道亮光闪过。一个<<person>>躺在灌木丛底下，举着相机对着你。相机又闪了一下，拍下了你<<nudity>>的证据。<<covered>>
+			<br><br>
+
+			<<if $exhibitionism gte 75>>
+				<<link [[摆pose|Park Run Pose]]>><<fameexhibitionism 20 "pic">><</link>><<exhibitionist5>>
+				<br>
+			<</if>>
+			<<link [[跑走|Park Run Away]]>><<fameexhibitionism 10 "pic">><</link>>
+			<br>
+			<<set $skulduggerydifficulty to 300>>
+			<<link [[偷照相机|Park Run Steal]]>><<crimeup 10>><</link>><<crime>><<skulduggerydifficulty>>
+			<br>
+		<<elseif $rng gte 61>>
+			突然，一群<<generate1>><<generate2>><<fullGroup>>从前面的灌木丛中走出，他们向你走来。<<covered>>"是<<phim>>！"<<person1>><<person>>说道。"那个变态！"
+			<br><br>
+
+			"像这样的<<girl>>，我们想怎么办就怎么办，"<<person2>><<person>>说。"没人会信<<phim>>的话。"他们加快了速度。
+			<br><br>
+
+			<<link [[反抗|Park Run Rape]]>><<set $phase to 1>><<set $molestationstart to 1>><</link>>
+			<br>
+			<<link [[逃跑|Park Run Escape]]>><</link>><<athleticsdifficulty 1 1000>>
+			<br>
+
+		<<elseif $rng gte 41>>
+			一只流浪狗追着你跑了一阵子。
+			<<gstress>><<stress 3>>
+			<br><br>
+
+			<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<<elseif $rng gte 21>>
+			你无意中听到一个打扮成警察的<<generatePolice 1>><<person1>><<person>>在灌木丛的另一边和一个行人说话。"你见到过吗？"<<he>>用手比划着。"一个<<girl>>，大约有这么高，在公园里裸奔。你确定你什么都没看到吗？" 你向相反的方向跑去。
+			<<gstress>><<stress 3>>
+			<br><br>
+			<<endevent>>
+			<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+			<br>
+
+		<<else>>
+			尽管时间已经很晚了，公园里还是很热闹。你蹲下身子，让自己的敏感部位被灌木遮挡。
+			<<garousal>><<arousal 600>>
+			<br><br>
+
+			<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "eventParkStreak1">>
+	<<generate1>><<generate2>>
+	"停下!"
+	<br><br>
+	你转过身来，看见两个警察在追你。你的心跳加快了。
+	<br><br>
+	<<link [[逃跑|Park Streak Police Run]]>><</link>><<athleticsdifficulty 1 1000>><<crime>>
+	<br>
+	<<link [[停止|Park Streak Police Catch]]>><<set $phase to 1>><<pass 2>><</link>>
+	<br>
+	<<link [[战斗|Park Streak Police Fight]]>><<set $fightstart to 1>><</link>>
+<</widget>>
+
+<<widget "eventParkStreak2">>
+	<<generate1>><<generate2>>
+	你在跑步时看到一个<<person1>><<person>>和<<person2>><<person>>从前面的小路上走出来。他们的眼神中透着恶意。
+	<br><br>
+	"哇哦，一个暴露狂。"<<person1>><<person>>说。
+	<br>
+	"有意思，正好可以拿来放松放松。"<<person2>><<person>>喃喃。
+	<br><br>
+	<<link [[继续|Park Streak Rape]]>><<set $molestationstart to 1>><</link>>
+<</widget>>
+
+<<widget "eventParkStreak3">>
+	<<npc Whitney>><<person1>>
+	当你跑过喷泉时，你看到惠特尼在一棵树下吸烟。<<He>>没有看到你。
+	<br><br>
+	<<run wikifier("nnpc_him", "Whitney")>>
+	<<link [["避开"+_text_output|Park Streak Whitney]]>><<pass 2>><<set $phase to 0>><</link>>
+	<br>
+	<<link [["从"+_text_output+"身边跑过"|Park Streak Whitney]]>><<pass 2>><<set $phase to 1>><</link>>
+<</widget>>
+
+<<widget "eventParkStreak4">>
+	<<npc Robin>><<person1>>
+	你跑过一条小路，看到罗宾正站在<<his>>的小摊上卖热巧克力。<<Hes>>正在和几个顾客交谈，没有注意到你。你想知道<<he>>看到你现在的状态会作何反应。 
+	<br><br>
+	<<run wikifier("nnpc_him", "Robin")>>
+	<<link [["避开"+_text_output|Park Streak Robin]]>><<pass 2>><<set $phase to 0>><</link>>
+	<br>
+	<<link [["跑到"+_text_output+"面前"|Park Streak Robin]]>><<pass 2>><<set $phase to 1>><</link>>
+<</widget>>
+
+<<widget "eventParkStreak5">>
+	<<npc Kylar>><<person1>>
+	当你沿着小路跑步时，你看到一个人坐在树下，<<He>>正弯腰看着手中的东西。你认出那个人是凯拉尔，<<he>>正在对着素描本画画。<<He>>没有看到你，正专注于所画的内容。如果你想的话，你可以避开<<him>>。
+	<br><br>
+	<<run wikifier("nnpc_him", "Kylar")>>
+	<<link [["避开"+_text_output|Park Streak Kylar]]>><<pass 2>><<set $phase to 0>><</link>>
+	<br>
+	<<link [["从"+_text_output+"身边跑过"|Park Streak Kylar]]>><<pass 2>><<set $phase to 1>><</link>>
+<</widget>>
+
+<<widget "eventParkStreakEnd">>
+	<<if $bus is "parkmens">>
+		<<link [[继续|Men's Toilets]]>><<endevent>><<set $eventskip to 1>><<pass 5>><</link>>
+	<<else>>
+		<<link [[继续|Women's Toilets]]>><<endevent>><<set $eventskip to 1>><<pass 5>><</link>>
+	<</if>>
+<</widget>>
+
+:: Widgets Events Toilets [widget]
+<<widget "eventstoilets">>
+	<<generate1>><<person1>>你进入了厕所，听到背后传来一阵叫喊声。"我看到你进去了，变态！"<<person>>怒气冲冲地跑了进来。"这就让你尝尝什么叫自作自受！"
+	<br><br>
+
+	<<link [[继续|Toilets Molestation]]>><<set $molestationstart to 1>><</link>>
+
+	<<if $player.gender_appearance isnot $player.gender>><<set $toiletsmistake to 1>><</if>>
+<</widget>>
+
+<<widget "eventstoiletssafe">>
+	<<if $weather is "rain">>
+		雨点猛烈地敲打着小窗户。
+		<br><br>
+	<<else>>
+		风吹得小窗户格格作响。
+		<br><br>
+	<</if>>
+
+	<<if $bus is "parkmens">>
+		<<link [[继续|Men's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Women's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</widget>>

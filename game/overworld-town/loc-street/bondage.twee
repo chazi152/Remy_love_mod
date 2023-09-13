@@ -1,0 +1,662 @@
+:: Bondage Run
+
+<<effects>>
+你弯下腰，走得尽可能地快。你靠近墙壁，远离你认为的道路。你希望没有人看到你如此丢脸的窘境，但同时你也知道你需要帮助。
+<br><br>
+<<set $phase to 1>>/*Makes events always trigger*/
+<<destinationbondage>>
+
+:: Bondage Hide
+
+<<effects>>
+你蜷缩在一堵墙边，希望能有个遮蔽物。
+<br><br>
+<<destinationbondage>>
+
+:: Bondage Wolf
+
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "wolf">>
+
+你感觉到脚下的泥土，并听到<<if Time.hour gte 7 and Time.hour lte 20>>远处小镇的声音。<<else>>近处传来令人不安的狼嚎声。<</if>>
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondagesouth>>
+	<<else>>
+		<<link [[朝着机器的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "nightingale">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着大海的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "commercial">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着车流的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "danube">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Bondage Nightingale
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "nightingale">>
+
+你感觉到脚下的泥土，并听到<<if Time.hour gte 7 and Time.hour lte 20>>远处小镇的声音。<<else>>近处传来令人不安的狼嚎声。<</if>>
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondagesouth>>
+	<<else>>
+		<<link [[朝着机器的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "elk">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着大海的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "park">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着车流的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "wolf">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Bondage Danube
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+你感觉到脚下的泥土，并听到<<if Time.hour gte 7 and Time.hour lte 20>>远处小镇的声音。<<else>>近处传来令人不安的狼嚎声。<</if>>
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondagesouth>>
+	<<else>>
+		<<link [[朝着机器的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "wolf">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着大海的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "residential">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着车流的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "domus">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Bondage Park
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "park">>
+
+你感到脚下有泥土，并听到<<if Time.hour gte 7 and Time.hour lte 20>>远处传来的小镇的声音。<<else>>附近有狗叫声。<</if>>
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondagesouth>>
+	<<else>>
+		<<link [[朝着机器的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "oxford">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着大海的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "starfish">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着车流的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "high">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[逃离城镇的喧嚣 (0:05)|Bondage Run]]>><<set $bus to "nightingale">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Bondage Elk
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "elk">>
+
+你听到附近有重型卡车的隆隆声，且闻到了刺鼻的化学品气味。
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondageeast>>
+	<<else>>
+		<<link [[朝着机器的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "harvest">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着大海的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "industrial">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着车流的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "oxford">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[逃离城镇的喧嚣 (0:05)|Bondage Run]]>><<set $bus to "nightingale">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Bondage Harvest
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "harvest">>
+
+你听到附近有重型卡车的隆隆声，且闻到了刺鼻的化学品气味。
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondageeast>>
+	<<else>>
+		<<link [[朝着大海的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "mer">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着车流的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "industrial">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[逃离城镇的喧嚣 (0:05)|Bondage Run]]>><<set $bus to "elk">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Bondage Oxford
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "oxford">>
+
+你听到附近有重型卡车的隆隆声，且闻到了刺鼻的化学品气味。
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondageeast>>
+	<<else>>
+		<<link [[朝着机器的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "industrial">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着大海的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "starfish">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着车流的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "park">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[逃离城镇的喧嚣 (0:05)|Bondage Run]]>><<set $bus to "nightingale">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Bondage Industrial
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "industrial">>
+
+你听到附近有重型卡车的隆隆声，且闻到了刺鼻的化学品气味。
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondageeast>>
+	<<else>>
+		<<link [[朝着机器的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "harvest">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着大海的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "mer">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着车流的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "oxford">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[逃离城镇的喧嚣 (0:05)|Bondage Run]]>><<set $bus to "elk">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Bondage Mer
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "mer">>
+
+你闻到了大海的气息，听到了<<if Time.hour gte 7 and Time.hour lte 20>>远处码头工作的声音。<<else>>海浪拍打的声音。<</if>>
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondagenorth>>
+	<<else>>
+		<<link [[朝着机器的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "harvest">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着车流的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "starfish">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[逃离城镇的喧嚣 (0:05)|Bondage Run]]>><<set $bus to "elk">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Bondage Starfish
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "starfish">>
+
+你闻到了大海的气息，听到了<<if Time.hour gte 7 and Time.hour lte 20>>远处码头工作的声音。<<else>>海浪拍打的声音。<</if>>
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondagenorth>>
+	<<else>>
+		<<link [[朝着机器的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "mer">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着车流的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "cliff">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[逃离城镇的喧嚣 (0:05)|Bondage Run]]>><<set $bus to "park">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Bondage Cliff
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+
+你闻到了大海的气息，听到了<<if Time.hour gte 7 and Time.hour lte 20>>远处码头工作的声音。<<else>>海浪拍打的声音。<</if>>
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondagenorth>>
+	<<else>>
+		<<link [[朝着机器的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "starfish">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着车流的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "barb">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[逃离城镇的喧嚣 (0:05)|Bondage Run]]>><<set $bus to "commercial">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Bondage High
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "high">>
+
+你闻到了大海的气息，听到了<<if Time.hour gte 7 and Time.hour lte 20>>远处码头工作的声音。<<else>>海浪拍打的声音。<</if>>
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondagenorth>>
+	<<else>>
+		<<link [[朝着机器的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "park">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着大海的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "cliff">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着车流的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "commercial">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[逃离城镇的喧嚣 (0:05)|Bondage Run]]>><<set $bus to "wolf">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Bondage Commercial
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "commercial">>
+
+你闻到了大海的气息，听到了<<if Time.hour gte 7 and Time.hour lte 20>>远处码头工作的声音。<<else>>海浪拍打的声音。<</if>>
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondagenorth>>
+	<<else>>
+		<<link [[朝着机器的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "high">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着大海的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "barb">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着车流的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "connudatus">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[逃离城镇的喧嚣 (0:05)|Bondage Run]]>><<set $bus to "danube">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Bondage Connudatus
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "connudatus">>
+
+你感觉脚下是人行道，并听到<<if Time.hour gte 7 && Time.hour lte 20>>附近有汽车和行人。<<else>>偶尔有汽车在附近行驶。<</if>>
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondagewest>>
+	<<else>>
+		<<link [[朝着机器的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "commercial">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着大海的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "cliff">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着车流的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "residential">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[逃离城镇的喧嚣 (0:05)|Bondage Run]]>><<set $bus to "danube">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Bondage Barb
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "barb">>
+
+你感觉脚下是人行道，并听到<<if Time.hour gte 7 && Time.hour lte 20>>附近有汽车和行人。<<else>>偶尔有汽车在附近行驶。<</if>>
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondagewest>>
+	<<else>>
+		<<link [[朝着机器的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "connudatus">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着大海的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "cliff">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着车流的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "domus">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[逃离城镇的喧嚣 (0:05)|Bondage Run]]>><<set $bus to "danube">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Bondage Domus
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "domus">>
+
+你感觉脚下是人行道，并听到<<if Time.hour gte 7 && Time.hour lte 20>>附近有汽车和行人。<<else>>偶尔有汽车在附近行驶。<</if>>
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondagewest>>
+	<<else>>
+		<<link [[朝着机器的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "residential">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着大海的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "barb">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[逃离城镇的喧嚣 (0:05)|Bondage Run]]>><<set $bus to "danube">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Bondage Residential
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "residential">>
+
+你感觉脚下是人行道，并听到<<if Time.hour gte 7 && Time.hour lte 20>>附近有汽车和行人。<<else>>偶尔有汽车在附近行驶。<</if>>
+<br><br>
+
+<<if $exposed gte 1>>
+	<<covered>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>><<set $phase to 0>>
+	<<passoutstreet>>
+<<elseif !$worn.face.type.includes("blindfold")>>
+	<span class="green">在你的头上的破旧眼罩化作了几片，让你重获自由。</span>你眯起眼睛迎着光线。
+	<<ltrauma>><<lllstress>><<trauma -6>><<stress -24>>
+	<br><br>
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1 or $phase is 1>><<set $phase to 0>>
+		<<eventsbondagewest>>
+	<<else>>
+		<<link [[朝着机器的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "connudatus">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着大海的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "barb">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[朝着车流的声音跑去 (0:05)|Bondage Run]]>><<set $bus to "domus">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[逃离城镇的喧嚣 (0:05)|Bondage Run]]>><<set $bus to "danube">><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[隐藏 (0:05)|Bondage Hide]]>><<pass 5>><<stress 3>><</link>><<gstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>

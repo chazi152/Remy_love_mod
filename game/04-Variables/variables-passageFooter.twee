@@ -1,0 +1,123 @@
+:: PassageFooter
+<div id="gameVersionDisplay">
+	<<if $options.passageCount is "total">>
+		段落数：<<print $passageCount>> |
+	<</if>>
+	<<if $options.passageCount is "changes">>
+		改动段落数：<<print $passageChangesCount>> |
+	<</if>>
+	<<if $options.playtime>>
+		游玩时间<<print msToTime(($saveDetails.playTime ? $saveDetails.playTime : 0) + ($saveDetails.loadTime ? new Date() - $saveDetails.loadTime : 0))>> |
+	<</if>>
+	<<print StartConfig.version>><<if StartConfig.versionName>> <<print StartConfig.versionName>><</if>><<if StartConfig.sneaky>> SNEAKY<</if>>
+</div>
+<div id="gameVersionDisplay2"><<print StartConfig.version.slice(1)>></div>
+<<if $passage isnot "Start">>
+	<div id="feat"></div>
+	<div id="mobileStats"></div>
+	<div id="exportWarning" @class="'no-numberify ' + (Time.days gte $saveDetails.exported.days + $saveDetails.exported.frequency ? '':'hidden')">
+		<span class="red">&#26412;&#28216;&#25103;&#23436;&#20840;&#20813;&#36153;&#65292;&#22914;&#26524;&#20320;&#33457;&#38065;&#36141;&#20080;&#20102;&#65292;&#25214;&#20182;&#36864;&#27454;&#24182;&#20030;&#25253;&#20182;&#65281;&#20320;&#24050;&#32463;&#26377;&#27573;&#26102;&#38388;&#27809;&#23548;&#20986;&#23384;&#26723;&#20102;</span> |
+		<<if !Browser.isMobile.any()>>
+			<<link "导出">>
+				<<script>>
+					updateExportDay();
+					Save.export("degrees-of-lewdity");
+				<</script>>
+			<</link>> |
+		<</if>>
+		<<link "帮我导出">>
+			<<overlayReplace "saves">>
+			<!-- This calls an asynchronous callback and prone to failure. -->
+			<<run T.tab.setActive(1)>>
+			<<replace #customOverlayContent>><<optionsExportImport>><</replace>>
+		<</link>> |
+		<<link "暂时忽略">><<set $saveDetails.exported.days to Math.floor(Time.days - ($saveDetails.exported.frequency * 0.5))>><<addclass #exportWarning "hidden">><</link>>
+	</div>
+<</if>>
+<<if $replayScene isnot undefined>>
+	<<if $replayScene.startPassage is $passage or $passage is "Scene Viewer End">>
+	<<elseif !$replayScene.passages.includes($passage)>>
+		<!-- todo: replace goto with something that doesn't have a potential to fuck up the history -->
+		<<goto "Scene Viewer End">>
+	<</if>>
+	<<if $replayScene is undefined>>
+	<<elseif $replayScene.startPassage>>
+		<<run delete $replayScene.startPassage>>
+	<</if>>
+<</if>>
+<div id="customOverlayContainer" class="customOverlayContainer no-numberify hidden" onclick="closeOverlay()">
+	<div id="customOverlay" @class="'customOverlay hidden' + ($options.overlayFontSize ? ' fontSize' + $options.overlayFontSize : '') + ($options.overlayLineHeight ? ' lineHeight' + $options.overlayLineHeight.toString().replace('.','') : '')" onclick="event.stopPropagation()">
+		<div id="customOverlayTitle"></div>
+		<div id="customOverlayContent"></div>
+	</div>
+</div>
+
+<<if $combat is 1>>
+	<<printCombatMenu>>
+<</if>>
+
+<<if !Story.has($passage)>>
+	<br>
+	请反馈此问题，并重新载入先前的存档，或点击页面底部的退出按钮返回至上一页面。
+	<<if $options.maxStates gt 1>>
+		或使用回溯功能返回到前一步。
+	<</if>>
+	<br>
+	<<set _exit to $safePassage ? $safePassage : "Bedroom">>
+	<span id="next"><<link [[安全返回|_exit]]>><<endcombat>><<clotheson>><</link>></span>
+<<elseif !_link and !tags().includes("exitCheckBypass")>>
+	/* Does not trigger if the scene has a red link. Those will probably be reported anyway */
+	<br>
+	<<error {
+		message	: `The passage ${$passage} has no usable links.`,
+		source	: `Previous passage: ${$passagePrev} | phase: ${$phase} | rng: ${$rng}.`
+	}>>
+	<br><br>
+	请反馈此问题，
+	<<if $cheatdisable is "f">>
+		除非你是用了非常规手法到此页面的，
+	<</if>>
+	然后载入先前的存档，或点击页面底部的退出按钮返回至上一页面。
+	<<if $options.maxStates gt 1>>
+		或使用回溯功能返回到前一步。
+	<</if>>
+	<br><br><br>
+	<<set _exit to $safePassage ? $safePassage : "Bedroom">>
+	<span id="next"><<link [[安全返回|_exit]]>><<endcombat>><<clotheson>><</link>></span>
+<</if>>
+
+<!-- handle autosaves in the footer, so the description getter don't have to guess what happened in the passage -->
+<<if _autosavehere and !_preventUpdate and !$options.autosaveDisabled>>
+	<<if idb.active>>
+		<<run idb.saveState(0)>>
+	<<else>>
+		<<run Save.autosave.save(null, {"saveId":$saveId, "saveName":$saveName})>>
+		<<run setSaveDetail("autosave",{"saveId":$saveId,"saveName":$saveName},Story.get($passage).description())>>
+	<</if>>
+<</if>>
+
+<<if $options.debugdisable is "f">>
+	<<set _normalised to scanNaNs(V)>>
+	<<if _normalised neq null>>
+		<<error {
+			message: "Corrupted variables have been detected.",
+			source: "The following variables have invalid values:\n" + JSON.stringify(_normalised) +
+			"\n\nCurrent passage is: '" + $passage + "'\nPlease report this to the DoL Discord #bug-reports.",
+			exportable: false,
+		}>>
+		<br>
+		请在截图前先点击上方文本框左侧的下拉箭头展开文本框。
+		<br><br>
+		<div id="nanClear">
+			如果有懂行的大佬建议你这么做，那你就点击下方的按钮以重设损坏变量。
+			<br>
+			<<link "重设损坏变量">>
+				<<silently>><<run objectAssignDeep(V, _normalised)>><</silently>>
+				<<replace "#nanClear" t8n>><span class="green">变量已清除。</span><</replace>>
+			<</link>>
+			<br>
+			<span class="red">警告：这一举动将会把所有损坏的变量重设为0。并可能对你当前的游戏产生无法预测的后果。继续之前先三思！</span>
+		</div>
+		<br><br>
+	<</if>>
+<</if>>

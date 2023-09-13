@@ -1,0 +1,304 @@
+:: Widgets Masturbation [widget]
+
+<<widget "endmasturbation">>
+	<<if $possessed>>
+		<<if $masturbationorgasm is 0>>
+			你没有高潮，你感觉如释重负。
+			<<lstress>><<stress -6>>
+		<</if>>
+	<<else>>
+		<<if $masturbationorgasm is 0>>
+			<<if $purity gte 990 and playerChastity()>>
+				你没有高潮，但无论如何你都会感到有些难受。
+			<<elseif $purity gte 900>>
+				你没有高潮，但这没什么的大不了的。
+			<<else>>
+				你没有高潮，这让你感到有些愤怒。
+				<<gstress>><<stress 6>>
+			<</if>>
+		<<elseif $masturbationorgasm is 1>>
+			你感到满足。
+		<<elseif $masturbationorgasm is 2>>
+			你高潮了两次，这让你很满足。
+		<<elseif $masturbationorgasm lte 4>>
+			你高潮了<<number $masturbationorgasm>>次，你感觉有一股神奇的光芒正照耀着你的内心。
+		<<elseif $masturbationorgasm lte 6>>
+			你高潮了<<number $masturbationorgasm>>次，这让你有些体力不支。
+		<<elseif $masturbationorgasm lte 10>>
+			你高潮了<<number $masturbationorgasm>>次，你的身体有些不堪重负了。
+		<<elseif $masturbationorgasm lte 15>>
+			你高潮了<<number $masturbationorgasm>>次，如果你上战场的话，你一定是最强的士兵。
+		<<elseif $masturbationorgasm lte 20>>
+			你高潮了<<number $masturbationorgasm>>次，这越来越愚蠢了。
+		<<elseif $masturbationorgasm lte 30>>
+			你高潮了<<number $masturbationorgasm>>次，你确定你的身体能承受的住吗？
+		<<elseif $masturbationorgasm lte 50>>
+			你高潮了<<number $masturbationorgasm>>次，你知道，还有其他的方法可以应对压力。
+		<<elseif $masturbationorgasm lte 100>>
+			你高潮了<<number $masturbationorgasm>>次，如果那些触手像你一样持久的话，它们一定会更难对付。
+		<<else>>
+			你高潮了<<number $masturbationorgasm>>次，你是疯了还是真的想成为触手之神？
+		<</if>>
+	<</if>>
+	<<if $masturbationorgasm gt 50>>
+		<<earnFeat "Producer of Lewd Fluids">>
+	<</if>>
+	<<if $masturbationorgasm gt 100 or ($masturbation_bowl is 1 and Math.floor(($masturbation_fluid / 30)) gte 15)>>
+		<<earnFeat "Literally Buckets">>
+	<</if>>
+	<<if $purity gte 990 and playerChastity()>>
+		其他<<girls>>也是这样的么？还是说只有你是个怪胎？
+	<</if>>
+	<br>
+	<<if $masturbation_oralSkill and $oralskill lt 200>>
+		<<if !$masturbation_oralSkillMax>><<set $masturbation_oralSkillMax to 0>><</if>>
+		<<set _oralSkillUp to Math.clamp(Math.ceil($masturbation_oralSkill / 3),0,20 - $masturbation_oralSkillMax)>>
+		<<if $oralskill + _oralSkillUp gt 200>><<set _oralSkillUp to 200 - $oralskill>><</if>>
+		<<if _oralSkillUp gt 0>>
+			<<oralskill _oralSkillUp>>
+			<span class="gold">你对自己用嘴给人带来愉悦的能力更有信心。</span>
+			<br>
+		<</if>>
+		<<set $masturbation_oralSkillMax to $masturbation_oralSkillMax + _oralSkillUp>>
+	<</if>>
+	<<set $masturbation_fluid to ($masturbation_semen + $masturbation_milk + $masturbation_vaginaFluid)>>
+	<<if $masturbation_bowl is 1>>
+		<<masturbationbowlimage>>
+		<<if $masturbation_fluid gt $creamstat>>
+			<<set $creamstat to $masturbation_fluid>>
+		<</if>>
+		<<if $masturbation_fluid gt 0>>
+			<<set $_liquids to []>>
+			<<if $masturbation_milk gt 0>><<set $_liquids.push("milk")>><</if>>
+			<<if $masturbation_semen gt 0>><<set $_liquids.push("semen")>><</if>>
+			<<if $masturbation_vaginaFluid gt 0>><<set $_liquids.push("lewd fluids")>><</if>>
+			<span class="gold">你收集了<<print ($masturbation_fluid).toFixed(1)>>mL的<<print $_liquids.formatList({"conjunction":"和","useOxfordComma":true,"separator":"、"})>>。</span>
+		<<else>>
+			你没能分泌出任何乳汁或其他淫秽的液体。
+		<</if>>
+		<br>
+	<<elseif $masturbation_milk gt 0>>
+		<span class="gold">你从胸部挤出了<<print ($masturbation_milk).toFixed(1)>>mL牛奶。</span>
+		<<if $masturbation_milk gte 100>>
+			<<set $_bottles to Math.floor($masturbation_milk / 100)>>
+			<<tending_give baby_bottle_of_breast_milk $_bottles>>
+			足够装满<<print $_bottles>>个瓶子。
+		<<else>>
+			不够一瓶。
+		<</if>>
+		<br>
+	<</if>>
+	<<unset $masturbation_oralSkill>>
+	<<set $masturbating to 0>>
+	<<set $masturbation_bowl to 0>>
+	<!-- temporary variables to allow for referencing these values after this widget is run -->
+	<<set _masturbation_semen to $masturbation_semen>>
+	<<set _masturbation_milk to $masturbation_milk>>
+	<<set _masturbation_vaginaFluid to $masturbation_vaginaFluid>>
+	<<set $masturbation_semen to 0>>
+	<<set $masturbation_milk to 0>>
+	<<set $masturbation_vaginaFluid to 0>>
+	<<set $leftactiondefault to 0>>
+	<<set $rightactiondefault to 0>>
+	<<set $leftaction to 0>>
+	<<set $rightaction to 0>>
+	<<set $mouthactiondefault to 0>>
+	<<set $mouthaction to 0>>
+	<<set $mouth to 0>>
+	<<set $mouthstate to 0>>
+	<<set $penisuse to ($player.penisExist ? 0 : "none")>>
+	<<set $penisstate to ($player.penisExist ? 0 : "none")>>
+	<<set $vaginaactiondefault to 0>>
+	<<set $vaginaaction to 0>>
+	<<set $vaginause to ($player.vaginaExist ? 0 : "none")>>
+	<<set $vaginastate to ($player.vaginaExist ? 0 : "none")>>
+	<<set $anusactiondefault to 0>>
+	<<set $anusaction to 0>>
+	<<set $anususe to 0>>
+	<<set $anusstate to 0>>
+	<<if $leftarm isnot "bound">>
+		<<set $leftarm to 0>>
+	<</if>>
+	<<if $rightarm isnot "bound">>
+		<<set $rightarm to 0>>
+	<</if>>
+	<<unset $corruptionMasturbation>>
+	<<unset $corruptionMasturbationCount>>
+	<<unset $leftFingersSemen>>
+	<<unset $rightFingersSemen>>
+	<<set $masturbationorgasmsemen to 0>>
+	<<if $semenInVagina is true>>
+		<<recordVaginalSperm "pc" "pc" "human">>
+		<<fertiliseParasites "vagina">>
+		<<unset $semenInVagina>>
+	<</if>>
+	<<if $semenInAnus is true>>
+		<<recordAnusSperm "pc" "pc" "human">>
+		<<fertiliseParasites>>
+		<<unset $semenInAnus>>
+	<</if>>
+	<<fetishPregnancyImg>>
+	<<unset $ballsText>>
+	<<unset $fingersInVagina>>
+	<<unset $vaginaFingerLimit>>
+	<<unset $selfsuckDepth>>
+	<<unset $selfsuckLimit>>
+	<<unset $penisHeight>>
+	<<unset $canSelfSuckPenis>>
+	<<unset $canSelfSuckVagina>>
+	<<unset $currentToyLeft>>
+	<<unset $currentToyRight>>
+	<<unset $currentToyVagina>>
+	<<unset $currentToyAnus>>
+<</widget>>
+
+<<widget "masturbationstart">>
+	<<set $masturbating to 1>>
+	<<if $leftarm isnot "bound">>
+		<<set $leftarm to 0>>
+		<<set $leftaction to 0>>
+	<</if>>
+	<<set $leftactiondefault to "mrest">>
+	<<if $rightarm isnot "bound">>
+		<<set $rightarm to 0>>
+		<<set $rightaction to 0>>
+	<</if>>
+	<<set $rightactiondefault to "mrest">>
+	<<set $mouth to 0>>
+	<<set $mouthactiondefault to "mrest">>
+	<<set $mouthaction to 0>>
+	<<switch $player.gender>>
+		<<case "f">>
+			<<set $vaginause to 0>>
+			<<set $penisuse to "none">>
+		<<case "m">>
+			<<set $penisuse to 0>>
+			<<set $vaginause to "none">>
+		<<case "h">>
+			<<set $vaginause to 0>>
+			<<set $penisuse to 0>>
+	<</switch>>
+	<<set $vaginaactiondefault to "mrest">>
+	<<set $vaginaaction to 0>>
+	<<set $anusactiondefault to "mrest">>
+	<<set $anusaction to 0>>
+	<<set $anususe to 0>>
+	<<set $masturbationorgasmsemen to 0>>
+	<<set $masturbation_oralSkill to 0>>
+	<<set $masturbation_semen to 0>>
+	<<set $masturbation_milk to 0>>
+	<<set $masturbation_vaginaFluid to 0>>
+
+	<<set $fingersInVagina to 0>>
+	<<if $player.virginity.vaginal is true and $sexStats.vagina.pregnancy.totalBirthEvents is 0>>
+		<!-- if virgin, limit is 2 -->
+		<<set $vaginaFingerLimit to 2>>
+	<<else>>
+		<<if $vaginalskill gte 600 or $demon gte 3>> <!-- Demons are stretchy. -->
+			<<set $vaginaFingerLimit to 5>>
+		<<elseif $vaginalskill gte 200 or $demon gte 1>>
+			<<set $vaginaFingerLimit to 4>>
+		<<else>>
+			<<set $vaginaFingerLimit to 3>>
+		<</if>>
+	<</if>>
+
+	/* note: we're setting $ballssize here because the variable exists but isn't used anywhere else YET. when a true implementation is attempted, remove this. */
+	<<set $ballssize to $player.penissize>>
+	<<silently>>
+		<<ballsize>><<set $ballsText to _text_output + " ">>
+		<<testicles>><<set $ballsText += _text_output>>
+	<</silently>>
+
+	<<selfsuckchecks>>
+
+	<<if $possessed>>
+		它控制你的手来摩挲你的身体。
+		<<if $purity gte 990>>
+			虽然你感觉很恶心，但你无法控制自己。
+		<<elseif $purity gte 900>>
+			你不希望它继续下去。
+		<<else>>
+			尽管你有更好的自控力，但你还是渴望被人触摸。
+		<</if>>
+	<<elseif !playerChastity()>>
+		你抚摸着你的<<genitals 1>>。
+		<<if $purity gte 990>>
+			你知道如果你再继续下去的话，你会感到内疚，但这感觉实在是太好了。
+		<<elseif $purity gte 900>>
+			如果再继续下去的话，会更糟糕么？
+		<<else>>
+			你感觉到它那渴望被触摸的想法。
+		<</if>>
+	<</if>>
+
+	<<if playerHeatMinArousal() + playerRutMinArousal() gte 3000>>
+		<span class="red">你觉得手淫无法满足你目前的兴奋状态。</span>
+	<<elseif playerHeatMinArousal() + playerRutMinArousal() gte 1500>>
+		<span class="red">你觉得手淫是不够的。</span>
+	<<elseif playerHeatMinArousal() + playerRutMinArousal() gte 500>>
+		<span class="red">你觉得手淫的感觉不像平时那么好。</span>
+	<</if>>
+	<br><br>
+<</widget>>
+
+<<widget "masturbationbowl">>
+	<<set $masturbation_fluid to ($masturbation_semen + $masturbation_milk + $masturbation_vaginaFluid)>>
+	<<if $masturbation_fluid gt $creamstat>>
+		<<set $creamstat to $masturbation_fluid>>
+	<</if>>
+	<<masturbationbowlimage>>
+	你已经收集了<<print ($masturbation_fluid).toFixed(1)>>mL的淫液。
+<</widget>>
+
+<<widget "masturbationbowlimage">>
+	<<if $options.images is 1>>
+		<<set _masturbation_temp to Math.floor(($masturbation_fluid / 30))>>
+		<div id="divbowl">
+			<img id="map" src="img/misc/icon/masturbationbowl.png">
+			<<if $masturbation_fluid gte 900>>
+				<img id="maparrow" src="img/misc/icon/masturbationbowl30.png">
+			<<elseif $masturbation_fluid gte 30>>
+				<img id="maparrow" @src="'img/misc/icon/masturbationbowl' + _masturbation_temp + '.png'">
+			<</if>>
+		</div>
+	<</if>>
+<</widget>>
+
+/* these checks only determine if it could be possible. they do not check for current obstructions like clothing or hands. */
+<<widget "selfsuckchecks">>
+	<<set $_danceSkillLimit to Math.clamp(Math.ceil((800 - $danceskill)/200), 0, 4)>>
+	<<set $_catFlexLimit to Math.clamp((6 - $cat), 0, 4)>>
+	<<if $player.penisExist and !playerChastity("penis")>>
+		/* <<set setup.penisHeightLevels to ["base", "waist", "midriff", "chest"]>> */
+		/* the above comment is a reminder of how high the player's penis can reach. however, it's not useful in the code at the moment. */
+
+		/* lower number means harder to reach; the player has to get their head lower down to reach it. */
+		<<set $penisHeight to [0,0,0,1,1,2,3][$player.penissize + 2]>>
+		<<set $canSelfSuckPenis to ($penisHeight gte $_danceSkillLimit) or ($penisHeight gte $_catFlexLimit)>>
+		<<set $selfsuckLimit to $penisHeight - ($_danceSkillLimit lt $_catFlexLimit ? $_danceSkillLimit : $_catFlexLimit)>>
+		<<set $selfsuckDepth to 0>>
+	<<else>>
+		<<set $canSelfSuckPenis to false>>
+	<</if>>
+	<<if $player.vaginaExist and !playerChastity("vagina")>>
+		<<set $canSelfSuckVagina to ((0 gte $_danceSkillLimit) or (0 gte $_catFlexLimit))>>
+	<<else>>
+		<<set $canSelfSuckVagina to false>>
+	<</if>>
+<</widget>>
+
+<<widget "addVaginalWetness">>
+	<<if _args[0] and _args[0] gt 0 and $player.vaginaExist>>
+		<!-- Scale the wetness change based on arousal -->
+		<<set $_change to _args[0] * Math.pow(($arousal+6000)/10000, 2)>>
+
+		<!-- Make it harder to build up wetness the closer you are to max wetness. -->
+		<<set $_wetnessPercent to Math.clamp($vaginaArousalWetness / 100, 0, 1)>>
+		<<set $_change to Math.floor($_change * (1 - $_wetnessPercent))>>
+
+		<!-- In summery: Having high arousal causes larger wetness gains, while being near max wetness causes lower wetness gains -->
+		<<set $vaginaArousalWetness += $_change>>
+		<<set $vaginaArousalWetness to Math.clamp($vaginaArousalWetness, 0, 100)>>
+	<</if>>
+<</widget>>

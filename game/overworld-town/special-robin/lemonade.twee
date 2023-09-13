@@ -1,0 +1,825 @@
+:: Robin's Lemonade
+
+<<location "beach">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+<<if $robinlemonadeintro isnot 1>><<set $robinlemonadeintro to 1>><<set $daily.robin.freeDrink to 1>>
+	<<npc Robin>><<person1>>你看到罗宾站在<<his>>的柠檬水摊后面。<<He>>看到你时挥手。
+	<br><br>
+
+	"嗨。”在你靠近的时候<<he>>向你打招呼，<<He>>看起来很开心见到你。“见到你真高兴，希望你能来尝尝我的柠檬水。”<<He>>把水、柠檬汁和糖混合在一起后递给了你一杯柠檬水。“别客气。”柠檬水非常甜。
+	<br><br>
+
+	<<else>>
+	<<npc Robin>><<person1>>
+	<<if _robin.trauma gte 40>>
+		你看到罗宾正站在<<his>>的柠檬水摊后面。每当有人经过<<him>>时都会退缩。
+		当<<he>>看到你时，<<he>>怯怯地挥了挥手。
+	<<elseif $robinromance is 1 and $worn.under_upper.type.includesAny("swim", "naked") and $worn.under_lower.type.includesAny("swim", "naked")	and $worn.upper.type.includes("naked") and $worn.lower.type.includes("naked") and $worn.under_upper.reveal gte 800 and $worn.under_lower.reveal gte 800>>
+		在你走向<<his>>的柠檬水摊子时罗宾目瞪口呆地看着你。<<He>>被你的泳装震撼到了。
+	<<else>>
+		你看到罗宾正站在<<his>>的柠檬水摊后面。<<He>>看到你时向你挥了挥手。
+	<</if>>
+	<<if _robin.crossdressing is 2>>
+		<<if _robin.pronoun is "f">>
+			<<if _robin.breastsize gte 9>> /* massive, huge, gigantic, enormous */
+				罗宾通常是<<breastsizedesc _robin.breastsize>>的乳房在<<his>>的胸束下看起来不太明显。
+				但由于<<his>>的天然尺寸如此之大，它们仍然很难隐藏。
+			<<elseif _robin.breastsize gte 6>> /* full, large, ample */
+				罗宾通常是<<breastsizedesc _robin.breastsize>>的乳房在<<his>>的胸束下看起来不太明显。
+				但是当你寻找的时候，你可以看到<<his>>巨大的乳房。
+			<<elseif _robin.breastsize gte 3>> /* small, pert, modest */
+				罗宾通常是<<breastsizedesc _robin.breastsize>>的乳房在<<his>>的胸束下看起来几乎看不出来。
+			<<elseif _robin.breastsize gte 0>> /* budding, tiny */
+				罗宾通常是<<breastsizedesc _robin.breastsize>>的乳房在<<his>>的胸束下完全看不出来。
+			<</if>>
+			<<He>>看起来很开心。
+		<<else>>
+			<<His>>的<<npcClothesText _robin "upper">>和大大的微笑使<<him>>看起来像一个快乐的女孩。
+		<</if>>
+	<</if>>
+	<br><br>
+
+<</if>>
+<<endevent>>
+
+<<lemonade_stand_options>>
+
+:: Robin's Lemonade Purchase
+
+<<location "beach">><<effects>>
+<<npc Robin>><<person1>>
+<<set $money -= 100>>
+
+"没问题！只要给我一分钟...”罗宾说着，把柠檬水倒进一个玻璃杯里。
+<br><br>
+
+<<He>>微笑着将柠檬水递给你，你也把£1放在了柜台上。
+<br><br>
+
+<<if $robinpaid is 1 and $daily.robin.freeDrink isnot 1>>
+	<<set $daily.robin.freeDrink to 1>>
+	"我，我不能收你的钱...”<<He>>把钱还给了你。“你已经为我向贝利付款了。而且你知道的，我到时候也会把那些钱还给你的。"
+	<<set $money += 100>>
+
+<<elseif $robinpaid is 1>>
+	<<set $robinmoney += 1>>
+	"这...这次我不得不收下了。”<<He>>看钱的时候皱着眉。“我必须花钱购买柠檬水的原料。即使我想一直请你喝，但我做不到的。"
+
+<<else>>
+	<<set $robinmoney += 1>>
+	"感谢您的购买！”<<He>>微笑着，把钱收到了柜台下面。
+
+<</if>>
+<br><br>
+
+你看着海浪翻滚，聆听着海浪声，几乎一口气喝完了柠檬水。
+<br><br>
+
+"<<print either(
+"...你有没有在晴朗的夜晚里注视过夜空？那里有那么多的星星...那么多像我们这样的世界...我多希望孤儿院里有个望远镜啊。",
+"有些时候我只是看着那些海滩上的人。他们看上去是那么的快乐...",
+"总有一天我会下海去游泳的。如果我穿学校的泳衣，你觉得会有人认为我很奇怪吗？")>>"
+<br><br>
+
+<<if Time.hour gte 17>>
+	"我需要把我的小摊带回家了。”罗宾说道，“现在没什么人会买柠檬水的，能请你帮帮我吗？"
+	<<endevent>>
+	<br><br>
+	<<link [[同意(0:30)|Orphanage]]>><<npcincr Robin love 1>><<pass 30>><</link>><<glove>>
+	<br>
+	<<link [[拒绝|Beach]]>><</link>>
+	<br>
+
+<<else>>
+	<<endevent>>
+	<<lemonade_stand_options>>
+
+<</if>>
+
+
+:: Robin's Lemonade Help
+
+<<location "beach">><<effects>>
+<<npc Robin>><<person1>>
+<<set _robin to statusCheck("Robin")>>
+
+<<if $leftarm is "bound" or $rightarm is "bound">>
+	<<He>>注意到了你的手臂：“哦，你这样帮不了我啊，过来一下。”<<He>>走到了你身后，然后用灵巧的双手解开了你的束缚。<<unbind>>
+	<br><br>
+<</if>>
+<<if Time.hour gte 17>>
+	<<if _robin.trauma gte 40>>
+		"……你能送我回家吗?”罗宾颤抖着说。“我觉得我再也受不了了。"
+	<<else>>
+		"我想找人帮我把东西搬回家，"罗宾说。“时间已经这么晚了，人们也不会再买柠檬水了。"
+	<</if>>
+	<br><br>
+
+	你和罗宾一起走回孤儿院。
+	<br><br>
+
+	<<if $arousal gte $arousalmax>>
+		当你的身体背叛你的时候，你就快要回来了。
+		<<orgasm>>
+		罗宾礼貌地把目光移开，但忍不住受到了影响。<<npcincr Robin lust 1>>
+		<br>
+	<</if>>
+	<<endevent>>
+	<<link [[继续|Orphanage]]>><</link>>
+	<br>
+<<else>>
+	<<He>>露出<<if _robin.trauma gte 40>>勉强的<</if>>微笑。
+	<<if $rng gte 81 and $cow gte 6 and $livestock_intro isnot undefined>>
+		<<if _robin.trauma gte 40>>
+			"我想我现在很好，但是你能陪着我吗?" 罗宾一边坐立不安一边问你。
+		<<else>>
+			"我需要的都有了，不过欢迎你留下来，我喜欢这种陪伴。"
+		<</if>>
+		<br><br>
+		你陪着<<he>>摆摊，在没有顾客的时候和<<him>>聊天。
+		<<npcincr Robin love 1>><<glove>><<ltrauma>><<lstress>><<trauma -3>><<stress -6>>
+		<br><br>
+
+		<<if _robin.dom gte 60>>
+			<<generate2>><<person2>>
+			一个<<person>>走近小摊。
+			<<if _robin.trauma gte 40>>
+				"嗨，”罗宾低下头说。“如果可以的话，需要一杯1英镑的柠檬水吗？"
+			<<else>>
+				"欢迎光临，”罗宾说。“要花一镑买新鲜柠檬水吗？"
+			<</if>>
+			<br><br>
+			"当然，亲爱的，”那个<<person>>在转向你之前说。他们露出了淫荡而扭曲的微笑。”我记得你，我们在农场里见过。你为什么不和我一起回去呢?我会带你回家的。”他们伸出手来。
+			<br><br>
+			你感到很矛盾。你被虐待的记忆与身处开阔原野的愉快相冲突。你犹豫不决，然后将你的手伸向他们。
+			<br><br>
+			<<link [[继续|Robin's Lemonade Cow]]>><</link>>
+			<br>
+
+		<<else>>
+			<<generate2>><<person2>>
+			一个<<person>>走近小摊。
+			<<if _robin.trauma gte 40>>
+				"嗨，”罗宾低下头说。“如果可以的话，需要一杯1英镑的柠檬水吗？"
+			<<else>>
+				"欢迎光临，”罗宾说。“要花一镑买新鲜柠檬水吗？"
+			<</if>>
+			<br><br>
+			"当然，亲爱的，”那个<<person>>在转向你之前说。他们露出了淫荡而扭曲的微笑。”我记得你，我们在农场里见过。你为什么不和我一起回去呢?我会带你回家的。”他们伸出手来。
+			<br><br>
+			你感到矛盾。你受凌辱的回忆，与对田野的美好思念相冲突。你犹豫了，然后把你的手伸向他们。“对不起，<<sir>>，”罗宾打断道。“你的柠檬水。"
+			<br><br>
+			<<person>>看起来很惊讶，但笑容并没有褪去。“谢谢，亲爱的，”<<he>>说，接过递过来的杯子说：“多关注关注你的朋友。” ，然后<<He>>就离开了。
+			<br><br>
+			其他顾客没那么恐怖，但罗宾似乎被吓坏了。
+			<br><br>
+
+			<<endevent>>
+			<<lemonade_stand_options>>
+		<</if>>
+	<<elseif $rng gte 61>>
+		<<if $robinsignintro isnot 1>>
+			<<set $robinsignintro to 1>>
+			<<He>>蹲在看台后面，拿着一个牌子出来。上面写着"罗宾的柠檬水"下面还有说明，
+			<<if _robin.trauma gte 40>>
+				"那个…你能拿着这个牌子四处走走吗?只是为了吸引更多的顾客。"
+			<<else>>
+				"你能拿着这个在海滩上走一圈儿吗?应该能多吸引一些客户。"
+			<</if>>
+			<br><br>
+		<<else>>
+			"你能再帮我的摊位打打广告吗?上次真的很有用。"
+			<br><br>
+		<</if>>
+		你拿着广告牌沿着海滩走。
+		<br><br>
+		你看到人们在读你举着的广告牌，却不知道是不是真的有用。
+		<<famebusiness 1>><<set $robinmoney += 5>>
+		<br><br>
+		<<link [[不断尝试|Robin's Lemonade Sign]]>><</link>>
+		<br>
+		<<if $promiscuity gte 15>>
+			<<link [[与潜在客户调情|Robin's Lemonade Flirt]]>><<famebusiness 1>><</link>><<promiscuous2>>
+			<br>
+		<</if>>
+	<<elseif $rng gte 21>>
+		<<if _robin.trauma gte 40>>
+			"我的水没了。虽然我不想一个人待着，但你能帮我去再买一些吗?”罗宾紧张地说。“商业街上有一些店铺卖的很便宜，但附近也有一些店能买，我不希望你离开太久……"
+			<<He>>递给了你£20。在把钱交给你后<<His>>也没有放开，还是紧紧的握着你的手。"请快点儿回来。"
+			<<set _extramoney to true>>
+		<<else>>
+			"我的水快用完了。水很重，我本来不想麻烦你的，但你能帮我再买一些吗？商业街上卖的比较便宜，海滩附近的商铺收费太高了。"<<He>>递给你£2。"这足够买一大瓶了。"
+		<</if>>
+		<br><br>
+		<<if _robin.trauma gte 40>>
+			当你离开海滩时，你看到一家卖大瓶装水的商店。罗宾的钱只够买四瓶。你可以去商业街买一些，但你不想让罗宾一个人待太久。
+		<<else>>
+			当你离开海滩时，你看到一家卖大瓶装水的商店。罗宾说的对，附近的水确实很贵。不过，从商业街一路搬水过来会更困难。
+		<</if>>
+		<br><br>
+		<<link [[去商业街|Robin's Lemonade High]]>><</link>>
+		<br>
+		<<if $money gte 2000>>
+			<<link [[用自己的钱买水(£20)|Robin's Lemonade Buy]]>><<set $phase to 0>><<set $money -= 2000>><</link>>
+			<br>
+		<</if>>
+		<<if _extramoney>>
+			<<link [[用罗宾的钱买水|Robin's Lemonade Buy]]>><<set $phase to 1>><</link>>
+			<br>
+		<</if>>
+		<<set $skulduggerydifficulty to 200>>
+		<<link [[偷水|Robin's Lemonade Steal]]>><<crimeup 20>><</link>><<skulduggerydifficulty>><<crime>>
+		<br>
+		<<if $promiscuity gte 15>>
+			<<if _extramoney>>
+				<<link [[为得到便宜的水调情|Robin's Lemonade Seduction]]>><<set $phase to 1>><</link>><<promiscuous2>>
+			<<else>>
+				<<link [[为得到便宜的水调情|Robin's Lemonade Seduction]]>><<set $phase to 0>><</link>><<promiscuous2>>
+			<</if>>
+			<br>
+		<</if>>
+	<<else>>
+		<<if _robin.trauma gte 40>>
+			"我想我现在很好，但是你能陪着我吗?" 罗宾一边坐立不安一边问你。
+		<<else>>
+			"我需要的都有了，不过欢迎你留下来，我喜欢这种陪伴。"
+		<</if>>
+		<br><br>
+		你陪着<<he>>摆摊，在没有顾客的时候和<<him>>聊天。
+		<<npcincr Robin love 1>><<glove>><<ltrauma>><<lstress>><<trauma -3>><<stress -6>>
+		<br><br>
+		<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $danger gte (9900 - $allure) and $daily.robin.beachPolice isnot 1>>
+			<<set $daily.robin.beachPolice to 1>>
+			<<endevent>><<generatePolice 1>><<generatePolice 2>>一伙穿着警察制服的<<fullGroup>>走近小摊。
+			<<if _robin.trauma gte 40>>
+				罗宾看起来被他们吓到了，"要，要来一杯……"
+			<<else>>
+				"欢迎，”罗宾开口了。"要来杯新鲜的……"
+			<</if>>
+			<br><br>
+			"嘘,"<<person1>><<person>>打断。"我们是来看看你的许可证的。"
+			<br><br>
+			"许，许可证?”罗宾问道。
+			<br><br>
+			"没错。别告诉我你没有?"
+			<br><br>
+			"我不认为<<nnpc_he "Robin">>有,”<<person2>><<person>>说。“无证售卖要判处二十年的监禁，很简单。”罗宾的脸一下子没有了血色。
+			<br><br>
+			"是的，"<<person1>><<person>>说。"或者我们可以罚你£100。由你决定。"
+			<br><br>
+			罗宾开始用颤抖的手数钱。
+			<br><br>
+			<<link [[安慰罗宾|Robin's Lemonade Comfort]]>><</link>>
+			<br>
+			<<if $money gte 10000>>
+				<<link [[帮罗宾付钱|Robin's Lemonade Pay]]>><<set $money -= 10000>><<set $daily.robin.policePay to 1>><<famegood 3>><</link>>
+				<br>
+			<</if>>
+			<<if $promiscuity gte 35>>
+				<<link [[用你的身体付钱|Robin's Lemonade Offer]]>><<famegood 3>><<set $daily.robin.policeBody to 1>><</link>>
+				<br>
+			<</if>>
+			<<if $submissive lte 500>>
+				<<link [[恐吓|Robin's Lemonade Intimidate]]>><<def 1>><</link>><<defianttext>>
+				<br>
+			<</if>>
+		<<else>>
+			"谢谢你花时间陪我，”过了一会儿，<<he>>说。
+			<br>
+			<<if $arousal gte $arousalmax>>
+				但你不能把注意力集中在<<his>>的话上。
+				<<orgasm>>
+				罗宾礼貌地把目光移开，但忍不住受到了影响。<<npcincr Robin lust 1>>
+				<br>
+			<</if>>
+			<br>
+			<<endevent>>
+			<<lemonade_stand_options>>
+		<</if>>
+	<</if>>
+<</if>>
+
+:: Robin's Lemonade Sign
+
+<<location "beach">><<effects>>
+<<generate2>><<person2>>
+<<set _robin to statusCheck("Robin")>>
+
+你走到海滩人口密集的另一端，然后回到罗宾那里。<<person1>><<Hes>>正在和<<person2>><<person>>交谈。
+<br><br>
+<<if _robin.trauma gte 40>>
+	"如果可以的话，请给我一英镑。"
+	<br><br>
+
+	"给，"<<person>>没有立刻离开，“你有兴趣多赚一点儿吗？我喜欢害羞的人。"
+	<br><br>
+
+	罗宾睁大了眼睛。“不!不，不用了。”<<person1>><<He>>深吸一口气，试着递给<<person2>><<person>>柠檬水，但是
+	<<person1>><<his>>手滑了。柠檬水溅了一桌子，还溅到了<<person2>><<personsimple>>的鞋子上。
+	<br><br>
+
+	"喂!小心点儿，小子!"<<person2>><<person>>生气道。罗宾瑟缩了一下，无助的用手捂住了自己的脸。<<person1>>
+	<br><br>
+
+	当<<person2>><<person>>怒气冲冲地离开时，罗宾注意到了你。<<person1>><<He>>流着鼻涕，但还是努力对你露出了一个微笑。"谢谢你的帮助。"
+<<else>>
+	"请给我一英镑。"
+	<br><br>
+
+	"谢谢，"<<person>>把手撑在柠檬摊上。"你有兴趣多赚一点儿吗?我知道一个安静的地方。"
+	<br><br>
+
+	罗宾看起来很困惑。"但是我需要把我的摊位放在一个热闹的地方，人们才能看到它。不过还是谢谢你的建议。"
+	<br><br>
+
+	"没事儿，"<<person>>叹了口气，"算了，算了吧。"
+	<br><br>
+
+	当<<person>>离开时，罗宾注意到了你。<<person1>>"生意好转了很多。"<<he>>笑着说，"谢谢你。"
+<</if>>
+<br><br>
+<<if $arousal gte $arousalmax>>
+	你试着回答，但你无法集中注意力。
+	<<orgasm>>
+	罗宾礼貌地把目光移开，但忍不住受到了影响。<<npcincr Robin lust 1>>
+	<br><br>
+<</if>>
+<<endevent>>
+<<lemonade_stand_options>>
+
+:: Robin's Lemonade Flirt
+<<location "beach">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+<!-- I feel like this can be turned into a function -->
+<<set $seductiondifficulty to 4000>>
+<<seductioncheck>>
+<br><br>
+<<if $seductionskill lt 1000>><span class="gold">你对自己的诱惑力更有信心了。</span><</if>><<seductionskilluse>>
+<<promiscuity2>>
+
+<<if $seductionrating gte $seductionrequired>>
+	你决定变得更加自信，与潜在客户调情，用魅力解除他们的防备。当你回到罗宾身边时，那里排着长队。<<He>>对你微笑。
+	<br><br>
+	"我不知道你是怎么做到的，但是谢谢你。”<<He>>亲吻你的脸颊。
+	<<glove>><<npcincr Robin love 1>><<ltrauma>><<lstress>><<trauma -3>><<stress -6>><<set $robinmoney += 5>>
+	<br><br>
+	<<endevent>>
+	<<lemonade_stand_options>>
+<<else>>
+	<<generate2>><<person2>>
+	你施展魅力，但还是没人对你感兴趣。你回到了罗宾身边。<<person1>><<Hes>>正在和<<person2>><<person>>交谈。
+	<br><br>
+		<<if _robin.trauma gte 40>>
+		"如果可以的话，请给我一英镑。"
+		<br><br>
+
+		"给，"<<person>>没有立刻离开，“你有兴趣多赚一点儿吗？我喜欢害羞的人。"
+		<br><br>
+
+		罗宾睁大了眼睛。“不!不，不用了。”<<person1>><<He>>深吸一口气，试着递给<<person2>><<person>>柠檬水，但是
+		<<person1>><<his>>手滑了。柠檬水溅了一桌子，还溅到了<<person2>><<personsimple>>的鞋子上。
+		<br><br>
+
+		"喂!小心点儿，小子!"<<person2>><<person>>生气道。罗宾瑟缩了一下，无助的用手捂住了自己的脸。<<person1>>
+		<br><br>
+
+		当<<person2>><<person>>怒气冲冲地离开时，罗宾注意到了你。<<person1>><<He>>流着鼻涕，但还是努力对你露出了一个微笑。"谢谢你的帮助。"
+	<<else>>
+		"请给我一英镑。"
+		<br><br>
+
+		"谢谢，"<<person>>把手撑在柠檬摊上。"你有兴趣多赚一点儿吗?我知道一个安静的地方。"
+		<br><br>
+
+		罗宾看起来很困惑。"但是我需要把我的摊位放在一个热闹的地方，人们才能看到它。不过还是谢谢你的建议。"
+		<br><br>
+
+		"没事儿，"<<person>>叹了口气，"算了，算了吧。"
+		<br><br>
+
+		当<<person>>离开时，罗宾注意到了你。<<person1>>"生意好转了很多。"<<he>>笑着说，"谢谢你。"
+	<</if>>
+	<br><br>
+	<<endevent>>
+	<<lemonade_stand_options>>
+<</if>>
+
+:: Robin's Lemonade High
+
+<<location "beach">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+你到商业街买了一大瓶水，然后回到了海滩上。
+<<if _robin.trauma gte 40>>
+	罗宾挥手让你过去。<<Hes>>激动的喊。"我很担心你，我还以为你出什么事儿了!"<<He>>紧紧地抱住了你。<<npcincr Robin trauma 1>><<grtrauma>>
+<<else>>
+	罗宾向你挥手。"谢谢你，如果不是你，我就得关闭小摊了。"<<He>>抱住了你。
+<</if>>
+<br><br>
+<<if $arousal gte $arousalmax>>
+	这个拥抱把你的身体推到了兴奋的边缘。
+	<<orgasm>>
+	罗宾惊讶地放开了你，却还是受到了你的影响。<<npcincr Robin lust 1>>
+	<br><br>
+<</if>>
+<<if _robin.trauma gte 40>>
+	你悄悄地把找给罗宾的零钱放回<<his>>的桌子上。
+	<<set $robinmoney += 2>>
+	<br><br>
+<</if>>
+<<endevent>>
+<<lemonade_stand_options>>
+
+:: Robin's Lemonade Buy
+
+<<location "beach">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+你买了四大瓶水，把它们拖回来给罗宾。那沉甸甸的重量让你走得很慢，你需要经常休息。幸好距离不是太远，罗宾看到你后立刻就冲过来帮忙了。
+<<if _robin.trauma gte 40>>
+	"太谢谢你了!我很高兴你没有离开那么久，我都开始担心了。”罗宾看起来松了一口气。
+	当你回到<<his>>的小摊时，<<he>>紧紧的抱住了你。
+	<<if $phase is 0>>
+		<br><br>
+
+		你悄悄地把<<he>>给你的£20留在小摊上。
+		<<set $robinmoney += 2>>
+	<<else>>
+		<<set $robinmoney -= 2>>
+	<</if>>
+<<else>>
+	"你怎么——”<<he>>停顿了一下。“你不可能一直带着这些东西。"
+	<br><br>
+
+	"我在附近的商店里发现它打折了，”你说。
+	<br><br>
+
+	"你真会省钱，谢谢你。"你悄悄地把<<he>>给你的£2留在小摊上。
+<</if>>
+<<npcincr Robin love 1>><<glove>>
+<br><br>
+
+<<endevent>>
+
+<<lemonade_stand_options>>
+
+:: Robin's Lemonade Steal
+
+<<location "beach">><<effects>>
+<<endevent>><<generate1>><<person1>>
+<<set _robin to statusCheck("Robin")>>
+<<skulduggerycheck>>
+
+<<if $skulduggerysuccess is 1>>
+	你走进商店，开始把大瓶装水装上手推车。完成后，假装浏览并等待。一位健谈的顾客和柜台后面的<<person>>攀谈起来，给了你机会。你推着手推车离开商店。
+	<br><br>
+	<<endevent>><<npc Robin>><<person1>>
+	你一直把它推到罗宾那里。<<he>>看到你的时候眼睛都睁大了。
+	<<if _robin.trauma gte 40>>
+		"太谢谢你了!我很高兴你没有离开那么久，我都开始担心了。”罗宾看起来松了一口气。
+		当你回到<<his>>的小摊时，<<he>>紧紧的抱住了你。你悄悄地把<<he>>给你的20英镑放在了小摊上。
+		<<set $robinmoney += 2>>
+	<<else>>
+		"我从没想过那件事，"<<he>>说: "你真聪明。"你悄悄地把<<he>>给你的£2留在小摊上。
+	<</if>>
+	<<npcincr Robin love 1>><<glove>>
+	<br><br>
+	<<skulduggeryuse>>
+	<<endevent>>
+	<<lemonade_stand_options>>
+<<else>>
+	你走进商店，开始把大瓶装水装上手推车。完成后，假装浏览并等待。一位健谈的顾客和柜台后面的<<person>>攀谈起来，给了你机会。你推着手推车离开商店。
+	<br><br>
+	一只手臂抓住了你的肩膀。是一个<<person>>。“你这个小混蛋。我要教训教训你，居然敢偷我的东西。"
+	<br><br>
+	<<skulduggeryuse>>
+	<<link [[继续|Robin's Lemonade Steal Molestation]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Robin's Lemonade Seduction
+
+<<location "beach">><<effects>>
+<<endevent>><<generate1>><<person1>>
+<<set $seductiondifficulty to 6000>>
+<<seductioncheck>>
+<br><br>
+<<if $seductionskill lt 1000>><span class="gold">你对自己的诱惑力更有信心了。</span><</if>><<seductionskilluse>>
+<br><br>
+<<promiscuity2>>
+
+<<if $seductionrating gte $seductionrequired>>
+	你靠在附近一家商店的柜台上。一个<<person>>站在后面。你看着他的眼睛开玩笑地笑。“我真的很渴，”你说。“我需要几大瓶水，但是我没有钱。”你降低你的声音。“也许我可以用别的方式付款?"
+	<br><br>
+	<<He>>走到门口，锁上了门。“好吧，妓女。让我看看你能做什么。"
+	<br><br>
+	<<link [[继续|Robin's Lemonade Steal Molestation]]>><<set $sexstart to 1>><</link>>
+	<br>
+<<else>>
+	你靠在附近一家商店的柜台上。一个<<person>>站在后面。你看着他的眼睛开玩笑地笑。“我真的很渴，”你说。“我需要几大瓶水，但是我没有钱。”你降低你的声音。“也许我可以用别的方式付款?"
+	<br><br>
+	<<He>>看起来没被打动。“我不可能给每一个来这里的荡妇送东西。要么付钱，要么滚蛋。"
+	<br><br>
+	<<endevent>><<npc Robin>><<person1>>
+	<<link [[去商业街|Robin's Lemonade High]]>><</link>>
+	<br>
+	<<if $money gte 2000>>
+		<<link [[用自己的钱买水(£20)|Robin's Lemonade Buy]]>><<set $money -= 2000>><</link>>
+		<br>
+	<</if>>
+	<<if $phase is 1>>
+		<<link [[用罗宾的钱买水|Robin's Lemonade Buy]]>><<set $phase to 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Robin's Lemonade Steal Molestation
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>><<set $enemyanger += 150>>
+	<<enable_rescue>>
+<<elseif $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Robin's Lemonade Steal Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Robin's Lemonade Steal Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Robin's Lemonade Steal Molestation Finish
+
+<<location "beach">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"好啊，”<<he>>说。“用这钱嫖一次妓女，价格还挺公道的。"
+	<br><br>
+<<elseif $enemyhealth lte 0>>
+	"操你妈的<<bitch>>，"<<he>>怒骂，“留着你那该死的水吧。”<<He>>一瘸一拐地走了。
+	<br><br>
+<<elseif $finish is 1>>
+	"他妈的荡妇”，<<he>>说:“拿上你那该死的水滚出去！"
+	<br><br>
+<<else>>
+	<<set $rescued += 1>>
+	你的哭声吸引了注意。大街上人头攒动。无法忍受被围观，那个<<person>>从你身边离开了。“他妈的！<<bitch>>，”<<he>>说，“留着你那该死的水吧。"
+	<br><br>
+<</if>>
+<<clothesontowel>>
+<<endcombat>>
+<<npc Robin>><<person1>>
+<<tearful>>你走回罗宾身边，当<<he>>看到你时，<<he>>冲过来帮忙。
+<<if _robin.trauma gte 40>>
+	"太谢谢你了!我很高兴你没有离开那么久，我都开始担心了。”罗宾看起来松了一口气。
+<<else>>
+	"你怎么——”<<he>>停顿了一下。“你不可能一直带着这些东西。"
+<</if>>
+<br><br>
+<<if $pain gte 40>>
+	<<He>>看到了你的眼泪。“怎么了?”<<he>>问道。罗宾紧紧的抱住了你。你对着<<his>>的肩膀抽泣，感觉好一点了。
+	<<npcincr Robin dom 1>><<gdom>>
+	<<lpain>><<pain -5>>
+	<br><br>
+<</if>>
+<<if _robin.trauma gte 40>>
+	你悄悄地把<<he>>给你的£20留在小摊上。
+<<else>>
+	"我在附近的商店里发现它打折了，”你说。
+	<br><br>
+	"你真会省钱，谢谢你。"你悄悄地把<<he>>给你的£2留在小摊上。
+<</if>>
+<<npcincr Robin love 1>><<glove>>
+<br><br>
+<<endevent>>
+<<lemonade_stand_options>>
+
+:: Robin's Lemonade Comfort
+
+<<location "beach">><<effects>>
+<<endevent>><<npc Robin>><<person1>>
+你把胳膊搭在罗宾的肩膀上，这让<<him>>稳定了一点儿。奸诈的警察拿了钱就走了。
+<br><br>
+他们一走，罗宾就泪流满面，把头埋在你的肩膀上。“我——我该怎么办?”<<he>>啜泣着。你紧紧抱着<<him>>直到<<he>>平静下来。“谢，谢谢你。"
+<<npcincr Robin trauma 3>><<grtrauma>>
+<br><br>
+<<endevent>>
+<<lemonade_stand_options>>
+
+:: Robin's Lemonade Pay
+
+<<location "beach">><<effects>>
+<<endevent>><<npc Robin>><<person1>>
+"我会付钱的，"你说。罗宾摇了摇头，但是<<his>>完全说不出完整的话来。你轻轻地把<<him>>推到一边，把钱交给警察。
+<br><br>
+他们一走，罗宾就泪流满面，把头埋在你的肩膀上。“我-我，”<<he>>抽泣着。“我太害怕了。谢谢你。”当<<He>>把钱放回架子下面时，<<he>>平静了一点。
+<br><br>
+<<npcincr Robin trauma -3>><<lrtrauma>>
+<<endevent>>
+<<lemonade_stand_options>>
+
+:: Robin's Lemonade Offer
+
+<<location "beach">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+你轻轻地把罗宾推到一边，身体向前倾。“难道你不想和我一起玩吗?”你小声说。
+他们笑了。“当然，”<<person1>><<person>>说。“那我们走吧。"
+<br><br>
+罗宾看起来很困惑。“我要和他们一起去解决一下这个问题，”你说。“我一会儿就回来。"
+<br><br>
+<<if _robin.dom gte 40>>
+	罗宾紧紧地拥抱着你。“小心点，我不喜欢那些家伙的样子。"
+<<else>>
+	罗宾拥抱你。“好，再见。"
+<</if>>
+<br><br>
+你和警察一起走出海滩。他们的车停在附近的小巷里。“上车，”<<person2>><<person>>说。你爬到后座上，<<he>>紧随其后。<<person1>><<person>>从另一边进来。
+<br><br>
+<<link [[继续|Robin's Lemonade Offer Molestation]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Robin's Lemonade Intimidate
+
+<<location "beach">><<effects>>
+你愤怒地握紧拳头。“如果你的上司知道你来敲诈一个卖柠檬水的小摊，会怎么想?"
+<br><br>
+<<person1>><<person>>笑了。"你觉得有人在乎？"<<He>>回头看着罗宾。"付钱!"<<He>>厉声喝道，罗宾吓得跳了起来。
+<br><br>
+"我相信你已经给过了他们应得的那一份，对吗?"<<person2>><<person>>看起来很紧张。
+<br><br>
+"闭嘴,贱人,”<<person1>><<person>>说,但<<person2>><<person>>转向<<person1>><<him>>。“这家伙好像不太好惹。我们还是算了吧。"
+<br><br>
+"很好，”<<person>>咆哮道。<<He>>看着你。“我会记住你的脸。"
+<br><br>
+<<endevent>><<npc Robin>><<person1>>
+罗宾突然哭了起来，把头埋在你的肩膀上。“我...我，”<<he>>抽泣着。“我太害怕了。谢谢你。”待<<he>>冷静下来，<<he>>又把钱放回架子下面。
+<<npcincr Robin trauma -3>><<lrtrauma>>
+<br><br>
+<<endevent>>
+<<lemonade_stand_options>>
+
+:: Robin's Lemonade Offer Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>><<set $enemytrust -= 50>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Robin's Lemonade Offer Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Robin's Lemonade Offer Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Robin's Lemonade Offer Molestation Finish
+<<location "beach">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"比妓院便宜。”，<<person1>><<person>>说，<<He>>打开车门。“回到你朋友身边去吧。"
+	<br><br>
+<<elseif $enemyhealth lte 0>>
+	你把<<person1>><<person>>撞到刹车上了。汽车开到了路上，他们俩都争先恐后地去想去控制方向盘。你抓住机会逃走了。
+	<<crime>><<crimeup 100>>
+	<br><br>
+<</if>>
+<<clothesontowel>>
+<<endcombat>>
+<<npc Robin>><<person1>>
+<<tearful>>你走回罗宾身边。<<He>>看到你就跑向你。
+<br><br>
+<<if $pain gte 40>>
+	<<He>>看到你的眼泪，拥抱你。
+	<<if _robin.dom gte 60>>
+		"如果他们伤害你……”<<he>>说。
+	<<else>>
+		"我希望他们没有伤害你的,"<<he>>说。
+	<</if>>
+<<else>>
+	<<He>>拥抱你。“我希望他们没有伤害你，”<<he>>说。
+<</if>>
+<br><br>
+"不，不，"你说。"一切都很好。"
+<<npcincr Robin love 1>><<glove>><<npcincr Robin trauma -3>><<lrtrauma>>
+<br><br>
+<<endevent>>
+<<lemonade_stand_options>>
+
+:: Robin's Lemonade Set
+
+<<location "beach">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+你帮罗宾把<<his>>的设备搬到海滩上。
+<<if _robin.trauma gte 40>>
+	"谢谢你，如果没有你，我真不知道该怎么办。”罗宾开始榨柠檬汁，每次有人靠近时<<He>>都畏畏缩缩的。
+<<else>>
+	"谢谢你的帮助,”<<he>>说。“我一个人承受这一切太难了。”<<He>>开始给柠檬榨汁。
+<</if>>
+
+<br><br>
+<<endevent>>
+<<lemonade_stand_options>>
+
+:: Robin's Lemonade Set Tutorial
+<<set $outside to 1>><<set $location to "town">><<effects>>
+你和罗宾去了海滩。你走在前面一点，带着一些<<his>>的设备。就在你和罗宾离开孤儿院的时候，你撞见了一个路过的<<endevent>><<generate1>><<person1>><<person>>。碰撞使你掉下了手中的东西。
+<<He>>摇摇晃晃地回头，愤怒地看着你，但当<<he>>看清你的脸时，<<his>>的愤怒变成了好色。"你是我这一周见过的最可爱的东西！给我过来。"
+<br><br>
+<<link [[继续|Tutorial]]>><<set $molestationstart to 1>><<set $tutorialExit to "Robin's Lemonade Set Tutorial 2">><</link>>
+
+:: Robin's Lemonade Set Tutorial 2
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<npc Robin>><<person1>>
+罗宾发现你走出小巷。“你、你还好吗？”<<he>>用一种担忧的表情问道，“他们没有伤害你吧？"
+<br><br>
+你点点头，捡起<<his>>掉在地上的装备，继续和罗宾一起向海滩走去。剩下的旅程平安无事。
+<br><br>
+<<endevent>>
+<<lemonade_stand_options>>
+
+:: Robin's Lemonade Cow
+<<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+在你的手碰到<<persons>>之前，有人把你的手臂往后拉。罗宾把你拉到了<<person1>><<him>>的身后。
+<<if _robin.trauma gte 40>>
+	"你、你不能带走<<phim>>！”<<he>>用颤抖的手拿着<<person2>><<person>>的杯子。
+	<br><br>
+
+	"小心,<<nnpc_gendery "Robin">>,”<<person>>说。“你的朋友很值钱。我不愿看到你落得和他们一样的下场。"
+	<br><br>
+
+	罗宾退缩了一下，但还是坚持<<person1>><<his>>的立场。 “请你在我报警之前离开。"
+
+	<<person>>笑着把柠檬水倒在沙滩上。“收下吧。最好看好你的朋友。”<<He>>离开了。
+	<br><br><<person1>>
+
+	你转向罗宾，歪着头，发出一声担心的哞叫。
+	<br><br>
+
+	"一切都好，”罗宾深吸了一口气。“给。”<<He>>把柠檬汁、水和糖放在一起搅拌，然后递给了你。
+	<br><br>
+
+	"这应该会让你感觉好点。"<<Hes>>说得对。<<gdom>><<npcincr Robin dom 1>><<lstress>><<stress -6>>
+<<else>>
+	"我需要请你离开这里，"<<he>>颤抖地拿着<<person2>><<person>><<his>>的杯子。
+	<br><br>
+
+	"小心,<<nnpc_gendery "Robin">>,”<<person>>说。“你的朋友很值钱。我不愿看到你落得和他们一样的下场。"
+	<br><br>
+
+	罗宾皱起了眉头。"最后一次，请你在我报警之前离开。"
+	<br><br>
+
+	<<person>>笑着把柠檬水倒在沙滩上。“收下吧。最好看好你的朋友。”<<He>>离开了。
+	<br><br><<person1>>
+
+	你转向罗宾，歪着头，发出一声担心的哞叫。
+	<br><br>
+
+	"没关系，”罗宾深吸了一口气。“给。”<<He>>把柠檬汁、水和糖放在一起搅拌，然后递给了你。
+	<br><br>
+
+	"这应该会让你感觉好点。"<<Hes>>说得对。<<gdom>><<npcincr Robin dom 1>><<lstress>><<stress -6>>
+<</if>>
+<br><br>
+其他的顾客没有那么毛骨悚然。
+<br><br>
+
+<<endevent>>
+<<lemonade_stand_options>>

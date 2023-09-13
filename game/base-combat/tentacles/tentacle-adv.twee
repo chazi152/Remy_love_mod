@@ -1,0 +1,2263 @@
+:: Widgets Combat Tentacle Adv [widget]
+<<widget "tentacleadv">>
+	<<set _tentacle to _args[0]>>
+	<<if _tentacle.type is "vine" and $abomination is 1 or ["vine","root","shoot"].includes(_tentacle.type)>>
+		<<set _fluid to "nectar">>
+		<<set _Slimy to "Sticky">>
+	<<else>>
+		<<set _fluid to "fluid">>
+		<<set _Slimy to "Slimy">>
+	<</if>>
+	<<set _The to ($abomination is 1 ? "<<His>>" : "")>>
+	<<set _the to ($abomination is 1 ? "<<his>>" : "")>>
+
+	<<if $abomination is 1 and $ejaculating is 1>>
+		<<statetentacles>>
+		<<if (_tentacle.head is "anus" or _tentacle.head is "anusdeep") and _tentacle.baby isnot 0>>
+			<<impregnateParasite _tentacle.baby _tentacle.babychance>>
+			<<fertiliseParasites>>
+			<<set _tentacleAnus to _impregnatedParasite is "anus" ? $tentacleAnus : 0>>
+		<</if>>
+		<<if (_tentacle.head is "vagina" or _tentacle.head is "vaginadeep") and _tentacle.baby isnot 0>>
+			<<impregnateParasite _tentacle.baby _tentacle.babychance "vagina">>
+			<<fertiliseParasites "vagina">>
+			<<set _tentacleVagina to _impregnatedParasite is "vagina" ? $tentacleVagina : 0>>
+		<</if>>
+		<<if _tentacle.shaft isnot "finished" and _tentacle.head isnot "finished">>
+			<<if _firsttentacle isnot 1>><<set _firsttentacle to 1>>_The<</if>>
+			<<if $tentacles.active is 1>>
+				<<if _retract isnot 3 and _retract isnot 2>><<set _retract to 1>><</if>>
+				<<if _retract is 1>>
+					_tentacle.fullDesc缩回
+				<<elseif _retract is 2>>
+					随后<<print _tentacle.fullDesc>>两条都缩回去了
+				<<else>>
+					随后<<print _tentacle.fullDesc>>们全部缩回去了
+				<</if>>
+				<<if _tentacleVagina and _tentacleAnus>>
+					从你身上离开时候，_tentacleVagina和_tentacleAnus在离开之前<span class="red">往你的雌穴和肛门</span>里射入了什么东西。
+				<<elseif _tentacleVagina>>
+					从你身上离开时候，<<if _retract isnot 1>>_tentacleVagina<</if>>在离开之前<span class="red">往你的小穴</span>里射入了什么东西。
+				<<elseif _tentacleAnus>>
+					从你身上离开时候，<<if _retract isnot 1>>_tentacleAnus<</if>>在离开之前<span class="red">往你的菊穴</span>里射入了什么东西。
+				<<else>>
+					远离你。
+				<</if>>
+				<br>
+			<<elseif $tentacles.active is 2>>
+				<<if _retract isnot 3>><<set _retract to 2>><</if>>
+				_tentacle.desc
+			<<else>>
+				<<set _retract to 3>>
+				_tentacle.desc,
+			<</if>>
+			<<tentacleadvdisable _tentacle>>
+			<<set _tentacle.shaft to "finished">><<set _tentacle.head to "finished">>
+		<</if>>
+	<</if>>
+
+	<<if _tentacle.tentaclehealth lte 0 and _tentacle.shaft isnot "finished">>
+		<<if ["leftarm","rightarm"].includes(_tentacle.head)>>
+			精疲力尽，_the _tentacle.fullDesc在你的手边蠕动和挤压着，随后从你的身上缩了回去。
+			<<takeHandholdingVirginity `$abomination is 1 ? $NPCList[0] + "的" + _tentacle.fullDesc : _tentacle.fullDesc` "tentacle" _tentacle.type.replace("tentacle","触手").replace("root","树根").replace("shoot","嫩芽").replace("tendril","卷须").replace("vine","藤蔓").replace("metal","金属")>>
+		<<else>>
+			筋疲力尽，_the _tentacle.fullDesc从你身上离开。
+		<</if>>
+		<<tentacleadvdisable _tentacle>>
+		<<set _tentacle.shaft to "finished">><<set _tentacle.head to "finished">>
+		<br>
+	<</if>>
+
+	<<if $novaginal is 1 and (_tentacle.head is "vaginaentrance" or _tentacle.head is "vaginaimminent" or _tentacle.head is "vagina" or _tentacle.head is "vaginadeep")>>
+		那只<<personsimple>>啧了下<<his>>的舌头，随后<span class="lblue">_the _tentacle.fullDesc从你的<<pussy>>里离开。</span>
+		<<tentacleadvdisable _tentacle>>
+	<</if>>
+
+	<<if $noanal is 1 and (_tentacle.head is "anusentrance" or _tentacle.head is "anusimminent" or _tentacle.head is "anus" or _tentacle.head is "anusdeep")>>
+		那只<<personsimple>>啧了下<<his>>的舌头，随后<span class="lblue">_the _tentacle.fullDesc从你的<<bottom>>里离开。</span>
+		<<tentacleadvdisable _tentacle>>
+	<</if>>
+
+	<<if $nopenile is 1 and (_tentacle.head is "penisentrance" or _tentacle.head is "penisimminent" or _tentacle.head is "penis" or _tentacle.head is "penisdeep")>>
+		那只<<personsimple>>啧了下<<his>>的舌头，随后<span class="lblue">_the _tentacle.fullDesc从你的<<penis>>上离开。</span>
+		<<tentacleadvdisable _tentacle>>
+	<</if>>
+
+	<<if $nochoke is 1 and _tentacle.shaft is "neck">>
+		那只<<personsimple>>啧了下<<his>>的舌头，随后<span class="lblue">_the _tentacle.fullDesc从你的颈部离开。</span>
+		<<tentacleadvdisable _tentacle>>
+	<</if>>
+
+	<<if $tentacleMouth is "removed" and (_tentacle.head is "mouthentrance" or _tentacle.head is "mouthimminent" or _tentacle.head is "mouth" or _tentacle.head is "mouthdeep")>>
+		<<tentacleadvdisable _tentacle>>
+	<</if>>
+	<<if $tentacleAnus is "removed" and (_tentacle.head is "anusentrance" or _tentacle.head is "anusimminent" or _tentacle.head is "anus" or _tentacle.head is "anusdeep")>>
+		<<tentacleadvdisable _tentacle>>
+	<</if>>
+	<<if $tentacleVagina is "removed" and (_tentacle.head is "vaginaentrance" or _tentacle.head is "vaginaimminent" or _tentacle.head is "vagina" or _tentacle.head is "vaginadeep")>>
+		<<tentacleadvdisable _tentacle>>
+	<</if>>
+	<<if $tentaclePenis is "removed" and (_tentacle.head is "penisentrance" or _tentacle.head is "penisimminent" or _tentacle.head is "penis" or _tentacle.head is "penisdeep")>>
+		<<tentacleadvdisable _tentacle>>
+	<</if>>
+
+	<<if _tentacle.shaft is "tummy">>_The _tentacle.fullDesc在你的肚子周围<<slithers>>，<</if>>
+	<<if _tentacle.shaft is "thighs">>_The _tentacle.fullDesc在你的大腿之间<<slithers>>，<</if>>
+	<<if _tentacle.shaft is "breasts">>_The _tentacle.fullDesc把你的胸部挤在一起，<</if>>
+	<<if _tentacle.shaft is "chest">>_The _tentacle.fullDesc在你的胸口附近<<slithers>>，<</if>>
+	<<if _tentacle.shaft is "waist">>_The _tentacle.fullDesc环绕在你的腰上<<slithers>>，<</if>>
+	<<if _tentacle.shaft is "neck">>_The _tentacle.fullDesc缠绕在你的脖颈上<<slithers>>，<</if>>
+	<<if _tentacle.shaft is "shoulders">>_The _tentacle.fullDesc在你的肩膀附近<<slithers>>，<</if>>
+	<<if _tentacle.shaft is "leftleg">><span class="blue">_The _tentacle.fullDesc在你的左腿上<<slithers>></span>，<</if>>
+	<<if _tentacle.shaft is "rightleg">><span class="blue">_The _tentacle.fullDesc在你的右腿上<<slithers>></span>，<</if>>
+	<<if _tentacle.shaft is "leftarm">><span class="blue">_The _tentacle.fullDesc在你的左臂上<<slithers>></span>，<</if>>
+	<<if _tentacle.shaft is "rightarm">><span class="blue">_The _tentacle.fullDesc在你的右臂上<<slithers>></span>，<</if>>
+
+	<<if _tentacle.head is "leftarm">>
+		_The _tentacle.fullDesc在你的左手里蠕动。
+		<<neutral 5>>
+		<br>
+	<</if>>
+	<<if _tentacle.head is "rightarm">>
+		_The _tentacle.fullDesc在你的右手里蠕动。
+		<<neutral 5>>
+		<br>
+	<</if>>
+	<<if _tentacle.head is "feet">>
+		_The _tentacle.fullDesc在你的双脚之间摩擦。
+		<<neutral 5>>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "leftnipplesuck">>
+		并且<<if _tentacle.shaft is "breasts">><<slithers>><</if>>到你的<<breasts>>处，吮吸着你的左乳头。
+		<<playWithBreasts>><<neutralbreast 3>>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "rightnipplesuck">>
+		并且<<if _tentacle.shaft is "breasts">><<slithers>><</if>>到你的<<breasts>>处，吮吸你的右乳头。
+		<<playWithBreasts>><<neutralbreast 3>>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "leftnipple">>
+		并且继续挑逗你的左乳头。<span class="purple"><<print _tentacle.type>>的顶端张开并连接在乳头上，开始吮吸。</span>
+		<<set _tentacle.head to "leftnipplesuck">><<set $leftnipple to "tentaclesuck">>
+		<<playWithBreasts>><<neutralbreast 3>>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "rightnipple">>
+		并且继续挑逗你的右乳头。<span class="purple"><<print _tentacle.type>>的顶端张开并连接在乳头上，开始吮吸。</span>
+		<<set _tentacle.head to "rightnipplesuck">><<set $rightnipple to "tentaclesuck">>
+		<<playWithBreasts>><<neutralbreast 3>>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "chest">>
+		<<if $chestuse is 0>>
+			远离你的<<breasts>>
+			<<set _tentacle.head to 0>>
+		<<else>>
+			随后<<if _tentacle.shaft is "breasts">><<slithers>><</if>>到你的<<breasts>>，在中间摩擦着。
+			<<neutralbreast 2>>
+			<<tentacle_skin "breasts">>
+		<</if>>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "mouthdeep">>
+		并且<<if _tentacle.shaft is "breasts">><<slithers>><</if>>进你的嘴里，每次插入到极限时都会往你的喉咙里射出甜蜜的_fluid。
+		<<if $ejactrait gte 1>>
+			浓稠的液体顺着喉咙流下的感觉让你颤抖。
+		<</if>>
+		<<tentacle_skin "mouth">>
+		<<purity -1>><<internalejac>><<sex 5 "mouth">>
+		<<if _fluid is "nectar">><<nectarfed 5>><<else>><<drugs 3>><</if>><<bodyliquid "mouth" _fluid>>
+		<<set _tentacle.tentaclehealth -= 1>>
+		<<if _tentacle.desc.includes("苍白色")>>
+			<<hallucinogen 5>>
+		<</if>>
+		<<if $abomination is 1>>
+			<<set $enemyarousal += 3>>
+		<</if>>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "mouth">>
+		然后继续插入你的嘴里。<span class="pink">顶端张开，开始流出甜蜜的_fluid。</span>
+		<<tentacle_skin "mouth">>
+		<<purity -1>><<internalejac>><<sex 5 "mouth">>
+		<<set $mouthstate to "tentacledeep">><<set _tentacle.head to "mouthdeep">>
+		<<oralejacstat>><<ejacstat>>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "mouthimminent">>
+		<<if $worn.face.type.includes("covered") or $worn.face.type.includes("gag")>>
+			<span class="blue">抽打你的<<print $worn.face.cn_name_cap>>，试图把自己强行插进去</span>
+			<<damageFaceCover 5>>
+		<<else>>
+			<<if $player.virginity.oral is true>>
+				<<switch _tentacle.size>>
+				<<case 3>>
+					<span class="pink">在你的嘴唇之间插入，使你的嘴巴张得大大的,</span><span class="red">第一次穿过你的嘴巴。</span>
+					<<violence 25>>
+				<<default>>
+					<span class="pink">插入你的双唇中</span><span class="red">第一次穿过你的嘴巴</span>
+				<</switch>>
+				<<takeVirginity `$abomination is 1 ? $NPCList[0].fullDescription + "'s " + _tentacle.fullDesc : _tentacle.fullDesc` "oral">><<violence 5>>
+				<<if $abomination is 1 and $NPCList[0].type is "plant">>
+					<<set $speechmouthvirgin to 2>>
+				<</if>>
+			<<else>>
+				<<switch _tentacle.size>>
+				<<case 3>>
+					<span class="pink">在你的嘴唇之间插入，迫使你的嘴张得大大的</span>
+					<<violence 25>>
+				<<default>>
+					<span class="pink">插入你的嘴里</span>
+				<</switch>>
+			<</if>>
+			<<tentacle_skin "mouth">>
+			<<set $mouthstate to "tentacle">><<set _tentacle.head to "mouth">><<sex 5 "mouth">><<raped>><<oralstat>>
+			<br>
+		<</if>>
+	<</if>>
+
+	<<if _tentacle.head is "mouthentrance">>
+		<<if $worn.face.type.includes("covered") or $worn.face.type.includes("gag")>>
+			<span class="purple">压在你的身上<<print $worn.face.cn_name_cap>>。</span>
+			<<damageFaceCover 5>>
+		<<else>>
+			<span class="purple">紧贴着你的嘴唇.</span>
+			<<set $mouthstate to "tentacleimminent">><<set _tentacle.head to "mouthimminent">>
+			<<neutral 4 "mouth">>
+			<<set $tentacleMouth to _tentacle.fullDesc>>
+			<br>
+		<</if>>
+	<</if>>
+
+	<<if _tentacle.head is "vaginadeep">>
+		<<if _tentacle.baby isnot 0>>
+			并<<slithers>>进你的<<pussy>>，每次抽送都将大量的_fluid<<if canImpregnateParasite("vagina")>><span class="red">和某些东西</span><</if>>泵入其中。
+			<<impregnateParasite _tentacle.baby _tentacle.babychance "vagina">>
+			<<fertiliseParasites "vagina">>
+		<<else>>
+			然后<<slithers>>进你的<<pussy>>，在每次插到最深处时，顶端射出粘性液体。
+		<</if>>
+		<<tentacle_skin "vagina">>
+		<<purity -1>><<internalejac>><<sex 5 "genitals">>
+		<<drugs 3>><<bodyliquid "vagina" _fluid>><<pain $vaginalPain>>
+		<<set _tentacle.tentaclehealth -= 1>>
+		<<if _tentacle.desc.includes("苍白色")>>
+			<<hallucinogen 5>>
+		<</if>>
+		<<if $abomination is 1>>
+			<<set $enemyarousal += 3>>
+		<</if>>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "vagina">>
+		<<if _tentacle.baby isnot 0 and canImpregnateParasite("vagina")>>
+			继续插入你的<<pussy>>.<span class="pink"> 尖端张开，开始渗出粘性液体<span class="red">和其他东西放在一起</span>.</span>
+			<span class="red">这让你感到害怕。</span>
+		<<else>>
+			并继续插入你的<<pussy>>。<span class="pink">的尖端打开并开始渗出粘稠的液体。</span>
+		<</if>>
+		<<tentacle_skin "vagina">>
+		<<purity -1>><<internalejac>>
+		<<set $vaginastate to "tentacledeep">><<set _tentacle.head to "vaginadeep">><<pain $vaginalPain>>
+		<<sex 5 "genitals">><<vaginalejacstat>><<ejacstat>>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "vaginaimminent">>
+		<<if $player.virginity.vaginal is true>>
+			<<if $sexStats.vagina.pregnancy.totalBirthEvents gt 0>>
+				<span class="pink">并插入你的<<pussy>>。</span><span class="red">尽管你没有处女膜，但你感觉到你体内的某种变化，你的童贞和纯洁被夺走了。</span>
+				<<violence 10>>
+			<<else>>
+				<<switch _tentacle.size>>
+					<<case 3>>
+						<span class="pink">并插入你的<<pussy>>，</span><span class="red">撕裂了你的处女膜，永远夺走了你的纯洁。你哀嚎着，你的<<pussy>>被拉伸以适应_the _tentacle.fullDesc。</span>
+						<<violence 100>>
+					<<default>>
+						<span class="pink">并插入你的<<pussy>>，</span><span class="red">撕裂了你的处女膜，永远夺走了你的纯洁。</span>
+				<</switch>>
+				<<violence 100>>
+				<<if $abomination is 1 and $NPCList[0].type is "plant">>
+					<<set $speechvaginavirgin to 2>>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<switch _tentacle.size>>
+			<<case 3>>
+				<span class="pink">并插入你的<<pussy>>。</span><span class="red">你哀嚎着，你的<<pussy>>被拉伸以适应_the _tentacle.fullDesc。</span>
+			<<default>>
+				<span class="pink">并插入你的<<pussy>>。</span>
+			<</switch>>
+		<</if>>
+		<<tentacle_skin "vagina">>
+		<<takeVirginity `$abomination is 1 ? $NPCList[0].fullDescription + "'s " + _tentacle.fullDesc : _tentacle.fullDesc` "vaginal">>
+		<<set $vaginastate to "tentacle">><<set _tentacle.head to "vagina">><<sex 5 "genitals">><<raped>><<vaginaraped>><<vaginalstat>><<violence 1>><<pain $vaginalPain>>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "vaginaentrance">>
+		<<if !playerChastity("vagina")>>
+			<<if $vaginaWetness gte (_tentacle.size * 20) + random(1, 40) or random(1, 2) is 2>>
+				并压进你的<<pussy>>。<<vagina_lube_text>><span class="pink">尖端压在你身上，离完全进入还有一段距离。</span>
+				<<set $vaginastate to "tentacleimminent">><<set _tentacle.head to "vaginaimminent">><<sex 10 "genitals">>
+				<<if setup.bodyliquid.combined("vagina") gte 1 or setup.bodyliquid.combined("vaginaoutside") gte 1>>
+					_Slimy _fluid渗了出来。
+				<</if>>
+			<<else>>
+				并压向你的<<pussy>>，<span class="blue">但未能进入。</span>
+				<<sex 5 "genitals">>
+				<<if random(1, 3) gte 3>>
+					<span class="purple">史莱姆黏滑的液体从尖端喷出，给你润滑</span>
+					<<bodyliquid "vaginaoutside" _fluid>>
+				<</if>>
+			<</if>>
+		<<else>>
+			并试图找到一条进去的路。但是失败了，它猛烈地拍打金属。
+			<<set $worn.genitals.integrity -= 10>><<violence 1>>
+		<</if>>
+		<<set $tentacleVagina to _tentacle.fullDesc>>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "penisdeep">>
+		并继续插入你的<<penis>>，抚摸和揉搓你的肉棒。
+		<<sex 5 "genitals">><<set _tentacle.tentaclehealth -= 1>>
+		<<if $abomination is 1>>
+			<<set $enemyarousal += 3>>
+		<</if>>
+		<<tentacle_skin "penis">>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "penis">>
+		并继续着挑逗你的<<penis>>.<span class="pink">它吮吸并揉捏你的下体，试图榨取你的精液。</span>
+		<<tentacle_skin "penis">>
+		<<set $penisstate to "tentacledeep">><<set _tentacle.head to "penisdeep">><<sex 5 "genitals">>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "penisimminent">>
+		<<if $player.virginity.penile is true>>
+			<span class="pink">对你的<<penis>>进行插入，将你吞到底部</span><span class="red">拿走你鸡鸡的第一次，永远夺走你的纯洁。</span>
+			<<violence 100>>
+			<<if $abomination is 1 and $NPCList[0].type is "plant">>
+				<<set $speechpenisvirgin to 2>>
+			<</if>>
+		<<else>>
+			<span class="pink">刺向你的<<penis>>，将你吞入腹中。</span>
+		<</if>>
+		<<tentacle_skin "penis">>
+		<<takeVirginity `$abomination is 1 ? $NPCList[0].fullDescription + "'s " + _tentacle.fullDesc : _tentacle.fullDesc` "penile">>
+		<<set $penisstate to "tentacle">><<set _tentacle.head to "penis">><<sex 5 "genitals">><<raped>><<penisraped>><<penilestat>><<violence 1>>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "penisentrance">>
+		<<if !playerChastity("penis")>>
+			<<if $penisWetness + (_tentacle.size * 10) gte (playerPenisSize() * 15) + random(1, 40) or random(1, 2) is 2>>
+				并<<slithers>>到你的<<penis>>.<<penis_lube_text>><span class="pink">顶端打开并压在你的龟头上，一个推就包住你的肉棒。</span>
+				<<set $penisstate to "tentacleimminent">><<set _tentacle.head to "penisimminent">><<neutralgenitals 4>>
+			<<else>>
+				并<<slithers>>到你的<<penis>>上。顶端打开压在你的龟头上，但<span class="blue">它未能成功。</span>
+				<<sex 5 "genitals">>
+				<<if random(1, 3) gte 3>>
+					<span class="purple">史莱姆黏滑的液体从尖端喷出，给你润滑</span>
+					<<bodyliquid "penis" _fluid>>
+				<</if>>
+			<</if>>
+			<<tentacle_skin "penis">>
+		<<else>>
+			并试图找到一条进去的路。但是失败了，它猛烈地拍打金属。
+			<<set $worn.genitals.integrity -= 10>><<violence 1>>
+		<</if>>
+		<<set $tentaclePenis to _tentacle.fullDesc>>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "anusdeep">>
+		<<if _tentacle.baby isnot 0>>
+			并<<slithers>>进你的<<bottom>>，在那里迸射出粘稠的液体<<if canImpregnateParasite("anus")>><span class="red">和其他东西在一起</span><</if>>再每次顶到最里面的时候。
+			<<impregnateParasite _tentacle.baby _tentacle.babychance>>
+			<<fertiliseParasites>>
+			<<set _tentacle.baby to 0>><<set $tentacleAnusBaby to _tentacle.baby>>
+		<<else>>
+			并<<slithers>>到你的<<bottom>>，在那里它在每次插入射出粘稠的液体。
+		<</if>>
+		<<purity -1>><<internalejac>><<sex 5 "anus">>
+		<<drugs 3>><<bodyliquid "anus" _fluid>>
+		<<set _tentacle.tentaclehealth -= 1>><<pain $analPain>>
+		<<if _tentacle.desc.includes("苍白色")>>
+			<<hallucinogen 5>>
+		<</if>>
+		<<if $abomination is 1>>
+			<<set $enemyarousal += 3>>
+		<</if>>
+		<<tentacle_skin "anus">>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "anus">>
+		<<if _tentacle.baby isnot 0 and canImpregnateParasite("anus")>>
+			继续插入你的<<bottom>>。<span class="pink">尖端张开，开始渗出粘稠的液体</span><span class="red">和其他东西放在一起。有些事让你害怕。</span>
+		<<else>>
+			并继续插入你的<<bottom>>。<span class="pink">尖端打开并开始渗出粘稠的液体。</span>
+		<</if>>
+		<<purity -1>><<internalejac>><<sex 5 "anus">>
+		<<set $anusstate to "tentacledeep">><<set _tentacle.head to "anusdeep">>
+		<<analejacstat>><<ejacstat>><<pain $analPain>>
+		<<tentacle_skin "anus">>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "anusimminent">>
+		<<if $player.virginity.anal is true>>
+			<<switch _tentacle.size>>
+			<<case 3>>
+				<span class="pink">插入你的<<bottom>>，</span><span class="red">以你从未想过的方式侵犯着你。当你的<<bottom>>伸展着以容下_tentacle.fullDesc时，你不禁颤抖着。</span>
+				<<violence 100>>
+			<<default>>
+				<span class="pink">插入你的<<bottom>>，</span><span class="red">以你从未想过的方式侵犯着你。</span>
+			<</switch>>
+			<<takeVirginity `$abomination is 1 ? $NPCList[0].fullDescription + "'s " + _tentacle.fullDesc : _tentacle.fullDesc` "anal">><<violence 100>>
+			<<if $abomination is 1 and $NPCList[0].type is "plant">>
+				<<set $speechanusvirgin to 2>>
+			<</if>>
+		<<else>>
+			<<switch _tentacle.size>>
+			<<case 3>>
+				<span class="pink">插入你的<<bottom>>。</span><span class="red">当你的<<bottom>>伸展着以容下_tentacle.fullDesc时，你颤抖着。</span>
+			<<default>>
+				<span class="pink">插入你的<<bottom>>。</span>
+			<</switch>>
+		<</if>>
+		<<set $anusstate to "tentacle">><<set _tentacle.head to "anus">>
+		<<sex 5 "anus">><<raped>><<anusraped>><<analstat>><<violence 1>><<pain $analPain>>
+		<<tentacle_skin "anus">>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "anusentrance">>
+		<<if !playerChastity("anus")>>
+			<<if $anusWetness gte (_tentacle.size * 20) + random(1, 40) or random(1, 2) is 2>>
+				抵着你的<<bottom>>。<<anus_lube_text>><span class="purple">尖端已经进入了你的体内，但离完全插入还有段距离。</span>
+				<<set $anusstate to "tentacleimminent">><<set _tentacle.head to "anusimminent">><<neutral 4 "anus">>
+				<<if setup.bodyliquid.combined("bottom") gte 1 or setup.bodyliquid.combined("anus") gte 1>>
+					_Slimy _fluid渗了出来。
+				<</if>>
+			<<else>>
+				抵着你的<<bottom>>。<span class="blue">它力道不稳，滑到了一旁。</span>
+				<<sex 5 "anus">>
+				<<if random(1, 3) gte 3>>
+					<span class="purple">史莱姆黏滑的液体从尖端喷出，给你润滑</span>
+					<<bodyliquid "bottom" _fluid>>
+				<</if>>
+			<</if>>
+		<<else>>
+			并试图找到一条进去的路。但是失败了，它猛烈地拍打着金属。
+			<<set $worn.genitals.integrity -= 10>><<violence 1>>
+		<</if>>
+		<<set $tentacleAnus to _tentacle.fullDesc>><<set $tentacleAnusBaby to _tentacle.baby>>
+		<br>
+	<</if>>
+
+	<<rng>>
+	<<if _tentacle.head is "vaginarub">>
+		<<if $rng gte 21>>
+			<<if _tentacle.shaft is "thighs">>
+				它抵着你的<<pussy>><<slithers>>，挤弄着你的阴蒂。
+			<<else>>
+				<<if _tentacle.shaft is "breasts">><<slithers>><</if>>在你的大腿之间，它抵着你的<<pussy>><<slithers>>，逗弄着你的阴蒂。
+			<</if>>
+			<<sex 3 "genitals">>
+		<<elseif $novaginal is 1>>
+			<<if _tentacle.shaft is "thighs">>
+				而它向你的<<pussy>><<slithers>>。
+			<<else>>
+				<<if _tentacle.shaft is "breasts">><<slithers>><</if>>在你的大腿间朝着<<pussy>><<slithers>>。
+			<</if>>
+			<<personsimple>>轻弹<<his>>的舌头，<span class="lblue">舌头缩了回去，</span>转而压在了你的阴蒂上。
+			<<sex 3 "genitals">>
+		<<else>>
+			<<if _tentacle.shaft is "thighs">>
+				，<span class="blue">它向你的<<pussy>><<slithers>>。</span>
+			<<else>>
+				<<if _tentacle.shaft is "breasts">><<slithers>><</if>>在你的大腿间<span class="blue">朝着<<pussy>><<slithers>>。</span>
+			<</if>>
+			<<if _tentacle.baby isnot 0 and canImpregnateParasite("vagina")>>
+				<span class="red">有些东西让你害怕。</span>
+			<</if>>
+			<<set $vaginause to "tentacle">><<set $vaginastate to "tentacleentrance">><<set _tentacle.head to "vaginaentrance">><<set $thighuse to 0>><<set $vaginatarget to "tentacles">>
+		<</if>>
+		<br>
+	<</if>>
+
+	<<rng>>
+	<<if _tentacle.head is "penisrub">>
+		<<if $rng gte 21>>
+			<<if _tentacle.shaft is "thighs">>
+				在那里，它<<slithers>>着你的<<penis>>，盘绕着它。
+			<<else>>
+				并且<<if _tentacle.shaft is "breasts">><<slithers>><</if>>在你的大腿中间，它<<slithers>>着你的<<penis>>，盘绕着它。
+			<</if>>
+			<<sex 3 "genitals">>
+		<<elseif $nopenile is 1>>
+			<<if _tentacle.shaft is "thighs">>
+				它的顶部张开朝向你的<<penis>><<slithers>>。
+			<<else>>
+				并且<<if _tentacle.shaft is "breasts">><<slithers>>你的大腿之间，<</if>>它的顶端张开朝着你两腿中间的<<penis>><<slithers>>。
+			<</if>>
+			<<personsimple>>点了下<<his>>的舌头，同时<span class="lblue">缩回</span>，作为替代<<personsimple>>绕着你的<<penis>>。
+			<<sex 3 "genitals">>
+		<<else>>
+			<<if _tentacle.shaft is "thighs">>
+				<span class="blue">它的顶端张开朝着你的<<penis>><<slithers>>。</span>
+			<<else>>
+				并且<<if _tentacle.shaft is "breasts">><<slithers>>你的大腿之间，<</if>><span class="blue">它的顶端张开朝着你两腿中间的<<penis>><<slithers>>。</span>
+			<</if>>
+			<<set $penisuse to "tentacle">><<set $penisstate to "tentacleentrance">><<set _tentacle.head to "penisentrance">><<set $thighuse to 0>><<set $penistarget to "tentacles">><<set $tentaclePenis to _tentacle.fullDesc>>
+		<</if>>
+		<br>
+	<</if>>
+
+	<<rng>>
+	<<if _tentacle.head is "anusrub">>
+		<<if $rng gte 21>>
+			并且<<if _tentacle.shaft is "breasts">><<slithers>><</if>>在你的<<bottom>>和股沟之间,<<slithers>>贴着你的背。
+			<<sex 3 "anus">>
+		<<elseif $noanal is 1>>
+			并且<<slithers>>向了你的<<bottom>>。那只<<personsimple>>咋了下<<his>>的舌头，然后<span class="lblue">收了回去，</span><<slithering>>在你的<<bottom>>间来回磨蹭。
+		<<else>>
+			<<if _tentacle.baby isnot 0 and canImpregnateParasite("anus")>>
+				<span class="blue">同时<<slithers>>向你的<<bottom>>。</span><span class="red">这让你感到害怕。</span>
+			<<else>>
+				并且<<if _tentacle.shaft is "breasts">><<slithers>><</if>>在你的<<bottom>>和股沟之间,<span class="blue">朝着你的菊穴。</span>
+				<<neutral 3 "anus">>
+			<</if>>
+			<<set $anususe to "tentacle">>
+			<<set $anusstate to "tentacleentrance">><<set _tentacle.head to "anusentrance">><<set $anustarget to "tentacles">>
+		<</if>>
+		<br>
+	<</if>>
+
+	<<rng>>
+	<<if _tentacle.head is "hypnosis_scream">>
+		并当着你的面
+		<<if _tentacle.type is "vine">>
+			<span class="pink">把闪闪发光的花粉喷到你脸上</span>
+		<<elseif _tentacle.fullDesc.includes("金属色")>>
+			<span class="pink">灯光闪烁着迷人的节奏.</span>
+		<<else>>
+			<span class="pink">闪耀着邪恶之光。</span>
+		<</if>>
+		<span class="pink">你感觉到你的意识发生了变化</span>
+		<<if !$hypnosis_traits.scream>>
+			你获得了<span class="pink">催眠性渴望</span>特质.
+			<<set $hypnosis_traits.scream to 1>>
+		<<elseif $hypnosis_traits.scream lt 5>>
+			你对催眠的渴望加深了。
+			<<set $hypnosis_traits.scream += 1>>
+		<</if>>
+		<<hypnotised 1>>
+		<<set _tentacle.tentaclehealth -= 6>><<set _tentacle.head to 0>><<set _tentacle.tempBusy to true>>
+		<br>
+	<</if>>
+
+	<<rng>>
+	<<if _tentacle.head is "hypnosis_cover">>
+		并当着你的面
+		<<if _tentacle.type is "vine">>
+			<span class="pink">把闪闪发光的花粉喷到你脸上</span>
+		<<elseif _tentacle.fullDesc.includes("金属色")>>
+			<span class="pink">灯光闪烁着迷人的节奏.</span>
+		<<else>>
+			<span class="pink">闪耀着邪恶之光。</span>
+		<</if>>
+		<span class="pink">你感觉到你的意识发生了变化</span>
+		<<if !$hypnosis_traits.cover>>
+			你获得了<span class="pink">炫耀催眠</span>的特质
+			<<set $hypnosis_traits.cover to 1>>
+		<<elseif $hypnosis_traits.cover lt 5>>
+			你的催眠加深了。
+			<<set $hypnosis_traits.cover += 1>>
+		<</if>>
+		<<hypnotised 1>>
+		<<set _tentacle.tentaclehealth -= 6>><<set _tentacle.head to 0>><<set _tentacle.tempBusy to true>>
+		<br>
+	<</if>>
+
+	<<rng>>
+	<<if _tentacle.head is "hypnosis_deviancy">>
+		并当着你的面
+		<<if _tentacle.type is "vine">>
+			<span class="pink">把闪闪发光的花粉喷到你脸上</span>
+		<<elseif _tentacle.fullDesc.includes("金属色")>>
+			<span class="pink">灯光闪烁着迷人的节奏.</span>
+		<<else>>
+			<span class="pink">闪耀着邪恶之光。</span>
+		<</if>>
+		<span class="pink">你感觉到你的意识发生了变化。</span>无法言说的交配的欲望感充斥着你的脑海
+		<<if $uncomfortable.hypnosis is false>>
+			<span class="red">毁灭所有相反的想法.</span>
+			<<if !$hypnosis_traits.deviancy>>
+				你获得了<span class="pink">催眠性异种癖</span>特质.
+				<<set $hypnosis_traits.deviancy to 1>>
+			<<elseif $hypnosis_traits.deviancy lt 5>>
+				你的催眠异种癖加深了。
+				<<set $hypnosis_traits.deviancy += 1>>
+			<</if>>
+			<<willpower 1>><<gwillpower>>
+		<<elseif $willpower gte random(1, 1000)>>
+			<span class="green">但你会把他们赶走的.</span>
+		<<else>>
+			<span class="red">毁灭所有相反的想法.</span>
+			<<if !$hypnosis_traits.deviancy>>
+				你获得了<span class="pink">催眠性异种癖</span>特质.
+				<<set $hypnosis_traits.deviancy to 1>>
+			<<elseif $hypnosis_traits.deviancy lt 5>>
+				你的催眠异种癖加深了。
+				<<set $hypnosis_traits.deviancy += 1>>
+			<</if>>
+			<<willpower 1>><<gwillpower>>
+		<</if>>
+		<<set _tentacle.tentaclehealth -= 6>><<set _tentacle.head to 0>><<set _tentacle.tempBusy to true>>
+		<br>
+	<</if>>
+
+	<<rng>>
+	<<if _tentacle.head is "hypnosis_sadism">>
+		并当着你的面
+		<<if _tentacle.type is "vine">>
+			<span class="pink">把闪闪发光的花粉喷到你脸上</span>
+		<<elseif _tentacle.fullDesc.includes("金属色")>>
+			<span class="pink">灯光闪烁着迷人的节奏.</span>
+		<<else>>
+			<span class="pink">闪耀着邪恶之光。</span>
+		<</if>>
+		一种深深的思念绽放,
+		<<if $uncomfortable.hypnosis is false>>
+			由你的淫荡部分孕育而生。<span class="lewd">你的大脑立刻接受了它。</span>你渴望看到别人痛苦的样子。<<sadism 10>>
+		<<elseif $willpower gte random(1, 1000)>>
+			由你内心的叛逆部分孕育而生。<span class="lblue">你要让它消失。</span>
+		<<else>>
+			持续不断。<span class="pink">你无法抵抗。</span>你渴望看到别人痛苦的样子。<<sadism 10>><<willpower 1>><<gwillpower>>
+		<</if>>
+		<<hypnotised 1>>
+		<<set _tentacle.tentaclehealth -= 6>><<set _tentacle.head to 0>><<set _tentacle.tempBusy to true>>
+		<br>
+	<</if>>
+
+	<<rng>>
+	<<if _tentacle.head is "hypnosis_orgasm">>
+		并当着你的面
+		<<if _tentacle.type is "vine">>
+			<span class="pink">把闪闪发光的花粉喷到你脸上</span>
+		<<elseif _tentacle.fullDesc.includes("金属色")>>
+			<span class="pink">灯光闪烁着迷人的节奏.</span>
+		<<else>>
+			<span class="pink">闪耀着邪恶之光。</span>
+		<</if>>
+		一种深深的思念绽放,
+		<<if $uncomfortable.hypnosis is false>>
+			由你的淫荡部分孕育而生。<span class="lewd">你的大脑立刻接受了它。</span>发情的感觉击溃了你。<<arousal 10000>>
+		<<elseif $willpower gte random(1, 1000)>>
+			由你内心的叛逆部分孕育而生。<span class="lblue">你要让它消失。</span>
+		<<else>>
+			持续不断。<span class="pink">你无法抵抗。</span>发情的感觉击溃了你。<<arousal 10000>><<willpower 1>><<gwillpower>>
+		<</if>>
+		<<hypnotised 1>>
+		<<set _tentacle.tentaclehealth -= 6>><<set _tentacle.head to 0>><<set _tentacle.tempBusy to true>>
+		<br>
+	<</if>>
+
+	<<rng>>
+	<<if _tentacle.head is "hypnosis">>
+		并当着你的面
+		<<if _tentacle.type is "vine">>
+			<span class="purple">花粉在顶端持续闪耀。</span>
+		<<elseif _tentacle.fullDesc.includes("金属色")>>
+			<span class="purple">在那里光以奇怪的节奏的闪烁着。</span>
+		<<else>>
+			<span class="purple">在那里光怪陆离的闪烁光芒。</span>
+		<</if>>
+		<<rng 5>>
+		<<if $rng gte 5 and ($hypnosis_traits.scream is undefined or $hypnosis_traits.scream lt 5)>>
+			混乱的画面在你的脑海中游走，融合并扭转你的思绪。
+			<<set _tentacle.head to "hypnosis_scream">>
+		<<elseif $rng gte 4 and ($hypnosis_traits.cover is undefined or $hypnosis_traits.cover lt 5)>>
+			混乱的画面在你的脑海中游走，融合并扭转你的思绪。
+			<<set _tentacle.head to "hypnosis_cover">>
+		<<elseif $rng gte 3 and $bestialitydisable is "f" and ($hypnosis_traits.deviancy is undefined or $hypnosis_traits.deviancy lt 5)>>
+			无法言说的画面填满你的脑海，将你诱惑到奇怪的地方。
+			<<set _tentacle.head to "hypnosis_deviancy">>
+		<<elseif $rng gte 2>>
+			嗜虐的画面在你的脑海中涌动，伴随着邪恶的愉悦。
+			<<set _tentacle.head to "hypnosis_sadism">>
+		<<else>>
+			极其强烈的快感让你头皮发麻。这是一种很危险的感觉。
+			<<set _tentacle.head to "hypnosis_orgasm">>
+		<</if>>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "leftlegentrance">>
+		<<if _tentacle.traits.includes("pain")>>
+			<<violence 2>>
+			<<switch random(1, 3)>>
+				<<case 3>>_The _tentacle.fullDesc撬开你的左腿，<span class="purple">让你毫无防备。</span>
+				<<case 2>>_The _tentacle.fullDesc狠狠地拖拽你的左腿，<span class="purple">使其疼痛难忍。</span>
+				<<case 1>>_The _tentacle.fullDesc钳制住你的左腿，<span class="purple">使其动弹不得。</span>
+			<</switch>>
+		<<else>>
+			<<switch random(1, 3)>>
+				<<case 3>>_The _tentacle.fullDesc环绕住你的左腿，<span class="purple">将其牢牢困住。</span>
+				<<case 2>>_The _tentacle.fullDesc收紧你的左腿，<span class="purple">将其束缚。</span>
+				<<case 1>>_The _tentacle.fullDesc用力挤压，<span class="purple">直到你的左腿麻木。</span>
+			<</switch>>
+		<</if>>
+		<<neutral 1>><<feettentacledisable>><<set _tentacle.shaft to "leftleg">><<set _tentacle.head to 0>>
+		<<set $leftleg to "grappled">><<set $feettarget to "tentacles">><<set _tentacle.tempBusy to true>>
+		<<if $rightleg and $rightleg.includes("tentacle")>>
+			<<set $rightleg to 0>>
+		<</if>>
+		<<tentacle_skin "left_thigh">>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "rightlegentrance">>
+		<<if _tentacle.traits.includes("pain")>>
+			<<violence 2>>
+			<<switch random(1, 3)>>
+				<<case 3>>_The _tentacle.fullDesc撬开你的右腿，<span class="purple">让你毫无防备。</span>
+				<<case 2>>_The _tentacle.fullDesc狠狠地拖拽你的右腿，<span class="purple">使其疼痛难忍。</span>
+				<<case 1>>_The _tentacle.fullDesc钳制住你的右腿，<span class="purple">使其动弹不得。</span>
+			<</switch>>
+		<<else>>
+			<<switch random(1, 3)>>
+				<<case 3>>_The _tentacle.fullDesc环绕住你的右腿，<span class="purple">将其牢牢困住。</span>
+				<<case 2>>_The _tentacle.fullDesc收紧你的右腿，<span class="purple">将其束缚。</span>
+				<<case 1>>_The _tentacle.fullDesc用力挤压，<span class="purple">直到你的右腿麻木。</span>
+			<</switch>>
+		<</if>>
+		<<neutral 1>><<feettentacledisable>><<set _tentacle.shaft to "rightleg">><<set _tentacle.head to 0>>
+		<<set $rightleg to "grappled">><<set $feettarget to "tentacles">><<set _tentacle.tempBusy to true>>
+		<<if $leftleg and $leftleg.includes("tentacle")>>
+			<<set $left to 0>>
+		<</if>>
+		<<tentacle_skin "right_thigh">>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "leftarmentrance">>
+		<<if _tentacle.traits.includes("pain")>>
+			<<violence 2>>
+			<<switch random(1, 3)>>
+				<<case 3>>_The _tentacle.fullDesc扳开你的左臂，<span class="purple">使你毫无防备。</span>
+				<<case 2>>_The _tentacle.fullDesc将你的左臂拧至背后，<span class="purple">被捉住的手臂疼痛难忍。</span>
+				<<case 1>>_The _tentacle.fullDesc钳制住你的左臂，<span class="purple">使其动弹不得。</span>
+			<</switch>>
+		<<else>>
+			<<switch random(1, 3)>>
+				<<case 3>>_The _tentacle.fullDesc环绕住你的左臂，<span class="purple">将其牢牢困住。</span>
+				<<case 2>>_The _tentacle.fullDesc收紧你的左臂，<span class="purple">将其束缚。</span>
+				<<case 1>>_The _tentacle.fullDesc用力挤压，<span class="purple">直到你的左臂麻木。</span>
+			<</switch>>
+		<</if>>
+		<<neutral 1>><<leftarmtentacledisable>><<set _tentacle.shaft to "leftarm">><<set _tentacle.head to 0>>
+		<<set $leftarm to "tentgrappled">><<set $leftarmstate to 0>><<set $lefttarget to "tentacles">><<set _tentacle.tempBusy to true>>
+		<<tentacle_skin "left_arm">>
+		<br>
+	<</if>>
+
+	<<if _tentacle.head is "rightarmentrance">>
+		<<if _tentacle.traits.includes("pain")>>
+			<<violence 2>>
+			<<switch random(1, 3)>>
+				<<case 3>>_The _tentacle.fullDesc扳开你的右臂，<span class="purple">使你毫无防备。</span>
+				<<case 2>>_The _tentacle.fullDesc将你的右臂拧至背后，<span class="purple">被捉住的手臂疼痛难忍。</span>
+				<<case 1>>_The _tentacle.fullDesc钳制住你的右臂，<span class="purple">使其动弹不得。</span>
+			<</switch>>
+		<<else>>
+			<<switch random(1, 3)>>
+				<<case 3>>_The _tentacle.fullDesc环绕住你的右臂，<span class="purple">将其牢牢困住。</span>
+				<<case 2>>_The _tentacle.fullDesc收紧你的右臂，<span class="purple">将其束缚。</span>
+				<<case 1>>_The _tentacle.fullDesc用力挤压，<span class="purple">直到你的右臂麻木。</span>
+			<</switch>>
+		<</if>>
+		<<rightarmtentacledisable>><<neutral 1>><<set _tentacle.shaft to "rightarm">><<set _tentacle.head to 0>>
+		<<set $rightarm to "tentgrappled">><<set $rightarmstate to 0>><<set $righttarget to "tentacles">><<set _tentacle.tempBusy to true>>
+		<<tentacle_skin "right_arm">>
+		<br>
+	<</if>>
+
+	<<rng>>
+	<<if _tentacle.head is 0 and _tentacle.shaft isnot 0 and !_tentacle.tempBusy>>
+		<<if random(1, 2) is 2 and _tentacle.traits.includes("hypno") and $hypnosisdisable is "f">>
+			<<upperslither>><span class="blue">并在你的眼前舞动。</span>
+			<<set _tentacle.head to "hypnosis">>
+		<<elseif $rng lte 10>>
+			<<if $chestuse is "squeezed">>
+				<<upperslither>><span class="blue">同时<<if _tentacle.shaft is "breasts">><<slithers>><</if>>向你被挤压的<<breasts>></span>
+				<<set _tentacle.head to "chest">><<neutralbreast 2>><<set $chestuse to "tentaclerub">><<cheststat>><<set $chesttarget to "tentacles">>
+				<<tentacle_skin "breasts">>
+			<<else>>
+				<<tentacleadvdefault _tentacle>>
+			<</if>>
+		<<elseif $rng lte 20>>
+			<<if $leftnipple is 0>>
+				<<upperslither>><<playWithBreasts>><span class="blue">并挑逗你的左乳头。</span>
+				<<neutralbreast 2>>
+				<<set _tentacle.head to "leftnipple">><<set $leftnipple to "tentacle">>
+				<<tentacle_skin "breasts">>
+			<<else>>
+				<<tentacleadvdefault _tentacle>>
+			<</if>>
+		<<elseif $rng lte 30>>
+			<<if $rightnipple is 0>>
+				<<upperslither>><<playWithBreasts>><span class="blue">并挑逗你的右乳头。</span>
+				<<neutralbreast 2>>
+				<<set _tentacle.head to "rightnipple">><<set $rightnipple to "tentacle">>
+				<<tentacle_skin "breasts">>
+			<<else>>
+				<<tentacleadvdefault _tentacle>>
+			<</if>>
+		<<elseif $rng lte 40>>
+			<<if $mouthuse is 0>>
+				<<upperslither>><span class="blue">同时<<if _tentacle.shaft is "breasts">><<slithers>><</if>>伸向你的嘴。</span>
+				<<neutral 1 "breasts">><<neutral 1 "mouth">>
+				<<set $mouthuse to "tentacle">><<set $mouthstate to "tentacleentrance">><<set _tentacle.head to "mouthentrance">><<set $mouthtarget to "tentacles">>
+				<<tentacle_skin "left_cheek" "right_cheek">>
+			<<else>>
+				<<tentacleadvdefault _tentacle>>
+			<</if>>
+		<<elseif $rng lte 50>>
+			<<if $anususe is 0 and $analdisable is "f" and $noanal is 0>>
+				<<underslither>><span class="blue">同时<<slithers>>向你<<bottom>>。</span>
+				<<if _tentacle.baby isnot 0 and canImpregnateParasite("anus")>>
+					<span class="red">这让你感到害怕。</span>
+				<</if>>
+				<<neutral 2 "bottom">>
+				<<set $anususe to "tentacle">><<set $anusstate to "tentacleentrance">><<set _tentacle.head to "anusentrance">><<set $anustarget to "tentacles">>
+				<<tentacle_skin "left_bottom" "right_bottom">>
+			<<else>>
+				<<tentacleadvdefault _tentacle>>
+			<</if>>
+		<<elseif $rng lte 60>>
+			<<if $player.vaginaExist and $vaginause is 0 and $novaginal is 0>>
+				<<underslither>><span class="blue">同时<<slithers>>向你<<pussy>>。</span>
+				<<if _tentacle.baby isnot 0 and canImpregnateParasite("vagina")>>
+					<span class="red">这让你感到害怕。</span>
+				<</if>>
+				<<neutralgenitals 2>>
+				<<set $vaginause to "tentacle">><<set $vaginastate to "tentacleentrance">><<set _tentacle.head to "vaginaentrance">><<set $vaginatarget to "tentacles">>
+				<<tentacle_skin "pubic">>
+			<<else>>
+				<<tentacleadvdefault _tentacle>>
+			<</if>>
+		<<elseif $rng lte 70>>
+			<<if $player.penisExist and $penisuse is 0 and $nopenile is 0>>
+				<<underslither>><span class="blue">同时<<slithers>>向你<<penis>>。</span>
+				<<neutralgenitals 2>>
+				<<set $penisuse to "tentacle">><<set $penisstate to "tentacleentrance">><<set _tentacle.head to "penisentrance">><<set $penistarget to "tentacles">><<set $tentaclePenis to _tentacle.fullDesc>>
+				<<tentacle_skin "pubic">>
+			<<else>>
+				<<tentacleadvdefault _tentacle>>
+			<</if>>
+		<<elseif $rng lte 80>>
+			<<if $player.penisExist and $penisuse is 0 and random(0,100) gte 50>>
+				<<if _tentacle.shaft is "thighs">>
+					<<underslither>><span class="blue">它<<slithers>>你的腹部和<<penis>>。</span>
+				<<else>>
+					<<underslither>><span class="blue">它贴着你的小腹和<<penis>>在你的大腿间<<slithers>>。</span>
+				<</if>>
+				<<set $penisuse to "tentaclerub">><<set $thighuse to "tentaclerub">><<set _tentacle.head to "penisrub">><<sex 3 "genitals">><<thighstat>><<set $penistarget to "tentacles">><<set $tentaclePenis to _tentacle.fullDesc>>
+			<<elseif $player.vaginaExist and $vaginause is 0 and random(0,100) gte 50>>
+				<<if _tentacle.shaft is "thighs">>
+					<<underslither>><span class="blue">它<<slithers>>你的腹部和<<pussy>>。</span>
+				<<else>>
+					<<underslither>><span class="blue">它贴着你的小腹和<<pussy>>在你的大腿间<<slithers>>。</span>
+				<</if>>
+				<<set $vaginause to "tentaclerub">><<set $thighuse to "tentaclerub">><<set _tentacle.head to "vaginarub">><<sex 3 "genitals">><<thighstat>><<set $vaginatarget to "tentacles">>
+				<<tentacle_skin "left_thigh" "right_thigh">>
+			<<else>>
+				<<tentacleadvdefault _tentacle>>
+			<</if>>
+		<<elseif $rng lte 90>>
+			<<if $anusstate is 0 and $anususe is 0 and $analdisable is "f">>
+				<<underslither>><span class="blue">同时贴着你的背在你<<bottom>>的臀瓣间<<slithers>>。</span>
+				<<set $anusstate to "tentaclerub">><<set $anususe to "tentaclerub">><<set _tentacle.head to "anusrub">><<sex 1 "anus">><<bottomstat>><<set $anustarget to "tentacles">>
+				<<tentacle_skin "back">>
+			<<else>>
+				<<tentacleadvdefault _tentacle>>
+			<</if>>
+		<<else>>
+			<<tentacleadvdefault _tentacle>>
+		<</if>>
+		<br>
+	<<elseif _tentacle.head is 0 and _tentacle.shaft is 0>>
+		<<if $rng lte 10>>
+			<<if $position isnot "wall">>
+				_The _tentacle.fullDesc缠绕在你的肚子上。
+				<<neutral 1>>
+				<<set _tentacle.shaft to "tummy">>
+			<<else>>
+				_The _tentacle.fullDesc轻轻拍打你<<bottom>>。
+				<<violence 1>><<hitstat>>
+			<</if>>
+		<<elseif $rng lte 20>>
+			_The _tentacle.fullDesc在你大腿之间<<slithers>>。
+			<<neutral 1 "genitals">>
+			<<set _tentacle.shaft to "thighs">>
+			<<tentacle_skin "left_thigh" "right_thigh">>
+		<<elseif $rng lte 30>>
+			<<if $position isnot "wall">>
+				<<if $player.breastsize gte 2 and $chestuse is 0>>
+					_The _tentacle.fullDesc围绕你<<breasts>><<slithers>>，<span class="blue">将它们挤压在一起。</span>
+					<<neutralbreast 1>><<set _tentacle.shaft to "breasts">><<set $chestuse to "squeezed">>
+					<<tentacle_skin "breasts">>
+				<<else>>
+					_The _tentacle.fullDesc轻轻拍打你<<bottom>>。
+					<<violence 1>><<hitstat>>
+					<<tentacle_skin "left_bottom" "right_bottom">>
+				<</if>>
+			<<else>>
+				_The _tentacle.fullDesc轻轻拍打你<<bottom>>。
+				<<violence 1>><<hitstat>>
+				<<tentacle_skin "left_bottom" "right_bottom">>
+			<</if>>
+		<<elseif $rng lte 40>>
+			<<if $position isnot "wall">>
+				_The _tentacle.fullDesc在你<<breasts>>蜿蜒攀伸。
+				<<neutralbreast 1>><<set _tentacle.shaft to "chest">>
+				<<tentacle_skin "breasts">>
+			<<else>>
+				_The _tentacle.fullDesc轻轻拍打你<<bottom>>。
+				<<violence 1>><<hitstat>>
+				<<tentacle_skin "left_bottom" "right_bottom">>
+			<</if>>
+		<<elseif $rng lte 50>>
+			_The _tentacle.fullDesc缠绕在你的腰上。
+			<<neutral 1>><<set _tentacle.shaft to "waist">>
+		<<elseif $rng lte 60>>
+			<<if $position isnot "wall">>
+				<<if $head is 0 and $nochoke isnot 1 and $asphyxiaLvl gte 1>>
+					_The _tentacle.fullDesc缠绕在你的脖子上，<span class="blue">控制住你的头。</span>
+					<<neutral 1>><<set _tentacle.shaft to "neck">><<set $head to "grappled">>
+					<<tentacle_skin "left_cheek" "right_cheek">>
+				<<else>>
+					_The _tentacle.fullDesc绕着你的肩膀蜿蜒而行。
+					<<neutral 1>><<set _tentacle.shaft to "shoulders">>
+				<</if>>
+			<<else>>
+				_The _tentacle.fullDesc轻轻拍打你<<bottom>>。
+				<<tentacle_skin "left_bottom" "right_bottom">>
+				<<violence 1>><<hitstat>>
+			<</if>>
+		<<elseif $rng lte 70>>
+			_The _tentacle.fullDesc轻轻拍打你<<bottom>>。
+			<<tentacle_skin "left_bottom" "right_bottom">>
+			<<violence 1>><<hitstat>>
+		<<elseif $rng lte 80>>
+			<<if $leftleg is 0>>
+				<<switch random(1, 3)>>
+					<<case 3>>_The _tentacle.fullDesc缠绕在你的左腿上，<span class="blue">包裹着它。</span>
+					<<case 2>>_The _tentacle.fullDesc<span class="blue">戳了戳你的左腿，</span>试探其反应。
+					<<case 1>>_The _tentacle.fullDesc<span class="blue">缠绕上你的左腿。</span>
+				<</switch>>
+				<<neutral 1>><<set _tentacle.head to "leftlegentrance">><<tentacle_skin "left_thigh">>
+			<<else>>
+				<<switch random(1, 3)>>
+					<<case 3>>_The _tentacle.fullDesc给你的脚心搔痒。
+					<<case 2>>_The _tentacle.fullDesc攥紧你的大腿。
+					<<case 1>>_The _tentacle.fullDesc<<slithers>>在你的双腿之间。
+				<</switch>>
+				<<neutral 1>>
+			<</if>>
+		<<elseif $rng lte 85>>
+			<<if $rightleg is 0>>
+				<<switch random(1, 3)>>
+					<<case 3>>_The _tentacle.fullDesc缠绕在你的右腿上，<span class="blue">包裹着它。</span>
+					<<case 2>>_The _tentacle.fullDesc<span class="blue">戳了戳你的右腿，</span>试探其反应。
+					<<case 1>>_The _tentacle.fullDesc<span class="blue">缠绕上你的右腿。</span>
+				<</switch>>
+				<<neutral 1>><<set _tentacle.head to "rightlegentrance">><<tentacle_skin "right_thigh">>
+			<<else>>
+				<<switch random(1, 3)>>
+					<<case 3>>_The _tentacle.fullDesc给你的脚心搔痒。
+					<<case 2>>_The _tentacle.fullDesc攥紧你的大腿。
+					<<case 1>>_The _tentacle.fullDesc<<slithers>>在你的双腿之间。
+				<</switch>>
+				<<neutral 1>>
+			<</if>>
+		<<elseif $rng lte 90>>
+			<<if $leftarm is 0>>
+				<<switch random(1, 3)>>
+					<<case 3>>_The _tentacle.fullDesc缠绕在你的左臂上，<span class="blue">包裹着它。</span>
+					<<case 2>>_The _tentacle.fullDesc<span class="blue">戳了戳你的左臂，</span>试探其反应。
+					<<case 1>>_The _tentacle.fullDesc<span class="blue">缠绕到你的左臂。</span>
+				<</switch>>
+				<<neutral 1>><<set _tentacle.head to "leftarmentrance">><<tentacle_skin "left_arm">>
+			<<else>>
+				<<switch random(1, 3)>>
+					<<case 3>>_The _tentacle.fullDesc在你的腋窝搔痒。
+					<<case 2>>_The _tentacle.fullDesc<<slithers>>在你的肋骨之上。
+					<<case 1>>_The _tentacle.fullDesc拍打着你的手掌。
+				<</switch>>
+				<<neutral 1>>
+			<</if>>
+		<<elseif $rng lte 95>>
+			<<if $rightarm is 0>>
+				<<switch random(1, 3)>>
+					<<case 3>>_The _tentacle.fullDesc缠绕在你的右臂上，<span class="blue">包裹着它。</span>
+					<<case 2>>_The _tentacle.fullDesc<span class="blue">戳了戳你的右臂，</span>试探其反应。
+					<<case 1>>_The _tentacle.fullDesc<span class="blue">缠绕到你的右臂。</span>
+				<</switch>>
+				<<neutral 1>><<set _tentacle.head to "rightarmentrance">><<tentacle_skin "right_arm">>
+			<<else>>
+				<<switch random(1, 3)>>
+					<<case 3>>_The _tentacle.fullDesc在你的腋窝搔痒。
+					<<case 2>>_The _tentacle.fullDesc<<slithers>>在你的肋骨之上。
+					<<case 1>>_The _tentacle.fullDesc拍打着你的手掌。
+				<</switch>>
+				<<neutral 1>>
+			<</if>>
+		<<elseif $rng lte 100>>
+			_The _tentacle.fullDesc抵着你的<<bottom>><<slithers>>。
+			<<tentacle_skin "left_bottom" "right_bottom">>
+			<<neutral 1 "bottom">>
+		<</if>>
+		<br>
+	<</if>>
+	<<run delete _tentacle.tempBusy>>
+<</widget>>
+
+<<widget "tentacleadvdefault">>
+	<<set _tentacle to _args[0]>>
+	<<rng>>
+	<<if $rng gte 90>>
+		然后向你的脖子上喷射一种温热的_fluid。
+		<<bodyliquid "neck" _fluid>><<neckejacstat>>
+	<<elseif $rng gte 80>>
+		然后向你的右臂上喷射一种温热的_fluid。
+		<<bodyliquid "rightarm" _fluid>><<handejacstat>>
+	<<elseif $rng gte 70>>
+		然后向你的左臂上喷射一种温热的_fluid。
+		<<bodyliquid "leftarm" _fluid>><<handejacstat>>
+	<<elseif $rng gte 60>>
+		然后向你的大腿上喷射一种温热的_fluid。
+		<<bodyliquid "thigh" _fluid>><<thighejacstat>>
+	<<elseif $rng gte 50>>
+		然后向你的<<bottom>>上喷射一种温热的_fluid。
+		<<bodyliquid "bottom" _fluid>><<bottomejacstat>>
+	<<elseif $rng gte 40>>
+		然后向你的肚子上喷射一种温热的_fluid。
+		<<bodyliquid "tummy" _fluid>><<tummyejacstat>>
+	<<elseif $rng gte 30>>
+		然后向你的胸口上喷射一种温热的_fluid。
+		<<bodyliquid "chest" _fluid>><<chestejacstat>>
+	<<elseif $rng gte 20>>
+		然后向你的脸上喷射一种温热的_fluid。
+		<<bodyliquid "face" _fluid>><<faceejacstat>>
+	<<elseif $rng gte 10>>
+		然后将一种温热的_fluid喷在你的头发上。
+		<<bodyliquid "hair" _fluid>><<hairejacstat>>
+	<<else>>
+		然后向你的脚上喷射一股温热的_fluid。
+		<<bodyliquid "feet" _fluid>><<feetejacstat>>
+	<</if>>
+	<<neutral 1>><<set _tentacle.tentaclehealth -= 1>><<ejacstat>>
+	<<if $abomination is 1>>
+		<<set $enemyarousal += 3>>
+	<</if>>
+<</widget>>
+
+<<widget "tentacleadvdisable">>
+	<<set _tentacle to _args[0]>>
+
+	<<if _tentacle.head is "feet">><<set $leftleg to 0>><<set $rightleg to 0>><<set $feetstate to 0>><</if>>
+	<<if _tentacle.head is "leftarm">><<set $leftarm to 0>><<set $leftarmstate to 0>><</if>>
+	<<if _tentacle.head is "rightarm">><<set $rightarm to 0>><<set $rightarmstate to 0>><</if>>
+
+	<<if _tentacle.head is "leftnipple" or _tentacle.head is "leftnipplesuck">>
+		<<set $leftnipple to 0>>
+	<</if>>
+
+	<<if _tentacle.head is "rightnipple" or _tentacle.head is "rightnipplesuck">>
+		<<set $rightnipple to 0>>
+	<</if>>
+
+	<<if _tentacle.head is "mouthentrance" or _tentacle.head is "mouthimminent" or _tentacle.head is "mouth" or _tentacle.head is "mouthdeep">>
+		<<if $mouthuse is "tentacle">><<set $mouthuse to 0>><<set $mouthstate to 0>><</if>>
+		<<unset $tentacleMouth>>
+	<</if>>
+
+	<<if _tentacle.head is "anusentrance" or _tentacle.head is "anusimminent" or _tentacle.head is "anus" or _tentacle.head is "anusdeep">>
+		<<if $anususe is "tentacle" or $anususe is "tentaclerub">><<set $anususe to 0>><<set $anusstate to 0>><</if>>
+		<<unset $tentacleAnus>><<unset $tentacleAnusBaby>>
+	<</if>>
+
+	<<if _tentacle.head is "vaginaentrance" or _tentacle.head is "vaginaimminent" or _tentacle.head is "vagina" or _tentacle.head is "vaginadeep">>
+		<<if $vaginause is "tentacle" or $vaginause is "tentaclerub">><<set $vaginause to 0>><<set $vaginastate to 0>><</if>>
+		<<unset $tentacleVagina>>
+	<</if>>
+
+	<<if _tentacle.head is "penisentrance" or _tentacle.head is "penisimminent" or _tentacle.head is "penis" or _tentacle.head is "penisdeep">>
+		<<if $penisuse is "tentacle" or $penisuse is "tentaclerub">><<set $penisuse to 0>><<set $penisstate to 0>><</if>>
+		<<unset $tentaclePenis>>
+	<</if>>
+
+	<<if _tentacle.head is "chest">><<set $chestuse to "squeezed">><</if>>
+
+	<<if _tentacle.shaft is "breasts">><<set $chestuse to 0>><</if>>
+
+	<<if _tentacle.head is "vaginarub">><<set $vaginause to 0>><<set $thighuse to 0>><</if>>
+	<<if _tentacle.head is "penisrub">><<set $penisuse to 0>><<set $thighuse to 0>><</if>>
+	<<if _tentacle.head is "bottomrub">><<set $anususe to 0>><<set $bottomuse to 0>><</if>>
+	<<if _tentacle.head is "anusrub">><<set $anususe to 0>><<set $anususe to 0>><</if>>
+
+	<<if _tentacle.shaft is "neck" and $head isnot "bound">><<set $head to 0>><</if>>
+	<<if _tentacle.shaft is "leftleg" and $leftleg isnot "bound">><<set $leftleg to 0>><</if>>
+	<<if _tentacle.shaft is "rightleg" and $rightleg isnot "bound">><<set $rightleg to 0>><</if>>
+	<<if _tentacle.shaft is "leftarm" and $leftarm isnot "bound">><<set $leftarm to 0>><</if>>
+	<<if _tentacle.shaft is "rightarm" and $rightarm isnot "bound">><<set $rightarm to 0>><</if>>
+
+	<<set _tentacle.shaft to 0>>
+	<<set _tentacle.head to 0>>
+<</widget>>
+
+<<widget "actionstentacleadvcheckbox">> /* Dunno what im doing honestly ~Ludsoe */
+	<<if _args[3] is _args[4]>><<set _checked to "checked">><<else>><<set _checked to "">><</if>>
+
+	/* Originally i was just passing _args[0] along to the label, but for some reason that didnt work.... but this does*/
+	<<if _args[0] is "def">>
+		| <label><span class="def">_args[1]</span> <<radiobutton _args[2] _args[3] _checked>></label>
+	<<elseif _args[0] is "sub">>
+		| <label><span class="sub">_args[1]</span> <<radiobutton _args[2] _args[3] _checked>></label>
+	<<elseif _args[0] is "neutral">>
+		| <label><span class="neutral">_args[1]</span> <<radiobutton _args[2] _args[3] _checked>></label>
+	<<elseif _args[0] is "brat">>
+		| <label><span class="brat">_args[1]</span> <<radiobutton _args[2] _args[3] _checked>></label>
+	<</if>>
+<</widget>>
+
+<<widget "actionstentacleadvlefthand">> /* unused */
+	<<set _tentacle to _args[0]>>
+
+	<<if $leftarm is 0 and _tentacle.shaft isnot "finished">>
+		<<set _action to "lefthittentacle"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "def" "击打_tentacle.fullDesc" "$leftaction" _action $leftactiondefault>>
+
+		<<set _action to "leftgrabtentacle"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "抓住_tentacle.fullDesc" "$leftaction" _action $leftactiondefault>>
+
+		<<if $angel gte 4 and $angelBanish gte 1>>
+			<<set _action to "leftbanish"+_tentacle.id>>
+			<<actionstentacleadvcheckbox "def" "放逐_tentacle.fullDesc" "$leftaction" _action $leftactiondefault>>
+		<</if>>
+
+		<br>
+	<<elseif $leftarm is _tentacle.id>>
+		你用左手握着 _tentacle.fullDesc。
+		<br>
+		<<set _action to "leftrub"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "榨取它" "$leftaction" _action $leftactiondefault>>
+
+		<<set _action to "leftstop"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "neutral" "放开它" "$leftaction" _action $leftactiondefault>>
+
+		<<if $deviancy gte 75>> /* Should i lock this behind consentacles? */
+			<<if ($anususe is 0 and $analdisable is "f") or ($player.vaginaExist and $vaginause is 0 or $player.penisExist and $penisuse is 0) or $mouthuse is 0>>
+				<br>--<<deviant5>>| --<br>
+
+				<<if $anususe is 0 and $analdisable is "f">>
+					<<set _action to "showbottom"+_tentacle.id>>
+					<<actionstentacleadvcheckbox "sub" "将它对准你的<<bottom>>。" "$leftaction" _action $leftactiondefault>>
+				<</if>>
+
+				<<if ($player.vaginaExist and $vaginause is 0) or ($player.penisExist and $penisuse is 0)>>
+					<<set _action to "showthighs"+_tentacle.id>>
+					<<actionstentacleadvcheckbox "sub" "将它对准你的大腿。" "$leftaction" _action $leftactiondefault>>
+				<</if>>
+
+				<<if $mouthuse is 0>>
+					<<set _action to "showmouth"+_tentacle.id>>
+					<<actionstentacleadvcheckbox "sub" "将它对准你的嘴巴。" "$leftaction" _action $leftactiondefault>>
+				<</if>>
+			<</if>>
+		<</if>>
+
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "actionstentacleadvrighthand">> /* unused */
+	<<set _tentacle to _args[0]>>
+
+	<<if $rightarm is 0 and _tentacle.shaft isnot "finished">>
+		<<set _action to "righthittentacle"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "def" "击打_tentacle.fullDesc" "$rightaction" _action $rightactiondefault>>
+
+		<<set _action to "rightgrabtentacle"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "抓住_tentacle.fullDesc" "$rightaction" _action $rightactiondefault>>
+
+		<<if $angel gte 4 and $angelBanish gte 1>>
+			<<set _action to "rightbanish"+_tentacle.id>>
+			<<actionstentacleadvcheckbox "def" "放逐_tentacle.fullDesc" "$rightaction" _action $rightactiondefault>>
+		<</if>>
+		<br>
+	<<elseif $rightarm is _tentacle.id>>
+		你用右手握着_tentacle.fullDesc。
+		<br>
+		<<set _action to "rightrub"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "榨取它" "$rightaction" _action $rightactiondefault>>
+
+		<<set _action to "rightstop"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "neutral" "放开它" "$rightaction" _action $rightactiondefault>>
+
+		<<if $deviancy gte 75>> /* Should i lock this behind consentacles? */
+			<<if ($anususe is 0 and $analdisable is "f") or ($player.vaginaExist and $vaginause is 0 or $player.penisExist and $penisuse is 0) or $mouthuse is 0>>
+				<br>--<<deviant5>>| --<br>
+
+				<<if $anususe is 0 and $analdisable is "f">>
+					<<set _action to "showbottom"+_tentacle.id>>
+					<<actionstentacleadvcheckbox "sub" "将它对准你的<<bottom>>。" "$rightaction" _action $rightactiondefault>>
+				<</if>>
+
+				<<if ($player.vaginaExist and $vaginause is 0) or ($player.penisExist and $penisuse is 0)>>
+					<<set _action to "showthighs"+_tentacle.id>>
+					<<actionstentacleadvcheckbox "sub" "将它对准你的大腿。" "$rightaction" _action $rightactiondefault>>
+				<</if>>
+
+				<<if $mouthuse is 0>>
+					<<set _action to "showmouth"+_tentacle.id>>
+					<<actionstentacleadvcheckbox "sub" "将它对准你的嘴巴。" "$rightaction" _action $rightactiondefault>>
+				<</if>>
+			<</if>>
+		<</if>>
+
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "actionstentacleadvlegs">> /* unused */
+	<<set _tentacle to _args[0]>>
+
+	<<if $leftleg is 0 and $rightleg is 0 and _tentacle.shaft isnot "finished">>
+		<<set _action to "feethit"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "def" "踢_tentacle.fullDesc" "$feetaction" _action $feetactiondefault>>
+
+		<<set _action to "feetgrab"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "抓住_tentacle.fullDesc" "$feetaction" _action $feetactiondefault>>
+
+		<br>
+	<<elseif ($rightleg is 0 or $leftleg is 0) and _tentacle.shaft isnot "finished">>
+		<<set _action to "feethit"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "def" "踢_tentacle.fullDesc" "$feetaction" _action $feetactiondefault>>
+
+		<br>
+	<<elseif $leftleg is _tentacle.id>>
+		你把_tentacle.fullDesc夹在两脚之间。
+		<br>
+		<<set _action to "feetrub"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "榨取它" "$feetaction" _action $feetactiondefault>>
+
+		<<set _action to "feetstop"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "neutral" "放开它" "$feetaction" _action $feetactiondefault>>
+
+		<<if $deviancy gte 75>> /* Should i lock this behind consentacles? */
+			<<if ($anususe is 0 and $analdisable is "f") or ($player.vaginaExist and $vaginause is 0 or $player.penisExist and $penisuse is 0)>>
+				<br>--<<deviant5>>| --<br>
+
+				<<if $anususe is 0 and $analdisable is "f">>
+					<<set _action to "showbottom"+_tentacle.id>>
+					<<actionstentacleadvcheckbox "sub" "将它对准你的<<bottom>>。" "$feetaction" _action $feetactiondefault>>
+				<</if>>
+
+				<<if ($player.vaginaExist and $vaginause is 0) or ($player.penisExist and $penisuse is 0)>>
+					<<set _action to "showthighs"+_tentacle.id>>
+					<<actionstentacleadvcheckbox "sub" "将它对准你的大腿。" "$feetaction" _action $feetactiondefault>>
+				<</if>>
+
+			<</if>>
+		<</if>>
+
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "actionstentacleadvmouth">> /* unused */
+	<<set _tentacle to _args[0]>>
+	<<if _tentacle.head is "mouthentrance">>
+		<<set _action to "mouthlick"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "舔它" "$mouthaction" _action $mouthactiondefault>>
+
+		<<if $head is "grappled">>
+		<<else>>
+			<<set _action to "mouthpullaway"+_tentacle.id>>
+			<<actionstentacleadvcheckbox "brat" "将它拉开" "$mouthaction" _action $mouthactiondefault>>
+		<</if>>
+		<<if $tending gte 600>>
+			<<set _action to "mouthlull"+_tentacle.id>>
+			<<actionstentacleadvcheckbox "brat" "忽略它" "$mouthaction" _action $mouthactiondefault>>
+		<</if>>
+	<<elseif _tentacle.head is "mouthimminent">>
+		<<set _action to "mouthkiss"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "亲吻它" "$mouthaction" _action $mouthactiondefault>>
+
+		<<if $head is "grappled">>
+		<<else>>
+			<<set _action to "mouthpullaway"+_tentacle.id>>
+			<<actionstentacleadvcheckbox "brat" "将它拉开" "$mouthaction" _action $mouthactiondefault>>
+		<</if>>
+		<<if $tending gte 600>>
+			<<set _action to "mouthlull"+_tentacle.id>>
+			<<actionstentacleadvcheckbox "brat" "忽略它" "$mouthaction" _action $mouthactiondefault>>
+		<</if>>
+	<<elseif _tentacle.head is "mouth" or _tentacle.head is "mouthdeep">>
+		<<set _action to "mouthcooperate"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "配合着它" "$mouthaction" _action $mouthactiondefault>>
+
+		<<set _action to "mouthbite"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "def" "咬它" "$mouthaction" _action $mouthactiondefault>>
+	<<else>>
+		<<if $tending gte 600>>
+			<<set _action to "mouthlull"+_tentacle.id>>
+			<<actionstentacleadvcheckbox "brat" "忽略它" "$mouthaction" _action $mouthactiondefault>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "actionstentacleadvvagina">> /* unused */
+	<<set _tentacle to _args[0]>>
+
+	<<if _tentacle.head is "vaginaentrance" or _tentacle.head is "vaginaimminent">>
+		<<set _action to "vaginarub"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "摩擦它" "$vaginaaction" _action $vaginaactiondefault>>
+
+		<<if $leftleg is "grappled" and $rightleg is "grappled">>
+		<<else>>
+			<<set _action to "vaginapullaway"+_tentacle.id>>
+			<<actionstentacleadvcheckbox "brat" "将它拉开" "$vaginaaction" _action $vaginaactiondefault>>
+		<</if>>
+
+	<<elseif _tentacle.head is "vagina" or _tentacle.head is "vaginadeep">>
+		<<set _action to "vaginacooperate"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "配合它" "$vaginaaction" _action $vaginaactiondefault>>
+
+	<</if>>
+<</widget>>
+
+<<widget "actionstentacleadvpenis">> /* unused */
+	<<set _tentacle to _args[0]>>
+
+	<<if _tentacle.head is "penisentrance" or _tentacle.head is "penisimminent">>
+		<<set _action to "penisrub"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "摩擦它" "$penisaction" _action $penisactiondefault>>
+
+		<<if $leftleg is "grappled" and $rightleg is "grappled">>
+		<<else>>
+			<<set _action to "penispullaway"+_tentacle.id>>
+			<<actionstentacleadvcheckbox "brat" "将它拉开" "$penisaction" _action $penisactiondefault>>
+
+		<</if>>
+
+	<<elseif _tentacle.head is "penis" or _tentacle.head is "penisdeep">>
+		<<set _action to "peniscooperate"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "配合它" "$penisaction" _action $penisactiondefault>>
+
+	<</if>>
+<</widget>>
+
+<<widget "actionstentacleadvanus">> /* unused */
+	<<set _tentacle to _args[0]>>
+
+	<<if _tentacle.head is "anusentrance" or _tentacle.head is "anusimminent">>
+		<<set _action to "anusrub"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "摩擦它" "$anusaction" _action $anusactiondefault>>
+
+		<<if $leftleg is "grappled" and $rightleg is "grappled">>
+		<<else>>
+			<<set _action to "anuspullaway"+_tentacle.id>>
+			<<actionstentacleadvcheckbox "brat" "将它拉开" "$anusaction" _action $anusactiondefault>>
+
+		<</if>>
+
+	<<elseif _tentacle.head is "anus" or _tentacle.head is "anusdeep">>
+		<<set _action to "anuscooperate"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "配合它" "$anusaction" _action $anusactiondefault>>
+
+	<</if>>
+<</widget>>
+
+<<widget "actionstentacleadvthighs">> /* unused */
+	<<set _tentacle to _args[0]>>
+
+	<<if _tentacle.head is "penisrub">>
+		<<set _action to "penisrub"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "摩擦它" "$thighaction" _action $thighactiondefault>>
+
+	<<elseif _tentacle.head is "vaginarub">>
+		<<set _action to "vaginarub"+_tentacle.id>>
+		<<actionstentacleadvcheckbox "sub" "摩擦它" "$thighaction" _action $thighactiondefault>>
+
+	<</if>>
+<</widget>>
+
+<<widget "actionstentacleadvbottom">> /* unused */
+	<<set _tentacle to _args[0]>>
+
+	<<set _action to "bottomrub"+_tentacle.id>>
+	<<actionstentacleadvcheckbox "sub" "摩擦它" "$bottomaction" _action $bottomactiondefault>>
+<</widget>>
+
+<<widget "actionstentacleadvchest">> /* unused */
+	<<set _tentacle to _args[0]>>
+
+	<<set _action to "chestrub"+_tentacle.id>>
+	<<actionstentacleadvcheckbox "sub" "摩擦它" "$chestaction" _action $chestactiondefault>>
+<</widget>>
+
+<<widget "effectstentacleadv">>
+	<<set _tentacle to _args[0]>>
+	<<if _tentacle.type is "vine">>
+		<<set _fluid to "nectar">>
+		<<set _Slimy to "Sticky">>
+	<<else>>
+		<<set _fluid to "fluid">>
+		<<set _Slimy to "Slimy">>
+	<</if>>
+	<<rng>>
+	<<set _The to ($abomination is 1 ? "<<His>>" : "")>>
+	<<set _the to ($abomination is 1 ? "<<his>>" : "")>>
+
+	/*New Controls*/
+	<<if ($leftaction is "lefthittentacle" and $leftactionTarget is _tentacle.id)
+	or ($rightaction is "righthittentacle" and $rightactionTarget is _tentacle.id)>>
+		<<if $leftaction is "lefthittentacle" and $rightaction is "righthittentacle" and $leftactionTarget is $rightactionTarget>>
+			你双拳直击_the _tentacle.fullDesc，它晕头转向的离开了你。
+			<<set _multi to 2>>
+			<<set $leftaction to 0>><<set $leftactiondefault to "lefthittentacle">>
+			<<set $rightaction to 0>><<set $rightactiondefault to "righthittentacle">>
+		<<elseif $leftaction is "lefthittentacle">>
+			你左勾拳命中_the _tentacle.fullDesc，它晕头转向的离开了你。
+			<<set _multi to 1>><<set $leftaction to 0>>
+			<<set $leftactiondefault to "lefthittentacle">>
+		<<else>>
+			你右勾拳命中_the _tentacle.fullDesc，它晕头转向的离开了你。
+			<<set _multi to 1>>
+			<<set $rightaction to 0>><<set $rightactiondefault to "righthittentacle">>
+		<</if>>
+		<<defiance `2 * _multi`>>
+		<<set $speechhit to 1 * _multi>><<set $attackstat += 1 * _multi>>
+		<<if $rng lte (currentSkillValue('physique') / 200)>>
+			<span class="green">它因你的力量而颤抖。</span>
+			<<set _tentacle.tentaclehealth -= 1 * _multi>>
+		<</if>>
+		<<set _tentacle.tentaclehealth -= 1 * _multi>>
+		<<tentacleadvdisable _tentacle>>
+		<<if $abomination is 1>>
+			<<person>>因痛苦蜷缩起来。
+		<</if>>
+	<</if>>
+
+	<<if ($leftaction is "leftbanish" and $leftactionTarget is _tentacle.id)
+	or ($rightaction is "rightbanish" and $rightactionTarget is _tentacle.id)>>
+		<<if $leftaction is "leftbanish" and $rightaction is "rightbanish" and $leftactionTarget is $rightactionTarget and $angelBanish gte 2>>
+			<<set $angelBanish -= 2>>
+			你双手合十祈祷。_The _tentacle.fullDesc发出明亮的闪光，从你身旁炸离。
+			<<set _multi to 2>>
+			<<set $leftaction to 0>><<set $leftactiondefault to "leftbanish">>
+			<<set $rightaction to 0>><<set $rightactiondefault to "rightbanish">>
+		<<elseif $leftaction is "leftbanish">>
+			<<set $angelBanish -->>
+			你用左手做出一个复杂的手势。The _tentacle.fullDesc闪着光剧烈地蜷缩起来。
+			<<set _multi to 1>><<set $leftaction to 0>>
+			<<set $leftactiondefault to "leftbanish">>
+		<<else>>
+			<<set $angelBanish -->>
+			你用右手做出一个复杂的手势。The _tentacle.fullDesc闪着光猛然向后退去。
+			<<set _multi to 1>><<set $rightaction to 0>>
+			<<set $rightactiondefault to "rightbanish">>
+		<</if>>
+		<<if $purity gte 1000>>
+			<<set _multi ++>>
+		<</if>>
+		<<defiance `($purity / 100) * _multi`>>
+		<<set $speechhit to 1 * _multi>><<set $attackstat += 1 * _multi>>
+		<<if $rng lte ($purity / 20)>><<set _tentacle.tentaclehealth -= 10 * _multi>><</if>>
+		<<set _tentacle.tentaclehealth -= 10 * _multi>>
+		<<tentacleadvdisable _tentacle>>
+		<<if $abomination is 1>>
+			<<person>>自光中退缩。
+		<</if>>
+	<</if>>
+
+	<<if ($leftaction is "leftgrabtentacle" and $leftactionTarget is _tentacle.id)
+	or ($rightaction is "rightgrabtentacle" and $rightactionTarget is _tentacle.id)>>
+		<<tentacleadvdisable _tentacle>> /* Make sure you call this before trying to set the tentacle info */
+		<<if $leftaction is "leftgrabtentacle" and $leftactionTarget is _tentacle.id>>
+			<<set _hand to "left">><<set $leftaction to 0>><<set $leftactiondefault to "leftrub">>
+			<<set $leftarm to _tentacle.id>><<set _tentacle.head to "leftarm">><<set $leftarmstate to "tentacle">><<set $lefttarget to "tentacles">>
+		<<else>>
+			<<set _hand to "right">><<set $rightaction to 0>><<set $rightactiondefault to "rightrub">>
+			<<set $rightarm to _tentacle.id>><<set _tentacle.head to "rightarm">><<set $rightarmstate to "tentacle">><<set $righttarget to "tentacles">>
+		<</if>>
+		<span class="lblue">你<<handtext>>用你的<<print _hand.replace("left","左").replace("right","右")>>手抓着_the _tentacle.fullDesc。</span>
+		<<submission 1>><<handstat>>
+	<</if>>
+
+	<<if $leftaction is "leftrub"+_tentacle.id or $rightaction is "rightrub"+_tentacle.id>>
+		<<if $leftaction is "leftrub"+_tentacle.id>>
+			<<set _hand to "left">><<set $leftaction to 0>>
+			<<set $leftactiondefault to "leftrub"+_tentacle.id>>
+		<<else>>
+			<<set _hand to "right">><<set $rightaction to 0>>
+			<<set $rightactiondefault to "rightrub"+_tentacle.id>>
+		<</if>>
+
+		<<handskilluse>><<submission 1>>
+		你<<handtext>>挤着<<print _hand.replace("left","左").replace("right","右")>>手抓住的_the _tentacle.fullDesc，顺着整根触手上下摩擦。
+
+		<<if $handskill gte (800 - ($rng * 10))>>
+			<span class="lblue">_Slimy<<print _fluid>>从前端射出。</span>
+			<<set _tentacle.tentaclehealth -= 3>>
+			<<if $abomination is 1>>
+				<<set $enemyarousal += 6>>
+			<</if>>
+			<<handejacstat>><<ejacstat>>
+			<<if _hand is "left">><<bodyliquid "leftarm" _fluid>><<else>><<bodyliquid "rightarm" _fluid>><</if>>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "leftstruggle" or $rightaction is "rightstruggle">>
+		<<if !_struggletext>>
+			<<if $leftaction is "leftstruggle" and $rightaction is "rightstruggle">>
+				你拼尽全力挣扎。
+			<<else>>
+				你挣扎着。
+			<</if>>
+			<<set _struggletext to 1>>
+		<</if>>
+		<<if $abomination is 1 and ($NPCList[0].lefthand is "arms" or $NPCList[0].righthand is "arms")>>
+			<<if $leftaction is "leftstruggle" and $rightaction is "rightstruggle">>
+				<<set $leftaction to 0>><<set $rightaction to 0>><<set $leftactiondefault to "leftstruggle">><<set $rightactiondefault to "rightstruggle">>
+				<<if currentSkillValue('physique') gte random(1, 32000)>>
+					<span class="teal">你设法将手臂挣脱。</span>
+					<<defiance 5>>
+					<<set $leftarm to 0>><<set $rightarm to 0>>
+					<<set $NPCList[0].lefthand to 0>>
+					<<set $NPCList[0].righthand to 0>>
+				<<else>>
+					<span class="purple">你的手臂仍被牢牢捆在一起。</span>
+				<</if>>
+			<<else>>
+				<<if currentSkillValue('physique') gte random(1, 64000)>>
+					<span class="teal">你设法将手臂挣脱。</span>
+					<<defiance 5>>
+					<<set $leftarm to 0>><<set $rightarm to 0>>
+					<<set $NPCList[0].lefthand to 0>>
+					<<set $NPCList[0].righthand to 0>>
+				<<else>>
+					<span class="purple">你的手臂仍被牢牢捆在一起。</span>
+				<</if>>
+			<</if>>
+		<</if>>
+		<<if $leftaction is "leftstruggle" and _tentacle.shaft is "leftarm">>
+			<<set $leftaction to 0>><<set $leftactiondefault to "leftstruggle">>
+			<<set $speechstruggle to 1>><<defiance 1>>
+			<<if currentSkillValue('physique') gte random(1, 64000)>>
+				<span class="teal">你设法将你的左臂挣脱。</span>
+				<<defiance 5>><<tentacleadvdisable _tentacle>>
+				<<set $leftarm to 0>>
+			<<else>>
+				<span class="purple">你的左臂仍被牢牢缠住。</span>
+			<</if>>
+		<</if>>
+		<<if $rightaction is "rightstruggle" and _tentacle.shaft is "rightarm">>
+			<<set $rightaction to 0>><<set $rightactiondefault to "rightstruggle">>
+			<<defiance 1>><<set $speechstruggle to 1>>
+			<<if currentSkillValue('physique') gte random(1, 64000)>>
+				<span class="teal">你设法将你的右臂挣脱。</span>
+				<<defiance 5>><<tentacleadvdisable _tentacle>>
+				<<set $rightarm to 0>>
+			<<else>>
+				<span class="purple">你的右臂仍被牢牢缠住。</span>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "showbottom"+_tentacle.id or $rightaction is "showbottom"+_tentacle.id>>
+		<<if $leftaction is "showbottom"+_tentacle.id>>
+			<<set _hand to "left">><<set $leftaction to 0>>
+			<<set $leftarm to 0>>
+			<<set $leftarmstate to 0>>
+		<<else>>
+			<<set _hand to "right">><<set $rightaction to 0>>
+			<<set $rightarm to 0>>
+			<<set $rightarmstate to 0>>
+		<</if>>
+
+		<<submission 1>>
+		<br>
+		<<combatdeviancy5>>
+		<br>
+		你<<handtext>>用<<print _hand.replace("left","左").replace("right","右")>>手将_the _tentacle.fullDesc对准你的<<bottom>>。
+
+		<<if $rng lte 30>> /* How common will the tentacle wrap around the arm guiding it */
+			<<if _hand is "left">>
+				<<leftarmtentacledisable>>
+				<<set _tentacle.shaft to "leftarm">>
+				<<set $leftarm to "tentgrappled">><<set $leftarmstate to 0>><<set $lefttarget to "tentacles">>
+			<<else>>
+				<<rightarmtentacledisable>>
+				<<set _tentacle.shaft to "rightarm">>
+				<<set $rightarm to "tentgrappled">><<set $rightarmstate to 0>><<set $righttarget to "tentacles">>
+			<</if>>
+			_The _tentacle.fullDesc缠绕在你的<<print _hand.replace("left","左").replace("right","右")>>臂上，<span class="blue">将其束缚。</span>
+			<<neutral 1>>
+		<<else>>
+			<<if _tentacle.shaft is 0>>
+				<<set _tentacle.shaft to (either("tummy","waist","thighs"))>>
+			<</if>>
+		<</if>>
+
+		<<set $anusstate to "tentaclerub">><<set $anususe to "tentaclerub">>
+		<<set _tentacle.head to "anusrub">><<sex 1 "anus">><<bottomstat>><<set $anustarget to "tentacles">>
+	<</if>>
+
+	<<if $leftaction is "showmouth"+_tentacle.id or $rightaction is "showmouth"+_tentacle.id>>
+		<<if $leftaction is "showmouth"+_tentacle.id>>
+			<<set _hand to "left">><<set $leftaction to 0>>
+			<<set $leftarm to 0>>
+			<<set $leftarmstate to 0>>
+		<<else>>
+			<<set _hand to "right">><<set $rightaction to 0>>
+			<<set $rightarm to 0>>
+			<<set $rightarmstate to 0>>
+		<</if>>
+
+		<<submission 1>>
+		<br>
+		<<combatdeviancy5>>
+		<br>
+		你<<handtext>>用<<print _hand.replace("left","左").replace("right","右")>>手将_the _tentacle.fullDesc对准你的嘴巴。
+
+		<<if $rng lte 30>> /* How common will the tentacle wrap around the arm guiding it */
+			<<if _hand is "left">>
+				<<leftarmtentacledisable>>
+				<<set _tentacle.shaft to "leftarm">>
+				<<set $leftarm to "tentgrappled">><<set $leftarmstate to 0>><<set $lefttarget to "tentacles">>
+			<<else>>
+				<<rightarmtentacledisable>>
+				<<set _tentacle.shaft to "rightarm">>
+				<<set $rightarm to "tentgrappled">><<set $rightarmstate to 0>><<set $righttarget to "tentacles">>
+			<</if>>
+			_The _tentacle.fullDesc缠绕在你的<<print _hand.replace("left","左").replace("right","右")>>臂上，<span class="blue">将其束缚。</span>
+			<<neutral 1>>
+		<<else>>
+			<<if _tentacle.shaft is 0>>
+				<<if $nochoke is 1>>
+					<<set _tentacle.shaft to (either("tummy","chest","breasts"))>>
+				<<else>>
+					<<set _tentacle.shaft to (either("tummy","neck","chest","breasts"))>>
+				<</if>>
+			<</if>>
+		<</if>>
+
+		<<set $mouthuse to "tentacle">><<set $mouthstate to "tentacleentrance">><<set $mouthtarget to "tentacles">>
+		<<set _tentacle.head to "mouthentrance">><<neutral 2 "mouth">>
+	<</if>>
+
+	<<if $leftaction is "showthighs"+_tentacle.id or $rightaction is "showthighs"+_tentacle.id>>
+		<<if $leftaction is "showthighs"+_tentacle.id>>
+			<<set _hand to "left">><<set $leftaction to 0>>
+			<<set $leftarm to 0>>
+			<<set $leftarmstate to 0>>
+		<<else>>
+			<<set _hand to "right">><<set $rightaction to 0>>
+			<<set $rightarm to 0>>
+			<<set $rightarmstate to 0>>
+		<</if>>
+
+		<<submission 1>>
+		<br>
+		<<combatdeviancy5>>
+		<br>
+		你<<handtext>>用<<print _hand.replace("left","左").replace("right","右")>>手将_the _tentacle.fullDesc对准你的大腿。
+
+		<<if $rng lte 30>> /* How common will the tentacle wrap around the arm guiding it */
+			<<if _hand is "left">>
+				<<leftarmtentacledisable>>
+				<<set _tentacle.shaft to "leftarm">>
+				<<set $leftarm to "tentgrappled">><<set $leftarmstate to 0>><<set $lefttarget to "tentacles">>
+			<<else>>
+				<<rightarmtentacledisable>>
+				<<set _tentacle.shaft to "rightarm">>
+				<<set $rightarm to "tentgrappled">><<set $rightarmstate to 0>><<set $righttarget to "tentacles">>
+			<</if>>
+			_The _tentacle.fullDesc缠绕在你的<<print _hand.replace("left","左").replace("right","右")>>臂上，<span class="blue">将其束缚。</span>
+			<<neutral 1>>
+		<<else>>
+			<<if _tentacle.shaft is 0>>
+				<<set _tentacle.shaft to (either("tummy","waist"))>>
+			<</if>>
+		<</if>>
+
+		<<if $player.penisExist and $penisuse is 0>>
+			<<set $penisuse to "tentaclerub">><<set _tentacle.head to "penisrub">><<set $penistarget to "tentacles">>
+		<<elseif $player.vaginaExist and $vaginause is 0>>
+			<<set $vaginause to "tentaclerub">><<set _tentacle.head to "vaginarub">><<set $vaginatarget to "tentacles">>
+		<</if>>
+
+		<<sex 3 "genitals">><<thighstat>>
+		<<set $thighuse to "tentaclerub">>
+	<</if>>
+
+	<<if $leftaction is "showpenis"+_tentacle.id or $rightaction is "showpenis"+_tentacle.id>>
+		<<if $leftaction is "showpenis"+_tentacle.id>>
+			<<set _hand to "left">><<set $leftaction to 0>>
+			<<set $leftarm to 0>>
+			<<set $leftarmstate to 0>>
+		<<else>>
+			<<set _hand to "right">><<set $rightaction to 0>>
+			<<set $rightarm to 0>>
+			<<set $rightarmstate to 0>>
+		<</if>>
+		<<if playerHasStrapon() or $player.penisExist>>
+			<<submission 1>>
+			<br>
+			<<combatdeviancy5>>
+			<br>
+			你<<handtext>>用<<print _hand.replace("left","左").replace("right","右")>>手将_the _tentacle.fullDesc对准大腿根部向你的<<penisSimple>>贴近。
+
+			<<if $rng lte 30>> /* How common will the tentacle wrap around the arm guiding it */
+				<<if _hand is "left">>
+					<<leftarmtentacledisable>>
+					<<set _tentacle.shaft to "leftarm">>
+					<<set $leftarm to "tentgrappled">><<set $leftarmstate to 0>><<set $lefttarget to "tentacles">>
+				<<else>>
+					<<rightarmtentacledisable>>
+					<<set _tentacle.shaft to "rightarm">>
+					<<set $rightarm to "tentgrappled">><<set $rightarmstate to 0>><<set $righttarget to "tentacles">>
+				<</if>>
+				_The _tentacle.fullDesc缠绕在你的<<print _hand.replace("left","左").replace("right","右")>>臂上，<span class="blue">将其束缚。</span>
+				<<neutral 1>>
+			<<else>>
+				<<if _tentacle.shaft is 0>>
+					<<set _tentacle.shaft to (either("tummy","waist"))>>
+				<</if>>
+			<</if>>
+
+			<<if $penisuse is 0>>
+				<<set $penisuse to "tentaclerub">><<set _tentacle.head to "penisrub">><<set $penistarget to "tentacles">>
+			<</if>>
+
+			<<sex 3 "genitals">><<thighstat>>
+			<<set $thighuse to "tentaclerub">>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "showvagina"+_tentacle.id or $rightaction is "showvagina"+_tentacle.id>>
+		<<if $leftaction is "showvagina"+_tentacle.id>>
+			<<set _hand to "left">><<set $leftaction to 0>>
+			<<set $leftarm to 0>>
+			<<set $leftarmstate to 0>>
+		<<else>>
+			<<set _hand to "right">><<set $rightaction to 0>>
+			<<set $rightarm to 0>>
+			<<set $rightarmstate to 0>>
+		<</if>>
+		<<if $player.vaginaExist>>
+			<<submission 1>>
+			<br>
+			<<combatdeviancy5>>
+			<br>
+			你<<handtext>>用<<print _hand.replace("left","左").replace("right","右")>>手将_the _tentacle.fullDesc对准大腿根部向你的小穴贴近。
+
+			<<if $rng lte 30>> /* How common will the tentacle wrap around the arm guiding it */
+				<<if _hand is "left">>
+					<<leftarmtentacledisable>>
+					<<set _tentacle.shaft to "leftarm">>
+					<<set $leftarm to "tentgrappled">><<set $leftarmstate to 0>><<set $lefttarget to "tentacles">>
+				<<else>>
+					<<rightarmtentacledisable>>
+					<<set _tentacle.shaft to "rightarm">>
+					<<set $rightarm to "tentgrappled">><<set $rightarmstate to 0>><<set $righttarget to "tentacles">>
+				<</if>>
+				_The _tentacle.fullDesc缠绕在你的<<print _hand.replace("left","左").replace("right","右")>>臂上，<span class="blue">将其束缚。</span>
+				<<neutral 1>>
+			<<else>>
+				<<if _tentacle.shaft is 0>>
+					<<set _tentacle.shaft to (either("tummy","waist"))>>
+				<</if>>
+			<</if>>
+
+			<<if $vaginause is 0>>
+				<<set $vaginause to "tentaclerub">><<set _tentacle.head to "vaginarub">><<set $vaginatarget to "tentacles">>
+			<</if>>
+
+			<<sex 3 "genitals">><<thighstat>>
+			<<set $thighuse to "tentaclerub">>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "leftstop"+_tentacle.id>>
+		<<set $leftaction to 0>><<set $leftactiondefault to "leftstop"+_tentacle.id>>
+		你将左手从_the _tentacle.fullDesc里抽出。
+		<<tentacleadvdisable _tentacle>>
+	<</if>>
+
+	<<if $rightaction is "rightstop"+_tentacle.id>>
+		<<set $rightaction to 0>><<set $rightactiondefault to "rightstop"+_tentacle.id>>
+		你将右手从_the _tentacle.fullDesc里抽出。
+		<<tentacleadvdisable _tentacle>>
+	<</if>>
+
+	<<if $leftaction is "leftstop"+_tentacle.id>>
+		<<set $leftaction to 0>><<set $leftactiondefault to "leftstop"+_tentacle.id>>
+		你将左手从_the _tentacle.fullDesc里抽出。
+		<<tentacleadvdisable _tentacle>>
+	<</if>>
+
+	<<effectshandsclothes>>
+
+	<<if $feetaction is "feethit" and $feetactionTarget is _tentacle.id>>
+		<<set $feetaction to 0>><<set $feetactiondefault to "feethit">>
+		你一脚抽向_the _tentacle.fullDesc，它步履蹒跚的离开了你。
+		<<defiance 2>><<set $speechhit to 1>><<tentacleadvdisable _tentacle>><<set $attackstat += 1>>
+		<<set _tentacle.tentaclehealth -= 1>>
+		<<if $rng lte (currentSkillValue('physique') / 200)>>
+			<span class="green">它因你的力量而颤抖。</span>
+			<<set _tentacle.tentaclehealth -= 1>>
+		<</if>>
+		<<if $abomination is 1>>
+			<<defiance 3>>
+		<</if>>
+	<</if>>
+	<<if $feetaction is "feetgrab" and $feetactionTarget is _tentacle.id>>
+		<<set $feetaction to 0>><<set $feetactiondefault to "feetrub">><<submission 1>><<feetstat>>
+		<span class="lblue">你<<feettext>>将_the _tentacle.fullDesc用双脚抓住。</span>
+		<<tentacleadvdisable _tentacle>><<set $leftleg to _tentacle.id>><<set $rightleg to _tentacle.id>><<set $feettarget to "tentacles">>
+		<<set _tentacle.head to "feet">><<feetstat>><<set $feetstate to "tentacle">>
+	<</if>>
+
+	<<if $feetaction is "feetrub"+_tentacle.id>>
+		<<set $feetaction to 0>><<set $feetactiondefault to "feetrub"+_tentacle.id>><<feetskilluse>><<submission 1>>
+		你<<feettext>>用双脚挤压着_the _tentacle.fullDesc，沿着整根触手上下摩擦。
+		<<if $feetskill gte (800 - ($rng * 10))>>
+			<span class="lblue">_Slimy<<print _fluid>>从前端射出。</span>
+			<<bodyliquid "feet" _fluid>><<set _tentacle.tentaclehealth -= 3>><<feetejacstat>><<ejacstat>>
+			<<if $abomination is 1>>
+				<<set $enemyarousal += 6>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $feetaction is "showthighs"+_tentacle.id or $feetaction is "showbottom"+_tentacle.id>>
+		<<set $feetaction to 0>><<set $feetstate to 0>>
+		<<set $leftleg to 0>><<set $rightleg to 0>>
+
+		<<submission 1>>
+		<br>
+		<<combatdeviancy5>>
+		<br>
+
+		<<if $feetaction is "showthighs"+_tentacle.id>>
+			<<set _dir to "thighs">>
+			你<<feettext>>用双脚将_the _tentacle.fullDesc对准你的大腿。
+		<<else>>
+			<<set _dir to "bottom">>
+			你<<feettext>>用双脚将_the _tentacle.fullDesc对准你的<<bottom>>。
+		<</if>>
+
+		<<if $rng lte 30>> /* Leg grapple? */
+			<<if $rng gte 15>>
+				<<set _leg to "left">><<set _tentacle.shaft to "leftleg">><<set $leftleg to "grappled">><<set $feettarget to "tentacles">>
+			<<else>>
+				<<set _leg to "right">><<set _tentacle.shaft to "rightleg">><<set $rightleg to "grappled">><<set $feettarget to "tentacles">>
+			<</if>>
+			<<neutral 1>><<feettentacledisable>>
+			_The _tentacle.fullDesc缠绕在你的_leg腿上，<span class="blue">将其束缚。</span>
+		<<else>>
+			<<if _tentacle.shaft is 0>>
+				<<if _dir is "thighs">>
+					<<set _tentacle.shaft to (either("tummy","waist"))>>
+				<<else>>
+					<<set _tentacle.shaft to (either("tummy","waist","thighs"))>>
+				<</if>>
+			<</if>>
+		<</if>>
+
+		<<if _dir is "thighs">>
+			<<if $player.penisExist and $penisuse is 0>>
+				<<set $penisuse to "tentaclerub">><<set _tentacle.head to "penisrub">><<set $penistarget to "tentacles">>
+			<<elseif $player.vaginaExist and $vaginause is 0>>
+				<<set $vaginause to "tentaclerub">><<set _tentacle.head to "vaginarub">><<set $vaginatarget to "tentacles">>
+			<</if>>
+
+			<<sex 3 "genitals">><<thighstat>>
+			<<set $thighuse to "tentaclerub">>
+		<<else>>
+			<<set $anusstate to "tentaclerub">><<set $anususe to "tentaclerub">>
+			<<set _tentacle.head to "anusrub">><<sex 1 "anus">><<bottomstat>><<set $anustarget to "tentacles">>
+		<</if>>
+	<</if>>
+
+	<<if $feetaction is "showvagina"+_tentacle.id>>
+		<<set $feetaction to 0>><<set $feetstate to 0>>
+		<<set $leftleg to 0>><<set $rightleg to 0>>
+
+		<<if $player.vaginaExist>>
+			<<submission 1>>
+			<br>
+			<<combatdeviancy5>>
+			<br>
+			你<<feettext>>用双脚将_the _tentacle.fullDesc对准大腿根部向你的小穴贴近。
+
+			<<if $rng lte 30>>
+				<<if $rng gte 15>>
+					<<set _leg to "left">><<set _tentacle.shaft to "leftleg">><<set $leftleg to "grappled">><<set $feettarget to "tentacles">>
+				<<else>>
+					<<set _leg to "right">><<set _tentacle.shaft to "rightleg">><<set $rightleg to "grappled">><<set $feettarget to "tentacles">>
+				<</if>>
+				<<neutral 1>><<feettentacledisable>>
+				_The _tentacle.fullDesc缠绕在你的_leg腿上，<span class="blue">将其束缚。</span>
+			<<else>>
+				<<if _tentacle.shaft is 0>>
+					<<set _tentacle.shaft to (either("tummy","waist"))>>
+				<</if>>
+			<</if>>
+
+			<<if $vaginause is 0>>
+				<<set $vaginause to "tentaclerub">><<set _tentacle.head to "vaginarub">><<set $vaginatarget to "tentacles">>
+			<</if>>
+
+			<<sex 3 "genitals">><<thighstat>>
+			<<set $thighuse to "tentaclerub">>
+		<</if>>
+	<</if>>
+
+		<<if $feetaction is "showpenis"+_tentacle.id>>
+		<<set $feetaction to 0>><<set $feetstate to 0>>
+		<<set $leftleg to 0>><<set $rightleg to 0>>
+
+		<<if playerHasStrapon() or $player.penisExist>>
+			<<submission 1>>
+			<br>
+			<<combatdeviancy5>>
+			<br>
+			你<<feettext>>用双脚将_the _tentacle.fullDesc对准大腿根部向你的<<print playerHasStrapon() ? "穿戴式假阳具" : "肉棒">>贴近。
+
+			<<if $rng lte 30>>
+				<<if $rng gte 15>>
+					<<set _leg to "left">><<set _tentacle.shaft to "leftleg">><<set $leftleg to "grappled">><<set $feettarget to "tentacles">>
+				<<else>>
+					<<set _leg to "right">><<set _tentacle.shaft to "rightleg">><<set $rightleg to "grappled">><<set $feettarget to "tentacles">>
+				<</if>>
+				<<neutral 1>><<feettentacledisable>>
+				_The _tentacle.fullDesc缠绕在你的_leg腿上，<span class="blue">将其束缚。</span>
+			<<else>>
+				<<if _tentacle.shaft is 0>>
+					<<set _tentacle.shaft to (either("tummy","waist"))>>
+				<</if>>
+			<</if>>
+
+			<<if $penisuse is 0>>
+				<<set $penisuse to "tentaclerub">><<set _tentacle.head to "penisrub">><<set $penistarget to "tentacles">>
+			<</if>>
+
+			<<sex 3 "genitals">><<thighstat>>
+			<<set $thighuse to "tentaclerub">>
+		<</if>>
+	<</if>>
+
+	<<if $feetaction is "feetstop"+_tentacle.id>>
+		<<set $feetaction to 0>><<set $feetactiondefault to "feetstop"+_tentacle.id>>
+		你松开双脚间的_tentacle.fullDesc。
+		<<tentacleadvdisable _tentacle>>
+	<</if>>
+
+	<<if $mouthaction is "mouthlull"+_tentacle.id>>
+		<<set $mouthaction to 0>><<set $mouthactiondefault to "mouthlull"+_tentacle.id>>
+		<<brat 1>>
+		你对着_the _tentacle.fullDesc哼唱舒缓的摇篮曲，榨取着它的力量。<span class="green">它退开了。</span>
+		<<tentacleadvdisable _tentacle>><<set _tentacle.tentaclehealth -= 1>>
+		<<if $rng lte (currentSkillValue('willpower') / 10)>>
+			<span class="green">它在你的信念面前颤抖着。</span>
+			<<set _tentacle.tentaclehealth -= 1>>
+		<</if>>
+	<</if>>
+
+	<<if $mouthaction is "mouthlick"+_tentacle.id>>
+		<<set $mouthaction to 0>><<set $mouthactiondefault to "mouthlick"+_tentacle.id>>
+		<<submission 2>><<oralskilluse>>
+		你<<oraltext>>舔着_the _tentacle.fullDesc的前端。
+		<<if $oralskill gte (800 - ($rng * 10))>>
+			<span class="lblue">_Slimy<<print _fluid>>从前端射出，布满你的脸颊。</span>
+			<<bodyliquid "face" _fluid>><<set _tentacle.tentaclehealth -= 3>><<faceejacstat>><<ejacstat>>
+			<<if $abomination is 1>>
+				<<set $enemyarousal += 6>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $mouthaction is "mouthkiss"+_tentacle.id>>
+		<<set $mouthaction to 0>><<set $mouthactiondefault to "mouthkiss"+_tentacle.id>>
+		<<submission 3>><<oralskilluse>>
+		你<<oraltext>>亲吻_the _tentacle.fullDesc的前端。
+		<<if $oralskill gte (800 - ($rng * 10))>>
+			<span class="lblue">_Slimy<<print _fluid>>从前端射出，布满你的脸颊。</span>
+			<<bodyliquid "face" _fluid>><<set _tentacle.tentaclehealth -= 3>><<faceejacstat>><<ejacstat>>
+			<<if $abomination is 1>>
+				<<set $enemyarousal += 6>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $mouthaction is "take">>
+		<<set $mouthaction to 0>><<set $mouthactiondefault to "take">>
+
+	<</if>>
+
+	<<if $mouthaction is "mouthcooperate"+_tentacle.id>>
+		<<set $mouthaction to 0>><<set $mouthactiondefault to "mouthcooperate"+_tentacle.id>>
+		<<sex 5 "mouth">><<oralskilluse>>
+		你<<oraltext>>吮吸着侵犯嘴巴的_tentacle.fullDesc。
+		<<if $oralskill gte (800 - ($rng * 10))>>
+			<span class="lblue">_Slimy<<print _fluid>>从前端射出，进入你的嘴巴。</span>
+			<<set _tentacle.tentaclehealth -= 3>><<if _fluid is "nectar">><<nectarfed 5>><<else>><<drugs 3>><</if>><<bodyliquid "mouth" _fluid>><<oralejacstat>><<ejacstat>>
+			<<if _tentacle.desc.includes("苍白色")>>
+				<<hallucinogen 5>>
+			<</if>>
+			<<if $abomination is 1>>
+				<<set $enemyarousal += 6>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $mouthaction is "mouthpullaway"+_tentacle.id>>
+		<<set _nectarDifficulty to Math.clamp($drugged, 0, 500) + Math.clamp($nectar_addiction, 0, 500)>>
+		<<willpowerdifficulty _nectarDifficulty $willpowermax "silent">>
+		<<if $NPCList[0].type is "plant" and _tentacle.head is "mouthdeep" and !$willpowerSuccess>>
+			你试着将逼近嘴巴的_tentacle.fullDesc拉开。
+			<span class="red">然而，你无法将自己从甜美的花蜜中抽离，</span>
+			随后拼命地吮吸着_tentacle.type。
+			<<willpower 1>>
+		<<else>>
+			<<set $mouthaction to 0>><<set $mouthactiondefault to "mouthpullaway"+_tentacle.id>><<brat 1>>
+			<span class="teal">你将逼近嘴巴的_tentacle.fullDesc拉开。</span>
+			<<tentacleadvdisable _tentacle>>
+		<</if>>
+	<</if>>
+
+	<<if $mouthaction is "mouthbite"+_tentacle.id>>
+		<<set $mouthaction to 0>><<set $mouthactiondefault to "mouthbite"+_tentacle.id>><<defiance 5>>
+		你咬向侵犯嘴巴的_tentacle.fullDesc。<span class="teal">它马上就退缩了。</span>
+		<<tentacleadvdisable _tentacle>><<set $attackstat += 1>><<set _tentacle.tentaclehealth -= 1>>
+		<<if $rng lte (currentSkillValue('physique') / 200)>>
+			<span class="green">它因你的力量而颤抖。</span>
+			<<set _tentacle.tentaclehealth -= 1>>
+		<</if>>
+		<<if $abomination is 1>>
+			<<person>>发出痛苦的咕噜声。<<defiance 10>>
+			<<if $transformationParts.traits.fangs isnot "disabled">>
+				<<defiance 10>><<defiance 10>>
+				你舔舐干净自己的獠牙。
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $vaginaaction is "vaginarub"+_tentacle.id>>
+		<<set $vaginaaction to 0>><<set $vaginaactiondefault to "vaginarub"+_tentacle.id>>
+		<<submission 2>><<vaginalskilluse>>
+		你<<vaginaltext>>用你的<<pussy>>摩擦_the _tentacle.fullDesc的尖端。
+		<<if $vaginalskill gte (800 - ($rng * 10))>>
+			<span class="lblue">_Slimy<<print _fluid>>从前端射出。</span>
+			<<bodyliquid "vaginaoutside" _fluid>><<set _tentacle.tentaclehealth -= 3>><<vaginalentranceejacstat>><<ejacstat>>
+			<<if $abomination is 1>>
+				<<set $enemyarousal += 6>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $vaginaaction is "take">>
+		<<set $vaginaaction to 0>><<set $vaginaactiondefault to "take">>
+
+	<</if>>
+
+	<<if $vaginaaction is "vaginacooperate"+_tentacle.id>>
+		<<set $vaginaaction to 0>><<set $vaginaactiondefault to "vaginacooperate"+_tentacle.id>>
+		<<sex 5 "genitals">><<vaginalskilluse>>
+		你<<vaginaltext>>后压向侵犯着你<<pussy>>的_the _tentacle.fullDesc。
+		<<if $vaginalskill gte (800 - ($rng * 10))>>
+			<span class="lblue">_Slimy<<print _fluid>>从前端射出，将它温暖的液体灌满你的子宫。</span>
+			<<set _tentacle.tentaclehealth -= 3>><<drugs 3>><<bodyliquid "vagina" _fluid>><<vaginalejacstat>><<ejacstat>>
+			<<if _tentacle.desc.includes("苍白色")>>
+				<<hallucinogen 5>>
+			<</if>>
+			<<if $abomination is 1>>
+				<<set $enemyarousal += 6>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $vaginaaction is "vaginapullaway"+_tentacle.id>>
+		<<set $vaginaaction to 0>><<set $vaginaactiondefault to "vaginapullaway"+_tentacle.id>><<brat 1>>
+		<span class="teal">你将逼近<<pussy>>的_tentacle.fullDesc拉开。</span>
+		<<tentacleadvdisable _tentacle>>
+	<</if>>
+
+	<<if $penisaction is "penisrub"+_tentacle.id>>
+		<<set $penisaction to 0>><<set $penisactiondefault to "penisrub"+_tentacle.id>>
+		<<submission 2>><<penileskilluse>>
+		你<<peniletext>>用你的<<penis>>摩擦_the _tentacle.fullDesc的尖端。
+		<<if $penileskill gte (800 - ($rng * 10))>>
+			<span class="lblue">_Slimy<<print _fluid>>从前端射出。</span>
+			<<bodyliquid "penis" _fluid>><<set _tentacle.tentaclehealth -= 3>>
+			<<if $abomination is 1>>
+				<<set $enemyarousal += 6>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $penisaction is "take">>
+		<<set $penisaction to 0>><<set $penisactiondefault to "take">>
+
+	<</if>>
+
+	<<if $penisaction is "peniscooperate"+_tentacle.id>>
+		<<set $penisaction to 0>><<set $penisactiondefault to "peniscooperate"+_tentacle.id>>
+		<<sex 5 "genitals">><<penileskilluse>>
+		你<<peniletext>>顶向吞没你<<penis>>的_tentacle.fullDesc。
+		<<if $penileskill gte (800 - ($rng * 10))>>
+			<span class="lblue">_Slimy<<print _fluid>>从前端射出，布满你的胯下。</span>
+			<<set _tentacle.tentaclehealth -= 3>><<bodyliquid "penis" _fluid>>
+			<<if $abomination is 1>>
+				<<set $enemyarousal += 6>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $penisaction is "penispullaway"+_tentacle.id>>
+		<<set $penisaction to 0>><<set $penisactiondefault to "penispullaway"+_tentacle.id>><<brat 1>>
+		<span class="teal">你将逼近<<penis>>的_tentacle.fullDesc拉开。</span>
+		<<tentacleadvdisable _tentacle>>
+	<</if>>
+
+	<<if $anusaction is "anusrub"+_tentacle.id>>
+		<<set $anusaction to 0>><<set $anusactiondefault to "anusrub"+_tentacle.id>>
+		<<submission 2>><<analskilluse>>
+		你<<analtext>>用你的<<bottom>>摩擦_the _tentacle.fullDesc的尖端。
+		<<if $analskill gte (800 - ($rng * 10))>>
+			<span class="lblue">_Slimy<<print _fluid>>从前端射出，布满你的<<bottom>>。</span>
+			<<bodyliquid "bottom" _fluid>><<set _tentacle.tentaclehealth -= 3>><<bottomejacstat>><<ejacstat>>
+			<<if $abomination is 1>>
+				<<set $enemyarousal += 6>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $anusaction is "take">>
+		<<set $anusaction to 0>><<set $anusactiondefault to "take">>
+
+	<</if>>
+
+	<<if $anusaction is "anuscooperate"+_tentacle.id>>
+		<<set $anusaction to 0>><<set $anusactiondefault to "anuscooperate"+_tentacle.id>>
+		<<sex 5 "anus">><<analskilluse>>
+		你<<analtext>>向后压向侵犯着你<<bottom>>的_tentacle.fullDesc。
+		<<if $analskill gte (800 - ($rng * 10))>>
+			<span class="lblue">_Slimy<<print _fluid>>从前端射出，将温暖的液体灌满了你的肠道。</span>
+			<<set _tentacle.tentaclehealth -= 3>><<drugs 3>><<bodyliquid "anus" _fluid>><<analejacstat>><<ejacstat>>
+			<<if _tentacle.desc.includes("苍白色")>>
+				<<hallucinogen 5>>
+			<</if>>
+			<<if $abomination is 1>>
+				<<set $enemyarousal += 6>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $anusaction is "anuspullaway"+_tentacle.id>>
+		<<set $anusaction to 0>><<set $anusactiondefault to "anuspullaway"+_tentacle.id>><<brat 1>>
+		<span class="teal">你将逼近<<bottom>>的_tentacle.fullDesc拉开。</span>
+		<<tentacleadvdisable _tentacle>>
+	<</if>>
+
+	<<if $thighaction is "penisrub"+_tentacle.id>>
+		<<set $thighaction to 0>><<set $thighactiondefault to "penisrub"+_tentacle.id>>
+		<<submission 3>><<thighskilluse>>
+		你<<thightext>>在大腿间摩擦着_the _tentacle.fullDesc。
+		<<if $thighskill gte (800 - ($rng * 10))>>
+			<span class="lblue">_Slimy<<print _fluid>>从前端射出，布满你的小腹。</span>
+			<<set _tentacle.tentaclehealth -= 3>><<bodyliquid "tummy" _fluid>><<tummyejacstat>><<ejacstat>>
+			<<if $abomination is 1>>
+				<<set $enemyarousal += 6>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $thighaction is "vaginarub"+_tentacle.id>>
+		<<set $thighaction to 0>><<set $thighactiondefault to "vaginarub"+_tentacle.id>>
+		<<submission 3>><<thighskilluse>>你的<<thightext>>搓揉着大腿间的_the _tentacle.fullDesc。
+		<<if $thighskill gte (800 - ($rng * 10))>>
+			<span class="lblue">_Slimy<<print _fluid>>从前端射出，布满你的小腹。</span>
+			<<set _tentacle.tentaclehealth -= 3>><<bodyliquid "tummy" _fluid>><<tummyejacstat>><<ejacstat>>
+			<<if $abomination is 1>>
+				<<set $enemyarousal += 6>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $anusaction is "anusrub"+_tentacle.id>>
+		<<set $anusaction to 0>><<set $anusactiondefault to "anusrub"+_tentacle.id>>
+		<<submission 3>><<bottomskilluse>>
+		你<<bottomtext>>在你的臀瓣间摩擦着_the _tentacle.fullDesc。
+		<<if $bottomskill gte (800 - ($rng * 10))>>
+			<span class="lblue">_Slimy<<print _fluid>>从前端射出，布满你的<<bottom>>。</span>
+			<<set _tentacle.tentaclehealth -= 3>><<bodyliquid "bottom" _fluid>><<bottomejacstat>><<ejacstat>>
+			<<if $abomination is 1>>
+				<<set $enemyarousal += 6>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $chestaction is "chestrub"+_tentacle.id>>
+		<<set $chestaction to 0>><<set $chestactiondefault to "chestrub"+_tentacle.id>>
+		<<submission 3>><<chestskilluse>>
+		你<<chesttext>>在你的<<breasts>>间摩擦着_the _tentacle.fullDesc。
+		<<if $chestskill gte (800 - ($rng * 10))>>
+			<span class="lblue">_Slimy<<print _fluid>>从前端射出，布满你的胸口。</span>
+			<<set _tentacle.tentaclehealth -= 3>><<bodyliquid "chest" _fluid>><<chestejacstat>><<ejacstat>>
+			<<if $abomination is 1>>
+				<<set $enemyarousal += 6>>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "tentacle_skin">>
+	<<if $skin[_args[0]] and $skin[_args[0]].special is "holy" or $skin[_args[1]] and $skin[_args[1]].special is "holy" and !$banishDisable>>
+		你皮肤上的神圣符号发出白光，燃烧起来，<span class="pink">灼烧着你</span><span class="teal">和那_tentacle.fullDesc。</span><<pain 8>><<set _tentacle.tentaclehealth -= 12>><<tentacleadvdisable _tentacle>>
+	<<elseif _tentacle.traits.includes("pain") and _args[0] isnot "pubic">>
+		<<if _args[0].includes("_")>>
+			<<set _bodypart to _args[0].split("_").pop()>>
+		<<else>>
+			<<set _bodypart to _args[0]>>
+		<</if>>
+		<<if !(playerHasStrapon() and _bodypart is "penis")>>
+			_the _tentacle.fullDesc磨蹭着你的_bodypart，让你感到<<print $masochism_level gte 3 ? "颤抖" : "畏缩">>。
+			<<pain 1>><<gpain>>
+		<</if>>
+	<</if>>
+<</widget>>

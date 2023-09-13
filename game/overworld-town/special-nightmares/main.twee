@@ -1,0 +1,1128 @@
+:: Nightmare Test
+<<effects>>
+
+<<link [[关于伊甸的恶梦|Nightmare Eden]]>><<set $sleephour to 1>><<set $nightmareExit to "Eden Cabin Bed">><</link>>
+<br>
+<<link [[关于惠特尼的恶梦|Nightmare Wraith]]>><<set $sleephour to 1>><<set $nightmareExit to "Bed">><</link>>
+<br>
+<<link [[关于哈珀的恶梦|Nightmare Harper]]>><<set $sleephour to 1>><<set $nightmareExit to "Bed">><</link>>
+<br>
+<<link [[关于巨鹰的噩梦|Nightmare Bird]]>><<set $sleephour to 1>><<set $nightmareExit to "Bird Tower Bed">><</link>>
+<br><br>
+
+<<link [[返回|Bedroom]]>><</link>>
+<br>
+
+:: Nightmare Eden
+<<effects>><<nightmareStart "eden">><<set $location to "cabin">>
+
+<<generate1>><<npc "Eden" 2>><<person2>>
+<<set $NPCList[0] to clone($NPCList[1])>>
+<<set $NPCList[0].description to "shadowed">>
+<<set $NPCList[0].role to ($pronoun is "m" ? "man" : "woman")>>
+<<clearsinglenpc 1>><<person1>>
+
+你试图入睡，但这并不容易。你感觉你的心跳开始加速，但它正在平稳的跳动。你的眼睛是紧闭着的，但它们依旧能洞察一切.
+<br><br>
+
+阴影攀附在小屋的角落内，它们伸出手臂，用那细长的手指抚摸着你。即使你身处于伊甸的保护之下，你依旧能感觉到它们的指甲正抚过你的皮肤.<<stress 6>><<gstress>>
+<br><br>
+
+<<if $nightmaresSeen.includes("eden")>>
+	有点不对劲，你以前见过这个。<span class="purple">它不是真实的存在.</span>
+	<br><br>
+
+	<<link [[醒醒|Nightmare Eden Wake]]>><<set $phase to 0>><</link>><<nightmareWakeDifficulty>>
+	<br>
+<</if>>
+<<link [[叫醒伊甸|Nightmare Eden 2]]>><<set $phase to 0>><</link>>
+<br>
+<<link [[用床单盖住头|Nightmare Eden 2]]>><<set $phase to 1>><</link>>
+<br>
+
+:: Nightmare Eden Wake
+<<effects>>
+
+<<if $phase is 2>>
+	那个<<person>>越来越近，你不会让它带走你的。当你醒来的时候，你会回到伊甸的身边。<<He>>一定会保护你的。
+<<elseif $phase is 1>>
+	那侵袭的双手威胁着要把你所有的思想变成恐怖的回忆，你拒绝交出记忆，毕竟除了你的身体，它们就是你剩下的一切。所以你闭上眼睛开始集中精力。
+<<else>>
+	恐惧在你的脑海中萦绕，但你试图把它抛之脑后。没有什么可害怕的，毕竟有伊甸在你身边，现在你只要闭上眼睛放松就好。
+<</if>>
+<br><br>
+
+<<if $willpowerSuccess>>
+	你的身体抽搐着，不管是什么在压制着你，<span class="green">你恢复了一定的自控力.</span>至少你现在可以开口了.
+	<br><br>
+
+	你发出一声刺耳的尖叫声，然后你就这样持续尖叫着，直到你的喉咙被刺痛，不过你根本不在乎，因为这足以将阴影赶走了。
+	<br><br>
+
+	有人抓住你的肩膀，把你拉了起来，让你的注意力从角落里被夺走了。你感到恐慌，直到你的目光与一个熟悉的怒视相遇。那是伊甸。
+	<br><br>
+
+	<<link [[继续|Nightmare Eden Wake 2]]>><</link>>
+	<br>
+<<else>>
+	<<if $phase is 2>>
+		你试图集中精力想着伊甸，但<<His>>的脸在你的脑海里扭曲成一团，<span class="red">变成一团阴影般的混乱。</span>你惊恐地睁开眼睛，只发现自己与那个阴影面对面。<<He>>向你袭来。<<stress 12>><<ggstress>>
+		<br><br>
+
+		<<link [[继续|Nightmare Eden Molestation]]>><<set $phase to 1>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<elseif $phase is 1>>
+		<span class="red">一些东西刷过你的脖子，</span>打破了你的注意力。你睁开眼睛，发现一团阴影在你的身体周围旋转，慢慢地形成并淹没了你。<<stress 6>><<gstress>>
+		<br><br>
+
+		<<link [[继续|Nightmare Eden 3]]>><<set $phase to 1>><</link>>
+		<br>
+	<<else>>
+		即使闭上眼睛，阴影仍然在扭动。<span class="red">你无法阻止它们。</span>无论你如何挣扎，束缚你的力量已经侵入你的思维，阻止你逃脱。<<stress 6>><<gstress>>
+		<br><br>
+
+		<<link [[继续|Nightmare Eden 2]]>><<set $phase to 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Nightmare Eden 2
+<<effects>>
+
+<<if $phase is 1>>
+	你试图用被子把自己盖住。
+<<elseif $phase is 0>>
+	你试图转身并叫醒伊甸。
+<</if>>
+你无法动弹一寸。<span class="red">阴影在逼近，你甚至不能动一根手指。</span>它们在床上旋转，在抓取你的时候，又在最后一刻收回。每次抓取都会把它们拉得更近。<<stress 6>><<gstress>>
+<br><br>
+
+伊甸在你旁边打着呼噜，毫不受即将到来的危险影响。<<He>>曾说过，<<he>>会保护你，让你安全无虞。你只需要叫醒<<him>>。
+<br><br>
+
+<<if $nightmaresSeen.includes("eden")>>
+	<<link [[苏醒|Nightmare Eden Wake]]>><<set $phase to 1>><</link>><<nightmareWakeDifficulty>>
+	<br>
+<</if>>
+<<link [[尝试移动|Nightmare Eden 3]]>><<set $phase to 1>><</link>>
+<br>
+<<link [[尖叫|Nightmare Eden 3]]>><<set $phase to 0>><</link>>
+<br>
+
+:: Nightmare Eden 3
+<<effects>>
+
+<<if $phase is 1>>
+	尽管你竭尽全力，但你的身体仍然冰冷僵硬，只能在原地颤抖。
+<<else>>
+	你的内心尖叫着，但你的嘴唇紧闭着，只发出了微弱的呜咽声。
+<</if>>
+伊甸没有退缩。<<stress 6>><<gstress>>
+<br><br>
+
+抽象的形状融合成一个高耸的身影，静静地站在你的身体上方，伸出有爪的手。它越靠近你，就越加实体化。颜色渗入它的形态，直到它变成了一个没有表情的<<personsimple>>。
+<br><br>
+
+小屋里死一般的寂静，你无法确认伊甸是否在你身旁。你和<<person>>独处。
+<br><br>
+
+<<if $nightmaresSeen.includes("eden")>>
+	<<link [[苏醒|Nightmare Eden Wake]]>><<set $phase to 2>><</link>><<nightmareWakeDifficulty>>
+	<br>
+<</if>>
+<<link [[反抗|Nightmare Eden Molestation]]>><<set $phase to 1>><<set $molestationstart to 1>><</link>>
+<br>
+<<link [[屈服|Nightmare Eden Molestation]]>><<set $phase to 0>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Nightmare Eden Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $trance to 1>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemyanger to 70>>
+	<<set $enemytrust to 0>>
+	<<if $phase is 1>>
+		你用最后微弱的力量对着要压住你的力量做了最后一丝反抗。结果是令人绝望的。你感觉你最终会向<<persons>>屈服。
+	<<else>>
+		无能为力，你把你的身体和思想交给了<<persons>>的意志。
+	<</if>>
+	<<He>>把<<his>>的手放在你身上。很冷。
+	<<controlloss>>
+	<<molested>>
+	<<set $enemyarousalmax to 250>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Nightmare Eden Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Nightmare Eden Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Nightmare Eden Molestation Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<set _nn to 0>>
+	<<set $pronoun to $NPCList[0].pronoun>>
+	<<set $NPCList[0].intro to 1>>
+	<<ejaculation-eden>>
+
+	<<if $options.images is 1 and $options.combatImages is 1>>
+		<br>
+		<<combatimg>>
+		<br>
+	<</if>>
+
+	<<He>>抚摸着你的头发，轻轻地从你脸上移开散落的头发，然后从你仍然冰冷的身体上撤退。
+<<else>>
+	<<person>>从床上倒下，加入到阴影中。他们在地板上扭动着，从你仍然冰冷的身体上撤退。
+<</if>>
+<br><br>
+
+你看着<<him>>滑回角落。当<<his>>的影子消失时，你的肌肉放松，把你从看不见的枷锁中解放出来。
+<br><br>
+
+<<tearful>>你坐起来，无法把你的<<if $pain gte 20>>含泪模糊的<</if>>眼睛从黑暗的角落移开。
+<br><br>
+
+<<link [[继续|Nightmare Eden End]]>><<endcombat>><<clotheson>><</link>>
+<br>
+
+:: Nightmare Eden End
+<<effects>><<nightmareEnd>>
+<<npc "Eden">><<person1>>
+
+<<if Time.hour gte 0 and Time.hour lte 6>>
+	你伸手去找伊甸，找到了<<his>>的手臂，你抱得很紧。<<Hes>>还在这里。<<He>>一直在这里。
+<<else>>
+	你伸手去摸伊甸，却只感觉到你旁边是一个空荡荡的地方。<<He>>可能已经醒了。你希望<<hes>>只是醒了过来。
+<</if>>
+<br><br>
+
+<<He>>没有救你，<<He>>明明答应过会保护你的，<<he>>为什么要撒谎？<<stress 18>><<gggstress>>
+<br><br>
+
+<<link [[继续|$nightmareExit]]>><<unset $nightmareExit>><<endevent>><</link>>
+<br>
+
+:: Nightmare Eden Wake 2
+<<effects>><<nightmareEnd>>
+
+"什么事?"<<he>>询问。"发生什么了吗?"
+<br><br>
+
+<<He>>并没有等待回答，<<Hes>>已经站了起来，手里拿着枪。你的眼睛仍然盯着角落，直到<<he>>在你的脸前打了个响指。
+<br><br>
+
+"嘿!你在看什么?"
+<br><br>
+
+<<link [[`告诉${$NPCList[0].pronouns.him}`|Nightmare Eden Console]]>><</link>>
+<br>
+<<link [[坚持这没什么|Nightmare Eden Insist]]>><</link>>
+
+:: Nightmare Eden Console
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我……我看到那边有什么东西，"你说道。"它，它要把我带走。它想……"你开始失去控制地呼吸，紧紧抱住伊甸以寻求支撑。
+<<elseif $speech_attitude is "bratty">>
+	"那里有个……东西！"你大喊道。"那里有个可怕的东西，就在那边。"你把<<him>>推向角落。
+<<else>>
+	"你没看到吗？"你轻声问道，"那个生物。就在那里。"你点了点头，依偎在<<him>>的温暖怀抱中。
+<</if>>
+<br><br>
+
+<<He>>把你推开。"那里什么都没有，"<<he>>嘀咕着，低头看着你。"一定是个噩梦。"
+<br><br>
+
+你没有机会争辩。
+<<if Time.hour gte 0 and Time.hour lte 6>>
+	<<His>>的枪撞在墙上，床吱吱作响，然后<<hes>>像一盏灯一样消失了。
+<<else>>
+	<<He>>在外面踱步，让你独自思考.
+<</if>>
+<br><br>
+
+伊甸一定是对的。这一切就是场梦。
+<br><br>
+
+<<link [[继续|$nightmareExit]]>><<unset $nightmareExit>><<endevent>><</link>>
+<br>
+
+:: Nightmare Eden Insist
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"只是个噩梦，"你神经质地笑道，"没什么好担心的。"从<<his>>脸上的表情看不出<<he>>是否相信你。
+<<elseif $speech_attitude is "bratty">>
+	"这是一个愚蠢的噩梦，"你喃喃自语。"我会没事的。"伊甸嗯了一声。
+<<else>>
+	"我想就是场噩梦，"你说道。<<He>>盯着你看了一会儿，然后转过<<his>>的身子背向你。
+<</if>>
+<br><br>
+
+"这一切都是场噩梦，"<<he>>叹息着，随着<<he>><<if Time.hour gte 0 and Time.hour lte 6>>再次陷入睡眠<<else>>迈开沉重的步子向外走去<</if>>。
+<br><br>
+
+伊甸一定是对的。这一切就是场梦。
+<br><br>
+
+<<link [[继续|$nightmareExit]]>><<unset $nightmareExit>><<endevent>><</link>>
+<br>
+	
+:: Nightmare Wraith
+<<effects>><<nightmareStart "wraith">><<set $location to "temple">>
+<<set Time.setTime(12, 0)>>
+
+你陷入不安的睡眠。
+<br><br>
+
+你脸朝下地醒来，躺在一块草地上。眨眨眼睛，摆脱剩余的睡意，你站起身来，环顾四周。
+<br><br>
+
+你在一个俯瞰神殿的山丘上。在你身后的树林中，传来炊烟和欢笑声。这一切看起来都有些熟悉。
+<<if $awarelevel gte 2>>
+	这看起来像是森林中的湖泊，但你并没有看到水。
+<</if>>
+<br><br>
+
+<<if $nightmaresSeen.includes("wraith")>>
+	你知道这个地方。这不是真的。<span class="purple">你心生不安。</span>
+	<br><br>
+
+	<<link [[苏醒|Nightmare Wraith Wake]]>><<set $phase to 0>><</link>><<nightmareWakeDifficulty>>
+	<br>
+	<span class="nextLink"><<link [[待着.|Nightmare Wraith 2]]>><<set $phase to 1>><</link>></span>
+	<br>
+<<else>>
+	<<link [[继续|Nightmare Wraith 2]]>><<set $phase to 0>><</link>>
+	<br>
+<</if>>
+
+:: Nightmare Wraith Wake
+<<effects>>
+
+<<if $phase is 2>>
+	风和水拍打着你的脸，但你忽略了不适。这不是真的。当你醒来时，它就会消失。你闭上眼睛。
+<<elseif $phase is 1>>
+	你闭上眼睛，捂住耳朵。无论这首歌有多美妙，你都不能让它或歌手控制你。你试着想要醒来。
+<<else>>
+	你闭上眼睛，集中精力。不管身处何方，这里没有值得你留下的东西。你深吸一口气，强迫自己醒来。
+<</if>>
+<br><br>
+
+<<if $willpowerSuccess>>
+	你感到寒冷，死亡的寒冷。恐慌开始升起，但你不让它压倒你。你离现实非常近了。
+	<br><br>
+
+	"<span class="wraith">躲在黑暗中，<<pcpetname "Wraith">>。躲在自己的内心深处。</span>"
+	<br><br>
+
+	一只冰冷的手拂过你的脸颊。你喘着气睁开眼睛。
+	<br><br>
+
+	<<link [[继续|Nightmare Wraith End]]>><<endevent>><<set $phase to 1>><</link>>
+	<br>
+<<else>>
+	<<set $nightmareWake++>>
+
+	<<if $phase is 2>>
+		<span class="red">一片巨大的海浪冲向你，将你冲倒在地。</span>你试图站起来，但一个幽灵般的存在压制住了你。苍白的身影屹立在你的上方，祂的<<wraithEyes>>眼睛盯着你的眼睛。<<stress 6>><<gstress>>
+		<br><br>
+
+		<span class="nextLink"><<link [[看着.|Nightmare Wraith 4]]>><</link>></span>
+		<br>
+	<<elseif $phase is 1>>
+		但无论你如何努力，<span class="red">你都无法忽略祂。</span>祂让你感到安全。你的眼睛不由自主地睁开了，你的手无力地垂在身旁。你唯一能做的就是观看和倾听。<<stress 6>><<gstress>>
+		<br><br>
+
+		<span class="nextLink"><<link [[倾听.|Nightmare Wraith 3]]>><</link>></span>
+		<br>
+	<<else>>
+		<span class="red">一道低语打破了你的专注。</span>你可能只听到了不到一秒钟，但那已经足够了。祂让你脱离现实，诱惑你留下来。<span class="red">你被牢牢地困在了原地。</span><<stress 6>><<gstress>>
+		<br><br>
+
+		<span class="nextLink"><<link [[看着.|Nightmare Wraith 2]]>><<set $phase to 0>><</link>></span>
+		<br>
+	<</if>>
+<</if>>
+
+:: Nightmare Wraith 2
+<<effects>><<set $weather to "overcast">>
+
+<<if $phase is 1>>
+	美妙的歌曲的记忆涌入你的脑海。你想再次听到它。<span class="blue">你需要听到它。</span>
+	<br><br>
+
+	四处张望，你在远处发现了祂。
+<<else>>
+	有什么东西吸引了你的目光。远处站着一个人影。
+<</if>>
+你看不清祂的五官，只看到一件暗褐色的长袍衬着苍白的头发。
+<br><br>
+
+声音很轻，但听起来像是祂在唱歌。你不认识这种语言，但它传达出一种温柔的旋律。你越听越感到平静，被它所吸引。
+<br><br>
+
+声音变得更大了。你注意到山丘下有动静。神殿里流出了水。
+<br><br>
+
+<<if $nightmaresSeen.includes("Wraith")>>
+	<<link [[苏醒|Nightmare Wraith Wake]]>><<set $phase to 1>><</link>><<nightmareWakeDifficulty>>
+	<br>
+<</if>>
+<span class="nextLink"><<link [[倾听.|Nightmare Wraith 3]]>><</link>></span>
+<br>
+
+:: Nightmare Wraith 3
+<<effects>><<set $weather to "rain">>
+<<set Time.setTime(20, 0)>>
+
+平静开始消逝。那个身影的声音变得越来越大，音调悲痛而绝望。
+<br><br>
+
+越来越多的水从神殿的门窗中倾泻而下，直到形成洪水。山丘下的盆地越来越满。风开始变大，带着水流，把你和那个身影淋湿了。
+<br><br>
+
+在风中吹动着祂的头发时，你清晰地看到了祂的脸。那张脸变得越来越苍白，直到变得半透明。祂的声音现在变成了尖叫。
+<br><br>
+
+祂的脖子上掉下了什么东西，掉进了祂脚下的水池中。
+<br><br>
+
+<<if $nightmaresSeen.includes("Wraith")>>
+	<<link [[苏醒|Nightmare Wraith Wake]]>><<set $phase to 2>><</link>><<nightmareWakeDifficulty>>
+	<br>
+<</if>>
+<span class="nextLink"><<link [[看着.|Nightmare Wraith 4]]>><</link>></span>
+<br>
+
+:: Nightmare Wraith 4
+<<effects>><<set $forcedBloodmoon to true>>
+<<set Time.setTime(21, 0)>>
+
+森林是寂静的。风也吹不动树。
+<br><br>
+
+"<span class="wraith">永远冻结，</span>"白色身影低声说。"<span class="wraith">寒冷，无法呼吸。</span>"
+<br><br>
+
+你抬起头朝着祂看去。祂直视着你，脸上没有表情。
+<br><br>
+
+"<span class="wraith">你想加入他们吗，<<pcpetname "Wraith">>?</span>"
+<br><br>
+
+<<link [[保持不动|Nightmare Wraith 5]]>><<set $phase to 1>><</link>>
+<br>
+<<link [[跑|Nightmare Wraith 5]]>><<set $phase to 0>><</link>>
+<br>
+
+:: Nightmare Wraith 5
+<<effects>>
+
+<<if $phase is 1>>
+	当身影靠近时，你抬头凝视着祂。祂轻柔地将你引导到地面上。一只<<if $tentacledisable is "f">>触手<<else>>苍白的手臂<</if>>从祂的背后爆发出来，将你压住。
+<<else>>
+	你试图向树林里逃去，但那身影迅速出击。祂扑了上来，用一只<<if $tentacledisable is "f">>蠕动的触手<<else>>抽打的手臂<</if>>将你压在地上。
+<</if>>
+<br><br>
+
+热量从你的身体渗出。水从人影的头发上滴下来，滴到你的脸上。
+<br><br>
+
+<<if $wraith.state is "haunt">>
+	"<span class="wraith"><<pcPetname "Wraith">>。你拿了我的东西，至少要给我些补偿，把你的温暖给我。</span>"
+<<elseif $wraith.state is "despair">>
+	"<span class="wraith">给我你的温暖。太冷了，一直，一直都是那么冷。</span>"
+<<else>>
+	"<span class="wraith">给我你的温暖。</span>"
+<</if>>
+<br><br>
+
+<<generateWraith 1 true>><<initWraith "abomination">>
+
+<<link [[继续|Nightmare Wraith Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Nightmare Wraith Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effectsWraith>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Nightmare Wraith Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Nightmare Wraith Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Nightmare Wraith Rape Finish
+<<effects>>
+
+<<if $enemyhealth lte 0 and $wraith.type is "man">>
+		苍白的身影嘶嘶地离开。 
+		<br><br>
+
+		"<span class="wraith">无知的人。</span>"祂向后漂浮，朝着新形成的湖泊而去。"<span class="wraith">盲目而软弱。温暖，但使人迟钝。</span>"
+		<br><br>
+
+		当祂沉入湖底时，祂怒视着你。湖水在祂周围翻滚。
+		<<set $wraith.defeated++>>
+<<else>>
+	<<ejacW>>
+	<<if $enemyanger gt 0>>
+		"<span class="wraith">这样的活力。会持续多久?</span>"
+		<br><br>
+
+		祂慢慢地退去，爱抚着你的身体。祂在起身前最后一次严厉地捏你的大腿。
+		<br><br>
+
+		当祂向后漂浮沉入湖中时，祂脸上露出了令人不安的微笑。水在祂周围翻滚。
+	<<else>>
+		"<span class="wraith">回声。</span>"祂用冰冷的手指拂过你的脸颊。"<span class="wraith">记忆。</span>"
+		<br><br>
+
+		祂慢慢地退去，爱抚着你的身体。祂似乎不愿放手。
+		<br><br>
+
+		祂看起来依旧平静，开始向后飘去。祂沉入水中，从未离开你的注视。水在祂周围翻滚。
+	<</if>>
+<</if>>
+<br><br>
+
+<<link [[继续|Nightmare Wraith 6]]>><<endcombat>><</link>>
+<br>
+
+:: Nightmare Wraith 6
+<<effects>><<set $location to "lake_ruin">>
+
+水咕嘟咕嘟地冒泡着，身影不再可见。你拼命地向后爬，试图避开涨潮。它来得又快又猛烈。
+<br><br>
+
+<span class="red">某些东西抓住了你的脚踝。</span>一只泡沫般的手，强而有力地抓住了你。你倒在草地上，泥巴溅到你的脸上，苍白的手爬上了你的身体。
+<br><br>
+
+祂把你拖了回去，将你的身体拉进了湖里。水的寒冷夺去了你的呼吸，直到最后一口气。<span class="red">你无法呼吸！</span>
+<br><br>
+
+当你被拉得更深时，月亮的深红色透过波浪逐渐消失了。
+<br><br>
+
+<span class="nextLink"><<link [[被水淹没.|Nightmare Wraith End]]>><<clotheson>><<unset $forcedBloodmoon>><<set $phase to 0>><</link>></span>
+<br>
+
+:: Nightmare Wraith End
+<<effects>><<nightmareEnd>>
+
+<<if $phase is 1>>
+	你猛然挺直身子。森林的声音慢慢地消失了。你醒了。
+	<br><br>
+
+	一阵微风吹过你的身体。你意识到自己的身体变得非常热了。除了你的脸颊。<<stress 2>><<gstress>>
+<<else>>
+	一声声音把你从睡梦中惊醒。你在睡梦中挣扎，撞到了墙上。<<pain 1>><<gpain>>
+	<br><br>
+
+	你打着寒颤坐了起来，四周环顾一下。没有水，没有苍白的身影。你是安全的。
+	<<if ["asylum", "prison"].includes($location)>>
+		相对而言。
+	<</if>>
+	这只是一个梦。
+<</if>>
+<br><br>
+
+<<link [[继续|$nightmareExit]]>><<unset $nightmareExit>><</link>>
+<br>
+
+:: Nightmare Bird
+<<effects>><<nightmareStart "bird">><<set $location to "tower">>
+<<npc "Great Hawk">><<person1>>
+
+你陷入不安的睡眠。
+<br><br>
+
+一阵风把你惊醒。你依偎在你的<<if $monster is 1>><<nnpc_wife "Great Hawk">><<else>>伴侣<</if>>身边取暖，但是你感觉不到<<bhim>>。你什么都感觉不到。只有风和背部的剧痛。
+<br><br>
+
+你睁开眼睛，发现自己正凝视着这座塔。它很远。你低下头看着下方，<span class="red">一片黑暗向你反射，</span>地面被<<if Time.dayState is "night">>夜晚<<else>>薄雾<</if>>所掩盖。<<stress 6>><<gstress>>
+<br><br>
+
+一对巨大的翅膀在头顶上振动，是你的<<if $monster is 1>><<nnpc_wife "Great Hawk">><<else>>伴侣<</if>>。
+<<bhe>>紧紧地抓住你，把你带到了高塔并将你扔下。<<bHis>>翅膀
+<<if Time.dayState is "night">>
+	星星被隐藏
+<<else>>
+	在你身上投下巨大的阴影
+<</if>>
+，你四肢伸开躺在<<bhis>>的爪子下。
+<br><br>
+
+<<if $nightmaresSeen.includes("bird")>>
+	有些不对劲。<span class="purple"><<bHe>>不是你的<<if $monster is 1>><<nnpc_wife "Great Hawk">><<else>>伴侣<</if>>。</span>
+	<br><br>
+
+	<<link [[苏醒|Nightmare Bird Wake]]>><</link>><<willpowerdifficulty 1 1000>>
+	<br>
+<</if>>
+<<link [[安抚|Nightmare Bird 2]]>><<set $phase to 1>><<sub 1>><</link>><<gmystery>>
+<br>
+<<link [[训斥|Nightmare Bird 2]]>><<set $phase to 0>><<def 1>><</link>><<gmystery>>
+<br>
+
+:: Nightmare Bird Wake
+<<effects>>
+
+你不想在这里。你想回到你的巢穴，和你的<<if $monster is 1>><<nnpc_wife "Great Hawk">><<else>>伴侣<</if>>在一起，而不是和这个<<if $monster is 1>>不知道是谁<<else>>不知道什么东西<</if>>在一起。你闭上了眼睛。
+<br><br>
+
+<<if $willpowerSuccess>>
+	你感觉周围的世界逐渐消失，<span class="green">让现实重新出现。</span>那个<<beasttype>>尖叫着，直到最后也消失了。
+	<br><br>
+
+	<<link [[继续|Nightmare Bird End]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<span class="red">一声可怕的尖叫将你从现实中撕裂开来。</span>那个<<beasttypes>>的爪子深深地插进了你的胸口，将你压在地上。你被困住了，无论是身体还是思想。<<stress 6>><<pain 4>><<gstress>><<gpain>>
+	<br><br>
+
+	<<link [[继续|Nightmare Bird 2]]>><<set $phase to 2>><</link>>
+	<br>
+<</if>>
+
+:: Nightmare Bird 2
+<<effects>>
+
+<<if $phase is 1>>
+	你撑起身子，向<<beasttype>>伸出一只手。
+	<<if $speech_attitude is "meek">>
+		"好了，好了，"你低声说。"你只是脾气暴躁。我们去睡觉吧。"
+	<<elseif $speech_attitude is "bratty">>
+		"你怎么了?"你说。"回去睡觉吧，笨蛋。"
+	<<else>>
+		"没关系，"你低声说。"你只是需要休息。"
+	<</if>>
+	<br><br>
+
+	<<if $monster is 1>>
+		<span class="red"><<bHe>>以尖叫和猛烈的拍打回应。</span>
+	<<else>>
+		<span class="red"><<bHe>>以一声尖叫回答。</span>
+	<</if>>	
+	你退缩了。<<bHis>>凝视着你。<<stress 6>><<gstress>>
+	<br><br>
+<<elseif $phase is 0>>
+	<<if $speech_attitude is "meek">>
+		"请停止吧，"你哀嚎着，把自己埋在巢里。"我想睡觉。"
+	<<elseif $speech_attitude is "bratty">>
+		你不屑地转过身去。"别闹了，"你呻吟道。"我想睡觉。"
+	<<else>>
+		你翻了个身，叹了口气。"我在睡觉，"你说。"别再叫醒我了。"
+	<</if>>
+	<br><br>
+
+	伴随着一声可怕的尖叫，<span class="red"><<bhe>>用<<bhis>>的爪子抓住了你的脖子，</span>把你扭回去，以满足<<bhis>>的凝视。<<stress 6>><<gstress>>
+	<br><br>
+<</if>>
+
+<<bHe>>靠过来，把你背进巢里，
+<<if $monster is 1>>
+	直到你们的脸平齐。<<bHis>>头发又乱又打结，
+<<else>>
+	直到它的喙与你同高。它的羽毛凌乱，没有平常被梳理过的那般整齐，
+<</if>>
+<<bhis>>的爪尖在你的皮肤上显得特别锐利。在<<bhis>>的怒视中，你感受不到任何的认知，只有可怕而野蛮的欲望。
+<br><br>
+
+毫无预兆地，<<bhe>>向你扑来!
+<br><br>
+
+<<link [[继续|Nightmare Bird Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Nightmare Bird Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<set $enemyhealthmax to 600>>
+	<<set $enemyhealth to 600>>
+	<<if $monster isnot 1>>
+		<<set $position to "doggy">>
+		<<set $NPCList[0].stance to "top">>
+	<</if>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Nightmare Bird Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Nightmare Bird Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Nightmare Bird Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+
+	<<bHe>>盯着你,
+	<<if $monster is 1>>
+		死一般的寂静。
+	<<else>>
+		很宁静.
+	<</if>>
+	突然，<<bhe>>飞到空中，用<<bhis>>的爪子抓住你，把你从塔的边缘拖下来。
+<<else>>
+	<<bHe>>突然退缩，发出一声刺耳的尖叫。然后<<bhe>>以奔跑的姿势，用爪子抓住你，将你拖向塔的边缘。
+<</if>>
+你再次面对着下面黑暗的深渊。<<beasttypes>>的爪子深深地刺入你的肉体，牢牢地抓住你。
+<br><br>
+
+然后，<<bhe>>放开了手。<<stress 12>><<ggstress>>
+<br><br>
+
+当你坠落时，<<beasttype>>消失在视野中。
+<<if $speech_attitude is "meek">>
+	你呼喊着向<<bhim>>乞求、哀求。但风吹走了你的呼声。
+<<elseif $speech_attitude is "bratty">>
+	你拼命地向<<bhim>>抓去，但只能抓住一把风。
+<<else>>
+	你疯狂地挥舞着，大声呼救。只有风在回答。
+<</if>>
+像垃圾一样被丢弃，完全无助地跌倒。
+<br><br>
+
+<<link [[继续|Nightmare Bird End]]>><<endcombat>><<clotheson>><</link>>
+<br>
+
+:: Nightmare Bird End
+<<effects>><<nightmareEnd>>
+<<npc "Great Hawk">><<person1>>
+
+你颤抖着醒来，汗水浸透了全身，但你安全地在巢里。<<beasttype>>在你身边睡着，平静而毫不在意。你的目光停留在<<bhis>>安睡的身影上，然后从塔顶上飘散开来。
+<br><br>
+
+即使你梦的阴霾已被驱散，边缘上也只剩下黑暗。你浑身颤抖。<<stress 6>><<gstress>>
+<br><br>
+
+<<link [[继续|$nightmareExit]]>><<unset $nightmareExit>><<endevent>><</link>>
+<br>
+
+:: Nightmare Harper
+<<effects>><<nightmareStart "harper">><<set $location to "asylum">>
+<<silently>><<ruined>><</silently>>
+<<upperwear 87>>
+<<npc Harper>><<generate2>><<generate3>><<generate4>><<person1>>
+
+你陷入不安的睡眠。
+<br><br>
+
+你被眩目的灯光唤醒，坐直身子却无法动弹。你的四肢被绑住了。你甚至不能转头。<<stress 6>><<gstress>>
+<br><br>
+
+环顾四周，你能瞥见周围的环境。光滑的白色墙壁。三把椅子。在他们面前，桌子上放着一台奇怪的机器。房间里没有人。
+<br><br>
+
+<<if $nightmaresSeen.includes("harper")>>
+	你知道这个地方。这不是真的。<span class="purple">你心生不安。</span>
+	<br><br>
+
+	<<link [[苏醒|Nightmare Harper Wake]]>><<set $phase to 0>><</link>><<nightmareWakeDifficulty>>
+	<br>
+<</if>>
+<<link [[反抗|Nightmare Harper 2]]>><<set $phase to 1>><<pain 6>><</link>>
+<br>
+<<link [[等待|Nightmare Harper 2]]>><<set $phase to 0>><<stress 6>><</link>>
+<br>
+
+:: Nightmare Harper Wake
+<<effects>>
+
+<<if $phase is 2>>
+	手术刀靠近时，你的心跳加速，但你紧闭着眼睛。这不是真的，不会伤害你。你意志力地让自己醒来。
+<<elseif $phase is 1>>
+	你不理睬哈珀和其他人。一旦你醒来，他们就无法伤害你。你闭上眼睛。
+<<else>>
+	挣扎没有任何用处，如果你想要逃脱，你需要保持一个清晰的头脑。你闭上眼睛。
+<</if>>
+<br><br>
+
+<<if $willpowerSuccess>>
+	房间变得更加明亮。光线穿过你的眼睛，<span class="green">你感觉到四肢放松了下来。</span>你整个身体都自由了。你一直在一个白色的虚空中自由落体。最终，你着陆了。你的视野慢慢地变得清晰。
+	<br><br>
+
+	<<link [[继续|Nightmare Harper End]]>><<endevent>><<set $phase to 1>><</link>>
+	<br>
+<<else>>
+	<<set $nightmareWake++>>
+
+	<<if $phase is 2>>
+		刀锋一点点地深入你的身体。你无法思考。<span class="red">威胁太过真实。</span>本能接管了你的思维，你拼命地扯动着绑着你的绳索。<<stress 6>><<gstress>>
+		<br><br>
+
+		<<link [[继续|Nightmare Harper 4]]>><<set $phase to 1>><</link>>
+		<br>
+	<<elseif $phase is 1>>
+		"太好了，"哈珀说，"非常放松。"<span class="red"><<person1>><<His>>的话打破了你的注意力。</span>你紧张地把目光从一个人转向另一个人。期待再次渐渐涌入你的心中。<<stress 6>><<gstress>>
+		<br><br>
+
+		<<link [[继续|Nightmare Harper 3]]>><<set $phase to 0>><</link>>
+		<br>
+	<<else>>
+		你试图集中注意力，<span class="red">但某些事物在你的脑海中咬着你。</span>你不记得自己为什么会在这里，但你知道这里不安全。<span class="red">你失去了注意力。</span><<stress 6>><<gstress>>
+		<br><br>
+
+		<<link [[继续|Nightmare Harper 2]]>><<set $phase to 2>><</link>>
+		<br>
+	<</if>>
+<</if>>
+<br><br>
+
+:: Nightmare Harper 2
+<<if $phase is 1>>
+	你试图拉扯着固定你的皮革绑带。尽管你尽了最大的努力，但最终只是磨破了你的手腕。<<gpain>>
+<<elseif $phase is 0>>
+	绑带太紧了，你试图挣脱只会让自己更加受伤。除此之外，你别无选择，只能坐在那里，等待着紧张的沉默。<<gstress>>
+<</if>>
+<br><br>
+
+你身后传来一扇门开启的声音，两个身穿医院工作服的人进来了。另外两个人跟在后面。你认出其中一个人，是哈珀医生。
+<br><br>
+
+"晚上好，"哈珀医生这样说着，把<<his>>的同事领到了桌子旁。其他人把一个手推车推到了你面前，上面放着某种装置。
+<br><br>
+
+<<if $nightmaresSeen.includes("harper")>>
+	<<link [[苏醒|Nightmare Harper Wake]]>><<set $phase to 1>><</link>><<nightmareWakeDifficulty>>
+	<br>
+<</if>>
+<<link [[要求|Nightmare Harper 3]]>><<def 1>><<set $phase to 1>><</link>>
+<br>
+<<link [[保持沉默|Nightmare Harper 3]]>><<set $phase to 0>><</link>>
+<br>
+
+:: Nightmare Harper 3
+<<effects>>
+
+<<if $phase is 1>>
+	<<if $speech_attitude is "meek">>
+		"我——我在哪儿?"你恳求。
+		<br><br>
+
+		哈珀微笑着从<<his>>的写字板上抬起头来。"别担心，"<<he>>说。"我们在保护着你。一切都会好起来的。" 
+	<<elseif $speech_attitude is "bratty">>
+		"嘿!"你喊道，挣扎着挣脱束缚。"这是什么鬼东西?"
+		<br><br>
+
+		哈珀皱眉。"治疗很快就会开始，"<<he>>叹息道。"请不要使用这种粗暴的语气。"
+	<<else>>
+		"你找我干什么?"你问。
+		<br><br>
+
+		哈珀在<<his>>的写字板上写写画画。你看不懂这些字。"你会明白的，"<<he>>说。"这是为了你好。别担心。"
+	<</if>>
+	<br><br>
+<</if>>
+
+两位护工完成了他们的装置，并将其连接到桌子上的设备上。
+<<if $fluid_forced_stat gte 100>>
+	现在完全组装好了，毫无疑问。<span class="lewd">这是雷米农场的一台挤奶机。</span>
+<<else>>
+	它已经组装好了，但你不知道它是什么。
+<</if>>
+哈珀忽略了这两个人，而选择了<<his>>的朋友。<<person2>><<Hes>>穿着白色外套，就像哈珀一样。
+<br><br>
+
+"这是我的一个病人，"<<person1>><<he>>说。"我认为<<pshe>>将是我们最新治疗计划的完美主题。请密切关注。"
+<br><br>
+
+<<He>>朝护工点了点头。其中一个，一个<<person3>><<person>>抓住你的肩膀。另一个挥舞着手术刀。<span class="red"><<person4>><<He>>把刀片压在你的胸口。</span><<stress 6>><<gstress>>
+<br><br>
+
+<<if $nightmaresSeen.includes("harper")>>
+	<<link [[苏醒|Nightmare Harper Wake]]>><<set $phase to 2>><</link>><<nightmareWakeDifficulty>>
+	<br>
+<</if>>
+<<link [[反抗|Nightmare Harper 4]]>><<def 1>><<set $phase to 1>><<pain 6>><</link>>
+<br>
+<<link [[顺其自然|Nightmare Harper 4]]>><<sub 1>><<set $phase to 0>><<stress 6>><</link>><<gstress>>
+<br>
+
+:: Nightmare Harper 4
+<<effects>>
+
+<<if $phase is 1>>
+	你在座位上扭动。<<person3>><<person>>收紧<<his>>抓住你的力道。你在<<his>>的控制下挣扎着呼吸。<<pain 2>><<gpain>>
+	<br><br>
+
+	不受影响，<<person4>><<person>>继续。刀刃刺穿了你的衣服，但没有进一步刺穿。
+<<else>>
+	闭上眼睛，打起精神。幸运的是，刀刃刺穿你的衣服后就停止了。
+<</if>>
+<<He>>离开了,
+<<if playerChastity()>>
+	<span class="lewd">你的$worn.genitals.cn_name_cap露了出来。</span> 哈珀皱眉，"这样可能会影响我们的测试结果。"
+	<br><br>
+
+	<<person1>><<He>>从外套里拿出了一个锋利的工具，<<person4>><<person>>接过了它。以外科手术般的精准，<<he>>将尖端滑入你腰带的锁孔。咔哒。<span class="red">你尖叫起来，突如其来的疼痛冲击着你的<<genitals>>。</span>当痛苦消退时，你的$worn.genitals.cn_name_cap哗啦哗啦地掉到了地板上。
+	<<set $worn.genitals.type.push("broken")>><<genitalsruined>><<ruined>>
+	<<stress 12>><<pain 10>><<ggstress>><<gggpain>>
+<<else>>
+	<span class="lewd">你的<<genitals>>露了出来。</span>
+	<<ruined>><<stress 6>><<gstress>>
+<</if>>
+<br><br>
+
+<<if $exhibitionism gte 75>>
+	你已经习惯了这种暴露，但他们的冷漠并不能激起你的性欲。
+<<else>>
+	浑身赤裸带来的耻辱几乎把你压垮，但你对此无能为力。
+<</if>>
+你无能为力，只能放任哈珀看着你的冷漠目光。"很好，"<<he>>对护工说。"现在，请开始手术。"
+<br><br>
+
+<<link [[继续|Nightmare Harper 5]]>><</link>>
+<br>
+
+:: Nightmare Harper 5
+<<effects>>
+
+<<person4>><<person>>拨动椅子上的开关。在一片模糊中，它向后折断，迫使你仰面躺下。
+<br><br>
+
+"没有健康的身体，就不可能有健康的思想。"哈珀盯着你。在<<person1>><<his>>的提示下，护工走向机器。
+<br><br>
+
+<<if $player.penisExist and $lactating is 1>>
+	<<set $phase2 to 2>>
+	<<person3>><<person>>取回一个玻璃泵，而<<his>>的搭档拿着一对橡胶杯。<span class="lewd">它们被扣在你的<<penis>>和<<breasts>>上，</span>橡胶密封圈紧紧地围绕着它们。
+<<elseif $player.penisExist>>
+	<<set $phase2 to 1>>
+	<<person3>><<person>>把你的<<penis>>握在手里，而<<person4>><<person>>则展开了一根长长的橡胶管。玻璃泵固定在它的末端。<<He>>放低它，<span class="lewd">直到它与你的<<penis>>相连。</span>它周围的橡胶密封很紧。
+<<else>>
+	<<set $phase2 to 0>>
+	<<person3>><<person>>取回一个小小的药丸状物体。<span class="lewd"><<He>>把它按在了你裸露的阴蒂上，</span>用一条带子固定住。<<His>>的同伴在你的<<breasts>>上扣上了一对橡胶杯，橡胶密封紧盖在你的乳头上。
+<</if>>
+<<stress 6>><<arousal 100>><<gstress>><<garousal>>
+<br><br>
+
+哈珀向<<person4>><<person>>点头。那个人轻轻一按开关，机器就运作了起来。
+<br><br>
+
+<<link [[继续|Nightmare Harper Machine]]>><<set $phase to "start">><<person1>><</link>>
+<br>
+
+:: Nightmare Harper Machine
+<<effects>>
+
+<<if $phase is "resist">>
+	你试图忽略机器侵入性的探测.
+	<<if $willpowerSuccess>>
+		<span class="green">你可以将自己从这种感觉中分离出来。</span>感觉几乎不真实。
+	<<else>>
+		<span class="red"><<if $phase2 is 0>>振动证明<<else>>吸力证明<</if>>作用太大，</span>但是你却感觉比以前更热。<<arousal 2500>><<garousal>>
+	<</if>>
+	<br><br>
+
+	<<print either(
+		`"这个过程需要时间，"哈珀告诉<<his>>的同事。"<<pShe>>会暖和起来的。"`,
+		`哈珀向护工报出号码。他们相应地调整了机器。`,
+		`哈珀摇了摇头。"治疗只对那些愿意接受治疗的人有效。"`,
+		`哈珀饶有兴趣地看着。<<He>>经常做笔记。`,
+		`哈珀皱眉。"这种紧张是不健康的。"`
+	)>>
+<<elseif $phase is "struggle">>
+	虽然被束缚住了，你还是使劲地抽打着机器。
+	<<if $physiqueSuccess>>
+		<<set $harperNightmareMachine -= 1>>
+		<span class="green">那机器在你的力量下火花四溅。</span>管子脱落了，哪怕只是一瞬间。
+	<<else>>
+		<span class="red">它仍然紧贴着，</span>你的挣扎很快被它的<<if $phase2 is 0>>振动<<else>>吸力<</if>>侵蚀。<<arousal 2500>><<garousal>>
+	<</if>>
+	<br><br>
+
+	<<print either(
+		`"<<pShe>>可能会挣扎，"哈珀对<<his>>的同事说，"但我向你保证，<<pshe>>不会挣脱的。"`,
+		`哈珀恼怒地啧了一声。"请控制自己的行为，这是为你好。"`,
+		`哈珀向护工报出号码。他们相应地调整了机器。`,
+		`哈珀饶有兴趣地看着。<<He>>经常做笔记。`,
+		`哈珀叹了一口气。"如果你放松点儿，事情就容易多了。"`
+	)>>
+<<elseif $phase is "let">>
+	你让"治疗"结束。
+	<<switch $phase2>>
+		<<case 2>>
+			管子在你的<<penis>>周围收紧，抽吸它。
+			<<if $arousal gte 5000>>
+				它的节奏迅速而机械，令人痛苦。
+			<<else>>
+				一开始很缓慢，但速度稳步增加。
+			<</if>>
+			上面的罩杯夹住你的<<breasts>>。<span class="lewd">当你被用力吸时，精液和乳汁在管子中流动。</span>
+		<<case 1>>
+			管子在你的<<penis>>周围收紧，抽吸它。
+			<<if $arousal gte 5000>>
+				它的节奏迅速而机械，令人痛苦。
+			<<else>>
+				一开始很缓慢，但速度稳步增加。
+			<</if>>
+			<span class="lewd">精液从吸管中滴漏而出。</span>
+		<<default>>
+			设备对着你的<<pussy>>震动。
+			<<if $arousal gte 5000>>
+				光是压力就足以把你压垮。
+			<<else>>
+				一开始是轻微的，但逐渐增加压力。
+			<</if>>
+			上面的杯子<<if $player.breastsize is 0>>紧紧按住你的胸部<<else>>紧紧夹住你的<<breasts>><</if>>。
+			<<if $lactating is 1>>
+				<span class="lewd">牛奶漏了出来，从管子里滴了出来。</span>
+			<<else>>
+				它玩弄你的乳头，让你高兴得喘不过气来。
+			<</if>>
+	<</switch>>
+	你被绑得发抖。<<garousal>><<arousal 2500>>
+	<br><br>
+
+	<<print either(
+		`哈珀向护工报出号码。他们相应地调整了机器。`,
+		`"看看<<pshe>>是怎么抽搐的，"哈珀对<<his>>的同伴笑着说。`,
+		`哈珀饶有兴趣地看着。<<He>>经常做笔记。`,
+		`哈珀拍了拍双手。"好漂亮的腮红!"`,
+		`哈珀微笑，"感觉很好，不是吗?"`
+	)>>
+<<elseif $phase is "start">>
+	<<set $harperNightmareTimer to 9>>
+	<<set $harperNightmareMachine to 4>>
+	<<set $position to "missionary">>
+
+	机器隆隆作响。你不舒服地扭动身体，但你的绑带把你锁在了原地。哈珀和<<person2>><<person>>密切关注。<<person1>>
+<</if>>
+<br><br>
+
+<<switch $phase2>>
+	<<case 2>><<barn_img both no_livestock table>>
+	<<case 1>><<barn_img penis no_livestock table>>
+	<<default>><<barn_img breasts no_livestock table>>
+<</switch>>
+
+<<if $arousal gte $arousalmax>>
+	这种感觉太强烈了。<<orgasm>>
+	<br>
+
+	<<link [[继续|Nightmare Harper Machine Finish]]>><<set $phase to "orgasm">><</link>>
+	<br>
+<<elseif $harperNightmareMachine lte 0>>
+	<span class="green">机器发出嘶嘶声，</span>它的探测头从你的<<if $phase2 isnot 1>>胸部和<</if>>腹股沟滑动。哈珀紧握着<<his>>手中的钢笔。
+	<br><br>
+
+	<<link [[继续|Nightmare Harper Machine Finish]]>><<set $phase to "break">><</link>>
+	<br>
+<<elseif $harperNightmareTimer lte 0>>
+	机器里有东西发出咔哒声。一盏灯闪烁着，突然，<span class="green">停了下来。</span>必须排水。哈珀皱眉。
+	<br><br>
+
+	<<link [[继续|Nightmare Harper Machine Finish]]>><<set $phase to "timer">><</link>>
+	<br>
+<<else>>
+	<<set $harperNightmareTimer -= 1>>
+
+	<<link [[抵抗|Nightmare Harper Machine]]>><<set $phase to "resist">><</link>><<willpowerdifficulty 1 $willpowermax>>
+	<br>
+	<<link [[反抗|Nightmare Harper Machine]]>><<set $phase to "struggle">><</link>><<physiquedifficulty 1 $physiquemax>>
+	<br>
+	<<link [[顺其自然|Nightmare Harper Machine]]>><<set $phase to "let">><</link>>
+	<br>
+<</if>>
+
+:: Nightmare Harper Machine Finish
+<<effects>>
+
+<<if $phase is "orgasm">>
+	"很好，"哈珀说。<<He>>招呼<<his>>的同伴靠近，急切地指着你身体的某些部位。"<<pShes>>更加放松了，你不同意吗?"
+	<br><br>
+
+	他们一边交谈，一边不时戳戳你裸露的身体。你仍然被束缚着，你无力阻止他们，更不可能遮挡住自己。<<stress 6>><<gstress>>
+	<br><br>
+
+	最后，<<he>>微笑着把手放在你的头上。"你做得太棒了，"<<he>>说。"但现在是休息的时候了。"
+<<elseif $phase is "break">>
+	"你没必要这么麻烦，"哈珀叹了口气。"我们在努力帮助你。"<<his>>声音中的愤怒是显而易见的，但<<he>>转向<<his>>的同事后，<<he>>的脸上又带上了<<his>>惯常的微笑。
+	<br><br>
+
+	"就当这是一次尝试吧，"<<he>>说。"当然还需要进一步的测试，先把<<pher>>送回房间去。"
+<<else>>
+	"真令人失望，"哈珀叹息道。"<<pshe>>好像很害怕。不过也正常，恐惧会减少快乐。"
+	<br><br>
+
+	<<He>>打了个响指，护工走上前来。"我们稍后再试。"<<He>>轻拍你的头。"该回你的房间了。"
+<</if>>
+<br><br>
+
+<<link [[继续|Nightmare Harper 6]]>><<unset $harperNightmareMachine>><<unset $harperNightmareTimer>><</link>>
+<br>
+
+:: Nightmare Harper 6
+<<effects>>
+
+哈珀从<<person1>><<his>>的外套中取出一根针，同时<<person3>><<person>>按住了你的手臂。哈珀把帽子摘下来的时候，你的手臂已经被洗干净了。
+<br><br>
+
+"闭上眼睛，"当针扎进你的皮肤时，<<he>>轻声说。<<gpain>>
+<br><br>
+
+药效很快，你很快就昏昏欲睡了。你的四肢从束缚中解放了出来，但你还是动不了。当你被抬到轮床上时，你的整个身体都非常酸软。
+<br><br>
+
+哈珀跟在你身后，你被推着走了。"保重，"<<he>>说，尽管你几乎听不清。<<He>>不会停止观察，直到门关上，你的眼睛也跟着闭上。
+<br><br>
+
+<<link [[继续|Nightmare Harper End]]>><<machine_end>><<endevent>><</link>>
+<br>
+
+:: Nightmare Harper End
+<<effects>><<nightmareEnd>>
+
+<<tearful>>你坐起来。
+<<if $phase is 1>>
+	你的视力还是很模糊,
+<<else>>
+	你的身体因兴奋而燃烧,
+<</if>>
+但你很安全。那只是一个梦。
+<br><br>
+
+<<link [[继续|$nightmareExit]]>><<unset $nightmareExit>><</link>>
+<br>

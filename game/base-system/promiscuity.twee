@@ -1,0 +1,159 @@
+:: Widgets Promiscuity [widget]
+<<widget "promiscuity1">>
+	<<promiscuityN 1>>
+<</widget>>
+
+<<widget "promiscuity2">>
+	<<promiscuityN 2>>
+<</widget>>
+
+<<widget "promiscuity3">>
+	<<promiscuityN 3>>
+<</widget>>
+
+<<widget "promiscuity4">>
+	<<promiscuityN 4>>
+<</widget>>
+
+<<widget "promiscuity5">>
+	<<promiscuityN 5>>
+<</widget>>
+
+<<widget "promiscuity6">>
+	<<promiscuityN 6>>
+<</widget>>
+
+<<widget "promiscuityN">>
+	<<set $_n to _args[0]>>
+	<<set $_scaledPromiscuityMax to 20 * $_n>>
+	<<if $desperateaction is 1>>
+		你觉得恶心，但这总比贝利为你准备的要好。
+	<<elseif $desperateaction is 2>>
+		你觉得恶心，但这已经是最好的选择了。
+	<<elseif typeof $desperateaction is "string">>
+		你觉得恶心，但<<print $desperateaction>>。
+	<<else>>
+		<<if $control lt $controlmax>>
+			<<if $_n is 6>>
+				如此堕落的行径<span class="green">彻底恢复了你的控制感</span>，<span class="red">但你的精神受到了打击</span>。
+			<<elseif $promiscuity lt $_scaledPromiscuityMax>>
+				这样淫荡的行为会让你感到兴奋，<span class="green">你的控制感和自我价值感缓慢地恢复了</span>，但这只是暂时的。
+			<<else>>
+				做出这样的淫荡行为会让你兴奋，但并不足以驱散笼罩在你头上的阴霾。<span class="pink">也许你需要做一些更极端的事情？</span>
+			<</if>>
+		<<else>>
+			<<if $_n is 6>>
+				你已感到一切尽在掌握之中，<span class="red">但为徒劳的堕落行径而感到空虚。</span>。
+			<<elseif $promiscuity lt $_scaledPromiscuityMax>>
+				你已感到一切尽在掌握之中，如此的猥亵行为会<span class="green">抚慰</span>着你，并让你感到兴奋异常。
+			<<else>>
+				你已感到一切尽在掌控之中。即使这种行为<span class="pink">过于平淡而无法抚慰你</span>，但它的确让你感到非常的兴奋。
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<!-- separating the code from the written text -->
+	<<if $desperateaction is 1 or $desperateaction is 2 or typeof $desperateaction is "string">>
+		<<control `$_n * -10`>>
+		<<switch $_n>>
+			<<case 1>><<lcontrol>>
+			<<case 2>><<llcontrol>>
+			<<case 3>><<llcontrol>>
+			<<case 4>><<llcontrol>>
+			<<case 5>><<lllcontrol>>
+		<</switch>>
+		<<gtrauma>><<trauma $_n>>
+	<<else>>
+		<<if $_n is 6>>
+			<<set $promiscuity += ($control lt $controlmax ? 2 : 1)>>
+			<<if $control lt $controlmax>><<set $control to $controlmax>><<gggcontrol>><</if>><<trauma 40>><<ggtrauma>>
+		<<elseif $promiscuity lt $_scaledPromiscuityMax>>
+			<<set $promiscuity += ($control lt $controlmax ? 2 : 1)>>
+			<<if $control lt $controlmax>>
+				<<ggcontrol>>
+			<</if>>
+			<<control 25>><<stress $_n -300>><<combattrauma `$_n * -30`>><<ltrauma>><<lstress>>
+		<<else>>
+			<<if V.daily["promiscuityStress" + $_n] isnot 1 and $statFreeze isnot true>>
+				<<set V.daily["promiscuityStress" + $_n] to 1>><<lstress>><<stress $_n -100>>
+			<</if>>
+		<</if>>
+		<<arousal `$_n * 100`>><<garousal>>
+	<</if>>
+	<<set $promiscuity to Math.clamp($promiscuity, 0, 100)>>
+	<br><br>
+	<<unset $desperateaction>>
+<</widget>>
+
+<<widget "combatpromiscuity1">>
+	<<combatpromiscuityN 1>>
+<</widget>>
+
+<<widget "combatpromiscuity2">>
+	<<combatpromiscuityN 2>>
+<</widget>>
+
+<<widget "combatpromiscuity3">>
+	<<combatpromiscuityN 3>>
+<</widget>>
+
+<<widget "combatpromiscuity4">>
+	<<combatpromiscuityN 4>>
+<</widget>>
+
+<<widget "combatpromiscuity5">>
+	<<combatpromiscuityN 5>>
+<</widget>>
+
+<<widget "combatpromiscuity6">>
+	<<combatpromiscuityN 6>>
+<</widget>>
+
+<<widget "combatpromiscuityN">>
+	<<if !$promiscuityIgnore>>
+		<<set $_n to _args[0]>>
+		<<if $enemytype isnot "man">>
+			<<combatdeviancyN $_n>>
+		<<elseif $consensual is 1 or $_n is 6>>
+			<<set $_scaledPromiscuityMax to 20 * $_n>>
+			<<if $promiscuity lt $_scaledPromiscuityMax>>
+				<<set $promiscuity += ($control lt $controlmax ? 2 : 1)>>
+				<<if $control lt $controlmax>>
+					<<set _combat_promiscuity_success to (_combat_promiscuity_success gte $_n ? _combat_promiscuity_success : $_n)>>
+					<<if $_n is 6>><<set $control to $controlmax>><<else>><<control 25>><</if>>
+				<<else>>
+					<<set _combat_promiscuity_max_control to $_n>>
+				<</if>>
+				<<if $_n is 6>><<combattrauma 40>><<else>><<stress $_n -300>><<combattrauma `$_n * -30`>><</if>>
+			<<else>>
+				<<set _combat_promiscuity_failure to $_n>>
+				<<if V.daily["promiscuityStress" + $_n] isnot 1 and $statFreeze isnot true>>
+					<<set V.daily["promiscuityStress" + $_n] to 1>><<stress $_n -100>>
+				<</if>>
+			<</if>>
+			<<arousal `$_n * 100`>>
+		<</if>>
+	<</if>>
+	<<set $promiscuity to Math.clamp($promiscuity, 0, 100)>>
+<</widget>>
+
+<<widget "combat_promiscuity_text">>
+	<<if _combat_promiscuity_success>>
+		<br>
+		<<if _combat_promiscuity_success is 6>>
+			你淫乱的堕落行径<span class="green">彻底恢复了你的控制感</span>，<span class="red">但对你的精神状态造成了损伤</span>。<<gggcontrol>><<ggtrauma>><<ggarousal>>
+		<<else>>
+			你的淫乱行为 <span class="green">让你恢复了对自己的控制。</span><<ggcontrol>><<ltrauma>><<lstress>><<garousal>>
+		<</if>>
+	<<elseif _combat_promiscuity_max_control>>
+		<br>
+		<<if _combat_promiscuity_max_control is 6>>
+			你已感到一切尽在掌握之中，<span class="red">但为徒劳的堕落行径而感到空虚。</span>。<<ggtrauma>><<ggarousal>>
+		<<else>>
+			你的淫乱行为 <span class="green">抚慰了你的心灵，同时也愉悦了你的身体。</span><<ltrauma>><<lstress>><<garousal>>
+		<</if>>
+	<<elseif _combat_promiscuity_failure>>
+		<br>
+		你的行为是淫乱的。<span class="pink">但这还不够，无法平复你内心的躁动。</span><<lstress>><<garousal>>
+	<</if>>
+<</widget>>

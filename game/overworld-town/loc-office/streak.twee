@@ -1,0 +1,128 @@
+:: Office Streak
+<<location "office_building">><<effects>>
+<<set $stairDistance to random(3,6)>>
+<<set $clothesCheck to 1>>
+你在<<checkfloor>>上。你躲进一个空的隔间，希望没人能看到你的<<lewdness>>.
+<<if $stress gte $stressmax>>
+	<br><br>
+	<<if isPlayerNonparasitePregnancyEnding()>>
+		<<pregnancyWatersBrokenPassout "office">>
+	<<else>>
+		<<officepassout>>
+	<</if>>
+<<else>>
+	电梯很近，但被人看见的风险很高。
+	<br>
+	你可以走楼梯，但那样你就得跑过繁忙的办公室楼层。如果你小心的话，你应该能在不被人发现的情况下爬到楼梯上。
+	<br>
+	不过，最好还是先找件东西盖住自己。
+	<br><br>
+	<<link [[冒险搭乘电梯(0:01)|Office Lift]]>><<pass 1>><</link>><<ggstress>>
+	<br>
+	<<link [[小心地走向楼梯(0:05)|Office Streak Stairs]]>><<pass 5>><<set $streakSpeed to 1>><</link>>
+	<br>
+	<<link [[快速前往楼梯(0:01)|Office Streak Stairs]]>><<pass 1>><<set $streakSpeed to 2>><</link>><<gharass>>
+	<br>
+	<<link [[试着找件衣服穿(0:05)|Office Streak Search]]>><<pass 5>><</link>>
+<</if>>
+
+:: Office Streak Stairs
+<<effects>>
+你低姿前进，利用掩体潜行至楼梯。
+<<set $danger to random(1,10000)>>
+<<if $danger gte 9000 - ($streakSpeed * 1500)>>
+	<<if $rng gte 90 - ($officeFloor * 2)>>
+		一个<<generate1>><<person1>><<person>>走进你所在的过道，开始向你走来，所以你躲进附近的一个储物柜等待<<him>>经过。
+		<br>
+		你靠在门上，试图喘口气，这时门猛地打开了，把你撞倒在地。
+		<br>
+		你抬头看到那个<<person1>><<person>>站在你面前，用欲念的目光凝视着你。
+		<br><br>
+		<<link [[继续|Office Supply Molest]]>><<set $molestationstart to 1>><</link>>
+	<<elseif $rng gte 70 - $officeFloor>>
+		就在你以为安全了的时候，你撞上了一个保安。
+		<br><br>
+		"你跟我来。"
+		<br><br>
+		<<link [[继续|Office Security Escort]]>><<pass $officeFloor>><</link>>
+	<<else>>
+		你遇到一大群<<people>>挡住了通往楼梯的路。其中一个人开始朝你走来。
+		<br>
+		你注意到附近有一辆用布盖着的服务车，所以你爬进去隐藏你的<<lewdness>>.
+		<br>
+		就在你以为安全了的时候，车却开始移动了。一分钟后，车停了下来，你听到有人走开了。
+		<br><br>
+		<<set _cartDistance to random(-2,2)>>
+		<<if _cartDistance gte 0>>
+			你从购物车下面偷看，想弄清楚自己的方位，却发现自己已经离楼梯更远了!
+		<<else>>
+			你从购物车下面偷看，想弄清楚自己的方位，却发现自己离楼梯更近了!
+		<</if>>
+		<<set $stairDistance += _cartDistance>>
+		<<officestreakactions>>
+	<</if>>
+<<else>>
+	<<set $stairDistance -= $streakSpeed>>
+	<<if $stairDistance lte 0>>
+		你从藏身之处奔向楼梯井，保持低调，躲在别人看不到的地方。你走到门口，偷偷溜了进去。这门是从里面锁上的，所以现在没有回头路了。
+		<br>
+		你花点时间喘口气。你会需要它的，因为你有<<number $officeFloor>>层要下。
+		<br><br>
+		<<link [[下楼梯|Office Stairwell]]>><</link>>
+	<<else>>
+		你走到你觉得安全的地方，然后停下来躲起来<<officestreakhide>>
+		<<officestreakactions>>
+	<</if>>
+<</if>>
+<<unset $streakSpeed>>
+
+:: Office Streak Search
+<<effects>>
+<<set $clothesCheck to 0>>
+你花点时间在地板上四处找衣服穿。
+<br>
+<<if $rng gte 80>>
+	有人推着一辆装满毛巾的推车经过你的藏身之处。在别人看到你之前，你迅速抓起一个包在自己身上。你现在可以安全地乘电梯了。
+	<br><br>
+	<<towelup>>
+	<<link [[回到大厅(0:01)|Office Lobby]]>><<pass 1>><</link>>
+<<else>>
+	找了几分钟，你还是什么也没找到。你决定你最好的行动就是尽快跑到安全的地方。
+	<<officestreakactions>>
+<</if>>
+
+:: Widgets Office Streak [widget]
+<<widget "officestreakactions">>
+	<br><br>
+	<<if $stairDistance lte 2>>
+		你可以看到楼梯，离你现在的位置只有几条过道。
+	<<elseif $stairDistance lte 4>>
+		楼梯离你有好几条通道，但它们仍然可能是比电梯更好的选择。
+	<<else>>
+		楼梯看不见了。
+	<</if>>
+	<br><br>
+	<<link [[冒险乘电梯(0:01)|Office Lift]]>><<pass 1>><</link>>
+	<br>
+	<<link [[小心地走向楼梯(0:05)|Office Streak Stairs]]>><<pass 5>><<set $streakSpeed to 1>><</link>>
+	<br>
+	<<link [[快速前往楼梯(0:01)|Office Streak Stairs]]>><<pass 1>><<set $streakSpeed to 2>><</link>>
+	<br>
+	<<if $clothesCheck gte 1>>
+		<<link [[试着找件衣服穿(0:05)|Office Streak Search]]>><<pass 5>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "officestreakhide">>
+	<<rng>>
+	<<if $rng gte 76>>
+		在一株大盆栽的后面。有两个人从你身边走过，似乎没有注意到你。
+	<<elseif $rng gte 51>>
+		在复印机后面有人走过来开始复印。他们没有注意到你就走开了。
+	<<elseif $rng gte 26>>
+		在复印机后面有人走过来开始复印。他们没有注意到你就走开了。
+	<<else>>
+		在饮水机后面。靠在它上面，你会感觉到它凉爽的塑料底座贴在你的<<exposedupper>>上.
+	<</if>>
+<</widget>>

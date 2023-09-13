@@ -1,0 +1,732 @@
+:: Widgets Actions Pain [widget]
+<<widget "actionspain">>
+	<<if $leftarm is 0>>
+		你的左臂自由了，但疼痛使你动弹不得。
+		<br>
+		<<if $leftactiondefault is "leftstruggleweak">>
+			| <label><span class="brat">挣扎</span> <<radiobutton "$leftaction" "leftstruggleweak" checked>></label>
+		<<else>>
+			| <label><span class="brat">挣扎</span> <<radiobutton "$leftaction" "leftstruggleweak">></label>
+		<</if>>
+		<<if $leftactiondefault is "leftprotect">>
+			| <label><span class="meek">防护</span> <<radiobutton "$leftaction" "leftprotect" checked>></label>
+		<<else>>
+			| <label><span class="meek">防护</span> <<radiobutton "$leftaction" "leftprotect">></label>
+		<</if>>
+		<br>
+	<<elseif $leftarm is "grappled">>
+		你的左臂被痛苦的抓住了。
+		<br>
+	<<elseif $leftarm is "bound">>
+		你的左臂因束缚而阵痛。
+		<br>
+	<</if>>
+
+	<<if $rightarm is 0>>
+		<br>
+		你的右臂自由了，但疼痛使你动弹不得。
+		<br>
+		<<if $rightactiondefault is "rightstruggleweak">>
+			| <label><span class="brat">挣扎</span> <<radiobutton "$rightaction" "rightstruggleweak" checked>></label>
+		<<else>>
+			| <label><span class="brat">挣扎</span> <<radiobutton "$rightaction" "rightstruggleweak">></label>
+		<</if>>
+		<<if $rightactiondefault is "rightprotect">>
+			| <label><span class="meek">防护</span> <<radiobutton "$rightaction" "rightprotect" checked>></label>
+		<<else>>
+			| <label><span class="meek">防护</span> <<radiobutton "$rightaction" "rightprotect">></label>
+		<</if>>
+		<br>
+	<<elseif $rightarm is "grappled">>
+		你的右臂被痛苦的抓住。
+		<br>
+	<<elseif $rightarm is "bound">>
+		你的右臂因束缚而阵痛。
+		<br>
+	<</if>>
+
+	<<if $mouthuse is 0>>
+		<br>
+		你的嘴自由了，但不由自主的呜咽与哭泣抑制了言语。
+		<br>
+		<<if $mouthactiondefault is "stifle">>
+			| <label><span class="brat">强忍住</span> <<radiobutton "$mouthaction" "stifle" checked>></label>
+		<<else>>
+			| <label><span class="brat">强忍住</span> <<radiobutton "$mouthaction" "stifle">></label>
+		<</if>>
+		<<if $mouthactiondefault is "letout">>
+			| <label><span class="meek">发泄出来</span> <<radiobutton "$mouthaction" "letout" checked>></label>
+		<<else>>
+			| <label><span class="meek">释放出来</span> <<radiobutton "$mouthaction" "letout">></label>
+		<</if>>
+		<br>
+	<</if>>
+<</widget>>
+
+:: Widgets Effects Pain [widget]
+
+<<widget "effectspain">>
+	<<if $leftaction is "leftstruggleweak" and $rightaction is "rightstruggleweak">>
+		<<set $leftaction to 0>><<set $rightaction to 0>><<set $leftactiondefault to "leftstruggleweak">><<set $rightactiondefault to "rightstruggleweak">>
+		<<if $position is "stalk">>
+			你与疼痛作斗争，试图让自己站起来，但是没有力气了。
+		<<else>>
+			你与痛苦作斗争，试图把它们推开，但是你没力气了。
+		<</if>>
+		<<brat 2>><<set _br to true>>
+	<</if>>
+
+	<<if $leftaction is "leftstruggleweak">>
+		<<set $leftaction to 0>><<set $leftactiondefault to "leftstruggleweak">>
+		<<if $position is "stalk">>
+			你与疼痛作斗争，试图用左臂把自己撑起来，但是力气太小了。
+		<<else>>
+			你与疼痛作斗争，用你的左臂推它们，但是你的力气太少了。
+		<</if>>
+		<<brat 1>><<set _br to true>>
+	<</if>>
+
+	<<if $rightaction is "rightstruggleweak">>
+		<<set $rightaction to 0>><<set $rightactiondefault to "rightstruggleweak">>
+		<<if $position is "stalk">>
+			你与疼痛作斗争，试图用右臂把自己推起来，但是力气太小了。
+		<<else>>
+			你与疼痛作斗争，用你的右臂推着它们，但是你没力气了。
+		<</if>>
+		<<brat 1>><<set _br to true>>
+	<</if>>
+
+	<<if $leftaction is "leftprotect" and $rightaction is "rightprotect">>
+		<<set $leftaction to 0>><<set $rightaction to 0>><<set $leftactiondefault to "leftprotect">><<set $rightactiondefault to "rightprotect">>
+		你保护你身体的柔软部分，保护他们免受进一步的伤害。<span class="green"> - 疼痛</span>
+		<<meek 2>><<pain -2>><<set _br to true>>
+	<</if>>
+
+	<<if $leftaction is "leftprotect">>
+		<<set $leftaction to 0>><<set $leftactiondefault to "leftprotect">>
+		你用左手紧紧抓住身体上的一个敏感部位，保护它不受伤害。<span class="green"> - 疼痛</span>
+		<<meek 1>><<pain -1>><<set _br to true>>
+	<</if>>
+
+	<<if $rightaction is "rightprotect">>
+		<<set $rightaction to 0>><<set $rightactiondefault to "rightprotect">>
+		你用右手紧紧抓住身体上的一个敏感部位，保护它不受伤害。<span class="green"> - 疼痛</span>
+		<<meek 1>><<pain -1>><<set _br to true>>
+	<</if>>
+
+	<<if _br is true>>
+		<br>
+	<</if>>
+
+	<<if $mouthaction is "stifle">>
+		<<set $mouthaction to 0>><<set $mouthactiondefault to "stifle">>
+		你试着平稳你的呼吸，你试着抑制你的哭泣……尽管很痛苦，但你还是做到了。<span class="green"> - 疼痛</span>
+		<<pain -1>>
+	<</if>>
+
+	<<if $mouthaction is "letout">>
+		<<set $mouthaction to 0>><<set $mouthactiondefault to "letout">><<set _sound to 1>>
+		你没有抑制住你的眼泪，你被哭泣和呜咽打断。<span class="green"> - 压力</span>
+		<<meek 1>><<stress -2>>
+	<</if>>
+
+	<<painclamp>>
+<</widget>>
+
+:: Widgets Actions Orgasm [widget]
+<<widget "actionsorgasm">>
+	<<if $leftarm is 0>>
+		你的左臂自由了，但你无法停止痉挛。
+		<br>
+		<<if $leftactiondefault is "leftfold">>
+			| <label><span class="brat">交叉手臂</span> <<radiobutton "$leftaction" "leftfold" checked>></label>
+		<<else>>
+			| <label><span class="brat">交叉手臂</span> <<radiobutton "$leftaction" "leftfold">></label>
+		<</if>>
+		<<if $leftactiondefault is "leftgrip">>
+			| <label><span class="meek">伸手</span> <<radiobutton "$leftaction" "leftgrip" checked>></label>
+		<<else>>
+			| <label><span class="meek">伸手</span> <<radiobutton "$leftaction" "leftgrip">></label>
+		<</if>>
+		<br>
+	<<elseif $leftarm is "grappled">>
+		你的左臂因他们的紧握而抽搐。
+		<br>
+	<<elseif $leftarm is "bound">>
+		你的左臂抽动着撞向它的束缚。
+		<br>
+	<</if>>
+
+	<<if $rightarm is 0>>
+		<br>
+		你的右臂自由了，但你无法停止痉挛。
+		<br>
+		<<if $rightactiondefault is "rightfold">>
+			| <label><span class="brat">合拢</span> <<radiobutton "$rightaction" "rightfold" checked>></label>
+		<<else>>
+			| <label><span class="brat">交叉手臂</span> <<radiobutton "$rightaction" "rightfold">></label>
+		<</if>>
+		<<if $rightactiondefault is "rightgrip">>
+			| <label><span class="meek">紧握</span> <<radiobutton "$rightaction" "rightgrip" checked>></label>
+		<<else>>
+			| <label><span class="meek">紧握</span> <<radiobutton "$rightaction" "rightgrip">></label>
+		<</if>>
+		<br>
+	<<elseif $rightarm is "grappled">>
+		你的右臂因紧握而抽搐。
+		<br>
+	<<elseif $rightarm is "bound">>
+		你的右臂因紧缚而抽搐。
+		<br>
+	<</if>>
+
+	<<if $mouthuse is 0>>
+		<br>
+		你的嘴自由了，但不由自主的呻吟和哭泣抑制了言语。
+		<br>
+		<<if $mouthactiondefault is "stifleorgasm">>
+			| <label><span class="brat">强忍住</span> <<radiobutton "$mouthaction" "stifleorgasm" checked>></label>
+		<<else>>
+			| <label><span class="brat">强忍住</span> <<radiobutton "$mouthaction" "stifleorgasm">></label>
+		<</if>>
+		<<if $mouthactiondefault is "letoutorgasm">>
+			| <label><span class="meek">释放出来</span> <<radiobutton "$mouthaction" "letoutorgasm" checked>></label>
+		<<else>>
+			| <label><span class="meek">释放出来</span> <<radiobutton "$mouthaction" "letoutorgasm">></label>
+		<</if>>
+		<br>
+	<</if>>
+<</widget>>
+
+:: Widgets Effects Orgasm [widget]
+<<widget "effectsorgasm">>
+	<<if $leftaction is "leftfold" and $rightaction is "rightfold">>
+		<<set $leftaction to 0>><<set $rightaction to 0>><<set $leftactiondefault to "leftfold">><<set $rightactiondefault to "rightfold">>
+		你试图通过双臂交叉放在身前，尽可能保持不动来隐藏你的高潮。
+		<<brat 2>>
+		<<set _br to true>>
+	<</if>>
+
+	<<if $leftaction is "leftfold">>
+		<<set $leftaction to 0>><<set $leftactiondefault to "leftfold">>
+		你把左臂交叉放在身前，尽可能保持不动。
+		<<brat 1>>
+		<<set _br to true>>
+	<</if>>
+
+	<<if $rightaction is "rightfold">>
+		<<set $rightaction to 0>><<set $rightactiondefault to "rightfold">>
+		你把右臂交叉放在身前，尽可能保持不动。
+		<<brat 1>>
+		<<set _br to true>>
+	<</if>>
+
+	<<if $leftaction is "leftgrip" and $rightaction is "rightgrip">>
+		<<set $leftaction to 0>><<set $rightaction to 0>><<set $leftactiondefault to "leftgrip">><<set $rightactiondefault to "rightgrip">>
+		<<if $position is "stalk">>
+			你靠着砖墙站稳，身体颤抖。
+		<<else>>
+			当你身体颤抖的时候，你抓住任何你能依靠的东西。
+		<</if>>
+		<span class="green"> - 性奋</span><<meek 2>><<arousal -300>>
+		<<set _br to true>>
+	<</if>>
+
+	<<if $leftaction is "leftgrip">>
+		<<set $leftaction to 0>><<set $leftactiondefault to "leftgrip">>
+		<<if $position is "stalk">>
+			当你的身体颤抖的时候，你用你的左手靠在一堵砖墙上。
+		<<else>>
+			当你的身体颤抖时，你用左手抓住任何你能抓住的东西。
+		<</if>>
+		<span class="green"> - 性奋</span><<meek 1>><<arousal -300>>
+		<<set _br to true>>
+	<</if>>
+
+	<<if $rightaction is "rightgrip">>
+		<<set $rightaction to 0>><<set $rightactiondefault to "rightgrip">>
+		<<if $position is "stalk">>
+			当你的身体颤抖时，你用右手靠着砖墙站稳。
+		<<else>>
+			当你的身体颤抖时，你用右手抓住任何你能抓住的东西。
+		<</if>>
+		<span class="green"> - 性奋</span><<meek 1>><<arousal -300>>
+		<<set _br to true>>
+	<</if>>
+
+	<<if _br is true>>
+		<br>
+	<</if>>
+
+	<<if $mouthaction is "stifleorgasm">>
+		<<set $mouthaction to 0>><<set $mouthactiondefault to "stifleorgasm">>
+		你皱着眉头，希望你的喘息被当作是恼怒。
+		<<brat 1>>
+	<</if>>
+
+	<<if $mouthaction is "letoutorgasm">>
+		<<set $mouthaction to 0>><<set $mouthactiondefault to "letoutorgasm">><<set _sound to 1>>
+		你没有任何保留，让喘息和呻吟随心所欲地逸出。
+		<<meek 1>><span class="green"> - 性奋</span><<arousal -300>>
+	<</if>>
+
+	<<if $feetaction is "feetHold">>
+		<br>
+		<<set $feetaction to 0>><<set $feetactiondefault to "feetHold">>
+		<<if _leg_position is "up" or _feet_pos isnot "">>
+			你尽量保持腿不动。
+		<<else>>
+			你软弱地试图合拢上你的腿。
+		<</if>>
+		<<brat 1>>
+	<</if>>
+
+	<<if $feetaction is "feetCurl">>
+		<br>
+		<<set $feetaction to 0>><<set $feetactiondefault to "feetCurl">>
+		<<if $consensual is 1>>
+			你翘起脚趾，享受高潮。
+		<<else>>
+			你翘起脚趾，让高潮主宰你。
+		<</if>>
+		<<meek 1>><span class="green"> - 性奋</span><<arousal -100>>
+	<</if>>
+<</widget>>
+
+:: Widgets Actions Dissociation [widget]
+<<widget "actionsdissociation">>
+	<<if $leftarm is 0>>
+		你的左臂自由了，但感觉有些麻木。
+		<br>
+		<<if $leftactiondefault is "leftpoke">>
+			| <label>戳自己 <<radiobutton "$leftaction" "leftpoke" checked>></label>
+		<<else>>
+			| <label>戳自己 <<radiobutton "$leftaction" "leftpoke">></label>
+		<</if>>
+		<<if $leftactiondefault is "leftcurl">>
+			| <label><span class="meek">把你的胳膊移开</span> <<radiobutton "$leftaction" "leftcurl" checked>></label>
+		<<else>>
+			| <label><span class="meek">把你的胳膊移开</span> <<radiobutton "$leftaction" "leftcurl">></label>
+		<</if>>
+		<br>
+	<<elseif $leftarm is "grappled">>
+		你的左臂无力地被他们抓住。
+		<br>
+	<<elseif $leftarm is "bound">>
+		你的左臂因捆绑而瘫软无力。
+		<br>
+	<</if>>
+
+	<<if $rightarm is 0>>
+		<br>
+		你的右臂自由了，但感觉有些麻木。
+		<br>
+		<<if $rightactiondefault is "rightpoke">>
+			| <label>戳自己<<radiobutton "$rightaction" "rightpoke" checked>></label>
+		<<else>>
+			| <label>戳自己 <<radiobutton "$rightaction" "rightpoke">></label>
+		<</if>>
+		<<if $rightactiondefault is "rightcurl">>
+			| <label><span class="meek">把你的胳膊移开</span> <<radiobutton "$rightaction" "rightcurl" checked>></label>
+		<<else>>
+			| <label><span class="meek">把你的胳膊移开</span> <<radiobutton "$rightaction" "rightcurl">></label>
+		<</if>>
+		<br>
+	<<elseif $rightarm is "grappled">>
+		你的右臂无力地被他们抓住。
+		<br>
+	<<elseif $rightarm is "bound">>
+		你的右臂因捆绑而瘫软无力。
+		<br>
+	<</if>>
+
+	<<if $mouthuse is 0>>
+		<br>
+		你的嘴自由了，但你不知道说什么。
+		<br>
+		<<if $mouthactiondefault is "speak">>
+			| <label>尝试说话<<radiobutton "$mouthaction" "speak" checked>></label>
+		<<else>>
+			| <label>尝试说话<<radiobutton "$mouthaction" "speak">></label>
+		<</if>>
+		<<if $mouthactiondefault is "noises">>
+			| <label><span class="meek">发出柔软声音</span> <<radiobutton "$mouthaction" "noises" checked>></label>
+		<<else>>
+			| <label><span class="meek">发出柔软声音</span> <<radiobutton "$mouthaction" "noises">></label>
+		<</if>>
+	<</if>>
+<</widget>>
+
+:: Widgets Effects Dissociation [widget]
+<<widget "effectsdissociation">>
+	<<if $leftaction == "leftpoke" && $rightaction == "rightpoke">>
+		<<set $leftaction to 0>><<set $rightaction to 0>><<set $leftactiondefault to "leftpoke">><<set $rightactiondefault to "rightpoke">>
+		你自己戳自己.
+		这是真的吗? <span class="green"> + Focus</span>
+		<<set $traumafocus += 2>>
+		<<set _br to true>>
+	<</if>>
+
+	<<if $leftaction == "leftpoke">>
+		<<set $leftaction to 0>><<set $leftactiondefault to "leftpoke">>
+		你用左手戳自己。<span class="green"> + Focus</span>
+		<<set $traumafocus += 1>>
+		<<set _br to true>>
+	<</if>>
+
+	<<if $rightaction == "rightpoke">>
+		<<set $rightaction to 0>><<set $rightactiondefault to "rightpoke">>
+		你用右手戳自己。<span class="green"> + Focus</span>
+		<<set $traumafocus += 1>>
+		<<set _br to true>>
+	<</if>>
+
+	<<if $leftaction == "leftcurl" && $rightaction == "rightcurl">>
+		<<set $leftaction to 0>><<set $rightaction to 0>><<set $leftactiondefault to "leftcurl">><<set $rightactiondefault to "rightcurl">>
+		你把胳膊放在一边，手指卷起来。
+		<<meek 2>>
+		<<set _br to true>>
+	<</if>>
+
+	<<if $leftaction == "leftcurl">>
+		<<set $leftaction to 0>><<set $leftactiondefault to "leftcurl">>
+		你把你的左臂放在一边，手指卷起来。
+		<<meek 1>>
+		<<set _br to true>>
+	<</if>>
+
+	<<if $rightaction == "rightcurl">>
+		<<set $rightaction to 0>><<set $rightactiondefault to "rightcurl">>
+		把你的右臂放在一边，手指弯曲。
+		<<meek 1>>
+		<<set _br to true>>
+	<</if>>
+
+	<<if _br is true>>
+		<br>
+	<</if>>
+
+	<<if $mouthaction == "speak">>
+		<<set $mouthaction to 0>><<set $mouthactiondefault to "speak">>
+		你发出一些类似于言语的声音。<span class="green"> + Focus</span>
+		<<set $traumafocus += 1>>
+	<</if>>
+
+	<<if $mouthaction == "noises">>
+		<<set $mouthaction to 0>><<set $mouthactiondefault to "noises">>
+		你发出一些柔和的声音，听起来不错。
+		<<meek 1>>
+	<</if>>
+<</widget>>
+
+:: Widgets Actions Possessed [widget]
+<<widget "actionspossessed">>
+	<<if !$leftactiondefault>>
+		<<set $leftactiondefault to "leftacceptW">>
+	<</if>>
+	<<if !$rightactiondefault>>
+		<<set $rightactiondefault to "rightacceptW">>
+	<</if>>
+	<<if !$feetactiondefault>>
+		<<set $feetactiondefault to "feetacceptW">>
+	<</if>>
+	<<if !$mouthactiondefault>>
+		<<set $mouthactiondefault to "mouthacceptW">>
+	<</if>>
+	<<if $leftarm is 0>>
+		你的左臂自由了，<span class="pink">但无法控制自如。</span>
+		<br>
+		<<if $leftactiondefault is "leftacceptW">>
+			| <label><span class="wraith">接受</span> <<radiobutton "$leftaction" "leftacceptW" checked>></label>
+		<<else>>
+			| <label><span class="wraith">接受</span> <<radiobutton "$leftaction" "leftacceptW">></label>
+		<</if>>
+		<<if $leftactiondefault is "leftresistW">>
+			| <label><span class="brat">将其固定不动</span> <<radiobutton "$leftaction" "leftresistW" checked>></label>
+		<<else>>
+			| <label><span class="brat">将其固定不动</span> <<radiobutton "$leftaction" "leftresistW">></label>
+		<</if>>
+		<br>
+	<<elseif $leftarm is "grappled">>
+		你的左臂在他们的控制下不由自主地扭动.
+		<br>
+		<<set $leftactiondefault to ["leftacceptW","leftstruggleW"].includes($leftactiondefault) ? "leftstruggleW" : "leftstillW">>
+		<<if $leftactiondefault is "leftstruggleW">>
+			| <label><span class="wraith">挣扎</span> <<radiobutton "$leftaction" "leftstruggleW" checked>></label>
+		<<else>>
+			| <label><span class="wraith">挣扎</span> <<radiobutton "$leftaction" "leftstruggleW">></label>
+		<</if>>
+		<<if $leftactiondefault is "leftstillW">>
+			| <label><span class="brat">将其固定不动</span> <<radiobutton "$leftaction" "leftstillW" checked>></label>
+		<<else>>
+			| <label><span class="brat">将其固定不动</span> <<radiobutton "$leftaction" "leftstillW">></label>
+		<</if>>
+		<br>
+	<<elseif $leftarm is "bound">>
+		你的右臂在他们的掌握下，不由自主地扭动着。
+		<br>
+	<</if>>
+
+	<<if $rightarm is 0>>
+		<br>
+		你的右臂是自由的,<span class="pink">但无法控制自如。</span>
+		<br>
+		<<if $rightactiondefault is "rightacceptW">>
+			| <label><span class="wraith">接受</span> <<radiobutton "$rightaction" "rightacceptW" checked>></label>
+		<<else>>
+			| <label><span class="wraith">接受</span> <<radiobutton "$rightaction" "rightacceptW">></label>
+		<</if>>
+		<<if $rightactiondefault is "rightresistW">>
+			| <label><span class="brat">将其固定不动</span> <<radiobutton "$rightaction" "rightresistW" checked>></label>
+		<<else>>
+			| <label><span class="brat">将其固定不动</span> <<radiobutton "$rightaction" "rightresistW">></label>
+		<</if>>
+		<br>
+	<<elseif $rightarm is "grappled">>
+		<br>
+		你的右臂在他们的掌握下，不由自主地扭动着。
+		<br>
+		<<set $rightactiondefault to ["rightacceptW","rightstruggleW"].includes($rightactiondefault) ? "rightstruggleW" : "rightstillW">>
+		<<if $rightactiondefault is "rightstruggleW">>
+			| <label><span class="wraith">挣扎</span> <<radiobutton "$rightaction" "rightstruggleW" checked>></label>
+		<<else>>
+			| <label><span class="wraith">挣扎</span> <<radiobutton "$rightaction" "rightstruggleW">></label>
+		<</if>>
+		<<if $rightactiondefault is "rightstillW">>
+			| <label><span class="brat">将其固定不动</span> <<radiobutton "$rightaction" "rightstillW" checked>></label>
+		<<else>>
+			| <label><span class="brat">将其固定不动</span> <<radiobutton "$rightaction" "rightstillW">></label>
+		<</if>>
+		<br>
+	<<elseif $rightarm is "bound">>
+		<br>
+		你的右臂不由自主地在其范围内扭动.
+		<br>
+	<</if>>
+
+	<<if $feetuse is 0>>
+		<br>
+		你的腿自由了,<span class="pink">但是你没有知觉</span>.
+		<br>
+		<<if $feetactiondefault is "feetacceptW">>
+			| <label><span class="wraith">接受</span> <<radiobutton "$feetaction" "feetacceptW" checked>></label>
+		<<else>>
+			| <label><span class="wraith">接受</span> <<radiobutton "$feetaction" "feetacceptW">></label>
+		<</if>>
+		<<if $feetactiondefault is "feetresistW">>
+			| <label><span class="brat">让他们保持不动</span> <<radiobutton "$feetaction" "feetresistW" checked>></label>
+		<<else>>
+			| <label><span class="brat">让他们保持不动</span> <<radiobutton "$feetaction" "feetresistW">></label>
+		<</if>>
+		<br>
+	<<elseif $feetuse is "bound">>
+		<br>
+		你的脚在他们的掌握下，不由自主地扭动着。
+		<br>
+	<</if>>
+
+	<<if $mouthuse is 0>>
+		<br>
+		你的嘴自由了,<span class="pink">但是不熟悉的话从你的嘴里说出来</span>.
+		<br>
+		<<if $mouthactiondefault is "mouthacceptW">>
+			| <label><span class="wraith">接受</span> <<radiobutton "$mouthaction" "mouthacceptW" checked>></label>
+		<<else>>
+			| <label><span class="wraith">接受</span> <<radiobutton "$mouthaction" "mouthacceptW">></label>
+		<</if>>
+		<<if $mouthactiondefault is "mouthresistW">>
+			| <label><span class="brat">闭上你的嘴</span> <<radiobutton "$mouthaction" "mouthresistW" checked>></label>
+		<<else>>
+			| <label><span class="brat">闭上你的嘴</span> <<radiobutton "$mouthaction" "mouthresistW">></label>
+		<</if>>
+	<<elseif $mouthuse is "lefthand" or $mouthuse is "righthand">>
+		<br>
+		你的嘴被堵住了，堵住了你心中涌出的话语。
+		<br>
+		<<set $mouthactiondefault to ["mouthacceptW","handbiteW"].includes($mouthactiondefault) ? "handbiteW" : "handcloseW">>
+		<<if $mouthactiondefault is "handbiteW">>
+			| <label><span class="wraith">咬</span> <<radiobutton "$mouthaction" "handbiteW" checked>></label>
+		<<else>>
+			| <label><span class="wraith">咬</span> <<radiobutton "$mouthaction" "handbiteW">></label>
+		<</if>>
+		<<if $mouthactiondefault is "handcloseW">>
+			| <label><span class="brat">闭上你的嘴</span> <<radiobutton "$mouthaction" "handcloseW" checked>></label>
+		<<else>>
+			| <label><span class="brat">闭上你的嘴</span> <<radiobutton "$mouthaction" "handcloseW">></label>
+		<</if>>
+	<</if>>
+<</widget>>
+
+:: Widgets Effects Possessed [widget]
+<<widget "effectspossessed">>
+	<<set $enemyanger to 200>><<set $willpowerSuccess to 0>>
+	<<dynamicblock id=control-caption>>
+		<<controlcaption>>
+	<</dynamicblock>>
+
+	<<if $combatBegun is 1>>
+		<<set _resist to 0>>
+		<<if $leftaction isnot "leftresistW" and $rightaction isnot "rightresistW" and $feetaction isnot "feetresistW" and $mouthaction isnot "mouthresistW">>
+			<span class="pink">你让它带着你.</span>
+			<<pain -2>><<stress -12>><<sub 2>><<lpain>><<llstress>><<set $wraith.will += 30>>
+		<<else>>
+			<<if $leftaction is "leftresistW" and $rightaction is "rightresistW" and $feetaction is "feetresistW">>
+				<<set _resist to 3>>
+			<<elseif $leftaction is "leftresistW" and $rightaction is "rightresistW"
+			or $leftaction is "leftresistW" and $feetaction is "feetresistW"
+			or $rightaction is "rightresistW" and $feetaction is "feetresistW">>
+				<<set _resist to 2>>
+			<<else>>
+				<<set _resist to 1>>
+			<</if>>
+			<<set _wraithWill to Math.floor(1 + $wraith.will)>>
+			<<willpowerdifficulty 1 _wraithWill true>>
+			<<if $willpowerSuccess>>
+				<<set _resistSuccess to 1>>
+				<span class="green">
+					你争夺着自己身体的控制权。
+					<<if ($leftaction is "leftresistW" or $leftaction is "leftstillW") and ($rightaction is "rightresistW" or $rightaction is "rightstillW") and $feetaction is "feetresistW">>
+						你的身体被锁住了。
+					<<elseif $feetaction is "feetresistW" and ($leftaction is "leftresistW" or $leftaction is "leftstillW" or $rightaction is "rightresistW" or $rightaction is "rightstillW")>>
+						你的胳膊和腿都锁住了。
+					<<elseif ($leftaction is "leftresistW" or $leftaction is "leftstillW") and ($rightaction is "rightresistW" or $rightaction is "rightstillW")>>
+						你的手臂被锁住了。
+					<<elseif $feetaction is "feetresistW">>
+						你的腿被锁住了。
+					<<elseif $leftaction is "leftresistW" or $leftaction is "leftstillW" or $rightaction is "rightresistW" or $rightaction is "rightstillW">>
+						你的手臂被卡住了。
+					<</if>>
+					<<if $mouthaction is "handcloseW">>
+						你把嘴闭上。
+					<</if>>
+				</span>
+				<<if $mouthaction is "mouthresistW">>
+					<<set $willpowerSuccess to 0>>
+					<<silently>><<willpowerdifficulty _wraithWill/3 _wraithWill*1.2>><</silently>>
+					<<if $willpowerSuccess>>
+						<<set _mouthSuccess to 1>><<set _resist++>>
+						<span class="green">你把嘴闭上。</span>
+					<<else>>
+						<span class="purple">然而，你无法阻止从你嘴里流出的话语.</span>
+					<</if>>
+				<</if>>
+				<<pain _resist>><<stress _resist>><<trauma _resist>><<def 2>><<gpain>><<gtrauma>><<gstress>><<if _resist is 4>><<ggcontrol>><<else>><<gcontrol>><</if>><<set $wraith.will -= Math.floor(currentSkillValue('willpower') / 24)*_resist>>
+				<<set $control += Math.floor(currentSkillValue('willpower') / 24)*_resist>>
+			<<else>>
+				<span class="red">你的身体不服从.</span>
+				<<stress 6>><<trauma 6>><<willpower 1>><<def 1>><<gtrauma>><<gstress>><<gwillpower>><<set $wraith.will -= Math.floor(currentSkillValue('willpower') / 40)*_resist>>
+			<</if>>
+		<</if>>
+		<br><br>
+	<<else>>
+		<<set $combatBegun to 1>>
+	<</if>>
+
+	<<if $leftaction is "leftresistW" and $rightaction is "rightresistW" and _resistSuccess>>
+		<<set $leftaction to 0>><<set $rightaction to 0>><<set $leftactiondefault to "leftresistW">><<set $rightactiondefault to "rightresistW">>
+		你把手臂紧紧地放在身体的一侧。
+	<</if>>
+
+	<<if $leftaction is "leftacceptW" or $leftaction is "leftresistW" and !_resistSuccess>>
+		<<set $_wraithDamage to 1>>
+		<<if $leftaction is "leftacceptW">><<set $_wraithDamage ++>><</if>>
+		<<set $_wraithDamage += Math.floor(C.npc["Ivory Wraith"].lust / 10)>>
+		<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>><<set _target to random(1,$enemyno)-1>>
+		你用左手<<print either("拳击","拍打","划伤","爪","砍","打击")>>。
+		<<defiance $_wraithDamage _target>>
+	<</if>>
+
+	<<if $leftaction is "leftresistW" and _resistSuccess>>
+		<<set $leftaction to 0>><<set $leftactiondefault to "leftresistW">>
+		你把左臂紧紧地放在身体的一侧。
+	<</if>>
+
+	<<if $leftaction is "leftstruggleW" or $rightaction is "rightstruggleW" or (($leftaction is "leftresistW" or $rightaction is "rightresistW") and !_resistSuccess)>>
+		<<set $leftaction to 0>><<set $leftactiondefault to "leftstruggleW">><<set $rightaction to 0>><<set $leftactiondefault to "leftstruggleW">>
+		你挣扎着挣脱你的手臂。
+		<<set $speechstruggle to 1>>
+		<<if currentSkillValue('physique') gte random(1, 48000)>>
+			<span class="pink">你设法挣脱手臂.</span>
+			<<set $leftarm to 0>><<set $rightarm to 0>>
+			<<for _s = 0; _s lt $NPCList.length; _s++>>
+				<<if $NPCList[_s].lefthand is "arms">>
+					<<set $NPCList[_s].lefthand to 0>>
+					<<break>>
+				<</if>>
+				<<if $NPCList[_s].righthand is "arms">>
+					<<set $NPCList[_s].righthand to 0>>
+					<<break>>
+				<</if>>
+			<</for>>
+		<<else>>
+			<span class="lblue">你的手臂仍然被抓着.</span>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "leftstillW" and $rightaction is "rightstillW" and _resistSuccess>>
+		在他们的掌握中，你尽量保持手臂不动。
+	<</if>>
+
+	<<if $rightaction is "rightacceptW" or $rightaction is "rightresistW" and !_resistSuccess>>
+		<<set $_wraithDamage to 1>>
+		<<if $rightaction is "rightacceptW">><<set $_wraithDamage ++>><</if>>
+		<<set $_wraithDamage += Math.floor(C.npc["Ivory Wraith"].lust / 10)>>
+		<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>><<set _target to random(1,$enemyno)-1>>
+		你用右手<<print either("打","拍","挠","抓","劈","敲")>>。
+		<<defiance $_wraithDamage _target>>
+	<</if>>
+
+	<<if $rightaction is "rightresistW" and _resistSuccess>>
+		<<set $rightaction to 0>><<set $rightactiondefault to "rightresistW">>
+		你把右臂紧紧地放在身体的一侧。
+	<</if>>
+
+	<<if $feetaction is "feetacceptW" or $feetaction is "feetresistW" and !_resistSuccess>>
+		<<set $_wraithDamage to 1>>
+		<<if $feetaction is "feetacceptW">><<set $_wraithDamage ++>><</if>>
+		<<set $_wraithDamage += Math.floor(C.npc["Ivory Wraith"].lust / 10)>>
+		<<set $feetactiondefault to $feetaction>><<set $feetaction to 0>><<set _target to random(1,$enemyno)-1>>
+		你用腿<<print either("笨拙地","狠狠地","迅速地","痛快地","残酷地","<<feettext>>")>>攻击。
+		<<defiance $_wraithDamage _target>>
+	<</if>>
+
+	<<if $feetaction is "feetresistW" and _resistSuccess>>
+		<<set $feetaction to 0>><<set $feetactiondefault to "feetresistW">>
+		你把腿放在地上。
+	<</if>>
+
+	<<if $mouthaction is "mouthacceptW" or $mouthaction is "mouthresistW" and !_mouthSuccess>>
+		<<set $_wraithDamage to 1>>
+		<<if $mouthaction is "mouthacceptW">><<set $_wraithDamage ++>><</if>>
+		<<set $mouthactiondefault to $mouthaction>><<set $mouthaction to 0>>
+		<<speechWraith>>
+		<<defiance $_wraithDamage>>
+	<</if>>
+
+	<<if $mouthaction is "mouthresistW" and _mouthSuccess>>
+		<<set $mouthaction to 0>><<set $mouthactiondefault to "mouthresistW">>
+		你嘴里念念有词，但你没有说。
+	<</if>>
+
+	<<if $mouthaction is "handbiteW" or $mouthaction is "handcloseW" and !_resistSuccess>>
+		<<set $mouthactiondefault to $mouthaction>><<set $mouthaction to 0>>
+		<<actionshandbite>>
+		<<for _s = 0; _s lt $NPCList.length; _s++>>
+			<<if $NPCList[_s].lefthand is "mouth">>
+				<<set $NPCList[_s].lefthand to 0>>
+			<</if>>
+			<<if $NPCList[_s].righthand is "mouth">>
+				<<set $NPCList[_s].righthand to 0>>
+			<</if>>
+			<span class="teal"><<He _s>>在痛苦中退缩，解放你的嘴巴。</span>
+			<<defiance 1 _s>>
+			<<break>>
+		<</for>>
+		<<set $mouthuse to 0>>
+	<</if>>
+
+	<<if $mouthaction is "handcloseW" and _resistSuccess>>
+		<<set $mouthaction to 0>><<set $mouthactiondefault to "handcloseW">>
+		你把嘴闭上，不要让手碰到它。
+	<</if>>
+<</widget>>

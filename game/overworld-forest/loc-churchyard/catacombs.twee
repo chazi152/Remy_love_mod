@@ -1,0 +1,816 @@
+:: Catacombs
+<<location "catacombs">><<set $bus to "catacombs">><<set $outside to 0>><<effects>>
+
+你在森林下面的地下墓穴里。一段楼梯向上通向教堂墓地。一个六臂天使的雕像朝你微笑，用最低的手抱着一个点燃的火盆。
+<br><br>
+
+<<if $museumAntiques.antiques.antiqueivorystatuette isnot "found" and $museumAntiques.antiques.antiqueivorystatuette isnot "talk" and $museumAntiques.antiques.antiqueivorystatuette isnot "museum">>
+	雕像的肩膀上有一个小雕像。你可以够到它。
+	<br><br>
+<</if>>
+
+<<if $worn.face.type.includes("blindfold")>>
+	暖风拂过你的脸，<span class="green">你的眼罩掉了下来，</span>只剩下一条破布。很难想象它刚才还很结实。
+	<<set $worn.face.type.push("broken")>>
+	<<faceruined>>
+	<br><br>
+<</if>>
+
+<<if $worn.upper.name is "cocoon" or $worn.lower.name is "cocoon bottom">>
+	雕像的眼睛闪烁着。覆盖在你身上的网松弛了，松弛了，<span class="green">散了。</span>
+	<br><br>
+	<<if $worn.upper.name is "cocoon">>
+		<<upperruined>>
+	<</if>>
+	<<if $worn.lower.name is "cocoon bottom">>
+		<<lowerruined>>
+	<</if>>
+<</if>>
+
+<<catacombs_torch_text>>
+<br><br>
+
+<i>当你的火炬熄灭时，避开陷阱和其他肮脏的东西会变得更加困难。</i>
+<br><br>
+
+<<set $eventskip to 1>>
+<<if $stress gte $stressmax>>
+	<<passoutcatacombs>>
+<<elseif $eventskip isnot 1>>
+	<<events_catacombs normal>>
+<<else>>
+	<<if $museumAntiques.antiques.antiqueivorystatuette isnot "found" and $museumAntiques.antiques.antiqueivorystatuette isnot "talk" and $museumAntiques.antiques.antiqueivorystatuette isnot "museum">>
+		<<link [[拿起小雕像|Catacombs Statuette]]>><</link>><<crime>>
+		<br>
+	<</if>>
+	<<if $leftarm is "bound" or $rightarm is "bound">>
+		<<link [[烧断你的绑缚|Catacombs Unbind]]>><<pain 1>><</link>><<gpain>>
+		<br>
+	<</if>>
+	<<if $catacombs_torch lt 100>>
+		<<link [[点燃火把|Catacombs Light]]>><</link>><<gtorch>>
+		<br>
+	<</if>>
+	<<link [[向东走(0:10)|Catacombs Sarcophagi]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>>
+	<br>
+	<<link [[向西走(0:10)|Catacombs Prison]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>>
+	<br><br>
+
+	<<link [[离开|Churchyard]]>><<catacombs_end>><</link>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Catacombs Unbind
+<<effects>>
+
+你背对着雕像，把你的绑带放在火焰上。热量越来越高，你感到一阵刺痛。你刚要抽离，绑带就松了。你把自己解放了。
+<<unbind>>
+<br><br>
+
+<<link [[继续|Catacombs]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Catacombs Light
+<<effects>>
+
+<<catacombs_torch 100>>
+你把火把放在火盆上。它燃烧着新的生命。有那么一会儿，雕像的眼睛被反射的火焰灼烧着。
+<br><br>
+
+<<link [[继续|Catacombs]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Catacombs Statuette
+<<effects>>
+
+你爬上六臂雕像，站在它的手臂上，用翅膀支撑。它被证明是坚固的，你与雕像面对面。它是大天使的微缩版，只不过手臂和头都是举起来恳求的样子，脸上还带着微笑。
+<br><br>
+
+你把小天使从大天使手中拿过来，然后爬下来。它应该放在博物馆里。
+<br><br>
+
+<<set $antiquemoney += 500>><<museumAntiqueStatus "antiqueivorystatuette" "found">><<crimeup 500>>
+
+<<link [[继续|Catacombs]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Catacombs Sarcophagi
+<<effects>><<set $bus to "sarcophagi">>
+
+你在森林下面的地下墓穴里。石棺以猛烈的角度从墙上伸出来，好像被一股巨大的力量从原来的位置上推了出来。
+<br><br>
+
+<<catacombs_torch_text>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutcatacombs>>
+<<elseif $eventskip isnot 1>>
+	<<events_catacombs normal>>
+<<else>>
+	<<if $leftarm isnot "bound" and $rightarm isnot "bound">>
+		<<set $lock to 500>>
+		<<if currentSkillValue('skulduggery') gte $lock>>
+			<span class="green">这里埋藏着财富。</span>
+			<br>
+			<<link [[掠夺(0:30)|Catacombs Normal Plunder]]>><<pass 30>><<catacombs_torch -5>><</link>><<crime>><<ltorch>>
+			<br>
+		<<else>>
+			<span class="red">你缺乏在这里嗅出财富的技能。</span><<skulduggeryrequired>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<link [[向东走(0:10)|Catacombs Chasm]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>>
+	<br>
+	<<link [[向西走(0:10)|Catacombs]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>><<catacombs_exit_indicator>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Catacombs Prison
+<<effects>><<set $bus to "prison">>
+
+你在森林下面的地下墓穴里。墙壁和地板上都是千疮百孔，都是用铁条闩着的。
+<br><br>
+
+<<catacombs_torch_text>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutcatacombs>>
+<<elseif $eventskip isnot 1>>
+	<<events_catacombs normal>>
+<<else>>
+	<<if $leftarm isnot "bound" and $rightarm isnot "bound">>
+		<<set $lock to 500>>
+		<<if currentSkillValue('skulduggery') gte $lock>>
+			<span class="green">这里埋藏着财富。</span>
+			<br>
+			<<link [[掠夺(0:30)|Catacombs Normal Plunder]]>><<pass 30>><<catacombs_torch -5>><</link>><<crime>><<ltorch>>
+			<br>
+		<<else>>
+			<span class="red">你缺乏在这里嗅出财富的技能。</span><<skulduggeryrequired>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<link [[向东走(0:10)|Catacombs]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>><<catacombs_exit_indicator>>
+	<br>
+	<<link [[向西走(0:10)|Catacombs Ridge]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Catacombs Chasm
+<<effects>><<set $bus to "chasm">>
+
+你在森林下面的墓穴里。有一堵被撕裂的墙，好像是什么猛兽干的，露出了一个黑色的大裂口。
+巨大的钟乳石悬挂在天花板上。
+<<if $spiderdisable is "f">>
+	<span class="blue">你看到它们之间的黑暗中有动静。</span>上面有东西正在看着这里。
+<<else>>
+	<span class="blue">你看到它们之间有微弱的闪光。</span>上面有什么东西。
+<</if>>
+<br><br>
+
+<<catacombs_torch_text>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutcatacombs>>
+<<elseif $eventskip isnot 1>>
+	<<events_catacombs normal>>
+<<else>>
+	<<if $leftarm isnot "bound" and $rightarm isnot "bound">>
+		<<set $lock to 500>>
+		<<if currentSkillValue('skulduggery') gte $lock>>
+			<span class="green">这里埋藏着财富。</span>
+			<br>
+			<<link [[掠夺(0:30)|Catacombs Normal Plunder]]>><<pass 30>><<catacombs_torch -5>><</link>><<crime>><<ltorch>>
+			<br>
+		<<else>>
+			<span class="red">你缺乏在这里嗅出财富的技能。</span><<skulduggeryrequired>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<if $tending gte 500>>
+		<<link [[劝说|Catacombs Chasm Coax]]>><</link>><<note "护理" "green">>
+		<br>
+	<<else>>
+		<span class="blue">你缺乏把上面的东西哄出来的技巧。</span>
+		<br>
+	<</if>>
+	<<link [[向西走(0:10)|Catacombs Sarcophagi]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>><<catacombs_exit_indicator>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Catacombs Chasm Coax
+<<effects>>
+
+你对着钟乳石咕咕叫着，声音轻柔。起初只有微弱的回声回应,
+
+<<beastNEWinit 1 spider>>
+<<if $spiderdisable is "t">>
+	但随后一个光球降临。它在你面前盘旋了一会儿，然后漂浮在深渊的边缘。
+	<br><br>
+
+	它来到墙上，照亮了一条狭窄的通道，在那里盘旋了一会儿，好像在招手。然后浮在里面。它看起来像一个隐藏的通道，围绕着裂口。
+<<elseif $monster is 1>>
+	但接着一个头伸了出来，后面跟着八个四肢。这是一个<<beasttype>>，但在<<bhis>>的举止中没有任何威胁。<<bHe>>从钟乳石上爬下来，剩下的部分落在一根丝线上，最后落在你面前。
+	<br><br>
+
+	"危险的地方，"<<bhe>>说。"如果你愿意，我可以背你过峡谷。我比看起来强壮。强大得多。"
+<<else>>
+	但随后八条腿爬进了视野。这是一个巨大的<<beasttype>>，但在<<bhis>>的举止中没有威胁。<<bHe>>从钟乳石上爬下来，剩下的部分落在一根丝线上，最后落在你面前。
+	<br><br>
+	<<bHe>>转身向峡谷走去，放下<<bhis>>的腹部。<<bHe>>想带你过去。
+<</if>>
+<br><br>
+
+<<link [[穿越峡谷 (0:10)|Catacombs Chasm Coax 2]]>><<pass 10>><</link>>
+<br>
+<<link [[留下|Catacombs Chasm]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Catacombs Chasm Coax 2
+<<effects>>
+
+<<if $spiderdisable is "t">>
+	你跟着光走。它会引导你穿过石头中狭窄走廊的迷宫，直到你出现在地下墓穴的另一部分，在峡谷的另一边。墙上和地板上都钻了奇怪的洞。你身后的通道在黑暗中消失了。
+	<br><br>
+
+	带着一种俏皮的闪光，光线射向天花板，并在一个钻孔中隐蔽。
+<<elseif $monster is 1>>
+	<<beasttype>>在你周围打转。在你做出反应之前，<<bhe>>已经在你的腰上缠了几股线。<<bHe>>爬上<<bhe>>降落的线，把你从你的脚上拉到空中。"抱你最好的方式，"<<bhe>>带着歉意的微笑说。
+	<br><br>
+
+	<<bHe>>爬到天花板上，冲过裂缝。你在<<bhim>>下摇摆，意识到下面的深渊，直到你到达另一边。<<bHe>>轻轻地放下你，然后<<bhimself>>自己又下来，扯掉你腰上的带子。
+	<br><br>
+
+	"看到了吗？"<<bHe>>咧嘴一笑。"很强壮！"<<bhe>>一跃而起，爬上了墙，再次消失在黑暗中。你现在正在地下墓穴的另一个区域，奇怪的孔洞填满了墙壁和地板。
+<<else>>
+	你爬到<<beasttype>>的腹部，当<<bhis>>开始运动时，你的手臂环绕在<<bhe>>的腹柄上。<<bHe>>爬上丝线，爬上了一张你从下面看不见的水平网。<<bHe>>跑过一个几乎看不见的网络挂在裂缝上。你紧紧抓住，意识到脚下就是深渊。
+	<br><br>
+
+	<<bHe>>到达了另一边，沿着另一条线迅猎而下。你爬下来，蜘蛛立刻爬到挂着的绳子上，消失在黑暗中。你在地下墓穴的另一部分。墙壁和地板上布满了奇怪的钻孔。
+<</if>>
+<br><br>
+
+<<link [[继续|Catacombs Bores]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Catacombs Ridge
+<<effects>><<set $bus to "ridge">>
+
+你在森林下面的地下墓穴里。有一堵被撕裂的墙，好像是什么猛兽干的，露出了一个黑暗的裂口。落差很陡，但还不是垂直。如果你小心点的话，你也能爬下来。
+<br><br>
+
+<<catacombs_torch_text>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutcatacombs>>
+<<elseif $eventskip isnot 1>>
+	<<events_catacombs normal>>
+<<else>>
+	<<if $leftarm isnot "bound" and $rightarm isnot "bound">>
+		<<set $lock to 500>>
+		<<if currentSkillValue('skulduggery') gte $lock>>
+			<span class="green">这里埋藏着财富。</span>
+			<br>
+			<<link [[掠夺(0:30)|Catacombs Normal Plunder]]>><<pass 30>><<catacombs_torch -5>><</link>><<crime>><<ltorch>>
+			<br>
+		<<else>>
+			<span class="red">你缺乏在这里嗅出财富的技能。</span><<skulduggeryrequired>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<link [[往下爬(0:01)|Catacombs Mud Climb]]>><<pass 1>><</link>>
+	<br>
+	<<link [[向东走(0:10)|Catacombs Prison]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>><<catacombs_exit_indicator>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Catacombs Mud Climb
+<<effects>>
+
+一步一步地，你把自己放低到深渊中，在投入之前测试每一步。破碎的砖石和天然石头被证明是坚固的，到达底部并不困难。
+<br><br>
+
+黑暗包围着你。你听到远处的水声。
+<br><br>
+
+<<link [[继续|Catacombs Mud]]>><</link>>
+<br>
+
+:: Catacombs Mud
+<<effects>><<set $bus to "mud">>
+
+你在森林下面的地下墓穴里。石头上刻着巨大的沟，通向一片无边无际的泥土，一直延伸到黑暗中。
+<br><br>
+
+<<catacombs_torch_text>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutcatacombs>>
+<<elseif $eventskip isnot 1>>
+	<<events_catacombs barrow>>
+<<else>>
+	<<if $leftarm isnot "bound" and $rightarm isnot "bound">>
+		<<set $lock to 500>>
+		<<if currentSkillValue('skulduggery') gte $lock>>
+			<span class="green">这里埋藏着财富。</span>
+			<br>
+			<<link [[掠夺(0:30)|Catacombs Barrow Plunder]]>><<pass 30>><<catacombs_torch -5>><</link>><<crime>><<ltorch>>
+			<br>
+		<<else>>
+			<span class="red">你缺乏在这里嗅出财富的技能。</span><<skulduggeryrequired>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<link [[向东走(0:10)|Catacombs Masonry]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>>
+	<br>
+	<<link [[往上爬 (0:01)|Catacombs Ridge Climb]]>><<pass 1>><</link>><<catacombs_exit_indicator>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Catacombs Ridge Climb
+<<effects>>
+
+你穿过斜坡，与其说是在爬，不如说是在爬，寻找能承受你重量的坚硬岩石。你到了山顶，到了真正的地下墓穴。
+<br><br>
+
+<<link [[继续|Catacombs Ridge]]>><</link>>
+<br>
+
+:: Catacombs Masonry
+<<effects>><<set $bus to "masonry">>
+
+你穿过斜坡，与其说是在爬，不如说是在爬，寻找能承受你重量的坚硬岩石。你到了山顶，到了真正的地下墓穴。
+<br><br>
+
+<<catacombs_torch_text>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutcatacombs>>
+<<elseif $eventskip isnot 1>>
+	<<events_catacombs barrow>>
+<<else>>
+	<<if $leftarm isnot "bound" and $rightarm isnot "bound">>
+		<<set $lock to 500>>
+		<<if currentSkillValue('skulduggery') gte $lock>>
+			<span class="green">这里埋藏着财富。</span>
+			<br>
+			<<link [[掠夺(0:30)|Catacombs Barrow Plunder]]>><<pass 30>><<catacombs_torch -5>><</link>><<crime>><<ltorch>>
+			<br>
+		<<else>>
+			<span class="red">你缺乏在这里嗅出财富的技能。</span><<skulduggeryrequired>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<link [[向东走(0:10)|Catacombs Barrow]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>>
+	<br>
+	<<link [[向西走 (0:10)|Catacombs Mud]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>><<catacombs_exit_indicator>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Catacombs Barrow
+<<effects>><<set $bus to "barrow">>
+
+你在森林下的地下墓穴里。石头上刻出了道道大沟。一座巨大的土丘耸立在他们的上方。
+<br><br>
+
+<<if $museumAntiques.antiques.antiquesilvercrown isnot "found" and $museumAntiques.antiques.antiquesilvercrown isnot "talk" and $museumAntiques.antiques.antiquesilvercrown isnot "museum">>
+	有一个小隧道，通向土丘。
+	<br><br>
+<</if>>
+
+<<catacombs_torch_text>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutcatacombs>>
+<<elseif $eventskip isnot 1>>
+	<<events_catacombs barrow>>
+<<else>>
+	<<if $museumAntiques.antiques.antiquesilvercrown isnot "found" and $museumAntiques.antiques.antiquesilvercrown isnot "talk" and $museumAntiques.antiques.antiquesilvercrown isnot "museum">>
+		<<link [[进入土堆|Catacombs Crown]]>><</link>>
+		<br>
+	<</if>>
+	<<if $leftarm isnot "bound" and $rightarm isnot "bound">>
+		<<set $lock to 500>>
+		<<if currentSkillValue('skulduggery') gte $lock>>
+			<span class="green">这里埋藏着财富。</span>
+			<br>
+			<<link [[掠夺(0:30)|Catacombs Barrow Plunder]]>><<pass 30>><<catacombs_torch -5>><</link>><<crime>><<ltorch>>
+			<br>
+		<<else>>
+			<span class="red">你缺乏在这里嗅出财富的技能。</span><<skulduggeryrequired>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<link [[向东走(0:10)|Catacombs Stream]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>>
+	<br>
+	<<link [[向西走(0:10)|Catacombs Masonry]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>><<catacombs_exit_indicator>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Catacombs Crown
+<<effects>>
+
+你走进了隧道。天花板低得让你只能蹲伏下来，但你很快就踏入一个圆形的房间里。一座石堆坐落在中间一块隆起的地面上。有块石板耸立于前方的土地，石板上静静地躺着一顶银质王冠。
+<br><br>
+
+<<link [[带走|Catacombs Crown 2]]>><</link>><<crime>>
+<br>
+<<link [[离开|Catacombs Barrow]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Catacombs Crown 2
+<<effects>>
+
+你拿下王冠。大地震动，几乎把你震倒。一堆堆的泥土从天花板上掉下来。你冲进隧道，在被雪崩掩埋之前成功逃脱。
+<br><br>
+
+你检查王冠。正面的插孔曾经被填满过，金属被时间腐蚀了，但其他方面都完好无损。它应该放在博物馆里。
+<br><br>
+
+<<set $antiquemoney += 1200>><<museumAntiqueStatus "antiquesilvercrown" "found">><<crimeup 1200>>
+
+<<link [[继续|Catacombs Barrow]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Catacombs Stream
+<<effects>><<set $bus to "stream">>
+
+你在森林下面的地下墓穴里。小溪沿着石头上的大沟流淌。
+<br><br>
+
+<<catacombs_torch_text>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutcatacombs>>
+<<elseif $eventskip isnot 1>>
+	<<events_catacombs barrow>>
+<<else>>
+	<<if $leftarm isnot "bound" and $rightarm isnot "bound">>
+		<<set $lock to 500>>
+		<<if currentSkillValue('skulduggery') gte $lock>>
+			<span class="green">这里埋藏着财富。</span>
+			<br>
+			<<link [[掠夺(0:30)|Catacombs Barrow Plunder]]>><<pass 30>><<catacombs_torch -5>><</link>><<crime>><<ltorch>>
+			<br>
+		<<else>>
+			<span class="red">你缺乏在这里嗅出财富的技能。</span><<skulduggeryrequired>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<link [[向东走(0:10)|Catacombs Stalagmites]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>>
+	<br>
+	<<link [[向西走(0:10)|Catacombs Barrow]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>><<catacombs_exit_indicator>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Catacombs Stalagmites
+<<effects>><<set $bus to "stalagmites">>
+
+你在森林下面的地下墓穴里。一大片岩石牙齿挡住了东面的通道，但北面有一个陡峭的斜坡。你也许能爬上去。
+<br><br>
+
+<<catacombs_torch_text>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutcatacombs>>
+<<elseif $eventskip isnot 1>>
+	<<events_catacombs barrow>>
+<<else>>
+	<<if $leftarm isnot "bound" and $rightarm isnot "bound">>
+		<<set $lock to 500>>
+		<<if currentSkillValue('skulduggery') gte $lock>>
+			<span class="green">这里埋藏着财富。</span>
+			<br>
+			<<link [[掠夺(0:30)|Catacombs Barrow Plunder]]>><<pass 30>><<catacombs_torch -5>><</link>><<crime>><<ltorch>>
+			<br>
+		<<else>>
+			<span class="red">你缺乏在这里嗅出财富的技能。</span><<skulduggeryrequired>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<link [[往上爬(0:01)|Catacombs Bores Climb]]>><<pass 1>><</link>>
+	<br>
+	<<link [[向西走(0:10)|Catacombs Stream]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>><<catacombs_exit_indicator>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Catacombs Bores Climb
+<<effects>>
+
+你爬上石坡。奇怪的钻孔提供了捕捉的好地方，尤其是靠近顶部的地方。
+<br><br>
+
+你出现在一个华丽大厅的废墟中。破碎的陶器和陶器散落在地上，在脚下嘎吱作响。
+<br><br>
+
+<<link [[继续|Catacombs Bores]]>><</link>>
+<br>
+
+:: Catacombs Bores
+<<effects>><<set $bus to "bores">>
+
+你在森林下面的地下墓穴里。管道和电缆在头顶纵横交错，穿过奇怪的钻孔。
+<<if $spiderdisable is "f">>
+	<span class="blue">你看到它们之间的黑暗中有动静。</span>上面有东西正在看着这里。
+<<else>>
+	<span class="blue">你看到它们之间有微弱的闪光。</span>上面有什么东西。
+<</if>>
+<br><br>
+
+<<catacombs_torch_text>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutcatacombs>>
+<<elseif $eventskip isnot 1>>
+	<<events_catacombs compound>>
+<<else>>
+	<<if $leftarm isnot "bound" and $rightarm isnot "bound">>
+		<<set $lock to 500>>
+		<<if currentSkillValue('skulduggery') gte $lock>>
+			<span class="green">这里埋藏着财富。</span>
+			<br>
+			<<link [[掠夺(0:30)|Catacombs Compound Plunder]]>><<pass 30>><<catacombs_torch -5>><</link>><<crime>><<ltorch>>
+			<br>
+		<<else>>
+			<span class="red">你缺乏在这里嗅出财富的技能。</span><<skulduggeryrequired>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<if $tending gte 500>>
+		<<link [[劝说|Catacombs Bores Coax]]>><</link>><<note "护理" "green">>
+		<br>
+	<<else>>
+		<span class="blue">你缺乏把上面的东西哄出来的技巧。</span>
+		<br>
+	<</if>>
+	<<link [[向北走(0:10)|Catacombs Engravings]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>>
+	<br>
+	<<link [[向下爬 (0:01)|Catacombs Stalagmites Climb]]>><<pass 1>><</link>><<catacombs_exit_indicator>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Catacombs Bores Coax
+<<effects>>
+
+你在洞边咕咕叫，声音很柔和。起初只有微弱的回声回应，
+
+<<beastNEWinit 1 spider>>
+<<if $spiderdisable is "f">>
+	但接下来，一个圆滚滚的光球就从洞口钻了出来。它在你面前盘旋了一会儿，然后沿着深渊边缘飘起，似乎寻找着什么。
+	<br><br>
+
+	它来到墙上，照亮了一条狭窄的通道，在那里盘旋了一会儿，好像在招手。然后浮在里面。它看起来像一个隐藏的通道，围绕着裂口。
+<<elseif $monster is 1>>
+	但接着一个头伸了出来，后面跟着八个四肢。这是一个<<beasttype>>，但在<<bhis>>的举止中没有任何威胁。在一根丝线的帮助下，<<bHe>>从洞里爬出来，沿着墙爬下去，落在你面前。
+	<br><br>
+
+	"不和其他人类交朋友吗？"<<bhe>>问道，"我可以背你穿过峡谷，如果你愿意的话。离出口更近。我比看起来要强壮，强多了。"
+<<else>>
+	然后八条腿爬进了视野。这是一个巨大的<<beasttype>>，但在<<bhis>>的举止中没有威胁。在一根丝线的帮助下，<<bHe>>从洞里爬出来，沿着墙爬下去，落在你面前。
+	<br><br>
+
+	<<bHe>>转身向峡谷走去，放下<<bhis>>的腹部。<<bHe>>想带你过去。
+<</if>>
+<br><br>
+
+<<link [[穿越峡谷 (0:10)|Catacombs Bores Coax 2]]>><<pass 10>><</link>>
+<br>
+<<link [[留下|Catacombs Bores]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Catacombs Bores Coax 2
+<<effects>>
+
+<<if $spiderdisable is "f">>
+	你跟着光走。它会引导你穿过石头中狭窄走廊的迷宫，直到你出现在地下墓穴的另一部分，在峡谷的另一边。钟乳石悬挂在黑暗中。你身后的通道已经消失在阴影里了。
+	<br><br>
+
+	带着俏皮的闪光，光线射向天花板，在钟乳石之间隐蔽。
+<<elseif $monster is 1>>
+	<<beasttype>>在你周围打转。在你做出反应之前，<<bhe>>已经在你的腰上缠了几股线。<<bHe>>爬上<<bhe>>降落的线，把你从你的脚上拉到空中。"抱你最好的方式，"<<bhe>>带着歉意的微笑说。
+	<br><br>
+
+	<<bHe>>爬到天花板上，冲过裂缝。你在<<bhim>>下摇摆，意识到下面的深渊，直到你到达另一边。<<bHe>>轻轻地放下你，然后<<bhimself>>自己又下来，扯掉你腰上的带子。
+	<br><br>
+
+	"看到了吗?"<<bHe>>笑了。"我很强!"随着跳跃，<<bhe>>爬上墙，再次消失在黑暗中。你在地下墓穴的另一部分。钟乳石悬挂在黑暗中。
+<<else>>
+	你爬到<<beasttype>>的腹部，当<<bhis>>开始运动时，你的手臂环绕在<<bhe>>的腹柄上。<<bHe>>爬上丝线，爬上了一张你从下面看不见的水平网。<<bHe>>跑过一个几乎看不见的网络挂在裂缝上。你紧紧抓住，意识到脚下就是深渊。
+	<br><br>
+
+	<<bHe>>到达了另一边，沿着另一条线迅猎而下。你爬下来，蜘蛛立刻爬到挂着的绳子上，消失在黑暗中。你在地下墓穴的另一部分。钟乳石悬挂在黑暗中。
+<</if>>
+<br><br>
+
+<<link [[继续|Catacombs Chasm]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Catacombs Stalagmites Climb
+<<effects>>
+
+你把自己陷进深渊。钻孔是抓鱼的好地方，而且到达海底并不难。
+<br><br>
+
+黑暗包围着你。水从你的脚边流过。
+<br><br>
+
+<<link [[继续|Catacombs Stalagmites]]>><</link>>
+<br>
+
+:: Catacombs Engravings
+<<effects>><<set $bus to "engravings">>
+
+你在森林下面的地下墓穴里。管道和电缆在头顶纵横交错。墙壁上装饰着骨骼雕刻。
+<br><br>
+
+<<catacombs_torch_text>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutcatacombs>>
+<<elseif $eventskip isnot 1>>
+	<<events_catacombs compound>>
+<<else>>
+	<<if $leftarm isnot "bound" and $rightarm isnot "bound">>
+		<<set $lock to 500>>
+		<<if currentSkillValue('skulduggery') gte $lock>>
+			<span class="green">这里埋藏着财富。</span>
+			<br>
+			<<link [[掠夺(0:30)|Catacombs Compound Plunder]]>><<pass 30>><<catacombs_torch -5>><</link>><<crime>><<ltorch>>
+			<br>
+		<<else>>
+			<span class="red">你缺乏在这里嗅出财富的技能。</span><<skulduggeryrequired>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<link [[向北走(0:10)|Catacombs Museum]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>>
+	<br>
+	<<link [[向南走(0:10)|Catacombs Bores]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>><<catacombs_exit_indicator>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Catacombs Museum
+<<effects>><<set $bus to "museum">>
+
+你在森林下面的地下墓穴里。管道和电缆在头顶纵横交错。碎玻璃散落一地。
+<br><br>
+
+<<catacombs_torch_text>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutcatacombs>>
+<<elseif $eventskip isnot 1>>
+	<<events_catacombs compound>>
+<<else>>
+	<<if $leftarm isnot "bound" and $rightarm isnot "bound">>
+		<<set $lock to 500>>
+		<<if currentSkillValue('skulduggery') gte $lock>>
+			<span class="green">这里埋藏着财富。</span>
+			<br>
+			<<link [[掠夺(0:30)|Catacombs Compound Plunder]]>><<pass 30>><<catacombs_torch -5>><</link>><<crime>><<ltorch>>
+			<br>
+		<<else>>
+			<span class="red">你缺乏在这里嗅出财富的技能。</span><<skulduggeryrequired>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<link [[向北走 (0:10)|Catacombs Statues]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>>
+	<br>
+	<<link [[向南走(0:10)|Catacombs Engravings]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>><<catacombs_exit_indicator>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Catacombs Statues
+<<effects>><<set $bus to "statues">>
+
+你在森林下面的地下墓穴里。管道和电缆在头顶纵横交错。年久失修的雕像守卫着毁坏的门户。
+<br><br>
+
+<<catacombs_torch_text>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutcatacombs>>
+<<elseif $eventskip isnot 1>>
+	<<events_catacombs compound>>
+<<else>>
+	<<if $leftarm isnot "bound" and $rightarm isnot "bound">>
+		<<set $lock to 500>>
+		<<if currentSkillValue('skulduggery') gte $lock>>
+			<span class="green">这里埋藏着财富。</span>
+			<br>
+			<<link [[掠夺(0:30)|Catacombs Compound Plunder]]>><<pass 30>><<catacombs_torch -5>><</link>><<crime>><<ltorch>>
+			<br>
+		<<else>>
+			<span class="red">你缺乏在这里嗅出财富的技能。</span><<skulduggeryrequired>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<link [[向北走(0:10)|Catacombs Compound]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>>
+	<br>
+	<<link [[向南走(0:10)|Catacombs Museum]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>><<catacombs_exit_indicator>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Catacombs Compound
+<<effects>><<set $bus to "compound">>
+
+你在森林下面的地下墓穴里。管道和电缆在头顶上振动，绕着半毁的柱子蜿蜒而行。
+<<if $museumAntiques.antiques.antiquewhitecrystal isnot "found" and $museumAntiques.antiques.antiquewhitecrystal isnot "talk" and $museumAntiques.antiques.antiquewhitecrystal isnot "museum">>
+	他们都朝同一个方向跑去，朝着一台嗡嗡作响的机器跑去。它的中心悬挂着一块发光的白色水晶。昏暗的光线投下长长的影子。
+<</if>>
+<br><br>
+
+<<catacombs_torch_text>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutcatacombs>>
+<<elseif $eventskip isnot 1>>
+	<<events_catacombs compound>>
+<<else>>
+	<<if $museumAntiques.antiques.antiquewhitecrystal isnot "found" and $museumAntiques.antiques.antiquewhitecrystal isnot "talk" and $museumAntiques.antiques.antiquewhitecrystal isnot "museum">>
+		<<link [[接近水晶|Catacombs Crystal]]>><</link>>
+		<br>
+	<</if>>
+	<<if $leftarm isnot "bound" and $rightarm isnot "bound">>
+		<<set $lock to 500>>
+		<<if currentSkillValue('skulduggery') gte $lock>>
+			<span class="green">这里埋藏着财富。</span>
+			<br>
+			<<link [[掠夺(0:30)|Catacombs Compound Plunder]]>><<pass 30>><<catacombs_torch -5>><</link>><<crime>><<ltorch>>
+			<br>
+		<<else>>
+			<span class="red">你缺乏在这里嗅出财富的技能。</span><<skulduggeryrequired>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<link [[向南走(0:10)|Catacombs Statues]]>><<pass 10>><<catacombs_torch -5>><</link>><<ltorch>><<catacombs_exit_indicator>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Catacombs Crystal
+<<effects>>
+
+你走近机器。当你靠近时，你感觉到地面在震动，并看到金属尖头将水晶固定在适当的位置。不管它是什么，它都很重要，可能值一大笔钱。
+<br><br>
+
+<<link [[拿走|Catacombs Crystal 2]]>><</link>><<gcrime>>
+<br>
+<<link [[远离|Catacombs Compound]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Catacombs Crystal 2
+<<effects>>
+<<earnFeat "Dark Delvings">>
+你把水晶拿掉。尖头无阻力地释放它。你以为你看到了一幅雕刻，不知怎么地刻在了里面。
+<br><br>
+
+在你进一步检查之前，<span class="red">警报器就响了。</span>你转身跑开，穿过柱子，穿过一条蜿蜒的通道。你听到身后的脚步声，但很快就在迷宫中消失了。
+<br><br>
+
+<<set $antiquemoney += 2000>><<museumAntiqueStatus "antiquewhitecrystal" "found">><<crimeup 2000>>
+
+<<link [[继续|Catacombs Compound]]>><<set $eventskip to 1>><</link>>
+<br>

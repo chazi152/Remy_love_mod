@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DoL sprite grayscale converter</title>
+    <script type="text/javascript" src="../canvasmodel/tinycolor.js"></script>
+    <script type="text/javascript" src="../canvasmodel/renderer.js"></script>
+    <script type="text/javascript" src="../../game/03-JavaScript/domutils.js"></script>
+</head>
+<body>
+<div>
+    Open image file(s):
+    <input type="file" id="filectl" multiple>
+</div>
+<div>
+    Result<sub>R,G,B</sub> = (
+    Rfactor &times; Src<sub>R</sub><sup>&gamma;</sup> +
+    Gfactor &times; Src<sub>G</sub><sup>&gamma;</sup> +
+    Bfactor &times; Src<sub>B</sub><sup>&gamma;</sup>
+    ) &times; Scale / ( Rfactor + Gfactor + Bfactor )
+</div>
+<div style="display:flex">
+    <div id="original"></div>
+    <div id="parameters">
+        <h2>Paremeters</h2>
+        <div style="font-family: monospace">
+            R factor: <input type="number" id="param0" oninput="gsfactors[0]= +this.value;processImages()"><br/>
+            G factor: <input type="number" id="param1" oninput="gsfactors[1]= +this.value;processImages()"><br/>
+            B factor: <input type="number" id="param2" oninput="gsfactors[2]= +this.value;processImages()"><br/>
+            Scale by: <input type="number" id="param3" oninput="gsfactors[3]= +this.value;processImages()"><br/>
+            Gamma &nbsp; : <input type="number" step="0.1" id="param4" oninput="gsfactors[4] = +this.value;processImages()"><br/>
+            Test color: <input type="color" value="#FF0000" oninput="testcolor=this.value;makexamples()"><br/>
+        </div>
+        <hr>
+        <div>
+            Default clothing: [2, 1, 1, 1, 1] <br/>
+            Hair: [2, 1, 1, 1, 1.5] <br/>
+            Simple grayscale: [0.21, 0.71, 0.08, 1, 2.2]
+        </div>
+    </div>
+    <div id="results"></div>
+    <div id="examples"></div>
+</div>
+
+<script type="text/javascript">
+	let images = [];
+	let allready = false;
+	let filectl = document.getElementById('filectl');
+	let divoriginal = document.getElementById('original');
+	let divresults = document.getElementById('results');
+	let divexamples = document.getElementById('examples');
+	let gsfactors = [2,1,1,1,1];
+	for (let i = 0; i < gsfactors.length; i++) document.getElementById('param'+i).value=gsfactors[i];
+	let testcolor = '#FF0000';
+
+	filectl.addEventListener('change', loadFiles);
+
+	function imageLoaded(ir) {
+		ir.loaded = true;
+		ir.width = ir.image.width;
+		ir.height = ir.image.height;
+		ir.result.width = ir.width;
+		ir.result.height = ir.height;
+		ir.example.width = ir.width;
+		ir.example.height = ir.height;
+		/**
+		 * @type {CanvasRenderingContext2D}
+		 */
+		let ctx = ir.result.getContext('2d');
+		ctx.drawImage(ir.image, 0, 0);
+		ir.imagedata = ctx.getImageData(0, 0, ir.width, ir.height);
+		for (let image of images) {
+			if (!image.loaded) allready = false;
+		}
+		allready = true;
+		processImages();
+	}
+
+	function loadFiles() {
+		allready = false;
+		images = [];
+		divoriginal.innerHTML = '<h2>Original</h2>';
+		divresults.innerHTML = '<h2>Converted</h2>';
+		divexamples.innerHTML = '<h2>Examples</h2>';
+		let files = filectl.files;
+		for (let file of files) {
+			if (!file.name.match(/\.png$/i)) {
+				console.log("Not a png, skipping: ", file.name);
+				continue;
+			}
+			let ir = {
+				name: file.name,
+				loaded: false,
+				image: element("img"),
+				result: element('canvas'),
+				example: element('canvas')
+			};
+			images.push(ir);
+			divoriginal.append(
+				element('div', file.name),
+				element('div', ir.image)
+			);
+			divresults.append(
+				element('div', file.name),
+				element('div', ir.result)
+			);
+			divexamples.append(
+				element('div', file.name),
+				element('div', ir.example)
+			);
+			file.arrayBuffer().then(buffer => {
+				let blob = new Blob([buffer]);
+				ir.image.addEventListener('load', () => imageLoaded(ir));
+				ir.image.src = URL.createObjectURL(blob);
+			})
+		}
+	}
+
+	function processImages() {
+		if (!allready) return;
+		let [rf, gf, bf, sf, gamma] = gsfactors;
+		let f = 255*sf/(rf+gf+bf);
+		for (let ir of images) {
+			let resultctx = ir.result.getContext('2d');
+			let gsdata = resultctx.createImageData(ir.imagedata);
+			let srcarr = ir.imagedata.data;
+			let gsarr = gsdata.data;
+			for (let i = 0, n = ir.width * ir.height * 4; i < n; i += 4) {
+				let r = srcarr[i]/255;
+				let g = srcarr[i + 1]/255;
+				let b = srcarr[i + 2]/255;
+				let a = srcarr[i + 3];
+				let value = ((rf * r**gamma + gf * g**gamma + bf * b**gamma)* f)|0;
+				gsarr[i] = value;
+				gsarr[i + 1] = value;
+				gsarr[i + 2] = value;
+				gsarr[i + 3] = a;
+			}
+			resultctx.putImageData(gsdata, 0, 0);
+		}
+		makexamples();
+	}
+
+	function makexamples() {
+		if (!allready) return;
+		for (let image of images) {
+			let img = Renderer.composeOverRect(image.result,testcolor,'hard-light');
+			img = Renderer.cutoutFrom(img, image.result);
+			image.example.getContext('2d').drawImage(img.canvas,0,0);
+		}
+	}
+</script>
+</body>
+</html>

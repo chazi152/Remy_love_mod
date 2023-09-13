@@ -1,0 +1,939 @@
+:: School Library
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>><<set $bus to "schoollibrary">>
+你正在学校图书馆里。
+<<if Time.schoolDay>>
+	/* indev - double <br> replaced with single */
+	<<if $schoolstate is "early">>
+		图书馆里没有人，因为时间太早了。
+		<br>
+	<<elseif $schoolstate is "late">>
+		图书馆里没有人，学生和老师都回家了。
+		<br>
+	<<elseif $schoolstate is "lunch">>
+		房间里挤满了用午休时间赶作业的学生。
+		<br>
+	<<else>>
+		在场的几个学生正在桌上学习，在书架间找书。
+		<br>
+	<</if>>
+<<else>>
+	图书馆里没有人。
+	<br>
+<</if>>
+/*indev - Extra library description*/
+图书馆后面有一张大书桌，上面挂着一块标牌，写着"图书出租+服装"。
+<br>
+有几个书架上有经典的学术文献。你看到工程学、生物学、社会科学和语言学习方面的书籍，这些都很有助于成绩提升。
+<br>
+旁边是一个小篮子，里面有返还的和还没分类的书。
+<<if (Time.monthName is "November" and Time.monthDay gte 24) or Time.monthName is "December">>
+	你注意到一本奇怪的橄榄色的书夹在其余的书中间。
+<</if>>
+<<if currentSkillValue('english') lt 200>>
+	你想知道如果你是那些书虫中的一员，这样会不会有更有趣。
+<</if>>
+
+/* Just some hints and tips for the player */
+<<if Time.schoolDay and $schoolstate isnot "early" and $schoolstate isnot "late" and random(1, 3) is 1>>
+	<br><br>
+	你无意中听到一些学生在互相交谈。
+	<br>
+	<<if $rng gte 96>>
+		"你知道吗，有些书呆子为了学习，会晚上偷偷溜进图书馆？"
+		<br>
+		"别傻了，好像真有人会这么呆似的。"
+	<<elseif $rng gte 91>>
+		"太可怕了！我只知道我完全挂科了。"
+		<br>
+		"我告诉过你要好好学习！"
+	<<elseif $rng gte 86>>
+		"我一点也集中不了精神，一考试就会变得非常焦虑......"
+		<br>
+		"为了放松，我经常在厕所里事先撸一次。"
+		<br>
+		"怪人。"
+	<<elseif $rng gte 81>>
+		"你是如何在取得好成绩的同时还有那么多空闲时间的？"
+		<br>
+		"那很简单！我每天学习一小段时间。你看，人类的大脑不能一次处理太多的信息，所以分散学习时间会更有效。"
+		<br>
+		"我总是在考试前通宵学习..."
+	<<elseif $rng gte 76>>
+		"温特曾经提到过有一条秘密通道连接学校厕所和下水道."
+		<br>
+		"我不知道，我上课从来都不专心。"
+	<<elseif $rng gte 71>>
+		"你知道那个失踪了一个月的女孩吗？"
+		<br>
+		"住在孤儿院的那个？"
+		<br>
+		"是的，就是那个，我不知道她出了什么事但她完全变了。有时她无缘无故地尖叫，有些人甚至认为她能看到别人看不到的东西。"
+		<br>
+		"比如说鬼魂？你也相信这些吗？"
+		<br>
+		"当然不是！鬼魂只存在于电影或游戏中。"
+	<<elseif $rng gte 66>>
+		"你知道吗？当你赤身裸体的时候你能学更多。"
+		<br>
+		"这是最后一次，我们一起学习的时候我再也不脱衣服了."
+	<<elseif $rng gte 61>>
+		"你戴那副傻兮兮的眼镜是怎么回事？"
+		<br>
+		"它能帮我在课堂上集中注意力。"
+		<br>
+		"这怎么行得通的？难道你需要戴它们吗？"
+		<br>
+		"没有，但每次我穿戴上它们，我都觉得自己像个书呆子，下意识地表现得像个书呆子，从而更加集中注意力在老师身上。"
+		<br>
+		"你试过让自己变得更像一个正常人吗？"
+	<<elseif $rng gte 56>>
+		"到底为什么我们需要付钱来把书带回家呢？如果能更容易地接触到这些材料，我们都会做得更好。"
+		<br>
+		"我不知道，但你最好确保按时归还，图书管理员的助手非常讨厌。"
+		<br>
+		"我听说过<<nnpc_him "Sydney">>。<<nnpc_he "Sydney">>是不是那些老师的宠儿之一?"
+		<br>
+		"可能。上次我只是还书迟了，结果花了几天才把那些标记弄掉……"
+	<<elseif $rng gte 51>>
+		"你有读过那本红色的书吗? 有关于那对恋人的那本?"
+		<br>
+		"什么？"
+		<br>
+		"我试了几页，最后读完了整本书。我发誓那感觉真的身临其境。我忍不住一直在想这件事。"
+		<br>
+		"……什么？"
+	<<elseif $rng gte 46>>
+		"上个月最后一天晚上的月亮是怎么回事?它变成全红的了，大家都变得好奇怪。"
+		<br>
+		"你觉得是就是，反正小心点，不止你一个人看到过。"
+		<br>
+		"看起来你心情不是很好，我之后再问吧。"
+	<<elseif $rng gte 41>>
+		"嘿，你知道吗？精液其实是大脑组织。"
+		<br>
+		"你是认真的吗？"
+		<br>
+		"当然。每次你自慰，你的大脑都会稍微缩小一点。"
+		<br>
+		"我看得出来。"
+	<<elseif $rng gte 36>>
+		"你知道性行为会让你变笨吗？"
+		<br>
+		"你是这么认为的吗？"
+		<br>
+		"是的，这是被证实的事实。你越放纵，就会变得越愚蠢。"
+		<br>
+		"我明白了...就像我能提到的某个学生一样。"
+	<<elseif $rng gte 31>>
+		"嘿，你听说过自慰吗？他们说这很危险哦！"
+		<br>
+		"真的吗?"
+		<br>
+		"是的。如果你做得太频繁，你会变瞎的!"
+		<br>
+		"难道这就是你眼神不好的原因？"
+	<<elseif $rng gte 26>>
+		"你最近有没有看到那个学生？你知道的，那个全校都在谈论的人。"
+		<br>
+		"不...似乎不怎么去上课。"
+		<br>
+		"不是很聪明，对吧？"
+		<br>
+		"以前并不是，但最近那家伙的大脑被下面支配了。"
+	<<elseif $rng gte 21>>
+		<<rngWraith>>
+		<<if _wraithEvent>>
+			<<silently>><<speechWraith "lines">><</silently>>
+			"_line1"
+			<br>
+			"_line2"
+			<br>
+			他们不是学生。
+			<<trauma 6>><<gtrauma>>
+		<<else>>
+			"<<print either("如果你这么觉得的话，其实我们都不在这里。","嘿，听。听到了吗？没什么。","没试过就先别挑刺。爵士金属就是这样。","冬天其实有点热，从化石的角度来说。","说实话，我宁愿让狼把我操了。","如果小测验只是'小'测验，那么测试是什么？","你。我。书架。图书馆躲避球。你先？","我在这所学校连一个垃圾桶都没见过，难以置信。","食堂的食物其实很不错，虽然不想承认。","哦，做一只毛毛虫，遗忘掉世界的苦难。", "有人说他们看到了一条鲸鱼有…额…触须！像乌贼一样的触须。也许鱿鱼和鲸鱼终于放下了分歧，互通有无？")>>"
+			<br>
+			"<<print either ("我到底为什么跟你是朋友？","我告诉过你别再跟着我了，","他妈的什么鬼？","我要走了，","我们能不能正常点？","...什么？","我很确定你不应该喝醉了来学校。","我要报警了。","我要去告状了，我认真的。","就算我求求你，别发癫好么？","你能不能能像一棵树一样到冬天的时候去死？")>>"
+			<br>
+			只是在聊天而已，没什么好听的。
+		<</if>>
+	<<else>>
+		但他们太远了，你听不清。
+	<</if>>
+<</if>>
+
+<br><br>
+<<if $exposed gte 1>>
+	<<if Time.schoolDay and $schoolstate isnot "early" and $schoolstate isnot "late">>
+		你躲在书架之间，努力隐藏你的<<nudity>>。
+		<br>
+	<<else>>
+		<<exhibitionclassroom>>
+	<</if>>
+<</if>>
+<<sydneySchedule>>
+<<if $stress gte $stressmax>>
+	<<link [[你眼前一黑…|School Passout]]>><</link>>
+<<elseif _sydney_location is "library" and ($sydneyLeightonConfront is 1 or $leightonAssaulted is 1) and $exposed lte 0 and $NPCName[$NPCNameList.indexOf("Leighton")].init is 1 and $pillory_tenant.special.name isnot "Leighton" and !$sydneyLeightonConfrontTimer>>
+	<<unset $sydneyLeightonConfront>><<set $sydneyLeightonConfrontTimer to 7>><<set $corruptionEvent to 1>>
+	<<if ($bookStolenKnown isnot undefined and $bookStolenKnown gte 3) or $libraryMoneyStolen gte 1000 or $leightonAssaulted is 1>>
+		<<if $leightonAssaulted is 1>>
+			<<set $leightonAssaulted to 2>>
+		<</if>>
+		<<npc "Sydney">><<person1>>
+		你听到身后的脚步声，感到有一只手搭在你的肩膀上。"完美的时机。"礼顿说道。"看来你就是不吸取教训，我应该让警察知道你偷了我们多少钱，但我可以接受更…家常的惩罚。"
+		<br><br>
+		<<nnpc_He "Leighton">>开始领着你走向出租柜台。"你的朋友会和你一起受罚。<<if $studyBooks.stolen isnot "none">><<set $studyBooks.stolen to "none">><<unset $sydneyStolenKnown>>哦，我还要把那些偷来的书还回去。<</if>>"
+		<br><br>
+		有几个学生逗留了一会儿，但礼顿的一声怒吼把他们赶了出去。礼顿在他们身后锁上了门。
+		<br><br>
+		<<link [[继续|Sydney Leighton Spank]]>><<set $phase to 4>><</link>>
+		<br>
+	<<else>>
+		你看到礼顿站在悉尼的柜台前。<<nnpc_He "Leighton">>好像在因为什么原因严厉地责骂<<nnpc_him "Sydney">>。过了一会，<span class="red">礼顿抓住<<nnpc_his "Sydney">>的手臂并提高了<<nnpc_his "Leighton">>嗓门。</span>
+		<br><br>
+		<<link [[介入|Sydney Leighton Intervene]]>><<npcincr Sydney love 1>><</link>><<glove>>
+		<br>
+		<<link [[无视|Sydney Leighton Ignore]]>><<stress 12>><<npcincr Sydney love -10>><<npcincr Sydney purity -5>><</link>><<ggstress>><<llllove>><<llspurity>><<sydneyWarning>>
+		<br>
+	<</if>>
+<<else>>
+	<<if $arousal gte $arousalmax>>
+		<<orgasmLocation "library">>
+	<</if>>
+	<<if $exposed gte 1 and Time.schoolDay and $schoolstate isnot "early" and $schoolstate isnot "late">>
+	<<else>>
+		<<if $exposed lte 0>>
+			<<if _sydney_location is "library" and ($sydneySeen is undefined or !$sydneySeen.includes("library"))>>
+				<<if $sydneySeen>>悉尼<<else>>一个学生<</if>>坐在租赁柜台，整理着文件和盖章卡片。
+				<br>
+				<<ind>><<link [[柜台|Sydney Library Intro]]>><</link>>
+				<br><br>
+			<<elseif _sydney_location isnot "library">>
+				<<ind>><<link [[柜台|Library Rental Counter]]>><<set $counterApproach to 1>><</link>>
+				<br><br>
+			<<elseif _sydney_location is "library">>
+				悉尼坐在出租柜台的凳子上，翻阅文件，盖印花卡。
+				<br>
+				<<ind>><<link [[靠近悉尼|Library Rental Counter]]>><<set $counterApproach to 1>><</link>>
+				<br><br>
+			<</if>>
+		<</if>>
+		<<projectoptions>>
+		<<if $exposed lte 0 and Time.schoolDay and ($schoolstate is "morning" or $schoolstate is "afternoon" or $schoolstate is "lunch") and $mathsproject is "ongoing" and $mathslibrarystudent isnot 1 and $mathslibraryknown isnot 1>>
+			你看到一个学生正在为数学竞赛求解。
+			<br>
+
+			<<ind>><<link [[靠近|Maths Library Student]]>><</link>>
+			<br><br>
+		<</if>>
+		<<if $exposed lte 0 and $NPCName[$NPCNameList.indexOf("Kylar")].state is "active" and ($weather is "rain" or $weather is "snow") and $schoolstate is "lunch" and $daily.school.lunchEaten is 1>>
+			凯拉尔坐在一张桌子前，潦草地涂着什么。
+			<br>
+			<<ind>><<link [[靠近凯拉尔|Kylar Library]]>><<set $kylar_text_trigger to true>><</link>>
+			<br><br>
+		<<elseif $englishPlay is "ongoing" and $englishPlayRoles.Kylar isnot "none" and $englishPlayRoles.KylarKnown and $exposed lte 0 and ($weather is "rain" or $weather is "snow") and $schoolstate is "afternoon">>
+			<<if $englishPlayReadiness gte 56 and $englishPlayRoles.SydneyKnown and !$englishPlayDoubleRehearsal>>
+				凯拉尔不在这.<<nnpc_he "Kylar">>常坐的桌上有张便条，上面写着"<span class="gold">到英语教室见我</span>"
+				<br><br>
+			<<else>>
+				凯拉尔坐在一张桌子前，潦草地涂着什么。
+				<br>
+				<<ind>><<link [[接近|Kylar Library]]>><<set $kylar_text_trigger to true>><</link>>
+				<br><br>
+			<</if>>
+		<</if>>
+		<<if $exposed gte 1>>
+			<<scienceicon>><<link [[学习科学 (0:20)|Library Study Exposed]]>><<pass 20>><<set $phase to 1>><</link>><<gscience>>
+			<br>
+			<<mathicon>><<link [[学习数学 (0:20)|Library Study Exposed]]>><<pass 20>><<set $phase to 2>><</link>><<gmaths>>
+			<br>
+			<<englishicon>><<link [[学习英语 (0:20)|Library Study Exposed]]>><<pass 20>><<set $phase to 3>><</link>><<genglish>>
+			<br>
+			<<historyicon>><<link [[学习历史 (0:20)|Library Study Exposed]]>><<pass 20>><<set $phase to 4>><</link>><<ghistory>>
+			<br>
+		<<else>>
+			<<scienceicon>><<link [[学习科学 (0:20)|Library Study]]>><<pass 20>><<set $phase to 1>><</link>><<gscience>>
+			<br>
+			<<mathicon>><<link [[学习数学 (0:20)|Library Study]]>><<pass 20>><<set $phase to 2>><</link>><<gmaths>>
+			<br>
+			<<englishicon>><<link [[学习英语 (0:20)|Library Study]]>><<pass 20>><<set $phase to 3>><</link>><<genglish>>
+			<br>
+			<<historyicon>><<link [[学习历史 (0:20)|Library Study]]>><<pass 20>><<set $phase to 4>><</link>><<ghistory>>
+			<br>
+		<</if>>
+		/*indev - scarlet book possible to be taken. English 200+ required*/
+		<<if currentSkillValue('english') gte 300>>
+			<<scarleticon>><<link [[从还书处拿 "劳尔与珍妮特" (0:01)|ScarletBook1]]>><<pass 1>><<set $scarletExitPassage to "School Library">><</link>>
+			<br>
+		<<elseif currentSkillValue('english') gte 200>>
+			<<scarleticon>><<link [[从篮子里拿出那本中等大小的猩红色的书 (0:01)|ScarletBook1]]>><<pass 1>><</link>>
+			<br>
+		<</if>>
+		<<if (Time.monthName is "November" and Time.monthDay gte 24) or Time.monthName is "December">>
+			<<oliveicon>><<link [[从篮子里拿那本橄榄色的书 (0:01)|Olive Book 1]]>><<set $oliveExitPassage to "School Library">><<pass 1>><</link>>
+			<br>
+		<</if>>
+	<br>
+	<</if>>
+<<link [[离开图书馆 (0:01)|Hallways]]>><<pass 1>><</link>>
+<br>
+<</if>>
+
+:: Library Study
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>><<sydneySchedule>><<rngWraith 1>>
+
+<<if $phase is 1>><<scienceskill>>
+	你坐在书桌前，拿着一本科学教科书，开始仔细的阅读起来。
+<<elseif $phase is 2>><<mathsskill>>
+	你坐在一张桌子前，拿着一本数学教科书，开始仔细的阅读起来。
+<<elseif $phase is 3>><<englishskill>>
+	你坐在书桌前，拿着一本英语教科书，开始仔细的阅读起来。
+<<elseif $phase is 4>><<historyskill>>
+	你坐在书桌前，拿着一本历史教科书，开始仔细的阅读起来。
+<</if>>
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure) and Time.schoolDay and $schoolstate isnot "early" and $schoolstate isnot "late">>
+	<<if $rng gte 51>>
+		<<generatey1>><<generatey2>>当你忙着自己的事的时候, 一伙<<fullGroup>>开始骚扰你。
+		<br><br>
+
+		<<link [[忽视他们|School Library Harass]]>><<set $phase to 0>><<trauma 2>><<stress 2>><</link>><<gtrauma>><<gstress>>
+		<br>
+		<<link [[请求图书管理员帮忙|School Library Harass]]>><<set $phase to 1>><<status -10>><</link>><<lcool>>
+		<br>
+		<<if $NPCName[$NPCNameList.indexOf("Sydney")].init is 1 and $sydneySeen.includes("library") and _sydney_location is "library">>
+			<<link [[请求悉尼帮忙|School Library Harass]]>><<set $phase to 2>><</link>>
+			<br>
+		<</if>>
+	<<elseif _wraithEvent>>
+		过了一段时间，你开始感到焦虑。你把课本放回书架上。
+		<br><br>
+		透过另一边的缝隙，你瞥见了一张苍白的脸。<<stress 12>><<ggstress>><<trauma 4>><<gtrauma>>
+		<br><br>
+		<<link [[继续|School Library]]>><</link>>
+		<br>
+	<<else>>
+		<<if !$worn.over_lower.type.includes("naked")>>
+			<<set $worn.over_lower.integrity -= 10>>
+			<<if $worn.over_lower.integrity lte 0>>
+				当你从凳子上起身时，你的$worn.over_lower.cn_name_cap<<overlowerplural>>被凳子钩住了。你尝试把解救你的衣服，但<<overloweritis>>从你身上扯成碎条，<<if !$worn.lower.type.includes("naked")>>，暴露了你的<<undies>><</if>>。
+				<<overlowerruined>><<trauma 3>>
+				<br><br>
+			<<elseif $worn.over_lower.integrity gte 0>>
+				当你从凳子上站起来时，你听到了撕裂声。 你的$worn.over_lower.cn_name_cap<<overlowerplural>>被桌子勾住了。
+				<br><br>
+			<</if>>
+		<<else>>
+			<<set $worn.lower.integrity -= 10>>
+			<<if $worn.lower.integrity lte 0>>
+				当你从凳子上站起来时，你听到了撕裂声。 你的$worn.lower.cn_name_cap<<lowerplural>>被桌子勾住了。 你试图把它解开，但是<<loweritis>>被扯了下来，露出了你的<<undies>>。
+				<<lowerruined>><<trauma 3>>
+				<br><br>
+			<<elseif $worn.lower.integrity gte 0>>
+				你从座位上站起来时，听到了撕裂声。你的$worn.lower.cn_name_cap<<lowerplural>>被桌子勾住了。
+				<br><br>
+			<</if>>
+		<</if>>
+		<<link [[继续|School Library]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<link [[继续|School Library]]>><</link>>
+	<br>
+<</if>>
+
+:: Library Study Exposed
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>><<rngWraith 1>>
+
+<<if $phase is 1>>
+	你在一张桌子前坐下，拿着一本科学教科书，通读材料。即使周围没有人，坐在学校图书馆里展示着你的<<lewdness>>也让你感到很涩情。这一举动让你保持警觉和专注。
+	<<gscience>><<scienceskill>><<garousal>><<arousal 300>>
+<<elseif $phase is 2>>
+	你在一张桌子前坐下，拿着一本数学教科书，通读材料。即使周围没有人，坐在学校图书馆里展示着你的<<lewdness>>也让你感到很涩情。这一举动让你保持警觉和专注。
+	<<gmaths>><<mathsskill>><<garousal>><<arousal 300>>
+<<elseif $phase is 3>>
+	你在一张桌子前坐下，拿着一本英语教科书，通读材料。即使周围没有人，坐在学校图书馆里展示着你的<<lewdness>>也让你感到很涩情。这一举动让你保持警觉和专注。
+	<<genglish>><<englishskill>><<garousal>><<arousal 300>>
+<<elseif $phase is 4>>
+	你在一张桌子前坐下，拿着一本历史教科书，通读材料。即使周围没有人，坐在学校图书馆里展示着你的<<lewdness>>也让你感到很涩情。这一举动让你保持警觉和专注。
+	<<ghistory>><<historyskill>><<garousal>><<arousal 300>>
+<</if>>
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - ($allure / 2))>>
+	<<if $rng gte 51>>
+		<<generate1>><<person1>>当你试图把书放在书架上时，你摸索着把它放在书架上。它在地板上砰砰作响。"那最好不是另外一只猫，"一个声音从外面的走廊上回响。你躲在书架后面，从书中偷看。一个穿着保安制服的<<person>>进来了，"谁在那里？"
+		<br><br>
+
+		<<if $exposed gte 2>>
+			<<if $exhibitionism gte 75>>
+				<<link [[显出身形|Library Study Show]]>><<set $phase to 0>><</link>><<exhibitionist5>>
+				<br>
+			<</if>>
+		<<elseif $exposed is 1>>
+			<<if $exhibitionism gte 15>>
+				<<link [[显出身形|Library Study Show]]>><<set $phase to 1>><</link>><<exhibitionist2>>
+				<br>
+			<</if>>
+		<</if>>
+		<<link [[保持隐蔽 (0:10)|Library Study Hide]]>><<stress 3>><<pass 10>><</link>><<gstress>>
+		<br>
+	<<elseif _wraithEvent>>
+		过了一段时间，你开始感到焦虑。你把课本放回书架上。
+		<br><br>
+		透过另一边的缝隙，你瞥见了一张苍白的脸。<<stress 12>><<ggstress>><<trauma 4>><<gtrauma>>
+		<br><br>
+		<<link [[继续|School Library]]>><</link>>
+		<br>
+	<<else>>
+		<<generate1>><<generate2>><<fullGroup>>沿着窗外的街道走。他们如果看过去就会看到你。
+		<br><br>
+
+		<<link [[冒这个险|Library Study Risk]]>><</link>>
+		<br>
+		<<link [[藏起来 (0:20)|Library Study Pair Hide]]>><<pass 20>><</link>>
+		<br>
+
+	<</if>>
+<<else>>
+	<<link [[继续|School Library]]>><</link>>
+	<br>
+<</if>>
+
+:: Library Study Risk
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<if $rng gte 81>>
+	你忽略他们，继续学习。<<person1>><<person>>越过<<his>>的肩膀，发现了你。<<He>>抓住<<person2>><<persons>>的手臂，他们都隔着玻璃对你咧嘴笑。<<covered>>你觉得你的脸变红了。
+	<<gstress>><<garousal>><<stress 3>><<arousal 600>><<fameexhibitionism 2>>
+	<br><br>
+
+	他们继续前行，仍然面带微笑。
+	<br><br>
+<<else>>
+	你无视他们，继续学习。他们没有注意到你。
+	<br><br>
+<</if>>
+
+<<endevent>>
+<<link [[继续|School Library]]>><</link>>
+<br>
+
+:: Library Study Pair Hide
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+你躲在图书管理员桌子后面。两人在窗边停下来，转过身来开始聊天。你耐心等待他们继续前进。
+<br><br>
+
+<<endevent>>
+<<link [[继续|School Library]]>><</link>>
+<br>
+
+:: Library Study Hide
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+你仍然隐藏着。<<He>>在图书馆里巡逻，但你躲着不让<<him>>发现。<<He>>离开房间时皱着眉头。
+<br><br>
+<<endevent>>
+<<link [[继续|School Library]]>><</link>>
+<br>
+
+:: Library Study Show
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+你从你的藏身处走出来。当<<persons>>看到你时，<<he>>的惊讶得下巴都快掉了下来。
+<<if $phase is 0>>
+	<<exhibitionism5>>
+<<else>>
+	<<exhibitionism2>>
+<</if>>
+
+<<if $rng gte 51>>
+	"你--你不应该在这里，"<<he>>结结巴巴地说。"你--你需要跟我过来。"
+	<br><br>
+
+	<<link [[服从|Library Study Comply]]>><</link>>
+	<br>
+	<<link [[拒绝 (0:20)|Library Study Refuse]]>><<pass 20>><</link>>
+	<br>
+<<else>>
+	"真不错，"<<he>>说。<<He>>走近时，<<he>>用拇指翘着警棍，然后向你冲过来。
+	<br><br>
+
+	<<link [[继续|Library Exposed Molestation]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Library Exposed Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Library Exposed Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Library Exposed Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Library Exposed Molestation Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	"感谢我的仁慈"，<<he>>说，"倘若告发他们会把像你这样的<<girl>>生吞活剥。"<<He>>吹着口哨离开了图书馆。
+	<br><br>
+
+	<<tearful>>你挣扎着站了起来。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|School Library]]>><</link>>/*Point links wherever you want the player to end up*/
+<<elseif $enemyhealth lte 0>>
+	<<He>>跌跌撞撞地离开你，摸索着找寻<<his>>的警棍。它从<<his>>的手指上滑落。"去你的，"<<he>>说，然后从图书馆跑了出来。
+	<br><br>
+
+	<<tearful>>你听着<<his>>的脚步声逐渐消失。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|School Library]]>><</link>>
+<</if>>
+
+:: Library Study Comply
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+你点点头，走到<<persons>>身边，毫不在意。<<He>>脸红了，看向一边。"我......我将护送你离开这个地方，"<<he>>说。"请......请。"
+<br><br>
+
+你跟在<<him>>后面沿着走廊走向入口。 “这-这里，”<<he>>在学校门口说。 <<He>>递给你一块毛巾，“你会感冒的。”<<He>>在你身后锁上了大门。
+<br><br>
+
+<<towelup>>
+<<endevent>>
+<<link [[继续|Oxford Street]]>><</link>>
+<br>
+
+:: Library Study Refuse
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<He>>在过道上追赶你。你轻松地避开了<<him>>的追捕。<<He>>似乎害怕接触你，<<he>>以免接触到<<he>>不应该接触的东西。过了一会儿，<<he>>停下来，气喘吁吁。"我--如果有人问起，"<<he>>说。"我从未见过你。" <<He>>离开了房间。
+<br><br>
+
+<<endevent>>
+<<link [[继续|School Library]]>><</link>>
+
+:: School Library Harass
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<if $phase is 0>>
+	<<if $rng gte 81>>
+		<<person1>><<person>>看着<<person2>><<person>>笑了。"<<pShe>>认为<<pshe>>可以无视我们。"<<person1>><<He>>用手堵住你的嘴。
+		<br><br>
+
+		<<link [[继续|School Library Molestation]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<else>>
+		你无视他们的纠缠，直到他们受挫离开你。
+		<br><br>
+
+		<<link [[继续|School Library]]>><<endevent>><</link>>
+	<</if>>
+<<elseif $phase is 1>>
+	<<generate3>><<person3>>你大声求救。有几个人赶来查看，包括图书管理员。<<He>>瞪着这两人。"又是你们两个，给我出去。"
+	<br>
+	<<person2>><<person>>看起来很愤慨。"我们只是在玩--"
+	<br>
+	图书管理员打断了他的话。"我说出去。"他们照办了，让你享受接下来安静的时光。
+	<br><br>
+
+	<<person3>>图书管理员询问你是否没事，你点点头。确保你没问题，随后<<he>>回到了<<his>>的岗位。
+	<br><br>
+
+	<<link [[继续|School Library]]>><<endevent>><</link>>
+<<elseif $phase is 2>>
+	<<run statusCheck("Sydney")>>
+	你向悉尼呼救。<<person2>><<person>>冷笑。"哦，不，不要悉尼，<<nnpc_he "Sydney">>会在我们身上写字，我们该怎么办啊？"这两个人开始大笑。
+	<br>
+	然而，当尺子"啪"的一声打在他们身上的时候，他们僵住了。那个<<person1>><<person>>痛苦地叫了起来。你转身看到悉尼愤怒的目光，目睹尺子从<<person2>><<persons>>的头上弹开。
+	<br>
+	"我说，这可真他喵的疼！"
+	<br>
+	<<if _sydneyStatus.includes("corrupt")>>
+		悉尼咧嘴一笑。"哦，真的吗？你认为<<nnpc_title "Leighton">>会相信谁？出去，现在。"
+	<<else>>
+		悉尼瞪大眼睛。"你在图书馆里大吵大闹，是你负全责。快点走。"
+	<</if>>
+	<br>
+	两人嘟囔着离开了图书馆，一边护着他们刚刚被打痛的地方。你无意中听到<<person1>><<person>>咒骂："操他妈的，那帮老师的宝贝教会傻逼！"
+	<br><br>
+	<<if $sydneyromance is 1>>
+		<<if _sydneyStatus.includes("corrupt")>>
+			当你转身时，悉尼抓住你，按着你的头给了你一个吻。<<takeKissVirginity "Sydney" `($sydneyromance is 1?"loveInterest":"romantic")`>>
+			<br><br>
+			<<nnpc_He "Sydney">>片刻后拉开了距离。
+		<<else>>
+			你感觉到悉尼的手臂环绕着你。
+		<</if>>
+		"我希望他们没有伤害你。" 你花了一些时间安抚<<nnpc_him "Sydney">>，但<<nnpc_he "Sydney">>似乎仍然犹豫不决，不愿离开你的身边。过了一会儿后，<<nnpc_he "Sydney">>起身往租借柜台走去，但在回去的路上<<nnpc_his "Sydney">>还是会时不时的回头看你。
+		<br><br>
+	<<else>>
+		"你还好吗？" 悉尼把一只手放在你的肩膀上。你点了点头，但悉尼似乎犹豫不决，不愿离开你的身边。过了一会儿后，<<nnpc_he "Sydney">>起身往租借柜台走去，但在回去的路上<<nnpc_his "Sydney">>还是会时不时的回头看你。
+		<br><br>
+	<</if>>
+
+	<<link [[继续|School Library]]>><<endevent>><</link>>
+<</if>>
+
+:: School Library Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+
+	<<maninit>><<npcidlegenitals>><<hand_gag 0 left>>
+	<<enableSchoolRescue "delinquency">>
+	<<set $timer to 20>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate "<span class='red'>没有人来帮助你，可能是因为你有个坏孩子的名声。</span>">>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or $timer lte 0>>
+	<span id="next"><<link [[继续|School Library Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|School Library Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: School Library Molestation Finish
+<<if $enemyhealth lte 0>>
+	他们痛苦地退缩，眼中闪过一丝恐惧。"他喵的神经病！" 他们默默地离开了你。<<tearful>>你振作起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|School Library]]>><</link>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	<<person1>><<person>>看着<<person2>><<person>>。"我先来的，付钱！"
+	<br><br>
+
+	那<<person>>摇了摇头，"没门，我在你之前就高潮了。"
+	<br><br>
+
+	他们把瘫倒的你留在桌子上，争论的声音渐渐远去。<<tearful>>你重新调整好心情。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|School Library]]>><</link>>
+<<elseif $alarm is 1 and $rescue is 1>>
+	<<set $rescued += 1>>
+
+	<<endevent>>
+
+	图书管理员被你的哭声吓了一跳，赶来调查。
+	<br><br>
+
+	当图书管理员向你冲过来时，这两个人停止了攻击，从书架之间逃走了。
+
+	<<clotheson>>
+	<<endcombat>>
+	<<exposure>>
+	<<generate1>><<person1>>
+	<<if $exposed gte 1>>
+		<<He>>给你一些毛巾让你盖上。<<towelup>>
+	<</if>>
+	"你还好吗？"<<he>>问道。
+	<<if $stress gte $stressmax>>
+		然而，你的意识已经在逐渐消失。
+		<br><br>
+		<<endevent>>
+		<<if isPlayerNonparasitePregnancyEnding()>>
+			<<pregnancyWatersBrokenPassout "schoolLibrarian">>
+		<<else>>
+			<<ambulance>>
+		<</if>>
+	<<elseif $pain gte 100 and $willpowerpain is 0>>
+		你试图说话，但却泪流满面。当你晕过去的时候，你感觉到图书管理员搂着你。
+		<br><br>
+		<<endevent>>
+		<<if isPlayerNonparasitePregnancyEnding()>>
+			<<pregnancyWatersBrokenPassout "schoolLibrarian">>
+		<<else>>
+			<<ambulance>>
+		<</if>>
+	<<elseif $pain gte 20>>
+		<<tearful>>你含泪点头，向图书管理员露出微笑。确定你没有受伤之后，<<he>>就回到了<<his>>的岗位。
+		<<endevent>>
+		<br><br>
+		<<link [[继续|School Library]]>><</link>>
+	<<else>>
+		<<tearful>>你向脸红的图书管理员点头微笑。确定你没有受伤，随后<<he>>回到了<<his>>的岗位。
+		<br><br>
+		<<endevent>>
+		<<link [[继续|School Library]]>><</link>>
+	<</if>>
+<<elseif $timer lte 0>>
+	他们似乎感到厌倦了，离开了你。<<tearful>>你振作了起来。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|School Library]]>><</link>>
+<</if>>
+
+:: Library Rental Counter
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<sydneySchedule>>
+<<if $counterApproach is 1>>
+	<<unset $counterApproach>>
+	<<set _counterApproach to 1>>
+	你走近出租柜台。
+<<elseif $schoolShopAction is undefined>>
+	你现在正在图书馆的出借柜台。
+<</if>>
+<<switch _sydney_location>>
+	<<case "library">>
+		<<sydneyLibrary>>
+	<<case "science">>
+		前面挂着一块牌子。<span class="blue">"正在上课"</span>
+		<br><br>
+		<<link [[离开|School Library]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<<case "canteen">>
+		前面挂着一块牌子。<span class="blue">"在食堂"</span>
+		<br><br>
+		<<link [[离开|School Library]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<<case "class">>
+		前面挂着一块牌子。<span class="blue">"正在上课"</span>
+		<br><br>
+		<<link [[离开|School Library]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<<default>>
+		<<if Time.schoolDay and $schoolstate isnot "early" and $schoolstate isnot "late" and _counterApproach is 1>>
+			没有人在那里。你按铃铛，没有人回应。
+			<<if Time.hour lt 8 and $sydneyLate is 1 and $sydneySeen and $sydneySeen.includes("library")>>
+				看来悉尼又迟到了<<if $sydneySeen.includes("science")>><</if>>。
+			<</if>>
+		<</if>>
+		<<if (Time.schoolDay or $schoolstate is "early" or $schoolstate is "late")>>
+			<br><br>
+			<<bookRentalOptions>>
+		<</if>>
+		<<if !$weekly.theft.schoolLibraryMoney>>
+			<br><br>
+			<<link [[检查收银机|School Library Register]]>><</link>>
+			<br>
+		<</if>>
+		<br>
+		<<link [[离开|School Library]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+<</switch>>
+
+
+:: Book Rental
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<sydneySchedule>><<run statusCheck("Sydney")>>
+你
+<<switch $bookRent>>
+	<<case "return">>
+		归还了<<if $book_rent_timer lt 0>><<set $recentReturnTimer to 14>>逾期的<</if>>
+		<<switch $phase>>
+			<<case 6>>
+				<<if $per_npc.pinch isnot undefined>>
+					《林奇<<if $per_npc.pinch.pronoun is "m">>先生<<else>>女士<</if>>的圣诞追寻之旅》一书的副本
+					<<clearNPC pinch>>
+				<<else>>
+					橄榄色的书。
+				<</if>>
+			<<case 5>>
+				《劳尔与珍妮特》一书的副本。
+			<<default>>
+				<<print $studyBooks.rented.replace("science","科学").replace("maths","数学").replace("English","英语").replace("history","历史")>>教材。
+		<</switch>>
+		<<set $studyBooks.rented to "none">>
+		<<if _sydney_location is "library">>
+			<<if $book_rent_timer lt 0>>
+				<<if $NPCName[$NPCNameList.indexOf("Sydney")].love lt 10>>
+					"逾期了，但至少它没有损坏。请尽量在规定时间内返还的更准时些。" 悉尼写下了一些东西，皱着眉头。<<bookCriminal>>
+				<<elseif $sydneyromance is 1>>
+					<<if _sydneyStatus.includes("corrupt")>>
+						"我希望你能把持住租期，就像你把持住我一样，"<<he>>说着脸却又红了起来，浑身都散发着可爱的气息。<<bookCriminal>>
+					<<else>>
+						"我真希望我可以为你网开一面，但是…礼顿<<nnpc_Title "Leighton">>太严厉了，我害怕被他责问。"<<bookCriminal>>
+					<</if>>
+				<<else>>
+					"逾期了。"悉尼抬起头来，"我知道你清楚的。"<<bookCriminal>>
+				<</if>>
+			<<elseif $book_rent_timer is 14>>
+				"这速度可真是…快。" 悉尼在收银机上摸索了一会儿，然后递给你<<moneyGain 15>>.
+			<<elseif $book_rent_timer gt 7>>
+				"提前完成了吗？" 悉尼在收银机前摸索了一会儿，然后递给你<<moneyGain 10>>。
+			<<else>>
+				"谢谢你这么准时!"悉尼高兴地从你手里接过书，然后把它放回原处。
+			<</if>>
+			<<unset $bookOverdue>>
+			<<set $book_rent_timer to 0>>
+			<br><br>
+			<<sydneyOptions>>
+		<<else>>
+			<<set $bookReturnedAbsent to 1>>
+			<<set $book_rent_timer to 0>>
+			<br><br>
+			<<bookRentalOptions>>
+			<br>
+			<<link [[离开|School Library]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<br>
+		<</if>>
+	<<case "rent">>
+		借了
+		<<if $phase is 6>>
+			那本奇怪的橄榄色的书。
+			<<switch _sydneyStatus>>
+				<<case "corrupt" "corruptLust">>
+					悉尼偷偷笑了一下："我本以为这本书是给孩子们看的，不知道它为什么会在这儿。但是，嘿，你随意就好了。"
+				<<default>>
+					悉尼笑了："嗷~，我喜欢这本旧书！"。<<nnpc_Brother "Jordan">>约旦以前每年在圣诞节前后都会给我读这本书。"
+			<</switch>>
+			<br><br>
+			<<He>>正准备把书拿给你，但看到着封面顿时又停了下来。<<his>>皱着眉头道："这书看起来可真古怪…"<<He>>摊开书页扫了几眼，然后又摇了摇头把书递给你，"慢用。"
+		<<elseif $phase is 5>>
+			《劳尔与珍妮特》 一书的副本。
+			<<switch _sydneyStatus>>
+				<<case "pure">>
+					<<if $sydneyromance is 1>>
+						悉尼对你笑了笑。"你所期许的爱情？我希望它有一个更幸福的结局。"<<He>>低着头，脸上还带着一抹绯红，十分可爱。"你… 你认为我们会得到一个幸福的结局吗？"
+					<<else>>
+						悉尼低头看着书，皱起了眉头。"美好的爱情故事，但我一直没有搞明白他们想做什么，为什么他们要——"<<he>>打断了自己的话， "哦！抱歉，我不该剧透的，请享受这本作品！"
+					<</if>>
+				<<case "pureLust">>
+					悉尼脸颊顿时升起了一层浅浅的红晕。"一本......有趣的书！<<if $sydneyromance is 1>>也许…也许你可以…可以读给我听，在某些时候。"<<He>>羞涩地向着你眨了下眼，然后将书递还给你。在接触到你手指的一瞬间，却又马上又像是受惊的小鹿一样，纤细的手飞也似地从书上挪开<<else>>"<<He>>把书还回给你，不敢与你有眼神接触<</if>>。
+				<<case "corrupt">>
+					悉尼低头看着书，然后轻捂住嘴笑了，"真是本邪♂恶的读，但现在还不是享受太多的乐趣的时候。"
+				<<case "corruptLust">>
+					悉尼低头看着书，然后轻捂住嘴笑了，"真是本邪♂恶的读物，但现在还不是享受太多的乐趣的时候。"<<He>>把书递给你<<if $sydneyromance is 1>>，然后把<<his>>的手放轻轻地贴在你的手背上。"也许我们可以在某个时候复现一下书中的第三幕第五场"<<arousal 1000>><<garousal>><<else>>。<</if>>
+				<<default>>
+					悉尼低头看了看书，皱起了眉头。"一个充满爱与罪恶的故事。"<<if $temple_rank>><<He>>倾身在你耳边细语："约旦其实是这本书的忠实粉丝，但请不要告诉<<nnpc_him "Jordan">>是我说的哦！<<nnpc_He "Jordan">>说过，这是一个很好的警示故事，关于欲望后果的故事。"<</if>><<He>>把书递回给你。"请慢慢欣赏。"
+			<</switch>>
+		<<else>>
+			一本<<print $studyBooks.rented.replace("science","科学").replace("maths","数学").replace("English","英语").replace("history","历史")>>教材。
+			<<if $sydneyromance is 1>>
+				悉尼对你笑了笑："看着你付出这么多的努力去学习！我真是为你感到骄傲。"
+			<<else>>
+				悉尼微笑着说："感谢你的租赁！"
+			<</if>>
+		<</if>>
+		<<set $book_rent_timer to 14>>
+		<br><br>
+		<<sydneyOptions>>
+	<<case "renew">>
+		延长借书期限
+		<<if $studyBooks.rented is "Raul and Janet">>
+			《劳尔与珍妮特》一书的副本。
+		<<elseif $studyBooks.rented is "Pinch">>
+			橄榄色的书。
+		<<else>>
+			<<print $studyBooks.rented.replace("science","科学").replace("maths","数学").replace("English","英语").replace("history","历史")>>教材。
+		<</if>>
+		<<set $book_rent_timer to 14>>
+		悉尼微笑着说，"谢谢你对这方面的长久的关心。<<if $sydneyromance is 1 and _sydneyStatus.includes("corrupt")>>现在，如果你能保持对我的关注就好了。<</if>>"
+		<br><br>
+		<<sydneyOptions>>
+	<<case "steal">>
+		盗窃
+		<<if $phase is 6>>
+			一本橄榄色的书。
+		<<elseif $phase is 5>>
+			《劳尔与珍妮特》 一书的副本。
+		<<else>>
+			一本<<print $studyBooks.stolen.replace("science","科学").replace("maths","数学").replace("English","英语").replace("history","历史")>>教材。
+		<</if>>
+		<<set $bookStolen to 1>>
+		<br><br>
+		<<bookRentalOptions>>
+		<br>
+		<<link [[离开|School Library]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<<default>>
+<</switch>>
+<br><br>
+<br>
+
+:: Book Rental Return Stolen
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<sydneySchedule>><<run statusCheck("Sydney")>>
+你归还了偷来的
+<<if $phase is 6>>
+	<<if $per_npc.pinch isnot undefined>>
+		《林奇<<if $per_npc.pinch.pronoun is "m">>先生<<else>>女士<</if>>的圣诞追寻之旅》一书的副本
+		<<clearNPC pinch>>
+	<<else>>
+		橄榄色的书。
+	<</if>>
+<<elseif $phase is 5>>
+	《劳尔与珍妮特》一书的副本。
+<<else>>
+	<<print $studyBooks.stolen.replace("science","科学").replace("maths","数学").replace("English","英语").replace("history","历史")>>教材。
+<</if>>
+<<if _sydney_location is "library">>
+	<<if $bookStolenKnown isnot undefined>>
+		<<switch $bookStolenKnown>>
+			<<case 1>>
+				"那是......！" 当你把书递过去时，悉尼显得很吃惊。"你找到它了！" 你还没来得及回话，悉尼就从柜台那边把你拉到了<<He>>的怀抱里。
+				"我很害怕礼顿<<nnpc_Title "Leighton">>的戒尺，谢谢你救了我<<if _sydneyStatus.includes("corrupt")>>的屁股<<else>>，让我免受皮肉之苦<</if>>。"<<npcincr Sydney love 5>><<gglove>>
+			<<case 2>>
+				<<set $recentReturnTimer to 14>>
+				"那本书被登记为被盗。这是你第二次退回这种东西了……"悉尼好像突然明白了你的秘密，<<He>>站了起来，皱着眉头看着你。"我很失望，但是谢谢你把它还给我，也谢谢你如此诚实。"<<bookCriminal>>
+			<<default>>
+				<<set $recentReturnTimer to 14>>
+				悉尼看起来快要哭出来了，"你为什么要一直这样做？你知道<<nnpc_title "Leighton">>会让我为这一切负责的，你知道的，是不是？"<<npcincr Sydney love -10>><<lllove>>
+		<</switch>>
+		<<set $bookStolenKnown += 1>>
+		<<unset $sydneyStolenKnown>>
+	<<else>>
+		悉尼疑惑地看着你。"那本书从来没有被借出过，你是在地上捡到的吗?"
+	<</if>>
+	<<set $studyBooks.stolen to "none">>
+	<br><br>
+	<<sydneyOptions>>
+<<else>>
+	<<set $bookStolenAbsent to 1>>
+	<<set $studyBooks.stolen to "none">>
+	<<unset $sydneyStolenKnown>>
+	<br><br>
+	<<bookRentalOptions>>
+	<br>
+	<<link [[离开|School Library]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>

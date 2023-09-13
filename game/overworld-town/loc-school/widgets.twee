@@ -1,0 +1,3004 @@
+:: Widgets School [widget]
+<<widget "schooleffects">>
+	<<if Time.schoolDay>>
+		<<if Time.hour lte 6>>
+			<<set $schoolstate to "early">><<set $schoollesson to 0>>
+		<<elseif Time.hour lte 8>>
+			<<set $schoolstate to "morning">><<set $schoollesson to 0>>
+		<<elseif Time.hour is 9>>
+			<<set $schoolstate to "first">><<set $schoollesson to 1>>
+		<<elseif Time.hour is 10>>
+			<<set $schoolstate to "second">><<set $schoollesson to 1>>
+		<<elseif Time.hour is 11>>
+			<<set $schoolstate to "third">><<set $schoollesson to 1>>
+		<<elseif Time.hour is 12>>
+			<<set $schoolstate to "lunch">><<set $schoollesson to 0>>
+		<<elseif Time.hour is 13>>
+			<<set $schoolstate to "fourth">><<set $schoollesson to 1>>
+		<<elseif Time.hour is 14>>
+			<<set $schoolstate to "fifth">><<set $schoollesson to 1>>
+		<<elseif Time.hour lte 16>>
+			<<set $schoolstate to "afternoon">><<set $schoollesson to 0>>
+		<<elseif Time.hour gte 17>>
+			<<set $schoolstate to "late">><<set $schoollesson to 0>>
+		<</if>>
+
+		<!-- changing room is in use a bit longer than school is in session. also include changing times before first, after fifth and during midday break -->
+		<<set $changingroomstate to "empty">>
+		<<if (Time.hour gt 8 or Time.hour is 8 and Time.minute gte 58) and (Time.hour lt 15 or Time.hour is 15 and Time.minute lte 4)>>
+			<<if Time.minute lte 4 or Time.minute gte 58>>
+				<<if Time.hour gte 14 and Time.minute gte 58>>
+					<<set $changingroomstate to "own">>
+				<<else>>
+					<<set $changingroomstate to "other">>
+				<</if>>
+			<</if>>
+		<</if>>
+
+		<<if $schoolpoolundress isnot undefined>>
+			<span class="yellow">你的衣服被移到了<<print $schoolpoolundress is "wardrobe" ? "衣柜" : $schoolpoolundress + "更衣室">>.</span>
+			<br>
+			<<unset $schoolpoolundress>>
+		<</if>>
+
+		<!-- pool room itself is in use during $schoolstate only -->
+		<<if $schoolstate is "fifth">>
+			<<set $poolroomstate to "own">>
+		<<elseif $schoollesson is 1>>
+			<<set $poolroomstate to "other">>
+		<<else>>
+			<<set $poolroomstate to "empty">>
+		<</if>>
+	<<else>>
+		<<if Time.hour lte 6>>
+			<<set $schoolstate to "earlynoschool">><<set $schoollesson to 0>>
+		<<elseif Time.hour gte 17>>
+			<<set $schoolstate to "daynoschool">><<set $schoollesson to 0>>
+		<<else>>
+			<<set $schoolstate to "latenoschool">><<set $schoollesson to 0>>
+		<</if>>
+		<<set $changingroomstate to "empty">>
+		<<set $poolroomstate to "empty">>
+	<</if>>
+<</widget>>
+
+<<widget "advancelesson">><!-- advances time during a lesson and sets $phase to 1 if the lesson has ended -->
+	<<set _time_left to 59 - Time.minute>>
+	<!-- the lesson ends at 59th minute to give time to walk to the next class -->
+	<<set _state to $schoolstate>>
+	<<schooleffects>>
+
+	<<if _state isnot $schoolstate>>
+		<!-- only happens if we somehow jumped into another lesson, abort! -->
+		<<set $phase to 1>>
+	<<elseif _time_left gte 23>>
+		<!-- make sure that there's at least a couple of minutes left for the next phase of a lesson -->
+		<<pass 20>>
+	<<else>>
+	<!-- end of the lesson -->
+		<<set $phase to 1>>
+		<<pass _time_left>>
+	<</if>>
+	<<schooleffects>>
+	<!-- an extra variable for use in adding learning points, stress, etc.
+		1 point per 5 minutes + 1 for being present at the end of the lesson -->
+	<<set _lesson_progress to (_time_left gte 20 ? 4 : Math.trunc(_time_left / 5)) + $phase>>
+<</widget>>
+
+<<widget "schoolperiod">>
+	<<if $exposed lte 0>>
+		<<if $schoolstate is "morning" or ($schoolstate is "first" and Time.minute lte 58)>>
+			<<scienceicon>><<link [[去上科学课 (0:01)|Science Classroom]]>><<pass 1>><</link>>
+			<br><br>
+		<<elseif $schoolstate is "first" or ($schoolstate is "second" and Time.minute lte 58)>>
+			<<mathicon>><<link [[去上数学课 (0:01)|Maths Classroom]]>><<pass 1>><</link>>
+			<br><br>
+		<<elseif $schoolstate is "second" or ($schoolstate is "third" and Time.minute lte 58)>>
+			<<englishicon>><<link [[去上英语课 (0:01)|English Classroom]]>><<pass 1>><</link>>
+			<br><br>
+		<<elseif $schoolstate is "third" or ($schoolstate is "lunch" and Time.minute lte 58)>>
+			<<eaticon>><<link [[加入食堂的人群中 (0:01)|Canteen]]>><<pass 1>><</link>>
+			<br>
+			<<historyicon>><<link [[在历史教室等待 (0:01)|History Classroom]]>><<pass 1>><</link>>
+			<br><br>
+		<<elseif $schoolstate is "lunch" or ($schoolstate is "fourth" and Time.minute lte 58)>>
+			<<historyicon>><<link [[去上历史课 (0:01)|History Classroom]]>><<pass 1>><</link>>
+			<br><br>
+		<<elseif $schoolstate is "fourth" or ($schoolstate is "fifth" and Time.minute lte 58)>>
+			<<swimmingicon>><<link [[去上游泳课 (0:01)|School Pool Entrance]]>><<pass 1>><</link>>
+			<br><br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "schoolperiodtext">>
+	<<if $schoolstate is "morning">>
+		你的科学课开始于<<ampm 9 00>>。
+		<br><br>
+	<<elseif $schoolstate is "first" and Time.minute lte 58>>
+		你的科学课开始于<<ampm 9 00>>！
+		<br><br>
+	<<elseif $schoolstate is "first">>
+		你的数学课在<<ampm 10 00>>开始。
+		<br><br>
+	<<elseif $schoolstate is "second" and Time.minute lte 58>>
+		你的数学课在<<ampm 10 00>>开始！！！
+		<br><br>
+	<<elseif $schoolstate is "second">>
+		你的英语课开始于<<ampm 11 00>>。
+		<br><br>
+	<<elseif $schoolstate is "third" and Time.minute lte 58>>
+		你的英语课开始于<<ampm 11 00>>！
+		<br><br>
+	<<elseif $schoolstate is "lunch">>
+		你的历史课开始于<<ampm 13 00>>。
+		<br><br>
+	<<elseif $schoolstate is "fourth" and Time.minute lte 58>>
+		你的历史课开始于<<ampm 13 00>>！
+		<br><br>
+	<<elseif $schoolstate is "fourth">>
+		你的游泳课开始于<<ampm 14 00>>。
+		<br><br>
+	<<elseif $schoolstate is "fifth">>
+		你的游泳课开始于<<ampm 14 00>>！
+		<br><br>
+	<</if>>
+<</widget>>
+
+<<widget "classgrades">>
+	<<if $schoolstate is "morning" or ($schoolstate is "first" and Time.minute lte 58)>>
+		<<if $sciencetrait gte 4>>
+					你当前的科学成绩是<span class="green">A*</span>。你已经无法从这个课程中学到更多的东西了。
+				<<elseif $sciencetrait gte 3>>
+					你当前的科学成绩是<span class="teal">A</span>。你是最优秀的人之一，但你仍然可以取得更多的成就。
+				<<elseif $sciencetrait gte 2>>
+					你当前的科学成绩是<span class="lblue">B</span>。你的成绩不是最好的，但也不是最差的。
+				<<elseif $sciencetrait gte 1>>
+					你当前的科学成绩是<span class="blue">C</span>。你已经有了一些进步，但仍需要更多的学习。
+				<<elseif $sciencetrait gte 0>>
+					你当前的科学成绩是<span class="purple">D</span>。你还有很长的路要走。
+				<<else>>
+					你当前的科学成绩是<span class="red">F</span>。你是班上最差的学生。
+			<</if>>
+		<<elseif $schoolstate is "first" or ($schoolstate is "second" and Time.minute lte 58)>>
+		<<if $mathstrait gte 4>>
+					你当前的数学成绩是<span class="green">A*</span>。你已经无法从这个课程中学到更多的东西了。
+				<<elseif $mathstrait gte 3>>
+					你当前的数学成绩是<span class="teal">A</span>。你是最优秀的人之一，但你仍然可以取得更多的成就。
+				<<elseif $mathstrait gte 2>>
+					你当前的数学成绩是<span class="lblue">B</span>。你的成绩不是最好的，但也不是最差的。
+				<<elseif $mathstrait gte 1>>
+					你当前的数学成绩是<span class="blue">C</span>。你已经有了一些进步，但仍需要更多的学习。
+				<<elseif $mathstrait gte 0>>
+					你当前的数学成绩是<span class="purple">D</span>。你还有很长的路要走。
+				<<else>>
+					你当前的数学成绩是<span class="red">F</span>。你是班上最差的学生。
+			<</if>>
+		<<elseif $schoolstate is "second" or ($schoolstate is "third" and Time.minute lte 58)>>
+		<<if $englishtrait gte 4>>
+					你当前的英语成绩是<span class="green">A*</span>。你已经无法从这个课程中学到更多的东西了。
+				<<elseif $englishtrait gte 3>>
+					你当前的英语成绩是<span class="teal">A</span>。你是最优秀的人之一，但你仍然可以取得更多的成就。
+				<<elseif $englishtrait gte 2>>
+					你当前的英语成绩是<span class="lblue">B</span>。你的成绩不是最好的，但也不是最差的。
+				<<elseif $englishtrait gte 1>>
+					你当前的英语成绩是<span class="blue">C</span>。你已经有了一些进步，但仍需要更多的学习。
+				<<elseif $englishtrait gte 0>>
+					你目前的英语成绩是<span class="purple">D</span>。你还有很长的路要走。
+				<<else>>
+					你目前的英语成绩是<span class="red">F</span>。你是班上最差的学生。
+			<</if>>
+		<<elseif $schoolstate is "lunch" or ($schoolstate is "fourth" and Time.minute lte 58)>>
+		<<if $historytrait gte 4>>
+					你当前的历史成绩是<span class="green">A*</span>。你已经无法从这个课程中学到更多的东西了。
+				<<elseif $historytrait gte 3>>
+					你当前的历史成绩是<span class="teal">A</span>。你是最优秀的人之一，但你仍然可以取得更多的成就。
+				<<elseif $historytrait gte 2>>
+					你当前的历史成绩是<span class="lblue">B</span>。你的成绩不是最好的，但也不是最差的。
+				<<elseif $historytrait gte 1>>
+					你当前的历史成绩是<span class="blue">C</span>。你已经有了一些进步，但仍需要更多的学习。
+				<<elseif $historytrait gte 0>>
+					你当前的历史成绩是<span class="purple">D</span>。你还有很长的路要走。
+				<<else>>
+					你当前的历史成绩是<span class="red">F</span>。你是班上最差的学生。
+		<</if>>
+	<</if>>
+		<br><br>
+<</widget>>
+
+<<widget "exhibitorgasm">>
+	<<if $orgasmdown gte 1>><<set $orgasmdown to 0>>
+		<<if $orgasmcurrent lte 0>>
+		<<elseif $orgasmcurrent lte 1>>
+			你的身体在束缚下痉挛着达到了高潮。
+			<<if $enemyno gte 2>>
+				<<if $player.penisExist and $orgasmcount lte 23>>
+					两人的眼中射出了光芒。"<<pShes>>射出来了！"<<person>>兴奋的大喊，同时往后退避开你不断喷射出精液的下体，敬畏地看着这一幕。
+				<<else>>
+					两人的眼中射出了光芒。"<<pShes>>射出来了！"<<person>>兴奋的大喊。
+				<</if>>
+			<<else>>
+				<<if $player.penisExist and $orgasmcount lte 23>>
+				<<else>>
+				<</if>>
+			<</if>>
+		<<elseif $orgasmcurrent is 2>>
+			你的身体在束缚下痉挛着，再次达到了高潮。
+			<<if $enemyno gte 2>>
+				<<if $player.penisExist and $orgasmcount lte 23>>
+					"我第一次见有人能一口气射这么多发。"<<person>>感叹道。
+				<<else>>
+					"我第一次见有人能一口气射这么多发。"<<person>>感叹道。
+				<</if>>
+			<<else>>
+				<<if $player.penisExist and $orgasmcount lte 23>>
+				<<else>>
+				<</if>>
+			<</if>>
+		<<else>>
+		<</if>>
+		<br><br>
+	<</if>>
+<</widget>>
+
+<<widget "changingrooms">>
+	<<if $exposed gte 2>>
+		<<if $player.gender_appearance is "m">>
+			<<if $exhibitionism gte 75>>
+				<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><</link>><<exhibitionist5>>
+				<br>
+			<</if>>
+			<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><</link>>
+			<br>
+		<<else>>
+			<<if $exhibitionism gte 75>>
+				<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><</link>><<exhibitionist5>>
+				<br>
+			<</if>>
+			<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><</link>>
+		<br>
+		<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+:: Widgets Events Science [widget]
+<<widget "eventsscience">>
+	<<if $rng gte 91 and ($player.gender_appearance is "m" and $worn.legs.name is "girl's gym socks" or $player.gender_appearance is "f" and $worn.legs.name is "boy's gym socks")>>
+		一个<<generates1>><<person1>><<person>>盯着你的脚部。
+		<<if $worn.legs.name is "girl's gym socks">>
+			"你干嘛穿着女生的袜子？"<<he>>大声地问，"能让你感觉自己更漂亮吗？"
+		<<else>>
+			"你干嘛穿着男生的袜子？"<<he>>大声地问，"你认为这样打扮就会让人们忘记你是个荡妇吗"
+		<</if>>
+		<<His>>的朋友门们开始大笑。
+		<br><br>
+
+		<<link [[踢他们|Science Kick]]>><<stress -12>><<trauma -6>><<detention 3>><</link>><<gdelinquency>><<ltrauma>><<lstress>>
+		<br>
+		<<link [[无视|Science Lesson]]>><<stress 6>><<trauma 6>><<endevent>><</link>><<gtrauma>><<gstress>>
+		<br>
+
+	<<elseif $rng gte 81>>
+		班里正在用化学品进行实验。
+		<br><br>
+
+		一个<<generates1>><<person1>><<person>>把酸液溅到了你的衣服上！
+		"对不起，我被绊了一下。"<<he>>说，<<print either("假声笑了笑","假声笑了笑","假声笑了笑","倒吸了一口冷气","惊慌失措")>>。
+		<br><br>
+
+		<<set $worn.upper.integrity -= 20>>
+		<<set $worn.lower.integrity -= 20>>
+		<<set $worn.under_lower.integrity -= 20>>
+
+		<<integritycheck no_text>>
+		<<exposure>>
+
+		<<if !$worn.upper.type.includes("naked") and !$worn.lower.type.includes("naked")>>
+			它不是一种很强的酸性物质，但它确实会让你的衣服出现磨损。
+		<<else>>
+			酸正在腐蚀你的衣服，你很快就发现你已经暴露在了全班面前！在西里斯拿着毛巾冲过来之前，你极尽全力遮掩着你的<<lewdness>>。
+			<<if $exhibitionismaction is "excited">>
+				你向全班展示着你的<<nudity>>。
+			<<else>>
+				虽然你试图遮掩你暴露在外的部分，但你缓慢的动作暴露你的真实想法。
+			<</if>>
+			<<if $worn.lower.type.includes("naked") and $worn.under_lower.type.includes("naked")>>
+				<<schoolrep_naked>>
+			<</if>>
+			<<towelup>>
+
+		<</if>>
+		<br><br>
+
+		<<link [[继续|Science Lesson]]>><<endevent>><</link>>
+		<br>
+	<<elseif $rng gte 61>>
+		<<npc Sirris>><<person1>>西里斯让你到讲台上来。
+		<br><br>
+
+		<<link [[继续|Science Event3]]>><</link>>
+		<br>
+
+	<<elseif $rng gte 41>>
+		学生们被要求在房间边缘的玻璃柜周围排好队。而你则乘机观察其中所包含的植物，并尝试识别其物种。
+		<br><br>
+
+		<<link [[继续|Science Terrarium]]>><</link>>
+		<br>
+
+	<<elseif $rng gte 21>>
+		一群坏学生决定找你的麻烦。
+		<br><br>
+
+		<<link [[向老师寻求帮助|Science Pick]]>><<status -10>><</link>><<lcool>>
+		<br>
+		<<link [[默默忍受|Science Pick]]>><<set $phase to 1>><<stress 2>><<trauma 2>><</link>><<gtrauma>><<gstress>>
+		<br>
+
+	<<else>>
+		西里斯要求每两个人分成一组。
+		<br><br>
+		<<rng>>
+
+		<<if $cool gte 80>>
+			你找到一个组员，今天要解刨<<print either("羊眼球","一只昆虫","一条蠕虫","一只青蛙")>>。
+			<br><br>
+
+			<<link [[专注于解剖|Science Dissection]]>><<scienceskill>><</link>><<gscience>>
+			<br>
+			<<link [[和你的组员开玩笑|Science Dissection]]>><<trauma -1>><<stress -2>><<status 1>><<set $phase to 1>><</link>><<ltrauma>><<lstress>><<gcool>>
+			<br>
+		<<else>>
+			其他学生的都对你避之不及，你发现自己找不到愿意和你组队的人。西里斯拿着一个塑料盒子走了进来，当<<nnpc_he "Sirris">>看到你孤身一人时，<<nnpc_he "Sirris">>走过来与你说话。
+			<br><br>
+
+			"我有一份特别的工作要给你，在学校门口的警卫室里还有一个像这样的盒子。你能把它带到这里来吗？"
+			<br><br>
+
+			你走到没有上锁的警卫室内，在翻找一番后终于找到了你要找的盒子。它真的很重！你几乎举不起来它，但你还是将它带了回去。
+			<<physique>>
+			<br><br>
+			<<if $rng gte 21>>
+				当你你回到教室时，班上的其他同学都在忙着解剖青蛙。而你没有组员，只能一个人待着。
+				<<gscience>><<scienceskill>>
+				<br><br>
+
+				<<link [[继续|Science Lesson]]>><<endevent>><</link>>
+				<br>
+			<<else>>
+				<<generatey1>><<generatey2>><<generatey3>>
+				你经过了三个在走廊里抽烟的坏学生。由于箱子挡住了你的视线，所以你并没有看到他们。于是他们开始在大厅里追你。
+
+				<<person1>>一个<<person>>抓住你$worn.lower.cn_name_cap的下摆并试图将它们拉下来！
+
+				<<if $worn.under_lower.type.includes("naked")>>
+					<span class="lewd">当你想到你并没有穿任何内衣时，你开始害怕起来！</span>
+				<</if>>
+				<br><br>
+
+				"让我们看看<<pshes>>在这种情况下会有什么反应，"在说完之后，那个<<person2>><<person>>和<<person3>><<person>>朝你走了过来。
+				<br><br>
+
+				当你的双手拿着这个盒子时，你无法腾出手来保护自己。你必须弯下腰才能把盒子放下而不弄坏里面的东西，但你感觉如果弯腰的话可能更容易被袭击。
+				<br><br>
+
+				<<link [[放下盒子，保护自己|Science Dissection]]>><<set $phase to 2>><<detention 2>><</link>><<gdelinquency>>
+				<br>
+				<<link [[默默忍受|Science Dissection]]>><<set $phase to 3>><<stress 2>><<trauma 2>><</link>><<gtrauma>><<gstress>>
+				<br>
+				<<link [[弯下腰并将盒子轻轻地放下|Science Dissection]]>><<set $phase to 4>><</link>>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "eventssciencesafe">>
+	<<if $condomLvl isnot 0 and !$scienceCondomIntro>>
+		<<set $scienceCondomIntro to true>>
+		<<npc Sirris>><<person1>>
+		西里斯拿着一大堆小盒子走到全班同学面前。"我敢肯定，一些父母还没和你们说起这些。或者，你们中有些人像我<<if C.npc.Sydney.pronoun is "m">>儿子<<else>>女儿<</if>>一样，认为自己会终身禁欲。"
+		<<He>>开始把小盒子发给前排的同学，并依次往后传。你听到一些同学检查完盒子后笑了起来，但其他人表现得极为尴尬。
+		<br><br>
+
+		"这些是避孕套。你们正处于生命的黄金时期，荷尔蒙激增，所以需要随时随地带着这些东西。它们不仅能减少意外怀孕，还能让你保持干净。"西里斯从<<his>>桌子底下拿出一个巨大的、形状明显的水果。
+		<br><br>
+
+		"戴上它们非常简单。在这里撕开包装纸，靠在顶端，然后卷下来。不过，不要把这部分推下去。这就是所谓的储层尖端，它可以防止任何液体泄漏。"西里斯把避孕套套在那水果上的动作似乎让一些学生脸红了。<<arousal 200>><<garousal>>
+		<br><br>
+
+		"我不指望你们中的任何一个人保持禁欲，但我希望你们保持安全。到时候一定要用这些。我自掏腰包买的，所以最好别让我看到它们没开封就丢在垃圾桶里。如果你用完了，<span class="gold">你可以在南丁格尔街的医院药房买更多的。</span>你低头看了看那盒避孕套。<<awarenessup 200 5>><<gcondoms 3>>
+		<br><br>
+
+		<i>避孕套可以阻止淫秽液体，防止意外受精，从内到外保持身体清洁。这也将有助于减轻纯洁损失，并抑制性奋增长。然而，避孕套有极小的概率破裂，尤其是在激烈的性交中。结合自控能发挥最佳效果。</i>
+		<<endevent>>
+	<<elseif $scienceproject is "none" and Time.days gte 2 and $mathsprojectdays isnot (21 + (7 - Time.weekDay))>>
+		<<set $scienceproject to "ongoing">><<set $scienceprojectdays to (21 + (7 - Time.weekDay))>>
+		<<scienceprojectstart>>
+		"科学展将在几周后举行，"西里斯宣布道，"展会是自愿参加的，但这是一个学习与实践相结合的好机会。这次的主题是当地的原生动植物，我为你们每个人都准备好了一个研究课题，但如果你们想的话，也可以自己找一个研究项目。"
+		<br><br>
+		西里斯要求全班同学将课本翻到第 $rng 页，其开始在教室里走动着分发卡片。发给你的卡片上写着这样的东西："地衣生长在城市的许多地方，不同的环境会让这些东西的生长有什么影响么？" 后面写了一些你可以寻找并改变的变量，直到最后一句写到："记得在进入私人领地之前要征求同意！"
+		<<set $sciencelichenknown to 1>>
+		<br><br>
+		西里斯回到讲台上说道："展览会将在星期六的市政厅举行。我希望你们能够到场，即使你们没有准备研究项目。"
+		<br><br>
+		<span class="gold">科学项目被添加到日志中。</span>
+
+		<<if $sciencephallusknown isnot 1 and $promiscuity gte 35>>
+			<br><br>
+			<<set $sciencephallusknown to 1>>
+			在其他学生还在讨论想法时，一个淫秽的想法出现在你的脑海中。<span class="gold">你已经构思了 "本地性器调查 "的科学项目。</span>
+		<</if>>
+
+	<<elseif $rng gte 81>>
+		西里斯要求全班同学将课本翻到 $rng 页。不过教室里的气氛很是轻松吵闹，大多数的学生情愿将时间浪费在聊天上，而不是去阅读课文。
+	<<elseif $rng gte 71>>
+		西里斯播放了一段关于<<print either("自然","空间","磁场","电子","化学键","爱因斯坦","科学方法的先驱","艾萨克-牛顿","核聚变","酶的作用","DNA")>>的简短视频。课堂上弥漫着悠闲的气氛。大多数学生都在认真观看，但也有很多人在聊天。
+	<<elseif $rng gte 61>>
+		班上的同学正在进行着关于化学品的实验，你要小心不要让任何东西洒出来。
+	<<elseif $rng gte 51>>
+		<<generates1>><<person1>>
+		班里正在用化学品进行实验。
+		<<if random(1)>>
+			一个<<person>>不小心将化学品洒在<<his>>的衣服上。
+		<<else>>
+			一个<<person>><<print (random(1,5) is 1 ? "意外" : "'意外'")>>将化学品洒在<<generates2>><<person2>><<persons>>的衣服上。
+		<</if>>
+		你看到<<personsimple>>惊慌失措的从教室里逃了出来，因为<<his>>的衣服开始溶解了。
+		<<endevent>>
+	<<elseif $rng gte 41>>
+		一些坏学生挑衅其中的一个书呆子，西里斯让那些坏学生到教室的另一边去。
+	<<elseif $rng gte 31>>
+		西里斯放了一段关于人类生殖的视频。
+		<<if Time.days gte 25 and $rng % 3 is 0>>/*1 in 3 chance, and won't happen too early*/
+			<br><br>
+			它看起来根本不像是一部教育片--它十分形象且生动。说实话，这玩意就是一盘14分钟的家庭性爱录像带。唯一的 "教育性 "就是西里斯时不时地暂停视频，以此让学生指出哪些身体部位是被舔、被抚摸、被吸、被咬或被插入。
+			虽然视频里没有任何人露脸，但你开始怀疑其中的某个参与者就是西里斯。
+			<br>
+			全班同学都在全神贯注地看着，直到这对夫妇气喘吁吁地达到高潮。
+			<<garousal>><<arousal 200>>
+			<br><br>
+			"我知道这太暴露了，"西里斯说道："但是好的科学家并不胆怯，人类也是动物，而这只是观察动物行为。除了书面了解和术语外，重要的是你要了解什么是真正的性行为，以及它看起来是什么样子。
+			<<awarenessup 200 1>>
+		<<else>>
+			它有很强的教育重点，广泛谈论性健康、性病、<<if $pregnancyspeechdisable is "f">>怀孕、<</if>>避孕和同意性行为。
+			它通过一些简单的图表来标明所涉及的身体部位和细胞类型，同时也介绍了性行为的基本机制。
+			<<awarenessup 100 1>>
+			<br><br>
+			教室里洋溢着懒散悠闲的气氛，大多数学生都在聊天，只有一部分人在观看，即使是在观看的这批人也没有几个对它真正的感兴趣。
+			<<if playerBellyVisible() and $pregnancyspeechdisable is "f">>你不断被提醒着你目前所处的境况，以及你体内孕育的宝贵生命。<<lstress>><<stress -10>><</if>>
+		<</if>>
+	<<elseif $rng gte 21>>
+		<<npc Sirris>><<person1>>
+		西里斯向全班同学提出了一个问题。你认为你知道答案。
+		<br><br>
+		<<set _uniqueoptions to true>>
+		<<link [[举手|Science Event1]]>><<set $phase to 1>><<stress 1>><<scienceskill 1>><</link>><<gstress>><<gscience>>
+		<br>
+		<<link [[保持低调|Science Event1]]>><</link>>
+		<br>
+	<<elseif $rng gte 11>>
+		<<if $player.gender_appearance is "m">><<generatesf1>><<else>><<generatesm1>><</if>>
+		西里斯环视了一下教室，随后在瞥了你一眼后，让一个<<person1>><<personsimple>>到教室的讲台上去。
+		<br><br>
+		西里斯对<<person>>笑了笑。
+		<<rng>>
+		<<if $scienceprogression gte 2>>
+			<<He>>看起来很紧张，"这部分课程是关于人体解剖学的，所以我需要你脱掉你的衣服。嗯，是所有的衣服。不过不要感到尴尬，这对这门课很重要。"
+			<br><br>
+			<<if $rng lte 35>>
+				<<set $_studentLeaves to true>>
+			<<else>>
+				<<personsimple>><<print either("兴奋地同意", "高兴的同意", "漫不经心的同意", "勉强同意", "<<he>>看起来很想哭，但还是点头同意", "含泪同意")>>。
+				<<He>>脱光了衣服，这立即勾起了全班同学的注意力，当老师讲解指出<<person>>身上对应的解刨部位时，<<his>>就那样光着身子站在前面。
+				<<if $scienceprogression gte 3>>
+					随后，西里斯示意<<him>>爬到桌子上，并让<<his>>张开双腿。西里斯<<if $NPCList[0].penis isnot "none">>举起<<personsimple>>的阴茎<<else>>使用窥阴器<</if>>，让那些本就兴奋的学生们看得更清楚。
+					<<if $scienceprogression gte 4>>
+						终于，事情开始失控起来了。当有些学生开始亲自探索"人体的奥秘"时，<<person>>开始放声尖叫。直到最后才逐渐恢复控制，
+					<</if>>
+				<</if>>
+				西里斯结束了讲解，在请<<person>>穿上衣服后便让其坐回了原位。
+				<br><br>
+
+				虽然你为那个<<person>>感到难过，但这绝对使这节课更加有趣，你认为你从中学到了一些东西。
+				<<gscience>><<scienceskill>>
+			<</if>>
+		<<elseif $scienceprogression gte 1>>
+			"我需要你在我讲解这部分的时候脱下衣服。别担心，你想的话，你可以留着你的内裤。"
+			<br><br>
+			<<if $rng lte 25>>
+				<<set $_studentLeaves to true>>
+			<<elseif $rng lte 35>>
+				<<set $_studentNotWearingUnderwear to true>>
+			<<else>>
+				<<personsimple>><<print either("兴奋地同意", "高兴的同意", "漫不经心的同意", "勉强同意", "<<he>>看起来很想哭，但还是点头同意", "含泪同意")>>。
+				<<He>>脱掉了<<his>>的内裤，这立即吸引了全班的注意力。
+				西里斯继续讲课，指着<<persons>>身体的各个部分并解释起各种功能。
+				西里斯很快就结束了演示，请<<person>>穿好衣服并坐回原位后，西里斯开始继续讲课。
+				<br><br>
+
+				虽然你为那个<<person>>感到些许难过，但这绝对使这节课更加有趣，你认为你从中学到了一些东西。
+				<<gscience>><<scienceskill>>
+			<</if>>
+		<<else>>
+			"别担心，我们不会做任何与侵犯有关的事情。"
+			<br><br>
+			在接下来的几分钟里，西里斯谈到了各种骨骼和器官，并在讲解的同时指着<<persons>>身体的对应位置，这确实很有意思。
+			<<gscience>><<scienceskill>>
+		<</if>>
+
+		<<if $_studentNotWearingUnderwear>>
+			<<personsimple>>对西里斯低声说了几句话。
+			<br><br>
+			西里斯的脸一下子涨的通红，随后马上让<<person>>坐回原位。"那个，我又想了一下。同学们，那个，额......这次，这次我们将用解剖图，"西里斯说道："它们......更详细清楚。"
+		<<elseif $_studentLeaves>>
+			<<print either(
+				"那个<<personsimple>>直接跑出了房间，没有再回来。",
+				"<<personsimple>>带着平静的表情默默地离开了房间。",
+				"<<personsimple>>带着担忧的表情说到自己想去一下卫生间，随后<<his>>在将桌子上属于自己的东西拿走后便离开了。直到最后<<He>>也没有回来。"
+			)>>
+			<br><br>
+			"我想我们将不得不用旧的解剖图来做演示了，"西里斯继续说道："对不起，同学们。"
+		<</if>>
+		<<endevent>>
+	<<else>>
+		<<if $dissociation gte 1>>
+			<<npc Sirris>><<person1>>西里斯走向你并问道："有什么问题么？"你看起来有些……不太好。"
+			<br><br>
+
+			<<link [[我很好|Science Event2]]>><</link>>
+			<br>
+			<<link [[放声痛哭|Science Event2]]>><<set $phase to 1>><</link>>
+			<br>
+		<<else>>
+			西里斯走近你并问道："有什么我可以帮你讲解的吗？"
+			<br><br>
+
+			<<link [[是的|Science Event2]]>><<set $phase to 2>><<scienceskill 1>><</link>><<gscience>>
+			<br>
+			<<link [[没有|Science Event2]]>><<set $phase to 3>><</link>>
+			<br>
+		<</if>>
+		<<set _uniqueoptions to true>>
+	<</if>>
+
+	<<if !_uniqueoptions>>
+		<br><br>
+		<<link [[继续|Science Lesson]]>><</link>>
+	<</if>>
+<</widget>>
+
+:: Widgets Events Maths [widget]
+<<widget "eventsmaths">>
+	<<cleareventpool>>
+
+	<<if  (($wolfgirl gte 4 and $transformationParts.wolf.ears isnot "hidden") or ($cat gte 4 and $transformationParts.cat.ears isnot "hidden") or ($fox gte 4 and $transformationParts.fox.ears isnot "hidden"))>>
+		<<addinlineevent "mathsTFears">>
+			<<npc River>><<person1>>瑞沃在班级里来回踱步，直到走到你的身边时，<<He>>停下了脚步。
+			<<if $riverbite isnot 1>>
+				<<set $riverbite to 1>>
+				"那个头巾是违反学校规定的，"<<he>>说，抓住你的一只<<if $wolfgirl gte 4>>狼<<elseif $fox gte 4>>狐狸<<else>>猫<</if>>耳朵。
+			<<else>>
+				"你还戴着那个愚蠢的发带?"<<he>>说道。"我想我说得很清楚了。"<<He>>抓了一只你的<<if $wolfgirl gte 4>>狼<<elseif $fox gte 4>>狐狸<<else>>猫<</if>>耳朵。
+			<</if>>
+			<<He>>扯得你很痛。<<gpain>><<gstress>><<pain 2>><<stress 1>>
+			<br><br>
+
+			<<link [[咬|Maths Event Bite]]>><<npcincr River dom -1>><<npcincr River love -1>><<detention 6>><<stress -12>><<trauma -6>><<def 3>><</link>><<gdelinquency>><<ltrauma>><<lstress>>
+			<br>
+			<<link [[忍耐|Maths Event Endure]]>><<npcincr River dom 1>><<stress 6>><<trauma 6>><<pain 5>><<sub 2>><</link>><<gpain>><<gtrauma>><<gstress>>
+			<br>
+		<</addinlineevent>>
+	<</if>>
+	<<if $fame.exhibitionism gte 500 and $delinquency gte 500 and $mathrulerin is 0 and $worn.genitals.name isnot "chastity belt">>
+		<<addinlineevent "mathsTheRulerScene" 0>>
+			<!-- Note: This event is effectively in quarantine and cannot be reached in-game. Don't make it reachable and don't edit the event or its associated passages. -->
+			<<npc River>><<person1>>
+			你听到瑞沃的手机正在嗡嗡作响，<<he>>没有去看手机，只是说到<<he>>需要离开教室几分钟，一会就会回来。
+			<br>
+			<<He>>在离开的时候留下来一些有关方程的题目来让学生先行解答。
+			<br><br>
+			当你再也听不到<<his>>的脚步声后，一个女孩拿起一把尺子站了起来。
+			<br>
+			"嘿，你。" 她望着你说道。
+			<br>
+			"我听说你喜欢展示自己的身体，那让我们现在来玩个小游戏，怎么样？"她继续说道："当然，是在全班同学面前。"
+			<br>
+			"我打赌你可以将这把尺子插入你的<<if $player.gender_appearance is "m">>菊穴<<else>>小穴<</if>>。如果你这样做的话，我会给你 £40。"
+			<br><br>
+
+			<<link [[接受打赌|Maths Ruler]]>><<set $phase to 1>><<status 10>><<if $player.gender_appearance is "m">><<arousal 1500 "anus">><<else>><<arousal 1500 "pussy">><</if>><<set $mathrulerin to 1>><</link>><<exhibitionist5>><<fameexhibitionism 3>><<garousal>>
+			<br>
+			<<link [[拒绝|Maths Ruler]]>><<stress 2>><<set $phase to 2>><<status -10>><<set $mathrulerin to 1>><</link>><<gstress>>
+			<br>
+		<</addinlineevent>>
+	<</if>>
+
+	<<if $whitneymaths is "active" or $whitneymaths is "seat">>
+		<<addinlineevent "mathsWhitneyShirt">>
+			<<npc Whitney>><<person1>>
+			"太热了，"惠特尼自顾自说着的同时将<<his>>的衬衫拉到了头顶上,
+			<<if $pronoun is "f">>
+				这让<<him>>的上半身除了一件白色胸罩用来遮掩<<his>>那$NPCList[0].breastsdesc外别无它物。
+			<<else>>
+				这让<<him>>赤裸的上半身暴露无遗。
+			<</if>>
+			"好多了。" 有人咯咯笑了起来。
+			<br><br>
+
+			<<if !$worn.upper.type.includes("naked") and $whitneymaths is "seat">>
+				<<He>>转身面向你的同时抓住了你$worn.upper.cn_name_cap的下摆。"让我来帮你，"<<he>>说着的同时试图把它拉起来。
+				<br><br>
+
+				<<if $player.gender isnot "m" or $player.gender_appearance isnot "m">>
+					你的脸涨的通红。<<if $worn.under_upper.type.includes("naked")>>因为你的下面没有穿任何东西！<</if>>
+					<br><br>
+
+					<<if !$worn.under_upper.type.includes("naked") or $exhibitionism gte 15>>
+						<<link [[允许|Maths Whitney Shirt Allow]]>><<npcincr Whitney love 1>><<npcincr Whitney dom 1>><<npcincr Whitney lust 1>><<detention 4>><</link>><<exhibitionist `($worn.under_upper.type.includes("naked") ? 3 : 1)`>><<gdelinquency>><<glove>><<gdom>><<glust>>
+						<br>
+					<</if>>
+				<<else>>
+					<<link [[允许|Maths Whitney Shirt Allow]]>><<npcincr Whitney love 1>><<npcincr Whitney dom 1>><<npcincr Whitney lust 1>><<detention 4>><</link>><<gdelinquency>><<glove>><<gdom>><<glust>>
+					<br>
+				<</if>>
+				<<link [[抵抗|Maths Whitney Shirt Resist]]>><<stress 6>><</link>><<gstress>>
+				<br>
+				<<if $promiscuity gte 15>>
+					<<set $skulduggerydifficulty to 300>>
+					<<link [[`进一步暴露${$NPCList[0].pronouns.him}`|Maths Whitney Shirt Expose]]>><<def 1>><<npcincr Whitney lust 5>><<npcincr Whitney dom -1>><</link>><<skulduggerydifficulty>><<promiscuous2>><<ldom>><<glust>>
+					<br>
+				<</if>>
+			<<else>>
+				<<npc River 2>><<person2>>
+				瑞沃转身调查笑声的来源，当<<He>>看到惠特尼没有穿校服衬衫时，<<he>>几乎就要晕倒了，<<his>>无力的靠在讲台上。"出去，"<<he>>费力说道："去把你的衬衫穿上。"
+				<br><br>
+
+				惠特尼翻了个白眼，但<<person1>><<his>>还是站起了身。就在你想着<<He>>会怎么回应的时候，<<his>>直接将衬衫甩在肩膀上，随后大摇大摆的离开了教室。
+				<br><br>
+
+				<<set $whitneymaths to "sent">>
+
+				<<link [[继续|Maths Lesson]]>><<endevent>><</link>>
+				<br>
+			<</if>>
+		<</addinlineevent>>
+	<</if>>
+	<<if $whitneymaths is "active">>
+		<<addinlineevent "mathsWhitneyPen">>
+			<<npc Whitney>><<person1>><<generateyv2>>
+			一支笔砸到了你的头上，是惠特尼。<<He>>虽然正躺在自己的座位上，但是<<his>>正在从邻近的<<person2>><<persons>>的铅笔盒里翻找更多的文具来扔向你。那个<<person>>太胆小了，不敢阻止<<person1>><<him>>。
+			<br><br>
+
+			<<link [[容忍|Maths Whitney Tolerate]]>><<stress 6>><</link>><<gstress>>
+			<br>
+			<<link [[报告老师|Maths Whitney River]]>><<npcincr Whitney love -1>><<status -10>><</link>><<lcool>><<llove>>
+			<br>
+			<<link [[报复|Maths Whitney Retaliate]]>><<def 1>><<detention 1>><<trauma -6>><</link>><<gdelinquency>><<ltrauma>>
+			<br>
+		<</addinlineevent>><<addinlineevent "mathsWhitneyProtractor">>
+			瑞沃正在黑板上板书方程式，而惠特尼则乘机强迫你身后的那个<<generatey1>><<person1>><<person>>起开，在<<his>>被惠特尼赶跑之后，惠特尼坐到了这空出来的位置上。
+			<br><br>
+
+			<<endevent>><<npc Whitney>><<person1>>
+
+			有什么东西正在戳你的腰。你转过头看去，惠特尼虽然脸上一副天真无邪的笑容坐在后面，但<<his>>手上的圆规证明了就是这家伙干的好事。你回过头来的时候，<<he>>又戳了你一下。<<gpain>><<pain 6>>
+			<br><br>
+
+			<<link [[默默忍受|Maths Whitney Protractor Endure]]>><<stress 6>><<pain 6>><</link>><<gstress>><<gpain>>
+			<br>
+			<<link [[报告老师|Maths Whitney Protractor Tell]]>><<status -10>><<mathsskill 6>><<npcincr Whitney love -1>><</link>><<llove>><<lcool>><<gmaths>>
+			<br>
+			<<link [[报复|Maths Whitney Protractor Retaliate]]>><<detention 4>><<status 1>><<npcincr Whitney dom -1>><</link>><<gdelinquency>><<ldom>><<gcool>>
+			<br>
+		<</addinlineevent>><<addinlineevent "mathsWhitneyPaperBall">>
+			瑞沃在处理着文书工作的同时给全班同学讲了一些要解决的方程式。
+			<br><br>
+
+			<<npc Whitney>><<person1>>
+			一个皱巴巴的纸团从你头上弹开。你转身看去，是惠特尼和其他几个坏学生。当看到你转头时，这些家伙笑了起来。
+			<br><br>
+
+			<<link [[阅读纸条|Maths Whitney Read]]>><</link>>
+			<br>
+			<<link [[把它扔回去|Maths Whitney Throw]]>><<def 1>><</link>>
+			<br>
+			<<link [[把它扔进垃圾箱|Maths Whitney Bin]]>><</link>>
+			<br>
+		<</addinlineevent>>
+	<<elseif $whitneymaths is "seat">>
+		<<addinlineevent "mathsWhitneyOral">>
+			<<npc Whitney>><<person1>>
+			惠特尼靠得很近，<<his>>在说话的时候，<<he>>呼出的气时刻刺挠着你的耳朵。
+			"我的<<if $NPCName[$NPCNameList.indexOf("Whitney")].penis isnot "none">>肉棒<<else>>小穴<</if>>需要你来侍奉，"<<he>>低声说道。"做一个好<<girlfriend>>，钻到桌子底下去。"
+			<br><br>
+
+			<<link [[勉强答应|Maths Whitney Oral]]>><<set $phase to 0>><<trauma 6>><<stress 6>><<npcincr Whitney dom 1>><<sub 1>><<set $molestationstart to 1>><</link>><<gtrauma>><<gstress>><<gdom>>
+			<br>
+			<<if $promiscuity gte 55>>
+				<<link [[高兴的答应|Maths Whitney Oral]]>><<set $phase to 1>><<npcincr Whitney dom 1>><<sub 1>><<set $sexstart to 1>><</link>><<promiscuous4>><<gdom>>
+				<br>
+			<</if>>
+			<<if $whitneyromance is 1>>
+				<<link [[亲切的答应|Maths Whitney Oral]]>><<set $phase to 2>><<trauma 6>><<npcincr Whitney dom 1>><<npcincr Whitney love 1>><<sub 1>><<set $sexstart to 1>><</link>><<promiscuous1>><<gtrauma>><<glove>><<gdom>>
+				<br>
+			<</if>>
+			<<link [[拒绝|Maths Whitney Oral Refuse]]>><<stress 6>><<npcincr Whitney dom -1>><</link>><<gstress>><<ldom>>
+		<</addinlineevent>><<addinlineevent "mathsWhitneyJealous">>
+			你听到教室外面传来了叫喊声，瑞沃离开教室前去调查原因。
+			<br><br>
+
+			<<npc Whitney>><<generatey2>>
+			"你是在盯着我的<<girlfriend>>么？" 惠特尼在你身边说道。<<person1>><<Hes>>瞪向你身后的那个<<person2>><<person>>。
+			<br>
+			"不，我，我没有"<<person>>回答道。但惠特尼很明显并不想理会<<his>>。<<person1>><<He>>一下子站了起来，并冲到<<person2>><<persons>>的桌子前，然后一把揪住<<him>>的衣领。
+			<br>
+			"<<pShes>>是我的<<person2>><<if $pronoun is "m">>肉便器<<else>>骚货<</if>>,"<<person1>><<he>>嘶吼道： "现在,我将确保你能将它牢记在心."
+			<br><br>
+
+			<<person2>><<person>>看起来有些<<print either("惊恐","蔑视","愤怒","害怕","疑惑")>>。
+			<br><br>
+
+			<<link [[看戏|Maths Whitney Watch]]>><<npcincr Whitney dom 1>><</link>><<gdom>>
+			<br>
+			<<link [[劝阻|Maths Whitney Intervene]]>><<famegood 10>><<npcincr Whitney dom -1>><<trauma -6>><</link>><<ldom>><<ltrauma>>
+			<br>
+			<<link [[怂恿|Maths Whitney Encourage]]>><<npcincr Whitney love 1>><<detention 3>><</link>><<glove>><<gdelinquency>>
+			<br>
+		<</addinlineevent>><<addinlineevent "mathsWhitneyMakeout">>
+			瑞沃在处理着文书工作的同时给全班同学讲了一些要解决的方程式。
+			<br><br>
+
+			<<npc Whitney>><<person1>>
+			惠特尼百无聊赖的靠在座位上，感到无聊的<<his>>将手伸向你的脑袋，然后便用手指捻动起了你的头发。
+			<br><br>
+
+			<<link [[亲热|Maths Whitney Makeout]]>><<npcincr Whitney love 1>><</link>><<glove>>
+			<br>
+			<<link [[继续认真上课|Maths Whitney Work]]>><<mathsskill 1>><</link>><<gmaths>>
+			<br>
+		<</addinlineevent>>
+		<<if $arousal gte 8000 and $daily.whitney.mathsGrope isnot 1>>
+			<<addinlineevent "mathsWhitneyGrope" 5>>
+				<<set $daily.whitney.mathsGrope to 1>>
+				<<npc "Whitney" 1>><<npc "River" 2>>
+				瑞沃开始解释几个数学概念，并在白板上演示等式，<<person2>><<he>>也这样做。
+				<br><br>
+
+				惠特尼靠在你身边，而瑞沃转过身去。"嘿，荡妇，你看起来有点压抑，"<<person1>><<he>>低语。
+				<<He>>隔着你的$worn.lower.cn_name_cap摸索着。"我赌我能让你当着整班人的面叫出声。"<<arousal 300 "genitals">><<garousal>>
+				<br><br>
+
+				<<link [[顺其自然|Maths Whitney Grope Allow]]>><</link>><<gggarousal>>
+				<br>
+				<<link [[否认|Maths Whitney Grope Deny]]>><<stress 6>><<npcincr Whitney love -1>><</link>><<gstress>><<llove>>
+				<br>
+				<<if $speech_attitude is "bratty">>
+					<<link [[报复|Maths Whitney Grope Retaliate]]>><<npcincr Whitney dom -1>><</link>><<ldom>><<skill_difficulty "$handskill" "手部技巧" 1 600>>
+					<br>
+				<</if>>
+			<</addinlineevent>>
+		<</if>>
+	<<else>>
+		<<addinlineevent "mathsEvent1">>
+			瑞沃在处理着文书工作的同时给全班同学讲了一些要解决的方程式。
+			<br><br>
+
+			少数坏学生利用这个机会骚扰你。
+			<br><br>
+
+			<<link [[告诉他们停下来|Maths Event1]]>><<detention 2>><</link>><<gdelinquency>>
+			<br>
+			<<link [[忍受|Maths Event1]]>><<stress 2>><<set $phase to 1>><</link>><<gstress>>
+			<br>
+		<</addinlineevent>>
+	<</if>>
+
+	<<addinlineevent "mathsLowerLiftTease">>
+		<<npc River>><<generates2>>
+		瑞沃让你到讲台上来解决黑板上的一个方程式。
+
+		<<set $_skirt to setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt>>
+		当你在黑板上解题的时候，一个<<person2>><<person>>拿着一把尺子伸了过来，并<<print $_skirt is 1 ? "掀起了你的裙子" : "猛地扯下了你的$worn.lower.cn_name_cap">>！
+		<br><br>
+		<<if $worn.under_lower.type.includes("naked")>>
+			当他们看到你没有穿内裤时，全班爆发出一阵欢呼。
+			<<if $_skirt is 1 and $panicattacks gte 1 and random(1, 2) is 2 and $controlled is 0>>
+				你需要回击，把尺子打掉，<span class="red">但你的身体在这样羞愧的情况下僵住了。</span>
+				当你想知道班上会有什么可怕的事情等着你时，你的思绪开始模糊起来了。
+				<br><br>
+				你听到他们喋喋不休，但你无法理解这些话，只听到手机摄像头对准拍摄你的<<bottom>>和<<if $player.penisExist>>变硬的<</if>><<genitals>>的咔嚓声。
+				<br><br>
+
+				瑞沃转过身来，<<person1>><<his>>看起来有些生气。但是那个家伙抢在瑞沃发火之前喊了出来："<<sir>>，<<pshes>>没有穿内裤！"
+				<br><br>
+
+				当瑞沃看向你时，全班开始哄堂大笑。瑞沃没有说话，只是静静地靠在讲台边上。
+				直到笑声逐渐变小之后，瑞沃才开口道："你违反了校规，现在把它弄好并回到你的座位上去，快点！"
+				<br><br>
+				瑞沃的怒吼使你从那种尴尬僵麻的状态中回过神来，你稍微整理了一下你的$worn.lower.cn_name_cap，然后乖乖地回到了座位。
+				<<gtrauma>><<gstress>><<gdelinquency>><<gcool>><<trauma 6>><<stress 6>><<detention 4>><<status 1>>
+			<<else>>
+				你飞快地将尺子拍掉，强烈的羞耻感涌上心头，满脸通红的你快速地整理了一下你的$worn.lower.cn_name_cap。瑞沃转过身来，想要看看是什么引起了骚动。
+				当瑞沃看到拿着尺子的<<person>>后，<<person1>><<he>>看起来有些生气。但那个家伙却抢在瑞沃发火之前喊了出来："但是，<<sir>>，<<pshes>>没有穿内裤！"
+				<br><br>
+
+				全班又爆发出一阵喝彩声，瑞沃看向你问道："这是真的吗？你知道的，这是违反校规。去坐下吧。"
+				<<gtrauma>><<gstress>><<gdelinquency>><<gcool>><<trauma 2>><<stress `($_skirt is 1 ? 2 : 4)`>><<detention 2>><<status 1>>
+
+				<<if $whitneymaths is "active" or $whitneymaths is "seat">>
+					<br><br>
+
+					惠特尼傻笑。
+				<</if>>
+			<</if>>
+		<<else>>
+			你推开尺子，整理好你的$worn.lower.cn_name_cap，但还是没来得及，全班都看到了你的<<print ($worn.under_lower.anus_exposed is 1 ? "光屁股" : $worn.under_lower.cn_name_cap)>>。
+			<<gtrauma>><<gstress>><<trauma 1>><<stress `($_skirt is 1 ? 1 : 2)`>>
+
+			<<if ($whitneypantiescheck is 1 or ($whitneypantiescheck is 2 or $worn.under_lower.gender isnot "f")) and $whitneymaths is "active">>
+				<br><br>
+
+				惠特尼瞪了你一眼，但并没有说什么。这还没有结束。
+				<<set $whitneypantiesmaths to "seen">>
+			<</if>>
+		<</if>>
+		<br><br>
+
+		<<link [[继续|Maths Lesson]]>><<endevent>><</link>>
+	<</addinlineevent>><<addinlineevent "mathsMessageDelivery">>
+		<<rng>>
+		<<npc River>><<person1>>
+
+		瑞沃站在你的桌子旁边说道："我需要你帮我把一封信交给校长。"<<He>>在说着的同时递给你一个密封的信封。
+		<br><br>
+
+		你离开了教室。
+		<br><br>
+		<<endevent>>
+		<<link [[打开信封|Maths Note]]>><<detention 6>><<set $phase to 1>><</link>><<gdelinquency>>
+		<br>
+		<<link [[只要交信就行了|Maths Note]]>><</link>>
+		<br>
+	<</addinlineevent>><<addinlineevent "mathsPartnerStudy">>
+		<<rng>>
+		<<if currentSkillValue('maths') lte 499>>
+			<<generates1>><<person1>>
+			瑞沃安排了一个勤奋的<<person>>来帮助你学习。
+			<<if $cool gte (($coolmax / 5) * 2)>>
+				<<He>>很乐意提供帮助，你对教材的理解也会加深。<<lstress>><<stress -4>><<gmaths>><<mathsskill>>
+			<<elseif $cool gte ($coolmax / 5)>>
+				<<He>>似乎对这一安排并不特别满意，但你确实学到了一些东西。<<gmaths>><<mathsskill>>
+			<<else>>
+				但<<He>>显然很不好意思和你在一起;<<he>>从不看你，也很少说话。你没有学到任何东西。
+			<</if>>
+			<br><br>
+
+			<<link [[继续|Maths Lesson]]>><<endevent>><</link>>
+			<br>
+		<<else>>
+			<<generates1>>
+			由于你在这门课上的优异成绩，瑞沃让你和一个成绩不太好的<<person1>><<person>>坐在一起，并让你多帮帮对方。
+			<<if $rng gt 40>>
+				那个<<person>>对这种安排一点也不满意，在你试图向其提供帮助不过几分钟后，你感到一只手在摸你的屁股。
+				<br><br>
+
+				<<if $eventsmaths4 is 1 and $rng gte 71>>
+					<<link [[忽视|Maths Event3]]>><<trauma 2>><<stress 2>><<arousal 200 "bottom">><<set $phase to 3>><</link>><<gtrauma>><<gstress>><<garousal>>
+				<<else>>
+					<<set $eventsmaths4 to 1>>
+					<<link [[忽视|Maths Event3]]>><<trauma 2>><<stress 2>><<arousal 200 "bottom">><<set $phase to 2>><</link>><<gtrauma>><<gstress>><<garousal>>
+				<</if>>
+				<br>
+				<<link [[挪开|Maths Event3]]>><<detention 2>><<set $phase to 1>><</link>><<gdelinquency>>
+				<br>
+				<<if $whitneymaths is "seat">>
+					<<link [[告诉惠特尼|Maths Event3 Whitney]]>><<npcincr Whitney dom 1>><</link>><<gdom "Whitney">>
+					<br>
+				<</if>>
+			<<else>>
+				那个<<person>>对这个安排一点也不满意，但其听了你的话，没有发生任何意外。
+				<br><br>
+
+				<<link [[继续|Maths Lesson]]>><<endevent>><</link>>
+				<br>
+			<</if>>
+		<</if>>
+	<</addinlineevent>><<addinlineevent "mathsPenThrow">>
+		<<npc River>><<person1>><<generates2>>
+		当瑞沃背过去的时候，有人朝<<his>>的背上扔了一支笔。<<He>>停止了讲课并慢慢地转过身来。<<person2>>坐在你后面的那个<<person>>指着你。"<<pShe>>丢的！"
+		<br><br>
+		<<if $delinquency gte 400>>
+			<<if $whitneymaths is "seat">>
+				瑞沃看着你。"我应该知道会是你，在外面等着。" 你知道争辩是没有用的，所以你站起身准备离开.<<gstress>><<stress 2>>
+				<br><br>
+
+				惠特尼站在你身边。"坐下。"瑞沃说道，但惠特尼没有理会<<person1>><<him>>，然后其直接离开了教室。
+			<<else>>
+				瑞沃看着你。"我应该知道会是你，在外面等着。" 你知道争辩是没有用的，所以你站起身离开.<<gstress>><<stress 2>>
+			<</if>>
+			<br><br>
+
+			<<link [[继续|Maths Event4]]>><<endevent>><</link>>
+		<<else>>
+			瑞沃没有被<<person2>><<person>>所迷惑，然后叫那几个家伙出去。
+			<br><br>
+
+			<<link [[继续|Maths Lesson]]>><<endevent>><</link>>
+		<</if>>
+	<</addinlineevent>>
+
+	<<runeventpool>>
+<</widget>>
+
+<<widget "eventsmathssafe">>
+	<<if $mathsproject is "none" and Time.days gte 23 and $scienceprojectdays isnot (21 + (7 - Time.weekDay))>>
+		<<set $mathsproject to "ongoing">><<set $mathsprojectdays to (21 + (7 - Time.weekDay))>>
+		<<mathsprojectstart>>
+		<<npc River>><<person1>><<generatey2>>"大家听着，"瑞沃大声说着，好像是要宣布什么东西。<<He>>敲了敲讲台，"坐在后面的也都听好——我今天为你们准备了一些特别的。现在，我们要为你们这个年级的学生举行一次年度比赛。" 这句话瞬间就吸引了前面那个<<person2>><<person>>的注意，<<He>>一下子把自己的腰挺了起来。
+		<<if $whitneymaths is "active" or $whitneymaths is "seat">>
+			惠特尼对此不那么感兴趣，<<nnpc_his "Whitney">>正躺在自己的座位上，脸被一本打开的教科书盖住。
+		<</if>>
+		<br><br>
+
+		"你们有几个星期的时间来准备竞赛，"瑞沃继续说着，同时<<person1>><<he>>开始分发小册子。"谁能提供最精妙的答案，谁就能够胜出。我们并不指望有人能找到正确答案，毕竟这并不是重点。"<<He>>将一本黑白的小册子放在你面前。你打开它，发现它有些难以理解。
+		<br><br>
+
+		<<person2>><<persons>>将手举了起来，"你有什么问题么？" 瑞沃问道。
+		<br><br>
+
+		"您还没有讲到这里，"那个<<person>>用颤巍巍的语气说道。你随之松了一口气，看来不是只有你一个人看不懂。
+		<br><br>
+
+		瑞沃笑了起来，"不错，看得很仔细，"<<person1>><<he>>继续说道："你们都将在同一起跑线上，哪怕你在之前没有怎么听课。参加全凭自愿——虽然冠军会获得奖励，但不要因此耽误了你的学业。"
+		<br><br>
+
+		<<He>>把最后一本小册子分发出去后补充道："这个问题是为这次比赛专门编写的，所以不要以为你能在哪里找到正确答案，同时也不要向你的父母求助。"<<he>>在说这话的同时尽量避免向你这边看来。"我们是能够分辨出来的。最后，比赛将在市政厅举行，届时将对你们进行评判。祝好运。"
+		<br><br>
+
+		<span class="gold">日志中增加了数学竞赛。</span>
+		<br><br>
+
+		<<link [[继续|Maths Lesson]]>><<endevent>><</link>>
+	<<else>>
+		<<cleareventpool>>
+
+		<<set $_linkskip to false>>
+		<<addinlineevent "mathsSafe1">>
+			<<npc River>><<person1>>
+			瑞沃在布置了一些方程式给全班同学求解后，便开始处理起了文书工作。
+
+			<<if $whitneymaths is "seat" or $whitneymaths is "active">>
+				就连惠特尼都在保持安静，尽管<<nnpc_he "Whitney">>可能只是在睡觉。
+			<<else>>
+				甚至坏学生们也都保持安静，小心翼翼地避开瑞沃的注意。
+			<</if>>
+
+		<</addinlineevent>><<addinlineevent "mathsSafe2">>
+			<<generates1>><<generates2>><<person1>><<set _coinflip to random(0,1)>>
+			瑞沃指派一名表现出色的学生，让那个<<person>>来为坐在你附近的一名坏学生提供帮助。
+			<br><br>
+			<<rng>>
+			<<if $rng % 3 is 0>>
+				进展十分顺利。两个学生之间相处得很好，似乎二人都因这种安排而受益匪浅。
+			<<else>>
+				这是一场灾难。那个坏学生，也就是那个<<person2>><<person>>，看起来十分讨厌<<person1>><<persons>>的帮助，很快便开始欺负起了<<him>>。你用眼角的余光看去，事件正在不断激化，并逐渐失去控制。
+				<<if _coinflip>>
+					在事情发展到一定程度之前，瑞沃要求结束互助。
+				<<else>>
+					当<<person1>><<person>>的尖叫声响起时，瑞沃前来调查。
+					<<if $rng % 2>>
+						瑞沃把肇事者赶了出去。
+					<<else>>
+						不知何故，<<person1>><<person>>最终被指责并被留校。
+					<</if>>
+				<</if>>
+			<</if>>
+
+		<</addinlineevent>><<addinlineevent "mathsSafe3">>
+			瑞沃在黑板上演示着方程式，并偶尔点名提问那些<<nnpc_he "River">>认为没有注意听课的学生。
+
+		<</addinlineevent>><<addinlineevent "mathsSafe4">>
+			<<if $whitneymaths is "seat" or $whitneymaths is "active">>
+				惠特尼诱使一个<<generatey1>><<person1>><<person>>将一支笔扔到瑞沃的背上。结果这个<<person>>在一番争吵后被请出了教室。
+			<<else>>
+				班上有人把一支笔扔到了瑞沃的背上，在一番争吵过后，惹事的家伙被送出了教室，课堂继续上课。
+			<</if>>
+
+		<</addinlineevent>><<addinlineevent "mathsSafe5">>
+			<<npc River>><<person1>>
+			瑞沃在白板上演示方程式，偶尔会问问题，挑那些他认为不专心的学生的毛病。这一次，<<he>>选了你。
+			<br><br>
+
+			<<if currentSkillValue('maths') gte 500>>
+				你知道答案，但是正确回答这么难的问题会让其他学生觉得你很奇怪。
+				<br><br>
+
+				<<set $_linkskip to true>>
+				<<link [[回答|Maths Event2]]>><<status -10>><</link>><<lcool>>
+				<br>
+				<<link [[假装答不上来|Maths Event2]]>><<detention 2>><<stress 2>><<set $phase to 1>><</link>><<gstress>><<gdelinquency>>
+			<<else>>
+				这个问题相当困难，超出了你目前的知识水平，所以你告诉<<him>>你不知道答案。
+				<br><br>
+
+				"也是，你当然不会知道。" 幸运的是，<<he>>并没有继续絮叨下去，而是开始继续讲课。
+				<<stress 20>><<ggstress>>
+			<</if>>
+
+		<</addinlineevent>><<addinlineevent "mathsSafe6">>
+
+			你被叫到前面回答一个问题。你从容地走上前去，在黑板上写下了你的答案。瑞沃似乎对这个答案很是满意。在回到座位坐下之后，你感到臀部传来一阵剧痛。你站起身来并向后伸手摸去，感觉到一根大头针正卡在你的<<bottom>>上。
+			<<pain 2>><<stress 6>><<gpain>><<gstress>>
+			<br><br>
+
+			你把它拿开，坐回去。
+			<<if $whitneymaths is "active">>
+				你听到惠特尼在背后笑出了声。
+			<<elseif $whitneymaths is "seat">>
+				惠特尼脸上挂着事不关己的微笑。
+			<<else>>
+				你听到一群痞子在背后笑出了声。
+			<</if>>
+
+		<</addinlineevent>><<addinlineevent "mathsSafe7">>
+
+			班里正在上三角函数课，瑞沃正巡视着填表中的学生。
+			<<if $whitneymaths is "seat">>
+				惠特尼和另一个学生开始了一场秘密战争。他们用圆规刺伤对方。
+			<<elseif $whitneymaths is "active">>
+				惠特尼和其他少年犯偷偷地用指南针戳对方。
+			<<else>>
+				一些学生偷偷地用圆规点互相刺伤。
+			<</if>>
+
+		<</addinlineevent>><<addinlineevent "mathsSafe8">>
+			全班学生都在学习几何学，然后填写练习题。瑞沃在教室里来回转悠，时不时提出某些人的错误。
+
+		<</addinlineevent>><<addinlineevent "mathsSafe9">>
+			<<generates1>><<generates2>>
+			一个<<person1>><<person>>被叫到教室前面来在黑板上解一个方程式。而当<<he>>正在书写时，一个<<person2>><<person>>俯身向前，用一把尺子将不知情的<<person1>><<personsimple>>的内裤亮给了全班人看。
+			<<if ($rng % 4) is 0>>
+				然而，事实证明，这个<<person>>没有穿任何内裤——欢呼声在教室里爆发出来，同时被羞辱的这个<<personsimple>>和那个拿着尺子的<<person2>><<person>>都获得了留校的奖励。
+			<<else>>
+				<<personsimple>>拍掉了尺子，而瑞沃用尖锐地目光盯着<<person2>><<person>>。
+				<br><br>
+				课堂还在继续。
+			<</if>>
+
+		<</addinlineevent>><<addinlineevent "mathsSafe10">>
+			瑞沃在黑板上演示方程式，然后分发习题册供全班完成。
+
+		<</addinlineevent>>
+
+		<<runeventpool>>
+
+		<<if !$_linkskip>>
+			<br><br>
+
+			<<link [[继续|Maths Lesson]]>><<endevent>><</link>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "mathsWhitneyAttendChance">>
+	<<if !$whitneymaths or $whitneymaths is "absent">>
+		<<if C.npc.Whitney.state is "active" and Time.minute lte 40>>
+			<<if !$whitneymaths>>
+				<!-- Whitney attending Maths class for the first time during the game -->
+				<<npc Whitney 1>><<person1>>
+				惠特尼大摇大摆地走了进来。"你决定来上课了啊，"瑞沃说着，同时指着前面的一个空座位："坐在那里，把你的衬衫给我塞进去。"
+				<br><br>
+
+				<<if $whitneyromance is 1>>
+					<<set $whitneymaths to "seat">>
+					惠特尼翻了个白眼，
+					<<if $whitneyskirtcheck is 1 and ((setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt isnot 1) or (setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1 and $worn.lower.reveal gt 200)) and $forcedcrossdressingdisable is "f">>
+						当<<he>>发现你的$worn.lower.cn_name_cap时，他只是瞪大眼睛望着你。
+						<<set $whitneyskirtmaths to true>>
+					<</if>>
+					转而坐在你身旁的座位上。
+				<<else>>
+					<<set $whitneymaths to "active">>
+					惠特尼翻了个白眼，
+					<<if $whitneyskirtcheck is 1 and ((setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt isnot 1) or (setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1 and $worn.lower.reveal gt 200)) and $forcedcrossdressingdisable is "f">>
+						当<<he>>发现你的$worn.lower.cn_name_cap时，他只是瞪大眼睛望着你。
+						<<set $whitneyskirtmaths to true>>
+					<</if>>
+					转而坐在后面的座位上。
+				<</if>>
+				<<He>>坐下来时只把衬衫前襟塞进了<<his>>的<<npcClothesText $NPCList[0] "lower">>。
+				<<endevent>>
+				<br><br>
+			<<else>>
+				<<set $_whitney_maths_chance to ((C.npc.Whitney.love / 3) + (C.npc.Whitney.dom * 3) + (C.npc.Whitney.lust / 3))>>
+				<<set $_whitney_tardy_modifier to (Time.minute lte 20 ? Time.minute : -Time.minute + 40) - 10>>
+				<!-- whitney_tardy_modifier starts out negative, becomes positive at 10 minutes late, peaks at 20 minutes late, and hits negative again at 30 minutes late -->
+				<<set $_whitney_maths_chance += $_whitney_tardy_modifier>>
+				<<if random(1, 100) lte $_whitney_maths_chance>>
+					<<npc Whitney 1>><<person1>>
+					<<if $whitneyromance is 1>>
+						<<set $whitneymaths to "seat">>
+						惠特尼走进教室。<<He>>直接推开一个<<generatey2>><<person2>><<person>>，然后坐到了你的身边。
+					<<else>>
+						<<set $whitneymaths to "active">>
+						惠特尼走进教室，然后在你后面的座位上坐了下来。
+					<</if>>
+					<<endevent>>
+					<br><br>
+				<<elseif $whitneymaths isnot undefined>>
+					<!-- if whitney HAS attended class before, but is not present now -->
+					<<set $whitneymaths to "absent">>
+				<</if>>
+			<</if>>
+		<<elseif $whitneymaths isnot undefined>>
+			<!-- if whitney HAS attended class before, but is unable to attend -->
+			<<set $whitneymaths to "absent">>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "mathsLessonEnd">>
+	<<endevent>>
+	下课铃响了，你
+	<<storeon "mathsClassroom" "check">>
+	<<if _store_check is 1>>
+		<<storeon "mathsClassroom">>
+		拿上你的外套然后
+	<</if>>
+	离开了教室。
+	<br><br>
+
+	<<if $whitneymaths isnot undefined>>
+		<!-- set whitney's state to "absent" after the lesson ends so that we can use mathsWhitneyAttendChance to put them back in class on the next day -->
+		<!-- Note: if you want to know whether or not Whitney attended maths class, but class has already ended, you'll need to change how this system works. -->
+		<<set $whitneymaths to "absent">>
+	<</if>>
+
+	<<link [[继续|Hallways]]>><</link>>
+<</widget>>
+
+<<widget "mathsLessonEvent">>
+	<<set $_mod to _args[0] or 1>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (8900 - ($allure * $_mod))>> <!-- $_mod multiplies the effect that allure has on your odds of getting an unsafe event -->
+		<<eventsmaths>>
+	<<else>>
+		<<eventsmathssafe>>
+	<</if>>
+<</widget>>
+
+:: Widgets Events English [widget]
+<<widget "eventsenglish">>
+	<<if $halloween is 1 and $kylarenglishstate is "active" and $halloween_kylar is undefined>>
+		<<npc Kylar>><<person1>>
+		<<if Time.monthDay is 31>>
+			凯拉尔将身体靠了过来，然后低声说道："今天晚上<span class="gold"><<ampm 21 00>></span>在公园等着我，我有东西要给你看。"
+		<<else>>
+			凯拉尔将身体靠了过来，然后低声说道："万圣节晚上<span class="gold"><<ampm 21 00>></span>在公园等着我，我想给你看一些东西。"
+		<</if>>
+		<br><br>
+
+		<<He>>在余下的课程中总是带着一丝奇怪的笑意。
+		<<set $halloween_kylar to 1>>
+		<br><br>
+
+		<<link [[继续|English Lesson]]>><<endevent>><</link>>
+		<br>
+	<<elseif $rng gte 91 and $goocount + $semencount gte 10>>
+		<<npc Doren>><<person1>>
+		多伦在你的桌子旁边停下。"你闻起来...很奇怪，"<<he>>继续说道："就好像....."
+		<br><br>
+
+		<<generates2>><<person2>>一个<<person>>打断了<<person1>><<him>>。"<<pShe>>闻起来像精液，<<sir>>。"全班人一下子都吃吃笑了起来。
+		<br><br>
+		<<person1>>
+
+		<<if $promiscuity gte 35>>
+			<<link [[顺势承认|English Events Own]]>><</link>><<promiscuous3>>
+			<br>
+		<</if>>
+		<<link [[羞愧地盯着地板|English Events Stare]]>><<trauma 6>><<stress 6>><<status -10>><<npcincr Doren love 1>><</link>><<gtrauma>><<gstress>><<lcool>>
+		<br>
+
+	<<elseif $rng gte 91 and $nectarcount gte 5>>
+		<<npc Doren>><<person1>>
+		多伦停在你的桌子旁。"你闻起来…好，"<<he>>说道。"这是香水吗?科隆?"
+		<br><br>
+
+		<<generates2>><<person2>>一个<<person>>打断<<person1>><<him>>。"<<pShe>>闻起来很香，<<sir>>。真的很甜。"一些学生嗅着空气，自言自语。
+		<br><br>
+
+		<<person1>>多伦摇了摇头。"你们这些人热衷的时尚……"<<He>>回去教<<his>>的课。有些学生把桌子挪得离你更近一些，要么是为了闻你身上的花蜜，要么只是为了满足他们的好奇心。
+		<<if $kylarenglishstate is "active">>
+			凯拉尔看起来对他们很恼火，但很明显，<<nnpc_he "Kylar">>也喜欢你的味道。<<npcincr Kylar lust 1>><<npcincr Kylar rage 1>><<glust>><<gksuspicion>>
+		<</if>>
+		<<status 1>><<gcool>>
+		<br><br>
+
+		<<link [[继续|English Lesson]]>><<endevent>><</link>>
+		<br>
+
+	<<elseif $rng gte 81>>
+		<<set $_genitals_exposed to ($worn.under_lower.type.includes("naked") and !playerChastity("hidden"))>>
+		<<set $_seat_glued to ($cool lt 40)>>
+		当你站起身交作业时，
+		<<if $_seat_glued>>
+			<<set $worn.lower.integrity -= 30>>
+			<<if $worn.lower.integrity lte 0>>
+				你的$worn.lower.cn_name_cap从你的身上<<print ($worn.lower.plural ? "扯下" : "撕下")>>来了！
+				你惊恐地向下看去，一部分衣料被粘在了椅子上，有人把胶水涂在了你的座位上！
+			<<else>>
+				你的$worn.lower.cn_name_cap被<<print ($worn.lower.plural ? "撕开了" : "扯开了")>>，有人在你的座位上涂了胶水！
+				幸运的是，你的$worn.lower.cn_name_cap依旧坚挺的活着，尽管它肯定已经磨损的不成样子了。
+			<</if>>
+		<<else>>
+			<<set $worn.lower.integrity -= 10>>
+			<<if $worn.lower.integrity lte 0>>
+				你的$worn.lower.cn_name_cap<<print ($worn.lower.plural ? "勾在" : "挂在了")>>你的课桌的边角上，你感觉它好像被<<print ($worn.lower.plural ? "扯下" : "撕下")>>来了！
+				你惊恐地向下看去，一部分残存的衣料正挂在桌角上。
+			<<else>>
+				你的$worn.lower.cn_name_cap<<print ($worn.lower.plural ? "勾在" : "挂在了")>>你的课桌的边角上，你感觉它好像被<<print ($worn.lower.plural ? "扯开" : "撕开")>>了！
+				幸运的是，你的$worn.lower.cn_name_cap依旧坚挺的活着，尽管它看起来有些糟糕。
+			<</if>>
+		<</if>>
+
+		<<if $worn.lower.integrity lte 0>>
+			你尽可能快地遮住暴露在外的<<undies>>，但有那么一瞬间你还是完全暴露在众人面前。
+			多伦拿着毛巾向你冲来，而你的脸因羞愧而涨得通红。
+
+			<<if $_genitals_exposed>>
+				<<stress 12>><<trauma 12>><<ggstress>><<ggtrauma>>
+
+				<<if $player.gender isnot $player.gender_appearance>>
+					<br><br>
+					<<if $schoolrep.crossdress gte 3 or $schoolrep.herm gte 3>>
+						其他的学生对你所处的窘境<<print ($_seat_glued ? "看起来很是满足" : "放声笑了起来")>>。
+						当多伦忙着帮你时，你无意中听到了几声低语，
+						这些家伙看见了<<print ($player.gender is "h" ? "你的生殖器" : "你穿着异性的内衣")>>。现在，这些家伙知道谣言是真的了。
+					<<else>>
+						当多伦忙着帮你的时候，其他学生都倒抽了一口凉气，随后教室里充满了窃窃私语。
+						你察觉到那些家伙可能看到了<<print ($player.gender is "h" ? "你的生殖器" : "你穿着的异性内衣")>>。
+					<</if>>
+					<<schoolrep_naked>>
+				<</if>>
+
+				<<set $genderknown.pushUnique("Doren")>>
+			<<else>>
+				<!-- Nothing happens if the player's genitals aren't exposed -->
+				<<stress 6>><<trauma 6>><<gstress>><<gtrauma>>
+			<</if>>
+
+			<<if $kylarenglishstate is "active" or $kylarenglishstate is "watching">>
+				<br><br>
+
+				凯拉尔虽然移开了视线，但<<nnpc_he "Kylar">>一定看得十分清楚，因为<<nnpc_he "Kylar">>的脸已经涨得通红了。<<npcincr Kylar lust 1>><<glust>>
+				<<if $_genitals_exposed>>
+					<<set $genderknown.pushUnique("Kylar")>>
+				<</if>>
+			<</if>>
+		<</if>>
+		<br><br>
+		<<integritycheck>>
+		<<link [[继续|English Lesson]]>><<towelup>><</link>>
+		<br>
+
+	<<elseif $rng gte 71 and $kylarenglishstate is "active">>
+
+		<<npc Kylar>><<person1>>多伦叫凯拉尔叫到教室前面来背诵<<his>>写的诗。这是一首关于爱情的诗，而且内容是关于你的。<<He>>看起来很高兴能在大众面前分享这首诗。
+		<<status -10>><<lcool>>
+		<br><br>
+
+		<<if $player.penisExist and $genderknown.includes("Kylar")>>
+			但当<<nnpc_he "Kylar">>读到你拥有着巨大的肉棒时，你的脸一下子臊红了起来.<<status 1>><<gcool>>
+			<br><br>
+		<</if>>
+
+		几个学生傻笑着盯着看，一个<<generates2>><<person2>><<person>>挪了一下<<his>>的座位，以保持你们之间的距离。
+		<br><br>
+		<<person1>>
+
+		凯拉尔重新坐了下来并对你微笑，对<<he>>所造成的尴尬浑然不觉。
+		<br><br>
+		<<endevent>>
+		<<link [[继续|English Lesson]]>><</link>>
+		<br>
+
+	<<elseif $rng gte 61>>
+		<<if currentSkillValue('english') gte 500>>
+			<<npc Doren>><<person1>>多伦走近你的桌子说道："我想你已经知道这些原料了，所以当班上其他人干活的时候，我有个消息需要送到学校后面的那栋楼里面。"<<He>>递给你一张纸条，里面是一份剧场道具的清单。"只要把它塞到门缝里就行了。"
+			<br><br>
+			<<endevent>>
+
+			<<if $outbuildingvisited is 1>>
+				你来到了<<print $outbuildingBeast>>攻击你的那座楼下。如果你慢慢来，小心点，你可以避免再次遇到那种情况。不过你会错过一些课程。
+				<br><br>
+
+				<<link [[谨慎一点|English Outbuilding]]>><<set $phase to 0>><<detention 1>><</link>><<gdelinquency>>
+				<br>
+				<<link [[冒险一点|English Outbuilding]]>><<set $phase to 1>><</link>>
+				<br>
+			<<else>>
+				<<set $outbuildingvisited to 1>>
+				<<beastNEWinit 1 dog>><<set $outbuildingBeast to $NPCList[0].type>>
+				你前往学校后面的建筑，并按照指示将纸条塞到门下。然而，当你转身时，你发现一只<<beasttype>>正呲着牙向你走来。
+				<br><br>
+
+				<<if $monster is 1 or $bestialitydisable is "f">>
+					<<link [[继续|English Outbuilding Molestation]]>><<set $molestationstart to 1>><</link>>
+					<br>
+				<<else>>
+					你设法逃回了教室，但并非毫发无损。<<beastescape>>。
+					<br><br>
+					<<integritycheck>><<towelup>>
+
+					<<link [[继续|English Lesson]]>><<endevent>><</link>>
+				<</if>>
+				<!-- Modified for Beast People -->
+			<</if>>
+
+		<<else>>
+			多伦对你的进步特别感兴趣，没有给你放松的机会。
+			<<gstress>><<genglish>><<stress 2>><<englishskill>>
+			<br><br>
+
+			<<link [[继续|English Lesson]]>><</link>>
+		<</if>>
+
+	<<elseif $rng gte 51>>
+		<<npc Doren>><<person1>>多伦让全班大声朗读当前的学习文本。每个学生需要从书中读一段。多伦坐在前面，一边听一边选择下一位读者。
+		你旁边的一个学生读完了一篇文章。现在多伦指着你。
+		<br><br>
+
+		<<if $trauma gte (($traumamax / 5) * 3)>>
+			但是由于你承受的压力太大，你忘了带书!<<gstress>><<stress 4>>
+		<<elseif $delinquency gte 666>>
+			难道<<he>>真的希望你像这些书呆子一样读书吗?你根本不会带书的。
+		<<elseif $tiredness gte (C.tiredness.max / 5) * 3>>
+			但你太累了，把书忘在储物柜里了。
+		<<else>>
+			但是你今天忘记带书了。
+		<</if>>
+		<br><br>
+
+		<<link [[告诉多伦你的书不在|English Read Passage]]>><<set $phase to 0>><</link>>
+		<br>
+		<<link [[向同学寻求帮助|English Read Passage]]>><<set $phase to 1>><</link>>
+		<br>
+		<<link [[试着编点什么吧|English Read Passage]]>><<set $phase to 2>><</link>>
+		<br>
+		<<if $speech_attitude is "bratty" or $delinquency gte 400>><<link [[拒绝阅读|English Read Passage]]>><<set $phase to 3>><</link>><br><</if>>
+
+	<<elseif $rng gte 41>>
+		<<if $delinquency gte 400>>
+			<<npc Doren>><<person1>>为了减少课堂上的骚动，Doren将那些不太可控的学生分开，其中包括你<<if $kylarenglishstate is "active">>和Kylar<</if>>。<<He>><<endevent>>让你坐在一个安静的<<generates1>><<person1>><<person>>旁边，这家伙从来不惹麻烦。
+			<br><br>
+
+			几分钟后，<<persons>>的笔滚落到地板上，<<He>>伸手去捡起它时将另一只手放在了你的大腿上，"没有人会相信你的。"<<His>>说完之后便用手在你的大腿上游走了起来。
+
+			<<if $kylarenglishstate is "active">>
+				直到凯拉尔抓住了<<his>>的手腕，把<<him>>拽了过去。
+				<br><br>
+				<<endevent>>
+				<<npc Kylar>><<person1>>"我的。"凯拉尔低声说道。<<He>>亮了一下<<his>>口袋里的刀，阻止了后面所有可能会出现的争论。
+				<br><br>
+
+				<<endevent>>
+
+				<<link [[继续|English Lesson]]>><</link>>
+
+			<<else>>
+				<<He>>坐回了原位，但依旧调戏着你。
+				<br><br>
+
+				<<link [[寻求帮助|English Event2]]>><<detention 1>><</link>><<gdelinquency>>
+				<br>
+				<<link [[默默忍受|English Event2 Molest]]>><<stress 4>><<trauma 4>><</link>><<gstress>><<gtrauma>>
+				<br>
+			<</if>>
+		<<elseif $kylarenglishstate is "active">>
+			一些坏学生对你感兴趣，其中一个人试图摸索，但被凯拉尔的眼神吓住了。
+			<br><br>
+
+			<<link [[继续|English Lesson]]>><</link>>
+			<br>
+		<<else>>
+			一些环学生对你有了兴趣，这些家伙趁老师不注意时偷偷的抚摸你。
+			<<gtrauma>><<gstress>><<trauma 2>><<stress 2>>
+			<br><br>
+
+			<<link [[继续|English Lesson]]>><</link>>
+		<</if>>
+	<<elseif $rng gte 21>>
+		多伦要求你在黑板上做语法演示。当你走到教室前面时，一只脚伸到你的前面，把你绊倒了。
+		<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+			<<if $worn.under_lower.name is "naked" or $worn.under_lower.anus_exposed is 1>>
+				当你跪倒在地时，你的裙子飘了起来，向全班同学露出了你光溜溜地屁股。你挣扎着站起来，同时你的脸也涨得通红，而全班都在吹口哨或嘲笑你。
+				<<stress 3>><<trauma 3>><<gstress>><<gtrauma>>
+				<br><br>
+			<<else>>
+				当你跪倒在地时，你的裙子飘了起来，向全班同学露出了你的$worn.under_lower.cn_name_cap。你挣扎着站起来，同时你的脸也涨得通红，而全班都在吹口哨或嘲笑你。
+				<<stress 1>><<trauma 1>><<gstress>><<gtrauma>>
+				<br><br>
+			<</if>>
+		<<else>>
+			你向前跪倒在地，当你挣扎着站起来时，全班都笑了起来。<<stress 1>><<gstress>>
+			<br><br>
+		<</if>>
+		<<link [[继续|English Lesson]]>><</link>>
+	<<else>>
+		<<generates1>><<person1>>一阵微风吹进教室，在带起一阵沙沙声的同时，把一个<<person1>><<persons>>的纸从<<his>>的桌子上吹落。而它正好落在你旁边的地板上。当<<He>>走过来弯腰捡起它时，<<his>>几乎把<<his>>的屁股伸到了你的脸上。
+		<br><br>
+		<<if $promiscuity gte 15>>
+			<<link [[掐一把|English Events Pinch]]>><</link>><<promiscuous2>>
+			<br>
+		<</if>>
+		<<link [[不去盯着看|English Lesson]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "eventsenglishsafe">>
+	<<if $englishPlay is "none" and Time.monthName is "November" and Time.monthDay gte 7 and C.npc.Kylar.init is 1 and C.npc.Sydney.init is 1>>
+		<<set $englishPlay to "ongoing">><<set $englishPlayDays to (14 + (7 - Time.weekDay))>>
+		<<englishplaystart>>
+
+		<<npc Doren>><<person1>>
+		"好了，大家好好看好好听。"多伦说，<<his>>的声音命令所有的学生保持安静。
+		<br><br>
+
+		"大家都知道，圣诞节马上就要到了，我们想通过一场小表演来结束这个学期，让每个人都沉浸在节日的气氛中。我一直在联系我曾经合作过的一家戏剧公司，我们的<<nnpc_Title "Leighton">>给了我们绿灯，让我们安排一系列你可以表演的戏剧。"
+		<br><br>
+
+		"参与并不是强制性的，而是强烈鼓励的。此外，我相信你的父母会很乐意看到它，"<<he>>咯咯地笑着。"如果有人对表演感兴趣，就过来把你的名字写在这张纸上。"<<He>>把一张表格放在<<his>>的桌子上。
+		<br><br>
+
+		<<if $kylarenglishstate is "watching">>
+			凯拉尔专注地看着你，好像在等着看你对多伦的声明的反应。
+			<br><br>
+		<<elseif $kylarenglishstate is "active">>
+			凯拉尔将<<nnpc_his "Kylar">>手放在你的背上。"听起来很有趣，"<<nnpc_he "Kylar">>低语道。"我们可以试试吗?"
+			<br><br>
+		<</if>>
+
+		<<link [[走近多伦的桌子|English Play Intro Accept]]>><</link>>
+		<br>
+		<<link [[保持坐着|English Play Intro Ignore]]>><</link>>
+		<br>
+
+	<<elseif $halloween is 1 and $kylarenglishstate is "active" and $halloween_kylar is undefined>>
+		<<npc Kylar>><<person1>>
+		<<if Time.monthDay is 31>>
+			凯拉尔将身体靠了过来，然后低声说道："今天晚上<span class="gold"><<ampm 21 00>></span>在公园等着我，我有东西要给你看。"
+		<<else>>
+			凯拉尔将身体靠了过来，然后低声说道："万圣节晚上<span class="gold"><<ampm 21 00>></span>在公园等着我，我想给你看一些东西。"
+		<</if>>
+		<br><br>
+
+		<<He>>在余下的课程中总是带着一丝奇怪的笑意。
+		<<set $halloween_kylar to 1>>
+		<br><br>
+
+		<<link [[继续|English Lesson]]>><<endevent>><</link>>
+		<br>
+	<<elseif $rng gte 91>>
+		<<npc Doren>><<person1>>
+		多伦引起了全班的注意。<br><br>
+		<<if Time.days % 42 gte 39>> /* every 6 weeks: day 39-41, 80-83, ... */
+			"我们现在几乎结束了这个<<print either("主题","文本","书本","游戏")>>，"<<he>>说道。"是时候结束它了。它会出现在考试中。"
+			<br><br>
+			全班分成小组复习主题，而多伦则在小组之间提问和回答问题。
+			<<if currentSkillValue('english') lte 300>><br><br>你们小组陷入了困难，所以多伦多花了些时间跟你们待一起。<<genglish>><<englishskill>><br><br>
+			<<elseif currentSkillValue('english') gte 700>>多伦听了你的小组一会儿，点头微笑。<br><br>"佳作!继续。"<<lstress>><<stress -6>><br><br>
+			<</if>>
+		<<elseif Time.days % 42 lte 2>> /* every 6 weeks: day 1-2, 42-44, ... */
+			"听着，"<<he>>说道。"我们正在开始一个新的主题。<<print either("这个很有趣。我想你们会喜欢的。","这个模块是我最喜欢的模块之一。我真的希望你们也喜欢它。","这个很难——我不想撒谎——但它是值得的。你们可以从中学到很多东西。")>>"
+			<br><br>
+			多伦概述了即将讲解的内容。
+			<<if currentSkillValue('english') lte 200>><<print either("但你听不懂。","你几乎听不懂哪怕一个词语。","你尝试用心去听，但什么也没有听进去。")>><<gstress>><<stress 6>>
+			<br><br>
+			<<elseif currentSkillValue('english') gte 600>>看起来很<<print either("有趣.","好玩.","不一样，但是很棒.")>><<lstress>><<stress -6>><br><br>
+			<<else>>看起来不错。
+			<</if>>
+		<<else>>
+			<<generates2>><<generateyp3>>
+			<<if $rng % 3 == 0>>
+				<<set _has_feelings_towards to either("明显是喜欢","明显热衷于","明显有性欲于","明显垂涎于","公然调情与")>>
+				<<set _causing_a_consequence to either("使场面更加尴尬了。","使场面更可爱了。","给场面增添了性意味。")>>
+				<<set _hilarity_ensues to either('一个学生起哄道: "开个房吧!"','一些学生开始拿他们开玩笑。')>>
+			<<elseif $rng % 3 == 1>>
+				<<set _has_feelings_towards to either("显然很藐视","根本受不了","讨厌")>>
+				<<set _causing_a_consequence to either("使场面更难看了。","使场面更紧张了。","使整个场面很迷惑。")>>
+				<<set _hilarity_ensues to either('观众在尴尬的寂静中看着。','几个学生觉得这样很好笑。','房间里一阵尴尬的安静。')>>
+			<<else>>
+				<<set _has_feelings_towards to "有默契于">>
+				<<set _causing_a_consequence to "表演者很好地再现了这一场景。">>
+				<<set _hilarity_ensues to either("绝大多数同学认真观看。","整个教室很有兴趣地观看。","大多数学生看了, 但也有少数人低头在书上乱涂乱画。")>>
+			<</if>>
+			在多伦的指导下，一个<<person2>><<person>>和一个<<person3>><<person>>被要求从你正在学习的文本中表演一个重要的场景。
+			<<person>>_has_feelings_towards那个<<person2>><<person>>，_causing_a_consequence<br>
+			_hilarity_ensues
+		<</if>>
+		<br><br>
+
+		<<link [[继续|English Lesson]]>><<endevent>><</link>>
+		<br>
+	<<elseif $rng gte 81>>
+		<<npc Doren>><<person1>>
+		<<if $rng % 3 == 0>>
+			学生们轮流背诵一首诗的诗句。多伦有时会亲自背诵一首诗，<<his>>那响亮的声音吸引着全班的注意力。
+		<<elseif $rng % 3 == 1>>
+			学生们轮流表演一出戏的场景。多伦鼓励学生们真正投入到角色中来，偶尔给<<his>>自己对重要台词的蓬勃演绎。
+		<<else>>
+			多伦扮演当前学习手册中的大反派。全班需要扮演警察面试官，轮流问问题，多伦以角色回答。
+		<</if>>
+		<br><br>
+
+		<<link [[继续|English Lesson]]>><<endevent>><</link>>
+		<br>
+	<<elseif $rng gte 71>>
+		<<if Time.season is "summer" and $weather isnot "rain">>
+			<<npc Doren>><<person1>>
+			一只黄蜂从窗户飞进来，落在他们的书上，一个学生尖叫起来。多伦伸出一只安抚的手。<br>
+			"忽略它，"<<he>>说道。"它很快就会消失的。"<br>
+			它<<if $rng % 2 == 0>>刺痛了一个学生<<else>>开始在房间里飞来飞去<</if>>，班级陷入混乱。
+			<<if $kylarenglishstate is "active">>这一次，它朝你走来，而凯拉尔跳出来保护你。<</if>>
+			<br><br>
+			最后多伦把它赶走了，课又可以继续了。
+		<<elseif Time.season is "summer">>
+			<<npc Doren>><<person1>>
+			"诗歌，"多伦说道。"从自然界中寻找灵感。"
+			<br>
+			"看外面的暴风雨，"<<he>>说道。"那些阴沉的云。咆哮的雷声。花点时间思考一下你所看到的。你的感受。看到了吗?"<br>
+			几秒钟过去了，然后是隆隆的雷声。<br>
+			"大自然原始的兽性愤怒，"多伦咧嘴一笑。"现在抓住它。当然是形容词，但也不要忽视动词。"<br>
+			你写了下来。
+		<<elseif Time.season is "winter">>
+			<<if $rng % 3 == 0>>
+				<<generates1>><<person1>>
+				窗户关不上，外面的冷风吹进来了。一个学生的手指因为寒冷冻得发抖了。<br>
+				多伦派了一个<<person>>去找管理员。
+				<br><br>
+				随着课程的继续，学生们打了个寒颤。
+			<<else>>
+				<<generates1>><<person1>>
+				暖气调得太高了，房间里热得令人难以置信。一名学生抱怨感到头晕。<br>
+				多伦派了一个<<person>>去找管理员。
+				<br><br>
+				当多伦继续讲课时，全班同学都在流汗，用书本扇风。
+			<</if>>
+		<<else>>
+			<<npc Doren>><<person1>>
+			"诗歌，"多伦说道。"从自然界中寻找灵感。"
+			<br>
+			<<if Time.season is "spring">>
+				<<He>>从公园带来了花。一个学生开始打喷嚏。
+			<<elseif Time.season is "autumn">>
+				<<He>>从公园里带来了不同颜色的落叶。
+			<</if>>
+			<br><br>
+
+			"看这些，"<<he>>说道。"花点时间思考一下你所看到的。你怎么想的。你的感受。然后写下来。"<br>
+			你写了下来。
+		<</if>>
+		<br><br>
+		<<link [[继续|English Lesson]]>><<endevent>><</link>>
+		<br>
+	<<elseif $rng gte 61>>
+		多伦让全班同学分成几个小组。
+
+		<<if $kylarenglishstate is "active">>
+			没有人愿意和凯拉尔组队，所以只能你们两人组成一队。<<endevent>><<npc Kylar>><<person1>><<He>>看起来异常开心。
+			<<glove>><<npcincr Kylar love 1>>
+		<<elseif $cool gte 160>>
+			你的同学们向你这边靠近，都希望成为你的队伍中的一员。
+			<<lstress>><<ltrauma>><<stress -4>><<trauma -2>>
+		<<elseif $cool lt 40>>
+			没有人愿意和你一组，所以你独自坐在角落里。不过多伦却因此而给了你额外的关注。
+			<<gtrauma>><<gstress>><<genglish>><<trauma 2>><<stress 2>><<englishskill>>
+		<<else>>
+			你加入了一个小组，并一起开展一个小型活动。
+		<</if>>
+		<br><br>
+
+		<<link [[继续|English Lesson]]>><<endevent>><</link>>
+		<br>
+	<<elseif $rng gte 51 and $kylarenglishstate is "active" and $rng % 5 == 0>> /* If Kylar is active, Kylar event will win 80% of the time. */
+		<<npc Doren>><<person1>>多伦走向你这里。"你还好吗，<<lass>>？"<<he>>在询问的同时瞥了一眼凯拉尔，而凯拉尔正全神贯注地在<<nnpc_his "Kylar">>的素描本上画着你的素描。
+		<br><br>
+
+		<<link [[摇头|English Kylar Moved]]>><</link>>
+		<br>
+		<<link [[点头|English Kylar Nod]]>><</link>>
+		<br>
+	<<elseif $rng gte 51 and Time.minute lte 40>> /* first session only, mostly only runs when Kylar inactive */
+		多伦从后面的储物柜里拿东西，惊讶地发现
+		<<generates1>><<generateyp2>>一个<<person1>><<person>>和一个<<person2>><<person>>
+		<<if $awarelevel gte 1>>
+			<<if $purity gte ((1000/7) * 5)>>
+				在里面<<print either("鬼混在一起","暧昧地互动","重重地爱抚着")>>
+			<<else>>
+				在里面<<print either("相互拉扯","做龌龊事","纠缠一起","互相作乐")>>
+			<</if>>
+		<<else>>
+			<<if $rng%2 == 0>>
+				在里面玩。
+				<br><br>
+
+				真奇怪。他们能在这么小的地方玩什么游戏？也许他们在打架 - 他们看起来都满头大汗，衣衫不整。
+				<br><br>
+			<<else>>
+				躲在里面。
+				<br><br>
+
+				真奇怪。为什么会有人躲在储物间里？他们俩看起来都满头大汗，衣衫不整。也许他们在吵架。
+				<br><br>
+			<</if>>
+		<</if>>
+		多伦命令他们回到座位上就座。一些人在旁吹起了口哨。
+		<br><br>
+
+		<<link [[继续|English Lesson]]>><<endevent>><</link>>
+		<br>
+	<<elseif $rng gte 41>>
+		<<npc Doren>><<person1>>多伦走到你旁边并询问你进展如何。
+		<br><br>
+
+		<<link [[寻求帮助|English Event1]]>><<set $phase to 1>><<stress 2>><<englishskill>><</link>><<gstress>><<genglish>>
+		<br>
+		<<link [[说你没事|English Event1]]>><<set $phase to 0>><</link>>
+		<br>
+	<<elseif $rng gte 31>>
+		<<npc Doren>><<person1>>
+		多伦让几个学生表演你们正在学习的戏剧中的一个场景。<br>
+		<<if $rng gte 38>>
+			他们大多是小丑，为了取乐而玩耍，让角色听起来很滑稽。多伦转了转<<his>>的眼睛，但是笑了。<br>
+			这很有趣。<<lstress>>
+		<<elseif $rng gte 34>>
+			他们表演得非常出色，真的把场景带到了生活中。<br>
+			<<if currentSkillValue('english') lt 700>>你从中学到了点东西。<<genglish>><<else>>你很喜欢它。<</if>>
+		<<else>>
+			他们平静地读出书中的台词.<br>
+			多伦机智地在事情开始变得拖沓之前将课程向前推进。
+		<</if>>
+		<br><br>
+
+		<<link [[继续|English Lesson]]>><<endevent>><</link>>
+		<br>
+	<<elseif $rng gte 21>>
+		多伦解释和演示
+		<<if $rng % 5 == 0>>
+			使用白板语法规则。
+		<<elseif $rng % 5 == 1>>
+			修辞和有说服力的语言。
+		<<elseif $rng % 5 == 2>>
+			不同的词汇和措辞-展示如何熟练使用单词可以增加真正的力量，你的沟通。
+		<<elseif $rng % 5 == 3>>
+			肢体语言和声音技巧。<br>
+			"有时候，重要的不是你说了什么，而是你怎么说道。"
+		<<else>>
+			不同的幽默技巧——举例说明如何用幽默来缓解紧张局势，削弱辩论对手，或者仅仅是为了喜剧效果。
+		<</if>>
+		<br><br>
+
+		<<link [[继续|English Lesson]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		<<npc Doren>><<person1>>
+		<<if $rng % 2 == 0>>
+			多伦发放习题册供全班完成，<<He>>并不介意全班同学在学习时相互交谈，从而在班里形成了一种活跃的气氛。
+		<<else>>
+			多伦给每个人十分钟写一首打油诗。
+			<<if currentSkillValue('english') gte 400>>
+				<<if $promiscuity gte 65>>
+					你写了一首令人震惊的<<print either("污秽","肮脏","下流","淫秽")>>打油诗，关于一个来自于<<print either("因奇贝尔","格伦里丁","纳茨福德")>><br>的油滑<<girl>>
+					当你读到最后一行的时候，几个学生都笑了。多伦吓了一跳，并迅速转向下一个学生。
+					<<gcool>><<status 1>>
+				<<elseif $promiscuity gte 35>>
+					你写了一首<<print either("粗俗的","色情的","淫秽的")>>
+					<<if $exhibitionism gte 33>>
+						关于一个对衣服过敏的<<girl>>的打油诗。
+					<<elseif $masochism_level gte 2>>
+						这首打油诗讲的是银行的一个调皮的<<girl>>（她非常需要打屁股）。
+					<<elseif $arousal gte (($arousalmax / 5) * 3)>>
+						关于威克的一个<<girl>>的打油诗。
+					<<elseif $skulduggery gte 500>>
+						关于基尔马诺克的一个好色的年轻盗贼的打油诗。
+					<<else>>
+						打油诗。
+					<</if>><br>
+					当你读出来的时候，几个学生都笑了。
+				<<else>>
+					你写了一首
+					<<if $skulduggery gte 500>>
+						打油诗讲述了一个偷窃宝石的小偷。
+					<<elseif $exhibitionism gte 33>>
+						打油诗讲述了一个<<girl>>丢失了<<pher>>的衣服。
+					<<elseif $money lte 50000>>
+						关于一个孤儿<<girl>>赢得很多钱的打油诗。<br>
+						你希望它是你。
+					<<else>>
+						合格的打油诗。
+					<</if>><br>
+					<<if currentSkillValue('english') gte 600>>
+						多伦<<print either("面带微笑，","点头，")>>赞许地说着，然后走向下一个学生。
+					<<else>>
+						多伦点了点头，随即走向下一个学生。
+					<</if>>
+				<</if>>
+			<<else>>
+				你挣扎着，却无法完成。<br>
+				其他一些学生做了有趣的打油诗。
+			<</if>>
+		<</if>>
+		<br><br>
+
+		<<link [[继续|English Lesson]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "englishstart">>
+	<<endevent>>
+	<<set _kylar to statusCheck("Kylar")>>
+
+	<<if _kylar.state is "active">>
+		<<if $kylarenglish is 0>>
+			<<set $kylarenglishstate to "watching">>
+			<<npc Kylar>><<person1>>当你入座时，你感觉到凯拉尔在盯着你看，但每当你看向<<he>>时，<<him>>就会转过头去。
+			<br><br>
+
+			<<if _kylar.love gte 30>>
+				椅子腿刮过地面。凯拉尔趿拉着鞋穿过房间，书本紧贴在<<his>>的胸前，眼睛盯着你身边的空座位，<<He>>几乎要坐下了。突然一个<<generatey2>><<person2>><<person>>把<<person1>><<him>>推到一边，并顺势为<<person2>><<himself>>占了座。
+				<<if _kylar.love lt 60>>
+					凯拉尔瞪了一眼那个<<person>>，但还是一言不发的回到了<<person1>><<his>>原来的座位。
+					<br><br>
+				<<else>>
+					<<He>>没有看凯拉尔一眼。
+					<br><br>
+
+					周围突然有人发出尖叫。因为<<person1>>凯拉尔正拿着一把<span class="red">刀</span>站在那里。<<He>>透过<<person1>><<his>>那乌黑的刘海盯着<<person2>><<person>>。<<person2>><<person>>惊恐地向后翻过桌子试图后退，不慎推翻了桌子，重重地摔在地上。而其他学生也在跌跌撞撞地争相向门口挤去。
+					<br><br>
+
+					<<npc Doren 3>><<person3>>
+					多伦跳上<<his>>的桌子并怒吼一声。尖叫声与争吵声都停止了。凯拉尔放下了刀。每个人都盯着多伦，<<his>>跳下来并且将武器拿走，<<He>>抓着凯拉尔的手臂。"你真是个大麻烦，"<<he>>说道。"来吧，我们不要耽误太久的课。"凯拉尔在被带出教室的时候，一直低垂着<<person1>><<his>>的头。
+					<br><br>
+
+					当门关上时，全班爆发出紧张的笑声。多伦很快回来了，凯拉尔没有跟<<him>>一起。学生们缠着<<person3>><<him>>八卦，但<<he>>一个字都不说。
+					<br><br>
+					<<if $loveInterest.primary is "None">>
+						<<set $loveInterest.primary to "Kylar">>
+						<span class="gold">凯拉尔现在是你的爱人了！你不确定你是否同意了这一点。</span>
+						<br><br>
+					<<else>>
+						<span class="gold">凯拉尔现在可以作为你的爱人了! 你不确定之后会发生什么。<br>你可以在"态度"菜单中改变你的爱情对象。</span>
+						<br><br>
+					<</if>>
+
+					<<set $kylarenglish to 1>>
+					<<set $kylarenglishstate to "absent">>
+				<</if>>
+			<</if>>
+		<<elseif $kylarenglish is 1>>
+			<<if _kylar.love gte 60>>
+				<<set $kylarenglish to 2>><<set $kylarenglishstate to "active">>
+
+				<<npc Kylar>><<person1>>当你入座的时候，你感觉到凯拉尔正看着你。<<He>>站起来穿过教室，眼睛死死盯着你旁边的座位。
+				没有人阻止<<him>>。
+				<<His>>喘着沉重的呼吸坐下了。
+				<br><br>
+
+				<<set $_specialOptions to true>>
+				<<link [[坐在其他地方|English Kylar Move]]>><<npcincr Kylar love -5>><</link>><<lllove>>
+				<br>
+				<<link [[继续坐着|English Lesson]]>><<endevent>><<npcincr Kylar love 1>><<npcincr Kylar rage -1>><</link>><<glove>><<lksuspicion>>
+				<br>
+			<<else>>
+				<<set $kylarenglishstate to "absent">>
+			<</if>>
+
+		<<elseif $kylarenglish is 2>>
+			<<if _kylar.love gte 60>>
+				<<set $kylarenglishstate to "active">>
+
+				<<npc Kylar>><<person1>>当你入座的时候，你感觉到凯拉尔正看着你。<<He>>站起来穿过教室，眼睛死死盯着你旁边的座位。
+				<<His>>喘着沉重的呼吸坐下了。
+				<br><br>
+
+				<<set $_specialOptions to true>>
+				<<link [[坐在其他地方|English Kylar Move]]>><<npcincr Kylar love -5>><</link>><<lllove>>
+				<br>
+				<<link [[继续坐着|English Lesson]]>><<endevent>><<npcincr Kylar love 1>><<npcincr Kylar rage -1>><</link>><<glove>><<lksuspicion>>
+				<br>
+
+			<<else>>
+				<<set $kylarenglishstate to "watching">>
+
+				<<npc Kylar>><<person1>>当你入座时，你感觉到凯拉尔在盯着你看，但每当你看向<<he>>时，<<him>>就会转过头去。
+				<br><br>
+			<</if>>
+		<<else>>
+			<<set $kylarenglish to 0>><<set $kylarenglishstate to "watching">>
+			你发现凯拉尔正独自坐在后面的角落里。<<nnpc_He "Kylar">>碰上了你的目光，脸红了并且看向了别处
+			<br><br>
+		<</if>>
+	<<else>>
+		<<set $kylarenglishstate to "absent">>
+	<</if>>
+
+	<<if !$_specialOptions>>
+		<<link [[继续|English Lesson]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+:: Widgets Events History [widget]
+<<widget "eventshistory">>
+	<<if $rng gte 91>>
+		<<npc Winter>><<person1>>温特在你旁边停下脚步。
+		<<if $worn.neck.collared is 1>>
+			"你脖子上的是什么？"<<he>>问道。
+			<br><br>
+
+			<<link [[回答|History Lesson Collar]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+			<br>
+			<<link [[隐瞒|History Lesson Conceal]]>><<detention 3>><</link>><<gdelinquency>>
+			<br>
+		<<elseif ($cat gte 6 and $transformationParts.cat.ears isnot "hidden") or ($wolfgirl gte 4 and $transformationParts.wolf.ears isnot "hidden") or ($fox gte 4 and $transformationParts.fox.ears isnot "hidden") or ($demon gte 6 and $transformationParts.demon.horns isnot "hidden")>>
+			"你头上的这些是什么？"<<he>>问道。
+			<br><br>
+
+			<<if $demon gte 6>>
+				<<link [[诚实地回答|History Lesson Horns]]>><</link>>
+			<<else>>
+				<<link [[诚实地回答|History Lesson Ears]]>><</link>>
+			<</if>>
+			<br>
+			<<link [[寻找借口|History Lesson Excuse]]>><</link>>
+			<br>
+		<<elseif $history gte 600>>
+			"很好，"<<he>>点点头，从你的肩膀上看过去。"干得好。"<<stress -2>><<lstress>>。
+			<br><br>
+
+			<<link [[继续|History Lesson]]>><<endevent>><</link>>
+		<<else>>
+			你感觉到<<him>>在你的身后看书。
+			<br>
+			<<He>>大声嘟囔道："我想我们需要再复习一下这部分。"
+			<br><br>
+			附近有人窃笑着。
+			<<stress 2>><<gstress>>
+			<br><br>
+
+			<<link [[继续|History Lesson]]>><<endevent>><</link>>
+		<</if>>
+
+	<<elseif $rng gte 89 and $robinhistory is "seat">>
+		<<npc Robin>><<generatey2>><<person2>>
+		一架纸飞机飞过教室，击中了温特的背部。
+		<br><br>
+		<<person1>>"是<<him>>，"一个<<person2>><<person>>指着罗宾说道。
+		<br><br>
+		<<if random(1, 2) is 2>>
+			温特瞪着罗宾说道："出去。现在。"
+			<br><br>
+			罗宾愣住了。"但我......我......"
+			<br><br>
+			"在我的课堂上，我不会容忍这种行为。" 罗宾垂下了<<person1>><<his>>的头，将<<his>>的椅子往外拉了一下。
+			<br><br>
+
+			<<link [[保卫罗宾|History Robin Defend]]>><<npcincr Robin love 1>><<detention 1>><</link>><<gdelinquency>><<glove>>
+			<br>
+			<<link [[保持沉默|History Robin Quiet]]>><<npcincr Robin dom -1>><</link>><<ldom>>
+			<br>
+		<<else>>
+			温特怒视着那个<<person>>。"出去。现在。"<<person>>从<<his>>的座位上站起来，然后离开了教室。
+			<br><br>
+			<<link [[继续|History Lesson]]>><<endevent>><</link>>
+			<br>
+		<</if>>
+
+	<<elseif $rng gte 76>>
+		<<generates1>><<person1>>你发现一个平时很害羞的<<person>>在教室的另一侧打量着你。
+		<br><br>
+		<<if $exhibitionism gte 35 and setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1 and !$worn.under_lower.type.includes("naked")>>
+			<<link [[炫耀|History Flash]]>><</link>><<exhibitionist2>>
+			<br>
+		<<elseif $exhibitionism gte 55 and setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+			<<link [[炫耀|History Flash]]>><</link>><<exhibitionist4>>
+			<br>
+		<<else>>
+			<<link [[挑逗|History Tease]]>><</link>><<exhibitionist1>>
+			<br>
+		<</if>>
+
+		<<link [[无视|History Lesson]]>><<endevent>><</link>>
+		<br>
+	<<elseif $rng gte 64 and $robinhistory is "seat">>
+		<<npc Robin>><<generatey2>><<person2>>
+		一个<<person>>靠在罗宾的桌子边咧嘴笑着，<<him>>朋友们都在看着<<His>>。<<He>>用一种几乎微不可闻的声音问道："你还是个处吗？"
+		<br><br>
+
+		<<if $NPCName[$NPCNameList.indexOf("Robin")].dom gte 80>>
+			"那不关你的事，"罗宾回答道。
+			<br><br>
+		<<else>>
+			罗宾看起来很不舒服，所以并没有回答问题。
+			<br><br>
+		<</if>>
+
+		那个<<person>>回到<<his>>的朋友身边。"我想知道谁拿走了你的童贞，"一个人大声说道。<<person1>>"<<he>>看起来是不是很无辜？"
+		<br>
+		<<if $robinromance is 1>>
+			一个人指着你并低声说道.
+		<<else>>
+			"是这个班上的某个人吗？"另一个人低声说道。
+		<</if>>
+		<br>
+		更多鬼祟的窃窃私语，但你还是能听出其中的一些。"我不喜欢<<him>>！"
+		<br>
+		<<rng 4>>
+		<<if $rng is 4>>
+			"我打赌<<hes>>的接吻技术一定很好。"
+		<<elseif $rng is 3>>
+			"骗子。"
+		<<elseif $rng is 2>>
+			"你应该去把<<him>>约出来."
+		<<else>>
+			"<<Hes>>超级可爱哎，特别是当<<he>>脸红的时候。"
+		<</if>>
+		<br><br>
+		当罗宾沉入坐在<<his>>的椅子上时，那些家伙们继续献着殷勤。
+		<br><br>
+
+		<<link [[继续|History Lesson]]>><<endevent>><</link>>
+		<br>
+	<<elseif $rng gte 52>>
+		温特让全班练习从教室边缘的各种书架上寻找有用信息。当你在柜子之间移动时，你感觉到你的$worn.lower.cn_name_cap被拽住了，同时你还并听到了它们被撕裂的声音。在喧闹的教室里，一定是有人趁着你不注意的时候把<<if $worn.lower.plural is 1>>那个<<else>>那些<</if>>柜门给关上了。
+		<<set $worn.lower.integrity -= 10>>
+		<<integritycheck>>
+		<<exposure>>
+
+		<<if !$worn.lower.type.includes("naked")>>
+			<<gstress>><<stress 2>>
+			<br><br>
+		<<else>>
+			<br><br>
+			然而，事情比你最初设想的还要糟糕。你低头一看，发现你的<<undies>>完全暴露出来，这让你的同学们很是开心。在你的羞耻变得难以忍受之前，你赶紧找了条毛巾遮住自己。
+			<<trauma 2>><<gtrauma>><<stress 2>><<gstress>>
+			<br><br>
+			<<towelup>>
+		<</if>>
+		<<link [[继续|History Lesson]]>><<endevent>><</link>>
+		<br>
+	<<elseif $rng gte 35 and $robinhistory is "seat">>
+		<<npc Robin 1>>
+		<<npc Winter 2>><<person2>>
+		温特请罗宾到教室前面来说道："我有一套尺寸适合你的穿的历史服装，现在我需要你来当模特。"
+		<br><br>
+
+		<<if $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 20>>
+			罗宾正盯着窗户外面，这迫使温特重复了一遍。罗宾这才从<<person1>><<his>>的座位上离开，并前往教室里的那个小隔间。
+			<br><br>
+
+			过了一会儿后，<<He>>穿着<<print either("礼服", "军装")>>重新出现 。但<<He>>却只是一个劲的盯着地毯并一言不发。
+			<br><br>
+
+			温特开始讨论起这套衣服，但罗宾的举止让全班同学感到不太舒服，这包括你也在内。温特只好缩短演示时间。
+			<br><br>
+
+			"请换衣服，跟我来，"温特用柔和的声音说着。罗宾按照指示跟着温特一起出去了。
+			<br><br>
+
+			几分钟后，温特没有带罗宾回来，但课程依旧继续进行。
+			<br><br>
+			<<set $robinhistory to "missing">>
+
+			<<link [[继续|History Lesson]]>><<endevent>><</link>>
+			<br>
+		<<else>>
+			罗宾点点头，走到教室角落的小隔间里。
+
+			<<if random(1, 2) is 2>>
+				当<<person1>><<He>>重新出现时，<<nnpc_gendery "Robin">>穿着一套传统的服饰，而<<nnpc_gendery "Robin">>的脸上则洋溢着笑容。事实证明，这个片段很有趣。
+				温特要求罗宾表演一个小节目，以用来展示这套衣服的历史意义，并且还要按照<<his>>的装束进行适当的表演。
+				<br><br>
+
+				罗宾换回衣服后坐回了你的身边，并对你露出一个安心的笑容。
+				<br><br>
+
+				<<link [[继续|History Lesson]]>><<endevent>><</link>>
+				<br>
+			<<else>>
+				温特要求罗宾换快一点，罗宾的头从隔间上面探出一点。
+				<br><br>
+				"我-我不知道我是否能穿这个，"<<person1>><<he>>回答说："这是为<<print ($pronoun is "m" ? "女孩" : "男孩")>>准备的。
+				<br><br>
+
+				"不要害羞，"温特说道："我们有很多内容要讲呢。"
+				<br><br>
+
+				罗宾走了出来，穿着一件古典
+				<<if $pronoun is "m">>
+					裙子，而且是一件相当短的裙子。
+				<<else>>
+					士兵的制服。但是它在胸部的位置有些过分暴露了。
+				<</if>>
+				<br><br>
+
+				这个片段很有趣，尽管罗宾感到很不舒服。
+				温特要求<<him>>表演一个小节目，以用来展示这套衣服的历史意义，并且还要按照<<his>>的装束进行适当的表演。
+				罗宾玩得很开心，但其还是很小心的防止走光太多。
+				<br><br>
+
+				罗宾换回衣服后坐回了你的身边，看起来松了口气。
+				<br><br>
+
+				<<link [[继续|History Lesson]]>><<endevent>><</link>>
+				<br>
+			<</if>>
+		<</if>>
+	<<elseif $rng gte 27>>
+		<<npc Winter>><<person1>>温特请你到教室前面来说道："我有一套尺寸适合你的穿的历史服装，现在我需要你来当模特。"
+		<<He>>指着房间角落的那个小隔间。
+		<br><br>
+
+		<<if $delinquency gte 400>>
+			在隔间后面，你发现了一件暴露的传统服装。你把它举起来仔细看看。
+			它不会给人留下太多的遐想空间；因为它的布料几乎不足以掩盖你的<<breasts>>和裆部。
+			它看起来似乎不太适合你，它的面料绷得很紧，你在穿上它之前需要脱掉之前的衣服。
+			<br><br>
+
+			<<link [[穿上它|History Events Revealing Dress]]>><<stress 6>><<trauma 6>><</link>><<gstress>><<gtrauma>>
+			<br>
+			<<link [[拒绝穿它|History Events Refusal]]>><<detention 2>><</link>><<gdelinquency>>
+			<br>
+
+		<<elseif $delinquency gte 200>>
+			<<if $player.gender_appearance is "m">>
+				在隔间里面，你发现一件传统的女孩服装。
+				<<if $player.gender isnot "m">>
+					全班同学都认为你是个男孩，所以如果你在他们面前穿这个，所有人都会认为你在变装。
+				<</if>>
+				它看起来似乎不太适合你，它的面料绷得很紧，这意味着你在穿上它之前需要脱掉之前的衣服。
+				<br><br>
+
+				<<link [[穿上它|History Events Dress]]>><<stress 2>><<trauma 2>><</link>><<gstress>><<gtrauma>>
+				<br>
+				<<link [[拒绝穿它|History Events Refusal]]>><<detention 1>><</link>><<gdelinquency>>
+				<br>
+			<<elseif $player.gender_appearance is "f">>
+				在隔间里面，你发现一件传统的男孩服装。
+				<<if $player.gender isnot "f">>
+					全班同学都认为你是个女孩，所以如果你在他们面前穿这个，所有人都会认为你在变装。
+				<</if>>
+				它看起来似乎不太适合你，它的面料绷得很紧，这意味着你在穿上它之前需要脱掉之前的衣服。
+				<br><br>
+
+				<<link [[穿上它|History Events Dress]]>><<stress 2>><<trauma 2>><</link>><<gstress>><<gtrauma>>
+				<br>
+				<<link [[拒绝穿它|History Events Refusal]]>><<detention 1>><</link>><<gdelinquency>>
+				<br>
+			<</if>>
+		<<else>>
+			在隔间里面，你发现了
+			<<if currentSkillValue('history') gte 500>>
+				<<print either("十九世纪美国商人的装束","十七世纪加勒比海盗的装饰","一些维多利亚时代后期的商人服饰","仿制的一战军官制服")>>。
+			<<elseif currentSkillValue('history') gte 300>>
+				<<print either("一件明亮的老式服装","海盗装束","老照片上的人才会穿的衣服","军装")>>。
+			<<else>>
+				一些<<print either("旧衣服","传统服饰","老式服装")>>。
+			<</if>>
+			<<if $cool lt 119 and $rng lte 33>>
+				这衣服很大，但没有宽到可以套在你现在的衣服上，你赶紧换上这件衣服。
+				这是一个有趣的环节，你觉得你学到了一些东西。温特让你在中暑之前将衣服换了回来。
+				<<ghistory>><<historyskill 1>>
+				<br><br>
+				当你坐下来的时候，你感到有些痒。而这种感觉迅速上升到一种不可抗拒的存在，它迫使你想要去抓挠，但抓挠只会使它变得更加糟。很快，你的整个身体
+				感觉像是燃烧了起来。你听到角落里隔间旁的桌子那有一些学生在窃窃私语和偷笑，你看到他们在笑着看着你。
+				<br><br>
+				他们在你的衣服里放了东西，瘙痒粉。
+				<br><br>
+				<<link [[忍受|History Cleanup]]>><<endevent>><<pain 3>><<stress 20>><<set $phase to 3>><</link>><<gpain>><<ggstress>>
+				<br>
+				<<link [[匆忙赶到厕所清洗 (0:10)|History Cleanup]]>><<endevent>><<detention 2>><<set $phase to 0>><<stress 10>><</link>><<gdelinquency>>
+				<br>
+				<<link [[告诉老师并要求去清理 (0:10)|History Cleanup]]>><<endevent>><<status -10>><<set $phase to 1>><</link>><<lcool>>
+				<br>
+				<<if $exhibitionism gte 35>>
+					<<link [[剥离并清理那里|History Cleanup]]>><<endevent>><<set $phase to 2>><</link>><<exhibitionist3>>
+					<<if $worn.under_lower.type.includes("naked") or ($worn.under_upper.type.includes("naked") and $player.breastsize gte 1)>><<gdelinquency>><</if>>
+					<br>
+				<</if>>
+			<<else>>
+				这衣服足够的宽大，以至于完全可以套在你的衣服外面。总之这是一个有趣的环节，你觉得你学到了一些东西。温特让你在中暑之前将衣服换了回来。<<ghistory>><<historyskill 1>>
+				<br><br>
+
+				<<link [[继续|History Lesson]]>><<endevent>><</link>>
+			<</if>>
+			<br>
+		<</if>>
+
+	<<elseif $rng gte 17 and $robinhistory is "seat">>
+		<<npc Robin>><<generatey2>><<person2>>
+		<<person>>探过身来倚靠在你和罗宾之间。"你们两个真是可爱的一对情侣，"<<he>>笑着调侃道。"你们是在约会吗？"
+		<br><br>
+
+		<<if $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 20>>
+			罗宾没有任何反应。<<person1>><<He>>只是低头盯着桌子。<<He>>不想要这样。你把<<person2>><<person>>赶走了。
+			<br><br>
+
+			<<link [[继续|History Lesson]]>><<endevent>><</link>>
+			<br>
+		<<else>>
+			<<if $robinromance is 1>>
+				<<link [[是的|History Robin Yes]]>><</link>>
+				<br>
+				<<link [[不是|History Robin No Lie]]>><<npcincr Robin love -3>><<npcincr Robin dom -1>><</link>><<lllove>><<ldom>>
+				<br>
+			<<else>>
+				<<link [[是的|History Robin Yes Lie]]>><</link>>
+				<br>
+				<<link [[不是|History Robin No]]>><</link>>
+				<br>
+			<</if>>
+			<<link [[保持沉默|History Robin Silent]]>><</link>>
+			<br>
+		<</if>>
+
+	<<elseif $rng gte 8>>
+		<<generates1>><<person1>>温特留下<<person>>发课本，并离开教室去办事。<<person>>走到你面前时，<<he>>停了一下，扭曲地假笑着。
+		<br><br>
+
+		<<he>>并没有把书放在你的桌子上，而是将它丢在旁边的地板上。"哎呀，我真是笨手笨脚的。你最好在老师回来之前把它捡起来。" 班上其他的同学都转过身来看着你。
+		<br><br>
+		<<if currentSkillValue('skulduggery') gte 100>><<set $skulduggerydifficulty to 400>>
+			<<link [[欺骗他们|History Events Trick]]>><</link>><<skulduggerydifficulty>>
+			<br>
+		<</if>>
+		<<link [[捡起来|History Events Pick]]>><<trauma 2>><<stress 2>><<status -10>><</link>><<gtrauma>><<gstress>><<lcool>>
+		<br>
+		<<link [[离开|History Events Leave]]>><<stress 2>><<detention 2>><</link>><<gdelinquency>><<gstress>>
+		<br>
+
+	<<else>>
+		<<npc Winter>><<person1>>温特揭开房间角落里的颈手枷，向全班同学微微一笑。"我们很幸运地拥有这样一件罕见的古董！我需要有人帮助我演示它的用途。"<<He>>环顾着房间。"有自愿的吗？"
+		<br><br>
+		<<if currentSkillValue('history') gte 800>>
+			当然，没有人自愿。温特看了看你。"请到教室前边来。"
+			<br><br>
+			<<link [[拒绝|History Lesson]]>><<detention 1>><<endevent>><</link>><<gdelinquency>>
+			<br>
+			<<link [[到教室前边去|History Lesson Pillory]]>><<historyskill>><<stress 2>><</link>><<ghistory>><<gstress>>
+			<br>
+
+		<<elseif currentSkillValue('history') gte 600>>
+			当然，没有人自愿。温特看了看你。"请到教室前边来。"
+			<br><br>
+			<<link [[拒绝|History Lesson]]>><<endevent>><<detention 1>><</link>><<gdelinquency>>
+			<br>
+			<<link [[到教室前边去|History Lesson Pillory]]>><<historyskill>><<stress 2>><</link>><<ghistory>><<gstress>>
+			<br>
+
+		<<else>>
+			<<link [[低下头|History Lesson]]>><<endevent>><</link>>
+			<br>
+			<<link [[自告奋勇|History Lesson Pillory]]>><<historyskill>><<stress 2>><</link>><<ghistory>><<gstress>>
+			<br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "eventshistorysafe">>
+	<<if $halloween is 1 and !$halloween_winter_key>>
+		<<set $halloween_winter_key to 1>>
+		<<npc Winter>><<person1>>温特用<<he>>那单调低沉的声音给全班讲课，但似乎心不在焉。<<He>>看了看房间里的每个壁橱，仿佛在寻找什么。
+		<br><br>
+
+		<<link [[继续|History Lesson]]>><<endevent>><</link>>
+		<br>
+	<<elseif $rng gte 81>>
+		<<npc Winter>><<person1>>温特让全班默读，每当听到窃窃私语时，<<he>>便怒目而视。
+		<br><br>
+		<<link [[继续|History Lesson]]>><<endevent>><</link>>
+		<br>
+
+	<<elseif $rng gte 71>>
+		<<generates1>><<person1>><<set _coinflip to random(0,1)>>
+		温特把一个<<person>>叫到教室前面，请<<him>>做历史服装的模特。
+		<<if currentSkillValue('history') gte 700>>
+			这些衣服看起来像是<<print either("中世纪初的仆人服装", "都铎时代贵族家庭的宫廷服装，可能是圣克莱尔家族的", "中世纪的'走私犯'或信使所穿的衣服", "前工业化时期的海军制服", "马僮服")>>，除非你弄错了。
+			<<if $rng % 2>>从<<print either("针脚","着色","褶边","裁剪","'印度尼西亚制造'标签")>>来看，这些只是复制品。<<else>>据你所知，这些都是真正的历史服饰。<</if>>
+		<<elseif currentSkillValue('history') gte 300>>
+			它们看起来就像来自<<print either("那些人们会说'Hark!'的英剧","那部关于大房子里的有钱老人的电视节目.","那个有胡子和斧头的电视节目","那些战争时期的老照片.","那些披着床单的罗马人的东西.")>>
+			温特在讨论这些衣服的背景时总是异常兴奋。
+		<<else>>
+			这些衣服看起来真的很有年头，而温特讲述的那些伟大故事，也让它们变得栩栩如生。
+		<</if>>
+		<br><br>
+		总的来说，这是一个有趣的、令人愉快的和有教育意义的课程。
+		<<ghistory>><<historyskill>><<lstress>><<stress -1>>
+		<br><br>
+		<<if _coinflip>>
+			这个<<person>>似乎很喜欢成为注意力的中心，并热情地演绎着温特的故事。
+		<<else>>
+			然而，这个<<person>>似乎对成为注意力的中心感到不舒服。<<He>>看起来宁愿去别的地方。
+		<</if>>
+		<br><br>
+		<<link [[继续|History Lesson]]>><<endevent>><</link>>
+		<br>
+
+	<<elseif $rng gte 66 and $robinhistory is "seat">>
+		<<npc Robin>><<person1>>
+		温特向全班同学提出了一个棘手的问题。没有人知道答案，所以<<nnpc_he Winter>>点名罗宾回答。
+		<br><br>
+
+		<<if random(1, 2) is 2>>
+			"正确。"温特回应罗宾的回答说道。<<nnpc_He Winter>>貌似对罗宾有了一个好印象。<<gdom>><<npcincr Robin dom 1>>
+		<<else>>
+			"不正确，"温特说道："请多加注意。"<<ldom>><<npcincr Robin dom -1>>
+			<br><br>
+			有人嗤之以鼻，"好像你能做得更好一样，"温特冷笑一声，让那些家伙闭嘴。
+		<</if>>
+		<br><br>
+		<<link [[继续|History Lesson]]>><<endevent>><</link>>
+		<br>
+	<<elseif $rng gte 61>>
+		温特问了全班同学一个问题。
+		<<if currentSkillValue('history') gte 400>>
+			你认为你知道答案。
+			<br><br>
+			<<link [[举起手|History Lesson Answer]]>><<stress 2>><<historyskill>><</link>><<ghistory>><<gstress>>
+			<br>
+			<<link [[保持沉默|History Lesson]]>><<endevent>><</link>>
+			<br>
+		<<else>>
+			你不知道答案。
+			<br><br>
+			<<link [[继续|History Lesson]]>><<endevent>><</link>>
+			<br>
+		<</if>>
+
+	<<elseif $rng gte 51>>
+		<<generates1>><<person1>><<set _coinflip to random(0,1)>>
+		你身边的一个<<person>>在上课时睡着了。
+		<<if $rng % 2>>
+			<<He>>静静地打了几分钟瞌睡，随后在<<print either("温特掉了支笔", "一个女孩的椅子发出刮擦声","课室的门打开","一个男孩摔下了椅子","一个学生路过","后面的学生轻推了他一下")>>时惊醒。
+			<<He>>惊慌失措地四处张望了一会儿，你向<<him>>竖起了大拇指，同时嘴里说着'没事'。
+			<br>
+			<<He>>点头表示感谢。
+			<<gcool>><<status 1>>
+		<<else>>
+			本来一切都很好，直到<<his>>的头向后仰去，<<he>>开始大声打鼾。温特停止了说话，瞪着眼睛看着那个<<person>>。
+			<br>
+			"叫醒<<him>>，"温特命令道。
+			<br>
+			<<if _coinflip>>另一个学生叫醒<<else>>你叫醒<</if>>了<<personsimple>>。
+			<br><br>
+			"谢谢你加入我们，"温特微笑着说。"也许你可以告诉校长是什么让你在留校时这么累。"
+			<br>
+			<<His>>的脸颊发红。
+		<</if>>
+		<br><br>
+		<<link [[继续|History Lesson]]>><<endevent>><</link>>
+		<br>
+
+	<<elseif $rng gte 41>>
+		<<npc Winter>><<person1>>
+		温特用<<his>>那絮絮叨叨的声音向全班讲课。
+		<<if $tiredness lt 2000>>
+			保持清醒是一项工作。
+			<br><br>
+			<<link [[继续|History Lesson]]>><<endevent>><<historyskill>><</link>><<ghistory>>
+			<br>
+		<<else>>
+			你尽力保持清醒，但你实在太累了。在眯了几分钟后你醒了过来，幸运的是，温特似乎没有注意到你的小憩。
+			<br><br>
+			<<link [[继续|History Lesson]]>><<endevent>><<set $tiredness -= 200>><</link>><<ltiredness>>
+			<br>
+		<</if>>
+
+	<<elseif $rng gte 31>>
+		温特向全班展示了一些历史电影的节选。
+		<<if $rng % 2>>
+			这是一部人人都看过的无聊的老电影，它很有教育意义，但即使是温特也似乎对此毫无感觉。
+		<<else>>
+			这是一部全新的电影，有一些惊人的特效。温特强调了影片中的一些正确的历史，以及一些有趣但不准确之处。
+			<br>
+			这是个有趣的会议。
+			<<ghistory>><<historyskill>><<lstress>><<stress -1>>
+		<</if>>
+		<br><br>
+
+		<<link [[继续|History Lesson]]>><<endevent>><</link>>
+		<br>
+
+	<<elseif $rng gte 21>>
+		温特让全班练习从教室边缘的各种书架上寻找有用信息。
+		<br><br>
+
+		<<link [[继续|History Lesson]]>><<endevent>><</link>>
+		<br>
+
+	<<elseif $rng gte 11>>
+		温特说学校、公园和医院都在一个古代堡垒的遗址上，它们还包括了关于地下巢穴、阴暗的地牢和隐藏的逃生通道的传言。
+		<br><br>
+
+		<<link [[继续|History Lesson]]>><<endevent>><</link>>
+		<br>
+
+	<<else>>
+		温特对当地交通系统的历史进行了深入的探讨，你不知道你是否曾经听过如此无聊的东西。
+		<br><br>
+
+		<<link [[继续|History Lesson]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+:: Widgets Events Swimming [widget]
+<<widget "eventsswimming">>
+	<<outfitChecks>>
+
+	<<if $rng gte 91 and $leftarm is "bound" and $rightarm is "bound">>
+		<<npc Mason>><<person1>>
+		梅森示意你过去一下，你<<if $feetuse is "bound">>蝶泳着<</if>>游到了池边。
+		"你为什么不使用你的手臂？"<<He>>注意到你身上的捆绑。"哦！你可以自己把这些东西拿下来吗？我想我有一些剪刀。"
+		<br><br>
+
+		<<link [[获得解放|Events Swimming Freed]]>><<unbind>><</link>>
+		<br>
+		<<link [[拒绝|Events Swimming Freed Refuse]]>><</link>>
+		<br>
+
+	<<elseif $rng gte 81>>
+
+		<<generates1>><<generates2>>游泳池的另一边爆发了一场争吵。
+		当梅森游过去阻止争斗的时候，一个<<fullGroup>>向你游过来，并把你困在中间。
+		<<person>>在后面抚摸你的屁股的同时<<person1>><<person>>说道。
+		"你看起来很孤独，<<bitch>>。别担心，我们在这里陪着你。"
+		<br><br>
+
+		<<link [[推开这些家伙|Swimming Lesson Shove]]>><</link>>
+		<br>
+
+		<<if $cool lt 80>>
+			<<link [[忍受|Events Swimming Molestation]]>><<set $molestationstart to 1>><</link>><<gtrauma>><<gstress>><<garousal>>
+			<br>
+		<<else>>
+			<<link [[忍受|Events Swimming Endure]]>><<trauma 2>><<stress 2>><<arousal 200 "bottom">><</link>><<gtrauma>><<gstress>><<garousal>>
+			<br>
+		<</if>>
+
+	<<elseif $rng gte 71>>
+
+		<<rng>>
+		<<npc Mason>><<generates2>><<person2>>
+		<br><br>
+		梅森指着你附近的一个<<person>>。"你，出来一下，我想看看你的潜水技术。"
+		<br><br>
+
+		<<if $rng % 5 == 0 and $swimnudecounter gte 3>>/*1 in 5 chance*/
+			<<person>>游到泳池边缘后爬上了岸，在稍作休整之后，<<He>>走到了跳水板前。而班里一些人停下来观看。
+			<br><br>
+
+			<<link [[继续|Events Swimming NPC Dive]]>><<set $phase to 3>><</link>>
+			<br>
+
+		<<elseif $rng % 5 == 0>>
+			那个<<person>>游到泳池边缘，然后对梅森耳语了几句。梅森的脸一下子就红透了，在回了一句话后便转身离开了，而那个<<person>>则去继续游泳。
+			片刻之后，你听到一声响亮的哨声。是梅森叫大家到泳池边集合。
+			<br><br>
+
+			"同学们! 大家都过来! 是时候进行动作示范了。"
+			<br><br>
+
+			<<link [[继续|Events Swimming NPC Dive]]>><<set $phase to 2>><</link>>
+			<br>
+
+		<<elseif $rng % 10>>/*9 in 10 chance*/
+			<<person>>游到泳池边缘后爬上了岸，在稍作休整之后，<<He>>走到了跳水板前。而班里一些人停下来观看。
+			<br><br>
+
+			<<link [[继续|Events Swimming NPC Dive]]>><<set $phase to 1>><</link>>
+			<br>
+
+		<<else>>
+			那个<<person>>拒绝了，梅森试图劝说<<him>>甚至后面威胁<<him>>说要让<<he>>留校，但<<he>>就是不会潜水。
+			<br><br>
+
+			<<link [[继续|Swimming Lesson]]>><<endevent>><</link>>
+			<br>
+		<</if>>
+
+	<<elseif $rng gte 61 and $worn.lower.type.includes("naked") and !_underOutfit>>
+		<<rng>>
+		<<npc Mason>><<person1>>梅森指着你说道："爬出来，我想看看你的潜水技术。"
+		<<if playerBellyVisible()>>
+			你的脸一下子红了起来, 你小声提醒<<him>>你现在保持着<<if $exposed gte 1>>裸体<</if>>并且你还怀孕了.
+			<<He>>尴尬的看向你的肚子，"哦，很抱歉......"<<He>>短暂地停顿了一下继续说道："我不想伤害孩子。"
+			<br><br>
+			<<link [[继续|Swimming Lesson]]>><<endevent>><</link>>
+		<<elseif $exposed gte 1>>
+			你的脸一下子红了起来, 你小声提醒<<him>>你现在正保持着裸体。<<He>>尴尬的将头转了过去。
+			"你仍然需要潜水，"<<he>>说道："我会试着分散其他学生的注意力的。"
+			<br><br>
+
+			<<He>>站在跳水台对面的水池边上说道："各位，现在是时候进行示范了。"
+			你等待着，直到所有人都离你很远之后，你才<<nervously>>爬了出来。
+
+			<<rng>>
+			<<if $rng gte 81>>
+				<<generates2>><<person2>>然而当你接近跳台时，一个<<person>>突然转过身来。
+				当<<he>>向<<his>>的朋友门喊叫时，你试图遮住身体，以此来避免吸引更多的注意力。虽然梅森试图控制局势，但并没有什么用。
+				整个班级很快就会盯着你。
+				<<gtrauma>><<trauma 2>><<gstress>><<stress 2>>
+				<br><br>
+				<<if $exhibitionism gte 75>>
+					<<link [[炫耀身体|Events Swimming Flaunt]]>><</link>><<exhibitionist5>>
+					<br>
+				<</if>>
+				<<link [[无论如何都要潜水|Events Swimming Lewd Dive]]>><<trauma 2>><<stress 2>><</link>><<gtrauma>><<gstress>>
+				<br>
+				<<link [[逃跑|Event Swimming Run]]>><<detention 1>><</link>><<gdelinquency>>
+				<br>
+			<<else>>
+				你瞥了一眼班上的其他人，在看到他们仍然背对着你后，你<<swimmingtext>>潜入水中。
+				<<gstress>><<stress 2>><<gswimming>><<swimmingskilluse>>
+				<br><br>
+				<<link [[继续|Swimming Lesson]]>><<endevent>><</link>>
+			<</if>>
+
+		<<else>>
+			你将自己暴露在寒冷的空气当中，随后走到潜水平台的边缘，<<swimmingtext>>潜入水里。
+			<br><br>
+
+			你回到了水面上，梅森向你竖起了大拇指，随后<<his>>又将注意力转移到了其他地方。
+			你觉得有点不对劲，然后你猛的感觉到你的<<undies>><<underlowerplural>>消失了！
+			<br><br>
+
+			<<rng>>
+			<<if $school gte 1600 or $rng lt 80>>
+				你注意到你的衣服正漂浮在几英尺远的地方，你迅速游过去并拿上衣服。你扫视了一下泳池周围，你认为没有人注意到这的情况。
+				<<gstress>><<stress 2>><<gswimming>><<swimmingskilluse>>
+				<br><br>
+
+				<<link [[继续|Swimming Lesson]]>><<endevent>><</link>>
+				<br>
+			<<else>>
+
+				<<endevent>><<generates1>><<person1>><<underlowerstrip>>
+				你环顾四周，看到你的衣服正漂浮在水中。你向它们游去，但一个<<person>>比你更快赶过去。
+				<<He>>在把它们放在你够不着的地方后对你笑着说道："在公共场合脱衣服？谁会知道像你这样的书呆子会如此变态。"
+				<<He>>开始审视你那暴露的身体，然后观察梅森的注意力是否在这边。
+				"我想和你玩玩。你最好按我的要求去做，否则你将会在剩下的课程中继续赤身裸体。"
+				<br><br>
+
+				<<link [[接受|Events Swimming Molestation Single]]>><<set $molestationstart to 1>><</link>>
+				<br>
+				<<link [[拒绝|Events Swimming Refuse]]>><</link>>
+				<br>
+			<</if>>
+		<</if>>
+	<<elseif $rng gte 41>>
+		<<generates1>><<person1>>一个<<person>>似乎在游泳池周围跟踪你。但是每当你看向<<him>>的时候，<<he>>总是会让目光看向别的地方。
+		<br><br>
+
+		<<link [[与其对峙|Events Swimming Stalk Confront]]>><<detention 1>><</link>><<gdelinquency>>
+		<br>
+		<<link [[无视这家伙|Events Swimming Stalk Ignore]]>><</link>>
+		<br>
+
+	<<elseif $rng gte 21>>
+		<<generates1>><<generates2>><<generates3>>
+		一个<<fullGroup>>开始试图找你的麻烦，这家伙不停地在水底下跟踪和触摸你。
+		你可以试着游离这些家伙，但如果你失败了，那么事情可能会变得十分糟糕。
+		<br><br>
+
+		<<link [[游离|Events Swimming Swim Away]]>><</link>><<swimmingdifficulty 1 800>>
+		<br>
+		<<link [[忍受|Events Swimming Swim Endure]]>><<stress 2>><<trauma 2>><<arousal 100 "bottom">><<arousal 100 "genitals">><</link>><<gtrauma>><<gstress>><<garousal>>
+		<br>
+
+	<<else>>
+		<<if $worn.lower.type.includes("naked")>>
+			<<pain 5>>
+			你感到屁股传来一阵剧痛，你漂到距离除垢泵太近的地方了，你的屁股被扇叶夹住了。
+			你设法不让自己哭出来，以此避免吸引到更多的注意力。
+			<<gstress>><<stress 2>>
+			<br><br>
+			<<link [[继续|Swimming Lesson]]>><</link>>
+		<<else>>
+			<<set $worn.lower.integrity -= 4>>
+			<<exposure>>
+			有东西正拖着你的$worn.lower.cn_name_cap。你漂得离除垢泵太近了，你的衣服被它的扇叶卡住了。
+			<<integritycheck>>
+			<<exposure>>
+			<<if $worn.lower.type.includes("naked")>>
+				你试图挣脱开来，但当你这样做的时候，你的衣服被残忍地从你的身体上撕下来，并在一瞬间就消失在了除垢泵里，只留下
+				<<if $worn.upper.type.includes("naked")>>
+					完全裸露。
+				<<else>>
+					从腰部往下都是光溜溜的你.
+				<</if>>
+			<<else>>
+				你试图离开，顺便将你的$worn.lower.cn_name_cap<<lowerplural>>从除垢泵里救出来，虽然它还能穿，但是磨损的更严重了。
+			<</if>>
+			<br><br>
+			<<link [[继续|Swimming Lesson]]>><</link>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "eventsswimmingsafe">>
+	<<npc Mason>><<person1>>
+	<<if $rng gte 21>>
+		梅森让全班练习<<print either("潜泳", "蛙泳", "仰泳", "蝶泳")>>.
+		<<He>>在水池外围巡逻，给那些不太会游泳的人提供指点。
+		<br><br>
+	<<else>>
+		梅森让全班同学练习潜水。
+		<<He>>在水池外围观看，给那些不太会游泳的人提供指点。
+		<br><br>
+	<</if>>
+
+	<<if currentSkillValue('swimmingskill') lte 100>>
+		你不太擅长游泳，甚至在水面上都很难停留。
+	<<elseif currentSkillValue('swimmingskill') lte 300>>
+		你不能游的很快，由于肌肉的紧绷，你需要经常休息才行。
+	<<elseif currentSkillValue('swimmingskill') lte 500>>
+		你的游泳技术并不差，但你还有很长的路要走。
+	<<elseif currentSkillValue('swimmingskill') lte 900>>
+		你的游泳技术非常好，你在班级里是最好的那一批。
+	<<else>>
+		你的游泳技巧十分高超，很容易就成为班上游的最好的那个。
+	<</if>>
+	<br><br>
+	<<link [[继续|Swimming Lesson]]>><<endevent>><</link>>
+	<br>
+<</widget>>
+
+<<widget "schoolpoolexposed">>
+	<<if $schoolstate is "fifth" and $swimnudecounter gte 1>>
+		你走进游泳馆.<<covered>>
+		<br><br>
+	<<else>>
+		<<npc Mason>><<generatey2>><<generatey3>>你深吸一口气，就这样展示着你的<<lewdness>>走入泳池室。
+		一个<<person2>><<person>>最先看到你，随后<<He>>马上用手遮住自己的脸，并放声尖叫起来。
+		班上其他同学也纷纷效仿，他们反应不一，有的欢喜有的尴尬，有高兴的有不高兴的，也有一些比较拘谨的学生非常厌恶。
+		<<if $player.penisExist>>
+			<<if $player.penissize is 4>>
+				<<if maleChance() lt 100>>
+					那些女孩们的眼神似乎粘在了你的<<genitals>>上，有几个女孩甚至开始互相兴奋低语。
+					有几个男孩显然对你赤身裸体的出现感到不太高兴。<<if maleChance() gt 0>>其他人似乎很感兴趣。<</if>>
+				<<else>>
+					那些男孩们目不转睛的盯着你的<<genitals>>，有几个男孩开始互相兴奋低语。
+				<</if>>
+				<<incgpenisinsecurity>>
+				<<status 10>><<gcool>>
+			<<elseif $player.penissize lte 1>>
+				一些女孩开始互相小声耳语，而一些男孩则表现出相当得意的表情。
+				<<incgpenisinsecurity>>
+			<</if>>
+		<</if>>
+		<br><br>
+		<<person1>>梅森转过身来面对着你，然后迅速移开<<He>>的目光。"你的泳衣，"<<he>>说道。"去拿它。"
+		<<detention 6>>
+		<br><br>
+		"哦？"你说着的同时抬起一只手平放在眉心，仿佛在扫视周围。"我想知道我把它放在哪里了。" 全班哄堂大笑了起来。
+		<br><br>
+		梅森极力不让自己看向你，但是<<Hes>>的脸依旧红的通透。"快回到更衣室里去，请-请快点。"
+		<br><br>
+	<</if>>
+	<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><<endevent>><</link>>
+	<br>
+	<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><<endevent>><</link>>
+	<br>
+<</widget>>
+
+:: Lesson Effects Widget [widget]
+
+<<widget "swimminglessoneffects">>
+	<<advancelesson>>
+	<<stress _lesson_progress>>
+	<<tiredness _lesson_progress>>
+
+	<<if $phase is 1>>
+		<<set $phase to 0>>
+		<<if $exposed gte 1 and $swimall isnot 1>>
+			当下课的铃声响起时，你继续待在泳池中以等待其他学生的离开，但有一些学生依旧徘徊不前。毫无疑问，那些家伙希望在你爬出来的时候能看到独特的风景线，但梅森把那些家伙都赶走了，以此来为你留下一些隐私。
+			<br><br>
+
+		<<elseif $exposed lte 0>>
+			当下课的铃声响起时，你爬出了游泳池。
+			<br><br>
+
+		<</if>>
+
+		<<if $exposed lte 0 or $swimall is 1>>
+			<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><</link>>
+			<br>
+			<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><</link>>
+			<br><br>
+
+		<</if>>
+
+		<<if $exposed gte 1>>
+			<<link [[拿起一些毛巾裹住自己并进入男更衣室|School Boy Changing Room]]>><<towelupm>><</link>>
+			<br>
+			<<link [[拿起一些毛巾裹住自己并进入女更衣室|School Girl Changing Room]]>><<towelup>><</link>>
+			<br><br>
+
+		<</if>>
+	<<else>>
+		<<if $exposed gte 1>>
+			<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+			<<if $danger gte (8900 - $allure)>>
+				<<eventsswimming>>
+			<<else>>
+				<<eventsswimmingsafe>>
+			<</if>>
+		<<elseif $exposed lte 0>>
+			<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+			<<if $danger gte (8900 - ($allure / 5))>>
+				<<eventsswimming>>
+			<<else>>
+				<<eventsswimmingsafe>>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "bookRentalOptions">>
+	<<if $studyBooks is undefined>>
+		<<set $studyBooks to {}>>
+		<<set $studyBooks.rented to "none">>
+		<<set $studyBooks.stolen to "none">>
+	<</if>>
+	<<if (!Time.schoolDay or $schoolstate is "early" or $schoolstate is "late")>>
+		图书馆内异常安静。
+	<<else>>
+		有许多教科书可供租用。
+		<<if $studyBooks.rented isnot "none">>
+			你必须在借出另一本之前归还你所租的书。你目前的租书是<<if $book_rent_timer gt 0>>应在<span class="gold">$book_rent_timer 日<<if $book_rent_timer gt 1>><</if>>后到期。</span><<elseif $book_rent_timer is 0>><span class="blue">今日到期。</span><<else>><span class="red">过期的。</span><</if>>
+		<<else>>
+			你没有租来的书可以归还。
+		<</if>>
+	<</if>>
+	<br>
+	<<switch $studyBooks.rented>>
+		<<case "science">>
+			<<link [[归还租借的科学教科书|Book Rental]]>><<set $bookRent to "return">><</link>>
+			<br>
+		<<case "maths">>
+			<<link [[归还租借的数学教科书|Book Rental]]>><<set $bookRent to "return">><</link>>
+			<br>
+		<<case "English">>
+			<<link [[归还租借的英语教科书|Book Rental]]>><<set $bookRent to "return">><</link>>
+			<br>
+		<<case "history">>
+			<<link [[归还租借的历史教科书|Book Rental]]>><<set $bookRent to "return">><</link>>
+			<br>
+		<<case "Raul and Janet">>
+			<<link [[归还租借地 "劳尔与珍妮特"|Book Rental]]>><<set $phase to 5>><<set $bookRent to "return">><</link>>
+			<br>
+		<<case "Pinch">>
+			<<link [[归还橄榄色的书|Book Rental]]>><<set $phase to 6>><<set $bookRent to "return">><</link>>
+			<br>
+		<<default>>
+	<</switch>>
+	<<switch $studyBooks.stolen>>
+		<<case "science">>
+			<<link [[归还你偷来的科学课本|Book Rental Return Stolen]]>><</link>>
+			<br>
+		<<case "maths">>
+			<<link [[归还你偷来的数学课本|Book Rental Return Stolen]]>><</link>>
+			<br>
+		<<case "English">>
+			<<link [[归还你偷来的英语课本|Book Rental Return Stolen]]>><</link>>
+			<br>
+		<<case "history">>
+			<<link [[归还你偷来的历史教科书|Book Rental Return Stolen]]>><</link>>
+			<br>
+		<<case "Raul and Janet">>
+			<<link [[归还你偷来的 "劳尔和珍妮特 "|Book Rental Return Stolen]]>><<set $phase to 5>><</link>>
+			<br>
+		<<case "Pinch">>
+			<<link [[归还橄榄色的书籍|Book Rental Return Stolen]]>><<set $phase to 6>><</link>>
+			<br>
+		<<default>>
+	<</switch>>
+	<<sydneySchedule>>
+	<<if _sydney_location is "library">>
+		<<if $money gte 2000>>
+			<<if $studyBooks.rented is "none">>
+				<<if $studyBooks.stolen isnot "science">>
+					<<link [[租一本科学教科书 (£20)|Book Rental]]>><<set $money -= 2000>><<set $bookRent to "rent">><<set $phase to 1>><<set $studyBooks.rented to "science">><</link>><<note "+ 被动科学提升" "green">>
+					<br>
+				<</if>>
+				<<if $studyBooks.stolen isnot "maths">>
+					<<link [[租一本数学教科书 (£20)|Book Rental]]>><<set $money -= 2000>><<set $bookRent to "rent">><<set $phase to 2>><<set $studyBooks.rented to "maths">><</link>><<note "+ 被动数学提升" "green">>
+					<br>
+				<</if>>
+				<<if $studyBooks.stolen isnot "English">>
+					<<link [[租一本英语教科书 (£20)|Book Rental]]>><<set $money -= 2000>><<set $bookRent to "rent">><<set $phase to 3>><<set $studyBooks.rented to "English">><</link>><<note "+ 被动英语提升" "green">>
+					<br>
+				<</if>>
+				<<if $studyBooks.stolen isnot "history">>
+					<<link [[租一本历史教科书 (£20)|Book Rental]]>><<set $money -= 2000>><<set $bookRent to "rent">><<set $phase to 4>><<set $studyBooks.rented to "history">><</link>><<note "+ 被动历史提升" "green">>
+					<br>
+				<</if>>
+				<<if currentSkillValue('english') gte 300 and $studyBooks.stolen isnot "Raul and Janet">>
+					<<link [[租用 "劳尔与珍妮特" (£20)|Book Rental]]>><<set $money -= 2000>><<set $bookRent to "rent">><<set $phase to 5>><<set $studyBooks.rented to "Raul and Janet">><</link>>
+					<br>
+				<</if>>
+				<<if ((Time.monthName is "November" and Time.monthDay gte 24) or Time.monthName is "December") and $studyBooks.stolen isnot "Pinch">>
+					<<link [[租用橄榄色的书 (£20)|Book Rental]]>><<set $money -= 2000>><<set $bookRent to "rent">><<set $phase to 6>><<set $studyBooks.rented to "Pinch">><</link>>
+					<br>
+				<</if>>
+			<<else>>
+				<<if $money gte 1500 and $book_rent_timer lte 13 and $book_rent_timer gt 0>>
+					<<link [[续租你的书 (£15)|Book Rental]]>><<set $money -= 1500>><<set $bookRent to "renew">><</link>>
+					<br>
+				<<elseif $money lt 1500>>
+					<span class=purple>你无法承担续租的费用。</span>
+					<br>
+				<<else>>
+				<</if>>
+			<</if>>
+		<<else>>
+			<span class=purple>你没钱租课本了。</span>
+			<br>
+		<</if>>
+	<<else>>
+		<<if (!Time.schoolDay or $schoolstate is "early" or $schoolstate is "late")>>
+			<<if $studyBooks.stolen is "none">>
+				<<if $studyBooks.rented isnot "science">>
+					<<link [[偷一本科学教科书|Book Rental]]>><<set $bookRent to "steal">><<set $studyBooks.stolen to "science">><</link>><<crime>><<note "+ 被动科学提升" "green">>
+					<br>
+				<</if>>
+				<<if $studyBooks.rented isnot "maths">>
+					<<link [[偷一本数学教科书|Book Rental]]>><<set $bookRent to "steal">><<set $studyBooks.stolen to "maths">><</link>><<crime>><<note "+ 被动数学提升" "green">>
+					<br>
+				<</if>>
+				<<if $studyBooks.rented isnot "English">>
+					<<link [[偷一本英语教科书|Book Rental]]>><<set $bookRent to "steal">><<set $studyBooks.stolen to "English">><</link>><<crime>><<note "+ 被动英语提升" "green">>
+					<br>
+				<</if>>
+				<<if $studyBooks.rented isnot "history">>
+					<<link [[偷一本历史教科书|Book Rental]]>><<set $bookRent to "steal">><<set $studyBooks.stolen to "history">><</link>><<crime>><<note "+ 被动历史提升" "green">>
+					<br>
+				<</if>>
+				<<if currentSkillValue('english') gte 300 and $studyBooks.rented isnot "Raul and Janet">>
+					<<link [[窃取 "劳尔和珍妮特"|Book Rental]]>><<set $phase to 5>><<set $bookRent to "steal">><<set $studyBooks.stolen to "Raul and Janet">><</link>><<crime>>
+					<br>
+				<</if>>
+				<<if ((Time.monthName is "November" and Time.monthDay gte 24) or Time.monthName is "December") and $studyBooks.stolen isnot "Pinch">>
+					<<link [[窃取橄榄色封面的书|Book Rental]]>><<set $phase to 6>><<set $bookRent to "steal">><<set $studyBooks.stolen to "Pinch">><</link>><<crime>>
+					<br>
+				<</if>>
+			<<else>>
+				你一次只能携带一本被偷的书。
+				<br>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "homeStudyOptions">>
+	<<if $studyBooks isnot undefined>>
+		<<switch $studyBooks.rented>>
+			<<case "science">>
+				/*<<link [[Study science (0:20)|$passage]]>><<set $study to 1>><<pass 20>><<set $phase to 1>><</link>><<gscience>>
+				<br>*/
+			<<case "maths">>
+				/*<<link [[Study maths (0:20)|$passage]]>><<set $study to 1>><<pass 20>><<set $phase to 2>><</link>><<gmaths>>
+				<br>*/
+			<<case "English">>
+				/*<<link [[Study English (0:20)|$passage]]>><<set $study to 1>><<pass 20>><<set $phase to 3>><</link>><<genglish>>
+				<br>*/
+			<<case "history">>
+				/*<<link [[Study history (0:20)|$passage]]>><<set $study to 1>><<pass 20>><<set $phase to 4>><</link>><<ghistory>>
+				<br>*/
+			<<case "Raul and Janet">>
+				<<scarletnewicon>><<link [[阅读"劳尔和珍妮特" (0:01)|ScarletBook1]]>><<pass 1>><<set $scarletExitPassage to $passage>><</link>>
+				<br>
+			<<case "Pinch">>
+				<<olivenewicon>><<link [[读那本橄榄色封皮的书(0:01)|Olive Book 1]]>><<pass 1>><<set $oliveExitPassage to $passage>><</link>>
+				<br>
+			<<default>>
+		<</switch>>
+		<<switch $studyBooks.stolen>>
+			<<case "science">>
+				/*<<link [[Study science (0:20)|$passage]]>><<set $study to 1>><<pass 20>><<set $phase to 1>><</link>><<gscience>>
+				<br>*/
+			<<case "maths">>
+				/*<<link [[Study maths (0:20)|$passage]]>><<set $study to 1>><<pass 20>><<set $phase to 2>><</link>><<gmaths>>
+				<br>*/
+			<<case "English">>
+				/*<<link [[Study English (0:20)|$passage]]>><<set $study to 1>><<pass 20>><<set $phase to 3>><</link>><<genglish>>
+				<br>*/
+			<<case "history">>
+				/*<<link [[Study history (0:20)|$passage]]>><<set $study to 1>><<pass 20>><<set $phase to 4>><</link>><<ghistory>>
+				<br>*/
+			<<case "Raul and Janet">>
+				<<scarletnewicon>><<link [[阅读"劳尔和珍妮特" (0:01)|ScarletBook1]]>><<pass 1>><<set $scarletExitPassage to $passage>><</link>>
+				<br>
+			<<case "Pinch">>
+				<<olivenewicon>><<link [[读那本橄榄色封皮的书(0:01)|Olive Book 1]]>><<pass 1>><<set $oliveExitPassage to $passage>><</link>>
+				<br>
+			<<default>>
+		<</switch>>
+	<</if>>
+<</widget>>
+
+<!-- "upperruined" doesn't take sets into account, so use "strip" and destroy the carried towel parts -->
+<<widget "droptowel">>
+	<<if _toweldrop is "both">>
+		<<generalStrip "upper">>
+		<<generalStrip "lower">>
+	<<elseif _toweldrop is "lower">>
+		<<generalStrip "lower">>
+	<<elseif _toweldrop is "upper">>
+		<<generalStrip "upper">>
+	<</if>>
+<</widget>>
+
+<!-- Will check if the pc can drop a towel to expose themselves. Returns its result in "_exlevel" and "_toweldrop".-->
+<<widget "checkdroptowel">>
+	<<set _bottom to "nothing">>
+	<<set _top to "nothing">>
+	<<if $exhibitionism gte 55>>
+		<<if ($worn.lower.name is "towel skirt" or $worn.lower.name is "large towel bottom") and $worn.over_lower.exposed gte 2>>
+			<<if $worn.under_lower.exposed lt 1 or $exhibitionism gte 75>>
+				<<set _bottom to "strip">>
+			<</if>>
+		<</if>>
+		<<if ($worn.upper.name is "towel top" or $worn.upper.name is "large towel") and $worn.over_upper.exposed gte 2>>
+			<<if $worn.upper.one_piece isnot 1 or _bottom is "strip">>
+				<<set _top to "strip">>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if _bottom is "strip" and _top is "strip">>
+		<<set _exlevel to ($worn.under_lower.exposed lt 1 ? 1 : 2)>>
+		<<set _toweldrop to "both">>
+	<<elseif _bottom is "strip">>
+		<<set _exlevel to ($worn.under_lower.exposed lt 1 ? 1 : 2)>>
+		<<set _toweldrop to "lower">>
+	<<elseif _top is "strip">>
+		<<set _exlevel to 1>>
+		<<set _toweldrop to "upper">>
+	<<else>>
+		<<set _exlevel to 0>>
+		<<set _toweldrop to "none">>
+	<</if>>
+<</widget>>
+
+<<widget "school_infirmary_options">>
+	<<if $passage isnot "School Infirmary Ask Painkiller">>
+		<<link [[要求提供止痛药|School Infirmary Ask Painkiller]]>><</link>>
+		<br>
+	<</if>>
+	<<if $passage isnot "School Infirmary Ask Bed">>
+		<<link [[要求使用其中一张床位|School Infirmary Ask Bed]]>><</link>>
+		<br>
+	<</if>>
+	<<if $passage isnot "School Infirmary Cabinet">>
+		<<link [[看看橱柜内部|School Infirmary Cabinet]]>><</link>>
+		<br>
+	<</if>>
+	<<link [[离开|Hallways]]>><<endevent>><</link>>
+	<br>
+<</widget>>
+
+<<widget "infirmary_excused">>
+	<<switch $schoolstate>>
+		<<case "first">>
+			<<set $daily.school.scienceExcused to true>>
+		<<case "second">>
+			<<set $daily.school.mathsExcused to true>>
+		<<case "third">>
+			<<set $daily.school.englishExcused to true>>
+		<<case "fourth">>
+			<<set $daily.school.historyExcused to true>>
+		<<case "fifth">>
+			<<set $daily.school.swimmingExcused to true>>
+	<</switch>>
+<</widget>>
+
+<<widget "enableSchoolRescue">>
+	/* Call with all applicable conditions for a rescue in any order. ex: <<enableSchoolRescue "Whitney" "delinquency">> for scenes where Whitney or low delinquency can save you, or <<enableSchoolRescue "Leighton">> for scenes where just Leighton can save you. */
+	/* Shouldn't be called without any arguments; just use the standard "enable_rescue" widget for those cases. */
+	<<if $drugged lte 0>>
+		<<set $_rescue to []>>
+
+		<<if _args.includes("Whitney") and C.npc.Whitney.dom gte random(10, 25) and C.npc.Whitney.state is "active" and $whitneyromance is 1>>
+			<<set $_rescue.push("Whitney")>>
+		<</if>>
+
+		/* There are no cases where Leighton being present and low delinquency are separate conditions for rescue, but there are some where both are required. ex: "Maths Note Molestation" */
+		<<if _args.includesAll("delinquency", "Leighton") and $delinquency lt 400 and $pillory_tenant.special.name isnot "Leighton">>
+			<<set $_rescue.push("Leighton")>>
+		<<elseif _args.includes("delinquency") and $delinquency lt 400>>
+			<<set $_rescue.push("delinquency")>>
+		<<elseif _args.includes("Leighton") and $pillory_tenant.special.name isnot "Leighton">>
+			<<set $_rescue.push("Leighton")>>
+		<</if>>
+
+		<<if $_rescue.includes("Whitney") and $_rescue.includes("delinquency", "Leighton")>>
+			/* Safe Whitney rescue */
+			<<set $rescue to 3>>
+		<<elseif $_rescue.includes("Whitney")>>
+			/* Lone Whitney rescue */
+			<<set $rescue to 2>>
+		<<elseif $_rescue.length gt 0 or !_args[0]>>
+			/* Safe rescue */
+			<<set $rescue to 1>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+:: School Vending Machine Widget [widget]
+<<widget "schoolVendingMachine">>
+	<<if $changingRoomGender is "boys">>
+		<<set $currentToiletReturn to "School Boy's Toilets">>
+	<<else>>
+		<<set $currentToiletReturn to "School Girl's Toilets">>
+	<</if>>
+	<<if $weekly.theft.vendingMachine is undefined>>
+		<<set $weekly.theft.vendingMachine to {}>>
+	<</if>>
+	<<if $daily.vendingMachine is undefined>>
+		<<set $daily.vendingMachine to {}>>
+	<</if>>
+	<br>
+	这里有个售卖避孕套的自动售货机。由青年部提供补贴。
+	<br>
+	<<if !$brothelVending>>
+		<<if $brotheljob and $fame.business gte 100>>
+			<<set $brothelVending to {status: "idea", products: 0, condoms: 0, lube: 0, condomsSold: 0, lubeSold: 0, condomsToRefill: 0, lubeToRefill: 0, weeksRent: 0, weeksEmpty: 0}>>
+			/* $brothelVending.status
+			idea - 1 PC has had the idea but not talked to Briar
+			asked - 2 Talked with Briar But not bought the machine
+			bought 2 - 4 Bought the vending machine but not installed it
+			sold - Briar sold the machine since it was empty for so long
+			set 3 - 8 Installed the vending machine
+			BITS of $brothelVending.products
+			bit 0 - 1 Talked to the pharmacy nurse about reselling condoms
+			bit 1 - 2 Talked to Sirris about selling lube */
+			<br>
+			看见自动售货机，<span class="pink">一个想法跃上心头</span>。你认为在妓院的更衣室里设置一台自动售货机可能是个好主意，这样工作人员就可以为他们的工作购买润滑液或其他有用物品。<span class="gold">你决定要和布莱尔谈谈这个问题。</span>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<if $weekly.theft.vendingMachine[$changingRoomGender]>>
+		自动售货机坏掉了。
+		<br>
+	<<elseif $daily.vendingMachine[$changingRoomGender]>>
+		一个红标显示着："缺货"。
+		<br>
+		<<if !Time.schoolTime>>
+			<<link [[洗劫|Vending Machine Rob]]>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		<<if $money gte 2000>>
+			<<link [[买避孕套 (2包 £20)|Vending Machine Buy]]>><</link>>
+			<br>
+		<<else>>
+			你付不起钱。
+			<br>
+		<</if>>
+		<<if !Time.schoolTime>>
+			<<link [[洗劫|Vending Machine Rob]]>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+	<br>
+<</widget>>

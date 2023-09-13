@@ -1,0 +1,523 @@
+:: Soup Kitchen
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+<<if $soup_kitchen_init isnot 1>>
+	<<set $soup_kitchen_init to 1>>
+	你寻找着别人告诉你的那座灰色建筑。你发现它隐藏在神殿阴影下的树林中。当你走近时，你闻到了煮熟的菜香。里面是一个大殿，一排排的桌子一直延伸下去。这些桌子旁坐着各种年龄段的人，包括几个家庭。当你进入时，没有人关注你。
+	<br><br>
+	<<npc River>><<person1>>
+	你走到远处，一个戴着发网的<<personsimple>>正在往碗里舀汤，你认出了<<him>>，是瑞沃.在其身旁有几个<<monks>>正在帮忙.
+	<br><br>
+	<<link [[继续|Soup Kitchen Intro]]>><</link>>
+	<br>
+<<elseif Time.hour gte 21>>
+	<<generate1>><<person1>>施粥所会在晚上关门，附近神殿里的几个<<monks>>会来这里帮助打扫卫生。
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Wolf Street]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	你在待在狼街的施粥所内，大厅里摆放着一排排拥挤的桌子，而厨房就在后面，整个房间里充满了热汤的味道。
+	<br><br>
+	<<link [[协助瑞沃 (1:00)|Soup Kitchen Work]]>><<pass 60>><<famegood 5>><<trauma -6>><<npcincr River love 1>><</link>><<glove>><<ltrauma>>
+	<br>
+	<<if $mathsproject is "ongoing" and $river_help isnot 1>>
+		<<link [[向瑞沃寻求数学竞赛的帮助|Soup Kitchen Maths]]>><</link>>
+		<br>
+	<</if>>
+	<<if $loft_known is 1 and $loft_river isnot 1 and $NPCName[$NPCNameList.indexOf("River")].love gte 40>>
+		<<link [[告诉瑞沃关于孤儿院阁楼的事情|River Loft]]>><</link>>
+		<br>
+	<</if>>
+	<<link [[离开|Wolf Street]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: River Loft
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+<<npc River>><<person1>><<generatey2>><<generate3>>
+<br><br>
+你把孤儿院阁楼的事告诉了瑞沃，<<Hes>>只是安静的听着，你不确定<<he>>到底听进去了没有，在过了一会后，<<he>>.开口说道;"这不是我该考量的事情，"
+<br><br>
+"我们可以再接着吃么？"一个你在孤儿院认识的<<person2>><<person>>打断道，<<He>>在说完之后将一个空碗递了过来，瑞沃犹豫了一会儿，然后把它填满了，那个<<person>>匆匆的离开了.
+<br><br>
+<<person1>>
+"不过，"瑞沃继续说道;"我们可以设立另一个厨房，毕竟我们这里已经很拥挤了，但是这将花费<span class="gold">£20000.</span>我们会把食物送到新厨房，并且不会收取额外的费用."
+<br><br>
+<i>一个厨房将让孤儿们在远离贝利的注视下准备饭菜，这将更容易增加孤儿们的希望.</i>
+<br><br>
+<<if $money gte 2000000>>
+	<<link [[在阁楼建造厨房 (£20000 3:00)|River Loft 2]]>><<set $loft_river to 1>><<set $loft_upgrade += 1>><<set $money -= 2000000>><</link>>
+	<br>
+<</if>>
+<<link [[离开|Soup Kitchen]]>><<endevent>><<endevent>><</link>>
+<br>
+
+:: River Loft 2
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+瑞沃向一个<<person3>><<monk>>招手并在<<his>>的耳边低语了几句，那个<<monk>>点点头，然后脱下围裙向入口走去."<<He>>会回来的，"瑞沃说道:"那些家伙需要你的帮助来搬运东西."
+<br><br>
+<<person1>>
+<<He>>在舀着一勺汤时说道:"不要告诉你的看护人，毕竟我们光是维持现在的样子就足够麻烦了."
+<br><br>
+<<person3>>
+几分钟后，那名<<monk>>带着几个人回来了，你跟着他们进入一间密室，"我们打算在镇子的另一边建立另一个厨房，"<<he>>在说完之后带你进入了另一个房间，这里像是一个没有组装完的厨房，这里有着锅碗瓢盆、柜台和橱柜，甚至还有冰箱和烤箱."我们有着许可和所有厨房用具，但是市长办公室的人干涉了进来."
+<br><br>
+<<link [[继续|River Loft 3]]>><<pass 180>><</link>>
+<br>
+
+:: River Loft 3
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+其他几个<<monks>>在稍微拾掇了一下之后，开始研究如何搬运这些东西.
+<<if currentSkillValue('physique') gte 12000>>
+	一个身材魁梧的<<monk>>要求你帮忙抬起烤箱.
+<<else>>
+	他们给你一盒餐具让你拿着.
+<</if>>
+"我们会慢慢来地带，"一个<<monk>>说道:"如果需要的话，我们可以休息一下."
+<br><br>
+你和这些<<monks>>一起把厨房用具从后门搬了出来，在穿过街道之后朝着孤儿院走去，虽然路上有几个人会停下脚步看看这支奇怪的队伍，但没有谁来打扰你们.
+<br><br>
+你们走到宅邸街，在已经可以看到前面的孤儿院时，领头的那个<<monk>>停了下来。"麻烦了，<<if $pronoun is "m">>伙计们<<else>>姑娘们<</if>>，"<<he>>突然说道，而你很快就明白了原因，贝利正站在一辆敞篷车旁，和一个你不认识的<<generate4>><<person4>><<person>>说话，"我们不想被人发现。"
+<br><br>
+<<person3>>
+<<if currentSkillValue('physique') gte 12000>>
+	"我们应该在拐角处等待一会，"那个魁梧的<<monk>>建议道，"毕竟他们不会永远都呆在那里，"<<He>>说着把烤箱放在地上，你也很高兴能休息一下。
+	<<gtiredness>><<tiredness 6>><<physique 6>>
+	<br><br>
+<<else>>
+	"我们应该在拐角处等待一会，"另一个<<monk>>建议道，"毕竟他们不会永远都呆在那里，"
+	<br><br>
+<</if>>
+<<link [[等待 (1:00)|River Loft Wait]]>><<pass 60>><</link>>
+<br>
+<<link [[穿过小巷 (0:10)|River Loft Alleyways]]>><<pass 10>><</link>>
+<br>
+
+:: River Loft Wait
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+你和这些<<monks>>躲在角落里，在过了一会儿后，<<person4>><<person>>开车经过了前面的道路，带头的那个<<person3>><<monk>>探出头查看了一番后便说道:"走了，我们继续吧."
+<br><br>
+你继续向着孤儿院走去，当进入孤儿院后，那些<<monks>>便跟着你穿过主厅，走上楼梯，几个孤儿惊讶的停下脚步，而领头的<<monk>>则对他们笑了笑，然后用食指指向<<his>>的嘴唇.
+<br><br>
+事实证明，通往阁楼的那个梯子很麻烦，但这些<<monks>>都很坚定，在先把较小的货物搬上去后，再一起努力拖动较大的电器，这些人所表现出的习惯和举止都比平时要显得更加坚强.
+<br><br>
+
+<<link [[继续|River Loft 4]]>><</link>>
+<br>
+
+:: River Loft Alleyways
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+你说服了这些人和你一起去小巷，虽然这里的栅栏很是麻烦.但这些<<monks>>都很坚定，在先把较小的货物搬上去后，再一起努力拖动较大的电器，这些<<monks>>所表现出的习惯和举止都比平时要显得更加坚强.
+<br><br>
+在进门之后，那些<<monks>>便跟着你穿过主厅，走上楼梯，几个孤儿惊讶的停下脚步，而领头的<<monk>>则对他们笑了笑，然后用食指指向<<his>>的嘴唇.
+<br><br>
+事实证明，通往阁楼的那个梯子比之前的栅栏还要麻烦，但这些<<monks>>并没有因为这而被阻拦.
+<br><br>
+<<link [[继续|River Loft 4]]>><</link>>
+<br>
+
+:: River Loft 4
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+这些人在阁楼上寻找着最佳的改造房间，在经过简短的私下讨论后，他们便开始工作，"这里的水管还在运行，"领头的那个<<monk>>对你说道:"这将使事情变得更加容易."
+<br><br>
+<<monks>>们让这项工作看起来很容易，尽管噪音吸引了更多的孤儿，在水槽安装完毕之后，他们测试了一下水龙头，它可以正常工作，这也是最后一个安装的器具，这些<<monks>>们允许自己小声的庆祝.
+<br><br>
+他们通过煮一锅汤来向孤儿们展示如何在厨房工作当示范结束后，孤儿们挤在一起品尝食物，快速消失的食物表明给孤儿们留下了深刻的印象，也可能只是这些孤儿们饿了.现在，这些孩子们急于尝试自己做饭.
+<br><br>
+"我们会在附近转转，确保这些孩子们都吃上饭，"一个<<monk>>微笑着对你说道："你今天做了一件好事。"
+<<llltrauma>><<trauma -24>>
+<br><br>
+<<endevent>>
+<<link [[继续|Orphanage Loft]]>><</link>>
+<br>
+
+:: Soup Kitchen Maths
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+<<npc River>><<person1>>
+你向瑞沃寻求数学竞赛方面的帮助.
+<br><br>
+<<if $NPCName[$NPCNameList.indexOf("River")].love gte 30>>
+	"这对其他学生来说是不公平的，"瑞沃说道:"然而，我可以给你上一堂关于一些高级概念的数学，是否在比赛中运用它们将取决于你."
+	<br><br>
+	<<link [[开小灶 (1:00)|Soup Kitchen Lesson]]>><<set $river_help to 1>><<set $mathsinfo += 3>><<pass 60>><</link>><<note "+ + 数学见解" "green">>
+	<br>
+	<<link [[现在不需要|Soup Kitchen]]>><<endevent>><</link>>
+	<br>
+<<else>>
+
+	"我不会偏私任何一个学生，"瑞沃在说着的同时用<<his>>那蓝色的眼睛死死的盯着你.<i>如果<<he>>对你有更好的印象，也许<<he>>会更愿意帮忙.</i>
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Soup Kitchen]]>><</link>>
+<</if>>
+
+:: Soup Kitchen Lesson
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+瑞沃在让一个<<monk>>接管厨房之后，便将你带到一个布满灰尘的房间，这里有一张小桌子和两把椅子.
+<br><br>
+<<He>>给你讲了一系列的概念，有太多的东西需要接受，但你察觉到在这里学习到的东西与竞赛问题建立了联系，你感觉你已经理解了一部分的问题.
+<br><br>
+"我希望你能理解，"<<he>>在说完之后站了起来，"我需要回到厨房去了，至少要在那些<<monks>>把事情搞得一团糟之前."
+<br><br>
+<<endevent>>
+<<link [[继续|Soup Kitchen]]>><</link>>
+<br>
+
+:: Soup Kitchen Intro
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+瑞沃用<<his>>那双湛蓝色的眼睛盯着你，"我没想到会在这里看到你，"<<he>>在说着的同时接着搅动着锅里的汤，"不要试图引起任何麻烦."
+<br><br>
+<<if $speech_attitude is "meek">>
+	"我不会的，"你说道:"我听说你需要帮助."
+<<elseif $speech_attitude is "bratty">>
+	"不要对我说三道四，"你说道:"我们现在不在学校，我是来帮忙的."
+<<else>>
+	"我听说你需要帮助,"你说道.
+<</if>>
+<br><br>
+<<He>>看了你一会儿，然后便把注意力重新转移到了汤上，"如果你是真心想来帮忙的话，就先去切菜吧."
+<br><br>
+
+<<endevent>>
+<<link [[继续|Soup Kitchen]]>><</link>>
+<br>
+
+:: Soup Kitchen Work
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+你在厨房里帮助瑞沃，你的工作是切好准备烹饪的蔬菜，并清理整个大厅里被洒在地上的食物和垃圾。
+<br><br>
+<<pubfameComplete "river">>
+<<cleareventpool>>
+<<if $danger gte (9900 - $allure)>>
+	<<addinlineevent "kitchen_grope" 2>>
+		<<npc River>><<generate2>><<person2>>
+		你在弯腰处理一处垃圾时，感觉一只手正在你的<<bottom>>上。你转身看到一个<<person>>正在用<<He>>的手捏你.
+		<<gstress>><<gtrauma>><<stress 6>><<trauma 6>>
+		<br><br>
+		<<link [[忽视|Soup Kitchen Grope Ignore]]>><<sub 1>><<stress 6>><<arousal 600 "bottom">><</link>><<gstress>><<garousal>>
+		<br>
+		<<link [[走开|Soup Kitchen Grope Walk]]>><<npcincr River love -1>><</link>><<llove>>
+		<br>
+		<<link [[生气|Soup Kitchen Grope Angry]]>><<def 1>><<stress -6>><<trauma -6>><<npcincr River love -1>><</link>><<llove>><<ltrauma>><<lstress>>
+		<br>
+	<</addinlineevent>>
+	<<addinlineevent "kitchen_preposition" 2>>
+		<<npc River>><<generate2>><<person2>>
+		"嘿，小可爱，"一个<<person>>在你切萝卜时对你说道："让我们去……"
+		<br><br>
+		<<Hes>>被一个勺子捶打了一下，"我不希望在我的厨房里有这些东西，"瑞沃在说着的时候又那个<<person>>一记重击，"把这些想法留给你自己，或者从这里滚出去。"尽管<<person1>><<He>>的脸色有些苍白，但<<his>>的声音依旧很严厉。
+		<br><br>
+		<<person2>>那个<<person>>拿着<<his>>的汤和面包，并没有引起进一步的骚动。
+		<br><br>
+		<<endevent>>
+		<<link [[继续|Soup Kitchen]]>><</link>>
+		<br>
+	<</addinlineevent>>
+	<<addinlineevent "kitchen_van" 1>>
+		<<generate1>><<generate2>><<generate3>><<person1>>
+		瑞沃让你从外面的货车上拿一些蔬菜进来.
+		<br><br>
+		当你拿着蔬菜箱往回走的时候，你听到在房子的拐角处有声音传来.
+		<br><br>
+		"你没想过自己会逃走，是吗？"一个沙哑的<<personsimple>>的声音响起，"像你这样子欺骗老板，你不被沉海都算幸运的了."
+		<br><br>
+		"我......这是个意外."一个声音结结巴巴地回答道，而后，第三个声音笑了起来.
+		<br><br>
+		<<link [[调查|Soup Kitchen Investigate]]>><</link>>
+		<br>
+		<<link [[告诉瑞沃|Soup Kitchen Tell]]>><</link>>
+		<br>
+		<<link [[无视|Soup Kitchen Ignore]]>><</link>>
+		<br>
+	<</addinlineevent>>
+<<else>>
+	<<addinlineevent "kitchen_argument" 1>>
+		<<npc River>><<person1>>
+		大厅远处的争论变得激烈了起来，瑞沃让你掌勺，而<<he>>则去负责处理这件事。你开始工作，就是用勺子把满满一勺汤装进碗里，然后递给等待的人群。想跟上人流你就得快点干才行，同时还要努力不搞砸一切。
+		<br><br>
+		几分钟过后，瑞沃回来了，<<He>>似乎很高兴你能处理好事情.
+		<br><br>
+		<<endevent>>
+		<<link [[继续|Soup Kitchen]]>><</link>>
+		<br>
+	<</addinlineevent>>
+	<<addinlineevent "kitchen_baking" 1>>
+		瑞沃让你从烤箱里拿一批新出炉的面包，你在上一个托盘里的面包被拿光之后用这个托盘重新装满了面包.
+		<br><br>
+		<<link [[继续|Soup Kitchen]]>><</link>>
+		<br>
+	<</addinlineevent>>
+	<<addinlineevent "kitchen_honest_work" 1>>
+		你花了近乎一小时的时间，才手忙脚乱地将洒出的汤处理干净.
+		<br><br>
+		<<link [[继续|Soup Kitchen]]>><</link>>
+		<br>
+	<</addinlineevent>>
+	<<addinlineevent "kitchen_habit_spill" 1>>
+		<<generate1>><<person1>>
+		一个<<monk>>把汤洒在了<<his>>的长袍上，"笨手笨脚的，"瑞沃嘀咕道:"你去后面把自己冲洗干净，还有你，"瑞沃指着你说道:"你去神殿里给<<him>>拿一套备用的衣服来."
+		<br><br>
+		在你按照指示走到神殿里后，你看见一个在入口处扫地的<<monk>>，你在解释了发生的事情后，<<he>>为<<his>>笨拙的同袍取来了一件新的长袍。
+		<br><br>
+		你回到了施粥所，当你走向后面的房间时，你发现那件被洒上汤的长袍被丢在一扇虚掩的门旁边，而那里面正传出哗啦啦的流水声。
+		<br><br>
+		<<link [[偷看|Soup Kitchen Peek]]>><</link>><<promiscuous1>>
+		<br>
+		<<link [[放下长袍并离开|Soup Kitchen Habit]]>><</link>>
+		<br>
+	<</addinlineevent>>
+	<<addinlineevent "kitchen_orphan" 1>>
+		<<generatey1>><<person1>>
+		你看见一个也住在孤儿院里的<<person>>，"别告诉别人你看到我了，"<<he>>说道:"贝利不喜欢我们在这里吃饭."
+		<br><br>
+		<<endevent>>
+		<<link [[继续|Soup Kitchen]]>><</link>>
+		<br>
+	<</addinlineevent>>
+<</if>>
+<<runeventpool>>
+
+:: Soup Kitchen Investigate
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+你走在拐角处。一个<<person1>><<person>>用<<his>>的前臂将一个<<person3>><<person>>顶在墙上，而一个<<person2>><<person>>则在一旁咧嘴看着。他们转过身面对你。
+<br><br>
+"你瞅啥？"<<person1>><<person>>啐了一口。"滚，否则你就是下一个。"
+<br><br>
+<<link [[用拳头阻止他们|Soup Kitchen Fight]]>><<set $fightstart to 1>><<def 1>><</link>>
+<br>
+<<link [[告诉瑞沃|Soup Kitchen Tell]]>><</link>>
+<br>
+<<link [[无视|Soup Kitchen Ignore]]>><<sub 1>><</link>>
+<br>
+
+:: Soup Kitchen Fight
+
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+	<<set $enemyno to 2>><<set $enemynomax to 2>>
+	<<set $enemyhealthmax -= $NPCList[2].health>>
+	<<set $enemyarousalmax -= 500>>
+	你向<<person>>挥拳。<<He>>举起<<his>>的手臂来保护<<his>>的脸，放开了<<person3>><<person>>并让<<him>>滑到地上。
+	<br><br>
+	<<person1>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Soup Kitchen Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Soup Kitchen Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Soup Kitchen Fight Finish
+
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation "short">>
+	<<tearful>>你抓着<<person3>><<persons>>的手臂跑进厨房。抱着<<his>>的双腿将<<He>>放在烤炉旁的地上。一个<<monk>>蹲在<<him>>身边，让<<him>>到<<his>>的脚边，然后把<<him>>带到后面的房间。
+	<br><br>
+	<<clothesontowel>>
+	<<endcombat>>
+	<<npc River>><<person1>>瑞沃审视着你，审视着你蓬头垢面的状态。<<he>>一声不吭地从你进门的那扇门离开了。你听到了叫喊声。过了一会儿，瑞沃回来了。"你真傻，"<<he>>说。<<Hes>>微笑着。
+	<<glove>><<npcincr River love 1>>
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Soup Kitchen]]>><</link>>
+<<elseif $enemyhealth lte 0>><<famescrap 3>>
+	<<tearful>>你把这对夫妇从你身上推开，抓住那个<<person3>><<persons>>的胳膊跑进厨房。<<He>>蹲坐到炉子旁边的地上，抱着<<his>>的大腿。一位<<monk>>蹲在<<him>>旁边，哄骗<<him>>站了起来，把<<him>>引到后面的房间。
+	<br><br>
+	<<clothesontowel>>
+	<<endcombat>>
+	<<npc River>><<person1>>瑞沃审视着你，看着你衣衫不整的样子，不发一言，从你进来的那扇门离开。你听到喊叫声。不一会儿，瑞沃回来了。"你真够勇敢的，"<<he>>说道。<<His>>的衬衫被撕破了，但依旧面带微笑。
+	<<glove>><<npcincr River love 1>>
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Soup Kitchen]]>><</link>>
+<<else>>
+	你倒在了地上，伤势太重，无法继续。<<person1>><<person>>踩住了那个正试图爬走的<<person3>><<person>>。<<person2>><<person>>看向你。
+	<br><br>
+	"让我们把<<phim>>带上吧，"<<he>>说道。"老板会很高兴的。"
+	<br><br>
+	"好吧，"<<person1>><<person>>说道。"你背着<<phim>>，我把这该死的东西搬上货车。"
+	<br><br>
+	那个<<person2>><<person>>正蹲下身来抬起你，突然<span class="red">一个擀面杖砸在<<his>>的脑袋上。</span><<He>>捂着<<his>>的太阳穴退到一边。瑞沃从你身旁走过，蓝色的眼睛仿佛要在打手身上挖个洞。两名<<set $pronoun to $NPCName[$NPCNameList.indexOf("River")].pronoun>><<monks>>站在<<him>>身侧，每个都拿着一根长金属棒。
+	<br><br>
+	那个<<person2>><<person>>瞥了一眼<<his>>的朋友，看到<<person1>><<him>>早已跑路。<<person2>><<person>>连忙照做。
+	<br><br>
+	<<tearful>>你在瑞沃的帮助下站起身来，同时<<set $pronoun to $NPCName[$NPCNameList.indexOf("River")].pronoun>><<monks>>去帮助那<<person3>><<person>>。
+	<br><br>
+	<<clothesontowel>>
+	<<endcombat>>
+	<<link [[感谢|Soup Kitchen Fight Thank]]>><</link>>
+	<br>
+	<<link [[询问金属棒|Soup Kitchen Fight Rods]]>><</link>>
+<</if>>
+
+:: Soup Kitchen Fight Thank
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+<<npc River>><<person1>>当他们带你回去时候。你感谢着瑞沃和<<monks>>。
+<br><br>
+<<endevent>>
+<<link [[继续|Soup Kitchen]]>><</link>>
+<br>
+
+:: Soup Kitchen Fight Rods
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+<<npc River>><<person1>>
+<<if $speech_attitude is "meek">>
+	"这些棒子看起来很吓人，"你说道。"它们是用来做什么的?"
+<<elseif $speech_attitude is "bratty">>
+	"你有一些看起来很糟糕的武器，"你说道。
+<<else>>
+	"我不知道<<monks>>也携带武器，"你说道。
+<</if>>
+<br><br>
+<<monks>>中的一位笑了。"我不明白你的意思，"<<he>>说道。"瑞沃只是用<<his>>的擀面杖吓走了他们。"
+<br><br>
+当他们带你回到厨房时，你试图探究，但无济于事。
+<br><br>
+<<endevent>>
+<<link [[继续|Soup Kitchen]]>><</link>>
+<br>
+
+:: Soup Kitchen Tell
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+你回到厨房，接近瑞沃。
+<<if $speech_attitude is "meek">>
+	"有..有人受到了威胁，"你说道。"听起来很吓人。"
+<<elseif $speech_attitude is "bratty">>
+	"一对暴徒正在骚扰某人，"你说道。
+<<else>>
+	"有人受到了威胁，"你说。
+<</if>>
+<br><br>
+瑞沃紧张起来，但点点头，向外走去。
+<br><br>
+几分钟后，一个<<person3>><<person>>踉踉跄跄地走进门来，看起来衣衫不整，惊慌失措。<<He>>蹲坐到炉子旁边的地面上，用胳膊抱着<<his>>的腿。一位<<monk>>蹲在<<him>>的面前，连哄带劝终于让<<person>>站起身来，并把<<him>>引到后面的房间。
+<br><br>
+<<endevent>>
+<<npc River>><<person1>>
+又一分钟过去了，瑞沃也回来了。<<His>>的发网不见了，衬衫被撕裂了，而且<span class="red">有鲜血顺着<<his>>的太阳穴流下。</span><<He>>在水池里洗了洗脸。"谢谢你告诉我，"<<he>>对你说道，同时用布把<<himself>>擦干。"有些人不懂礼节。"
+<br><br>
+<<endevent>>
+<<link [[继续|Soup Kitchen]]>><</link>>
+<br>
+
+:: Soup Kitchen Ignore
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+不管发生了什么，都不关你的事，而且可能很危险。你回到厨房。
+<br><br>
+<<endevent>>
+<<link [[继续|Soup Kitchen]]>><</link>>
+<br>
+
+:: Soup Kitchen Peek
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+你把门打开一点，然后偷看。
+<<promiscuity1>>
+那个<<monk>>是完全裸体的，闭着眼睛正在洗澡。<<Hes>>对你的存在浑然不觉。
+<<if $pronoun is "f">>
+	<<He>>用<<his>>肥皂手在<<his>>$NPCList[0].breastsdesc. 他们继续沿着<<his>>肚子, 然后越过<<his>>
+	<<if $NPCList[0].penis isnot "none">>
+		贞操笼。<<He>>拽着它，皱起眉头。
+	<<else>>
+		贞操带。<<He>>拽着它，皱起眉头。
+	<</if>>
+<<else>>
+	<<He>>用<<his>>沾满肥皂的双手在胸膛上涂抹着。双手继续前进，越过<<his>>的腹部和
+	<<if $NPCList[0].penis isnot "none">>
+		贞操笼，限制着<<his>>的$NPCList[0].penisdesc。<<He>>拽着它，皱起眉头。
+	<<else>>
+		贞操带，覆盖着<<his>>的小穴。<<He>>拽着它，皱起眉头。
+	<</if>>
+<</if>>
+你在被看到之前回到了厨房里。
+<br><br>
+那<<monk>>没有花费太久时间，但瑞沃依然责备<<him>>占用了<<his>>的时间。
+<br><br>
+<<endevent>>
+<<link [[继续|Soup Kitchen]]>><</link>>
+<br>
+
+:: Soup Kitchen Habit
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+你把干净的长袍整齐地堆放在门边。
+那<<monk>>几分钟后返回，带着一身肥皂香。瑞沃责怪<<him>>花费了太久时间。
+<br><br>
+<<endevent>>
+<<link [[继续|Soup Kitchen]]>><</link>>
+<br>
+
+:: Soup Kitchen Grope Ignore
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+你无视那<<person>>并继续清洁地板。<<He>>把你的不抗拒当作鼓励，并加倍地进行摸索。
+<br><br>
+你感到很慌乱，但<<he>>并没有试图更进一步。
+<br><br>
+<<endevent>>
+<<link [[继续|Soup Kitchen]]>><</link>>
+<br>
+
+:: Soup Kitchen Grope Walk
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+你站起来，离开这个变态。你稍后会清理这些溢出物。
+<br><br>
+<<person1>>瑞沃看着那块被你放弃的依旧很脏的地板，摇了摇头。
+<br><br>
+<<endevent>>
+<<link [[继续|Soup Kitchen]]>><</link>>
+<br>
+
+:: Soup Kitchen Grope Angry
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+你转过身来，打了那个<<person>>一巴掌，吸引了瑞沃的注意。<<person1>><<He>>注视着你，那个<<person2>><<person>>捂着脸。
+<br><br>
+剩下的一个小时没有发生任何事情。
+<br><br>
+<<endevent>>
+<<link [[继续|Soup Kitchen]]>><</link>>
+<br>
+
+:: Soup Kitchen Closed
+
+<<set $outside to 0>><<set $location to "temple">><<effects>>
+<<if $soup_kitchen_init isnot 1>>
+	你寻找别人告诉你的那座灰色建筑。你发现它隐藏在神殿阴影下的树林中。你尝试进门，但它锁上了。你听说它在<span class="gold"><<ampm 18 00>>到<<ampm 21 00>>之间</span>开放。
+	<br><br>
+<<else>>
+	你走近施粥所，但门是上锁的。你听说它在<span class="gold"><<ampm 18 00>>到<<ampm 21 00>>之间</span>开放。
+	<br><br>
+<</if>>
+<<link [[继续|Wolf Street]]>><</link>>
+<br>

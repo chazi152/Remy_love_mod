@@ -1,0 +1,328 @@
+:: Widgets Clothing caption text [widget]
+
+<<widget "clothingCaptionText">>
+	<<run window.outfitChecks()>>
+	<<if _fullyNaked is false>>
+		<<set _clothingCaptionItems to []>>
+		<<set _finally to ".">>
+		<<set _text_output to "">>
+
+		<<set _wearing to "你" + (_topless ? "<span class='pink'>赤裸着上身</span>, " : "") + "">>
+
+		<<if !_overNaked>>
+			<<clothingCaptionTextOver>>
+		<</if>>
+
+		<<if !_middleNaked>>
+			<<clothingCaptionTextMiddle>>
+		<</if>>
+
+		<<clothingCaptionTextUnder>>
+
+		<<set _text_output to _wearing>>
+		<<if _clothingCaptionItems.length is 1>>
+			<<set _text_output += (_nothingBut ? "只穿着" : "仅穿了")>><<else>><<set _text_output += "穿着">>
+		<</if>>
+
+		<<set _text_output += formatList(_clothingCaptionItems, "和", true,"、") + _finally>>
+		<<print _text_output>>
+
+		<<clothingCaptionTextGenitals>>
+	<</if>>
+	<<clothingCaptionTextNothing>>
+	<<clothingCaptionTextMask>>
+	<br>
+	<<if window.checkForExposedClothing()>>
+		<<clothingCaptionTextStrip>>
+	<</if>>
+
+	<<if $NudeGenderDC gte 0>>
+		<<clothingCaptionTextGender>>
+		<br>
+	<</if>>
+	<<if playerIsPregnant() and playerAwareTheyArePregnant() and playerBellySize() gt 7 or $bellySizeDebug>>
+		<<clothingCaptionTextPreggy>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "pushClothingCaption">>
+	<<set $_output to "">>
+	<<set $_wornItem to $worn[_args[0]]>>
+
+	/* word 1: article, example: "a" or "an" or "a pair of" */
+	<<if def _args[1]>>
+		<<set $_output += _args[1] + "">>
+	<<else>>
+		<<set $_wornItemWord to setup.clothes[_args[0]][clothesIndex(_args[0],$_wornItem)].word>>
+		<<set $_output += ($_wornItemWord isnot "n" ? "一件" : "一条") + "">>
+	<</if>>
+
+	/* word 2: damage, example "frayed" */
+	<<run $_output += window.integrityWord($_wornItem,_args[0])>>
+
+	/* word 3: colour, example: "red" */
+	<<run $_output += window.clothesColour($_wornItem) + "">>
+
+	/* word 4: clothes name, example: "school shirt" */
+	<<set $_output += $_wornItem.cn_name_cap>>
+
+	/* push */
+	<<set _clothingCaptionItems.pushUnique($_output)>>
+<</widget>>
+
+<<widget "clothingCaptionTextOver">><<silently>>
+	<<if $worn.over_upper.name isnot "naked">>
+		<!--Upper and maybe lower-->
+		<<pushClothingCaption "over_upper">>
+	<</if>>
+	<<if $worn.over_lower.name isnot "naked" and !_overOutfit>>
+		<!-- Lower, if not outfit -->
+		<<pushClothingCaption "over_lower">>
+	<</if>>
+<</silently>><</widget>>
+
+<<widget "clothingCaptionTextMiddle">><<silently>>
+	<<if $worn.upper.name isnot "naked">>
+		<!--Upper and maybe lower-->
+		<<pushClothingCaption "upper">>
+	<</if>>
+	<<if $worn.lower.name isnot "naked" and !_middleOutfit>>
+		<!-- Lower, if not outfit -->
+		<<pushClothingCaption "lower">>
+	<</if>>
+<</silently>><</widget>>
+
+<<widget "clothingCaptionTextUnder">><<silently>>
+	<<set $_exposed to (_overNaked and _middleNaked)>>
+
+	<<if _underNaked>>
+		<!--Not wearing-->
+		<<if ($worn.over_upper.name isnot "naked" or $worn.upper.name isnot "naked") and
+		($worn.over_lower.name isnot "naked" or $worn.lower.name isnot "naked")>>
+			<<set _finally to "<span class='purple'>里面什么都没穿。</span>">>
+		<<elseif $worn.over_upper.name is "naked" or $worn.over_lower.name is "naked" or
+		$worn.upper.name is "naked" or $worn.lower.name is "naked">>
+			<<set _finally to "<span class='purple'>还没穿内衣</span>">>
+		<</if>>
+	<<else>>
+		<<if $_exposed>>
+			<<set _wearing to "<span class='pink'>你" + (_topless ? "赤裸着上身，" : "") + "">>
+			<<set _finally to "。</span>">>
+		<</if>>
+		<<if $worn.under_upper.name isnot "naked" and $worn.under_lower.name isnot "naked">>
+			<!--Both-->
+			<<set _nothingBut to $_exposed and _underOutfit>>
+
+			<<pushClothingCaption "under_upper">>
+			<<if !_underOutfit>>
+				<<pushClothingCaption "under_lower">>
+			<</if>>
+		<<elseif $worn.under_upper.name isnot "naked">>
+			<!--Upper only-->
+			<<pushClothingCaption "under_upper">>
+
+			<<set _nothingBut to $_exposed>>
+			<<if !$_exposed and !_bottomless>>
+				<<set _finally to "。<span class='purple'>你没有穿任何内裤。</span>">>
+			<</if>>
+		<<elseif $worn.under_lower.name isnot "naked">>
+			<!--Lower only-->
+			<<set $_pair to ($worn.under_lower.name.last() is "s" ? "一条" : "<<word under_lower>>")>>
+			<<pushClothingCaption "under_lower" $_pair>>
+
+			<<set _nothingBut to $_exposed>>
+			<<if !$_exposed and !_topless and $player.breastsize gte 4 and ($player.gender isnot "m" or $backgroundTraits.includes("crossdresser"))>>
+				<<set _finally to "。<span class='purple'>你没有戴胸罩。</span>">>
+			<</if>>
+		<</if>>
+	<</if>>
+<</silently>><</widget>>
+
+<<widget "clothingCaptionTextGenitals">><<silently>>
+	<<if $worn.genitals.name isnot "naked">>
+		<<if _bottomless>>
+			<<set $_text_output to " <span class='red'>你<<if playerChastity('anus')>>装着护肛板<</if>><<if playerHasButtPlug()>>带$worn.butt_plug.namecap<</if>>的<<genitalsintegrity>>$worn.genitals.cn_name_cap给不了你任何安慰。</span>">>
+		<<else>>
+			<<set $_text_output to "你穿着<<if playerChastity('anus')>>带护肛板的<</if>><<genitalsword>><<genitalsintegrity>>$worn.genitals.cn_name_cap<<if playerHasButtPlug()>>和$worn.butt_plug.namecap<</if>>。">>
+		<</if>>
+	<<elseif playerHasButtPlug()>>
+		<<set $_a to ($worn.butt_plug.name is "anal beads"? "一串": "一个")>>
+		<<set $_text_output to "<br>你戴着$_a<span>$worn.butt_plug.namecap</span>。">>
+	<</if>>
+	<</silently>><<if $_text_output>><<print $_text_output>><</if>>
+<</widget>>
+
+<<widget "clothingCaptionTextMask">>
+	<<if $worn.face.type.includes("mask")>>
+		<br>
+		你的身份被你的<<faceintegrity>>$worn.face.cn_name_cap所遮掩。
+	<</if>>
+<</widget>>
+
+<<widget "clothingCaptionTextNothing">><<silently>>
+	<<if _fullyNaked>>
+		<<if $worn.genitals.name isnot "naked">>
+			<<set $_text_output to "<br>你<<if playerChastity('anus')>>带护肛板<</if>>的<<genitalsintegrity>>$worn.genitals.cn_name_cap不能带给你任何快感。">>
+		<<else>>
+			<<set $_text_output to "你一丝不挂!">>
+		<</if>>
+	<<elseif _bottomless>>
+		<<set $_text_output to "你的下半身一丝不挂！">>
+	<</if>>
+<</silently>><<if $_text_output>><span class="red"><<print $_text_output>></span><</if>><</widget>>
+
+<<widget "clothingstatecompare">>
+	/* One argument, a clothing article whose state you want to compare against its original state. Must be the ENTIRE variable, not .name! */
+	/* Returns the difference between the current and base states. Negative means it's pulled down, positive means it's pulled up. */
+	/* If the clothing was pulled to the side, this returns 0. It would also return 0 if the current state is the base state. */
+	<<set _compare_result to _clothing_levels.indexOf($worn[_args[0]].state) - _clothing_levels.indexOf(setup.clothes[_args[0]][clothesIndex(_args[0],$worn[_args[0]])].state_base)>>
+	<<if $worn[_args[0]].state is "totheside">><<set _compare_result to 0>><</if>>
+<</widget>>
+
+<<widget "clothingCaptionTextStrip">>
+	<<set _captionCount to 0>>
+	<<set _clothing_levels to [0,"ankles","knees","thighs","waist","midriff","chest"]>>
+	<<clothingCaptionExposed "upper">>
+	<<clothingCaptionExposed "lower">>
+
+	<<if _captionCount gte 1>>
+		<br><br> /* insert extra newlines after the caption, if there is one, for better style */
+	<</if>>
+	<<unset _captionCount>>
+<</widget>>
+
+<<widget "clothingCaptionExposed">>
+	<<set $_clothes to {"naked": [], "wet": [], "up": [], "down": [], "totheside": [], "exposed": []}>>
+	<<set $_plural to {"naked": false, "wet": false, "up": false, "down": false, "totheside": false, "exposed": false}>>
+	<<set $_isExposed to false>>
+	<<set $_revealColour to "purple">>
+	<<set $_highestLevelCovered to "">>
+	<<set $_clothingRevealType to {}>>
+	<<set $_outfitType to _args[0]>>
+
+	/* Find which clothes are failing to cover the player */
+	<<for $_i, $_outfitLayer range ["over", "", "under"]>>
+		<<set $_clothing to [$_outfitLayer, $_outfitType].filter(Boolean).join("_")>>
+		<<set _wetstage to $_outfitLayer + $_outfitType + "wetstage">>
+		<<set $_wornClothing to $worn[$_clothing]>>
+
+		<<if $_wornClothing.type.includes("naked")>>
+			<<set $_clothingRevealType[$_clothing] to "naked">>
+			<<continue>>
+		<<elseif $_wornClothing.state isnot setup.clothes[$_clothing][clothesIndex($_clothing,$_wornClothing)].state_base>>
+			<<clothingstatecompare $_clothing>>
+			<<if _compare_result gte 1>>
+				<<set $_clothingRevealType[$_clothing] to "up">>
+			<<elseif _compare_result lte -1>>
+				<<set $_clothingRevealType[$_clothing] to "down">>
+			<<else>>
+				<<set $_clothingRevealType[$_clothing] to "totheside">>
+			<</if>>
+		<<elseif $_wornClothing.exposed is 2>>
+			<<set $_clothingRevealType[$_clothing] to "exposed">>
+		<<elseif V[_wetstage] gte 3>>
+			<<set $_clothingRevealType[$_clothing] to "wet">>
+		<<else>>
+			<<set $_clothingRevealType[$_clothing] to false>>
+			<<set $_highestLevelCovered to $_wornClothing.name>>
+			<<break>> /* don't check clothing below the current layer if this layer is blocking visibility */
+		<</if>>
+
+		<<set $_revealType to $_clothingRevealType[$_clothing]>>
+
+		<<set $_clothes[$_revealType].pushUnique($_wornClothing.name)>>
+		<<set $_plural[$_revealType] to ($_plural[$_revealType] or ($_wornClothing.plural is 1))>>
+		<<set $_isExposed to true>>
+	<</for>>
+
+	<<if $_isExposed>>
+		/* Find which areas are exposed */
+		<<if $_highestLevelCovered is "">>
+			<<silently>>
+			<<if $_outfitType is "upper">>
+				<<breasts>><<set $_undertext to _text_output>>
+			<<else>>
+				<<set $_revealColour to "pink">>
+				<<genitals>><<set $_undertext to _text_output>>
+			<</if>>
+			<</silently>>
+		<<else>>
+			<<set $_undertext to $_highestLevelCovered>>
+		<</if>>
+
+		/* Piece together the caption */
+		<<set _output to "">>
+		<<for $_type range ["wet", "up", "down", "totheside", "exposed"]>>
+			<<if $_clothes[$_type].length lte 0>>
+				<<continue>>
+			<</if>>
+			<<set $_verbIsPlural to ($_clothes[$_type].length gte 2 or $_plural[$_type])>>
+			<<switch $_type>>
+				<<case "wet">>			<<set $_verb to ($_verbIsPlural ? "湿透了，" : "湿透了，")>>
+				<<case "exposed">>		<<set $_verb to ($_verbIsPlural ? "已经被拉到一边，" : "已经被拉到一边，")>>
+				<<case "up">>			<<set $_verb to ($_verbIsPlural ? "已经被拉了起来，" : "已经被拉了起来，")>>
+				<<case "down">>			<<set $_verb to ($_verbIsPlural ? "已经被拉了下来，" : "已经被拉了下来，")>>
+				<<case "totheside">>	<<set $_verb to ($_verbIsPlural ? "已经被拉到边上，" : "已经被拉到边上，")>>
+			<</switch>>
+
+			<<if _output isnot "">><<set _output += "而且你的">><</if>>
+			<<set _output += formatList($_clothes[$_type], "和", true,"、") + $_verb>>
+		<</for>>
+
+		/* Print the caption */
+		<<set _captionCount += 1>>
+		<br>
+		你的_output<span @class="$_revealColour">露出了你的$_undertext。</span>
+	<</if>>
+<</widget>>
+
+<<widget "clothingCaptionTextGender">><<silently>>
+	<<if $player.gender isnot "f" and $player.gender_appearance is "f">>
+		<<if $breastindicator is 1 and $player.perceived_breastsize gt 1>>
+			<<set $_text_output to "你暴露在外的乳房会让别人以为你是个女孩！">>
+		<<elseif $exposed gte 2>>
+			<<set $_text_output to "你的样子在别人的眼里就是个女孩！">>
+		<<else>>
+			<<set $_text_output to "你的衣着会让别人认为你是个女孩！">>
+		<</if>>
+	<<elseif $player.gender isnot "m" and $player.gender_appearance is "m">>
+		<<if $breastindicator is 0 and $worn.upper.exposed is 2 and $worn.under_upper.exposed gte 1 and $player.perceived_breastsize lte 1>>
+			<<set $_text_output to "你暴露在外的平胸会让别人以为你是个男孩！">>
+		<<elseif $exposed gte 2>>
+			<<set $_text_output to "你的样子在别人的眼里就是个男孩！">>
+		<<else>>
+			<<set $_text_output to "你的穿搭方式会让别人认为你是个男孩！">>
+		<</if>>
+	<</if>>
+<</silently>><<if $_text_output>><span class="pink"><<print $_text_output>></span><</if>><</widget>>
+
+<<widget "clothingCaptionTextPreggy">><<silently>>
+	<<if playerBellyVisible()>>
+		<<set $_textCol to "pink">>
+		<<if _fullyNaked>>
+			<<set $_text_output to `你完全没穿衣服，让你的<<bellyDescription "pc">>更明显.`>>
+		<<elseif $worn.upper.type.includes("naked") and $worn.over_upper.type.includes("naked")>>
+			<<if $worn.under_upper.type.includes("naked")>>
+				<<set $_text_output to `你暴露的上半身，让你的<<bellyDescription "pc">>更明显.`>>
+			<<else>>
+				<<set $_text_output to `你的$worn.under_upper.cn_name_cap并不能覆盖你的<<bellyDescription "pc">>.`>>
+			<</if>>
+		<<elseif $worn.upper.type.includes("bellyShow") and $worn.over_upper.type.includes("naked")>>
+			<<set $_text_output to `你的$worn.upper.cn_name_cap展示出你的<<bellyDescription "pc">>.`>>
+		<<elseif $worn.upper.type.includes("bellyHide") and $worn.over_upper.type.includes("naked")>>
+			<<set $_text_output to `你的<<bellyDescription "pc">>太大了，以至于你的$worn.upper.cn_name_cap无法遮挡.`>>
+		<<else>>
+			<<set $_text_output to `你的<<bellyDescription "pc">>清晰可见`>>
+		<</if>>
+	<<else>>
+		<<set $_textCol to "blue">>
+		<<if $worn.upper.type.includes("bellyHide")>>
+			<<set $_text_output to `你的$worn.upper.cn_name_cap遮住了你的<<bellyDescription "pc">>.`>>
+		<<elseif !$worn.over_upper.type.includes("naked")>>
+			<<set $_text_output to `你的$worn.over_upper.cn_name_cap遮住了你的<<bellyDescription "pc">>。`>>
+		<<else>>
+			<<set $_text_output to `你的<<bellyDescription "pc">>是看不见的.`>>
+		<</if>>
+	<</if>>
+<</silently>><<if $_text_output>><span @class=$_textCol><<print $_text_output>></span><</if>><</widget>>

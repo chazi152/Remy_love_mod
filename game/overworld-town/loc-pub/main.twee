@@ -1,0 +1,755 @@
+:: Widgets Pub [widget]
+
+<<widget "landryoptions">>
+	<<if $blackmoney gte 1>>
+		<<link [[出售赃物|Pub Sell]]>><</link>>
+		<br>
+	<</if>>
+	<<if $spray lt $spraymax and $money gte 250000>>
+		<<link [[购买防狼喷雾 (£2500)|Pub Spray]]>><<spray 1>><<set $money -= 250000>><</link>>
+		<br>
+	<</if>>
+	<<if $crime gte 500 and !$pubtask>>
+		<<link [[寻求帮助，消除你的犯罪记录|Pub Task]]>><</link>>
+		<br>
+	<</if>>
+	<<if $police_hack is 1>>
+		<<link [[求助如何黑入警用电脑|Pub Hack]]>><</link>>
+		<br>
+	<<elseif $police_hack is 4 and $money gte 30000>>
+		<<link [[购买警察电脑新的密码 (£ 300)|Pub Hack]]>><<set $money -= 30000>><</link>>
+		<br>
+	<<elseif $pub_hack_job is 3 and $hacker_tasks.length gte 2>>
+		<<link [["传递黑客的消息"|Pub Hack]]>><<set $pub_hack_job to 4>><</link>>
+		<br>
+	<</if>>
+	<<if $pubtask2 is 1>>
+		<<link [[交出黑匣子|Pub Box]]>><<set $pub_task_stat++>><</link>>
+		<br>
+	<</if>>
+	<<if $estate_fence is "quest" and _estate_asked isnot true>>
+		<<link [[询问关于闯入雷米庄园的问题|Pub Estate]]>><</link>>
+		<br>
+	<</if>>
+	<<if $pubfame>>
+		<<if $pubfame.status is "ready">>
+			<<link [[为名声寻求帮助|Pub Fame]]>><<set $phase to 0>><</link>>
+			<br>
+		<<elseif $pubfame.status is "hiding">>
+			<<link [[为名声寻求帮助|Pub Fame Hiding]]>><</link>>
+			<br>
+		<<elseif $pubfame.status is "accepted">>
+			<<link [[请求米奇帮个忙|Pub Fame]]>><<set $phase to 0>><</link>>
+			<br>
+		<<elseif $pubfame.status is "done">>
+			<<link [[和米奇谈谈关于你的请求|Pub Fame]]>><<set $phase to 0>><</link>>
+			<br>
+		<<elseif $pubfame.intro and $hacker_tasks.length gte 2>>
+			<<link [[为名声寻求帮助|Pub Fame Return]]>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+	<br>
+<</widget>>
+
+:: Pub
+<<set $outside to 0>><<set $location to "pub">><<effects>><<set $bus to "harvest">>
+
+<<if $exposed gte 1>>
+	你躲在手推车里以遮掩你的<<lewdness>>。幸运的是，每个人要么在忙自己的事，要么已经喝到烂醉如泥了.总而言之，现在没有任何人注意到你。
+	<br><br>
+
+	<<link [[寻找一些可以遮住你的东西|Pub Exposed]]>><</link>>
+	<br>
+	<<link [[从后面溜走|Industrial alleyways]]>><</link>>
+	<br>
+<<else>>
+	<<if $pubbooze is "herbal">>
+		<<set $pubbooze to 0>>
+		酒保为你倒了一杯当地生产的烈酒。当你喝下之后，你感觉整个世界都扭曲了起来。
+	<<elseif $pubbooze is "booze">>
+		<<set $pubbooze to 0>>
+		酒保为你倒了一杯便宜但却很受欢迎的饮料。
+	<<else>>
+		你走进酒吧，这里一如往常人来人往。
+	<</if>>
+	<<if $arousal gte $arousalmax>>
+		<<orgasmLocation "pub">>
+	<</if>>
+	<br><br>
+	<<if $averyPub is 1 and (Time.dayState is "day" or Time.dayState is "dusk")>>
+		<<npc Avery>><<person1>>
+		<<loadNPC 1 avery_sidepiece>><<person2>>
+		你保持低调姿态寻找着艾弗里。不一会，你就看见一个<<person>>正和艾弗里在吧台边聊得火热。
+		你认出了那个<span class="red"><<person>>是孤儿院的孤儿。</span>
+		<br><br>
+		艾弗里倾身将一只手放在<<his>>的大腿上，这让<<him>>紧张了起来。随后<<person>>突然站了起来，找了个借口后就朝厕所走了过去。
+		<br><br>
+		<<link [[去洗手间|Avery Dismissal Restroom]]>><</link>>
+		<br>
+		<<link [[去吧台边|Avery Dismissal Bar]]>><</link>>
+		<br>
+	<<elseif ($fame.bestiality gte 400 or $fame.rape gte 400 or $fame.prostitution gte 400 or $fame.sex gte 400 or $fame.exhibitionism gte 400) and !$pubfame>>
+		<<set $pubfame to {seen: [], tasksDone: []}>><<set $fameDecay to {}>><<set $fameDecayTimer to {}>>
+		<<generate1>><<person1>>
+		一只手从后面落在你的肩膀上。"你是个大忙人呢，"一个<<person>>在你耳边说道，你可以闻到这家伙满嘴的酒味。"别以为我不认识你，你在镇上可是大名鼎鼎呢.
+		<<if $fame.bestiality gte 400>>
+			不过没有看到一群狗在和你做爱真是让人有些惊讶."
+		<<elseif $fame.sex gte 400 or $fame.rape gte 400 or $fame.prostitution gte 400>>
+			不过没有看到你在被粗暴强奸真是让人有些惊讶呢."
+		<<else>>
+			看到你穿上衣服真是让人有些不适应呢."
+		<</if>>
+		<<stress 3>><<gstress>>
+		<br><br>
+		<<His>>握紧了搭在你肩膀上的手，"我估计现在是时候让我来爽爽了。<<if $fame.prostitution gte 400>>希望你不介意我不付钱吧。<<elseif $fame.rape gte 400>>你喜欢被粗暴对待，是吗？虽然这是我听说的。<</if>>来吧，亲爱的。"
+		<br><br>
+		<<link [[继续|Pub Fame Intro]]>><</link>>
+	<<elseif $pubwhore gte 10 and $pubattack isnot 1>>
+		<<set $pubattack to 1>>
+		<span class="red">你突然被麻袋套住脑袋</span>，两双手臂从后面抓住了你，随后将你拖出酒吧并塞进货车里。
+		<br><br>
+		<<link [[继续|Brothel Punishment]]>><</link>>
+		<br>
+	<<elseif $pubwhore gte 20>>
+		<<set $pubwhore to 10>>
+		<<generate1>><<generate2>><<person1>>一个<<person>>将你推到墙上，一个<<person2>><<person>>站在<<person1>><<him>>旁边。酒吧里的工作人员和顾客都将目光移开。 "<span class="red">是老板派我们来的，</span>"<<person1>><<person>>说道： "老板说你太不听话了，要我们将你带过去。"<<He>>瞥了一眼吧台。 "还有，不要做无谓的挣扎和求救，没有人会帮助你的。"
+		<br><br>
+		<<if $money gte 50000>>
+			<<link [[贿赂 (£500)|Pub Accost]]>><<set $phase to 0>><</link>>
+			<br>
+		<</if>>
+		<<link [[反抗|Pub Accost Fight]]>><<set $fightstart to 1>><</link>>
+		<br>
+		<<link [[跟着去见老板|Pub Accost]]>><<set $phase to 1>><</link>>
+		<br>
+	<<else>>
+		<<ind>><<link [[找兰德里|Pub Landry]]>><<endevent>><</link>>
+		<br>
+		<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+			<span class="blue">你知道自己怀孕了，不能喝酒。</span>
+			<br>
+		<<else>>
+			<<if $money gte 1000>>
+				<<beericon>><<link [[普通的酒（£10 0:05）|Pub]]>><<endevent>><<set $money -= 1000>><<set $pubbooze to "booze">><<alcohol 120>><<pass 5>><</link>><<ggalcohol>>
+				<br>
+			<</if>>
+			<<if $money gte 2000>>
+				<<ind>><<link [[草药酒（£20 0:05）)|Pub]]>><<endevent>><<set $money -= 2000>><<set $pubbooze to "herbal">><<pass 5>><<alcohol 60>><<hallucinogen 20>><</link>><<galcohol>><<ghallucinogens>>
+				<br>
+			<</if>>
+		<</if>>
+		<<if $farm>>
+			<<if $farm.tower gte 1 and !$farm.tower_guard and $farm.tower_guard_can_hire>>
+				<<ind>><<link [[为你的农场寻找守卫 (0:30)|Pub Guard]]>><<endevent>><<pass 30>><</link>>
+				<br>
+			<</if>>
+		<</if>>
+		<br>
+		<<generate1>><<person1>>你看到一个<<person>>正独自坐在吧台那里。
+		<br>
+		<<link [[调情 (0:05)|Pub Flirt]]>><<pass 5>><<set $pubdrink to 0>><</link>><<promiscuous1>>
+		<br>
+		<<link [[寻找其他人 (0:01)|Pub]]>><<endevent>><<pass 1>><</link>>
+		<br>
+
+		<<if Time.weekDay is 1 and Time.hour gte 21 and C.npc.Whitney.state is "active">>
+			<br>
+			一些坏学生占据了一张桌子，将整个酒馆地气氛带到了狂欢之中。
+			<<if $weekly.whitneyPub>>
+				<span class="purple">你不应该进一步试图去激怒那些家伙。</span>
+			<<else>>
+				你看见惠特尼也坐在那些人中间.
+				<<if $NPCName[$NPCNameList.indexOf("Whitney")].love gte 10>>
+					<span class="teal"><<nnpc_He "Whitney">>坐在<<nnpc_his "Whitney">>的位置上看着你.</span>
+				<<else>>
+					<span class="blue">即使<<nnpc_he "Whitney">>看见你，<<nnpc_he "Whitney">>也不表现出什么。</span>
+				<</if>>
+				<br>
+				<<link [[走过去|Whitney Pub Approach]]>><<endevent>><<set $weekly.whitneyPub to 1>><<set $phase to 0>><</link>>
+			<</if>>
+			<br>
+		<</if>>
+
+		<br><br>
+		<<link [[离开|Harvest Street]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Pub Intro
+
+<<set $outside to 0>><<set $location to "pub">><<effects>><<set $bus to "harvest">>
+你走进酒吧，这里的装潢总是会给人一种舒适质朴的感觉。而墙上装饰着的旧农具，则是对附近历史悠久的农业文化的致敬。
+<<if Time.dayState is "night">>
+	尽管已经很晚了，但这个地方的总是人潮涌动，所以很难找到位置坐下。
+<<else>>
+	这个地方的总是人潮涌动，所以很难找到位置坐下。
+<</if>>
+<br><br>
+<<npc Landry>><<person1>>
+<<if $pronoun is "m">>
+	"我从没见过你，"你旁边响起一个男人的声音。 你扭头看去，<<He>>有一头黑色的短发，穿着灰色的毛衣和深色的裤子。在这样的地方，像这样的家伙一抓一大把。 "你愿意和我一起去个安静的地方吗？我有一个建议给你。"
+	<br><br>
+<<else>>
+	"我从没见过你，"你旁边响起一个女人的声音。 你扭头看去，<<He>>有一头齐肩的黑发，穿着灰色的衬衫和深色的裤子。在这样的地方，像这样的家伙一抓一大把。 "你愿意和我一起去安静的地方吗？我有一个提议建议给你。"
+	<br><br>
+<</if>>
+考虑到是在这样的公共场合，你同意了请求。在你同意之后，<<He>>将你带到靠一处近酒吧后厅的地方，这里有张桌子，你有些奇怪。虽然这里有些隐蔽，但也不至于在人满为患的酒吧里无人就座。 就在你百思不得其解时，<<He>>坐在了桌子旁，见此，你只好坐到另一边。而在你<<he>>都坐下之后，你意识到这家伙其实身材修长，但被<<his>>那略显朴素宽松的衣服所掩盖住了。
+<br><br>
+"开门见山地直说吧，"<<he>>突然说道。"我知道你很需要钱。别问我是怎么知道的，我有自己的消息途径。我想我能够帮助你，如果你得到任何不知道如何处理的珠宝或其他物品，你都可以来找我。我会帮你销赃的。"
+<br><br>
+<<He>>盯着你的肩膀，好像在确定是否隔墙有耳。 "不管怎么说，这都是后面的话了，我想说的就这么多。"<<He>>站起身并伸出<<his>>的手。 "至少请记住我，当你想找我时，问一下酒吧的工作人员，他们知道在哪里可以找到我，还有，我的名字是兰德里。"
+<<set $pubintro to 1>>
+<br><br>
+<<link [[离开|Pub]]>><<endevent>><</link>>
+<br>
+
+:: Pub Landry
+
+<<set $outside to 0>><<set $location to "pub">><<effects>><<set $bus to "harvest">>
+
+<<if $phase is 1>>
+	<<endevent>><<npc Landry>><<person1>>
+	你走回兰德里坐着的那张桌子，"你现在有什么计划么？"<<he>>问道。
+<<else>>
+	<<npc Landry>><<person1>>你和酒保说要找兰德里，酒保点点头，随后示意你坐在之前的那个位置。而你刚坐下，兰德里就过来并坐在了你的对面。
+	<br><br>
+
+	"你有什么东西要给我吗?"<<he>>问道。
+	<<if $pubfame>>
+		<<if $pubfame.status is "finished">>
+			"如果你在找我们的共同朋友，那你要等一段时间，虽然那家伙确实很忙，但其还是愿意<span class="gold"><<if $pubfame.timer gt 1>>在<<number $pubfame.timer>>天后<<else>>明天<</if>>见你</span>."
+		<<elseif $pubfame.status is "hidingKnown">>
+			"如果你在找我们的共同朋友，那家伙还在隐藏自己，但其还是愿意<span class="gold"><<if $pubfame.timer gt 1>>在<<number $pubfame.timer>>天后<<else>>明天<</if>>见你</span>."
+		<</if>>
+	<</if>>
+<</if>>
+<br><br>
+
+<<landryoptions>>
+<<link [[离开|Pub]]>><<endevent>><</link>>
+<br>
+
+:: Pub Spray
+
+<<set $outside to 0>><<set $location to "pub">><<effects>><<set $bus to "harvest">>
+你将钱放在桌子上，兰德里则是拿出一个小罐子来交换。
+<<gspray>>
+<br><br>
+<<if $pubspray isnot 1>>
+	<<set $pubspray to 1>>
+	"对不起，请先掏钱，"<<he>>说道。"这玩意的配料很难找到。"
+	<br><br>
+<</if>>
+<<landryoptions>>
+<<link [[离开|Pub]]>><<endevent>><</link>>
+<br>
+
+:: Pub Sell
+
+<<set $outside to 0>><<set $location to "pub">><<effects>><<set $bus to "harvest">>
+<<if $blackmoney lt 100>>
+	你将东西放在桌子上，兰德里用专业的眼光评估着它们的价值。"很好，如果你以后还有类似的东西的话，你知道在哪里找我。"
+	<br><br>
+<<elseif $blackmoney lt 500>>
+	你将东西放在桌子上，兰德里用专业的眼光评估着它们的价值。"太棒了，如果你以后还有类似的东西的话，你知道在哪里找我。"
+	<br><br>
+<<else>>
+	你将东西放在桌子上，兰德里用专业的眼光评估着它们的价值。"这次你带来的东西非常不错，但我希望你没有被条子盯上，如果你需要帮忙"擦屁股"的话，你知道在哪里找我。"
+	<br><br>
+<</if>>
+你获得了<span class="gold">£<<print $blackmoney>>.</span>
+<<set $money += $blackmoney * 100>><<set $blackmoney to 0>>
+<br><br>
+<<link [[离开|Pub]]>><<endevent>><</link>>
+<br>
+
+:: Pub Task
+
+<<set $outside to 0>><<set $location to "pub">><<effects>><<set $bus to "harvest">>
+
+<<if $pubstage is undefined>>
+	"我可以帮你，"兰德里说着，斜靠在旁，"但我需要你也帮我个忙，跟钱没有任何关系。我在等一个包裹，而它一直没到，我需要你帮我找到它。幸好的是，我正知道能在哪找到它，那上面装了GPS。<span class="gold">他在镇旁的森林深处。"</span>
+	<br><br>
+	"把它给我，我会帮你消除一些较轻的罪行记录。记住了，这是一个黑匣子。你不应该把它与任何岩石或树枝混淆。哦，记得在森林里小心行事，有的人永远的消失在那片森林里。"
+	<br><br>
+	<<set $pubtask to "forest">>
+	<<set $pubstage to 1>>
+	<<link [[离开|Pub]]>><<endevent>><</link>>
+	<br>
+<<elseif $pubstage is 1>>
+	"我能再帮你一次，"兰德里说着，斜靠在旁，"但我有另一个活要给你。又有个包裹没能运达，<span class="gold">而这件丢失在了荒原里</span>，离镇子有些距离。你需要从丰收街那边过去。"
+	<br><br>
+	"把它给我，我会帮你消除一些较轻的罪行记录。这是另一个黑匣子。哦，记得在荒原里小心行事，虽然我并不相信怪物的传说，但是一个迷信故事能口口相传这么多年的话，我相信那就可能并不是无稽之谈。"
+	<br><br>
+	<<set $pubtask to "moor">>
+	<<unset $pubstage>>
+	<<link [[离开|Pub]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Pub Box
+
+<<set $outside to 0>><<set $location to "pub">><<effects>><<set $bus to "harvest">>
+"就是这个！你真是我的幸运星啊！"<<He>>仔细地检查起了盒子， "我希望这不会太麻烦，不过你放心，我会完成答应你的事情。我会帮忙消除大部分的记录。"<<He>>站了起来。 "现在，请原谅我的失礼，我有一些私人的事情要去做。"
+<br><br>
+<<unset $pubtask>>
+<<unset $pubtask2>>
+<<unset $pubtasksetting>>
+<<crimeup -10000>>
+<<link [[离开|Pub]]>><<endevent>><</link>>
+<br>
+
+:: Pub Hack
+<<set $outside to 0>><<set $location to "pub">><<effects>><<set $bus to "harvest">><<set $phase to 1>>
+<<if $police_hack is 1>>
+	<<if $pubfame and !$pubfame.intro>>
+		"黑进警察的电脑？" 兰德里斜倚着问道。"我喜欢你的行事风格.
+		<<if $pubfame.status is "hiding">>
+			<<set $pubfame.status to "hidingKnown">>
+			在这方面我帮不了你，而且不幸的是<span class="red">我们的朋友现在有别的事在忙.</span>那家伙得躲起来，不让那些坏人找到，这全是因为有人泄露关于那家伙的重要信息。"
+			<<stress 12>><<ggstress>>
+			<br><br>
+
+			<<He>>在你想说什么之前摇了摇头，别道歉，我可不想去被那些警察抓住.等那个家伙安定下来，我们就可以重新联系上了，你只要等到<span class="gold"><<if $pubfame.timer gt 1>><<number $pubfame.timer>>天后<<else>>明天<</if>>就可以了</span>"
+			<br><br>
+
+			<<link [[离开|Pub]]>><<endevent>><</link>>
+		<<elseif $pubfame.status is "hidingKnown">>
+			我在那方面帮不了你，而且不幸的是，我们的朋友还在努力隐藏自己的位置。不过，一旦那家伙安顿下来，你就可以试图与其联系上。"
+			<br><br>
+
+			<<link [[离开|Pub]]>><<endevent>><</link>>
+		<<else>>
+			<<set $police_hack to 4>>
+			这并不是我所擅长的事情，但我想我知道谁能够帮你."<<He>>环顾了一圈四周，在确认没有人看向这边后,用手指轻轻地指了一下旁边的门. "<span class="teal">我们共同的朋友应该能帮上你的忙.</span>"
+			<br><br>
+
+			你敲了敲门. "是我."
+			<br><br>
+
+			'米奇'将门打开一条缝:"嘿，我偷听到你和兰德里的谈话。警察的密码？简单，但你要付出代价.<<printmoney 30000>>。" 米奇似乎对你惊讶的表情有些不满："干嘛，我也需要现金的，人情又不能当饭吃。"
+			<br><br>
+
+			<<if $money gte 30000>>
+				<<link [[支付 (£300)|Pub Hack Deal Mickey]]>><<set $police_hack to 5>><<set $phase to 1>><<set $money -= 30000>><</link>>
+				<br>
+				<<link [[不支付|Pub Hack Deal Mickey]]>><<set $police_hack to 4>><<set $phase to 2>><</link>>
+			<<else>>
+				你没有足够的钱。
+				<<link [[继续|Pub Hack Deal Mickey]]>><<set $police_hack to 4>><<set $phase to 2>><</link>>
+			<</if>>
+		<</if>>
+	<<else>>
+		"黑进警察的电脑？" 兰德里斜倚着问道。"我喜欢你的行事风格，但如果你想找我帮忙做网络方面的事，那你就不太走运了。"<<He>>搓着<<his>>的下巴在思考着，然后突然像是想到了什么，开口说道:"有一个人，
+		<<if $pubfame and $pubfame.intro>>
+			还记得那个米奇吗？你因为名声问题来找我时，我指给你的那个黑客，那家伙应该能把事情办好。"
+		<<else>>
+			<span class="teal">那个家伙住在宅邸街的孤儿院里.</span>那家伙是个电脑天才，名字好像是米奇，MIKU?反正是差不多的名字."
+			<br><br>
+
+			你想起来兰德里说的是谁了，但你从未听说过那家伙是个电脑天才，看来这家伙的保密措施做得很好。
+			<br><br>
+
+			"最好的期望就是，"兰德里继续说道："找到这个孤儿，然后如果你能说服那家伙来和我一起工作的话，我会给你一笔钱。只是，一定不要踩到贝利的痛脚。"<<He>>笑着说道，"你知道该怎么做的。"
+		<</if>>
+		<br><br>
+
+		<<link [[交易|Pub Hack Deal]]>><<set $police_hack to 2>><<if $pub_hack_job lte 1>><<set $pub_hack_job to 1>><</if>><<set $phase to 1>><</link>>
+		<br>
+		<<link [[拒绝交易|Pub Hack Deal]]>><<set $phase to 2>><</link>>
+		<br>
+	<</if>>
+<<elseif $police_hack is 4>>
+	"当然，"兰德里说道， "给我10分钟。"
+	<br><br>
+
+	在你观察酒吧的其他客人时，兰德里走了回来。
+	<br>
+	"给你，"兰德里说道:"一个新的警察电脑密码，向我们共同的朋友致谢吧。"
+	<br><br>
+	<<set $police_hack to 5>>
+	<<link [[离开|Pub]]>><<endevent>><</link>>
+	<br>
+<<else>>/*Was elseif $pub_hack_job is 4*/
+	"米奇来过了，"兰德里说道。"那家伙好像说你有一张SD卡？"
+	<br><br>
+	你交出了SD卡。作为回报，兰德里给了你一个信封，里面是钱和一张写着潦草字的卡片。
+	<br><br>
+	"谢谢，这是警察电脑的密码，另附£500，我非常欣赏你所展现出的才能，我将来可能再与你合作。"
+	<br><br>
+	"还有这个，"<<he>>说着的同时掏出一个U盘。 "这里面装着一种病毒，它可以破坏电脑的系统。这让它会引起一些麻烦，或者让过去的某些麻烦消失，总之祝你好运。"
+	<br><br>
+	<<set $money += 50000>><<set $police_hack to 5>><<set $mickeyPub to 2>>
+	<<link [[离开|Pub]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Pub Hack Deal
+<<set $outside to 0>><<set $location to "pub">><<effects>><<set $bus to "harvest">>
+
+<<if $phase is 1>>
+	"好极了，祝你马到成功。"
+<<elseif $phase is 2>>
+	"那我就帮不了你了，只能祝那台电脑好运了。"
+<</if>>
+<br><br>
+<<link [[继续|Pub]]>><<endevent>><</link>>
+
+:: Pub Hack Deal Mickey
+<<effects>>
+<<if $phase is 1>>
+	"太好了。" 米奇突然关上了门，然后又打开了门。"对不起，你还要等几分钟，我不是在骗你的钱。" 说完之后米奇再次关上了门。
+	<br><br>
+
+	你趁此观察了一会儿其他的酒吧顾客，不一会，米奇就回来了。
+	<br>
+	"给，"米奇说着的同时递给你一个装有卡片的信封，上面还写着一个字，同时递过来的还有一个U盘。"这是个病毒，你可以用它来破坏整个系统，但是你最好只是把它当做最终手段，因为如果你这样做的话，你将需要一个新的密码。"
+<<elseif $phase is 2>>
+	米奇突然关上了门。"如果你改变主意的话，就和兰德里谈谈。"这家伙隔着门对你说道。
+<</if>>
+<br><br>
+<<link [[继续|Pub]]>><<endevent>><</link>>
+:: Pub Estate
+<<effects>>
+
+当你提到庄园时，兰德里本来微咪的眼神一下子变得严肃了起来。<<He>>用冷酷的眼神看着你说完。"<span class="pink">£2000,</span>"<<he>>说道."不过这个钱不是给我的，而是给能带你进去的人。那里是十分冒险的，你要和这个小镇的最顶层的那些家伙打交道。不过<<nnpc_he Wren>>会将你带进去的。"
+<br><br>
+<<set _estate_asked to true>>
+
+<<if $money gte 200000>>
+	<<link [[付钱 (£2000)|Pub Estate Pay]]>><<set $money -= 200000>><</link>>
+	<br>
+<<else>>
+	你负担不起这笔费用。
+	<br>
+<</if>>
+<br>
+
+<<landryoptions>>
+<<link [[离开|Pub]]>><<endevent>><</link>>
+<br>
+
+
+:: Pub Estate Pay
+<<effects>>
+
+你将钱整齐地码在桌子上。
+<<set $estate_fence to "landry">>
+<<if currentSkillValue('skulduggery') gte 200>>
+	这些钱马上就被兰德里收走了。
+<<else>>
+	这些钱在你眼前一下子就消失了。
+<</if>>
+"我会打电话的，"<<he>>说道，"那家伙应该在你过去的时候就在那里了。"
+<br><br>
+
+<<landryoptions>>
+<<link [[离开|Pub]]>><<endevent>><</link>>
+<br>
+
+:: Pub Guard
+<<effects>>
+
+<<generate1>><<set $NPCList[0].skills.security to random(1, 600)>><<npcClothesName $NPCList[0] "wildsFlannel">>
+<<generate2>><<person2>>
+你问老板是否认识需要工作的人，<<He>>指了指一个<<person1>><<person>>，
+<<if $NPCList[0].traits.includes("relaxed")>>
+	<<He>>正斜靠在窗户附近，在你走过去的时候，<<He>>将头抬了起来。 "我能怎么帮你？"<<he>>指着对面的座位说道。
+	<br><br>
+
+	<<if $speech_attitude is "meek">>
+		"我...我需要护卫来保护我的农场，"你说道。 "一个能在晚上工作的人。"
+	<<elseif $speech_attitude is "bratty">>
+		"我想为我的农场配备护卫，"你说道， "先说好，安排的是夜班工作，你有兴趣吗？"
+	<<else>>
+		"我正在为我的农场寻找安全保障，"你说道。 "一个可以通宵工作的人。"
+	<</if>>
+	<br><br>
+
+	<<person>>喝着<<his>>的饮料回应道: "听起来很有趣，但是你也需要付出相应的代价。"
+	<br><br>
+<<elseif $NPCList[0].traits.includes("sociable")>>
+	<<He>>正和朋友坐在一起聊天。你必须轻拍<<his>>的肩膀才能引起<<his>>的注意。
+	<br><br>
+
+	<<He>>同意和你坐在另一张桌子上。 "所以，你想要些什么？"<<he>>问道。
+	<br><br>
+
+	<<if $speech_attitude is "meek">>
+		"我...我需要护卫来保护我的农场，"你说道。 "一个能在晚上工作的人。"
+	<<elseif $speech_attitude is "bratty">>
+		"我想为我的农场配备护卫，"你说道， "先说好，安排的是夜班工作，你有兴趣吗？"
+	<<else>>
+		"我正在为我的农场寻找安全保障，"你说道。 "一个可以通宵工作的人。"
+	<</if>>
+	<br><br>
+
+	"安全？我敢打赌这很无聊，但工作就是工作。"
+	<br><br>
+
+<<elseif $NPCList[0].traits.includes("brooding")>>
+	<<He>>正一个人坐在黑暗的角落里。 而在你看过去时，<<Hes>>已经在盯着你看了。
+	<br><br>
+
+	你坐在<<him>>对面的座位上。
+	<<if $speech_attitude is "meek">>
+		"我-我需要-"
+	<<elseif $speech_attitude is "bratty">>
+		"我在看-"
+	<<else>>
+		"我正在寻找-"
+	<</if>>
+	<br>
+	"我会做的，"<<person>>打断了你接下来要说的话。<<He>>笑道: "别这样看我，你也不是那么不起眼，我们商量一下雇佣的条件吧。"
+	<br><br>
+
+<<else>>
+	试图在酒馆里搭讪一个<<print maleChance($pronoun) gte random(1, 100) ? "男孩" : "女孩">>。<<His>>的猎物走开了，留下<<him>>靠在柜台上。你占了那个空位。
+	<br><br>
+
+	而<<His>>径直向你走来，"你看起来也挺不错的，"<<person>>说着的同时上下打量着你。
+	<br><br>
+
+	<<if $speech_attitude is "meek">>
+		"我...我需要护卫来保护我的农场，"你说道。 "一个能在晚上工作的人。"
+	<<elseif $speech_attitude is "bratty">>
+		"我想为我的农场配备护卫，"你说道， "先说好，安排的是夜班工作，你有兴趣吗？"
+	<<else>>
+		"我正在为我的农场寻找安全保障，"你说道。 "一个可以通宵工作的人。"
+	<</if>>
+	<br><br>
+
+	"农场？"<<he>>问道，随后耸了耸肩。 "只要不让我干农活我就接受，是谁让我是个穷光蛋呢？"
+	<br><br>
+
+<</if>>
+
+<<guard_terms>>
+<br><br>
+
+<<link [[雇佣|Pub Guard Accept]]>><<famebusiness 2>><</link>>
+<br>
+<<link [[拒绝|Pub]]>><<endevent>><</link>>
+<br>
+
+
+
+:: Pub Guard Accept
+<<effects>>
+
+
+<<if $NPCList[0].traits.includes("relaxed")>>
+	"这是为了长久的合作，"<<person>>说着的同时喝掉了<<his>>手中的酒。 "我的名字是<span class="gold"><<print $NPCList[0].name>></span>，你只要把去农场的路指出来就行了。"
+	<br><br>
+
+	你指出前往农场的路线。"好的，我会在黄昏时赶到，然后一直坚守岗位直到黎明。嗯，感觉很容易。"
+	<br><br>
+
+	<<He>>踉跄着走出了酒吧。
+	<br><br>
+
+<<elseif $NPCList[0].traits.includes("sociable")>>
+	"听起来很棒，"<<person>>说道。 "打电话给我，我叫<span class="gold"><<print $NPCList[0].name>></span>. 那么，你的这个农场在哪里？"
+	<br><br>
+
+	你指出路线， "我知道了，我下午晚些时候到那，不知道什么时候才能把我遇到的第一只狐狸吓跑。"
+	<br><br>
+
+	<<He>>起身回到了<<his>>的朋友身边。
+	<br><br>
+
+<<elseif $NPCList[0].traits.includes("brooding")>>
+	"好吧，"<<person>>说道。 "我叫<span class="gold"><<print $NPCList[0].name>></span>."<<He>>站了起来， "我知道那个农场在哪里。"<<He>>说完之后便离开了酒馆。
+	<br><br>
+
+<<else>>
+	<<person>>犹豫了一下，然后点了点头。 "这可能很有趣，"<<he>>说道，"你可以联系我，我叫<span class="gold"><<print $NPCList[0].name>></span>。我们以后有的是时间互相了解，那么，这个农场在哪里？
+	<br><br>
+
+	你给<<him>>指出路线。 "那里可没有巴士站，"<<he>>抱怨道。 "但我会去那里上夜班的。"
+	<br><br>
+
+	说完之后，<<He>>大摇大摆地走出酒吧。
+	<br><br>
+
+<</if>>
+
+<<saveNPC 0 "farm_tower_guard">>
+<<set $farm.tower_guard to clone($NPCList[0].name)>>
+<<set $farm.tower_guard_unpaid to 1>>
+<<set $farm.tower_guard_skill to clone($NPCList[0].skills.security)>>
+<<earnFeat "To Watch the Fields">>
+
+<<link [[继续|Pub]]>><<endevent>><</link>>
+<br>
+
+:: Pub Exposed
+<<set $outside to 0>><<set $location to "pub">><<effects>>
+<<generate1>><<person1>>
+
+你扫视整个室内，寻找任何可以遮盖的东西。
+<br><br>
+
+<<switch random(1, 3)>>
+	<<case 3>>
+		当你正在思考时，一个正接近的<<person>>打断了你的思绪。<<he>>把脏盘子装到手推车上，而你则在那之前便把头缩了回去，神奇的是，<<he>>并没有注意到你的存在。
+		<br><br>
+
+		一捆清洁抹布落在你的腿上，它们还有着威士忌的味道，但总比没有好。你把它们裹在身上，然后偷偷地溜到了安全地带。
+		<<towelup>>
+		<br><br>
+
+		<<link [[继续|Pub]]>><<endevent>><</link>>
+		<br>
+	<<case 2>>
+		你还没来得及有所行动，手推车就响了起来，你迅速躲回了屋里。
+		<br><br>
+
+		当你潜伏着前进了一段距离后，你小心翼翼地探出头来，一件毛衣被遗弃在酒吧的凳子上，你无法判断它的主人是否在附近。
+		<br><br>
+
+		<<set $skulduggerydifficulty to 600>>
+		<<link [[拿走|Pub Exposed Sweater]]>><</link>><<skulduggerydifficulty>>
+		<br>
+		<<link [[离开这里|Pub Exposed Kitchen]]>><</link>>
+		<br>
+	<<case 1>>
+		在吧台边上，一个<<person>>正在折叠毛巾，在折到一半时，<<hes>>突然被叫走了，现在那些毛巾没有人看守。
+		<br><br>
+
+		<<link [[滑过去拿毛巾|Pub Exposed Bar]]>><<endevent>><</link>>
+		<br>
+		<<link [[继续找|Pub Exposed No Towels]]>><</link>>
+		<br>
+<</switch>>
+
+:: Pub Exposed Kitchen
+<<set $outside to 0>><<set $location to "pub">><<effects>>
+
+当你被推着走时，酒馆的喧闹声逐渐消失了，现在除了手推车的吱吱声外，只有脚步声和盘子摞在一起地咔哒声，你现在一定是在厨房里。
+<br><br>
+
+突然，<span class="pink">覆盖在手推车上的布被掀了起来。</span>你与一个<<person>>撞了个脸对脸，<<He>>被吓到放声尖叫起来。<<stress 12>><<ggstress>>
+<br><br>
+
+你惊慌失措地从后面逃走了，那个<<person>>虽然骂骂咧咧地，但并没有追赶上来。
+<br><br>
+
+<<link [[继续|Industrial alleyways]]>><<endevent>><</link>>
+<br>
+
+:: Pub Exposed Sweater
+<<set $outside to 0>><<set $location to "pub">><<effects>>
+
+你在靠的足够近之后，伸手去拿毛衣。
+<<silently>><<skulduggerycheck>><</silently>>
+<<if $skulduggerysuccess is 1>>
+	<span class="green">没有人阻止你.</span> 你赶紧把它拿进推车里，在穿上之后你麻溜的溜走了.
+	<<if $pronoun is "f">>
+		<<upperwear 29>>
+	<<else>>
+		<<upperwear 24>>
+	<</if>>
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	<<link [[继续|Pub]]>><<endevent>><</link>>
+<<else>>
+	就在你的手指要触摸到衣服时，<span class="red">一个人抓住了你的手腕，</span>那个<<person>>把你从藏身处拉了出来，"你这个小滑头，"<<he>>咆哮道。"你以为你..."
+	<br><br>
+
+	当<<his>>看到你的<<lewdness>>时，震惊取代了<<he>>的愤怒。<<His>>的手松开了，这让你得以挣脱，你趁机逃离了酒馆。<<trauma 6>><<stress 6>><<gtrauma>><<gstress>>
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	<<link [[继续|Harvest Street]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Pub Exposed Bar
+<<set $outside to 0>><<set $location to "pub">><<effects>>
+<<generate1>><<generate2>>
+
+你保持潜行姿势走到吧台前，就在马上拿到毛巾时，一个杯子从吧台上落了下来，把你吓了一大跳。
+<br><br>
+
+"你，<<girl>>，"一个声音叫道。你看向吧台，发现一个<<person1>><<person>>和<<person2>><<person>>正坐在那头，这两个家伙把手里的空杯子塞给你。"再来一杯，可以么？"
+<br><br>
+
+他们无法从吧台那边看出你的身份，但如果你拒绝的话，你可能会被怀疑。
+<br><br>
+
+<<link [[为这两个家伙提供服务|Pub Exposed Bar Serve]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+<br>
+<<link [[拒绝|Pub Exposed Bar Refuse]]>><</link>><<difficulty 50>>
+<br>
+
+:: Pub Exposed Bar Serve
+<<set $outside to 0>><<set $location to "pub">><<effects>>
+
+<<if $player.gender_appearance is "f" and $worn.upper.exposed gte 2 and $worn.under_upper.exposed gte 1>>
+	你把一盘饮料拿起来，在你走过去的时候把它举在胸前。泡沫应该能掩盖你的<<breasts>>，但愿吧。
+<<else>>
+	你将一托盘的饮料满满地倒好，举得很低，就在你的<<genitals>>上方，然后你慢慢地走过去。
+<</if>>
+<br><br>
+
+他们抓起一副酒杯，还没等你有机会逃跑就把它们喝光了。一个不小心的动作就有可能造成灾难，你被迫站在那里，看着他们一杯接一杯地灌下去。
+<<if $player.gender_appearance is "f" and $worn.upper.exposed gte 2 and $worn.under_upper.exposed gte 1>>
+	更糟糕的是，以他们的速度，你很快就要失去遮掩了.
+<</if>>
+<br><br>
+
+喝了三杯后, 那个<<person>>借口<<himself>>要上厕所. 抓住这他个分心的机会, 你抢过毛巾，溜出了酒吧.
+<<towelup>>
+<br><br>
+
+<<link [[继续|Pub]]>><<endevent>><</link>>
+<br>
+
+:: Pub Exposed Bar Refuse
+<<set $outside to 0>><<set $location to "pub">><<effects>>
+
+你在吧台后面蹲低.
+<<if $speech_attitude is "meek">>
+	"对-对不起，" 你说。"我有点忙。"
+<<elseif $speech_attitude is "bratty">>
+	"我现在休息时间，" 你撒谎道，"滚。"
+<<else>>
+	"我没时间，" 你说。"问问别人吧。"
+<</if>>
+<br><br>
+
+<<if random(1)>>
+	空气安静了片刻. 接着, <span class="green">那个<<person>>叹了口气.</span> "我要见<<pher>>的上司,"<<he>>喃喃道.
+	<br><br>
+
+	在上面，你听到这对夫妇离开时椅子的吱吱声。你现在可以地抢走毛巾并快速溜走。
+	<<towelup>>
+	<br><br>
+
+	<<link [[继续|Pub]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	"你说什么?" 那个<<person>>嗤笑着说道.<span class="red">当<<he>>俯身时，酒吧在你上方吱吱作响.</span> "你以为你他妈的是谁-"
+	<br><br>
+
+	一声喘息打断了<<him>>的发言. "<<pShes>>-"<<he>>结结巴巴地说. "<<pShes>>裸体!" 你无法判断<<hes>>是惊恐还是兴奋. 你没有坚持下去，以找出答案。当你逃到街上时，欢呼声追着你.<<trauma 6>><<stress 6>><<gtrauma>><<gstress>>
+	<br><br>
+
+	<<link [[继续|Harvest Street]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Pub Exposed No Towels
+<<set $outside to 0>><<set $location to "pub">><<effects>>
+
+你继续扫描整个房间。在你找到任何合适隐藏的东西之前, <span class="purple">手推车响了起来.</span> 你继续把头缩回柜台下面.
+<br><br>
+
+<<link [[继续|Pub Exposed Kitchen]]>><</link>>
+<br>

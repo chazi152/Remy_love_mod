@@ -1,0 +1,455 @@
+:: Saves overlay [widget]
+<<widget "saves">>
+	<<if StartConfig.sneaky>>
+		<div class="sneaky-warning">
+			<h3>警告</h3>
+
+			<p>
+				请在游玩此<b>测试版本</b>前导出并备份你的存档。
+				如果遇您到了任何bug或者错误，我们强烈建议将问题直接报告给我们的Discord群组。
+				存档时请您务必谨慎，尤其是遇到影响到游戏的正常流程的问题时。
+			</p>
+		</div>
+	<</if>>
+	<br>
+	<<if $ironmanmode is true>>
+		<span style="background-color: #ffffff1a;">铁人模式已启用: </span>
+		<ul class="ironman-ul"><li>在铁人模式下保存将会使您回到游戏的初始界面。</li>
+			<li style="text-decoration: underline;">这些存档将会在加载后<span style="color: #ff0000;">自动删除</span></li>
+			<li>每5 - 8天 (游戏内时间) 将会进行自动存档，自动存档不会在加载后删除。通常模式下睡觉时的自动存档将被禁用。</li>
+			<li>作弊已禁用</li>
+			<li>铁人模式存档可通过<img src="img/ui/SilverCoin.gif" style="max-width: 16px;filter: brightness(2.2);">继续游玩</li>
+		</ul>
+	<</if>>
+
+	<div id="saveList">
+		<<if idb.active and !$ironmanmode and !sessionStorage.getItem("noidb")>>
+			<<run setTimeout(() => idb.saveList())>>
+		<<else>>
+			/* record idb status between page reloads within the same session */
+			<<run sessionStorage.setItem("noidb", true); idb.active = false>>
+			<<saveList>>
+		<</if>>
+	</div>
+<</widget>>
+
+<<widget "saveList">>
+	<<run prepareSaveDetails()>>
+	<<if !tags().includes("nosave") && $replayScene is undefined>>
+		<<set _saveUnlock to true>>
+	<</if>>
+	<<if $replayScene isnot undefined>>
+		<h3 class="red">当前正处于场景查看器中，无法使用保存系统。</h3>
+	<<elseif tags().includes("nosave")>>
+		<h3 class="red">您现在无法存档!</h3>
+	<</if>>
+	<p>此处的存档皆暂存于浏览器缓存中，清除浏览器缓存将导致存档被丢失。建议定时导出存档以防游戏进度丢失。</p>
+	<<set _saveDetails = getSaveDetails()>>
+	<!--Extra checks incase the above fails for some reason-->
+	<<if _saveDetails eq null>>
+		<<set _saveDetails to returnSaveDetails()>>
+	<<elseif _saveDetails.autosave is undefined or _saveDetails.slots is undefined>>
+		<<set _saveDetails to returnSaveDetails()>>
+	<</if>>
+	<<set _lastSlot to _saveDetails.autosave ? { slot: "autosave", date: _saveDetails.autosave.date } : { slot: "", date: 0 }>>
+	<<for _slot, _data range _saveDetails.slots>>
+		<<if _data and _data.date gt _lastSlot.date>>
+			<<set _lastSlot to { slot: _slot, date: _data.date }>>
+		<</if>>
+	<</for>>
+	<<set _currentTime to new Date().getTime()>>
+	<div id="savesListContainer">
+		<div class="savesListRow">
+			<div class="saveGroup">				
+				<div class="saveId">#</div>
+				<div class="saveButton">保存/加载</div>
+				<div class="saveName">ID/名称</div>
+				<div class="saveDetails">详细内容</div>
+			</div>
+			<div class="deleteButton"></div>
+		</div>
+		<<for _i to 0; _i lt 11; _i++>>
+			<<if _i != 9 or (_i == 9 and _saveDetails.slots[_i - 1] != null)>>
+				<div class="savesListRow">
+					<<if _i is 0>>
+						<<if _saveDetails.autosave neq null>>
+							<<if _lastSlot.slot is "autosave">>
+								<<set _highlight to " green">>
+							<<elseif _saveDetails.autosave.date gte _currentTime - 1800000>>
+								<<set _highlight to " gold">>
+							<<else>>
+								<<set _highlight to "">>
+							<</if>>
+							<div class="saveGroup">
+								<div class="saveId">自动储存</div>
+								<div class="saveButton">
+									<input type="button" class="saveMenuButton" value="加载" onclick="DoLSave.loadHandler('auto')"/>
+								</div>
+
+								<<if _saveDetails.autosave.metadata isnot undefined>>
+									<div @class="'saveName' + ($saveId is _saveDetails.autosave.metadata.saveId ? ' gold' : '')">
+										<<if _saveDetails.autosave.metadata.saveName isnot "">>
+											<<print _saveDetails.autosave.metadata.saveName.slice(0,10)>>
+										<<else>>
+											<<print _saveDetails.autosave.metadata.saveId>>
+										<</if>>
+									</div>
+								<<else>>
+									<div class="saveName"></div>
+								<</if>>
+								<div class="saveDetails">
+									<span><<print Util.escapeMarkup(_saveDetails.autosave.title.replace(/</g, "< "))>></span>
+									<span @class="'datestamp' + _highlight"><<print new Date(_saveDetails.autosave.date).toLocaleString()>></span>
+								</div>
+							</div>
+							<div class="deleteButton">
+								<input type="button" class="saveMenuButton right" value="删除" onclick="deleteSave('auto')"/>
+							</div>
+						<<else>>
+							<div class="saveGroup">
+								<div class="saveId">自动储存</div>
+								<div class="saveButton">
+									<input type="button" value="加载" disabled/>
+								</div>
+								<div class="saveName"></div>
+								<div class="saveDetails"></div>
+							</div>
+							<div class="deleteButton">
+								<input class="right" type="button" value="删除" disabled/>
+							</div>
+						<</if>>
+					<<elseif _i lt 10>>
+						<<set _slot to _i - 1>>
+						<<set _ironmanSlot to 9>>
+						<<if _saveDetails.slots[_slot] neq null>>
+							<<if _lastSlot.slot eq _slot>>
+								<<set _highlight to " green">>
+							<<elseif _saveDetails.slots[_slot].date gte _currentTime - 1800000>>
+								<<set _highlight to " gold">>
+							<<else>>
+								<<set _highlight to "">>
+							<</if>>
+							<div class="saveGroup">
+								<<if _saveDetails.slots[_slot].metadata.ironman === true>>
+									<div class="saveId" style="width: 10px;">
+										<img src="img/ui/SilverCoin.gif" class="ironman-icon" @onclick="'IronMan.UI.exportHandler(' + _slot + ')'">
+									</div>
+								<<else>>
+									<div class="saveId" style="width: 10px;">
+										<<print _i>>
+									</div>
+								<</if>>
+								<div class="saveButton">
+									<<if _i lt 9>>
+										<<if _saveUnlock>>
+											<<set _onclick to "save("+_slot+", false, "+_saveDetails.slots[_slot].metadata.saveId+", `"+$saveName+"`)">>
+											<input type="button" class="saveMenuButton" value="保存" @onclick="clone(_onclick)"/>
+										<<else>>
+											<input type="button" value="保存" disabled/>
+										<</if>>
+									<</if>>
+									<input type="button" class="saveMenuButton" value="加载" @onclick="'DoLSave.loadHandler('+ _slot +')'"/>
+								</div>
+								<div @class="'saveName' + ($saveId is _saveDetails.slots[_slot].metadata.saveId ? ' gold' : '')">
+									<<if _saveDetails.slots[_slot].metadata.saveName isnot "">>
+										<<print _saveDetails.slots[_slot].metadata.saveName.slice(0,10)>>
+									<<else>>
+										<<print _saveDetails.slots[_slot].metadata.saveId>>
+									<</if>>
+								</div>
+								<div class="saveDetails">
+									<span><<print Util.escapeMarkup(_saveDetails.slots[_slot].title.replace(/</g, "< "))>></span>
+									<span @class="'datestamp' + _highlight"><<print new Date(_saveDetails.slots[_slot].date).toLocaleString()>></span>
+								</div>
+							</div>
+							<<if _i is _ironmanSlot>>
+								<div id="exportButton" class="exportButton"><input type="button" class="saveMenuButton right" value="Export" @onclick="'IronMan.export('+ _slot +')'"/></div>
+							<</if>>
+							<div class="deleteButton"><input type="button" class="saveMenuButton right" value="Delete" @onclick="'deleteSave('+ _slot +')'"/></div>
+						<<else>>
+							<div class="saveGroup">
+								<div class="saveId"></div>
+								<div class="saveButton">
+								<<if _saveUnlock>>
+									<input type="button" class="saveMenuButton" value="保存" @onclick="'save('+ _slot +',true,'+$saveId+', `'+$saveName+'`)'"/>
+								<<else>>
+									<input type="button" value="保存" disabled/>
+								<</if>>
+									<input type="button" value="加载" disabled/>
+								</div>
+								<div class="saveName"></div>
+								<div class="saveDetails"></div>
+							</div>
+							<div class="deleteButton">
+								<input class="right" type="button" value="删除" disabled/>
+							</div>
+						<</if>>
+					<<else>>
+						<div class="saveGroup">
+							<span style="margin: 0;">特别鸣谢所有 [[支持 Degrees of Lewdity 的人| "https://subscribestar.adult/vrelnir"]]</span>
+							<div class="saveId"></div>
+							<div class="saveButton"></div>
+							<div class="saveName"></div>
+							<div class="saveDetails"></div>
+						</div>
+						<div class="saveButton"><input type="button" class="saveMenuButton right" value="Delete All" onclick="deleteSave('all')"/></div>
+					<</if>>
+				</div>
+			<</if>>
+		<</for>>
+	</div>
+	<label>
+		<<checkbox "$compressSave" false true autocheck>>
+		压缩存档
+	</label>
+	<br>
+	<label>
+		<<checkbox "$confirmSave" false true autocheck>>
+		保存时需要确认
+	</label>
+	<br>
+	<label>
+		<<checkbox "$confirmLoad" false true autocheck>>
+		加载时需要确认
+	</label>
+	<br>
+	<label>
+		<<checkbox "$confirmDelete" false true autocheck>>
+		删除时需要确认
+	</label>
+	<br>
+	<label id="idbToggleSaves">
+		/* checkbox macro doesn't allow changing variables that do not start with "$" or "_". this is a bypass hack. */
+		<<run setTimeout(() => jQuery(document.createElement("input"))
+			.attr({ id: "checkbox-idbactive", name: "checkbox-idbactive", type: "checkbox", checked: idb.active && !V.ironmanmode, disabled: idb.lock || V.ironmanmode })
+			.addClass("macro-checkbox")
+			.on("change.macros", () => { idb.active = document.getElementById("checkbox-idbactive").checked; if (idb.active) { sessionStorage.removeItem("noidb"); idb.saveList() } })
+			.prependTo("#idbToggleSaves"))>> 启用 indexedDB <<if $ironmanmode>> (铁人模式下不可用)<</if>>
+	</label>
+	<br><br>
+	<<if $saveDetails isnot undefined>>
+		多少天没有导出存档后显示警告信息：
+		<br>
+		<label><<radiobutton "$saveDetails.exported.frequency" 5 autocheck>>5</label> |
+		<label><<radiobutton "$saveDetails.exported.frequency" 10 autocheck>>10</label> |
+		<label><<radiobutton "$saveDetails.exported.frequency" 15 autocheck>>15</label> |
+		<label><<radiobutton "$saveDetails.exported.frequency" 20 autocheck>>20</label> |
+		<label><<radiobutton "$saveDetails.exported.frequency" 30 autocheck>>30</label> |
+		<label><<radiobutton "$saveDetails.exported.frequency" 60 autocheck>>60</label> |
+		<label><<radiobutton "$saveDetails.exported.frequency" 365 autocheck>>365</label>
+	<</if>>
+	<<if $debug is 1>>
+		<br>
+		<label><<print '<<checkbox "$prepareSaveDetails" false true '+($prepareSaveDetails is true ? "checked" : "")+'>>'>>
+			执行`prepareSaveDetails`。禁用将导致在旧版本中保存/删除存档将不会更新在新版本中的存档列表，但可能会缩短重载耗时。
+		</label>
+	<</if>>
+<</widget>>
+
+<<widget "clearAllWarning">>
+	<div class="saveBorder">
+		<h4><span class="red">警告</span> - 你确定要删除所有存档？</h4>
+
+		<input type="button" class="close saveMenuConfirm" value="确定全部删除" onclick="deleteSave('all', true)"/>
+
+		<input type="button" class="saveMenuButton saveMenuConfirm" value="取消" onclick="resetSaveMenu();"/>
+		<br>
+	</div>
+<</widget>>
+
+<<widget "saveWarning">>
+	<div class="saveBorder">
+		<<if _saveDetails.slots[_args[0]] isnot null>>
+			<<if _saveDetails.slots[_args[0]].metadata isnot undefined>>
+				<<if _saveDetails.slots[_args[0]].metadata.saveId isnot $saveId>>
+					<<set _showSaveId to true>>
+				<<else>>
+					<<set _showSaveId to false>>
+				<</if>>
+			<<else>>
+				<<set _showSaveId to "noId">>
+			<</if>>
+		<</if>>
+		<<if _saveDetails.slots[_args[0]] is null>>
+			<h4 class="red">保存栏位 - <<print (_args[0] is "auto"? "自动存档": _args[0] + 1)>></h4>
+			<<if _showSaveId is true>>
+			<span class="red">存档ID不匹配，是否继续覆盖?</span>
+			<br>
+			<</if>>
+			<<if _showSaveId is "noId">>
+			<span class="red">在现有存档中未找到新的ID，是否继续覆盖？</span>
+			<br>
+			<</if>>
+		<<else>>
+			<h4 class="red">覆盖保存到栏位<<print (_args[0] is "auto"? "自动存档": _args[0] + 1)>>?</h4>
+			<<if _showSaveId is true>>
+			<span class="red">存档ID不匹配，是否继续覆盖?</span>
+			<br>
+			<</if>>
+			<<if _showSaveId is "noId">>
+			<span class="red">在现有存档中未找到新的ID，是否继续覆盖？</span>
+			<br>
+			<</if>>
+			旧存档: <<print Util.escapeMarkup(_saveDetails.slots[_args[0]].title)>>
+			<br>
+			<<print new Date(_saveDetails.slots[_args[0]].date).toLocaleString()>>
+			<br>
+		<</if>>
+		<<if _saveDetails.slots[_args[0]].metadata isnot undefined>>
+			<<if _saveDetails.slots[_args[0]].metadata.saveName isnot undefined>>
+				之前的存档名: <<print _saveDetails.slots[_args[0]].metadata.saveName>>
+				<br>
+			<</if>>
+		<</if>>
+		<<if _showSaveId is true>>
+			之前的存档ID: <<print _saveDetails.slots[_args[0]].metadata.saveId>>
+			<br><br>
+			<<if $saveName isnot undefined>>
+				当前存档名: <<print $saveName>>
+				<br>
+			<</if>>
+			当前存档ID: <<print $saveId>>
+			<br>
+		<</if>>
+		<input type="button" class="saveMenuButton saveMenuConfirm" value="保存" @onclick="'save('+ _args[0] +', true,'+$saveId+', `'+$saveName+'`)'"/>
+		<input type="button" class="saveMenuButton saveMenuConfirm" value="取消" onclick="resetSaveMenu();"/>
+		<br>
+	</div>
+<</widget>>
+
+<<widget "loadWarning">>
+	<div class="saveBorder">
+		<h4 class="red">加载栏位 - <<print (_args[0] is "auto"? "自动存档": _args[0] + 1)>></h4>
+		<<if _args[0] is "auto">>
+			<<print Util.escapeMarkup(_saveDetails.autosave.title)>>
+			<br>
+			<<print new Date(_saveDetails.autosave.date).toLocaleString()>>
+			<br>
+			<input type="button" class="saveMenuButton saveMenuConfirm" value="载入" onclick="DoLSave.loadHandler('auto', true)"/>
+		<<else>>
+			<<print Util.escapeMarkup(_saveDetails.slots[_args[0]].title)>>
+			<br>
+			<<print new Date(_saveDetails.slots[_args[0]].date).toLocaleString()>>
+			<br>
+			<input type="button" class="saveMenuButton saveMenuConfirm" value="加载" @onclick="'DoLSave.loadHandler('+ _args[0] +', true)'"/>
+		<</if>>
+		<input type="button" class="saveMenuButton saveMenuConfirm" value="取消" onclick="resetSaveMenu();"/>
+		<br>
+	</div>
+<</widget>>
+
+<<widget "loadwarningcompat">>
+	<!-- Wrap auto in strings, for the onclick fn further down. Planned to change in future. -->
+	<<set $_slot to _args[0] is "auto" ? "'auto'" : _args[0]>>
+	<div class="saveBorder">
+		<h4 class="red">正在将存档加载到旧版本！</h4>
+		将存档加载到旧版本可能会产生许多意想不到的后果。
+		我们不保证对旧版本的兼容性，可能会出现错误。
+		<br>
+		<input type="button" class="saveMenuButton saveMenuConfirm" value="载入" @onclick="'DoLSave.load(' + $_slot + ')'"/>
+		<input type="button" class="saveMenuButton saveMenuConfirm" value="取消" onclick="resetSaveMenu();"/>
+		<br>
+	</div>
+<</widget>>
+
+<<widget "deleteWarning">>
+	<div class="saveBorder">
+		<h4 class="red">删除栏位 - <<print (_args[0] is "auto"? "自动存档": _args[0] + 1)>></h4>
+		<<if _args[0] is "auto">>
+			<<set _title to _saveDetails.autosave.title>>
+			<<print Util.escapeMarkup(_title)>>
+			<br>
+			<<print new Date(_saveDetails.autosave.date).toLocaleString()>>
+			<br>
+			<input type="button" class="saveMenuButton" value="删除自动存档" onclick="deleteSave('auto', true)"/>
+		<<else>>
+			<<set _title to _saveDetails.slots[_args[0]].title>>
+			<<print Util.escapeMarkup(_title)>>
+			<br>
+			<<print new Date(_saveDetails.slots[_args[0]].date).toLocaleString()>>
+			<br>
+			<input type="button" class="saveMenuButton" value="删除" @onclick="'deleteSave('+ _args[0] +', true)'"/>
+		<</if>>
+		<input type="button" class="saveMenuButton saveMenuConfirm" value="取消" onclick="resetSaveMenu();"/>
+		<br>
+	</div>
+<</widget>>
+
+<<widget "loadBoxIronmanCheater">>
+	<div class="saveBorder">
+		<h4 class="red">检测到作弊</h4>
+		<ul>
+			<li>您为本游戏存档启用了铁人模式，该模式禁止作弊和存钱。</li>
+			<li>即使游戏中的情况看起来不公平或令人沮丧，您还是选择了接受它启用此模式。</li>
+			<li>还原您所做的所有变更，您就可以继续执行此回合。如果您有任何问题，可以在Discord上询问我们。</li>
+		</ul>
+		<<print Util.escapeMarkup(_saveDetails.slots[_args[0]].title)>>
+		<br>
+		<<print new Date(_saveDetails.slots[_args[0]].date).toLocaleString()>>
+		<br>
+		<input type="button" class="saveMenuButton saveMenuConfirm" value="取消" onclick="resetSaveMenu();"/>
+		<br>
+	</div>
+<</widget>>
+
+<<widget "loadBoxIronmanSafetyCancel">>
+	<div class="saveBorder">
+		<h4 class="orange">加载已取消。</h4>
+		<ul>
+			<li>在设置了铁人模式的游戏存档中加载存档将使您失去当前的游戏。</li>
+			<li style="text-decoration: underline;">存档，之后您可以随意加载该存档。</li>
+		</ul>
+		<input type="button" class="saveMenuButton saveMenuConfirm" value="取消" onclick="resetSaveMenu();"/>
+		<br>
+	</div>
+<</widget>>
+
+<<widget "resetSaveMenu">>
+	<<if document.getElementById("saveList") != null>>
+		<<replace #saveList>>
+			<<saveList>>
+		<</replace>>
+	<</if>>
+<</widget>>
+
+<<widget "clearSaveMenu">>
+	<<replace #saveList>>
+		<<clearAllWarning>>
+	<</replace>>
+<</widget>>
+
+<<widget "saveConfirm">>
+	<<replace #saveList>>
+		<<saveWarning _args[0]>>
+	<</replace>>
+<</widget>>
+
+<<widget "loadConfirm">>
+	<<replace #saveList>>
+		<<loadWarning _args[0]>>
+	<</replace>>
+<</widget>>
+
+<<widget "loadconfirmcompat">>
+	<<replace #saveList>>
+		<<loadwarningcompat _args[0]>>
+	<</replace>>
+<</widget>>
+
+<<widget "loadIronmanSafetyCancel">>
+	<<replace #saveList>>
+		<<loadBoxIronmanSafetyCancel _args[0]>>
+	<</replace>>
+<</widget>>
+
+<<widget "loadIronmanCheater">>
+	<<replace #saveList>>
+		<<loadBoxIronmanCheater _args[0]>>
+	<</replace>>
+<</widget>>
+
+<<widget "deleteConfirm">>
+	<<replace #saveList>>
+		<<deleteWarning _args[0]>>
+	<</replace>>
+<</widget>>

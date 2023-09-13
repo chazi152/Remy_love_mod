@@ -1,0 +1,1032 @@
+:: Widgets children [widget]
+<<widget "childrenSetup">>
+	<<if $children is undefined>>
+		<<set $children to {}>>
+	<</if>>
+<</widget>>
+
+<<widget "getUsedChildrenNames">>
+	<<set _usedChildrenNames to []>>
+	<<for $_label, $_value range $children>>
+		<<run _usedChildrenNames.pushUnique($_value.name)>>
+	<</for>>
+<</widget>>
+
+/*args[0] - location, args[1] - "both" to include unrelated children or "only" to exclude the player children*/
+<<widget "getChildrenIds">>
+	<<set _childrenIds to []>>
+	<<for $_label, $_value range $children>>
+		<<if $_value.mother isnot "pc" and $_value.father isnot "pc">>
+			<<if _args[1] isnot "both" and _args[1] isnot "only">>
+				<<continue>>
+			<</if>>
+		<<elseif _args[1] is "only">>
+			<<continue>>
+		<</if>>
+		<<if _args[0] is undefined or $_value.location is _args[0]>>
+			<<run _childrenIds.push($_label)>>
+		<</if>>
+	<</for>>
+<</widget>>
+
+/*args[0] - location, args[1] - min length requirement, args[2] - max length requirement,
+args[3] - "both" to include unrelated children or "only" to exclude the player children*/
+<<widget "getSameBirthChildrenIds">>
+	<<set _birthChildrenIds to {}>>
+	<<for $_label, $_value range $children>>
+		<<if $_value.mother isnot "pc" and $_value.father isnot "pc">>
+			<<if _args[3] isnot "both" and _args[3] isnot "only">>
+				<<continue>>
+			<</if>>
+		<<elseif _args[3] is "only">>
+			<<continue>>
+		<</if>>
+		<<if _args[0] is undefined or $_value.location is _args[0]>>
+			<<if _birthChildrenIds[$_value.birthId] is undefined>>
+				<<set _birthChildrenIds[$_value.birthId] to []>>
+			<</if>>
+			<<run _birthChildrenIds[$_value.birthId].push($_value.childId)>>
+		<</if>>
+	<</for>>
+	<<if _args[1]>>
+		<<for $_label, $_value range _birthChildrenIds>>
+			<<if $_value.length lt _args[1] or $_value.length gt _args[2]>>
+				<<run delete _birthChildrenIds[$_label]>>
+			<</if>>
+		<</for>>
+	<</if>>
+<</widget>>
+
+/*args[0] - location, args[1] - birthId, args[2] - new location*/
+<<widget "moveChildren">>
+	<<if _args[0] and _args[1]>>
+		<<getSameBirthChildrenIds _args[0]>>
+		<<if _birthChildrenIds[_args[1]] isnot undefined>>
+			<<for $_i to 0; $_i lt _birthChildrenIds[_args[1]].length; $_i++>>
+				<<set $children[_birthChildrenIds[_args[1]][$_i]].location to _args[2]>>
+				<<if _args[2] is "home">>
+					<<run setKnowsAboutPregnancy($children[_birthChildrenIds[_args[1]][$_i]].mother, "Bailey", $children[_birthChildrenIds[_args[1]][$_i]].mother + $children[_birthChildrenIds[_args[1]][$_i]].birthId)>>
+				<</if>>
+			<</for>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+/*args[0] - childId, args[1] - new name*/
+<<widget "childRename">>
+	<<if _args[0]>>
+		<<set $children[_args[0]].name to generateBabyName(_args[1], $children[_args[0]].gender, _args[0])>>
+	<</if>>
+<</widget>>
+
+/*args[0] - childId, args[1] - clothes*/
+<<widget "childChangeClothes">>
+	<<if _args[0]>>
+		<<if $children[_args[0]].features.clothes isnot null>>
+			<<if _args[1]>>
+				<<set _clothes to _args[1]>>
+			<<else>>
+				<<set _clothes to "naked">>
+			<</if>>
+			<<set $children[_args[0]].features.clothes to _clothes>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+/*args[0] - childId, args[1] - set to display specific text output*/
+<<widget "childAge">><<silently>>
+	<<if _args[0]>>
+		<<set _date1 to $children[_args[0]].born.day + " " + $children[_args[0]].born.month + " " + $children[_args[0]].born.year>>
+		<<set _date2 to Time.monthDay + " " + Time.monthName + " " + Time.year>>
+		<<set $_calc to Math.abs(Date.parse(_date2) - Date.parse(_date1))>>
+		<<switch  $children[_args[0]].type>>
+			<<case "human" "wolf">><<set _childTotalDaysCap to 200>>
+			<<default>><<set _childTotalDaysCap to 0>>
+		<</switch>>
+		<<set _childTotalDays to Math.clamp(Math.ceil($_calc / (1000 * 60 * 60 * 24)), 0, _childTotalDaysCap)>>
+		<<set _childYears to Math.floor(_childTotalDays / 360)>>
+		<<set _childDays to Math.floor(_childTotalDays % 360)>>
+		<<switch _args[1]>>
+			<<case "full">>
+				<<set $_text_output to _childYears + "岁" + (_childYears isnot 1 ? ", " : ", ") + _childDays + "天" + (_childDays isnot 1 ? "" : " ") + "大">>
+			<<case "year">>
+				<<set $_text_output to _childYears + "年">>
+			<<case "day">>
+				<<set $_text_output to _childDays + "天">>
+			<<case "totalDays">>
+				<<set $_text_output to _childTotalDays>>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><<if _childTotalDaysCap is _childTotalDays>><mouse class="tooltip linkBlue">(已达上限)<span>已到达当前子活动内容的结尾</span></mouse><</if>><</if>><</widget>>
+
+/*:: Widgets children2 [widget]*/
+
+/*args[0] - childId*/
+<<widget "childSelect">>
+	<<if _args[0] isnot undefined>>
+		<<set $childSelected to $children[_args[0]]>>
+	<</if>>
+<</widget>>
+
+/*args[0] - childId*/
+<<widget "childname">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<set $_text_output to $children[$_id].name>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - childId in an array*/
+<<widget "childrenNames">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_text_output to "">>
+		<<for $_i to 0; $_i lt _args[0].length; $_i++>>
+			<<set $_text_output += $children[_args[0][$_i]].name>>
+			<<if $_i is _args[0].length - 1>>
+			<<elseif $_i is _args[0].length - 2>>
+				<<set $_text_output += "和">>
+			<<else>>
+				<<set $_text_output += ", ">>
+			<</if>>
+		<</for>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - childId in an array*/
+<<widget "childInteratedWith">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id>>
+		<<set $_localVariables to $children[$_id].localVariables>>
+		<<if $_localVariables.interactionsTotal is undefined>>
+			<<set $_localVariables.interactionsTotal to 0>>
+			<<set $_localVariables.interactions to 0>>
+		<</if>>
+		<<set $_localVariables.interactionsTotal++>>
+		<<if $daily.childInteractions is undefined>><<set $daily.childInteractions to []>><</if>>
+		<<if !$daily.childInteractions.includes($_id)>>
+			<<set $_localVariables.interactions++>>
+			<<run $daily.childInteractions.push($_id)>>
+		<</if>>
+		<<set $pregnancyStats.childInteractions++>>
+		<<if $location is "home">><<set $pregnancyStats.orphanageInteractions++>><</if>>
+	<</if>>
+<</silently>><</widget>>
+
+/*args[0] - childId*/
+<<widget "childHe">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<switch $children[$_id].gender>>
+			<<case "m">><<set $_text_output to "他">>
+			<<case "f" "h">><<set $_text_output to "她">>
+			<<case "h">><<set $_text_output to "他们">>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - childId*/
+<<widget "childhe">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<switch $children[$_id].gender>>
+			<<case "m">><<set $_text_output to "他">>
+			<<case "f" "h">><<set $_text_output to "她">>
+			<<case "h">><<set $_text_output to "他们">>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - childId*/
+<<widget "childHis">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<switch $children[$_id].gender>>
+			<<case "m">><<set $_text_output to "他">>
+			<<case "f" "h">><<set $_text_output to "她">>
+			<<case "h">><<set $_text_output to "他们">>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - childId*/
+<<widget "childhis">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<switch $children[$_id].gender>>
+			<<case "m">><<set $_text_output to "他">>
+			<<case "f" "h">><<set $_text_output to "她">>
+			<<case "h">><<set $_text_output to "他们">>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - childId*/
+<<widget "childHim">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<switch $children[$_id].gender>>
+			<<case "m">><<set $_text_output to "他">>
+			<<case "f" "h">><<set $_text_output to "她">>
+			<<case "h">><<set $_text_output to "他">>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - childId*/
+<<widget "childhim">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<switch $children[$_id].gender>>
+			<<case "m">><<set $_text_output to "他">>
+			<<case "f" "h">><<set $_text_output to "她">>
+			<<case "h">><<set $_text_output to "他">>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - childId*/
+<<widget "childHers">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<switch $children[$_id].gender>>
+			<<case "m">><<set $_text_output to "他">>
+			<<case "f" "h">><<set $_text_output to "她">>
+			<<case "h">><<set $_text_output to "他们">>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - childId*/
+<<widget "childhers">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<switch $children[$_id].gender>>
+			<<case "m">><<set $_text_output to "他">>
+			<<case "f" "h">><<set $_text_output to "她">>
+			<<case "h">><<set $_text_output to "他们">>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - childId*/
+<<widget "childherself">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<switch $children[$_id].gender>>
+			<<case "m">><<set $_text_output to "他自己">>
+			<<case "f" "h">><<set $_text_output to "她自己">>
+			<<case "h">><<set $_text_output to "他们自己">>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - childId*/
+<<widget "childhand">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<switch $children[$_id].type>>
+			<<case "human">><<set $_text_output to "手">>
+			<<case "wolf" "wolfboy" "wolfgirl">><<set $_text_output to "爪子">>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - childId*/
+<<widget "childhands">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<switch $children[$_id].type>>
+			<<case "human">><<set $_text_output to "手">>
+			<<case "wolf" "wolfboy" "wolfgirl">><<set $_text_output to "爪子">>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - childId*/
+<<widget "childgiggles">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set _id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set _id to $childSelected.childId>>
+	<</if>>
+	<<if _id isnot undefined>>
+		<<switch $children[_id].type>>
+			<<case "human">><<set $_text_output to "咯咯笑着">>
+			<<case "wolf" "wolfboy" "wolfgirl">><<set $_text_output to "摇着<<childhis _id>>的尾巴">>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - childId*/
+<<widget "childhair">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<switch $children[$_id].type>>
+			<<case "human">><<set $_text_output to "头发">>
+			<<case "wolf" "wolfboy" "wolfgirl">><<set $_text_output to "毛发">>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - cry type, args[1] - childId */
+<<widget "childcry">><<silently>>
+	<<if _args[1] isnot undefined>>
+		<<set $_id to _args[1]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<if between(_args[0], 1, 4)>>
+			<<set $_cry to _args[0]>>
+		<<else>>
+			<<set $_cry to 1>>
+		<</if>>
+		<<switch $children[$_id].type>>
+			<<case "human">>
+				<<switch $_cry>>
+					<<case 1>><<set $_text_output to "抽泣">>
+					<<case 2>><<set $_text_output to "哭泣">>
+					<<case 3>><<set $_text_output to "大哭">>
+					<<case 4>><<set $_text_output to "嚎啕大哭">>
+				<</switch>>
+			<<case "wolf" "wolfboy" "wolfgirl">>
+				<<switch $_cry>>
+					<<case 1>><<set $_text_output to "哼唧">>
+					<<case 2>><<set $_text_output to "呜咽">>
+					<<case 3>><<set $_text_output to "哭泣">>
+					<<case 4>><<set $_text_output to "哀嚎">>
+				<</switch>>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - cry type, args[1] - childId */
+<<widget "childCry">><<silently>>
+	<<if _args[1] isnot undefined>>
+		<<set $_id to _args[1]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<if between(_args[0], 1, 4)>>
+			<<set $_cry to _args[0]>>
+		<<else>>
+			<<set $_cry to 1>>
+		<</if>>
+		<<switch $children[$_id].type>>
+			<<case "human">>
+				<<switch $_cry>>
+					<<case 1>><<set $_text_output to "抽泣">>
+					<<case 2>><<set $_text_output to "哭泣">>
+					<<case 3>><<set $_text_output to "大哭">>
+					<<case 4>><<set $_text_output to "嚎啕大哭">>
+				<</switch>>
+			<<case "wolf" "wolfboy" "wolfgirl">>
+				<<switch $_cry>>
+					<<case 1>><<set $_text_output to "哼唧">>
+					<<case 2>><<set $_text_output to "呜咽">>
+					<<case 3>><<set $_text_output to "哭泣">>
+					<<case 4>><<set $_text_output to "哀嚎">>
+				<</switch>>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - childId*/
+<<widget "childtype">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<switch $children[$_id].type>>
+			<<case "human">><<set $_text_output to "孩子">>
+			<<case "wolf" "wolfboy" "wolfgirl">><<set $_text_output to "幼崽">>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+<<widget "childTransform">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined>>
+		<<set $_text_output to "">>
+		<<switch $children[$_id].features.divineTransform>>
+			<<case "angel">><<set $_text_output += "天使化的">>
+			<<case "demon">><<set $_text_output += "恶魔化的">>
+		<</switch>>
+		<<if $children[$_id].features.divineTransform and $children[$_id].features.beastTransform>><<set $_text_output += " ">><</if>>
+		<<switch $children[$_id].features.beastTransform>>
+			<<case "cat">><<set $_text_output += "猫" + ($children[$_id].gender === "m" ? "男孩" : "女孩")>>
+			<<case "cow">><<set $_text_output += "奶牛" + ($children[$_id].gender === "m" ? "男孩" : "女孩")>>
+			<<case "wolf">><<set $_text_output += "狼" + ($children[$_id].gender === "m" ? "男孩" : "女孩")>>
+			<<case "bird">><<set $_text_output += "鸟" + ($children[$_id].gender === "m" ? "男孩" : "女孩")>>
+			<<case "fox">><<set $_text_output += "狐狸" + ($children[$_id].gender === "m" ? "男孩" : "女孩")>>
+		<</switch>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - childId, args[1] - word*/
+<<widget "childFirstWord">><<silently>>
+	<<if _args[0] isnot undefined>>
+		<<set $_id to _args[0]>>
+	<<elseif $childSelected isnot undefined>>
+		<<set $_id to $childSelected.childId>>
+	<</if>>
+	<<if $_id isnot undefined and !$children[$_id].localVariables.firstWord>>
+		<<set $_text_output to $children[$_id].localVariables.firstWord.word>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+/*args[0] - location, args[1] - toyid, toy set or toy name, args[2] - option of either "notext" or "lowercase"*/
+<<widget "childtoy">><<silently>>
+	<<set _toys to $storedChildrenToys[_args[0]]>>
+	<<if _toys>>
+		<<if between(_args[1], 0, _toys.length - 1)>>
+			<<set _toy to _toys[_args[1]]>>
+		<<elseif _args[1]>>
+			<<set _toySelect to []>>
+			<<for $_i to 0; $_i lt _toys.length; $_i++>>
+				<<if _toys[$_i].set is _args[1] or _toys[$_i].name is _args[1]>>
+					<<run _toySelect.push($_i)>>
+				<</if>>
+			<</for>>
+			<<if _toySelect.length gt 0>>
+				<<set _toyid to _toySelect[random(0,_toySelect.length - 1)]>>
+				<<set _toy to _toys[_toyid]>>
+			<</if>>
+		<<else>>
+			<<set _toyid to random(0,_toys.length - 1)>>
+			<<set _toy to _toys[_toyid]>>
+		<</if>>
+		<<if _toy>>
+			<<switch _args[2]>>
+				<<case "notext">>
+				<<case "lowercase">>
+					<<set $_text_output to clone(_toy.name_lower)>>
+					<<set _toyName to clone(_toy.name_lower)>>
+				<<default>>
+					<<set $_text_output to clone(_toy.name_lower)>>
+					<<set _toyName to clone(_toy.name_lower)>>
+			<</switch>>
+		<</if>>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>><</widget>>
+
+<<widget "childViewerDisplay">>
+	<<set _idList to _args[0]>>
+	<<set _listMaxItems to 10>>
+	<<set _listPage to 1>>
+	<<set _listPageMax to Math.ceil(_idList.length / _listMaxItems)>>
+	<<set _childStart to 0>>
+	<<set _childEnd to (_childStart + _listMaxItems gt _idList.length ? _idList.length : _childStart + _listMaxItems)>>
+	<div id="childViewer">
+		<<childViewerDisplayElements>>
+	</div>
+<</widget>>
+
+<<widget "childViewerPageUpdate">>
+	<<set _childStart to _listMaxItems * (_listPage - 1)>>
+	<<set _childEnd to (_childStart + _listMaxItems lte _idList.length ? _childStart + _listMaxItems : _idList.length)>>
+	<<replace '#childViewer'>>
+		<<childViewerDisplayElements>>
+	<</replace>>
+<</widget>>
+
+<<widget "childViewerDisplayElements">>
+	<div class="childrenUi">
+		<<for $_i to _childStart; $_i lt _childEnd; $_i++>>
+			<<set _childId to _childrenIds[$_i]>>
+			<<capture _childId>>
+				<div @id="'child-' + _childId">
+					<<childViewerElement `_childId`>>
+				</div>
+			<</capture>>
+		<</for>>
+	</div>
+	<br>
+	<div class="childrenUiControls">
+		<<set _disabled = _listPage > 1 ? "" : "disabled">>
+		<div @class="'div-link btn-pagination prev ' + _disabled">
+			<<link "上一个">>
+				<<if _listPage > 1>>
+					<<set _listPage -= 1>>
+					<<childViewerPageUpdate>>
+				<</if>>
+			<</link>>
+			<div class="btn-pagination-arrow">&lt;</div>
+		</div>
+		<div>
+			<<print (_listPage) + " out of " + _listPageMax>>
+		</div>
+		<<set _disabled = _listPage < _listPageMax ? "" : "disabled">>
+		<div @class="'div-link btn-pagination next ' + _disabled">
+			<<link "下一个">>
+				<<if _listPage < _listPageMax>>
+					<<set _listPage += 1>>
+					<<childViewerPageUpdate>>
+				<</if>>
+			<</link>>
+			<div class="btn-pagination-arrow">&gt;</div>
+		</div>
+	</div>
+	<<run linkifyDivs('#childViewer')>>
+<</widget>>
+
+<<widget "childViewerElement">>
+	<<if _children is undefined>>
+		<<set _children to {}>>
+	<</if>>
+	<<capture _args>>
+		<<if $children[_args[0]].type isnot "human">>
+			种族: <<print $children[_args[0]].type[0].toUpperCase() + $children[_args[0]].type.substring(1)>> |
+		<<else>>
+			种族: 人类<<if $children[_args[0]].features.beastTransform or $children[_args[0]].features.divineTransform>> (<<childTransform _args[0]>>)<</if>> |
+		<</if>>
+		性别：
+		<<switch $children[_args[0]].gender>>
+			<<case "m">>男性
+			<<case "f">>女性
+			<<case "h">>扶她
+		<</switch>>
+		<br>
+		<label>名字: <<textbox "_children[_args[0]]" `$children[_args[0]].name`>></label>
+		<br>
+		<<childActivity _args[0]>>
+		<<childViewerHiddenElements _args[0] _args[1]>>
+	<</capture>>
+<</widget>>
+
+<<widget "childViewerHiddenElements">>
+	<<if _args[0]>>
+		<div @id="'childViewerHidden-'+_args[0]" @class="'childViewerHidden' + (_args[1] ? '' : ' hidden')">
+			母亲:
+			<<if $children[_args[0]].motherKnown>>
+				<<print pregnancyNameCorrection($children[_args[0]].mother, true)>>
+			<<else>>
+				????
+			<</if>>
+			| 父亲:
+			<<if $children[_args[0]].fatherKnown>>
+				<<print pregnancyNameCorrection($children[_args[0]].father, true)>>
+			<<else>>
+				????
+			<</if>>
+			<br>
+			出生于: <<print $children[_args[0]].born.day + "" + $children[_args[0]].born.month + "" + $children[_args[0]].born.year>> |
+			年龄: <<childAge _args[0] "full">>
+			<br>
+			大小: <<print $children[_args[0]].features.size>> | 发色: <<hairmapcolourtext $children[_args[0]].features.hairColour>>
+			<<if $children[_args[0]].features.skinColour>>
+				| 肤色: <<skinColourName $children[_args[0]].features.skinColour>>
+			<</if>>
+			<br>
+			<<if $children[_args[0]].features.identical>>
+				相似度: <<print $children[_args[0]].features.identical>>
+				<br>
+			<</if>>
+			<<if $children[_args[0]].localVariables.interactionsTotal>>
+				互动次数: <<print $children[_args[0]].localVariables.interactionsTotal>>
+				<br>
+			<</if>>
+			<span class="no-numberify">
+			<<link "更名">>
+				<<set $children[_args[0]].name to generateBabyName(_children[_args[0]], $children[_args[0]].gender, _args[0])>>
+				<<replace `"#child-" + _args[0]`>><<childViewerElement _args[0] true>><</replace>>
+			<</link>> |
+			<<link "随机名字">>
+				<<set $children[_args[0]].name to generateBabyName(undefined, $children[_args[0]].gender, _args[0])>>
+				<<replace `"#child-" + _args[0]`>><<childViewerElement _args[0] true>><</replace>>
+			<</link>>
+			</span>
+			<br>
+			<small class="right">
+				孩子Id: <<print $children[_args[0]].childId>>.
+				存档Id: <<print $saveId>>.
+				<<if $saveName isnot "">>
+					| name: <<print $saveName>>.
+				<</if>>
+			</small>
+		</div>
+	<</if>>
+<</widget>>
+
+<<widget "childViewerHiddenElementsUnhide">>
+	<<capture _args>>
+		<<if _args[0]>>
+			<<toggleclass `'#childViewerHidden-' + _args[0]` "hidden">>
+		<</if>>
+	<</capture>>
+<</widget>>
+
+<<widget "childActivity">>
+	<<if _args[0]>>
+		<<childAge _args[0]>>
+		<<childSelect _args[0]>>
+		/*'updateChildActivity' Changes the current event if enough time has passed*/
+		<<updateChildActivity _args[0]>>
+		<<switch $children[_args[0]].type>>
+			<<case "human">><<humanChildActivity _args[0]>>
+			<<case "wolf" "wolfboy" "wolfgirl">><<wolfChildActivity _args[0]>>
+		<</switch>>
+		<span class="no-numberify">
+			<<link "Extra Details">><<childViewerHiddenElementsUnhide _args[0]>><</link>>
+		</span>
+	<</if>>
+<</widget>>
+
+/*ToDo: Pregnancy Story Content: Lacking events. Human children events which the place accesses by going to the childrens UI*/
+<<widget "humanChildActivity">>
+	<<set _activityColour to !$daily.childInteractions or !$daily.childInteractions.includes(_args[0]) ? " childrensActivityGold" : "">>
+	<span @class="'no-numberify' + _activityColour">
+		<<switch $children[_args[0]].localVariables.activity>>
+			<<case "noEvent">>
+				<<childHe>>睡得正香。
+			<<case "sleeping">>
+				<<childHe>>睡得正香。
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<set _rng to random(1, 6)>>
+					<<switch _rng>>
+						<<case 1>>
+							<<link [[照看他们 (0:05)|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"transfixed", childid:_args[0]}>><</link>> |
+						<<case 2>>
+							<<link [[照看他们 (0:05)|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"stroke", childid:_args[0]}>><</link>> |
+						<<case 3>>
+							<<link [[照看他们 (0:05)|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"yawn", childid:_args[0]}>><</link>> |
+						<<case 4>>
+							<<link [[照看他们 (0:05)|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"murmur", childid:_args[0]}>><</link>> |
+						<<case 5>>
+							<<link [[打盹 (0:30)|Children Activity Events]]>><<pass 30>><<set $childActivityEvent to {event:"cotNap", childid:_args[0]}>><</link>> |
+						<<default>>
+							<<link [[照看他们 (0:05)|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"shiverInCot", childid:_args[0]}>><</link>> |
+					<</switch>>
+				<</if>>
+			<<case "restlessSleep">>
+				<<childHe>>在睡梦中不停地动，<<childhis>>显得很不安。
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[安抚 (0:30)|Children Activity Events]]>><<pass 30>><<set $childActivityEvent to {event:"restlessSleep", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "crying">>
+				<<childHe>>非常烦恼并且在哭泣。
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<set _rng to random(1, 6)>>
+					<<switch _rng>>
+						<<case 1>>
+							<<link [[安抚 (0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"holdToShoulder", childid:_args[0]}>><</link>> |
+						<<case 2>>
+							<<link [[安抚 (0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"melodicLullaby", childid:_args[0]}>><</link>> |
+						<<case 3>>
+							<<link [[安抚 (0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"foreheadKiss", childid:_args[0]}>><</link>> |
+						<<case 4>>
+							<<link [[安抚 (0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"objectShow", childid:_args[0]}>><</link>> |
+						<<case 5>>
+							<<link [[安抚 (0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"carryRevolt", childid:_args[0]}>><</link>> |
+						<<default>>
+							<<link [[安抚 (0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"rockToSleep", childid:_args[0]}>><</link>> |
+					<</switch>>
+				<</if>>
+			<<case "lonely">>
+				<<childHe>>看起来很孤单。
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<set _rng to random(1, 10)>>
+					<<switch _rng>>
+						<<case 1>>
+							<<link [[安抚 (0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"nurseryRhymes", childid:_args[0]}>><</link>> |
+						<<case 2>>
+							<<link [[安抚 (0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"FeetCup", childid:_args[0]}>><</link>> |
+						<<case 3>>
+							<<link [[安抚 (0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"shareThoughts", childid:_args[0]}>><</link>> |
+						<<case 4>>
+							<<link [[安抚 (0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"speakCry", childid:_args[0]}>><</link>> |
+						<<case 5>>
+							<<link [[安抚(0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"waveTongue", childid:_args[0]}>><</link>> |
+						<<case 6>>
+							<<link [[安抚(0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"handsClap", childid:_args[0]}>><</link>> |
+						<<case 7>>
+							<<link [[安抚(0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"peekaboo", childid:_args[0]}>><</link>> |
+						<<case 8>>
+							<<link [[安抚(0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"blowRaspberriesHappy", childid:_args[0]}>><</link>> |
+						<<case 9>>
+							<<link [[安抚(0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"blowRaspberriesUpset", childid:_args[0]}>><</link>> |
+						<<default>>
+							<<link [[安抚(0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"faceStudy", childid:_args[0]}>><</link>> |
+					<</switch>>
+				<</if>>
+			<<case "happy">>
+				<<childHe>>开心的咯咯笑.
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[跟着一起笑 (0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"smilesAndLaughs", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "talking">>
+				<<childHe>>让<<childherself>>发出咿呀的声音.
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[跟着一起咿呀学语 (0:10)|Children Activity Events]]>><<pass 10>><<set $childActivityEvent to {event:"talking", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "talking2">>
+				<<childHe>>咿咿呀呀的鼓弄着嘴唇，并试图让<<childherself>>发出一些声音。
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[跟着一起咿呀学语 (0:10)|Children Activity Events]]>><<pass 10>><<set $childActivityEvent to {event:"talking2", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "nappyChange">>
+				<<childHe>>看起来很不舒服，而且身上有着异味..
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[清理 (0:10)|Children Activity Events]]>><<pass 10>><<set $childActivityEvent to {event:"nappyChange", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "bathe">>
+				<<childHe>>正准备洗澡。
+				<<if $children[_args[0]].localVariables.event>>
+					<<switch random(1, 4)>>
+						<<case 1>>
+							<<link [[洗澡 (0:10)|Children Activity Events]]>><<pass 10>><<set $childActivityEvent to {event:"batheGentle", childid:_args[0]}>><</link>> |
+						<<case 2>>
+							<<link [[洗澡 (0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"batheShampoo", childid:_args[0]}>><</link>> |
+						<<case 3>>
+							<<link [[洗澡 (0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"BatheCalm", childid:_args[0]}>><</link>> |
+						<<case 4>>
+							<<link [[洗澡 (0:20)|Children Activity Events]]>><<pass 20>><<set $childActivityEvent to {event:"batheTantrum", childid:_args[0]}>><</link>> |
+						<<default>>
+					<</switch>>
+				<</if>>
+			<<case "thumbSucking">>
+				<<childHe>>正在开心地吮吸<<childhis>>的大拇指。
+			<<case "grumpyChild">>
+				<<childHe>>正在发脾气.
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[挠痒痒 (0:10)|Children Activity Events]]>><<pass 10>><<set $childActivityEvent to {event:"grumpyChild", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "crawlingAttempt">>
+				<<childHe>>平躺在那里并摇来晃去的.
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[帮一把 (0:05)|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"crawlingAttempt", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "crawlingAttempt2">>
+				<<childHe>>正在房间里慢慢的爬行.
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[帮一把 (0:05)|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"crawlingAttempt2", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "readingAttempt">>
+				<<childHe>>正在倒着看一本儿童读物。
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[翻转书本 (0:10)|Children Activity Events]]>><<pass 10>><<set $childActivityEvent to {event:"readingAttempt", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "readingCorrected">>
+				<<childHe>>正在看一本儿童读物。
+			<<case "babyRattle">>
+				<<childtoy $location "baby rattles" "notext">>
+				<<if _toyid>>
+					<<childHe>>正盯着<<childtoy $location _toyid "lowercase">>。
+					<<if $children[_args[0]].localVariables.event>>
+						<br>
+						<<capture _toyid>><<link [[摇一摇 (0:05)|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"babyRattle", childid:_args[0], toyid:_toyid}>><</link>><</capture>> |
+					<</if>>
+				<<else>>
+					<<humanChildActivityNoToy _args[0]>>
+				<</if>>
+			<<case "teddyBear">>
+				<<childtoy $location "teddy bears" "notext">>
+				<<if _toyid>>
+					<<childHe>>在睡觉的时候因那个<<childtoy $location _toyid "lowercase">>而翻来覆去.
+					<<if $children[_args[0]].localVariables.event>>
+						<br>
+						<<capture _toyid>><<link [["给与你购买的" + _toyName + " (0:05)"|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"teddyBear", childid:_args[0], toyid:_toyid}>><</link>><</capture>> |
+					<</if>>
+				<<else>>
+					<<humanChildActivityNoToy _args[0]>>
+				<</if>>
+			<<case "teddyBear2">>
+				<<childHe>>因为有着<<childhis>>的<<print $children[_args[0]].localVariables.toy>>而睡的很香。
+			<<case "toyCar">>
+				<<childtoy $location "toy cars" "notext">>
+				<<if _toyid>>
+					<<childHe>>在空中挥舞着那个<<childtoy $location _toyid "lowercase">>。
+					<<if $children[_args[0]].localVariables.event>>
+						<br>
+						<<capture _toyid>><<link [[玩耍 (0:05)|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"toyCar", childid:_args[0], toyid:_toyid}>><</link>><</capture>> |
+					<</if>>
+				<<else>>
+					<<humanChildActivityNoToy _args[0]>>
+				<</if>>
+			<<case "dummy">>
+				<<childtoy $location "dummies" "notext">>
+				<<if _toyid>>
+					<<set _rng to random(1,4)>>
+					<<childHe>>的<<childcry _rng>>，在附近的地板上有着<<childtoy $location _toyid "lowercase">>。
+					<<if $children[_args[0]].localVariables.event>>
+						<br>
+						<<capture _toyid _rng>><<link [[安抚 (0:15)|Children Activity Events]]>><<pass 15>><<set $childActivityEvent to {event:"dummy", childid:_args[0], toyid:_toyid, childCry:_rng}>><</link>><</capture>> |
+					<</if>>
+				<<else>>
+					<<humanChildActivityNoToy _args[0]>>
+				<</if>>
+			<<case "dummySucking">>
+				<<childHe>>正在大声吸吮<<childhis>>的橡胶奶嘴.
+			<<case "clown">>
+				<<childtoy $location "clown" "notext">>
+				<<if _toyid>>
+					<<childHe>>在用非常不确定的表情看着那个<<childtoy $location _toyid "lowercase">>.
+					<<if $children[_args[0]].localVariables.event>>
+						<br>
+						<<capture _toyid>><<link [[玩耍 (0:05)|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"clown", childid:_args[0], toyid:_toyid}>><</link>><</capture>> |
+					<</if>>
+				<<else>>
+					<<humanChildActivityNoToy _args[0]>>
+				<</if>>
+			<<case "clownHappy">>
+				<<if _childTotalDays lt 199>>
+					<<childHe>>在小丑和你之间快乐地玩耍着。
+				<<else>>
+					<<childHe>>时不时拉动着小丑的绳并发出笑声。
+				<</if>>
+			<<case "Robin">>
+				<<if getRobinLocation() isnot "orphanage">>
+					<<childHe>>正在开心地吮吸<<childhis>>的大拇指。
+				<<else>>
+					罗宾正抱着<<childhim>>。
+					<<if $children[_args[0]].localVariables.event>>
+						<br>
+						<<link [[抱住 (0:05)|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"Robin", childid:_args[0]}>><</link>>
+					<</if>>
+				<</if>>
+			<<default>>
+				<<childHe>>发现自己是一个游戏人物 (这是个错误，请反馈).
+				<<print $children[_args[0]].localVariables.activity>>
+		<</switch>>
+	</span>
+<</widget>>
+
+<<widget "humanChildActivityNoToy">>
+	<<childHe>>睡得正香。
+	<<if $children[_args[0]].localVariables.event>>
+		<br>
+		<<link [[静静地看着 (0:05)|Children Activity Events]]>><<pass 5>><<set $childActivityEvent to {event:"shiverInCot", childid:_args[0]}>><<set $child_played.pushUnique(_args[0])>><</link>> |
+	<</if>>
+<</widget>>
+
+/*ToDo: Pregnancy Story Content: Lacking events, no puppy toy events at all. Wolf pups events which the place accesses by going to the childrens UI*/
+<<widget "wolfChildActivity">>
+	<span class="no-numberify">
+		<<switch $children[_args[0]].localVariables.activity>>
+			<<case "noEvent">>
+				<<childHe>>睡得正香。
+			<<case "sleeping">>
+				<<childHe>>正睡在<<childhis>>自己的床上。
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[轻抚 (0:10)|Children Activity Events]]>><<pass 10>><<set $childActivityEvent to {event:"sleepingStroke", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "sleepingWithWolf">>
+				<<childHe>>酣睡在另一只<<if $monster is 1>>狼娘<<else>>母狼<</if>>的怀抱里.
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[偎依 (0:30)|Children Activity Events]]>><<pass 30>><<set $childActivityEvent to {event:"cuddleAndNap", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "crying">>
+				<<childHe>>正痛苦的<<childcry>>.
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[安慰 (0:15)|Children Activity Events]]>><<pass 15>><<set $childActivityEvent to {event:"cryingWolf", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "playing">>
+				<<childHe>>正在和其他小狼一起玩耍。
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[一起玩 (0:15)|Children Activity Events]]>><<pass 15>><<set $childActivityEvent to {event:"playing", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "watchingCurious">>
+				<<childHe>>用好奇的表情看着你。
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[满足好奇心 (0:30)|Children Activity Events]]>><<pass 30>><<set $childActivityEvent to {event:"curiousGaze", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "watchingLonging">>
+				<<childHe>>用渴望的表情看着你。
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[搔耳朵 (0:30)|Children Activity Events]]>><<pass 30>><<set $childActivityEvent to {event:"longingGaze", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "playFighting">>
+				<<childHe>>和另一个小狼在玩斗犬游戏。
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[让这些崽子们冷静下来 (0:10)|Children Activity Events]]>><<pass 10>><<set $childActivityEvent to {event:"playFighting", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "staringOutside">>
+				<<childHe>>凝视着洞穴外面的景象。
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[散步 (0:30)|Children Activity Events]]>><<pass 30>><<set $childActivityEvent to {event:"fieldTrip", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "grumpyWolf">>
+				<<childHe>>正独自坐着，并对靠近<<childHe>>的所有人发脾气。
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[逗乐 (0:15)|Children Activity Events]]>><<pass 15>><<set $childActivityEvent to {event:"grumpyWolf", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "hungeryWolf">>
+				<<childHe>><<childcry>>着挤在人满为患的雌性<<wolf_cave_singular "f">>面前。
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[帮忙找奶头 (0:15)|Children Activity Events]]>><<pass 15>><<set $childActivityEvent to {event:"hungeryWolf", childid:_args[0]}>><</link>> |
+				<</if>>
+			<<case "gnawing">>
+				<<childHe>>正在坑咬着
+				<<switch random(1,4)>>
+					<<case 1>>一根脱落的鹿角。<<set $pupToy to "antler">> 
+					<<case 2>>一根鹿骨。<<set $pupToy to "bone">> 
+					<<case 3>>一只旧胶靴。<<set $pupToy to "boot">> 
+					<<case 4>>一根树枝。<<set $pupToy to "stick">> 
+				<</switch>>
+				<<if $children[_args[0]].localVariables.event>>
+					<br>
+					<<link [[玩拔河游戏(0:10)|Children Activity Events]]>><<pass 10>><<set $childActivityEvent to {event:"gnawing", childid:_args[0]}>><</link>>
+				<</if>>
+			<<default>>
+				<<childHe>>发现自己是一个游戏人物 (这是个错误，请反馈).
+				<<print $children[_args[0]].localVariables.activity>>
+		<</switch>>
+	</span>
+<</widget>>
+
+<<widget "skinColourName">><<silently>>
+	<<switch _args[0]>>
+		<<case "ylight">><<set $_text_output to "light">>
+		<<case "ymedium">><<set $_text_output to "medium">>
+		<<case "ydark">><<set $_text_output to "dark">>
+		<<case "ghostlyPale">><<set $_text_output to "ghostly pale">>
+		<<case "gyaru" "ygyaru">><<set $_text_output to "medium">>
+		<<default>><<set $_text_output to _args[0]>>
+	<</switch>>
+	<</silently>><<print $_text_output>>
+<</widget>>

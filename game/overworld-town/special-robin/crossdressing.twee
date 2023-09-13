@@ -1,0 +1,2388 @@
+:: Robin Caught CD
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<!-- flip pronoun while the player doesn't recognise robin -->
+	<<genderswap>>
+	<<run npcEquipSet(_robin, setup.npcClothesSets.find(n => n.name === (_robin.pronoun is "m" ? "femaleTown1" : "maleTown1")))>>
+
+	在一番心理斗争之后，你的好奇心占据了上风。你将门打开，看到一个穿着<<npcClothesText _robin "upper">>的<<personsimple>>，
+	而这家伙正背对着你，审视着<<himself>>。
+	<br><br>
+
+	在你进入房间的时候，那个<<personsimple>>就已经透过镜子注意到了你。而<<He>>也在转身面向你之前用手遮住了脸.
+	<br><br>
+
+	<<if $speech_attitude is "meek">>
+		"你--你对罗宾做了什么？" 你颤颤巍巍的说着，不知道这个陌生人的意图是什么。
+	<<elseif $speech_attitude is "bratty">>
+		"你在罗宾的房间里做什么？" 你已经做好了战斗的准备。
+	<<else>>
+		"你是谁？" 你这样问道，毕竟你并不确定这个陌生人的意图到底是什么。
+	<</if>>
+	<br><br>
+
+	那个<<personsimple>>犹豫了一下，然后回答道："我不是陌生人! 是我！"
+	<<if $pronoun is "f">>
+		她用手擦去了一些化妆品。
+	<<else>>
+		你认出了这个声音。
+	<</if>>
+	<span class="green">是罗宾</span>.
+	<!-- restore pronoun -->
+	<<genderswap>>
+	<br><br>
+
+	<!-- Please add more options here if you add another Robin crossdressing starting event -->
+	<<if _robin.cdstart is "christmas">>
+		"我试穿了你在圣诞节送给我的那个礼物，我想你是对的，"<<he>>说道："我确实相当喜欢它。"
+	<<elseif _robin.cdstart is "halloween">>
+		"自从我打扮成那个<<print (_robin.pronoun is "m" ? "女巫" : "吸血鬼")>>之后,我就一直再想试上那么一试变装."
+	<<else>>
+		<!-- Failsafe, only if CDstart is otherwise empty for some reason -->
+		"我在一家商店的橱窗里看到了这套衣服，我无法控制自己不去想它，"<<he>>继续说道："我想如果我穿上它的话会让我看起来更加<<print (_robin.pronoun is "m" ? "可爱" : "帅气")>>。"
+	<</if>>
+	<<if _robin.dom gte 40>>
+		罗宾深吸了一口气，然后缓慢的旋转一周。"那么，它看起来怎么样呢？"<<He>>在询问着的同时用充满希冀的目光看向你。
+	<<else>>
+		罗宾满脸通红地移开视线："抱歉吓到你了。请给我一分钟时间去把这些都换回来。"
+	<</if>>
+	<br><br>
+
+	<<link [[鼓励|Robin CD Encourage]]>><<npcincr Robin love 5>><</link>><<gglove>>
+	<br>
+	<<link [[温柔的劝阻|Robin CD Soft Discourage]]>><<npcincr Robin love 1>><</link>><<glove>>
+	<br>
+	<<link [[斥责|Robin CD Harsh Discourage]]>><<npcincr Robin dom -3>><<stress 4>><<npcincr Robin love -5>><<npcincr Robin trauma 3>><</link>><<gstress>><<grtrauma>><<lllove>><<lldom>>
+	<br>
+
+:: Robin CD Encourage
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<set _robin.crossdress to 2>>
+	<<set _robin.cdquest to 1>>
+	<<set $daily.robin.cdevent to 1>>
+
+	<<if $backgroundTraits.includes("crossdresser") or $player.gender isnot $player.gender_appearance>>
+		<<if $speech_attitude is "meek">>
+			"你这样看起来真的很可爱，"你说完之后立马将头低了下去，罗宾停下了脚步，回头看着你。
+		<<elseif $speech_attitude is "bratty">>
+			"你做到很好！" 你在说着的同时向罗宾跨进一步，罗宾停下了将要做的事情。"但还有几件事情你可以改进一下，例如....
+			<<if _robin.pronoun is "m">>你的打扮<<else>>你说话的方式<</if>>，但你显然有这方面的天赋！"
+		<<else>>
+			"你成为了一个非常可爱的<<print (_robin.pronoun is "m" ? "女孩" : "男孩")>>，"你轻声说道，而罗宾也一下子不好意思的脸红了起来。
+		<</if>>
+		<br><br>
+
+		罗宾结结巴巴地说："我，我么？" 你可以看到<<he>>的脸上洋溢起了止不住的笑容。
+		<br><br>
+
+		<<if $speech_attitude is "meek">>
+			"对不起，如果我让你感到惊讶的话，"你怯生生地说道："我真的很高兴还有其他人喜欢这个东西。" 你用微笑来回应<<his>>的笑容。
+		<<elseif $speech_attitude is "bratty">>
+			"你只是需要更多的信心！" 你这样说道.
+		<<else>>
+			"你让我在那里呆了一会儿，这可是十分值得骄傲的事情，"你说说着的同时给了<<him>>一个鼓励的眼神。
+		<</if>>
+		<br><br>
+
+		<<if _robin.dom gte 40>>
+			罗宾对你的鼓励显得欣喜若狂，<<He>>跑到你身边死死地抱住你。"你不知道你刚才说的话让我有多高兴！，"<<he>>说道.
+			你们就这样拥抱着，互相感受着彼此的温柔。在过了好一会之后， 罗宾才将你轻轻地推开。
+			<br><br>
+
+			"如果你在这种事情上需要帮助，"你说着的同时指了指<<his>>的衣服，"我很乐意帮忙."
+			<br><br>
+
+			罗宾看起来很可能会因为你的鼓励而泪流满面，但<<he>>还是设法使<<himself>>振作起来并说道："我很感激，谢谢."
+			<<He>>深吸一口气，然后笑着说道："那么，"你要见我？"<<he>>在说着的同时整理了一下<<his>>的衣服。
+		<<else>>
+			你看到<<him>>开始流泪，"抱歉，我只是很高兴没有失去你！"<<He>>感叹道。
+			"当你看到我时，我不禁想到了所有可能出错的方式。"<<He>>用<<his>>那流泪的脸庞为你挤出一个微笑："太感谢你了。"
+			<br><br>
+
+			"如果你在这种事情上需要帮助，"你说着的同时指了指<<his>>的衣服，"我很乐意帮忙."
+			<br><br>
+
+			罗宾拥抱你，但那喜悦的泪水仍从<<his>>的眼角滑落，过了很久，<<he>>终于平静了下来，然后给了你一个温柔的微笑。
+			"所以，"<<he>>一边整理<<his>>的衣服一边说道："你想见我？"
+		<</if>>
+	<<else>>
+		"你看起来真不错，”你对<<him>>说道，当你说出这话之后，罗宾一瞬间停下了手上的动作。
+		"我认为你是一个完全陌生的人，但在那之前，你是一个相当可爱的人，"你在说着的同时，对着<<him>>眨了眨眼。
+		<br><br>
+
+		<<if _robin.dom gte 40>>
+			罗宾忍不住地笑了起来，"我知道你没有认出我，"<<he>>继续说道："但听到你亲口说出来，我还是很高兴的。"
+			<<his>>看起来像是卸下什么重担一样松了口气.
+		<<else>>
+			罗宾看向你，<<his>>那紧皱的眉头瞬间就消失了，"真-真的吗？谢谢你，太谢谢了！"
+		<</if>>
+		<<he>>深吸了一口气停顿了一下，然后接着说道："你介意什么时候帮我一下么？" 在说完后<<he>>又停顿了一会儿。
+		"这不是催促或任何其他东西，我只是真的没有其他人可以问了....算了，当我没说好了，你找我有事么？"
+		罗宾无视了对<<his>>先前问题的任何回应。
+	<</if>>
+	<br><br>
+
+	<<robinoptions>>
+
+:: Robin CD Soft Discourage
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<run delete _robin.crossdress>>
+
+	<<if $speech_attitude is "meek">>
+		"对不起，我只是觉得它可能不太适合你，"你尽量用委婉的话语来劝阻<<him>>。
+	<<elseif $speech_attitude is "bratty">>
+		"我还是觉得你平时的样子更好看，那个我所了解和关心的那个可爱罗宾。" 你微笑着说道，但<<he>>似乎并不愿意回应你。
+	<<else>>
+		"你没必要穿成这样，现在的你就已经很可爱了。" 你走向罗宾，给<<him>>了一个温柔的笑容。
+	<</if>>
+	<br><br>
+
+	在过了好一会儿之后，<<He>>才叹气道："我早该想到我不会成功的，但还是要谢谢你，"
+	"现在让我把这个脱掉吧，请给我一些时间。"
+	<br><br>
+
+	你点点头，然后退出房间，以此来给<<him>>一些私人空间。在几分钟之后，你听到<<his>>的声音从里面传出，你听的出其话语里的沮丧感,"我换完了."
+	<br><br>
+
+	当你再次进入房间时，你发现罗宾正坐在床上生着闷气。你上前将其拥入怀中，而<<he>>也马上回抱住了你。
+	<br><br>
+
+	"谢谢，我想我现在感觉好多了，就让我们忘记这一切吧。"
+	<br><br>
+
+	<<set _robin.crossdressing to 0>>
+	<<robinoptions>>
+
+:: Robin CD Harsh Discourage
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<run delete _robin.crossdress>>
+
+	"罗宾，你为什么要穿成这个样子？你难道不会感到害臊么？"你在震惊之余的同时厉声斥责了起来。
+	<br><br>
+
+	"我只是想。也许那--"<<He>>语无伦次的说道："我--我不知道！"看来罗宾的精神已经崩溃了，现在的<<his>>无比脆弱，你听到<<him>>哽咽的抽泣着。
+	<br><br>
+
+	<<if $speech_attitude is "meek">>
+		话刚说出口你就感到了后悔，你试图安慰<<him>>，但<<his>>的泪水止不住的往下流。
+	<<elseif $speech_attitude is "bratty">>
+		看到罗宾这个样子，你于心不忍的说道："只要你别再这样做就好了，我真的不想看到你受到伤害。"
+	<<else>>
+		"请不要再哭了，"你拍着<<his>>的肩膀说道："毕竟这是不对的。"
+	<</if>>
+	<br><br>
+
+	"你能离开一下吗？"<<He>>抽噎着说道："我需要一点独处时间。"
+	<br><br>
+
+	<<set _robin.crossdressing to 0>>
+	<<endevent>>
+	<<link [[离开|Bedroom]]>><</link>>
+
+:: Robin Caught CD Knock
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if $speech_attitude is "meek">>
+	你敲了敲门，没有任何反应，但你听见里面传来的轻细的沙沙声。在等了一会后，罗宾打开门从里面走了出来。尽管<<his>>的脸上挂着一如既往的笑容，但你还是注意到了<<hes>>脸上那尚未褪去的红晕。
+	<br><br>
+
+	"请进！"<<he>>轻快地说道："我可什么都没做哦。"<<He>>俏皮地推了你一把，然后跳到了<<his>>的床。而你则在<<him>>的身边坐了下来。
+<<elseif $speech_attitude is "bratty">>
+	你疯狂的捶打着门，一声喊叫从门的另一边传来。"等...等一下！" 在罗宾结巴地说完之后，一阵急促的脚步声和频砰声接踵而至，直到门被打开后，满脸通红的罗宾才露出头来。
+	<br><br>
+
+	"你吓到我了，"<<he>>整理了一下裤子，然后扑到了<<his>>的床上，而你坐在了还在大喘气的<<his>>的旁边。
+<<else>>
+	你敲了敲门，然后听见了门那边罗宾的喘气声，"等...等一下！"<<he>>结结巴巴说着的同时传来衣服的沙沙声，在等了一会后，罗宾打开门将你拉了进去，你注意到了<<Hes>>那通红的脸庞。
+	<br><br>
+
+	"谢谢你的等待，"<<he>>叹了口气，接着说道："你现在可以进来了。"你进入房间并坐在了床上。
+<</if>>
+<br><br>
+
+<<link [[询问怎么了|Robin Caught CD Note]]>><</link>>
+<br>
+<<robinoptions>>
+
+:: Robin Caught CD Note
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<He>>一下子紧绷了起来："怎…怎么了？额，那个…我在…我在学习，而且我不想被打扰。"<<He>>停顿了一下，接着说道："我，我没有生你的气，反正我也打算休息一下，而且…"
+<br><br>
+
+<<He>>一直东扯西扯地回避着你的问题。直到最后，<<hes>>沉默了下来。
+<<if $robinconsole is 0>>
+	<<His>>将头垂了下去，你看不见<<his>>的任何表情，
+<<else>>
+	<<His>>将目光放在了电视机上，就那样默默的盯着，
+<</if>>
+而这也让你的好奇心更加强烈。
+<br><br>
+
+<span class="blue">也许如果你当时没有敲门的话，你就会明白<<he>>在做什么了。</span>
+<br><br>
+
+<<robinoptions>>
+
+:: Robin CD Door Answer
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<set $daily.robin.cdevent to 1>>
+	<<generatey2>>
+
+	<<if _robin.dom gte 60>>
+		"怎么了？" 罗宾回答道，这听起来远没有<<person1>><<he>>表现出来的那么焦急。
+	<<else>>
+		"有......有什么事么？" 罗宾结结巴巴地说道。
+	<</if>>
+	<br><br>
+
+	一个<<person2>><<personsimple>>在门的另一边喊道：“你说会帮我辅导数学作业，我想知道你现在有空吗？"
+	<br><br>
+
+	罗宾用充满矛盾的神情看向你.
+	<br><br>
+
+	<<link [[鼓励罗宾去开门|Robin CD Door Encourage]]>><</link>>
+	<br>
+	<<link [[告诉罗宾别去开门|Robin CD Door Discourage]]>><</link>>
+	<br>
+
+:: Robin CD Door Ignore
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+	<<set $daily.robin.cdevent to 1>>
+	<<generatey2>>
+
+	你看了一眼罗宾的着装，然后摇了摇头。罗宾也心领神会的点了点头，然后保持起了沉默。
+	<br><br>
+
+	"哎，真奇怪。"一个<<person2>><<personsimple>>在罗宾的门外喃喃自语道："<<person1>><<hes>>如果不在房间的话应该是会留下一张纸条的。"
+	在脚步声渐渐远去后，罗宾长舒一口气。
+	<br><br>
+
+	"好险，"罗宾说道，<<he>>看起来既紧张又兴奋，"如果让别人看到我穿成这个样子的话......" 罗宾没有把话说完，只是下意识的打了个寒颤。
+	"算了，不管怎样，让我们继续回去打游戏吧。"<<he>>对你笑着说道。
+	<br><br>
+
+	<<clearsinglenpc 1>> <!-- clear only the other npc, so robin's clothes remain unchanged -->
+	<<robinoptions>>
+
+:: Robin CD Door Encourage
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<set _robin.cdquest to 2>>
+
+	<<if $speech_attitude is "meek">>
+		"我想你会没事的。"你对<<person1>><<him>>低声说道。
+	<<elseif $speech_attitude is "bratty">>
+		"你看起来很棒，"你说道："一切会好起来的，别担心！"
+	<<else>>
+		你拍了拍罗宾的背说道：“你能行的！"
+	<</if>>
+	<br><br>
+
+	在你的鼓励下，罗宾做出了回应。"我现在有空了，请进吧！" 话音刚落，一个<<person2>><<person>>打开门，就那样看着你们二人。
+	"哦，我不知道你已经有一些朋友在这了，"<<he>>在说完后将目光都放在了罗宾的身上。
+	"等一下，罗宾？你穿着这个看起来像一个<<print (_robin.pronoun is "m" ? "女孩" : "男孩")>>，我一开始都没有认出你来。"
+	<br><br>
+
+	<<if _robin.dom gte 60>>
+		罗宾听到这话也就只是笑了一下，除此之外并没有理会其它的东西。"你是说你需要数学方面的帮助？"
+	<<else>>
+		罗宾在听到这话后一下子脸红了起来，在花了点时间来整理<<person1>><<himself>>自己后回答道："你是说你需要数学方面的帮助？"
+	<</if>>
+	<br><br>
+
+	罗宾帮助了这个<<person2>><<person>>一段时间，而每当<<he>>提到关于<<person1>><<his>>目前的装束时都会止不住的露出笑容。
+	最终，辅导的工作完成了，当那个家伙离开时，罗满眼兴奋的看着你。<<person2>>"<<He>>竟然一开始没有认出我！"罗宾兴奋的说道，"我简直不敢相信。"
+	<br><br>
+
+	<<if $speech_attitude is "meek">>
+		"这可是值得高兴的事哦，"话音未落，罗宾就紧紧地抱住了你。
+	<<elseif $speech_attitude is "bratty">>
+		"我早就告诉过你吧，"你边说边揉起了<<person1>><<his>>的头发。
+	<<else>>
+		"我就知道你能做到！" 你微笑着快速抱了一下<<person1>><<him>>。
+	<</if>>
+	<br><br>
+
+	<<clearsinglenpc 1>> <!-- clear only the other npc, so robin's clothes remain unchanged -->
+	<<robinoptions>>
+
+:: Robin CD Door Discourage
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+
+	你看着罗宾，摇了摇头。
+	<br><br>
+
+	罗宾回过头来点点头，然后朝门外喊道："对不起！我正在和我
+	<<if $robinromance is 1>>
+		<<girlfriend>>
+	<<else>>
+		最好的朋友
+	<</if>>
+	在一起打游戏，你能晚点来么？"
+	<br><br>
+
+	你听到门外传来失望的叹息声，然后那个<<person2>><<personsimple>>回应道："好的，当然! 那我以后再来找你。"
+	你听见了离去的脚步声.
+	<br><br>
+
+	"好险，"罗宾说道，<<he>>看起来既紧张又兴奋，"如果让别人看到我穿成这个样子的话......" 罗宾没有把话说完。
+	罗宾没有把话说完，只是下意识的打了个寒颤，"算了，不管怎样，让我们继续回去打游戏吧。"<<he>>对你笑着说道。
+	<br><br>
+
+	<<clearsinglenpc 1>> <!-- clear only the other npc, so robin's clothes remain unchanged -->
+	<<robinoptions>>
+
+:: Robin CD Socialise
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<set _robin.cdquest to 3>>
+
+	当你靠近时，罗宾对你笑了笑。<<person1>><<He>>现在看起来就像是一个普通的<<print (_robin.pronoun is "m" ? "女孩" : "男孩")>>.
+	<<if _robin.dom gte 60>>
+		"嘿！我刚才正在谈论你呢，"<<he>>在转身走向那个<<person2>><<person>>前对你说道.
+		<<person1>><<He>>似乎比平时更加兴奋，同时<<his>>的脸也更红了。
+	<<else>>
+		"谢谢你愿意过来，"罗宾用小到那个<<person2>><<person>>听不见的声音说道。
+		"我想我会这样走出我的房间，然后<<he>>就过来开始和我谈论这件事。"
+		<<person1>><<He>>咳嗽一声，将声音恢复到正常大小："就这样，这就是我之前说的那个人。"
+	<</if>>
+	<br><br>
+
+	<<person2>><<person>>对你笑着说道："所以，是你把罗宾变成了这样的一个变态！" 虽然<<His>>在用开玩笑的语调说着，但罗宾看起来还是有点受伤。
+	<br><br>
+
+	<<link [[保护罗宾|Robin CD Socialise Defend]]>><<stress 2>><<npcincr Robin love 3>><</link>><<gglove>><<gstress>>
+	<br>
+	<<link [[转移话题|Robin CD Socialise Change]]>><<npcincr Robin love 1>><</link>><<glove>>
+	<br>
+
+:: Robin CD Socialise Defend
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+
+	<<if $backgroundTraits.includes("crossdresser") or $player.gender isnot $player.gender_appearance>>
+		<<if $speech_attitude is "meek">>
+			你靠向罗宾说道："我只是想帮助<<person1>><<him>>成为<<himself>>自己."
+		<<elseif $speech_attitude is "bratty">>
+			你对<<person2>><<person>>挑了挑眉毛："这也让我成为了一个变态吗？"
+		<<else>>
+			"我只是帮助<<person1>><<him>>走出<<his>>内心的束缚，"你说道："这没有什么变态的。"
+		<</if>>
+	<<else>>
+		<<if $speech_attitude is "meek">>
+			你靠向罗宾说道:<<person1>>"<<Hes>>才不是变态......"。
+		<<elseif $speech_attitude is "bratty">>
+			你挤到那个<<person2>><<person>>和罗宾之间后说道："你对<<person1>><<him>>说了什么？"
+		<<else>>
+			你紧皱着眉头，对着这个<<person2>><<person>>说道：<<person1>>"<<He>>又没有做错什么，你为什么要这么说呢？"
+		<</if>>
+	<</if>>
+	<br><br>
+
+	<<person2>><<personsimple>>似乎对你的维护感到惊讶："这只是一个玩笑，不要太当真了。
+	反正我得走了，很高兴遇到你，罗宾！<<He>>在离开时说道。
+	<br><br>
+
+	<<personsimple>>离开没一会，罗宾便长长的叹了一口气。
+	<<if _robin.dom gte 60>>
+		<<person1>><<He>>深吸了一口气，<<hes>>似乎想说些什么。
+		"谢谢，我想我以后必须要更加小心了。"<<person1>><<He>>在说着的同时露出了和平日里一样的笑容。
+		"嘛，虽然有些曲折，但这真的很有趣! 而且这在某种程度上很令人兴奋呢。"<<He>>在转身离开前紧紧的抱住了你，"如果你需要我的话，我就在我的房间里。"
+	<<else>>
+		<<person1>><<He>>紧紧地抱着你，在过了好一会之后，<<he>>开口道:"谢谢你为我辩护，真的很感谢你。"
+		"但我可不会让这一切阻止我，毕竟只要有你在我身边的话，我就会感到十分安全。"<<He>>停顿了一下，然后微笑着说道："如果你需要我的话，我就在我的房间里。"
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+
+:: Robin CD Socialise Change
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+
+	<<if $speech_attitude is "meek">>
+		你靠向罗宾说道:我们可以谈点别的事情么？"
+	<<elseif $speech_attitude is "bratty">>
+		"没错，我就是变态。"你直截了当地说着的同时盯着他们，直到他们中断了目光的接触。
+	<<else>>
+		"所以啊，罗宾告诉我那天的一个测试..."你直截了当地试图改变话题。
+	<</if>>
+	<br><br>
+
+	"好吧，我明白了，我就不说了，虽然我还是很好奇<<person1>><<him>>经历了什么。"
+	在<<person2>><<person>>微笑着谈了一会儿别的事情后便离开了。
+	<br><br>
+
+	<<if _robin.dom gte 60>>
+		<<person1>><<He>>似乎想要说些什么和<<person2>><<him>>有关的话，但是<<hes>>深吸了一口气，“谢谢你改变话题，"
+		<<person1>><<he>>说道："我不在乎别人是怎么说的，反正我不是那样的人。它只是让我感觉很好，仅此而已。"
+		<<He>>转身紧紧的抱住了你，"如果你需要我的话，我就在我的房间里。"
+	<<else>>
+		<<person1>><<He>>紧紧地抱着你，在过了好一会之后，<<person1>><<he>>开口说道:"谢谢你这么做."
+		"我不会让这阻止我，我知道我不是......那个。"<<He>>颤抖着，但还是说不出那个词。
+		最终，<<he>>甩掉了它，并对你微笑着说道："如果你需要我的话，我就在我的房间里。"
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+
+:: Robin's Stand CD Explain Demo
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+
+	<<if $speech_attitude is "meek">>
+		你慢步走向罗宾并将<<him>>抱住，“你没事吧？”你轻声问道。
+	<<elseif $speech_attitude is "bratty">>
+		"嘿，我平时认识的罗宾去哪里了？"你轻轻地揉了揉<<his>>的头发。“怎么了？"
+	<<else>>
+		你轻轻的拍了拍罗宾的背并问道："你感觉还好吗？如果你不愿意的话，你不必去出摊的。"
+	<</if>>
+	<br><br>
+
+	"嗯，我......”<<he>>停顿了一下，“没关系。不是什么重要的事。"你看得出来，罗宾正试图回避这个问题，并且其没有回答任何进一步的问题。
+	<br><br>
+
+	<span class="blue">如果<<he>>更信任你的话，也许<<he>>就会敞开心扉。</span>
+	<br><br>
+	<<if Time.season is "winter">>
+		<<link [[为其提供帮助 (0:30)|Robin Chocolate Set]]>><<pass 30>><<npcincr Robin love 1>><</link>><<glove>>
+	<<else>>
+		<<link [[为其提供帮助 (0:30)|Robin's Lemonade Set]]>><<pass 30>><<npcincr Robin love 1>><</link>><<glove>>
+	<</if>>
+	<br>
+	<<link [[离开|Orphanage]]>><<set $fromRobinRoom to true>><<endevent>><</link>>
+	<br>
+
+:: Robin's Stand CD Explain Full
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+
+	<<if $speech_attitude is "meek">>
+		你慢步走向罗宾并将<<him>>抱住，“你没事吧？”你轻声问道。
+	<<elseif $speech_attitude is "bratty">>
+		"嘿，我平时认识的罗宾去哪里了？"你轻轻地揉了揉<<his>>的头发。“怎么了？"
+	<<else>>
+		你轻轻的拍了拍罗宾的背并问道："你感觉还好吗？如果你不愿意的话，你不必去出摊的。"
+	<</if>>
+	<br><br>
+	<<if _robin.cdstanddenial is 1>>
+		<<if _robin.dom gte 60>>
+			"你有空吗？我想在我的摊位上试试穿我的异装，"<<he>>满怀希冀的问道。
+		<<else>>
+			"我想在，你知道的，"<<he>>在说着的同时疯狂朝<<his>>的衣服打手势，但<<His>>的声音却很平静："我在想，你能不能和我一起待一会儿。"
+		<</if>>
+	<<else>>
+		<<set _clothes to (Time.season is "winter" ? "coldHoodie" : (_robin.pronoun is "m" ? "femaleTown1" : "maleTown1"))>>
+		<<set _clothes to setup.npcClothesSets.find(n => n.name === _clothes)>>
+		<<if _robin.dom gte 60>>
+			"好吧，<<he>>在停顿了好一会之后才开始说道："你知道我有多喜欢在孤儿院周围变装，对吗？"
+			<<He>>在继续说下去之前又停顿了一下："我想在我的<<if Time.season is "winter">>热巧克力<<else>>柠檬水<</if>>摊上也开始这样做。"
+			<<He>>指出了<<print Time.season is "winter" ? (_robin.pronoun is "m" ? "粉色合身的" : "蓝色宽松的") : "">>
+			<<print _clothes.desc>><<if _robin.pronoun is "f">>和一件束胸衣<</if>>。
+			"我甚至还得到了一套新的衣服来试穿！"。
+			<<if _robin.pronoun is "m">>
+				我也一直有在练习化妆。"
+			<<else>>
+				我想我关于模仿男人形态也更得心应手了。"
+			<</if>>
+			<<He>>微笑着，但很快就消失了。"我猜我只是害怕像那样独自走出去。"罗宾叹了口气。
+			"嘿，你不介意和我一起去吧？当你在那里陪伴我时，我总是感觉更舒服。"
+
+		<<else>>
+			<<He>>在叹息之前给你一个轻微的微笑。“不是真的，”<<he>>说。“到目前为止，我真的很喜欢变装。但是……"
+			又是一声叹息。"我没有足够的信心在其他地方做这件事。"
+			<<He>>指出了<<print Time.season is "winter" ? (_robin.pronoun is "m" ? "粉色合身的" : "蓝色宽松的") : "">>
+			<<print _clothes.desc>><<if _robin.pronoun is "f">>和一件束胸衣<</if>>。
+			"我买了一套新衣服只是为了试一下。”<<He>>看着衣服笑了笑，但它慢慢变淡了。
+			"我害怕那些人会盯着我看，”<<he>>继续向你倾诉着。
+			"大家只会觉得我是一个变-变态...“罗宾开始抽噎了。
+			<<if _robin.pronoun is "m">>
+				"我还让其他孤儿来教了我怎么化妆。"
+			<<else>>
+				"我还让其他孤儿来教了我该如何表现得更有男子气概。"
+			<</if>>
+			<br><br>
+
+			<<if $robinromance>>
+			你小心地擦去了<<his>>眼中的泪水。
+			<</if>>
+			<<if $speech_attitude is "meek">>
+				"没事的..."你小声安慰着<<him>>。
+			<<elseif $speech_attitude is "bratty">>
+				"谁在乎别人怎么看呢，对吧？你就是最好最完美的，我保证。“你抱了抱罗宾。
+			<<else>>
+				”罗宾，不要在意别人的想法，尽情享受自己想要穿成的模样就好。“你向<<him>>微笑。当安慰不起效的时候，你紧紧抱住了<<him>>。
+			<</if>>
+			<br><br>
+
+			<<His>>的泪水继续缓缓流淌。“你一直很支持我，我不想再多要什么了，但是，你觉得你这次能陪我一起去吗？
+			即使只有一小会儿，我也会感觉更安全。"
+		<</if>>
+	<</if>>
+	<br><br>
+
+	<<link [[跟罗宾一起去 (1:00)|Robin's Stand CD Accept]]>><<pass 60>><<npcincr Robin love 5>><</link>><<gglove>>
+	<br>
+	<<link [[拒绝|Robin's Stand CD Refuse]]>><<npcincr Robin love -5>><</link>><<lllove>>
+	<br>
+
+:: Robin's Stand CD Refuse
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<set _robin.cdstanddenial to 1>>
+
+	<<if $speech_attitude is "meek">>
+		"我很抱歉，我很忙......”你说。
+	<<elseif $speech_attitude is "bratty">>
+		"能不能改天？我今天有点事情。"
+	<<else>>
+		"我真的很想去，但不是今天，”你说，“过一阵子再去吧！"
+	<</if>>
+	<br><br>
+
+	<<if _robin.dom gte 60>>
+		"没关系，”<<he>>低头说。“下次再说吧。”你听到<<his>>声音中微弱的痛苦。
+		"我要先准备一下。待会儿见。"
+	<<else>>
+		看起来罗宾的泪水即将全力涌出。然而，<<he>>设法忍住了，露出了一个微弱的微笑。
+		"我不能这样经营我的摊位，”<<he>>抽泣着。“我会去洗手间擦干净，然后换回去。"
+		<br><br>
+
+		几分钟后，<<he>>回来了，拥抱了你。“对不起打扰你了。下次如果你改变主意，我会在这里等着。"
+	<</if>>
+	<br><br>
+
+	<<link [[离开|Orphanage]]>><<endevent>><</link>>
+	<br>
+
+:: Robin's Stand CD Accept
+	<<set $outside to 1>><<set $location to (Time.season is "winter" ? "park" : "beach")>><<effects>>
+	<<set $robinmoney += 10>>
+	<<set _robin to statusCheck("Robin")>>
+	<<generateNPC 2 a>>
+
+	<<if $speech_attitude is "meek">>
+		"我会和你一起去，”你微笑着说，“你是我的朋友。"
+	<<elseif $speech_attitude is "bratty">>
+		"当然！”你毫不犹豫的说。“没有什么能阻止我帮助你。"
+	<<else>>
+		你点了点头。“我会在你身边的。"
+	<</if>>
+	<br><br>
+
+	罗宾兴奋地拥抱了你，迅速收拾了<<person1>><<his>>的用品，以及<<his>>的新衣服。当<<hes>>完成后，罗宾面向你。
+	"你能在外面等一会儿吗？我马上就出来。"
+	你出去了，几分钟后，罗宾出来了，看起来充满了<<print _robin.pronoun is "m" ? "女性魅力" : "男子气概">>.
+	<br><br>
+
+	前往<<print (Time.season is "winter" ? "公园" : "海滩")>>的路上你们一直在有说有笑的聊天。每次有人看罗宾的时候，<<him>>都会脸红。
+	当你们到达时，<<he>>高兴地摆起了<<his>>的摊位并开始营业。
+	你尽可能地帮忙，但大部分时间里<<he>>都充满了无限的活力来应对各种事情。
+	<br><br>
+
+	你短暂地休息了一下去上洗手间，但当你回来时，你看到罗宾正在处理一个特别难缠的顾客。
+	<br><br>
+
+	<<link [[干涉|Robin's Stand CD Intervene]]>><</link>>
+	<br>
+	<<link [[偷听|Robin's Stand CD Listen]]>><</link>>
+	<br>
+
+:: Robin's Stand CD Listen
+	<<set $outside to 1>><<set $location to (Time.season is "winter" ? "park" : "beach")>><<effects>>
+
+	你偷偷藏在一个不容易被发现的角落，偷听他们的谈话。仔细一听，似乎是一个<<person2>><<person>>在骚扰罗宾。
+	你努力听着，想听清他们每一句对话。
+	<br><br>
+
+	"一个<<print (Time.season is "winter" ? "公园" : "海滩")>>摊位？多过时啊，"你听到了大声的嘲笑。"你一天能赚多少钱？"
+	<<person>>把手放在罗宾的肩膀上。"跟我来，<<person1>><<genderswap>><<personsimple>>，我可以带你出去玩儿，而且还能赚到更多的钱。"
+	<br><br>
+
+	你不确定罗宾会如何回应。
+	<br><br>
+
+	<<link [[干涉|Robin's Stand CD Intervene]]>><</link>>
+	<br>
+	<<link [[等待|Robin's Stand CD Wait]]>><</link>>
+
+:: Robin's Stand CD Intervene
+	<<set $outside to 1>><<set $location to (Time.season is "winter" ? "park" : "beach")>><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<set _robin.crossdress to 4>>
+	<<set _robin.cdquest to 4>>
+
+	<<set _boyfriend to ($robinromance ? "<<person1>><<genderswap>><<personsimple>>朋友" : "最好的朋友")>>
+
+	<<if $speech_attitude is "meek">>
+		你迅速走到罗宾的身后支持<<person1>><<him>>。你把手放在<<his>>的肩膀上，<<he>>看着你笑了笑。
+		转向<<person2>><<person>>，你用低沉的声音说道，"别碰我_boyfriend。"
+	<<elseif $speech_attitude is "bratty">>
+		你走近<<person2>><<person>>。"嘿！"你大声喊道。"别对我_boyfriend动手动脚！"
+	<<else>>
+		你插进两个人之间。"嗨，我是<<person1>><<genderswap>><<his>>
+		<<print $robinromance ? "<<girlfriend>>" : "最好的朋友">>, 请你离开<<him>>。"
+	<</if>>
+	<br><br>
+
+	<!-- if robin is male, then while crossdressing, they appear female and npcs "expect" them to have a vagina -->
+	<<set _expectedPartFound to ((_robin.pronoun is "m" ? _robin.vagina : _robin.penis) isnot "none")>>
+	<<set _unexpectedPartFound to ((_robin.pronoun is "m" ? _robin.penis : _robin.vagina) isnot "none")>>
+
+	罗宾转过身来，惊讶地看着你。"你在这里！"<<person1>><<He>>开心极了。
+	<<if _robin.dom gte 60>>
+		<<He>>面向<<person2>><<person>>.
+		"我只是想卖我的<<print (Time.season is "winter" ? "热巧克力" : "柠檬水")>>，如果你不打算买任何东西，可以离开我们吗？"
+		<br><br>
+
+		然而，<<person2>><<person>>的想法似乎没有被打消。"我喜欢他们充满斗志的样子。"<<He>>说着，把手伸向罗宾的裆部。
+		在<<He>>没有得逞之前，罗宾把<<He>>的手打开了。
+		<br><br>
+
+		"住手！"<<person1>><<He>>大喊。"我觉得你应该离开。"
+		<br><br>
+
+		然后，<<person2>><<person>>看着罗宾的裆部
+		<<if _expectedPartFound and !_unexpectedPartFound>>
+			说道：“嘿，别太保守了。”<<He>>把手拿开了。"我只是想玩得开心点而已。"
+			<br><br>
+
+			"离开。”罗宾声音颤抖，但<<person2>><<person>>明白了信息。
+			<br><br>
+
+			"好吧。”<<person2>><<person>>嗤笑着转身离开。
+		<<else>>
+			大喊, "你不是<<person1>><<genderswap>><<personsimple>>! 你就是个<<print (_expectedPartFound ? "怪物" : "异装癖")>>!"
+			<<person2>><<He>>愤怒地走开了。
+		<</if>>
+		<br><br>
+
+		你轻轻地抚摸了罗宾的肩膀，使<<person1>><<him>>放松了拳头。
+		<<if $speech_attitude is "meek">>
+			"我很高兴<<person2>><<hes>>已经离开了。”你松了一口气。“罗宾，你还好吗？"
+		<<elseif $speech_attitude is "bratty">>
+			"那个混蛋不知道<<person2>><<hes>>在说什么。”你揉着罗宾的肩膀说。“别理<<him>>。"
+		<<else>>
+			"还好<<person2>><<hes>>离开了。”你微笑着对罗宾说。“你还好吗？"
+		<</if>>
+		<br><br>
+
+		罗宾脸上的愤怒慢慢消失，迅速被松了一口气，然后变成了喜悦。<<person1>><<He>>紧紧地拥抱你。
+		"你来帮我的忙了！而且你没有暴露我的身份。”<<He>>在你的耳边低语。“这对我来说意义非凡。"
+		<<His>>的声音几乎听不见。"我感觉在你面前我可以做自己。"
+		<br><br>
+
+		你们最终分开，继续一起经营摊位。幸运的是，其余的顾客都很友善。
+		<<npcincr Robin love 5>><<gglove>>
+	<<else>>
+		你感觉到罗宾的手碰到了你的背部。"如果你不买什么，请你离开好吗？"
+		<<He>>对着那个<<person2>><<personsimple>>转过身去。“我们需要吸引顾客。"
+		<br><br>
+
+		"不要这么害羞，”那个<<person2>><<person>>盯着罗宾说，“我相信我可以找到一种方法打开你的心扉。"
+		那个<<personsimple>>把<<his>>的手移缓缓向你的朋友裤裆处，而罗宾则站在那里，完全没有察觉。
+		<br><br>
+
+		<<if $speech_attitude is "meek">>
+			你只能恐惧地看着那个<<person2>><<person>>对罗宾的裆部进行了一次彻底的摸索。
+			结束后，你走向罗宾。"对不起。"你温柔地把<<person1>><<him>>紧紧地搂在怀里。
+		<<elseif $speech_attitude is "bratty">>
+			你把那个<<person2>><<person>>推开，但他还是在你走开之前摸到了你的朋友。
+			"罗宾，你还好吗？”你轻轻地摇着罗宾，让<<person1>><<him>>清醒过来。
+		<<else>>
+			你走过去阻止那个<<person2>><<him>>，但是在你能移开<<he>>的手之前，<<he>>还是摸了一下。
+			"你还好吗？"你低声对罗宾说，声音低到那个<<personsimple>>听不到。
+		<</if>>
+		<br><br>
+
+		罗宾仍然处于震惊状态，而那个<<person2>><<person>>则大声说道,
+		<<if _expectedPartFound and !_unexpectedPartFound>>
+			"嘿，你怎么回事？我只是想和你的朋友玩玩。"
+			<<person2>><<He>>瞪了你和罗宾一眼，然后愤怒地走开了。
+		<<else>>
+			"你不是<<person1>><<genderswap>><<personsimple>>! 你就是个<<print (_expectedPartFound ? "怪物" : "异装癖")>>!"
+			<<person2>><<He>>给了你和罗宾一副厌恶的表情，然后怒气冲冲地离开了。
+		<</if>>
+		直到这时，罗宾才回过神来。
+		<br><br>
+
+		"那很可怕。”<<person1>><<he>>说了很久，<<his>>的眼睛湿润了。
+		"我很高兴有你在这里。我不知道<<person2>><<he>>想对我做什么，但那不是好事。"
+		罗宾拥抱了你一会儿，然后在你的耳边低语道：“而且你没揭穿我的身份，这对我意义非凡。"
+		<<person1>><<His>>的声音几乎听不见。"我感觉我能在你面前做自己。"
+		<br><br>
+
+		你们最终分开，继续一起经营摊位。幸运的是，其余的顾客都很友善。
+		<<npcincr Robin love 5>><<gglove>>
+	<</if>>
+	<br><br>
+
+	<<endevent>>
+	<<if Time.season is "winter">>
+		<<link [[提供帮助 (0:30)|Robin Chocolate Help]]>><<npcincr Robin love 1>><<pass 30>><</link>><<glove>>
+		<br>
+		<<link [[离开|Park]]>><</link>>
+		<br>
+	<<else>>
+		<<link [[提供帮助 (0:30)|Robin's Lemonade Help]]>><<npcincr Robin love 1>><<pass 30>><</link>><<glove>>
+		<br>
+		<<link [[离开|Beach]]>><</link>>
+		<br>
+	<</if>>
+
+:: Robin's Stand CD Wait
+	<<set $outside to 1>><<set $location to (Time.season is "winter" ? "park" : "beach")>><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+
+	你无法让自己干涉，所以你等了一会儿，看看会发生什么。
+	<br><br>
+
+	<<person2>><<person>>说了些你听不清的话，然后试图抚摸罗宾的裆部。
+	<br><br>
+
+	<!-- if robin is male, then while crossdressing, they appear female and npcs "expect" them to have a vagina -->
+	<<set _expectedPartFound to ((_robin.pronoun is "m" ? _robin.vagina : _robin.penis) isnot "none")>>
+	<<set _unexpectedPartFound to ((_robin.pronoun is "m" ? _robin.penis : _robin.vagina) isnot "none")>>
+
+	<<if _robin.dom gte 60>>
+		罗宾推开了<<his>>的手，大声喊道：“停下！”然后做出一种让<<person1>><<He>>走开的姿势，看起来相当难过。
+		<<person2>><<personsimple>>走开了，看起来很沮丧。
+		<br><br>
+
+		<<person>>看了看罗宾的裆部，
+		<<if _expectedPartFound and !_unexpectedPartFound>>
+			说道：“嘿，别太保守了。”<<He>>把手拿开了。"我只是想玩得开心点而已。"
+			<br><br>
+
+			"离开。”罗宾声音颤抖，但<<person2>><<person>>明白了信息。
+			<br><br>
+
+			"好吧。”<<person2>><<person>>嗤笑着转身离开。
+		<<else>>
+			大喊, "你不是<<person1>><<genderswap>><<personsimple>>! 你就是个<<print (_expectedPartFound ? "怪物" : "异装癖")>>!"
+			<<person2>><<He>>愤怒地走开了。
+		<</if>>
+		<br><br>
+
+		<<person2>><<personsimple>>离开后，你走出藏身之处，走向罗宾。<<person1>><<He>>看起来很震惊。
+		<<if $speech_attitude is "meek">>
+			"对不起，我没能在你身边。”你感觉<<him>>在发抖，紧紧地拥抱着<<him>>。“你没事吧？"
+		<<elseif $speech_attitude is "bratty">>
+			"罗宾，我看到那个混蛋做了什么，”你告诉<<him>>。“你没事吧？”你紧紧拥抱着<<him>>。
+		<<else>>
+			你怒视着<<person2>>走远的背影。“你还好吧，罗宾？"
+		<</if>>
+		<br><br>
+
+		罗宾深吸了几口气。“我想应该没事吧。我只是没想到会发生这种事。”<<person1>><<His>>的脸背叛了<<his>>的话。
+		过了一会儿，<<he>>终于开始放松，紧紧地拥抱着你。“谢谢。我不知道会发生什么，"
+		<<he>>说，声音略微发抖。罗宾紧紧地拥抱着你。
+	<<else>>
+		罗宾看起来很紧张，<<person1>><<his>>的眼睛逐渐变得湿润起来。
+		<br><br>
+
+		<!-- if robin is male, then while crossdressing, they appear female and npcs "expect" them to have a vagina -->
+		<<set _expectedPartFound to ((_robin.pronoun is "m" ? _robin.vagina : _robin.penis) isnot "none")>>
+		<<set _unexpectedPartFound to ((_robin.pronoun is "m" ? _robin.penis : _robin.vagina) isnot "none")>>
+
+		<<if _expectedPartFound and !_unexpectedPartFound>>
+			<<person2>><<person>>微笑着看着罗宾，低声说了些话。
+			罗宾听到那人在<<person1>><<his>>的耳边窃窃私语，呆若木鸡，然后那人离开了。
+		<<else>>
+			<<person2>><<person>>猛地抽回了手，大声喊道："你这个可恶的异装癖，你差点骗了我！"
+			然后<<He>>快步走开，留下罗宾静静地发抖。
+			<br><br>
+		<</if>>
+
+		<<person2>><<personsimple>>离开后，你走出藏身之处，走向罗宾。<<person1>><<He>>看起来很震惊。
+		<<if $speech_attitude is "meek">>
+			"对不起，我没能在你身边。”你感觉<<him>>在发抖，紧紧地拥抱着<<him>>。“你没事吧？"
+		<<elseif $speech_attitude is "bratty">>
+			"罗宾，我看到那个混蛋做了什么，”你告诉<<him>>。“你没事吧？”你紧紧拥抱着<<him>>。
+		<<else>>
+			你怒视着<<person2>>走远的背影。"你还好吗？"
+		<</if>>
+		<br><br>
+
+		罗宾一开始没有回答，还有些发抖。最终，<<person1>><<he>>在你的怀抱中放松下来。
+		"我不知道我还能不能继续这样下去，”<<he>>看着你说，“我喜欢这样的感觉，但是……”<<he>>紧紧地抱住你。
+		"我不想受伤。"
+	<</if>>
+	<br><br>
+
+	<<link [[安慰|Robin's Stand CD Reassure]]>><<npcincr Robin love 3>><</link>><<glove>>
+	<br>
+	<<link [[劝阻|Robin's Stand CD Discourage]]>><<npcincr Robin love -3>><</link>><<llove>>
+	<br>
+
+:: Robin's Stand CD Reassure
+	<<set $outside to 1>><<set $location to (Time.season is "winter" ? "park" : "beach")>><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<set _robin.crossdress to 4>>
+	<<set _robin.cdquest to 4>>
+	<<person1>>
+
+	<<if $speech_attitude is "meek">>
+		"对不起，"你握着<<his>>的手，"我相信你……"
+	<<elseif $speech_attitude is "bratty">>
+		"没有人会伤害你，”你紧紧地抱着<<him>>，“我保证。"
+	<<else>>
+		"如果你喜欢这样，就不要让别人阻止你，”你轻轻地拍着<<his>>的背。
+	<</if>>
+	<br><br>
+
+	<<if _robin.dom gte 60>>
+		罗宾抬起头，微笑着看着你。“你是我最好的<<if $robinromance>><<girlfriend>><<else>>朋友<</if>>。"
+		罗宾紧紧地抱住你，然后放开你的怀抱。“你说得对，”<<he>>微笑着说。
+		"在你身边，我不会让任何人阻止我做我想做的事情。”<<He>>的声音变得很低，你几乎听不清。
+		"我感觉我能在你身边真正做自己。”<<He>>清了清嗓子。
+		"现在我们来卖一些<<print (Time.season is "winter" ? "热巧克力" : "柠檬水")>>吧！"
+	<<else>>
+		罗宾仰起头看着你，脸上露出微笑。"你总是让我感觉更好。"<<he>>的声音里又充满了幸福。
+		"我不会让一个坏人阻挡我的脚步。”<<His>>的声音变小了。“再次感谢你陪着我。如果没有你，我不知道会怎么样。"
+		<<His>>的声音变得几乎是低语。“我感觉我能够真正地做回自己。"
+	<</if>>
+	<br><br>
+
+	你们分开继续一起经营摊位。幸运的是，剩下的顾客都很友善。
+	<br><br>
+
+	<<endevent>>
+	<<if Time.season is "winter">>
+		<<link [[提供帮助 (0:30)|Robin Chocolate Help]]>><<npcincr Robin love 1>><<pass 30>><</link>><<glove>>
+		<br>
+		<<link [[离开|Park]]>><</link>>
+		<br>
+	<<else>>
+		<<link [[提供帮助 (0:30)|Robin's Lemonade Help]]>><<npcincr Robin love 1>><<pass 30>><</link>><<glove>>
+		<br>
+		<<link [[离开|Beach]]>><</link>>
+		<br>
+	<</if>>
+
+:: Robin's Stand CD Discourage
+	<<set $outside to 1>><<set $location to (Time.season is "winter" ? "park" : "beach")>><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<set _robin.cdstanddenial to 1>>
+
+	<<if $speech_attitude is "meek">>
+		"也许现在对这个来说还为时过早…" 你一边抱着<<him>>，一边说道。
+	<<elseif $speech_attitude is "bratty">>
+		"我们总是可以再试一次的。" 你拍了拍<<him>>的背。 "没有必要着急。"
+	<<else>>
+		"当你想再试的时候，我会在你身边的。” 你仍然拥抱着<<him>>说道。
+	<</if>>
+
+	<<if _robin.dom gte 60>>
+		罗宾好像有些失落，但是<<hes>>并没有表现出来。 “下一次一定会有机会的。”<<He>>打破了拥抱。
+		"我想我应该换回去了，"<<he>>说道。 "我带了一套衣服在我的摊位上，以防这种情况发生。"
+	<<else>>
+		罗宾点点头，<<he>>说：“我想这并不紧急。”<<he>>的声音里逐渐回复了一些活力。
+		"那我应该回去换了。我带了一套衣服在我的摊位上，以防这种情况发生。"
+	<</if>>
+	<br><br>
+
+	<<set _clothes to (Time.season is "winter" ? (_robin.pronoun is "m" ? "maleWarm1" : "femaleWarm1") : (_robin.pronoun is "m" ? "maleTown1" : "femaleTown1"))>>
+	<<npcClothesType _robin _clothes>>
+	罗宾离开了一会儿，回来时穿着一套<<npcClothesText _robin "both">>的衣服。
+	看到你，<<his>>的皱眉变成了微笑。"我们来卖一些<<print (Time.season is "winter" ? "热巧克力" : "柠檬水")>>吧。"
+	<br><br>
+
+	你们继续一起经营摊位。幸运的是，剩下的顾客都很友善。
+	<br><br>
+
+	<<endevent>>
+	<<if Time.season is "winter">>
+		<<link [[提供帮助 (0:30)|Robin Chocolate Help]]>><<npcincr Robin love 1>><<pass 30>><</link>><<glove>>
+		<br>
+		<<link [[离开|Park]]>><</link>>
+		<br>
+	<<else>>
+		<<link [[提供帮助 (0:30)|Robin's Lemonade Help]]>><<npcincr Robin love 1>><<pass 30>><</link>><<glove>>
+		<br>
+		<<link [[离开|Beach]]>><</link>>
+		<br>
+	<</if>>
+
+:: Robin School CD Interrupt
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+
+	<<if $speech_attitude is "meek">>
+		你走回房间外，敲了敲门。你听到罗宾在门内忙碌地动着，然后<<he>>打开了门。
+		<br><br>
+
+		"哦，是你。”<<He>>松了一口气。“进来吧！”<<He>>拥抱了你，然后让你走了进去。
+	<<elseif $speech_attitude is "bratty">>
+		"嘿，罗宾。"你大声喊道，然后关上了门。
+		<br><br>
+
+		"哇！"罗宾差点儿绊倒，转过身来看着你。"你吓了我一跳！"
+	<<else>>
+		你关上门，给罗宾一些私人空间，然后对<<him>>喊道，“嘿，是我。"
+		<br><br>
+
+		罗宾转过身来微笑着，"嘿！"
+	<</if>>
+	看起来罗宾正要问你些什么，但<<he>>摇了摇头，改为拥抱了你。
+	<br><br>
+
+	<span class="blue">你感觉你们并不够亲密，罗宾不太可能和你谈起这个话题。</span>
+	<br><br>
+
+	<<robinoptions>>
+
+:: Robin School CD Compliment
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+
+	<<if $speech_attitude is "meek">>
+		"你穿那件衣服真好看，"你小声地对罗宾说，让<<He>>转向了你。
+	<<elseif $speech_attitude is "bratty">>
+		"你看起来真不错！也许我应该开始称呼你我的<<print (_robin.pronoun is "m" ? "女朋友" : "男朋友")>>!"
+		你鼓励地笑着，看着罗宾脸上的红晕。
+	<<else>>
+		"你穿那件衣服肯定很可爱，”罗宾转过身去，你可以看到<<his>>的脸颊有些泛红。
+	<</if>>
+	<br><br>
+
+	<<if _robin.dom gte 60>>
+		"谢谢！”罗宾一见到你就开心地笑了，“我总是可以指望你让我感觉更好。"
+		<<He>>拿着校服站在你面前，“接下来就是在学校穿异装了。”<<He>>看起来很兴奋。
+		"学校的人认识我，但这只会让我更兴奋。"
+		"但如果你在我身边，我会感觉更好。”罗宾带着希望的语气说道，“你想和我一起去上学吗？"
+	<<else>>
+		"谢谢！”罗宾试图控制自己，但结结巴巴地说道，“我……”<<he>>停了下来，深吸了一口气。
+		"我想穿异性装去上学。"<<He>>拿着校服站在你面前，"到目前为止，一切都很有趣，你的支持对我来说很宝贵。"
+		罗宾对你微笑着，“我觉得我应该这么做，”<<He>>的声音渐渐消失了，“但如果没有你，我不知道我能不能做到。"
+		<<He>>满怀希望地看着你，“你能陪我走一段路吗？"
+	<</if>>
+	<br><br>
+
+	<<link [[接受|Robin School CD Accept]]>><<npcincr Robin love 5>><</link>><<gglove>>
+	<br>
+	<<link [[拒绝|Robin School CD Refuse]]>><<npcincr Robin love -2>><</link>><<llove>>
+	<br>
+
+:: Robin School CD Refuse
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+
+	<<if $speech_attitude is "meek">>
+		"对不起，我今天可能不行。”你轻声说道。
+	<<elseif $speech_attitude is "bratty">>
+		"我们以后再说吧？今天不太方便。" 你说道。
+	<<else>>
+		"今天对我来说不太行。" 你带着安慰的微笑说道。
+	<</if>>
+
+	罗宾听到你的回答后微笑消失了，但是<<he>>点了点头。"我明白了。"<<he>>把校服收好了。
+	"所以，你想看到我？"
+	<br><br>
+
+	<<robinoptions>>
+
+:: Robin School CD Accept
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<set _robin.cdquest to 5>>
+	<<set _robin.crossdress to 5>>
+
+	<<if $speech_attitude is "meek">>
+		你微笑着向<<him>>点头。
+	<<elseif $speech_attitude is "bratty">>
+		"当然我会跟你一起去的，" 你露出了笑容。"我一直在这里支持着你，记住了吗？"
+	<<else>>
+		"我很想和你一起去。" 你向<<him>>微笑着说道。
+	<</if>>
+	<br><br>
+
+	"真的吗？" 罗宾非常高兴。<<He>>紧紧地拥抱了你一会儿，然后放开了你。"我去换衣服了。"
+	<<Hes>>非常兴奋，立刻开始换衣服。"就算你想看我换衣服，我也不介意。"<<He>>大声说道。
+	<br><br>
+
+	<<if $promiscuity gte 15>>
+		<<link [[观看|Robin School CD Change]]>><<set $phase to 1>><</link>><<promiscuous2>>
+		<br>
+	<</if>>
+	<<link [[避开视线|Robin School CD Change]]>><<set $phase to 0>><</link>>
+	<br>
+
+:: Robin School CD Change
+	<<set $outside to 0>><<set $location to "home">><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+
+	<<if $phase is 1>>
+		你不由自主地看着罗宾在你面前换衣服。<<arousal 150>><<garousal>>
+		<br><br>
+
+		<<if _robin.lust gte 40>>
+			罗宾注意到你的注视，放慢了<<his>>的脱衣速度，让<<his>>的动作更具感性。
+			<<He>>脱下上衣时咬着嘴唇，然后轻松地笑了起来。
+		<<else>>
+			罗宾一开始没有注意到你，但当<<he>>在镜子里看到你的目光时，<<he>>的脸涨红了，然后很快就换好了衣服。
+			"对不起让你久等了。”<<He>>结巴着说。
+		<</if>>
+		<<npcincr Robin lust 2>><<glust>><<arousal 150>><<garousal>>
+	<<else>>
+		为了安全起见，你把视线移开了。
+	<</if>>
+	<br><br>
+
+	当<<hes>>完成后，<<he>>转过身来，紧紧地抱住你。"我爱你。"
+	<br><br>
+
+	<<link [[步行到学校 (0:20)|Robin School CD Walk]]>><<npcincr Robin love 5>><<pass 20>><</link>><<gglove>>
+
+:: Robin School CD Walk
+	<<set $outside to 1>><<set $location to "town">><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+
+	去学校的路和往常一样，除了罗宾兴奋地谈论今天会有多棒之外。
+	一些路过的学生看着<<him>>，但<<him>>都很从容。当你到达时，罗宾看着你微笑着说。
+	"午餐时间再见。"<<He>>向你挥手，然后走进去了。
+	<br><br>
+
+	<<link [[继续|School Front Courtyard]]>><<endevent>><</link>><<gglove>><<npcincr Robin love 5>>
+
+:: Canteen Lunch Robin CD 1
+	<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>><<sydneySchedule>>
+	<<set _robin to statusCheck("Robin")>>
+	<<set _whitney to $NPCName[$NPCNameList.indexOf("Whitney")]>>
+	<<set _robin.cdquest to 6>>
+	<<npc Robin>><<person1>>
+
+	你看到罗宾正在和几个学生聊天。<<if _whitney.init is 1>>你认出他们是惠特尼的朋友。<</if>>
+	<<if _robin.dom gte 60>>
+		<<He>>看起来很开心，但不习惯这样的关注。
+	<<else>>
+		<<He>>似乎在对话中有些无所适从。
+	<</if>>
+	<br><br>
+
+	<<He>>看到你走近时向你招手。"嘿！" 围绕着<<He>>的学生们都转过头来看着你。"这是我的<<girlfriend>>。"
+	<<He>>为你留出了一个位置。
+	<br><br>
+
+	<<if _whitney.init is 1 and _whitney.state isnot "dungeon">>
+		<<if $cool lte 120>>
+			"你可以做得比<<phim>>更好！”他们嘲笑你。<<stress 2>><<gstress>>
+			<br><br>
+
+			<<if _robin.dom gte 40>>
+				罗宾似乎要反驳他们的话，但是在看到某些事情后就冻结了。
+			<<else>>
+				罗宾看着你，<<his>>的手移到桌子下面握住你的手，然后轻轻地擦了一下。
+				<<takeHandholdingVirginity "Robin" "romantic">>
+				<<He>>停止了<<He>>的动作，眼睛睁得大大的。
+			<</if>>
+		<<else>>
+			"嘿嘿！你捡到了一个不错的人。"一个学生用力拍了拍罗宾的后背。
+			罗宾微笑着开始回应，但是在半路上突然冻结了。
+		<</if>>
+
+		你跟随<<his>>的目光，只看到惠特尼朝你们的桌子走来。
+		<br><br>
+
+		<<npc Whitney 2>><<person2>>
+		"嘿，婊子们，”惠特尼大力地把手砸在你和罗宾坐的地方旁边说。
+		<br><br>
+
+		<<if _robin.dom gte 60>>
+			罗宾沉默的咬了一口<<person1>><<his>>手中的食物。
+			<br><br>
+
+			惠特尼的嘲笑很快消失了，被愤怒的怒容所取代。
+			"你现在应该是什么？一个<<genderswap>><<personsimple>>吗？"
+			惠特尼向罗宾的脸吐口水。
+		<<else>>
+			"惠……惠特尼！”罗宾结结巴巴地说，<<person1>><<he>>站直了身子，引起了惠特尼的嘲笑。
+			<br><br>
+
+			<<person2>><<He>>看着罗宾的校服，<<his>>的笑容消失了。
+			"你现在这是在干什么？一个<<person1>><<genderswap>><<personsimple>>？"
+			<<person2>><<He>>盯着罗宾.
+		<</if>>
+
+		<<if _robin.pronoun is "m" and _whitney.pronoun is "m">>
+			"怎么了？当男人不够好吗？你宁愿当个婊子吗？"
+		<<elseif _robin.pronoun is "f" and _whitney.pronoun is "f">>
+			"你肯定还是希望你的裙子下面继续长睾丸吧？"
+		<<elseif _robin.pronoun isnot _whitney.pronoun>>
+			"真是个变态。"
+		<<else>>
+			"我的眼里只能看到一个不知道<<person1>><<his>>本身性别的人。"
+		<</if>>
+		<br><br>
+
+		<<if _robin.dom gte 91>>
+			你们桌子上的其他学生都安静了下来。你在眼角的位置看到罗宾在颤抖。
+			<<person1>><<He>>深深地吸了一口气，然后回答道,
+			<<if _robin.pronoun isnot _whitney.pronoun>>
+				"我是<<person2>><<personsimple>>的两倍！你只是个胆小鬼！"
+			<<else>>
+				"你只是一个懦夫！"
+			<</if>>
+			<<person1>><<His>>的声音颤抖着，半个食堂的人都安静了下来。
+			你看到罗宾的眼睛里涌起了泪水。<<He>>用手捂住了嘴。“不，等等，我没有......"
+			罗宾的道歉被惠特尼推开的时候打断了，然后把<<him>>剩下的午餐扔了过去。
+			托盘击中了<<him>>的头，然后嘎吱作响地掉在地上。
+			<br><br>
+
+			在惠特尼愤怒地走开时，<<person2>><<he>>带着<<his>>的朋友们一起走了。
+		<<elseif _robin.dom gte 60>>
+			罗宾保持沉默，试图再咬一口<<person1>><<his>>的食物，但你可以看到<<him>>的身体正在微微颤抖。
+			先前与罗宾交谈的学生们都保持沉默，选择盯着<<him>>或者惠特尼。
+			<br><br>
+
+			"嘿，婊子，我在和你说话。”惠特尼的声音变成了低沉的咆哮。
+			罗宾试图再吃一口<<his>>的食物，惠特尼却把<<his>>的托盘丢到了<<him>>身上。“你聋了还是怎么了?"
+			<br><br>
+
+			罗宾试着缓过来，但惠特尼把<<him>>推倒在地。你试图抓住<<him>>，但是惠特尼却更用力地推罗宾，你完全控制不了事态。
+			<<He>>坐在地板上，上面堆满了<<his>>自己的午餐。这时你才看到罗宾在哭。
+			<br><br>
+
+			"你活该，婊子。”当惠特尼气冲冲地离开时，<<person2>><<he>>带着<<his>>的朋友。
+		<<else>>
+
+			罗宾抽泣着，用手把<<person1>><<his>>的脸藏起来，不让惠特尼看见。<<He>>张开<<his>>的嘴，但是惠特尼打断了他。
+			<br><br>
+
+			"嘿，荡妇，你是不会说话吗?”惠特尼把罗宾的午餐打翻在<<him>>身上。“你看看和你说话的人!"
+			<<person2>><<he>>把罗宾推倒在地，<<His>>的声音提高了。“臭婊子"
+			惠特尼朝<<person1>><<his>>的方向吐口水，<<person2>><<his>>的朋友们大声嘲笑罗宾。
+			在<<he>>愤怒地走开时，<<he>>带着<<his>>的朋友们一起走了。
+		<</if>>
+	<<else>>
+		你和罗宾和其他同学聊了几分钟。当你谈论各种琐事时，气氛通常是愉快的。
+		<br><br>
+
+		你注意到有更多的学生向罗宾走来。你正要和他们打招呼，其中一个，
+		一个<<generatey2>><<person2>><<person>>，假装绊倒并把<<his>>的食物洒在罗宾身上。
+		牛奶浸透了罗宾的制服，使它变得半透明。
+		<!-- if robin is male, then while crossdressing, they appear female and npcs "expect" them to have a vagina -->
+		<<set _expectedPartFound to ((_robin.pronoun is "m" ? _robin.vagina : _robin.penis) isnot "none")>>
+		<<set _unexpectedPartFound to ((_robin.pronoun is "m" ? _robin.penis : _robin.vagina) isnot "none")>>
+
+		<<person>>仔细看了看罗宾的胯部
+		<<if _expectedPartFound and !_unexpectedPartFound>>
+			转向<<his>>的朋友说:“等等，你之前不是说罗宾是个异装癖吗?"
+			<br><br>
+
+			"也许<<person1>><<he>>以前是异装的?”<<person2>><<His>>的朋友耸了耸肩，两人都没有道歉就走了。
+		<<elseif !_expectedPartFound and _unexpectedPartFound>>
+			得意地笑着说:“嘿，你是对的!<<person1>><<He>>是个异装者!”他们笑了笑，在离开前分享了满意的表情。
+		<<else>>
+			"比我想的还要糟。”<<his>>的眼睛瞪得大大的。“他们是怪胎!”在罗宾试图解释的时候，他们俩迅速离开了。
+		<</if>>
+		<br><br>
+
+		罗宾慌乱地跪在地上，因为<<person1>><<his>>周围的一些食物罗宾滑倒了。<<He>>摔倒在地板上。
+		之前和罗宾说话的学生要么在嘲笑他，要么在进行他们自己的谈话。“哎哟……"
+
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Canteen Lunch Robin CD 2]]>><</link>>
+	<br>
+
+:: Canteen Lunch Robin CD 2
+	<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>><<sydneySchedule>>
+
+	<<if $speech_attitude is "meek">>
+		你迅速抓起一张餐巾纸，把酸奶从罗宾脸上抹去。
+	<<elseif $speech_attitude is "bratty">>
+		"该死的!”你站起来，愤怒的瞪着行凶者，然后去看罗宾是否还好。
+	<<else>>
+		你离开座位去看罗宾。“你还好吗?"
+	<</if>>
+	<br><br>
+
+	罗宾因为疼痛在地板上呻吟，同时揉着<<person1>><<his>>的头。“……我没事，”<<he>>一边抽鼻子一边说。
+	"别为我担心，我只是被吓到了，”<<he>>说，擦了擦<<his>>的眼睛。“我很好，真的。"
+	<br><br>
+
+	<<if $speech_attitude is "meek">>
+		"为了安全起见，我想我们应该去看护士，”你说。
+	<<elseif $speech_attitude is "bratty">>
+		"不，这些都不是，”你说。“你要去医务室，我们会确保的。"
+	<<else>>
+		"好吧，好吧…但也许我们应该让护士仔细检查一下，”你说。
+	<</if>>
+	<br><br>
+
+	在尽你所能地清洗完<<him>>之后，你把罗宾的手臂放在你的肩膀上，然后带着<<him>>去医务室。
+	<br><br>
+
+	<<link [[继续|School Infirmary Robin CD Intro]]>><<endevent>><</link>>
+	<br>
+
+:: School Infirmary Robin CD Widgets [widget]
+	<<widget "robinInfirmaryCDUndressLower">>
+		<<if $worn.lower.type.includes("naked") and ($worn.under_lower.type.includes("naked") or playerHasStrapon())>>
+			你已经脱光了，迫不及待地想走了。
+		<<else>>
+			<<set $_layer to (!$worn.lower.type.includes("naked") ? "lower" : "under_lower")>>
+			<<if $speech_attitude is "meek">>
+				你朝<<him>>点头，然后把$worn[$_layer].name取下来，轻轻地把<<it $_layer>>放在地板上。
+			<<elseif $speech_attitude is "bratty">>
+				"当然可以。”你给<<him>>一个热切的笑容，然后脱下你的$worn[$_layer].name，并把<<it $_layer>>扔在你身后。
+			<<else>>
+				在去掉你的$worn[$_layer].name之前，你给了罗宾最后一个吻。
+			<</if>>
+
+			<<if !$worn.under_lower.type.includes("naked") and !playerHasStrapon()>>
+				你的$worn.under_lower.cn_name_cap很快也难以幸免。
+			<</if>>
+		<</if>>
+		<<lowerstrip>>
+		<<if !playerHasStrapon()>>
+			<<underlowerstrip>>
+		<</if>>
+		<<legsstrip>>
+		<<feetstrip>>
+		<br><br>
+
+		<<if $player.penisExist and $player.vaginaExist>>
+			你的阴茎和阴部明显被唤起欲望，液体从两者滴下。
+		<<elseif $player.penisExist>>
+			你的阴茎硬了，龟头漏出液体。
+		<<elseif $player.vaginaExist>>
+			你的<<pussy>>在滴水。
+			<<if playerHasStrapon()>>
+				$worn.under_lower.cn_name_cap对着罗宾, 罗宾睁大眼睛看着它。
+			<</if>>
+		<</if>>
+	<</widget>>
+
+	<<widget "robinInfirmaryCDOptions">>
+		<<if $robinCDI.acts is 2>>
+			<<link [[继续|School Infirmary Robin CD Aftercare]]>><</link>><<pass 5>><<gglove>><<npcincr Robin love 5>>
+			<br>
+		<<else>>
+			<<if $passage is "School Infirmary Robin CD Receive Oral">>
+				<<if ($player.penisExist and $player.penissize gte 0 and !playerChastity("penis")) or playerHasStrapon()>>
+					<<if _robin.vagina isnot "none">>
+						<<link [[插入罗宾的阴道(0:10)|School Infirmary Robin CD Penetrate]]>><<set $phase to 0>><<pass 10>><</link>><<promiscuous1>><<penilevirginitywarning>><<NPCvirginitywarning "Robin" "vaginal">>
+						<br>
+						<<link [[插入罗宾的屁股(0:10)|School Infirmary Robin CD Penetrate]]>><<set $phase to 1>><<pass 10>><</link>><<promiscuous1>><<penilevirginitywarning>><<NPCvirginitywarning "Robin" "anal">>
+						<br>
+					<<else>>
+						<<link [[插入罗宾(0:10)|School Infirmary Robin CD Penetrate]]>><<set $phase to 1>><<pass 10>><</link>><<promiscuous1>><<penilevirginitywarning>><<NPCvirginitywarning "Robin" "anal">>
+						<br>
+					<</if>>
+				<</if>>
+			<</if>>
+			<<if $passage is "School Infirmary Robin CD Give Oral">>
+				<<if _robin.penis isnot "none">>
+					<<if $player.vaginaExist>>
+						<<if !playerChastity("hidden")>>
+							<<link [[让罗宾插入你的阴道(0:10)|School Infirmary Robin CD Get Penetrated]]>><<set $phase to 0>><<pass 10>><</link>><<promiscuous1>><<oralvirginitywarning>><<vaginalvirginitywarning>><<NPCvirginitywarning "Robin" "penile">>
+							<br>
+						<</if>>
+						<<if !playerChastity("anus")>>
+							<<link [[让罗宾插入你的屁股(0:10)|School Infirmary Robin CD Get Penetrated]]>><<set $phase to 1>><<pass 10>><</link>><<promiscuous1>><<oralvirginitywarning>><<analvirginitywarning>><<NPCvirginitywarning "Robin" "penile">>
+							<br>
+						<</if>>
+					<<elseif !playerChastity("anus")>>
+						<<link [[让罗宾插入你(0:10)|School Infirmary Robin CD Get Penetrated]]>><<set $phase to 1>><<pass 10>><</link>><<promiscuous1>><<oralvirginitywarning>><<analvirginitywarning>><<NPCvirginitywarning "Robin" "penile">>
+						<br>
+					<</if>>
+				<</if>>
+			<</if>>
+			<<if $passage isnot "School Infirmary Robin CD Receive Oral">>
+				<<if $player.penisExist and $player.penissize gte 0 and !playerChastity("penis") and !playerHasStrapon()>>
+					<<link [[让罗宾给你口交(0:10)|School Infirmary Robin CD Receive Oral]]>><<set $phase to 0>><<pass 10>><</link>><<promiscuous1>><<NPCvirginitywarning "Robin" "oral">>
+					<br>
+				<</if>>
+				<<if $player.vaginaExist and !playerChastity("hidden")>>
+					<<link [[让罗宾给你口交 (0:10)|School Infirmary Robin CD Receive Oral]]>><<set $phase to 1>><<pass 10>><</link>><<promiscuous1>>
+					<br>
+				<</if>>
+			<</if>>
+			<!-- May add tribbing version at a later point -->
+			<<if $passage isnot "School Infirmary Robin CD Give Oral">>
+				<<if _robin.penis isnot "none">>
+					<<link [[给罗宾口交(0:10)|School Infirmary Robin CD Give Oral]]>><<set $phase to 0>><<pass 10>><</link>><<promiscuous1>><<oralvirginitywarning>>
+					<br>
+				<</if>>
+				<<if _robin.vagina isnot "none">>
+					<<link [[给罗宾口交 (0:10)|School Infirmary Robin CD Give Oral]]>><<set $phase to 1>><<pass 10>><</link>><<promiscuous1>>
+					<br>
+				<</if>>
+			<</if>>
+			<<link [[拥抱(0:10)|School Infirmary Robin CD No Sex]]>><<pass 10>><<set $phase to 1>><</link>><<gglove>><<npcincr Robin love 5>>
+			<br>
+		<</if>>
+	<</widget>>
+
+	<<widget "robinInfirmaryVariableCleanup">>
+		<<unset $robinCDI>>
+		<<unset $playerHasStraponOverride>>
+	<</widget>>
+
+:: School Infirmary Robin CD Intro
+	<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<set _robin.cdquest to 7>>
+	<<npc Robin>><<person1>>
+	<<dontHideForNow>>
+	<<set $robinCDI to {acts: 0}>>
+
+	<<silently>>
+		<<npcClothesText _robin "upper">><<set _robinUpper to _text_output>>
+		<<npcClothesText _robin "lower">><<set _robinLower to _text_output>>
+	<</silently>>
+	<<set _robinUnderUpper to (_robin.pronoun is "m" ? "padded bra" : "chest binder")>>
+	<<set _robinUnderLower to (_robin.pronoun is "m" ? "panties" : "boxers")>>
+
+	<<if playerHasStrapon() and $worn.under_lower.size isnot undefined>>
+		<<set $playerHasStraponOverride to true>>
+	<</if>>
+
+	你打开医务室的门，大声喊叫，却没有人回答。护士的桌子上有一个小牌子，上面写着“出去吃午饭”。
+	<br><br>
+
+	"嗯，没人?”罗宾环顾了一下房间。
+	<br><br>
+
+	你把罗宾带到一张床上，让<<him>>躺下。
+	<<if $speech_attitude is "meek">>
+		你向罗宾移动。“你的衣服……"
+	<<elseif $speech_attitude is "bratty">>
+		你说:“我们得帮你脱光，把你洗干净。"
+	<<else>>
+		"我想我们应该把你的衣服脱了，嗯?”你朝罗宾沾满食物的衣服做了个手势。
+	<</if>>
+	<br><br>
+
+	罗宾揉着<<his>>的后脑勺，微笑着。
+	<<if _robin.dom gte 40>>
+		"如果你愿意，你可以把它们从我身上脱下来，”罗宾看着你。
+	<<else>>
+		"我——呃，我没带换洗的衣服，”<<he>>脸红着说。
+	<</if>>
+	当你慢慢抬起<<his>>的_robinUpper时，<<He>>举起<<his>>的手臂，
+	<<if _robin.pronoun is "f" and _robin.breastsize gte 6>>
+		逐渐将它拉过<<his>>胀大的乳房。
+	<<else>>
+		露出了<<his>>的_robinUnderUpper。
+	<</if>>
+	当你把脏的_robinUpper放在一边时，罗宾看向别处。
+	<br><br>
+
+	<<He>>踢掉<<his>>的鞋子，允许你拉下<<his>>的_robinLower。你看着
+	<<if _robin.penis isnot "none">>
+		<<his>>的<<npcPenis 0>>的凸起，撑起了<<his>>的_robinUnderLower，而<<his>>的包皮从尖端的泄出了一片湿痕。
+		<<if _robin.vagina isnot "none">>
+			为了不被<<his>>的阴茎打败，
+		<</if>>
+	<</if>>
+	<<if _robin.vagina isnot "none">>
+		<<his>>的_robinUnderLower的胯部<<if _robin.penis isnot "none">>也很<</if>>光滑，有来自<<his>>的<<pussy>>的湿迹。
+	<</if>>
+	<br><br>
+
+	你抬头看着罗宾
+	<<if $speech_attitude is "meek">>
+		并给<<him>>一个质疑的眼神。
+	<<elseif $speech_attitude is "bratty">>
+		然后扬起眉毛，举起一根沾满<<his>>的液体的手指。
+	<<else>>
+		然后给<<him>>一个疑问的眼神。
+	<</if>>
+	<br><br>
+
+	<<if _robin.dom gte 80>>
+		<<He>>只是微笑着对你说:“我能说什么呢?你这样对我。”然后，<<he>>沉默了一会儿，然后说:
+		"嘿，如果我们有自己的房间……想要利用它吗?"
+	<<elseif _robin.dom gte 50>>
+		"什，什么?我没办法!最近发生了很多事，我不知道……"
+		罗宾害羞地笑了笑。“嘿，我知道我们还在学校，但是……”<<He>>给你一个性感的眼神。“你有兴趣吗?"
+	<<else>>
+		"啊,哈哈…对不起……我没办法。我的情绪现在真的很复杂，而且——”罗宾笑着看向别处，开始摩擦<<his>>的腿。
+		"我想我有心情了。"
+	<</if>>
+	<br><br>
+
+	<<link [[亲吻(0:10)|School Infirmary Robin CD Kiss]]>><<pass 10>><</link>><<promiscuous1>><<NPCvirginitywarning "Robin" "kiss">>
+	<br>
+	<<link [[拥抱(0:10)|School Infirmary Robin CD No Sex]]>><<pass 10>><<set $phase to 0>><</link>>
+	<br>
+
+:: School Infirmary Robin CD Kiss
+	<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+
+	<<if $speech_attitude is "meek">>
+		你张开嘴唇看着罗宾，<<he>>领会了你的意思，倾身吻了你。
+	<<elseif $speech_attitude is "bratty">>
+		你上前吻<<him>>.
+	<<else>>
+		你们俩对着对方微笑，然后亲吻。
+	<</if>>
+	<br><br>
+
+	<!-- robin's confidence vs player's assertiveness, whichever is greater decides who leads the kiss -->
+	<<if _robin.dom gte (100 - ($submissive/20))>>
+		罗宾先是吻了你，你像跳舞一样跟着<<his>>的动作。你觉得<<his>>的舌头戳你的嘴唇。
+		当你让<<him>>进来时，<<he>>用<<his>>的舌头探索你的嘴。<<takeKissVirginity "Robin" "romantic">>
+		当<<his>>的手温柔而坚定地上下抚摸你的身体时，你发出一声小小的呻吟。
+		<<if !$worn.upper.type.includes("naked")>>
+			罗宾的手勾住了你的$worn.upper.cn_name_cap，开始往上拉。
+			在<<He>>的嘴唇回到你的嘴唇之前，<<his>>结束了吻。
+			<<upperstrip>>
+			<<if !$worn.under_upper.type.includes("naked")>>
+				再过一会儿，<<he>>将$worn.under_upper.cn_name_cap取下，完全露出了你的上半身。
+				<<underupperstrip>>
+			<</if>>
+		<<elseif !$worn.under_upper.type.includes("naked")>>
+			罗宾暂时中断了亲吻，脱掉了你的$worn.under_upper.cn_name_cap，完全露出了你的上半身。
+			<<underupperstrip>>
+		<</if>>
+		随着亲吻的继续，罗宾的动作慢慢变得更加热情。<<His>>的手现在抚摸着你裸露的上半身。
+		<<if $player.breastsize gte 1>>
+			当你的乳头变硬立起来时，你的乳房紧贴着罗宾。
+			<<if _robin.dom gte 40>>
+				<<He>>轻轻地摸着其中的一个，边接吻边轻轻地把它握在<<his>>的手里。
+			<<else>>
+				<<He>>用<<his>>的胸部摩擦你的<<breasts>>，使你的乳头摩擦<<hers>>。
+			<</if>>
+		<</if>>
+	<<else>>
+		你引导罗宾接吻，而<<he>>则无缝地跟随你的动作。
+		过了一会儿，你试着用舌头戳<<his>>的嘴唇，当<<he>>张开<<he>>的嘴时，<<his>>发出一声呻吟。
+		你用你的舌头戳<<his>>的舌头，然后你们俩一起动。<<takeKissVirginity "Robin" "romantic">>
+		<<if !$worn.upper.type.includes("naked")>>
+			你暂停了片刻，把$worn.upper.cn_name_cap脱掉，然后把它扔到地板上。
+			<<upperstrip>>
+			<<if !$worn.under_upper.type.includes("naked")>>
+				你也脱掉了$worn.under_upper.cn_name_cap，让你的上半身裸露。
+				<<underupperstrip>>
+			<</if>>
+		<<elseif !$worn.under_upper.type.includes("naked")>>
+			你暂停了片刻，把$worn.under_upper.cn_name_cap脱掉，然后把它扔到地板上。
+			<<underupperstrip>>
+		<</if>>
+		<<if $player.breastsize gte 1>>
+			罗宾看着你的<<breasts>>，眼睛睁得大大的。
+			<<if _robin.dom gte 40>>
+				"你真美，”<<he>>在让你继续吻之前说。
+			<<else>>
+				罗宾沉默了一会儿，你提醒<<him>>你的嘴唇在哪里。
+			<</if>>
+		<</if>>
+	<</if>>
+	<br><br>
+
+	又过了一会儿，罗宾在满脸通红地结束接吻后问道:
+	<<if _robin.dom gte 40>>
+		"我们能继续下一步吗?”<<He>>看着你，眼里充满了欲望。
+	<<else>>
+		"你觉得我们能不能……”<<He>>没有说完这句话，只是期待地看着你。
+	<</if>>
+	<<npcincr Robin lust 20>><<gglust>>
+	<br><br>
+
+	<<robinInfirmaryCDOptions>>
+
+:: School Infirmary Robin CD No Sex
+	<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<earnFeat "Robin's Song">>
+
+	<<if $phase is 1>>
+		<<if $speech_attitude is "meek">>
+			你犹豫地示意罗宾停下来。
+		<<elseif $speech_attitude is "bratty">>
+			"嘿，我想我们应该停下来，”你说，把一只手放在<<his>>的肩膀上。
+		<<else>>
+			"我们能停下来吗?”你问罗宾。
+		<</if>>
+		<br><br>
+
+		<<if $robinCDI.whoOrgasmed is "robin">>
+			罗宾看起来有点难过，但点点头。“……好吧，我尊重你的意愿，”<<he>>说。
+		<<elseif $robinCDI.whoOrgasmed is "pc">>
+			"我还没说完呢……”<<He>>生气了，语气有点难过。
+		<<else>>
+			"你确定吗?我们俩都还没有……”<<His>>的声音变小了，但是最终<<he>>还是点了点头。
+		<</if>>
+	<</if>>
+	你抱着罗宾，让<<him>>靠近你。你感觉到<<his>>的呼吸在你耳边。
+	<<if _robin.dom gte 40>>
+		罗宾紧紧地抱住你作为回报。
+	<<else>>
+		过了一会儿，<<he>>开始放松地躺在你的怀里。
+	<</if>>
+		<<if _robin.breastsize gte 4 and ($player.breastsize + _robin.breastsize) gte 6>> /* doesn't matter whose breasts are larger, if the combined size fills the gap */
+			你能感觉到罗宾的_robin.breastsdesc紧贴着
+			<<if $player.breastsize lte 1>>
+				你。
+			<<else>>
+				你自己的胸口。
+			<</if>>
+		<</if>>
+	当<<he>>继续拥抱时，<<His>>的肌肉放松。
+	你轻轻地用指尖在<<his>>的背上划了一个圈。罗宾记了下来，你可以感觉到一颗心的轮廓被画在了你的身上。
+	<br><br>
+
+	罗宾最终从拥抱中挣脱出来，<<he>>深情的望着你。“我爱你，”<<he>>低声说。“谢谢你帮我做这一切，”<<he>>又给了你一个快速的拥抱。
+	"但我们最好在被人发现之前离开这里。”<<He>>站起来，抓起<<his>>的制服，在穿上之前尽可能地擦干净。
+	<<if $schoolstate is "lunch">>
+		"还好我们还有时间，”<<he>>边说边朝门口走去。“我们一起进去吧。”<<he>>带你去上历史课。
+	<<elseif $schoolstate is "fourth">>
+		"啊!时间怎么就这样从我身边溜走了?”罗宾有些恐慌。“迟到了，我们快走!”<<He>>拖着你快步冲了出去。
+	<<else>>
+		<!-- This should not happen it's a catch all -->
+		罗宾看了看钟，又看了看，呻吟着。“哦，天哪，我怎么让事情拖到这么晚?”<<He>>叹了一口气。“我想我们应该离开这里，对吧?"
+		<<He>>在离开房间之前紧紧地拥抱你。
+	<</if>>
+	<br><br>
+
+	<<robinInfirmaryVariableCleanup>>
+
+	<<if $schoolstate is "lunch" or $schoolstate is "fourth">>
+		<<link [[继续|School History Robin CD Enter]]>><<endevent>><<clotheson>><<dontHideRevert>><</link>>
+	<<else>>
+		<<link [[继续|Hallways]]>><<endevent>><<clotheson>><<dontHideRevert>><</link>>
+	<</if>>
+	<br>
+
+:: School Infirmary Robin CD Receive Oral
+	<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+
+	<<if $robinCDI.acts is 0>>
+		<<robinInfirmaryCDUndressLower>>
+		<br><br>
+	<</if>>
+
+	<<if $phase is 0>> <!-- blowjob from Robin -->
+		罗宾的眼睛一直盯着你的<<penis>>。<<He>>慢慢地把<<his>>的嘴靠近它，然后抬头看着你。
+		<<if _robin.dom gte 40>>
+			"我可以吗?”罗宾看起来很急切。
+		<<else>>
+			"你介意我……”罗宾看起来很羞涩，没办法继续说完下面的话。
+		<</if>>
+		你点头。<<He>>试探地伸出<<his>>的舌头去舔它。
+		<br><br>
+
+		<<if _robin.virginity.oral>>
+			"对不起，这是我第一次做这种事。不过我会尽力的!"
+			<<takeNPCVirginity "Robin" "oral">>
+		<</if>>
+		<<He>>又舔了。每次舔完之后，下一次就会更快更热切。
+		<<if $player.penissize lte 0>>
+			最后<<he>>靠近，把整个东西放进<<his>>的嘴里，用<<his>>的舌头舔动它。
+			当你感觉到<<his>>的舌头挠你的阴茎时，你的脊椎会颤抖。
+		<<else>>
+			最后，<<he>>张开<<his>>的嘴把尖端吸进去，急切地吮吸着。
+			<<He>>直视你的眼睛，而<<he>>开始来回摆动，每次都吸的更多。
+		<</if>>
+		<br><br>
+
+		<<switch $player.penissize>>
+			<<case -1 0>>
+				<<He>>努力让<<his>>的嘴在上面停留一会儿，然后开始亲吻它而不是吮吸它。
+			<<case 1>>
+				最后，<<he>>把它一直舔到底，并在<<he>>吮吸时发出高兴的声音。
+			<<case 2>>
+				<<him>>花了一点时间才到达底部，但最终<<he>>到达了它，在继续摇摆之前，<<he>>抓住了它几秒钟。
+			<<case 3>>
+				你感觉<<his>>的嘴越来越多地绕着你的阴茎，直到它开始戳到<<his>>喉咙的后面。
+				一段时间内，<<he>>就这么吞下去了，但是<<he>>继续往吞咽着，突然你觉得<<his>>的喉咙猛烈地抽动。
+				<br><br>
+
+				<<He>>吞下你的阴茎，然后看着你，眼中不自觉地含着泪水，说，
+				<br>
+				"哈哈——抱歉，我有点忘乎所以了。"
+				<<He>>回到你的阴茎，但没有那么深。不久之后，
+			<<case 4 5>>
+				你感觉<<his>>的嘴越来越多地绕着你的阴茎，直到它开始戳到<<his>>喉咙的后面。
+				<<He>>似乎很沮丧，因为有不少还留在外面，你可以看到<<his>>皱着眉头。
+				突然，<<he>>进一步往下吞，你感到<<his>>的喉咙开始猛烈地抽动。
+				<br><br>
+
+				<<He>>吞下你的阴茎，然后看着你，满脸绯红，眼中不由自主地含着泪水，说，
+				<br>
+				"哈哈——抱歉，我有点忘乎所以了。"
+				<<He>>回到你的阴茎，但似乎把<<his>>的努力集中在<<he>>能到达的地方。不久之后，
+			<<default>>
+				罗宾吐出了你的阴茎，控制不住的干呕。“对不起，”<<he>>说。“我没想到你的阴茎尺寸是<<print $player.penissize>>.
+				<span class="red">这是个bug。</span>当你有机会的时候，你能把这个报告给Vrelnir吗?"
+		<</switch>>
+		当<<he>>移动时，罗宾开始用<<his>>的舌头绕着你的阴茎旋转。
+		<<arousal 5000 "genitals">><<gggarousal>>
+		<br><br>
+
+		<<if $arousal gte $arousalmax>>
+			<<silently>><<orgasm>><</silently>>
+			<<set $robinCDI.whoOrgasmed to "pc">>
+			你的阴茎抽搐，然后摇晃，因为罗宾的动作把你甩到边缘，导致你的臀部下滑，你的阴茎把你的精液射入<<his>>的嘴里。
+			<br><br>
+			<<if _semen_released lte 50>>
+				罗宾措手不及，但很快就把它吞了下去。
+			<<elseif _semen_released lte 150>>
+				罗宾完全被吓了一跳，但还是咽了下去。
+			<<else>>
+				罗宾的眼睛震惊地睁大了，<<he>>挣扎着跟上，每一次喉咙滚动都是在大声吞咽，直到你的高潮终于停止。
+			<</if>>
+			<br><br>
+
+			"呀!你要这么做的时候要警告我!你知道我们不应该把这里弄得一团糟。"
+			<br><br>
+			<<if $robinCDI.acts is 0>>
+				然后，当<<he>>抚摸你的肉棒时，<<he>>
+				<<if _robin.dom gte 40>>
+					补充道，“我希望你还有更多消息要告诉我。我还没说完呢。"
+				<<else>>
+					脸红着补充道，"我……希望你还有更多消息要告诉我。我还没说完呢。"
+				<</if>>
+				罗宾的声音因兴奋而颤抖，<<he>>躺在床上。
+			<<else>>
+				罗宾依偎在你身边，开心地叹了口气。“我很高兴你能感到舒服，”<<he>>对你微笑。
+			<</if>>
+		<<else>>
+
+			当<<he>>停下来的时候，你觉得自己快要高潮了。
+			<<if $robinCDI.acts is 0>>
+				"我想到了一个更好的主意，”<<he>>说，声音因兴奋而颤抖，<<he>>躺回床上。
+			<<else>>
+				"对不起，我的下巴疼，”<<he>>看起来很沮丧。“对不起，我没能让你高潮，”<<he>>叹了口气，拥抱了你。
+			<</if>>
+		<</if>>
+	<<else>><!-- eat out by Robin -->
+		罗宾又开始吻你，虽然这一次<<his>>的手伸向你的胸膛。
+		<<He>>轻轻地把<<his>>的指尖绕在你的乳头上，<<he>>轻咬你的下唇。由于<<his>>挑逗的手指，它很快就勃起了。
+		罗宾结束了吻，闭上眼睛，开始在你的脖子和胸部留下痕迹。
+		罗宾的嘴在你的<<breasts>>上方盘旋，<<his>>的呼吸使皮肤发痒。<<He>>给你的乳头温柔的吻，然后缓慢的舔动。
+		罗宾的手移到你的另一个乳头上，也开始轻轻地玩弄它。<<He>>开始轻轻地吮吸，进一步戏弄你。
+		<br><br>
+
+		<<if $speech_attitude is "meek">>
+			"请放低一点，”当你的<<pussy>>压低到床上时，你乞求道。
+		<<elseif $speech_attitude is "bratty">>
+			你把一只手放在罗宾的头上，轻轻地把<<him>>推向你滴水的<<pussy>>。
+		<<else>>
+			"继续，不要停在这里，”你一边说一边用手拨弄罗宾的头发。
+		<</if>>
+		<br><br>
+
+		罗宾又吻了你的乳头，然后继续往下吻。
+		<<He>>在抬头看你之前慢慢地把<<his>>的嘴靠近你的<<pussy>>。
+		<<if _robin.dom gte 40>>
+			"我可以吗?”罗宾看起来很急切。
+		<<else>>
+			"你介意我……”罗宾看起来很羞涩，没办法继续说完下面的话。
+		<</if>>
+		<br><br>
+
+		你点头。罗宾试探性地伸出舌头舔外面的褶皱。当<<he>>又舔了一口时，你颤抖了。
+		罗宾的舔一开始是温柔的，但随着时间的推移，它们慢慢地变得越来越强硬。几分钟后，<<he>>中断了。
+		"你觉得舒服吗?”罗宾说，然后温柔地亲吻你的阴蒂。
+		<br><br>
+
+		<<if $speech_attitude is "meek">>
+			"是的，”你发出一声呜咽。
+		<<elseif $speech_attitude is "bratty">>
+			"是的，但我也希望你能多使用一下你的舌头……更快一点。”你把一只鼓励的手放在罗宾的头上。
+		<<else>>
+			"你做得很好，”你说，给了罗宾一个安慰的眼神。
+		<</if>>
+		<br><br>
+
+		罗宾在你的话的刺激下，给你的阴蒂最后一次吮吸，然后向下移动，把<<his>>的舌头伸进你的小穴里。
+		<<He>>慢慢地把它推进去，直到<<his>>的舌头全部推进去。然后<<He>>开始来回移动<<his>>的舌头，按压着你的肉壁。
+		<<He>>继续舔弄，并四处移动<<his>>的舌头。在舔弄时，<<His>>的鼻子压在你的阴蒂上。
+		<<arousal 5000 "genitals">><<gggarousal>>
+		<br><br>
+
+		<<if $arousal gte $arousalmax>>
+			当一股快感的浪潮席卷过你的身体时，你不停的颤抖着，接着是另一股，你像溺水的人一样死死搂着罗宾。
+			<<He>>放慢<<his>>的舌头，把你紧紧地抱着，直到你的颤抖过去。
+			<br><br>
+
+			你松开手，罗宾离开了你。
+			<<if _robin.dom gte 40>>
+				"我很高兴你能感到舒服快乐!”<<He>>轻轻地吻你的肚子，然后坐起来。
+			<<else>>
+				"我太高兴了!”<<He>>眼中含着泪水对你微笑。
+			<</if>>
+			<<silently>><<orgasm>><</silently>>
+			<<set $robinCDI.whoOrgasmed to "pc">>
+		<<else>>
+			你最终被压垮了，你深吸了几口气，把罗宾推开。<<He>>看起来有点失望，但还是照你说的做了。
+			<br><br>
+
+			<<if _robin.dom gte 40>>
+				"你还好吗?”<<He>>似乎很关心你，直到你点头才放下心来。
+			<<else>>
+				"我没有伤害你吧?”<<He>>看着你，几乎要流泪了，直到你安慰<<him>>。
+			<</if>>
+		<</if>>
+	<</if>>
+	<br><br>
+
+	<<if $robinCDI.acts is 0>>
+		<<if _robin.vagina isnot "none">>
+			<<if _robin.pronoun is "f">>
+				罗宾脱下<<his>>那带着诱人湿迹的四角裤，露出<<his>>的小穴和菊花朝向你。
+			<<else>>
+				罗宾脱下<<his>>那带着诱人湿迹的四角裤，你能看到<<his>>露出来的阴部和菊花。
+			<</if>>
+		<<else>>
+			<<if _robin.pronoun is "f">>
+				罗宾脱下<<his>>的四角裤，露出<<his>>的屁股朝向你。
+			<<else>>
+				罗宾把<<his>>的内裤挪到一边，这样你就可以够到<<his>>的屁股了。
+			<</if>>
+		<</if>>
+
+		<<if _robin.penis isnot "none">>
+			<<switch _robin.penissize>>
+				<<case 0 1>>
+					你可以看到织物上的凸起，这表明了<<his>><<npcPenis 0>>的存在。
+				<<case 2>>
+					<<His>>的<<npcPenis 0>>把衣服撑了起来.
+				<<case 3>>
+					<<his>><<npcPenis 0>>的龟头伸出顶部，溢出了粘液。
+				<<case 4 5>>
+					<<his>>一半的<<npcPenis 0>>在裙子下摆隐约可见，紧贴着<<his>>的小腹，上面还积了一些流出的精前液。
+			<</switch>>
+		<</if>>
+
+		"穿成这样做会让人感觉更热。”罗宾朝你微笑，脸涨得通红。
+		<<npcincr Robin lust 20>><<gglust>>
+		<br><br>
+	<</if>>
+
+	<<set $robinCDI.acts++>>
+	<<robinInfirmaryCDOptions>>
+
+:: School Infirmary Robin CD Penetrate
+	<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<set _hole to ($phase is 1 ? "ass" : "vagina")>>
+
+	<<if playerHasStrapon()>>
+		罗宾看着你的<<penis>>，眼睛睁得大大的。“我们需要一些润滑液。"
+		罗宾从医务室拿了一些洗剂，倒在<<his>>的手上。
+		<<He>>用<<his>>的手上下撸动你的<<penis>>，在整根肉棒上都涂上了乳液。
+		"不是最好的，但也只能这样了，”<<he>>说，声音因兴奋而颤抖，<<he>>躺回床上。
+	<</if>>
+	<<if $speech_attitude is "meek">>
+		罗宾的热情让你脸红，但你的身体反应积极。在罗宾的鼓励下，你兴奋地要刺穿<<him>>.
+	<<elseif $speech_attitude is "bratty">>
+		你兴奋地要刺穿罗宾.
+	<<else>>
+		你对罗宾微笑，因为你的身体对<<his>>的热情做出了反应。当<<he>>屏住<<his>>的呼吸时，你将你的<<penis>>对齐到<<his>>的入口。
+	<</if>>
+	你吻罗宾的嘴唇，因为你放松向前，用<<penis>>轻轻地按压着<<his>>的_hole。
+	当你进入<<him>>时，<<He>>喘着气，当你继续缓慢移动时，<<He>>会轻微扭动。
+	当尖端滑进去时，<<he>>喘着气，很快就变成了呻吟。
+	<<if $player.virginity.penile is true>>
+		<<takeVirginity "Robin" "penile">>
+	<</if>>
+	<<penilestat>><<penisraped>>
+
+	<<if _hole is "vagina" and _robin.virginity.vaginal>>
+		<br><br>
+
+		<span class="lewd">罗宾因处女膜破裂而颤抖。少量血液从<<him>>的下体流出。</span> "继续!我很好，”<<he>>安慰你。
+		<<silently>><<takeNPCVirginity "Robin" "vaginal">><</silently>><<arousal 2000 "genitals">><<ggarousal>>
+		<br><br>
+
+	<<elseif _hole is "ass" and _robin.virginity.anal>>
+		<<takeNPCVirginity "Robin" "anal">>
+		<br>
+	<</if>>
+	<<switch $player.penissize>>
+		<<case 0>>
+			你很容易就能把整个肉棒埋进罗宾的身体里。
+			<br><br>
+
+			<<He>>对你微笑，让你放心。“我不介意它有点小，我关心的是你。"
+		<<case 1>>
+			你继续插入，直到你的<<penis>>全部插进了罗宾的身体里。<<He>>微笑并高兴地叹了口气。
+			<br><br>
+
+			"我很高兴，”<<he>>对你微笑着说。
+		<<case 2>>
+			你进一步插入，不得不偶尔休息一下，这样罗宾才不会受伤。几次动作后，你在<<him>>体内开始抽插。
+			<br><br>
+
+			"我很高兴，”<<he>>对你微笑着说。
+		<<case 3>>
+			当你用你的<<penis>>推罗宾时，<<he>>继续喘息和蠕动。
+			你握着<<his>>的手，偶尔休息一下，这样罗宾才不会受伤。
+			<br><br>
+
+			当你的<<penis>>全部插进了罗宾的身体里时，<<he>>发出了一声长长的呻吟，“我感觉涨涨的。"
+		<<case 4 5>>
+			当你用你的<<penis>>推罗宾时，<<he>>继续喘息和蠕动。
+			你握着<<his>>的手，偶尔休息一下，这样罗宾才不会受伤。
+			<br><br>
+
+			过了一会儿，罗宾睁开了眼睛，“就这些了吗?是我干的吗?”<<He>>然后看着你的<<penis>>，只有一半多一点。
+			"哇…我希望我不会坏掉，”<<he>>睁大眼睛说。
+			当<<he>>在你的<<penis>>周围颤抖时，你可以感觉到一个颤抖穿过<<his>>的整个身体。
+			<<if _robin.penis isnot "none">>
+				你的<<print (playerHasStrapon() ? "假阳具": "阴茎")>>深深进入了<<him>>，
+				对<<his>>前列腺的压力导致持续不断的积液从<<his>>的<<npcPenis 0>>流出并聚集在<<his>>的腹部。
+			<</if>>
+	<</switch>>
+	<br><br>
+
+	<<if !playerHasStrapon()>>
+		当你在那里休息几秒钟时，你感到罗宾的内壁紧紧地压在你身上。你给<<him>>几秒钟的时间来适应你在<<him>>体内的感受。
+	<<else>>
+		你给罗宾几秒钟的时间来适应你在<<him>>体内的状态。
+	<</if>>
+	<<if $speech_attitude is "meek">>
+		你看了看罗宾，希望得到<<he>>的允许，<<he>>迫不及待地答应了。
+	<<elseif $speech_attitude is "bratty">>
+		"我要开始行动了，好吗?”你问罗宾，<<he>>急切地点点头。
+	<<else>>
+		"我可以开始了吗?”你问罗宾，<<he>>微笑着点头。
+	<</if>>
+	你开始慢慢地抽出，几乎完全离开，然后再次向前推进。
+	每次用力，你都慢慢加快速度，当<<he>>开始呻吟时，你用自己的手挤压<<his>>的手。
+	当你插入时看着<<him>>，<<he>>看起来仍然像一个<<print (_robin.pronoun is "m" ? "女孩" : "男孩")>>
+	穿着<<his>>的<<print (_robin.pronoun is "m" ? "衬垫胸罩和内裤" : "胸带和四角裤")>>。
+	<br><br>
+
+	当你加快速度时，罗宾的呻吟声会变得更大更频繁。
+	<<He>>咬着<<his>>的嘴唇不想发出声音，但在一次特别强大的推力后失败了。
+	"我爱你!”罗宾在呻吟间大声叫道。
+	<br><br>
+
+	你进一步提高你的速度，罗宾用<<his>>的胳膊和腿围住你。
+	当你继续抽插时，<<his>>咬紧牙关，<<His>>闭上眼睛。<<his>>呻吟的声音和你的胯部拍打罗宾的声音充满了房间。
+
+	<<if !playerHasStrapon()>>
+		<<arousal 7000 "genitals">><<gggarousal>>
+		<<penileskill 5>>
+	<</if>>
+	<br><br>
+
+	<<if $arousal gte $arousalmax>>
+		<<silently>><<orgasm>><</silently>>
+
+		<<if !playerHasStrapon()>>
+			<<if $speech_attitude is "meek">>
+				"我要……”你试着提醒罗宾即将到来的高潮。
+			<<elseif $speech_attitude is "bratty">>
+				"我要高潮了!”你咬牙切齿地说，肌肉都绷紧了。
+			<<else>>
+				"我就快到了，”你告诉罗宾，同时你感到一种压力在你内心积聚。
+			<</if>>
+			<br><br>
+
+			<<if _robin.dom gte 40>>
+				”求你了！我想要它！“罗宾一边吻着你一边更用力的动着<<his>>的臀部。
+			<<else>>
+				罗宾脸红得更厉害了，但还是点点头。“继续!"
+			<</if>>
+			<br><br>
+
+			在罗宾的刺激下，当你的<<penis>>开始在<<his>>的_hole内悸动时，你做了最后几次冲刺。
+			<<if _semen_released lte 0>>
+				你尽你所能把自己推到罗宾的身体深处，因为你的身体开始颤抖，但什么也没有出来。
+			<<else>>
+				你觉得自己达到了你的极限，当你开始射热精液到罗宾的<<print (_hole is "vagina" ? "阴道" : "菊穴")>>深处。
+			<</if>>
+			<br><br>
+
+			当你进入罗宾体内时，你感觉到<<him>>收紧了<<his>>的肌肉。<<His>>的手捂住<<his>>的嘴以抑制<<his>>的呻吟。“我要高潮了!"
+			<<if _robin.penis isnot "none">>
+				<<He>>开始射精，<<his>>的液体在床上和你的肉棒上到处都是，在你最后几次抽插的时候。
+			<</if>>
+			<<if _hole is "vagina">>
+				<<His>>的内壁挤压你的<<penis>>到最后一刻，你可以感受到你周围的热量。
+			<</if>>
+			<<if _robin.penis isnot "none" and _semen_released gt 0>>
+				<<set _robinsemenamount to ((_robin.lust * _robin.penissize) / 3)>>
+				<<if _robinsemenamount gte (_semen_released + 100)>>
+					你看<<his>>的精液溅在床上和地板上。<<He>>继续，即使你的最后一根精液射入<<him>>。
+				<<elseif Math.abs(_robinsemenamount - _semen_released) lte 100>>
+					当你们都达到高潮时，你们在床上创造了一个小水池，你们的高潮几乎在同一时间结束。
+				<<else>>
+					当罗宾自己的高潮结束时，你还在做爱，当<<his>>的身体挤压你的每一滴时，<<his>>的高潮延长了你的高潮。
+				<</if>>
+			<</if>>
+		<<else>> <!-- Robin orgasm with strapon -->
+			罗宾卷起<<his>>的脚趾，发出特别长的呻吟。<<his>>的肌肉开始紧绷和放松，因为<<he>>把你抱得特别近。
+			<<if _robin.dom gte 40>>
+				"继续!我要射了!”罗宾挤压你，<<he>>呻吟。
+			<<else>>
+				"不要停！求你了!”罗宾半呻吟着说。
+			<</if>>
+			<<if _robin.penis isnot "none">>
+				<<He>>开始射精，<<his>>的液体在床上和你的<<penis>>上到处都是，<<his>>继续射精。
+			<</if>>
+			<<if _hole is "vagina">>
+				<<His>>开始喷出液体，<<he>>咬你的肩膀。你帮助<<him>>完成<<his>>的性高潮。
+			<</if>>
+			<br><br>
+			<<if $arousal gte $arousalmax>>
+				<<silently>><<orgasm>><</silently>>
+				你也感觉到一种压力在你体内积聚，这是由罗宾的高潮带来的。当你的肌肉痉挛时，你感觉自己失去了对你的推力的控制。
+				你紧紧抱着罗宾度过各自的高潮。
+			<</if>>
+		<</if>>
+	<<else>>
+		罗宾卷起<<his>>的脚趾，发出特别长的呻吟。<<his>>的肌肉开始紧绷和放松，因为<<he>>把你抱得特别近。
+		<<if _robin.dom gte 40>>
+			"继续!我要射了!”罗宾挤压你，<<he>>呻吟。
+		<<else>>
+			"不要停！求你了!”罗宾半呻吟着说。
+		<</if>>
+		<<if _robin.penis isnot "none">>
+			<<He>>开始射精，<<his>>的液体在床上和你的<<penis>>上到处都是，<<his>>继续射精。
+		<</if>>
+		<<if _hole is "vagina">>
+			<<His>>开始喷出液体，<<he>>咬你的肩膀。你帮助<<him>>完成<<his>>的性高潮。
+		<</if>>
+	<</if>>
+	<br><br>
+
+	<<link [[继续|School Infirmary Robin CD Aftercare]]>><</link>>
+
+:: School Infirmary Robin CD Get Penetrated
+	<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<set _hole to ($phase is 1 ? "ass" : "vagina")>>
+
+	<!-- Feel free to add a Robin strap-on version -->
+	<<if !$worn.under_lower.type.includes("naked")>>
+		你把$worn.under_lower.cn_name_cap扔到一边。
+	<</if>>
+	<<if !$worn.under_upper.type.includes("naked")>>
+		你脱下$worn.under_upper.cn_name_cap让它落到地板上。
+	<</if>>
+	<<strip>>
+	你一丝不挂地和罗宾躺在床上。
+	<br><br>
+
+	罗宾望着你赤裸的身体，<<his>>的<<npcPenis 0>>随着心跳微微跳动。
+	<<if _robin.dom gte 40>>
+		"你真漂亮。”<<He>>上前吻你的嘴唇。
+	<<else>>
+		当你和<<he>>眼神接触时，<<he>>惊慌失措地把目光移开，“你真的很可爱。"
+	<</if>>
+	<br><br>
+
+	你把你的小穴放在罗宾的阴茎上，在上面摆动着身体。
+	<br><br>
+
+	<<if _robin.dom gte 40>>
+		罗宾把<<his>>的手放在你的臀部，轻轻地把你拉下来。
+		<br><br>
+	<<else>>
+		罗宾深吸了一口气，“我准备好了。"
+		<br><br>
+
+		你开始压低身体。
+	<</if>>
+	你的<<print (_hole is "vagina" ? "阴道" : "菊穴")>>摩擦<<his>>的阴茎，在你们一起努力结合之前停顿了一会儿。
+	你感觉到<<his>>的龟头压在你的入口处，再加上一点额外的力量，你感觉到<<him>>开始在你的体内推进。
+	<<his>>肉棒的温暖令人陶醉。你侧身，让罗宾更容易插入。
+	<<if _hole is "ass">>
+		<<analstat>><<anusraped>>
+		<<if $player.virginity.anal is true>>
+			<<takeVirginity "Robin" "anal">>
+			<<arousal 2000 "bottom">><<ggarousal>>
+		<</if>>
+		<br>
+	<<elseif _hole is "vagina">>
+		<<vaginalstat>><<vaginaraped>>
+		<<if $player.virginity.vaginal is true>>
+			<<takeVirginity "Robin" "vaginal">>
+			<<arousal 2000 "genitals">><<ggarousal>>
+		<</if>>
+	<</if>>
+	罗宾咕哝着，慢慢地把<<his>>的<<npcPenis 0>>插的更深。
+	<<switch _robin.penissize>>
+		<<case 1>>
+			你很容易的就接纳了<<his>>的一整根肉棒。罗宾发出一声快乐的呻吟，<<he>>的阴茎穿过阴道。顶在了你的子宫口上。
+			<<He>>让你更靠近<<him>>，“我爱你。"
+		<<case 2>>
+			<<He>>缓慢地抽插，每次都稍微深一点。最终，<<he>>插到了你的最深处，你感觉很舒服。
+			罗宾对你微笑，“你做得很好！"
+		<<case 3>>
+			罗宾慢慢地抽进抽出，每次都稍微深一点。每一次推力都让你感觉更充实。
+			<<if (_hole is "vagina" ? $vaginalskill : $analskill) gte 400>>
+				最终<<he>>全部插进了你的体内。你轻轻地哼哼和摩擦<<him>>，引起<<him>>的呻吟。
+				"你真的很擅长这个!”罗宾称赞你。
+			<<else>>
+				<<He>>注意到你开始感到不舒服，停了一会儿。“你还好吗?”<<He>>问道。
+				只有在得到你的保证后，<<he>>才会继续移动，只插到了<<he>>可以舒适的地方。
+			<</if>>
+		<<case 4>>
+			罗宾并没有试着去做所有的事情，相反，<<he>>只做了<<he>>认为你觉得舒服的事情。
+			<<if (_hole is "vagina" ? $vaginalskill : $analskill) gte 800>>
+				知道自己的极限后，你一下子吞进了<<his>>的<<npcPenis 0>>，把<<he>>带到了你的最深处。
+				罗宾发出一声长长的呻吟，因为你让<<him>>措手不及。“哇，你确定吗?”<<He>>睁大眼睛问。
+			<<else>>
+				当<<he>>加速抽插时，你紧紧地抱紧了<<him>>的身体。
+			<</if>>
+	<</switch>>
+	<<arousal 7000 "genitals">><<gggarousal>>
+	<br><br>
+
+	<<if $arousal gte $arousalmax>>
+		你感到内心的压力开始积聚。
+		<<if $speech_attitude is "meek">>
+			"我要……”你试着提醒罗宾即将到来的高潮。
+		<<elseif $speech_attitude is "bratty">>
+			"我要高潮了!”你咬牙切齿地说，肌肉都绷紧了。
+		<<else>>
+			"我就快到了，”你告诉罗宾，同时你感到一种压力在你内心积聚。
+		<</if>>
+		<br><br>
+		<!-- Add pullout alternative when pregnancy update comes? -->
+		"我，我也是!”罗宾回应你，然后加速了抽插。
+		<<silently>><<orgasm>><</silently>>
+		<br><br>
+
+		你的手臂环绕着<<him>>迎接<<his>>的猛攻。
+		你突然被一股快乐的浪潮击中，快感令你的身体酸软无力。
+		当罗宾继续在你体内插入时，你虚弱地呜咽，你的阴道内壁紧紧地围绕着<<his>>的肉棒。
+	<<else>>
+		"我想我离高潮越来越近了，”罗宾告诉你，<<his>>的推力越来越不稳定。
+		<br><br>
+
+		<<if $speech_attitude is "meek">>
+			你微笑着点头，开始每一次用力。
+		<<elseif $speech_attitude is "bratty">>
+			"给我!”你开始把你所有的东西都投入到每一个推力中。
+		<<else>>
+			你吻罗宾，鼓励<<him>>更用力地抽插。
+		<</if>>
+		<br><br>
+
+	<</if>>
+	你可以感觉到<<his>>的阴茎在你体内跳动。
+	<<he>>最后又抽插了几次，在高潮来临之际紧紧地抱着你。
+	当罗宾把<<himself>>推到你体内尽可能深的地方时，你感到一股炙热的液体在你的_hole里喷射。
+	<<he>>之后又抽插了几次，想把剩下的精液挤出来给你。
+	<br><br>
+
+	罗宾在结束后倒在床上。“很激烈。”你躺在<<hes>>旁边。
+	<br><br>
+
+	<<if _hole is "ass">>
+		<<analskill 5>>
+	<<else>>
+		<<vaginalskill 5>>
+	<</if>>
+
+	<<link [[继续|School Infirmary Robin CD Aftercare]]>><</link>>
+	<br>
+
+:: School Infirmary Robin CD Give Oral
+	<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<set _action to ($phase is 0 ? "blowjob" : "eat out")>>
+
+	<<if $robinCDI.acts is 0>> <!-- first act, preparing for penetration -->
+		<<robinInfirmaryCDUndressLower>>
+		<br><br>
+
+		<<if _action is "blowjob">>
+			<<set $NPCList[0].intro to 1>>
+		<<elseif _action is "eat out">>
+			<<if $speech_attitude is "meek">>
+				"我想让你感觉好点……”你喃喃自语。
+			<<elseif $speech_attitude is "bratty">>
+				你用手指和舌头做一个下流的手势。“我想尝尝，”你说。
+			<<else>>
+				"介意我帮你一点忙吗?”你说。“你看起来有点燥热不安。”你对罗宾笑了笑。
+			<</if>>
+			<br><br>
+
+			罗宾脸红了，“是，是的 !"
+		<</if>>
+
+		<<set _soaked to (_robin.vagina isnot "none" ? "arousal-soaked" : "")>>
+		<<if _robin.pronoun is "f">>
+			<<He>>拉下了<<his>>浸湿的内裤正面，露出了<<his>>的
+		<<else>>
+			<<He>>把<<his>>湿透了的三角裤脱到了<<his>>膝盖那里，露出了<<his>>的
+		<</if>>
+
+		<<if _robin.penis isnot "none" and _robin.vagina isnot "none">>
+			<<npcPenis 0>>和<<npcVagina 0>>。
+		<<elseif _robin.penis isnot "none">>
+			<<npcPenis 0>>.
+		<<elseif _robin.vagina isnot "none">>
+			<<npcVagina 0>>.
+		<</if>>
+	<<else>> <!-- Second act, player is already naked -->
+		<<if $speech_attitude is "meek">>
+			"我也想帮助你，我不想成为唯一一个感觉良好的人，”你说。
+		<<elseif $speech_attitude is "bratty">>
+			"你以为我会这么轻易放过你吗?”你得意的笑。“把裤子脱下来，让我来照顾你。"
+		<<else>>
+			"我也想帮你，”你指着<<his>>的<<if _robin.penis isnot "none">>勃起<<else>>滴水的内裤<</if>>说。
+		<</if>>
+	<</if>>
+	<br><br>
+
+	<<if _action is "blowjob">> <!-- blowjob for Robin -->
+		<<if $robinCDI.acts is 0>> <!-- first act blowjob for Robin -->
+			<<if _robin.dom gte 40>>
+				"我能在上面吗?”罗宾看着你，脸红了。
+			<<else>>
+				"你觉得我能……”<<He>>在指着<<his>>的<<npcPenis 0>>时脸红了。
+			<</if>>
+			<br><br>
+
+			<<if $speech_attitude is "meek">>
+				你微笑着把你的头靠近<<his>>的阴茎，亲吻尖端。
+			<<elseif $speech_attitude is "bratty">>
+				"不是说你不能，”你笑着说。“得先把它润滑一下。"
+			<<else>>
+				"当然可以!”你兴奋地说。“不过我想先尝尝。"
+			<</if>>
+		<<else>> <!-- second act blowjob for Robin -->
+			<<if $speech_attitude is "meek">>
+				你微笑着把你的头靠近<<his>>的阴茎，亲吻尖端。
+			<<elseif $speech_attitude is "bratty">>
+				你把你的头移到罗宾的肉棒上，在舔它之前呼气。
+			<<else>>
+				你把你的头移到<<his>>的尖端，轻轻地舔了一下。
+			<</if>>
+		<</if>>
+		<br><br>
+
+		罗宾在你的抚摸下压抑着呻吟。你看着罗宾的眼睛，慢慢地开始用嘴吞下<<his>>的阴茎。
+		你执着的用你的舌头去挑逗它的尖端，引起罗宾的呻吟。
+		过了一会儿，你开始慢慢地前后移动你的头，吞吐<<his>>的肉棒。
+		<<if $player.virginity.oral is true>>
+			<<silently>><<takeVirginity "Robin" "oral">><</silently>>
+			<<arousal 1500 "mouth">><<ggarousal>>
+		<</if>>
+		<<if _robin.dom gte 40>>
+			罗宾轻轻地把<<his>>的手放在你的后脑勺上，在你继续的时候温柔地鼓励你。
+		<<else>>
+			罗宾用<<his>>的手遮住了<<his>>的脸，但仍然透过<<his>>的手指偷看你。
+		<</if>>
+		<br><br>
+
+		你停止吮吸片刻，开始亲吻<<his>>的根部。
+		<<if $speech_attitude is "meek">>
+			"我希望我让你舒服了，”你说，然后在<<his>>的肉棒底部留下一个吻。
+		<<elseif $speech_attitude is "bratty">>
+			"感觉舒服吗?”你又吻了一下<<his>>的尖端，轻轻地逗弄它。
+		<<else>>
+			"你感觉怎么样?我希望很好，”你笑着舔了舔<<his>>的尖端。
+		<</if>>
+		<br><br>
+
+		<<He>>点头，你继续口交，让<<him>>再次呻吟。你加倍努力，试着吞下<<his>>的整根肉棒。
+		<<oralskill 5>>
+		<<switch _robin.penissize>>
+			<<case 1>>
+				很容易的就全部吞下了。你哼哼，让罗宾因为振动而哀鸣。
+			<<case 2>>
+				你每次都舔得更远，慢慢地沿着<<his>>的长度前进。
+				<<if $oralskill gte 200>>
+					最后你把整个东西都吞下了。你深喉时吮吸了一下，让罗宾发抖。
+				<<else>>
+					然而，即使你尽了最大的努力，你也无法把整个东西塞进嘴里。
+					罗宾给了你一个安心的眼神，<<he>>抚摸你的头。
+				<</if>>
+			<<case 3>>
+				你尽你最大的努力，每一波都越走越远。罗宾又发出了一声呻吟。
+				<<if $oralskill gte 400>>
+					再次吞咽了几下，你就把整个东西含在嘴里了。尖端到达你的喉咙，导致罗宾发出色情的喘息作为回应。
+					几分钟后，然后回到了龟头。
+				<<else>>
+					不管你怎么努力，你似乎都无法接受这一切。你所做的任何尝试都只会以流泪和咳嗽告终。
+					罗宾关切地看着你，无言地问你是否没事。你的回答是继续照顾<<his>>的肉棒。
+				<</if>>
+			<<case 4>>
+				你闭上眼睛，试着越吞越深，挑战你的极限。
+				当你到达你认为必须接近终点的地方时，你睁开眼睛却发现你才吞下了一半。你加倍努力。
+				<<if $oralskill gte 800>>
+					几分钟后，你慢慢接近<<his>>的根部，你设法把它带到极致。
+					罗宾的眼睛睁得大大的，当你感觉到<<his>>的肉棒对着你的喉咙时。
+					你对<<him>>眨眨眼，你回到原本的工作，继续深喉，然后切换了回来。
+				<<else>>
+					你试了试，直到泪水涌上你的眼睛，你的呕吐反射迫使你停下来。你坐在那里咳嗽，罗宾关切地看着你。
+					<<He>>走到你所在的地方，拥抱了你很长时间。然而，在<<he>>结束拥抱之后，你以更合理的速度继续你的口交。
+				<</if>>
+		<</switch>>
+
+		<<if (_robin.lust + ($oralskill / 10)) gte 100 or $robinCDI.acts is 1>> <!-- robin guaranteed to cum if second act -->
+			<br><br>
+
+			罗宾的肉棒开始在你嘴里跳动。
+			<<if _robin.dom gte 40>>
+				"我快要……”<<He>>与你进行眼神交流，然后轻轻地把你的头固定在<<his>>的肉棒上。
+			<<else>>
+				<<His>>的眼睛闭着，因为<<his>>的肌肉痉挛。“对不起，我控制不住了!”<<He>>大叫。
+			<</if>>
+			罗宾往你嘴里射出了热气腾腾的精液，接着又是一股。你把它们都吞了下去。
+			你继续吮吸<<his>>的阴茎，帮助<<him>>度过<<his>>的高潮，直到它最终消失。
+			"我要…休息一下。”<<He>>瘫倒在床上一会儿。
+			<<set $robinCDI.whoOrgasmed to "robin">>
+		<</if>>
+
+		<<if $robinCDI.acts is 0>> <!-- first act -->
+			<<if (_robin.lust + ($oralskill / 10)) gte 100>>
+				<<if $speech_attitude is "meek">>
+					"如果你愿意，我可以让你感觉更好，”你平静地说。
+				<<elseif $speech_attitude is "bratty">>
+					"我们还没做完呢，差远了，”你一边说一边开玩笑地戳着<<his>>的肩膀。
+				<<else>>
+					"如果你可以的话，我想继续下去。我们还没到主菜，”你笑着说。
+				<</if>>
+				<br><br>
+
+				罗宾的<<npcPenis 0>>回复了你的话。“我猜休息时间结束了，”<<he>>静静地笑着。
+				<<npcincr Robin lust -10>>
+			<<else>>
+				过了一会儿，罗宾拥抱你。“我不想过早地把你给我的包袱放下。"
+				<<if _robin.dom gte 40>>
+					<<He>>松开了拥抱，笑了。“而且我知道一个更好的地方。"
+				<<else>>
+					<<He>>结束了拥抱抚摸<<his>>的后脑勺。“我们能继续吗?”你点头。
+				<</if>>
+				<<npcincr Robin lust 30>>
+			<</if>>
+		<</if>>
+
+	<<elseif _action is "eat out">> <!-- eat out Robin -->
+		<<if $speech_attitude is "meek">>
+			你急切地舔着罗宾。
+		<<elseif $speech_attitude is "bratty">>
+			你在罗宾的皱褶上呼气，戏弄了<<him>>一会儿，然后缓慢的舔<<him>>。
+		<<else>>
+			你慢慢地舔了罗宾的皱褶几次，每次舔都轻轻地碰触<<his>>的阴蒂。
+		<</if>>
+		<br><br>
+
+		<<if _robin.dom gte 40>>
+			罗宾温柔地把手放在你的头上，鼓励你进入得更深。
+		<<else>>
+			"请不要挑逗我!”<<He>>发牢骚。
+		<</if>>
+		<br><br>
+
+		你又慢慢地舔了一下，<<him>>小声地呜咽。
+		<<Hes>>准备在你开始之前抗议，急切地在舔<<his>>外层褶皱和轻轻地吮吸<<his>>勃起的阴蒂之间交换。
+		罗宾的抗议演变成了呻吟，因为你不断地取悦<<him>>。你试探性地把舌头轻轻地伸进去，让<<him>>紧张起来。
+		当你把罗宾的舌头往里推的时候，你可以感觉到<<his>>的舌头在收缩。
+		完全进入后你探索<<his>>的阴部，确保品尝你能到达的一切。
+		罗宾再次颤抖，<<his>>的呻吟达到了发烧的程度，因为你不断地把舌头移进和移出<<his>>的阴道。
+		<br><br>
+
+		<<if _robin.dom gte 40>>
+			当<<he>>开始失去控制时，罗宾之前温和的推变得更加困难。
+		<<else>>
+			"别停!我要……”当<<His>>肌肉痉挛时，<<his>>的话变成了另一声呻吟。
+		<</if>>
+		<br><br>
+
+		你又回去吮吸<<his>>的阴蒂了。你移动一个手指沿着<<his>>的下唇，然后慢慢地插进了<<him>>的口中。
+		当你开始抽出手指时，<<He>>再次颤抖。当<<his>>的呻吟声开始变得危险时，你移动你空着的那只手捂住了<<his>>的嘴。
+		你把另一根手指插进<<him>>嘴里，<<he>>开始软弱无力。
+		<br><br>
+
+		罗宾很快就被这种感觉淹没了。<<He>>向后倾斜<<his>>的头，当颤抖穿过<<his>>的身体时，罗宾喘息着。
+		<<He>>用微弱地力道试图推开你。你选择轻轻地抱着<<him>>，等待<<he>>结束高潮。
+		<<if _robin.dom gte 40>>
+			"我太爱你了……”罗宾边喘气边说，然后拥抱了你。
+		<<else>>
+			罗宾轻轻地呜咽了一声，开始回礼。
+		<</if>>
+		"我需要一分钟。好……刺激。”<<He>>瘫倒在床上。
+		<<set $robinCDI.whoOrgasmed to "robin">>
+
+	<<else>>
+		罗宾皱眉。“对不起，我不是……这里该怎么办?<span class="red">我认为__action被设置为_action是一个bug。</span>
+		你有机会能把这事报告给弗列尼尔吗?"
+		<br><br>
+
+		<<He>>笨拙地拍着你的头顶，不知道还能做什么。
+	<</if>>
+	<br><br>
+
+	<<set $robinCDI.acts++>>
+	<<robinInfirmaryCDOptions>>
+
+:: School Infirmary Robin CD Aftercare
+	<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+	<<npcincr Robin lust -100>>
+	<<earnFeat "Robin's Song">>
+	你和罗宾紧紧地躺在医务室的病床上，互相拥抱着。
+	<br><br>
+
+	几分钟后，罗宾起身，看着墙上的钟。
+	<br><br>
+
+	<<if $schoolstate is "lunch">>
+		"我们还有一些时间，但我们可能应该走了，”罗宾说，然后轻轻地吻了你的嘴唇。
+	<<elseif $schoolstate is "fourth">>
+		"啊!我们得去上历史课了!”罗宾站直身子，脱口而出。
+	<<else>>
+		<!-- This should not happen it's a catch all -->
+		"天啊，怎么这么晚了?”罗宾轻轻地摇了摇头。
+	<</if>>
+	<br><br>
+
+	<<He>>开始清洗<<his>>的衣服，现在大部分已经干了。把它们穿上，当你整理衣服时，<<he>>对你微笑。
+	"谢谢，”<<he>>说。“不只是为了这个，而是为了一切。"
+	<<if $schoolstate is "lunch" or $schoolstate is "fourth">>
+		<<He>>在牵着你的手带你去上课之前给你一个大大的拥抱。
+	<</if>>
+	<br><br>
+
+	你希望没人注意到你们俩身上散发出的性爱气息。
+	<br><br>
+
+	<<robinInfirmaryVariableCleanup>>
+
+	<<if $schoolstate is "lunch" or $schoolstate is "fourth">>
+		<<link [[继续|School History Robin CD Enter]]>><<endevent>><<clotheson>><<dontHideRevert>><</link>>
+	<<else>>
+		<<link [[继续|Hallways]]>><<endevent>><<clotheson>><<dontHideRevert>><</link>>
+	<</if>>
+	<br>
+
+:: School History Robin CD Enter
+	<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+	<<set _robin to statusCheck("Robin")>>
+	<<npc Robin 1>>
+	<<npc Winter 2>>
+
+	当你们俩进入<<person2>><<his>>的课堂时，温特扬起了眉毛。
+	<<if $schoolstate is "lunch">>
+		"你为什么穿那个，罗宾?为什么这么脏?"
+	<<else>>
+		"迟到可不像你，罗宾。你为什么穿着那件制服?"
+	<</if>>
+	<br><br>
+
+	<<if _robin.dom gte 60>>
+		"我只是觉得这样更快乐，”罗宾说。“而且我刚刚还被食物绊倒了，<<pshe>>带我去医务室检查一下，确认我没受什么伤。”<<person1>><<He>>向你示意。
+		<<He>>坐在<<his>>的老座位上，示意你坐在<<him>>旁边.
+	<<else>>
+		"有人了…”当<<person1>><<he>>坐在<<his>>惯常的座位上时，罗宾拒绝进一步详细说明，并做手势让你坐在<<him>>旁边。
+	<</if>>
+
+	看起来温特正要说些什么，但是制止了<<person2>><<himself>>.
+	<br><br>
+	<<if $schoolstate is "lunch">>
+		<<link [[继续|History Classroom]]>><<endevent>><</link>>
+	<<else>>
+		<<link [[继续|History Lesson]]>><<endevent>><</link>>
+	<</if>>
+	<br>

@@ -1,0 +1,1599 @@
+:: Dilapidated Shop
+<<set $outside to 0>><<set $location to "adult_shop">><<effects>>
+<<getadultshopstate>>
+<<run statusCheck("Sydney")>>
+<<if $adultshopstate is "sydney" and Time.weekDay is 6>>
+	<<if $adultshopintro isnot 1>>
+		<<set $adultshopintro to 1>>
+		<<unset $adultshopintrosirris>>
+		<<if $NPCName[$NPCNameList.indexOf("Sirris")].init isnot 1>>
+			你经过一家破旧的商店。窗户用木板封住了，但门是开着的。有人提着板条箱走了出来——是西里斯。<<npc Sirris>><<person1>><<He>>看到你看起来很惊讶。
+			<br><br>
+			"学年开始以来就没见过你了，我还以为你转校了……不说那些，欢迎来到我未完成的商店。"西里斯说着，把箱子放在脚边，伸手进去拿了些什么东西。"刚开始还只是兴趣使然，但我一个朋友告诉我这些东西会很有市场。"
+			<br><br>"
+		<<else>>
+			<<npc Sirris>>
+			<<person1>>
+
+			你经过一家破旧的商店。窗户用木板封住了，但门是开着的。一个<<personsimple>>拿着板条箱走出来。是西里斯。<<He>>一看到你就笑了。
+			<br><br>
+
+			"欢迎来到我未完成的商店。"西里斯说着，把箱子放在脚边，伸手进去拿了些什么东西。"刚开始还只是兴趣使然，但我一个朋友告诉我这些东西会很有市场。"
+			<br><br>
+		<</if>>
+		<<He>>拿出了一根粗壮的紫色物品，<span class="purple">外形形似一根阴茎。</span>"不该在外面拿着这玩意张扬的。"<<he>>摇了摇头，把它扔回了箱子里。"你可以来帮我整理商店，一个小时付你£20。"
+		<br><br>
+		"我已经有一个帮手了。"<<he>>补充道，"悉尼！"
+		<br><br>
+
+		<<link [[继续|Dilapidated Shop Intro]]>><</link>>
+		<br>
+	<<else>>
+		<<npc Sirris>>
+		<<npc Sydney 2>>
+		<<person2>>
+		你进入了西里斯的商店。
+		<<if $adultshopprogress gte 18>>
+			货架空空如也，地面还需要打扫，但商店似乎已经快准备完毕了。
+		<<elseif $adultshopprogress gte 14>>
+			堆得高高的箱子靠着剥落的墙壁。
+		<<elseif $adultshopprogress gte 7>>
+			木制货架，螺丝，以及其他的家具组件散落一地。
+		<<else>>
+			一架扶梯上挂着一桶油漆。
+		<</if>>
+		悉尼从后面的房间里出来了。
+		<<if $sydneyromance is 1>>
+			<<if _sydneyStatus.includes("corrupt")>>
+				"你好啊，"<<he>>说着，亲了亲你的脸颊。"来帮忙的吗？"
+			<<else>>
+				"<<sydneymum>>让你来帮忙真是太好了。"<<he>>害羞地低下了头，"如果是别人的话就要尴尬死了。"
+			<</if>>
+		<<else>>
+			<<if _sydneyStatus.includes("corrupt")>>
+				"你好啊，"<<he>>笑了笑，"来帮忙的吗？"
+			<<else>>
+				<<He>>害羞的微笑着，"你是来帮忙的吗？"
+			<</if>>
+		<</if>>
+		<br><br>
+		<i>无论你是否帮忙，成人用品店都会开门，但如果你帮忙的话进度会更快。一旦竣工，你就可以从商店买东西了，小镇的其他人也会来买。</i>
+		<br><br>
+		<<link [[帮忙 (1:00)|Dilapidated Help]]>><<set $adultshopprogress += 1>><<set $adultshopcontribution += 1>><<set $adultshophelped to 1>><<pass 60>><<npcincr Sirris love 1>><<npcincr Sydney love 1>><</link>><<glove>>
+		<br>
+		<<if $cheatdisable is "f">>
+			<<link [[小心翼翼的帮助|Dilapidated Help]]>><<set $adultshopprogress += 8>><<set $adultshopcontribution += 8>><<set $adultshophelped to 1>><<pass 60>><<npcincr Sirris love 1>><<npcincr Sydney love 1>><</link>><<glove>><i>增加商店进度，才能解锁下一层事件.</i> <i>作弊.</i><!-- Appears even with blind stats enabled. Intentional -->
+		<</if>>
+		<br>
+		<<link [[离开|Elk Street]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	你路过了一家破败的商店。窗户被木板钉死了，你从木板间的缝隙向内窥觑，发现地上到处都是色情杂志和VHS视频磁带。
+	<br><br>
+
+	<<link [[离开|Elk Street]]>><</link>>
+	<br>
+	<<if $debug is 1>>
+		<br>
+		<i>Debug.对悉尼数据的更改在事件结束后依然有效。</i>
+		<br><br>
+		成人用品店准备进度:$adultshopprogress<br>
+		<<link [[将进度改为0|$passage]]>><<set $adultshopprogress to 0>><</link>>
+		<br>
+		<<link [[将进度改为8|$passage]]>><<set $adultshopprogress to 8>><</link>>
+		<br>
+		<<link [[将进度改为15|$passage]]>><<set $adultshopprogress to 15>><</link>>
+		<br><br>
+		<<link [[帮忙装修商店|Dilapidated Help]]>><<npc Sirris>><<npc Sydney 2>><<person2>><<set $adultshopprogress += 1>><<set $adultshopcontribution += 1>><<set $adultshophelped to 1>><<pass 60>><<npcincr Sirris love 1>><<npcincr Sydney love 1>><</link>><<glove>>
+		<br><br>
+		<<link [[开业典礼 悉尼纯洁状态|Adult Shop Opening]]>><<npc Sydney>><<person1>><<endevent>><<set $NPCName[$NPCNameList.indexOf("Sydney")].purity to 100>><<set $NPCName[$NPCNameList.indexOf("Sydney")].corruption to 0>><</link>>
+		<br>
+		<<link [[开业典礼 悉尼中立状态|Adult Shop Opening]]>><<npc Sydney>><<person1>><<endevent>><<set $NPCName[$NPCNameList.indexOf("Sydney")].purity to 0>><<set $NPCName[$NPCNameList.indexOf("Sydney")].corruption to 0>><</link>>
+		<br>
+		<<link [[开业典礼 悉尼腐化状态|Adult Shop Opening]]>><<npc Sydney>><<person1>><<endevent>><<set $NPCName[$NPCNameList.indexOf("Sydney")].purity to 0>><<set $NPCName[$NPCNameList.indexOf("Sydney")].corruption to 100>><</link>>
+		<br><br>
+	<</if>>
+	<<if $cheatdisable is "f" or $debug is 1>>
+		<<link [[开商店的锁|Elk Street]]>><<set $adultshopunlocked to true>><</link>> | <i>作弊选项</i> <!-- Appears even with blind stats enabled. Intentional -->
+		<br>
+	<</if>>
+<</if>>
+
+
+:: Dilapidated Shop Intro
+<<effects>>
+<<if $sydneySeen is undefined>>
+	<<npc Sydney 2>>
+	<<set $sydneySeen.pushUnique("shop")>><<set $sydneyFirstSeen to "shop">>
+	<<person2>>
+	一名有着<<npcHairColour "Sydney">>马尾的<<personsimple>>从店里走了出来。是悉尼，一位以纯洁品性和恪守职责而闻名的学生。<<his>>的脖子上挂着一个十字架，眼镜背后是一双略显疲色的琥珀色眼睛。
+	<br><br>
+<<else>>
+	<<npc Sydney 2>>
+	<<set $sydneySeen.pushUnique("shop")>>
+	<<person2>>
+	悉尼从店里走了出来。
+<</if>>
+<<run statusCheck("Sydney")>>
+<<He>>朝你笑了笑。"嘿，"<<he>>挥了挥手，"你好啊，我在这里帮忙来着。"
+<br>
+"我问过你的同学你要不要来帮忙。"
+<br>
+<<if _sydneyStatus.includes("corrupt")>>
+	悉尼的微笑更灿烂了。"这里干活很有意思的，"<<he>>看了看周围，"我学到了好多东西。"
+	<br>
+	<<person1>>
+	西里斯点了点头。"肯定没什么不好意思的啦。"<<he>>笑了起来，"不过，还是<<phim>>自己说了算。"<<He>>回头转向你，"我们每个周五下午都会在这里，全部准备好要好几个星期。"
+	<br><br>
+<<elseif _sydneyStatus.includes("pure")>>
+	悉尼似乎十分尴尬。"我不想让<<phim>>看见-"
+	<br>
+	<<person1>>
+	西里斯笑了起来，悉尼默默闭上了嘴。"没什么不好意思的啦！"<<He>>回头转向你，"我们每个周五下午都会在这里，全部准备好要好几个星期。"
+	<br><br>
+<<else>>
+	悉尼皱了皱眉，"你确定吗？有些东西有点-"<<he>>犹豫了一下，"粗俗。"
+	<br>
+	<<person1>>
+	"粗俗？"西里斯笑着说，"没什么不好意思的啦。不过，还是<<phim>>自己说了算。"<<He>>回头转向你。"我们每个周五下午都会在这里，全部准备好要好几个星期。"
+	<br><br>
+<</if>>
+<<link [[帮忙 (1:00)|Dilapidated Help]]>><<set $adultshopprogress += 1>><<set $adultshopcontribution += 1>><<set $adultshophelped to 1>><<pass 60>><<npcincr Sirris love 1>><<npcincr Sydney love 1>><</link>><<glove>>
+<br>
+<<link [[离开|Elk Street]]>><<endevent>><</link>>
+<br>
+
+:: Dilapidated Help
+<<effects>>
+<<run statusCheck("Sydney")>>
+<<if $adultshopprogress gte 15>>
+	你帮助悉尼上货，而西里斯则在后面工作着。你透过门上的裂缝，看到有火星飞过。
+	<br><br>
+	<<person2>>
+	<<if random(1)>>
+		<<generate3>><<person3>>
+		你听到有人在敲窗。一名<<person>>站在外面。<<He>>指了指<<him>>旁边的一个板条箱，便走开了。<<person2>>
+		<<if _sydneyStatus.includes("corrupt")>>
+			悉尼跳了起来，向门口走去。<<Hes>>回来的时候，手里拿着那个板条箱，欢快得要蹦起来一般。
+			<br><br>
+			"你猜这是什么？"<<he>>一关上门，便迫不及待的把箱子放下，从满地散落的工具中抄起一根撬棍。<<He>>没等你回答，便咔的一声撬开了箱子。
+			<br><br>
+			<<link [[继续|Dilapidated Toy]]>><</link>>
+			<br>
+		<<elseif _sydneyStatus.includes("pure")>>
+			悉尼稍微等了一会才去拿货。<<He>>双手抱着箱子，匆忙进入了后面的房间。箱子里不知道装了什么东西。
+			<br><br>
+			<<link [[建议打开箱子|Dilapidated Suggest]]>><</link>>
+			<br>
+			<<link [[不管悉尼|Dilapidated Let]]>><</link>>
+			<br>
+		<<else>>
+			悉尼稍微等了一会才去拿货。<<He>>双手抱着箱子走过你身边，然后向后面的房间走去。
+			<br><br>
+			<<link [[建议打开箱子|Dilapidated Suggest]]>><</link>>
+			<br>
+			<<link [[不管悉尼|Dilapidated Let]]>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		<<if _sydneyStatus.includes("corrupt")>>
+			<<Hes>>看着琳琅满目的商品，表情十分着迷——尤其是看向SM道具区的时候，皮鞭，马鞭，捆绑带，"用不好的话就是在严刑拷打，"<<he>>用手扶着下巴，"我在神殿见过差不多的东西。"
+			<br><br>
+
+			<<link [[戴上一个项圈并调戏悉尼|Dilapidated Collar Corrupt]]>><<npcincr Sydney purity -2>><<npcincr Sydney lust 5>><</link>><<set _lustincrdisplay to 1>><<lspurity>><<glust>>
+			<br>
+			<<link [[继续工作|Dilapidated Collar Refuse]]>><</link>>
+			<br>
+		<<elseif _sydneyStatus.includes("pure")>>
+			<<He>>犹豫着拿起一个商品，又赶快放开，仿佛眼前的物品是一堆活蹦乱跳的眼镜蛇。皮鞭，马鞭，小黄书，假阳具和震动棒在<<he>>的手下被杂乱的放在架子上。
+			<br><br>
+
+			<<link [[戴上一个项圈并调戏悉尼|Dilapidated Collar]]>><<npcincr Sydney purity -2>><<npcincr Sydney lust 5>><</link>><<set _lustincrdisplay to 1>><<lspurity>><<glust>>
+			<br>
+			<<link [[继续工作|Dilapidated Collar Refuse]]>><</link>>
+			<br>
+		<<else>>
+			<<He>>把货品一个个摆放整齐，并没有盯着它们看，强制着自己不被这些皮鞭，马鞭，小黄书，假阳具和震动棒什么的吸引注意力。
+			<br><br>
+
+			<<link [[戴上一个项圈并调戏悉尼|Dilapidated Collar]]>><<npcincr Sydney purity -2>><<npcincr Sydney lust 5>><</link>><<set _lustincrdisplay to 1>><<lspurity>><<glust>>
+			<br>
+			<<link [[继续工作|Dilapidated Collar Refuse]]>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<<elseif $adultshopprogress gte 8>>
+	你帮助悉尼清空了板条箱，而西里斯则在后面的房间工作着。你听到零星的敲锤子的声音。
+	<br><br>
+	<<person2>>
+	<<if random(1)>>
+		<<generate3>>
+		你听到有人敲门。
+		<<if _sydneyStatus.includes("corrupt")>>
+			"我来开。"悉尼说着，满脸期待。
+			<br><br>
+			一名拿着货的<<person3>><<person>>微笑着站在门外。悉尼签收了货物，双手把板条箱搬了进来。
+			<br><br>
+			"你猜这是什么？"<<person2>><<he>>一关上门，便迫不及待的把箱子放下，从满地散落的工具中抄起一根撬棍。<<He>>没等你回答，便咔的一声撬开了箱子。
+			<br><br>
+			<<link [[继续|Dilapidated Toy]]>><</link>>
+			<br>
+		<<elseif _sydneyStatus.includes("pure")>>
+			敲门声响起，悉尼的脸瞬间沉了下来。
+			<br><br>
+
+			<<link [[让悉尼开门|Dilapidated Door Suggest]]>><</link>>
+			<br>
+			<<link [[自己开门|Dilapidated Door Answer]]>><</link>>
+			<br>
+		<<else>>
+			悉尼看上去并不想开门。
+			<br><br>
+
+			<<link [[让悉尼开门|Dilapidated Door Suggest]]>><</link>>
+			<br>
+			<<link [[自己开门|Dilapidated Door Answer]]>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+
+		你听到店铺前传来人声。一群围观的人们正朝窗户里偷看，好奇店里有什么。
+		<br><br>
+
+		<<if _sydneyStatus.includes("corrupt")>>
+			悉尼拍了拍手，"我们可以给店里打点广告，"<<he>>提议道，"我刚好有合适的东西。"<<He>>伸手从其中一个板条箱里拿出一个口球和一段绳子，并以令人生疑的熟练度迅速把口球绑在了自己的头上，并抓住绳子。"跟我来。"
+			<br><br>
+
+			<<link [[跟随悉尼|Dilapidated Gag]]>><<famebusiness 5>><<npcincr Sydney purity -5>><<npcincr Sydney lust 10>><</link>><<llspurity>><<gglust>>
+			<br>
+			<<link [[拒绝|Dilapidated Gag Refuse]]>><</link>>
+			<br>
+		<<elseif _sydneyStatus.includes("pure")>>
+			悉尼冲到了货架后，生怕被人看见。
+			<br><br>
+
+			<<link [[安抚|Dilapidated Gawker Reassure]]>><<npcincr Sydney love 1>><<npcincr Sydney purity 2>><</link>><<glove>><<gpurity>>
+			<br>
+			<<link [[无视|Dilapidated Gawker Ignore]]>><</link>>
+			<br>
+			<<link [[挑逗|Dilapidated Gawker Tease]]>><<npcincr Sydney purity -2>><</link>><<exhibitionist1>><<lspurity>>
+			<br>
+		<<else>>
+			悉尼躲在货架后，生怕被看见。
+			<br><br>
+
+			<<link [[安抚|Dilapidated Gawker Reassure]]>><<npcincr Sydney love 1>><<npcincr Sydney purity 2>><</link>><<glove>><<gpurity>>
+			<br>
+			<<link [[无视|Dilapidated Gawker Ignore]]>><</link>>
+			<br>
+			<<link [[挑逗|Dilapidated Gawker Tease]]>><<npcincr Sydney purity -2>><</link>><<exhibitionist1>><<lspurity>>
+			<br>
+		<</if>>
+	<</if>>
+<<else>>
+	你帮助悉尼给墙壁刷漆，而西里斯则在后面的房间工作着。你不知道<<person1>><<hes>>在里面干什么，不过你偶尔能听到滋滋的电钻声。
+	<br><br>
+	<<person2>>
+	<<if random(1)>>
+		<<generate3>><<person3>>
+		一辆货车停在了外面，车上下来了个<<person>>，手里拿着一个小板条箱。西里斯从门里探出头来。"悉尼，去拿一下吧。"<<person1>><<he>>转头继续忙活着， "我手上拿了东西。"
+		<br><br>
+
+		<<person3>><<person>>意味深长地笑了笑，把板条箱递给了悉尼。
+		<<if _sydneyStatus.includes("corrupt")>>
+			悉尼装作什么都不知道的样子，腼腆地笑了笑。<<person2>><<Hes>>把箱子搬回了店里，几乎是跳着走的。
+			<br><br>
+			"你猜这是什么？"<<he>>把箱子放下，从满地散落的工具中抄起一根撬棍。<<He>>没等你回答，便咔的一声撬开了箱子。
+			<br><br>
+			<<link [[继续|Dilapidated Toy]]>><</link>>
+			<br>
+		<<elseif _sydneyStatus.includes("pure")>>
+			<<person2>>悉尼还是没能强迫自己回应，<<he>>捂着脸冲回了后面的房间。
+			<br><br>
+			<<He>>从你身边冲过，迫切地想钻进后面的房间。
+			<br><br>
+
+			<<link [[建议打开箱子|Dilapidated Suggest]]>><</link>>
+			<br>
+			<<link [[不管悉尼|Dilapidated Let]]>><</link>>
+			<br>
+		<<else>>
+			<<person2>>悉尼不敢看那人的眼睛，但还是小声的挤出一句谢谢，又冲回了店里。
+			<br><br>
+			<<He>>从你身边走过，走向后面的房间。
+			<br><br>
+
+			<<link [[建议打开箱子|Dilapidated Suggest]]>><</link>>
+			<br>
+			<<link [[不管悉尼|Dilapidated Let]]>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		你俩都穿着厚厚的围裙罩着自己的衣服，以免溅上油漆。房间里本来就够热了，可以看得出悉尼十分难受。
+		<br><br>
+
+		<<if _sydneyStatus.includes("corrupt")>>
+			<<if $sydneyromance gte 1>>
+				"太热了，"悉尼扯下了围裙，"我下面不穿了。"<<He>>开始脱衣服。
+				<br><br>
+
+				<<if $exhibitionism gte 15>>
+					<<link [[加入|Dilapidated Paint Suit Romance]]>><<npcincr Sydney lust 10>><</link>><<exhibitionist2>><<gglust>>
+					<br>
+				<</if>>
+				<<link [[观看|Dilapidated Paint Watch Romance]]>><<npcincr Sydney lust 5>><<arousal 600>><</link>><<glust>><<garousal>>
+				<br>
+				<<link [[移开视线|Dilapidated Paint Look]]>><</link>>
+				<br>
+			<<else>>
+				"太热了，"悉尼扯下了围裙，"我下面不穿了。"<<He>>开始脱衣服。
+				<br><br>
+
+				<<if $exhibitionism gte 15>>
+					<<link [[加入|Dilapidated Paint Suit]]>><<npcincr Sydney lust 10>><</link>><<exhibitionist2>><<gglust>>
+					<br>
+				<</if>>
+				<<link [[观看|Dilapidated Paint Watch]]>><<npcincr Sydney lust 5>><<arousal 600>><</link>><<glust>><<garousal>>
+				<br>
+				<<link [[移开视线|Dilapidated Paint Look]]>><</link>>
+				<br>
+			<</if>>
+		<<elseif _sydneyStatus.includes("pure")>>
+			"抱歉热到你们了，"西里斯从后面的房间里走了出来，"空调出现了故障，过会儿就修好了。"
+			<br><br>
+
+			工作很辛苦，你们出了很多汗，但进展很顺利。
+			<br><br>
+
+			<<link [[继续|Dilapidated End]]>><</link>>
+			<br>
+		<<else>>
+			"抱歉热到你们了，"西里斯从后面的房间里走了出来，"空调出现了故障，过会儿就修好了。"
+			<br><br>
+
+			工作很辛苦，你们出了很多汗。悉尼松了松衣服，缓解着酷热。
+			<br><br>
+
+			<<link [[继续|Dilapidated End]]>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<</if>>
+
+
+:: Dilapidated Collar
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我穿这个可爱吗？"你羞涩地扯着自己的项圈。
+<<elseif $speech_attitude is "bratty">>
+	"我看上去是不是很温顺啊？"你笑了起来，"可别被外表迷惑了。"
+<<else>>
+	"我穿这个有没有让你想把我拴起来？"你摆弄着脖子上的项圈，笑了起来。
+<</if>>
+<br><br>
+
+悉尼看向你，但很快便移开了视线，"你品味好怪哦。"<<he>>摇了摇头。你接着戴了一会项圈，发现<<him>>时不时还是会瞄它一眼。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Collar Corrupt
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我穿这个可爱吗？"你羞涩地扯着自己的项圈。
+<<elseif $speech_attitude is "bratty">>
+	"我看上去是不是很温顺啊？"你笑了起来，"可别被外表迷惑了。"
+<<else>>
+	"我穿这个有没有让你想把我拴起来？"你摆弄着脖子上的项圈，笑了起来。
+<</if>>
+<br><br>
+
+悉尼疾步走到货架上，拿出一根狗绳便拴在了你的项圈上，你甚至觉得<<he>>就在等你这么做。"坏狗狗，"<<he>>拿着绳子，"趴下。"
+<br><br>
+
+<<link [[趴下|Dilapidated Collar Bow]]>><<npcincr Sydney lust 10>><<sub 1>><</link>><<gglust>>
+<br>
+<<link [[啃咬|Dilapidated Collar Bite]]>><<npcincr Sydney lust 10>><<def 1>><</link>><<gglust>>
+<br>
+<<link [[舔舐|Dilapidated Collar Lick]]>><<npcincr Sydney love 1>><</link>><<glove>>
+<br>
+
+
+:: Dilapidated Collar Bow
+<<effects>>
+
+你遵从了指令，四肢着地，低下了你的头。"乖<<girl>>，"<<he>>的声音中有一丝笑意，"谁是乖<<girl>>？你是乖<<girl>>！"
+<br><br>
+
+<<if $wolfgirl gte 6 or $fox gte 6>>
+	<<He>>用双手挠着你的耳朵后面，你情到深处，侧着倒下，双腿不受控制的在空中扑腾着。"可别让我上瘾了，"<<he>>笑了。
+	<br><br>
+<</if>>
+你开心的汪了一声，<<He>>露出了微笑，把你扶了起来。"接着干活吧，"<<he>>说着，站在你身前，帮你解开了狗绳。
+<br><br>
+
+<<if $sydneyromance gte 1>>
+	<<link [[亲吻|Dilapidated Collar Kiss]]>><<npcincr Sydney love 5>><</link>><<gglove>><<kissvirginitywarning>>
+	<br>
+	<<link [[继续工作|Dilapidated End]]>><</link>>
+	<br>
+<<else>>
+	<<link [[继续|Dilapidated End]]>><</link>>
+	<br>
+<</if>>
+
+:: Dilapidated Collar Kiss
+<<effects>>
+
+你身体前倾，闭上了双眼，轻启双唇。悉尼的唇与你相接，<<He>>轻轻的呻吟着，滑入了你的怀抱。<<takeKissVirginity "Sydney" `($sydneyromance is 1?"loveInterest":"romantic")`>><<npcincr Sydney lust 1>><<glust>>
+<br><br>
+你们推开彼此，凝视着对方。<<if _npcKissVirginTemp>><<He>>笑了，"我的初吻能给你实在是太好了。"<</if>>随后<<He>>再一次把你拉入了<<his>>怀抱。
+<br><br>
+
+<<He>>开心的哼着小曲，和你一起回去继续工作了。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Collar Bite
+<<effects>>
+
+你低吼一声，扑向悉尼的喉咙！你的牙齿对着<<his>>柔嫩的肌肤，轻轻的咬了下去。
+<br><br>
+
+"坏-坏狗狗！"<<he>>慌乱的搂住你，"下来！"你无视了<<he>>的命令，又轻轻咬了<<him>>一口。<<He>>愉悦的颤抖着，笑了出来。"是我错了，不该想驯服你的。"<<he>>抚过你的脖颈，也轻咬了你一口，你们都笑了起来。<<he>>随后解开了你的狗绳，"继续回去工作吧。"
+<br><br>
+
+<<if $sydneyromance gte 1>>
+	<<link [[亲吻|Dilapidated Collar Kiss]]>><<npcincr Sydney love 5>><</link>><<gglove>><<kissvirginitywarning>>
+	<br>
+	<<link [[继续工作|Dilapidated End]]>><</link>>
+	<br>
+<<else>>
+	<<link [[继续|Dilapidated End]]>><</link>>
+	<br>
+<</if>>
+
+:: Dilapidated Collar Lick
+<<effects>>
+
+你抬起头，装作听不懂的样子，然后把<<his>>的脸舔了个遍。"快-快停下！"<<he>>开心的笑着，"我们还是接着干活吧。"<<He>>解开了你的狗绳。
+<br><br>
+
+<<if $sydneyromance gte 1>>
+	<<link [[亲吻|Dilapidated Collar Kiss]]>><<npcincr Sydney love 5>><</link>><<gglove>><<kissvirginitywarning>>
+	<br>
+	<<link [[继续工作|Dilapidated End]]>><</link>>
+	<br>
+<<else>>
+	<<link [[继续|Dilapidated End]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Dilapidated Collar Refuse
+<<effects>>
+
+你继续工作。你和悉尼的工作进展很顺利。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+
+:: Dilapidated Gawker Reassure
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"没事的，"你轻轻拍了拍悉尼，"他们应该看不到我们。"
+<<elseif $speech_attitude is "bratty">>
+	"没事啦，"你笑了起来，"他们根本看不见我们在里面。"
+<<else>>
+	"别担心。"你拍了拍悉尼的肩膀，"他们看不到我们。"
+<</if>>
+你朝围观的人群挥了挥手，他们没有反应。
+<br><br>
+
+悉尼依然保持谨慎，小心的从藏身处走了出来。"我认识其中几个，我在神殿见过。"<<he>>摇了摇头，回去继续干活了。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Gawker Ignore
+<<effects>>
+
+你让悉尼躲起来，直到看客们离开。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Gawker Tease
+<<effects>>
+
+你从一个打开的板条箱里拿出了一根假阳具，走向悉尼的藏身处。
+
+<<if $speech_attitude is "meek">>
+	"有什么问题么？"你笑了起来，手里的假阳具在空中挥舞着，"你在害羞什么？"
+<<elseif $speech_attitude is "bratty">>
+	"你掉东西了，"你笑了起来，手里的假阳具在空中挥舞。
+<<else>>
+	"怎么了？"笑了起来说着，手中的假阳具在空中挥舞着，"你在害羞什么？"
+<</if>>
+<br><br>
+悉尼一脸震惊，<<he>>慌忙地瞥了架子一眼，"快放下！"<<he>>压低了声音，显得异常焦虑。"我认识里面一个人，我在神殿见过！"
+<br><br>
+
+"他们看不见我们，"你双手抱胸，"否则的话就会有反应了。"你向窗户招了招手，围观的人群没有反应。"里面太黑他们看不见。"
+<br><br>
+
+悉尼从货架后偷偷瞄了一眼。<<Hes>>仍然很紧张，但还是从藏身处里出来，回去继续干活了。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Gag
+<<effects>>
+
+你拿起绳子。悉尼把口球塞进自己嘴里，又把双手别在背后。你把<<his>>的手捆在一起，算不上紧，但也不会让乱动。
+<br><br>
+
+<<He>>向窗户走去。你抓住<<his>>被束缚的双臂，跟在<<him>>后面，仿佛在推着<<him>>一样。店内十分昏暗，围观群众还看不见你们，但随着你们逐渐走近，他们脸上露出了惊讶的神情。
+<br><br>
+
+"唔，唔！"悉尼戴着口球呜咽着。<<he>>奋力地挣扎，仿佛想要挣脱你的束缚。
+<br><br>
+
+<<link [[继续|Dilapidated Gag 2]]>><</link>>
+<br>
+
+:: Dilapidated Gag 2
+<<effects>>
+
+<<generate3>><<generate4>>
+
+<<person3>>
+"这是什么店啊？"一名<<person>>说道。
+<br><br>
+"嘛，这里是西里斯的成人用品店。"你看了一眼挣扎的悉尼，"我们还在准备，等准备好了请务必来一起玩呀。"
+<br><br>
+当你把悉尼拖回店里时，<<person2>><<he>>还在卖力的挣扎。你们一退出人群的视线，<<he>>便给自己松了绑，把口球吐了出来。"你觉得有用吗？"围观群众仍然站在窗前，互相讨论着，似乎十分兴奋。
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"希-希望有用，"你羞涩地转过头，"我希望我表现得还行。"
+	<br><br>
+	<<He>>立即抱住了你，搂住你的脖子。"你表现的非常好。我觉得是个好机会，就直接即兴发挥了。抱歉突然把你卷进来。"
+<<elseif $speech_attitude is "bratty">>
+	"到时候队能排上一条街。"你笑了起来。
+	<br><br>
+	悉尼点了点头，"希望如此。"
+<<else>>
+	"也许吧，"你抱紧了悉尼。
+	<br><br>
+	悉尼点了点头，"希望如此。"
+<</if>>
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Gag Refuse
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我-我不想让人看见你戴着狗绳被我牵着走，"你的脸红了起来，"会引发误会的。"
+<<elseif $speech_attitude is "bratty">>
+	"我谢谢你，"你双手抱胸，"人家会觉得我们有病。"
+<<else>>
+	"那有点过分了吧。"你有些不安。
+<</if>>
+<br><br>
+
+悉尼叹了口气，"确实。接着干活吧，还有很多东西要整理。"
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Paint Suit Romance
+<<effects>>
+<<clothesstrip>>
+你脱下了围裙，然后开始脱衣服。悉尼直勾勾地的看着你，你也毫不掩饰地看了回去。
+<<exhibitionism2>>
+
+你们穿着裸体围裙，暴露在了凉风中——这下舒服多了。"哎呀，"你听见悉尼叫了一声，于是抬起了头。<<his>>围裙的一条肩带落了下来，暴露出
+<<if $pronoun is "m">>
+	<<his>>裸露的胸膛。
+<<else>>
+	一对<<print $NPCList[1].breastdesc>>。
+<</if>>
+悉尼盯着你的眼睛，嘴角微微一笑。"哎呀我真是不小心，"<<He>>慢悠悠的整理着衣服，手指从下到上，划过胸膛，越过乳头。
+<br><br>
+
+你们涂完了漆，趁西里斯回来之前穿好了衣服。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><<clotheson>><</link>>
+<br>
+
+:: Dilapidated Paint Watch Romance
+<<effects>>
+
+你看着悉尼脱衣服。<<He>>显摆一般的脱着，又慢悠悠的穿上围裙。
+<br><br>
+"有点紧呀，"<<he>>咯咯地笑了起来，围裙挂在了大腿上。"你要不要来帮我一下？"
+<br><br>
+
+<<link [[帮助|Dilapidated Paint Help]]>><</link>>
+<br>
+<<link [[旁观|Dilapidated Paint Watch 2]]>><</link>>
+<br>
+
+:: Dilapidated Paint Help
+<<effects>>
+
+你走到悉尼背后，抓住围裙的边缘。<<He>>一边让你把围裙拉上<<his>>的大腿，一边用屁股顶着你扭动着身子。
+<br><br>
+
+"谢了亲爱的，"<<he>>回过头亲了一下你的鼻尖，"继续干活吧！"
+<br><br>
+
+悉尼似乎觉得不穿衣服刷漆更舒服，但还是赶在西里斯回到前厅之前把衣服穿好。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+
+:: Dilapidated Paint Watch 2
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我-我还是看着就好。"你害羞地别过脸，"抱-抱歉。"
+<<elseif $speech_attitude is "bratty">>
+	"算了吧，"你双手抱胸，不怀好意地笑了起来。"我想看你挣扎的样子。"
+<<else>>
+	"我还蛮喜欢看现在这风景的。"你打趣道。
+<</if>>
+<br><br>
+"是吗？"悉尼转过身来背对着你，一边弯下腰一边把围裙往上扯。然后<<He>>又转了过来，把肩带拉上肩膀，一边炫耀着自己<<if $pronoun is "m">>的胸膛<<else>><<print $NPCList[0].breastsdesc>><</if>>
+<br><br>
+
+悉尼似乎觉得不穿衣服刷漆更舒服，但还是赶在西里斯回到前厅之前把衣服穿好。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+
+:: Dilapidated Paint Suit
+<<effects>>
+
+悉尼躲到了一个货架后，只露出一个头。<<his>>脱着衣服，然后一件件放好叠拢。
+<br><br>
+
+<<clothesstrip>>
+你也如法炮制，躲在另一个货架后脱下了衣服，然后穿上了围裙。你们俩都继续回去干活了。
+<br><br>
+
+你们穿成这样，感觉舒服多了。<<He>>表面上回避着，目光却锁死在了你毫无遮拦的<<breasts>>上，而<<his>>自己的围裙也毫无保留的暴露着<<his>>的身体。
+<br><br>
+
+你们趁西里斯回来之前穿好了衣服。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Paint Watch
+<<effects>>
+
+你看着悉尼脱下围裙，又脱下了衬衫。<<He>>注意到了你的目光，没有说什么，只是淡淡地笑了笑。"想看场表演吗？"<<he>>调戏着说，"还是等下次吧。"<<He>>走到一组货架后躲了起来。过了一会儿后，<<he>>穿着围裙出来了，身体毫无保留地暴露在外。
+<br><br>
+
+悉尼似乎觉得不穿衣服干活更舒服，但还是赶在西里斯回到前厅之前把衣服穿好。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Paint Look
+<<effects>>
+
+你扭过头，给了悉尼一些私人空间。"我好了。"<<he>>走了出来。你看了看<<him>>，身上只穿着一件围裙，身体毫无保留地暴露在外。
+<br><br>
+
+悉尼似乎觉得不穿衣服干活更舒服，但还是赶在西里斯回到前厅之前把衣服穿好。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Door Suggest
+<<effects>>
+
+悉尼点点头，打开了门。一名<<person3>><<person>>站在门外，拿着一个板条箱。"东西挺有意思的。"<<he>>微笑着把箱子递给你们。
+<br><br>
+
+悉尼签收了板条箱，劲量避免不必要的视线接触。只见<<person2>><<he>>匆匆的说了声谢谢，便拿起箱子，关上了门，把它搬到了后面的房间。
+<br><br>
+
+<<link [[建议打开箱子|Dilapidated Suggest]]>><</link>>
+<br>
+<<link [[不管悉尼|Dilapidated Let]]>><</link>>
+<br>
+
+
+:: Dilapidated Door Answer
+<<effects>>
+
+你打开了门。一名<<person3>><<person>>站在门外，拿着一个板条箱。"货物清单有点意思。"<<he>>对你们笑了笑。
+<br><br>
+
+<<link [[宣传商店|Dilapidated Door Advertise]]>><<famebusiness 1>><</link>>
+<br>
+<<link [[签收货物|Dilapidated Door Sign]]>><</link>>
+<br>
+
+:: Dilapidated Door Advertise
+<<effects>>
+
+"那必须的，"你说着，签收了货物。"这里是西里斯的成人用品店。我们还在准备，开店时还请务必光临。"
+<br><br>
+
+你拿起板条箱，关上了门，回到了悉尼身边，把箱子放在<<person2>><<him>>身旁。<<He>>双手抱起板条箱，朝后面的房间走去。
+<br><br>
+
+<<link [[建议打开箱子|Dilapidated Suggest]]>><</link>>
+<br>
+<<link [[不管悉尼|Dilapidated Let]]>><</link>>
+<br>
+
+:: Dilapidated Door Sign
+<<effects>>
+
+你签收了货物，拿起板条箱，关上了门。
+<br><br>
+
+你回到悉尼身边，把板条箱放在<<person2>><<him>>身旁。<<He>>双手抱起板条箱，朝后面的房间走去。
+<br><br>
+
+<<link [[建议打开箱子|Dilapidated Suggest]]>><</link>>
+<br>
+<<link [[不管悉尼|Dilapidated Let]]>><</link>>
+<br>
+
+:: Dilapidated Suggest
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我-我觉得还是打开看看吧，"你看着箱子，又看了看悉尼，"检查一下货物，别让西里斯多操心了。"
+<<elseif $speech_attitude is "bratty">>
+	"我们自己打开检查下东西吧。"你说道。"西里斯已经够忙了。"
+<<else>>
+	"我们可以自己检查一下，"你看了看手中的箱子，"确认一下商品是否完好——西里斯实在太忙了。"
+<</if>>
+<br><br>
+
+悉尼停了下来，点了点头。"有道理。"<<he>>说着， 从满地散落的工具中抄起一根撬棍，咔的一声撬开了箱子。
+<br><br>
+
+<<link [[继续|Dilapidated Toy]]>><</link>>
+<br>
+
+:: Dilapidated Let
+<<effects>>
+
+<<person1>>
+你听见西里斯收货时拍了一下手。悉尼回到了店里，<<person2>>羞得满脸通红。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+
+:: Dilapidated End
+<<effects>>
+<<run statusCheck("Sydney")>>
+<<if $adultshopprogress gte 22>>
+	<<person1>>
+
+	西里斯从柜台后走了出来，一边观察着店里，一边用手抚摸着柜台，自豪的检查着货架上摆满的性玩具和各种装备。
+	<br><br>
+
+	"太谢谢你们俩了，"西里斯拍了拍你的肩膀，"<span class="gold">我们明天就可以盛大开业了。</span>你可一定要来啊，<span class="gold">我们这可有好多好东西卖呢！"</span>
+	<br><br>
+
+	<<if $adultshopcontribution gte 11>>
+		<<He>>给了你<<moneyGain 100>>，比平时多了不少。
+	<<else>>
+		<<He>>给了你<<moneyGain 20>>。
+	<</if>>
+	"你们真是帮大忙了，"<<he>>把你们俩送到了店门口，"如果你们还要找工作的话，也可以来帮我管理商店。"
+	<br>
+	<<person2>>
+	<<if _sydneyStatus.includes("corrupt")>>
+		"我等不及了。"悉尼笑了笑，看向了你。
+	<<elseif _sydneyStatus.includes("pure")>>
+		"有必要的话我会来帮忙的，"悉尼搂住你的肩，"应该的。"
+	<<else>>
+		"我有空就来帮忙，"悉尼搂住你的肩，"虽然我本来就很忙。"
+	<</if>>
+	<br>
+	"随时欢迎，"西里斯双手抱胸，斜靠在门上。"我还要再稍微打扫一下。"<<person1>><<He>>关上了门。
+	<br><br>
+	<<person2>>
+	<<if _sydneyStatus.includes("corrupt")>>
+		<<if $sydneyromance gte 1>>
+			悉尼一只手搂住了你。"一起工作肯定会很开心的。"<<he>>在你的耳旁压低了声音，呼吸让你不禁颤抖起来。
+		<<else>>
+			悉尼靠近了你。"在这里上班肯定很有意思。"<<he>>拍了拍你的肩膀，笑了起来。"不是吗？不知道会不会碰见教区的人。"
+		<</if>>
+		<<He>>转过身，大步离开了。
+		<br><br>
+	<<else>>
+		<<if $sydneyromance gte 1>>
+			悉尼迅速的抱了你一下。"我还得回神殿，你也可以一起来。"
+			<br><br>
+		<<else>>
+			悉尼朝你尴尬的笑了笑，走开了。
+			<br><br>
+		<</if>>
+	<</if>>
+
+
+<<else>>
+	<<person1>>
+	"今天做到这里就行了。"你和悉尼一起走出店里，西里斯从商店后走了出来，在你们的身后锁上了店门。<<He>>给了你<<moneyGain 20>>。
+	<br><br>
+	<<person2>>
+	<<if _sydneyStatus.includes("corrupt")>>
+		<<if $sydneyromance gte 1>>
+			悉尼一只手搂住了你。"一起工作肯定会很开心的。"<<he>>在你的耳旁压低了声音，呼吸让你不禁颤抖起来。
+		<<else>>
+			悉尼靠近了你。"在这里上班肯定很有意思。"<<he>>拍了拍你的肩膀，笑了起来。"不是吗？不知道会不会碰见教区的人。"
+		<</if>>
+	<<else>>
+		<<if $sydneyromance gte 1>>
+			悉尼迅速的抱了你一下。"我还得回神殿，你也可以一起来。"
+		<<else>>
+			悉尼朝你尴尬的笑了笑，走开了。
+		<</if>>
+	<</if>>
+	<br><br>
+<</if>>
+
+
+<<link [[陪悉尼去神殿 (0:10)|Dilapidated Temple]]>><<pass 10>><</link>>
+<br>
+<<link [[告别|Dilapidated Bye]]>><</link>>
+<br>
+
+:: Dilapidated Temple
+<<effects>>
+<<person2>>
+<<run statusCheck("Sydney")>>
+你和悉尼一起走过麋鹿街，又走过南丁格尔街，路过了医院。
+<<if _sydneyStatus.includes("corrupt")>>
+	<<if $sydneyromance gte 1>>
+		<<He>>一边搂着你的腰一边走着，分享了一些西里斯关于商店的计划。<<gscience>><<scienceskill>>
+	<<else>>
+		<<He>>分享了一些西里斯关于商店的计划。<<gscience>><<scienceskill>>
+	<</if>>
+<<else>>
+	<<if $sydneyromance gte 1>>
+		你们一起走时，牵起了手。<<hes>>还在为西里斯的古怪行为感到尴尬。<<takeHandholdingVirginity "Sydney" "romantic">>
+	<<else>>
+		<<He>>什么也没说，还在为西里斯的古怪行为感到尴尬。
+	<</if>>
+<</if>>
+<br><br>
+
+<<link [[继续|Temple]]>><<endevent>><</link>>
+<br>
+
+:: Dilapidated Bye
+<<effects>>
+
+<<if $sydneyromance is 1>>
+	你与悉尼互相拥抱过后，便分开了。
+<<else>>
+	悉尼招手告别，离开了。
+<</if>>
+<br><br>
+
+<<link [[继续|Elk Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Dilapidated Toy
+<<effects>>
+<<run statusCheck("Sydney")>>
+<<rng 3>>
+<<switch $rng>>
+	<<case 1>>
+		<<if _sydneyStatus.includes("corrupt")>>
+			悉尼把手伸进板条箱，拿出了一个大号<span class="purple">假阳具</span>。<<He>>把它拿到自己的眼前，手指从其上拂过，感受着上面的凹凸。
+			<br><br>
+			<<if $sydneyromance is 1>>
+				<<He>>看着你，坏笑了起来。"坐到柜台上去吧。"
+				<br><br>
+				<<link [[坐上柜台|Dilapidated Dildo]]>><<npcincr Sydney love 1>><<npcincr Sydney lust 10>><<arousal 2000>><<set $sydney_toy to "dildo">><</link>><<promiscuous1>><<glove>><<gglust>><<ggarousal>><<gsydneytoy "dildo">>
+				<br>
+				<<link [[拒绝|Dilapidated Dildo Refuse]]>><</link>>
+				<br>
+			<<else>>
+				<<He>>惊讶的看着你，仿佛忘记了你还在。"感到好奇并不可耻，"<<he>>尴尬地攥着那个玩具，"<<sydneymum>>一直这么说道。"
+				<br><br>
+
+				<<link [[鼓励|Dilapidated Dildo Encourage]]>><<npcincr Sydney purity -2>><<npcincr Sydney lust 1>><</link>><<set _lustincrdisplay to 1>><<lspurity>><<glust>>
+				<br>
+				<<link [[继续工作|Dilapidated Dildo Work]]>><</link>>
+				<br>
+			<</if>>
+		<<elseif _sydneyStatus.includes("pure")>>
+			悉尼闭上眼睛，把手伸进板条箱，拿出了一个大号假阳具。<<he>>没有睁开眼睛，挣扎着把它放到货架上，但摆得太靠外，假阳具掉了下来。
+			<br><br>
+
+			<<link [[挑逗|Dilapidated Dildo Tease]]>><<npcincr Sydney purity -2>><</link>><<lspurity>>
+			<br>
+			<<link [[假装没看见|Dilapidated Pretend]]>><</link>>
+			<br>
+		<<else>>
+			悉尼把手伸进板条箱，拿出了一个大号假阳具。<<He>>好奇的看着它，但在意识到这是什么后，便把它扔在了地上。
+			<br><br>
+
+			<<link [[挑逗|Dilapidated Dildo Tease]]>><<npcincr Sydney purity -2>><</link>><<lspurity>>
+			<br>
+			<<link [[假装没看见|Dilapidated Pretend]]>><</link>>
+			<br>
+		<</if>>
+	<<case 2>>
+		<<if _sydneyStatus.includes("corrupt")>>
+			悉尼把手伸进板条箱，拿出了一串长长的肛珠。<<He>>瞥了一眼通向后门，你听见西里斯在门后工作工作着。
+			<br><br>
+			<<if $sydneyromance is 1 and ($worn.upper.set isnot $worn.lower.set or setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1)>>
+				<<He>>坏笑着看着你。"把手放墙上，屁股翘起来。"<<he>>催促道，"快快。"
+				<br><br>
+
+				<<link [[把手放在墙上|Dilapidated Beads]]>><<npcincr Sydney love 1>><<npcincr Sydney lust 10>><<set $sydney_toy to "length of anal beads">><</link>><<promiscuous1>><<glove>><<gglust>><<gsydneytoy "length of anal beads">>
+				<br>
+				<<link [[拒绝|Dilapidated Beads Refuse]]>><</link>>
+				<br>
+			<<else>>
+				<<He>>把肛珠拿到你的眼前。"我们得试试这东西有没有奇怪的味道，"<<he>>笑了笑，"毕竟肯定会有人把它塞嘴里。"
+				<br><br>
+
+				<<link [[舔|Dilapidated Beads Lick]]>><<arousal 1200 "mouth">><<npcincr Sydney purity -2>><<npcincr Sydney lust 1>><</link>><<ggarousal>><<set _lustincrdisplay to 1>><<lspurity>><<glust>>
+				<br>
+				<<link [[拒绝|Dilapidated Beads Lick Refuse]]>><</link>>
+				<br>
+			<</if>>
+		<<elseif _sydneyStatus.includes("pure")>>
+			悉尼一脸厌恶的把手伸进板条箱，拿出了一串长长的肛珠。当<<He>>意识到手上拿的是什么的时候，马上把手缩回，任肛珠落回板条箱里。
+			<br><br>
+
+			<<link [[挑逗|Dilapidated Beads Tease]]>><<npcincr Sydney purity -2>><</link>><<lspurity>>
+			<br>
+			<<link [[假装没看见|Dilapidated Pretend]]>><</link>>
+			<br>
+		<<else>>
+			悉尼把手伸进板条箱，拿出了一串长长的肛珠，又赶忙把它放了回去。
+			<br><br>
+
+			<<link [[挑逗|Dilapidated Beads Tease]]>><<npcincr Sydney purity -2>><</link>><<lspurity>>
+			<br>
+			<<link [[假装没看见|Dilapidated Pretend]]>><</link>>
+			<br>
+		<</if>>
+	<<default>>
+		<<if _sydneyStatus.includes("corrupt")>>
+			悉尼把手伸进板条箱，拿出了一根马鞭。<<He>>瞥了一眼后门，西里斯正在里面工作。
+			<br><br>
+			<<if $sydneyromance is 1>>
+				<<He>>把双手抱在胸前，看着你。"你今天很不乖呢。"<<he>>说着，夸张的用马鞭轻轻拍在自己胳膊上。"给我趴下。"
+				<br><br>
+
+				<<link [[四肢着地趴着|Dilapidated Crop Fours]]>><<npcincr Sydney love 1>><<npcincr Sydney lust 10>><<set $sydney_toy to "riding crop">><</link>><<promiscuous1>><<glove>><<gglust>><<gsydneytoy "riding crop">>
+				<br>
+				<<link [[拒绝|Dilapidated Crop Refuse]]>><</link>>
+				<br>
+			<<else>>
+				"真想找个圆润的屁股，拿这个试试手啊。"<<he>>笑了起来，"我有个主意。"<<He>>把马鞭交给你，转过身弯下腰。"还是得测试下产品，否则就太不负责了。来吧，用尽全力！"
+				<br><br>
+
+				<<link [[全力鞭笞|Dilapidated Crop Whack Hard]]>><<npcincr Sydney purity -5>><<npcincr Sydney lust 10>><</link>><<llspurity>><<gglust>>
+				<br>
+				<<link [[轻轻鞭笞|Dilapidated Crop Whack Soft]]>><<npcincr Sydney purity -2>><<npcincr Sydney lust 5>><<npcincr Sydney love 1>><</link>><<set _lustincrdisplay to 1>><<lspurity>><<glust>><<glove>>
+				<br>
+				<<link [[拒绝|Dilapidated Crop Whack Refuse]]>><</link>>
+				<br>
+			<</if>>
+		<<elseif _sydneyStatus.includes("pure")>>
+			悉尼把手伸进板条箱，拿出了一根马鞭。"这个的话神殿应该不会管。"<<he>>说道。
+			<br><br>
+
+			<<link [[挑逗|Dilapidated Crop Tease]]>><<npcincr Sydney purity -2>><</link>><<lspurity>>
+			<br>
+			<<link [[假装没看见|Dilapidated Pretend]]>><</link>>
+			<br>
+		<<else>>
+			悉尼把手伸进板条箱，拿出了一根马鞭。"大家的XP都好怪。"<<He>>摇了摇头，在手里翻来覆去的端详着马鞭。
+			<br><br>
+
+			<<link [[挑逗|Dilapidated Crop Tease]]>><<npcincr Sydney purity -2>><</link>><<lspurity>>
+			<br>
+			<<link [[假装没看见|Dilapidated Pretend]]>><</link>>
+			<br>
+		<</if>>
+<</switch>>
+
+
+:: Dilapidated Crop Whack Hard
+<<effects>>
+
+你将手后举，狠狠的抽了悉尼的屁股一下。
+
+<<if currentSkillValue('physique') gte 15000>>
+	悉尼颤抖了一下，痛苦的大叫着。
+	<br>
+	"怎么了？"西里斯从后面的房间里问着。
+	<br>
+	"没-没！"悉尼立马站了起来，"没什么事。"
+	<br><br>
+	"你力气真大，"悉尼压低了声音，"不过对我来说还不够，我罪孽深重。"
+<<elseif currentSkillValue('physique') gte 10000>>
+	悉尼颤抖了一下，痛苦地叫了一声。"啊哈，就是这样。"<<he>>喘息着，"罪孽深重，罪有应得。"<<He>>站了起来，揉了揉屁股。
+<<elseif currentSkillValue('physique') gte 5000>>
+	悉尼颤抖了一下。"啊哈，"<<he>>倒吸了一口气，"就是这样。罪孽深重，罪有应得。"<<He>>站了起来。
+<<else>>
+	悉尼颤抖了一下。"你就这点力气？"<<he>>扭过头来看着你，站了起来。"我罪孽深重，我应该受更多责罚。"
+<</if>>
+<br><br>
+
+悉尼收回了马鞭，盯着它看了会，便把它放回了板条箱里，回去继续工作了。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+
+:: Dilapidated Crop Whack Soft
+<<effects>>
+
+你抡起胳膊，用恰到好处的力量抽了悉尼的屁股一下。马鞭落在悉尼的屁股上，发出了悦耳的啪的一声。悉尼颤抖了一下。"对我手下留情？"<<he>>抬头看了你一眼，"你也太怂了。"
+<br><br>
+
+悉尼收回了马鞭，盯着它看了会，便把它放回了板条箱里，回去继续工作了。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Crop Whack Refuse
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我-我觉得还是不要乱用商品吧。"你看着手中的马鞭，把它放回了板条箱里。
+<<elseif $speech_attitude is "bratty">>
+	"想得美，变态。"你说着，把马鞭放回了板条箱里。
+<<else>>
+	"我觉得还是不要乱用商品吧，"你把马鞭放回了板条箱里。
+<</if>>
+<br><br>
+悉尼叹了口气，站了起来。"也许下次我可以说服你。"
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Crop Fours
+<<effects>>
+
+你遵从了指令，四肢着地。"乖<<girl>>，"<<he>>，"那就从轻处罚。"<<He>>坐在你背上，但还是用一条腿支撑着自己。虽然旁人看来他正压在你身上，但实际上你并没有承受太多压力。
+<br><br>
+
+<<He>>把没用力的腿搭在另一条腿上。"驾！"<<he>>说着，用马鞭在你<<bottom>>上抽了一下。你开始向前爬。"快点！"又是一鞭，轻轻的拍在你脸上。
+<br><br>
+
+<<link [[继续|Dilapidated Crop Fours 2]]>><</link>>
+<br>
+
+:: Dilapidated Crop Fours 2
+<<effects>>
+
+你在房间里绕圈爬着，悉尼时不时抽你一下。<<He>>把一只手放在你头上，轻轻的揉着你的头顶，为你按摩。
+<br><br>
+
+你们接近了窗户。外面有人路过，但店里过于灰暗，他们看不见你们。
+<br><br>
+
+<<if $exhibitionism gte 15>>
+	<<link [[接近窗户|Dilapidated Crop Fours Window]]>><<npcincr Sydney lust 5>><<npcincr Sydney purity -2>><</link>><<exhibitionist2>><<set _lustincrdisplay to 1>><<lspurity>><<gglust>>
+	<br>
+<</if>>
+<<link [[停止|Dilapidated Crop Fours End]]>><</link>>
+<br>
+
+
+:: Dilapidated Crop Fours Window
+<<effects>>
+
+你爬向窗户。"哎呀呀，"悉尼笑了起来，"你可真是不怕羞。"
+<<generate4>><<generate5>><<person4>>
+<<exhibitionism2>>
+一名拿着一个满满的购物袋的<<person>>发现了你，停下了脚步。从对向走来的一名<<person5>><<person>>顺着<<his>>的视线看去，看见了窗户里的你被人骑着，也停下了脚步。
+<br><br>
+"这里是西里斯的成人用品店。"悉尼说着，声音大到窗户外也听得见。"我们尚未开张，但开店时还请务必光临。"<<person2>><<He>>轻轻扯了扯你的头发，引导你往店里爬去，离开了人们的视线。你的心怦怦跳着。
+<br><br>
+
+<<link [[继续|Dilapidated Crop Fours End]]>><</link>>
+<br>
+
+:: Dilapidated Crop Fours End
+<<effects>>
+
+你停了下来。"差不多了，"悉尼搂着你的腰，从你背上下来，然后牵起你的手，把你从地上拉了起来。"感觉如何，亲爱的？"
+<br><br>
+
+<<link [[调情|Dilapidated Crop Fours Flirt]]>><<npcincr Sydney lust 5>><<npcincr Sydney purity -2>><</link>><<set _lustincrdisplay to 1>><<lspurity>><<gglust>>
+<br>
+<<link [[哭泣|Dilapidated Crop Fours Cry]]>><<pain -4>><<trauma -6>><<stress -6>><</link>><<if $pain gte 1>><<lpain>><</if>><<ltrauma>><<lstress>>
+<br>
+<<link [[继续工作|Dilapidated Crop Fours Work]]>><</link>>
+<br>
+
+:: Dilapidated Crop Fours Flirt
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"再来一下，"你说着，转过身弯下腰。"就当收尾了。"
+	<br><br>
+	悉尼露出了微笑，用马鞭给了你最后一下。这一下比之前都重，你不禁叫了出来。
+	<br><br>
+<<elseif $speech_attitude is "bratty">>
+	"我感觉不错，"你从<<his>>的手中接过马鞭，另一只手则搂住<<his>>的腰。你报复般的拍了一下<<his>>屁股。"下次换我来骑你好了。"
+	<br><br>
+	悉尼露出了微笑。"哦？"<<he>>笑着，"你还想骑我？那我只能祝你好运了。"
+	<br><br>
+<<else>>
+	"你就等着吧，"你做出威胁，"下次就是你趴地上。"
+	<br><br>
+	悉尼露出了微笑，"哦？你还想骑我？那我只能祝你好运了。"
+	<br><br>
+<</if>>
+
+你们回去继续工作了。悉尼把马鞭收了起来，以备后用。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+
+:: Dilapidated Crop Fours Cry
+<<effects>>
+
+你把头靠在悉尼的肩上，哭了起来。"没事的，"<<he>>神情有些慌张，"我下手没很重吧？"你摇了摇头。
+<br><br>
+
+<<He>>牵着你的手，和你一起坐了会儿，聊起了这些天发生的事情。如此简单而平常的日子里，能和<<he>>在一起，听着<<he>>的声音，你感到内心的躁动消失了。休息的时间不长，但<<he>>并不在意。
+<br><br>
+
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+
+:: Dilapidated Crop Fours Work
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我-我们还是继续收拾商店吧，"你低下了头，"否则就要被逮到了。"
+<<elseif $speech_attitude is "bratty">>
+	"我们还是继续收拾商店吧，"你笑了起来，"说不定换我找到个马鞭，就换我惩罚你了。"
+<<else>>
+	"我们还是继续收拾商店吧，"你环顾四周，"否则就要被逮到了。"
+<</if>>
+<br><br>
+悉尼点点头，把马鞭收了起来，回到了工作。
+<br><br>
+
+<<link [[结束|Dilapidated End]]>><</link>>
+<br>
+
+
+:: Dilapidated Crop Refuse
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我-我觉得还是不要自己用这些玩具吧，"你拉着悉尼的肩膀。
+<<elseif $speech_attitude is "bratty">>
+	"现在不行，"你双手抱胸，"我还要干活呢。"
+<<else>>
+	"我没这个心情，"你擦着额头的汗珠。
+<</if>>
+<br><br>
+
+悉尼似乎松了一口气。<<he>>点了点头，把马鞭放回了板条箱里，回去继续工作了。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+
+:: Dilapidated Crop Tease
+<<effects>>
+
+你轻轻推了悉尼一把。你并没有推动<<him>>，但<<he>>还是惊讶地叫出了声。"嘿，"<<he>>差点没站稳，"你这是干什么？"
+<br>
+<<if $speech_attitude is "meek">>
+	"没什么，"你斜靠在柜台上，翘起你<<bottom>>。"就是想惹惹你~不觉得我该被惩罚一下吗？"
+	<br>
+	"惩罚？这难道不是只-"
+<<elseif $speech_attitude is "bratty">>
+	"你这是干什么？"你嘲讽般的模仿着悉尼，靠在柜台上，翘起你<<bottom>>。
+	<br>
+	"我做错了什-"
+<<else>>
+	"是不是觉得不爽了？"你说着，靠在柜台上，翘起你<<bottom>>。"我觉得你应该报复一下。"
+	<br>
+	"报复？为什么我-"
+<</if>>
+悉尼的话刚说到一半，便注意到你正直直盯着马鞭。<<He>>看着你的姿势，脸上漏出了恍然大悟的表情，于是匆匆把马鞭丢下，大步的离开了。你笑得很开心。
+<br><br>
+
+<<He>>扭过头去继续回去工作了，但你怀疑<<his>>是在掩饰自己脸红的样子。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+
+:: Dilapidated Beads Tease
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"没什么好害羞的啦，"你说着伸手拿起了肛珠，"玩♂具而已。"
+<<elseif $speech_attitude is "bratty">>
+	"不会一个小小的玩♂具就把你吓怕了吧？"你伸手拿起了肛珠。
+<<else>>
+	"怎么了？"你伸手拿起了肛珠，"没什么好害羞的啦。"
+<</if>>
+ 你用食指和拇指比出一个小小的圈，特地把手举到悉尼能看见的地方，然后把肛珠从自己手指之间一个个的塞进去。
+<br><br>
+
+悉尼移开视线，满脸通红。"感-感谢你的展示。"<<his>>捂住了脸，"不过还是趁没被看见赶快收起来吧。"你听从了<<his>>的意见，回去继续工作了。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+
+
+:: Dilapidated Beads Lick
+<<effects>>
+
+悉尼把它对准了你的嘴，你用舌头划过最前端的一颗肛珠，然后张开双唇，<<he>>就把肛珠塞进了你的嘴里——不过没有什么味道。
+<br><br>
+
+<<if $arousal gte 10000>>
+	你再也承受不住了。<<orgasm>>
+	"很棒嘛，"<<he>>看着你颤抖的样子，笑了起来。"没想到还能这么用。"<<llspurity>><<glust>><<npcincr Sydney purity -5>><<npcincr Sydney lust 2>>
+	<br><br>
+<</if>>
+
+你听见商店深处传来了声音。悉尼担心的看了一眼后门，把肛珠放回了板条箱里，回去继续工作了。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Beads Lick Refuse
+<<effects>>
+
+
+<<if $speech_attitude is "meek">>
+	"这-这样不卫生吧？"你怀疑的看着肛珠。
+<<elseif $speech_attitude is "bratty">>
+	"我可不要把这玩意吃进去，"你双手抱胸，瞪着肛珠。"用没用过都不要。"
+<<else>>
+	"我觉得有点不卫生，"你盯着肛珠，皱了皱眉。
+<</if>>
+<br><br>
+
+悉尼叹了口气。"好吧，反正尝起来肯定没问题。"<<he>>回去继续工作了。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+
+:: Dilapidated Beads
+<<effects>>
+
+你把手按在墙上，翘起了你<<bottom>>。"这些衣服有点碍事，"悉尼一只手搂住你的腰，另一只手抓住了你$worn.lower.cn_name_cap的边缘。
+
+<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+	<<He>>把它掀了起来，露出了你的<<undies>>。
+<<else>>
+	<<He>>把它脱了下来，露出了你的<<undies>>。
+<</if>>
+<<if $worn.under_lower.type.includes("naked")>>
+	"没穿内裤，"<<he>>瞥了你一眼，"你其实一直在期待这个时刻。"
+<<else>>
+	<<He>>又抓住你的$worn.under_lower.cn_name_cap，把它也脱了下来。
+<</if>>
+<br><br>
+<<if playerChastity("anus")>>
+	<<His>>的手指抚过你的$worn.genitals.cn_name_cap。"这东西拆不下来的，我知道它们特别牢靠。不过，你都这个姿势了，不做点什么实在可惜。"
+	<br><br>
+
+	悉尼在你背后蹲下了。你能感受到你的皮肤上传来<<his>>的气息，然后是温柔的吻。一下，又一下。"别动，"<<he>>紧紧地按住你的手臂，"等我做完。"
+	<br><br>
+
+	你听见商店深处传来了声音。悉尼站起身，迅速地把你遮了起来，一脸警戒的看着后门。"这个就留着下次再用吧。"<<he>>耸了耸肩，然后把肛珠收了起来，回去继续工作了。
+	<br><br>
+	<<link [[继续|Dilapidated End]]>><</link>>
+	<br>
+<<else>>
+	悉尼在你身后蹲下。你回头，看见<<him>>正用口水润滑着肛珠。
+	<br><br>
+
+	<<link [[允许|Dilapidated Beads 2]]>><<npcincr Sydney purity -2>><<npcincr Sydney lust 5>><<arousal 4000 "anus">><</link>><<gggarousal>><<set _lustincrdisplay to 1>><<lspurity>><<glust>>
+	<br>
+	<<link [[挡住屁股|Dilapidated Beads Refuse 2]]>><</link>>
+	<br>
+<</if>>
+
+:: Dilapidated Beads 2
+<<effects>>
+
+悉尼把第一颗肛珠塞进了你<<bottom>>。
+<<if $leftarm isnot "bound" or $rightarm isnot "bound">>
+	你捂住了自己的嘴。
+<<else>>
+	你抑制着想要呻吟的冲动。
+<</if>><<He>>在继续之前犹豫了一下，不确定地看着你。"你想要我继续吗？"你点了点头 ，<<he>>把剩下的珠子一颗一颗地塞了进去。
+<br><br>
+<<He>>把肛珠一口气全部拔了出来，你不住的颤抖、呻吟着。
+<<if $arousal gte 10000>>
+	你再也承受不住了。<<orgasm>>
+	"小声点亲爱的，"<<he>>在你的耳旁压低了声音，"会被听到的。"<<gglust>><<npcincr Sydney lust 5>>
+<</if>>
+<br><br>
+
+<<He>>顺手在你<<bottom>>上摸了一把。"赶紧穿好衣服，一会要被抓了。"<<he>>笑着把你的衣服拉上，"这玩意我就留着回头用了。"<<He>>把肛珠藏了起来，又继续回去工作了。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+
+
+
+:: Dilapidated Beads Refuse 2
+<<effects>>
+
+悉尼正把肛珠对准时，你用一只手遮住了你的<<bottom>>。"需要我再劝劝你？"<<he>>站了起来，"我不会逼你的，不过这个我就留着下次再用了。"<<He>>把肛珠收好，回去继续工作了。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Beads Refuse
+<<effects>>
+
+"你这就没意思了，"悉尼耸了耸肩，"我肯定能说服你的，"<<He>>看了门一眼，"不过还是见好就收吧。"<<He>>把肛珠放回了板条箱里，回去继续工作了。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Dildo Encourage
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"能-能给我看看吗？"你的脸涨得通红，"我-我有点好奇。"
+<<elseif $speech_attitude is "bratty">>
+	"拿来，"你伸出了手。
+<<else>>
+	"能给我看看吗？"你问。
+<</if>>
+你接过那个物品，将其举到眼前，并用手指在上面摩擦着——"这的确是一个阴茎，"你平静地说道，"非常粗大，然而，人类的器官肯定能够容纳它。"你又郑重其事地点了点头，装模作样地表现得很有见地。
+<br><br>
+
+悉尼脸红了，从你手中接过假阳具，放回了板条箱里。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Dildo Work
+<<effects>>
+
+你继续工作着。 悉尼犹豫了一下， 把假阳具放回了板条箱里，然后和你一起工作。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Dildo
+<<effects>>
+
+你坐在了柜台上。悉尼跟在你后面，手中还拿着那根假阳具，上下打量着你。"最好小声点，"<<he>>的声音很轻，"可别让<<sydneymum>>起了疑心。"<<He>>把假阳具放在了嘴里，用牙咬着，自己也爬上了上去，把你按倒在柜台。
+<<promiscuity1>>
+
+<<He>>从嘴里拿过假阳具，用它的尖端蹭着你的脸颊。"我想看看你舔它的样子，"<<he>>贴近你的脸，"靠近一点。"
+<br><br>
+
+<<link [[舔舐|Dilapidated Dildo Lick]]>><</link>>
+<br>
+<<link [[要求悉尼舔|Dilapidated Dildo Sydney Lick]]>><</link>>
+<br>
+
+:: Dilapidated Dildo Lick
+<<effects>>
+
+你把舌头压在假阳具上。悉尼拿着它在你脸上抽动着，凝视着你的眼睛，而你的舌头则保持不动。"你变得黏糊糊的了，"<<he>>压低了声音，"口水的润滑效果如何，嗯？"<<He>>把假阳具竖着对着你，而你则舔舐着龟头。
+<br><br>
+<<if $arousal gte 10000>>
+	悉尼压在你身上，做出如此的行为，你再也承受不住了。<<orgasm>>
+	"哎呀呀，"悉尼笑了起来，"你可真是敏感呢~等我回头给你再找点别的舔吧。"<<gglust>><<npcincr Sydney lust 5>>
+	<br><br>
+<</if>>
+你听到商店后面有动静。悉尼从你身上爬了下来，忧心忡忡地瞥了门一眼。<<He>>在回去工作之前嬉皮笑脸的把假阳具拿走。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Dildo Sydney Lick
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你-你能给我示范一下吗？"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"怎么？"你反问。"不敢自己舔？"
+<<else>>
+	"要不你给我示范下呗？"你说道。
+<</if>>
+<br><br>
+
+悉尼把假阳具的龟头放在嘴边，轻轻的用它在脸上上下抽动着，从上到下的舔舐着。<<He>>把它转过来，又重复着动作，全程都与你四目相接。
+<br><br>
+
+<<if $arousal gte 10000>>
+	悉尼压在你身上，做出如此的行为，你再也承受不住了<<orgasm>>
+	<<He>>笑了。"等我哪天舔你，"<<he>>压低了声音，"你说不定会昏过去。"
+	<br><br>
+<</if>>
+
+你听到商店后面有动静。悉尼从你身上爬了下来，忧心忡忡地瞥了门一眼。<<He>>在回去工作之前嬉皮笑脸的把假阳具拿走。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+
+
+:: Dilapidated Sex
+/*Unfinished and unused*/
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>><<promiscuity5>>
+	<<set $rescue to 1>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Dilapidated Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Dilapidated Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Dilapidated Sex Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"我们还是继续回去工作吧，亲爱的。"<<he>>看了一眼后门，"我会留着的，<<sydneyMum>>应该不会发现。"<<glove>><<llspurity>><<lllust>><<npcincr Sydney love 1>><<npcincr Sydney lust -10>><<npcincr Sydney purity -5>>
+	<br><br>
+	<<tearful>>你从柜台上跳了下来。
+	<br><br>
+<<elseif $enemyhealth lte 0>>
+	悉尼稍微退后了几步。"怎么了，亲爱的？"<<he>>的声音变得轻柔了起来，"是我太粗暴了吗？"<<He>>笑了。
+	<br><br>
+	<<tearful>>你从柜台上跳了下来。
+	<br><br>
+<<elseif $rescue is 1 and $alarm is 1>>
+	悉尼稍微退后了几步。"嘘——"<<he>>捂住你的嘴，"<<sydneyMum>>会听见的。"商店深处传来了声音，悉尼赶紧回去继续工作了。
+	<br><br>
+	<<tearful>>你从柜台上跳了下来。
+	<br><br>
+<<else>>
+	"确实有点太冒险了。"<<he>>看向了后门，你们能听见西里斯在里面工作的声音。"下次我们在别的地方好好独处吧，怎么样？"
+	<br><br>
+	<<tearful>>你从柜台上跳了下来。
+	<br><br>
+<</if>>
+<<clothesontowel>>
+<<endcombat>>
+<<link [[继续|Dilapidated End]]>><<npc Sirris>><<npc Sydney 2>><</link>>
+<br>
+
+:: Dilapidated Dildo Refuse
+<<effects>>
+
+"要我求你吗？"悉尼把手中的假阳具拿到眼前舔舐着，继续盯着你。"还是要我好好劝劝你？"
+<br><br>
+
+你听见店深处传来脚步声，悉尼把假阳具丢回了板条箱。"下次吧，亲爱的。"
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+:: Dilapidated Dildo Tease
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"没什么好害羞的。"你伸手从板条箱里拿出了假阳具，"看，"你拿着它向悉尼挥了挥，悉尼的脸顿时红了起来。"难道神殿觉得这玩意算亵渎吗？"
+<<elseif $speech_attitude is "bratty">>
+	"怎么了？"你伸手从板条箱里拿出了假阳具，"又不是蛇，"你拿着它向悉尼挥了挥，悉尼的脸顿时红了起来。"神殿是禁止这种渎神之物吗？"
+<<else>>
+	"没什么好怕的啦，"你伸手从板条箱里拿出了假阳具，"这东西又不会动。"你拿着它向悉尼挥了挥，悉尼的脸顿时红了起来。"难道神殿觉得这玩意算亵渎吗？"
+<</if>>
+<br><br>
+"不-不是，"悉尼匆忙移开了视线，"快把它放回去吧，我们还有活要干呢。"
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+
+
+
+
+:: Dilapidated Pretend
+<<effects>>
+
+"能帮我抬一下这个吗？"你抱着东西，注意力却在别处。悉尼点了点头，似乎松了一口气。
+<br><br>
+
+<<link [[继续|Dilapidated End]]>><</link>>
+<br>
+
+
+:: Adult Shop Closed
+<<set $outside to 0>><<effects>><<set $lock to 200>>
+	你路过了一家成人用品店，它目前关着门。
+
+	<<if currentSkillValue('skulduggery') gte $lock>>
+	<span class="green">锁看起来很容易撬开。</span>
+	<br><br>
+
+	<<link [[撬开它 (0:10)|Adult Shop]]>><<pass 10>><<crimeup 1>><</link>><<crime>>
+	<br>
+	<<else>>
+	<span class="red">要撬开这把锁看起来超出了你的能力。</span>
+	<<skulduggeryrequired>>
+	<br><br>
+	<</if>>
+

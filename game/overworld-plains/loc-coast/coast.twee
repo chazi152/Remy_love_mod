@@ -1,0 +1,183 @@
+:: Coast Path Mer
+<<set $outside to 1>><<effects>>
+
+你走在码头附近一条隐蔽的小路上，这通向远离梅尔街的一处地方。而另一头则通向一个仓库，在其一侧是一条沙地小径，隐藏在一丛丛带刺的草中。它会把你带到小镇侧面的山丘上，就是那处面向着大海的悬崖顶上。
+<br><br>
+
+很少人知道这条小径的存在。
+<br><br>
+
+<<link [[继续|Coast Path]]>><</link>>
+<br>
+
+:: Coast Path
+<<location "coastpath">><<effects>>
+
+你位于镇子东边的沿海小径上，在一处面向大海的悬崖上方。
+
+<<cliff_top_desc>>
+
+没了风的侵扰，白玫瑰花丛在这里茁壮成长。
+<br><br>
+
+<<if !$plants_known.includes("white_rose")>>
+	<<icon "tending/white_rose.png">> <<link [[搜索种子 (0:30)|Coast Path White Rose]]>><<pass 30>><<pain 6>><<tending 6>><<set $plants_known.push("white_rose")>><</link>><<gpain>><<gtending>>
+	<br>
+<</if>>
+<<if $historytrait gte 3>>
+	<<link [[沿海岸向东走 (2:00)|Coast Path East]]>><<pass 120>><</link>>
+	<br>
+	<<if currentSkillValue('athletics') gte 300 and ($weather is "clear" or $weather is "overcast") and !$worn.feet.type.includes("heels")>>
+		<<link [[沿海岸向东慢跑 (1:30)|Coast Path East]]>><<pass 90>><<tiredness 2>><<set $speed to "jog">><</link>><<athleticsdifficulty 250 700>><<gtiredness>>
+		<br>
+		<<if currentSkillValue('athletics') gte 700>>
+			<<link [[沿海岸向东奔跑 (1:00)|Coast Path East]]>><<pass 60>><<tiredness 5>><<set $speed to "run">><</link>><<athleticsdifficulty 650 1000>><<gtiredness>>
+			<br>
+		<</if>>
+	<</if>>
+	<<if $harpy gte 6 and $birdFly gte 1>>
+		<<flight_time_check 20>>
+		<<print '<<link [[向东飞翔 ('+_hoursPassed+':'+ (_minutesPassed lt 10 ? "0" : "") + _minutesPassed + ')|Coast Path East]]>><<set $fatigueMod to _fatigueMod>><<set $flightTime to _flightTime>><<pass _flightTime>><<set $speed to "fly">><</link>>'>><<flight_text>><<gtiredness>>
+		<br>
+	<</if>>
+<</if>>
+<br>
+<<link [[进入城镇 (0:30)|Mer Street]]>><<pass 30>><</link>>
+<br>
+
+:: Coast Path White Rose
+<<effects>>
+
+你在盛开的花丛中寻找能播种的种子。你小心翼翼地避开尖刺，但还是扎到了自己。
+<br><br>
+<span class="gold">你现在可以种植<<icon "tending/white_rose.png">>白玫瑰了。</span>
+<br><br>
+<<link [[继续|Coast Path]]>><</link>>
+<br>
+
+
+:: Coast Path Cabbage
+<<effects>>
+
+你凑近看了看点缀在崖顶的多叶灌木丛，那是野生卷心菜。你收集了一些种子。
+<br><br>
+<span class="gold">你现在可以种植<<icon "tending/cabbage.png">>卷心菜了。</span>
+<br><br>
+<<link [[继续|Coast Path Farmland]]>><</link>>
+<br>
+
+
+:: Coast Path Meadow
+<<set $outside to 1>><<effects>>
+
+在草地的一个隐蔽角落里，有一条纤长的小径通向那依偎在两座山之间的灌木丛。它指引你向北走，好像是直通着面向大海的悬崖顶端。
+<br><br>
+
+很少人知道这条小径的存在。
+<br><br>
+
+<<link [[继续|Coast Path Farmland]]>><</link>>
+<br>
+
+:: Coast Path Farmland
+<<location "coastpath">><<effects>>
+
+你位于农田北边的沿海小径上，在一处面向大海的悬崖上方。
+
+<<cliff_top_desc>>
+
+<br><br>
+
+<<link [[沿海岸向西行走 (2:00)|Coast Path West]]>><<pass 120>><</link>>
+<br>
+<<if !$plants_known.includes("cabbage")>>
+	<<icon "tending/cabbage.png">> <<link [[搜索种子 (0:30)|Coast Path Cabbage]]>><<pass 30>><<tending 6>><<set $plants_known.push("cabbage")>><</link>><<gtending>>
+	<br>
+<</if>>
+<<if currentSkillValue('athletics') gte 300 and ($weather is "clear" or $weather is "overcast") and !$worn.feet.type.includes("heels")>>
+	<<link [[沿海岸向西慢跑 (1:30)|Coast Path West]]>><<pass 90>><<tiredness 2>><<set $speed to "jog">><</link>><<athleticsdifficulty 250 700>><<gtiredness>>
+	<br>
+	<<if currentSkillValue('athletics') gte 700>>
+		<<link [[沿海岸向西奔跑 (1:00)|Coast Path West]]>><<pass 60>><<tiredness 5>><<set $speed to "run">><</link>><<athleticsdifficulty 650 1000>><<gtiredness>>
+		<br>
+	<</if>>
+<</if>>
+<<if $harpy gte 6 and $birdFly gte 1>>
+	<<flight_time_check 20>>
+	<<print '<<link [[向西飞翔 ('+_hoursPassed+':'+ (_minutesPassed lt 10 ? "0" : "") + _minutesPassed + ')|Coast Path West]]>><<set $fatigueMod to _fatigueMod>><<set $flightTime to _flightTime>><<pass _flightTime>><<set $speed to "fly">><</link>>'>><<flight_text>><<gtiredness>>
+	<br>
+<</if>>
+
+<br>
+<<link [[走向农场 (0:30)|Meadow]]>><<pass 30>><</link>>
+<br>
+
+:: Coast Path East
+<<effects>>
+
+<<if $speed is "fly">>
+	<<flight_effects>>
+	你跑跳着前进，让风推着你沿小路前行。<<physique 2>><<athletics 2>>
+<</if>>
+<br><br>
+你沿着这条路向东走，它有时会紧贴着悬崖的边缘，有时也会向下倾斜一部分。在这种时候，这条路就会挤在一侧的岩壁和另一边的峭壁之间。
+<<if $speed is "jog">>
+	<br><br>
+	<<athleticsdifficulty 250 700 true>>
+	<<if $athleticsSuccess>>
+		你迎着风慢跑。<span class="green">海边的空气<<if $weather is "clear" and Time.dayState is "day">>和阳光<</if>>让人感到十分的清爽。</span>
+	<<else>>
+		你逆着风慢跑。<span class="red">你感到有些吃力。</span><<gtiredness>><<tiredness 2>>
+	<</if>>
+<<elseif $speed is "run">>
+	<br><br>
+	<<athleticsdifficulty 650 1000 true>>
+	<<if $athleticsSuccess>>
+		你逆着风奔跑。<span class="green">海边的空气<<if $weather is "clear" and Time.dayState is "day">>和阳光<</if>>让你神清气爽。</span>
+	<<else>>
+		你逆着风慢跑。<span class="red">你感到有些吃力。</span><<gtiredness>><<tiredness 5>>
+	<</if>>
+<</if>>
+<<unset $speed>>
+<br><br>
+你看到了远方的农田。
+<br><br>
+
+<<link [[继续|Coast Path Farmland]]>><</link>>
+<br>
+
+:: Coast Path West
+<<effects>>
+
+<<if $speed is "fly">>
+	<<flight_effects>>
+	你又跑又跳。此时你的身后吹来一阵柔风，带着你沿小路前行。
+	<br><br>
+	<<physique 2>><<athletics 2>>
+	<br><br>
+<</if>>
+你沿着这条路向西走。野草和其他植物经常会出现在路上，有的时候甚至会将路全部遮住，但找到路并不难，因为它总是紧贴着悬崖。
+<br><br>
+<<if $speed is "jog">>
+	<br><br>
+	<<athleticsdifficulty 250 700 true>>
+	<<if $athleticsSuccess>>
+		你迎着风慢跑。<span class="green">海边的空气<<if $weather is "clear" and Time.dayState is "day">>和阳光<</if>>让人感到十分的清爽。</span>
+	<<else>>
+		你逆着风慢跑。<span class="red">你感到有些吃力。</span><<gtiredness>><<tiredness 2>>
+	<</if>>
+<<elseif $speed is "run">>
+	<br><br>
+	<<athleticsdifficulty 650 1000 true>>
+	<<if $athleticsSuccess>>
+		你逆着风奔跑。<span class="green">海边的空气<<if $weather is "clear" and Time.dayState is "day">>和阳光<</if>>让你神清气爽。</span>
+	<<else>>
+		你逆着风慢跑。<span class="red">你感到有些吃力。</span><<gtiredness>><<tiredness 5>>
+	<</if>>
+<</if>>
+<<unset $speed>>
+你看到了远方的城镇。
+<br><br>
+
+<<link [[继续|Coast Path]]>><</link>>
+<br>

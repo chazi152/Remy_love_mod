@@ -1,0 +1,53 @@
+:: Widgets Mines [widget]
+<<widget "mines_init">>
+<<set $mines_crystals to 10>>
+<<if $prof.pickaxe is undefined>>
+    <<set $prof.pickaxe to 0>>
+<</if>>
+<<set $mines_suspicion to 61>>
+<<set $mines_guards_dig to 0>>
+<</widget>>
+
+<<widget "mines_end">>
+<<unset $mines_crystals>>
+<<unset $mines_suspicion>>
+<</widget>>
+
+<<widget "mines_crystals">>
+<<number $mines_crystals "silent">>
+<<set $_color to ["red","pink","purple","purple","blue","blue","lblue","lblue","teal","teal","green"][Math.clamp($mines_crystals,0,10)]>>
+<<set $_count to $mines_crystals gte 1 ? _text_output : "no">>
+<<set $_crystals to $mines_crystals is 1 ? "crystal" : "crystals">>
+你有着<span @class="$_color">$_count</span> $_crystals。
+<</widget>>
+
+<<widget "passout_mines">>
+<<passout>>
+<<link [[继续|Mines Passout]]>><</link>>
+<br>
+<</widget>>
+
+<<widget "mines_suspicion_text">>
+<<if $mines_suspicion gte 100>>
+    <span class="red">警卫们的目光死死地锁在你身上。</span>
+<<elseif $mines_suspicion gte 80>>
+    <span class="pink">警卫们看向你所处的方向。</span>
+<<elseif $mines_suspicion gte 60>>
+    <span class="purple">警卫们警惕地望着你。</span>
+<<elseif $mines_suspicion gte 40>>
+    <span class="blue">警卫们正在监视着你。</span>
+<<elseif $mines_suspicion gte 20>>
+    <span class="lblue">警卫们不怎么在意你的行为。</span>
+<<elseif $mines_suspicion gte 1>>
+    <span class="teal">警卫们一点都不关注你在干嘛</span>
+<<else>>
+    <span class="green">你就好比隐形人一样，没人会在意你到底在做些什么。</span>
+<</if>>
+<</widget>>
+
+<<widget "mines_suspicion">>
+	<<if _args[0] and $statFreeze isnot true>>
+		<<set $mines_suspicion += (_args[0])>>
+        <<set $mines_suspicion to Math.clamp($mines_suspicion, 0, 100)>>
+	<</if>>
+<</widget>>

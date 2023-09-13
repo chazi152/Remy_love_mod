@@ -1,0 +1,374 @@
+:: Widgets Whitney [widget]
+<<widget "whitneyoptions">>
+	<<if $location is "park" and Time.dayState isnot "day">>
+		<<if $NPCName[$NPCNameList.indexOf("Whitney")].love gte 15>>
+			"我要走了，"<<he>>突然说，"这种天气不要呆在外面。"<<He>>一言不发地离开了公园。
+		<<else>>
+			<<He>>一句话也没说就离开了公园。
+		<</if>>
+		<br><br>
+		<<whitneyexit>>
+	<<else>>
+		<<if $daily.whitney.parkWhore is "run">>
+			<<set $daily.whitney.parkWhore to true>><<run delete $daily.whitney.textTrigger>>
+			"之前的假期过得不错，"<<he>>突然说。"怎么，你以为我会生气？
+			<<if $whitneyromance is 1>><<set _noOptions to true>>
+				我的<<girl>>知道<<pshe>>想要谁。"
+				<br><br>
+
+				<<He>>靠过来，把你困在<<himself>>和树之间。<<His>>的嘴唇拂过了你的脖子。
+				<br><br>
+
+				<<link [[顺其自然|Whitney Park Whore Romance]]>><<set $phase to 1>><<sub 1>><<arousal 600>><<npcincr Whitney lust 5>><</link>><<garousal>><<glust>>
+				<br>
+				<<link [[推开|Whitney Park Whore Romance]]>><<set $phase to 0>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+				<br>
+			<<else>>
+				反正我已经拿到钱了，谁在乎他们得没得到他们想要的呢？"
+				<br><br>
+			<</if>>
+		<<elseif $daily.whitney.parkWhore is "paid" and $NPCName[$NPCNameList.indexOf("Whitney")].love gte 10>>
+			<<set $daily.whitney.parkWhore to true>><<set _noOptions to true>><<run delete $daily.whitney.textTrigger>>
+			<<He>>在<<his>>的<<npcClothesText $NPCList[0] "upper">>中翻找出了一把钞票。<<He>>看都不看就把它们丢到了你的脸上。
+			<br><br>
+
+			"你的那份，"<<he>>说。"不用谢我。"
+			<br><br>
+
+			<<link [[生气|Whitney Park Whore Share]]>><<moneyGain 50>><<set $phase to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+			<br>
+			<<link [[保持沉默|Whitney Park Whore Share]]>><<moneyGain 50>><<set $phase to 0>><</link>>
+			<br>
+		<<elseif $daily.whitney.parkWhore is "runFail" and $NPCName[$NPCNameList.indexOf("Whitney")].love gte 10>>
+			<<set $daily.whitney.parkWhore to true>><<set _noOptions to true>><<run delete $daily.whitney.textTrigger>>
+			"笨蛋，"<<he>>嘟囔着，"你这也能叫逃跑？下次试试跑得更快点儿吧。"
+			<br><br>
+
+			<<link [[道歉|Whitney Park Run Advice]]>><<set $phase to 2>><<sub 1>><<npcincr Whitney dom 1>><</link>><<gdom>>
+			<br>
+			<<link [[生气|Whitney Park Run Advice]]>><<set $phase to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+			<br>
+			<<link [[保持沉默|Whitney Park Run Advice]]>><<set $phase to 0>><</link>>
+			<br>
+		<<elseif $daily.whitney.textTrigger is true>>
+			<<run delete $daily.whitney.textTrigger>>
+			<<if $daily.whitney.text is 1>>
+				"又来？真烦人，能不能滚啊？"<<He>>看向别处。
+			<<elseif $daily.whitney.text is 2>>
+				"你真让我心烦，<<bitch>>，"<<He>>看向别处。
+			<<else>>
+				<<if $whitneyromance is 1 or $NPCName[$NPCNameList.indexOf("Whitney")].dom gte 10>>
+					"我最喜欢的荡妇在这里做什么呢？"
+				<<elseif $whitneyrescued>>
+					<<He>>看了你一眼，但很快就把目光移开了。
+				<<else>>
+					<<He>>看起来很生气。
+				<</if>>
+			<</if>>
+		<<else>>
+			<<if _whitney_attention is 1>>
+				<<if $NPCName[$NPCNameList.indexOf("Whitney")].lust gte 50>>
+					<span class="green">不管之前在想些什么，那些东西现在都在<<him>>的脑海里烟消云散了。<<His>>的眼睛粘在了你身上。</span>
+				<<elseif $NPCName[$NPCNameList.indexOf("Whitney")].lust gte 20>>
+					<span class="blue"><<his>>似乎注意到了你, 但就仅此而已。</span>
+				<<else>>
+					<span class="pink">惠特尼试着无视你。</span>
+				<</if>>
+			<<elseif $location is "park" and $rng gte 50>>
+				<<He>>盯着喷泉。
+			<<else>>
+				<<He>>吸了口烟。
+			<</if>>
+		<</if>>
+		<br><br>
+		<<if !_noOptions>>
+			<<if _whitney_attention is 1>>
+				<<if $promiscuity gte 15>>
+					<<link [[更近一步(0:15)|Whitney Flirt 2]]>><<pass 15>><<npcincr Whitney lust 1>><<npcincr Whitney dom 1>><</link>><<glust>><<gdom>><<promiscuous2>>
+					<br>
+				<<else>>
+					你还不够放荡，不能再近一步了。
+					<br>
+				<</if>>
+			<</if>>
+			<<if $milkshake gte 1>>
+				<<if $whitneyromance is 1>>
+					<<link [[给奶昔(0:20)|Whitney Milkshake]]>><<npcincr Whitney love 1>><<set $milkshake -= 1>><</link>><<glove>>
+					<br>
+				<<else>>
+					<<link [[给奶昔(0:20)|Whitney Milkshake Fail]]>><<npcincr Whitney love 1>><<set $milkshake -= 1>><</link>><<glove>>
+					<br>
+				<</if>>
+			<</if>>
+				<<if $whitneyromance is 1 and $daily.whitney.flirt is undefined>>
+				<<link [[调情(0:15)|Whitney Flirt]]>><<set $daily.whitney.flirt to 1>><<pass 15>><<npcincr Whitney love 1>><<npcincr Whitney lust 1>><</link>><<promiscuous1>><<glove>><<glust>>
+				<br>
+			<</if>>
+			<<if $daily.whitney.chat is undefined>>
+				<<if $whitneyromance is 1>>
+					<<link [[聊天(0:15)|Whitney Chat]]>><<pass 15>><<stress -3>><<set $daily.whitney.chat to 1>><<npcincr Whitney love 1>><</link>><<glove>><<lstress>>
+				<<else>>
+					<<link [[聊天(0:15)|Whitney Chat]]>><<pass 15>><<stress 6>><<set $daily.whitney.chat to 1>><<npcincr Whitney love 1>><</link>><<glove>><<gstress>>
+				<</if>>
+			<<else>>
+				<<if $whitneyromance is 1>>
+					<<link [[聊天(0:15)|Whitney Chat]]>><<pass 15>><<stress -3>><</link>><<lstress>>
+				<<else>>
+					<<link [[聊天(0:15)|Whitney Chat]]>><<pass 15>><<stress 6>><</link>><<gstress>>
+				<</if>>
+			<</if>>
+			<br>
+			<<if $daily.whitney.ask is undefined and $location is "park">>
+				<<link [[问是不是出了什么事|Whitney Ask]]>><<set $daily.whitney.ask to 1>><</link>>
+				<br>
+			<</if>>
+			<<if !$daily.whitney.chastityBeg and $worn.genitals.origin is "Whitney">>
+				<<link [[乞求松开|Whitney Chastity Beg]]>><<set $daily.whitney.chastityBeg to 1>><</link>>
+				<br>
+			<</if>>
+			<<if $whitneychastity is 1 and ($worn.genitals.name is "naked" or ($worn.genitals.integrity lte setup.clothes.genitals[clothesIndex('genitals',$worn.genitals)].integrity_max * 0.25 and $worn.genitals.origin is "Whitney"))>>
+				<<link [[询问你的贞操笼是否可以更换|Whitney Chastity Replace]]>><</link>>
+				<br>
+			<</if>>
+			<<whitneyoptionsleave>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "whitneyoptionsleave">>
+	<<if $bus is "park" or $location is "park">>
+		<<link [[离开|Park]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "whitneyexit">>
+	<<if $bus is "park" or $location is "park">>
+		<<set $daily.whitney.park to 0>><<run delete $daily.whitney.text>><<run delete $daily.whitney.textTrigger>>
+		<<link [[继续|Park]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "whitneyRescueEnd">>
+	<<endevent>>
+	<<if $whitneyRescueSpecial>>
+		<<switch $whitneyRescueSpecial>>
+			<<case "scienceDissection">>
+				你赶紧回到了西里斯的教室，把物品安全送达。
+				<<if $schoolstate is "first">>
+					班上其他同学正忙着解剖青蛙。因为没有同伴，你只能独自进行实验。
+					<br><br>
+
+					<<gscience>><<scienceskill>>
+					<br><br>
+
+					<<link [[继续|Science Lesson]]>><</link>>
+					<br>
+				<<else>>
+					你回来的时候已经下课了，西里斯正站在门边。
+					<br><br>
+
+					"你没有迷路吧？"<<nnpc_He "Sirris">>微笑着接过盒子，"没什么大不了的，你只管回去上课吧，快些。"
+					<br><br>
+
+					<<link [[继续|Hallways]]>><</link>>
+					<br>
+				<</if>>
+			<<case "mathsNote">>
+				你赶紧回了教室，惠特尼没有跟在你身后。
+				<br><br>
+
+				<<if $schoolstate is "second">>
+					<<link [[继续|Maths Lesson]]>><</link>>
+					<br>
+				<<else>>
+					等你回来的时候已经下课了，瑞沃站在门边。
+					<br><br>
+
+					"你浪费了很多时间，"<<nnpc_He "River">>盯着你细细地看了一会儿，然后叹气道，"不过都已经这样了，多说无益，快给我回去上课。"
+					<br><br>
+
+					<<link [[继续|Hallways]]>><</link>>
+					<br>
+				<</if>>
+			<<case "mathsSent">>
+				你赶紧趁瑞沃不注意，回到了门边的座位上。
+				<<if $schoolstate is "second">>
+					你到达时，正好遇到了<<nnpc_he "River">>。
+					<br><br>
+
+					<<nnpc_He "River">>狐疑地看了你一眼，但没有追问。"看来我是搞错了，快进来吧。"
+					<br><br>
+
+					<<link [[继续|Maths Lesson]]>><</link>>
+					<br>
+				<<else>>
+					等你回来的时候已经下课了，瑞沃站在门边。
+					<br><br>
+
+					"你到底跑到哪里去了？明明就没有惹上麻烦。"<<nnpc_He "River">>叹了口气，"算了，回去上课吧，别再让这种事情发生了。"
+					<br><br>
+
+					<<link [[继续|Hallways]]>><</link>>
+					<br>
+				<</if>>
+			<<default>>
+				/* failsafe - should be inaccessible */
+				你觉得你本该在做什么重要的事，但你忘了到底是什么。你漫无目的地穿过走廊。
+				<br><br>
+
+				<<link [[继续|Hallways]]>><</link>>
+				<br>
+		<</switch>>
+	<<else>>
+		<<switch $whitneyRescueExit>>
+			<<case "canteen">>
+				<<link [[继续|Canteen]]>><</link>>
+				<br>
+			<<case "courtyard">>
+				<<if $bus is "schoolfrontcourtyard">>
+					<<link [[继续|School Front Courtyard]]>><<set $eventskip to 1>><</link>>
+					<br>
+				<<else>>
+					<<link [[继续|School Rear Courtyard]]>><<set $eventskip to 1>><</link>>
+					<br>
+				<</if>>
+			<<default>>
+				<<link [[继续|Hallways]]>><<set $eventskip to 1>><</link>>
+				<br>
+		<</switch>>
+	<</if>>
+	<<unset $whitneyRescueAlone>>
+	<<unset $whitneyRescueExit>>
+	<<unset $whitneyRescueSafe>>
+	<<unset $whitneyRescueSlime>>
+	<<unset $whitneyRescueSpecial>>
+	<<unset $whitneyRescueUniform>>
+<</widget>>
+
+<<widget "whitneyFinish">>
+	<<if $player.penisExist and $penisuse isnot 0>>
+		<<set $penisuse to 0>>
+	<</if>>
+	<<if $audiencepresent gte 1>>
+		<<He>>把你的头拉近，窃窃低语。"装都装不出来？你让我在大伙面前很难堪啊。"
+	<<else>>
+		"别以为我不会报答你，荡妇。"
+	<</if>>
+	<<if !$genderknown.includes("Whitney") and ($player.gender is "h") or ($player.gender_appearance is "m" and $player.gender isnot "m") or ($player.gender_appearance is "f" and $player.gender isnot "f")>>
+		<<set $genderknown.pushUnique("Whitney")>>
+		<<His>>的手往下移，碰到了你的<<genitals>>。一时间<<him>>似乎对自己摸到的感到有些惊讶，但<<him>>还是笑了。
+		<br><br>
+	<</if>>
+	<<He>>迅速地抓住了你的<<genitals>>，然后
+	<<if $player.gender is "h" and (playerChastity("penis") or playerChastity("vagina"))>>
+		开始用一只手给你撸，同时<<his>>把另一只手的手指插进了你的<<pussy>>。
+	<<elseif $player.penisExist and playerChastity("penis")>>
+		开始给你撸，特别注意你的<<penis>>的尖端。
+	<<elseif $player.vaginaExist and playerChastity("vagina")>>
+		将手指插进了你的<<pussy>>，搅动了起来。
+	<</if>>
+	<<arousal 5000 "genitals">>
+	<<if $arousal gte $arousalmax>>
+		<<orgasm>><<He>>露出微笑。
+	<<else>>
+		<<if $audiencepresent gte 1>>
+			"我会教你珍惜美好的性爱。"
+		<<else>>
+			"不能让你不带点小礼物就走。"
+		<</if>>
+		<br><br>
+		<<He>>的眼睛紧紧的盯着你，速度变得越来越快。
+		<<if $player.gender is "h">>
+			<<He>>用<<his>>的手指在你的尖端上画着圆，同时将另一根手指滑入<<pussy>>。
+		<<elseif $player.penisExist>>
+			<<He>>使用<<his>>的手指在你的尖端上画着圆<<if $NPCName[$NPCNameList.indexOf("Whitney")].dom gte 16 and $analdisable is "f">>，然后将手指慢慢滑入<<bottom>>，当<<he>>到达你的前列腺时<<He>>笑了。<<else>>，用<<his>>另一只手给了你的<<bottom>>一记耳光。<</if>>
+		<<else>>
+			<<He>>将另一根手指插进你的<<pussy>>，并用<<his>>另一只手抚摸你的<<breasts>>。
+		<</if>>
+		<<He>>吻你，压住你不由自主的呻吟。
+		<<if $location is "park">>
+			公园那边好像有人注意到你们俩了，他们赶紧转过身去。
+		<</if>>
+		<br><br>
+		<<set $arousal to 10000>>
+		<<if $arousal gte $arousalmax>>
+			<<orgasm>>
+		<</if>>
+		惠特尼给了你一个邪恶的微笑<<if $audiencepresent gte 1>>，围观的人群再次欢呼<</if>>。
+	<</if>>
+	<br><br>
+<</widget>>
+
+<<widget "dismissWhitney">>
+	<<npcset Whitney state "dungeon">>
+	<<if $loveInterest.primary is "Whitney">>
+		<<if $loveInterest.secondary isnot "None">>
+			<<set $loveInterest.primary to $loveInterest.secondary>>
+			<<set $loveInterest.secondary to "None">>
+		<<else>>
+			<<set $loveInterest.primary to "None">>
+		<</if>>
+		<span class = "red">惠特尼不再是你爱的人了。</span>
+	<<elseif $loveInterest.secondary is "Whitney">>
+		<<set $loveInterest.secondary to "None">>
+		<span class = "red">惠特尼不再是你爱的人了。</span>
+	<<elseif $whitneyromance is 1>>
+		<span class = "red">惠特尼不能再被认为是你的爱人了。</span>
+	<<else>>
+		<span class = "red">惠特尼被带走了。</span>
+	<</if>>
+	<br><br>
+<</widget>>
+
+<<widget "whitneyFaceWritingInspection">>
+	<<set _targetLocs to ["left_cheek","right_cheek"].filter(loc => $skin[loc].special is "Whitney" or !$skin[loc].pen or ["pen","lipstick","mud"].includes($skin[loc].pen))>>
+
+	<<set _whitneySpecialLocs to _targetLocs.filter(loc => $skin[loc].special is "Whitney")>>
+	<<set _erasableWritingLocs to _targetLocs.filter(loc => ["pen","lipstick","mud"].includes($skin[loc].pen))>>
+	<<set _writableLocs to _targetLocs.filter(loc => !$skin[loc].pen)>>
+
+	<<if _whitneySpecialLocs.length gte 1>>
+		<<set _loc to _whitneySpecialLocs.random()>>
+		<<set _cheek to _loc.replace("_", " ")>>
+		<<He>>倾身亲吻你的脸颊，就在<<tattoo _loc>>上。"我只是想确保你身上的标签还在。"<<He>>在回到<<his>>的朋友们身边之前拍了一下你的<<bottom>>。
+		<<gstress>><<garousal>><<glust>><<stress 6>><<arousal 600 "bottom">><<npcincr Whitney lust 5>>
+		<br><br>
+
+		<<link [[继续|Oxford Street]]>><<endevent>><</link>>
+		<br>
+	<<elseif _erasableWritingLocs.length gte 1>>
+		<<set _loc to _erasableWritingLocs.random()>>
+		<<set _cheek to _loc.replace("_", " ")>>
+		<<He>>倾身亲吻你的脸颊，就在<<tattoo _loc>>上。<<He>>用袖子擦了擦，然后从<<his>>的口袋里拿出了一支笔。"是时候给你贴上一个合适的标签了，不要动。"
+		<br><br>
+		<<bodywriting_clear _loc>>
+		<<set $phase to (_loc is "left_cheek" ? 1 : 2)>>
+
+		<<link [[允许|School Leave Whitney Writing]]>><<set $phase to 1>><<npcincr Whitney love 1>><</link>><<glove>><<gbodywriting>>
+		<br>
+		<<link [[拍开惠特尼的手|School Leave Whitney Writing Push]]>><<npcincr Whitney love -1>><<npcincr Whitney dom -1>><</link>><<llove>><<ldom>>
+		<br>
+	<<elseif _writableLocs.length gte 1>>
+		<<set _loc to _writableLocs.random()>>
+		<<set _cheek to _loc.replace("_", " ")>>
+		<<He>>从<<his>>的口袋里拿出了一支笔。"我要让所有人都知道你属于谁。不要动。"
+		<br><br>
+		<<set $phase to (_loc is "left_cheek" ? 1 : 2)>>
+
+		<<link [[允许|School Leave Whitney Writing]]>><<set $phase to 2>><<npcincr Whitney love 1>><</link>><<glove>><<gbodywriting>>
+		<br>
+		<<link [[拍开惠特尼的手|School Leave Whitney Writing Push]]>><<npcincr Whitney love -1>><<npcincr Whitney dom -1>><</link>><<llove>><<ldom>>
+		<br>
+	<<else>>
+		<<set _cheek to (random(0,1) ? "left cheek" : "right cheek")>><<set _cheekType to _cheek.replace(" ", "_")>>
+		<<He>>倾身亲吻你的 _cheek，就在<<tattoo _cheekType>>上
+		"没想到会脱下来。"<<he>>一边说，一边拉开了<<he>>的手。"哦，好吧。再见，荡妇。" 当<<He>>回到<<his>>的朋友身边时，<<he>>打了你的<<bottom>>一下。
+		<<gstress>><<garousal>><<glust>><<stress 6>><<arousal 600 "bottom">><<npcincr Whitney lust 5>>
+		<br><br>
+
+		<<link [[继续|Oxford Street]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<</widget>>

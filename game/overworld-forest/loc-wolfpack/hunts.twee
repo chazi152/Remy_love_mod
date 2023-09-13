@@ -1,0 +1,1274 @@
+:: Wolf Cave Hunt
+<<set $location to "wolf_cave">><<effects>>
+
+<<if $wolfpacktrust gte 18 or $wolfpackleader gte 1>>
+	<<if playerIsPregnant() and playerBellySize() gte 15>>
+		<<set _pregnancy to getPregnancyObject()>>
+		<<npc "Black Wolf">>
+		你试图跟随那些<<wolf_cave_plural>>，但黑狼转过身来，闻了闻你的肚子周围，似乎在寻找什么。
+		<<if $monster is 1>>
+			"待在这里！看好孩子。保护好你的肚子。"
+			<<if _pregnancy.type is "wolf" and _pregnancy.potentialFathers.find(father => father.source === "Black Wolf")>>
+				<<bhe>>在骄傲地看着你的肚子时.<<set $blackWolfPregnancyHunt to true>>
+			<</if>>
+		<<else>>
+			<<bHe>>
+			<<if _pregnancy.type is "wolf" and _pregnancy.potentialFathers.find(father => father.source === "Black Wolf")>>
+				看起来比一般人更贴心，而且很明显<<set $blackWolfPregnancyHunt to true>>
+			<</if>>
+			希望你和年轻的<<wolf_cave_plural>>呆在一起，保护你和你日渐变大的肚子。
+		<</if>>
+		<br><br>
+		<<endevent>>
+
+		你看着它们穿过树林离开。
+		<br><br>
+
+		<<destinationwolfcave>>
+	<<elseif $blackWolfNotHunting>>
+		<<npc "Black Wolf">>
+		黑狼坐在石头上，注视着一切，<<bhis>>鼓胀的肚子也呈现在你的视野中。
+		<<endevent>>
+		<br><br>
+		<<if $wolfpackleader gte 1>>
+			当成员们兴奋地互相咬来咬去时，狼群开始吠叫。但目前还没有人开始跑步。它们都在看着你。
+		<<else>>
+			狼群中的成员为谁来领导狩猎而咆哮和撕咬。
+		<</if>>
+		<<set $outside to 1>>
+		<br><br>
+		<<link [[带头 (0:15)|Wolf Cave Hunt No Black Wolf Start]]>><<set $phase to 1>><<pass 15>><</link>>
+		<br>
+		<<link [[移开视线(0:30)|Wolf Cave Hunt No Black Wolf Start]]>><<pass 30>><</link>>
+	<<else>>
+		<<set $dateCount.BlackWolfHunts++>>
+
+		你跟随着那些<<wolf_cave_plural>>穿过树林离开。它们没有阻止你。
+		<br><br>
+		<<set $outside to 1>>
+		离狼穴不远的地方，它们开始奔跑。它们移动得很快，很难跟上。
+		<<gathletics>><<athletics 6>><<physique 6>>
+		<br><br>
+
+		<<wolfhuntevents>>
+	<</if>>
+<<else>>
+	你试图跟随<<wolf_cave_plural>>，但黑狼转身向你咆哮。
+	<<npc "Black Wolf">>
+	<<if $monster is 1>>
+		"留下来！看着年轻的孩子们。建立信任。"
+	<<else>>
+		<<bHe>>想让你留在这里照看年轻的<<wolf_cave_plural>>。
+	<</if>>
+	<br><br>
+	<<endevent>>
+
+	你看着它们穿过树林离开。
+	<br><br>
+
+	<i>如果它们更信任你，它们可能会愿意让你加入.</i>
+	<br><br>
+
+	<<destinationwolfcave>>
+<</if>>
+
+:: Wolf Cave Hunt Leave
+
+<<set $location to "wolf_cave">><<effects>>
+<<if $blackWolfNotHunting>>
+	狼群们在树林之间离开，留下你和黑狼，留下年轻的<<wolf_cave_plural>>。
+	<<if $wolfpackleader gte 1>>
+		<<npc "Black Wolf">>
+		<<if $monster is 1>>
+			<br><br>
+			"头狼应该领先。”当<<bhe>>注意到你在盯着自己看时，<<bhe>>喘气，似乎很失望。
+		<</if>>
+		<<endevent>>
+	<</if>>
+<<else>>
+	狼群们在树林之间离开，留下你和年轻的<<wolf_cave_plural>>。
+<</if>>
+<br><br>
+
+<<destinationwolfcave>>
+
+:: Wolf River
+
+<<location "forest">><<effects>>
+你和狼群一起沿着河边跑。你来到一片柔软的草地上。一些<<wolf_cave_plural>>躺下休息。
+<br><br>
+<<if $wolfpackleader gte 1>>
+	<<link [[休息(1:00)|Wolf River Rest]]>><<tiredness -12>><<pass 1 hour>><</link>>
+	<br>
+	<<link [[没时间休息|Wolf River Rouse]]>><</link>>
+	<br>
+	<<if $rng gte 51>>
+		<<link [[让黑狼决定|Wolf River Rest]]>><<tiredness -12>><<pass 1 hour>><</link>>
+		<br>
+	<<else>>
+		<<link [[让黑狼决定|Wolf River Rouse]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<npc "Black Wolf">>
+	<<if $rng gte 51>>
+		黑狼也躺了下来，你和其他的<<wolf_cave_plural>>也跟着躺下了。
+		<<if $monster is 1>>
+			"休息。节省体力。"
+		<</if>>
+		<br><br>
+		<<link [[继续(1:00)|Wolf River Rest]]>><<tiredness -12>><<pass 1 hour>><</link>>
+		<br>
+	<<else>>
+		<<if $monster is 1>>
+			黑狼叫了一声。"没时间休息了！有风的味道。快点。"
+		<<else>>
+			黑狼对它们咆哮，它们又站了起来。
+		<</if>>
+		<br><br>
+		<<link [[继续|Wolf River Rouse]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+<<endevent>>
+
+:: Wolf Cliff
+
+<<location "forest">><<effects>>
+你来到悬崖底部一个腐烂的树桩前。树桩底部长着一堆蘑菇，有些是红色的，有些是粉红色的。
+<<if currentSkillValue('science') gte 400>>
+	你认出了红色的是狼菇，这种蘑菇被认为是赋予力量的，在古代被战士们珍视。你也能认出粉红色的蘑菇。它们是一种催情药，对许多动物有毒。包括<<wolf_cave_plural>>。
+<<elseif currentSkillValue('science') gte 200>>
+	你认出了红色的是狼菇，这种蘑菇被认为是赋予力量的，在古代被战士们珍视。粉红色的你认不出来。
+<<else>>
+	两种蘑菇你都认不出来。
+<</if>>
+<br><br>
+<<link [[摘红色的蘑菇|Wolf Cliff2]]>><<set $wolfpackshroom to "red">><</link>>
+<br>
+<<link [[摘粉色的蘑菇|Wolf Cliff2]]>><<set $wolfpackshroom to "pink">><<arousal 600>><</link>><<garousal>>
+<br>
+<<link [[直接离开|Wolf Cliff2]]>><</link>>
+<br>
+
+:: Wolf River Rest
+
+<<location "forest">><<effects>>
+狼群休息一会儿。你以为自己睡着了。
+<<gharmony>><<lferocity>><<ltiredness>>
+<br><br>
+很快，狩猎队伍又变得焦躁不安起来，狩猎继续了下去。
+<<gathletics>><<athletics 6>><<physique 6>>
+<br><br>
+<<wolfhuntevents>>
+
+:: Wolf River Rouse
+
+<<location "forest">><<effects>>
+狼群被唤醒，狩猎仍在继续。
+<<gathletics>><<athletics 6>><<physique 6>>
+<br><br>
+<<wolfhuntevents>>
+
+:: Wolf Cliff2
+
+<<location "forest">><<effects>>
+狼群又开始移动了，你跑过去跟上他们。
+<<gathletics>><<athletics 6>><<physique 6>>
+<br><br>
+<<wolfhuntevents>>
+
+:: Wolf Deer
+<<npc "Black Wolf">>
+<<location "forest">><<effects>>
+你顺着鹿的足迹走。它们抬起头的频率更高，好像能闻到你闻不到的东西。过了一段时间，它们开始冲刺。
+<br><br>
+<<if $athleticsSuccess>>
+	它们不会阻碍你，<span class="green">但你能跟上</span>你们很快就到了目的地。另一边站着一只孤独的鹿。它停止了觅食，一看到狼群就惊慌失措地跑了起来。
+	<br><br>
+	<<if 20 + $wolfpackharmony + $wolfpackferocity gte $rng>>
+		它穿过森林，在树林之间穿梭，很快就看不见了。黑狼从狼群中跑出来，开始追赶它。你们跑到另一片空地，发现黑狼胜利地站在猎物面前。
+		<br><br>
+		<<if random(1,5) is 1>>
+			<<endevent>><<beastNEWinit 1 wolf>><<saveNPC 0 rival_wolf>>
+			狼群聚集在猎物周围，但在它们有机会大快朵颐之前，有什么东西阻止了它们。另一伙狼群出现在你们面前。它们露出牙齿，以威胁的姿态走近。
+			<br><br>
+			<<if $wolfpackleader is 1>>
+				它们的领导者，一个体型较大的<<beasttype>>，<<bhis>>的眼睛紧盯着你。
+				<<if $monster is 1>>
+					"你是领导者吗？"<<bhe>>咆哮道。"后退！猎物归我们了！"
+				<<else>>
+					<<bHe>>发出攻击性的咆哮，要求你将猎物交给<<bhim>>。
+				<</if>>
+				<br><br>
+				一开始是一个小团体，你开始注意到更多的敌对团体成员从灌木丛后面走出来，包围着你的其他兄弟。它们的数量超过了你们。
+				<br><br>
+				<<endevent>><<npc "Black Wolf">>
+				黑狼站在你身边。
+				<<if $monster is 1>>
+					"下达命令吧，"<<bhe>>低声对你说道。"狼群会听从你的所有指令。"
+				<</if>>
+				<br><br>
+				<<wolf_cave_plural>>在等待着你的信号。
+				<br><br>
+				<<endevent>><<loadNPC 0 rival_wolf>>
+				<<link [[和对面的首领战斗|Wolf Rival Challenge]]>><</link>>
+				<br>
+				<<if $deviancy gte 15>>
+					<<link [[主动出击|Wolf Rival Offer]]>><</link>><<deviant2>>
+					<br>
+				<</if>>
+				<<link [[撤退|Wolf Rival Retreat]]>><</link>>
+			<<else>>
+				它们的首领，一个体型较大的<<beasttype>>，<<bhis>>的眼睛紧盯着黑狼。
+				<<if $monster is 1>>
+					"你是领导者吗？"<<bhe>>咆哮道。"后退！猎物归我们了！"
+				<<else>>
+					<<bHe>>给了黑狼一个令人不寒而栗的眼神，要求狼群将猎物交给<<bhim>>。
+				<</if>>
+				<br><br>
+				<<endevent>><<npc "Black Wolf">>
+				黑狼咆哮着回来，<<bhis>>的耳朵压低了。你开始注意到更多的敌对成员从灌木丛后面走出来，包围着你的其他兄弟。它们的数量超过了你们。
+				<br><br>
+				<<bHis>>因为突然的袭击失去了信心，黑狼似乎不确定如何应对。
+				<br><br>
+				<<if $deviancy gte 15>>
+					<<endevent>><<loadNPC 0 rival_wolf>>
+					<<link [[主动出击|Wolf Rival Offer]]>><</link>><<deviant2>>
+					<br>
+				<</if>>
+				<<link [[逃跑|Wolf Rival Flee]]>><</link>><<athleticsdifficulty 1 1000>>
+			<</if>>
+		<<else>>
+			黑狼选了给自己的部分。你发现附近生长着一些浆果，更和你胃口。你坐在鹿旁边。
+			<<if $monster is 1>>
+				<<bHe>>坐在你身旁，把手放在了你的头上。"狩猎很成功，要感谢<<ppackbrother>>。"
+			<</if>>
+			<<stress -12>><<lstress>>
+			<br><br>
+			狼群慵懒地躺在那里，悠闲地享用食物。突然，一场小争斗爆发了，黑狼离开了<<bhis>>在鹿旁边的位置去平息争吵。
+			<br><br>
+			<<endevent>>
+			<<wolfpackhuntoptions>>
+		<</if>>
+	<<else>>
+		它穿过森林，在树林之间穿梭。狼群追着它跑，但以如此快的速度奔跑，它们很快就累坏了。鹿逃走了。
+		<br><br>
+		<i>更高的和谐和凶猛增加了狩猎成功的机会.</i>
+		<br><br>
+		<<wolf_cave_plural>>沮丧但并没有放弃，它们试图捕捉到更容易的猎物气味。突然，它们闻到了某种气味，于是开始奔跑起来。
+		<<gathletics>><<athletics 6>><<physique 6>>
+		<br><br>
+		<<endevent>>
+		<<set $bus to "wolfcaveclearing">>
+		<<wolfhuntevents>>
+	<</if>>
+<<else>>
+	它们不会阻碍你，<span class="red">你的速度跟不上</span>。你在森林里和它们失散了。
+	<br><br>
+	<<link [[继续|Forest]]>><<endevent>><<set $forest to 60>><</link>>
+	<br>
+<</if>>
+
+:: Wolf Carrion
+
+<<location "forest">><<effects>>
+<<beastNEWinit 1 boar>>
+你沿着小路走，到达一个长满草的小丘。它的顶部是一具鹿的尸体，正被一只<<beasttype>>咀嚼着。<<bHe>>发现了狼群，瞪了你们一眼。
+<br><br>
+
+<<if $rng gte 51>>
+	在后面的<<wolf_cave_plural>>到达之前，<<beasttype>>跳过尸体，冲下山，直接向你扑来！
+	<br><br>
+
+	<<link [[站在原地|Wolf Carrion Stand]]>><</link>><<physiquedifficulty 2000 12000>>
+	<br>
+	<<link [[跑|Wolf Carrion Run]]>><</link>>
+	<br>
+
+<<else>>
+	在后面的狼群到达之前，<<beasttype>>跳过尸体，冲下山，直接向黑狼扑去！
+	<br><br>
+	<<endevent>><<npc "Black Wolf">>
+
+	<<if $wolfpackharmony + $wolfpackferocity + 20 gte $rng>>
+		黑狼站在地面上。攻击者转身逃跑，跑进了森林。
+		<br><br>
+
+		黑狼给自己留下了部分，而你在附近找到了一些浆果，它们对你来说更加美味。你坐在那头鹿旁边。
+		<<if $monster is 1>>
+			<<bHe>>坐在你边上，摸了摸你的头。"精彩的狩猎，愿你永获猎物，<<ppackbrother>>。"
+		<</if>>
+		<<stress -12>><<lstress>>
+		<br><br>
+
+		狼群慵懒地躺在那里，悠闲地享用食物。突然，一场小争斗爆发了，黑狼离开了<<bhis>>在鹿旁边的位置去平息争吵。
+		<br><br>
+		<<endevent>>
+		<<wolfpackhuntoptions>>
+
+	<<else>>
+		黑狼站在地面上，攻击者的冲锋将<<bhim>>击倒。它在狼群中横冲直撞，它们惊慌失措，为了安全四处奔逃。
+		<br><br>
+
+		<i>更高的和谐和凶猛增加了狩猎成功的机会.</i>
+		<br><br>
+
+		你带着狼群跑进了森林。一定有更容易被捕食的猎物。
+		<<gathletics>><<athletics 6>><<physique 6>>
+		<br><br>
+		<<endevent>>
+		<<set $bus to "wolfcaveclearing">>
+		<<wolfhuntevents>>
+	<</if>>
+<</if>>
+
+:: Wolf Bear
+<<location "forest">><<effects>>
+<<beastNEWinit 1 bear>>
+你来到一个小洞穴，看到一个巨大的形状以稳定的节奏起伏。这是一只<<beasttype>>，它闭着眼睛躺在一只新捕到的猎物旁边。它看起来像一只鹿。狼群越来越近。它们需要一些惊喜。
+<br><br>
+
+<<set $skulduggerydifficulty to 300>>
+<<link [[分散注意|Wolf Bear Distract]]>><</link>><<skulduggerydifficulty>>
+<br>
+<<link [[攻击|Wolf Bear Attack]]>><</link>>
+<br>
+
+:: Wolf Hunters
+<<location "forest">><<effects>>
+
+狼群似乎感到不安，通常情况下，它们不会追踪人类，除非情况十分危急。不过，它们还是跟着你前进。它们的奔跑逐渐放缓，变成了潜行。不久之后，你听到前方传来笑声。你慢慢地靠近，发现三个猎人围着篝火坐着，地上放着一只鹿的尸体，每个人手里都拿着一支步枪。
+<br><br>
+
+进行正面攻击非常冒险。
+<br><br>
+
+<<if $exposed gte 2>>
+	<<if $exhibitionism gte 75>>
+		当你面对其他人时，你会更加意识到自己的<<lewdness>>。像这样大步走到他们中间会很尴尬。但这可能对你有利。
+		<br><br>
+
+		<<set $skulduggerydifficulty to 400>>
+		<<link [[分散他们的注意|Wolf Hunters Distract]]>><<set $phase to 0>><</link>><<skulduggerydifficulty>><<exhibitionist5>>
+		<br>
+	<<else>>
+		当你面对其他人时，你会更加意识到自己的<<lewdness>>。你不可能让他们看到你。
+		<br><br>
+	<</if>>
+<<elseif $exposed gte 1>>
+	<<if $exhibitionism gte 35>>
+		当你面对其他人时，你会更加意识到自己的<<lewdness>>。像这样大步走到他们中间会很尴尬。但这可能对你有利。
+		<br><br>
+
+		<<set $skulduggerydifficulty to 600>>
+		<<link [[分散他们的注意|Wolf Hunters Distract]]>><<set $phase to 1>><</link>><<skulduggerydifficulty>><<exhibitionist3>>
+		<br>
+	<<else>>
+		当你面对其他人时，你会更加意识到自己的<<lewdness>>。你不可能让他们看到你。
+		<br><br>
+	<</if>>
+<<else>>
+	<<set $skulduggerydifficulty to 800>>
+	<<link [[分散他们的注意|Wolf Hunters Distract]]>><<set $phase to 2>><</link>><<skulduggerydifficulty>>
+	<br>
+<</if>>
+
+<<link [[攻击|Wolf Hunters Attack]]>><</link>>
+<br>
+<<link [[离开|Wolf Hunter Leave]]>><</link>>
+<br>
+
+:: Wolf Deer2
+<<location "forest">><<effects>>
+<<npc "Black Wolf">>
+<<if $phase is 0>><<set $wolfpackshroom to "none">>
+	你把红色的蘑菇撒在了黑狼的食物里。黑狼发现了你的行为，开始咆哮，但当<<bhe>>看到你没有带走任何东西后，就停止了抗议。<<bHe>>回到了自己的位置，继续享用食物。接下来的几个小时，<<bhe>>变得更加有领地意识，盯着其他靠近鹿的<<wolf_cave_plural>>，并对它们咆哮着。
+	<<gferocity>>
+	<br><br>
+<<elseif $phase is 1>><<set $wolfpackshroom to "none">>
+	你把粉红色的蘑菇撒在黑狼的食物上.<<bHe>>发现了你的动作并发出咆哮，但当<<bHe>>看到你什么都没带走时，<<bhe>>软化了态度.<<bHe>>回到<<bhis>>的地方，继续吃东西。在接下来的几个小时里，<<bhe>>变得无精打采。另一只<<wolf_cave_plural>>注意到鹿的某些部位，并在它们通常不被允许的部位碰运气。
+	<<lferocity>><<set $wolfpackpoisoned to 1>>
+	<br><br>
+<</if>>
+<<endevent>><<beastNEWinit 1 wolf>>
+你躺在草地上，头靠在一个<<beasttype>>身上。一直跑步让你很累。你闭上眼睛睡觉。当你休息的<<beasttype>>站起来时，你被吵醒了。
+<br><br>
+<<endevent>>
+
+<<set $huntstate to "success">>
+<<wolfhuntevents>>
+
+:: Wolf Hunters Attack
+<<location "forest">><<effects>>
+<<generate1>><<generate2>><<generate3>>
+狼群在营地周围就位，然后从四面八方冲进来！
+<br><br>
+
+<<if $wolfpackharmony + $wolfpackferocity - 20 gte $rng>>
+
+	猎人反应很快，但速度不够快。一个<<person1>><<person>>伸手去拿<<his>>的枪，<<he>>把枪留在了<<he>>坐的地方，但为时已晚。黑狼猛扑过去，抓住<<his>>的手臂。
+	<br><br>
+
+	另一个<<wolf_cave_plural>>跟随黑狼的脚步。当它们背靠着猎人，把他们逼成一个紧密的圆圈时，你开始后退。
+	<br><br>
+
+	"这太疯狂了，"<<person>>结结巴巴地说道。
+	<br><br>
+	<<earnFeat "Top of the Food Chain">>
+	<<link [[索要贵重物品|Wolf Hunters Valuables]]>><</link>><<crime>>
+	<br>
+	<<link [[让他们走|Wolf Hunters Go]]>><</link>>
+	<br>
+
+<<else>>
+	猎人们迅速做出反应，他们拿起步枪向狼群开火。子弹呼啸着飞入树林。虽然没有受伤，但<<wolf_cave_plural>>仍然转身逃离，寻找安全之处。你跟着它们一起离开了那里。
+	<<lharmony>><<lferocity>>
+	<br><br>
+
+	<i>更高的和谐和凶猛增加了狩猎成功的机会.</i>
+	<br><br>
+
+	你又一次跑进森林，后面紧跟着狼群。一定有更容易被捕食的猎物。
+	<<gathletics>><<athletics 6>><<physique 6>>
+	<br><br>
+	<<endevent>>
+	<<set $bus to "wolfcaveclearing">>
+	<<wolfhuntevents>>
+<</if>>
+
+:: Wolf Hunters Distract
+<<location "forest">><<effects>>
+<<generate1>><<generate2>><<generate3>>
+<<if $phase is 0>>
+	<<flaunting>>你从安全的树上出来，一丝不挂。你听到你的一个队友在你身后某处呜咽，但你没有停下来。你现在可以更清楚地看到猎人，然后直接向他们中间行进。
+	<<exhibitionism5>>
+
+	他们目瞪口呆地看着你。和你距离最近的，一个<<person1>><<person>>最先开口。"为什么，如果不是林中精灵，为什么要来给我们保暖？"<<He>>站了起来，其他人也站了起来。
+	<br><br>
+
+<<elseif $phase is 1>>
+	<<flaunting>>尽管暴露在外，你还是从安全的树上走了出来。你听到狼群在你身后某处呜咽，但你没有停下来。你现在可以更清楚地看到猎人，然后直接向他们中间行进。
+	<<exhibitionism3>>
+
+	他们目瞪口呆地看着你。和你距离最近的，一个<<person1>><<person>>最先开口。"看起来你忘了穿得体了。"<<He>>站起来，其他人也站起来了。
+	<br><br>
+
+<<else>>
+	你安全的从树林里出来。你听到你的一个队友在你身后某处呜咽，但你没有停下来。你现在可以更清楚地看到猎人，然后直接向他们中间行进。
+	<br><br>
+
+	他们一看到你就跳起来伸手去拿枪，但很快就平静下来了。和你距离最近的，一个<<person1>><<person>>最先开口。"你不应该穿成这样偷偷接近别人，"<<he>>说道。"你会很容易受伤的。"<<He>>站起来时斜眼看着你，其他人也一样。
+	<br><br>
+<</if>>
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+	<<skulduggeryuse>>
+
+	<<person2>><<person>>耸耸肩，好像在听，<span class="green">但什么也没听到</span><<He>>对你咧嘴笑。"是一个人在树林里散步吗？别担心，我们会照顾你的。"
+	<br><br>
+
+	"没错，"<<person3>><<person>>说，然后<<he>>上下打量着你。"问题是，我们该怎么处理你？"
+	<br><br>
+
+	他们被你迷住了，以至于没有注意到许多双眼睛在黑暗中发光，而且还在越来越近。<<person1>><<person>>从<<his>>朋友的肩膀上看过去，恐惧在<<his>>脸上蔓延。<<He>>伸手去拿<<his>>的枪，<<he>>把枪留在了<<He>>坐的地方，但为时已晚。黑狼猛扑过去，咬住<<his>>的手臂。
+	<br><br>
+
+	另一个<<wolf_cave_plural>>跟随黑狼的脚步。当它们背靠着猎人，把他们逼成一个紧密的圆圈时，你开始后退。
+	<br><br>
+
+	"这太疯狂了，"<<person>>结结巴巴地说道。
+	<br><br>
+	<<earnFeat "Top of the Food Chain">>
+	<<link [[索要贵重物品|Wolf Hunters Valuables]]>><</link>><<crime>>
+	<br>
+	<<link [[让他们走|Wolf Hunters Go]]>><</link>>
+	<br>
+<<else>>
+
+	<<skulduggeryskilluse>>
+
+	"<span class="red">我听到了</span>，"<<person2>><<person>>开口说道，并迅速捡起一块石头扔到营地周围的灌木丛中。你可以听到沙沙作响的脚步声。它逐渐消失。这群人非常紧张，足以吓得他们逃跑。
+	<br><br>
+
+	"看起来你的朋友跑得很快啊，"<<person3>><<person>>说道。"真可怜。我打赌它们和你一样可爱。"<<He>>向你伸出手来。"现在来吧。"
+	<br><br>
+
+	<<link [[继续|Wolf Hunter Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Wolf Hunter Leave
+<<location "forest">><<effects>>
+
+这太冒险了，不值得冒险。你转身就跑，<<wolf_cave_plural>>松了一口气，紧随其后.
+<<gathletics>><<athletics 6>><<physique 6>>
+<br><br>
+
+<<set $bus to "wolfcaveclearing">>
+<<wolfhuntevents>>
+
+:: Wolf Hunters Valuables
+<<location "forest">><<effects>>
+<<set $wolfpackrob to 1>>
+
+<<if $speech_attitude is "meek">>
+	"把你们的钱和贵重物品都交出来，然后就离开，让我们安心地吃饭。"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"你们的钱和贵重物品，"你说道。"在我把你喂给家人之前。"
+<<else>>
+	"你们的钱和贵重物品，"你说道。"快点，我不能永远阻止它们。"
+<</if>>
+狼群咆哮着。
+<br><br>
+
+他们从口袋里掏出钱，摘下珠宝。他们把所有东西都堆在脚下，然后被紧跟在他们后面的<<wolf_cave_plural>>从营地赶走。一旦人影消失了，它们就开始冲向鹿的尸体。
+<br><br>
+
+<<if $rng gte 96>>
+	你发现了<<moneyGain 200 true true>>现金，以及你认为非常有价值的各种小玩意。
+	<<set $blackmoney += 800>><<crimeup 800>>
+<<elseif $rng gte 51>>
+	你发现了<<moneyGain 50 true true>>现金，以及你认为很有价值的各种小玩意。
+	<<set $blackmoney += 50>><<crimeup 50>>
+<<else>>
+	你发现了<<moneyGain 20 true true>>现金，以及你认为非常有价值的各种小玩意。
+	<<set $blackmoney += 30>><<crimeup 30>>
+<</if>>
+
+<<endevent>>
+<<npc "Black Wolf">>
+黑狼留下了最好的部分给自己。你在猎人留下的袋子里翻找，找到一些更适合你的罐头食品。你坐在鹿旁边。
+<<stress -12>><<lstress>>
+<br><br>
+
+<<if $wolfpackspray isnot 1>><<set $wolfpackspray to 1>>
+	你在他们的东西中发现一个奇怪的圆柱体。它看起来像是胡椒喷雾，但底部有一个暴露的计算机芯片。你把它放进去了。
+	<<gspraymax>><<set $spraymax += 1>><<spray 5>>
+	<br><br>
+	<span class="gold">你获得了额外的防狼喷雾。</span>
+	<br><br>
+<</if>>
+<<if $monster is 1>>
+	黑狼坐在你旁边，把手放在你的头上。"狩猎很成功。人类是顶级捕食者。有了你，我们可以做任何事情，<<ppackbrother>>。"
+<</if>>
+
+狼群慵懒地躺在那里，悠闲地享用食物。突然，一场小争斗爆发了，黑狼离开了<<bhis>>在鹿旁边的位置去平息争吵。
+<br><br>
+<<endevent>>
+
+<<wolfpackhuntoptions>>
+
+:: Wolf Hunters Go
+<<location "forest">><<effects>>
+
+<<if $speech_attitude is "meek">>
+	"离我们远点"，你说道。"我们只想和平地吃饭。"
+<<elseif $speech_attitude is "bratty">>
+	"离开，"你说道。"在我改变主意，把你喂给我的家人之前。"
+<<else>>
+	"离开，"你说道。"我不能永远阻止它们。"
+<</if>>
+狼群咆哮着。
+<br><br>
+
+猎人们点头离开营地，身后紧跟着<<wolf_cave_plural>>。一旦人影消失了，它们就开始冲向鹿的尸体。
+<br><br>
+
+<<endevent>>
+<<npc "Black Wolf">>
+黑狼给自己留下了部分，你在猎人留下的袋子里翻找，找到一些更适合你的罐头食品。你坐在鹿旁边。
+<<stress -12>><<lstress>>
+<br><br>
+
+<<if $wolfpackspray isnot 1>>
+	<<set $wolfpackspray to 1>>
+	你在他们的东西中发现一个奇怪的圆柱体。它看起来像是胡椒喷雾，但底部有一个暴露的计算机芯片。你把它放进去了。
+	<<gspraymax>><<set $spraymax += 1>><<spray 5>>
+	<br><br>
+	<span class="gold">你获得了额外的防狼喷雾。</span>
+	<br><br>
+<</if>>
+<<if $monster is 1>>
+	黑狼坐在你旁边，把手放在你的头上。"狩猎很成功。人类是顶级捕食者。有了你，我们可以做任何事情，<<ppackbrother>>。"
+<</if>>
+
+狼群慵懒地躺在那里，悠闲地享用食物。突然，一场小争斗爆发了，黑狼离开了<<bhis>>在鹿旁边的位置去平息争吵。
+<br><br>
+<<endevent>>
+<<wolfpackhuntoptions>>
+
+:: Wolf Hunter Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>><<set $enemyanger += 50>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Wolf Hunter Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Wolf Hunter Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Wolf Hunter Rape Finish
+<<location "forest">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	"我说过这次旅行是值得的，"<<person1>><<person>>说道。"现在怎么办？"
+	<br><br>
+
+	<<person2>>"我知道，"<<person>>说道。<<He>>从篝火旁边的一个袋子里拿出一根绳子，将你的手臂绑在一起。"好了，祝你被狼吃得开心。"<<tearful>>你含着泪离开了营地。你走着，直到他们的笑声在身后渐渐消失。
+	<br><br>
+	<<set $leftarm to "bound">><<set $rightarm to "bound">>
+	<<clotheson>>
+	<<endcombat>>
+<<else>>
+	<<person1>><<person>>使劲向后一跌，踩进了篝火里。<<tearful>>你推开<<him>>，逃进了森林。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+
+<<link [[继续|Forest]]>><<set $forest to 1>><</link>>
+
+:: Wolf Bear Distract
+<<location "forest">><<effects>>
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+	你悄悄接近洞穴，听到了<<beasttype>>的鼾声。<span class="green">你从<<bhim>>身后悄悄接近。</span>其他的狼群也逐渐靠近。其中一只踩断了一根树枝，<<beasttypes>>的眼睛立刻睁开了。你朝<<bhim>>扔了一块石头，<<bhe>>转过身来面对你。<<bHe>>站起来咆哮，完全没有意识到身后的<<wolf_cave_plural>>正在向<<bhim>>发起攻击，咬着<<bhis>>的四肢，抓着<<bhis>>的背部。
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	<<beasttype>>晕晕乎乎地被包围着，从洞穴里跌跌撞撞地跑出去了，鹿的尸体被留在了原地。<<if $monster is 1>>"贼狼……如果你们这么想要这只鹿的话，就拿走吧！"<</if>>黑狼留下了最美味的部分，而你在附近发现了一些浆果，对你来说更有用。你坐在鹿旁边。
+	<<stress -12>><<lstress>>
+	<br><br>
+	<<endevent>>
+	<<npc "Black Wolf">>
+	<<if $monster is 1>>
+		黑狼叫你过去。"熊并不是我们团队力量的对手。<<pPackbrother>>做得很好。"
+	<</if>>
+
+	狼群慵懒地躺在那里，悠闲地享用食物。突然，一场小争斗爆发了，黑狼离开了<<bhis>>在鹿旁边的位置去平息争吵。
+	<br><br>
+
+	<<endevent>>
+	<<wolfpackhuntoptions>>
+<<else>>
+	你悄悄接近洞穴，听到了<<beasttype>>的鼾声。<span class="red">当你正走到它身边的时候，它突然睁开了眼睛，直勾勾地盯着你！</span><<wolf_cave_plural>>在夜色中逃走了，<<beasttype>>站在你面前。
+	<br><br>
+
+	<<link [[继续|Wolf Bear Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Wolf Bear Attack
+<<location "forest">><<effects>>
+狼群悄悄地接近洞穴，<<beasttypes>>的眼睛睁开了，狼群向它扑去。
+<br><br>
+
+<<if $wolfpackharmony + $wolfpackferocity + 20 gte $rng>>
+
+	<<beasttype>>试图站起身来，但已经太晚了。几只狼的嘴巴紧紧咬住了它的身体。它痛苦地咆哮着，挥舞爪子攻击着攻击者，但它们跳开以躲避攻击。
+	<br><br>
+
+	<<beasttype>>晕晕乎乎地受伤离开了洞穴，鹿的尸体被留在了原地。<<if $monster is 1>>"贼狼……如果你们这么想要这只鹿的话，就拿走吧！"<</if>>黑狼留下了最美味的部分，而你在附近发现了一些浆果，对你来说更有用。
+	<<stress -12>><<lstress>>
+	<br><br>
+	<<endevent>>
+	<<npc "Black Wolf">>
+	<<if $monster is 1>>
+		黑狼叫你过去。"熊并不是我们团队力量的对手。<<pPackbrother>>做得很好。"
+	<</if>>
+
+	狼群慵懒地躺在那里，悠闲地享用食物。突然，一场小争斗爆发了，黑狼离开了<<bhis>>在鹿旁边的位置去平息争吵。
+	<br><br>
+
+	<<endevent>>
+	<<wolfpackhuntoptions>>
+
+<<else>>
+	黑狼扑过去，但<<beasttype>>的动作太快了。<<bHe>>一把把黑狼甩开，其他的<<wolf_cave_plural>>也转身逃跑。黑狼跟上去一起跑走了，除了<<nnpc_his "Black Wolf">>的尊严受到了伤害，没有一头狼受伤。
+	<br><br>
+
+	<i>更高的和谐和凶猛增加了狩猎成功的机会.</i>
+	<br><br>
+
+	你带着狼群跑进了森林。一定有更容易被捕食的猎物。
+	<<gathletics>><<athletics 6>><<physique 6>>
+	<br><br>
+	<<endevent>>
+
+	<<set $bus to "wolfcaveclearing">>
+	<<wolfhuntevents>>
+<</if>>
+
+:: Wolf Bear Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $enemytrust -= 40>><<set $enemyanger += 40>><<set $enemyhealthmax to 400>><<set $enemyhealth to 400>><<set $enemyarousalmax to 1000>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Wolf Bear Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Wolf Bear Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Wolf Bear Rape Finish
+
+<<location "forest">><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+	<<beasttype>>满意地回去睡觉了。
+	<br><br>
+	<<tearful>>你蹒跚地走出洞穴。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Forest]]>><<set $forest to 60>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	你吓到了那只肥壮的<<beasttype>>。<<bHe>>逃回了<<bhis>>的窝里。很遗憾狼群跑了，因为没有任何东西保护尸体。
+	<br><br>
+	<<tearful>>你蹒跚地走出洞穴。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Forest]]>><<set $forest to 60>><</link>>
+	<br>
+<</if>>
+
+:: Wolf Carrion Stand
+
+<<location "forest">><<effects>>
+你爬着站了起来。
+<<if $physiqueSuccess>>
+	<span class="green">那个<<beasttype>>从你们身边逃跑了</span>,逃进了森林里。
+	<br><br>
+	黑狼选了给自己的部分。你发现附近生长着一些浆果，更和你胃口。你坐在鹿旁边。
+	<<endevent>><<npc "Black Wolf">>
+	<<if $monster is 1>>
+		<<bHe>>坐在你边上，摸了摸你的头。"精彩的狩猎，愿你永获猎物，<<ppackbrother>>。"
+	<</if>>
+	<<stress -12>><<lstress>>
+	<br><br>
+	狼群慵懒地躺在那里，悠闲地享用食物。突然，一场小争斗爆发了，黑狼离开了<<bhis>>在鹿旁边的位置去平息争吵。
+	<br><br>
+	<<endevent>>
+	<<wolfpackhuntoptions>>
+<<else>>
+	<span class="red">那头<<beasttype>>没有停下。</span><<bHe>>把你撞到一边，在狼群中疯狂奔跑，狼群在森林中四散逃开。在你尝试爬起来的时候，<<beasttype>>压在了你身上。
+	<br><br>
+	<<link [[继续|Wolf Carrion Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Wolf Carrion Run
+
+<<location "forest">><<effects>>
+你从<<beasttype>>身边逃开了。<<bHe>>它在狼群中横冲直撞，它们惊慌失措四散而逃。
+<br><br>
+你带着狼群跑进了森林。一定有更容易被捕食的猎物。
+<<gathletics>><<athletics 6>><<physique 6>>
+<br><br>
+<<endevent>>
+<<set $bus to "wolfcaveclearing">>
+<<wolfhuntevents>>
+
+:: Wolf Carrion Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $NPCList[0].stance to "top">>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Wolf Carrion Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Wolf Carrion Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Wolf Carrion Rape Finish
+
+<<location "forest">><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+	那头<<beasttype>>心满意足地爬回山丘上享受食物。
+	<br><br>
+	<<tearful>>你走进树林中。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Forest]]>><<set $forest to 60>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	你把<<beasttype>>从你身边吓跑了。<<bHe>>尖叫着逃走了。很遗憾狼群逃跑了，这下没有任何东西能保护猎物了。
+	<br><br>
+	<<tearful>>你走进树林中。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Forest]]>><<set $forest to 60>><</link>>
+	<br>
+<</if>>
+
+:: Wolf Rival Challenge
+<<effects>>
+你的族群不可能赢下这场战斗。你走向巨大的<<beasttype>>，想要一对一地解决问题。你一踏进范围，你的对手立刻咆哮着冲向了你。
+<br><br>
+
+<<link [[继续|Wolf Rival Fight]]>><<set $fightstart to 1>><</link>>
+
+:: Wolf Rival Fight
+
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $enemyanger += 200>>
+	<<set $enemyhealth to 300>><<set $enemyhealthmax to 300>>
+<</if>>
+<<set $enemyanger += 10>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Wolf Rival Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Wolf Rival Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Wolf Rival Fight Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<set _victory to 1>>
+	<<beastejaculation>>
+	<<beasttype>>的目光涣散了，<<bhe>>漫无目的地离开了。敌对的狼群看起来很困惑，但还是跟着它们的领袖离开了，它们不情愿地离开了你和你的狼群。<<tearful>>你站了起来。
+<<elseif $enemyhealth lte 0>>
+	<<set _victory to 1>>
+	<<tearful>>你胜利地站在被击败的敌人面前。<<beasttype>>匆匆离开了你们，逃进了它们安全的领地。它们很快就离开了，留下你的族群去享受它的猎物。
+<<else>>
+	<<set _victory to 0>>
+	你摔倒在地，无法继续战斗。那头<<beasttype>><<if $monster isnot 1>>用<<bhis>>的牙齿<</if>>扼住了你的喉咙，但最终还是放开了你。<<trauma 6>><<gtrauma>>
+	<br><br>
+	<<if $monster is 1>>
+		"软弱的头狼，"<<bhe>>嘲笑道。"你的族群将以你为耻，夹着尾巴逃命去吧，弱者。"
+		<br><br>
+	<</if>>
+	敌对的狼群把尸体拖走了，留下你面对族群失望的表情。<<tearful>>你站起来，躲闪着他们的目光。<<lharmony>><<lferocity>>
+<</if>>
+<br>
+<<endcombat>><<clearNPC rival_wolf>><<npc "Black Wolf">>
+<<clotheson>>
+
+<<if _victory is 1>>
+	黑狼高声嚎叫，随后是你和族群的应和。森林里回响着你们凯旋的颂歌。<<stress -12>><<trauma -6>><<llstress>><<ltrauma>><<gharmony>><<gferocity>>
+	<br><br>
+
+	<<if $wolfpackharmony gte $wolfpackferocity>>
+		黑狼推了你一下。
+		<<if $monster is 1>>
+			"优秀的领袖身强力壮，"<<bhe>>说道。"伟大的领袖强大无匹。能有<<ppackbrother>>是族群的福祉。"
+		<<else>>
+			<<bHe>>舔了舔你的手。
+		<</if>>
+	<<else>>
+		黑狼朝另一群狼离开的方向狂吠了一声。
+		<<if $monster is 1>>
+			"该结束这场无聊的斗争了，"<<bhe>>咆哮道。"族群无需再理会敌人的威胁。伟大的领袖绝不手软!"
+		<</if>>
+	<</if>>
+<<else>>
+	<<if $wolfpackharmony gte $wolfpackferocity>>
+		黑狼温柔地用鼻子蹭你。
+		<<if $monster is 1>>
+			"领袖战斗的很英勇，"<<bhe>>说道。"但族群崇尚力量。领袖必须足够强大才能获得族群的追随。"
+		<<else>>
+			<<bHe>>至少不会因为你的失败而鄙视你。
+		<</if>>
+	<<else>>
+		黑狼走到你面前，对你低吼一声。
+		<<if $monster is 1>>
+			"如果族群再在狩猎中依赖如此软弱的领袖，族群就会饿死!"<<he>>龇牙咧嘴。 "头狼要么下次继续获胜，不然就失去整个族群!"
+		<</if>>
+	<</if>>
+<</if>>
+<br><br>
+
+<<endevent>>
+<<wolfpackhuntoptions>>
+
+:: Wolf Rival Offer
+<<effects>>
+
+你开始走向敌对的狼群。那领导的<<beasttype>>在你靠近时朝你咆哮。你四肢着地向着<<beastsplural>>摆出交尾的姿势。
+<br><br>
+
+<<if $monster is 1>>
+	那<<beasttype>>向你走来，把你的头按在地上，紧紧地踩着你。"拿走食物,"<<bhe>>朝黑狼说道。"我们找到了更美味的猎物……"。<<beasttype>>其余的族群推开，允许你的族人们拿走原来的猎物。
+<<else>>
+	它们的领袖靠近你，闻一闻你的气味，然后用牙齿咬住你的头发，从你背后骑上你。狼群的其余部分越来越近，留下他们之前的猎物无人看管，供你的族群带走。
+<</if>>
+<br><br>
+
+领导的<<beasttype>>第一个靠上来。
+<br><br>
+
+<<for _wolfNum = 2; _wolfNum < 5; _wolfNum++>>
+	<<generateBEAST _wolfNum "wolf">>
+<</for>>
+<<link [[继续|Wolf Rival Molestation]]>><<set $molestationstart to 1>><<set $phase to 1>><</link>>
+
+:: Wolf Rival Molestation
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<beastTrainGenerate>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Wolf Rival Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Wolf Rival Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Wolf Rival Molestation Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+	<<if $combatTrain.length gt 0>>
+		心满意足地，<<beasttype>>放开了你。另外一只接替了<<bhis>>的位置。
+		<<combatTrainAdvance>>
+		<<wolfpacktrust>>
+		<br><br>
+		<<link [[继续|Wolf Rival Molestation]]>><</link>>
+	<<else>>
+		心满意足的<<beasttype>>放开了你。
+		<<combatTrainAdvance>>
+		<<wolfpacktrust>>
+		<br><br>
+		<<link [[继续|Wolf Rival Molestation End]]>><</link>>
+	<</if>>
+<<elseif $enemyhealth lte 0>>
+	<<beastwound>>
+	<<if $combatTrain.length gt 0>>
+		<<beasttype>>在痛苦和恐惧中退缩，但另一个补上了<<bhis>>的位置。
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[继续|Wolf Rival Molestation]]>><</link>>
+	<<else>>
+		<<beasttype>>吃痛退开，畏惧着。
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[继续|Wolf Rival Molestation End]]>><</link>>
+	<</if>>
+<</if>>
+
+:: Wolf Rival Molestation End
+<<effects>>
+
+<<if $enemyejaculated is 0>>
+	<<if $phase is 1>>
+		尽管它们人多势众，但你还是成功击退了贪婪的狼群，让它们夹着尾巴逃跑了。
+	<<else>>
+		感觉你带来的麻烦超过了你的价值，<<beasttype>>退缩了。
+	<</if>>
+<<else>>
+	它们心满意足地把你留在地上，让你恢复体力，然后飞奔而去，消失在黑夜中。
+<</if>>
+<<tearful>>你站了起来。
+<br><br>
+
+<<endcombat>><<clotheson>><<clearNPC rival_wolf>>
+
+你爬起来，花了几分钟时间恢复。幸运的是，你发现了鹿群留下的脚印，你成功地跟着脚印回到了安全的洞穴。<<gharmony>><<lferocity>>
+<br><br>
+<<set $huntstate to "finished">>
+<<if $wolfstate is "hunt">>
+	<<set $wolfstate to "cave">>
+<</if>>
+
+<<link [[继续|Wolf Cave Clearing]]>><</link>>
+
+:: Wolf Rival Flee
+<<effects>>
+
+<<endevent>><<beastNEWinit 1 wolf>>
+你不想参与随后的打斗，所以你密切关注着野兽，寻找逃跑的机会。一旦战斗爆发，你会转身逃跑。一个<<beasttype>>注意到你试图逃跑并开始追赶你。
+<br><br>
+<<if $athleticsSuccess>>
+	<<clearNPC rival_wolf>>
+	你尽你的腿能跑多快，<span class="green">和<<beasttype>>很快就看不见你了</span>。甩掉追赶你的人后，你花了几分钟来喘口气。
+	<br><br>
+	<<link [[继续|Forest]]>><<endevent>><<set $forest to 60>><</link>>
+<<else>>
+	你的腿能跑多快就跑多快，<span class="red">但是你被<<beasttype>></span>超过了。<<bHe>>把你撞倒在地。
+	<br><br>
+
+	<<if $monster is 1>>
+		"胆小鬼想逃跑?"<<bHe>>咆哮。"要教训教训!"
+		<br><br>
+	<</if>>
+	<<link [[继续|Wolf Rival Molestation]]>><<set $molestationstart to 1>><</link>>
+<</if>>
+
+:: Wolf Rival Retreat
+<<effects>>
+
+你权衡了自己的选择，意识到最好避免这场争斗。你看着你的<<wolf_cave_plural>>，挥手让它们离开。
+<br><br>
+
+来自对方族群的<<beasttype>>接近想要攻击，但被其首领阻止。
+<<if $monster is 1>>
+	"让懦夫走吧，"<<bhe>>轻蔑地说道。"不值得战斗。我们要减少损失。"
+<</if>>
+<br><br>
+<<endevent>><<clearNPC rival_wolf>>
+
+对手的狼群把尸体拖走了，留下你自己的<<wolf_cave_plural>>空手而归。它们一边走一边轻蔑地看着你。
+
+<<npc "Black Wolf">>
+黑狼停在你身边，悲伤地看着你。
+<<if $monster is 1>>
+	"首领以前很强壮，很凶猛，"<<bhe>>说道。"族群不会跟随软弱的领袖。"
+<</if>>
+<br><br>
+
+<<endevent>>
+<<wolfpackhuntoptions>>
+
+:: Wolf Cave Hunt No Black Wolf Start
+<<effects>>
+
+<<if $phase is 1>>
+	<<beastNEWinit 1 wolf>>
+	在跑进树林之前，你深吸一口气。族群成员追在你后面，有些人跟在后面，有些人试图取代你的领导。其中一个<<beasttype>>似乎有意接管狩猎。<<gathletics>><<athletics 6>><<physique 6>>
+	<br><br>
+	<<link [[出行(0:30)|Wolf Cave Hunt Outrun]]>><<set $phase to 1>><<pass 30>><</link>><<dancedifficulty 600 1200>>
+	<br>
+	<<link [[试着逃跑(0:30)|Wolf Cave Hunt Outrun]]>><<set $phase to 0>><<pass 30>><</link>><<athleticsdifficulty 600 1200>>
+<<else>>
+	不想领导，你低着头等着别人来接手。<<if $wolfpackleader gte 1>>你听到黑狼在你身后咆哮。<</if>>
+	<br><br>
+	最终，一只更大的狼接管了，狩猎开始了。
+	<br><br>
+	其他几只狼仍在为奔跑时的领导权而战。<<gathletics>><<athletics 3>><<physique 3>>
+	<br><br>
+	<<link [[继续 (1:00)|Wolf Cave Hunt Not Taking the Lead]]>><<pass 60>><</link>>
+<</if>>
+
+:: Wolf Cave Hunt Outrun
+<<effects>>
+
+<<if $phase is 1>>
+	<<if $danceSuccess>>
+		在你的腿开始拉伤之前，你保持了一段时间的领先。不想输，你腿一伸，<span class="green">绊倒了<<beasttype>></span>。当<<bhe>>倒下时，你听到<<bhe>>的呜呜声。<<gferocity>>
+		<br><br>
+		<<link [[继续 (0:15)|Wolf Cave Hunt Taking the Lead]]>><<pass 15>><</link>>
+	<<else>>
+		在你的腿开始拉伤之前，你保持了一段时间的领先。不想输，你用脚猛击，但<<beasttype>>迅速闪避，你反而被绊倒了。
+		<<gdanceskill>><<danceskill 6>><<physique 6>>
+		<br><br>
+		<<link [[继续 (0:30)|Wolf Cave Hunt Not Taking the Lead]]>><<pass 30>><</link>>
+	<</if>>
+	<<clearsinglenpc 0>>
+	<br>
+<<else>>
+	<<if $athleticsSuccess>>
+		你努力在比赛中保持领先，你跑得时间太长，汗水从你的额头上滴下来。<span class="green">你保持领先</span>，你的挑战者最终从一个小池塘里挣脱出来喝水。
+		<br><br>
+		狼群一直在努力跟上，大多数成员都停下来喝水。<<gharmony>>
+		<br><br>
+		<<link [[继续 (0:15)|Wolf Cave Hunt Taking the Lead]]>><<pass 15>><</link>>
+	<<else>>
+		你努力在比赛中保持领先，你跑得时间太长，汗水从你的额头上滴下来。你最终落在了后面，腿太痛了，无法忽视。
+		<<gathletics>><<athletics 6>><<physique 6>>
+		<br><br>
+		其他成员也同样喘着粗气。看到一个小池塘，大家都可以休息一下，喝点水。
+		<br><br>
+		<<link [[继续 (0:30)|Wolf Cave Hunt Not Taking the Lead]]>><<pass 30>><</link>>
+	<</if>>
+	<br>
+<</if>>
+
+:: Wolf Cave Hunt Taking the Lead
+<<effects>>
+<<if $wolfgirl gte 6>>
+	你掌管一切，一股香味扑鼻而来。这很熟悉。是鹿。几个狼群成员也闻到了气味，它们看着你。
+<<else>>
+	你掌管一切，你在泥里看到脚印。蹄子，很像鹿。狼群成员嗅了嗅，兴奋地摇着尾巴。
+<</if>>
+<br><br>
+你再次开始奔跑，这次心中有一个目标。
+<br><br>
+<<link [[继续 (1:00)|Wolf Cave Hunt Taking the Lead 2]]>><<pass 60>><</link>>
+
+:: Wolf Cave Hunt Taking the Lead 2
+<<effects>>
+你试着让族群保持统一，你回忆着黑狼以前的领导方式。这很难，因为年长的成员试图接手，而年轻的成员则落后于他们。
+<br><br>
+狼群走得很近，可以看到空地上的鹿。它似乎处于高度戒备状态，经常抬头，吃得很少。谢天谢地，你们都在顺风处，被灌木丛遮住了。
+<br><br>
+想到必须抓住它，你心里很不放心。你选择了一个有经验的成员，它似乎渴望担任这个角色。
+<br><br>
+族群成员在出发前都已就位。小鹿惊慌失措地逃跑了，但狼群还在追赶。
+<br><br>
+<<link [[继续 (0:30)|Wolf Cave Hunt No Black Wolf Deer]]>><<pass 30>><</link>>
+
+:: Wolf Cave Hunt Not Taking the Lead
+<<effects>>
+
+你刚开始屏住呼吸，兴奋的尖叫声和呜呜声就响起来了。找到了气味，正式的狩猎开始了。 
+<br><br>
+<<link [[继续 (1:00)|Wolf Cave Hunt Not Taking the Lead 2]]>><<pass 60>><</link>>
+
+:: Wolf Cave Hunt Not Taking the Lead 2
+<<effects>>
+随着越来越多的狼试图组织狼群，似乎会有进一步的权力斗争。有人撕咬，有人吠叫，有人撞击，以确保大家都在一起。
+<br><br>
+当狼群进入鹿的警戒范围时，一切声音都安静了下来。在顺风处，隐藏在灌木丛中，你可以看到一只<<wolf_cave_singular>>在指挥其他狼就位，准备跳出来扑向猎物。
+<br><br>
+领头的开始了，以缓慢的小跑开始。鹿逃跑了，追逐又开始了。
+<br><br>
+<<link [[继续 (0:30)|Wolf Cave Hunt No Black Wolf Deer]]>><<pass 30>><</link>>
+
+:: Wolf Cave Hunt No Black Wolf Deer
+<<effects>>
+你设法在鹿的左侧跟上它，比其他成员更接近它。
+<br><br>
+在树林间穿梭，你走在了猎物的前面。这只鹿正在慢慢被包围，越来越多的狼追上了它。
+<br><br>
+看来如果使出全身的力气，捕猎就会成功。当鹿差点逃脱他们的追捕时，锋利的牙齿紧追不舍。
+<br><br>
+在你身后，湍急的河水呼啸而过，一棵倒下的树就像一座桥。如果鹿逃了过去，狼群就会挨饿。
+<br><br>
+你爬到树干上。在你身后，狩猎的嘈杂声越来越大，鹿又一次勉强被抓住了。
+<br><br>
+<<link [[推树干|Wolf Cave Hunt Push the trunk]]>><<tiredness 2>><</link>><<physiquedifficulty 5000 16000>><<gtiredness>>
+<br>
+<<link [[什么都不做|Wolf Cave Hunt Do nothing]]>><</link>>
+
+:: Wolf Cave Hunt Push the trunk
+<<effects>>
+<<if $physiqueSuccess>>
+	跑完全程后，你的四肢感到紧张和疼痛。尽管如此，你还是可以咬紧牙关，滚动圆木，直到它溅到水里。
+	<br><br>
+	刹那间，鹿从狼群中逃了出来，却在河岸上摔倒了。由于无处可逃，它试图跳过狼群跑回空地……<span class="green">当然这是不可能成功的</span>。
+	<br><br>
+	狼群兴奋地嚎叫起来。钓到的鱼很多，今晚肯定都吃饱了。
+	<br><br>
+	饥肠辘辘，你的目光四处游荡。最后落在一棵低矮的苹果树上，果实成熟可口。
+	<<endevent>>
+
+	<<set $huntstate to "success">>
+	<<wolfhuntevents>>
+<<else>>
+	跑完全程后，你的四肢感到紧张和疼痛。疼痛太剧烈了，你感觉很难受，抽筋开始蔓延到你的腿上。还没推完原木你就倒在了地上。
+	<br><br>
+	鹿做了最后一次逃跑的尝试，跳过你跳到木头上。一只<<wolf_cave_singular>>跟在后面，但是就在鹿跑到另一边的时候，倒下的树断成了两半。
+	<br><br>
+	狼群哀嚎着，失望着，饥饿着。它们很快就离开了你，你仍然渴望食物。你吃得很好，抓着小兔子给黑狼吃。
+	<br><br>
+
+	<<set $huntstate to "failure">>
+	<<wolfhuntevents>>
+<</if>>
+
+:: Wolf Cave Hunt Do nothing
+<<effects>>
+
+不想参与战斗，你去寻找更容易的食物。几米外有一棵苹果树，你可以吃到。你在觅食时发现一只兔子被猎人的陷阱夹住了。
+<br><br>
+<<if $wolfpackharmony + $wolfpackferocity gte $rng>>
+	这只鹿做了最后的逃跑尝试，越过你朝一根原木跳去，<span class="green">，但在它能成功之前被一只<<wolf_cave_singular>>抓住了</span>。
+	<br><br>
+	狼群兴奋地嚎叫起来。钓到的鱼很多，今晚肯定都吃饱了。
+	<br><br>
+	饥肠辘辘，你的目光四处游荡。最后落在一棵低矮的苹果树上，果实成熟可口。
+	<<endevent>>
+
+	<<set $huntstate to "success">>
+	<<wolfhuntevents>>
+<<else>>
+	鹿做了最后一次逃跑的尝试，跳过你跳到木头上。一只<<wolf_cave_singular>>跟在后面，但是就在鹿跑到另一边的时候，倒下的树断成了两半。
+	<br><br>
+	<<if $wolfpackleader gte 1>>
+		狼群开始攻击你，咆哮着撕咬你的皮肤。一些年长的<<wolf_cave_plural>>因为你站在那里什么都不做而惩罚你。
+		"<<print ["黑狼真的值得吗?", "它们很弱。"][random(0,1)]>>"
+		<br><br>
+	<</if>>
+	它们很快就离开了你，你仍然渴望食物。你吃得很好，抓着小兔子给黑狼吃。
+	<<endevent>>
+
+	<<set $huntstate to "failure">>
+	<<wolfhuntevents>>
+<</if>>

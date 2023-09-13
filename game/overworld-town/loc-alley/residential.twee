@@ -1,0 +1,482 @@
+:: Residential alleyways
+
+<<set $outside to 1>><<set $location to "alley">><<effects>><<set $bus to "residential">><<getTarget true>>
+你在住宅区的一条小巷里。
+<<if Time.dayState is "day">>
+	<<if $weather is "rain">>
+		许多人正冒着大雨前进。
+	<<elseif $weather is "snow">>
+		雪地上满是脚印。
+	<<else>>
+		周围有很多人。
+	<</if>>
+<<elseif Time.dayState is "dusk">>
+	<<if $weather is "rain">>
+		人们在雨中匆忙地赶路。
+	<<elseif $weather is "snow">>
+		雪地上已经被踏出一条可以行走的道路了.
+	<<else>>
+		你听到周围有声音。
+	<</if>>
+<<elseif Time.dayState is "night">>
+	<<if $weather is "rain">>
+		雨水正让排水沟超负荷工作中。
+	<<elseif $weather is "snow">>
+		积雪覆盖住了屋顶。
+	<<else>>
+		你听到狗在叫。
+	<</if>>
+<<elseif Time.dayState is "dawn">>
+	<<if $weather is "rain">>
+		人们正冒着雨去上班或者赶路。
+	<<elseif $weather is "snow">>
+		人们正冒着严寒去上班或者赶路。
+	<<else>>
+		周围已经有很多行人和正在骑自行车的人。
+	<</if>>
+<</if>>
+你家就在附近。
+<<streeteffects>>
+<br><br>
+<<if $exposed gte 1>>
+	<<exhibitionism "alley">>
+<</if>>
+<<if $arousal gte $arousalmax>>
+	<<orgasmstreet>>
+<</if>>
+<<if $stress gte $stressmax and !$possessed>>
+	<<passoutalley>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if ($danger gte (9900 - $allure) or $eventforced) and $eventskip is 0>>
+		<<eventsstreet>>
+	<<elseif $town_projects.thicket is 1>>
+		<<set $town_projects.thicket to 2>>
+		你走过一个小而密集的树丛，它曾经是一个休闲区，但因长期以来一直被忽视，现在它长满了荆棘杂草。虽然人们每天都会经过这里，但没有谁在乎这里。
+		<br><br>
+		你要保持距离，荆棘正随风摇曳着，那些巨大的棘刺看起来很锋利。不过在你看见其顶端有着一些多汁的树莓，但那太高了，你上不去。不过它们让你想起水烟店水池下面的眼睛。<span class="green">你突然有了一个想法。</span>如果得到适当的维护，这里可能是一个让人放松的地方。
+		<br><br>
+		<i>你可以在市政厅查询灌木丛的情况。</i>
+		<br><br>
+
+		<<link [[继续|Residential alleyways]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+
+	<<elseif $town_projects.thicket is 3>>
+		<<set $town_projects.thicket to 4>>
+		<<generate1>><<person1>>
+		你走近那片灌木丛，它不再显得那么杂乱无章了，不仅树枝已经被修剪过了，而且野生荆棘也被砍得差不多了。
+		<br><br>
+
+		在靠近中间的地方有一张长椅，附近有一块牌子，上面写着感谢你的话。一个<<person>>正坐在椅子上吃着三明治。
+		<br><br>
+		<<earnFeat "Concrete Woodland">>
+		<<link [[继续|Residential alleyways]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<if $options.mapTop is true>>
+			<<map "residential">>
+			<br>
+		<</if>>
+		可访问地点
+		<br>
+		<<if $exposed gte 1>>
+			<<homeicon>><<link [[回家 (0:02)->Home Fence]]>><<if $daily.fenceClimb isnot 1>><<set $daily.fenceClimb to 1>><<transform cat 1>><</if>><<pass 2>><</link>>
+			<br>
+		<<else>>
+			<<homeicon>><<link [[回家 (0:02)->Garden]]>><<if $daily.fenceClimb isnot 1>><<set $daily.fenceClimb to 1>><<transform cat 1>><</if>><<pass 2>><</link>>
+			<br>
+		<</if>>
+		/*<<link [[Scavenge (1:00)|Residential Scavenge]]>><<pass 60>><<housekeeping 100>><</link>><<ghousekeeping 100>>
+		<br>*/
+		<<if $town_projects.thicket gte 4>>
+			<<foresticon>><<link [[灌木丛 (0:01)|Residential Thicket]]>><<pass 1>><</link>>
+			<br>
+		<</if>>
+		<<if $cat gte 6 and Time.dayState is "night">>
+			<<ind>><<link [[喵喵喵 (0:30)|Residential Meow]]>><<pass 30>><<stress -3>><</link>><<cat>><<lstress>>
+			<br>
+		<</if>>
+		<<if Time.dayState isnot "night">>
+			<<if $exposed gte 2>>
+				<<if $exhibitionism gte 75>>
+					<<ind>><<link [[横穿康努达塔斯街 (0:05)|Road Ex]]>><</link>><<if $daily.ex.road is undefined>><<exhibitionist5>><</if>>
+					<br>
+				<</if>>
+			<<elseif $exposed is 1>>
+				<<if $exhibitionism gte 35>>
+					<<ind>><<link [[横穿康努达塔斯街 (0:05)|Road Ex]]>><</link>><<if $daily.ex.road is undefined>><<exhibitionist3>><</if>>
+					<br>
+				<</if>>
+			<</if>>
+		<</if>>
+		<br>
+		<<if $exposed gte 1 and Time.dayState isnot "night">>
+		<<else>>
+			<<add_link "其他区域<br>">><<hideDisplay>>
+			<<domus>>
+			<<barb>>
+			<<danube>>
+			<<connudatus>>
+			<<loiter>>
+		<</if>>
+		<<add_link "<br>快捷小路<br>">><<hideDisplay>>
+		<<if $exposed gte 1 and Time.dayState isnot "night">>
+		<<else>>
+			<<commercial>>
+		<</if>>
+		<<stormdrain>>
+		<<displayLinks>>
+		<<if $options.mapTop isnot true>>
+			<br>
+			<<map "residential">>
+		<</if>>
+	<</if>>
+<</if>>
+<<set $eventskip to 0>>
+
+:: Residential Meow
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<if $weather is "rain">>
+	你在夜里喵喵叫，像是在与雨争响。
+<<elseif $weather is "snow">>
+	你对着雪夜喵喵叫。
+<<else>>
+	你在深夜里喵喵叫。
+<</if>>
+<br><br>
+<<if $rng gte 76>>
+	<<beastNEWinit 1 cat>>
+	另一只喵喵应喵而来，一只小小的<<beasttype>>靠了过来.<<if $monster is 1>><<bHe>>抬起头，用满是无辜的眼神看着你。<</if>>
+	<br><br>
+	<<link [[宠爱的摸摸|Residential Pet]]>><<stress -6>><</link>><<lstress>>
+	<br>
+	<!-- Modified for Monster People -->
+	<<if $monster is 1 or $bestialitydisable is "f">>
+		<<link [[挑逗|Residential Tease]]>><</link>><<deviant1>>
+		<br>
+		<<if $deviancy gte 75>>
+			<<if playerAwareTheyAreInHeat() and $NPCList[0].penis isnot "none" and (($player.vaginaExist and !playerChastity("vagina")) or (canBeMPregnant() and !playerChastity("anus")))>>
+				<<link [[调情|Residential Flirt]]>><</link>><<deviant5>><<heat>>
+				<br>
+			<</if>>
+			<<if playerRutMinArousal() and $NPCList[0].vagina isnot "none" and !playerChastity("penis")>>
+				<<link [[顽皮的蹭蹭|Residential Rub]]>><</link>><<deviant5>><<rut>>
+				<br>
+			<</if>>
+		<</if>>
+	<</if>>
+<<elseif $rng gte 51>>
+	除了微风和远处的号角，什么也没有回答。
+	<br><br>
+	<<link [[继续|Residential alleyways]]>><</link>>
+	<br>
+<<elseif $rng gte 26>>
+	<<beastNEWinit 1 cat>>
+	一声咆哮的回应。一个巨大的<<beasttype>>从黑暗中徘徊而来，用水平的目光凝视看着你。
+	<br><br>
+	<<link [[宠爱的摸摸|Residential Big Pet]]>><<stress 6>><<trauma -6>><</link>><<gstress>><<ltrauma>>
+	<br>
+	<<if $monster is 1 or $bestialitydisable is "f">><!-- Modified for Monster People -->
+		<<link [[挑逗|Residential Big Tease]]>><</link>><<deviant1>>
+		<br>
+		<<if $deviancy gte 75>>
+			<<if playerAwareTheyAreInHeat() and $NPCList[0].penis isnot "none" and (($player.vaginaExist and !playerChastity("vagina")) or (canBeMPregnant() and !playerChastity("anus")))>>
+				<<link [[调情|Residential Flirt]]>><</link>><<deviant5>><<heat>>
+				<br>
+			<</if>>
+			<<if playerRutMinArousal() and $NPCList[0].vagina isnot "none" and !playerChastity("penis")>>
+				<<link [[顽皮的蹭蹭|Residential Rub]]>><</link>><<deviant5>><<rut>>
+				<br>
+			<</if>>
+		<</if>>
+	<</if>>
+<<else>>
+	楼上的阁楼里亮起一盏灯，窗帘后面出现了一个剪影。窗户打开了，一个<<generate1>><<person1>><<person>>向外倾斜。"笨猫，"<<he>>喊道。"给我闭嘴。<<He>>向你扔东西，你嘶嘶地躲开了。"总算停了。"<<he>>叹了口气，并关上了窗户。
+	<br><br>
+	<<if random(1, 2) is 2>>
+		光线从<<he>>投掷的物体上反射出。这是一个手表。如果你能找到买家，它可能值点钱。
+		<br><br>
+		<<set $blackmoney += 20>>
+	<</if>>
+	<<link [[继续|Residential alleyways]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Residential Pet
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+你蹲下来揉<<beasttype>>的头。
+<<if $monster is 1>>
+	<<bHe>>呜呜叫着，用<<bhis>>的头蹭着你的胸部。<<bHe>>用<<bhis>>的手轻弹你，然后用<<bhis>>的尾巴，
+<<else>>
+	<<bHe>>在你身上打呼噜、摩擦，然后用<<bhis>>的尾巴轻弹你，
+<</if>>
+然后跳到附近的墙上。<<bHe>>消失在它后面。
+<br><br>
+<<link [[继续|Residential alleyways]]>><<endevent>><</link>>
+<br>
+
+:: Residential Tease
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+发出诱人的呼噜声，你倒在地上，摆出求偶的姿势。
+<<if $monster is 1>>
+	<<beasttypes>>的眼睛亮了起来，渴望跟随你的领导。<<bHe>>咕噜咕噜叫。"谢谢你选择了我，"<<bhe>>说道。
+	<<bHe>>爬到你的身上，随后在挣扎着想找到支撑点时哼了一声。你抓住了<<bhis>>的胳膊，把<<bhim>>从你的身体上拉开。然后你在让<<bhim>>躺倒在地后，开始揉起了<<bhis>>的肚子。
+<<else>>
+	它急切地跳到你身上，随后在挣扎着寻找着落脚点时发出哼声。你抓住了它的颈部，把它从你的身体上拉开，在让它躺倒之后，你开始揉搓它的腹部。
+<</if>>
+当<<bHe>>挣脱时，<<bhe>>沮丧地喵了一声，随后在跳到附近的墙上后，消失在了墙后面。
+<<deviancy1>>
+<<link [[继续|Residential alleyways]]>><<endevent>><</link>>
+<br>
+
+:: Residential Big Pet
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<if $monster is 1>>
+	你向<<bhis>>的头伸出手，<<bHe>>比你高很多，所以<<bhe>>俯下身体让你有机会接触<<bhim>>.当你抚摸<<bhis>>的头时，<<bHe>>没有动，但你听到<<bhis>>的喉咙处发出低沉的呼噜声。
+	"谢谢你，"<<bhe>>咕哝道。<<bHe>>舔了舔你的手，然后转过身跳进了黑夜。
+<<else>>
+	你将手伸向<<bhis>>的头，当你触摸<<bHe>>时，<<bhim>>没有动，但你听到<<bhis>>的喉咙处发出了低沉的呼噜声.<<bHe>>舔了舔你的手，然后转过身跳入了黑夜当中。
+<</if>>
+<br><br>
+<<link [[继续|Residential alleyways]]>><<endevent>><</link>>
+<br>
+
+:: Residential Big Tease
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+
+你爬到地上，摆出交配的姿势。那只<<beasttype>>向你走来.在靠近之后，你用一只手按住<<bhis>>的鼻子，挑逗性地扭动一下。
+<<deviancy1>>
+<<if $monster is 1>>
+	从<<bhis>>脸上的表情可以看出，虽然<<bhe>>对你的挑逗感到一些恼火，但其似乎还是被逗乐了。
+<<else>>
+	这只<<beasttype>>正咆哮着，虽然其看起来有些生气，但貌似对你也很感兴趣。
+<</if>>
+<br><br>
+<!-- Modified for Beast People -->
+<<if $deviancy gte 15>>
+	<<link [[诱惑|Residential Beast]]>><<set $sexstart to 1>><</link>><<deviant2>>
+	<br>
+<</if>>
+<<link [[发出警戒的恐吓声|Residential Shoo]]>><</link>>
+<br>
+
+:: Residential Shoo
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+
+你把<<beasttype>>的头从你身边推开。<<bHe>>咆哮一声，然后在空咬了一下你手前的空气后，转身跳入了黑暗当中。
+<br><br>
+
+<<link [[继续|Residential alleyways]]>><<endevent>><</link>>
+<br>
+
+:: Residential Flirt
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<deviancy5>>
+<<clothesstrip>>
+在本能和发情的影响下, 你开始在<<bhis>>的脸上蹭来蹭去并在<<bhis>>耳边发出咕噜声,随后你开始将衣服脱了下来.
+<br><br>
+<<if $monster is 1>>
+	从<<bhis>>的表情可以看出，<<bhe>>被你的表演逗乐了，并且已经随时做好扑向你的准备。
+<<else>>
+	这只<<beasttype>>咕噜咕噜地叫着，然后很高兴地准备向你扑来。
+<</if>>
+你转过身，摆出准备交配的姿势<<if $transformationParts.cat.tail isnot "hidden">>，随后顺便将你的尾巴落到一边<</if>>。
+<br><br>
+<<link [[继续|Residential Beast]]>><<set $sexstart to 1>><<set $phase to 2>><</link>>
+<br>
+:: Residential Rub
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<deviancy5>>
+在本能和发情的影响下, 你不断的在<<bhis>>的脸上摩擦和蹭蹭.
+<br><br>
+<<if $monster is 1>>
+	<<bhis>>脸上的表情告诉你，你的行为激起了<<bhim>>的兴趣，<<bhe>>转过身来，把<<bhis>>的阴部呈现在你面前。
+<<else>>
+	当<<bhe>>转过身把<<bhis>>的阴部呈现在你面前时，这只<<beasttype>>发出咕噜咕噜的声音，看来其对此很感兴趣。
+<</if>>
+<br><br>
+<<link [[继续|Residential Beast]]>><<set $sexstart to 1>><<set $phase to 1>><</link>>
+<br>
+
+:: Residential Beast
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<beastCombatInit>>
+	<<if $phase is 0>>
+		你放开了<<beasttype>>的脸，然后伸了个懒腰。<<if $monster is 1>>"这对我来说足够好了，<<bhe>>坚定地说道。<</if>>这就是<<bhe>>所需要的暗示，<<bHe>>扑向了你。
+		<<deviancy2>>
+	<<else>>
+		<<set $position to "doggy">>
+		<<set $position_lock to 1>>
+		<<npc_attempt_sex>>
+	<</if>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Residential Beast Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Residential Beast]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Residential Beast Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+<<beastejaculation>>
+
+<<tearful>>你振作了起来，那只<<beasttype>>带着满意的神情跳进了黑暗当中。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Residential alleyways]]>><</link>>
+<br>
+
+<<elseif $enemyhealth lte 0>>
+
+<<beasttype>>发出一阵嘶嘶声，然后逃入了黑暗当中。<<if $monster is 1>>"没劲。"<</if>>。
+<br><br>
+
+<<tearful>>你振作起来。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Residential alleyways]]>><</link>>
+<br>
+
+<<else>>
+
+那只<<beasttype>>咆哮着，但在<<bhis>>试图<<if $pregnancyspeechdisable is "f">>繁殖<<else>>交配<</if>>时松懈下来。<<if $monster is 1>>"该早点了解清楚的，"<<bhe>>喃喃自语道。<</if>><<bHe>>跳进了黑暗中。
+<br><br>
+
+<<tearful>>你振作起来。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Residential alleyways]]>><</link>>
+<br>
+
+<</if>>
+
+:: Residential Thicket
+<<set $outside to 1>><<effects>>
+
+你正待在住宅区的灌木丛处.
+
+<<if Time.dayState is "night">>
+	<<if $weather is "rain">>
+		一大滴特凉的水落在了你的脖子上.
+	<<elseif $weather is "snow">>
+		顶端的树枝被雪压低了身形.
+	<<else>>
+		树枝在凉爽的微风中挥舞着。
+	<</if>>
+<<else>>
+	<<if $weather is "rain">>
+		雨水促使着人们离开.
+	<<elseif Time.season is "autumn">>
+		<<if Time.schoolDay and Time.hour gte 16>>
+			学校的学生们正在采摘黑莓。
+		<<elseif Time.hour is 12>>
+			一对老夫妻正在一起采摘黑莓。
+		<<elseif Time.hour gte 9>>
+			每当微风吹起，树叶就会飘落到地面上。
+		<<else>>
+			你看到一只松鼠跑到了树上。
+		<</if>>
+	<<elseif $weather is "snow">>
+		<<if Time.schoolDay and Time.hour gte 16>>
+			学校的学生们正在聊天，附近有几个堆好的雪人。
+		<<elseif Time.hour is 12>>
+			一对老夫妇坐在长椅上一起吃午饭，你不知道这对夫妇是怎么抵御严寒的。
+		<<else>>
+			你看到一只松鼠跑到了树上。
+		<</if>>
+	<<else>>
+		<<if Time.schoolDay and Time.hour gte 16>>
+			学校的学生们在树丛间聊着天。
+		<<elseif Time.hour is 12>>
+			一对老夫妇正在长椅上一起吃午饭。
+		<<else>>
+			你看到一只松鼠跑到了树上。
+		<</if>>
+	<</if>>
+<</if>>
+<br><br>
+
+<<if $daily.thicketBlackberries isnot 1>>
+	<<icon "tending/blackberry.png">> <<link [[摘取黑莓 (0:20)|Residential Thicket Blackberries]]>><<pass 20>><<set $daily.thicketBlackberries to 1>><</link>><<tendingdifficulty 1 300>>
+	<br>
+<</if>>
+<<if $historytrait gte 2>>
+	<<if $thicket_tunnel_intro is 1>>
+		<<ind>><<link [[走秘密隧道进入森林 (0:05)|Forest]]>><<pass 5>><<set $forest to 0>><<set $eventskip to 1>><<set $thicket_tunnel_intro to 1>><</link>>
+		<br>
+	<<else>>
+		<<ind>><<link [[走秘密通道去森林 (0:05)|Residential Thicket Tunnel]]>><<pass 5>><</link>>
+		<br>
+	<</if>>
+<</if>>
+<br>
+<<link [[离开(0:01)|Residential alleyways]]>><<pass 1>><</link>>
+<br>
+
+:: Residential Thicket Tunnel
+<<effects>>
+
+在一棵荆棘灌木下，地面倾斜。你向黑暗中窥视，看到一座石砌拱门。你听说过这些古老的隧道，但你不知道在这片灌木丛中会藏着一条。
+<br><br>
+
+你需要蹲下才能通过入口。这里堆积了一些土，但一旦通过它，你就可以直立行走了。
+<br><br>
+
+隧道漆黑一片，但很直，你可以毫不费力地走到另一边。你出现在森林里。
+<br><br>
+
+<<link [[继续|Forest]]>><<set $forest to 0>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Residential Thicket Blackberries
+<<effects>>
+
+下方的<<icon "tending/blackberry.png">>黑莓已经全部采摘完毕。你踮起脚尖去够荆棘丛的顶端。
+<br><br>
+<<if $tendingSuccess>>
+	<span class="green">你设法收集了许多看起来多汁的标本。</span>
+	<<tending_pick blackberry 60 180>>
+	<br><br>
+
+	<<link [[继续|Residential Thicket]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	<span class="red">尽你所能，你也够不着，</span>你可不想冒险碰着荆棘.<<gtending>><<tending 2>>
+	<br><br>
+
+	<<link [[继续|Residential Thicket]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>

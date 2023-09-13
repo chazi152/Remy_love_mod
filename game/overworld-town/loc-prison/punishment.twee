@@ -1,0 +1,814 @@
+:: Prison Punishment
+<<effects>>
+
+<<generate_methodical_guard 0>><<person1>>
+<<generate_relaxed_guard 1>>
+<<generate_anxious_guard 2>>
+<<generate_veteran_guard 3>>
+
+
+
+<<if $prison.punishment_intro is 0>>
+	<<set $prison.punishment_intro to 1>>
+	守卫带你穿过监狱区，回到了一侧有缺口的房间。其他守卫已经在这里了。<<methodical_guard 0 cap>><<person1>>坐在桌子后。
+	<br><br>
+	"你被警告了，"<<he>>说道，"典狱长允许我施以惩罚..."
+	<br>
+	门打开了，<<relaxed_guard 1>>从门外走了进来："我们要核对一下名单么？"
+	<br>
+	<<methodical_guard 0 cap>>无奈地揉了揉<<his>>的太阳穴，然后开口说道："我们不是…"
+	<br>
+	<<anxious_guard 2 cap>><<person3>>进去。"快来吧，"<<he>>说道。"这将会让我们玩得很爽。"
+	<br>
+	"这是不- "
+	<br>
+	"如果典狱长对此有问题"<<veteran_guard 3>>靠在门框上说."我们早就会听到一些消息."
+	<br><br>
+	<<methodical_guard 0 cap>><<person1>>叹了口气， "好吧。"<<He>>把手伸到了桌子下面。
+	<br><br>
+<<elseif $prison.active_punishments.length gte 1>>
+	守卫带你穿过监狱区，回到了一侧有缺口的房间。其他守卫已经在这里了。<<methodical_guard 0 cap>><<person1>>坐在桌子后。
+	<br><br>
+	"这样的惩罚对你来说还不够吗？"<<he>>说道，离开了你的视线之外。其他的守卫退到了一边。
+	<br><br>
+<<else>>
+	守卫带你穿过监狱区，回到了一侧有缺口的房间。其他守卫已经在这里了。<<methodical_guard 0 cap>><<person1>>坐在桌子后。
+	<br><br>
+	随着一声叹气，<<he>>去到了你的视线之外，其他人退到一边。
+	<br><br>
+<</if>>
+
+<<link [[继续|Prison Punishment List]]>><</link>>
+<br>
+
+:: Prison Punishment List
+<<effects>>
+
+<<methodical_guard 0 cap>>拿出一个大火把。<<He>>把它放在桌子上，朝向对面的深渊。随着火光闪耀，黑暗依然持续了片刻，然后蜷缩而去，在距离边缘几米远的地方露出一块银色的板子。
+<br><br>
+在其表面上刻有文字。
+<br><br>
+<<prison_list>>
+
+<<relaxed_guard 1 cap>>从<<his>>口袋里掏出一对骰子。<<He>>将<<his>>手合十，靠在桌子上。
+<br><br>
+
+<<link [[掷骰子|Prison Punishment Roll]]>><</link>>
+<br>
+
+:: Prison Punishment Roll
+<<effects>>
+
+<span id="prison_list">
+	<<prison_list>>
+</span>
+
+<<set _die_1 to random(1, 6)>>
+<<set _die_2 to random(1, 6)>>
+
+<div id="die_text">
+	<span id="die_1">
+		<<if $options.images is 1>>
+			<img src="img/misc/die_roll.gif">
+		<<else>>
+			?
+		<</if>>
+	</span>
+	+
+	<span id="die_2">
+		<<if $options.images is 1>>
+			<img src="img/misc/die_roll.gif">
+		<<else>>
+			?
+		<</if>>
+	</span>
+	<br>
+	=
+	<br>
+	<span id="die_result">
+
+	</span>
+	<span id="prison_list_result">
+
+	</span>
+</div>
+
+<<timed 2s>>
+	<<replace "#die_1">>
+	<<if $options.images is 1>>
+		<img @src="'img/misc/die_' + _die_1 + '.png'">
+	<<else>>
+		_die_1
+	<</if>>
+	<</replace>>
+<</timed>>
+<<timed 3s>>
+	<<replace "#die_2">>
+	<<if $options.images is 1>>
+		<img @src="'img/misc/die_' + _die_2 + '.png'">
+	<<else>>
+		_die_2
+	<</if>>
+	<</replace>>
+<</timed>>
+<<set $prison_punishment_number to _die_1 + _die_2>>
+<<switch $prison_punishment_number>>
+	<<case 2>>
+		<<set $prison_punishment to "free use">>
+	<<case 3>>
+		<<set $prison_punishment to "nude">>
+	<<case 4>>
+	<<set $prison_punishment to "blindfold">>
+	<<case 5>>
+		<<set $prison_punishment to "topless">>
+	<<case 6>>
+		<<set $prison_punishment to "leash">>
+	<<case 7>>
+		<<set $prison_punishment to "underwear">>
+	<<case 8>>
+		<<set $prison_punishment to "cuffs">>
+	<<case 9>>
+		<<set $prison_punishment to "bottomless">>
+	<<case 10>>
+		<<set $prison_punishment to "gag">>
+	<<case 11>>
+		<<set $prison_punishment to "bindings">>
+	<<default>>
+		<<set $prison_punishment to "rut">>
+<</switch>>
+<<timed 4s>>
+	<<replace "#die_result">>
+		<<print $prison_punishment_number>>
+	<</replace>>
+	<<replace "#prison_list">>
+		<<prison_list_dark>>
+	<</replace>>
+<</timed>>
+<<timed 5s>>
+	<<replace "#prison_list_result">>
+		| <<prison_list_result>>
+	<</replace>>
+<</timed>>
+
+<br><br>
+
+<<link [[继续|Prison Punishment 2]]>><</link>>
+<br>
+
+:: Prison Punishment 2
+<<effects>>
+
+<<if $prison.active_punishments.includes($prison_punishment)>>
+	<<prison_list_speech>><<methodical_guard 0>>说道："我们已经在实施那件事了。
+	<<for _i to $prison_punishment_number - 2; _i lt 11; _i++>>
+		<<if !$prison.active_punishments.includes($prison.punishments[_i])>>
+			<<set _prison_punishment_hi to $prison.punishments[_i]>>
+			<<break>>
+		<</if>>
+	<</for>>
+	<<for _i to $prison_punishment_number - 2; _i gt 0; _i-->>
+		<<if !$prison.active_punishments.includes($prison.punishments[_i])>>
+			<<set _prison_punishment_lo to $prison.punishments[_i]>>
+			<<break>>
+		<</if>>
+	<</for>>
+	<<if !_prison_punishment_hi>>
+		<<set $prison_punishment to _prison_punishment_lo>>
+		我们将按从后往前的顺序，使用下一个可用对象。"<<He>>看着名单。<<prison_list_speech end>>
+		<br><br>
+	<<elseif !_prison_punishment_lo>>
+		<<set $prison_punishment to _prison_punishment_hi>>
+		我们将按从前往后的顺序，使用下一个可用对象。"<<He>>看着名单。<<prison_list_speech end>>
+		<br><br>
+	<<else>>
+		我们会从前或从后计算名单，下一场符合条件的惩罚将以掷硬币的形式决定。"
+		<br><br>
+		<<relaxed_guard 1 cap>><<person2>>从<<his>>口袋里掏出一枚硬币。"头像朝上。"<<He>>掷出硬币，后用<<his>>空着的手盖上去，再饶有兴致地取出来。
+		<br><br>
+
+		<<if random(1, 2) is 2>>
+			<<set $prison_punishment to _prison_punishment_lo>>
+			"头，"<<he>>宣布道，他们纷纷转向了金属板。<<prison_list_speech end>>
+		<<else>>
+			<<set $prison_punishment to _prison_punishment_hi>>
+			"尾，"<<he>>宣布道，他们纷纷转向了金属板。<<prison_list_speech end>>
+		<</if>>
+		<br><br>
+	<</if>>
+<<else>>
+	<<prison_list_speech>><<methodical_guard 0>>说.
+	<br><br>
+<</if>>
+
+<<switch $prison_punishment>>
+	<<case "free use">>
+		<<leash 20>>
+		<<if $prison.active_punishments.includes("leash")>>
+			<<attach_leash>>
+		<</if>>
+		"哦我的<<girl>>,"<<veteran_guard 3>>轻声笑道."囚犯们会很高兴的."
+		<br><br>
+		<<methodical_guard 0 cap>>再次在下面翻找,杂乱的金属零件丁零当啷得砸在桌子上,其中有一个金属的项圈,在项圈的一边用扭曲的字刻着<span class="red">"免费使用"</span>.
+		<br><br>
+
+		<<relaxed_guard 1 cap>>解开了你的项圈、衣领,但是这种自由是相当短暂的,新的项圈甚至更加沉重.
+		<br><br>
+
+		<<link [[继续|Prison Punishment Free]]>><<prison_punishment_init>><</link>>
+		<br>
+
+	<<case "nude">>
+		<<if $worn.upper.name is "naked" and $worn.lower.name is "naked" and $worn.under_upper.name is "naked" and $worn.under_lower.name is "naked">>
+			<<methodical_guard 0 cap>><<person1>>调整了一下<<his>>的眼镜.<span class="pink">"你现在不许穿衣服了,"</span><<he>>说道."根据你的身边的人的判断,看起来你在我们前面."
+		<<else>>
+			<<clothesruined>>
+			<<methodical_guard 0 cap>><<person1>>在其他守卫靠近的时候调整了一下<<his>>的眼镜.<span class="pink">"你的衣服被没收了,"</span><<he>>说."你会接受你身边的人的评判."
+			<br><br>
+			他们的手猛地抓住并拽走了你身上的衣服,留下你光溜溜的待在房子中间.
+			<br><br>
+		<</if>>
+		<br><br>
+
+		<<link [[继续|Prison Punishment Nude]]>><<prison_punishment_init>><</link>>
+		<br>
+	<<case "blindfold">>
+		<<if $worn.face.name is "gag">>
+			<<set $worn.face.type.push("broken")>>
+			<<faceruined>>
+			<<facewear 6>>
+		<<else>>
+			<<facewear 5>>
+		<</if>>
+		"你得注意点你的脚下,"<<methodical_guard 0>><<person1>>说道,你听到后面的脚步声,但是你的眼在你转过身之前被一块布捂住了.<span class="purple">你被蒙上了眼睛</span>.
+		<br><br>
+
+		<<link [[继续|Prison Punishment Blindfold]]>><<prison_punishment_init>><</link>>
+		<br>
+	<<case "topless">>
+		<<if $worn.upper.name is "naked" and $worn.under_upper.name is "naked">>
+			<<methodical_guard 0 cap>><<person1>>调整了一下<<his>>的眼镜.<span class="blue">"你现在可以上半身不穿衣服了,"</span><<he>>说."这是为了展现你的奉献精神,看起来你已经在我们前面了."
+			<br><br>
+		<<else>>
+			<<upperruined>><<underupperruined>>
+			<<methodical_guard 0 cap>><<person1>>在其他守卫靠近的时候调整了一下<<his>>的眼镜.<span class="blue">"你现在上半身不许穿衣服了,"</span><<he>>说."这是为了展现你的奉献精神."
+			<br><br>
+			他们的手猛地抓住并拽走了你身上的衣服,留下你上半身赤裸的待在房子中间.
+			<br><br>
+
+		<</if>>
+		<<link [[继续|Prison Punishment Topless]]>><<prison_punishment_init>><</link>>
+		<br>
+		<br><br>
+	<<case "leash">>
+		<<attach_leash>>
+		<<veteran_guard 3 cap>><<person4>>走近着，拿出一根绳子。<span class="lblue"><<He>>把一端系在你脖子的项圈上，</span>然后把另一端递给<<relaxed_guard 1>>。 "这是个好<<bitch>>。"
+		<br><br>
+
+		<<link [[继续|Prison Punishment Leash]]>><<prison_punishment_init>><</link>>
+		<br>
+	<<case "underwear">>
+		<<if $worn.upper.name is "naked" and $worn.lower.name is "naked">>
+			<<methodical_guard 0 cap>><<person1>>调整了一下<<his>>的眼镜.<span class="teal">"你现在除了内衣以外什么都不许穿,"</span><<he>>说"这是你的赎罪,虽然说你看起来领先于我们"
+		<<else>>
+			<<upperruined>><<lowerruined>>
+			<<methodical_guard 0 cap>><<person1>>在其他守卫靠近前调整了一下<<his>>的眼镜.<span class="teal">"你除了内裤什么都不许穿,"</span><<he>>说."这是你的救赎."四周的手向你伸过来,撕扯着你身上的衣服,直到你光溜溜的留在房间中.
+		<</if>>
+		<br><br>
+		<<link [[继续|Prison Punishment Underwear]]>><<prison_punishment_init>><</link>>
+		<br>
+	<<case "cuffs">>
+		<<feetwear 26>>
+		<<methodical_guard 0 cap>><<person1>>再次在桌子下面翻找起来.<span class="lblue">一个被铁链绑起来的金属球砸在了桌子上.</span><<veteran_guard 3 cap>><<person4>>把它拿在手上,并蹲在你的旁边.
+		<br><br>
+		"也许这种束缚会让你想起你的地位."
+		<br><br>
+
+		<<link [[继续|Prison Punishment Cuffs]]>><<prison_punishment_init>><</link>>
+		<br>
+	<<case "bottomless">>
+		<<if $worn.lower.name is "naked" and $worn.under_lower.name is "naked">>
+			<<methodical_guard 0 cap>><<person1>>调整了一下<<his>>的眼镜."你需要接受惩罚,"<<he>>说.<span class="blue">"你的下半身不许穿衣服</span>.看起来你已经领先于我们了."
+			<br><br>
+		<<else>>
+			<<lowerruined>><<underlowerruined>>
+			<<methodical_guard 0 cap>><<person1>>在守卫靠近的时候调整了一下<<his>>的眼镜."你需要受到惩罚,"<<he>>说<span class="blue">"下半身不许穿衣服."</span>
+			<br><br>
+			他们的手撕扯着你的衣服,你在房间中央,下身被扒了个干净.
+			<br><br>
+		<</if>>
+
+		<<link [[继续|Prison Punishment Bottomless]]>><<prison_punishment_init>><</link>>
+		<br>
+	<<case "gag">>
+		<<if $worn.face.name is "blindfold">>
+			<<set $worn.face.type.push("broken")>>
+			<<faceruined>>
+			<<facewear 6>>
+		<<else>>
+			<<facewear 4>>
+		<</if>>
+		<<methodical_guard 0 cap>><<person1>>把手伸到桌子下面。<span class="purple"><<He>>把一个塑料口塞扔到桌上。</span><<anxious_guard 2 cap>><<person3>>拿起，装在了你的脸上。
+		<br><br>
+
+		<<link [[继续|Prison Punishment Mask]]>><<prison_punishment_init>><</link>>
+		<br>
+	<<case "bindings">>
+		<<set $leftarm to "bound">><<set $rightarm to "bound">>
+		<<methodical_guard 0 cap>>向<<veteran_guard 3>><<person4>>点头，后者拿出了一段绳子。"别动，<<girl>>。"<<He>>把你的双臂捆在一起，让你束手无策。
+		<br><br>
+
+		<<link [[继续|Prison Punishment Bindings]]>><<prison_punishment_init>><</link>>
+		<br>
+	<<case "rut">>
+		<<veteran_guard 3 cap>><<person4>>笑了。"很高兴认识你，"<<he>>笑道，将你推向桌子对面的缺口。<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+		<br>
+		"如果<<pshe>>能给我们带回来些值钱的东西，"<<anxious_guard 2>>说着，"我们就让<<phim>>回来，对吧?"<<lstress>><<stress -6>>
+		<br>
+		"没错，"<<veteran_guard 3>>回道，"但发情窟早就被摸了个干净了。"<<gstress>><<stress 6>>
+		<br>
+		"有些囚犯自己找到了上来的路，"<<relaxed_guard 1>>补充道。<<lstress>><<stress -6>>
+		<br>
+		"但不常见。"<<veteran_guard 3 cap>>的靴子一推你的后背，你跌入了黑暗之中。<<gtrauma>><<ggstress>><<trauma 6>><<stress 12>>
+		<br><br>
+
+		<<link [[继续|Prison Punishment Rut]]>><</link>>
+		<br>
+	<<default>>
+
+<</switch>>
+
+
+:: Prison Punishment Rut
+<<effects>>
+
+你在黑暗中坠落,掉进了一池冰冷的水中.
+<<water>>
+<<if $leftarm is "bound" and $rightarm is "bound">>
+	你扭动着向岸边移动.
+<<else>>
+	你游向岸边.
+<</if>>
+<br><br>
+
+你尝试听上面的声音,但什么都听不见.但是你闻到了什么味道.
+
+<<if $worn.face.type.includes("blindfold")>>
+	一股香甜的雾气从附近的某个地方喷了出来.它似乎能让你头脑清醒.<<lstress>><<stress -6>>
+<<else>>
+	一股紫色的雾气从一个奇怪的蘑菇中袅袅而出.蘑菇本身看起来很危险,但雾气闻起来很香甜.它能让你头脑清醒.<<lstress>><<stress -6>>
+<</if>>
+<br><br>
+
+<<set $rut_entry to "punish">>
+
+<<link [[吸入|Prison Rut Inhale]]>><<set $rut to 0>><<endevent>><<arousal 5000>><<drugs 300>><<stress -120>><</link>><<gggarousal>><<lllstress>>
+<br>
+<<link [[无视|Prison Rut]]>><<set $rut to 0>><<endevent>><</link>>
+<br>
+
+
+
+:: Prison Punishment Free
+<<effects>>
+
+<<prison_punishment_end>>
+
+"渣滓们，听好了，"<<he>>扬声说道，"这个坏<<girl>>赢得了忏悔。现在是打<<pher>>屁股的好时机。打<<phim>>，干<<phim>>。只要这块牌子上说的都行。"<<He>>用警棍敲打着项圈上的"随意使用"。"你们想干什么就他妈的干什么去吧。"
+<br><br>
+
+<<destination_prison_walkway>>
+
+
+:: Prison Punishment Nude
+<<effects>>
+
+<<prison_punishment_end>>
+
+<<covered>>囚犯们用猥亵的嘲笑声奚落你。在走廊上，你无处可躲避他们淫邪的目光。
+<br><br>
+
+<<destination_prison_walkway>>
+
+
+:: Prison Punishment Blindfold
+<<effects>>
+
+<<endevent>>
+你可以沿着栏杆回到你的牢房。
+
+<<if $prison.schedule is "lockdown">>
+	一名警卫跟在后面，但你不确定是谁。对方在你身后关上了牢门。
+<<else>>
+	<<generate1>><<person1>>总之，你认为你在正确的地方。
+	<br><br>
+	一双手从背后抓住了你的<<breasts>>，打断了你的思绪。"吓到了吧。"一个<<personsimple>>的声音从后面传来。<<He>>松开了你，但在走开之前拍了一下你的<<bottom>>。<<gtrauma>><<gstress>><<garousal>><<trauma 6>><<stress 6>><<arousal 600 "breasts">>
+<</if>>
+<br><br>
+
+<<link [[继续|Prison Cell]]>><<endevent>><</link>>
+<br>
+
+:: Prison Punishment Topless
+<<effects>>
+
+<<prison_punishment_end>>
+
+<<covered>>囚犯们乐此不疲，用猥亵的嘲笑声奚落你。
+<br><br>
+
+<<destination_prison_walkway>>
+
+:: Prison Punishment Leash
+<<effects>>
+
+<<prison_punishment_end>>
+<br><br>
+
+"跪下，<<bitch>>。"当他们的注意力都集中到了<<he>>身上时，<<he>>立刻说道。
+<br><br>
+
+<<link [[跪下来|Prison Punishment Knees]]>><<sub 1>><</link>>
+<br>
+<<link [[拒绝|Prison Punishment Knees Refuse]]>><<def 1>><</link>><<physiquedifficulty 1 16000>>
+<br>
+
+:: Prison Punishment Knees
+<<effects>>
+
+你跪在地上。"好婊子，"<<relaxed_guard 1>><<person2>>拽着皮带，迫使你沿着走廊爬向牢房。
+<br><br>
+
+<<if $prison.schedule is "lockdown">>
+	<<generate5>><<person5>>其中一名囚犯，<<person>>，在你经过时从牢房里伸出手来。你试图走开，但<<relaxed_guard 1>>将你拉近。在你经过时，<<person>>摸揉着你的<<bottom>>。<<gtrauma>><<gstress>><<garousal>><<trauma 6>><<stress 6>><<arousal 600 "bottom">>
+	<br><br>
+
+	其他狱友随即跟上，有的迅速打你的屁股，有的摸你。<<relaxed_guard 1 cap>>保持紧拉着皮带。
+	<br><br>
+
+	当你回到牢房时，你已经浑身酸痛。<<ggpain>><<pain 8>>
+	<br><br>
+<<else>>
+	<<if $exposed gte 1>>
+		囚犯们透过你脚下的铁栅栏，盯着你的<<lewdness>>。你能做的不多，只能忍受。<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+		<br><br>
+	<</if>>
+	<<generate5>><<person5>>当你经过时，其中一个<<person>>从<<his>>的牢房里走了出来。<<He>>俯视着你，迅速地打了下你的<<bottom>>。<<relaxed_guard 1 cap>>没有阻止<<him>>。
+	<br><br>
+	其他囚犯也纷纷效仿。回到牢房时，你已经浑身酸痛。<<ggpain>><<pain 8>>
+	<br><br>
+<</if>>
+
+<<link [[继续|Prison Cell]]>><<endevent>><</link>>
+<br>
+
+:: Prison Punishment Knees Refuse
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	<<gagged_speech "I-I'm sorry but I don't want-">>
+<<elseif $speech_attitude is "bratty">>
+	<<gagged_speech "I'm not a dog you piece of-">>
+<<else>>
+	<<gagged_speech "I don't want-">>
+<</if>>
+<br><br>
+<<if $physiqueSuccess>>
+	<<methodical_guard 0 cap>><<person1>>使劲拽着绳子，试图迫使你屈服。你紧紧抓住绳子的一端，用力地拉扯。<span class="green"><<methodical_guard 0 cap>>猛地摔到了金属栅栏上。</span><<ggsuspicion>><<ggrespect>><<prison_guards -3>><<prison_inmates 3>>
+	<br><br>
+	囚犯们欢呼着，让你趁<<hes>>倒下时抽<<him>>，但<<hes>>已经伸手去拿警棍了。你回到自己的牢房。
+	<br><br>
+<<else>>
+	<<methodical_guard 0 cap>><<person1>>用力拽住你的皮带，打断了你的话，<span class="red">迫使你跪下。</span><<He>>拉着你沿着过道走向你的牢房。
+	<br><br>
+	<<if $prison.schedule is "lockdown">>
+		<<generate5>><<person5>>其中一名囚犯，<<person>>，在你经过时从牢房里伸出手来。你试图走开，但<<relaxed_guard 1>>将你拉近。在你经过时，<<person>>摸揉着你的<<bottom>>。<<gtrauma>><<gstress>><<garousal>><<trauma 6>><<stress 6>><<arousal 6 "bottom">>
+		<br><br>
+
+		其他狱友随即跟上，有的迅速打你的屁股，有的摸你。<<relaxed_guard 1 cap>>保持紧拉着皮带。
+		<br><br>
+
+		当你回到牢房时，你已经浑身酸痛。<<ggpain>><<pain 8>>
+		<br><br>
+	<<else>>
+		<<if $exposed gte 1>>
+			囚犯们透过你脚下的铁栅栏，盯着你的<<lewdness>>。你能做的不多，只能忍受。<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+			<br><br>
+		<</if>>
+		<<generate5>><<person5>>当你经过时，其中一个<<person>>从<<his>>的牢房里走了出来。<<He>>俯视着你，迅速地打了下你的<<bottom>>。<<relaxed_guard 1 cap>>没有阻止<<him>>。
+		<br><br>
+		其他囚犯也纷纷效仿。回到牢房时，你已经浑身酸痛。<<ggpain>><<pain 8>>
+		<br><br>
+	<</if>>
+<</if>>
+
+<<link [[继续|Prison Cell]]>><<endevent>><</link>>
+<br>
+
+
+:: Prison Punishment Underwear
+<<effects>>
+
+"你这算轻松的了。"<<relaxed_guard 1>>在回到走廊时说道。
+<br><br>
+
+<<destination_prison_walkway>>
+
+:: Prison Punishment Cuffs
+<<effects>>
+
+<<if $prison.schedule is "lockdown">>
+	在你走动时，铁链与地面摩擦发出响声。一些囚犯透过牢房的栅栏探头探脑，然后回到床上继续睡觉。
+<<else>>
+	在你走动时，铁链与地面摩擦发出响声。一些从下面经过的囚犯抬起头，一边偷笑一边转过身去。
+<</if>>
+<br><br>
+<<destination_prison_walkway>>
+
+:: Prison Punishment Bottomless
+<<effects>>
+
+<<prison_punishment_end>>
+
+<<covered>>囚犯们乐此不疲，用猥亵的嘲笑声奚落你。
+<br><br>
+
+<<destination_prison_walkway>>
+
+
+:: Prison Punishment Mask
+<<effects>>
+
+"是不是太紧了？"<<relaxed_guard 1 cap>><<person2>>一回到走道上就笑了起来。"我不觉得。"<<He>>用警棍给你的<<bottom>>来了个离别时的纪念拍打。
+<br><br>
+
+<<destination_prison_walkway>>
+
+:: Prison Punishment Bindings
+<<effects>>
+
+<<relaxed_guard 1 cap>>当<<person2>>把你推回牢房时，<<he>>抓住了你的束缚。
+
+<<if $prison.schedule is "lockdown">>
+	<<generate5>><<person5>>其中一名囚犯，<<person>>，在你经过时从牢房里伸出手来，摸你的<<breasts>>。<<relaxed_guard 1 cap>><<person2>>将你按在原地好一会，让你毫无防备。<<gstress>><<gtrauma>><<garousal>><<stress 6>><<trauma 6>><<arousal 600 "breasts">>
+<<else>>
+	<<generate5>><<person5>>其中一个囚犯，一个<<person>>，走到你的面前。<<relaxed_guard 1 cap>><<person2>>按住你不放，让你毫无防备，放任囚犯摸索你的<<breasts>>。<<gstress>><<gtrauma>><<garousal>><<stress 6>><<trauma 6>><<arousal 600 "breasts">>
+<</if>>
+<br><br>
+
+<<link [[忍耐|Prison Punishment Bindings Endure]]>><<sub 1>><</link>>
+<br>
+<<link [[用头撞|Prison Punishment Bindings Headbutt]]>><<def 1>><</link>>
+<<if $cow gte 6>>
+	<<cow>><<ltrauma>><<lstress>>
+<<else>>
+	<<gpain>><<ltrauma>>
+<</if>>
+<br>
+
+:: Prison Punishment Bindings Endure
+<<effects>>
+
+你忍耐着，直到<<person5>><<person>>满意为止。<<relaxed_guard 1 cap>>一直这么做着，直到抵达了你的牢房为止。
+<br><br>
+
+<<link [[继续|Prison Cell]]>><<endevent>><</link>>
+<br>
+
+:: Prison Punishment Bindings Headbutt
+<<effects>>
+
+<<if $cow gte 6>>
+	<<trauma -6>><<stress -6>>
+	你用额头猛撞<<person5>><<person>>的额头，抹去了<<his>>脸上的傻逼笑容。你几乎没什么感觉，但囚犯却被击倒在地。
+<<else>>
+	你用额头猛撞着<<person5>><<person>>的额头。虽然很疼，但为了抹去了<<his>>脸上的傻逼笑容，还是值得的。<<pain 4>><<trauma -6>>
+<</if>>
+<br><br>
+
+<<relaxed_guard 1 cap>>狂笑一声，然后继续推着你向前行进。你离开了揉着头的<<person>>。
+<br><br>
+
+<<link [[继续|Prison Cell]]>><<endevent>><</link>>
+<br>
+
+
+
+:: Prison Punishment Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Prison Punishment Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Prison Punishment Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Prison Punishment Fight Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation "short">>
+	<<He>>踉踉跄跄地靠在墙上，精疲力尽。囚犯们嘲弄着<<him>>。<<ggsuspicion>><<prison_guards -3>><<ggrespect>><<prison_inmates 3>>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<prison_revolt_options>>
+<<elseif $enemyhealth lte 0>>
+	<<He>>跌坐在地上。囚犯们嘲弄着<<him>>，直到<<he>>伸手去拿警棍。<<ggsuspicion>><<prison_guards -3>><<ggrespect>><<prison_inmates 3>><<greb>><<prison_reb 1>>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<prison_revolt_options>>
+
+<<else>>
+	你倒在地上，伤得太重，无法继续。<<He>>给你戴上手铐，拉着你站起来。其他囚犯在你经过时取笑你，但听起来并没有什么恶意。<<grespect>><<prison_inmates 1>>
+	<<bind>>
+	<br><br>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Prison Punishment]]>><</link>>
+	<br>
+<</if>>
+
+:: Prison Punishment Shock
+<<effects>>
+
+警卫把手伸进<<his>>的衬衫口袋里。从你的颈部传来了<span class="red">一阵穿遍全身的可怕震感。</span>虽然只持续了一会，但足以让你倒地抽搐。<<gtrauma>><<ggstress>><<gggpain>><<trauma 4>><<stress 4>><<pain 4>>
+<br><br>
+你因伤势过重，在<<he>>将你铐上拖起时无法反抗。其他囚犯在你经过时取笑你，但听起来不算恶意。<<grespect>><<prison_inmates 1>>
+<<bind>>
+<br><br>
+
+<<link [[继续|Prison Punishment]]>><<endevent>><</link>>
+<br>
+
+
+:: Prison Remove Leash
+<<effects>>
+
+钳子切断了链条，让你单戴着项圈。
+<br><br>
+
+<<detach_leash>>
+
+<<destination_prison>>
+
+:: Prison Remove Cuffs
+<<effects>>
+
+<<He>>蹲在你身边，插入钥匙。$worn.feet.cn_name_cap咔哒一声打开。
+<br><br>
+
+"你最好好好表现，"<<he>>强调道，"不然这些就会装回到你身上。"
+<br><br>
+
+<<set $worn.feet.type.push("broken")>>
+<<feetruined>>
+
+<<destination_prison>>
+
+:: Prison Remove Gag
+<<effects>>
+
+<<if $worn.face.type.includes("blindfold")>>
+	<<set $worn.face.type.push("broken")>>
+	<<faceruined>>
+	<<facewear 5>>
+<<else>>
+	<<set $worn.face.type.push("broken")>>
+	<<faceruined>>
+<</if>>
+
+在<<he>>摆弄着你脑后的带子时，你保持不动，直到口塞松脱。
+<br><br>
+
+"注意你的言辞，"<<he>>警告你。
+<br><br>
+
+<<destination_prison>>
+
+:: Prison Remove Blindfold
+<<effects>>
+
+<<if $worn.face.type.includes("gag")>>
+	<<set $worn.face.type.push("broken")>>
+	<<faceruined>>
+	<<facewear 4>>
+<<else>>
+	<<set $worn.face.type.push("broken")>>
+	<<faceruined>>
+<</if>>
+
+当<<he>>摆弄你脑后的带子时，你一动不动。它松脱下来，突然的灯光迫使你眨了眨眼睛。
+<br><br>
+
+<<destination_prison>>
+
+:: Prison Remove Free Use
+<<effects>>
+
+<<He>>插入钥匙，项圈的 "自由使用 "部分就落进了<<his>>的手里。
+<br><br>
+
+"我希望这足以证明为什么服从对你来说是最好的选择。"<<he>>强调道。
+<br><br>
+
+
+<<if $worn.neck.cursed is 1>>
+	<<set $worn.neck.type.push("broken")>>
+	<<neckruined>>
+	<<if $prison.active_punishments.includes("leash")>>
+		<<neckwear 21>>
+	<<else>>
+		<<neckwear 1>>
+	<</if>>
+<</if>>
+
+<<destination_prison>>
+
+:: Prison Remove Bindings
+<<effects>>
+
+<<arm_unbind>>
+
+<<He>>解开了你的束缚，你的双臂从此自由。"别再给我们找捆你的理由了，"<<he>>警告道，"你腾出双臂的话才更有用处。"
+<br><br>
+
+<<destination_prison>>
+
+
+:: Prison Repunishment
+<<effects>>
+
+<<He>>将你领进中央塔楼底部一间昏暗的房间内。
+<br><br>
+
+<<if $prison.active_punishments.includes("free use") and $worn.neck.name isnot "free use collar" and $worn.neck.name isnot "free use collar with leash">>
+	<<leash 20>>
+	<<if $prison.active_punishments.includes("leash")>>
+		<<attach_leash>>
+	<</if>>
+	你的新项圈和上次的一样怪异。
+<<elseif $prison.active_punishments.includes("nude") and ($worn.upper.name isnot "naked" or $worn.lower.name isnot "naked" or $worn.under_upper.name isnot "naked" or $worn.under_lower.name isnot "naked")>>
+	<<clothesruined>>
+	<<He>>从口袋里掏出一把刀，抓住你的衣服，粗暴地将其撕开。<<covered>>
+	<br><br>
+<<elseif $prison.active_punishments.includes("blindfold") and !$worn.face.type.includes("blindfold")>>
+	<<if $worn.face.name is "gag">>
+		<<set $worn.face.type.push("broken")>>
+		<<faceruined>>
+		<<facewear 6>>
+	<<else>>
+		<<facewear 5>>
+	<</if>>
+	<<He>>把眼罩套在你的头上，系牢。
+<<elseif $prison.active_punishments.includes("topless") and ($worn.upper.name isnot "naked" or $worn.under_upper.name isnot "naked")>>
+	<<upperruined>><<underupperruined>>
+	<<He>>从口袋里掏出一把刀，抓住你的衣服，粗暴地将其撕开。<<covered>>
+	<br><br>
+<<elseif $prison.active_punishments.includes("bottomless") and ($worn.lower.name isnot "naked" or $worn.under_lower.name isnot "naked")>>
+	<<lowerruined>><<underlowerruined>>
+	<<He>>从口袋里掏出一把刀，抓住你的衣服，粗暴地将其撕开。<<covered>>
+	<br><br>
+<<elseif $prison.active_punishments.includes("leash") and $worn.neck.collared isnot 1>>
+	<<He>>把皮带系在你的$worn.neck.cn_name_cap上。
+	<<attach_leash>>
+<<elseif $prison.active_punishments.includes("underwear") and ($worn.upper.name isnot "naked" or $worn.lower.name isnot "naked")>>
+	<<upperruined>><<lowerruined>>
+	<<He>>从口袋里掏出一把刀，抓住你的衣服，粗暴地将其撕开。<<covered>>
+	<br><br>
+<<elseif $prison.active_punishments.includes("cuffs") and !$worn.feet.type.includes("shackle")>>
+	<<feetwear 26>>
+	<<He>>用冰冷的金属拷住你的脚踝，它与一个沉重的金属球相连。
+<<elseif $prison.active_punishments.includes("gag") and !$worn.face.type.includes("gag")>>
+	<<if $worn.face.name is "blindfold">>
+		<<set $worn.face.type.push("broken")>>
+		<<faceruined>>
+		<<facewear 6>>
+	<<else>>
+		<<facewear 4>>
+	<</if>>
+	<<He>>把口球塞进你的嘴里，然后把它紧紧地绑在你的头上。
+<<elseif $prison.active_punishments.includes("bindings") and ($leftarm isnot "bound" or $rightarm isnot "bound")>>
+	<<He>>把你的双臂紧紧地捆在背后。
+	<<bind>>
+<</if>>
+
+"瞧，从现在开始，你得遵守着规则了，"<<he>>补充道，"也许你还需要额外的"提醒"。"
+<br><br>
+<<link [[继续|Prison Punishment]]>><<endevent>><</link>>
+<br>

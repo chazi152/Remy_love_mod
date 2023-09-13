@@ -1,0 +1,330 @@
+
+:: Pups Den Widgets [widget]
+
+<<widget "wolfwetnurse">>
+	<<if $monster is 1>>
+		你看到一个愤怒的狼女正向你走来，她牵着你的小狼崽。
+		<br><br>
+
+		"<<pPackbrother>>终于回来了！"<<bhe>>抗议到。<<bHe>>提醒你让你注意看<<bhis>>的乳房。<<bHis>>的乳头看起来很肿。
+		<br><br>
+
+		"黑狼叫我喂小狼！你生的这头野蛮的小狼咬得特别狠，把我的奶水都吸干了！"<<bHe>>在<<bhe>>离开时推了你一下。“下次找不同的狼族姐妹帮忙！"
+		<br><br>
+
+		你的小狼崽看起来很想念你。你把他们抱在怀里，然后把他们带进去。
+		<br><br>
+	<<else>>
+		你看到一只愤怒的母狼正向你走来，身边还跟着你的小狼崽。
+		<br><br>
+
+		<<bHis>>的乳头看起来很肿。<<bHe>>刚刚一定是在喂养你的小狼崽，从现在的情况来看，它们看起来有些生气。
+		<br><br>
+
+		母狼在转身离开前对你咆哮。黑狼下次要找别的狼群姐妹帮忙了。
+		<br><br>
+
+		你的小狼崽看起来很想念你。你把他们抱在怀里，然后把他们带进去。
+		<br><br>
+	<</if>>
+    <<destinationwolfcave>>
+<</widget>>
+
+:: Pups Den
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+
+<<if ((Time.hour gte 8 and Time.hour lte 15) or (Time.hour gte 18))>>
+    <<unset $breastfeedend>>
+<</if>>
+
+你在狼洞里一个隐蔽的洞穴里。临时制作的咀嚼玩具散落一地。 
+<br><br>
+
+你的一个旅伴守卫着小狼窝的入口。
+<br><br>
+
+<<if Object.values($children).find(child => child.mother === "Black Wolf" && child.location === "wolf_cave") and ((Time.hour gte 6 and Time.hour lte 7) or (Time.hour gte 16 and Time.hour lte 17))>>
+    黑狼躺在洞穴的一角，周围围着一群小狼。
+    <br><br>
+
+    <<if $breastfeedend isnot 1>>
+        <<link [[靠近|BW Pups Breastfeed]]>><</link>>
+        <br>
+
+    <<else>>
+        <<link [[靠近|BW Pups Breastfeed]]>><</link>>
+    <br>
+
+    <</if>>
+
+<</if>>
+
+<<if $bestialitydisable is "f" and $breastfeedingdisable is "f" and $lactating is 1 and $deviancy gte 35 and ($monsterchance lt 100 or ($monsterhallucinations is "t" and $hallucinations is 0))>>
+
+	<<if $wolfcavebreast is 3>>
+		<span class="blue">幼崽们都喝足了奶。</span>
+        <br>
+	<<else>>
+		<<link [[母乳喂养一些幼崽(0:05)|Wolf Cave Breastfeed]]>><<set $phase to 0>><</link>><<deviant3>>
+        <br>
+	<</if>>
+<</if>>
+
+<<if Object.values($children).find(child => child.mother === "pc" && child.location === "wolf_cave") and ((Time.hour gte 6 and Time.hour lte 7) or (Time.hour gte 16 and Time.hour lte 17)) and $breastfeedend isnot 1>>
+
+    <<link [[查看你的孩子们|PC Pups Breastfeed]]>><</link>>
+    <br>
+
+<<else>>
+    <<link [[查看你的孩子们|Childrens Home]]>><<set $exitPassage to $passage>><</link>>
+    <br>
+<</if>>
+
+
+<<link [[离开|Wolf Cave]]>><</link>>
+
+:: BW Pups Breastfeed
+<<effects>><<npc "Black Wolf">>
+
+<<if $breastfeedend isnot 1>>
+
+    小狼们聚集在黑狼的乳房周围。他们互相推搡，想要喝奶。
+    <br><br>
+
+    黑狼仍然一动不动，心不在焉，只有当幼崽变得过于活跃时，才会偶尔发出咆哮声。
+    <br><br>
+
+    <<if $monster is 1>>
+
+        "小狼太没耐心了，”<<bhe>>生闷气。"需要比我想象中更多的耐心..."
+        <br><br>
+
+    <<else>>
+
+        你注意到了黑狼对幼狼的恼怒和缺乏耐心。
+        <br><br>
+
+    <</if>>
+
+    <<link [[试着喝点奶(0:30)|BW Pups Breastfeed Drink]]>><<pass 30>><</link>>
+    <br>
+
+    <<if $lactating is 1 and $breastfeedingdisable is "f" and $milk_amount gte 1>>
+
+        <<link [[自己喂一些小狼(0:30)|BW Pups Breastfeed Help]]>><<pass 30>><</link>>
+        <br>
+
+    <</if>>
+
+    <<link [[离开|Pups Den]]>><</link>>
+
+<<else>>
+
+    小狼崽们围着黑狼围成一小堆。
+    <br><br>
+
+    <<if $monster is 1>>
+
+        "小狼们终于平静下来了，”<<bhe>>如释重负地说。
+        <br><br>
+
+    <<else>>
+
+        小狼们终于平静下来，<<bHe>>似乎松了一口气。
+        <br><br>
+
+    <</if>>
+
+    <<link [[继续|Pups Den]]>><<endevent>><</link>>
+
+<</if>>
+
+:: BW Pups Breastfeed Drink
+<<effects>>
+
+你满怀期待地等着你的小狼吃完饭，吃饱后，它们就聚集在黑狼周围休息。你慢慢靠近黑狼的<<if $monster is 1>>胸口<<else>>乳头<</if>>。你轻轻舔了一下。<<garousal>><<arousal 600>>
+<br><br>
+
+<<if $monster is 1>>
+    黑狼把你推开。“住手，”<<bhe>>咆哮道。"<<pPackbrother>>不是幼崽。"
+    <br><br>
+<<else>>
+    黑狼把你推开。似乎被你想像小狼一样吃东西的企图惹恼了。
+    <br><br>
+<</if>>
+
+<<link [[坚持|BW Pups Breastfeed Insist]]>><</link>>
+<br>
+<<link [[离开|Pups Den]]>><<set $breastfeedend to 1>><<endevent>><</link>>
+
+:: BW Pups Breastfeed Insist
+<<effects>>
+
+你不会让这阻止你。你无视黑狼的警告，再次靠近。
+
+<<if $wolfpackharmony gte 15>>
+
+    <<if $monster is 1>>
+
+        <<bHe>>再次咆哮，不过这次声音比较柔和。黑狼将<<bhis>>的手臂移到一边，把<<bhis>>裸露的乳房露在了你够得着的地方。
+        <br><br>
+
+    <<else>>
+
+        <<bHe>>再次咆哮，不过这次声音比较柔和。黑狼把<<bhis>>的腿移到一边，留下<<bhis>>裸露的胸部在你够得着的地方。
+        <br><br>
+
+    <</if>>
+
+    你不会浪费这个机会。你向前伸手，含住乳头开始吮吸。<span class="pink">甜美的奶油状乳汁开始流出。</span>你用手挤压<<bhis>>的乳房，确保在继续喂奶的过程中，挤出最后一滴。
+    <br><br>
+
+    尽管小狼们之前喝得狼吞虎咽，但似乎也够你喝的了。你移动到另一个乳房，重复这个过程。黑狼仍然保持不动，但是似乎有些后悔。
+    <br><br>
+
+    喝完后你站起来，擦掉嘴角的奶。黑狼看起来很惭愧。 
+    
+    <<if $monster is 1>>
+        "希望<<ppackbrother>>这爱好不会成为习惯，”<<bhe>>看都没看你一眼就说。“如果狼群看到了，他们会怎么想？"
+        <br><br>
+
+    <<else>>
+        吃完后你站起来，擦掉嘴角的奶水。黑狼看起来很后悔。你的行为可能会对<<bhim>>有不好的影响，你想知道其他狼会不会觉得奇怪
+        <br><br>
+
+    <</if>>
+
+<<else>>
+
+    <span class="red"><<bHe>>抓住你的衣领把你压在地上。</span>
+
+    <<if $monster is 1>>
+
+        "现在没心情玩！"<<bHe>>抗议。
+        <br><br>
+
+        你决定不再做什么，让它们继续自己的事。
+        <br><br>
+
+    <<else>>
+
+        <<bHe>>这次咆哮声更大了。现在可能不是碰碰运气的好时机。
+        <br><br>
+
+    <</if>>
+
+    你决定不再做什么，让它们继续自己的事。
+    <br><br>
+
+<</if>>
+
+<<link [[继续|Pups Den]]>><<set $breastfeedend to 1>><<endevent>><</link>>
+
+:: BW Pups Breastfeed Help
+<<effects>>
+<<set _pupsCount to  Object.values($children).reduce((prev,curr) => curr.location === "wolf_cave" ? prev + 1: prev,0)>>
+
+你露着胸躺在地上。你拍拍地面，招呼几只小狼过来。
+<br><br>
+
+它们中的一些注意到了你，并从群体中出来，开始聚积在你周围。幼崽们很快就开始狼吞虎咽地进食。
+<br><br>
+
+黑狼似乎有点困惑，但松了口气。 
+
+<<if $monster is 1>>
+    "不知道奶水是否足够，虽然有我们两个...”<<bhe>>笑着说。
+<</if>>
+<br><br>
+
+幼崽们继续喝了一段时间奶，最后才安定下来。黑狼走过来，感谢的舔了一下你的脸，然后和小狼一起坐下来休息。
+<br><br>
+
+<<set $milk_amount -=_pupsCount/2>>
+
+<<link [[继续|Pups Den]]>><<endevent>><</link>>
+
+:: PC Pups Breastfeed
+<<effects>>
+
+你走近你的小狼，它们在你到来时哭泣呜咽。更多的小狼聚集在你周围，拼命地想要抓住你的胸部。
+<br><br>
+
+<<link [[喂养 (0:30)|PC Pups Breastfeed Feed]]>><<pass 30>><</link>>
+<br>
+<<link [[离开|Pups Den]]>><<endevent>><</link>>
+
+:: PC Pups Breastfeed Feed
+<<effects>>
+
+<<set _pupsCount to  Object.values($children).reduce((prev,curr) => curr.location === "wolf_cave" ? prev + 1: prev,0)>>
+
+<<if $catbuild gte 50 or $wolfbuild gte 30>>
+    你脱下上衣，侧躺在地上。你让小狼们看见了你的乳房，它们没有浪费任何时间，立即就跳了过来。
+    <br><br>
+
+    这些小崽子互相推搡，挣扎着争夺一个位置，但你一次只能喂两只。小狼偶尔会咬一口，让你痛苦地皱起眉头。<<gpain>><<violence 3>>
+    <br><br>
+
+    片刻之后，幼崽们安静下来，开始变得疲倦。
+
+    <<if _pupsCount lte 16>>
+        你很确定他们都得到了应得的那份。他们吃饱肚子，很快就进入了平静的睡眠状态。
+        <br><br>
+
+    <<else>>
+        你无法喂养那些小狗，导致它们去找了附近的<<if $monster is 1>>狼女<<else>>母狼<</if>>。
+        <br><br>
+
+    <</if>>
+
+    <<set $milk_amount -=_pupsCount>>
+
+<<elseif $cowbuild gte 40>>
+    你脱下上衣，趴在地上四肢着地。你的乳房悬挂在小狼们上方，它们没有浪费任何时间，立即跑到底下挤成了一堆。
+    <br><br>
+
+    小狼们互相推搡着想要喝奶，但是你一次只能喂两只。小狼们偶尔会咬到你，你的身体因为疼痛而颤抖。<<gpain>><<violence 3>>
+    <br><br>
+
+    片刻之后，幼崽们安静下来，开始变得疲倦。 
+    
+    <<if _pupsCount lte 32>>
+        你很确定他们都得到了应得的那份。他们吃饱肚子，很快就进入了平静的睡眠状态。
+        <br><br>
+
+    <<else>>
+        你无法喂养那些小狗，导致它们去找了附近的<<if $monster is 1>>狼女<<else>>母狼<</if>>。
+        <br><br>
+
+    <</if>>
+
+    <<set $milk_amount -=_pupsCount>>
+
+<<else>>
+    你脱下上衣躺在地上，坐在狼群旁边。你试着把小狼抱起来，它们在你的怀里急切地扭动着。
+    <br><br>
+
+    这些小崽子互相推搡，不停地向你鸣叫乞求，迫不及待地等着喂食。很快你就感到不堪重负，毕竟一次只能喂两只小狼。<<gstress>><<stress 6>>
+    <br><br>
+
+    小狼偶尔会咬一口，让你痛苦地皱起眉头。<<gpain>><<violence 3>>
+    <br><br>
+
+     片刻之后，幼崽们安静下来，开始变得疲倦。 
+
+    <<if _pupsCount lte 8>>
+        你很确定他们都得到了应得的那份。他们吃饱肚子，很快就进入了平静的睡眠状态。
+        <br><br>
+
+    <<else>>
+        你无法喂养那些小狗，导致它们去找了附近的<<if $monster is 1>>狼女<<else>>母狼<</if>>。
+        <br><br>
+
+    <</if>>
+
+    <<set $milk_amount -=_pupsCount>>
+
+<</if>>
+
+<<link [[继续|Pups Den]]>><<set $breastfeedend to 1>><<endevent>><</link>>

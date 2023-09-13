@@ -1,0 +1,1150 @@
+:: Beach
+
+<<location "beach">><<effects>>
+你在海滩上。
+<<if Time.dayState is "day">>
+	<<if $weather is "clear">>
+		这里挤满了游客，孩子们搭沙堡，在水里玩耍，而他们的父母则在阳光下晒太阳。一群学生在打排球。
+	<<elseif $weather is "overcast">>
+		乌云驱散了大部分游客，但仍有人沿着水边散步。
+	<<elseif $weather is "rain">>
+		由于下雨，海滩几乎没有人，但猛烈的海浪吸引了冲浪者。
+	<<elseif $weather is "snow">>
+		大雪使大部分人远离海滩，但猛烈的海浪吸引了冲浪者。
+	<</if>>
+<<elseif Time.dayState is "dawn">>
+	<<if $weather is "clear">>
+		这是慢跑者的热门目的地，有些人还带着狗。一些家庭正在设置防风衣。一群学生在打排球。
+	<<elseif $weather is "overcast">>
+		这是慢跑者的热门目的地，有些人还带着狗。雾挡住了你看大海的视线。
+	<<elseif $weather is "rain">>
+		由于下雨，海滩几乎没有人，但猛烈的海浪吸引了冲浪者。
+	<<elseif $weather is "snow">>
+		大雪使大部分人远离海滩，但猛烈的海浪吸引了冲浪者。
+	<</if>>
+<<elseif Time.dayState is "dusk">>
+	<<if $weather is "clear">>
+		太阳落山时，家家户户都在离开。一群学生在打排球。
+	<<elseif $weather is "overcast">>
+		这里几乎没有人，但有些人沿着水边散步。
+	<<elseif $weather is "rain">>
+		由于下雨，海滩几乎没有人，但猛烈的海浪吸引了冲浪者。
+	<<elseif $weather is "snow">>
+		大雪使大部分人远离海滩，但猛烈的海浪吸引了冲浪者。
+	<</if>>
+<<elseif Time.dayState is "night">>
+	<<if $weather is "clear">>
+		除了一群围在火堆旁喝酒的学生外，这里似乎空无一人。
+	<<elseif $weather is "overcast">>
+		这里似乎没什么人气。
+	<<elseif $weather is "rain">>
+		这里似乎没什么人气。
+	<<elseif $weather is "snow">>
+		这里似乎没什么人气。
+	<</if>>
+<</if>>
+你可以去游泳，但一定要穿着得体。
+<br><br>
+<<if $exposed gte 1>>
+	<<exhibitionism "beach">>
+<</if>>
+<<if $arousal gte $arousalmax>>
+	<<orgasmbeach>>
+<</if>>
+<<if $stress gte $stressmax>>
+	<<passoutbeach>>
+<<else>>
+	<<run statusCheck("Robin")>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip is 0>>
+		<<eventsbeach>>
+	<<elseif $robinReunionScene isnot undefined and _robin_location is "beach" and $exposed lte 0>>
+		<<npc Robin>><<person1>>
+		<<if $robinReunionScene is "dungeon">>
+			<<unset $robinReunionScene>><<set $robinPostMortem to true>>
+			你看到罗宾站在<<his>>的柠檬水摊后面。当<<he>>看到你的时候，<<he>>张大了嘴，然后向你冲过来。
+			<br><br>
+
+			"不敢相信!"<<he>>尖叫着把头埋在你的胸前。"我……我以为你永远离开了!"我们得回家再谈。等你准备好了再说道。"
+			<br><br>
+
+			你被带回到<<his>>的小摊。上面放着你们俩的小照片。<<He>>把它收起来。
+			<br>
+			<<He>>给你调了一杯柠檬水，然后打发你走了。
+			<br>
+			"别忘了以后来找我，"<<he>>带着担心表情说道:"如果你需要谈一谈的话，我总是会在这里等你."
+			<br><br>
+
+			<<link [[继续|Beach]]>><<set $eventskip to 1>><<endevent>><</link>>
+			<br>
+		<<elseif $robinReunionScene is "dungeonRobin">>
+			<<unset $robinReunionScene>>
+			你看到罗宾站在<<his>>的柠檬水摊后面。当<<he>>看到你的时候，<<he>>张大了嘴，然后向你冲过来。
+			<br><br>
+
+			"你居然成功了！"<<he>>尖叫着，同时<<he>>把<<himself>>埋在你的胸口。"当你被夺走的时候，我都不知道我该做些什么。"
+			<br><br>
+
+			你被带回到<<his>>的小摊。上面放着你们俩的小照片。<<He>>把它收起来。
+			<br>
+			<<He>>给你调了一杯柠檬水，然后打发你走了。
+			<br>
+			"别忘了以后来找我，"<<he>>带着担心表情说道:" 不要忘记，我总在这里等你。"
+			<br><br>
+
+			<<link [[继续|Beach]]>><<set $eventskip to 1>><<endevent>><</link>>
+			<br>
+		<<elseif $robinReunionScene is "asylum">>
+			<<unset $robinReunionScene>>
+			你看到罗宾站在<<his>>的柠檬水摊后面。
+
+			<<if $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 40>>
+				<<He>>难以置信地盯着你
+				<br><br>
+
+				"嗨，"当你走近时，<<he>>平静地说道。"我以为医生把你带走了。如果我知道你会回来，我一定会给你买些东西的。"罗宾的声音颤抖着。
+			<<else>>
+				<<He>>兴奋地向你招手，当<<he>>看到你的时候
+				<br><br>
+
+				"嘿，你病好了!"当你走近时，<<he>>说道。"我还以为你要在医生那里待一阵子呢。如果我知道你要回来，我会准备一些东西的，"罗宾解释道。
+			<</if>>
+			<br><br>
+
+			你摇摇头，告诉<<him>>那些家伙并不打算帮助你，所以你提前 "退房"了。罗宾虽然看起来还是很困惑，但<<he>>还是点了点头并给了你一个拥抱。
+			<br>
+
+			<<if $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 40>>
+				"好吧，我很高兴至少你自由了，"<<he>>小声说着的同时紧紧地抱住了你。
+			<<else>>
+				"好吧，再次看到你我很高兴！我希望你感觉更好些了。"
+			<</if>>
+			<br>
+			你们两人稍稍的谈了一会。最终，罗宾说<<he>>需要回到<<his>>那里了。
+
+			<<if $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 40>>
+				<<He>>缓慢地拖着脚步走了。<<his>>眼神如同粘在了地上一样。
+			<<else>>
+				<<He>>笑着与你挥手道别。
+			<</if>>
+			<br><br>
+
+			<<link [[继续|Beach]]>><<set $eventskip to 1>><<endevent>><</link>>
+			<br>
+		<<else>>
+			你在罗宾的柠檬水摊看到了<<his>>。<<His>>的眼睛掠过你，但<<he>>没有盯着你看。就好像<<he>>根本不认识你。
+			<br><br>
+
+			<<link [[继续|Beach]]>><<set $eventskip to 1>><<endevent>><</link>>
+			<br>
+		<</if>>
+	<<elseif $NPCName[$NPCNameList.indexOf("Robin")].init is 0 and _robin_location is "beach" and $exposed lte 0>>
+		<<set $robindebt to 0>><<set $robindebtlimit to 5>>
+		<<npc Robin>><<person1>>你看到一个熟悉的人在海滩上的小摊上工作。<<Hes>>也注意到了你。"嗨!我是罗宾。<<He>>是孤儿院的另一个居民。<<He>>总是很尊敬你，尽管你们年龄差不多。<<He>>在清洗玻璃水罐时示意你过去。<<He>>放下它，在你靠近时拥抱你。
+		<br><br>
+		<<if Time.days is 0>>
+			"我今天起得很早，所以今天早上没有看到你。记住，<span class="gold">你可以随时来我的房间找我</span>。今晚我有东西要给你看，我太兴奋了!"<<He>>看着你身后，注意到有顾客正在走近。"我得回去工作了。如果你愿意的话，欢迎你留下来帮忙。我一会儿要去购物中心取惊喜，所以不管怎样，我希望以后能见到你!"<<He>>回到他的摊位后的位置。
+		<<else>>
+			"很久没有在孤儿院里见到你了。我们一定不能忘了彼此。记住，<span class="gold">你来拜访家里我的房间</span>无论何时。我一直在等着给你展示些东西，我太激动了！"<<He>>看着你身后，注意到有顾客正在走近。"我得回去工作了。如果你愿意的话，欢迎你留下来帮忙。"<<He>>回到看台后面的位置。
+		<</if>>
+		<br><br>
+		<<endevent>>
+		<<link [[继续|Beach]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<if $exposed lte 0>>
+			<<if $scienceproject is "ongoing" and $sciencephallusknown is 1 and $sciencephallus lt 10 and Time.dayState isnot "night" and $weather isnot "rain" and $weather isnot "snow" and $exposed lte 0>>
+				<<ind>><<link [[寻找性器测量项目的参与者(0:15)|Beach Phallus]]>><<pass 15>><</link>>
+				<br>
+			<</if>>
+			<<swimicon>><<link [[去游泳(0:02)|Sea Beach]]>><<pass 2>><</link>>
+			<br>
+		<<elseif Time.dayState is "night">>
+			<<swimicon>><<link [[去游泳(0:02)|Sea Beach]]>><<pass 2>><</link>>
+			<br>
+		<</if>>
+		<<if Time.dayState is "day" and $weather is "clear">>
+			<<if $worn.under_lower.type.includes("swim") and ($worn.under_upper.type.includes("swim") or $worn.under_upper.type.includes("naked")) and ($worn.upper.type.includes("swim") or $worn.upper.type.includes("naked")) and ($worn.lower.type.includes("swim") or $worn.lower.type.includes("naked"))>>
+				<<baskicon>><<link [[日光浴(1:00)|Tanning]]>><<pass 60>><</link>><<lstress>>
+				<br>
+			<</if>>
+			<<if $milkshake gte 1 and $exposed lte 0>>
+				<<ind>><<link [[喝奶昔(0:10)|Beach Milkshake]]>><<pass 10>><<set $milkshake -= 1>><<stress -5>><</link>><<lstress>>
+				<br>
+			<</if>>
+		<</if>>
+		<<changingroomicon>><<link [[更衣室|Changing Room]]>><</link>>
+		<br>
+		<<if $exposed lte 0>>
+			<<if _robin_location is "beach">>
+				<<lemonadestandicon>><<link [[罗宾的柠檬摊|Robin's Lemonade]]>><</link>>
+				<br>
+			<</if>>
+			<<if $leftleg is "bound" or $rightleg is "bound">>
+				<<set $_boundType to ($leftleg is "bound" ? ($rightleg is "bound" ? "both legs" : "your left leg") : "your right leg")>>
+				你不能在$_boundType被绑住的情况下去跑步.
+			<<elseif $worn.feet.type.includes("heels")>>
+				<<walkicon>><<link [[穿高跟鞋散步(0:30)|Beach Heel Walk]]>><</link>><<gtiredness>><<lstress>>
+			<<else>>
+				<<runicon>><<link [[去跑步(0:30)|Beach Run]]>><<athletics 3>><</link>><<gtiredness>><<gathletics>><<lstress>>
+			<</if>>
+			<br>
+		<</if>>
+		<<if $weather is "clear" and Time.dayState is "night" and $exposed lte 0>>
+			<<partyicon>><<link [[沙滩派对|Beach Party]]>><</link>>
+			<br>
+		<</if>>
+		<<if $weather is "clear" and Time.dayState isnot "night" and $exposed lte 0>>
+			<<volleyballicon>><<link [[沙滩排球|Beach Volleyball]]>><</link>>
+			<br>
+			<<if $exhibitionism gte 75 and $daily.beachStrip isnot 1>>
+				<<stripicon>><<link [[脱衣 (0:20)|Beach Strip]]>><<pass 20>><</link>><<exhibitionist5>>
+				<br>
+			<</if>>
+		<</if>>
+		<<if $exposed gte 1 and Time.dayState isnot "night">>
+		<<else>>
+			<<add_link "<br>出行<br>">><<hideDisplay>>
+			<<cliff>>
+			<br>
+			<<starfish>>
+			<br>
+		<</if>>
+		<<displayLinks>>
+		<br>
+	<</if>>
+<</if>>
+<<set $eventskip to 0>>
+
+:: Beach Party
+
+<<location "beach">><<effects>>
+你走近学生。几个人在临时搭建的舞台上靠近火堆跳舞，其他人则在喝酒聊天。
+<br><br>
+<<link [[社交(0:10)|Beach Party Chat]]>><<pass 10>><<stress -2>><<status 1>><<set $phase to 0>><</link>><<gcool>><<lstress>>
+<br>
+<<link [[跳舞(0:05)|Beach Party Dance]]>><<danceinit>><<set $dancing to 1>><<set $venuemod to 1>><<stress -4>><<tiredness 4>><</link>><<lstress>><<gtiredness>>
+<br><br>
+<<link [[离开|Beach]]>><</link>>
+
+:: Beach Volleyball
+
+<<location "beach">><<effects>>
+<<generatey1>><<generatey2>><<generatey3>><<generatey4>><<generatey5>>
+你走近一群打排球的人。<<person1>><<person>>坐在沙滩上看<<his>>的四个朋友玩。
+<br><br>
+<<link [[加入(0:30)|Beach Volleyball Play]]>><<pass 30>><<stress -6>><<tiredness 6>><<status 1>><<athletics 3>><</link>><<gcool>><<gathletics>><<lstress>><<gtiredness>>
+<br>
+<<link [[离开|Beach]]>><<endevent>><</link>>
+
+:: Beach Volleyball Play
+
+<<location "beach">><<effects>>
+学生们很高兴有第六个球员，尤其是加入的这个人是一个<<person1>><<person>>。
+<br><br>
+<<physique 3>>
+<<set $eventcheck to random(1, 10000)>>
+<<if $eventcheck gte (9900 - ($allure))>>
+	<<if $rng gte 51>><<molested>>
+		<<if $worn.lower.type.includes("naked")>>
+			你太过专注于对方的队伍，完全没有注意到会有内鬼。一双手抓住了你$worn.under_lower.cn_name_cap的边缘。
+		<<else>>
+			你太专注于对方的队伍，你没有注意到你自己的队伍偷袭了你。一双手抓住了你$worn.lower.cn_name_cap的边缘。
+		<</if>>
+		<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 0 and $worn.lower.set isnot $worn.upper.set>>
+			在你做出反应之前，<<person1>><<person>>已经把它完全拉到了你的膝盖上，
+		<<elseif setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 0 and $worn.lower.set is $worn.upper.set>>
+			在你做出反应之前，<<person1>><<person>>已经把它拉到了一边，
+		<<else>>
+			在你做出反应之前，<<person1>><<person>>已经把它举起来了，
+		<</if>>
+		<<if $worn.under_lower.name is "naked" or $worn.lower.name is "naked">>
+			<<if $uncomfortable.nude is false>>
+				暴露你的<<genitals>>给所有人看。笑声和猥亵的手势从两队爆发，但你感到兴奋。
+				<br><br>
+				你整理衣服，比你需要的时间长了一点。
+				<<garousal>><<arousal 300>>
+			<<else>>
+				暴露你的<<genitals>>给所有人看。当你的脸涨得通红，你赶紧保护自己的尊严时，双方都爆发出笑声和下流的手势。
+				<<garousal>><<gstress>><<gtrauma>><<arousal 300>><<stress 3>><<trauma 3>>
+			<</if>>
+		<<else>>
+			<<if $uncomfortable.underwear is false>>
+				你的$worn.under_lower.cn_name_cap暴露了。两支队伍都爆发出笑声，包括你。只是<<if $worn.under_lower.plural is 0>>一件<</if>>$worn.under_lower.cn_name_cap，你不觉得尴尬。
+				<<gcool>><<status 5>><<garousal>><<gstress>>
+			<<else>>
+				你的$worn.under_lower.cn_name_cap暴露了。双方都爆发出笑声，你赶紧保护自己的尊严。
+				<<lcool>><<status -10>><<garousal>><<gstress>><<gtrauma>><<arousal 100>><<stress 1>><<trauma 1>>
+			<</if>>
+		<</if>>
+		<br><br>
+	<<else>>
+		<!-- if RNG is lower -->
+		<<if $topless is 1>>
+			在比赛进行到一半的时候，球撞上了你裸露的胸部，把你撞倒在地。
+			<<if $player.breastsize gte 2>>
+				<br>
+				你的<<breasts>>由于裸露的皮肤撞击而有点疼。
+				<<pain 1>><<gpain>>
+				<br>
+			<</if>>
+			这很尴尬，但你很快就会重新振作起来。
+			<br><br>
+		<<elseif !$worn.over_upper.type.includes("naked")>>
+			在比赛进行到一半的时候，球撞上了你的胸部，把你撞倒在地。
+			<<set $worn.over_upper.integrity -= 1>><<set $worn.upper.integrity -= 1>><<integritycheck>><<exposure>>
+			<<if $player.gender_appearance is "m" or !$worn.over_upper.type.includes("naked") or !$worn.upper.type.includes("naked") or !$worn.under_upper.type.includes("naked")>>
+				这很尴尬，但你很快就会重新振作起来。
+				<br><br>
+			<<else>>
+				<<if $uncomfortable.nude is false>>
+					更糟的是，你的衣服破烂不堪，露出了你的胸部。笑声和猥亵的手势从两队爆发，但你感到兴奋。
+					<<garousal>><<arousal 300>><<towelup>>
+				<<else>>
+					更糟的是，你的衣服破烂不堪，露出了你的胸部。你的脸变红，赶紧用毛巾保护自己的尊严，双方都爆发出笑声和下流的手势。
+					<<garousal>><<gstress>><<gtrauma>><<arousal 300>><<stress 3>><<trauma 3>><<towelup>>
+				<</if>>
+			<</if>>
+		<<else>>
+			在比赛进行到一半的时候，球撞上了你的胸部，把你撞倒在地。
+			<<set $worn.upper.integrity -= 1>><<set $worn.under_upper.integrity -= 1>><<integritycheck>><<exposure>>
+			<<if $player.gender_appearance is "m" or !$worn.upper.type.includes("naked") or !$worn.under_upper.type.includes("naked")>>
+				这很尴尬，但你很快就会重新振作起来。
+				<br><br>
+			<<else>>
+				<<if $uncomfortable.nude is false>>
+					更糟的是，你的衣服破烂不堪，露出了你的胸部。笑声和猥亵的手势从两队爆发，但你感到兴奋。
+					<<garousal>><<arousal 300>><<towelup>>
+				<<else>>
+					更糟的是，你的衣服破烂不堪，露出了你的胸部。你的脸变红，赶紧用毛巾保护自己的尊严，双方都爆发出笑声和下流的手势。
+					<<garousal>><<gstress>><<gtrauma>><<arousal 300>><<stress 3>><<trauma 3>><<towelup>>
+				<</if>>
+				<br><br>
+			<</if>>
+		<</if>>
+		<!-- end of RNG -->
+	<</if>>
+<<else>>
+	你玩得很愉快。
+	<br><br>
+<</if>>
+<<if Time.dayState is "night">>
+	太阳已经完全落山了，要继续玩下去就很困难了。<<person1>><<person>>告诉你他们要去参加一个海滩派对，并邀请你一起去。
+	<br><br>
+	<<link [[接受(0:10)|Beach Party Chat]]>><<pass 10>><<endevent>><<lstress>><<status 1>><</link>><<gcool>><<lstress>>
+	<br>
+	<<link [[找借口说再见|Beach]]>><<endevent>><</link>>
+	<br><br>
+<<else>>
+	<<link [[玩更多(0:30)|Beach Volleyball Play]]>><<pass 30>><<stress -6>><<tiredness 6>><<status 1>><<athletics 3>><</link>><<gcool>><<gathletics>><<lstress>><<gtiredness>>
+	<br>
+	<<link [[停止|Beach]]>><<endevent>><</link>>
+	<br><br>
+<</if>>
+
+:: Beach Party Chat
+
+<<location "beach">><<effects>>
+
+<<if $phase is 0>>
+	你加入谈话。
+	<<if $allure gte 3000>>
+		你很快就会成为关注的焦点。
+	<<elseif $allure gte 2000>>
+		你很容易吸引眼球。
+	<<elseif $allure gte 1000>>
+		当你说话时，人们会承认你，但除此之外，他们不会打扰你。
+	<<else>>
+		虽然你很严肃，但人们总是在谈论你，好像没有意识到你的存在。
+	<</if>>
+	<<if Time.dayState isnot "night">>
+		太阳从地平线升起，剩下的学生回家了。
+		<br><br>
+
+		<<link [[继续|Beach]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		<br><br>
+		<<set $eventcheck to random(1, 10000)>>
+		<<if $eventcheck gte (9900 - ($allure))>>
+			<<generatey1>><<person1>>一个<<person>>坐在你旁边，递给你一杯饮料。
+			<br><br>
+			<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+				<span class="blue">你还在怀孕中，所以你不能让自己喝酒。</span>
+			<<else>>
+				<<link [[喝(0:10)|Beach Party Chat]]>><<pass 10>><<stress -2>><<alcohol 60>><<set $phase to 1>><<status 1>><</link>><<gcool>><<lstress>>
+			<</if>>
+			<br>
+			<<link [[只是聊天(0:10)|Beach Party Chat]]>><<pass 10>><<stress -2>><<set $phase to 1>><<status 1>><</link>><<gcool>><<lstress>>
+			<br>
+			<<link [[离开|Beach]]>><<endevent>><</link>>
+			<br><br>
+		<<else>>
+			<<link [[继续 (0:10)|Beach Party Chat]]>><<pass 10>><<stress -2>><<status 1>><</link>><<gcool>><<lstress>>
+			<br>
+			<<link [[离开|Beach]]>><<endevent>><</link>>
+			<br><br>
+		<</if>>
+	<</if>>
+<<elseif $phase is 1>>
+	<<if $rng gte 21>>
+		你喜欢和<<person>>交谈。<<He>>却在?admires你的身体，<<He>>以为你没注意到。
+		<br><br>
+		<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+			<span class="blue">你还在怀孕中，所以你不能让自己喝酒。</span>
+		<<else>>
+			<<link [[喝(0:10)|Beach Party Chat]]>><<pass 10>><<stress -2>><<alcohol 60>><<set $phase to 1>><<status 1>><</link>><<gcool>><<lstress>>
+		<</if>>
+		<br>
+		<<link [[只是聊天(0:10)|Beach Party Chat]]>><<pass 10>><<stress -2>><<set $phase to 1>><<status 1>><</link>><<gcool>><<lstress>>
+		<br>
+		<<link [[离开|Beach]]>><<endevent>><</link>>
+		<br><br>
+	<<else>>
+		你喜欢和<<person>>交谈。<<He>>靠过来小声说:"你想去个私密的地方吗?"
+		<br><br>
+
+		<<link [[好|Beach Party Sex]]>><<set $phase to 0>><<set $sexstart to 1>><</link>><<promiscuous1>>
+		<br>
+
+		<<link [[不要|Beach Party Chat]]>><<set $phase to 2>><<status 1>><</link>><<gcool>>
+		<br><br>
+	<</if>>
+<<elseif $phase is 2>>
+	<<if $rng gte 11>><<set $phase to 0>>
+		<<He>>很失望，但礼貌地说再见，然后离开去别处看。
+		<br><br>
+		<<link [[继续 (0:10)|Beach Party Chat]]>><<pass 10>><<stress -2>><<status 1>><<endevent>><</link>><<gcool>><<lstress>>
+		<br>
+		<<link [[离开|Beach]]>><<endevent>><</link>>
+		<br><br>
+	<<else>>
+		<<He>>掐着你的脖子，"你这样不太礼貌。我觉得你需要上一课。"<<He>>让你站起来，开始强迫你离开小组的其他人。
+		<br><br>
+		<<link [[继续|Beach Party Rape]]>><<set $molestationstart to 1>><<set $timer to 10>><</link>>
+		<br><br>
+	<</if>>
+<</if>>
+
+:: Beach Party Dance
+
+<<location "beach">><<effects>>
+<<danceeffects>>
+<<danceaudience>>
+<<danceactions>>
+
+<<if $danceevent is 0 and $exhibitionism lte 74 and $exposed gte 2>>
+	你不可能在这么暴露的情况下继续跳舞!你红着脸逃离现场。
+	<br><br>
+<<elseif $danceevent is 0 and $exhibitionism lte 34 and $exposed gte 1 and !$worn.under_lower.type.includes("dance")>>
+	你不可能在这么暴露的情况下继续跳舞!你红着脸逃离现场。
+	<br><br>
+<</if>>
+
+<<if $danceevent is "rape">>
+	<<link [[继续|Beach Party Dance Rape]]>><<set $molestationstart to 1>><</link>>
+<<elseif $danceevent is "finish">>
+	<<link [[继续|Beach Party]]>><<clotheson>><<endevent>><</link>>
+<<elseif $danceevent is 0>>
+	<<if $exposed gte 2 and $exhibitionism lte 74>>
+		<<link [[离开|Changing Room]]>><<clotheson>><<endevent>><</link>>
+	<<elseif $exposed gte 1 and $exhibitionism lte 34>>
+		<<link [[离开|Changing Room]]>><<clotheson>><<endevent>><</link>>
+	<<else>>
+		<<link [[停止|Beach Party]]>><<clotheson>><<endevent>><</link>>
+	<</if>>
+<</if>>
+
+:: Beach Party Sex
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<promiscuity1>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>>
+	<<He>>静静地牵着你的手，带你离开人群。你走进沙丘，直到你再也听不见别人的谈话声，然后<<he>>转身拥抱你。
+	<br><br>
+<</if>>
+<<location "beach">><<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if $finish is 1>>
+	<span id="next"><<link [[继续->Beach Party Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<<if $alarm is 1>>
+		<<if $rescue is 0>>
+			<<set $alarm to 0>>
+			<br><br>
+			<<if $enemyarousal gte $enemyarousalmax>>
+				<span id="next"><<link [[继续->Beach Party Sex Ejaculation]]>><</link>></span><<nexttext>>
+			<<elseif $enemyhealth lte 0>>
+				<span id="next"><<link [[继续->Beach Party Sex Escape]]>><</link>></span><<nexttext>>
+			<<else>>
+				<span id="next"><<link [[继续->Beach Party Sex]]>><</link>></span><<nexttext>>
+			<</if>>
+		<</if>>
+	<<elseif $enemyarousal gte $enemyarousalmax>>
+		<span id="next"><<link [[继续->Beach Party Sex Ejaculation]]>><</link>></span><<nexttext>>
+	<<elseif $enemyhealth lte 0>>
+		<span id="next"><<link [[继续->Beach Party Sex Escape]]>><</link>></span><<nexttext>>
+	<<else>>
+		<span id="next"><<link [[继续->Beach Party Sex]]>><</link>></span><<nexttext>>
+	<</if>>
+<</if>>
+
+:: Beach Party Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<enable_rescue>>
+	<<hand_gag 0 left>>
+	<<set $NPCList[0].righthand to "arms">>
+	<<set $leftarm to "grappled">>
+	<<set $rightarm to "grappled">>
+<</if>>
+<<effects>>
+<<if $timer is 0 and $rescue is 1>>
+	<<set $rescue to 0>>
+	你走在沙丘后面。你离得太远了，没人能帮你。
+<<elseif $timer gte 1>>
+	你被拉离群体更远，但他们仍在视线范围内。
+<<else>>
+<</if>>
+<br><br>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if $alarm is 1>>
+	<<if $rescue is 1>>
+		<span id="next"><<link [[继续->Beach Party Rape Alarm]]>><</link>></span><<nexttext>>
+	<<else>>
+		<<set $alarm to 0>>
+		<br><br>
+		<<if $enemyarousal gte $enemyarousalmax>>
+			<span id="next"><<link [[继续->Beach Party Rape Ejaculation]]>><</link>></span><<nexttext>>
+		<<elseif $enemyhealth lte 0>>
+			<span id="next"><<link [[继续->Beach Party Rape Escape]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续->Beach Party Rape]]>><</link>></span><<nexttext>>
+		<</if>>
+	<</if>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<span id="next"><<link [[继续->Beach Party Rape Ejaculation]]>><</link>></span><<nexttext>>
+<<elseif $enemyhealth lte 0>>
+	<span id="next"><<link [[继续->Beach Party Rape Escape]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续->Beach Party Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Beach Party Rape Alarm
+
+<<effects>><<set $rescued += 1>>
+<<He>>注意到有几个人注意到了你的哭泣。<<He>>愤怒地看着你，喊道:"疯荡妇!"然后回到<<his>>的朋友那里。<<tearful>>你振作起来。
+<br><br>
+<<clotheson>>
+<<endcombat>>
+<<link [[继续|Beach]]>><</link>>
+
+:: Beach Party Rape Ejaculation
+
+<<ejaculation>>
+<<if $enemyanger gte ($enemyangermax / 5) * 3>>
+<<He>>把你推到沙滩上。
+<<violence 1>>
+<br><br>
+<<elseif $enemyanger gte 1>>
+没说一句话，<<he>>回到<<his>>的朋友身边。
+<br><br>
+<<else>>
+<<he>>微笑着靠得更近了，"好<<girl>>。"<<He>>让你躺在沙滩上。
+<br><br>
+<</if>>
+
+<<tearful>>你站了起来。
+<br><br>
+
+<<clotheson>>
+
+<<endcombat>>
+
+<<link [[继续|Beach]]>><</link>>
+
+:: Beach Party Rape Escape
+<<effects>>
+
+<<He>>吃痛退开，给了你可乘之机。<<tearful>>你跑进了黑暗之中。
+<br><br><br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Beach]]>><</link>>
+
+:: Beach Party Sex Ejaculation
+<<ejaculation>>
+
+<<if $enemyanger gte ($enemyangermax / 5) * 3>>
+<<He>>把你丢在沙滩上。
+<<violence 3>>
+<br><br>
+<<elseif $enemyanger gte 1>>
+<<he>>一言不发地离去。
+<br><br>
+<<else>>
+<<he>>微笑着吻了你的脸颊。<<He>>起身离开你躺在沙滩上。
+<br><br>
+<</if>>
+
+<<tearful>>你站了起来。
+<br><br>
+
+<<clotheson>>
+
+<<endcombat>>
+
+<<link [[继续|Beach]]>><</link>>
+
+:: Beach Party Sex Escape
+
+<<effects>>
+<<if Time.dayState isnot "night">>
+	<<He>>吃痛退开，给了你可乘之机。<<tearful>>你跑进了黑暗之中。
+	<br><br>
+<<else>>
+	<<He>>吃痛退开，给了你可乘之机。<<tearful>>你跑进了黑暗之中。
+	<br><br>
+<</if>>
+<<clotheson>>
+<<endcombat>>
+<<link [[继续|Beach]]>><</link>>
+
+:: Beach Party Sex Finish
+
+<<person>>离开了你。<<He>>看起来很沮丧。
+<<clotheson>>
+<<endcombat>>
+<<link [[继续|Beach]]>><</link>>
+
+:: Beach Party Dance Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<if Time.dayState isnot "night">>
+	<</if>>
+<</if>>
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if $alarm is 1>>
+	<<if $rescue is 0>>
+		<<set $alarm to 0>>
+		<br><br>
+		<<if $enemyarousal gte $enemyarousalmax>>
+			<span id="next"><<link [[继续->Beach Party Dance Rape Ejaculation]]>><</link>></span><<nexttext>>
+		<<elseif $enemyhealth lte 0>>
+			<span id="next"><<link [[继续->Beach Party Dance Rape Escape]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续->Beach Party Dance Rape]]>><</link>></span><<nexttext>>
+		<</if>>
+	<</if>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<span id="next"><<link [[继续->Beach Party Dance Rape Ejaculation]]>><</link>></span><<nexttext>>
+<<elseif $enemyhealth lte 0>>
+	<span id="next"><<link [[继续->Beach Party Dance Rape Escape]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续->Beach Party Dance Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Beach Party Dance Rape Ejaculation
+
+<<ejaculation>>
+<<if $audience is 1>>
+	随着<<person1>><<person>>的高潮，人群中爆发出一片欢呼。<<tearful>>你趁还没有其他人开始动歪心思时，蹒跚着溜走了。
+<<elseif $audience lte 6>>
+	<<person1>><<person>>与<<person2>><<person>>互相击掌。<<tearful>>你趁观众们欢呼庆祝的时候蹒跚着溜走了。
+<<else>>
+	人群中爆发出一片欢呼，大家似乎都很喜欢这场表演。<<tearful>>你趁还没有其他人开始动歪心思时，蹒跚着溜走了。
+<</if>>
+
+<<stealclothes>>
+
+<<endcombat>>
+
+<<link [[继续|Beach]]>><</link>>
+
+:: Beach Party Dance Rape Escape
+<<effects>>
+
+<<if Time.dayState isnot "night">>
+	<<He>>吃痛退开，给了你可乘之机。<<tearful>>你跑进了黑暗之中。
+	<br><br>
+<<else>>
+	<<He>>吃痛退开，给了你可乘之机。<<tearful>>你跑进了黑暗之中。
+	<br><br>
+<</if>>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Beach]]>><</link>>
+
+:: Beach Run
+<<pass 30>><<location "beach">><<effects>>
+
+你沿着海岸跑。
+<<if Time.dayState is "night">>
+	<<if $weather is "rain">>
+		海浪撞击的声音与暴雨的声音竞争。
+	<<elseif $weather is "clear">>
+		寒冷的夜风使你精神振奋。
+	<<elseif $weather is "overcast">>
+		凉爽的晚风吹在你的皮肤上感觉很舒服。
+	<<elseif $weather is "snow">>
+		<<if $body_temperature is "comfy">>
+			寒冷的夜风使你精神振奋。
+		<<else>>
+			你在冰冷的夜风中瑟瑟发抖。
+			<<gstress>><<stress 6>>
+		<</if>>
+	<</if>>
+<<else>>
+	<<if $weather is "rain">>
+		当你在潮湿的沙滩上慢跑时，雨水袭击了你。
+	<<elseif $weather is "clear">>
+		强烈的阳光让你精疲力竭。
+		<<tiredness 6>><<gtiredness>>
+	<<elseif $weather is "overcast">>
+		凉爽的天气适合慢跑。
+	<<elseif $weather is "snow">>
+		<<if $body_temperature is "comfy">>
+			当你在潮湿的沙滩上慢跑时，落下的雪吹在你的脸上。
+		<<else>>
+			你在寒风中瑟瑟发抖。
+			<<gstress>><<stress 6>>
+		<</if>>
+	<</if>>
+<</if>>
+<<physique 3>><<tiredness 6>><<stress -6>>
+<br><br>
+
+<<link [[继续|Beach]]>><</link>>
+
+:: Beach Heel Walk
+<<pass 30>><<location "beach">><<effects>>
+
+你沿着海岸走。
+<<if Time.dayState is "night">>
+	<<if $weather is "rain">>
+		漫步时，大雨淋湿了你。
+	<<elseif $weather is "clear">>
+		海浪的声音充满你的感官。
+	<<elseif $weather is "overcast">>
+		夜晚凉爽，让你很放松。
+	<<elseif $weather is "snow">>
+		当你漫步时，黑雪吹向你。
+	<</if>>
+<<else>>
+	<<if $weather is "rain">>
+		倾盆大雨弄湿了沙地。
+	<<elseif $weather is "clear">>
+		太阳太热了，你开始感到疲劳。
+		<<tiredness 3>><<gtiredness>>
+	<<elseif $weather is "overcast">>
+		凉爽的天气适合散步。
+	<<elseif $weather is "snow">>
+		当你漫步时，雪花吹向你。
+	<</if>>
+<</if>>
+<<tiredness 3>><<stress -5>>
+<br><br>
+
+<<link [[继续|Beach]]>><</link>>
+
+:: Beach Strip
+<<location "beach">><<effects>>
+<<set $daily.beachStrip to 1>>
+
+<<strip>>
+
+<<generate1>><<generate2>><<generate3>><<generate4>><<generate5>><<generate6>>
+兴奋得瑟瑟发抖，你脱下衣服，露出你的<<lewdness>>，让整个海滩都看到。人们一开始甚至不会意识到你脱了多远。毕竟这里很多人都穿得很暴露。但没有人穿得像你一样暴露，人们开始注意到。
+<br><br>
+
+一个<<person1>><<person>>看着你，听得到喘息的声音。<<person2>><<person>>避开<<his>>的眼睛，不惜一切代价避免看你。一个<<person3>><<person>>盯着看，看起来好像<<hes>>要开始流口水了。你很高兴这是最常见的反应。你不为你的<<genitals>>感到羞耻。你拥有一切值得骄傲的东西。
+<<exhibitionism5>>
+
+<<flaunting>>你漫步在海滩上，无论走到哪里都吸引着人们的目光。
+<<if $player.penisExist and $player.vaginaExist and !$worn.genitals.type.includesAll("chastity", "hidden") and $rng % 2 == 0>>许多目光都聚焦在你的生殖器上，为你的与众不同而惊叹。
+<<elseif $player.breastsize gte 6 and $rng % 2 == 0>>许多人的目光都被你的<<breasts>>吸引.
+<<elseif $player.penisExist and $player.penissize gte 3 and !$worn.genitals.type.includesAll("chastity", "hidden")>>许多人的目光都被你的<<penis>>吸引.
+<<elseif $beauty gte (($beautymax / 7) * 5) and $rng % 3>>有些人只是目瞪口呆地盯着你，被你赤裸裸的美所折服.
+<<elseif $physique gte (($physiquesize / 7) * 5)>>看到这样一个惊人的体格如此充分地展示，有些人感到惊讶。
+<<elseif $worn.genitals.type.includesAll("chastity", "hidden")>>有些人好奇地盯着你的$worn.genitals.cn_name_cap。
+<</if>>
+每一阵微风抚摸着你裸露的肉体，都在提醒着你的暴露。你感觉如此自由，强大和性感。
+
+<<endevent>>
+
+<br><br>
+<<if $rng % 3 == 0>>
+	<<link [[继续|Beach Strip End]]>><</link>>
+<<else>>
+	<<if $rng % 2 == 0>>
+		<<link [[继续|Beach Strip Lifeguard]]>><</link>>
+	<<else>>
+		<<link [[继续|Beach Strip Camera]]>><</link>>
+	<</if>>
+<</if>>
+
+:: Beach Strip Lifeguard
+
+汽笛划破了空气。你转过身，看到一个救生员向你跑来。
+
+<<generate1>><<person1>>
+
+<<He>>停在你面前，但看向别处。"我很抱歉，但我需要你把衣服盖起来。这里不是裸体海滩。"
+<br><br>
+
+<<link [[遵守|Beach Strip Comply]]>><</link>>
+<br>
+<<link [[拒绝(1:00)|Beach Strip Refuse]]>><<stress -12>><<trauma -6>><<crimeup 50>><<pass 1 hour>><</link>><<crime>><<ltrauma>><<lstress>>
+<br>
+<<if $promiscuity gte 15>>
+<<link [[诱惑|Beach Strip Seduce]]>><</link>><<promiscuous2>>
+<br>
+<</if>>
+
+:: Beach Strip Comply
+<<location "beach">><<effects>>
+
+你觉得你现在已经玩得够开心了，然后拿起你的衣服。
+
+<<clotheson>>
+
+"谢谢你，"救生员说，听起来松了一口气。"我不想把警察牵扯进来。从现在起尽量穿好衣服。"
+<br><br>
+
+<<endevent>>
+
+<<link [[继续|Beach]]>><</link>>
+<br>
+
+:: Beach Strip Refuse
+<<location "beach">><<effects>>
+
+<<if $speech_attitude is "meek">>
+"但我应该被看见，"你说道。"你不觉得我很漂亮吗?"你在身体两侧张开双臂并旋转。"每个人都应该被允许去看。"
+<<elseif $speech_attitude is "bratty">>
+你把手放在屁股上撅嘴。"或者什么?你要逼我吗?"你转过身来，向前倾，在闲逛之前拍一下你的<<bottom>>。
+<<else>>
+"不，"你说道。"我不会让你控制我的。不过，欢迎你加入我们的行列。"你笑着走开了。
+<</if>>
+<br><br>
+<<endevent>>
+
+你花了一个小时在沙滩上奔跑，在海浪中溅起水花。阳光温暖而温柔地照在你裸露的皮肤上。过了一会儿，风开始刮起来，冷得让你发抖。你决定先穿好衣服。总会有新的一天。
+<br><br>
+
+<<link [[继续|Beach]]>><<clotheson>><</link>>
+<br>
+
+:: Beach Strip End
+<<location "beach">><<effects>>
+
+你跑过沙滩，溅起浪花。阳光温暖而温柔地照在你裸露的皮肤上。过了一会儿，风开始刮起来，冷得让你发抖。你决定先穿好衣服。总会有新的一天。
+<br><br>
+<<endevent>>
+
+<<link [[继续|Beach]]>><<clotheson>><</link>>
+<br>
+
+:: Beach Strip Seduce
+<<effects>>
+
+<<set $seductiondifficulty to 8000>>
+<<seductioncheck>>
+<br><br>
+<<if $seductionskill lt 1000>><span class="gold">你对自己的诱惑力更有信心了。</span><</if>><<seductionskilluse>>
+<br><br>
+
+你走得离那个<<person>>更近了。"我可以穿衣服了，"你靠在<<his>>的胳膊上说道。"或者我们可以找点乐子。"
+<<promiscuity2>>
+
+<<if $seductionrating gte $seductionrequired>>
+
+<<He>>伸手去摸你的<<genitals>>，但突然停下来，咽了一大口口水。"也许，"<<he>>抓住你的腰。"如果我有一点乐趣。"
+<br><br>
+
+<<link [[继续|Beach Strip Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+
+<<else>>
+
+"我-我-不，"<<he>>结结巴巴地离开了你。"快穿好衣服，不然我叫警察了!"
+<br><br>
+
+<<link [[遵守|Beach Strip Comply]]>><</link>>
+<br>
+<<link [[拒绝(1:00)|Beach Strip Refuse]]>><<stress -12>><<trauma -6>><<crimeup 50>><<pass 1 hour>><</link>><<crime>><<ltrauma>><<lstress>>
+<br>
+
+<</if>>
+
+:: Beach Strip Camera
+
+你漫步在沙滩上，溅起浪花。阳光温暖而温柔地照在你裸露的皮肤上。
+<br><br>
+<<generate1>><<person1>>
+在海滩稍微平静的部分，你的路径带你靠近一个<<person>>，<<his>>正在忙着准备好昂贵的相机。
+
+<br><br>
+<<if $uncomfortable.nude is true>>
+	<<link [[绕道而行|Beach Strip End]]>><</link>>
+	<br>
+<</if>>
+<<link [[走过去|Beach Strip Camera Snap]]>><<set $phase to 0>><</link>>
+<br>
+<<if $uncomfortable.nude is false>>
+	<<link [[停下摆pose|Beach Strip Camera Snap]]>><<set $phase to 1>><</link>><<exhibitionist5>>
+	<br>
+	<<if $arousal gte $arousalmax / 2>>
+		<<link [[停下摆下流的pose|Beach Strip Camera Snap]]>><<set $phase to 2>><</link>><<exhibitionist5>><<promiscuous1>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Beach Strip Camera Snap
+
+<<if $phase is 0>>
+<<person>>试图让<<his>>的相机准备好，勉强控制<<his>>的手。
+当你到达<<him>>身边的时候，<<his>>的相机已经准备好了。
+<<if $uncomfortable.nude is false>>
+"等-等等!"<<he>>喘着气，当你经过<<him>>的时候。
+<<else>>
+"等-等等!"<<he>>喘着气，当你匆匆经过<<him>>时。
+<</if>>
+<br>
+<<His>>的相机开始疯狂地在你背后拍摄着。
+<br>
+<br>
+"至少我拍到了<<pher>>的屁股!"<<he>>叹了一口气。
+<<fameexhibitionism 1>>
+
+<br>
+<br>
+<<endevent>>
+<<elseif $phase gte 1>>
+你在<<person>>面前停下来，摆几个姿势，炫耀你的<<lewdness>>。
+<br>
+相机的快门疯狂地咔嚓作响。
+<<person>>试图保持<<his>>的相机稳定，勉强控制<<his>>的手。
+<br><br>
+
+<<if $phase is 2 and $player.breastsize gte 2>>
+	<<set $proud_of_breasts to 0>>
+
+	<<if $acceptance_breasts_small gte 999 and $player.breastsize lte 5>>
+		<<set $proud_of_breasts to 1>>
+	<<elseif $player.breastsize lte 7 and $player.breastsize gte 6>>
+		<<set $proud_of_breasts to 1>>
+	<<elseif $acceptance_breasts_big gte 999 and $player.breastsize gte 8>>
+		<<set $proud_of_breasts to 1>>
+	<</if>>
+
+	<<if $proud_of_breasts is 1>>
+		你向前挺胸，骄傲地炫耀你的<<breasts>>。
+		当相机不停地咔嚓咔嚓时，你以不同的姿势展示它们。
+		你捧起它们，抚摸它们，按摩它们，揉搓它们，整个过程中骄傲地与镜头保持眼神交流。
+		这个<<person>>似乎一心想要拍尽可能多的照片。
+		<br><br>
+	<</if>>
+<</if>>
+
+<<if $exposed gte 2>>
+	你慢慢转过身，让<<him>>好好看看你赤裸的<<bottom>>。
+	你听到<<his>>的相机在你背后不停地咔哒咔哒响，因为你摆了一些姿势来展示你的臀部。
+	<br><br>
+
+	<<if $phase is 2>>
+		你的背仍然对着镜头，你伸展你的腿，慢慢地弯腰，让<<him>>从后面看到你的<<genitals>>和屁眼。
+		照相机的咔嗒声更响了。
+		<<if $player.bodyliquid.vagina.semen gte 3>>
+			你感觉到精液从你的<<pussy>>里滴出来，顺着你的腿流下来。
+			<<garousal>><<arousal 200>>
+		<<elseif $player.bodyliquid.anus.semen gte 3>>
+			你感觉到精液从菊穴流出，顺着你的腿流下来。
+			<<garousal>><<arousal 200>>
+		<<else>>
+			<<garousal>><<arousal 100>>
+		<</if>>
+		<br><br>
+
+		<<if $player.vaginaExist>>
+		你弯着脖子向后看，直勾勾地盯着镜头，建议"为什么不拍些特写呢?"你用双手抓住你的<<bottom>>。然后，仍然凝视着镜头，你伸展你的<<pussy>>.
+		<br>
+		<<if $player.bodyliquid.vagina.semen gte 2>>
+		精液从你的<<pussy>>滴到沙滩上。这个景象对<<person>>来说太过分了，<<he>>的相机掉在沙子里。<<he>>兴奋地摇晃着，迅速地把它捡起来，急切地靠近。
+		<<else>>
+		<<person>>显然很震惊，但急切地靠近。
+		<</if>>
+		<<His>>的相机现在离你很近，几乎碰到你的<<pussy>>。<<he>>欣喜若狂不停地拍照。
+		<br><br>
+		你用一只手的手指展开你的<<pussy>>，用另一只手把一根手指伸进你的开口。你对镜头记录下的你的淫荡行为感到兴奋。
+		<<garousal>><<arousal 300 "genitals">>
+		<br><br>
+		<</if>>
+
+		当你决定给这个<<person>>拍足够多的照片时，你转身对着镜头飞吻。
+	<<else>>
+		你觉得你已经给了<<him>>足够的照片，你转身对着镜头飞吻。
+	<</if>>
+	<br><br>
+
+	当你走开的时候，<<he>>脱口而出一句快速的"谢谢!"，在说话的时候<<his>>的拍照也没有停过。
+	<<fameexhibitionism 15>>
+<<else>>
+	你决定让<<he>>好好拍完照片，你对着相机飞吻。
+	在你移动的时候，<<he>>喃喃地说了一句"谢谢"，在说话的时候<<his>>的拍照也没有停过。
+	<<fameexhibitionism 10>>
+<</if>>
+<</if>>
+
+<br><br>
+<<endevent>>
+
+<<link [[继续|Beach Strip End]]>><</link>>
+<br>
+
+:: Beach Strip Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 50>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Beach Strip Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Beach Strip Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Beach Strip Sex Finish
+<<location "beach">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+<<ejaculation>>
+
+"我那样做只是为了让你穿好衣服!"<<he>>不令人信服地说道。
+<br><br>
+
+不过天气越来越冷了，所以你决定先穿好衣服。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<elseif $enemyhealth lte 0>>
+
+你把那个<<person>>推到沙滩上，然后飞奔而去。
+<br><br>
+
+天气有点冷了，所以你决定先穿好衣服。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+<<elseif $finish is 1>>
+
+"我那样做只是为了让你穿好衣服!"<<he>>不令人信服地说道。
+<br><br>
+
+不过天气越来越冷了，所以你决定先穿好衣服。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+<</if>>
+<br><br>
+<<link [[继续|Beach]]>><</link>>
+
+:: Beach Exposed
+<<location "beach">><<effects>>
+<<fameexhibitionism 20 "pic">>
+<<flaunting>>你从水中浮现，自由地展示<<lewdness>>。你很快就成为人们关注的中心，被口哨声、欢呼声和赞美包围着。一些人爆发出掌声，而另一些人则争先恐后地拿起相机。
+
+<<if $uncomfortable.nude is false>>
+	你感到兴奋，被无数的眼睛挑起了欲望
+	<<if $player.penisExist and $player.vaginaExist and !$worn.genitals.type.includesAll("chastity", "hidden") and $rng % 2 == 0>>盯着你的<<genitals>>。
+	<<elseif $player.bottomsize gte 4 and $rng % 2 == 0>>在你摆动的<<bottom>>上徘徊
+	<<elseif $player.breastsize gte 6 and $rng % 2 == 0>>盯着你的<<breasts>>
+	<<elseif $player.penisExist and $player.penissize gte 3 and !$worn.genitals.type.includesAll("chastity", "hidden")>>呆呆地看着你的<<penis>>.
+	<<elseif $beauty gte (($beautymax / 7) * 5) and $rng % 3>>欣赏你美丽的裸体
+	<<elseif $physique gte (($physiquesize / 7) * 5)>>欣赏你完美的身材
+	<<else>>向你抛媚眼
+	<</if>>
+	当你在沙滩上散步时。
+	<br><br>
+	你漫步走进更衣室。慢慢地，你把背后的门关上。当你的脉搏恢复正常时，你的身体短暂地颤抖。
+<<elseif $uncomfortable.nude is true>>
+	<<if $player.penisExist and $player.vaginaExist and !$worn.genitals.type.includesAll("chastity", "hidden") and $rng % 2 == 0>>你被无数双眼睛盯着你的<<genitals>>而感到尴尬。
+	<<elseif $player.breastsize gte 6 and $rng % 2 == 0>>你觉得被无数双眼睛看着你的<<breasts>>.
+	<<elseif $player.penisExist and $player.penissize gte 3 and $rng % 2 == 0 and !$worn.genitals.type.includesAll("chastity", "hidden")>>你觉得被无数双眼睛看着你的<<penis>>.
+	<<elseif $beauty gte (($beautymax / 7) * 5) and $rng % 3>>你裸露的身体的每一寸都刺痛，因为你感到无数的眼睛在窥视你赤裸的美丽。
+	<<elseif $physique gte (($physiquesize / 7) * 5)>>当你感到无数的眼睛注视着你惊人的体格时，你健美的身体的每一寸都刺痛了。
+	<<else>>当你感到无数双眼睛在向你抛媚眼时，你赤裸的身体的每一寸都刺痛。
+	<</if>>
+	<br><br>
+	你来到更衣室，迅速关上身后的门。你靠在上面，等着你的脉搏慢下来。
+<</if>>
+
+<br>
+<<if $phase is 0>>
+	<<exhibitionism5>>
+<<else>>
+	<<exhibitionism2>>
+<</if>>
+
+<<link [[继续|Changing Room]]>><</link>>
+<br>
+
+:: Beach Milkshake
+
+<<effects>>
+你喝了从咖啡馆买的奶昔。如此美味的奶油，每一口都有助于融化压力。
+<br><br>
+<<link [[继续|Beach]]>><</link>>

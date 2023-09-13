@@ -1,0 +1,590 @@
+:: Beach Slug
+<<effects>>
+<<set $pursuit = Math.clamp($pursuit, 0, 3)>>
+你跑着，蛞蝓跟在你的身后。
+<br><br>
+<<if $eventskip is 0>>
+	<<if $rng gte 76>>
+		你接近了一池粘液。你可以绕道走，但这会花费你宝贵的时间。
+		<br><br>
+		<<if $swarmdisable is "f">>
+			有什么在这表面下蠕动。
+			<br><br>
+		<</if>>
+		<<link [[跳过去|Beach Slug Jump]]>><</link>><<athleticsdifficulty 400 1100>>
+		<br>
+		<<link [[绕道|Beach Slug Run]]>><<set $pursuit += 1>><</link>><<gpursuit>>
+		<br>
+	<<elseif $rng gte 51>>
+		巨型蛞蝓支起身子，它蠕动颤抖着，大嘴张开，面朝你吐出一摊粘液。
+		<br><br>
+
+		来者在向你猛冲时撑开了身躯。是另一只蛞蝓。
+		<br><br>
+
+		<<link [[躲闪|Beach Slug Dodge]]>><</link>><<dancedifficulty 400 1100>>
+		<br>
+		<<link [[撑住|Beach Slug Brace]]>><<set $pursuit += 1>><</link>><<gpursuit>>
+		<br>
+	<<elseif $rng gte 26>>
+		巨型蛞蝓猛地撞在地面上。石头颤抖着，你摇摇晃晃地撞上了悬挂在顶部的粘稠薄膜。
+		<br><br>
+		<<physiquedifficulty 1 18000 true>>
+		<<if $physiqueSuccess>>
+			在蛞蝓靠得更近之前，<span class="green">你自己就挣脱开了。</span>
+			<br><br>
+		<<else>>
+			<span class="red">你挣扎着想要挣脱。</span>你成功了，但蛞蝓靠的越来越近。<<gpursuit>><<set $pursuit += 1>>
+			<br><br>
+		<</if>>
+		<<link [[继续|Beach Slug]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		前面的岩石地面比起寻常地面更加光滑。
+		<br><br>
+
+		<<link [[冲刺|Beach Slug Sprint]]>><</link>><<athleticsdifficulty 600 1200>>
+		<br>
+		<<link [[小心行事|Beach Slug Careful]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	你到达了
+	<<if $cave_current is 1>>
+		充满地衣的隧道。
+	<<elseif $cave_current is 2>>
+		长满蘑菇的隧道。
+	<<elseif $cave_current is 3>>
+		黑暗的隧道。
+	<<else>>
+		水隧道。
+	<</if>>
+
+	<<if $cave_current is $cave_exit>>
+		<span class="green">它通向远离这处洞穴的地方！</span>
+	<<else>>
+		<span class="red">这是个死胡同！</span>你得去别处看看。
+	<</if>>
+	<br><br>
+	<<slug_text>>
+	<br><br>
+
+	<<if $pursuit gte 3>>
+		<<slug_caught>>
+	<<else>>
+		<<set $cave_seen.pushUnique($cave_current)>>
+		<<if $cave_current is $cave_exit>>
+			<<link [[逃脱|Beach Slug Escape]]>><</link>>
+			<br>
+		<</if>>
+
+		<<if $cave_current isnot 1>>
+			<<link [[跑向布满地衣的隧道|Beach Slug]]>><<set $cave_current to 1>><</link>> <<if $cave_seen.includes(1) and $cave_exit is 1>><<note "The exit is here" "green">><<elseif $cave_seen.includes(1)>><<note "(你已经看过这里了)">><</if>>
+			<br>
+		<</if>>
+		<<if $cave_current isnot 2>>
+			<<link [[跑向充满蘑菇的隧道|Beach Slug]]>><<set $cave_current to 2>><</link>> <<if $cave_seen.includes(2) and $cave_exit is 2>><<note "The exit is here" "green">><<elseif $cave_seen.includes(2)>><<note "(你已经看过这里了)">><</if>>
+			<br>
+		<</if>>
+		<<if $cave_current isnot 3>>
+			<<link [[跑向黑暗的隧道|Beach Slug]]>><<set $cave_current to 3>><</link>> <<if $cave_seen.includes(3) and $cave_exit is 3>><<note "The exit is here" "green">><<elseif $cave_seen.includes(3)>><<note "(你已经看过这里了)">><</if>>
+			<br>
+		<</if>>
+		<<if $cave_current isnot 4>>
+			<<link [[跑向渗水的隧道|Beach Slug]]>><<set $cave_current to 4>><</link>> <<if $cave_seen.includes(4) and $cave_exit is 4>><<note "The exit is here" "green">><<elseif $cave_seen.includes(4)>><<note "(你已经看过这里了)">><</if>>
+			<br>
+		<</if>>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+
+
+:: Beach Slug Sprint
+<<effects>>
+
+<<if $athleticsSuccess>>
+	你冲离了这个蛞蝓的身旁，<span class="green">设法远离了它。</span><<lpursuit>><<set $pursuit -= 1>>
+	<br><br>
+<<else>>
+	你试图冲离了这个蛞蝓的身旁，<span class="red">但你没能站稳。</span>你跌倒在地。<<gpain>><<gstress>><<pain 4>><<stress 6>>
+	<br><br>
+
+	你爬起来，继续奔跑。<<gpursuit>><<set $pursuit += 1>>
+	<br><br>
+<</if>>
+
+<<link [[继续|Beach Slug]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Beach Slug Careful
+<<effects>>
+
+你继续小心地跑着，留心跑在目测大概结实的地面上。
+<br><br>
+
+<<link [[继续|Beach Slug]]>><<set $eventskip to 1>><</link>>
+<br>
+
+
+:: Beach Slug Dodge
+<<effects>>
+
+<<if $danceSuccess>>
+	你躲闪开来。<span class="green">巨型蛞蝓从你身边飘过，</span>扑通一声落入了一个水池中。你继续跑着，过了一会儿，巨大的蛞蝓才缓过神来，滑动着追你。<<lpursuit>><<set $pursuit -= 1>>
+	<br><br>
+
+	<<link [[继续|Beach Slug]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	你试图闪开，<span class="red">但你慢了一步。</span>蛞蝓扑中你的胸膛，把你撞倒在地。巨型蛞蝓靠得更近了。
+	<br><br>
+
+	<<link [[继续|Beach Slug Struggle]]>><<set $struggle_start to 1>><</link>>
+	<br>
+<</if>>
+
+:: Beach Slug Brace
+<<effects>>
+
+你振作起来。当蛞蝓撞上你的胸膛时，你跌了个踉跄。你设法站住脚步，但巨型蛞蝓现在离得更近了。
+<br><br>
+
+<<link [[继续|Beach Slug]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Beach Slug Struggle
+<<effects>>
+
+<<if $struggle_start is 1>>
+	<<struggle_init>>
+	<<set $struggle.creature to "slug">>
+	<<struggle_creatures 1 2>>
+	<<set $combat to 1>>
+	<<controlloss>>
+	<<violence 1>>
+	<<molested>>
+	<<set $struggle.chest.creature to "slug">><<set $chestuse to "struggle">><<set $cheststate to "struggle">><<set $struggle.enemy[0].location to "chest">>
+	<<set $timer to 10>>
+	<<unset $struggle_start>>
+<</if>>
+
+<<if $timer lte 0>>
+	<<set $pursuit += 1>>
+	<<set $timer to 0>>
+<<elseif $timer is 8 and random(1, 2) is 2>>
+	<<struggle_add 1 1>>
+	<span class="pink">又一只蛞蝓从粘液中跳出！</span>
+	<br><br>
+<</if>>
+
+<<slug_text>>
+<br><br>
+
+
+<<struggle>>
+
+
+
+<<if $struggle.done gte $struggle.number>>
+	<span id="next"><<link [[继续|Beach Slug Struggle End]]>><</link>></span>
+	<br>
+<<elseif $pursuit gte 3>>
+	<span id="next"><<link [[继续|Beach Slug Struggle End]]>><</link>></span>
+	<br>
+<<else>>
+	<span id="next"><<link [[继续|Beach Slug Struggle]]>><</link>></span>
+	<br>
+<</if>>
+
+
+:: Beach Slug Struggle End
+<<effects>>
+
+<<if $pursuit gte 3>>
+	在巨型蛞蝓靠近时，更小点的蛞蝓跳开了。
+	<br><br>
+	<<endcombat>>
+	<<clotheson>>
+	<<slug_caught>>
+<<else>>
+	蛞蝓潜入粘液中。<<tearful>>你在巨大的蛞蝓将你压倒前站了起来。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Beach Slug]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+
+:: Beach Slug Jump
+<<effects>>
+
+<<if $athleticsSuccess>>
+	你奋力一跃，<span class="green">跳到了池子的另一边。</span>你继续跑着，而巨型蛞蝓毫不减速地从池子滑行着过去。
+	<br><br>
+
+	<<link [[继续|Beach Slug]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	你跳了起来，<span class="red">但却跳进了粘液池中。</span>
+	<<drench "goo" 5>>
+	<br><br>
+	<<if $swarmdisable is "f">>
+		你设法让你的头部露了出来，但却感觉道有什么在皮肤上蠕动。
+		<br><br>
+
+		<<link [[继续|Beach Slug Swarm]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<else>>
+		你设法将头露出水面，把自己拖到了对岸。巨大的蛞蝓紧随身后。<<gpursuit>><<set $pursuit += 1>>
+		<br><br>
+
+		<<if $pursuit gte 3>>
+			<<slug_caught>>
+		<<else>>
+			<<link [[继续|Beach Slug]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<</if>>
+
+
+:: Beach Slug Swarm
+<<effects>>
+
+<<effects>>
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<molested>>
+	<<controlloss>>
+	<<set $combat to 1>>
+	<<set $enemytype to "swarm">>
+	<<swarminit "eels" "鱼群" "向你移动" "包围着你" "击退" 1 6>>
+
+	<<set $swimdistance to 10>>
+	<<set $water to 1>>
+	<<set $timer to 10>>
+<</if>>
+
+<<if $timer lte 0>>
+	<<set $pursuit += 1>>
+	<<set $timer to 10>>
+<</if>>
+
+<<slug_text>>
+<br>
+
+<<if $swimdistance gte 10>>
+	你需要开始朝着岸上游！
+<<elseif $swimdistance gte 5>>
+	离岸边还有很远一段距离。
+<<elseif $swimdistance gte 3>>
+	离岸边只有一半距离了。
+<<elseif $swimdistance gte 1>>
+	你快到岸边了。
+<<else>>
+	岸边就近在咫尺了！
+<</if>>
+<br><br>
+<<swarmeffects>>
+<<swarm>>
+<<swarmactions>>
+<<if $stress gte $stressmax>>
+	<span id="next"><<link [[继续|Beach Slug Swarm Finish]]>><</link>></span><<nexttext>>
+<<elseif $pursuit gte 3>>
+	<span id="next"><<link [[继续|Beach Slug Swarm Finish]]>><</link>></span><<nexttext>>
+<<elseif $swimdistance lte 0>>
+	<span id="next"><<link [[继续|Beach Slug Swarm Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Beach Slug Swarm]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Beach Slug Swarm Finish
+
+<<effects>>
+<<if $stress gte $stressmax>>
+	你再也承受不住了，你昏倒了。
+	<br><br>
+	<<if $upperoff isnot 0>>
+		<<upperruined>>
+	<</if>>
+	<<if $loweroff isnot 0>>
+		<<lowerruined>>
+	<</if>>
+	<<if $underloweroff isnot 0>>
+		<<underlowerruined>>
+	<</if>>
+	<<if $underupperoff isnot 0>>
+		<<underupperruined>>
+	<</if>>
+	<<endcombat>>
+	<<slug_end>>
+	<<link [[继续|Passout Beach]]>><<pass 1 hour>><</link>>
+<<elseif $pursuit gte 3>>
+	巨型蛞蝓滑入池中，扬起粘液的浪潮，把你推到了岸边。
+	<br><br>
+	<<endcombat>>
+	<<clotheson>>
+	<<slug_caught>>
+<<else>>
+	<<tearful>>你将自己从粘液中拖了出来。在你踉跄着站起来时，一些蛞蝓从你身上掉了下来。
+	<br><br>
+
+	巨型蛞蝓毫不减速地从粘液中滑动着前行。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Beach Slug]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Beach Slug Run
+<<effects>>
+
+你绕着池子跑。巨型蛞蝓却仅是从中滑行了过去，追上了你。
+<br><br>
+
+<<link [[继续|Beach Slug]]>><<set $eventskip to 1>><</link>>
+<br>
+
+
+:: Beach Slug Try
+<<effects>>
+
+<<if $physiqueSuccess>>
+	你对抗着粘稠的粘液，<span class="green">设法将自己拉了出来。</span>你及时从要闭合的巨嘴中跳了出来。
+	<br><br>
+	你在另外一个洞穴中，洞穴很高，被粉色的地衣照亮。粘液从顶部滴下来，形成了巨大的粘液池。
+	<br><br>
+
+	这个生物从你后方升起。是一只巨大的蛞蝓，比马还大。<span class="red">它以惊人的速度滑行着接近。</span>
+	<br><br>
+
+	<<link [[跑|Beach Slug Start]]>><</link>>
+	<br>
+
+<<else>>
+	你对抗着粘稠的粘液，<span class="red">但你无法挣脱。</span>巨嘴包围住了你，随即合上，将你吞没。
+	<br><br>
+
+	<<if $tentacledisable is "f" and $hallucinations gte 1>>
+	你感觉有什么在皮肤上蠕动着。
+	<br><br>
+	<</if>>
+	<<link [[继续|Beach Slug Vore]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Beach Slug Remove
+<<effects>>
+
+<<clothesruined>>
+你挣脱开衣服，并及时地从快要闭合的巨嘴中跳出。
+<br><br>
+
+你在另外一个洞穴中，洞穴很高，被粉色的地衣照亮。粘液从顶部滴下来，形成了巨大的粘液池。
+<br><br>
+
+这个生物从你后方升起。是一只巨大的蛞蝓，比马还大。<span class="red">它以惊人的速度滑行着接近。</span>
+<br><br>
+
+<<link [[跑|Beach Slug Start]]>><</link>>
+<br>
+
+
+:: Beach Slug Vore
+<<effects>>
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $combat to 1>>
+	<<molested>>
+	<<controlloss>>
+	<<if $tentacledisable is "f" and $hallucinations gte 1>>
+		<<set $enemytype to "tentacles">>
+		<<tentaclestart 4 15>>
+	<<else>>
+		<<set $enemytype to "vore">>
+	<</if>>
+	<<set $vorestage to 1>>
+	<<set $vorecreature to "slug">>
+	<<set $vorestrength to 1>><<set $position to "doggy">>
+	<<if $tentacledisable is "f" and $hallucinations gte 1>>
+		<<set $voretentacles to 1>>
+	<<else>>
+		<<set $voretentacles to 0>>
+	<</if>>
+	<<resetLastOptions>>
+	<<getCombatDefaultsType>>
+<</if>>
+<<if $tentacledisable is "f" and $enemytype is "tentacles">>
+	<<voreeffects>><<effectstentacles>>
+	<<vore>><<tentacles>>
+	<<statetentacles>>
+	<br><br>
+	<<actionsvorentacles>>
+<<else>>
+	<<voreeffects>>
+	<<vore>>
+	<<voreactions>>
+<</if>>
+<<if $stress gte $stressmax>>
+	<span id="next"><<link [[继续|Beach Slug Vore Finish]]>><</link>></span><<nexttext>>
+<<elseif $vorestage lte 0>>
+	<span id="next"><<link [[继续|Beach Slug Vore Finish]]>><</link>></span><<nexttext>>
+<<elseif $vorestomach gte 5>>
+	<span id="next"><<link [[继续|Beach Slug Vore Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Beach Slug Vore]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Beach Slug Vore Finish
+
+<<effects>>
+<<if $stress gte $stressmax or $vorestomach gte 5>>
+	你再也承受不住了，你昏倒了。
+	<br><br>
+	<<if $upperoff isnot 0>>
+		<<upperruined>>
+	<</if>>
+	<<if $loweroff isnot 0>>
+		<<lowerruined>>
+	<</if>>
+	<<if $underloweroff isnot 0>>
+		<<underlowerruined>>
+	<</if>>
+	<<if $underupperoff isnot 0>>
+		<<underupperruined>>
+	<</if>>
+	<<endcombat>>
+	<<slug_end>>
+	<<link [[继续|Passout Beach]]>><<clotheson>><<pass 1 hour>><</link>>
+<<else>>
+	<<set $pursuit to 1>>
+	<<if $cave_exit>>
+		<<tearful>>你把自己从<<print $vorecreature.replace("frog","青蛙").replace("whale","鲸鱼").replace("snake","蛇").replace("giant lurker","巨大潜伏者").replace("slug","蛞蝓")>>的巨嘴中拉了出来。你踉跄着站住脚跟，开始奔跑。它紧随在你身后滑行。
+		<br><br>
+	<<else>>
+		<<tearful>>你把自己从<<print $vorecreature.replace("frog","青蛙").replace("whale","鲸鱼").replace("snake","蛇").replace("giant lurker","巨大潜伏者").replace("slug","蛞蝓")>>的巨嘴中拉了出来。你在另外一个洞穴中，洞穴很高，被粉色的地衣照亮。粘液从顶部滴下，形成了巨大的粘液池。
+		<br><br>
+
+		这个生物从你后方升起。是一只巨大的蛞蝓，比马还大。<span class="red">它以惊人的速度滑行着接近。</span>
+		<br><br>
+	<</if>>
+	<<clotheson>>
+	<<endcombat>>
+	<<if $cave_exit>>
+		<<link [[继续|Beach Slug]]>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Beach Slug Start]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+
+:: Beach Slug Start
+<<effects>>
+<<slug_init>>
+你转身就跑。有四条隧道能离开这个洞穴。
+<br>
+前方的隧道被自然发光的地衣所覆盖。
+<br>
+右边的隧道长满蘑菇，有些几乎和你一样高。这隧道似乎通往上方。
+<br>
+左边的隧道往下延伸，通往更深的地下。你从这个方向听见了湍急的水流声。
+<br>
+你回头看了一眼，蛞蝓的后面还有另外一条隧道，但没有地衣，看起来黑暗阴森。蛞蝓现在挡住了这条隧道。
+<br><br>
+
+<<link [[跑向充满地衣的隧道|Beach Slug]]>><<set $cave_current to 1>><</link>>
+<br>
+<<link [[跑向长满蘑菇的隧道|Beach Slug]]>><<set $cave_current to 2>><</link>>
+<br>
+<<link [[跑向充满水的隧道|Beach Slug]]>><<set $cave_current to 4>><</link>>
+<br>
+
+
+
+
+:: Beach Slug Escape
+<<effects>>
+
+<<earnFeat "Abnormal Mollusc">>
+
+
+<<pass 10>>
+<<if $cave_current is 1>>
+	你沿着长满地衣的隧道逃跑。你回头看了一眼，巨型蛞蝓没有跟着你。
+	<br><br>
+	隧道向上倾斜，色调从粉色逐渐变成浅蓝色。
+
+	<<if Time.dayState isnot "night">>
+		你听到海浪声，看到日光穿透了前方的阴霾。
+	<<elseif $weather is "clear">>
+		你听见波浪声，看见苍白的月光穿透了前方的阴霾。
+	<<else>>
+		你听见前面的波浪声。
+	<</if>>
+	<br><br>
+
+	你从面向大海的悬崖上冲出，掉入了水中，你现在正在沙滩附近。
+	<br><br>
+
+	<<link [[继续|Sea Beach]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<elseif $cave_current is 2>>
+	你逃出长满蘑菇的隧道。你回头看了一眼，巨型蛞蝓没有跟过来。
+	<br><br>
+	随着深入隧道，蘑菇长得越来越密。你绕过了一个特别大的，险些踩进地上的裂缝里。你觉得你听到了什么。你侧耳倾听，却只听到湍急的水声。
+	<br><br>
+
+	<span class="red">大地崩塌，</span>你坠入黑暗中。
+	<br><br>
+	<<if $sewersintro is 1>>
+		<<link [[继续|Sewers Commercial]]>><<sewersstart>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Sewers Intro]]>><</link>>
+	<</if>>
+<br>
+<<elseif $cave_current is 3>>
+	你逃进黑暗的隧道。你回头看，巨型蛞蝓没有跟过来。
+	<br><br>
+	你摸索着顺着隧道的墙壁走，越走越高，
+	<<if Time.dayState isnot "night">>
+		直到日光穿透前方的黑暗。
+	<<elseif $weather is "clear">>
+		直到月光穿透前方的黑暗。
+	<<else>>
+		直到你感觉到一阵微风，闻起来有森林的味道。
+	<</if>>
+	你鼓起勇气继续前进，来到了森林中。
+	<br><br>
+
+	<<link [[继续|Forest]]>><<set $forest to 20>><<set $eventskip to 1>><</link>>
+	<br>
+<<elseif $cave_current is 4>>
+	你逃离水漫的隧道。你回头看，巨型蛞蝓没有跟来。
+	<br><br>
+
+	隧道通往地下更深处。水从墙壁上裂开的缝隙中漫出来，伴随着你一同向下。
+	<br><br>
+
+	隧道打开，你看见了一个黑色的池子，水流冲击着你的脚踝。黑暗使你看不见对面，也看不见顶部。你只知道，这池子能通向地平线。
+	<br><br>
+
+	你听见身后一阵轰鸣。一股洪流顺着通道轰隆作响，把你击倒，把你推入黑暗中。
+	<br><br>
+
+	<<link [[继续|Underground Lake]]>><</link>>
+	<br>
+
+
+<</if>>
+
+<<slug_end>>
+<<beach_cave_end>>

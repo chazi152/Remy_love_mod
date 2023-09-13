@@ -1,0 +1,4161 @@
+:: Bedroom
+
+<<bedclotheson "bed">>
+<<set $outside to 0>><<set $location to "home">><<home_effects>><<effects>><<getTarget true>>
+你正待在你的卧室中。
+
+/* Wallpaper */
+<<set _furniture to $furniture.bedroom>>
+<<if _furniture.wallpaper>>
+	<<switch _furniture.wallpaper.name>>
+		<<case "vines">>
+			下流的绿色藤曼在墙上蠕动。
+			<<if $backgroundTraits.includes("plantlover")>>
+				糟糕的想法萦绕在你的脑中。
+			<</if>>
+		<<case "tentacles">>
+			紫色的触手沿墙壁滑行。
+			<<if $demon gte 6>>
+				快乐的想法在你的脑海中掠过。
+			<</if>>
+		<<case "plainwhite">>
+			普通的白色壁纸覆盖着墙壁。
+		<<case "wavywhite">>
+			波浪形图案的壁纸由白色渐变为黑色。这是某种性暗示吗？
+		<<case "hearts">>
+			粉色的心形图案覆盖着墙壁。
+		<<case "cowgirls">>
+			墙上贴着牛娘跳舞的海报。
+		<<case "trees">>
+			墙上绿色的树木让你仿佛置身于森林。
+		<<case "crosses">>
+			金色的十字架覆盖着墙壁。
+		<<default>> /* Custom */
+			_furniture.wallpaper.name的图案覆盖着墙壁。
+			<<if ['dol', 'degrees of lewdity'].some(e => _furniture.wallpaper.name === e)>>
+				不知为何给你一种熟悉的感觉。
+			<<elseif _furniture.wallpaper.name.startsWith('&lt;&lt')>>
+				<span class="black">你的作弊行为被抓到了！</span>
+			<</if>>
+	<</switch>>
+<<else>>
+	朴素的墙壁将你与外界隔绝开来。
+<</if>>
+
+/* Misc Furniture */
+<<set _desk to Furniture.get('desk')>>
+<<if _desk is null>>
+	<<set _desk to Furniture.set('desk','desk')>>
+<</if>>
+<<set _chair to Furniture.get('chair')>>
+<<if _chair is null>>
+	<<set _chair to Furniture.set('chair','chair')>>
+<</if>>
+	<<deskText "icon">> /* If no desk options (read a book, work on project, etc.) are available, desk and icon appear here */
+	<<tableText "icon">> /* If no fish tank is available to be placed on an owned table or chairs, table and chairs appear here */
+
+/* Decorations */
+<<set _deco to Furniture.get('decoration')>>
+<<if _deco>>
+	<br>
+	<<switch _deco.name>>
+		<<case "large bear plushie">>
+			<<furnitureicon _deco.iconFile>>那个_deco.nameCap被放在角落里。
+		<<default>>
+			<<furnitureicon _deco.iconFile>>那个_deco.nameCap正挂在墙上。
+	<</switch>>
+<</if>>
+
+<<set _owlplush to Furniture.get('owlplushie')>>
+<<if _owlplush>>
+	<br>
+	<<switch _owlplush.id>>
+		<<case "owlplushie">>
+			<<furnitureicon _owlplush.iconFile>>那个_owlplush.nameCap与周围的黑暗融为一体，它貌似正在衣柜上凝视着你。
+	<</switch>>
+<</if>>
+
+<<set _windowsill to Furniture.get('windowsill')>>
+<<if _windowsill>>
+	<br>
+	<<switch _windowsill.name>> /* can be expanded further */
+		<<case "ominous jar">> /* unused */
+			<<furnitureicon _windowsill.iconFile>>_windowsill.nameCap颇有气势地立在窗台上。
+		<<default>>
+			<<furnitureicon _windowsill.iconFile>>你的_windowsill.nameCap被放在了窗台上。
+	<</switch>>
+<</if>>
+
+<<set _poster to Furniture.get('poster')>>
+<<if _furniture.poster>>
+	<br>
+	<<switch _furniture.poster.name>>
+		<<case "cowgirl">>
+			<<furnitureicon _poster.iconFile>>墙上挂着一张牛娘海报。
+		<<case "cat">>
+			<<furnitureicon _poster.iconFile>>墙上挂着一张猫咪海报。下面的文字写着："坚持住！"
+		<<case "puppy">>
+			<<furnitureicon _poster.iconFile>>墙上挂着一张小狗的海报。
+		<<default>> /* Custom */
+			<<furnitureicon _poster.iconFile>>墙上挂着一张_furniture.poster.nameCap的海报。
+			<<if ['dol', 'degrees of lewdity'].some(e => _furniture.poster.name === e)>>
+				不知道为什么，你总感觉有一阵奇怪的熟悉感。
+			<<elseif _furniture.poster.name.startsWith('&lt;&lt;')>>
+				<span class="black">你的作弊行为被抓到了！</span>
+			<</if>>
+	<</switch>>
+<</if>>
+
+/* Events */
+<br><br>
+<<if $robinbed is "yours" and Time.hour gte 6 and !$possessed>>
+	<<unset $robinbed>>
+	<<npc Robin>><<person1>>罗宾打了个哈欠，走回<<his>>自己的房间。<<endevent>>
+	<<if Time.hour is 6 and Time.minute lte 20>><<run setRobinLocationOverride("orphanage", 6)>><</if>>
+	<br><br>
+<</if>>
+<<if $unbind is 1>>
+	<<unset $unbind>>
+	<<if $possessed>>
+		你看向身上那些拘束住你的东西。你只要轻轻一拉，它们就会松开，也就没办法再继续绑住你了。<<unbind>>
+		<br><br>
+	<<else>>
+		<span class="green">你靠着你的<span style="position:relative;top:-5px"><<furnitureicon _desk.iconFile>></span>桌子将束缚给弄了下来。</span>你花了不少功夫，但捆绑物最终还是屈服了，四肢得以解放。
+		<br><br>
+	<</if>>
+<</if>>
+<<if $study is 1>>
+	<<unset $study>>
+	<<if $phase is 1>>
+		你翻开你的科学教科书，开始阅读。
+		<<scienceskill>>
+	<<elseif $phase is 2>>
+		你翻开你的数学教科书，开始阅读。
+		<<mathsskill>>
+	<<elseif $phase is 3>>
+		你翻开你的英语教科书，开始阅读。
+		<<englishskill>>
+	<<elseif $phase is 4>>
+		你翻开你的历史教科书，开始阅读。
+		<<historyskill>>
+	<</if>>
+	<<endevent>>
+	<br><br>
+<</if>>
+<<if $nextPassageCheck is "Bedroom">>
+	<span class="nextLink"><<link [[抬头看看月亮|Bedroom]]>><</link>></span>
+	<br>
+<</if>>
+<<if $stress gte $stressmax and !$possessed>>
+	<<passouthome>>
+<<elseif $christmas is 1 and Time.monthDay is 25 and $christmas_robin_visit is undefined and $christmas_robin_gift_received is undefined and Time.dayState isnot "night" and $NPCName[$NPCNameList.indexOf("Robin")].init is 1 and !$possessed>>
+	<<set $christmas_robin_visit to true>>
+	<<christmas_robin_visit>>
+<<else>>
+	<<if $leftarm is "bound" or $rightarm is "bound" or $feetuse is "bound">>
+		<<link [[磨断拘束 (0:10)|Bedroom]]>><<set $unbind to 1>><<pass 10>><<unbind>><</link>>
+		<br><br>
+	<</if>>
+	<<if $robinpaid is 1 and $robinmissing is 0 and $robinnote isnot 1 and $NPCName[$NPCNameList.indexOf("Robin")].lust gte 10 and $NPCName[$NPCNameList.indexOf("Robin")].love gte 60 and $NPCName[$NPCNameList.indexOf("Robin")].trauma lt 10>>
+		<span class="gold">窗边貌似有张便条。</span>
+		<br>
+		<<link [[读一读|Robin Note]]>><<set $robinnote to 1>><</link>>
+		<br><br>
+	<</if>>
+
+/* Desk */
+	<<deskText "noicon">> /* If project, study, or Christmas options are available, desk location appears here, in line with bed/wardrobe/etc locations */
+
+
+	/* <<if $debug is 1>>
+		<span class="green">Debugging starts here</span>
+		<br>
+		<<if $debugradio or $debugradio is undefined>>
+			indev radio testing
+			A radio is on:
+			<br>
+
+			<<radio_placehere>>
+
+			<span class="green">More debugging:</span>
+			<br>
+			<<link [[Add test news|Bedroom]]>><<radio_addnews "meteor_fall" "2">><</link>> radio_addnews "meteor_fall" "2"
+			<br>
+			<<link [[Add test news|Bedroom]]>><<radio_addnews "godzilla_awaken" "3">><</link>> radio_addnews "godzilla_awaken" "3"
+			<br>
+			<<link [[Hard reset news|Bedroom]]>><<radio_hardreset>><</link>> radio_hardreset
+			<br>
+			<<link [[Midnight importance reduction|Bedroom]]>><<radio_midnight>><</link>> radio_midnight
+			<br>
+			<<link [[Turn off radio|$passage]]>><<set $debugradio to false>><</link>>
+			<br><br>
+		<<else>>
+			<<link [[Turn on radio|$passage]]>><<set $debugradio to true>><</link>>
+			<br>
+		<</if>>
+		<<link [[Skip to 23:58|Bedroom]]>><<set Time.setTime(23, 58)>><</link>>
+		<br>
+		<<link [[Test new features for DoL (0:15)|Bedroom]]>><<pass 15>><</link>>
+		<br>
+		<span class="green">Debugging end here</span>
+		<br><br>
+	<</if>> */
+
+/* Bed */
+	你的床占据了这个房间的大部分空间。
+	<<set _bed to Furniture.get('bed')>>
+	<<if $nextPassageCheck is "Bed">>
+		<br>
+		<<if $robinbed is "yours" or $robinbed is "theirs">>
+			<span class="nextLink"><<furnitureicon _bed.iconFile>><<link [[罗宾|Bed]]>><</link>></span>
+		<<else>>
+			<span class="nextLink"><<furnitureicon _bed.iconFile>><<link [[凯拉尔|Bed]]>><</link>></span>
+		<</if>>
+		<br>
+		<<listsleepoutfits>>
+	<<elseif $slimeEvent is undefined>>
+		<br>
+		<<furnitureicon _bed.iconFile>><<link [[脱光并爬到床上|Bed]]>><<undressSleep "bed">><</link>>
+		<br>
+		<<listsleepoutfits>>
+
+		<<if _bed.type.includes("comfy")>>
+			<<furnitureicon _bed.iconFile>><<link [[在床上自慰|Home Masturbation]]>><<set $masturbationstart to 1>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		<br>
+		<<if $possessed>>
+			<span class="red">你脑袋里的史莱姆保持着沉默。</span>
+		<<else>>
+			<span class="red">史莱姆要求你在睡觉前<<print $slimeEvent>>。</span>
+		<</if>>
+		<br>
+	<</if>>
+	<<roomoptions>>
+	<br>
+/* Wardrobe */
+	<<set _wardrobe to Furniture.get('wardrobe')>>
+	<<if _wardrobe>>
+		你的衣服正放在_wardrobe.nameCap里面。
+	<</if>>
+	<br>
+	<<furnitureicon _wardrobe.iconFile>><<link [[衣柜|Wardrobe]]>><</link>>
+	<br>
+	<<if playerHasSexToys()>>
+		<<sextoysicon>><<link [[性玩具|Sextoys Inventory]]>><<set $sextoyInvReturnLink to $passage>><</link>>
+		<br>
+	<</if>>
+	<<if $nextPassageCheck is "Mirror">>
+		<span class="nextLink"><<mirroricon>><<link [[镜子|Mirror]]>><<preMirror>><</link>></span>
+		<br>
+	<<elseif $christmas is 1 and !$christmas_wraith and _wraithEvent>>
+		<br>
+		<span class="purple">你瞥了一眼镜子，里面似乎有一个奇怪的光点。</span>
+		<br>
+		<<bloodmirroricon>><<link [[镜子|Christmas Mirror]]>><<preMirror>><</link>>
+		<br>
+	<<elseif Time.hour is 3 and $hallucinations gte 2 and $daily.mirrorTentacles isnot 1 and $tentacledisable is "f">>
+		<br>
+		<span class="purple">一道阴森诡异的光芒从你的镜子中折散而出。</span>
+		<br>
+		<<bloodmirroricon>><<link [[镜子|Eerie Mirror]]>><<preMirror>><<set $daily.mirrorTentacles to 1>><<set $phase to 0>><</link>>
+		<br>
+	<<else>>
+		<<homemirroricon>><<link [[镜子|Mirror]]>><<preMirror>><</link>>
+		<br>
+	<</if>>
+
+/*Table*/
+	<<tableText "noicon">> /* If fish tank option available, table/chair location appears here, in line with bed/wardrobe locations */
+
+/* Travel */
+	<br>
+	外面的走廊与孤儿院的其他地方相连接。
+	<<if $exposed gte 2>>
+		<<if Time.dayState isnot "night">>
+			<<if $exhibitionism gte 75>>
+				<br>
+				<span class="purple">一想到你要裸着<<genitals>>出门，就让人兴奋了起来。只要你够小心的话，就会没事的，对吧？</span>
+				<<orphanageWard>>
+				<br>
+				<<bathroomLink>>
+				<br>
+				<<robinroom_link>>
+				<br>
+				<<home_outside>>
+				<br><br>
+			<<elseif $exhibitionism gte 55>>
+				<br>
+				<span class="purple">一想到你要裸着<<genitals>>出门，就让人兴奋了起来。但你现在这样连一个小时都躲不了。等天黑再说吧。</span>
+				<br><br>
+			<<else>>
+				<<orphanageWard>>
+				<br>
+				<span class="red">你不可能这个样子出门！</span>
+				<br><br>
+			<</if>>
+		<<else>>
+			<<if $exhibitionism gte 55>>
+				<br>
+				<span class="purple">一想到你要裸着<<genitals>>出门，就让人兴奋了起来。反正已经晚上了，能出什么差错呢？</span>
+				<<orphanageWard>>
+				<br>
+				<<bathroomLink>>
+				<br>
+				<<robinroom_link>>
+				<<main_hall_icon>><<link [[大厅 (0:01)->Orphanage]]>><<pass 1>><</link>>
+				<br>
+				<<home_outside>>
+				<br><br>
+			<<else>>
+				<<orphanageWard>>
+				<br>
+				<span class="red">你不可能这个样子出门！</span>
+				<br><br>
+			<</if>>
+		<</if>>
+	<<elseif $exposed gte 1>>
+		<<if Time.dayState isnot "night">>
+			<<if $exhibitionism gte 35>>
+				<br>
+				<span class="purple">一想到要以如此淫荡的穿着出门，你就会心跳加速。只要你够小心的话，就会没事的，对吧？</span>
+				<<orphanageWard>>
+				<br>
+				<<bathroomLink>>
+				<br>
+				<<robinroom_link>>
+				<br>
+				<<home_outside>>
+				<br><br>
+			<<elseif $exhibitionism gte 15>>
+				<br>
+				<span class="purple">一想到要以如此淫荡的穿着出门，你就会心跳加速。但你现在这样连一个小时都躲不了。等天黑再说吧。</span>
+				<br><br>
+			<<else>>
+				<<orphanageWard>>
+				<br>
+				<span class="red">你不可能这个样子出门！</span>
+				<br><br>
+			<</if>>
+		<<else>>
+			<<if $exhibitionism gte 15>>
+				<br>
+				一想到要以如此淫荡的穿着出门，你就会心跳加速。现在外面一片漆黑，能出什么问题呢？
+				<br>
+				<<orphanageWard>>
+				<br>
+				<<bathroomLink>>
+				<br>
+				<<robinroom_link>>
+				<<main_hall_icon>><<link [[大厅 (0:01)->Orphanage]]>><<pass 1>><</link>>
+				<br>
+				<<home_outside>>
+				<br><br>
+			<<else>>
+				<<orphanageWard>>
+				<br>
+				<span class="red">你不可能这个样子出门！</span>
+				<br><br>
+			<</if>>
+		<</if>>
+	<<elseif $worn.under_lower.type.includes("naked")>>
+		<<if $underwarningskip is 1>>
+			<<orphanageWard>>
+			<br>
+			<<bathroomLink>>
+			<br>
+			<<robinroom_link>>
+			<br>
+			<<if Time.hour gte 18 and Time.hour lte 20 and $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 40 and $robinmissing is 0 and !$robinTraumaVisit>>
+				<<main_hall_icon>><<link [[大厅 (0:01)|Robin Trauma Visit]]>><<set $phase to 1>><<pass 1>><</link>>
+				<br>
+			<<else>>
+				<<main_hall_icon>><<link [[大厅 (0:01)->Orphanage]]>><<pass 1>><</link>>
+				<br>
+			<</if>>
+			<<home_outside>>
+			<br><br>
+			<<set _kylar to statusCheck("Kylar")>>
+			<<if $kylar_camera is 4>>
+				那个猫头鹰玩偶正在衣柜上看着你，你清楚的知道里面有一个摄像头。
+				<br>
+				<<ind>><<link [[决定如何处理凯拉尔的相机 (0:05)|Bedroom Kylar Camera]]>><<pass 5>><</link>>
+				<br><br>
+			<</if>>
+			<<if $kylar_camera is 0>>
+				凯拉尔送给你的礼物盒子就放在了你的床脚。
+				<br>
+				<<link [[打开看看|Bedroom Kylar Gift Open]]>><</link>>
+				<br><br>
+			<<elseif $kylar_camera is 1>>
+				凯拉尔送给你的礼物盒子就放在你的床脚，里面放着一个猫头鹰玩偶。
+				<br>
+				<<link [[把它作为装饰品保留下来|Bedroom Kylar Gift Keep]]>><</link>>
+				<br>
+				<<link [[把它送给一个孤儿|Bedroom Kylar Gift Orphan]]>><<hope 1>><</link>><<ghope>>
+				<br><br>
+			<</if>>
+		<<else>>
+			<br>
+			<span class="pink">你没有穿内裤！一想到要这样出门，你的脉搏就加快了。</span>
+			<br>
+			<<link [[这没什么|Bedroom]]>><<set $underwarningskip to 1>><</link>>
+			<br><br>
+		<</if>>
+	<<else>>
+		<<orphanageWard>>
+		<br>
+		<<bathroomLink>>
+		<br>
+		<<robinroom_link>>
+		<br>
+		<<if Time.hour gte 18 and Time.hour lte 20 and $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 40 and $robinmissing is 0 and !$robinTraumaVisit>>
+			<<main_hall_icon>><<link [[大厅 (0:01)|Robin Trauma Visit]]>><<set $phase to 1>><<pass 1>><</link>>
+			<br>
+		<<else>>
+			<<main_hall_icon>><<link [[大厅 (0:01)->Orphanage]]>><<pass 1>><</link>>
+			<br>
+		<</if>>
+		<<home_outside>>
+		<br><br>
+
+/* Kylar */
+		<<set _kylar to statusCheck("Kylar")>>
+		<<if $kylar_camera is 4>>
+			那个猫头鹰玩偶正在衣柜上看着你，你清楚的知道里面有一个摄像头。
+			<br>
+			<<ind>><<link [[决定如何处理凯拉尔的相机 (0:05)|Bedroom Kylar Camera]]>><<pass 5>><</link>>
+			<br><br>
+		<</if>>
+		<<if $kylar_camera is 0>>
+			凯拉尔送给你的礼物盒子就放在了你的床脚。
+			<br>
+			<<link [[打开看看|Bedroom Kylar Gift Open]]>><</link>>
+			<br><br>
+		<<elseif $kylar_camera is 1>>
+			凯拉尔送给你的礼物盒子就放在你的床脚，里面放着一个猫头鹰玩偶。
+			<br>
+			<<link [[把它作为装饰品保留下来|Bedroom Kylar Gift Keep]]>><</link>>
+			<br>
+			<<link [[把它送给一个孤儿|Bedroom Kylar Gift Orphan]]>><<hope 1>><</link>><<ghope>>
+			<br><br>
+		<</if>>
+	<</if>>
+
+/* Settings */
+	<<link [[设置|Settings]]>><<set $settingsExitPassage to "Bedroom">><</link>>
+	<br>
+	<<attitudesControlCheck>>
+	<<if $attitudesControl.showGoldLink is true>>
+		<span class="goldLink"><<link [[态度|Attitudes]]>><<set $attitudesExitPassage to $passage>><</link>></span><span class="red">!!</span>
+	<<else>>
+		<<link [[态度|Attitudes]]>><<set $attitudesExitPassage to $passage>><</link>>
+	<</if>>
+	<br><br>
+<</if>>
+
+
+:: Bedroom Kylar Gift Open
+<<effects>>
+
+你拉开绑带并打开盖子，里面是一个灰色的猫头鹰玩偶，它看起来很老，填充绒毛从它破旧的皮层中漏出。
+<br><br>
+
+<<link [[把它作为装饰品保留下来|Bedroom Kylar Gift Keep]]>><</link>>
+<br>
+<<link [[把它送给一个孤儿|Bedroom Kylar Gift Orphan]]>><<hope 1>><</link>><<ghope>>
+<br>
+
+:: Bedroom Kylar Gift Keep
+<<effects>>
+
+<<set $kylar_camera to 2>>
+
+你在衣柜顶端找到了一个空位, 这里可以看见整个房间内发生的一切。
+<br><br>
+
+<<run Furniture.set('owlplushie', 'owlplushie', {
+	name	: 'owl plushie',
+	nameCap	: 'Owl plushie'
+})>>
+
+<<link [[继续|Bedroom]]>><</link>>
+<br>
+
+:: Bedroom Kylar Gift Orphan
+<<effects>>
+
+<<set $kylar_camera to 3>>
+<<generatey1>><<person1>>
+你走进大厅，一个孤儿向你跑来，你把毛绒玩具拿了出来。<<His>>的眼睛发出亮光："给我的么？"<<he>>问道，在把玩偶给<<he>>之前，你勉强的点了一下头。"谢谢你！"<<He>>把玩偶紧紧抱在胸前后便跑了回去。
+<br><br>
+
+<<link [[继续|Bedroom]]>><<endevent>><</link>>
+<br>
+
+:: Bedroom Kylar Camera
+<<effects>>
+
+你把毛绒玩具从衣柜上拿了下来，看着它黑黢黢的眼睛，你看清楚了，其中一只眼睛比另一只眼睛的要更亮一些。你将两根手指伸进头部的一个绒毛孔中，从里面掏出一个小相机。
+<br><br>
+
+<<link [[销毁它|Bedroom Kylar Camera Destroy]]>><<set $phase to 0>><</link>>
+<br>
+<<if $exhibitionism gte 35>>
+	<<link [[放在那里以便于复仇|Bedroom Kylar Camera Leave]]>><<set $phase to 0>><</link>><<exhibitionist3>>
+	<br>
+<</if>>
+
+:: Orphanage Kylar Camera
+<<effects>>
+
+你在大厅里找到了那个玩偶，它正和其他几个玩偶放在一块。看着它黑黢黢的眼睛，你看清楚了，其中一只眼睛比另一只眼睛的要更亮一些。你将两根手指伸进头部的一个绒毛孔中，从里面掏出一个小相机。
+<br><br>
+
+<<link [[销毁它|Bedroom Kylar Camera Destroy]]>><<set $phase to 1>><</link>>
+<br>
+<<if $exhibitionism gte 35>>
+	<<link [[放回你的房间以便于复仇|Bedroom Kylar Camera Leave]]>><<set $phase to 1>><</link>><<exhibitionist3>>
+	<br>
+<</if>>
+
+:: Bedroom Kylar Camera Destroy
+<<effects>>
+
+你把相机丢在地上，然后狠狠的踩上一脚，你听到了镜头破碎的咔嚓声，这应该就可以了吧.<<gggcontrol>><<control 100>><<llltrauma>><<trauma -30>>
+<br><br>
+
+<<set $kylar_camera to 6>>
+
+<<if $phase is 1>>
+	在将相机解除之后，你将毛绒玩具放回了它原本的地方。
+	<br><br>
+
+	<<link [[继续|Orphanage]]>><</link>>
+	<br>
+<<else>>
+	在将相机解除之后，你将毛绒玩具放回了衣柜上。
+	<br><br>
+	<<link [[继续|Bedroom]]>><</link>>
+	<br>
+<</if>>
+
+:: Bedroom Kylar Camera Leave
+<<effects>>
+
+<<set $kylar_camera to 7>>
+
+<<if $phase is 1>>
+	你在回到你的房间后，把毛绒玩具放在了你的衣柜上。
+	<<run Furniture.set('owlplushie', 'owlplushie', {
+		name	: 'owl plushie',
+		nameCap	: 'Owl plushie'
+	})>>
+<<else>>
+	你将毛绒玩具放回了衣柜上。
+<</if>>
+
+你对着镜头说道： "我不知道该邀请谁过来,"然后在对着镜头做了个鬼脸之后继续说道："我希望你喜欢这场表演。<i>我的爱人.</i>"<<gggcontrol>><<control 100>><<llltrauma>><<trauma -30>><<exhibitionism3>>
+
+<<link [[继续|Bedroom]]>><</link>>
+<br>
+
+:: Bedroom Kylar Creep
+<<effects>>
+
+<<if $phase is 1>>
+	<<if $submissive gte 1150>>
+		"我醒着的，你晓得这点吧..."你悄声说。
+	<<elseif $submissive lte 850>>
+		"不错的尝试，"你低语道，"不过你这样在别人耳边喃喃自语，是会连死人都能吵醒的。"
+	<<else>>
+		"你从没像这样悄悄地接近人过。"你低声说道。
+	<</if>>
+	<br><br>
+
+	<<He>>一声不响地跳下你的床，连滚带爬地跑到门前，将门甩开，随即冲进了大厅。
+	<br><br>
+
+	你起身，关上了<<him>>身后的门。作为闯入你房间的人来说，凯拉尔显得过于害羞了。你不觉得你会想知道<<he>>打算对你做什么。
+	<br><br>
+
+	<<link [[继续|Bedroom]]>><<endevent>><</link>>
+
+<<elseif $phase is 2>>
+	你听到衣物褪去的摩擦声，有那么一瞬间，<<His>>屏住了呼吸.
+	<br><br>
+
+	一股平和温柔的声音正不断的从你的肚子上方传来。你突然意识到，如果<<hes>>正跨坐在你身上，那么这个声音大概就在<<his>>胯下的位置。
+	<br><br>
+
+	你的呼吸越来越快，也越来越沉重。"我...我真希望我们能真的这样做......" 凯拉尔小声呻吟道:"你会让我这样对你... ... 再一次，再一次，再一次..."
+	<br><br>
+
+	<<link [[睁开眼睛|Bedroom Kylar Creep 2]]>><<set $phase to 1>><<npcincr Kylar lust 1>><</link>><<glust>>
+	<br>
+	<<link [[让其靠近|Bedroom Kylar Creep 2]]>><<set $phase to 2>><</link>>
+	<br>
+	<<link [[生气|Bedroom Kylar Creep 2]]>><<set $phase to 3>><<npcincr Kylar rage 2>><<npcincr Kylar love -1>><<stress -6>><</link>><<gstress>><<llove>><<gksuspicion>>
+
+<<else>>
+	<<if $submissive gte 1150>>
+		"请你离开。"你尖锐地盯着凯拉尔，继续说着，"你不应该在这的..."
+	<<elseif $submissive lte 850>>
+		"你在搞什么鬼！？"你对着凯拉尔大喊，把他推到了地上，"滚出我的房间！"
+	<<else>>
+		"你为什么会在我房间里！？" 你对着凯拉尔大喊，把他推到了地上，"请你离开！"
+	<</if>>
+	<br><br>
+
+	<<He>>僵住了。你们两人盯着对方看了一会儿。
+	<br><br>
+
+	<<if $submissive gte 1150>>
+		<<He>>一声不响地跳下你的床，连滚带爬地跑到门前，将门甩开，随即冲进了大厅。
+	<<else>>
+		<<He>>一声不响地冲到门前，将门甩开，随即冲进了大厅。
+	<</if>>
+	<br><br>
+
+	你起身，关上了<<him>>身后的门。作为闯入你房间的人来说，凯拉尔显得过于害羞了。你很庆幸能在<<he>>做任何事情之前就阻止了<<him>>。
+	<br><br>
+
+	<<link [[继续|Bedroom]]>><<endevent>><</link>>
+
+<</if>>
+
+:: Bedroom Kylar Creep 2
+<<effects>>
+
+<<if $phase is 1>>
+	<<if $submissive gte 1150>>
+		"你-你吵醒我了，"你悄声说，"你还躺在我的身上..."
+	<<elseif $submissive lte 850>>
+		"你不会真的觉得我睡着了吧，啊？"你低语道，"没人在这种情况下还能睡得着觉。"
+	<<else>>
+		"你知道我醒着的，对吧？"你低语道。
+	<</if>>
+	<br><br>
+
+	<<He>>僵住了。你们两人盯着对方看了一会儿。
+	<br><br>
+
+	<<He>>一声不响地跳下你的床，连滚带爬地跑到门前，将门甩开，随即冲进了大厅。
+	<br><br>
+
+	你起身，关上了<<him>>身后的门。作为闯入你房间的人来说，凯拉尔显得过于害羞了。你很庆幸能在<<he>>把事情变得更过火之前就阻止了<<him>>。
+	<br><br>
+
+	<<link [[继续|Bedroom]]>><<endevent>><</link>>
+
+<<elseif $phase is 2>>
+	<<He>>向前挪了挪，然后呻吟着说道:"我......我爱你."
+	<br><br>
+
+	<<if $NPCList[0].penis isnot "none">>
+		<<if $NPCList[0].penissize gt 1>>
+
+			这就是在你被颜射之前所得到的所有预兆，随之而来的粘稠液体溅射到了你的脸上，并将你的脸和你的头全部弄乱.在高潮之后，<<his>>用你的嘴唇擦拭<<hes>>的龟头.<<if $ejactrait is 1>><<garousal>><<arousal 600>><</if>>
+			<br><br>
+
+		<<else>>
+
+			在一小股粘稠的暖流落上你的嘴唇之前，这就是你能得到的全部警告。在<<hes>>高潮后，<<He>>用你的被子擦拭着<<his>>的阴茎头。<<if $ejactrait is 1>><<garousal>><<arousal 600>><</if>>
+			<br><br>
+
+		<</if>>
+
+		<<set $hygiene += 500>><<bodyliquid "face" "semen">>
+
+	<<else>>
+
+		这就是在你被颜射之前所得到的所有预兆，随之而来的粘稠液体溅射到了你的脸上，并将你的脸和你的头全部弄乱。在<<hes>>高潮之后，<<He>>用你的被子擦拭<<his>>的下体。<<if $ejactrait is 1>><<garousal>><<arousal 600>><</if>>
+		<br><br>
+
+		<<set $hygiene += 500>><<bodyliquid "face" "goo">>
+
+	<</if>>
+
+	你感觉到<<him>>再次靠向了你。"很快..."<<he>>低语道，在你的额头上轻快地落下一吻。"我等不及了。"<<gstress>><<gtrauma>><<stress 6>><<trauma 1>>
+	<br><br>
+
+	<<He>>快速地从你身旁爬开。你没有听到<<him>>离开的动静，但当你睁开眼时，<<hes>>已经离开了。
+	<br><br>
+
+	<<link [[继续|Bedroom]]>><<endevent>><</link>>
+
+<<else>>
+	<<if $submissive gte 1150>>
+		"你在做什么？"你尖锐地盯着凯拉尔，继续说着，"变-变态..."
+	<<elseif $submissive lte 850>>
+		"你这变态！"你对着凯拉尔大喊，把他推到了地上，"你到底是有什么毛病啊？！"
+	<<else>>
+		"你以为你在做什么！？"你对着凯拉尔大喊，把他推到了地上，"变态！"
+	<</if>>
+	<br><br>
+
+	<<He>>僵住了。你们两人盯着对方看了一会儿。
+	<br><br>
+
+	<<if $submissive gte 1150>>
+		<<He>>一声不响地跳下你的床，连滚带爬地跑到门前，将门甩开，随即冲进了大厅。
+	<<else>>
+		<<He>>一声不响地冲到门前，将门甩开，随即冲进了大厅。
+	<</if>>
+	<br><br>
+
+	你起身，关上了<<him>>身后的门。作为闯入你房间的人来说，凯拉尔显得过于害羞了。因为<<his>>的性欲而被侵扰，你感觉<<print either("不干净了", "很不安", "不舒服")>>。
+	<br><br>
+
+	<<link [[继续|Bedroom]]>><<endevent>><</link>>
+
+<</if>>
+
+:: Bedroom Robin Mist Note
+<<set _robin to statusCheck("Robin")>>
+<<bedclotheson "bed">>
+
+<<set $robinmistknown to 1>>
+醒来后，你注意到有一张纸条被推到了你的门下。
+<br><br>
+
+"<i>我不知道这些人是谁，也不知道他们想要什么，他们强迫我写这封信给你。
+<br>我被关在类似牢房的地方。这里很冷，而且也没办法在这分辨时间。
+<br>他们让我告诉你去<span class="gold">麋鹿街的垃圾填埋场</span>。
+<br></i>
+<<if _robin.dom gte 80>>
+	<i>请一定要小心，<<if $robinromance>>我爱你。<</if>></i>"
+<<else>>
+	<i>请救救我，我很害怕。</i>"
+	<br><br>
+
+	后半部分的字迹抖动的几乎无法阅读，有多个错字被涂掉。
+	纸上还有一些圆形的水渍。
+<</if>>
+<br><br>
+
+<span class="red">这是罗宾的亲笔信。</span>
+<br><br>
+
+<<link [[继续|Bedroom]]>><</link>>
+
+:: Home Leave Undies
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<flaunting>>你偷偷地穿过黑暗中的孤儿院。偶尔从附近的房间里传来鼾声或家具移动的声音，直到周围唯一的声音是你的心脏砰砰作响时，你才再次移动。
+<br><br>
+
+你打开后门并向外窥视。你迈出了第一步，然后是第二步，你轻轻关上身后的门，你现在在外面了。<<covered>>
+<br><br>
+
+<<link [[继续|Garden Fence Undies Night]]>><<pass 5>><</link>>
+<br>
+
+:: Home Leave Naked
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<flaunting>>你偷偷地穿过黑暗中的孤儿院。偶尔从附近的房间里传来鼾声或家具移动的声音，直到周围唯一的声音是你的心脏砰砰作响时，你才再次移动。
+<br><br>
+
+你打开后门并向外窥视。你迈出了第一步，然后是第二步，你轻轻关上身后的门，你现在在外面了。<<covered>>
+<br><br>
+
+<<link [[继续|Garden Fence Naked Night]]>><<pass 5>><</link>>
+<br>
+
+:: Home Leave Undies Day
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<flaunting>>你偷偷地穿过黑暗中的孤儿院，你在藏身处之间穿行，朝前门靠近。你停下来，等待脚步声消失，以免被人发现。
+<br><br>
+
+你打开后门并向外窥视。你迈出了第一步，然后是第二步，你轻轻关上身后的门，你现在在外面了。<<covered>>
+<br><br>
+
+<<link [[继续|Garden Fence Undies Day]]>><<pass 5>><</link>>
+<br>
+
+:: Home Leave Naked Day
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<flaunting>>你偷偷地穿过黑暗中的孤儿院，你在藏身处之间穿行，朝前门靠近。你停下来，等待脚步声消失，以免被人发现。
+<br><br>
+
+你打开后门并向外窥视。你迈出了第一步，然后是第二步，你轻轻关上身后的门，你现在在外面了。<<covered>>
+<br><br>
+
+<<link [[继续|Garden Fence Naked Day]]>><<pass 5>><</link>>
+<br>
+
+:: Bathroom
+
+<<set $outside to 0>><<set $location to "home">><<effects>><<set $bus to "orphanage_bathroom">>
+你正待在浴室里。
+<br><br>
+<<if $stress gte $stressmax>>
+	<<passouthome>>
+<<else>>
+	<<if $leftarm is "bound" and $rightarm is "bound">>
+		<<set _clothed = ![V.worn.upper.name, V.worn.lower.name, V.worn.under_upper.name, V.worn.under_lower.name, V.worn.over_upper.name, V.worn.over_lower.name].every(x => x == 'naked')>>
+		<<bathicon>><<link [[(_clothed ? " 穿着衣服" : "") + "洗个澡 " + "(0:30)"->Bath]]>><<water>><<pass 30>><<stress -6>><<set $hygiene to 0>><</link>><<lstress>>
+	<<else>>
+		<<bathicon>><<link [[洗澡 (0:30)->Bath]]>><<strip>><<pass 30>><<stress -6>><<set $hygiene to 0>><</link>><<lstress>>
+	<</if>>
+	<br>
+	<!-- Check if there's any hair-->
+	<<if $pbdisable is "f" and ($pblevel gte 2 or $pbstrip gte 1 or $pblevelballs gte 2)>>
+		<<shaveicon>><<link [[梳理阴毛->Shave]]>><</link>>
+		<br>
+	<</if>>
+	<<pregnancyTest "Bedroom">>
+	<br>
+
+	<<bedroomicon>><<link [[去卧室 (0:01)->Bedroom]]>><<pass 1>><</link>>
+	<br>
+	<<robinroom_link>>
+	<br>
+	<<main_hall_icon>><<link [[大厅 (0:01)->Orphanage]]>><<pass 1>><</link>>
+	<br>
+	<<home_outside>>
+	<br>
+<</if>>
+
+:: Sleep
+<<set _autosavehere to true>>
+<<set _robin to statusCheck("Robin")>>
+
+<<sleep>><<effects>>
+<<sleepeffects>><<rngWraith 2 "noBlood">>
+<<if $sleepWraith>>
+	<<set $wraith.mimic to "Robin">><<set $wraith.exit to "sleep">><<unset $sleepWraith>><<unset $robinbed>>
+	你睡得很香，当你醒来时你感觉精神焕发。
+	<br><br>
+
+	你看向罗宾，<<Hes>>正盯着你看，你不知道<<hes>>已经醒了多久了。
+	<br><br>
+
+	你试图爬下床，但一只手抓住了你，罗宾将你拉回了床上，并将你按住后，<<He>>用第三只手轻轻的抚摸着你的脸颊。
+	<br><br>
+
+	那不是一只手，是许多长长的、半透明的触手正把你钉在床上。
+	<br><br>
+
+	你看到<<his>>的皮肤出现波纹不断变化，就像是融化的蜡油滴落在水面上。<<His>>的手臂也呈现出一种不自然的象牙色苍白。<<endevent>><<generateWraith 1 true>><<initWraith "abomination">>
+	<br><br>
+
+	这不是罗宾，当你入睡之后，就已经不是罗宾了。<<trauma 18>><<gggtrauma>><<set $wraith.revealed to true>>
+	<br><br>
+
+	"<span class="wraith">闭上你的眼睛继续睡觉，</span>"<<he>>嘶吼道，"<span class="wraith">只有这样，我们才能真正看到。</span>" 半透明的肢体逐渐向你靠拢。
+	<br><br>
+
+	<<link [[继续|Wraith Mimic Fight]]>><</link>>
+<<elseif $robindebtwake is 1 and $robinbed is undefined>>
+	<<set $robindebtwake to 0>><<set $robindebtknown to 1>>
+	<<npc Robin>><<person1>>有人在试图打开你的门，你被惊醒了，害怕的不知所措，直到你看到罗宾的脸出现在门缝处。 "我能进来吗？"<<he>>轻声询问。
+	<br><br>
+	<<if $exposed gte 1>>
+		你点头同意了，然后快速把被子拉了起来遮盖你的<<lewdness>>。
+	<<else>>
+		你点点头。
+	<</if>>
+	<<He>>在轻手轻脚地走进你的房间后，坐在了你的床尾。"希望我没有吵醒你，"<<he>>颤抖的说道。 "我太害怕了，贝利让我付钱给<<endevent>><<npc Bailey>><<him>>，但是<<endevent>><<npc Robin>><<person1>>最近要的越来越多了。"<<Hes>>的眼泪在眼眶里打转，你向前倾身抱住<<him>>。"我不知道该怎么办了。"
+	<br><br>
+	你和<<him>>相拥了几分钟，直到<<he>>缓过劲来。"对不起，我只是想找个人倾诉一下。"<<He>>用袖子擦了擦<<his>>的眼睛。"谢谢你。"<<He>>又轻手轻脚的走出了房间，还轻轻的将门带上了。
+	<<gstress>><<stress 6>>
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Bed]]>><</link>>
+	<br>
+<<elseif _wraithEvent and _robin.lovewake is 1 and $robinromance is 1 and C.npc["Ivory Wraith"].lust gte 14 and $rng gte 61>>
+	<<set $wraith.mimic to "Robin">><<set $wraith.exit to "home">><<set $robinbed to "yours">>
+	<<npc Robin>><<person1>>你有一种感觉，貌似罗宾正在环抱着你。
+	<br><br>
+
+	<<link [[回抱|Wraith Mimic Robin Dominant]]>><</link>><<ltrauma>><<lstress>><<lrtrauma>>
+	<br>
+	<<link [[亲吻|Wraith Mimic Fight]]>><<set $sexstart to 1>><</link>>
+<<elseif _robin.lovewake is 1>>
+	<<set _robin.lovewake to 0>><<set $robinbed to "yours">><<set $bedGuest to "Robin">>
+	<<npc Robin>><<person1>>你突然感受到了熟悉的触感，是罗宾，<<his>>正用胳膊搂着你。
+	<<if _robin.trauma gte 50>>
+		"对不起，"你听到<<his>>在你耳边低语，"我最近一直都在做噩梦……"
+		<br><br>
+
+		在你回抱住<<him>>之后，<<his>>终于不再颤抖了。
+		<<if $trauma gte ($traumamax * 0.7)>>
+			在你被<<he>>回抱住之后，你终于不再颤抖了。
+		<</if>>
+	<</if>>
+	<br><br>
+	<<if _robin.dom gte 80 and _robin.trauma lt 50>>
+		<<link [[拥抱|Robin Bed Dominant]]>><</link>>
+		<br>
+	<<else>>
+		<<link [[抱住|Bed]]>><<endevent>><<trauma -6>><<stress -12>><<npcincr Robin trauma -3>><</link>><<ltrauma>><<lstress>><<lrtrauma>>
+		<br>
+	<</if>>
+	<<if _robin.trauma lt 50>>
+		<<link [[接吻|Bed Robin Sex]]>><<set $sexstart to 1>><</link>>
+	<</if>>
+	<br>
+<<elseif $location is "home" and $wraith and $wraith.nightmare is 2 and isBloodmoon()>>
+	你梦见一个美丽的身影，它披着白色的纱裙，就那样站在红月之下，而它现在正向你张开双臂以示欢迎。当你靠近时，你感到它的目光像是要刺入你的脑袋一般。
+	<br><br>
+	它被树木环绕，而所有的树木都向内弯曲并漂浮在湖面上。你周围的一切都在移动，而你发现自己正浮在湖底的一个巨大的废墟上，你现在有些难以呼吸了。
+	<br><br>
+	你缓缓睁开眼，慢慢从床上站起身来。
+	<<if $robinbed is "yours" or $robinbed is "theirs">>
+		你小心的没有吵醒罗宾。
+	<<elseif $kylarbed is 1>>
+		你小心的没有吵醒凯拉尔。
+	<</if>>
+	你的耳朵里有声响。
+	<br><br>
+	<<storeon "bed" "wardrobe">><<wraithPossess "home">>
+	<span class="nextLink"><<link [[散步|Bedroom]]>><</link>></span>
+	<br>
+<<elseif $baileyrapewake is 1>>
+	<<set $baileyrapewake to 0>>
+	<<generate1>><<person1>>当你醒来时，看见一个若隐若现的身影，一双手将你的被子扯了下来，是一个<<person>>。"不要挣扎，"<<he>>说道。
+	<<if $robinbed is "yours" or $kylarbed is 1>>
+		"我们不希望吵醒你的朋友。"<<if $robinbed is "yours">>罗宾<<else>>凯拉尔<</if>>正躺在你身边安稳的睡着。
+	<</if>>
+	"你看起来很是诱人，而且你有着那么安稳的睡相。我再也控制不住自己了。"
+	<br><br>
+	<span class="red">贝利正靠在门框那里数着手上的钱。</span>
+	<br><br>
+	<<link [[继续|Sleep Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<elseif $christmas_kylar is 1>>
+	<<set $christmas_kylar to 2>>
+	<<npc Kylar>><<person1>>
+	你被叮当声吵醒。
+	<br>
+	一抹白霜
+	<br>
+	从窗外洒落，
+	<br>
+	是起床还是转个身继续睡觉？
+	<br><br>
+
+	<<link [[起身调查|Kylar Christmas]]>><<set $christmas_kylar to 3>><<towelup>><</link>>
+	<br>
+	<<link [[翻身睡觉|Sleep]]>><<endevent>><</link>>
+	<br>
+
+<<elseif _kylarWake is 1>>
+	<<npc Kylar>><<person1>>
+	<<run statusCheck("Kylar")>>
+
+	当你醒来的时候，冷风正从你打开的窗户那长驱直入。
+	<br><br>
+
+	你想起身下床，但一双手臂从后面揽住了你的腰，限制了你的行动。
+	<br><br>
+
+	你汗毛竖起,但一个熟悉的声音在你耳边低语. 是凯拉尔.
+	<br><br>
+
+	"我吓到你了吗？"<<he>>问道，<<his>>呼出的热气吹拂着你的脖子，"我很抱歉，我只是无法控制自己，我需要你。"
+	<br><br>
+
+	你感觉<<his>>的<<npcGenitals>>摩擦着你的屁股并且<<his>>的呼吸变得愈加强烈。<<He>>松开了手并开始用<<his>>的手在你身上游走<<if $worn.over_upper.name isnot "naked" or $worn.over_lower.name isnot "naked">>，迫不及待地想脱掉你的衣服，<<else>>试图将你紧紧抱住，感受你的每一寸肌肤。<</if>>
+	<br><br>
+
+	<<His>>松开双手，然后在一阵脱衣服的窸窣声后，<<his>>将身体再次压在了你的身上，"你不愿与我一起享受这份快乐么？"
+	<br><Br>
+
+	<<link [[默许凯拉尔接下来的行为|Bedroom Kylar Sneak Sex]]>><<set $sexstart to 1>><</link>><<gglove>><<npcincr Kylar love 2>>
+	<br>
+	<<link [[推开凯拉尔|Bedroom Kylar Sneak Push]]>><<npcincr Kylar love -1>><<npcincr Kylar rage 6>><<npcincr Kylar lust -2>><</link>><<llove>><<ggksuspicion>><<gglust>>
+
+<<elseif _kylarWake is 2>>
+	<<npc "Kylar">><<person1>>
+	<<run statusCheck("Kylar")>>
+
+	你被床上移动的东西吵醒了，就在准备睁开眼睛看看是什么的时候，你感觉到有呼吸喷在你的脸上。
+	<br><br>
+
+	" 你-你这样真<<if $player.gender_appearance is "f">>美丽<<else>>帅气<</if>>..."一个熟悉的声音喃喃自语，离你不过几英寸远.是凯拉尔的声音."很快... 我将拥有你的全部..."
+	<br><br>
+
+	<<link [[睁开眼睛|Bedroom Kylar Creep]]>><<set $phase to 1>><<npcincr Kylar lust 1>><</link>><<glust>>
+	<br>
+	<<link [[让他靠近|Bedroom Kylar Creep]]>><<set $phase to 2>><</link>>
+	<br>
+	<<link [[生气|Bedroom Kylar Creep]]>><<set $phase to 3>><<npcincr Kylar rage 2>><<npcincr Kylar love -1>><<stress -6>><</link>><<lstress>><<llove>><<gksuspicion>>
+
+<<elseif $location is "home" and $slimeWake is 1>>
+	<<slime_wake_home>>
+<<else>>
+	<<if $nightmares is 1 and $controlled is 0>>
+		<<if _sleepinterrupt>>
+			<<if $daily.motherWake is 1>>
+				你本打算继续睡觉，但贝利再次敲门，提醒你该起床了。
+			<<else>>
+				<<wakingEffects $sleepHoursTotal>>
+				<<if _wakingEffect isnot undefined>>
+					你梦到了
+				<<else>>
+					你梦见你是
+				<</if>>
+				被某种<<if ["haunt", "despair"].includes($wraith.state) and $rng lte 25>>苍白<<else>>黑暗<</if>>的东西追杀。噩梦被敲门声惊断，是贝利来提醒你该上学了。
+			<</if>>
+			<br><br>
+			<<set $daily.motherWake to 1>>
+		<<else>>
+			<<wakingEffects $sleepHoursTotal>>
+			<<if _wakingEffect isnot undefined>>
+				你梦到了
+			<<else>>
+				你梦见你是
+			<</if>>
+			被<<if ["haunt", "despair"].includes($wraith.state) and $rng lte 25>>苍白<<else>>黑暗<</if>>且可怕的东西猎杀，虽然你很快就忘掉了具体的细节，但是噩梦带来的恐惧感却挥之不去。
+			<br><br>
+		<</if>>
+	<<else>>
+		<<if _sleepinterrupt>>
+			<<if $daily.motherWake is 1>>
+				你本打算继续睡觉，但贝利再次敲门，提醒你该起床了。
+			<<else>>
+				<<wakingEffects $sleepHoursTotal>>
+				<<if _wakingEffect isnot undefined>>
+					在你睡着之后
+				<<else>>
+					你入睡之后
+				<</if>>
+				睡得很香，直到敲门声将你吵醒，是贝利来提醒你要去上学了。
+			<</if>>
+			<br><br>
+			<<set $daily.motherWake to 1>>
+		<<else>>
+			<<if !_wakingEffect>>
+				<<wakingEffects $sleepHoursTotal>>
+			<</if>>
+			<<if ["dryheaving","nausea"].includes(_wakingEffect)>>
+				你睡得很香，但现在感觉有点不舒服。
+				<br><br>
+			<<elseif $specialClothesEffects.bimboTotal gte random(100,1000) or $arousal gte ($arousalmax / 10) * 9>>
+				你的睡眠<<if _wakingEffect>>因<<else>>被<</if>>淫秽的梦境而困扰着。
+				<<arousal `$specialClothesEffects.bimboTotal / 10 * $sleepHoursTotal`>>
+				<<arousal `100 * $sleepHoursTotal`>>
+				<<if $arousal gte $arousalmax>>
+					它们把你推向了极点。
+					<<orgasm>><<set _orgasm to true>>
+				<<else>>
+					<br><br>
+				<</if>>
+			<<elseif !_wakingEffect>>
+				你睡得很香，当你醒来时你感觉精神焕发。
+				<br><br>
+			<<else>>
+				<br><br>
+			<</if>>
+		<</if>>
+	<</if>>
+	<<if $robinbed is "yours">>
+		<<unset $robinbed>>
+		<<npc Robin>><<person1>>
+		<<if _wakingEffect is "dryheaving">>
+			"你还好吗？让我来帮你吧，"罗宾的关心让你放松了很多。<<He>>一直都很担心你，直到你说自己没事后才放心的离开了。
+		<<elseif _orgasm is true>>
+			<<if $exposed gte 2>>
+				罗宾搂着你，"我留你一个人去穿——"<<he>>顿了顿，然后便注意到你们之间黏糊糊的。明白了一切后，<<he>>的脸唰的一下变红，起身下床为你们俩寻找纸巾去了。
+				<<if $rng gte 71>>
+					"没、没事，"<<he>>说道。
+				<<elseif $rng gte 31>>
+					"这可能是我的错，"<<he>>说道。
+				<<else>>
+					"我——我可能需要去洗个澡，"<<he>>说道。
+				<</if>>
+			<<else>>
+				罗宾拥抱你，"我去穿一下——"<<he>>顿了顿，在注意到你胯间的湿斑后，<<he>>的脸涨得通红，随后<<he>>递给你一张纸巾。
+				"没、没事，"<<he>>说道。
+			<</if>>
+		<<else>>
+			罗宾松开抱着你的胳膊，"我不打扰你穿衣服了。"<<he>>说道。
+		<</if>>
+		<<if Time.hour is 6>><<run setRobinLocationOverride("orphanage", 6)>><</if>>
+		<<endevent>>
+		<br><br>
+
+	<<elseif $kylarbed is 1>>
+		<<npc Kylar>><<person1>>
+		<<if $kylarSleepEvent is 1>>
+			<<unset $kylarSleepEvent>>
+			<<unset $kylarbed>>
+
+			当你醒来时，你感觉一只手正细细地抚摸着你的头发，你转过身去看向凯拉尔，<<he>>微笑着说道："我真的很高兴你让我留了下来。"
+			<br><br>
+
+			你们在起床之前又依偎了一会，直到不得不分开的时候，<<he>>才满脸不情愿的从你身边离开.
+			<br><br>
+
+			"我真的该走了，"<<he>>说道，你轻拂起<<his>>脸上的一缕头发，<<he>>又笑了起来，随后<<He>>握住你的手，在把它放在<<his>>的脸上一会儿后，<<He>>离开了你的身边。
+			<br><br>
+
+			你目视着<<he>>顺着<<he>>来时的路回去了，直到听不到<<him>>离开时的沙沙声后，你才躺回了床上，想着你们俩刚刚一起度过的美好夜晚。
+			<br><br>
+			
+		<<elseif _wakingEffect is "dryheaving">>
+
+		<<elseif $rng gte 81 and $robinmissing is 0 and $NPCName[$NPCNameList.indexOf("Robin")].init is 1>>
+			你被门打开所传来的吱呀声惊醒，在那家伙急忙关上门之前，你听到门外传来了不知道是谁的喘气声。
+			<br><br>
+
+			"谁在那儿……？"你打着哈欠，慢慢地从凯拉尔的怀中抽身。
+			<br><br>
+
+			"不知道，"凯拉尔揉着<<his>>的眼睛说道： "应该是无关紧要的家伙吧？"
+			<br><br>
+
+			<<if $robinromance is 1>>
+				<<npcincr Robin love -5>><<lllove "Robin">>
+				<br><br>
+			<</if>>
+			<<link [[继续|Kylar Orphanage Cuddle]]>><<set $kylarbed to 0>><</link>>
+
+		<<elseif $rng gte 61>>
+			你被门打开所传来的吱呀声惊醒，你听到门外传来了不知是谁的喘息声，随后又有笑声传来。
+			<br><br>
+
+			<<generatey2>><<person2>>
+			一个<<person>>站在房间门口看着你和凯拉尔。 "你在和<<nnpc_him "Kylar">>一起睡觉？！"<<he>>肆无忌惮的大笑。 "这就是你邀请<<nnpc_him "Kylar">>来这里的原因么？你喜欢这个怪胎是吧？"
+			<br><br>
+
+			凯拉尔的脸上闪过愤怒的神情，但<<nnpc_he "Kylar">>最后还是什么都没说道。
+			<br><br>
+
+			<<link [[保护凯拉尔|Kylar Orphanage Sleep Defend]]>><<set $kylarbed to 0>><<status -10>><<npcincr Kylar love 1>><</link>><<lcool>><<glove>>
+			<br>
+			<<link [[斥责凯拉尔|Kylar Orphanage Sleep Berate]]>><<set $kylarbed to 0>><<npcincr Kylar love -3>><</link>><<lllove>>
+			<br>
+			<<if $submissive lte 500 or $syndromekylar gte 1>>
+				<<link [[摔门而出|Kylar Orphanage Slam]]>><<set $kylarbed to 0>><<npcincr Kylar love 1>><<npcincr Kylar lust 1>><</link>><<glove>><<glust>><<if $syndromekylar gte 1>><<stockholmTrait "Kylar">><<else>><<defianttext>><</if>>
+			<</if>>
+
+		<<else>>
+			当你醒来时，<<if $submissive gte 1150 or $daily.kylar.sleepRape is true>>凯拉尔仍然抱着你<<else>>你依旧抱着凯拉尔<</if>>.过了一会儿，凯拉动了一下，随后懒懒地眨着眼睛。
+			<<if _orgasm is true>>
+				<<He>>用力的嗅了嗅空气，然后看向你。 "你也梦见我了吗？"<<he>>问道。
+			<</if>>
+			<br><br>
+
+			"我可能该走了，"<<he>>说道。尽管这么说了，但<<he>>并没有着急起身。
+			<br><br>
+
+			<<link [[继续|Kylar Orphanage Cuddle]]>><<set $kylarbed to 0>><</link>>
+		<</if>>
+	<</if>>
+	<<if $kylarbed isnot 1>>
+		<<set $wardrobe_location to "wardrobe">>
+		<<wardrobeSelection true>>
+		<<radiooutfits>>
+		<br><br>
+		<<if $renttime lte 0>>
+			<<set $bus to "home">>
+			<<link [[起床|Bedroom Bailey]]>><</link>>
+			<br><br>
+
+		<<elseif $robinmissing is "landfill" and !$robinmistknown>>
+			<<link [[起床|Bedroom Robin Mist Note]]>><</link>>
+			<br><br>
+		<<else>>
+			<<link [[起床|Bedroom]]>><</link>>
+		<</if>>
+	<</if>>
+<</if>>
+<<if $kylarbed isnot 1>>
+	<<set $phase to 0>>
+<</if>>
+
+:: Robin Sleep
+<<set _autosavehere to true>>
+<<run statusCheck("Robin")>>
+<<sleep>><<effects>>
+<<sleepeffects>>
+<<set $wear_outfit to "clotheson">>
+
+<<if $baileyrapewake>>
+	<<set $baileyrapewake to 0>>
+	<<generate1>><<person1>>当你醒来时，看见一个若隐若现的身影，一双手将你的被子扯了下来，是一个<<person>>。"不要挣扎，"<<he>>说道。
+	"我们不希望吵醒你的朋友。罗宾正躺在你身边熟睡着。
+	"你看起来很是诱人，而且你有着那么安稳的睡相。我再也控制不住自己了。"
+	<br><br>
+
+	<span class="red">贝利正靠在门框那里数着手上的钱。</span>
+	<br><br>
+
+	<<link [[继续|Sleep Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<elseif $location is "home" and $wraith and $wraith.nightmare is 2 and isBloodmoon()>>
+	你梦见一个美丽的身影，它披着白色的纱裙，就那样站在红月之下，而它现在正向你张开双臂以示欢迎。当你靠近时，你感到它的目光像是要刺入你的脑袋一般。
+	<br><br>
+	它被树木环绕，而所有的树木都向内弯曲并漂浮在湖面上。你周围的一切都在移动，而你发现自己正浮在湖底的一个巨大的废墟上，你现在有些难以呼吸了。
+	<br><br>
+	你慢慢睁开眼睛，缓缓地从床上起身。在确保没有惊动罗宾后，你顶着耳内嗡嗡作响的感觉走向你的房间。
+	<br><br>
+	<<storeon "bed" "wardrobe">><<wraithPossess "home">>
+	<span class="nextLink"><<link [[散步|Bedroom]]>><</link>></span>
+	<br>
+<<elseif $christmas_kylar is 1>>
+	<<set $christmas_kylar to 2>>
+	<<npc Kylar>><<person1>>
+	你被叮当声吵醒。
+	<br>
+	一抹白霜
+	<br>
+	从窗外洒落，
+	<br>
+	是起床还是转个身继续睡觉？
+	<br><br>
+
+	<<link [[起身调查|Kylar Christmas]]>><<unset $robinbed>><<set $christmas_kylar to 3>><<towelup>><</link>>
+	<br>
+	<<link [[转身继续睡|Robin Sleep]]>><<endevent>><</link>>
+	<br>
+<<elseif $location is "home" and $slimeWake is 1>>
+	<<slime_wake_home>>
+<<else>>
+	<<if $nightmares is 1 and $controlled is 0>>
+		<<if _sleepinterrupt is 1>>
+			<<if $daily.motherWake is 1>>
+				你本打算继续睡觉，但贝利再次敲门，提醒你该起床了。
+			<<else>>
+				<<wakingEffects $sleepHoursTotal>>
+				<<if _wakingEffect isnot undefined>>
+					你梦到了
+				<<else>>
+					你梦见你是
+				<</if>>
+				被某种<<if ["haunt", "despair"].includes($wraith.state) and $rng lte 25>>苍白<<else>>黑暗<</if>>的东西追杀。噩梦被敲门声惊断，是贝利来提醒你该上学了。
+			<</if>>
+			<br><br>
+			<<set $daily.motherWake to 1>>
+		<<else>>
+			<<wakingEffects $sleepHoursTotal>>
+			<<if _wakingEffect isnot undefined>>
+				你梦到了
+			<<else>>
+				你梦见你是
+			<</if>>
+			被<<if ["haunt", "despair"].includes($wraith.state) and $rng lte 25>>苍白<<else>>黑暗<</if>>且可怕的东西猎杀，虽然你很快就忘掉了具体的细节，但是噩梦带来的恐惧感却挥之不去。
+			<br><br>
+		<</if>>
+	<<else>>
+		<<if _sleepinterrupt is 1>>
+			<<if $daily.motherWake is 1>>
+				你本打算继续睡觉，但贝利再次敲门，提醒你该起床了。
+			<<else>>
+				<<wakingEffects $sleepHoursTotal>>
+				<<if _wakingEffect isnot undefined>>
+					在你睡着之后
+				<<else>>
+					你入睡之后
+				<</if>>
+				睡得很香，直到敲门声将你吵醒，是贝利来提醒你要去上学了。
+			<</if>>
+			<br><br>
+			<<set $daily.motherWake to 1>>
+		<<else>>
+			<<if !_wakingEffect>>
+				<<wakingEffects $sleepHoursTotal>>
+			<</if>>
+			<<if ["dryheaving","nausea"].includes(_wakingEffect)>>
+				你睡得很香，但现在感觉有点不舒服。
+				<br><br>
+			<<elseif $specialClothesEffects.bimboTotal gte random(100,1000) or $arousal gte ($arousalmax / 10) * 9>>
+				你的睡眠<<if _wakingEffect>>因<<else>>被<</if>>淫秽的梦境而困扰着。
+				<<arousal `$specialClothesEffects.bimboTotal / 10 * $sleepHoursTotal`>>
+				<<arousal `100 * $sleepHoursTotal`>>
+				<<if $arousal gte $arousalmax>>
+					它们把你推向了极点。
+					<<orgasm>><<set _orgasm to true>>
+				<<else>>
+					<br><br>
+				<</if>>
+			<<elseif !_wakingEffect>>
+				你睡得很香甜。
+				<br><br>
+			<<else>>
+				<br><br>
+			<</if>>
+		<</if>>
+	<</if>>
+	<<unset $robinbed>>
+	<<npc Robin>><<person1>>
+	<<if $renttime gte 1>> <!-- If Rent is not due -->
+		<<if _robin_location is "orphanage" or _robin_location is "sleep">>
+			<<if Time.hour lte 21>>
+				<<set _robinSleepyChance to ((Time.hour * 60) - 360) * 4/3>> <!-- 0% at 6, 80% at 7, and 100% starting at 7:15 -->
+				<<set _robinAwakeChance to ((Time.hour * 60) - 420) * 5/3>> <!-- 0% at 7, then increases to 100% by 8 -->
+				<<if _wakingEffect is "dryheaving">>
+					"你还好吗？让我来帮你，"罗宾说道，这让你得以放松。<<He>>在直到<<himself>>起床前都在检查你是否真的没事。
+					<<set $phase to 1>>
+				<<elseif _orgasm is true and $rng gt _robinAwakeChance>>
+					<<set $phase to 1>>
+					<<if $exposed gte 2>>
+						罗宾抱着你说道： "你应该去——"<<he>>顿了顿，然后在注意到<<his>>和你身上的液体后，<<he>>的脸涨得通红，随后<<he>>为你们俩个人去寻找纸巾。
+						"<<print ["我......我还好", "这也许是我的错", "我......我可能需要洗个澡"].random()>>,"<<he>>说道.
+					<<else>>
+						罗宾拥抱你，"你应该去——"<<he>>顿了顿，在注意到你胯间的湿斑后，<<he>>的脸涨得通红，随后<<he>>为你去寻找纸巾。
+						"没、没事，"<<he>>说道。
+					<</if>>
+				<<else>>
+					<<if $rng lte _robinAwakeChance>>
+						"起床了，大懒虫。"罗宾在床边朝你笑道。
+						<<set $phase to 2>>
+					<<elseif $rng lte _robinSleepyChance>>
+						罗宾松开你并说道："你该回去穿衣服了，"。
+						<<set $phase to 1>>
+					<<else>>
+						罗宾在睡梦中拥抱着你。
+						<<set $phase to 0>>
+					<</if>>
+				<</if>>
+				<br><br>
+			<</if>>
+		<<else>>
+			你在你旁边的墙上发现了一张便条:"希望你睡得很好！我得去做点事情！"
+			<br><br>
+
+			<<set $phase to 3>>
+		<</if>>
+	<</if>>
+	<<if Time.hour is 6>><<run setRobinLocationOverride("orphanage", 6)>><</if>>
+	<<endevent "phaseless">>
+	<<if $renttime lte 0>>
+		<<set $bus to "home">>
+		<<set $inRobinsRoom to true>>
+		<<link [[继续|Bedroom Bailey]]>><<set $wardrobe_location to "wardrobe">><</link>>
+		<br><br>
+	<<else>>
+		<<link [[继续|Robin Room Wake]]>><<set $wardrobe_location to "wardrobe">><</link>>
+		<br><br>
+	<</if>>
+<</if>>
+
+:: Bath Scream
+
+<<effects>><<set $location to "home">><<set $outside to 0>>
+<<endevent>><<npc Bailey>><<person1>>
+你尖叫起来。三人后退并向门口冲去，他们逃到了外面的走廊，门就这样敞开着。沉重的脚步声越来越近，贝利走了进来。<<His>>的目光在扫视了整个房间后落到了你的身上。 "你看到蜘蛛了吗？"<<he>>嘲笑道。 然后<<He>>靠近你，用<<his>>的手背敲了敲你的肩膀。 "别再打扰我了。"说完之后<<He>>气势汹汹地走出了房间，将身后的门用力地关上了。
+<<gpain>><<gtrauma>><<gstress>><<pain 20>><<trauma 6>><<stress 6>>
+<br><br>
+<<tearful>>你从浴缸里爬了出来。
+<br><br>
+<<endevent>>
+<<link [[继续|Bath Finish]]>><<clotheson>><</link>>
+<br>
+
+:: Bath Ask
+
+<<effects>><<set $location to "home">><<set $outside to 0>>
+<<if $speech_attitude is "meek">>
+	"不要看，"你说道。"请离开。"
+<<elseif $speech_attitude is "bratty">>
+	"离开这！" 你说道. "变态."
+<<else>>
+	"请离开"你说道。
+<</if>>
+<br><br>
+<<if $rng gte 81>>
+	他们犹豫了一下，随后<<person1>><<person>>向你冲来，<<he>>在捂住你的嘴后，将你拉到浴缸的边缘。 "为什么？"<<he>>在你耳边低语："那要在哪里才能有这样的乐趣呢?"
+	<br><br>
+	<<link [[继续|Bath Molestation]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	他们犹豫了一下，随后<<person3>><<person>>率先打开门离开了。其他人紧随其后，尽管<<person1>><<person>>还是逗留了片刻并盯着你看了一会。
+	<<if $player.penisExist and ($player.penissize lte 1 or $player.penissize is 4) and random(0,9) gte 6>>
+		<<telltalepenissize>>
+	<</if>>
+	<br><br>
+	<<endevent>>
+	<<tearful>>你从浴缸里爬了出来。
+	<br><br>
+	<<link [[继续|Bath Finish]]>><</link>>
+	<br>
+<</if>>
+
+:: Bath Molestation
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<enable_rescue>><<hand_gag 0 left>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Bath Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Bath Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Bath Molestation Finish
+
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	那些家伙在将你的脸推进水里后。便匆匆的离开了房间。
+	<br><br>
+	<<tearful>>你从浴缸里爬了出来。
+	<br><br>
+	<<endcombat>>
+	<<link [[继续|Bath Finish]]>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	<<person1>><<person>>背对着你，处理着你造成的伤口。其他人也满脸惊疑的后退一步。<<He>>张开嘴，好像是打算说些什么，但<<his>>最后还是什么都没说就离开了房间。其他人也紧随其后。
+	<br><br>
+	<<tearful>>你从浴缸里爬了出来。
+	<br><br>
+	<<endcombat>>
+	<<link [[继续|Bath Finish]]>><</link>>
+	<br>
+<<else>>
+	<<set $rescued += 1>>/*Unnecessary if rescue is impossible*/
+	<<endevent>><<npc Bailey>><<person1>>
+	像是回应你的尖叫声，沉重的脚步声越来越近。三人后退并向门口冲去，他们逃到了外面的走廊，门就这样敞开着。贝利走了进来。<<His>>的目光在扫视了整个房间后落到了你的身上。 "你看到蜘蛛了吗？"<<he>>嘲笑道。 然后<<He>>靠近你，用<<his>>的手背敲了敲你的肩膀。 "别再打扰我了。" 在说完之后<<He>>气势汹汹地走出了房间，将身后的门用力地关上了。
+	<<gpain>><<gtrauma>><<gstress>><<pain 20>><<trauma 6>><<stress 6>>
+	<br><br>
+	<<tearful>>你从浴缸里爬了出来。
+	<br><br>
+	<<endcombat>>
+	<<link [[继续|Bath Finish]]>><</link>>
+	<br>
+<</if>>
+
+:: Bath Sex
+
+<<if $sexstart is 1>>
+<<set $sexstart to 0>>
+<<consensual>>
+<<set $consensual to 1>>
+<<neutral 1>>
+<<maninit>>
+<<set $enemytrust += 100>>
+<<enable_rescue>>
+你站了起来。那些家伙的眼睛瞪得老大。你抓住<<person2>><<persons>>的衣领，把<<him>>拉了过来。<<person1>>
+<<promiscuity5>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Bath Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Bath Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Bath Sex Finish
+<<effects>>
+<<wash>>
+<<if $enemyarousal gte $enemyarousalmax>>
+<<ejaculation>>
+
+"你又将我弄得一团糟了，"你开玩笑道，"让我来收拾吧。"而他们则是满脸通红地离开了房间。
+<br><br>
+<<wash>>
+<<tearful>>你从浴缸里爬了出来。
+<br><br>
+
+<<endcombat>>
+
+<<link [[继续|Bath Finish]]>><</link>>
+<br>
+
+<<elseif $enemyhealth lte 0>>
+
+<<person1>><<person>>背对着你，处理着你造成的伤口。其他人也满脸惊疑的后退一步。<<He>>张开嘴，好像是打算说些什么，但<<his>>最后还是什么都没说就离开了房间。其他人也紧随其后。
+<br><br>
+
+<<tearful>>你从浴缸里爬了出来。
+<br><br>
+
+<<endcombat>>
+
+<<link [[继续|Bath Finish]]>><</link>>
+<br>
+
+<<elseif $alarm is 1 and $rescue is 1>> /*Unnecessary if rescue is impossible*/
+<<set $rescued += 1>>
+
+<<endevent>><<npc Bailey>><<person1>>
+像是回应你的尖叫声，沉重的脚步声越来越近。三人后退并向门口冲去，他们逃到了外面的走廊，门就这样敞开着。贝利走了进来。<<His>>的目光在扫视了整个房间后落到了你的身上。 "你看到蜘蛛了吗？"<<he>>嘲笑道。 然后<<He>>靠近你，用<<his>>的手背敲了敲你的肩膀。 "别再打扰我了。" 在说完之后<<He>>气势汹汹地走出了房间，将身后的门用力地关上了。
+<<gpain>><<gtrauma>><<gstress>><<pain 20>><<trauma 6>><<stress 6>>
+<br><br>
+
+<<tearful>>你从浴缸里爬了出来。
+<br><br>
+
+<<endcombat>>
+
+<<link [[继续|Bath Finish]]>><</link>>
+<br>
+
+<<else>>
+
+他们向后退了几步，但仍在注视着你。 "请给我一些隐私，"你开口说道。他们满脸羞红地离开了房间。
+<br><br>
+
+<<tearful>>你从浴缸里爬了出来。
+<br><br>
+
+<<endcombat>>
+
+<<link [[继续|Bath Finish]]>><</link>>
+<br>
+
+<</if>>
+
+:: Bath Watch
+<<effects>><<set $location to "home">><<set $outside to 0>>
+你已经洗的很干净了，但你不会错过这炫耀身体的机会。你站起身拿起一块海绵，在将目光从你的观众身上移开后，你用海绵擦过你的<<breasts>>，然后让它顺着你的肚子擦过你的<<genitals>>。三人就这样目瞪口呆地看着。
+<<exhibitionism5>>
+
+你转身背对着他们，将你的<<bottom>>暴露在这些家伙面前。你将手放到后面试图进行清洗，但<<person1>><<person>>抢走了海绵。 "让我来帮忙，"<<he>>说道。另外两个家伙也找到了其他的海绵。你让他们清洁你的身体，并转过身来，将你身体每一寸都暴露在他们面前。而这些家伙的另一只手总是不知羞耻地抚摸着你。
+<br><br>
+
+水开始变凉了。 "我已经洗干净了"你说道： "谢谢你们的帮助。"他们似乎有些犹豫，但还是离开了你。
+<br><br>
+
+<<tearful>>你从浴缸里爬了出来。
+<br><br>
+<<endevent>>
+
+<<link [[继续|Bath Finish]]>><</link>>
+<br>
+
+:: Bath
+<<effects>><<set $location to "home">><<set $outside to 0>>
+<<run statusCheck("Kylar")>>
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if getRobinLocation() is "bath" and C.npc.Robin.trauma lt 40 and $halloween isnot 1>>
+	<<set $daily.robin.bath to true>><<npc Robin>>
+
+	当你进入浴室时，你听到了来自走廊的脚步声，在门被推开了，你
+	<<if $exhibitionism lte 55>>
+		迅速遮住你暴露在外的<<breasts>>和<<genitals>>，当你注意到是罗宾之后，你放松了紧绷的神经。
+	<<else>>
+		你看见罗宾走了进来。
+	<</if>>
+	<<if $robinromance is 1>>
+		<<if C.npc.Robin.dom gte 60>>
+			"哦，我没想到有人会在这里，"<<he>>说道："你介意我和你一块洗吗？"<<Hes>>在询问的时候就已经开始脱衣服了。
+			<br><br>
+
+			<<link [[`让 ${$NPCList[0].pronouns.him} 加入`|Bath Robin Join 2]]>><<set $phase to 1>><</link>>
+			<br>
+			<<link [[拒绝|Bath Robin Join 2]]>><<npcincr Robin dom -1>><<set $phase to 0>><</link>><<ldom>>
+		<<else>>
+			"哦，对不起，我没想到有人会在这里。"<<He>>说着的同时转身离开："我一会儿再来。"
+			<br><br>
+
+			<<link [[继续洗澡|Bath]]>><<endevent>><</link>>
+			<<if $promiscuity gte 15>>
+				<br>
+				<<link [[要求帮忙搓澡|Bath Robin Help]]>><<npcincr Robin lust 1>><<npcincr Robin love 1>><<stress -6>><</link>><<promiscuous2>><<glust>><<glove>><<lstress>>
+				<br>
+				<<link [[要求一块洗|Bath Robin Join]]>><<npcincr Robin lust 1>><<npcincr Robin dom 1>><</link>><<promiscuous2>><<glust>><<gdom>>
+			<</if>>
+		<</if>>
+	<<else>>
+		"我很抱歉！"<<He>>迅速地捂住<<his>>的眼睛，然后试图伸手去抓出口的门把手。
+		<br><br>
+
+		<<link [[继续洗澡|Bath]]>><<endevent>><</link>>
+		<<if $exhibitionism gte 15>>
+			<br>
+			<<link [[挑逗|Bath Robin Tease]]>><<npcincr Robin lust 1>><</link>><<exhibitionist2>><<glust>>
+		<</if>>
+		<<if $promiscuity gte 15 and C.npc.Robin.love gte 60>>
+			<br>
+			<<link [[要求帮忙搓澡|Bath Robin Help]]>><<npcincr Robin lust 1>><<npcincr Robin love 1>><<stress -6>><</link>><<promiscuous2>><<glust>><<glove>><<lstress>>
+		<</if>>
+	<</if>>
+<<elseif $danger gte (9900 - $allure / 3) and $hallucinations gte 2 and $slimedisable is "f" and $controlled is 0>>
+	你洗得干干净净。<<wash>>
+	<br><br>
+
+	当你拔掉塞子排水时，你感觉到有什么东西在你的<<genitals>>周围。你往两腿之间看去，并没有看到任何异常。然而当你试图站起来时，半透明的触手从水中升起并阻止你站起来。
+	<br><br>
+
+	<<link [[继续|Bath Slime]]>><<set $molestationstart to 1>><</link>>
+<<elseif ($danger gte (9900 - $allure / 2) and $rng gte 30 and Time.dayState isnot "night") or _DEBUGTIMEBOIS is 1>>
+	<<generatey1>><<generatey2>><<generatey3>><<fameexhibitionism 3>>
+	你洗得干干净净。<<wash>>
+	<br><br>
+
+	当你拔开塞子排水时，你听到走廊里有脚步声。脚步声在门外停了下来，随后门被打开了。一个<<fullGroup>>闯了进来。
+	<br><br>
+	<<rng>>
+	<<if $rng gte 51>>
+		<<if $exhibitionism gte 75 and $uncomfortable.nude is false>>
+			你惊讶的大叫，却毫不遮掩自己的<<lewdness>>。那几个人睁大眼睛看着你，惊讶于你竟然毫不遮掩你的身身。 那个<<person1>><<person>>咧嘴一笑，然后将身后的门关上了。
+		<<else>>
+			<<if $leftarm is "bound" and $rightarm is "bound">>
+				你试图遮掩你的<<lewdness>>，但<span class="red">你的手臂被绑住了</span>，你无法遮掩你自己。你感到十分的尴尬，你的脸涨得通红。<<stress 6>>那几个人瞪大眼睛看着你，随后那个<<person1>><<person>>咧嘴一笑，关上了门。
+			<<else>>
+				你急忙遮掩住你的<<lewdness>>，那几个人睁大眼睛看着你， 其中那个<<person1>><<person>>咧嘴一笑，将身后的门关上了。
+			<</if>>
+		<</if>>
+			<br><br>
+
+		<<person2>><<person>>的脸涨得通红。 "对-对不起，"<<he>>说，但<<his>>并没有将目光从你身上移开。 "我们不知道你在这里。"
+		<br><br>
+		<<link [[尖叫|Bath Scream]]>><</link>>
+		<br>
+		<<link [[要求他们离开|Bath Ask]]>><</link>>
+		<br>
+		<<if $exhibitionism gte 75>>
+			<<link [[让他们观看 (0:05)|Bath Watch]]>><<pass 5>><</link>><<exhibitionist5>>
+			<br>
+		<</if>>
+		<<if $promiscuity gte 75>>
+			<<link [[刺激|Bath Sex]]>><<set $sexstart to 1>><</link>><<promiscuous5>>
+			<br>
+		<</if>>
+	<<else>>
+		<<if $exhibitionism gte 75 and $uncomfortable.nude is false>>
+			你惊讶的大叫，却毫不遮掩自己的<<lewdness>>。那几个人睁大眼睛看着你，惊讶于你竟然毫不遮掩你的身身。 那个<<person1>><<person>>咧嘴一笑，然后将身后的门关上了。
+		<<else>>
+			<<if $leftarm is "bound" and $rightarm is "bound">>
+				你试图遮掩你的<<lewdness>>，但<span class="red">你的手臂被绑住了</span>，你无法遮掩你自己。你感到十分的尴尬，你的脸涨得通红。<<stress 6>>那几个人瞪大眼睛看着你，随后那个<<person1>><<person>>咧嘴一笑，关上了门。
+			<<else>>
+				你急忙遮掩住你的<<lewdness>>，那几个人睁大眼睛看着你， 其中那个<<person1>><<person>>咧嘴一笑，将身后的门关上了。
+			<</if>>
+		<</if>>
+
+		<<if $player.penisExist and ($player.penissize lte 1 or $player.penissize is 4) and random(0,9) gte 6>>
+			<<telltalepenissize>>
+			<br><br>
+		<<else>>
+			<<stress 6>><<trauma 6>>
+			<<gtrauma>><<gstress>>
+			<br><br>
+		<</if>>
+
+		<<link [[结束->Bath Finish]]>><</link>>
+		<<endevent>>
+	<</if>>
+
+<<elseif C.npc.Kylar.init is 1 and C.npc.Kylar.state isnot "prison" and $weekly.kylarBathroom isnot 1 and $rng gte 70 and (Time.dayState is "dusk" or Time.dayState is "night") and _kylarStatus.includes("Love") and _kylarStatus.includes("Lust") and $kylarenglish is 1 and $kylarBodywriting is 1>>
+	<<unset $kylarBodywriting>>
+    <<set $weekly.kylarBathroom to 1>>
+    <<npc Kylar>><<person1>>
+
+    你滑入温暖的水中，并开始闭目养神。<br><br>
+    你听到附近的窗户被打开了，是凯拉尔。<<He>>正努力着想要挤进来。<br><br>
+    <<He>>冲过来，对你关切地说道："嘘！别吓坏了！我只是想帮忙！我只是想帮忙，"<<he>>说道。
+    <br><br>
+    <<link [[接受凯拉尔的帮助|Kylar Bath Help]]>><<npcincr Kylar love 1>><</link>><<glove>>
+    <br>
+    <<link [[推开凯拉尔|Kylar Bath Shove]]>><<npcincr Kylar love -1>><<npcincr Kylar rage 3>><</link>><<llove>><<gksuspicion>>
+
+<<else>>
+你洗得干干净净。<<wash>>
+<br><br>
+
+<<link [[离开->Bath Finish]]>><</link>>
+<br>
+<<link [[自慰|Bath Masturbation]]>><<set $masturbationstart to 1>><</link>>
+<br>
+<</if>>
+
+:: Kylar Bath Help
+<<wash>>
+<<run statusCheck("Kylar")>><<effects>>
+
+你缓慢地点点头，当<<He>>把手收回去的时候，<<his>>对你露出一个笑容。
+<<He>>脱掉衣服，和你一起进入浴缸。当<<His>>滑入水中时，<<he>>的脸涨得通红。
+<<his>>的手轻抚过你的皮肤。
+<br><br>
+
+"我要把它们从你身上洗掉，"<<he>>喃喃自语的同时微微靠向你，你感觉到<<his>>的手在摸索你的身体，<<he>>正在为你搓澡。
+<br><br>
+
+ 在完成之后，<<He>>似乎很满意，但你还是感觉到<<him>>在轻微的颤抖。
+"等等，"<<he>>说道："还有......"。你困惑地看了<<his>>一眼，随后你感觉到<<him>>的手进一步向下摸索着你。
+
+<br><br>
+<<link [[继续|Kylar Bath Sex]]>><<set $sexstart to 1>><</link>>
+
+:: Kylar Bath Shove
+<<run statusCheck("Kylar")>><<effects>>
+
+<<if _kylarStatus.includes("Calm") or _kylarStatus.includes("Sus")>>
+
+	你推了<<him>>一把，将<<him>>从你身边推开。<<npcincr Kylar love -1>><<llove>>
+	<br><br>
+
+	在被你突然的动作吓了一跳后，<<he>>紧张地扫视四周。"那里......那里还是很脏! 那些脏东西还都在你身上！"
+	<br><br>
+
+	你告诉<<him>>让他出去。
+	<br><br>
+
+	<<He>>低头盯着水面，然后慢慢开始后退。"请......把它们洗干净。"<<he>>呜咽着急忙重新穿上衣服，然后在最后看了你一眼之后，又钻过了窗户。<br><br>
+
+	<<link [[继续|Bath Finish]]>><<endevent>><</link>>
+
+<<else>>
+
+	你推了<<him>>一把，将<<him>>从你身边推开。<<npcincr Kylar love -1>><<llove>>
+	<br><br>
+
+	在被你突然的动作吓了一跳后，<<he>>紧张地扫视四周。"那里......那里还是很脏! 那些脏东西还都在你身上！"
+	<br><br>
+
+	你告诉<<him>>让他出去。
+	<br><br>
+
+	<<He>>低头盯向水面，随后又慢慢地举起<<his>>的手。"请......让我把您洗干净，您的那里太脏了，至少请让我确定一下。"<<He>>盯着你的眼睛，似乎在等着看你怎么做。
+	<br><br>
+
+	<<link [[让凯拉尔在一旁观看|Kylar Bath Watch]]>><<npcincr Kylar rage -3>><</link>><<lksuspicion>>
+	<br>
+	<<link [[让凯拉尔离开|Kylar Bath End 2]]>><<npcincr Kylar rage 5>><</link>><<ggksuspicion>>
+
+<</if>>
+
+:: Kylar Bath Watch
+<<wash>>
+<<run statusCheck("Kylar")>><<effects>>
+
+你开始清洁自己的身体，而<<He>>则用绝望的眼神看着你，在确保你把自己身上的每一点都洗干净后，你听到了<<his>>那传来的沉重呼吸声。<br><br>
+
+在完成之后，你回头看向凯拉尔。<<His>>的眼睛盯着你的身体，一声低沉的哀鸣从<<his>>唇边滑出。"让我给你做个记号，"<<he>>低声说着的同时再次将<<His>>的手放在了你的身上。<br><br>
+
+<<link [[继续|Kylar Bath Sex]]>><<set $molestationstart to 1>><</link>>
+
+:: Kylar Bath Sex
+<<run statusCheck("Kylar")>>
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>><<promiscuity2>>
+
+<<elseif $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Kylar Bath End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Kylar Bath Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Kylar Bath End
+<<run statusCheck("Kylar")>><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<if $consensual is 0>>
+		<<ejaculation>>
+
+		<<He>>靠向你，呼吸沉重，眼神投向你的身体。<<He>>紧紧抓着你的双腿。<<npcincr Kylar lust -20>><<lllust>>
+		<br><br>
+
+		<<His>>再次与你对上视线，然后在给了你一个温暖的微笑后，继续看着附近的窗外。
+		<br><br>
+
+		"我......我得走了，不要让那些家伙再碰你，"<<he>>说着的同时将去拿<<he>>的衣服，随后<<He>>便用来时的方式原路返回了。
+		<br><br>
+	<<else>>
+		<<ejaculation>>
+
+		<<He>>喘着粗气向后靠去，并将<<his>>的手重新滑入水中，"你....你是我的，"<<he>>喃喃自语的同时用充满爱意的眼睛看着你。
+		<br><br>
+
+		<<He>>摇摇晃晃地站起来并看着窗外。"我得走了，"<<he>>边说边从浴缸里爬了出来，"对不起...我们很快会再见面的！"<<he>>在穿衣服时最后看了你一眼，然后很快就从<<he>>来时的路原路返回了。
+	<</if>>
+
+<<elseif $enemyhealth lte 0>>
+
+	<<He>>结结巴巴地回答的同时睁大着眼睛盯着你。
+	<br><br>
+
+	"我...我要帮忙，我是来帮忙的！"
+	<br><br>
+
+	<<his>>眼含泪水的从水里爬了出来，在伸手去拿<<he>>的衣服时。你听到了<<his>>的抽泣声，<<he>>匆匆忙忙地穿上衣服后，很快便从窗口溜走了。
+<</if>>
+<br><br>
+
+<<tearful>>你从浴缸里爬了出来。
+<br><br>
+
+<<endcombat>>
+
+<<link [[继续|Bath Finish]]>><</link>>
+
+:: Kylar Bath End 2
+<<wash>>
+<<run statusCheck("Kylar")>><<effects>>
+
+	你摇摇头，举起一只手指向窗户，告诉<<him>>原路返回。
+	<br><br>
+
+	<<He>>盯着你好一会，像是不知所措。"把它洗掉。"<<he>>说着，走出了水面。<<his>>的眼神让你感到背脊发凉。你看着<<him>>换好衣服，之后从窗子爬了出去。你不喜欢<<he>>离开时那种将你抛下的感觉。<<gstress>><<stress 2>>
+	<br><br>
+
+	当<<he>>离开了你的视线后，你便离开水面重新穿起衣服。
+	<br><br>
+
+	<<link [[继续|Bath Finish]]>><<endevent>><</link>>
+
+:: Bath Finish
+<<effects>><<set $location to "home">><<set $outside to 0>>
+
+<<if $upperwetstage >= 3 or $lowerwetstage >= 3 or $underupperwetstage >= 3 or $underlowerwetstage >= 3 or $overupperwetstage >= 3 or $overlowerwetstage >= 3>>
+	你的衣服被浸湿了，水从你的身上滴落到地板上。
+<<else>>
+	你的皮肤还是湿漉漉的。
+<</if>>
+<br><br>
+<<if $leftarm is "bound" and $rightarm is "bound">>
+	<<link [[继续|Bathroom]]>><</link>>
+<<else>>
+	<<dressasyouwereicon>><<link [[穿之前的衣服|Bathroom]]>><<clotheson>><</link>>
+	<br>
+	<<towelicon>><<link [[用毛巾包裹住自己|Bathroom]]>>
+		<<if $player.gender == "f" or $player.breastsize > 0>>
+			<<set $wear_upper = "large_towel">>
+		<<else>>
+			<<set $wear_lower = "towel">>
+		<</if>>
+		<<returnCarried>>
+		<<wardrobewear>>
+	<</link>>
+
+	<<if $wardrobe.upper.findIndex(x => x.name == "bathrobe") >= 0 or $carried.upper.name == "bathrobe">>
+		<br>
+		<<bathrobeicon>><<link [[穿上浴袍|Bathroom]]>>
+			<<returnCarried>>
+			<<set $wear_upper = $wardrobe.upper.findIndex(x => x.name == "bathrobe")>>
+			<<wardrobewear>>
+		<</link>>
+	<</if>>
+<</if>>
+
+:: Passout home
+<<set $dangerhome to 0>>
+<<set $safehome to 0>>
+你将自己逼的太紧了。
+<br><br>
+<<passout>>
+
+<<set $danger to random(1, 10000)>>
+
+<<if $danger gte (9900 - $allure)>><<set $dangerhome to random(1, 100)>><</if>>
+
+<<if $danger lt (9900 - $allure)>><<set $safehome to random(1, 100)>><</if>>
+
+<<if $dangerhome gte 80>><<link [[醒来|Sold]]>><</link>>
+<<elseif $dangerhome gte 1>><<link [[醒来|Molestation]]>><<set $phase to 0>><<set $molestationstart to 1>><</link>>
+<</if>>
+
+<<if $safehome gte 1>><<link [[睡觉|Bailey Rescue]]>><</link>>
+<</if>>
+
+<<pass 1 hour>>
+<<set $stress -= 2000>>
+<<set $trauma +=10>>
+
+:: Molestation
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<generate1>><<maninit>><<hand_gag 0 left>>你感觉有什么东西在摸索你的下体。当你睁开眼睛时，一只手将你的嘴捂住，不让你发出任何声音。
+	<br>
+	<<enable_rescue>>
+	<<if $phase is 1>><</if>>
+<</if>>
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if $alarm is 1>>
+	<<if $rescue is 1>>
+		<span id="next"><<link [[继续->Molestation Alarm]]>><</link>></span><<nexttext>>
+	<<else>>
+		<<set $alarm to 0>>
+		<br><br>
+		<<if $enemyarousal gte $enemyarousalmax>>
+			<span id="next"><<link [[继续->Molestation Ejaculation]]>><</link>></span><<nexttext>>
+		<<elseif $enemyhealth lte 0>>
+			<span id="next"><<link [[继续->Molestation Escape]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续->Molestation]]>><</link>></span><<nexttext>>
+		<</if>>
+	<</if>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<span id="next"><<link [[继续->Molestation Ejaculation]]>><</link>></span><<nexttext>>
+<<elseif $enemyhealth lte 0>>
+	<span id="next"><<link [[继续->Molestation Escape]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续->Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Molestation Ejaculation
+
+<<ejaculation>>
+<<He>>一把将你推倒在地，随后在走到门口偷偷地观察一下外面的情况后，一溜烟的跑掉了。
+<br><br>
+<<tearful>>你站起身来。
+<br><br>
+<<clotheson>>
+<<endcombat>>
+<<link [[继续|Bedroom]]>><</link>>
+
+:: Bed
+
+<<effects>>
+<<wearoutfit>>
+<<if $robinbed is "yours">>
+	你和罗宾依偎在被窝里。
+
+<<else>>
+	<<if $location is "home" and $corruption_slime gte (currentSkillValue('willpower') / 20) and random(0,100) lt 3 and (Time.dayState is "night" and (Time.hour gte 20 or Time.hour lte 1)) and $slimeSleepEvent is 0 and $slimeEvent is undefined>>
+		<<set $slimeSleepEvent to 4>>
+		<<slimeNoSleep>>
+		<<set _skip to true>>
+	<<else>>
+	你依偎在被子里。
+	<</if>>
+<</if>>
+<<if $wraith.state and $wraithPrison and ($moonstate is "evening" or $moonstate is _nightstate)>>
+	你感到焦虑，你的目光向镜子移去。
+<</if>>
+<br><br>
+
+<<if _skip isnot true>>
+	<<nightmareCheck "Sleep">>
+
+	<<if $sleeptrouble is 1 and $controlled is 0>>
+		<<link [[睡10个小时|Sleep]]>><<set $sleephour to 10>><<incrementautosave>><</link>> (<<timeAfterXHours 10>>)<<ltiredness>>
+		<br>
+		<<link [[睡9个小时|Sleep]]>><<set $sleephour to 9>><<incrementautosave>><</link>> (<<timeAfterXHours 9>>)<<ltiredness>>
+		<br>
+	<</if>>
+
+	<<link [[睡8个小时|Sleep]]>><<set $sleephour to 8>><<incrementautosave>><</link>> (<<timeAfterXHours 8>>)<<ltiredness>>
+	<br>
+	<<link [[睡7个小时|Sleep]]>><<set $sleephour to 7>><<incrementautosave>><</link>> (<<timeAfterXHours 7>>)<<ltiredness>>
+	<br>
+	<<link [[睡6个小时|Sleep]]>><<set $sleephour to 6>><<incrementautosave>><</link>> (<<timeAfterXHours 6>>)<<ltiredness>>
+	<br>
+	<<link [[睡5个小时|Sleep]]>><<set $sleephour to 5>><<incrementautosave>><</link>> (<<timeAfterXHours 5>>)<<ltiredness>>
+	<br>
+	<<link [[睡4个小时|Sleep]]>><<set $sleephour to 4>><<incrementautosave>><</link>> (<<timeAfterXHours 4>>)<<ltiredness>>
+	<br>
+	<<link [[睡3个小时|Sleep]]>><<set $sleephour to 3>><<incrementautosave>><</link>> (<<timeAfterXHours 3>>)<<ltiredness>>
+	<br>
+	<<link [[睡2个小时|Sleep]]>><<set $sleephour to 2>><<incrementautosave>><</link>> (<<timeAfterXHours 2>>)<<ltiredness>>
+	<br>
+	<<link [[睡1个小时|Sleep]]>><<set $sleephour to 1>><<incrementautosave>><</link>> (<<timeAfterXHours 1>>)<<ltiredness>>
+	<br>
+	<<link [[只管去睡|Sleep]]>><<set $sleephour to -1>><<incrementautosave>><</link>> (??:??)<<ltiredness>>
+	<br><br>
+
+	<<link [[爬下床|Bedroom]]>><<storeon "bed">><<set $wardrobe_location to "wardrobe">><<loadTempHairStyle>><<endevent>><</link>>
+	<br><br>
+<<else>>
+	<<unset _skip>>
+<</if>>
+
+:: Bedroom Kylar Sneak Sex
+<<run statusCheck("Kylar")>>
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>><<promiscuity2>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Bedroom Kylar Sneak Continue]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Bedroom Kylar Sneak Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Bedroom Kylar Sneak Continue
+<<effects>>
+<<run statusCheck("Kylar")>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	<<He>>他翻身下床,转过身来面对你,用<<his>>充满爱的眼睛看着你."我很幸运能拥有你"<<he>>说<<lllust>><<npcincr Kylar lust -20>>
+	<br><br>
+
+	<<His>>手回到你的身体,很明显<<he>>想和你一起过夜.
+	<br><br>
+
+<</if>>
+
+<<endcombat>>
+
+<<link [[允许凯拉尔与你一起过夜|Bedroom Kylar Sneak Stay]]>><<clotheson>><<npcincr Kylar love 1>><</link>><<glove>>
+<br>
+<<link [[让凯拉尔离开|Bedroom Kylar Sneak Leave 2]]>><<clotheson>><<npcincr Kylar love -1>><</link>><<llove>>
+
+:: Bedroom Kylar Sneak Stay
+<<effects>>
+<<npc "Kylar">><<person1>>
+<<run statusCheck("Kylar")>>
+
+<<if $speech_attitude is "meek">>
+	"好......是的，"你怯生生地说道："你可以在这过夜。"
+
+<<elseif $speech_attitude is "bratty">>
+	"当然，"你说道。"你可以留下来过夜，前提是不要做任何奇怪的事情。"
+
+<<else>>
+	"你可以在这过夜," 你说道.
+
+<</if>>
+<br><br>
+
+凯拉尔的眼神一下子亮了起来。
+<br><br>
+
+"谢谢你，"<<he>>高兴地说着的同时把被子拉到了你们两个人身上。<<He>>亲吻了一下你的脸颊后，把脸贴在了你的脖颈处。
+<br><br>
+
+你等了一会儿，想看看<<his>>的呼吸是否变得均匀，但始终没有，仿佛<<he>>在等待你睡着，然后<<he>>才会去睡觉。
+<br><br>
+
+你试图在<<him>>睡着之后再去睡觉，但你睡意渐浓，不久后你便发现自己几乎无法睁开眼皮。你在入睡前记得的最后一件事是，你感觉到<<his>>的身体紧紧地贴在你身上，传来一种很温暖的感觉。
+<br><br>
+
+<<link [[继续|Bedroom Kylar Sneak Bed]]>><</link>>
+
+:: Bedroom Kylar Sneak Stay 2
+<<effects>>
+<<run statusCheck("Kylar")>>
+
+<<if $speech_attitude is "meek">>
+	"好...好吧，"你胆怯地说道。 "你可以留下来。"
+
+<<elseif $speech_attitude is "bratty">>
+	"好吧，"你叹了口气说道："你可以留下来过夜，只是不要做任何奇怪的事情。"
+
+<<else>>
+	"你可以留下，"你说道。
+
+<</if>>
+<br><br>
+
+"真...真的吗？" 凯拉尔说道："太好了！我...我的意思是，好的，当然！太...太棒了！"
+<br><br>
+
+你叹了口气，和<<him>>一起爬回了床上。
+<br><br>
+
+几秒钟内,<<he>>又回到你身边,但这次没有了不停的摸索和摩擦.<<He>>似乎满足于与你亲近.
+<br><br>
+
+"晚安，"你听到<<him>>对你轻声说道。你闭上眼睛，感觉到有什么东西在你的脸颊上一触而过，你认为是一个吻，这使你的内心感到一丝温暖。
+<br><br>
+
+在你确定那是什么之前，凯拉尔已经睡着了，虽然你本来并不打算让<<him>>在这过夜，但有一个人陪着你入睡总是让你有一丝安慰，不久，你也渐渐地进入梦乡。
+<br><br>
+
+<<link [[继续|Bedroom Kylar Sneak Bed]]>><</link>>
+
+:: Bedroom Kylar Sneak Push
+<<effects>>
+<<run statusCheck("Kylar")>>
+
+你挣扎反抗着<<his>>的手，并设法把<<him>>从你身上推开，在将其从床上推到地板上后，你花了一点时间来调顺气息，随后你与凯拉尔面对面的坐着，<<his>>带着一副沮丧的表情呆坐在那里。
+<br><br>
+
+"对不起"<<he>>温柔的说. "我-我不是故意要吓你的,我只是想来看看你.请原谅我"<<he>>恳求并将<<his>>手伸向你的手."请让我留下来,如果你想要的话,我-我们抱在一起.."
+<br><br>
+
+<<link [[让凯拉尔在这里过夜|Bedroom Kylar Sneak Stay 2]]>><<npcincr Kylar love 2>><<npcincr Kylar rage -6>><</link>><<gglove>><<llksuspicion>>
+<br>
+<<link [[叫凯拉尔离开|Bedroom Kylar Sneak Leave]]>><<npcincr Kylar love -2>><<npcincr Kylar rage 6>><</link>><<lllove>><<ggksuspicion>>
+
+:: Bedroom Kylar Sneak Leave
+<<effects>>
+<<run statusCheck("Kylar")>>
+<<unset $kylarSleepEvent>>
+
+<<if $speech_attitude is "meek">>
+	"请......请离开，"你小声的说道："你让我感觉很不舒服。"
+
+<<elseif $speech_attitude is "bratty">>
+	"滚蛋,"你命令道.
+
+<<else>>
+	"请离开吧，你说道。"
+
+<</if>>
+<br><br>
+
+凯拉尔用悲伤的眼神恳求道:"你确定吗？我可以......" 你以摇头作为回应，以此来让你试图表现得坚定一些。
+<br><br>
+
+"如果你想要这样的话，"<<he>>说着，伤感蒙上了<<his>>的语调。你看着<<he>>离开床铺，走向了你的窗户，且在爬出窗时最后看了你一眼。
+<br><br>
+
+当<<he>>离开之后，你就从床上下来并走向窗户，你打开窗户并伸出头扫试了一圈，以此来确认<<he>>已经走远了，但你的目光却与仍然站在那里的凯拉尔相接，哪怕<<He>>此时的身影几乎快完全被夜色所掩盖了。
+<br><br>
+
+你把头缩回去并关好窗户，因为你最后看见了凯拉尔。你在心里默默记下，看看是否有办法给窗户上一把更好的锁，因为你现在要依偎在被子里睡觉了。
+<br><br>
+
+<<link [[继续|Bedroom]]>><<endevent>><</link>>
+
+:: Bedroom Kylar Sneak Leave 2
+<<effects>>
+<<npc "Kylar">><<person1>>
+<<run statusCheck("Kylar")>>
+<<unset $kylarSleepEvent>>
+
+<<if $speech_attitude is "meek">>
+	"你....你得走了，凯拉尔，"你指着仍然敞开的窗户恳求道，"我不想让你陷入麻烦。"
+
+<<elseif $speech_attitude is "bratty">>
+	"离开这里，凯拉尔，"你要求指着仍然打开的窗户要求道："像这样偷偷摸摸地进来不仅令人毛骨悚然，而且还可能会给你带来一些意想不到的麻烦。"
+
+<<else>>
+	"必须要离开了，凯拉尔，"你指着仍然敞开的窗户说道，"我不想让你陷入麻烦。你不能这样偷偷摸摸的进来，这会为你带来不必要的麻烦。"
+
+<</if>>
+<br><br>
+
+<<He>>摇摇头，并哀求着说道："但我不想离开，<<he>>说着的同时自顾自的把被子拉到了自己的身上，"请让我留下来，我...我很抱歉，只是我..."
+<br><br>
+
+你打断了<<him>>，并再次要求<<him>>离开。这次你表现的更加决绝与坚定。
+<<He>>本想开口，但却不知道说些什么，只好把被子从<<He>>的身上拉开，随后<<his>>低着头向窗户走去。
+<br><br>
+
+当<<he>>离开之后，你就从床上下来并走向窗户，你打开窗户并伸出头扫试了一圈，以此来确认<<he>>已经走远了，但你的目光却与仍然站在那里的凯拉尔相接，哪怕<<He>>此时的身影几乎快完全被夜色所掩盖了。
+<br><br>
+
+你在最后看了一眼凯拉尔之后把头缩回去并关好窗户。之后你在心里默默记下，看看是否有办法在你上床依偎在被子里的时候给窗户上一把更好的锁。
+<br><br>
+
+<<link [[继续|Bedroom]]>><<endevent>><</link>>
+
+:: Bedroom Kylar Sneak Bed
+<<effects>>
+<<set $kylarbed to 1>><<set $bedGuest to "Kylar">>
+<<endevent>>
+
+你和凯拉尔依偎在被窝里。
+<<if $wraith.state and $wraithPrison and ($moonstate is "evening" or $moonstate is _nightstate)>>
+	你感到焦虑，你的目光向镜子移去。
+<</if>>
+<br><br>
+
+<<if $sleeptrouble is 1 and $controlled is 0>>
+	<<link [[睡10个小时|Sleep]]>><<set $sleephour to 10>><<incrementautosave>><</link>> (<<timeAfterXHours 10>>)<<ltiredness>>
+	<br>
+	<<link [[睡9个小时|Sleep]]>><<set $sleephour to 9>><<incrementautosave>><</link>> (<<timeAfterXHours 9>>)<<ltiredness>>
+	<br>
+<</if>>
+
+<<link [[睡8个小时|Sleep]]>><<set $sleephour to 8>><<incrementautosave>><</link>> (<<timeAfterXHours 8>>)<<ltiredness>>
+<br>
+<<link [[睡7个小时|Sleep]]>><<set $sleephour to 7>><<incrementautosave>><</link>> (<<timeAfterXHours 7>>)<<ltiredness>>
+<br>
+<<link [[睡6个小时|Sleep]]>><<set $sleephour to 6>><<incrementautosave>><</link>> (<<timeAfterXHours 6>>)<<ltiredness>>
+<br>
+<<link [[睡5个小时|Sleep]]>><<set $sleephour to 5>><<incrementautosave>><</link>> (<<timeAfterXHours 5>>)<<ltiredness>>
+<br>
+<<link [[睡4个小时|Sleep]]>><<set $sleephour to 4>><<incrementautosave>><</link>> (<<timeAfterXHours 4>>)<<ltiredness>>
+<br>
+<<link [[睡3个小时|Sleep]]>><<set $sleephour to 3>><<incrementautosave>><</link>> (<<timeAfterXHours 3>>)<<ltiredness>>
+<br>
+<<link [[睡2个小时|Sleep]]>><<set $sleephour to 2>><<incrementautosave>><</link>> (<<timeAfterXHours 2>>)<<ltiredness>>
+<br>
+<<link [[睡1个小时|Sleep]]>><<set $sleephour to 1>><<incrementautosave>><</link>> (<<timeAfterXHours 1>>)<<ltiredness>>
+<br>
+<<link [[只管去睡|Sleep]]>><<set $sleephour to -1>><<incrementautosave>><</link>> (??:??)<<ltiredness>>
+<br><br>
+
+:: Robin Bed
+<<effects>>
+<<wearoutfit>>
+<<npc Robin>><<person1>>
+
+你和罗宾依偎在被窝里。你可以感受到<<his>>用<<print ($robinromance is 1 and $NPCName[$NPCNameList.indexOf("Robin")].trauma lte 20 ? "赤裸的 " : "")>>身体为床所带来的温暖。
+<<set $robinbed to "theirs">><<set $bedGuest to "Robin">>
+
+<<if $wraith.state and $wraithPrison and ($moonstate is "evening" or $moonstate is _nightstate)>>
+	你感到焦虑，你的目光向镜子移去。
+<</if>>
+<<endevent>>
+<br><br>
+
+<<if _skip isnot true>>
+	<<if $sleeptrouble is 1 and $controlled is 0>>
+		<<link [[睡10个小时|Robin Sleep]]>><<set $sleephour to 10>><<incrementautosave>><</link>>(<<timeAfterXHours 10>>)<<ltiredness>>
+		<br>
+		<<link [[睡9个小时|Robin Sleep]]>><<set $sleephour to 9>><<incrementautosave>><</link>> (<<timeAfterXHours 9>>)<<ltiredness>>
+		<br>
+	<</if>>
+
+	<<link [[睡8个小时|Robin Sleep]]>><<set $sleephour to 8>><<incrementautosave>><</link>> (<<timeAfterXHours 8>>)<<ltiredness>>
+	<br>
+	<<link [[睡7个小时|Robin Sleep]]>><<set $sleephour to 7>><<incrementautosave>><</link>> (<<timeAfterXHours 7>>)<<ltiredness>>
+	<br>
+	<<link [[睡6个小时|Robin Sleep]]>><<set $sleephour to 6>><<incrementautosave>><</link>> (<<timeAfterXHours 6>>)<<ltiredness>>
+	<br>
+	<<link [[睡5个小时|Robin Sleep]]>><<set $sleephour to 5>><<incrementautosave>><</link>> (<<timeAfterXHours 5>>)<<ltiredness>>
+	<br>
+	<<link [[睡4个小时|Robin Sleep]]>><<set $sleephour to 4>><<incrementautosave>><</link>> (<<timeAfterXHours 4>>)<<ltiredness>>
+	<br>
+	<<link [[睡3个小时|Robin Sleep]]>><<set $sleephour to 3>><<incrementautosave>><</link>> (<<timeAfterXHours 3>>)<<ltiredness>>
+	<br>
+	<<link [[睡2个小时|Robin Sleep]]>><<set $sleephour to 2>><<incrementautosave>><</link>> (<<timeAfterXHours 2>>)<<ltiredness>>
+	<br>
+	<<link [[睡1个小时|Robin Sleep]]>><<set $sleephour to 1>><<incrementautosave>><</link>> (<<timeAfterXHours 1>>)<<ltiredness>>
+	<br>
+	<<link [[只管去睡|Robin Sleep]]>><<set $sleephour to -1>><<incrementautosave>><</link>> (??:??)<<ltiredness>>
+	<br><br>
+<<else>>
+	<<unset _skip>>
+<</if>>
+
+:: Orphanage
+<<set $outside to 0>><<set $location to "home">><<home_effects>><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+你正站在孤儿院的正厅里，
+
+<<if $christmas is 1 and Time.monthDay is 25 and Time.dayState isnot "night">>
+	房间里充满了节日的欢乐。
+<<elseif $halloween is 1 and Time.monthDay is 31 and Time.hour gte 15 and Time.dayState isnot "night">>
+	<<if !$halloween_robin_costume and !$halloween_robin_scare and ($wraith.state isnot "" and $wraithIntro and $hallucinations gte 1 and $rng lte 70)>>
+		<!-- This event happens if Robin is wearing the ghost costume, but you don't know that it's Robin. -->
+		<!-- The odds are 70% if you meet the conditions, much higher than normal, bc this is a non-repeatable event -->
+		<<set _wraithEvent to true>>
+	<<else>>
+		房间内热闹非凡，这些盛装打扮的孤儿们都兴奋不已。
+	<</if>>
+<<else>>
+	<<if Time.dayState is "day">>
+		几个孤儿正在清洁地板。
+	<<elseif Time.dayState is "dusk">>
+		这里安静到落针可闻。
+	<<elseif Time.dayState is "dawn">>
+		<<if Time.schoolDay>>
+			孤儿们正在做着上学时的准备。
+		<<else>>
+			孤儿正在外面寻找工作。
+		<</if>>
+	<<elseif Time.dayState is "night">>
+		孤儿们现在应该都在睡觉。
+	<</if>>
+<</if>>
+
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passouthome>>
+<<elseif $exposed gte 1 and Time.hour lt 22 and Time.hour gte 6>>
+	你无法忍受有人看到这样的你，你赶忙跑回卧室中。
+	<br><br>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure)>>
+		一扇门突然打开了，一个<<generatey1>><<person1>><<person>>走了出来，<<covered>><<He>>并没有注意到你。
+		<br><br>
+		<<link [[隐匿|Orphanage Hide]]>><<stress 6>><</link>><<gstress>>
+		<br>
+		<<if $exhibitionism gte 55>>
+			<<link [[夸耀|Orphanage Flaunt]]>><</link>><<exhibitionist4>>
+			<br>
+		<</if>>
+	<<else>>
+		<<link [[继续|Bedroom]]>><</link>>
+	<</if>>
+<<elseif $baileyReunionScene is "dungeon">>
+	<<npc Bailey>><<person1>>
+	<<unset $baileyReunionScene>>
+
+	<<if $home_gone gte 24>>
+		贝利正靠在墙上，一张印有你照片的失踪者海报被钉在<<him>>的旁边。
+		<br><br>
+
+		"你终于回来了，我很高兴你没事。"<<He>>假意笑道 "希望你在假期过得很愉快。"
+		<br><br>
+
+		<<He>>离开靠着的墙壁，将海报撕下来揉成一团。
+	<<else>>
+		在你进去的时候，一个讽刺的声音向你打招呼："你真是个小滑头，不是吗？"是贝利，<<Hes>>正靠在墙上看着你。"我很高兴你没事。"
+		<br><br>
+
+		<<He>>离开靠着的墙向你走来。
+	<</if>>
+	<br><br>
+	<<if $renttime lte 0>>
+		"下次付清你该付的东西，这样我们就不必再经历这样的事了。说起这件事……"<<He>>向你伸出<<his>>的手。
+		<<endevent>>
+		<<if $robinfirstrentfight and ($baileypaychain lt 2 or $renttime lte -1)>>
+			<<rentduerobin 0>>
+		<<else>>
+			<<rentdue 0>>
+		<</if>>
+	<<elseif $babyIntros and $babyIntros.Bailey and $babyIntros.Bailey.length gt 0>>
+		<<homeBabyIntro>>
+
+		"下次付清你该付的东西，这样我们就不必再经历这样的事了，"<<he>>说道，然后非常用力的捏了捏你的脸颊。<<stress 6>><<trauma 6>><<gstress>><<gtrauma>>
+		<br><br>
+
+		贝利随后便回到了<<his>>的办公室. 而你则揉着自己的脸蛋走回了房间。
+		<br>
+		<<if $robinReunionScene is "dungeon" or $robinReunionScene is "dungeonRobin">>
+			<span class="blue"><i>罗宾可能很担心你，有时间的话你应该去看望一下<<nnpc_him "Robin">>。</i></span>
+			<br>
+		<</if>>
+		<br>
+
+		<<link [[继续|Bedroom]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		"下次付清你该付的东西，这样我们就不必再经历这样的事了，"<<he>>说道，然后非常用力的捏了捏你的脸颊。<<stress 6>><<trauma 6>><<gstress>><<gtrauma>>
+		<br><br>
+
+		贝利随后便回到了<<his>>的办公室. 而你则揉着自己的脸蛋走回了房间。
+		<br>
+		<<if $robinReunionScene is "dungeon" or $robinReunionScene is "dungeonRobin">>
+			<span class="blue"><i>罗宾可能很担心你，有时间的话你应该去看望一下<<nnpc_him "Robin">>。</i></span>
+			<br>
+		<</if>>
+		<br>
+
+		<<link [[继续|Bedroom]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<<elseif $robinmissing is "pillory" and !$robinPillory.known and Time.hour gte 7 and Time.hour lte 15>>
+	<<generatec1>><<person1>>
+	<<npc Robin 2>>
+
+	一个小孤儿在和朋友经过大厅时认出了你，"你和罗宾是朋友，对吧？<<person2>><<Hes>>已经离开很长一段时间了，"<<person1>><<he>>说道。
+	"<<person2>><<he>>去哪里了？"
+	<br><br>
+
+	<<person1>><<He>>反复的提问你，而另一个孤儿很快就走了过来，并且做出同样的事情。
+
+	"<<person2>><<he>>还好吗？<<he>>去哪里了？"
+	<br><br>
+
+	<<link [[如实回答|Robin Pillory Truth]]>><</link>>
+	<br>
+	<<link [[回避问题|Robin Pillory Evade]]>><</link>>
+
+<<elseif $home_gone gte 168 and Time.dayState isnot "night">>
+	<<generatey1>><<person1>>
+	你注意到墙上有什么东西，那是一张贴有你照片的失踪者的海报。它还没有被扯下来，这意味着贝利一定也还在找你。
+	<br><br>
+	<<if $orphan_hope gte 10>>
+		一个负责清洁工作的<<person>>注意到了你，<<He>>抬头看了一眼海报。随后<<his>>吃惊的看向你。 "是你！"<<he>>说道，同时<<his>>手里的拖把都掉在了地上。 "我们不知道我们是否还会再见到你。"
+		<br><br>
+		<<set $home_gone to 0>>
+		<<He>>取下海报时松了口气。<<ghope>><<hope 1>>
+		<br><br>
+	<<else>>
+		一个<<person>>在做着清洁工作时注意到了你，<<he>>激动到弄洒了<<his>>的拖把桶。还没等你反应过来，<<he>>就上前抱住了你。 "是你，我们没想到你会回来，我们—"<<he>>沉默了，你感觉好像有什么东西滴到了你的肩膀上。
+		<br><br>
+		<<set $home_gone to 0>>
+		<<He>>在放你走时松了口气。<<He>>擦去<<his>>的眼泪，取下了海报。<<gghope>><<hope 3>>
+		<br><br>
+	<</if>>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+
+<<elseif Time.days gte 1 and _robin.init is 0 and Time.hour gte 7 and Time.hour lte 20 and !(Time.schoolDay and between(Time.hour, 8, 15))>>
+	<<set $robindebt to 0>><<set $robindebtlimit to 5>>
+	<<npc Robin>><<initnpc Robin>><<person1>>你听到一个声音在你身后叫道："嘿！"，转身一看，是罗宾。<<Hes>>是孤儿院的另一位住户，虽然与你年纪相仿，却一直都很仰慕你。<<He>>向你跑来，但是并没有做到及时减速，所以直接撞到了你的身上，这让<<he>>差点摔倒，不过好在你及时拉住了<<his>>的手臂来让<<him>>站稳。 "谢谢，"<<he>>说道。尽管<<he>>仍然保持微笑，但从<<his>>的眼神和肢体语言还是可以看出<<he>>有些尴尬。
+	<br><br>
+	"我昨天没看见你，记得<span class="gold">来一趟我的房间，</span>不过你想什么时候来都行，我有东西要给你看。我太兴奋了！"<<He>>抱住你，然后在你反应过来之前就跑开了。
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Orphanage]]>><</link>>
+	<br>
+
+<<elseif $renttime lte 0>>
+	<<set $bus to "home">>
+	一只手从后面搭住你的肩膀，<span class="red">是贝利。</span>
+	<br><br>
+	<<if $robinfirstrentfight and ($baileypaychain lt 2 or $renttime lte -1)>>
+		<<rentduerobin 0>>
+	<<else>>
+		<<rentdue 0>>
+	<</if>>
+<<elseif $babyIntros and $babyIntros.Bailey and $babyIntros.Bailey.length gt 0>>
+	<<npc Bailey>><<person1>>
+	"你在这里，"一个声音在你身后响起，你转身看去，贝利正向你走来。
+	<br><br>
+
+	<<homeBabyIntro>>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+	<br>
+<<elseif $christmas is 1 and Time.monthDay is 25 and $christmas_gift is "clothes" and !$christmas_event_2 and Time.dayState isnot "night">>
+	<<set $christmas_event_2 to 1>>
+	<<pass 30>>
+	<<earnFeat "A Festive Home">>
+	那颗塑料树是整场活动的中心。每个孤儿至少会收到一份礼物。他们无法控制自己的心情，很快就撕开包装拿到了你买的衣服。大多数人看起来都很开心，尽管有一个<<generatey1>><<person1>><<person>>在抱怨着， "衬衫？"<<he>>说道。 "这太无聊了，我想要一个游戏机。"
+	<br><br>
+	"不要忘恩负义，"一位年长的<<generatey2>><<personsimple>>说道。 "那件衬衫看起来又好又暖。"仿佛是要佐证所说的话，一阵冷风从有缺陷的窗户的缝隙吹了进来。<<ggghope>><<hope 10>>
+	<br><br>
+	<<endevent>><<npc Bailey>><<person1>>
+	贝利看着这一切，这些礼物似乎让<<him>>十分心烦意乱，"把这堆乱七八糟的东西捡起来！"<<he>>怒吼着，同时指着散落在地的包装纸。"你们所有人都动起来！"
+	<br><br>
+	当包装纸清理干净后，贝利在树底看到了一份无人认领的礼物，上面写有<<his>>的名字。<<He>>将礼物拿在<<his>>的手中检查了片刻，随后<<his>>将礼物夹在胳膊底下，离开了房间。
+	<br><br>
+	一位新来的孤儿见此竟笑了出来，而其余的人则表现出不安的神情。
+	<br><br>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+	<br>
+<<elseif $christmas is 1 and Time.monthDay is 25 and $robinmissing is 0 and _robin.init is 1 and $christmas_robin_gift_received is undefined and Time.hour gte 7>>
+	<<set $christmas_robin_gift_received to true>>
+	你在树下发现了一份礼物，上面写有你的名字，是罗宾准备的。
+	<br><br>
+	你打开它，里面装有一盒饼干，你很庆幸贝利不在此处。<<ltrauma>><<lstress>><<trauma -6>><<stress -6>>
+	<br><br>
+
+	<<link [[继续|Orphanage]]>><</link>>
+	<br>
+<<elseif $christmas is 1 and Time.monthDay is 25 and $robinmissing is 0 and $christmas_gift_robin_wrapped is 1 and $christmas_gift_robin_given is undefined and Time.dayState isnot "night">>
+	<<set $christmas_gift_robin_given to true>>
+	<<christmas_robin>>
+<<elseif $daily.homeEvent isnot 1 and Time.hour gte 6 and Time.hour lte 21>>
+	<<set $daily.homeEvent to 1>>
+	<<homeevent>>
+<<elseif Time.hour gte 16 and Time.hour lte 21 and getRobinLocation() is "orphanage"
+and !$fromRobinRoom and _robin.cdquest is 2 and _robin.trauma lte 20 and !$daily.robin.cdevent>>
+	<<set $daily.robin.cdevent to 1>>
+	<<npc Robin>><<person1>>
+	<<generatey2>><<person2>>
+
+	你看到罗宾正在和一个<<person2>><<person>>交谈，在看见你之后，罗宾向你招手。
+	<br><br>
+
+	<<link [[过去|Robin CD Socialise]]>><</link>>
+	<br>
+	<<link [[无视|Orphanage]]>><<endevent>><</link>>
+<<else>>
+	<<if $halloween is 1 and Time.monthDay is 31 and !$fromRobinRoom and $robinmissing is 0 and Time.hour gte 16 and Time.hour lt 19 and _robin.init is 1>>
+		<<if $halloween_robin_costume>>
+			你看到了罗宾，其穿上了$halloween_robin_costume，同时正被兴奋的孤儿们包围着。
+		<<elseif _wraithEvent>>
+			你看到有个人的头上盖着床单，那家伙一动不动，同时大厅内也空无一人，只显寂静，你注意到那床单<span class="red">是一种熟悉且可怕的苍白色。</span>
+			<br><br>
+
+			<span class="wraith">"不给糖就捣蛋"。</span>
+			<br><br>
+
+			你跌跌撞撞地往后退并尖叫了起来，仅仅一眨眼的功夫，大厅就完全变了一个样，你看到罗宾正被兴奋的孤儿们包围着，<<nnpc_his "Robin">>的手臂上正缠绕着<<nnpc_his "Robin">>的床单，看着你和你手上的床单，<<nnpc_his "Robin">>的眼睛里充满了迷惑。
+		<<else>>
+			你看到有人在头上套上床单扮演鬼魂，而在那附近围满了兴奋的孤儿。
+		<</if>>
+		<br><br>
+		<<ind>><<link [[靠近这些孤儿|Robin Trick Hall]]>><</link>>
+		<br><br>
+	<</if>>
+	<<if $police_hack is 2 and ($pub_hack_job is 1 or $pub_hack_job is 2)>>
+		<<ind>><<link [[寻找黑客 (0:10)|Orphanage Hacker]]>><<pass 10>><</link>>
+		<br><br>
+	<<elseif $pubfame and $pubfame.intro lte 2 and $pub_hack_job lte 3>>
+		<<ind>><<link [[寻找黑客 (0:10)|Orphanage Hacker]]>><<pass 10>><</link>>
+		<br><br>
+	<</if>>
+	<<if $kylar_camera is 5>>
+		<<ind>><<link [[决定如何处理凯拉尔的相机 (0:05)|Orphanage Kylar Camera]]>><<pass 5>><</link>>
+		<br><br>
+	<</if>>
+	<<if $christmas is 1 and Time.monthDay is 25 and Time.dayState isnot "night" and $exposed lte 0>>
+		<<ind>><<link [[庆祝圣诞节（1:00）|Orphanage Christmas]]>><<pass 60>><<trauma -12>><<stress -6>><</link>><<lltrauma>><<lstress>>
+		<br>
+	<</if>>
+	<<gardenicon>><<link [[花园（0:01）|Garden]]>><<pass 1>><</link>>
+	<br><br>
+	<<officeicon>><<link [[贝利办公室（0:01）|Bailey's Office]]>><<pass 1>><</link>>
+	<br>
+	<<orphanageWard>>
+	<br>
+	<<if Time.hour gte 18 and Time.hour lte 20 and _robin.trauma gte 40 and $robinmissing is 0 and !$robinTraumaVisit>>
+		<<bedroomicon>><<link [[卧室 (0:01)|Robin Trauma Visit]]>><<set $phase to 0>><<pass 1>><</link>>
+		<br>
+	<<elseif $kylar.timer.home gte 100 and $kylar.home is undefined>>
+		<<bedroomicon>><<link [[卧室 (0:01)|Kylar Bedroom 1]]>><<pass 1>><<set $kylar.timer.home to 0>><<set $kylar.home to 0>><</link>>
+		<br>
+	<<elseif $kylar.timer.home gte 100 and $kylar.home is 0 and $NPCName[$NPCNameList.indexOf("Kylar")].state is "active">>
+		<<bedroomicon>><<link [[卧室 (0:01)|Kylar Bedroom 2]]>><<pass 1>><<set $kylar.timer.home to 0>><<set $kylar.home to 1>><</link>>
+		<br>
+	<<else>>
+		<<bedroomicon>><<link [[卧室 (0:01)|Bedroom]]>><<pass 1>><</link>>
+		<br>
+	<</if>>
+	<<bathroomLink>>
+	<br>
+	<<robinroom_link>>
+	<br>
+	<<if $loft_known is 1>>
+		<<lofticon>><<link [[阁楼 (0:01)|Orphanage Loft]]>><<pass 1>><</link>>
+		<br>
+	<</if>>
+	<<home_outside>>
+	<br>
+<</if>>
+
+<<if $fromRobinRoom>>
+	<<unset $fromRobinRoom>>
+<</if>>
+
+:: Orphanage Handheld
+<<effects>>
+
+/*Not in yet*/
+
+你在玩一款格斗游戏，你很难跟的上移动出招。
+
+--
+
+你正在玩一个像素化的战争游戏。士兵们有条不紊地穿过战场，当你用按键喊出你的命令时，你已经做好准备流血了。
+
+--
+
+一款中世纪的游戏想引导你去冒险，但你却把时间浪费在了砍树上面。
+
+--
+
+你惊讶于在该设备上所购买的各种游戏，你推测罗宾可能是不想让你感到无聊，或者<<nnpc_him "Robin">>也不知道你到底喜欢什么。
+
+--
+
+
+你在玩一款模拟球队经理的体育游戏，你球队中的一名球员因职业生涯的结束而倍感受伤。
+
+--
+
+你在格斗游戏中对你的对手发动猛烈攻势，这让你成为锦标赛排名中的胜利者。
+
+--
+
+恐怖游戏让你与自己的精神对抗，在这座废弃的城市里，你最好保持理智。
+
+--
+
+一个内容丰富RPG游戏让你有些困惑，你思考你是否用这些奇怪的角色做出了正确的选择。
+
+--
+
+
+街机风格的砍杀游戏会占用您的大量时间，就算再多的兽人都无法与诸神借给你的神力相提并论。
+
+--
+
+在格斗游戏中，你试图在角色上学习一个像样的组合技，这是令人沮丧的。这可能需要一些时间，但你认为你已经入门了。
+
+--
+
+第一人称射击游戏的视角让你不得不考量起角色的动作，不过你忽略了这些影响，继续通过竞技场赚取奖励。
+
+--
+
+你在你的游戏中发现了一个复活节彩蛋，开发人员感谢您的购买参与。
+
+--
+
+没有任何士兵能与你势不可挡的猛攻相匹敌，那是不可能的。
+
+
+:: Orphanage Christmas
+<<effects>>
+
+你和其他孤儿一起庆祝圣诞节。
+<<rng>>
+<<if Time.hour gte 20>>
+	随着节日的结束，孩子们开始取下那些装饰品。
+<<else>>
+	<<if $rng gte 91>>
+		现在正在传递拿取新鲜出炉的饼干，而你则乘机拿了一个。<<lstress>><<stress -6>>
+	<<elseif $rng gte 81>>
+		一些人正在谈论外面有多冷，你对此深感赞同。
+	<<elseif $rng gte 71>>
+		一个<<generatey1>><<person1>><<person>>将礼物传递给了<<generatey2>><<person2>><<person>>。<<He>>看起来很是高兴，但<<he>>也有足够的耐心等到回去再拆开。
+	<<elseif $rng gte 61>>
+		<<if $robinmissing is 0>>
+			罗宾正在分发着小袋零食，而一个<<generatey1>><<person1>><<person>>一直在监视贝利的动向。
+		<<else>>
+			一个<<generatey1>><<person1>><<person>>正盯着窗外，<<Hes>>看起来很担心罗宾。
+		<</if>>
+	<<elseif $rng gte 51>>
+		一些金属丝做成的装饰品掉到了地板上，你将它们放回原处。
+	<<elseif $rng gte 41>>
+		有人抱怨着孤儿院实在太冷了，<<generatey1>><<person1>>一个<<person>>想请求贝利调高温度，但其他人拦下了<<him>>。
+	<<elseif $rng gte 31>>
+		他们既喧闹又快乐。
+	<<elseif $rng gte 21>>
+		有人偷拿了一些白兰地蛋酒。
+	<<elseif $rng gte 11>>
+		<<generatey1>><<person1>><<person>>受到了不知道是谁送的价值昂贵的电子礼物。 这让<<He>>引来了很多嫉妒。
+	<<else>>
+		大厅里充满了欢乐的气氛。
+	<</if>>
+<</if>>
+<br><br>
+<<endevent>>
+<<link [[继续|Orphanage]]>><</link>>
+<br>
+
+
+
+
+:: Orphanage Hide
+
+<<set $outside to 0>><<set $location to "home">><<effects>>
+你在被发现之前躲进了壁橱里，你不敢去触碰那依旧吱吱作响的门，但这小房间所拥有的黑暗应该能把你藏起来。你发现自己正蹲在一辆装满清洁液瓶的手推车后面。
+<br><br>
+<<if $rng gte 81>>
+	当<<person>>止步在外面时，你的心跳开始加速。你试图伸手去拿一些能遮挡自己的东西。但这里除了扫帚和瓶子什么都没有。 你可以透过黑暗看见<<He>>的眼睛。虽然<<He>>暂时看不清你，但<<his>>的眼睛很快就会适应黑暗。
+	<br><br>
+	<<He>>抓住手推车，"又要开始做清洁工作了，"<<he>>在说着的同时，拉走了唯一遮住你的东西。
+	<br><br>
+	<<set $skulduggerydifficulty to 400>>
+	<<link [[欺诈|Orphanage Hide Skul]]>><</link>><<skulduggerydifficulty>>
+	<br>
+	<<link [[扔扫帚|Orphanage Hide Throw]]>><</link>><<difficulty 50>>
+	<br>
+<<else>>
+	<<person>>头也不回地走掉了。你的心砰砰直跳，随后你回到了安全的房间。
+	<br><br>
+	<<link [[继续|Bedroom]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Orphanage Flaunt
+
+<<set $outside to 0>><<set $location to "home">><<effects>>
+你就这样昂首阔步的径直从<<him>>身边走过。
+<<if $rng gte 81>>
+	<<He>>喘着粗气，径直的退向<<his>>的房间。
+<<elseif $rng gte 61>>
+	<<he>>就那样目瞪口呆的看着你经过，你感觉<<His>>吃惊到下巴都快落到地上了。
+<<elseif $rng gte 41>>
+	<<He>>笑着看着你并向你吹起了口哨。
+<<elseif $rng gte 21>>
+	<<He>>的脸涨得通红，随后<<his>>赶忙将眼睛遮住.
+<<else>>
+	<<He>>的脸涨得通红，随后<<his>>赶忙将眼睛遮住.但是<<his>>的目光依旧透过手指缝隙悄悄地地看着。
+<</if>>
+<<exhibitionism4>>
+<<fameexhibitionism 1>><<if $orphanageexposed is undefined>><<set $orphanageexposed to 1>><<else>><<set $orphanageexposed += 1>><</if>>
+心脏怦怦直跳，你回到了你的房间，顺手将门关上了。
+<<if $orphanageexposed gte 10 and random(1, 100) gte 51>>
+	当轻柔的脚步声靠近时，你不自主加重了呼吸。接着，便传来了轻轻的敲门声。
+	<br><br>
+	你打开门，从门缝中窥视的同时小心翼翼地隐藏自己的身体。<<person>>站在前面，但还有其他人。这里面的许多人都在大厅里看见你赤身裸体，但也有一些人没有看见，有些站在后面的人甚至踮起了脚尖。
+	<br><br>
+	"嗨，"<<person>>深吸了一口气。 "我把我看到的事情告诉了我的朋友们。所以...你能再为我们做一次吗？"
+	<br><br>
+	<<if $exhibitionism gte 75>>
+		<<link [[炫耀|Orphanage Flaunt 2]]>><</link>><<exhibitionist5>>
+		<br>
+	<</if>>
+	<<link [[紧张地顺从|Orphanage Flaunt Nervous]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+	<br>
+	<<link [[拒绝|Orphanage Flaunt Refuse]]>><</link>>
+	<br>
+<<else>>
+	<br><br>
+	<<link [[继续|Bedroom]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Orphanage Hide Skul
+
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<if $speech_attitude is "meek">>
+	"等等，"你说道： "请不要碰它，请稍等五分钟，它坏了，我正在修理它。"
+<<elseif $speech_attitude is "bratty">>
+	"请放下它，"你说道，"不然你会把瓶子弄得到处都是，这个轮子坏了，请五分钟后再回来，我会将它修好的。"
+<<else>>
+	"住手，"你说道，"这个的轮子坏了，给我五分钟，我会把它修好的。"
+<</if>>
+<br><br>
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+	<span class="green"><<He>>将把手放开，</span>"哦，"<<he>>说道，"好的，我会在我的房间里等。"<<He>>让你继续身处黑暗之中，你一直等听到门关上的声音。当你重新安全下来的时候，你感到你的心脏依旧在怦怦直跳。
+	<br><br>
+	<<skulduggeryuse>>
+	<<link [[继续|Bedroom]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	"听起来是很不错，"<<he>>说道。<span class="red">但是<<He>>继续将手推车从壁橱拉出，</span>而这也让你彻底暴露。当<<he>>注意到你的<<lewdness>>时，<<He>>震惊地放下了把手。
+	<<if $rng gte 81>>
+		<<He>>喘息着，向后靠在了墙上。
+	<<elseif $rng gte 61>>
+		当<<he>>盯着你看时，你感觉<<His>>吃惊到下巴都快落到地上了。
+	<<elseif $rng gte 41>>
+		<<He>>笑着看着你并向你吹起了口哨。
+	<<elseif $rng gte 21>>
+		<<He>>的脸涨得通红，随后<<his>>赶忙将眼睛遮住.
+	<<else>>
+		<<He>>的脸涨得通红，随后<<his>>赶忙将眼睛遮住.但是<<his>>的目光依旧透过手指缝隙悄悄地地看着。
+	<</if>>
+	你的脸涨得通红，心跳也开始加速。你从<<him>>身边飞奔而过，就这样穿过走廊，跑进了你的房间。
+	<br><br>
+	<<if $orphanageexposed is undefined>><<set $orphanageexposed to 1>><<else>><<set $orphanageexposed += 1>><</if>>
+	<<skulduggeryuse>>
+	<<if $orphanageexposed gte 10 and random(1, 100) gte 51>>
+		当轻柔的脚步声靠近时，你不自主加重了呼吸。接着，便传来了轻轻的敲门声。
+		<br><br>
+		你打开门，从门缝中窥视的同时小心翼翼地隐藏自己的身体。<<person>>站在前面，但还有其他人。这里面的许多人都在大厅里看见你赤身裸体，有些站在后面的人甚至踮起了脚尖。
+		<br><br>
+		"嗨，"<<person>>深吸了一口气。 "我把我看到的事情告诉了我的朋友们。所以...你能再为我们做一次吗？"
+		<br><br>
+		<<if $exhibitionism gte 75>>
+			<<link [[炫耀|Orphanage Flaunt 2]]>><</link>><<exhibitionist5>>
+			<br>
+		<</if>>
+		<<link [[紧张地顺从|Orphanage Flaunt Nervous]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+		<br>
+		<<link [[拒绝|Orphanage Flaunt Refuse]]>><</link>>
+		<br>
+	<<else>>
+		<br><br>
+		<<link [[继续|Bedroom]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Orphanage Hide Throw
+
+<<set $outside to 0>><<set $location to "home">><<effects>>
+你朝<<person>>扔了一个扫帚头，然后赶忙从你的藏身之处跳了出来。而<<His>>在将眼睛闭上的同时，<<he>>交叉<<his>>的手臂以用来保护<<his>>的脸。
+<<if $rng gte 51>>
+	另一把扫帚掉在你的必经之路上，<span class="green">但你跳了过去</span>。你的心跳开始加速，在<<person>>还没有缓过来之前，你跑过走廊，回到了你的房间。
+	<br><br>
+	<<link [[继续|Bedroom]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	另一把扫帚掉在你前进的路上，<span class="red">它将你绊倒，使你摔倒在地</span>。
+	<br><br>
+	<<He>>在你爬起来之前缓过劲来，而<<he>>很快就注意到了你的<<lewdness>>。
+	<<if $rng gte 81>>
+		<<He>>喘息着，向后靠在了墙上。
+	<<elseif $rng gte 61>>
+		当<<he>>盯着你看时，你感觉<<His>>吃惊到下巴都快落到地上了。
+	<<elseif $rng gte 41>>
+		<<He>>笑着看着你并向你吹起了口哨。
+	<<elseif $rng gte 21>>
+		<<He>>的脸涨得通红，随后<<his>>赶忙将眼睛遮住.
+	<<else>>
+		<<He>>的脸涨得通红，随后<<his>>赶忙将眼睛遮住.但是<<his>>的目光依旧透过手指缝隙悄悄地地看着。
+	<</if>>
+	<<if $orphanageexposed is undefined>><<set $orphanageexposed to 1>><<else>><<set $orphanageexposed += 1>><</if>>
+	你的脸涨得通红，心跳也开始加速。你从<<him>>身边飞奔而过，就这样穿过走廊，跑进了你的房间。
+	<br><br>
+	<<if $orphanageexposed gte 10 and random(1, 100) gte 51>>
+		当轻柔的脚步声靠近时，你不自主加重了呼吸。接着，便传来了轻轻的敲门声。
+		<br><br>
+		你打开门，从门缝中窥视的同时小心翼翼地隐藏自己的身体。<<person>>站在前面，但还有其他人。这里面的许多人都在大厅里看见你赤身裸体，有些站在后面的人甚至踮起了脚尖。
+		<br><br>
+		"嗨，"<<person>>深吸了一口气。 "我把我看到的事情告诉了我的朋友们。所以...你能再为我们做一次吗？"
+		<br><br>
+		<<if $exhibitionism gte 75>>
+			<<link [[炫耀|Orphanage Flaunt 2]]>><</link>><<exhibitionist5>>
+			<br>
+		<</if>>
+		<<link [[紧张地顺从|Orphanage Flaunt Nervous]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+		<br>
+		<<link [[拒绝|Orphanage Flaunt Refuse]]>><</link>>
+		<br>
+	<<else>>
+		<br><br>
+		<<link [[继续|Bedroom]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Orphanage Flaunt 2
+
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<fameexhibitionism 20>>
+为了避免妒忌，你推开门，就这样走进走廊。一小群人分散开来让你通过，你走的十分缓慢，就好像是在走秀一般。而他们的眼睛都死死的盯着你的<<lewdness>>。走廊不够宽敞，无法容纳三个人并排，所以当你走动时总是会无可避免碰到每一个人。
+<br><br>
+"你们喜欢看到的景象么？"当来到走廊尽头时，你转身说道。随后在你回到你的房间准备关门时，你轻吻了一下你的肩膀。而当你隔着门听到他们的兴奋声时，你感到有些心跳加速。
+<br><br>
+<<link [[继续|Bedroom]]>><<endevent>><</link>>
+<br>
+
+:: Orphanage Flaunt Nervous
+
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<fameexhibitionism 10>>
+你担心他们不会离开，只好紧张地打开了门。<<covered>>人群注视着你，贪婪的盯着你身上的每一寸肌肤。 "好，好了吧!"你说道，"你们已经看到了你们想看的东西了。"说完之后，你砰的一声关上门，背靠着门坐到了地上。你感到心跳加速，但愿这能满足他们的好奇心。
+<br><br>
+<<link [[继续|Bedroom]]>><<endevent>><</link>>
+<br>
+
+:: Orphanage Flaunt Refuse
+
+<<set $outside to 0>><<set $location to "home">><<effects>>
+你不想再体验被人看到裸体的那种羞耻感，更何况是被一大群人看见。你摇了摇头，但当你试图再次关上门时，一只脚挡住了将要关上的门。
+<br><br>
+<<if $speech_attitude is "meek">>
+	"请，请离我远点，"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"我说了不行！"你吼了出来。
+<<else>>
+	"我做不到，"你说。
+<</if>>
+<br><br>
+<<person>>在思考了片刻后，将<<his>>的脚收了回去。当你关上门并坐到地上时，你感觉有些心跳加速。你听到人群在门外争吵着什么，但很快所有人就回到了自己的房间。
+<br><br>
+<<link [[继续|Bedroom]]>><<endevent>><</link>>
+<br>
+
+:: Molestation Alarm
+
+<<effects>><<set $rescued += 1>><<npcincr Bailey love -1>>
+贝利大步走过走廊，来到你的房间。是为了调查你尖叫的原因。 "你最好永远不要出门！"<<person1>><<person>>踩在床上，从打开的窗户那窜了出去。
+<br><br>
+<<clotheson>>
+<<endcombat>>
+<<npc Bailey>><<person1>>我不知道这个小镇会发生什么事情，"贝利在说着的同时将窗户关上，随后<<He>>看向你，说道："除非有特别重要的事情，否则不要再打扰我了。" 在说完之后，<<He>>头也不回的离开了，顺带将门砰的一声关上了。
+<<endevent>>
+<br><br>
+<<link [[继续|Bedroom]]>><</link>>
+
+:: Molestation Escape
+
+<<effects>>
+<<He>>吃痛退开，这给了你逃跑的机会。<<tearful>>你逃到了浴室，并锁上了浴室的门。如果<<he>>坚持追来的话，你可以从浴室里的某个窗口来逃跑。
+<br><br>
+<<pass 30>>
+已经过去了三十分钟，没有发生任何事情。你悄悄地回到卧室，当你看到卧室里没人有任何人时，你感到心里的那块石头落地了。
+<br><br>
+<<clotheson>>
+<<endcombat>>
+<<link [[继续|Bedroom]]>><</link>>
+
+:: Bask
+
+<<effects>>
+你在花园里找到一片荒芜的地方，当你躺下晒太阳时，你感到那温暖的舒适感正在渗入你的皮肤。
+<br><br>
+如果你不穿衣服的话，可能感觉会更好……
+<br><br>
+<<baskicon>><<link [[脱光|Nude Bask]]>><<set $stress -= 40>><</link>><<exhibitionist1>><<lstress>>
+<br>
+<<ind>><<link [[停止|Garden]]>><</link>>
+
+:: Nude Bask
+
+<<effects>>
+<<if $worn.upper.name isnot "naked">>你脱掉你的$worn.upper.cn_name_cap<<if $worn.lower.name isnot "naked" and $worn.upper.set isnot $worn.lower.set>>和你的$worn.lower.cn_name_cap<</if>>。<</if>>
+<br><br>
+<<upperstrip>><<lowerstrip>>
+让温暖的阳光直直照射在你裸露的皮肤上，这感觉真的棒极了。
+<br>
+<<exhibitionism1>>
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure) and $eventskip is 0>>
+	当你睁开眼睛时，发现你的衣服并不在之前的地方。你焦急地环顾四周，但在任何地方都看不到它们。一定是有人拿走了他们，也许做这件事的人还在这附近。
+	<br><br>
+	<<link [[呼喊|Bask Call]]>><</link>>
+	<br>
+	<<link [[溜进去|Bask Sneak]]>><<set $upperoff to 0>><<set $loweroff to 0>><</link>>
+	<br>
+<<else>>
+	<<if Time.dayState is "day">>
+		<<link [[继续 (0:20)|Nude Bask]]>><<set $stress -= 40>><<pass 20>><<tanned 40 "tanLines">><</link>><<lstress>><<gtanned>>
+		<br>
+		<<link [[手淫|Nude Masturbation]]>><<set $masturbationstart to 1>><</link>>
+		<br>
+		<<link [[停止|Garden]]>><<clotheson>><</link>>
+	<<else>>
+		太阳逐渐隐没在屋顶后面。
+		<br><br>
+		<<link [[穿好衣服|Garden]]>><<clotheson>><</link>>
+	<</if>>
+<</if>>
+
+:: Widget Passout Home [widget]
+<<widget "passouthome">>
+	<<if isPlayerNonparasitePregnancyEnding()>>
+		<<pregnancyWatersBrokenPassout "home">>
+	<<else>>
+		<<link [[你眼前一黑……->Passout home]]>><</link>>
+	<</if>>
+<</widget>>
+
+:: Bath Slime
+<<effects>>
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<molested>>
+	<<controlloss>>
+	<<set $combat to 1>>
+
+	<<if $tentacledisable is "f">>
+		<<set $enemytype to "tentacles">>
+		<<tentaclestart 2 15 "tendril">>
+	<<else>>
+		<<set $enemytype to "swarm">>
+	<</if>>
+
+
+	<<swarminit "slimes" "史莱姆群" "向你移动" "包围着你" "击退" 8 0>>
+	<<set $timer to 20>>
+<</if>>
+
+<<swarmeffects>>
+<<if $tentacledisable is "f">>
+	<<effectstentacles>>
+<</if>>
+
+<<swarm>>
+<<if $tentacledisable is "f">>
+	<<tentacles>>
+	<<statetentacles>>
+	<<actionsOmni>>
+<<else>>
+	<<swarmactions>>
+<</if>>
+
+<<if $timer lte 0>>
+	<span id="next"><<link [[继续|Bath Slime Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|$passage]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Bath Slime Finish
+<<effects>>
+
+史莱姆裹挟着浴缸里的最后一些水流走了，<<tearful>>你从浴缸里爬了出来。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Bath Finish]]>><</link>>
+
+:: Garden Play
+<<set $outside to 1>><<set $location to "home">><<effects>>
+
+<<if $rng gte 51>>
+	你加入了捉迷藏的游戏。
+		<<rng>>
+		<<if $rng gte 91>>
+		你躲在一个大盆栽后面，
+		<<elseif $rng gte 81>>
+		你躲在了树的后面，
+		<<elseif $rng gte 71>>
+		你躲在一座废弃的小屋里，
+		<<elseif $rng gte 61>>
+		你躲在孤儿院的拐角处，
+		<<elseif $rng gte 51>>
+		你躲在了灌木丛的后面，
+		<<elseif $rng gte 41>>
+		你躲在一片长的异常茂盛的草丛中，
+		<<elseif $rng gte 31>>
+		你躲在了花坛后面，
+		<<elseif $rng gte 21>>
+		你躲在了岩石后面，
+		<<elseif $rng gte 11>>
+		你躲在一辆旧手推车后面，
+		<<else>>
+		你躲在灌木丛的下面，
+		<</if>>
+		<<generates1>><<person1>>然后等待<<person>>找到您。
+		<br><br>
+
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure)>>
+	这并没有花费<<him>>多长时间。"我抓住你了！"当<<he>>将你从藏身处拉出来时候，<<he>>喊道。当<<He>>让你暴露时，他就没打算放手。恰恰相反的是，<<he>>将你拉近，并开始用<<his>>的双手探索起你的身体。
+	<br><br>
+
+	<<link [[推开|Garden Shove]]>><</link>>
+	<br>
+	<<if $promiscuity gte 15>>
+	<<link [[接受|Garden Sex]]>><<set $sexstart to 1>><</link>><<promiscuous2>>
+	<br>
+	<</if>>
+	<<else>>
+		<<rng>>
+		<<if $rng gte 81>>
+		你听到<<him>>一个接一个地搜索和寻找孤儿，直到最后只剩下你一个。又过了几分钟后，<<his>>的不耐烦使这场游戏得以结束，"我放弃了，你赢了！"在<<him>>喊完之后，你以胜利者的姿态离开了你的藏身处。
+		<br><br>
+
+		<<else>>
+		这并没有花费<<him>>多长时间。"我抓住你了！"当<<he>>将你从藏身处拉出来时候，<<he>>喊道。你觉得<<He>>一定是作弊了。
+		<br><br>
+
+		<</if>>
+
+	<<link [[继续|Garden]]>><<endevent>><</link>>
+	<br>
+	<</if>>
+<<else>>
+
+<<generates1>><<person1>>一个<<person>>跑到你面前，戳了戳你的肩膀。 "轮到你了！"<<he>>高兴地说道。
+<br><br>
+
+	<<if $rng gte 81>>
+	你在抓到其他人后继续游玩，当你追赶<<person>>时，<<he>>被倒下的树枝绊倒，而你也被绊倒，摔在了<<him>>的身上。
+	<br><br>
+
+	<<link [[站起来|Garden]]>><<endevent>><</link>>
+	<br>
+
+	<<link [[调情|Garden Flirt]]>><</link>><<promiscuous1>>
+	<br>
+
+	<<else>>
+	你标记其他人后继续玩了一段时间。
+	<br><br>
+	<<link [[继续|Garden]]>><<endevent>><</link>>
+	<br>
+	<</if>>
+
+<</if>>
+
+:: Orphanage Intro
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<set $rentmoney to 10000>><<rentmod>>
+<<set $renttime to 7>><<set $rentday to Time.weekDay>>
+<<set $rentstage to 1>>
+
+<<npc Bailey>><<person1>>
+你走进贝利的办公室。 <br>"我知道你的来意。"<<he>>打理着黑发， "你想从我这儿搬走，独立，自由，当然可以。但我们是不是还有笔账没算：你之前的吃穿用度都是从我这儿来的，但我却没拿到半毛钱。这笔帐，你要是不还清，我是不会放你走的。"
+<br><br>
+<<He>>从办公桌上拿起一个牛皮袋，用大拇指翻看里面的内容。你瞥见了自己的名字。<<He>>随后微笑着把你的身份证件藏在了<<he>>的外套里。"刚开始的话，<<printmoney $rentmoney "pink">>好了。我不问钱从哪来，打工也好，卖也好，偷也好，从现在起，你只有一周时间。做不到的话，我自有其他手段用你搞钱。"
+<br><br>
+
+你回到你的小卧室，不知道将来该怎么办。
+<br><br>
+
+<<endevent>>
+<hr>
+态度
+<br><br>
+<<attitudes>>
+<br>
+
+<<link [[继续|Bedroom]]>><</link>>
+
+:: Bailey Rescue
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<set $stress -= 2000>>
+<<npc Bailey>><<person1>>你因脸上的剧烈疼痛而惊醒，是贝利。<<He>>又打了你一巴掌。"我给你提供了一张非常舒适的床，而你却选择睡地板。"<<He>>在离开时关上了门。
+<br><br>
+<<pain 5>>
+<<link [[继续|Bedroom]]>><<endevent>><</link>>
+<br>
+
+:: Bedroom Bailey
+<<effects>><<run statusCheck("Robin")>>
+<!-- Bailey catches you by surprise, no time to get dressed -->
+
+<<if $inRobinsRoom>>
+	罗宾的卧室门在没有任何预兆的情况下被突然打开，<span class="red">是贝利。</span>
+	<br><br>
+
+	"你以为躲在罗宾的房间就能逃过去了？"贝利冷笑道。
+<<else>>
+	你的卧室门在没有任何预兆的情况下被突然打开，<span class="red">是贝利。</span>
+<</if>>
+
+<<if $exposed gte 1>>
+	<<nnpc_He "Bailey">>随意的看了你一眼，"把衣服穿上。"<<nnpc_he "Bailey">>说道。<<nnpc_He "Bailey">>打了个响指，"快一点。"
+	你匆忙穿上上一次穿的衣服。<<bedclotheson "bed">>
+<</if>>
+<br><br>
+
+<<if $robinfirstrentfight>> <!-- the first robin fight has already happened -->
+	<<if !["sleep", "orphanage"].includes(_robin_location)>>
+		<<rentduerobin 0>>
+	<<else>>
+		<<rentduerobin 1>>
+	<</if>>
+<<else>>
+	<<if ["sleep", "orphanage"].includes(_robin_location) and $inRobinsRoom>>
+		<<rentdue 1>> <!-- Robin is in the room with the PC -->
+	<<else>>
+		<<rentdue 0>>
+	<</if>>
+<</if>>
+<<unset $inRobinsRoom>>
+
+:: Mirror
+<<effects>>
+
+<<link [[走开|Bedroom]]>><<unset $mirrorMenu>><<unset $bodywritingSet>><<postMirror>><</link>>
+<br>
+
+<<mirror>>
+<br><br>
+
+:: Simple Mirror
+<<effects>>
+
+<<set $simpleMirror = true>>
+<<if $previousPassage is undefined>>
+	<<set $previousPassage = "Bedroom">>
+<</if>>
+<<link [[走开|$previousPassage]]>><<unset $mirrorMenu>><<unset $simpleMirror>><<unset $bodywritingSet>><<postMirror>><</link>>
+<br>
+
+<<mirror>>
+<br><br>
+
+:: Nude Cat
+<<effects>>
+<<beastNEWinit 1 cat>>
+当你发现一双眼睛在附近的灌木丛中看着你时，你停下了下来。一只<<beasttype>>从灌木丛里走了出来。
+<br><br>
+<<saveNPC 0 nude_cat>>
+<<endmasturbation>>
+<<endcombat>>
+<<loadNPC 0 nude_cat>>
+
+<!-- Modified for Beast People -->
+<<if $monster is 1 or $bestialitydisable is "f">>
+	<<link [[张开双腿|Nude Oral]]>><<trauma -6>><<stress -12>><<arousal 600>><</link>><<ltrauma>><<lstress>><<garousal>><<deviant1>>
+	<br>
+<</if>>
+<<link [[抚摸|Nude Pet]]>><<trauma -6>><<stress -12>><</link>><<ltrauma>><<lstress>>
+<br>
+
+:: Nude Oral
+<<effects>>
+
+<<bHe>>走到你的两腿之间好奇地注视着你的<<genitals>>.<<bHe>>闻了闻, 然后开始舔.<<bHe>>非常温柔, 似乎意识到<<bhis>>舌头的粗糙.<<if playerChastity()>>你的$worn.genitals.cn_name_cap无法阻止<<bhis>>灵活的舌头.<</if>><<deviancy1>>
+
+<<if $arousal gte ($arousalmax / 5) * 4>>
+<<arousal 2000 "genitals">>
+你躺倒在地，在<<beasttype>>尽情的取悦你的同时，你抚摸着<<bhe>>的耳朵。当<<beasttype>>深入舔弄你的私处时，你感觉到你的高潮将要到来。
+<br><br>
+
+<<orgasm>>
+
+<<beasttype>>渴望舔舐你的体液，当你在草地上高潮时，<<bhis>>实现了这一目标。当你的高潮劲退散时，<<beasttype>>开始四处游荡，试图寻找其他事情做，<<bhis>>的鼻子上还沾有一点液体。
+<br><br>
+
+<<else>>
+你躺倒在地，在<<beasttype>>尽情的取悦你的同时，你抚摸着<<bhis>>的耳朵。但是<<bHe>>很快就厌倦了，钻到了来时的那个灌木丛中。
+<br><br>
+<</if>>
+
+<<link [[继续|Nude Bask]]>><<clearNPC nude_cat>><<endevent>><</link>>
+<br>
+
+:: Nude Pet
+
+<<effects>>
+你伸出手去抚摸<<beasttype>>，<<bHe>>将脑袋伸到你手上并打了个哈欠。<<bHe>>摇了摇<<bhis>>的尾巴，回到了<<bhe>>来时的那个灌木丛。
+<br><br>
+<<link [[继续|Nude Bask]]>><<clearNPC nude_cat>><<endevent>><</link>>
+<br>
+
+:: Sleep Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<if $robinbed isnot undefined or $kylarbed is 1>>
+		<<enable_rescue>>
+	<</if>>
+<</if>>
+<<effects>>
+<<effectsman>>
+
+<<if $alarm is 1 and $rescue is 0>>
+	<<set $alarm to 0>>
+	"安静点，"贝利说道："这是让你用另外的方式来偿还你所欠下的一切。"
+	<br><br>
+<</if>>
+
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[继续|Sleep Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Sleep Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Sleep Rape Finish
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>><<set $forcedprostitutionstat += 1>><<fameprostitution 1>>
+	<<person>>从床上爬下后便离开了房间。贝利在盯着看了你一会儿后，砰地一声将门关上了。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Bed]]>><</link>>
+<<elseif $enemyhealth lte 0>>
+	你将<<person>>从床上打了下去，<<he>>跌跌撞撞地倒在了地上。 "他妈的混蛋！"<<he>>说道，然后扭头看向贝利说道："我想要回我的钱。"
+	<br><br>
+	贝利平静地瞪了<<him>>一眼，"你得到了你所付出的，你不能处理<<phim>>不是我的问题。"
+	<br><br>
+	<<He>>瞪了贝利一眼，但并没有继续追问，而贝利在<<hes>>走后便砰的一声将门关上了。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Bed]]>><</link>>
+<<elseif $robinbed isnot undefined>>
+	罗宾在听到你的哭声后睁开了眼睛，而当罗宾看到<<person>>在试图抱你时，一脚踢到了<<him>>的脸上。<<He>>跌跌撞撞地倒在了地上。 "他妈的混蛋！"<<he>>说道，然后扭头看向贝利说道："我想要回我的钱。"
+	<br><br>
+	贝利平静地瞪了<<him>>一眼，"你得到了你所付出的，你不能处理这件事的话，那不是我的问题。"
+	<br><br>
+	<<He>>瞪了贝利一眼，但并没有继续追问，而贝利在<<hes>>走后便砰的一声将门关上了。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<npc Robin>><<person1>>罗宾抱着你，但<<He>>看起来没有完全清醒，不一会，<<he>>又在你的怀中睡过去了。
+	<br><br>
+	<<npcincr Robin dom 1>>
+	<<endevent>>
+	<<if $robinbed is "theirs">>
+		<<link [[继续|Robin Bed]]>><</link>>
+	<<else>>
+		<<link [[继续|Bed]]>><</link>>
+	<</if>>
+<<else>>
+	<<set $daily.kylar.sleepRape to true>>
+	凯拉尔在你尖叫的那一瞬间就睁开了眼睛，<<nnpc_He "Kylar">>猛地从床上冲了下去，在将那个<<person>>扑倒在地板上后，<<nnpc_He "Kylar">>将一把刀从
+	<<if currentSkillValue('skulduggery') gte 200>>
+		<<nnpc_his "Kylar">>的<<if $NPCName[$NPCNameList.indexOf("Kylar")].pronoun is "m">>裤子<<else>>裙子<</if>>内的隐藏口袋里掏了出来。
+	<<else>>
+		突然
+	<</if>>
+	总而言之，凯拉尔现在将刀架在了<<persons>>的脖子上。
+	<br><br>
+	"哇，等一下！"<<person>>叫喊道。"我明白了，我这就走！该死的！"凯拉尔虽然往后退了两步，但<<nnpc_his "Kylar">>的眼睛仍旧死死地盯着入侵者。<<nnpc_He "Kylar">>就这样站在你们二人之间。
+	<br><br>
+	那<<person>>夺门而出。"我要拿回我的钱，"<<he>>对贝利嘶喊道。
+	<br><br>
+	贝利平静地瞪了<<him>>一眼，"你得到了你所付出的，你不能处理这件事的话，那不是我的问题。"
+	<br><br>
+	"我没有得到任何东西！"<<He>>瞪了贝利一眼，但并没有继续追问。而是直接走了出去，而贝利在盯着看了凯拉尔一会后，便砰的一声将门关上了。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<npc Kylar>><<person1>>凯拉尔回到床上，再度将<<his>>的胳膊环上你的<<if $speech_attitude is "meek">><</if>>。<<His>>的脉搏跳动着。"没-没事的。"<<he>>低声说道，"我在保护你，你是安全的。"
+	<<lksuspicion>><<npcincr Kylar rage -1>>
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Kylar Orphanage Bed]]>><</link>>
+<</if>>
+<br>
+
+:: Orphanage Hacker
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+<<generateMickey>>
+<<if $pub_hack_job is 1 or $pubfame and $pubfame.intro is 1>>
+	孤儿有时会更换房间，在经过几次失败的尝试后，您终于找到了正确的门。
+	<br><br>
+	你敲响门，在一个喘气的功夫后，门内传来了回应："找我?"
+	<br>
+	你打开门，一个人站在那里看着你。 "有事么?"
+	<br><br>
+	"嗨，呃……"你酝酿了一会，"米奇？"
+	<br>
+	这个人哼了一声。"然后呢，你想说什么。"
+	<br>
+	"那是你的名字么?"
+	<br>
+	"不。"
+	<br>
+	你笑道： "你有一个名字吗？"
+	<br>
+	"是的。"
+	<br>
+	"那我该叫你什么呢？"
+	<br>
+	"要我说我们可以继续用米奇。"
+	<br>
+	"看，呃......" 你又笑了，因为你不能认出这家伙到底是个男孩还是女孩，毕竟这家伙的声音和身材让人难以分辨，"我需要帮助。"
+	<br>
+	这家伙将眼睛眯了起来， "为什么这么说?"
+	<br>
+	"我听说你可以用电脑来做一些事情？"你问道。
+	<br>
+	"是谁说的？"
+	<br>
+	"我听说的，"你说道。
+	<br>
+	"那不是真的，这里的每个人都在编故事。不要相信你所听到的一切东西。"
+	<br>
+	"但兰德里说你—"
+	<br>
+	"兰德里？他妈的兰德里？"黑客带着一丝恐慌的神情环顾起了四周，随后关上了你身后的门。 "真操蛋，好吧，请脱掉你的衣服。"
+	<br>
+	"什么?"
+	<br>
+	"我说
+	<<if $fame.exhibitionism gte 600>>
+		脱衣服，这不是你出名的原因么？快点继续吧。"
+	<<elseif $fame.exhibitionism gte 200>>
+		脱衣服，你以前不是在各种公共场合做过很多次么？快点继续吧。"
+	<<elseif $exhibitionism lt 35>>
+		脱衣服。"黑客的态度缓和了下来，"听着，我不想在这件事上‘翻车’。所以我需要确定一下。"
+	<<else>>
+		脱衣服，快点继续吧。"
+	<</if>>
+	<br><br>
+<<else>>
+	你敲响黑客房间的门。
+	<br>
+	在门打开后，"米奇"探出身子，紧张地看向大厅的方向，随后在将你带进去之后，关上了身后的门。
+	<br>
+	"你准备好照我说的去做了吗？脱光你的衣服？"
+	<br><br>
+<</if>>
+<<link [[脱衣服 (0:02)|Orphanage Hacker Strip]]>><<stress 1>><<pass 2>><<if $pubfame and $pubfame.intro lte 2>><<set $pubfame.intro to 3>><</if>><<if $pub_hack_job lte 2>><<set $pub_hack_job to 3>><</if>><<undress "mickey">><</link>><<gstress>>
+<br>
+<<link [[拒绝|Orphanage Hacker Strip Refuse]]>><<if $pubfame and $pubfame.intro lte 2>><<set $pubfame.intro to 2>><</if>><<if $pub_hack_job lte 2>><<set $pub_hack_job to 3>><</if>><</link>>
+
+:: Orphanage Hacker Strip Refuse
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+"那现在就没什么好说的了，等你改变主意之后再回来吧。"
+<br><br>
+<<link [[继续|Orphanage]]>><<endevent>><</link>>
+<br>
+
+:: Orphanage Hacker Strip
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+"还有任何首饰。"
+<br><br>
+你脱光衣服，<<if $exhibitionism gte 55>>令人失望的是，这家伙<<elseif $exhibitionism lt 15>>令人高兴的是，这家伙<<else>>这家伙<</if>>并不在意你的裸体，反而对你的衣服更感兴趣。在你彻底脱光后，这家伙将你的衣服丢进一个金属制的篓筐里后，就将盖子给盖上并扣了起来。
+<br><br>
+"这是法拉第笼，"这家伙盯着你的脸说道，"它会阻断所有信号的传输，包括所有的监听设备、无线电、窃听器。不会有任何的信号进出。"
+<br>
+"什么?"
+<br>
+这家伙盯着你的脸盯了很长一段时间。
+<<if $hairlength gte 200>>
+	<<pass 5>>
+	<br>
+	"好吧。听着，如果.... 等等！不错的尝试。"
+	<br>
+	这家伙花了几分钟的时间用手指梳理你的头发，虽然不知道意义何在，但其看起来很满意，随后还检查了你的耳朵。
+<</if>>
+<br><br>
+
+<<link [[继续|Orphanage Hacker Strip 2]]>><</link>>
+<br>
+
+:: Orphanage Hacker Strip 2
+<<effects>>
+
+"很好很好，"这家伙继续说道。"好吧，如果你知道我在这的话，那就说明兰德里也知道我在这了，那这里就不再安全了。关于我的消息已经散播开来了，贝利捕捉到什么风声的话也只是时间问题了。
+那将是非常糟糕的事情，所以我需要再次人间蒸发，我之后会帮你的。但我现在需要你帮我，需要你帮我做三件事。"
+<br><br>
+
+在你点头之后，一个小型的USB设备被塞进你的手中。
+<br><br>
+
+<<link [[继续|Orphanage Hacker Strip 3]]>><</link>>
+<br>
+
+
+:: Orphanage Hacker Strip 3
+<<effects>>
+
+"首先，贝利的办公室里有一台可以说是上古产物的电脑，它的系统到处都是漏洞，但是那台电脑有着所有孤儿的电子记录。它很容易被找到，你要做的就是将这个设备插进去。
+不过计算机必须处于打开并登录的状态。这可能需要找一个贝利在使用电脑的时候，到时候我会亲自过去，这样的话我就可以删除自己的所有电子记录。
+<br><br>
+"然后，你要进入礼顿的办公室。在学校办公室的桌子底下有一个保险箱。里面有很多SD存储卡。卡里有些照片。照片上面是礼顿对那些天真得不能再天真的学生所做的事情。
+如果我要人间蒸发的话，礼顿不就能留住那些照片，我不会允许照片存在的，所以你要去偷它们，为此你必须去撬锁，而且要小心不要被抓住。
+<br><br>
+"最后一件事，去跟兰德里说一些好话。我可以让兰德里赚钱，很多的钱。而且我需要一个低调且陌生的地方。所以这是互利互惠的，兰德里给我提供藏身之所，而我让兰德里变得富有。
+这样的话贝利就永远都找不到我了，所以去和兰德里谈谈。不过先做其他的事，那些事更紧急。"
+<br><br>
+<<link [[继续|Orphanage Hacker Strip 4]]>><</link>>
+<br>
+
+:: Orphanage Hacker Strip 4
+<<effects>>
+
+"好的，"你说道。
+<br>
+"很好很好。为我做这些事，我会帮你的，我是说……你可能再也见不到我了，但我答应你的事一定会做到的。无论怎样，快点去做吧。"
+<br>
+"还有一件事——"
+<br>
+"什么？快点开始吧！"
+<br>
+你挥了挥手，示意你现在身上都没穿。
+<br>
+"哦，哇。"这家伙瞪大了眼睛。 "对不起。"
+<br>
+这家伙走到那个"法拉第笼"旁。
+<br>
+"对不起，我忘了。不过你，额，身材挺好的。"
+<br><br>
+你拿过衣服，匆忙的将其穿好。
+<br><br>
+<<link [[继续|Orphanage]]>><<storeon "mickey">><<set $hacker_tasks to []>><<endevent>><</link>>
+
+:: Shave
+<<effects>>
+<<dontHideForNow>>
+<<if $leftarm is "bound" and $rightarm is "bound">>
+	<span class="red">你的双臂都被绑住了。</span>而你很难以这种姿态来对你的阴毛做任何事情。
+	<br>
+	<<link [[返回->Bathroom]]>><<dontHideRevert>><</link>>
+<<else>>
+	<<shavestrip>>
+	你脱掉衣服，看着你的<<genitals>>。
+	<br>
+	<<if $worn.genitals.name is "chastity belt" or $worn.genitals.name is "gold chastity belt">>
+	皮带紧贴着你的身体，看来要用剃须刀够到阴毛几乎是不可能的。
+	<br>
+	<<link [[剃毛->Bathroom]]>><<clotheson>><<dontHideRevert>><</link>>
+	<<else>>
+	<<if $worn.genitals.name is "chastity cage">>
+	你的肉棒被锁在笼子里，在它周围刮阴毛会有点棘手，但这并不是什么大问题。
+	<br>
+	<</if>>
+	<<if $pblevel gte 2 or $pbstrip gte 1 or $pblevelballs gte 2>>
+		<<shavestyleicon 'clean'>><<link [[白虎型 (0:15)->Shave clean]]>><<pass 15>><<arousal 100>><<set $pblevel to 0>><<set $pbgrowth to 0>><<set $pblevelballs to 0>><<set $pbgrowthballs to 0>><<set $pbstrip to 0>><<set $makeup.pbcolour to 0>><</link>>
+		<br>
+	<</if>>
+	<<if $pblevel gte 5 or $pbstrip gte 2 or ($pbstrip is 1 and $pblevel gte 2)>>
+		<<shavestyleicon 'strip'>><<link [[一线天型 (0:15)->Shave strip]]>><<pass 15>><<arousal 100>><<set $pbstripName to "neat landing strip">><<set $pblevel to 0>><<set $pbgrowth to 0>><<set $pbstrip to 1>><</link>>
+		<br>
+	<</if>>
+	<<if $pblevel gte 5 or $pbstrip gte 3 or ($pbstrip gte 2 and $pblevel gte 2)>>
+		<<shavestyleicon 'heart'>><<link [[心型 (0:15)->Shave strip]]>><<pass 15>><<arousal 100>><<set $pbstripName to "cute heart shape">><<set $pblevel to 0>><<set $pbgrowth to 0>><<set $pbstrip to 2>><</link>>
+		<br>
+	<</if>>
+	<<if $pblevel gte 5 or $pbstrip gte 4 or ($pbstrip gte 3 and $pblevel gte 2)>>
+		<<shavestyleicon 'triangle'>><<link [[三角型 (0:15)->Shave strip]]>><<pass 15>><<arousal 100>><<set $pbstripName to "neat triangle">><<set $pblevel to 0>><<set $pbgrowth to 0>><<set $pbstrip to 3>><</link>>
+		<br>
+	<</if>>
+	<<if $player.ballsExist is true>>
+		<<if $pblevel gte 2 or $pbstrip gte 1>>
+			<<shavestyleicon 'clean'>><<link [[只剃耻骨 (0:10)->Shave pubis]]>><<pass 10>><<arousal 50>><<set $pblevel to 0>><<set $pbgrowth to 0>><<set $pbstrip to 0>><<if $pblevelballs is 0>><<set $makeup.pbcolour to 0>><</if>><</link>>
+			<br>
+		<</if>>
+		<<if $pblevelballs gte 3>>
+			<<shavestyleicon 'balls'>><<link [[球型 (0:05)->Shave balls]]>><<pass 5>><<arousal 50>><<set $pblevelballs to 0>><<set $pbgrowthballs to 0>><<if $pblevel is 0 and $pbstrip is 0>><<set $makeup.pbcolour to 0>><</if>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+	<<if $pblevel gt 5 or $pblevelballs gt 5>>
+		<<shavestyleicon 'trim'>><<link [[剪短 (0:10)->Shave trim]]>><<pass 10>><<arousal 100>>
+			<<if $pblevel gte 5>>
+				<<set $pblevel to 5>><<set $pbgrowth to 7>><<set $pbstrip to 0>>
+			<</if>>
+			<<if $pblevelballs gte 5>>
+				<<set $pblevelballs to 5>><<set $pbgrowthballs to 10>>
+			<</if>>
+		<</link>>
+		<br>
+	<</if>>
+	<<if $worn.genitals.name isnot "chastity belt">>
+		<<dyeicon>><<link [[给阴毛染色->Dye pubic hair]]>><</link>>
+		<br>
+	<</if>>
+	<<ind>><<link [[不去处理阴毛->Bathroom]]>><<clotheson>><<dontHideRevert>><</link>>
+<</if>>
+<</if>>
+
+:: Shave clean
+<<effects>>
+
+你拿起一些剃须膏和剃须刀。
+<br>
+你坐下来，分开双腿，小心地刮着你的阴毛。在几分钟后，你就刮完了。你的<<genitals_are 2>>现在干净整洁。
+<br><br>
+<<link [[继续|Bathroom]]>><<clotheson>><<dontHideRevert>><</link>>
+
+:: Shave pubis
+<<effects>>
+
+你拿起一些剃须膏和剃须刀。
+<br>
+你开始小心翼翼地剃除毛发。在几分钟后，你就搞定了，你的阴部现在是光滑干净的。
+<br><br>
+<<link [[继续|Bathroom]]>><<clotheson>><<dontHideRevert>><</link>>
+
+:: Shave balls
+<<effects>>
+
+你拿起一些剃须膏和剃须刀。
+<br>
+你把一条腿撑在浴缸上，开始小心翼翼地剃净着你的睾丸。在几分钟后，你就搞定了，你的睾丸现在是光滑干净的。
+<br><br>
+<<link [[继续|Bathroom]]>><<clotheson>><<dontHideRevert>><</link>>
+
+:: Shave strip
+<<effects>>
+
+你拿起一些剃须膏和剃须刀。
+<br>
+你坐下来，张开双腿，开始仔细地剃除你的阴毛。在几分钟后，你就搞定了，你的<<genitals_are 2>> 现在光滑干净，周边有<<print $pbstripName>>点缀着阴部。
+<br><br>
+<<link [[继续|Bathroom]]>><<clotheson>><<dontHideRevert>><</link>>
+
+:: Shave trim
+<<effects>>
+
+你拿起一把梳子和一把剪刀。
+<br>
+你坐下来，张开双腿，开始仔细修剪你的阴毛。在几分钟后，你就搞定了，你<<genitals 2>>周围的毛发现在修剪得很整齐。
+<br><br>
+<<link [[继续|Bathroom]]>><<clotheson>><<dontHideRevert>><</link>>
+
+:: Dye pubic hair
+<<effects>>
+
+<<set _ownedColours = $makeup.owned.hairdye.filter(x => x.count > 0)>>
+<<if _ownedColours.length == 0>>
+	你没有任何染发剂，也许你应该去化妆品店买上一些。
+	<br>
+<<else>>
+	它是要什么颜色？
+	<br>
+	<<set _choice = _ownedColours[0].colour>>
+	<<for _i, _item range _ownedColours>>
+		<label><span class="grey-shadow"><span @class="'hair-' + _item.colour.replace(/ /g, '-')"><span class="colour-hair"><span style="color:#FD6064;"><<hairmapcolourtext _item.colour>></span></span></span></span>&nbsp;<<print '<<radiobutton "_choice" "'+_item.colour+'" ' + (_choice is _item.colour ? "checked" : "") + '>>'>></label>
+		x  _item.count |
+	<</for>>
+
+	<br><br>
+	<<link [[使用选定颜色来染色（0:30）|Dye pubic hair Finish]]>><<pass 30>><<set $makeup.owned.hairdye.find(x => x.colour == _choice).count -= 1>><<set $makeup.pbcolour = _choice>><</link>>
+<</if>>
+<br>
+<<link [[返回|Shave]]>><</link>>
+
+:: Dye pubic hair Finish
+<<effects>>
+
+你用凡士林涂抹了敏感部位后，然后拿出准备好的染发剂。
+<br>
+用着个小刷子，你小心翼翼地将化学品涂抹在阴毛上，并等待它们浸透。
+<br>
+<<arousal 100>>
+<br>
+几分钟后，你用清水冲洗你的私处，瞧着<<hairmapcolourtext $makeup.pbcolour>>阴毛里的<<genitals 2>>。
+<br><br>
+<<link [[继续|Bathroom]]>><<clotheson>><<dontHideRevert>><</link>>
+
+:: Mirror Bodywriting
+<<effects>>
+<<if $writeaction and $writebodyaction>>
+	<<add_bodywriting $writebodyaction $writeaction pen>>
+	你在<<bodypart $writebodyaction>>上写道<span class="lewd">"<<print $skin[$writebodyaction].writ_cn>>"</span>。
+	<<unset $writeaction>><<unset $writebodyaction>>
+<<elseif $writeaction>>
+	<span class="blue">你必须要选择想要书写的部位。</span>
+	<<unset $writeaction>>
+<<elseif $writebodyaction>>
+	<span class="blue">你必须选择书写的内容.</span>
+	<<unset $writebodyaction>>
+<<else>>
+	你将笔贴近你的皮肤。
+<</if>>
+<br><br>
+Location:
+<br>
+<<for _active_bodypart range setup.bodyparts>>
+	<<if $skin[_active_bodypart].writing>>
+	<<else>>
+		<<set _bodypart_detected to 1>>
+		<label>写在你的<<bodypart _active_bodypart>><<capture _active_bodypart>><<radiobutton "$writebodyaction" _active_bodypart>><</capture>></label>
+		<br>
+	<</if>>
+<</for>>
+<<if _bodypart_detected isnot 1>>
+	你的皮肤上已经没有可书写的空间了。
+	<br>
+<</if>>
+<br>
+Text:
+<br>
+<label><span class="lewd">只价值£5的娼妓<<radiobutton "$writeaction" "five_pound_whore">></span></label> |
+<label><span class="lewd">£10就能口一次<<radiobutton "$writeaction" "ten_pound_a_pop">></span></label> |
+<label><span class="lewd">一炮£25<<radiobutton "$writeaction" "twenty_five_pound_per_fuck">></span></label> |
+<label><span class="lewd">£100<<radiobutton "$writeaction" "one_hundred_pound">></span></label> |
+<label><span class="lewd">如果你付钱给我，那就不是强奸<<radiobutton "$writeaction" "its_not_rape_if_you_pay_me">></span></label> |
+<label><span class="lewd">娼妓<<radiobutton "$writeaction" "whore">></span></label> |
+<label><span class="lewd">婊子待租中<<radiobutton "$writeaction" "slut_for_hire">></span></label> |
+<label><span class="lewd">便器出租中<<radiobutton "$writeaction" "body_for_sale">></span></label> |
+<br><br>
+<<link [[写东西|Mirror Bodywriting]]>><</link>>
+<br>
+<<link [[停止|$passage_mirror]]>><<unset $writeaction>><<unset $writebodyaction>><</link>>
+<br>
+
+:: Mirror Bodywriting Unused
+
+<<effects>>
+<<set _skin_keys to Object.keys(setup.bodywriting)>>
+<<if $mirror_bodypart>>
+	$mirror_bodypart
+	<br>
+	<<print $writeaction>>
+	<br>
+	<<add_bodywriting $mirror_bodypart $writeaction pen>>
+	<<unset $mirror_bodypart>><<unset $writeaction>>
+<<else>>
+	你将笔贴近你的皮肤。
+<</if>>
+<br><br>
+<<for _active_bodypart range setup.bodyparts>>
+	<<if $skin[_active_bodypart].writing>>
+	<<else>>
+		<<capture _active_bodypart>><<link [[写东西|Mirror Bodywriting]]>><<set $mirror_bodypart to _active_bodypart>><</link>><</capture>>在你的<<bodypart _active_bodypart>>
+		<br>
+	<</if>>
+<</for>>
+<br>
+Something non-explicit:
+<<for _s to 0; _s lt _skin_keys.length; _s++>>
+	<<if setup.bodywriting[_skin_keys[_s]].lewd is 0>>
+		<label><<print setup.bodywriting[_skin_keys[_s]].writ_cn>><<radiobutton "$writeaction" clone(setup.bodywriting[_skin_keys[_s]].index)>></label>
+		|
+		<br>
+	<</if>>
+<</for>>
+<br><br>
+<<if $promiscuity gte 35>>
+	<span class="lewd">淫荡下流的内容</span>:
+	<<for _s to 0; _s lt _skin_keys.length; _s++>>
+		<<if setup.bodywriting[_skin_keys[_s]].special isnot "bestiality" and setup.bodywriting[_skin_keys[_s]].lewd is 1>>
+			<label><<print setup.bodywriting[_skin_keys[_s]].writ_cn>><<radiobutton "$writeaction" "clone(setup.bodywriting[_skin_keys[_s]].index)">></label>
+			|
+		<</if>>
+	<</for>>
+	<br>
+<<else>>
+	淫荡下流的内容:<span class="pink">你还不够淫荡。</span>
+	<br>
+<</if>>
+<br>
+<<if $deviancy gte 35>>
+	<span class="lewd">非比寻常的内容</span>:
+	<<for _s to 0; _s lt _skin_keys.length; _s++>>
+		<<if setup.bodywriting[_skin_keys[_s]].special is "bestiality">>
+			<label><<print setup.bodywriting[_skin_keys[_s]].writ_cn>><<radiobutton "$writeaction" "clone(setup.bodywriting[_skin_keys[_s]].index)">></label>
+			|
+		<</if>>
+	<</for>>
+	<br>
+<<else>>
+	非比寻常的内容:<span class="pink">你的异种癖还不够高。</span>
+	<br>
+<</if>>
+<br>
+<<link [[停止|$passage_mirror]]>><</link>>
+<br>
+
+:: Mirror Bodywriting Choice
+
+<<effects>>
+你想在$mirror_bodypart上书写或者绘制些什么？
+<br><br>
+<<link [[来点不同寻常的|Mirror Bodywriting Deviant]]>><</link>>
+<br>
+<<link [[来点淫荡下流的|Mirror Bodywriting Lewd]]>><</link>>
+<br>
+<<link [[来点稀松平常的|Mirror Bodywriting Normal]]>><</link>>
+<br>
+
+:: Mirror Bodywriting Deviant
+
+<<effects>>
+<<set _skin_keys to Object.keys(setup.bodywriting)>>
+<<for _s to 0; _s lt _skin_keys.length; _s++>>
+	<<if setup.bodywriting[_skin_keys[_s]].special is "bestiality">>
+		<label><<print setup.bodywriting[_skin_keys[_s]].writ_cn>><<radiobutton "$writeaction" "clone(setup.bodywriting[_skin_keys[_s]])">></label>
+		|
+	<</if>>
+<</for>>
+<br><br>
+<<link [[写些什么|Mirror Bodywriting Deviant]]>><</link>>
+<br>
+
+:: Mirror Bodywriting Lewd
+
+<<effects>>
+
+:: Mirror Bodywriting Normal
+
+<<effects>>
+<<set _skin_keys to Object.keys(setup.bodywriting)>>
+<<for _s to 0; _s lt _skin_keys.length; _s++>>
+	<<print setup.bodywriting[_skin_keys[_s]].writ_cn>>
+	<br>
+<</for>>
+
+:: Sold
+
+<<set $location to "town">><<set $outside to 0>><<effects>>
+<<generate1>><<generate2>><<person1>><<facewear 26>><<bind>>
+当你惊醒时，你发现自己正躺在车的后座上。你的手臂被绳索固定在了背后，而你的身体也被固定在了椅子上。你的嘴里也被塞了用于堵嘴的东西。
+<br><br>
+"<<pShes>>醒了，"坐在副驾座位上的<<person>>说道。
+<br>
+"很好，"司机回答到。那是一个<<person2>><<person>>。"醒得正是时候。"
+<br><br>
+窗外看不到太多东西，从你的角度来看的话，你只能看到天空和一排街灯。而当汽车驶入一栋大楼之后，你听到后面的门被关上了。
+<br><br>
+<<link [[继续|Sold 2]]>><</link>>
+<br>
+
+:: Sold 2
+
+<<effects>>
+有些绳子已经松开了，但是你的手臂仍然被束缚着。你先是被带到了一个看起来像是普通厨房的地方，随后又被带入客厅。在进到客厅后，你被推倒在沙发上。
+<br><br>
+"现在好了，"<<person1>><<person>>说道，"抓你是那么的麻烦，现在抓到你了，我却不知道该怎么办了。"
+<br>
+"你可以强奸<<phim>>，"<<person2>><<person>>斜靠在座位上回答道。 "如果<<pshe>>不说不，那还算是强奸吗？"
+<br><br>
+这两个家伙讨论了一会儿你之后的命运，不过听起来都不怎么令人愉快。
+<br><br>
+<<link [[做出顺从的手势|Sold Sub]]>><<sub 1>><</link>>
+<br>
+<<link [[怒目而视|Sold Glare]]>><<def 1>><</link>>
+<br>
+
+:: Sold Sub
+
+<<effects>>
+你努力跪了起来，但也只是就那样跪着。同时你还低下了你的脑袋，那两个家伙放声大笑。
+<br><br>
+"看来某人已经下定决心了，"<<he>>向前伸出手，拽掉了堵在你嘴里的东西。"你有什么想法吗？"
+<br><br>
+<<set $worn.face.type.push("broken")>>
+<<faceruined>>
+<<link [[请求放了自己|Sold Ask]]>><</link>>
+<br>
+<<link [[说你会配合的|Sold Cooperate]]>><</link>>
+<br>
+<<link [[放声尖叫|Sold Scream]]>><</link>>
+<br>
+
+:: Sold Glare
+
+<<effects>>
+你轮流瞪向<<fullGroup>>，当他们回头看时，你也没有移开视线。这两人哈哈大笑。
+<br><br>
+"我想<<pshes>>有一些<<pher>>自己的想法，<<person1>><<person>>在说着的同时向前伸出<<he>>的手，拽掉了堵在你嘴里的东西。
+<br><br>
+<<set $worn.face.type.push("broken")>>
+<<faceruined>>
+<<link [[请求放了自己|Sold Ask]]>><</link>>
+<br>
+<<link [[说你会配合的|Sold Cooperate]]>><<sub 1>><</link>>
+<br>
+<<link [[放声尖叫|Sold Scream]]>><</link>>
+<br>
+
+:: Sold Ask
+
+<<effects>>
+<<if $speech_attitude is "meek">>
+	"请、请让我走吧，"你哀求道。"我不会告诉任何人的，我保证。"
+<<elseif $speech_attitude is "bratty">>
+	"你最好让我离开，"你说道，"总有人会找到我的。"
+<<else>>
+	"请让我走吧，"你哀求道。"我会忘记这一切的"
+<</if>>
+<br><br>
+两人在对视一眼后便开始哈哈大笑。"我们已经为了你而付过钱了，"<<person1>><<person>>说道，"我们要得到与付出的钱相等的回报。"
+<br>
+<<person2>><<person>>将身体向<<his>>旁边的那个家伙靠拢。他们就这样窃窃私语着，直到<<person1>><<person>>再次看向你。 "我们有个好主意，只要你愿意付出相应的努力，我们可以将你放走。"
+<br><br>
+<<link [[继续|Sold Work]]>><</link>>
+<br>
+
+:: Sold Cooperate
+
+<<effects>>
+<<if $speech_attitude is "meek">>
+	"我，我会照你说的做的，"你继续说道，"请不要伤害我。"
+<<elseif $speech_attitude is "bratty">>
+	"听着，"你说道："我知道这是怎么回事。我会配合的，但是我们不要再浪费我的时间了。"
+<<else>>
+	"我会配合的，"你说道，"不过还请温柔一点。"
+<</if>>
+<br><br>
+"你有一个聪明的头脑，"<<person1>><<person>>在说着的同时给自己倒了一杯苏格兰威士忌。"至少比上一个更好。"
+<br><br>
+<<pass 2>>
+两个人窃窃私语了几分钟，偶尔还偷偷瞥了你一眼，最终他们终于达成了协议，"我们有一些工作要交给你做。"
+<br><br>
+<<link [[继续|Sold Work]]>><</link>>
+<br>
+
+:: Sold Work
+
+<<effects>>
+"我一直想要一个专门服务我的<<if $player.gender_appearance is "m">>管家<<else>>女仆<</if>>，"<<person1>><<person>>继续说道："所以接下来你要为我们工作几个小时，给我们倒酒，提供赏心悦目的东西，我们想要什么你都要满足。作为回报，我们会让你离开而不是强奸你。"
+<br><br>
+"我们仍然可以强奸你，"<<person2>><<person>>说道。 "那之后我们就会把你和其他垃圾一起扔出去，如果你喜欢这样的话。"
+<br><br>
+<<link [[同意做他们的女仆（3:00）|Sold Work Accept]]>><<pass 60>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+<br>
+<<link [[拒绝|Sold Work Refuse]]>><</link>>
+<br>
+
+:: Sold Work Accept
+
+<<effects>>
+<<if $speech_attitude is "meek">>
+	"我，我会做任何您要求的事情，"你说道。 "我能为您服务吗？"
+<<elseif $speech_attitude is "bratty">>
+	"好吧，"你说道： "那你想要我做些什么呢？"
+<<else>>
+	"我明白了，"你说道。
+<</if>>
+<br><br>
+这两个家伙让你一直保持酒水充足，并根据需要让你去厨房拿取零食。而不需要你的时候，这些家伙会让你站在一旁等候差遣。<<if $exposed gte 1>>你真希望你没有穿的这么暴露。<</if>>这两个人毫不忌惮的盯着你看，但这并没有任何帮助。<<if $exposed gte 1>>你甚至都不能用你的双臂来遮掩自己。<</if>>
+<br><br>
+
+<<if $footdisable is "f">>
+	<<person2>><<person>>拿着<<his>>的玻璃杯示意你满上。而这一次，当你弯腰去添酒的时候，<<he>>踢向你的屁股，让你跪在地上。随后一只脚压在了你的背上，你正勉强地直起腰时，另外一只脚也压在了你的背上。"我需要一个新的脚凳，"<<he>>说道，"最好不要乱动，因为脚凳是不会动的。"
+	<<gtrauma>><<gstress>><<gpain>><<trauma 6>><<stress 6>><<pain 6>>
+	<br><br>
+	<<link [[忍耐 (1:00)|Sold Work Foot]]>><<pass 60>><<sub 1>><<trauma 6>><<stress 6>><<arousal 4000>><</link>><<gtrauma>><<gstress>><<ggarousal>>
+	<br>
+	<<link [[这太丢脸了|Sold Work Foot Refuse]]>><<def 1>><</link>>
+	<br>
+<<else>>
+	他们派你去厨房拿一些奶油，当你的胳膊被绑住时就会导致这很艰难。但你还是设法打开了冰箱门并举起奶油盒。然后你将它带到了客厅。
+	<br><br>
+	"躺在桌子上，"<<person2>><<person>>在说着的时候掀开了盖子。 "我们所有的盘子都在水槽里等待着清洗。"
+	<br><br>
+	<<link [[忍耐 (1:00)|Sold Work Food]]>><<trauma 6>><<stress 6>><<pass 60>><<sub 1>><<arousal 4000>><</link>><<gtrauma>><<gstress>><<ggarousal>>
+	<br>
+	<<link [[拒绝|Sold Work Food Refuse]]>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Sold Work Foot
+
+<<effects>>
+你继续跪着，而两人像是无视了你一样自顾自的聊起了天。尽管<<person2>><<person>>偶尔会提到<<his>>的脚凳有多舒服。
+<br><br>
+你开始感到无聊，但当有东西触及到你的<<genitals>>时，你惊讶地放声大叫。
+<<if playerChastity()>>
+	<<He>>用<<his>>的脚抬起你的$worn.genitals.cn_name_cap，然后将它扯向你的<<genitals 1>>和<<bottom>>。
+<<else>>
+	<<He>>漫不经心地用<<his>>的脚趾持续骚扰着你。
+<</if>>
+<<if $arousal gte $arousalmax>>
+	尽管是在这种情况下，你还是感觉到热量在你的下体聚集。<<orgasm>>使你气喘吁吁的。虽然这个<<person2>><<person>>和那个<<person1>><<person>>都没有说什么，但这两个家伙肯定还是注意到了。
+<<else>>
+	你只能保持不动，避免露出任何迹象以表明它对你有什么影响。
+<</if>>
+<br><br>
+<<person2>><<person>>厌倦了这样骚扰你，于是<<he>>们派你去厨房拿一些奶油，当你的胳膊被绑住时就会导致这很艰难。但你还是设法打开了冰箱门并举起奶油盒。然后你将它带到了客厅。
+<br><br>
+"躺在桌子上，"<<person>>在说着的时候掀开了盖子。 "我们所有的盘子都在水槽里等待着清洗。"
+<br><br>
+<<link [[接受|Sold Work Food]]>><<trauma 6>><<stress 6>><<pass 60>><<sub 1>><<arousal 4000>><</link>><<gtrauma>><<gstress>><<ggarousal>>
+<br>
+<<link [[拒绝|Sold Work Food Refuse]]>><</link>>
+<br>
+
+:: Sold Work Food
+
+<<effects>>
+在你按照指示躺在桌子上后，<<person2>><<person>>坐在你的脑后，用一只手臂环住你的脖子。
+<<if $worn.upper.set is $worn.lower.set>>
+	<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+		<<person1>><<person>>掀起你的裙子，将你的<<undies>>露了出来。你试图将腿合拢来遮掩自己，但并没有什么效果。<<He>>把你的裙子不断向上拉，一直到超过你的腹部，甚至是掀过你的<<undertop>>。随后<<He>>将奶油盒放在你的胸前。
+	<<else>>
+		<<person1>><<person>>拉下你的上衣，在将你的<<undertop>>露出来后。<<He>>将奶油盒放在你的胸前。
+	<</if>>
+<<elseif !$worn.upper.type.includes("naked")>>
+	<<person1>><<person>>拉起你的上衣，在将你的<<undertop>>露出来后。<<He>>将奶油盒放在你的胸前。
+<<else>>
+	<<person1>><<person>>将奶油盒放在你的胸部上方。
+<</if>>
+<<He>>将它倾倒，让那冰冷的奶油滑落在你那裸露的皮肤上。而当寒意袭上你身时，你会不自觉的扭动和颤抖。而这会让<<his>>很高兴。
+<br><br>
+<<if !$worn.under_upper.type.includes("naked")>>
+	<<He>>拉下你的$worn.under_upper.cn_name_cap.随后直接将奶油倒在了你的<<breasts>>上。
+<<else>>
+	<<He>>直接将奶油倒在你的<<breasts>>上。
+<</if>>
+你裸露的皮肤很是敏感，这让你很难不哭出声来。尤其是当<<his>>的舌头接触到你的身体时，它变得更难了。<<He>>用混乱的动作舔舐着你身上的奶油，有时猛攻一点，有舔出拖尾。
+<br><br>
+<<link [[继续|Sold Work Food 2]]>><</link>>
+<br>
+
+:: Sold Work Food 2
+
+<<effects>>
+<<person2>><<person>>拿起奶油盒，将奶油倒在了你的脸上。<<He>>俯身将奶油从你的皮肤上舔下来，那混乱的动作丝毫不亚于<<his>>的朋友。当你的脸被舔干净时，<<he>>将<<his>>的舌头探吻你的嘴唇，试图将你们二人的舌头交缠在一起。
+<br><br>
+<<if $arousal gte $arousalmax>>
+	那<<person1>><<persons>>在你<<breasts>>上的动作太过分了。<<orgasm>>你情不自禁地张开嘴开始喘气。那<<person2>><<person>>抓住机会，把<<his>>的舌头伸进你的嘴里。<<takeKissVirginity $NPCList[1] "rape">>
+<<else>>
+<</if>>
+最后，两人变得无聊起来，也可能只是奶油被用完了。 "这还不错吧？"<<person2>><<person>>在说着的同时解开了束缚你手臂的绳索。
+<<unbind>>
+<br><br>
+<<if $exposed gte 1>>
+	<<towelup>>
+	这两个家伙再将你从后门推出去之前，先递给你了一条毛巾。随后你被推搡着穿过房子的后门。进入花园，在花园后面有一扇门直通一条小路。
+	<br><br>
+	<<tearful>>你跟着小路前进，最终来到丰收街附近。
+<<else>>
+	他们把你从后门推了出去，来到花园后面的一扇院门，这扇门通向花园后面的一条小路。
+	<br><br>
+	<<tearful>>你跟着小路前进，最终来到丰收街附近。
+<</if>>
+<br><br>
+<<endevent>>
+<<link [[继续|Harvest Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Sold Work Food Refuse
+
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我，我不这么做，"你说道，"你太不友善了。"
+<<elseif $speech_attitude is "bratty">>
+	"这是他妈的最后一根稻草，"你吼道，"我受够了。"
+<<else>>
+	"不，"你说道， "而且你也不能强迫我。"
+<</if>>
+当你踢了<<person1>><<person>>的脸时，<<He>>向后倒下，并死死抓着<<himself>>。因为<<person2>><<person>>向你扑来。
+<br><br>
+
+<<link [[继续|Sold Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Sold Work Foot Refuse
+<<effects>>
+
+在你从<<person2>><<persons>>脚边爬出来后，你站了起来。"我猜你是想用最艰难的方式来解决这件事——"<<he>>的话还没有说完，你就一脚踢向<<him>>的腹股沟打断接下来的话，<<He>>虽然疼的滋哇乱叫，但还是站了起来。
+<br><br>
+
+<<link [[继续|Sold Rape]]>><<set $phase to 1>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Sold Work Refuse
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我，我不想，"你说道，"请你就让我走吧。"
+<<elseif $speech_attitude is "bratty">>
+	"去你妈的，"你吼道。 "让你他妈的那个烂选择去死吧，来吧。"
+<<else>>
+	"这不公平，"你说道，"你不应该这样对待别人。"
+<</if>>
+<br><br>
+
+"随你便，"<<person1>><<person>>耸了耸肩。"这个选择也很适合我们。"
+<br><br>
+
+<<link [[继续|Sold Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Sold Scream
+<<effects>>
+
+你捂住头，放声尖叫起来。
+<br><br>
+
+"他妈的愚蠢的<<bitch>>。"<<person1>><<person>>这样说着，在<<his>>急急忙忙向你扑来的时候撞翻了一张桌子。 "我会很享受和你做爱的。"当<<person2>><<person>>压住你时，<<He>>用手捂住了你的嘴。
+<br><br>
+
+你因被粗暴地对待而大声哭泣着，这两人就抱住你静静的听着
+
+<<if $rng gte 51>>
+	<<generate3>>
+	过了一会儿，你听到了<span class="green">敲门声</span>。"该死，"那个<<person1>><<person>>转身对那个<<person2>><<person>>继续说道:"别光坐在那儿，你这个笨蛋，送走他们。"
+	<br><br>
+	<<person2>><<person>>离开了客厅，你听到前门打开了。"里面一切都好吗？"一个陌生<<person3>><<personsimple>>的声音说道。"我好像听到了一声尖叫。
+	<br>
+	"一切都好。我只是绊到了脚趾头。"
+	<br>
+	"是这样吗？那尖叫声听起来不像你的声音。"
+	<br>
+	"也许你不该他妈的多管闲事。"
+	<br><br>
+
+	<<person1>><<person>>很紧张，<<his>>的手现在紧紧地抓着你的脸，疼得要命。
+	<br><br>
+
+	<<link [[制造噪音|Sold Noise]]>><</link>>
+	<br>
+	<<link [[等待 (0:02)|Sold Wait]]>><<pass 2>><</link>>
+	<br>
+<<else>>
+	<span class="red">什么也没有发生。</span><<person1>><<person>>坚信他们没被抓住，嘲笑着你。"是时候给你一个教训了，"他说道。"你是我们的玩具。没有人会来找你。"
+	<br><br>
+
+	<<link [[继续|Sold Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+
+<</if>>
+
+:: Sold Noise
+
+<<effects>>
+你踢了一下翻转的桌子，用脚把脆弱的木头劈开，发出一声脆响。
+<br><br>
+"我听到了。我要进来了。"这个陌生人说道。"否则我也不会履行公民义务了。"
+<br>
+"不，你不是。你给我滚回家去，不然我就弄死你。"
+<br>
+"那我就要报警了！"外面的声音正说着，前门砰的一声关上了。<<person2>><<person>>回到了客厅。
+<br><br>
+这两人互相指责对方的不是，并花了一些时间争论是否应该冒险继续将你留在这里。最后他们将你从后门推了出去，就这样一路推到花园门后的一条小路上。
+<br><br>
+"你会为此付出代价的，"你打了个趔趄，<<person1>><<person>>在你身后喊到到： "看你怎么保持这样的姿势回家！" 随后<<He>>砰的一声关上了门。
+<br><br>
+<<tearful>>你跟着小路前进，最终来到丰收街附近。
+<br><br>
+<<endevent>>
+<<link [[继续|Harvest Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Sold Wait
+
+<<effects>>
+<<pass 2>>
+你呆在原地，听见门口的争吵声愈演愈烈，直到陌生人威胁到要报警处理。<<person2>><<person>>才将门砰的一声关上结束了争吵。随后<<He>>回到了客厅。
+<br><br>
+这两人互相指责对方的不是，并花了一些时间争论是否应该冒险继续将你留在这里。最后他们将你从后门推了出去，就这样一路推到花园门后的一条小路上。
+<br><br>
+"你会为此付出代价的，"你打了个趔趄，<<person1>><<person>>在你身后喊到到： "看你怎么保持这样的姿势回家！" 随后<<He>>砰的一声关上了门。
+<br><br>
+<<tearful>>你跟着小路前进，最终来到丰收街附近。
+<br><br>
+<<endevent>>
+<<link [[继续|Harvest Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Sold Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $enemyanger += 100>><<set $enemytrust -= 50>>
+	<<if $phase is 1>>
+		<<set $enemyhealth -= 50>>
+	<<elseif $phase is 2>>
+		<<set $enemyhealth -= 100>>
+	<</if>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Sold Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Sold Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Sold Rape Finish
+
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"这个价格还不错，"<<person1>><<person>>斜靠在沙发上说道。然后<<person2>><<person>>在解开你<<unbind>>手臂后一把将你提了起来。
+	<br><br>
+	你被推搡着穿过房子的后门。进入花园，花园后面有一扇门直通一条小路。 "告诉贝利，我们很是满意。"随后大门在你身后砰地一声关上了。
+	<br><br>
+	<<tearful>>你跟着小路前进，最终来到丰收街附近。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Harvest Street]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	<<person1>><<person>>被桌子绊倒，重重的摔在上面。<<person2>><<person>>向你挥动手臂，但你实在是太快了。你跑出房子，穿过后门，看见花园里有一扇院门，它直通花园后面的一条小路。
+	<br><br>
+	<<tearful>>你跟着小路前进，最终出现在丰收街附近。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Harvest Street]]>><<set $eventskip to 1>><</link>>
+<</if>>

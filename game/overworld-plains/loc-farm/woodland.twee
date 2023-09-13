@@ -1,0 +1,709 @@
+:: Farm Woodland
+<<set $outside to 1>><<set $location to "alex_farm">><<set $bus to "woodland">><<effects>>
+
+<<farm_work_update>>
+
+你在农田里的林地里。
+
+<<if Time.dayState is "night">>
+	<<if $weather is "snow">>
+		雪压弯了头顶上的黑色树枝。
+	<<elseif $weather is "rain">>
+		树木遮挡着你免受冰冷的雨水侵袭。
+	<<else>>
+		这里的寒冷夜风减轻了一些。
+	<</if>>
+<<else>>
+	<<if $weather is "snow">>
+		雪压弯了头顶上的树枝。
+	<<elseif $weather is "rain">>
+		树木遮挡着你免受最糟糕的雨水侵袭。
+	<<else>>
+		你被鸟儿的鸣叫声所包围。
+	<</if>>
+<</if>>
+<<if $farm_work.alex is "woodland">>
+	艾利克斯在清除枯木。
+<</if>>
+<br><br>
+
+<<if $stress gte 10000>>
+	<<passoutfarmroad>>
+<<elseif $farm_attack_timer is 0 and Time.hour gte 21>>
+	<<npc Alex>><<person1>>
+	艾利克斯急忙走过来。<span class="red">"雷米来了，"</span><<he>>说道。 "我们可以做到。准备好，我会
+	<<if $farm.tower_guard>>
+		找到 $farm.tower_guard 。"
+	<<else>>
+		看看能不能找到他们的位置。"
+	<</if>>
+	<br><br>
+
+	<<farm_assault_intro>>
+	<br><br>
+
+	<<link [[准备|Farm Assault Wardrobe]]>><<endevent>><<set $phase to 2>><</link>>
+	<br>
+<<else>>
+	<<if $farm_work.alex is "woodland">>
+			<<link [[帮助艾利克斯照料林地 (0:20)|Farm Woodland Tend Alex]]>><<set $farm_work.woodland += 1>><<farm_count 20>><<pass 20>><<tending 2>><<tiredness 2>><<physique 2>><<set $farm_work.tending += 1>><</link>><<gtiredness>><<gtending>>
+			<br>
+	<<elseif $farm_work.woodland lt $farm.woodland>>
+		<<link [[照料林地(0:20)|Farm Woodland Tend]]>><<set $farm_work.woodland += 1>><<farm_count 20>><<pass 20>><<tending 2>><<tiredness 2>><<physique 2>><<set $farm_work.tending += 1>><</link>><<gtiredness>><<gtending>>
+		<br>
+	<</if>>
+	<<if $farm_work.forage isnot 1 and $farm.woodland gte 2>>
+		<<link [[搜查(1:00)|Farm Woodland Forage]]>><<set $farm_work.forage to 1>><<pass 60>><</link>>
+		<br>
+	<</if>>
+	<<link [[离开(0:05)|Farm Work]]>><<pass 5>><</link>>
+	<br>
+<</if>>
+
+:: Farm Woodland Tend
+<<effects>>
+
+你清除枯木，修剪杂乱的树枝。
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure)>>
+	<<if $worn.upper.name isnot "naked" and random(1, 2) is 2>>
+		<<set $worn.upper.integrity -= 10>>
+		<<if $worn.upper.integrity lte 0>>
+			你的$worn.upper.cn_name_cap被一根树枝挂住，一阵风吹来，树枝开始不住地摇曳起来。<span class="pink">这力道撕裂了你的衣服，露出了你的<<undertop>>。</span>
+		<<else>>
+			你的$worn.upper.cn_name_cap卡在一根树枝上，留下了明显的磨损。
+		<</if>>
+	<<elseif $worn.lower.name isnot "naked">>
+		<<set $worn.lower.integrity -= 10>>
+		<<if $worn.lower.integrity lte 0>>
+			你的$worn.lower.cn_name_cap被一根树枝挂住，一阵风吹来，树枝开始不住地摇曳起来。<span class="pink">力量撕裂了你的衣服，露出了你的<<undies>>。</span>
+		<<else>>
+			你的$worn.lower.cn_name_cap在一根树枝上卡住，留下了明显的磨损。
+		<</if>>
+	<<elseif $worn.under_upper.name isnot "naked" and random(1, 2) is 2>>
+		<<set $worn.under_upper.integrity -= 10>>
+		<<if $worn.under_upper.integrity lte 0>>
+			你的$worn.under_upper.cn_name_cap被一根树枝挂住，一阵风吹来，树枝开始不住地摇曳起来。<span class="pink">力量撕裂了你的衣服，露出了你的<<breasts>>。</span>
+		<<else>>
+			你的$worn.under_upper.cn_name_cap在一根树枝上卡住，留下了明显的磨损。
+		<</if>>
+	<<elseif $worn.under_lower.name isnot "naked">>
+		<<set $worn.under_lower.integrity -= 10>>
+		<<if $worn.under_lower.integrity lte 0>>
+			你的$worn.under_lower.cn_name_cap被一根树枝挂住，一阵风吹来，树枝开始不住地摇曳起来。<span class="pink">力量撕裂了你的衣服，露出了你的<<genitals>>。</span>
+		<<else>>
+			你的$worn.under_lower.cn_name_cap在一根树枝上卡住，留下了明显的磨损。
+		<</if>>
+	<<else>>
+		你工作时被一阵风吹得疼痛难忍。<<gpain>><<pain 4>>
+	<</if>>
+	<br><br>
+	<<link [[继续|Farm Woodland]]>><</link>>
+	<br>
+<<else>>
+	<<link [[继续|Farm Woodland]]>><</link>>
+	<br>
+<</if>>
+
+:: Farm Woodland Tend Alex
+<<effects>>
+
+<<npc Alex>><<person1>>
+你帮助艾利克斯清除枯木，修剪杂乱的树枝。
+<br><br>
+
+<<if random(1, 4) is 4>>
+	<<He>>指着头顶的树枝。"我们需要帮手才能够够得到，"<<he>>说道。"我去拿。"
+	<br><br>
+	<<He>>几分钟后回来，一只长梯子搁在<<He>>的一只手臂上。<<He>>将梯子靠在那棵树上。
+
+	<<if random(1, 2) is 2>>
+		"地面不平，你拿着锯爬上去，我来帮你稳住。不会太久。"
+		<br><br>
+
+		<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+			你爬上梯子。它有些摇晃，你犹豫了一下。
+			<br><br>
+
+			"没事吧？"艾利克斯问道。
+			<br>
+			你点了点头，伸手去拿最近的树枝。你将锯子放在上面，来回摆动。你加速了。力量在你身体里回荡，有点晃动了梯子。
+			<br>
+			一阵刺骨的风吹过，吹动着你的裙子，刮在你的腿上。
+			<br>
+			你向下瞥了一眼，<span class="pink">发现艾利克斯正在盯着你的两腿之间。</span><<His>>的脸颊发红。
+			<br><br>
+
+			<<link [[无视|Farm Woodland Tend Alex Ignore]]>><<stress 6>><<npcincr Alex lust 10>><<arousal 1000>><</link>><<ggarousal>><<gstress>><<gglust>>
+			<br>
+			<<link [[提醒|Farm Woodland Tend Alex Call]]>><<stress -6>><<npcincr Alex love -1>><</link>><<llove>><<lstress>>
+			<br>
+			<<if $exhibitionism gte 35>>
+				<<link [[夸耀|Farm Woodland Tend Alex Flaunt]]>><</link>><<exhibitionist3>><<npcincr Alex lust 5>>
+				<br>
+			<</if>>
+			<<if $submissive lte 500>>
+				<<link [[嘲笑|Farm Woodland Tend Alex Taunt]]>><<def 1>><</link>><<npcincr Alex dom -3>><<npcincr Alex lust 5>><<defianttext>><<lldom>><<glust>>
+				<br>
+			<</if>>
+
+		<<else>>
+			你爬上梯子。它有些摇晃，你犹豫了一下。
+			<br><br>
+
+			"没事吧？"艾利克斯问道。
+			<br>
+			你点了点头，伸手去拿最近的树枝。你将锯子放在上面，来回摆动。你加速了。力量在你身体里回荡，有点晃动了梯子。
+			<br>
+			你提醒艾利克斯注意。一会儿后，树枝掉到了落叶覆盖的地面上。
+			<br><br>
+
+			"谢谢你的帮助，"当你回到地面时，艾利克斯说道。
+			<br><br>
+
+			<<link [[继续|Farm Woodland]]>><<endevent>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		"地面不平。你能帮我扶梯子吗？不会花很长时间的。"
+		<br><br>
+
+		当<<he>>爬上梯子时，你站在梯子底部。
+		<<if $pronoun is "f">>
+			你只需要稍微倾斜一下就能看到<<his>>的裙子下面。
+			<br><br>
+
+			<<set $skulduggerydifficulty to 700>>
+			<<link [[偷看|Farm Woodland Tend Skirt]]>><<arousal 600>><</link>><<skulduggerydifficulty>><<garousal>>
+			<br>
+			<<link [[不去看|Farm Woodland Tend No Skirt]]>><<npcincr Alex love 1>><</link>>
+			<br>
+		<<else>>
+			你把脸低下来，避免被刺破。 "来了，"<<he>>说道。 一会儿后，树枝掉到了落叶覆盖的地面上。
+			<br><br>
+
+			"谢谢你的帮助，"重新回到了地面，艾利克斯笑着说.<<glove>><<npcincr Alex love 1>>
+			<br><br>
+
+			<<link [[继续|Farm Woodland]]>><<endevent>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<<else>>
+	<<link [[继续|Farm Woodland]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Farm Woodland Tend Skirt
+<<effects>>
+
+
+当艾利克斯锯木板时，你绕到梯子周围，这时一阵风吹起了<<his>>的裙子，你可以清晰地看到<<his>>穿了红色的平角裤。
+<br><br>
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+
+	<<He>>没有注意到你的目光。当艾利克斯锯树枝时，你继续偷窥。"它来了，"<<he>>说道。树枝砰的一声落在你身旁满是树叶的地板上。"下来了。"
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	"谢谢你的帮助，"<<he>>一下来就说.<<glove>><<npcincr Alex love 1>>
+	<br><br>
+
+	<<link [[继续|Farm Woodland]]>><<endevent>><</link>>
+	<br>
+
+<<else>>
+
+	<<He>>低头一看，<span class="red">然后大叫。</span><<He>>用一只手把<<his>>的裙子推到<<his>>的大腿之间，差点从梯子上摔下来。<<llove>><<gglust>><<npcincr Alex love -1>><<npcincr Alex lust 10>>
+	<br><br>
+
+	"别看，"<<he>>说道。
+
+	<<skulduggeryuse>>
+
+	<<link [[道歉|Farm Woodland Tend Apologise]]>><<npcincr Alex love 1>><<stress 6>><</link>><<gstress>><<glove>>
+	<br>
+	<<link [[挑逗|Farm Woodland Tend Tease]]>><<npcincr Alex dom 1>><</link>><<promiscuous1>><<gdom>>
+	<br>
+
+<</if>>
+
+
+:: Farm Woodland Tend Apologise
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我--我很抱歉，"你说，把眼睛移开。"我不是故意要看的。"
+<<elseif $speech_attitude is "bratty">>
+	"是啊，我太没品位了，"你转过头说，"对不起。"
+<<else>>
+	"对不起，"你说，把眼睛移开。"我太粗鲁了。"
+<</if>>
+<br><br>
+
+"别再看了，"艾利克斯说道。<<He>>锯完原木，但在<<his>>完成之前，<<hes>>两腿并拢。
+<br><br>
+
+<<Hes>>当树枝掉到地上时，<<he>>还在脸红，然后<<he>>又爬了下来。
+<br><br>
+
+<<link [[继续|Farm Woodland]]>><<endevent>><</link>>
+<br>
+
+:: Farm Woodland Tend Tease
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"可爱的内衣，"你咯咯地笑。
+<<elseif $speech_attitude is "bratty">>
+	"不错的内衣，"你开玩笑。"羞于隐瞒"
+<<else>>
+	"你对内衣很有品味。"你说道。
+<</if>>
+<<promiscuity1>>
+
+艾利克斯的脸红加深了。<<He>>继续锯木头，但<<his>>两腿并拢，把<<his>>裙子夹在中间，直到<<hes>>完成。
+<br><br>
+
+<<Hes>>当树枝掉到地上时，<<he>>还在脸红，然后<<he>>又爬了下来。
+<br><br>
+
+<<link [[继续|Farm Woodland]]>><<endevent>><</link>>
+<br>
+
+:: Farm Woodland Tend No Skirt
+<<effects>>
+
+当艾利克斯锯开树枝时，你把目光移开。"它来了，"<<he>>说道。过了一会儿，它砰的一声落在满是树叶的地板上。
+<br><br>
+
+"谢谢你的帮助，"<<he>>到达底部时说道。
+<br><br>
+
+<<link [[继续|Farm Woodland]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Woodland Forage
+<<effects>>
+
+你拿着一个篮子走进树林，在树枝和地上寻找成熟的食物。
+<br><br>
+
+<<if $rng gte 75>>
+	<span class="green">你发现一些成熟的<<icon "tending/strawberry.png">>草莓。</span>
+	<<if $farm.woodland gte 3>>
+		<<tending_pick strawberry 10 50>>
+	<<else>>
+		<<tending_pick strawberry 5 25>>
+	<</if>>
+<<elseif $rng gte 50>>
+	<span class="green">你发现一些成熟的<<icon "tending/peach.png">>桃子.</span>
+	<<if $farm.woodland gte 3>>
+		<<tending_pick peach 10 50>>
+	<<else>>
+		<<tending_pick peach 5 25>>
+	<</if>>
+<<elseif $rng gte 25>>
+	<span class="green">你发现一些成熟的<<icon "tending/plum.png">>李子.</span>
+	<<if $farm.woodland gte 3>>
+		<<tending_pick plum 10 50>>
+	<<else>>
+		<<tending_pick plum 5 25>>
+	<</if>>
+<<else>>
+	<span class="green">你发现一些<<icon "tending/mushroom.png">>蘑菇.</span>
+	<<if $farm.woodland gte 3>>
+		<<tending_pick mushroom 10 50>>
+	<<else>>
+		<<tending_pick mushroom 5 25>>
+	<</if>>
+<</if>>
+<br><br>
+
+<<if random(1, 5) is 5>>
+	你闻到了迷人的甜味。它会带你找到一朵奇怪的紫花。
+	<br><br>
+
+	<<icon "tending/strange_flower.png">> <<link [[摘取|Farm Woodland Harvest]]>><<drugs 60>><</link>><<garousal>>
+	<br>
+	<<link [[无视|Farm Woodland]]>><</link>>
+	<br>
+<<else>>
+	<<link [[继续|Farm Woodland]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Farm Woodland Harvest
+<<effects>>
+
+<<tending_pick strange_flower 1 1>>
+
+温暖从指尖蔓延开来。你抑制住了把鼻子埋在它柔软的花瓣里的冲动。
+<br><br>
+
+<<link [[继续|Farm Woodland]]>><</link>>
+<br>
+
+
+:: Farm Woodland Safe
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我也是，"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"我在这里也更自在，"你承认。
+<<else>>
+	"我也是，"你说。
+<</if>>
+<br><br>
+
+"它们让我很有安全感，"艾利克斯说，"如果我不小心，我会睡着的。"
+
+<<if Time.dayState is "night">>
+	趁我还没着凉，我还是进屋去吧。"
+<<elseif $farm_work.alex is "relax">>
+	也不是什么坏事。反正我也在休息。"
+<<else>>
+	休息够了。我该回去工作了。"
+<</if>>
+<<He>>朝小屋走去。
+<br><br>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Woodland Safe Alex
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+
+<<if $speech_attitude is "meek">>
+	"我也觉得安全，"你红着脸说，"当我在你身边的时候。"
+<<elseif $speech_attitude is "bratty">>
+	"你比某些树更能保护我，"你自豪地宣称。
+<<else>>
+	"我也觉得很安全，"你笑得很开心。"因为你。"
+<</if>>
+<br><br>
+
+艾利克斯挺起<<his>>的胸膛。
+<<if _alex.dom gte 30>>
+	"谢谢，<<girl>>。告诉我一些我不知道的东西，"<<he>>眨着眼睛说道。
+<<elseif _alex.dom lte -30>>
+	"我觉得你太看得起<<nnpc_gendery "Alex">>了，"<<he>>开玩笑说道。
+<<else>>
+	"你知道如何让<<nnpc_gendery "Alex">>感觉良好，"<<he>>微笑着说道。
+<</if>>
+
+
+<<if Time.dayState is "night">>
+	"趁你还没着凉，我们该进屋去了."
+	<br><br>
+	<<He>>牵起你的手，带你走向小屋.<<takeHandholdingVirginity "Alex" "loveInterest">><<pass 5>>
+	<br><br>
+
+	<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+	<br>
+<<elseif $farm_work.alex is "relax">>
+	<<He>>重新安顿下来。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	"不过，休息够了。我该回去工作了。"<<He>>朝小屋走去。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+:: Farm Woodland Safe Nothing
+<<effects>>
+
+你什么都没说。
+
+<<if Time.dayState is "night">>
+	一个影子从头顶飞过，可能是蝙蝠。
+	<br><br>
+<<else>>
+	鸟儿继续在四周鸣叫。
+	<br><br>
+<</if>>
+
+<<if Time.dayState is "night">>
+	"我们应该在感冒前到室内去。"，艾利克斯说道。<<He>>朝小屋走去。
+<<elseif $farm_work.alex is "relax">>
+	艾利克斯拽着帽子遮住眼睛。
+	<br><br>
+<<else>>
+	"我该回去工作了，"艾利克斯说道。"我一会儿可以放松一下。"<<He>>朝小屋走去。
+<</if>>
+<br><br>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+:: Farm Woodland Safe Indoors
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你-你不应该晚上躺在这里，"你说道。"你会感冒的。"
+<<elseif $speech_attitude is "bratty">>
+	"这个时候你在外面干什么？"你问。"你会冻僵的。"
+<<else>>
+	"你应该到室内去，"你说道。"趁你还没着凉"
+<</if>>
+<br><br>
+
+艾利克斯点点头。"你说得对，"<<he>>说道。"这里的气氛很好。是时候享受一下了。"
+<br><br>
+
+你们一起穿过林地回到小屋。
+<br><br>
+
+<<link [[继续|Farm Cottage]]>><<endevent>><</link>>
+<br>
+
+
+
+:: Farm Woodland Tend Alex Ignore
+<<effects>>
+
+你无视艾利克斯的目光，保持双腿合拢，把裙子往后拉。
+<br><br>
+
+<<if $arousal gte 10000>>
+	艾利克斯的凝视太多了。你会感到温暖，然后涌动。<<orgasm>>
+
+	你摇摇晃晃，抓住树枝稳住自己。<span class="red">当你跌倒时，它会因你的体重</span>而折断，落在下面的艾利克斯身上。
+	<br><br>
+
+	"你-你还好吗？"<<he>>问道。你一边呻吟一边滚动，然后咯咯地笑："把树枝放下来了。任务完成。"
+	<br><br>
+
+	<<He>>不知道你为什么会摔倒，也不会提起。
+	<br><br>
+
+	<<link [[继续|Farm Woodland]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	你锯完树枝，树枝掉到了林地的地上。你爬了下来。你不能跟艾利克斯眼神交流。
+	<br><br>
+
+	<<link [[继续|Farm Woodland]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Farm Woodland Tend Alex Call
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"别看，"你咕哝着。
+<<elseif $speech_attitude is "bratty">>
+	"变态。"你说道。"眼睛直视前方"
+<<else>>
+	你说，"别做变态。"
+<</if>>
+<br><br>
+
+"我，我，"艾利克斯低着头结结巴巴地说道。"对-对不起，我没有..."<<He>>沉默了。
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"没关系，"你说，"这种事经常发生。我不介意。”<<He>>看起来很矛盾，继续把目光移开。你继续工作。
+<<elseif $speech_attitude is "bratty">>
+	"我不会再抓到你了，是吗？"<<He>>使劲咽了口气，点了点头。你继续工作。
+<<else>>
+	"别再这样了，"你说道。<<He>>点头。你回去工作。
+<</if>>
+<br><br>
+
+你锯完树枝，树枝掉到了林地的地上。你爬下来的时候，艾利克斯没有说话。
+<br><br>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Woodland Tend Alex Flaunt
+<<effects>>
+
+当艾利克斯盯着你的双腿之间时，你的脸颊泛红。当裙子在风中飘扬时，你抑制住了遮盖自己的冲动。相反，你弯曲和扭动你的臀部给艾利克斯一个绝佳的角度来看你的<<undies>>。
+<<exhibitionism3>>
+
+你锯完树枝，爬下来。艾利克斯看起来比你还累，尽管只是扶着梯子。
+<br><br>
+
+"出什么事了吗？"你开玩笑，明明知道为什么<<he>>不能与你的目光相遇。
+<br>
+"你做得很好，"<<he>>说道。"很热。"
+
+<<if Time.season is "winter">>
+	尽管天气很冷，<<He>>脸还是很红。
+<<else>>
+	<<He>>红着脸.
+<</if>>
+<br><br>
+
+<<link [[继续|Farm Woodland Tend Alex Flaunt 2]]>><</link>>
+<br>
+
+:: Farm Woodland Tend Alex Flaunt 2
+<<effects>>
+
+"我也很热，"你说道。"这就是我今天穿这件衣服的原因。"你又把裙子撩了起来，引起了<<his>>的注意。你将下摆提升到足够高的高度，以便再次露出你的<<undies>>。
+<br><br>
+
+艾利克斯猛地一扭头，<<his>>闭上了眼睛。
+
+<<if $speech_attitude is "meek">>
+	"我以为你想看，"你笑了。"这就是你偷窥的原因，对吧？"
+<<elseif $speech_attitude is "bratty">>
+	"别假装这不是你想要的，"你笑了。
+<<else>>
+	"我知道你偷看了，"你说道。"这是对你的惩罚。"
+<</if>>
+<br>
+
+
+<<if $NPCName[$NPCNameList.indexOf("Alex")].lust gte 20>>
+	艾利克斯不再克制，<span class="lewd">直接向你扑来。</span>
+	<br><br>
+
+	<<link [[继续|Farm Woodland Tend Alex Sex]]>><<set $sexstart to 1>><</link>>
+	<br>
+<<else>>
+	"我，"艾利克斯低头看着，结结巴巴地说道。"对不起，我没有......"<<He>>拖长音调。"我们回去工作吧。"
+	<br><br>
+
+	<<link [[继续|Farm Woodland]]>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Farm Woodland Tend Alex Taunt
+<<effects>>
+
+"喂，"你大叫。"别做个变态"
+<br>
+艾利克斯看向别处，感到很尴尬。"我--我不是--"
+<br>
+"我知道我看到了什么，"你打断了<<him>>。"变态"你抓住树枝，把它折断以示强调。"你喜欢看裙子，是吗？"
+<br>
+"好吧，我，我，"艾利克斯吞吞吐吐地说道。"风--"
+<br>
+"是还是不是？"你爬下来时又打断了<<him>>。
+<br>
+<<Hes>>脸涨的通红，额头上有汗珠。"我-"<<he>>又吞吞吐吐地说道。"是的。"
+<br><br>
+
+<<link [[继续|Farm Woodland Tend Alex Taunt 2]]>><</link>>
+<br>
+
+
+:: Farm Woodland Tend Alex Taunt 2
+<<effects>>
+你笑着把树枝扔到一边，从梯子上跳下来。你把身体压在<<him>>身上，把<<him>>的背靠在树上。你问："你又要对我发脾气了，嗯？"
+<br><br>
+
+<<if $NPCName[$NPCNameList.indexOf("Alex")].lust gte 20>>
+	艾利克斯转移了目光，然后笑道："如果我这样做了，你会怎么做？"<<He>>一只手放在你的<<bottom>>上，把你拉到<<him>>身上。<<His>>的另一只手伸进你的腹部。
+	<br><br>
+	<<if playerChastity()>>
+		<<He>>拽着你的$worn.genitals.cn_name_cap."我不是那种必须保持贞洁才能阻止他人胡作非为的人，"<<he>>戏谑地说道。"我可以用其他方式满足你。"
+	<<elseif $player.penisExist>>
+		<<He>>用手指抚摸你的<<penis>>，引起一声不由自主的呻吟。
+		<<if $arousal gte 6000>>
+			"你已经勃起了，"<<he>>开玩笑说道。"是我偷窥造成的吗？我最好修好它。"
+		<<else>>
+			"我想你喜欢我的样子，"<<he>>开玩笑说道。"我可以更彻底地满足你."
+		<</if>>
+	<<else>>
+		<<He>>用手指抚摸你的<<pussy>>，引起一声不由自主的呻吟。
+		<<if $vaginaWetness gte 45>>
+			"你已经湿透了，"<<he>>开玩笑说道。"是我偷窥造成的吗？我最好修好它。"
+		<<else>>
+			"我想你喜欢我的样子，"<<he>>开玩笑说道。"我可以更彻底地满足你."
+		<</if>>
+	<</if>>
+	<br><br>
+	<<He>>坐到地上，把你拉到<<him>>身上。
+	<br><br>
+
+	<<link [[继续|Farm Woodland Tend Alex Sex]]>><<set $sexstart to 1>><</link>>
+	<br>
+<<else>>
+	艾利克斯把目光移开，然后笑了。"你真了不起，"<<he>>说道。<<He>>把<<his>>的手压在你的<<bottom>>上，把你拉到<<him>>身上。"我会乖乖的。我们回去工作吧。"<<He>>在你的脸颊上留下一个吻。
+	<br><br>
+
+	<<link [[继续|Farm Woodland]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Farm Woodland Tend Alex Sex
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Farm Woodland Tend Alex Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Farm Woodland Tend Alex Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Farm Woodland Tend Alex Sex Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>靠在树上。"希望我没有太粗暴，"<<he>>说，"你有时很疯狂，让我也失去了控制。"<<lllust>><<glove>><<npcincr Alex love 1>><<npcincr Alex lust -10>>
+	<br><br>
+	<<tearful>>你爬起来。"让我们继续工作吧，"<<he>>说道。<<He>>在走开之前拍了拍你的<<bottom>>。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Farm Woodland]]>><</link>>
+<<elseif $enemyhealth lte 0>>
+	艾利克斯被枯枝绊倒在地。"对不起，"<<he>>说道。"你让我这么激动。"<<llove>><<ldom>><<npcincr Alex love -1>><<npcincr Alex dom -1>>
+	<br><br>
+	<<tearful>>你站起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Farm Woodland]]>><</link>>
+<<else>>
+	艾利克斯从你身边抽离。"对不起，"<<he>>说道。"你让我这么激动。"<<llove>><<npcincr Alex love -1>>
+	<br><br>
+	<<tearful>>你站起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Farm Woodland]]>><</link>>
+<</if>>
+

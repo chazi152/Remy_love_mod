@@ -1,0 +1,86 @@
+:: Widgets Stalk Actions [widget]
+
+/*Hands */
+
+<<widget "left_pursuit_grab">>
+	<<if $NPCList[0].state is "pursuit" and $NPCList[0].distance lte 0>>
+		<<set _leftaction["握住"] to "pursuit_grab">>
+	<</if>>
+<</widget>>
+
+<<widget "right_pursuit_grab">>
+	<<if $NPCList[0].state is "pursuit" and $NPCList[0].distance lte 0>>
+		<<set _rightaction["握住"] to "pursuit_grab">>
+	<</if>>
+<</widget>>
+
+/*Feet */
+<<widget "feet_walk">>
+	<<if $leftleg isnot "bound" and $rightleg isnot "bound" and $dissociation lt 2 and $NPCList[0].state isnot "pursuit" and $feetuse isnot "run" and ($feetskill gte 200 or !$worn.feet.type.includes("heels"))>>
+		<<set _feetaction["步行"] to "walk">>
+	<</if>>
+<</widget>>
+
+<<widget "feet_strut">>
+	<<if $leftleg isnot "bound" and $rightleg isnot "bound" and $dissociation lt 2 and $NPCList[0].state isnot "pursuit" and $feetuse isnot "run" and $exhibitionism gte 15>>
+		<<set _feetaction["昂首阔步"] to "strut">>
+	<</if>>
+<</widget>>
+
+<<widget "feet_run">>
+	<<if $leftleg isnot "bound" and $rightleg isnot "bound" and $dissociation lt 2 and ($feetskill gte 200 or !$worn.feet.type.includes("heels"))>>
+		<<if $NPCList[0].state is "pursuit">>
+			<<set _feetaction["追赶"] to "run">>
+		<<else>>
+			<<set _feetaction["跑"] to "run">>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "feet_stand">>
+	<<if $dissociation lt 2 and $NPCList[0].state isnot "pursuit" and $feetuse isnot "run">>
+		<<set _feetaction["站立不动"] to "stand">>
+	<</if>>
+<</widget>>
+
+<<widget "feet_hobble">>
+	<<if $dissociation lt 2 and ($leftleg is "bound" or $rightleg is "bound") or ($feetskill lt 200 and $worn.feet.type.includes("heels"))>>
+		<<set _feetaction["蹒跚而行"] to "hobble">>
+	<</if>>
+<</widget>>
+
+<<widget "feet_hide">>
+	<<if $dissociation lt 2 and $panicviolence lte 0>>
+		<<set _feetaction["隐藏"] to "hide">>
+	<</if>>
+<</widget>>
+
+<<widget "feet_confront">>
+	<<if $dissociation lt 2 and $panicviolence lte 0 and $NPCList[0].legs isnot "run" and $NPCList[0].state isnot "pursuit">>
+		<<set _feetaction["对峙"] to "confront">>
+	<</if>>
+<</widget>>
+
+<<widget "head_turn">>
+	<<if $dissociation lt 2 and $panicviolence lte 0 and $NPCList[0].legs isnot "run" and $NPCList[0].state isnot "pursuit">>
+		<<set _mouthaction["回头看"] to "turn">>
+	<</if>>
+<</widget>>
+
+<<widget "head_down">>
+	<<if $dissociation lt 2 and $panicviolence lte 0 and $NPCList[0].legs isnot "run" and $NPCList[0].state isnot "pursuit">>
+		<<set _mouthaction["看看地面"] to "down">>
+	<</if>>
+<</widget>>
+
+<<widget "head_up">>
+	<<if $dissociation lt 2 and $panicviolence lte 0 and $NPCList[0].legs isnot "run" and $NPCList[0].state isnot "pursuit">>
+		<<set _mouthaction["抬起你的下巴"] to "up">>
+	<</if>>
+<</widget>>
+
+<<widget "bottom_wiggle">>
+	<<if $dissociation lt 2 and $panicviolence lte 0 and $NPCList[0].legs isnot "run" and $NPCList[0].state isnot "pursuit">>
+		<<set _anusaction["晃动"] to "wiggle">>
+	<</if>>
+<</widget>>

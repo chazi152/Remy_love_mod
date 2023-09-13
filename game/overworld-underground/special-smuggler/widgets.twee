@@ -1,0 +1,108 @@
+:: Widgets Smuggler [widget]
+<<widget "smugglerdifficultytext">>
+	你看到一个正坐在椅子上烤火的身影，在其身旁有个敞开的袋子。<span class="gold">里面貌似有什么东西正在发光。</span>
+	<br><br>
+	<<if $smuggler_stolen_stat is 0>>
+	<span class="green">那家伙看起来是孤身一人。</span>
+	<<elseif $smuggler_stolen_stat is 1>>
+	<span class="green">那家伙看起来是孤身一人，</span><span class="blue">但其总是时不时地看向身后。</span>
+	<<elseif $smuggler_stolen_stat is 2>>
+	<span class="blue">有另一个身影坐在其身边。</span>
+	<<elseif $smuggler_stolen_stat is 3>>
+	<span class="blue">另一个身影站其身边，</span>其中一只手握着的东西看起来像武器。
+	<<elseif $smuggler_stolen_stat is 4>>
+	<span class="purple">另外两个人坐其身旁。</span>
+	<<elseif $smuggler_stolen_stat is 5>>
+	<span class="purple">另外两个家伙像守卫一样站其两侧。</span>
+	<<elseif $smuggler_stolen_stat is 6>>
+	<span class="pink">另外有三个家伙坐其旁边，这些家伙正沉默地凝视火光。</span>
+	<<elseif $smuggler_stolen_stat is 7>>
+	<span class="pink">另外三个家伙正在附近来回踱步，</span>你注意到其中的一个人隐藏在阴影当中。
+	<<elseif $smuggler_stolen_stat is 8>>
+	<span class="red">还有四个人与其坐在一起，</span>这些家伙坐在篝火旁，围成了一个圈。
+	<<else>>
+	<span class="red">你看到还有其他四个身影，</span>那些家伙正围绕着火堆踱步，好像在巡逻一样。
+	<</if>>
+	<br><br>
+<</widget>>
+
+<<widget "smugglerdifficultyactions">>
+	<<if $smuggler_stolen_stat is 0>>
+		<<set $skulduggerydifficulty to 100>>
+	<<elseif $smuggler_stolen_stat is 1>>
+		<<set $skulduggerydifficulty to 200>>
+	<<elseif $smuggler_stolen_stat is 2>>
+		<<set $skulduggerydifficulty to 300>>
+	<<elseif $smuggler_stolen_stat is 3>>
+		<<set $skulduggerydifficulty to 400>>
+	<<elseif $smuggler_stolen_stat is 4>>
+		<<set $skulduggerydifficulty to 500>>
+	<<elseif $smuggler_stolen_stat is 5>>
+		<<set $skulduggerydifficulty to 600>>
+	<<elseif $smuggler_stolen_stat is 6>>
+		<<set $skulduggerydifficulty to 700>>
+	<<elseif $smuggler_stolen_stat is 7>>
+		<<set $skulduggerydifficulty to 800>>
+	<<elseif $smuggler_stolen_stat is 8>>
+		<<set $skulduggerydifficulty to 900>>
+	<<else>>
+		<<set $skulduggerydifficulty to 1000>>
+	<</if>>
+	<<link [[偷取发光的物品|Smuggler Steal]]>><</link>><<skulduggerydifficulty>>
+	<br>
+<</widget>>
+
+<<widget "smugglerdifficultynpcs">>
+	<<if $smuggler_stolen_stat is 0>>
+		<<generate1>><<person1>>
+	<<elseif $smuggler_stolen_stat is 1>>
+		<<generate1>><<person1>>
+	<<elseif $smuggler_stolen_stat is 2>>
+		<<generate1>><<person1>><<generate2>>
+	<<elseif $smuggler_stolen_stat is 3>>
+		<<generate1>><<person1>><<generate2>>
+	<<elseif $smuggler_stolen_stat is 4>>
+		<<generate1>><<person1>><<generate2>><<generate3>>
+	<<elseif $smuggler_stolen_stat is 5>>
+		<<generate1>><<person1>><<generate2>><<generate3>>
+	<<elseif $smuggler_stolen_stat is 6>>
+		<<generate1>><<person1>><<generate2>><<generate3>><<generate4>>
+	<<elseif $smuggler_stolen_stat is 7>>
+		<<generate1>><<person1>><<generate2>><<generate3>><<generate4>>
+	<<elseif $smuggler_stolen_stat is 8>>
+		<<generate1>><<person1>><<generate2>><<generate3>><<generate4>><<generate5>>
+	<<else>>
+		<<generate1>><<person1>><<generate2>><<generate3>><<generate4>><<generate5>>
+	<</if>>
+<</widget>>
+
+<<widget "smugglerobject">>
+	你检查了一下这个东西。
+	<<if $smuggler_stolen_stat is 0>>
+		那是一个厚实的灰色金属管，在其一侧是一片薄薄的玻璃片，它不断地放出紫色的光。上面虽然有文字，但用的是你所不熟悉的语言。你不确定里面有什么，也不知道如何打开它。<span class="gold">你如果把它交给有黑社会关系的人，那么也许你会获得一些好处。</span>
+	<<elseif $smuggler_stolen_stat is 1>>
+		这是另一个灰色的管子，与你之前偷的那个一模一样，不过它摸起来有点热。
+	<<else>>
+		又一个灰色金属管，你想知道它们是用来做什么的。
+	<</if>>
+	<br><br>
+	<<set $blackmoney += 2000>>
+	<<set $smuggler_stolen_stat += 1>>
+	<<set $smuggler_timer to -1>>
+<</widget>>
+
+<<widget "destinationsmuggler">>
+	<<if $location is "forest">>
+		<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<elseif $location is "sea">>
+		<<link [[继续|Rocks]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<elseif $location is "sewers">>
+		<<link [[继续|Sewers Algae]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Bus Station]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</widget>>

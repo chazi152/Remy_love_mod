@@ -1,0 +1,386 @@
+:: Widgets State Man [widget]
+<<widget "stateman">>
+	<div @class="($debugLines ? 'debugLines-stateman' : '')">
+		<<if $position isnot "stalk">>
+			<<if $fightTargets is undefined or $fightTargets.length lte 0>>
+				<<set $_enemies to $enemyno>>
+			<<else>>
+				<<set $_enemies to $fightTargets.length>>
+			<</if>>
+			<<set _looks to "看起来">>
+			<<set _doesntlook to ($_enemies is 1? "doesn't look" : "don't look")>>
+			<<set _is to ($_enemies is 1? "is" : "are")>>
+			<<set $_n to 0>>
+			<<if $enemyno is 1 and $enemynomax gt 1>>
+				<<for $_i to 0; $_i lt $enemynomax; $_i++>>
+					<<if $NPCList[$_i].active is "active" and $NPCList[$_i].stance isnot "defeated">>
+						<<set $_n to $_i>>
+						<<break>>
+					<</if>>
+				<</for>>
+			<</if>>
+			<<if ["m", "f", "i", "n", "t"].includes($NPCList[$_n].pronoun)>>
+				<<set $pronoun to $NPCList[$_n].pronoun>>
+			<<elseif $options.debugdisable is "f">>
+				<span class="red">ERROR: Unexpected $$NPCList[0].pronoun: [$NPCList[0].pronoun]</span>
+			<</if>>
+			<<if $enemytype is "beast" and $monster is 0>>
+				<<set $pronoun to "i">>
+			<</if>>
+			<<if $_enemies gt 1>>
+				<<set $pronoun to "t">>
+			<</if>>
+
+			<<if $loveDrunk>>
+				<span class="lustful"><<He>>_looks<<print either("陶醉于爱情", "罪孽深重", "疯了", "欲火焚身", "极度狂喜")>>。</span>
+			<<elseif $enemyhealth gte $enemyhealthmax>>
+				<span class="red"><<He>>_looks很急切。</span>
+			<<elseif $enemyhealth gte ($enemyhealthmax / 5) * 4>>
+				<span class="pink"><<He>>_looks有些难受。</span>
+			<<elseif $enemyhealth gte ($enemyhealthmax / 5) * 3>>
+				<span class="purple"><<He>>_looks有些痛苦。</span>
+			<<elseif $enemyhealth gte ($enemyhealthmax / 5) * 2>>
+				<span class="blue"><<He>>_looks十分痛苦。</span>
+			<<elseif $enemyhealth gte ($enemyhealthmax / 5) * 1>>
+				<span class="lblue"><<He>>_looks受到了不少伤害。</span>
+			<<elseif $enemyhealth gt 0>>
+				<span class="teal"><<He>>看起来无法承受更多的痛苦。</span>
+			<<elseif $enemyhealth lte 0>>
+				<span class="green"><<He>>吃痛退开。</span>
+				<<combatcontrol 15>><<def 10>>
+			<</if>>
+
+			<<if $enemyarousal gte $enemyarousalmax>>
+				<<if $NPCList[0].penis isnot "none" and !npcHasStrapon(0)>>
+					<span class="red">射精迫在眉睫。</span>
+				<<else>>
+					<span class="red">高潮迫在眉睫。</span>
+				<</if>>
+			<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+				<span class="pink">你觉得<<he>>应该快要高潮了。</span>
+			<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 3>>
+				<span class="purple"><<He>>_looks充满欲望。</span>
+			<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+				<span class="blue"><<He>>_looks非常性奋。</span>
+			<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 1>>
+				<span class="lblue"><<He>>_looks被激起了性欲。</span>
+			<<elseif $enemyarousal gt 0>>
+				<span class="teal"><<He>>_looks有些兴奋。</span>
+			<<elseif $enemyarousal lte 0>>
+				<<if $_enemies gt 1>>
+					<span class="green"><<He>>_looks无动于衷。</span>
+				<<else>>
+					<<if $npcSub>>
+						<span class="green"><<He>>静静地躺着，就这样等待着你。</span>
+					<<else>>
+						<span class="green"><<He>>的下身<<if $NPCList[0].penis isnot "none">>软趴趴的<<else>>很干<</if>>。</span>
+					<</if>>
+				<</if>>
+			<</if>>
+
+			<<if $enemyanger gte $enemyangermax>>
+				<span class="red"><<He>>异常愤怒。</span>
+			<<elseif $enemyanger gte ($enemyangermax / 5) * 4>>
+				<span class="pink"><<He>>_looks非常生气。</span>
+			<<elseif $enemyanger gte ($enemyangermax / 5) * 3>>
+				<span class="purple"><<He>>_looks已经生气了。</span>
+			<<elseif $enemyanger gte ($enemyangermax / 5) * 2>>
+				<span class="blue"><<He>>_looks有些恼怒。</span>
+			<<elseif $enemyanger gte ($enemyangermax / 5) * 1>>
+				<span class="lblue"><<He>>_looks有些躁动。</span>
+			<<elseif $enemyanger gt 0>>
+				<span class="teal"><<He>>_looks有些失望。</span>
+			<<elseif $enemyanger lte 0>>
+				<span class="green"><<He>>_looks很平静。</span>
+			<</if>>
+
+			<<if $enemytrust lte -100>>
+				<span class="red"><<He>>_looks充满猜疑。</span>
+			<<elseif $enemytrust lte -60>>
+				<span class="pink"><<He>>_looks很警惕。</span>
+			<<elseif $enemytrust lte -20>>
+				<span class="purple"><<He>>_looks很谨慎。</span>
+			<<elseif $enemytrust lte 20>>
+				<span class="blue"><<He>>_looks有些谨慎。</span>
+			<<elseif $enemytrust lte 60>>
+				<span class="lblue"><<He>>_looks尚有疑虑。</span>
+			<<elseif $enemytrust lte 100>>
+				<span class="teal"><<He>>_looks很放松。</span>
+			<<elseif $enemytrust gt 100>>
+				<span class="green"><<He>>_looks对你很信任。</span>
+			<</if>>
+		<</if>>
+
+		<<if $panicviolence is 0 and $panicparalysis is 0 and $controlled is 0>>
+			<<if $panicattacks gte 1 and _panicchecked isnot true and random(1, 100) is 100>>
+				<<set $panicparalysis to 5>>
+			<</if>>
+			<<set _panicchecked to true>>
+			<<if $panicattacks gte 2 and _paniccheckedviolence isnot true and random(1, 100) is 100>>
+				<<set $panicviolence to 3>>
+				<<if $position is "stalk">>
+					<<set $feetuse to "run">>
+				<</if>>
+			<</if>>
+			<<set _paniccheckedviolence to true>>
+		<</if>>
+		<br><br>
+
+		<<if $arousal gte $arousalmax and $orgasmdown lte 0>>
+			<<orgasm>>
+		<</if>>
+		<<sexcheck>>
+	</div>
+
+	<<unset $speechcamerapose>>
+<</widget>>
+
+:: Widgets Combat State [widget]
+<<widget "combatstate">>
+	<<if _statechecked isnot true>>
+		<<if $gamemode is "soft">>
+			<<set $pain to 0>>
+		<</if>>
+		<<wetnessCalculate>>
+		<<if $orgasmdown gte 1>>
+			<<set $enemyarousal += 10>>
+			<span class="pink">你的身体因高潮袭来而不断地抽搐痉挛着，让你无法正常行动。</span>
+			<br>
+			<<disable>>
+			<<if $options.combatControls is "disabled" and $panicviolence lte 0 and $panicparalysis lte 0 and $trance lte 0>>
+				<<actionsorgasm>>
+			<</if>>
+		<</if>>
+
+		<<if $pain gte 100 and $willpowerpain is 0>>
+			<<set $enemyarousal += 10>>
+			<<if $possessed is true>>
+				<<if $orgasmdown lte 0>>
+					你无法承受更多的痛苦，<span class="red">但你的身体仍在抗争。</span>
+					<<trauma 12>><<ggtrauma>>
+					<br>
+				<</if>>
+			<<else>>
+				<span class="red">你伤的太重了，无法正常行动。</span>
+				<br>
+				<<disable>>
+				<<if $options.combatControls is "disabled" and $orgasmdown lte 0 and $panicviolence lte 0 and $panicparalysis lte 0 and $trance lte 0>>
+					<<actionspain>>
+				<</if>>
+			<</if>>
+		<</if>>
+
+		<<if $panicviolence gte 1 and !$possessed>>
+			<<set $enemyarousal += 10>>
+			<<if $position is "stalk">>
+				<span class="red">恐慌吞噬了你。你想要逃跑，逃离这个地方。</span>
+			<<else>>
+				<span class="red">你陷入恐慌，对任何侵犯你私人空间的事物疯狂地攻击着。</span>
+			<</if>>
+			<br>
+			<<defiance 10>><<set $panicviolence to $panicviolence - 1>><<disable>>
+		<</if>>
+
+		<<if $panicparalysis gte 1 and !$possessed>>
+			<<set $enemyarousal += 10>>
+			<<if $position is "stalk">>
+				<span class="red">你陷入恐慌。你的肌肉紧绷起来，让你无法动弹。</span>
+			<<else>>
+				<span class="red">你陷入恐慌。你的肌肉紧绷起来，让你无能为力。</span>
+			<</if>>
+			<br>
+			<<set $panicparalysis -= 1>><<disable>>
+		<</if>>
+
+		<<if $dissociation gte 2 and !$possessed>>
+			<<set $enemyarousal += 10>>
+			世界似乎与你脱离了联系……感觉就像梦一样。
+			<br>
+			<<disable>>
+			<<if $options.combatControls is "disabled" and $orgasmdown lte 0 and $panicviolence lte 0 and $panicparalysis lte 0 and $trance lte 0>>
+				<<if $pain lt 100 or $willpowerpain is undefined>>
+					<<actionsdissociation>>
+				<</if>>
+			<</if>>
+		<</if>>
+
+		<<if $trance gte 1>>
+			<<set $enemyarousal += 10>>
+			你被迷住了。
+			<br>
+			<<disable>>
+		<</if>>
+
+		<<if $possessed is true>>
+			<<if $orgasmdown lte 0>>
+				你的身体不再属于你自己。<<if $rng gte 96>><span class="fading">事实上，它从来都不是。</span><</if>>
+				<br>
+			<</if>>
+			<<disable>>
+			<<if $options.combatControls is "disabled" and $dissociation lte 1 and $orgasmdown lte 0 and $panicviolence lte 0 and $panicparalysis lte 0 and $trance lte 0>>
+				<<actionspossessed>>
+			<</if>>
+			/* Updates the control caption at the top of the screen to include any control gained through the rest of the passage */
+			<<run $(()=>{
+				Dynamic.render("control-caption")
+			})>>
+			/* Adds the condition for ending an encounter. */
+			<<if $control gte $controlmax>>
+				<<set _controlRegain to 1>>
+			<</if>>
+		<</if>>
+		<<set _statechecked to true>>
+	<</if>>
+<</widget>>
+
+<<widget "carryblock">>
+	<<if $orgasmdown gte 1>>
+		<<set $carryblock to "orgasm">>
+	<<elseif $pain gte 100 and $willpowerpain is 0>>
+		<<set $carryblock to "pain">>
+	<<elseif $dissociation gte 2>>
+		<<set $carryblock to "dissociation">>
+	<<elseif $panicviolence gte 1>>
+		<<set $carryblock to 1>>
+	<<elseif $panicparalysis gte 1>>
+		<<set $carryblock to 1>>
+	<<elseif $trance gte 1>>
+		<<set $carryblock to 1>>
+	<<else>>
+		<<set $carryblock to 0>>
+	<</if>>
+<</widget>>
+
+<<widget "actioncarry">>
+	<<if $carryblock is 0>>
+		<<set $leftactioncarry to $leftactiondefault>>
+		<<set $rightactioncarry to $rightactiondefault>>
+		<<set $feetactioncarry to $feetactiondefault>>
+		<<set $mouthactioncarry to $mouthactiondefault>>
+		<<set $vaginaactioncarry to $vaginaactiondefault>>
+		<<set $penisactioncarry to $penisactiondefault>>
+		<<set $anusactioncarry to $anusactiondefault>>
+		<<set $thighactioncarry to $thighactiondefault>>
+		<<set $cheekactioncarry to $cheekactiondefault>>
+		<<set $chestactioncarry to $chestactiondefault>>
+	<<elseif $carryblock is "pain">>
+		<<set $leftactioncarrypain to $leftactiondefault>>
+		<<set $rightactioncarrypain to $rightactiondefault>>
+		<<set $feetactioncarrypain to $feetactiondefault>>
+		<<set $mouthactioncarrypain to $mouthactiondefault>>
+		<<set $vaginaactioncarrypain to $vaginaactiondefault>>
+		<<set $penisactioncarrypain to $penisactiondefault>>
+		<<set $anusactioncarrypain to $anusactiondefault>>
+		<<set $thighactioncarrypain to $thighactiondefault>>
+		<<set $cheekactioncarrypain to $cheekactiondefault>>
+		<<set $chestactioncarrypain to $chestactiondefault>>
+	<<elseif $carryblock is "orgasm">>
+		<<set $leftactioncarryorgasm to $leftactiondefault>>
+		<<set $rightactioncarryorgasm to $rightactiondefault>>
+		<<set $feetactioncarryorgasm to $feetactiondefault>>
+		<<set $mouthactioncarryorgasm to $mouthactiondefault>>
+		<<set $vaginaactioncarryorgasm to $vaginaactiondefault>>
+		<<set $penisactioncarryorgasm to $penisactiondefault>>
+		<<set $anusactioncarryorgasm to $anusactiondefault>>
+		<<set $thighactioncarryorgasm to $thighactiondefault>>
+		<<set $cheekactioncarryorgasm to $cheekactiondefault>>
+		<<set $chestactioncarryorgasm to $chestactiondefault>>
+	<<elseif $carryblock is "dissociation">>
+		<<set $leftactioncarrydissociation to $leftactiondefault>>
+		<<set $rightactioncarrydissociation to $rightactiondefault>>
+		<<set $feetactioncarrydissociation to $feetactiondefault>>
+		<<set $mouthactioncarrydissociation to $mouthactiondefault>>
+		<<set $vaginaactioncarrydissociation to $vaginaactiondefault>>
+		<<set $penisactioncarrydissociation to $penisactiondefault>>
+		<<set $anusactioncarrydissociation to $anusactiondefault>>
+		<<set $thighactioncarrydissociation to $thighactiondefault>>
+		<<set $cheekactioncarrydissociation to $cheekactiondefault>>
+		<<set $chestactioncarrydissociation to $chestactiondefault>>
+	<</if>>
+	<<set $carryblock to 0>>
+<</widget>>
+
+<<widget "actioncarrydrop">>
+	<<if $orgasmdown gte 1>>
+		<<set $leftactiondefault to $leftactioncarryorgasm>>
+		<<set $rightactiondefault to $rightactioncarryorgasm>>
+		<<set $feetactiondefault to $feetactioncarryorgasm>>
+		<<set $mouthactiondefault to $mouthactioncarryorgasm>>
+		<<set $vaginaactiondefault to $vaginaactioncarryorgasm>>
+		<<set $penisactiondefault to $penisactioncarryorgasm>>
+		<<set $anusactiondefault to $anusactioncarryorgasm>>
+		<<set $thighactiondefault to $thighactioncarryorgasm>>
+		<<set $cheekactiondefault to $cheekactioncarryorgasm>>
+		<<set $chestactiondefault to $chestactioncarryorgasm>>
+	<<elseif $pain gte 100 and $willpowerpain is 0>>
+		<<set $leftactiondefault to $leftactioncarrypain>>
+		<<set $rightactiondefault to $rightactioncarrypain>>
+		<<set $feetactiondefault to $feetactioncarrypain>>
+		<<set $mouthactiondefault to $mouthactioncarrypain>>
+		<<set $vaginaactiondefault to $vaginaactioncarrypain>>
+		<<set $penisactiondefault to $penisactioncarrypain>>
+		<<set $anusactiondefault to $anusactioncarrypain>>
+		<<set $thighactiondefault to $thighactioncarrypain>>
+		<<set $cheekactiondefault to $cheekactioncarrypain>>
+		<<set $chestactiondefault to $chestactioncarrypain>>
+	<<elseif $dissociation gte 2>>
+		<<set $leftactiondefault to $leftactioncarrydissociation>>
+		<<set $rightactiondefault to $rightactioncarrydissociation>>
+		<<set $feetactiondefault to $feetactioncarrydissociation>>
+		<<set $mouthactiondefault to $mouthactioncarrydissociation>>
+		<<set $vaginaactiondefault to $vaginaactioncarrydissociation>>
+		<<set $penisactiondefault to $penisactioncarrydissociation>>
+		<<set $anusactiondefault to $anusactioncarrydissociation>>
+		<<set $thighactiondefault to $thighactioncarrydissociation>>
+		<<set $cheekactiondefault to $cheekactioncarrydissociation>>
+		<<set $chestactiondefault to $chestactioncarrydissociation>>
+	<<else>>
+		<<set $leftactiondefault to $leftactioncarry>>
+		<<set $rightactiondefault to $rightactioncarry>>
+		<<set $feetactiondefault to $feetactioncarry>>
+		<<set $mouthactiondefault to $mouthactioncarry>>
+		<<set $vaginaactiondefault to $vaginaactioncarry>>
+		<<set $penisactiondefault to $penisactioncarry>>
+		<<set $anusactiondefault to $anusactioncarry>>
+		<<set $thighactiondefault to $thighactioncarry>>
+		<<set $cheekactiondefault to $cheekactioncarry>>
+		<<set $chestactiondefault to $chestactioncarry>>
+	<</if>>
+<</widget>>
+:: Widgets Combat Effects [widget]
+<<widget "combateffects">>
+	<<if $trauma gte $traumasaved>>
+		<<set $traumagain += ($trauma - $traumasaved)>>
+	<</if>>
+	<<if $trauma lte 0>>
+		<<set $traumasaved to 0>>
+	<<else>>
+		<<set $traumasaved to $trauma>>
+	<</if>>
+	<<if $stress gte $stresssaved>>
+		<<set $stressgain += ($stress - $stresssaved)>>
+	<</if>>
+	<<if $stress lte 0>>
+		<<set $stresssaved to 0>>
+	<<else>>
+		<<set $stresssaved to $stress>>
+	<</if>>
+	<<set $enemyanger to Math.clamp($enemyanger, 0, 200)>>
+<</widget>>
+
+/* Use first parameter to override the output text <<alarmstate "Custom line">> */
+/* Use <<alarmstate 1>> if you want to set $alarm to 0 later in the passage */
+<<widget "alarmstate">>
+	<<if $alarm is 1 and $rescue is 0>>
+		<<if _args[0] isnot 1 and _args[1] isnot 1>>
+			<<set $alarm to 0>>
+		<</if>>
+		<<if _args[0] is undefined or _args[0] is 1>>
+			<span class="red">没有人来救你。</span>
+			<<if $drugged gte 1>>药物抑制了你的声音，你的哭泣软弱无力。<</if>>
+		<<else>>
+			_args[0]
+		<</if>>
+		<br><br>
+	<</if>>
+<</widget>>

@@ -1,0 +1,1013 @@
+:: Lake Underwater
+
+<<set $outside to 0>><<set $location to "lake_ruin">><<set $bus to "lakeunderwater">><<underwater>><<effects>><<lakeeffects>>
+<<if $stress gte $stressmax and !$possessed>>
+	<<passoutlake>>
+<<elseif $foresthunt gte 10>>
+	<<foresthunt>>
+<<elseif wraithCanHunt() and $wraith.state and $wraith.hunt is 0 and $wraith.timer gte random(0, 10) and !$possessed>>
+	<<wHunt "lake">>
+<<else>>
+	<<if Time.season is "winter">>
+		你在湖底。 你在水晶天花板下游泳，在高大的杂草之间。
+		<<if Time.dayState is "night">>
+			<<if $weather is "snow">>
+				冰面上漆黑一片。
+			<<elseif $weather is "clear">>
+				苍白的月光洒落了下来。
+			<<else>>
+				冰是黑色的。
+			<</if>>
+		<<else>>
+			<<if $weather is "snow">>
+				冰是白色的。
+			<<elseif $weather is "clear">>
+				阳光穿透而下。
+			<<else>>
+				冰面被黯淡的灰色所笼罩着。
+			<</if>>
+		<</if>>
+	<<else>>
+		你正处于湖的正下方，在那如水晶般的湖面下的高大水草间游着泳。
+		<<if Time.dayState is "night">>
+			<<if $weather is "rain">>
+				你正处于湖的正下方，在那黑暗淤泥上的高大水草间游着泳。
+			<<elseif $weather is "clear">>
+				植物在月光下闪烁着光芒。
+			<<else>>
+				水是黑色的。
+			<</if>>
+		<<else>>
+			<<if $weather is "rain">>
+				水面上漆黑一片，这使落在其中的雨滴更显黯淡。
+			<<elseif $weather is "clear">>
+				阳光刺破了阴霾。
+			<<else>>
+				水很暗。
+			<</if>>
+		<</if>>
+	<</if>>
+	<<if !Time.schoolDay and $weather is "snow" and Time.dayState is "day" and $mason_ice_lake gte 1>>
+		透过那些植物，你看见了梅森的身影。
+	<</if>>
+	<br><br>
+	<<if !Time.schoolDay and $weather is "snow" and Time.dayState is "day" and $mason_ice_lake is undefined>>
+		<<set $mason_ice_lake to 1>>
+		<<npc Mason>><<person1>>
+		黑暗中隐约出现一个轮廓，一条强壮的手臂突然紧紧地抓住了你，在与结实肌肉紧贴了一会之后，你回到了光明当中。
+		<br><br>
+
+		在你被推到冰面上后，那个身影也接着爬了上来。是梅森，正穿着潜水服的梅森。
+
+		<<if $exposed gte 1>>
+			<<He>>从岸边的一个袋子里拿出一条毛巾，然后把它裹在了你的身上。
+			<<towelup>>
+		<</if>>
+		虽然<<He>>在那里直打冷颤，但<<He>>看起来似乎更关心你有没有问题。
+		<br><br>
+
+		"你不该在每年的这个时候潜水，"<<he>>说道："这是很危险的。"
+		<br><br>
+
+		<<link [[安慰|Lake Mason Reassure]]>><</link>><<swimmingdifficulty 600 1000>>
+		<br>
+		<<link [[感谢|Lake Mason Thank]]>><<npcincr Mason love 1>><</link>><<glove>>
+		<br>
+		<<link [[生气|Lake Mason Angry]]>><<def 1>><<npcincr Mason love -1>><</link>><<llove>>
+		<br>
+	<<elseif !Time.schoolDay and $weather is "snow" and Time.dayState is "day" and $mason_ice_lake is 1 and random(1, 5) is 5>>
+		<<npc Mason>><<person1>>
+		梅森发现了你，并朝你的方向加速而来。<<He>>抱起你朝着光亮的地方踢去，你被带回了冰面上。
+		<br><br>
+
+		<<if $exposed gte 1>>
+			<<He>>从岸边的一个袋子里拿出一条毛巾，然后把它裹在了你的身上。
+			<<towelup>>
+		<</if>>
+		虽然<<He>>在那里直打冷颤，但<<He>>看起来似乎更关心你有没有问题。
+		<br><br>
+		"我欣赏你急切的心情，"<<he>>说道，"但我说的是真的，这确实很危险，我不能让学生单独去那里。"
+		<br><br>
+
+		<<link [[安慰|Lake Mason Reassure]]>><</link>><<swimmingdifficulty 600 1000>>
+		<br>
+		<<link [[感谢|Lake Mason Thank]]>><</link>>
+		<br>
+		<<link [[生气|Lake Mason Angry]]>><</link>>
+		<br>
+	<<else>>
+		<<if $nextPassageCheck is "Lake Ruin">>
+			<span class="nextLink"><<link [[在废墟中游泳|Lake Ruin]]>><<wateraction>><</link>><<loxygen>></span>
+		<<else>>
+			<<link [[在废墟中游泳|Lake Ruin]]>><<wateraction>><</link>><<loxygen>>
+		<</if>>
+		<br><br>
+		<<if !Time.schoolDay and $weather is "snow" and Time.dayState is "day">>
+			<<set $lake_ice_broken to 1>>
+		<</if>>
+		<<if Time.season is "winter">>
+			<<if $lake_ice_broken is undefined>>
+				<<link [[向水面游去|Lake Underwater Ice]]>><</link>>
+				<br>
+			<<else>>
+				<<link [[向水面游去|Lake Depths Ice]]>><</link>>
+				<br>
+			<</if>>
+		<<else>>
+			<<link [[向水面游去|Lake Depths]]>><<set $lakesurface to 1>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<</if>>
+
+:: Lake Underwater Ice
+<<underwater>><<effects>>
+
+你游到了水面上，<span class="red">但你找不到冰面上的洞了！</span> 它被冻上了!<<ggstress>><<stress 18>>
+<br><br>
+
+<<link [[砸开|Lake Underwater Ice Smash]]>><<wateraction>><<pain 4>><</link>><<physiquedifficulty 1 $physiquemax>><<loxygen>><<gpain>>
+<br>
+<<link [[保持镇静，寻找洞口|Lake Underwater Ice Calm]]>><<wateraction>><</link>><<willpowerdifficulty 1 $willpowermax>><<loxygen>>
+<br>
+<<link [[向下游|Lake Underwater]]>><<wateraction>><</link>><<loxygen>>
+<br>
+
+
+:: Lake Underwater Ice Smash
+<<underwater>><<effects>>
+
+<<if $physiqueSuccess>>
+	你用你的<<if $leftarm is "bound" and $rightarm is "bound">>脚<<else>>拳头<</if>>用力砸向冰面。<span class="green">你听到了冰面开始裂开的声音.</span>你不断地敲打，你的力量也因缺氧的恐慌而增强，你成功设法敲开了一个足够大的洞，以便于你爬出去。
+	<br><br>
+	<<earnFeat "Under the Ice">>
+	你成功将自己挪到了湖面上.
+	<br><br>
+	<<set $location to "lake">>
+	<<set $lake_ice_broken to 2>>
+	<<link [[继续|Lake Depths Ice]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	你用你的<<if $leftarm is "bound" and $rightarm is "bound">>脚<<else>>拳头<</if>>用力砸向冰面。<span class="red">但它并没有要裂开的迹象</span>。
+	<br><br>
+
+	<<link [[继续尝试|Lake Underwater Ice Smash]]>><<wateraction>><<pain 4>><</link>><<physiquedifficulty 1 $physiquemax>><<loxygen>><<gpain>>
+	<br>
+	<<link [[保持镇静，寻找洞口|Lake Underwater Ice Calm]]>><<wateraction>><</link>><<willpowerdifficulty 1 $willpowermax>><<loxygen>>
+	<br>
+	<<link [[向下游|Lake Underwater]]>><<wateraction>><</link>><<loxygen>>
+	<br>
+<</if>>
+
+
+:: Lake Underwater Ice Calm
+<<underwater>><<effects>>
+
+<<if $willpowerSuccess>>
+	你无法通过呼吸来集中自己的注意力，但你可以感觉到周围的水流。冰不会永远是固体的，快没有时间了。
+	<br><br>
+	在冷静下来之后，你看到了出口，就在离你不远的地方。你游过去，推着冻住的冰盖.<span class="green">你轻轻地碰了它一下，它就碎掉了.</span>
+	<br><br>
+	<<earnFeat "Under the Ice">>
+	你成功将自己挪到了湖面上.
+	<br><br>
+	<<set $location to "lake">>
+	<<set $lake_ice_broken to 2>>
+	<<link [[继续|Lake Depths Ice]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	你通常会通过深呼吸来保持平静，但你现在甚至都无法那么做.<span class="red">在这种疯狂的状态下，</span>你将自己贴到了冰面上，<span class="red">在这种恍惚和绝望的情况下.</span><<gtrauma>><<trauma 6>><<ggwillpower>><<willpower 3>>
+	<br><br>
+
+	<<link [[砸开|Lake Underwater Ice Smash]]>><<wateraction>><<pain 4>><</link>><<physiquedifficulty 1 $physiquemax>><<loxygen>><<gpain>>
+	<br>
+	<<link [[继续尝试|Lake Underwater Ice Calm]]>><<wateraction>><</link>><<willpowerdifficulty 1 $willpowermax>><<loxygen>>
+	<br>
+	<<link [[向下游|Lake Underwater]]>><<wateraction>><</link>><<loxygen>>
+	<br>
+<</if>>
+
+
+:: Lake Ruin
+
+<<set $outside to 0>><<set $location to "lake_ruin">><<set $bus to "lake_ruin">><<underwater>><<effects>><<lakeeffects>>
+你正待在湖底的水下废墟中，荧光的紫色地衣覆盖在古老的墙壁上。
+<<if $wraithPrison or $sciencelichenlake is 1 or $scienceproject is "won" or $scienceproject is "done">>
+	在一处较为平坦的墙壁处，一个奇怪的符文正在闪烁着光芒。
+<</if>>
+<br><br>
+<<if $stress gte $stressmax and !$possessed>>
+	<<passoutlake>>
+<<elseif $foresthunt gte 10>>
+	<<foresthunt>>
+<<elseif wraithCanHunt() and $wraith.state and $wraith.hunt is 0 and $wraith.timer gte random(0, 10) and !$possessed>>
+	<<wHunt "lake">>
+<<else>>
+	<<if $sciencelichenknown is 1 and $sciencelichenlake isnot 1 and $scienceproject is "ongoing">>
+		<<link [[为你的科学项目采集地衣|Lake Lichen]]>><<set $sciencelichenlake to 1>><<wateraction>><</link>><<loxygen>>
+		<br>
+	<</if>>
+	<<if $nextPassageCheck is "Lake Ruin Prison Intro">>
+		<span class="nextLink"><<link [[视察符文|Lake Ruin Prison Intro]]>><<wateraction>><</link>><<loxygen>></span>
+		<br>
+	<<elseif $wraithPrison or $sciencelichenlake is 1 or $scienceproject is "won" or $scienceproject is "done">>
+		<<link [[检查符文|Lake Ruin Symbol]]>><<wateraction>><</link>><<loxygen>>
+		<br>
+	<</if>>
+	<<link [[向深处游去|Lake Ruin Deep]]>><<wateraction>><</link>><<loxygen>>
+	<br>
+	<<link [[向水面游去|Lake Underwater]]>><<wateraction>><</link>><<loxygen>>
+	<br>
+<</if>>
+
+:: Lake Ruin Symbol
+<<set $outside to 0>><<set $location to "lake_ruin">><<set $bus to "lake_ruin">><<underwater>><<effects>><<lakeeffects>>
+你用手摸索了一下那个符文，但什么也没有发生。
+<br><br>
+<<if $wraithPrison>>
+	你颤抖着，因为你知道了另一边是什么东西。
+	<br><br>
+<</if>>
+<<link [[继续|Lake Ruin]]>><</link>>
+<br>
+
+:: Lake Ruin Deep
+
+<<set $outside to 0>><<set $location to "lake_ruin">><<set $bus to "lake_ruin_deep">><<underwater>><<effects>><<lakeeffects>>
+你正待在湖下废墟深处，大小不一的罐子摆满了整个房间，而在入口的对面有一扇古老的门矗立在那里。
+<<if $lakeruinkey isnot 2>>
+	它已经关闭了。
+<<else>>
+	打开了。
+<</if>>
+<br><br>
+<<if $stress gte $stressmax and !$possessed>>
+	<<passoutlake>>
+<<elseif $foresthunt gte 10>>
+	<<foresthunt>>
+<<elseif wraithCanHunt() and $wraith.state and $wraith.hunt is 0 and $wraith.timer gte random(0, 10) and !$possessed>>
+	<<wHunt "lake">>
+<<else>>
+	<<if $lakeruinkey is 1>>
+		<<link [[使用青铜钥匙|Lake Ruin Door]]>><<wateraction>><</link>><<loxygen>>
+		<br>
+	<</if>>
+	<<link [[搜索罐子|Lake Pots]]>><<wateraction>><</link>><<loxygen>>
+	<br>
+	<<if $lakeruinkey is 2>>
+		<<link [[游向那个有着基座的房间|Lake Ruin Plinth]]>><<wateraction>><</link>><<loxygen>>
+		<br>
+	<</if>>
+	<br>
+	<<if $nextPassageCheck is "Lake Ruin">>
+		<span class="nextLink"><<link [[游向出口|Lake Ruin]]>><<wateraction>><</link>><<loxygen>></span>
+	<<else>>
+		<<link [[游向出口|Lake Ruin]]>><<wateraction>><</link>><<loxygen>>
+	<</if>>
+	<br>
+<</if>>
+
+:: Lake Ruin Door
+
+<<set $outside to 0>><<set $location to "lake_ruin">><<underwater>><<effects>><<lakeeffects>>
+<<set $lakeruinkey to 2>>
+你听到古老齿轮的运转声，随后门呻吟着打开了。门后是一个基座，它就孤零零地立在一个布满碎石的房间里。一条象牙项链被放在基座顶部，蓝色的宝石镶嵌其上。
+<br><br>
+<<link [[往里游|Lake Ruin Plinth]]>><</link>>
+<br>
+
+:: Lake Ruin Sit
+<<set $outside to 0>><<set $location to "lake_ruin">><<underwater>><<effects>><<lakeeffects>>
+
+你抓住矮柱，把你的<<bottom>>紧贴着它。你一触摸，一盏红灯亮起，照亮了房间。之前未曾见过的雕像从上面凝视着你。
+<br><br>
+你猛地后退，痉挛着。房间摇晃颤动，地板上出现了一道裂缝。它变宽了，更多的红光透了进来。
+<<if $parasite.left_ear.name is "slime" and $parasite.right_ear.name is "slime">>
+	你感觉到史莱姆从你的耳朵里蠕动着。它们消失在了裂缝里。
+<<else>>
+	你感觉到史莱姆从你的耳朵里蠕动着。它消失在了裂缝里。
+<</if>>
+<br><br>
+
+<<set $corruption_slime to 1>>
+
+<<if $slime_tf is 1>>
+	<<set $slime_tf to 0>>
+	<<set $physicalTransform to 0>>
+<</if>>
+
+<<if $parasite.left_ear.name is "slime" or $parasite.right_ear.name is "slime">>
+	<<unset $alwaysSleepNaked>>
+	<<unset $slimeEvent>>
+<</if>>
+
+<<if $parasite.left_ear.name is "slime">>
+	<<removeparasite left_ear>>
+<</if>>
+<<if $parasite.right_ear.name is "slime">>
+	<<removeparasite right_ear>>
+<</if>>
+<<set $noEarSlime to true>>
+
+<<if $tentacledisable is "f">>
+
+	光线消失了，一切都变得安静了。但你感觉到了一个存在。有东西留了下来。
+	<br><br>
+
+	十几根触手沿着矮柱蜷曲而上，形成了一个囚笼把你围住。
+	<br><br>
+
+	<<link [[继续|Lake Ruin Sit Tentacles]]>><<set $molestationstart to 1>><</link>>
+	<br>
+
+<<else>>
+
+	<<link [[继续|Lake Ruin Plinth]]>><</link>>
+	<br>
+
+<</if>>
+
+:: Lake Ruin Sit Tentacles
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $combat to 1>>
+	<<set $enemytype to "tentacles">>
+	<<controlloss>>
+	<<molested>>
+	<<tentaclestart 16 16>>
+<</if>>
+<<statetentacles>>
+
+<<underwater>><<effects>>
+<<effectstentacles>>
+<<tentacles>>
+<<actionstentacles>>
+<<if $tentacles.active lte ($tentacles.max / 2)>>
+	<span id="next"><<link [[继续|Lake Ruin Sit Tentacles Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Lake Ruin Sit Tentacles]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Lake Ruin Sit Tentacles Finish
+
+<<underwater>><<effects>>
+生物从你那里缩回，消失在黑暗中。<<tearful>>你四处张望，但没有看到其他威胁。
+<<clotheson>>
+<<endcombat>>
+<<link [[继续|Lake Ruin Plinth]]>><<set $phase to 1>><</link>>
+<br>
+
+:: Lake Ruin Plinth
+
+<<set $outside to 0>><<set $location to "lake_ruin">><<underwater>><<effects>><<lakeeffects>>
+你深入了湖泊废墟，身处一个小房间里，有一个矮柱。
+<<if $museumAntiques.antiques.antiqueivorynecklace is "notFound">>
+	一条象牙项链放在上面。项链上镶有蓝色的宝石。
+<</if>>
+<<set _leave to 1>>
+<<set _bmoon to isBloodmoon()>>
+<<set _parasite to ($parasite.left_ear.name is "slime" or $parasite.right_ear.name is "slime")>>
+<<if _bmoon>>
+	/* Display these on every blood moon entry */
+	<<if $wraith.hunt>>
+		你感觉到追踪你的存在停了下来。<span class="blue">祂无法进入这里。</span>
+		<<set $wraith.hunt to 0>><<set $foresthunt to 0>><<set $wraith.timer += 5>>
+	<</if>>
+	红月光从天花板的裂缝中过滤下来。虽然不多，但光线照在矮柱上，看起来很耀眼。
+	<<if $moonEvent and !_parasite and $worn.genitals.name is "gold chastity belt">>
+		/* Moon event if no parasites and has gold cb */
+		<<unset $moonEvent>><<set $worn.genitals.integrity *= 0.5>><<control 50>>
+		你被矮柱吸引了，感觉到一种奇怪的平静。
+		<<gggcontrol>><br><br>
+		<<set $phase to 1>>
+	<</if>>
+<</if>>
+<<if _bmoon and _parasite>>
+	/* Clear the possibility of the other moon event, but this event can be revisited if it is skipped */
+	<<unset $moonEvent>>
+	你感觉到祂在拉扯你。
+	<br><br>
+
+	<<link [[坐在矮柱上|Lake Ruin Sit]]>><</link>>
+	<br>
+<<elseif $tentacledisable is "f" and $hallucinations gte 2 and !_bmoon>>
+	你环顾空荡荡的房间。除了底座<<if $museumAntiques.antiques.antiqueivorynecklace is "notFound">>和项链<</if>>之外，你什么都看不到，但你听到了微弱的滑行声。<span class="blue">有东西在看着你。</span>
+	<br><br>
+
+	<<link [[摸索|Lake Ruin Deep Offer]]>><<loxygen>><</link>>
+	<br>
+<<elseif $tentacledisable is "f" and _bmoon and $phase isnot 1 and $museumAntiques.antiques.antiqueivorynecklace isnot "notFound">>
+	<<set _leave to 0>>
+	<br><br>
+	你感觉到水在你周围激动不安地翻腾着，当你四处张望时，水变得越来越不安。在暗处，被红色月光微弱照亮的地方，触手突然挥动着。<span class="red">其中两根缠绕在你的脚踝上，开始将你拉往房间深处！</span>
+	<br><br>
+
+	<<link [[顺从|Lake Ruin Deep NonConsentacles]]>><<set $molestationstart to 1>><</link>>
+	<br>
+	<<link [[逃脱|Lake Ruin Deep Consentacles Leave]]>><<loxygen>><</link>><<swimmingdifficulty 600 1200>>
+	<br>
+<<elseif _bmoon>>
+	你周围的水异常安静，死一般的寂静，房间只有微弱的红色光芒照亮。
+	<br><br>
+<<else>>
+	在黑暗的房间里，水随着你的动作摇摆。
+	<br><br>
+<</if>>
+<<if _leave>>
+	<<if $museumAntiques.antiques.antiqueivorynecklace is "notFound">>
+		<<link [[拿走项链|Lake Ruin Ivory]]>><<set $antiquemoney += 2000>><<museumAntiqueStatus "antiqueivorynecklace" "found">><<set $necklaceThief to "player">><</link>>
+		<br>
+	<</if>>
+	<<link [[离开|Lake Ruin Deep]]>><<set $phase to 0>><</link>>
+	<br>
+<</if>>
+
+:: Lake Ruin Ivory
+<<effects>>
+你把项链从底座上拿起来。工艺精湛，你感觉这对某人来说意味着很多。
+<br><br>
+<<if C.npc["Ivory Wraith"].init is 1>>
+	<<set C.npc["Ivory Wraith"].lust to 20>>
+<</if>>
+<<if isBloodmoon()>>
+	你突然听到周围墙壁的撞击声。<<if $wraith.seen gte 1>>一个熟悉的<<else>>一个陌生的<</if>>声音在叫喊，感觉好像有什么东西在抓住你的胳膊和腿。你本能地连枷并将自己向后推入水中。<<trauma 12>><<ggtrauma>>
+	<br><br>
+	几秒钟后，声音消失了，让你感到恐惧。
+	<<if $wraith.hunt>>
+		恐惧慢慢消退，你再也感觉不到追逐你的存在。<span class="blue"><i>在下一个血月之前，你是安全的。</i></span>
+		<br><br>
+	<</if>>
+	<<if $wraith>>
+		<<set $wraith.state to "">>
+		<<clearWraith>>
+		<<set $wraithSkip to true>>
+	<</if>>
+	<<tearful>>你离开房间。
+<<elseif $wraith.state>>
+	当你看着蓝宝石中的反射时，你感到一阵恐惧。你的脸色苍白。<<stress 6>><<gstress>>
+	<br><br>
+	你决定不再逗留，手持项链离开了房间。
+<<else>>
+	你可以在蓝色宝石中看到自己的倒影。这将卖个好价钱。
+<</if>>
+<br><br>
+<<link [[继续|Lake Ruin Deep]]>><</link>>
+<br>
+
+:: Lake Ruin Deep Offer
+
+<<set $outside to 0>><<set $location to "lake_ruin">><<underwater>><<effects>><<lakeeffects>>
+无论你面对哪个方向，它似乎都在你身后。你感觉到一种渴望。
+<br><br>
+<<if $deviancy gte 55>>
+	<<link [[献上自己|Lake Ruin Deep Offer 2]]>><<loxygen>><</link>><<deviant4>>
+	<br>
+<</if>>
+<<link [[离开|Lake Ruin Deep]]>><</link>>
+<br>
+
+:: Lake Ruin Deep Offer 2
+
+<<set $outside to 0>><<set $location to "lake_ruin">><<underwater>><<effects>><<lakeeffects>>
+<<if $museumAntiques.antiques.antiqueivorynecklace is "notFound">>
+	你小心翼翼地将项链移到一边。
+<</if>>
+<<if $exposed gte 2>>
+	你伸开手臂和腿，将身体呈现给房间中的事物。<<deviancy4>>
+<<else>>
+	<<strip>>
+	你脱光衣服，做出媚态，试图挑逗它。
+	<<deviancy4>>
+<</if>>
+片刻后，你感觉到几根触手从身后接近你。它们轻轻戳着、试探着你。尽管在水下，被它们触摸过的皮肤还是变得光滑起来。
+<br><br>
+几根触手开始探索你的身体，无论它们去到哪里，都留下了粘液。你感觉到两根触手缠绕在你的脚踝上。每当它们接触你的皮肤时，就会让你感到刺激的刺痛。当触手沿着你的大腿滑向你的<<genitals>>时，你被一种强烈的兴奋所填满。<<ggarousal>><<arousal 1500>>
+<br><br>
+<<link [[继续|Lake Ruin Deep Consentacles]]>><<loxygen>><<set $sexstart to 1>><</link>>
+<br>
+<<link [[逃脱|Lake Ruin Deep Consentacles Leave]]>><<loxygen>><</link>><<swimmingdifficulty 1 1000>>
+
+:: Lake Ruin Deep Offer 2 Leave
+
+感觉到即将来临的危险，你决定不冒任何风险，离开了房间。
+<br><br>
+<<link [[继续|Lake Ruin Deep]]>><<loxygen>><</link>>
+<br>
+
+:: Lake Ruin Deep Consentacles
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<set $enemytype to "tentacles">>
+	<<neutral 1>>
+
+	<<set $enemytrust += 100>>
+	<<tentaclestart 6 8>>
+<</if>>
+
+<<statetentacles>>
+
+
+<<underwater>><<effects>>
+<<effectstentacles>>
+<<tentacles>>
+<<actionstentacles>>
+<<if $tentacles.active lte ($tentacles.max / 2)>>
+	<span id="next"><<link [[继续|Lake Underwater Tentacles Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Lake Ruin Deep Consentacles]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Lake Ruin Deep Consentacles Leave
+
+决定你已经受够了，你试图解开自己，离开房间。
+<br><br>
+
+<<if $swimmingSuccess>>
+	<span class="green">你解开了脚踝，逃脱了。</span> 触手越来越绝望地抓住你，你勉强躲过一个朝你腿部射来的触手，穿过门口。触手从房间中伸出来，在墙上摸索着，但它们拒绝再追你了。它们悄悄地离开了。
+	<br><br>
+	<<link [[继续|Lake Ruin Deep]]>><<loxygen>><</link>>
+	<br>
+<<else>>
+	你试图向门口游去，<span class="red">但你无法解脱自己。</span> 缠绕着你脚踝的触手把你拖回到房间中央，而其他触手则从四面八方包围着你。
+	<br><br>
+	<<link [[继续|Lake Ruin Deep NonConsentacles]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Lake Ruin Deep NonConsentacles
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $combat to 1>>
+	<<set $enemytype to "tentacles">>
+	<<controlloss>>
+	<<molested>>
+	<<tentaclestart 6 8>>
+<</if>>
+<<statetentacles>>
+
+<<underwater>><<effects>>
+<<effectstentacles>>
+<<tentacles>>
+<<actionstentacles>>
+<<if $tentacles.active lte ($tentacles.max / 2)>>
+	<span id="next"><<link [[继续|Lake Underwater Tentacles Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Lake Ruin Deep NonConsentacles]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Lake Pots
+
+<<set $outside to 0>><<set $location to "lake_ruin">><<set $bus to "lake_ruin_deep">><<underwater>><<effects>><<lakeeffects>>
+<<if $stress gte $stressmax and !$possessed>>
+	<<passoutlake>>
+<<elseif $foresthunt gte 10>>
+	<<foresthunt>>
+<<else>>
+	<<if $rng gte 81>>
+		你伸手进了一个罐子里，找到了一个小的象牙盒。它被一把青铜锁密封着。
+		<br><br>
+		<<if $historytrait gte 4>>
+			盒子本身非常古老，一定很有价值。
+			<br><br>
+			<<link [[带走盒子|Lake Ruin Deep]]>><<set $antiquemoney += 20>><<museumAntiqueStatus "antiquebox" "found">><</link>>
+			<br>
+		<</if>>
+		<<set $skulduggerydifficulty to 300>>
+		<<link [[打开|Lake Ruin Box]]>><<wateraction>><</link>><<skulduggerydifficulty>><<loxygen>>
+		<br>
+		<<if $lakeruinkey is 1>>
+			<<link [[使用青铜钥匙|Lake Ruin Door]]>><<wateraction>><</link>><<loxygen>>
+			<br>
+		<</if>>
+		<<link [[搜索罐子|Lake Pots]]>><<wateraction>><</link>><<loxygen>>
+		<br>
+		<<if $lakeruinkey is 2>>
+			<<link [[游向那个有着基座的房间|Lake Ruin Plinth]]>><<wateraction>><</link>><<loxygen>>
+			<br>
+		<</if>>
+		<br>
+		<<link [[游向出口|Lake Ruin]]>><<wateraction>><</link>><<loxygen>>
+		<br>
+	<<elseif $rng gte 78 and $swarmdisable is "f">>
+		你伸手进了一个罐子里，发现一群小鱼涌出来，围绕着你。
+		<br><br>
+		<<link [[继续|Lake Swarm]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<elseif $rng gte 51>>
+		你伸手进了一个罐子里，底部有紫色的粉末。你的探索扰乱了它，它在你的手臂周围旋转。你感到热了。
+		<<gstress>><<stress `$swarmdisable is "t" and $rng gte 78 ? 6 : 3`>><<garousal>><<arousal 600>>
+		<br><br>
+		<<if $lakeruinkey is 1>>
+			<<link [[使用青铜钥匙|Lake Ruin Door]]>><<wateraction>><</link>><<loxygen>>
+			<br>
+		<</if>>
+		<<link [[搜索罐子|Lake Pots]]>><<wateraction>><</link>><<loxygen>>
+		<br>
+		<<if $lakeruinkey is 2>>
+			<<link [[游向那个有着基座的房间|Lake Ruin Plinth]]>><<wateraction>><</link>><<loxygen>>
+			<br>
+		<</if>>
+		<br>
+		<<link [[游向出口|Lake Ruin]]>><<wateraction>><</link>><<loxygen>>
+		<br>
+	<<elseif $rng gte 41 and $lakeruinkey is undefined>>
+		你伸手进一个罐子里，找到了一个腐烂的青铜钥匙。
+		<br><br>
+		<<set $lakeruinkey to 1>>
+		<<link [[用青铜钥匙打开门|Lake Ruin Door]]>><<wateraction>><</link>><<loxygen>>
+		<br>
+		<<link [[搜索罐子|Lake Pots]]>><<wateraction>><</link>><<loxygen>>
+		<br>
+		<<if $lakeruinkey is 2>>
+			<<link [[游向那个有着基座的房间|Lake Ruin Plinth]]>><<wateraction>><</link>><<loxygen>>
+			<br>
+		<</if>>
+		<br>
+		<<link [[游向出口|Lake Ruin]]>><<wateraction>><</link>><<loxygen>>
+		<br>
+	<<else>>
+		<<rng>>
+		<<if $rng gte 81>>
+			你伸手进一个罐子里，发现里面全是破陶瓷。
+		<<elseif $rng gte 61>>
+			你伸手进一个罐子里，里面有东西突然咬住了你。你及时把手拿开了，但是危险很近。
+			<<gstress>><<stress 3>>
+		<<elseif $rng gte 41>>
+			你伸手进一个罐子里，里面全是泥巴。
+		<<elseif $rng gte 21>>
+			你伸手进一个罐子里，里面全是小石子。
+		<<else>>
+			你伸手进一个罐子里，里面什么也没有。
+		<</if>>
+		<br><br>
+		<<if $lakeruinkey is 1>>
+			<<link [[使用青铜钥匙|Lake Ruin Door]]>><<wateraction>><</link>><<loxygen>>
+			<br>
+		<</if>>
+		<<link [[搜索罐子|Lake Pots]]>><<wateraction>><</link>><<loxygen>>
+		<br>
+		<<if $lakeruinkey is 2>>
+			<<link [[游向那个有着基座的房间|Lake Ruin Plinth]]>><<wateraction>><</link>><<loxygen>>
+			<br>
+		<</if>>
+		<br>
+		<<link [[游向出口|Lake Ruin]]>><<wateraction>><</link>><<loxygen>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Lake Swarm
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<molested>>
+	<<controlloss>>
+	<<set $combat to 1>>
+
+	<<set $enemytype to "swarm">>
+	<<swarminit "fish" "容器" "在摇晃" "破裂着" "稳定" 4 6>>
+	<<set $swimdistance to 8>>
+	<<set $water to 1>>
+<</if>>
+<<if $swimdistance gte 8>>
+	你被鱼群包围了。
+<<elseif $swimdistance gte 2>>
+	你正在逃离鱼群。
+<<else>>
+	你即将逃脱。
+<</if>>
+<<underwater>><<effects>><<swarmeffects>>
+<<swarm>>
+<<swarmactions>>
+<<if $stress gte $stressmax>>
+	<span id="next"><<link [[继续|Lake Swarm Finish]]>><</link>></span><<nexttext>>
+<<elseif $swimdistance lte 0>>
+	<span id="next"><<link [[继续|Lake Swarm Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Lake Swarm]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Lake Swarm Finish
+
+<<set $outside to 0>><<set $location to "lake_ruin">><<underwater>><<effects>><<lakeeffects>>
+<<if $stress gte $stressmax>>
+	这一切对你来说太多了，你晕倒了。
+	<br><br>
+	<<if $upperoff isnot 0>>
+		<<upperruined>>
+	<</if>>
+	<<if $loweroff isnot 0>>
+		<<lowerruined>>
+	<</if>>
+	<<if $underloweroff isnot 0>>
+		<<underlowerruined>>
+	<</if>>
+	<<if $underupperoff isnot 0>>
+		<<underupperruined>>
+	<</if>>
+	<<endcombat>>
+	<<passoutlake>>
+<<else>>
+	<<tearful>>你游离开了鱼群，它们留在了它们的罐子里。它们消失在罐子里。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[游向出口|Lake Ruin]]>><<wateraction>><</link>><<loxygen>>
+	<br>
+	<<link [[搜索罐子|Lake Pots]]>><<wateraction>><</link>><<loxygen>>
+	<br>
+<</if>>
+
+:: Lake Ruin Box
+
+<<set $outside to 0>><<set $location to "lake_ruin">><<underwater>><<effects>><<lakeeffects>>
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+	<<skulduggeryuse>>
+	<<if $rng gte 95>>
+		<<if random(0,100) gte 80>>
+			你发现了一个黄金做的贞操带。
+			<<set $antiquemoney += 2000>><<museumAntiqueStatus "antiquegoldchastitybelt" "found">>
+			<<set _goldchastity to true>>
+			<br><br>
+		<<else>>
+			你发现了一条金项链。
+			<<set $antiquemoney += 500>><<museumAntiqueStatus "antiquegoldnecklace" "found">>
+			<br><br>
+		<</if>>
+	<<else>>
+		你发现了一枚银戒指。
+		<<set $antiquemoney += 30>><<museumAntiqueStatus "antiquesilverring" "found">>
+		<br><br>
+	<</if>>
+	<<if $historytrait gte 4>>
+		你也拿走了这个空盒子。它应该放在博物馆里。
+		<<set $antiquemoney += 20>><<museumAntiqueStatus "antiquebox" "found">>
+		<br><br>
+	<</if>>
+
+	<<if $worn.genitals.name is "naked" and _goldchastity and playerBellySize() lte 7>>
+		<<link [[戴上它|Lake Gold Chastity Belt]]>><<wateraction>><</link>><<loxygen>>
+		<br>
+	<</if>>
+	<<link [[搜索罐子|Lake Pots]]>>
+	<<if _goldchastity>>
+		<<set $gold_chastity_held to true>>
+	<</if>>
+	<<wateraction>><</link>><<loxygen>>
+	<br>
+	<<link [[游向出口|Lake Ruin]]>>
+	<<if _goldchastity>>
+		<<set $gold_chastity_held to true>>
+	<</if>>
+	<<wateraction>><</link>><<loxygen>>
+	<br>
+<<else>>
+	你没能打开锁。
+	<br><br>
+	<<if $historytrait gte 4>>
+		<<link [[带走盒子|Lake Ruin Deep]]>><<set $antiquemoney += 20>><<museumAntiqueStatus "antiquebox" "found">><</link>>
+		<br>
+	<</if>>
+	<<link [[再次尝试|Lake Ruin Box]]>><<wateraction>><</link>><<skulduggerydifficulty>><<loxygen>>
+	<br>
+	<<link [[游向出口|Lake Ruin]]>><<wateraction>><</link>><<loxygen>>
+	<br>
+	<<link [[搜索罐子|Lake Pots]]>><<wateraction>><</link>><<loxygen>>
+	<br>
+<</if>>
+
+:: Lake Gold Chastity Belt
+
+<<set $outside to 0>><<set $location to "lake_ruin">><<underwater>><<effects>><<lakeeffects>>
+<<set $antiquemoney -= 2000>>
+
+你手里拿着金质贞操带，感觉它散发出一丝微弱的光芒。你想象着拥有这么美丽的东西来保护你的<<genitals 1>>是什么感觉。
+<br><br>
+你感到一种试穿它的冲动。你将它缠绕在腰间，当它发出卡嗒声时，你想知道是否有一把钥匙。
+<br><br>
+<<clothesstrip>>
+<<genitalswear 3>>
+<<earnFeat "Locked In Gold">>
+<<set $worn.genitals.origin to "Underwater Temple">>
+
+<<link [[搜索罐子|Lake Pots]]>><<wateraction>><<clotheson>><</link>><<loxygen>>
+<br>
+<<link [[游向出口|Lake Ruin]]>><<wateraction>><<clotheson>><</link>><<loxygen>>
+<br>
+
+:: Lake Lichen
+
+<<set $outside to 0>><<set $location to "lake_ruin">><<underwater>><<effects>><<lakeeffects>>
+<<hallucinogen 180>>
+苔藓在你触摸时破碎了，但你收集了足够的用于科学项目。<<if !$wraithPrison>>在苔藓破碎的地方，你注意到墙上刻着一个符文。<</if>>
+<br><br>
+<span class="gold">你可以把你找到的苔藓加入到你的房间或学校图书馆的项目中。</span>
+<br><br>
+一股温暖从你的手指传遍全身，你感到头晕目眩。
+<br><br>
+<i>你被迷幻剂影响了。直到它消失，你将拥有幻觉和严重幻觉的特征。高创伤或意识也会导致幻觉。</i>
+<br><br>
+<<generateWraith 1 true>>
+<<if $wraith.state isnot "">>
+	<<rainWraith>>
+	你突然感到自己被猛拉着，然后与一个美丽的苍白的人影面对面。
+	<<if $wraith.state is "haunt">>
+		"<span class="wraith">小偷又回来偷窃了。</span>"
+	<<else>>
+		"<span class="wraith">闯入者...</span>"
+	<</if>>
+	<br><br>
+	<<initWraith "abomination">>
+	<<He>>的一只手紧紧地勒住你的脖子。
+	<<set $NPCList[0].lefthand to "throat">><<set $neckuse to "hand">>
+	<<if $wraith.gen is "abomination">>
+		<<He>>举起<<his>>的另一只手，一群苍白的触手从阴影中升起。
+	<<else>>
+		还有几双手臂在你周围蠕动。
+	<</if>>
+	<br><br>
+	<<if $wraith.state is "haunt" and isBloodmoon()>>
+		<<link [[继续|Wraith Caught]]>><<set $wraith.exit to "lake_ruin">><</link>>
+	<<else>>
+		<<link [[继续|Wraith Underwater Rape]]>><<set $molestationstart to 1>><</link>>
+	<</if>>
+	<br>
+<<else>>
+	<<initWraith "man">>
+	你听到低语声，转过头看到一个美丽的苍白人影漂浮在你面前。
+	<<if $museumAntiques.antiques.antiqueivorynecklace isnot "notFound">>
+		<<Hes>>赤身裸体，手按在<<his>>的脖子上，愤怒地看着你。
+	<<else>>
+		<<Hes>>赤身裸体，颈部系着一条象牙项链。
+	<</if>>
+	<<if $tentacledisable is "f">>
+		<<He>>举起<<his>>的手，一团触手从黑暗中升起。它们向你飞奔而来。
+		<br><br>
+		<<link [[继续|Lake Underwater Tentacles]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<else>>
+		<<He>>喊出一些听不懂的话，然后向你扑来。
+		<br><br>
+		<<link [[继续|Lake Underwater Rape]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Lake Underwater Tentacles
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $combat to 1>>
+	<<set $enemytype to "tentacles">>
+	<<controlloss>>
+	<<molested>>
+	<<tentaclestart 6 8>>
+<</if>>
+<<statetentacles>>
+
+<<underwater>><<effects>><<speechWraith>>
+<<effectstentacles>>
+<<tentacles>>
+<<actionstentacles>>
+<<if $tentacles.active lte ($tentacles.max / 2)>>
+	<span id="next"><<link [[继续|Lake Underwater Tentacles Finish]]>><<set $phase2 to 1>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Lake Underwater Tentacles]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Lake Underwater Tentacles Finish Figure
+
+<<underwater>><<effects>>
+生物从你身上脱离并消失在黑暗中。<<tearful>>你转向出口。当你回头看时，苍白人物已经消失了。
+<<clotheson>>
+<<endcombat>>
+<<link [[继续|Lake Ruin]]>><<endWraith>><</link>>
+<br>
+
+:: Lake Underwater Tentacles Finish
+
+<<underwater>><<effects>>
+<<set _phase to $phase2>>
+<<if $bus is "lake_ruin_deep">>
+	<<set _nextroom to "Lake Ruin Deep">>
+<<elseif $bus is "lake_ruin">>
+	<<set _nextroom to "Lake Ruin">>
+<</if>>
+这个生物从你身边退缩，消失在黑暗中。<<tearful>>你转向出口<<if _phase is 1>>当你回头看时，苍白的身影已经消失了。<</if>>
+<<clotheson>>
+<<endcombat>>
+<<if _phase is 1>><<endWraith>><</if>>
+<<link [[继续|_nextroom]]>><</link>>
+<br>
+
+:: Lake Underwater Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $consensual to 0>>
+	<<neutral 1>>
+	<<controlloss>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<underwater>><<effects>>
+<<effectsman>><<man>><<speechWraith>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Lake Underwater Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Lake Underwater Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Lake Underwater Rape Finish
+
+<<set $outside to 1>><<set $location to "lake_ruin">><<underwater>><<effects>><<lakeeffects>>
+<<if $enemyhealth lte 0>>
+	<<He>>从你身上脱离并消失在黑暗中。<<tearful>>你转向出口。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<else>>
+	<<silently>><<ejaculation>><</silently>>
+	<<He>>咯咯笑着消失在黑暗中。<<tearful>>你转向出口。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+<<link [[继续|Lake Ruin]]>><<endWraith>><</link>>
+<br>
+
+:: Lake Depths Swarm
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<molested>>
+	<<controlloss>>
+	<<set $combat to 1>>
+
+	<<set $enemytype to "swarm">>
+	<<if $slimedisable is "f" and isBloodmoon()>>
+		<<swarminit "pale slimes" "史莱姆群" "向你移动" "包围着你" "击退" 8 0>>
+	<<else>>
+		<<swarminit "fish" "鱼群" "向你移动" "包围着你" "击退" 1 7>>
+	<</if>>
+	<<set $swimdistance to 12>>
+	<<set $water to 1>>
+<</if>>
+<<if $swimdistance gte 8>>
+	你被鱼群包围了。
+<<elseif $swimdistance gte 2>>
+	你正在逃离鱼群。
+<<else>>
+	你即将逃脱。
+<</if>>
+<<water>><<effects>><<swarmeffects>>
+<<swarm>>
+<<swarmactions>>
+<<if $stress gte $stressmax>>
+	<span id="next"><<link [[继续|Lake Depths Swarm Finish]]>><</link>></span><<nexttext>>
+<<elseif $swimdistance lte 0>>
+	<span id="next"><<link [[继续|Lake Depths Swarm Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Lake Depths Swarm]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Lake Depths Swarm Finish
+
+<<effects>>
+<<if $stress gte $stressmax>>
+	这一切对你来说太多了，你晕倒了。
+	<br><br>
+	<<if $upperoff isnot 0>>
+		<<upperruined>>
+	<</if>>
+	<<if $loweroff isnot 0>>
+		<<lowerruined>>
+	<</if>>
+	<<if $underloweroff isnot 0>>
+		<<underlowerruined>>
+	<</if>>
+	<<if $underupperoff isnot 0>>
+		<<underupperruined>>
+	<</if>>
+	<<endcombat>>
+	<<passoutlake>>
+<<else>>
+	<<tearful>>你逃离了<<if $slimedisable is "f" and isBloodmoon()>>苍白史莱姆<<else>>鱼<</if>>群。它们没有追上来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Lake Depths]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>

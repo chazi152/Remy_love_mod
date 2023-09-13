@@ -1,0 +1,124 @@
+:: Widgets Nightmares [widget]
+
+<<widget "nightmareCheck">>
+	<!-- _args[0] should always be the *next* passage; ex, if the current passage is "Eden Cabin Bed" _args[0] should be "Cabin Sleep" -->
+    <<if $nightmares gt 0 and $controlled is 0 and !$nightmareTimer>>
+		<<set $_possibleNightmares to []>>
+
+		<<if _args[0] is "Cabin Sleep" and isLoveInterest("Eden") and C.npc.Eden.love gt 140>>
+			<<set $_possibleNightmares.push("Nightmare Eden")>>
+		<</if>>
+
+		<<if _args[0].includes("Bird Tower Sleep") and $syndromebird is 1>>
+			<<set $_possibleNightmares.push("Nightmare Bird")>>
+		<</if>>
+
+		<<if $location isnot "asylum" and $asylumstatus isnot undefined>>
+			<<set $_possibleNightmares.push("Nightmare Harper")>>
+		<</if>>
+
+		<<if $wraithPrison and $wraithPrison.vision>>
+			<<set $_possibleNightmares.push("Nightmare Wraith")>>
+		<</if>>
+
+		<<if $_possibleNightmares.length gte 1>>
+			<<set $nightmareNext to $_possibleNightmares.random()>>
+			<<set $nightmareRedirect to _args[0]>>
+			<<set $nightmareExit to $passage>>
+
+			<<reroute {
+				[$nightmareRedirect] : $nightmareNext
+            }>>
+        <</if>>
+    <</if>>
+<</widget>>
+
+<<widget "nightmareStart">>
+	<<if !$nightmaresSeen>><<set $nightmaresSeen to []>><</if>>
+	<<set $activeNightmare to _args[0]>>
+	<<set $nightmareTimer to 4>>
+
+	<<set $real_weather to $weather>>
+	<<set $real_moonstate to $moonstate>>
+	<<set $real_timeStamp to $timeStamp>>
+	<<set $real_location to $location>>
+	<<set $statFreeze to true>>
+
+	<<set $real_bodyliquid to clone($player.bodyliquid)>>
+	<<set $real_parasite to clone($parasite)>>
+	<<set $real_pain to $pain>>
+	<<set $real_arousal to $arousal>>
+	<<set $real_tiredness to $tiredness>>
+	<<set $real_trauma to $trauma>>
+	<<set $real_control to $control>>
+
+	<<set $real_virginity to clone($player.virginity)>>
+	<<set $real_angel to $angel>>
+	<<set $real_angelbuild to $angelbuild>>
+	<<set $real_fallenangel to $fallenangel>>
+	<<set $real_transformationParts to clone($transformationParts)>>
+	<<set $real_purity to $purity>>
+
+	/*Note: Normal Pregnancy is diabled by directly checking for $activeNightmare*/
+	<<set $real_rebuy to $clothingrebuy>>
+	<<set $clothingrebuy to 0>>
+	<<set $real_parasitepregdisable to $parasitepregdisable>>
+	<<set $parasitepregdisable to "t">>
+
+	<<set $nightmareWake to 1>>
+
+	<<set $real_worn to clone($worn)>>
+	<<set $real_skin to clone($skin)>>
+<</widget>>
+
+<<widget "nightmareEnd">>
+	<<set $nightmaresSeen.pushUnique($activeNightmare)>>
+
+	<<set $weather to $real_weather>><<unset $real_weather>>
+	<<set $moonstate to $real_moonstate>>
+	<<set $timeStamp to $real_timeStamp>>
+	<<run Time.set()>>
+	<<unset $real_moonstate>>
+	<<unset $real_timeStamp>>
+	<<set $location to $real_location>><<unset $real_location>>
+	<<unset $statFreeze>>
+
+	<<set $player.bodyliquid to clone($real_bodyliquid)>><<goocount>><<unset $real_bodyliquid>>
+	<<set $parasite to clone($real_parasite)>><<unset $real_parasite>>
+	<<set $pain to $real_pain>><<unset $real_pain>>
+	<<set $tiredness to $real_tiredness>><<unset $real_tiredness>>
+	<<set $trauma to $real_trauma>><<unset $real_trauma>>
+	<<set $control to $real_control>><<unset $real_control>>
+
+	<<set $player.virginity to clone($real_virginity)>><<unset $real_virginity>>
+	<<set $angel to $real_angel>><<unset $real_angel>>
+	<<set $angelbuild to $real_angelbuild>><<unset $real_angelbuild>>
+	<<set $fallenangel to $real_fallenangel>><<unset $real_fallenangel>>
+	<<set $transformationParts to clone($real_transformationParts)>><<unset $real_transformationParts>>
+	<<set $purity to $real_purity>><<unset $real_purity>>
+
+	<<unset $nightmareNext>>
+	<<unset $nightmareWake>>
+	<<unset $activeNightmare>>
+	<<unset $nightmareRedirect>>
+
+	<<set $worn.genitals.type.push("broken")>>
+	<<silently>><<genitalsruined>><<ruined>><</silently>>
+	<<set $worn to clone($real_worn)>><<unset $real_worn>>
+	<<set $skin to clone($real_skin)>><<unset $real_skin>>
+
+	/*Note: Normal Pregnancy is diabled by directly checking for $activeNightmare*/
+	<<set $clothingrebuy to $real_rebuy>><<unset $real_rebuy>>
+	<<set $parasitepregdisable to $real_parasitepregdisable>><<unset $real_parasitepregdisable>>
+
+	<<set $sleephour to random(1, $sleephour)>>
+	<<sleep>>
+<</widget>>
+
+<<widget "nightmareWakeDifficulty">>
+	<<switch $nightmareWake>>
+		<<case 3>><<willpowerdifficulty 1 800>>
+		<<case 2>><<willpowerdifficulty 200 1000>>
+		<<default>><<willpowerdifficulty 400 1200>>
+	<</switch>>
+<</widget>>

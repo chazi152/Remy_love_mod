@@ -1,0 +1,2779 @@
+:: Livestock Cell
+<<set $outside to 0>><<set $location to "farm">><<effects>>
+
+你在谷仓的牢房里。牢房里有一桶看似干净的水可以饮用，还有一堆稻草供你睡觉。
+<br><br>
+
+<<if Time.hour gte 6 and Time.hour lt 18>>
+	谷仓中的居住者在雷米的监督下被赶到外面。
+<<elseif Time.hour gte 18 and Time.hour lt 21>>
+	<!-- Modified for Monster People -->
+	<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+		<<livestock_cows "cap">>他们在隔间边缘排成一排后，农场工人将挤奶机固定在他们的身体上。
+	<<else>>
+		<<livestock_cows "cap">>他们在隔间边缘排成一排后，农场工人将挤奶机固定在他们的身体上。
+	<</if>>
+<<else>>
+	大厅里充满了牛的鼾声。
+<</if>>
+<<if $uncomfortable.nude is true>><<covered>><</if>>
+<br><br>
+
+<<if isPlayerNonparasitePregnancyEnding()>>
+	<<pregnancyWatersBrokenPassout "remy">>
+<<elseif $stress gte $stressmax>>
+	<<passoutremy>>
+	<<if Time.hour gte 5 and Time.hour lt 18>>
+		<<hunger 1000>>
+		<<set $livestock_noise to false>>
+	<</if>>
+<<elseif Time.hour gte 6 and Time.hour lt 18>>
+	<<set $livestock_noise to false>>
+	雷米和农场工人绕着谷仓打开了隔间，放出里面的居住者，你也是其中的一只。
+	<br><br>
+
+	<<link [[离开你的牢房|Livestock Cell Leave]]>><<livestock_obey 1>><</link>><<gobey>>
+	<br>
+	<<link [[拒绝离开|Livestock Cell Refuse]]>><<livestock_obey -1>><<pain 6>><</link>><<lobey>><<gpain>>
+	<br>
+<<elseif Time.hour gte 18 and Time.hour lt 21>>
+	/* once every 4 days after pc's been missing for more than they have permissions for, when eden cares strongly enough to leave the forest and go all the way to the farmlands. if you think it's too easy, remember that grinding enough swimming to escape is easier than grinding eden's love, so see Figure 1. looking at you, fangi. */
+	<<if !(Time.days % 4) and $daily.eden.farmRescue isnot 1 and C.npc.Eden.love gte 120 and ($edenfreedom is 1 and $edendays gte 4 or $edenfreedom gte 2 and $edendays gte 9)>>
+		<<npc Eden>><<person1>>当雷米打开门走进你的牢房时，有一阵风吹过。一顶帽子飘到你的脚边。在你决定怎么做之前，有其他的事情<<if 150 - $submissive / 20 lt C.npc.Eden.dom>>命令<<else>>吸引了<</if>>你的注意。
+		<br><br>
+		<span class="green">你听到了伊甸</span>在和谷仓前面的人争论的声音。
+		<br><br>
+		<<link [[呼喊伊甸|Eden Shout]]>><<npcincr Eden dom 5>><<set $daily.eden.farmRescue to 1>><<livestock_obey -20>><</link>><<lllobey>><<gggdom>>
+		<br>
+		<<link [[无视它|Eden Shout Ignore]]>><<npcincr Remy dom 1>><<set $daily.eden.farmRescue to 1>><<livestock_obey 5>><</link>><<ggobey>>
+		<br>
+	<<elseif $livestock_obey lte 30>>
+		<<npc Remy>><<person1>>雷米过了过来，看着你的眼睛。"你是个典型问题，"<<he>>说道，然后进入了你的隔间。"所以我会亲自对付你。来这里。"
+		<br><br>
+
+		<<link [[服从|Livestock Milking Obey]]>><<npcincr Remy dom 1>><<livestock_obey 5>><</link>><<ggobey>>
+		<br>
+		<<link [[拒绝|Livestock Milking Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -5>><</link>><<lobey>>
+		<br>
+	<<else>>
+		<<npc Remy>><<person1>>雷米走了过来，看着你的眼睛。"我亲自对付这只，"<<he>>说着，进入了你的隔间，"来这里。"
+		<br><br>
+
+		<<link [[服从|Livestock Milking Obey]]>><<npcincr Remy dom 1>><<livestock_obey 5>><</link>><<ggobey>>
+		<br>
+		<<link [[拒绝|Livestock Milking Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -5>><</link>><<lobey>>
+		<br>
+	<</if>>
+<<else>>
+	<<link [[锻炼(1:00)|Livestock Workout]]>><</link>><<gtiredness>><<lstress>>
+	<br>
+	<<if $livestock_noise is false>>
+		<<link [[制造噪音(0:10)|Livestock Noise]]>><<pass 10>><<stress -12>><<trauma -6>><<set $livestock_noise to true>><</link>><<llstress>><<ltrauma>><<lobey>>
+		<br>
+	<</if>>
+	<<link [[睡到天亮|Livestock Sleep]]>><<incrementautosave>><<set $phase to 0>><</link>><<ltiredness>>
+	<br><br>
+	<<link [[设置|Livestock Settings]]>><</link>>
+	<br>
+	<<attitudesControlCheck>>
+	<<if $attitudesControl.showGoldLink is true>>
+		<span class="goldLink"><<link [[态度|Attitudes]]>><<set $attitudesExitPassage to $passage>><</link>> </span><span class="red">!!</span>
+	<<else>>
+		<<link [[态度|Attitudes]]>><<set $attitudesExitPassage to $passage>><</link>>
+	<</if>>
+	<br><br>
+<</if>>
+
+
+
+:: Eden Shout Ignore
+<<effects>>
+<<endevent>>
+<<npc Remy>><<person1>>
+你无视了那个声音。雷米捡起帽子，把它还给了那个人，<<him>>表示感谢，随后离开了。
+<br><br>
+
+<<link [[继续|Livestock Cell]]>><<endevent>><</link>>
+<br>
+
+
+:: Eden Shout
+<<effects>>
+<<endevent>>
+<<npc Eden>><<person1>>
+<<set $edenshoutrescue to 1>>
+"伊甸！"你尖叫了起来，惊动了雷米和附近的人。"救救我！"一个身影推开了农场工人，朝你走来。有人试图阻止<<him>>，但被推到了一旁。
+<br><br>
+
+你抓起帽子冲向伊甸。大多数农场工人都忙于处理牛，然而雷米手里抓着一条鞭子追在了你的后面。
+<br><br>
+伊甸就在你的面前, 你听见了一声脆响, 鞭子被甩了过来缠住了你的脚踝, 绊倒了你. 伊甸跳上前来, 一只手抓住了你.<<He>>继续奔跑着.
+<br><br>
+你抬起头来, 刚好看到伊甸一拳打在了雷米的下巴上.
+<br><br>
+雷米倒在了地上。伊甸把你扶了起来，随后你们一起逃离了谷仓。
+<br><br>
+<<pass 1>><<He>>带着你穿过了栅栏上被剪出来的一个洞。一分钟后，你听到了你身后传来了刺耳的哨声，还有喊叫跟狗吠。雷米的吼声盖过了其他的所有声音。<span class="red">你在被追捕。</span><<lllobey>><<livestock_obey -20>>
+<br><br>
+<<link [[继续|Livestock Eden Escape]]>><</link>>
+<br>
+
+
+:: Livestock Settings [exitCheckBypass]
+
+<<set $settingsExitPassage to "Livestock Cell">>
+<<settings>>
+
+:: Livestock Attitudes
+<!--Redundant passage, identical to :: Attitudes-->
+
+<<attitudes>>
+
+<br><br>
+<<link [[确认|$attitudesExitPassage]]>>
+	<<unset $attitudesExitPassage>>
+<</link>>
+<br>
+
+:: Livestock Workout
+<<effects>>
+<<if $livestock_noise is true>>
+	<<pass 1>><<tiredness 1>>
+	你试图从地板上站起来，但却瘫倒在地。你受到的惩罚使你动弹不得。现在做任何运动都是不可能的。
+	<br><br>
+	<<link [[继续|Livestock Cell]]>><</link>>
+	<br>
+<<else>>
+	<<pass 60>><<tiredness 6>>
+	牢房里有足够的空间可以进行简单锻炼。你出了一身汗，并不断鞭策自己，让注意力从被监禁的思绪中转移。
+	<<physique 6>>
+	<br><br>
+
+	<<if Time.hour lte 5>>
+		<<link [[坚持锻炼 (1:00)|Livestock Workout]]>><</link>><<gtiredness>>
+		<br>
+	<</if>>
+	<<link [[停止|Livestock Cell]]>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Noise
+<<effects>>
+
+就像被关在笼子里的动物一样，你在牢房里猛攻，用你最大的声音<<if $cow gte 6>>哞叫<<else>>叫喊<</if>>着。<<if $worn.face.type.includes("gag")>>尽管你戴着$worn.face.cn_name_cap，<</if>>你的喊声迅速地把另一头牛从睡梦中吵醒。你把干草翻起来，撞在牢房的金属栏杆上，发出很大的噪音。
+<br><br>
+很快, 整个谷仓都开始加入了你的反叛—有一些是出于恼火, 另一些则是因为明显的虐待.
+<br><br>
+没过多久，谷仓的门就打开了，灯光闪烁着。雷米和两名农场工人检查着牛，牛很快都回到了"床"上，唯一站在原地的是你，这表明你应该被调教一番。
+<br><br>
+<<if $livestock_obey gte 80>>
+	<<link [[继续|Livestock Noise 2]]>><<set $phase to 1>><</link>>
+	<br>
+<<else>>
+	<<link [[继续|Livestock Noise 2]]>><<set $phase to 0>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Noise 2
+<<livestock_obey -5>>
+<<npc Remy>><<person1>>
+
+<<if $phase is 1>>
+	你的牢房门打开了，农场工人冲进来约束你的手臂。雷米走了进来，手里拿着手帕，里面倒放着一个瓶子。
+	<<if $speech_attitude is "meek">>
+		惊恐万分的你<<if $worn.face.type.includes("gag")>>通过你的$worn.face.cn_name_cap<</if>><<if $cow gte 6>>哞叫着<<else>>求饶着<</if>>，但你的呼喊声被嘴里的布条压制住了。
+	<<elseif $speech_attitude is "bratty">>
+		你挥舞着手臂，试图把头扭开，但当布压在你的嘴上时，你的抗议声被压制了。
+	<<else>>
+		你扭开脖子，但农场工人抓稳了你的头，把你的脸压在布上。
+	<</if>>
+	<br><br>
+	雷米在你默默挣扎的时候看着你。"你怎么回事？"<<His>>的绿色的眼睛在你感觉越来越朦胧的时候仿佛能洞穿你。"你平时都是很乖的。"
+	<br><br>
+	你再也无法忍受，跪倒在地。雷米满意地离开了。
+	<br><br>
+	"躺下休息吧。我们将看到这种行为是否会成为一种习惯，"雷米指示道。当你被轻轻放在干草堆上时，你的双脚在地板上拖动。
+	<br><br>
+	<<if $loveInterest.primary isnot "None">>
+		当黑暗笼罩你的视线时，你最后想到的是$loveInterest.primary。你不知道自己还能不能再看到<<if $loveInterest.primary is "Black Wolf">>你的族群<<else>><<nnpc_him $loveInterest.primary>><</if>>。
+	<<else>>
+		黑暗笼罩着你的视线，直到你的意识消逝。
+	<</if>>
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Livestock Sleep]]>><<set $phase to 1>><</link>>
+	<br>
+<<else>>
+	你的牢门打开了，农场工人们冲进来束缚你的双臂。雷米走进来，任由手中的鞭子松弛展开。
+	<<if $speech_attitude is "meek">>
+		你惊恐万分，<<if $worn.face.type.includes("gag")>>通过你的$worn.face.cn_name_cap<</if>><<if $cow gte 6>>哞叫着<<else>>求饶着<</if>>，但当鞭子抽到你的脸上时，你的哭喊声被打断了。
+		<<if playerBellySize(true) gte 8>>
+			下体。<<He>>特别注意着，避开了你的<<bellyDescription "pc">>。
+		<<else>>
+			腹部。
+		<</if>>
+		你<<if $cow gte 6>>哞叫着<<else>>吸气<</if>>，痛苦地看着雷米倾尽所有的愤怒来惩罚你。你低下头，泣不成声，每一次击打都会让你流下新的泪水。
+	<<elseif $speech_attitude is "bratty">>
+		你疯狂地挣扎，但无济于事。你的挣扎被接连打断着，当雷米的鞭子抽在你的
+		<<if playerBellySize(true) gte 8>>
+			下体。<<He>>特别注意着，避开了你的<<bellyDescription "pc">>。
+		<<else>>
+			腹部。
+		<</if>>
+		这刺痛了你，你痛得大叫，加倍努力挣脱，但无济于事。
+		每当鞭子抽打在你裸露的皮肤上时，你只能咬紧牙关，低声呜咽。你努力维持着勇敢的表情，但眼泪还是止不住地流。
+	<<else>>
+		你几乎来不及反应，雷米的鞭子就抽在了你的
+		<<if playerBellySize(true) gte 8>>
+			下体。<<He>>特别注意着，避开了你的<<bellyDescription "pc">>。
+		<<else>>
+			腹部。
+		<</if>>
+		你哭喊出声<<if $worn.face.type.includes("gag")>>却全被$worn.face.cn_name_cap挡了下来<</if>>，而你知道，这还远未结束。
+		你紧闭双眼，准备承受更多的痛苦，而雷米则施以鞭打，每一鞭都比上一鞭更加疼痛。每一次抽打，你都会<<if $cow gte 6>>哭喘<<else>>发出嘶声<</if>>，泪水顺着你的眼眶流下。
+	<</if>>
+	<<gggpain>><<pain 50>>
+	<br><br>
+	你再也承受不住，倒在了地上。农场工人们强迫你站起来，让你承受最后一击。
+	<<gpain>>
+	<br><br>
+	雷米折起<<his>>的鞭子，走近你。<<his>>用手托住你的下巴，你被迫望向<<his>>那双炯炯有神的绿眼睛。"我警告过你了，"雷米斥责道，"我想你不会再去制造更多噪音了吧?"
+	<<if $speech_attitude is "meek">>
+		缺乏回应的力量，你只能恳求地盯着<<his>>的眼睛。
+		<br><br>
+		雷米似乎把你的沉默当成屈服了。"很好。把它放到床上，"雷米指示农场工人。
+	<<elseif $speech_attitude is "bratty">>
+		你把下巴从雷米的手里挣脱出来，没有给<<him>>一个满意的回应。
+		<br><br>
+		你的沉默对雷米来说已经足够了。"把它放到床上，"<<he>>指示农场工人。
+	<<else>>
+		你点头.
+		<br><br>
+		"很好。把它放到床上，"雷米指示农场工人。
+	<</if>>
+	你痛苦地呻吟着，很快就被拖向一堆干草扔在上面。你蜷缩起来，揉搓你刺痛的
+	<<if playerBellySize(true) gte 8>>
+		下体。
+	<<else>>
+		肚子。
+	<</if>>
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Livestock Cell]]>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Milking Obey
+<<effects>>
+
+<<milkvolume 20>><<lactation_pressure 10>><<set $breastgrowthtimer -= 150>>
+<<if $exhibitionism lt 95 or $uncomfortable.nude is true>>
+	"把你的手臂放在你的身体两侧，"<<he>>命令。你移动你的手臂，露出你赤裸的身体。
+	<<if $uncomfortable.nude is true>>你闭上眼睛看向别处，无法承受这种耻辱。<</if>>
+<<else>>
+	"把你的手臂放在你的身体两侧，"<<he>>命令。当<<his>>的眼睛在你身上扫视时，你感到一阵兴奋地颤栗。
+<</if>>
+<br><br>
+当<<his>>冰冷的手触摸你的<<breasts>>时，你瑟缩着。<<He>>揉捏抚摸着，一副若有所思的表情。
+
+<<if $player.breastsize gte 12>>
+	"这些乳房是农场的骄傲，"<<he>>满意地揉捏了一下。"要是别的牛也有就好了。"<<He>>从<<his>>的口袋里拿出一罐粉红色的凝胶，把它倒在<<his>>的手上。<<he>>用湿润的指尖按压你的胸部，然后揉搓。你被凝胶接触到的每一寸皮肤都泛着红，都变得更加敏感，你在<<his>>的触摸下颤抖。
+	<<garousal>><<arousal 600 "breasts">><<ginsecurity "breasts_big">><<insecurity "breasts_big" 2>>
+	<br><br>
+	<<if playerBellyVisible() and $pregnancyspeechdisable is "f">>
+		<<he>>看了看，揉了揉你的肚子，"也许我应该花更多的精力让我的其他牛像你一样怀孕。"
+		<br><br>
+	<</if>>
+<<elseif $player.breastsize gte 8>><<set $breastgrowthtimer to -100>>
+	"还不错，"<<he>>说着捏了一下。"但还有改进的空间。"<<He>>从<<his>>的口袋里拿出一罐粉红色的凝胶，把它倒在<<his>>的手上。<<he>>用湿润的指尖按压你的胸部，然后揉搓。你被凝胶接触到的每一寸皮肤都泛着红，都变得更加敏感，你在<<his>>的触摸下颤抖。
+	<<ggarousal>><<arousal 1800 "breasts">><<ginsecurity "breasts_big">><<insecurity "breasts_big" 1>>
+	<br><br>
+	<<if playerBellyVisible()>>
+		<<he>>看了看，揉了揉你的肚子，"照这样下去，用不了多久你就会成为农场的骄傲。"
+		<br><br>
+	<</if>>
+	<<if $arousal gte $arousalmax>>
+		<<orgasm>>雷米似乎忽略了你的痉挛，但<<he>>不可能没有注意到。你的脸因羞愧和兴奋而涨红。
+		<br><br>
+	<</if>>
+<<elseif $player.breastsize gte 6>><<set $breastgrowthtimer to -100>>
+	"你还有很多要做，"<<he>>说着揉捏了一下。"我正好有东西。"<<He>>从<<his>>的口袋里拿出一罐粉红色的凝胶，把它倒在<<his>>的手上。<<he>>用湿润的指尖按压你的胸部，然后揉搓。你被凝胶接触到的每一寸皮肤都泛着红，都变得更加敏感，你在<<his>>的触摸下颤抖。
+	<<ggarousal>><<arousal 1800 "breasts">>
+	<br><br>
+	<<if playerBellyVisible()>>
+		他看了看，揉了揉你的肚子，"这显然有助于你的生长，我应该在其他牛身上做更多的测试。"
+		<br><br>
+	<</if>>
+	<<if $arousal gte $arousalmax>>
+		<<orgasm>>雷米似乎忽略了你的痉挛，但<<he>>不可能没有注意到。你的脸因羞愧和兴奋而涨红。
+		<br><br>
+	<</if>>
+<<elseif $player.breastsize gte 1>><<set $breastgrowthtimer to -100>>
+	"现在的尺寸根本不行，"<<he>>失望地叹了口气说道。"幸运的是，我正好有这个东西。"<<He>>从<<his>>的口袋里拿出一罐粉红色的凝胶，把它倒在<<his>>的手上。<<he>>用湿润的指尖按压你的胸部，然后揉搓。你被凝胶接触到的每一寸皮肤都泛着红，都变得更加敏感，你在<<his>>的触摸下颤抖。
+	<<ggarousal>><<arousal 1800 "breasts">><<ginsecurity "breasts_small">><<insecurity "breasts_small" 1>>
+	<br><br>
+	<<if playerBellyVisible()>>
+		看了看你的肚子，<<he>>问:"嗯，它似乎有效?也许你在其他方面需要更多的帮助。"
+		<br><br>
+	<</if>>
+	<<if $arousal gte $arousalmax>>
+		<<orgasm>>雷米似乎忽略了你的痉挛，但<<he>>不可能没有注意到。你的脸因羞愧和兴奋而涨红。
+		<br><br>
+	<</if>>
+<<else>>
+	"平的像是没有胸一样，"<<he>>失望地叹了口气说道。"幸运的是，我正好有这个东西。"<<He>>从<<his>>的口袋里拿出一罐粉红色的凝胶，把它倒在<<his>>的手上。<<he>>用湿润的指尖按压你的胸部，然后揉搓。你被凝胶接触到的每一寸皮肤都泛着红，都变得更加敏感，你在<<his>>的触摸下颤抖。
+	<<ggarousal>><<arousal 1800 "breasts">><<ginsecurity "breasts_tiny">><<insecurity "breasts_tiny" 1>>
+	<br><br>
+	<<if playerBellyVisible()>>
+		看了看你的肚子，<<he>>问:"这真的很不寻常，你的乳房在怀孕的时候至少应该变大一点儿。"
+		<br><br>
+	<</if>>
+	<<if $arousal gte $arousalmax>>
+		<<orgasm>>雷米似乎忽略了你的痉挛，但<<he>>不可能没有注意到。你的脸因羞愧和兴奋而涨红。
+		<br><br>
+	<</if>>
+<</if>>
+
+<<He>>缩回<<his>>的手，留下你刺痛的胸口。
+<br><br>
+
+<<if $player.penisExist and (!playerChastity("hidden") or $genderknown.includes("Remy"))>>
+	<<link [[继续|Livestock Penis]]>><</link>>
+	<br>
+<<else>>
+	<<link [[继续|Livestock Lactate]]>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Penis
+<<effects>>
+雷米跪了下来，<<his>>的眼睛与你的<<penis>>齐平。
+<<if playerChastity("penis")>>
+	<<set _penisComment to true>>
+	<<switch $player.penissize>>
+		<<case 4>>
+			"没有什么好羞愧的，"<<he>>的表情很惊讶。"你让任何一头牛都自愧不如。"<<He>>拖拽着你的$worn.genitals.cn_name_cap。"我们把这个放出来再把你重新绑起来。"<<He>>从<<his>>的口袋里拿出一个小容器，在你的$worn.genitals.cn_name_cap上面涂上了一些灰色的浆糊。
+			<<insecurity "penis_big" 1>><<ginsecurity "penis_big">>
+		<<case 3>>
+			"没有什么好羞愧的，"<<he>>欣赏着你的生殖器。"虽然还有改进的空间。"<<He>>拖拽着你的$worn.genitals.cn_name_cap。"我们先把这个放出来再帮你。"<<He>>从<<his>>的口袋里拿出一个小容器，在你的$worn.genitals.cn_name_cap上面涂上了一些灰色的浆糊。
+		<<case 2>>
+			"你的精液肯定很好吃，"<<he>>用低沉的声音说，近的几乎是耳语。"我都有点儿想直接从源头喝下去了，呵呵。"<<He>>拖拽着你的$worn.genitals.cn_name_cap。"我们先把这个放出来。"<<He>>从<<his>>的口袋里拿出一个小容器，在你的$worn.genitals.cn_name_cap上面涂上了一些灰色的浆糊。
+		<<case 1>>
+			"有点小，"<<he>>说道。"我相信只要给予适当的关注，这种情况就会改变。"<<He>>拖拽着你的$worn.genitals.cn_name_cap。"我们先把它放出来。"<<He>>从<<his>>的口袋里拿出一个小容器，在你的$worn.genitals.cn_name_cap上面涂上了一些灰色的浆糊。
+			<<insecurity "penis_small" 1>><<ginsecurity "penis_small">>
+		<<case 0>>
+			<<He>>忍住笑。"太可爱了，"<<he>>说道。"但不适合公牛。"<<He>>拖拽你的$worn.genitals.cn_name_cap"我们脱了这个就会帮你的。"<<He>>从<<his>>的口袋里拿出一个小容器，在你的$worn.genitals.cn_name_cap上面涂上了一些灰色的浆糊。
+			<<insecurity "penis_tiny" 1>><<ginsecurity "penis_tiny">>
+		<<case -1>>
+			<<He>>皱眉。"你真的是个男人吗？"<<he>>说道。"完全不行。"<<He>>拖拽着你的$worn.genitals.cn_name_cap。"我们脱了这个就会帮你的。"<<He>>从<<his>>的口袋里拿出一个小容器，在你的$worn.genitals.cn_name_cap上面涂上了一些灰色的浆糊。
+			<<insecurity "penis_tiny" 1>><<ginsecurity "penis_tiny">>
+		<<case -2>>
+			<<He>>停顿了一下，眯着眼睛看着它。"哦。哦，原来不是阴蒂啊。"<<He>>噘起<<his>>的嘴唇。"我不认为我能解决这个问题。看来你做母牛比做公牛要好。"<<He>>看了一眼你的$worn.genitals.cn_name_cap，但没去管它。
+			<<insecurity "penis_tiny" 1>><<ginsecurity "penis_tiny">>
+	<</switch>>
+	<br><br>
+	<<if $player.penissize gt -2>>
+		<<set $worn.genitals.integrity -= 100>>
+		<<if $worn.genitals.integrity gt 0>>
+			雷米看着$worn.genitals.cn_name_cap皱起了眉头，"看来我们现在只能把它放着了。"
+			<br><br>
+		<<else>>
+			对着破损的$worn.genitals.cn_name_cap，雷米向你微笑。"好了，你们现在都自由了。"
+			<br><br>
+			<<set $worn.genitals.type.push("broken")>>
+			<<genitalsruined>>
+			<<set _continue to true>>
+		<</if>>
+	<</if>>
+<<else>>
+	<<set _continue to true>>
+<</if>>
+<<if _continue is true>>
+	<<if $player.penissize gt -2>><<semenvolume 20>><<set $penisgrowthtimer -= 150>><</if>>
+	<<switch $player.penissize>>
+		<<case 4>>
+			<<if _penisComment isnot true>>
+				"没有什么好羞愧的，"<<he>>的表情很惊讶。"你让任何一头牛都自愧不如。"<<He>>从<<his>>的夹克口袋里取出一小罐紫色凝胶，揉在<<his>>的手上。
+				<<insecurity "penis_big" 1>><<ginsecurity "penis_big">>
+				<br><br>
+			<</if>>
+			还是很惊讶，<<he>>向前伸出手，把你的肉棒放在<<his>>戴着手套的手里。<<He>>举起它，感受它的重量。<<He>>抬起<<his>>的另一只手，用手包裹着你的柱身。你能感觉到<<his>>的呼吸。
+			<<garousal>><<arousal 1800 "genitals">>
+			<br><br>
+			<<if $arousal gte $arousalmax>>
+				<<orgasm>>它沾满了<<his>>的脸，把<<him>>从昏迷中拉了出来。<<He>>从夹克里抽出一块手帕擦了擦<<his>>的脸，一丝红晕在<<his>>的脸颊上蔓延。
+				<br><br>
+			<<else>>
+				<<He>>突然跳了起来，环顾谷仓，好像害怕有人在看着<<he>>。<<He>>站起来。"检查结束了。"<<he>>边说边朝大门走去。
+				<br><br>
+			<</if>>
+		<<case 3>>
+			<<if _penisComment isnot true>>
+				"没有什么好羞愧的，"<<he>>欣赏着你的生殖器。"虽然还有改进的空间。"
+				<br><br>
+			<</if>>
+			<<He>>从<<his>>的夹克口袋里取出一小罐紫色凝胶，揉在<<his>>的手上。<<He>>向前伸手抓住你的肉棒。<<he>>用轻柔的动作将凝胶涂抹在你的皮肤上。温暖通过你的骨盆传播，<<he>>涂抹的时候，你的阴茎变得更加敏感。
+			<br><br>
+			<<if $arousal gte $arousalmax>>
+				<<orgasm>>当你高潮的时候，<<He>>移到一边，好像期待着它，想要保持任何溢出的清洁。当你的痉挛消退时，<<He>>站起来。"这是健康的标志，"<<he>>边说边朝大门走去。
+				<br><br>
+			<<else>>
+				<<He>>站起来，走向大门。
+				<br><br>
+			<</if>>
+		<<case 2>>
+			<<if _penisComment isnot true>>
+				"你的精液肯定很好吃，"<<he>>用低沉的声音说，近的几乎是耳语。"我都有点儿想直接从源头喝下去了，呵呵。"
+				<br><br>
+			<</if>>
+			<<He>>从<<his>>的夹克口袋里取出一小罐紫色凝胶，揉在<<his>>的手上。<<He>>向前伸手抓住你的肉棒。<<he>>用轻柔的动作将凝胶涂抹在你的皮肤上。温暖通过你的骨盆传播，<<he>>涂抹的时候，你的阴茎变得更加敏感。
+			<br><br>
+			<<if $arousal gte $arousalmax>>
+				<<orgasm>>当你高潮的时候，<<He>>移到一边，好像期待着它，想要保持任何溢出的清洁。当你的痉挛消退时，<<He>>站起来。"这是健康的标志，"<<he>>边说边朝大门走去。
+				<br><br>
+			<<else>>
+				<<He>>站起来，走向大门。
+				<br><br>
+			<</if>>
+		<<case 1>>
+			<<if _penisComment isnot true>>
+				"有点小，"<<he>>说道。"我相信只要给予适当的关注，这种情况就会改变。"<<insecurity "penis_small" 1>><<ginsecurity "penis_small">>
+				<br><br>
+			<</if>>
+			<<He>>从<<his>>的夹克口袋里取出一小罐紫色凝胶，揉在<<his>>的手上。<<He>>向前伸手抓住你的肉棒。<<he>>用轻柔的动作将凝胶涂抹在你的皮肤上。温暖通过你的骨盆传播，<<he>>涂抹的时候，你的阴茎变得更加敏感。
+			<br><br>
+			<<if $arousal gte $arousalmax>>
+				<<orgasm>>当你高潮的时候，<<He>>移到一边，好像期待着它，想要保持任何溢出的清洁。当你的痉挛消退时，<<He>>站起来。"这是健康的标志，"<<he>>边说边朝大门走去。
+				<br><br>
+			<<else>>
+				<<He>>站起来，走向大门。
+				<br><br>
+			<</if>>
+		<<case 0>>
+			<<if _penisComment isnot true>>
+				<<He>>忍住笑。“太可爱了，”<<he>>说。“但是作为一头公牛来说不太合适。”<<insecurity "penis_tiny" 1>><<ginsecurity "penis_tiny">>
+				<br><br>
+			<</if>>
+			<<He>>从<<his>>的夹克口袋里取出一小罐紫色凝胶，揉在<<his>>的手上。<<He>>向前伸手抓住你的肉棒。<<he>>用轻柔的动作将凝胶涂抹在你的皮肤上。温暖通过你的骨盆传播，<<he>>涂抹的时候，你的阴茎变得更加敏感。
+			<br><br>
+			<<if $arousal gte $arousalmax>>
+				<<orgasm>>当你高潮的时候，<<He>>移到一边，好像期待着它，想要保持任何溢出的清洁。当你的痉挛消退时，<<He>>站起来。"这是健康的标志，"<<he>>边说边朝大门走去。
+				<br><br>
+			<<else>>
+				<<He>>站起来，走向大门。
+				<br><br>
+			<</if>>
+		<<case -1>>
+			<<if _penisComment isnot true>>
+				<<He>>蹙眉。“这里几乎什么都没有，”<<he>>说。“不，不，这样不行。”<<insecurity "penis_tiny" 1>><<ginsecurity "penis_tiny">>
+				<br><br>
+			<</if>>
+			<<He>>从<<his>>的夹克口袋里取出一小罐紫色凝胶，揉在<<his>>的手上。<<He>>向前伸手抓住你的肉棒。<<he>>用轻柔的动作将凝胶涂抹在你的皮肤上。温暖通过你的骨盆传播，<<he>>涂抹的时候，你的阴茎变得更加敏感。
+			<br><br>
+			<<if $arousal gte $arousalmax>>
+				<<orgasm>>
+				<<if $femaleclimax>>
+					当你高潮时，<<He>>移到一边，期待着溢出来，但你没有射出一滴精液，<<He>>皱起了眉。当你的痉挛消退时，<<He>>站了起来。"这不是一个好兆头，"<<He>>说着，朝大门走去。
+				<<else>>
+					当你高潮的时候，<<He>>移到一边，好像期待着它，想要保持任何溢出的清洁。当你的痉挛消退时，<<He>>站起来。"这是健康的标志，"<<he>>边说边朝大门走去。
+				<</if>>
+				<br><br>
+			<<else>>
+				<<He>>站起来，走向大门。
+				<br><br>
+			<</if>>
+		<<case -2>>
+			<<if _penisComment isnot true>>
+			<<He>>停顿了一下，斜睨着它。“你下面长得那个又不是阴蒂。”<<He>>摩挲着<<his>>的嘴唇。“我不认为我能解决这个问题。看来你还是适合做母牛，没有做公牛的天赋。”<<insecurity "penis_tiny" 1>><<ginsecurity "penis_tiny">>
+				<br><br>
+			<</if>>
+			<<He>>从<<his>>的夹克口袋里取出一小罐紫色凝胶，揉在<<his>>的手上。<<He>>向前伸手抓住你的肉棒。<<he>>用轻柔的动作将凝胶涂抹在你的皮肤上。温暖通过你的骨盆传播，<<he>>涂抹的时候，你的阴茎变得更加敏感。
+			<br><br>
+			<<if $arousal gte $arousalmax>>
+				<<orgasm>>
+				当你高潮时，<<He>>移到一边，期待着溢出来，但你没有射出一滴精液，<<He>>皱起了眉。当你的痉挛消退时，<<he>>站起来拍了拍你的头。"没关系，你还是一头好牛，"<<he>>朝大门走去。
+				<br><br>
+			<<else>>
+				<<He>>站起来，走向大门。
+				<br><br>
+			<</if>>
+	<</switch>>
+<</if>>
+
+<<link [[继续|Livestock Lactate]]>><</link>>
+<br>
+
+:: Livestock Lactate
+<<effects>>
+
+<<if $breastfeedingdisable is "f">>
+	<<if $player.penisExist and !playerChastity("penis")>>
+		雷米从你的笼子外面拿了几个玻璃泵。它连着一根管子，通向一个更大的机器。和其他牛连接的是同一台机器。<<He>>抓住你的项圈，把你拉向大门。"跪下，<<girl>>。"
+		<br><br>
+
+		<<if $cow gte 6>>
+			<<link [[发出牛叫|Livestock Lactate Moo]]>><<npcincr Remy dom 1>><<npcincr Remy love 1>><<livestock_obey 5>><<sub 1>><<transform cow 1>><</link>><<ggobey>>
+			<br>
+		<</if>>
+		<<link [[服从|Livestock Lactate Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><<sub 1>><<transform cow 1>><</link>><<gobey>>
+		<br>
+		<<link [[拒绝|Livestock Lactate Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<def 1>><</link>><<lobey>>
+		<br>
+	<<else>>
+		雷米在你的笼子外取出几个玻璃泵。它连着一根管子，通向一个更大的机器。和其他牛连接的是同一台机器。<<He>>抓住你的衣领，把你拉向牢门。"跪下，<<girl>>。"
+		<br><br>
+
+		<<if $cow gte 6>>
+			<<link [[发出牛叫|Livestock Lactate Moo]]>><<npcincr Remy dom 1>><<npcincr Remy love 1>><<livestock_obey 5>><<sub 1>><<transform cow 1>><</link>><<ggobey>>
+			<br>
+		<</if>>
+		<<link [[服从|Livestock Lactate Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><<sub 1>><<transform cow 1>><</link>><<gobey>>
+		<br>
+		<<link [[拒绝|Livestock Lactate Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<def 1>><</link>><<lobey>>
+		<br>
+	<</if>>
+<<else>>
+	<<if $player.penisExist and !playerChastity("penis")>>
+		雷米在你的笼子外取出几个玻璃泵。它连着一根管子，通向一个更大的机器。和其他牛连接的是同一台机器。<<He>>抓住你的衣领，把你拉向牢门。"跪下，<<girl>>。"
+		<br><br>
+
+		<<if $cow gte 6>>
+			<<link [[发出牛叫|Livestock Lactate Moo]]>><<npcincr Remy dom 1>><<npcincr Remy love 1>><<livestock_obey 5>><<sub 1>><<transform cow 1>><</link>><<ggobey>>
+			<br>
+		<</if>>
+		<<link [[服从|Livestock Lactate Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><<sub 1>><<transform cow 1>><</link>><<gobey>>
+		<br>
+		<<link [[拒绝|Livestock Lactate Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<def 1>><</link>><<lobey>>
+		<br>
+	<<else>>
+		"你现在没什么用了，"雷米说，"但这不意味着你不会得到治疗。"<<He>>拿起一个粉红色的丸型小物体，那连在导向挤奶机的电线上。和其他牛连接的是同一台机器。<<He>>抓住你的衣领，把你拉向牢门。"跪好，<<girl>>。"
+		<br><br>
+
+		<<if $cow gte 6>>
+			<<link [[发出牛叫|Livestock Lactate Moo]]>><<npcincr Remy dom 1>><<npcincr Remy love 1>><<livestock_obey 5>><<sub 1>><<transform cow 1>><</link>><<ggobey>>
+			<br>
+		<</if>>
+		<<link [[服从|Livestock Lactate Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><<sub 1>><<transform cow 1>><</link>><<gobey>>
+		<br>
+		<<link [[拒绝|Livestock Lactate Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<def 1>><</link>><<lobey>>
+		<br>
+
+	<</if>>
+<</if>>
+
+:: Livestock Lactate Moo
+<<effects>>
+
+你跪在地上哞哞地叫着。"这才是个好<<girl>>，"雷米轻声说，抚摸着你的耳朵后面。"非常好。"<<He>>跪在你身边，把你的项圈绑在地上的短链子上。你的双腿张开，<<bottom>>抬高。<<headbind>>
+<br><br>
+
+<<link [[继续|Livestock Lactate Tubes]]>><</link>>
+<br>
+
+:: Livestock Lactate Obey
+<<effects>>
+
+你按照指示跪下。"真是个好<<girl>>，"雷米低声说道。<<He>>跪在你身边，把你的胳膊绑在离地面几英尺高的铁棍上。<<He>>还把你的项圈绑在一条拴在地上的短链子上。你的双腿仍然是自由的，但当你的胳膊和头被绑在这样的位置上，就没什么用了。<<bind>><<headbind>>
+<br><br>
+
+<<link [[继续|Livestock Lactate Tubes]]>><</link>>
+<br>
+
+:: Livestock Lactate Refuse
+<<effects>>
+
+<<if $worn.face.type.includes("gag")>>
+	尽管$worn.face.cn_name_cap让你感到手无寸铁，你仍然站在原地无视雷米的命令。
+<<elseif $speech_attitude is "meek">>
+	"不，不，"你说道，"我不是奶牛！"
+<<elseif $speech_attitude is "bratty">>
+	"滚开变态，"你骂道，"把那根管子塞到你自己的屁股里。"
+<<else>>
+	"我才不要这么做，"你说道，"我不是奶牛。"
+<</if>>
+<br><br>
+<<bind>><<headbind>>
+雷米紧紧的扼住你的脖子，你无法反抗，被<<him>>直接压在了地上。<<He>>叫来了两个农场工人一起过来压住你。
+<br><br>
+他们把你的手臂绑在离地面几英尺高的铁棍上，把你的项圈拴在地板上的短链子上。你的腿还能动，但胳膊和头被绑在这样的位置上就没什么用了。
+<br><br>
+
+<<link [[继续|Livestock Lactate Tubes]]>><</link>>
+<br>
+
+:: Livestock Lactate Tubes
+<<effects>>
+
+<<if $breastfeedingdisable is "f">>
+	<<if $player.penisExist and !playerChastity()>>
+		<<if $player.penissize gte 4>>
+		雷米靠在你的身体下方，手里拿着玻璃水泵。你感觉到有管子压在你的<<penis>>前端，又冷又硬。雷米皱眉站起身。"喂，"<<he>>对一个路过的农场工人喊道。"递给我一个大一点的。"
+		<br><br>
+
+		这次，管子合适了。紧接着，你感觉到一股类似的寒气压在你的<<breasts>>上。雷米离开了你的笼子，哐当一声把门关上。<<He>>走近挤奶机，拉动操作杆。一股难以置信的吸力袭击了你。
+		<br><br>
+
+		<<elseif $player.penissize gte 1>>
+		雷米靠在你的身体下面，手里还拿着个玻璃制的泵。你感觉到管子拂过你的<<penis>>，压在你的骨盆上。
+		<br><br>
+
+		紧接着，你感受到类似的冷意同样压在你的<<breasts>>上。雷米离开了你的笼子，在<<him>>身后哐当一声便关上了门。<<He>>走进挤奶机并拉下操作杆。一股令人难以置信的吸力袭向了你。
+		<br><br>
+		<<else>>
+		雷米靠在你的身体下面，手里还拿着玻璃泵。你感觉到管子紧贴着你的骨盆，冰冷而坚硬。雷米探出头来，<<his>>皱着眉头。"嘿，"他叫住一个路过的工人。"给我递个小一点的。"
+		<br><br>
+
+		这次，管子合适了。紧接着，你感觉到一股类似的寒气压在你的<<breasts>>上。雷米离开了你的笼子，哐当一声把门关上。<<He>>走近挤奶机，拉动操作杆。一股难以置信的吸力袭击了你的<<penis>>和胸脯。
+		<br><br>
+		<</if>>
+
+		<<if $lactating is 1 and $milk_amount gte 1>>
+			<span class="lewd">一种奇怪的感觉在你的身体里升起，你浑身颤抖。</span>你望向自己的胸部。管子里已经装满了你的奶水。
+			<br><br>
+		<</if>>
+
+		"一定要多给我们产点奶，"<<he>>说完就走了，留下你的脖子被锁在地板上，一根吸引管在你的阴茎和乳头上工作。
+		<<garousal>><<arousal 300 "genitals">><<arousal 300 "breasts">>
+		<br><br>
+
+		<<link [[屈服(3:00)|Livestock Both Give]]>><<transform cow 1>><<sub 1>><</link>>
+		<br>
+		<<link [[抵抗(3:00)|Livestock Both Resist]]>><<def 1>><</link>><<willpowerdifficulty 1 1000>>
+		<br>
+
+	<<else>>
+		雷米靠在你的身体下方，手里握着玻璃水泵。你感觉到管子压迫着你的<<breasts>>，又冷又硬。
+		<br><br>
+
+		雷米离开了你的笼子，砰的一声关上门。<<He>>走近挤奶机，拉动操纵杆。可怕的吸力开始压迫你的胸部。
+		<br><br>
+
+		<<if $lactating is 1 and $milk_amount gte 1>>
+			<span class="lewd">一种奇怪的感觉在你的身体里升起，你浑身颤抖。</span>你望向自己的胸部。管子里已经装满了你的奶水。
+			<br><br>
+		<</if>>
+
+		"一定要给我们多多生产牛奶，"<<he>>拍了拍你的头，然后离开了。你的脖子被锁在地板上，吸气管在你的<<nipples>>上不断工作着。
+		<<garousal>><<arousal 600 "breasts">>
+		<br><br>
+
+		<<link [[屈服(3:00)|Livestock Breasts Give]]>><<transform cow 1>><<sub 1>><</link>>
+		<br>
+		<<link [[抵抗(3:00)|Livestock Breasts Resist]]>><<def 1>><</link>><<willpowerdifficulty 1 1000>>
+		<br>
+	<</if>>
+<<else>>
+	<<if $player.penisExist and !playerChastity()>>
+		<<if $player.penissize gte 4>>
+			雷米靠在你的身体下方，手里拿着玻璃水泵。你感觉到有管子压在你的<<penis>>前端，又冷又硬。雷米皱眉站起身。"喂，"<<he>>对一个路过的农场工人喊道。"递给我一个大一点的。"
+			<br><br>
+
+			这一次管子合适了。雷米离开了你的笼子，砰的一声关上门。<<He>>走近挤奶机，拉动操纵杆。可怕的吸力压迫起了你的阴茎。
+			<br><br>
+
+		<<elseif $player.penissize gte 1>>
+			雷米靠在你的身体下面，手里还拿着个玻璃制的泵。你感觉到管子拂过你的<<penis>>，压在你的骨盆上。
+			<br><br>
+
+			雷米离开了你的笼子，哐当一声关上<<him>>身后的门。<<He>>走近挤奶机，拉动杠杆。一股难以置信的吸力袭击了你的阴茎。
+			<br><br>
+		<<else>>
+			雷米靠在你的身体下面，手里还拿着玻璃泵。你感觉到管子紧贴着你的骨盆，冰冷而坚硬。雷米探出头来，<<his>>皱着眉头。"嘿，"他叫住一个路过的工人。"给我递个小一点的。"
+			<br><br>
+
+			这次，管子大小合适了。雷米离开了你的笼子，哐当一声关上<<him>>身后的门。<<He>>走近挤奶机，拉动杠杆。一股难以置信的吸力袭向了你的<<penis>>。
+			<br><br>
+		<</if>>
+
+		"一定要多给我们产点奶，"<<he>>说道。<<He>>走了，留下你的脖子被锁在地板上，一根有着吸力的管道在你的阴茎上运作着。
+		<<garousal>><<arousal 600 "genitals">>
+		<br><br>
+
+		<<link [[屈服(3:00)|Livestock Penis Give]]>><<transform cow 1>><<sub 1>><</link>>
+		<br>
+		<<link [[抵抗(3:00)|Livestock Penis Resist]]>><<def 1>><</link>><<willpowerdifficulty 1 1000>>
+		<br>
+	<<else>>
+		<<if playerChastity()>>
+			雷米俯在你的身下。<<He>>将粉色物体塞入你的<<print $worn.genitals.cn_name_cap>>，并靠在你的<<genitals 1>>上。
+		<<else>>
+			雷米靠向你的身体下方。<<He>>把粉红色的东西压在你的<<genitals 1>>上。黏糊糊的。
+		<</if>>
+			你感觉到<<him>>在摸你的<<breasts>>。你低头一看，发现<<hes>>又在那里绑了两个粉红色的东西。
+			<br><br>
+			<<He>>离开你的笼子，哐当一声关上<<him>>身后的门。<<He>>走近挤奶机，拉动杠杆。一阵令人难以置信的振动冲击着你的胯部和胸部。
+			<br><br>
+
+			"玩得开心，"<<he>>说完就走了，留下你的脖子被锁在地板上，震动玩具粘在你的娇嫩部位。
+			<<garousal>><<arousal 300 "genitals">><<arousal 300 "breasts">>
+			<br><br>
+
+			<<link [[顺其自然 (3:00)|Livestock None Give]]>><<transform cow 1>><<sub 1>><</link>>
+			<br>
+			<<link [[抵抗(3:00)|Livestock None Resist]]>><<def 1>><</link>><<willpowerdifficulty 1 1000>>
+			<br>
+	<</if>>
+<</if>>
+
+:: Livestock None Give
+<<effects>>
+
+如果你能配合，工人也许会对你更好。你放纵着震动感作用于你的<<genitals 1>>和<<breasts>>，感觉到欲望不断地增强，直到你的身体再也无法承受。
+<br><br>
+
+<<orgasm>>
+<br><br>
+
+当震动变得更加剧烈时，你几乎还没从高潮中恢复过来。你还记得雷米给你抹的凝胶，以及那种温暖的感觉是多么不自然。现在，当凝胶进入你的体内，让你的身体为一次又一次的射精做好准备时，你也能感受到这种暖意。
+<br><br>
+
+<<link [[继续|Livestock None Give 2]]>><</link>>
+<br>
+
+:: Livestock None Give 2
+
+<<effects>>
+<!-- Modified for Monster People -->
+<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+	你看到<<livestock_cows>>在谷仓里跪下又站起，欢快地哞哞叫着，它们的脸因狂喜而扭曲。
+<<else>>
+<</if>>
+震动棒继续冲击着你的身体，使你再一次接近了巅峰。
+<<orgasm>>
+当你感觉到下一次开始时，你还在因高潮而颤抖。只需片刻，它就到来了。
+<<orgasm>>
+下一波高潮来得更快，你已经意识不清了。
+<<orgasm>>
+<<orgasm>>
+<<orgasm>>
+<<link [[继续|Livestock None Give 3]]>><</link>>
+<br>
+
+:: Livestock None Give 3
+
+<<effects>>
+
+你的身体一次又一次地被摧残，直到高潮无法停止。你的身体持续处于高潮状态，折磨你身体的玩具不停地振动。
+
+<<if $cow gte 6>>
+	<<if $worn.face.type.includes("gag")>>
+		当机器工作时，你隔着嘴套哞哞地叫。
+	<<else>>
+		机器工作时，你和其他牛一起哞哞叫。
+	<</if>>
+	最后振动停止了。你发出最后一声哞哞叫，然后瘫倒在地。
+<<else>>
+	最后振动停止了。你的身体经过了最后一次可怜的痉挛，你瘫倒在地。
+	<<ggtrauma>><<trauma 24>>
+<</if>>
+<br><br>
+
+<<link [[继续|Livestock None End]]>><</link>>
+<br>
+
+:: Livestock None Resist
+<<effects>>
+
+你试着把注意力集中在一些东西上，任何东西，而不是你的<<genitals 1>>和<<breasts>>上的感觉。你不会给他们想要的。你不会。玩具们变得更加激烈，好像感觉到了你的反抗。震动令人抓狂。
+<br><br>
+
+<<if $willpowerSuccess>>
+	你还记得雷米擦在你身上的凝胶，那种温暖感觉是多么不自然。现在你又感觉到了，凝胶在你的身体上发挥着邪恶的作用，把那份渴望扩散了到你的大脑，试图扭曲你的思想。你不会让它发生的。<span class="green">你拒绝了。</span>
+	<br><br>
+	你尽量保持静止不动，生怕哪怕是一个轻微的动作都会让你欲仙欲死。强烈的射精冲动让你几乎痛不欲生。
+	<br><br>
+	你困在高潮的边缘，不知道过了多久。最终，机器安静了下来。吸力停止了。
+	<br><br>
+	<<link [[继续|Livestock None End]]>><</link>>
+	<br>
+<<else>>
+	你不能接受。<span class="red">你的身体屈服了。</span>
+	<<orgasm>>
+	<<gggwillpower>><<willpower 24>>
+	<br><br><br><br>
+	你还记得雷米擦在你身上的凝胶，那种温暖感觉是多么不自然。现在，当凝胶在你的身体上发挥它的魔力，把那份渴望扩散到你的大脑时，你又感受到了它。
+	<br><br>
+	<<link [[继续|Livestock None Give 2]]>><</link>>
+	<br>
+<</if>>
+
+:: Livestock None End
+
+<<effects>>
+<<pass 180>>
+<<endevent>>
+<<npc Remy>><<person1>>
+你气喘吁吁地倒在铺满稻草的地板上。雷米站在了挤奶机前。<<He>>检查附在你身上的玻璃罐。
+<br><br>
+<<He>>打开大门，半跪在你身边，把一只手搭在你的肩膀上。这种治疗让你的身体变得非常敏感，甚至你的脊椎都在发抖。
+<br><br>
+<<He>>把手伸到你下面，拽开绑在你<<genitals 1>>和<<breasts>>上的玩具。这几乎让你崩溃。
+<br><br>
+<<if $livestock_obey gte 80>>
+	"你真是个好<<girl>>，"<<he>>说着挠了挠你的耳后。"该睡觉了。"<<He>>站起来向大门走去。到了门口，<<He>>转过身，微笑着关上了笼子。
+<<elseif $livestock_obey gte 20>>
+	<<He>>用<<his>>的手指勾住你的项圈，然后把你猛的拉近。"今晚你要做一个好<<girl>>，好吗？"<<he>>在你耳边低语。"不要把其他牛吵醒哦。"<<He>>放开你，站起身走向大门。它砰的一声关上了。
+<<else>>
+	<<He>>抓住你的耳朵，把你拉近。"该睡觉了。最好别让我听到你一夜没睡。明白吗?"<<He>>松开你，站起来，不等你回答就向牢门走去。
+<</if>>
+<br><br>
+雷米和农场工人把牛从机器里放了出来。他们离开时关了灯，让谷仓陷入一片黑暗。
+<br><br>
+<<endevent>>
+<<unbind>>
+<<link [[继续|Livestock Cell]]>><</link>>
+<br>
+
+:: Livestock Penis Give
+
+<<effects>>
+如果你能配合，也许工人会对你更好。你让吮吸的感觉作用于你的<<penis>>，感觉到兴奋感不断增强，直到你的身体再也无法忍受。
+<br><br>
+<<set $livestock_semen to $semen_amount>>
+<<orgasm>>
+<<if $semen_amount gte 1>>
+	你的精液被吸进管子，重新出现在牢房外挤奶机上的玻璃罐中。当抽吸变得更加剧烈时，你还在纠结于任何想看的人都能看见你暴露的精液产量。
+<<else>>
+	你还没从高潮中恢复过来，吸力就变得更强了。
+<</if>>
+<br><br>
+你还记得雷米给你抹的凝胶，那种温暖的感觉多么不自然。现在你再次感受到了，凝胶在你的阴茎上发挥着它的魔力，让它时刻准备着被一次又一次地 "挤奶"。
+<br><br>
+
+<<barn_img penis no_livestock>>
+
+<<link [[继续|Livestock Penis Give 2]]>><</link>>
+<br>
+
+:: Livestock Penis Give 2
+
+<<effects>>
+<!-- Modified for Monster People -->
+<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+	你看到<<livestock_cows>>在谷仓里跪下又站起，欢快地哞哞叫着，它们的脸因狂喜而扭曲。
+<<else>>
+<</if>>
+机器继续吸吮着你的<<penis>>，迫使你的身体走向另一个高潮，你再一次接近你的顶峰。
+<<orgasm>>
+当你感觉到下一次开始时，你还在因高潮而颤抖。只需片刻，它就到来了。
+<<orgasm>>
+下一波高潮来得更快，你已经意识不清了。
+<<orgasm>>
+<<orgasm>>
+<<orgasm>>
+
+<<barn_img penis half_livestock>>
+
+<<link [[继续|Livestock Penis Give 3]]>><</link>>
+<br>
+
+:: Livestock Penis Give 3
+<<effects>>
+
+你的身体一次又一次地被折磨着，直到高潮永无止境。你的身体一直处于高潮状态，抽吸折磨着你的<<penis>>，不停地吸吮着。
+
+<<if $cow gte 6>>
+	<<if $worn.face.type.includes("gag")>>
+		当机器工作时，你隔着嘴套哞哞地叫。
+	<<else>>
+		机器工作时，你和其他牛一起哞哞叫。
+	<</if>>
+	终于，吸力停止了。你发出最后的一声哞叫，然后瘫倒在地。
+<<else>>
+	终于，吸力停止了。你的身体最后一次陷入可怜的痉挛，瘫倒在地。
+	<<ggtrauma>><<trauma 24>>
+<</if>>
+<br><br>
+
+<<set $semen_amount to 0>>
+
+<<barn_img penis livestock>>
+
+<<link [[继续|Livestock Milking End]]>><<machine_end>><</link>>
+<br>
+
+:: Livestock Penis Resist
+<<effects>>
+
+你试着把注意力放在别的事情上，除了吸吮你的阴茎之外的任何事情。你不会让他们如愿的。你不会的。机器变得更加强烈，仿佛感受到了你的反抗。吸力让人抓狂。
+<br><br>
+
+<<if $willpowerSuccess>>
+	你还记得雷米给你抹的凝胶，那种温暖的感觉多么不自然。现在你再次感受到了，凝胶在你的阴茎上施展着它的魔力，将它的渴望扩散到你的核体内，试图扭曲你的思想。你不会让它得逞的。<span class="green">你抗拒着。</span>
+	<br><br>
+
+	你尽量保持静止不动，生怕哪怕是一个轻微的动作都会让你欲仙欲死。强烈的射精冲动让你几乎痛不欲生。
+	<br><br>
+
+	你困在高潮的边缘，不知道过了多久。最终，机器安静了下来。吸力停止了。
+	<br><br>
+
+	<<link [[继续|Livestock Milking End]]>><</link>>
+	<br>
+
+<<else>>
+	<<set $livestock_semen to $semen_amount>>
+	你受不住了。<span class="red">你的身体屈服了。</span><<orgasm>><<gggwillpower>><<willpower 24>>
+	<br><br>
+	<<if $semen_amount gte 1>>
+	你的精液被吸进管子，重新出现在牢房外挤奶机上的玻璃罐中。当抽吸变得更加剧烈时，你还在纠结于任何想看的人都能看见你暴露的精液产量。
+	<<else>>
+		你还没从高潮中恢复过来，吸力就变得更强了。
+	<</if>>
+	<br><br>
+	你还记得雷米给你抹的凝胶，以及那种温暖的感觉是多么不自然。当凝胶在你的阴茎上发挥它的魔力时，你再次感受到了这种感觉，它让你的阴茎蓄势待发，准备好一次又一次地被 "挤奶"。
+	<br><br>
+
+	<<barn_img penis no_livestock>>
+
+	<<link [[继续|Livestock Penis Give 2]]>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Breasts Give
+<<effects>>
+
+如果你能配合，也许工人会对你更好。你让吮吸的感觉在你的<<breasts>>上起作用。你的性欲不断高涨，直到你再也无法忍受。
+<br><br>
+
+<<orgasm>>
+<<if $milk_amount gte 1 and $lactating gte 1>><<set $livestock_milk to $milk_amount>><<set $milk_produced_stat += Math.trunc($milk_amount)>>
+	你的奶被吸进管子，重新出现在牢房外挤奶机上的玻璃罐里。任何想看的人都能看见你产出奶量的过程，但你尽量不去想它。
+	<br><br>
+<</if>>
+你还记得雷米擦在你身上的凝胶，那种温暖的感觉有多不自然。你现在又感觉到了，因为那凝胶在你的乳房上疯狂地工作，渗入你的下体，为你的身体做进一步的虐待准备。
+<br><br>
+
+<<barn_img breasts no_livestock>>
+
+<<link [[继续|Livestock Breasts Give 2]]>><</link>>
+<br>
+
+:: Livestock Breasts Give 2
+<<effects>>
+<!-- Modified for Monster People -->
+<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+	你看到<<livestock_cows>>在谷仓里跪下又站起，欢快地哞哞叫着，它们的脸因狂喜而扭曲。
+<<else>>
+<</if>>
+
+机器继续吮吸你的<<breasts>>，迫使你的身体走向另一个高潮，你快要到达极点了。
+<<orgasm>>
+
+当你感觉到下一次开始时，你还在因高潮而颤抖。只需片刻，它就到来了。
+<<orgasm>>
+
+下一波高潮来得更快，你已经意识不清了。
+<<orgasm>>
+
+<<orgasm>>
+
+<<orgasm>>
+
+<<barn_img breasts half_livestock>>
+
+<<link [[继续|Livestock Breasts Give 3]]>><</link>>
+<br>
+
+:: Livestock Breasts Give 3
+<<effects>>
+
+你的身体一次又一次地受到伤害，直到高潮不再停止。你的身体保持在不断高潮的状态，不停地吮吸折磨着你的<<breasts>>。
+
+<<if $cow gte 6>>
+	<<if $worn.face.type.includes("gag")>>
+		当机器工作时，你隔着嘴套哞哞地叫。
+	<<else>>
+		机器工作时，你和其他牛一起哞哞叫。
+	<</if>>
+	终于，吸力停止了。你发出最后的一声哞叫，然后瘫倒在地。
+<<else>>
+	终于，吸力停止了。你的身体最后一次陷入可怜的痉挛，瘫倒在地。
+	<<ggtrauma>><<trauma 24>>
+<</if>>
+<br><br>
+
+<<barn_img breasts livestock>>
+
+<<set $milk_amount to 0>>
+
+<<link [[继续|Livestock Milking End]]>><<machine_end>><</link>>
+<br>
+
+:: Livestock Breasts Resist
+<<effects>>
+
+<<if $milk_amount gte 1 and $lactating gte 1>>
+	<<set $livestock_milk to $milk_amount>><<set $milk_produced_stat += Math.trunc($milk_amount)>>
+	你的奶被吸进管子，重新出现在牢房外挤奶机上的玻璃罐里。任何想看的人都能看见你产出奶量的过程，但你尽量不去想它。
+	<br><br>
+<<else>>
+<</if>>
+
+你试着把注意力集中在某件事上，除了吸吮你的乳房之外的任何事情。你无法阻止他们挤奶，但你不会让他们强迫你达到高潮。你不会的。机器变得更加强烈，仿佛感受到了你的反抗。吸力让人发狂。
+<br><br>
+
+<<if $willpowerSuccess>>
+	你还记得雷米给你抹的凝胶，那种温暖的感觉多么不自然。现在你再次感受到了，凝胶在你的胸口作祟，将它的渴望扩散到你的内心，试图扭曲你的思想。你不会让它得逞的。<span class="green">你抵抗着。</span><<gwillpower>><<willpower 2>>
+	<br><br>
+
+	你尽量保持静止不动，生怕哪怕是一个轻微的动作都会让你欲仙欲死。强烈的射精冲动让你几乎痛不欲生。
+	<br><br>
+
+	你困在高潮的边缘，不知道过了多久。最终，机器安静了下来。吸力停止了。
+	<br><br>
+	<<set $milk_amount to 0>>
+	<<link [[继续|Livestock Milking End]]>><</link>>
+	<br>
+
+<<else>>
+	你无法控制。<span class="red">你的身体屈服了。</span><<gggwillpower>><<willpower 24>>
+
+	<br><br>
+	<<orgasm>>
+
+	你还记得雷米给你抹的凝胶，那种温暖的感觉多么不自然。当凝胶在你的胸口发挥魔力时，你再次感受到了这种温暖，它让你充满活力，开始产奶。
+	<br><br>
+
+	<<barn_img breasts no_livestock>>
+
+	<<link [[继续|Livestock Breasts Give 2]]>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Both Give
+<<effects>>
+
+<<if $milk_amount gte 1 and $lactating gte 1>><<set $livestock_milk to $milk_amount>><<set $milk_produced_stat += Math.trunc($milk_amount)>>
+	你的奶被吸进管子，重新出现在牢房外挤奶机上的玻璃罐里。任何想看的人都能看见你产出奶量的过程，但你尽量不去想它。
+	<br><br>
+<</if>>
+
+如果你能配合，也许农场工人会对你更好。你让吮吸的感觉作用于你的<<penis>>和<<breasts>>，感觉到性欲的感觉不断增强，直到你的身体再也无法忍受。
+<br><br>
+<<set $livestock_semen to $semen_amount>>
+<<orgasm>>
+<<if $semen_amount gte 1>>
+	<<if $livestock_milk gte 1>>
+		你的精液被吸入管道，与玻璃罐中的牛奶混合在一起。你还没从高潮中回过神来，吸力就变得更强了。
+	<<else>>
+		你的精液被吸进管子，然后流入牢房外挤奶机上的玻璃罐里。任何想看的人都能轻易看见你的产出精液的过程，但你尽量不去想它。你还没从高潮中回过神来，吸力就变得更大了。
+	<</if>>
+<<else>>
+	你还没从高潮中恢复过来，吸力就变得更强了。
+<</if>>
+<br><br>
+你还记得雷米给你抹的凝胶，那种温暖的感觉多么不自然。现在，当凝胶在你的阴茎上施展魔力时，你又再次感受到了这种感觉，它让你的阴茎蓄势待发，准备好一次又一次地被"挤奶"。
+<br><br>
+
+<<barn_img both no_livestock>>
+
+<<link [[继续|Livestock Both Give 2]]>><</link>>
+<br>
+
+:: Livestock Both Give 2
+<<effects>>
+<!-- Modified for Monster People -->
+<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+	你看到<<livestock_cows>>在谷仓里跪下又站起，欢快地哞哞叫着，它们的脸因狂喜而扭曲。
+<<else>>
+<</if>>
+
+机器继续吸吮着你的<<penis>>，迫使你的身体冲向另一次高潮。你再度接近了顶峰。
+<<orgasm>>
+
+当你感觉到下一次开始时，你还在因高潮而颤抖。只需片刻，它就到来了。
+<<orgasm>>
+
+下一次来得更快，几乎与前一次没有分清边界。<<orgasm>>
+
+<<orgasm>>
+
+<<orgasm>>
+
+<<barn_img both half_livestock>>
+
+<<link [[继续|Livestock Both Give 3]]>><</link>>
+<br>
+
+:: Livestock Both Give 3
+<<effects>>
+
+你的身体一次又一次地被折磨着，直到高潮永无止境。你的身体一直处于高潮状态，抽吸折磨着你的<<penis>>，不停地吸吮着。
+
+<<if $cow gte 6>>
+	<<if $worn.face.type.includes("gag")>>
+		当机器工作时，你隔着嘴套哞哞地叫。
+	<<else>>
+		机器工作时，你和其他牛一起哞哞叫。
+	<</if>>
+	终于，吸力停止了。你发出最后的一声哞叫，然后瘫倒在地。
+<<else>>
+	终于，吸力停止了。你的身体最后一次陷入可怜的痉挛，瘫倒在地。
+	<<ggtrauma>><<trauma 24>>
+<</if>>
+<br><br>
+
+<<barn_img both livestock>>
+
+<<set $semen_amount to 0>>
+<<set $milk_amount to 0>>
+
+<<link [[继续|Livestock Milking End]]>><<machine_end>><</link>>
+<br>
+
+:: Livestock Both Resist
+<<effects>>
+
+<<if $milk_amount gte 1 and $lactating gte 1>>
+	<<set $livestock_milk to $milk_amount>><<set $milk_produced_stat += Math.trunc($milk_amount)>>
+	你的奶被吸进管子，重新出现在牢房外挤奶机上的玻璃罐里。任何想看的人都能看见你产出奶量的过程，但你尽量不去想它。
+	<br><br>
+<<else>>
+<</if>>
+
+你试着把注意力集中在某件事上，除了吸吮你的阴茎和<<breasts>>之外的任何事情。你无法阻止他们吸吮出你的奶，但你不会让它们得到此外的更多的东西。你不会的。机器变得更加强烈，似乎感受到了你的反抗。吸力让人发狂。
+<br><br>
+
+<<if $willpowerSuccess>>
+	你还记得雷米给你抹的凝胶，那种温暖的感觉多么不自然。现在你再次感受到了，凝胶在你的阴茎和胸膛上施展着它的魔力，将它的渴望扩散到你的内心，试图扭曲你的思想。你不会让它得逞的。<span class="green">你抗拒着它。</span>
+	<br><br>
+
+	你尽量保持静止不动，生怕哪怕是一个轻微的动作都会让你欲仙欲死。强烈的射精冲动让你几乎痛不欲生。
+	<br><br>
+
+	你困在高潮的边缘，不知道过了多久。最终，机器安静了下来。吸力停止了。
+	<br><br>
+
+	<<link [[继续|Livestock Milking End]]>><</link>>
+	<br>
+
+<<else>>
+	<<set $livestock_semen to $semen_amount>>
+	你受不住了。<span class="red">你的身体屈服了。</span><<orgasm>><<gggwillpower>><<willpower 24>>
+	<br><br>
+	<<if $semen_amount gte 1>>
+	你的精液被吸进管子，重新出现在牢房外挤奶机上的玻璃罐中。当抽吸变得更加剧烈时，你还在纠结于任何想看的人都能看见你暴露的精液产量。
+	<<else>>
+		你还没从高潮中恢复过来，吸力就变得更强了。
+	<</if>>
+	<br><br>
+	你还记得雷米给你抹的凝胶，以及那种温暖的感觉是多么不自然。当凝胶在你的阴茎上发挥它的魔力时，你再次感受到了这种感觉，它让你的阴茎蓄势待发，准备好一次又一次地被 "挤奶"。
+	<br><br>
+
+	<<barn_img both no_livestock>>
+
+	<<link [[继续|Livestock Both Give 2]]>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Milking End
+<<effects>>
+<<pass 180>>
+<<endevent>>
+<<npc Remy>><<person1>>
+你瘫坐在铺满稻草的地板上，气喘吁吁。紧接着，雷米站在挤奶机前。<<He>>检查着你身上的玻璃罐。
+<br><br>
+<<if $livestock_milk is undefined>><<set $livestock_milk to 0>><</if>>
+<<if $livestock_semen is undefined>><<set $livestock_semen to 0>><</if>>
+<<set $fluid_forced_stat += ($livestock_milk + $livestock_semen)>>
+<<if $livestock_milk + $livestock_semen gte 5000>><<earnFeat "Pride of the Farm">>
+<<npcincr Remy love 3>>"非凡的生产力，"<<he>>敬畏地盯着面前的<span class="green">大量</span>白色液体说道。"不可能还有其他<<if $player.gender_appearance is "m">>公牛<<else>>母牛<</if>>能产这么多奶了。"
+<<gglove>>
+<<elseif $livestock_milk + $livestock_semen gte 3000>>
+<<npcincr Remy love 2>>"你是个好<<girl>>,"<<he>>盯着面前<span class="teal">大量的</span>白色液体说道。"唯一麻烦的是，"<<he>>微笑道。"搬起来可能有点重。"
+<<glove>>
+<<elseif $livestock_milk + $livestock_semen gte 1000>>
+<<npcincr Remy love 1>>"有了这样的产品，"<<he>>看着<<him>>面前的<span class="lblue">大量</span>白色液体说道。"你会是我们族群中最有价值的成员之一。"
+<<glove>>
+<<elseif $livestock_milk + $livestock_semen gte 500>>
+	"很好，"<<he>>看着<<him>>面前<span class="blue">适量</span>的白色液体说道。"你是我们族群中宝贵的一员。"
+<<elseif $livestock_milk + $livestock_semen gte 300>>
+	"很好，"<<him>>看着<span class="purple">少量的</span>白色液体说道。"不过，我认为你还能做得更好。"
+<<elseif $livestock_milk + $livestock_semen gte 100>>
+	"对于<<if $player.gender_appearance is "m">>公牛<<else>>奶牛<</if>>来说很少，"<<he>>看着<<him>>面前的<span class="pink">少量</span>白色液体。"但总比什么都没有强。"
+<<elseif $livestock_milk + $livestock_semen gte 1>>
+	"也太少了，"<<he>>叹了口气，看着面前<span class="red">只有几滴的</span>白色液体。"还要继续努力增加产量才行。"
+<<else>>
+	"一滴都没出来？"<<he>>叹了口气。"别担心，你未来还是有希望成为一头优秀的奶牛的。"
+<</if>>
+<<He>>打开大门，半跪在你身边，把一只手搭在你的肩膀上。这种治疗让你的身体变得非常敏感，甚至你的脊椎都在发抖。
+<br><br>
+
+<<if $breastfeedingdisable is "f">>
+	<<if $player.penisExist>>
+		<<He>>伸手到你的身体下面，扯掉了固定在你下体的玻璃泵。这刺激差点让你直接高潮。然后<<He>>又拔下了你<<breasts>>上的泵。
+	<<else>>
+		<<He>>把手伸到你的下方，将吸在你<<breasts>>周围的泵猛地拽开。这几乎足以把你送上高潮。
+	<</if>>
+<<else>>
+	<<He>>把手伸到你的下面，将吸在你<<penis>>周围的泵猛地拽开。这几乎足以把你送上高潮。
+<</if>>
+
+<<if $livestock_obey gte 80>>
+	"你真是个好<<girl>>，"<<he>>说着挠了挠你的耳后。"该睡觉了。"<<He>>站起来向大门走去。到了门口，<<He>>转过身，微笑着关上了笼子。
+<<elseif $livestock_obey gte 20>>
+	<<He>>用<<his>>的手指勾住你的项圈，然后把你猛的拉近。"今晚你要做一个好<<girl>>，好吗？"<<he>>在你耳边低语。"不要把其他牛吵醒哦。"<<He>>放开你，站起身走向大门。它砰的一声关上了。
+<<else>>
+	<<He>>抓住你的耳朵，把你拉近。"该睡觉了。最好别让我听到你一夜没睡。明白吗?"<<He>>松开你，站起来，不等你回答就向牢门走去。
+<</if>>
+<br><br>
+
+雷米和农场工人把牛从机器里放了出来。他们离开时关了灯，让谷仓陷入一片黑暗。
+<br><br>
+
+<<endevent>>
+
+<<unset $livestock_semen>>
+<<unset $livestock_milk>>
+<<unbind>>
+
+<<link [[继续|Livestock Cell]]>><</link>>
+<br>
+
+:: Livestock Wait
+<<effects>>
+
+你无聊的坐在牢房里等待。雷米在谷仓里巡视，查看牛群。几个小时后，农场工人再次开始工作，将奶牛从机器中解放出来。
+<br><br>
+
+灯灭了，谷仓陷入一片黑暗。
+<br><br>
+
+<<link [[继续|Livestock Cell]]>><<endevent>><</link>>
+<br>
+
+:: Livestock Wait Workout
+<<effects>>
+
+牢房里有足够的空间可以进行简单锻炼。你出了一身汗，并不断鞭策自己，让注意力从被监禁的思绪中转移。
+<<physique 18>>
+<br><br>
+
+<<link [[继续|Livestock Cell]]>><<endevent>><</link>>
+<br>
+
+:: Livestock Milking Refuse
+<<effects>>
+
+<<if $worn.face.type.includes("gag")>>
+	你试图抗议，但是脸上戴着的$worn.face.cn_name_cap让你脱口而出的话语全都含糊不清。你只能摇头表示反抗。
+<<elseif $speech_attitude is "meek">>
+	"我……我不想这么做……"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"滚开，死变态！"你气愤的喊道。"马上放我走！"
+<<else>>
+	"不要，" 你抗拒地说， "快让我走！"
+<</if>>
+<br><br>
+
+<<generate2>><<generate3>>
+
+雷米喊来了两个农场工人过来帮忙。"如果你非要成为一头顽固的野兽的话，"<<he>>绷紧了<<his>>手上的鞭子，"那我们就来硬的。"
+<br><br>
+
+<<link [[继续|Livestock Fight]]>><<set $fightstart to 1>><</link>>
+<br>
+
+:: Livestock Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Livestock Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Livestock Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Fight Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+<<ejaculation>>
+引发的骚乱盖过了谷仓里的狗叫声和机械声。其他的农场工人，甚至是一些牛都被吸引了注意力，带着困惑的表情看了过来。
+<br><br>
+<<person1>>
+雷米靠在大门上，<<his>>看着你的眼睛。旁边的农场工人踉跄的往后退。"你不会永远抵抗下去的，"<<him>>把鞭子收回腰间。"总有一天，你会向我屈服。"
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+	<!-- Modified for Monster People -->
+	<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+		农场工人给"奶牛们"装好了挤奶机。它们跪在牢房的边缘，管子连着它们的乳房和生殖器，表情看起来很满足。
+	<<else>>
+		农场工人给奶牛们装好了挤奶机。
+	<</if>>
+	<br><br>
+
+	<<link [[等待 (3:00)|Livestock Wait]]>><<pass 180>><</link>>
+	<br>
+	<<link [[锻炼(3:00)|Livestock Wait Workout]]>><<pass 180>><<tiredness 18>><</link>><<gtiredness>>
+	<br>
+
+<<elseif $enemyhealth lte 0>>
+<<person1>>
+农场工人们从雷米身边挤过，争先恐后地向出口跑去。雷米不甘心的在原地待了一会儿，然后也跟着跑了出去。在<<He>>关上大门的过程中<<he>>那双愤怒的眼睛一直都紧紧的盯着你。"你不会永远抵抗的，"<<him>>把鞭子收回腰间。"总有一天，你会向我屈服。"
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+	<!-- Modified for Monster People -->
+	<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+		农场工人给"奶牛们"装好了挤奶机。它们跪在牢房的边缘，管子连着它们的乳房和生殖器，表情看起来很满足。
+	<<else>>
+		农场工人给奶牛们装好了挤奶机。
+	<</if>>
+	<br><br>
+
+	<<link [[等待 (3:00)|Livestock Wait]]>><<pass 180>><</link>>
+	<br>
+	<<link [[锻炼(3:00)|Livestock Wait Workout]]>><<pass 180>><<tiredness 18>><</link>><<gtiredness>>
+	<br>
+
+<<else>>
+
+	<<tearful>>你倒在地上。你伤得太重，无法战斗。<<person2>><<person>>和<<person3>><<person>>把你拖起来。"花了不少时间了，"雷米瞥了一眼<<his>>的手表，然后用力抓住你的项圈。"接下来就交给我吧。"
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<npc Remy>><<person1>>
+	<<link [[继续|Livestock Milking Obey]]>><</link>>
+
+<</if>>
+
+:: Livestock Sleep
+<<effects>>
+
+<<livestock_sleep>>
+
+<<if $phase is 0>>
+	<<if $cow gte 6 or $wolfgirl gte 6 or $cat gte 6 or $fox gte 6>>
+		你蜷缩在柔软的稻草上，想象着你现在睡着的是柔软的床，而不是稻草。你很快就睡着了。
+	<<elseif $cow gte 5 or $wolfgirl gte 5 or $cat gte 5 or $fox gte 5>>
+		你蜷缩在柔软的稻草上，很快就睡着了。
+	<<elseif $cow gte 4 or $wolfgirl gte 4 or $cat gte 4 or $fox gte 4>>
+		你蜷缩在稻草上，没有那么难受。你被一声巨响惊醒了。
+	<<elseif $cow gte 3 or $wolfgirl gte 3 or $cat gte 3 or $fox gte 3>>
+		你蜷缩在稻草上，努力想睡着。你被一声巨响惊醒了。
+	<<elseif $cow gte 2 or $wolfgirl gte 2 or $cat gte 2 or $fox gte 2>>
+		你多捡了一些稻草想让床更柔软些，比之前要好些。你被一声巨响惊醒了。
+	<<elseif $cow gte 1 or $wolfgirl gte 1 or $cat gte 1 or $fox gte 1>>
+		你躺在稻草上。冰冷的稻草比睡在地板上好不了多少。你想象着你睡的是正常的床铺，但是很快的你被一道沉重的嘎嘎声吵醒。
+	<<else>>
+		你靠着墙坐着，无视那堆稻草。你不是动物，才不要睡在那上面。过了好一会儿你才睡去，但是很快的你被一声巨响惊醒了。
+	<</if>>
+<</if>>
+微弱的光线透过高高的窗户。天亮了。
+<<wakingEffects true>>
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure)>>
+	<<generate1>><<person1>>
+	你的眼神再度聚焦，看见一个<<person>>站在你的牢房外面，看着你。<<He>>的目光越过你的肩头。"如果我动作够快的话，应该不会被抓住，"<<he>>喃喃自语，同一时间打开了大门。你想站起来，但<<he>>把你推回到稻草上。
+	<br><br>
+
+	<<link [[继续|Livestock Cell Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	<<link [[继续|Livestock Cell]]>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Cell Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Livestock Cell Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Livestock Cell Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Cell Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<person1>><<person>>爬起来，紧张地环顾四周。<<He>>走到大门前，关上了<<him>>身后的大门。
+	<br><br>
+	<<tearful>>你爬了起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Livestock Cell]]>><</link>>
+	<br>
+
+<<else>>
+	<<person1>><<person>>争先恐后地从你身边跑开，<<his>>的眼中流露出恐惧的神色。<<He>>从牢房里翻了出来，一脚把牢门踢上。
+	<br><br>
+	<<tearful>>你爬了起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Livestock Cell]]>><</link>>
+	<br>
+
+<</if>>
+
+:: Livestock Cell Leave
+<<effects>><<set $outside to 1>>
+<!-- Modified for Monster People -->
+<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+	你离开牢房，和<<livestock_cows>>一起从谷仓出发。工人们从两侧包抄，确保把你往正确的方向赶。
+	<br><br>
+<<else>>
+	你离开牢房，和牛群一起从谷仓出发。农场工人从两侧夹道，确保把你赶到正确的方向。
+	<br><br>
+<</if>>
+
+<<if $weather is "rain">>
+	你走到了外面，暴露在了雨点和泥泞中。
+<<elseif $weather is "clear">>
+	你走到了外面，暴露在了阳光下。
+<<elseif $weather is "snow">>
+	你走到了外面，暴露在了雪中。
+<<else>>
+	你出来了。
+<</if>>
+
+<<npc Remy>><<person1>>雷米走在前面，一匹大<<livestock_horse>>在等着<<him>>。<<He>>爬上马背，策马跟在牛群后面。<<He>>一甩鞭子，一声气势汹汹的响声催促着被赶的牛群。
+<br><br>
+
+你们沿着一条有风的小路穿过一个小山谷，进入了一片广阔的田野中。田野周围围着电栅栏。雷米在入口处停下来，坐在他的马上观察经过的牛群。<<His>>的目光在你身上流连。
+<br><br>
+
+<<if $worn.face.type.includes("gag")>>
+	一个农场工人在你的后脑勺处摸索着。<<He>>解开你的绳子，<span class="lblue">取下你的$worn.face.cn_name_cap</span>，然后把你推进田里。两个农场工人把大门拉上。
+	<<set $worn.face.type.push("broken")>>
+	<<faceruined>>
+<<else>>
+	两个农场工人把门关上了。
+<</if>>
+<br><br>
+
+<<hunger 1000>>
+<<link [[继续|Livestock Field]]>><<endevent>><</link>>
+<br>
+
+:: Livestock Cell Refuse
+<<effects>><<set $outside to 1>>
+
+<<npc Remy>><<generate2>><<person2>>
+你拒绝离开牢房。农场工人打开牢房，是个<<person>>，他走了进来，伸手去抓你的项圈，但你退了回去。
+<br><br>
+
+"雷米！"<<he>>大叫。"我们遇上了头顽固的倔驴。"
+<br><br>
+<<person1>>
+<<if $livestock_obey gte 80>>
+	"怎么这么不听话，"雷米摇摇头。"我还以为你是一个好<<girl>>，"<<He>>用鞭子指挥手下的另外两个农场工人进入牢房。他们一起把你毫不费力的拉了出来。他们驱赶着你和牛群一起离开了谷仓。工人们从两侧包围着牛群，确保把你们带到正确的方向。
+<<elseif $livestock_obey lte 20>>
+	"真遗憾，"雷米说道。"每次只要逮到个机会你就想乱来。"<<He>>抚摸着腰间的鞭子，两个农场工人进了牢房。他们一起把你毫不费力的拉了出来。他们驱赶着你和牛群一起离开了谷仓。工人们从两侧包围着牛群，确保把你们带到正确的方向。
+<<else>>
+	"无法理解，"雷米无奈的摇了摇头。"难道说你只是单纯的喜欢反抗别人吗？"<<He>>用鞭子指挥手下的另外两个农场工人进入牢房。他们一起把你毫不费力的拉了出来。他们驱赶着你和牛群一起离开了谷仓。工人们从两侧包围着牛群，确保把你们带到正确的方向。
+<</if>>
+<br><br>
+
+<<if $weather is "rain">>
+	你走到了外面，暴露在了雨点和泥泞中。
+<<elseif $weather is "clear">>
+	你走到了外面，暴露在了阳光下。
+<<elseif $weather is "snow">>
+	你走到了外面，暴露在了雪中。
+<<else>>
+	你出来了。
+<</if>>
+
+雷米走在前面，一匹巨大的<<livestock_horse>>正等着<<him>>。<<He>>翻身上马，跟在牛群后面，挥鞭催赶牛群。
+<br><br>
+
+你们沿着一条有风的小路穿过一个小山谷，进入了一片广阔的田野中。田野周围围着电栅栏。雷米在入口处停下来，坐在他的马上观察经过的牛群。<<His>>的目光在你身上流连。
+<br><br>
+两个农场工人把门关上了。
+<br><br>
+
+<<hunger 1000>>
+<<link [[继续|Livestock Field]]>><<endevent>><</link>>
+<br>
+
+:: Livestock Escape
+<<effects>>
+
+<<npc Remy>><<person1>>
+你跑过开阔的田野。你想躲在树篱后面，但他们的狗肯定会闻出你的味道。
+<br><br>
+
+你听到身后传来了马蹄声。你回头一看，是骑着<<livestock_horse>>的雷米。
+<<set $remyEscapeSteed to _text_output>>
+<<Hes>>向你的位置快速逼近。
+<br><br>
+
+<span class="red"><i>没有人能跑得过马。</i></span>特别是在开阔的场地上。雷米到了你身边，绕了个圈，然后停在了你面前。<<His>>面色阴沉。
+
+<<if $livestock_obey gte 60>>
+	"我对你太失望了，"<<he>>啪的一声扬起了<<his>>的鞭子。"眼下只有一个办法了。"
+<<elseif $livestock_obey gte 20>>
+	"坏<<girls>>应该受到惩罚，"<<he>>说着，扬起<<his>>的鞭子啪的一声向你抽了过来。"希望你未来能学乖一点儿。"
+<<else>>
+	"不过是逃跑而已，"<<he>>啪的一声扬起了<<his>>的鞭子。"需要多少次，我就惩罚你多少次。"
+<</if>>
+
+<<if $livestock_horse gte 2>>
+	<<unset $livestock_escape>><<livestockescape>>
+	<!-- Modified for Monster People -->
+	<<if $remyEscapeSteed is "centaur">>
+		<<generate2>>
+		<<He>>将手臂举过<<his>>的头顶，但是在<<he>>挥鞭时，<span class="green">被一只有力的手抓住了。</span>
+		<br><br>
+		半人马抓住雷米的手臂，然后把<<person1>><<him>>整个人从马鞍上举起来扔到了地上，雷米震惊地睁大了眼睛。
+		<br><br>
+		半人马小跑到你身边，抓住你的腰，把你丢到了<<person2>><<his>>的背上。<<He>>开始奔跑，然后速度越来越快。你为了不摔下去用双手抱住<<his>>的腰。
+		<br><br>
+
+		<<link [[继续|Livestock Escape Centaur]]>><<unset $remyEscapeSteed>><</link>>
+		<br>
+	<<else>>
+		<<He>>把<<his>>的手臂举过<<his>>的头顶，<span class="green">但在<<he>>把手臂放下来时，马儿猛地后仰，</span>把<<his>>甩了出去。马站得太高，以至雷米翻出了马鞍，摔在下方的草地上。
+		<br><br>
+		马儿小跑到你面前，低下了头。你爬上马鞍。马儿突然跑起，随即飞驰起来。你双臂抱住马脖子，生怕摔倒。
+		<br><br>
+
+		<<link [[继续|Livestock Escape Horse]]>><<unset $remyEscapeSteed>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<if $edenwhip is 0>>
+		<<set $edenwhip to 1>>
+	<</if>>
+
+	<<He>>把<<his>>的手举过头顶，随后抵住你裸露的皮肤。
+	<<ggpain>><<pain 12>>
+	<br><br>
+
+	你听到农场工人和狗从后面走来。
+	<br><br>
+
+	<<link [[道歉|Livestock Apologise]]>><<sub 1>><<transform cow 1>><</link>>
+	<br>
+	<<link [[抗议|Livestock Protest]]>><<def 1>><</link>>
+	<br>
+	<<link [[保持沉默|Livestock Silent]]>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Eden Go
+<<effects>>
+
+虽然千钧一发，但在伊甸的帮助下，你们成功了。你们手牵手，一直跑到看不见田野为止。
+<<takeHandholdingVirginity "Eden" "romantic">>
+<br><br>
+
+你听到身后一声尖锐的口哨声，紧接着是喊叫声和狗叫声，其中以雷米的声音最为明显。<span class="red">你正在被追捕。</span>
+<br><br>
+
+<<link [[继续|Livestock Eden Escape]]>><</link>>
+<br>
+
+:: Livestock Eden Escape
+<<effects>>
+你和伊甸一起跑过开阔的荒原，但很快就听到身后传来雷鸣般的马蹄声。你回头瞥了一眼，看见雷米骑着一匹<<livestock_horse>>。<<nnpc_He "Remy">>快速地接近着。
+<br><br>
+伊甸举起步枪瞄准了目标。<<He>>朝<<livestock_horse>>的腿开了一枪。马向后倒在了地上，雷米被摔下了马背。
+<br><br>
+抓住这个机会，你和伊甸跑过了田野。你们爬到山顶上，森林就在那边。
+<<livestockescape>>
+<br><br>
+<<link [[继续|Eden Farm Rescue]]>><</link>>
+
+:: Livestock Eden Resist
+<<effects>>
+
+<<if $cow gte 6>>
+	你不想离开这里，你现在生活在雷米管理的农场里很安全。在这个地方镇上的人都伤害不了你。你留下来对所有人都好。
+	<br><br>
+
+	<<His>>的声音打断了你的忧虑。"你还在等什么？快走吧。"<<He>>抓住你的手。
+	<<if $speech_attitude is "meek">>
+		你害怕地叫。
+	<<elseif $speech_attitude is "bratty">>
+		你用头上的角戳<<him>>。
+	<<else>>
+		你用嘴咬<<his>>的手指。
+	<</if>>
+	<<He>>震惊地后退。<<him>>脸上的表情不断变化，最后<<him>>愤怒的看着你。
+<<else>>
+	<<if $speech_attitude is "meek">>
+		"对不起，"你低声说道。"我做不到，太危险了！"
+	<<elseif $speech_attitude is "bratty">>
+		"我可以拯救我自己，"你切了一声。"滚开，否则我们都会有麻烦的。"
+	<<else>>
+		"你在这里做什么？"你小声说话。"在我们都受到伤害之前快点儿走开。"
+	<</if>>
+	你不确定这些话是来自对雷米的恐惧，还是纯粹的固执。不管是什么原因，伊甸似乎很不高兴。
+<</if>>
+<br><br>
+
+<<He>>从缝隙中伸出一只手，抓住你的手臂。<<He>>抓着栏杆，丝毫没有退缩。"不行，"<<he>>生气的吼道。"我们现在就要一起走。"
+<br><br>
+
+<<He>>想强行把你拉出去。你开始挣扎，但是<<hes>>的力气太大了。你无法反抗。
+<br><br>
+
+<<link [[继续|Livestock Eden Resist 2]]>><</link>>
+<br>
+
+:: Livestock Eden Resist 2
+<<effects>>
+
+就在你接近对岸的时候，你听到身后传来一声尖锐的哨声，接着是叫喊声和狗叫声。伊甸低声骂了几句。<<He>>拉扯得更用力了，<<his>>那急切的想要拯救你的心情，差点害你变成一块烤焦在电栅栏上的烂肉。
+<br><br>
+
+你设法坚持了足够长的时间，让一对工人截住了你。他们把你从伊甸的手里扯出来，从栅栏上拖走。伊甸愤怒的呼喊声最后一次回荡在你耳边，然后你就在混乱中失去了<<him>>的身影。
+<br><br>
+
+<<link [[继续|Livestock Eden Resist 3]]>><<pass 5>><<endevent>><</link>>
+<br>
+
+:: Livestock Eden Resist 3
+<<effects>>
+
+你和其他牛群被关在谷仓里。门砰地关上了。你被挤在惊慌失措的<<livestock_cows>>中间，只能坐立不安地等待。
+<br><br>
+
+过了一段时间。门终于打开了，<<livestock_cows>>倾巢而出。你和它们被注视着。
+<br><br>
+
+<<link [[继续|Livestock Eden Resist 4]]>><</link>>
+<br>
+
+:: Livestock Eden Resist 4
+<<effects>>
+<<npc Remy>><<person1>>
+
+雷米的目光扫视着牛群，最后落在了你身上。<<He>>向手下的农民点点头。那些农场工人们把你拉了过来，让你跪在<<his>>的脚下。
+<br><br>
+
+"可怜的<<girl>>，<<nnpc_gender "Eden">>想把你猎走?"
+<<if $livestock_obey gte 20>>
+	<<He>>半蹲着。你们的身高还是有差距，但是足够<<He>>伸手捏住你的下巴了。"放心吧，你现在安全了。"
+	<br><br>
+
+	工人提着一篮苹果回来了。"这是给你做个好<<girl>>的奖励，"雷米轻声低语。"外面有卑鄙的偷猎者，但我会照顾好你的。"<<He>>笑了。"只要你听话。"
+	<br><br>
+
+	他们走了，渐渐消失在低声的交谈中。只剩下你一人。
+	<br><br>
+
+	<<link [[吃苹果|Livestock Job Eat]]>><<stress -6>><<trauma -6>><<hunger -2000>><</link>><<lllhunger>><<ltrauma>><<lstress>>
+	<br>
+	<<link [[留作他用|Livestock Job Save]]>><</link>>
+	<br>
+<<else>>
+	<<He>>低头看着你。"幸运的是，我会保证我所有的奶牛的安全，即使是不守规矩的牛。"
+	<br><br>
+
+	<<He>>转向<<his>>的工人。"我想它已经吸取教训了，"<<he>>说道。"如果它不想成为持枪疯子眼中的一块肉，它最好好乖乖听话。"
+	<br><br>
+
+	他们走了，渐渐消失在低声的交谈中。只剩下你一人。
+	<br><br>
+
+	<<link [[继续|Livestock Field]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Escape Centaur
+<<location "forest">><<effects>>
+<<pass 60>>
+
+半人马载着你穿过田野和山丘，直到在一个点缀着树木的山顶停下来。你可以看到你脚下的森林和城镇。
+<br><br>
+"我只能走这么远，"半人马说着把你从它的背上抱了起来。"我要回农场了，我的家人们都在那里。"<<He>>把你放在地上。
+<br><br>
+
+<<if $worn.face.type.includes("gag")>>
+	"对了，"<<he>>靠近你。"还有这个东西。"把手伸到了你的脑袋后面，<span class="lblue">解开了你的$worn.face.cn_name_cap。</span>
+	<<set $worn.face.type.push("broken")>>
+	<<faceruined>>
+	<br><br>
+<</if>>
+
+<<link [[感谢|Livestock Escape Thank]]>><</link>>
+<br>
+<<link [[亲吻|Livestock Escape Kiss]]>><</link>><<deviant1>>
+<br>
+
+:: Livestock Escape Thank
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"谢……谢谢你救了我，"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"谢谢你救了我。"，你说道。
+<<else>>
+	"谢谢你救了我，"你说道。
+<</if>>
+<br><br>
+
+"也谢谢你这个吻，"<<he>>回头朝农场走去。"雷米需要明白<<person1>><<his>>的权威是有限度的。" 说着，<<person2>><<he>>向前冲去。<<He>>在<<he>>爬上山顶时回头看了看。
+<<lltrauma>><<lllstress>><<trauma -24>><<stress -36>>
+<br><br>
+
+<<link [[继续|Livestock Escape Town]]>><<endevent>><</link>>
+<br>
+
+:: Livestock Escape Kiss
+<<effects>>
+
+你再次用双臂环住<<his>>的胸膛，但这次前倾身体，在<<his>>的嘴唇上留下一吻。<<He>>先是大笑，然后回吻。<<takeKissVirginity "Centaur">>
+
+<<if $pronoun is "f">>你感到<<his>>硕大的乳房紧压着你。<<else>><<He>>用<<his>>结实的手臂搂住你。<</if>>
+<br><br>
+
+你拉开距离。<<Hes>>脸红了。"我比我想象中更喜欢这样，"<<he>>说着，转身向农场走去。"雷米需要知道<<person1>><<his>>在这里不是无所不能的。"说着<<person2>><<he>>向前猛冲。<<he>>登上山顶，然后回头看着你。
+<<lltrauma>><<lllstress>><<trauma -24>><<stress -36>>
+<br><br>
+
+<<link [[继续|Livestock Escape Town]]>><<endevent>><</link>>
+<br>
+
+:: Livestock Escape Horse
+<<location "forest">><<effects>>
+<<pass 60>>
+
+马载着你越过田野和山丘，直到在一个长着几棵树的山顶停下来。你看到你脚下的森林和城镇。
+<br><br>
+这匹马再也走不动了。你从它的背上爬上了下来。它用头蹭了蹭你，你抚摸着它。
+<<lltrauma>><<lllstress>><<trauma -24>><<stress -36>>
+<br><br>
+
+<<if $worn.face.type.includes("gag")>>
+	它舔着你的脖子，然后你感觉到了一股拉力。它<span class="lblue">解开了你的$worn.face.cn_name_cap。</span>
+	<<set $worn.face.type.push("broken")>>
+	<<faceruined>>
+	<br><br>
+<</if>>
+
+它心满意足的转身向农场走去。它向前奔跑，消失在了山丘后面。
+<br><br>
+
+<<link [[继续|Livestock Escape Town]]>><<endevent>><</link>>
+<br>
+
+:: Livestock Escape Town
+<<effects>>
+<<earnFeat "Runaway Cattle">>
+<<set $hunger to 2000>>
+你还不清楚情况。<<if $exposed gte 2>>至少有件事是肯定的，你还是赤身裸体的。<<elseif $exposed gte 1>>至少有件事是肯定的，你还是衣衫不整的。<</if>>尽管如此，你还是满怀希望地爬下山。你发现了一条通往森林的小路。
+<br><br>
+
+<<link [[继续|Forest]]>><<set $eventskip to 1>><<set $forest to 0>><</link>>
+<br>
+
+:: Livestock Apologise
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"对不起!"你说着跪了下来。"我会乖的!别伤害我。"
+<<elseif $speech_attitude is "bratty">>
+	"很抱歉打扰你，"你说， "但这有点过头了。"
+<<else>>
+	"对不起，" 你说， "我不该逃跑的。"
+<</if>>
+<br><br>
+
+雷米再次挥起鞭子，但这一次它缠绕在了你的脖子上，几乎让你窒息。<<He>>驱赶着马奔跑，手用力的扯着鞭子，你被<<him>>拉着在地上拖动。
+<br><br>
+
+工人们终于赶上来，跟在你身边。狗紧随其后。你们翻过一座小山，谷仓映入眼帘。雷米从你脖子上松开了<<his>>的鞭子。你摔倒在地。
+<br><br>
+
+<<link [[继续|Livestock Caught]]>><</link>>
+<br>
+
+:: Livestock Protest
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你这样做是不对的，"你鼓起勇气说，"你不能这样对待别人。"
+<<elseif $speech_attitude is "bratty">>
+	"你最好滚回你的农场去，" 你说， "否则你会尝到苦果的。"
+<<else>>
+	"我不是牛，"你说道。"你不能这样对待我。"
+<</if>>
+<br><br>
+
+雷米再次挥起鞭子，但这一次它缠绕在了你的脖子上，几乎让你窒息。<<He>>驱赶着马奔跑，手用力的扯着鞭子，你被<<him>>拉着在地上拖动。
+<br><br>
+
+工人们终于赶上来，跟在你身边。狗紧随其后。你们翻过一座小山，谷仓映入眼帘。雷米从你脖子上松开了<<his>>的鞭子。你摔倒在地。
+<br><br>
+
+<<link [[继续|Livestock Caught]]>><</link>>
+<br>
+
+:: Livestock Silent
+<<effects>>
+
+你一言不发，准备迎接下一次鞭打。
+<br><br>
+雷米再次挥起鞭子，但这一次它缠绕在了你的脖子上，几乎让你窒息。<<He>>驱赶着马奔跑，手用力的扯着鞭子，你被<<him>>拉着在地上拖动。
+<br><br>
+
+工人们终于赶上来，跟在你身边。狗紧随其后。你们翻过一座小山，谷仓映入眼帘。雷米从你脖子上松开了<<his>>的鞭子。你摔倒在地。
+<br><br>
+
+<<link [[继续|Livestock Caught]]>><</link>>
+<br>
+
+:: Livestock Caught
+<<effects>>
+
+<<if $remyEscapeSteed is undefined>>
+	<<silently>>
+		<<livestock_horse>>
+		<<set $remyEscapeSteed to _text_output>>
+	<</silently>>
+<</if>>
+
+工人们围成一圈。他们奋力拖拽住狗。雷米仍然站在<<his>><<print $remyEscapeSteed>>上，一副若有所思的样子。
+<<endevent>>
+
+<<if random(1) and $horsedisable is "f">>
+	<<if $remyEscapeSteed is "centaur">>
+		<<if random(1, 100) lte beastMaleChance()>>
+			<<if random(1,100) lte $cbchance>>
+				<<beastNEWinit 1 horse m vagina monster>>
+			<<else>>
+				<<beastNEWinit 1 horse m penis monster>>
+			<</if>>
+		<<else>>
+			<<if random(1,100) lte $dgchance>>
+				<<beastNEWinit 1 horse f penis monster>>
+			<<else>>
+				<<beastNEWinit 1 horse f vagina monster>>
+			<</if>>
+		<</if>>
+	<<else>>
+		<<if $remyEscapeSteed is "stallion">>
+			<<beastNEWinit 1 horse m penis beast>>
+		<<else>>
+			<<beastNEWinit 1 horse f vagina beast>>
+		<</if>>
+	<</if>>
+	<<set _remyPunishBeast to "horse">>
+<<else>>
+	<<beastNEWinit 1 dog>>
+	<<set _remyPunishBeast to "dog">>
+<</if>>
+<<person1>>
+
+<<unset $livestock_escape>>
+<!-- Modified for Monster People -->
+<<if _remyPunishBeast is "horse" and ($monster is 1 or $bestialitydisable is "f")>>
+	"我知道你该得到什么，"<<nnpc_he "Remy">>抚摸着<<nnpc_his "Remy">><<if $monster is 1>>半人马<<else>>马<</if>>的耳后。<<beasttype>>靠在<<bhis>>主人的手上。"这个<<if $NPCList[0].pronoun is "m">>男孩<<else>>女孩<</if>>表现不错。你的惩罚就是<<if $NPCList[0].pronoun is "m">>他<<else>>她<</if>>的奖励。"
+	<br><br>
+	敲定好对你的惩罚后，<<nnpc_his "Remy">>驱赶马匹靠的更近了。几个农场工人也动了起来，他们向你扑来，抓住了你的胳膊和腿。他们把你拖到了附近的干草捆上。
+	<<if $monster is 1>>
+		半人马的眼睛亮了起来，<<bhe>>摇了摇<<bhis>>的<<print $NPCList[0].hair>>鬃毛，露出了<<bhis>>的
+		<<if $NPCList[0].pronoun is "m">>
+			健美的腹部。
+		<<else>>
+			巨大的乳房。
+		<</if>>
+		又靠近了几步，<<bhe>>用一只手抓住你的项圈，用身体压住了你。你瞥见了<<bhis>>那
+		<<if $NPCList[0].penis isnot "none">>
+			<span class="lewd">立着的阴茎。</span>
+		<<else>>
+			<span class="lewd">滴水的小穴。</span>
+		<</if>>
+	<<else>>
+		马用身体压住了你。你瞥见了它那
+		<<if $NPCList[0].penis isnot "none">>
+			<span class="lewd">立着的阴茎。</span>
+		<<else>>
+			<span class="lewd">滴水的小穴。</span>
+		<</if>>
+	<</if>>
+	<br><br>
+
+	农场工人越挤越近，都想观看全程。<<if $NPCList[0].penis isnot "none">>你感觉<<beasttype>>的阴茎正在戳你的屁股。<</if>>
+	<br><br>
+	<<link [[继续|Livestock Caught Horse Molestation]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<elseif _remyPunishBeast is "dog" and ($monster is 1 or $bestialitydisable is "f")>>
+	"我知道你应该得到什么，"<<nnpc_he "Remy">>看着蹲在农场工人旁边狂吠的<<beastsplural>>说道。<<nnpc_He "Remy">>指向其中一只。"就那只了。<<if $pronoun is "m">>他<<else>>她<</if>>是个好<<if $pronoun is "m">>男孩<<else>>女孩<</if>>，平时一直都很乖。必须给<<if $pronoun is "m">>他<<else>>她<</if>>一点儿奖励。"<<bHis>>兴奋的摇晃尾巴。<<generate2>><<person2>><<person>>解开了身后的<<person1>><<if $pronoun is "m">>猎犬<<else>>母狗<</if>>的项圈，<<bhe>>向你扑来。
+	<<clearsinglenpc 1>>
+	<br><br>
+
+	<<link [[继续|Livestock Caught Dog Molestation]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	<<if $edenwhip is 0>>
+		<<set $edenwhip to 1>>
+	<</if>>
+	"我知道你该得到什么，"<<nnpc_he "Remy">>翻身下马。两个农场工人向你扑来。他们抓住你的胳膊和腿，把你举到空中，然后把你压在了一捆干草上。他们按住你的肩膀，让你的<<bottom>>对着雷米。
+	<br><br>
+
+	<<nnpc_his "Remy">>的鞭子甩的劈啪作响。"这是为你好。"<span class="red"><<nnpc_He "Remy">>抽向你的<<bottom>>，</span>你痛的大叫，眼泪直接流了下来。
+	<<ggpain>><<pain 12>>
+	<br><br>
+
+	当雷米再次挥起鞭子时，聚集在一起的农场工人大笑起来。鞭子一次又一次地抽打你的皮肤，一次比一次痛。
+	<<gggpain>><<pain 24>>
+	<br><br>
+
+	雷米气喘吁吁地停了下来。<<nnpc_his "Remy">>把鞭子别回腰间。<<nnpc_he "Remy">>爬回到<<nnpc_his "Remy">>的<<print $remyEscapeSteed>>上，"把它带回牛场吧，希望它够聪明，把这个教训铭记在心。"
+	<br><br>
+
+	农场工人松开你的肩膀，拉起你的项圈。他们推着你沿着小路来到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<endevent>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+	<br>
+<</if>>
+<<unset $remyEscapeSteed>>
+
+/*	The farmhands form a circle around you. They struggle to hold back the dogs. Remy remains on <<his>> <<livestock_horse>>, looking thoughtful.
+	<<unset $livestock_escape>>
+	<!-- Modified for Monster People -->
+	<<if ($monsterchance gte random(1, 100) and ($hallucinations gte 1 or $monsterhallucinations is "f") or $bestialitydisable is "f") and $horsedisable is "f">>
+		<<if maleChance() lt random(1, 100)>>
+			<<if $dgchance gte 1>>
+				"我知道你该得到什么，"<<he>>一边说一边抚摸着半人马的耳后。半人马斜靠在她主人的手上。"这姑娘一直都很乖，所以对你的惩罚就是她的奖励。"
+				<br><br>
+				敲定好对你的惩罚后，<<he>>驱赶马匹靠的更近了。几个农场工人也动了起来，他们向你扑来，抓住了你的胳膊和腿。他们把你拖到了附近的干草捆上。半人马的眼睛亮了起来，她向后摇了摇她黑色的鬃毛，露出了她巨大的乳房。又靠近了几步，她用一只手抓住你的项圈，用身体压住了你。你瞥见了她那<span class="lewd">立着的阴茎。</span>
+				<br><br>
+
+				农场工人越挤越近，都想观看全程。你感觉半人马的阴茎正在戳你的屁股。
+				<br><br>
+				<<endevent>>
+				<<link [[继续|Livestock Caught Female Centaur Rape]]>><<set $molestationstart to 1>><</link>>
+				<br>
+			<<elseif random(1, 2) is 2>>
+				"我知道你该得到什么，"<<he>>一边说一边抚摸着半人马的耳后。半人马斜靠在她主人的手上。"这姑娘一直都很乖，所以对你的惩罚就是她的奖励。"
+				<br><br>
+				敲定好对你的惩罚后，<<he>>驱赶马匹靠的更近了。几个农场工人也动了起来，他们向你扑来，抓住了你的胳膊和腿。他们把你拖到了附近的干草捆上。半人马的眼睛亮了起来，她向后摇了摇她黑色的鬃毛，露出了她巨大的乳房。又靠近了几步，她用一只手抓住你的项圈，用身体压住了你。你瞥见了她那<span class="lewd">滴着水的阴部。</span>
+				<br><br>
+
+				农场工人越挤越近，都想观看全程。
+				<br><br>
+				<<endevent>>
+				<<link [[继续|Livestock Caught Female Centaur Vagina Rape]]>><<set $molestationstart to 1>><</link>>
+				<br>
+			<<else>>
+				"我知道你该得到什么，"<<he>>看着吠叫的犬娘，她们蹲在农场工人旁边。<<He>>指向其中一只。"就那只了。她是个好女孩，平时一直都很乖。必须给她一点儿奖励。"她兴奋的摇晃尾巴。<<generate2>><<person2>><<person>>解开了那只犬娘的项圈，她向你扑来。
+				<br><br>
+
+				<<endevent>>
+				<<link [[继续|Livestock Caught Doggirl Rape]]>><<set $molestationstart to 1>><</link>>
+				<br>
+			<</if>>
+		<<elseif $cbchance lt 100>>
+			"我知道你该得到什么，"<<he>>一边说一边抚摸着半人马的耳后。半人马斜靠在他主人的手上。"这孩子一直都很乖，所以对你的惩罚就是他的奖励。"
+			<br><br>
+			敲定好对你的惩罚后，<<he>>驱赶马匹靠的更近了。几个农场工人也动了起来，他们向你扑来，抓住了你的胳膊和腿。他们把你拖到了附近的干草捆上。半人马的眼睛亮了起来，他向后摇了摇他黑色的鬃毛，露出了他结实的腹肌。又靠近了几步，他用一只手抓住你的项圈，用身体压住了你。你瞥见了他那<span class="lewd">立着的阴茎。</span>
+			<br><br>
+
+			农场工人越挤越近，都想观看全程。你感觉半人马的阴茎正在戳你的屁股。
+			<br><br>
+			<<endevent>>
+			<<link [[继续|Livestock Caught Male Centaur Rape]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<<elseif $cbchance gte 1 and random(1, 2) is 2>>
+			"我知道你该得到什么，"<<he>>一边说一边抚摸着半人马的耳后。半人马斜靠在他主人的手上。"这孩子一直都很乖，所以对你的惩罚就是他的奖励。"
+			<br><br>
+			敲定好对你的惩罚后，<<he>>驱赶马匹靠的更近了。几个农场工人也动了起来，他们向你扑来，抓住了你的胳膊和腿。他们把你拖到了附近的干草捆上。半人马的眼睛亮了起来，他向后摇了摇他黑色的鬃毛，露出了他结实的腹肌。又靠近了几步，他用一只手抓住你的项圈，用身体压住了你。你瞥见了他那<span class="lewd">滴水的小穴。</span>
+			<br><br>
+
+			农场工人越挤越近，都想观看全程。
+			<br><br>
+			<<endevent>>
+			<<link [[继续|Livestock Caught Male Centaur Vagina Rape]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<<else>>
+
+			<<if $edenwhip is 0>>
+				<<set $edenwhip to 1>>
+			<</if>>
+			"我知道你该得到什么，"<<he>>翻身下马。两个农场工人向你扑来。他们抓住你的胳膊和腿，把你举到空中，然后把你压在了一捆干草上。他们按住你的肩膀，让你的<<bottom>>对着雷米。
+			<br><br>
+
+			你听到了<<his>>的长鞭挥舞的声音。"这是为你好，"<span class="red"><<he>>抽打着你的<<bottom>>,</span>你痛的大叫，眼泪流了出来。
+			<<ggpain>><<pain 12>>
+			<br><br>
+
+			当雷米再次挥起鞭子时，聚集在一起的农场工人大笑起来。鞭子一次又一次地抽打你的皮肤，一次比一次痛。
+			<<gggpain>><<pain 24>>
+			<br><br>
+
+			雷米气喘吁吁地停了下来。<<He>>把鞭子别在<<his>>的腰间。"把它牵回牛群里去，"<<he>>说着翻身骑到了<<his>>的<<livestock_horse>>背上。"希望它足够聪明，能牢记这次教训。"
+			<br><br>
+
+			农场工人松开你的肩膀，拉起你的项圈。他们推着你沿着小路来到田野。大门在你身后哐当关上了。
+			<br><br>
+
+			<<endevent>>
+
+			<<link [[继续|Livestock Field]]>><</link>>
+			<br>
+		<</if>>
+	<<elseif $bestialitydisable is "f">>
+		<<if beastMaleChance() gte 1 and $horsedisable is "f">>
+			"我知道你该得到什么，"<<he>>一边说一边抚摸着马的耳后。马斜靠在主人的手上。"这孩子一直都很乖，所以对你的惩罚就是他的奖励。"
+			<br><br>
+			敲定好对你的惩罚后，<<he>>驱赶马匹靠的更近了。几个农场工人也动了起来，他们向你扑来，抓住了你的胳膊和腿。他们把你拖到了附近的干草捆上。马又靠近了几步，你瞥见了它那<span class="lewd">立着的阴茎。</span>
+			<br><br>
+
+			农场工人越挤越近，都想观看全程。你感觉马的阴茎正在戳你的屁股。
+			<br><br>
+			<<endevent>>
+			<<link [[继续|Livestock Caught Horse Rape]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<<elseif random(1, 2) is 2 and $horsedisable is "f">>
+			"我知道你该得到什么，"<<he>>一边说一边抚摸着马的耳后。马斜靠在主人的手上。"这姑娘一直都很乖，所以对你的惩罚就是她的奖励。"
+			<br><br>
+			敲定好对你的惩罚后，<<he>>驱赶马匹靠的更近了。几个农场工人也动了起来，他们向你扑来，抓住了你的胳膊和腿。他们把你拖到了附近的干草捆上。马又靠近了几步，你瞥见了它那<span class="lewd">滴水的小穴。</span>
+			<br><br>
+
+			农场工人越挤越近，都想观看全程。
+			<br><br>
+			<<endevent>>
+			<<link [[继续|Livestock Caught Horse Female Rape]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<<else>>
+			"我知道你该得到什么，"<<he>>看着吠叫的狗子，它们蹲在农场工人旁边。<<He>>指向其中一只。"就那只了。她是个好女孩，平时一直都很乖。必须给她一点儿奖励。"小母狗兴奋的摇晃尾巴。<<generate2>><<person2>><<person>>解开了她的项圈，她向你扑来。
+			<br><br>
+
+			<<endevent>>
+			<<link [[继续|Livestock Caught Dog Rape]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+
+			<<if $edenwhip is 0>>
+				<<set $edenwhip to 1>>
+			<</if>>
+			"我知道你该得到什么，"<<he>>翻身下马。两个农场工人向你扑来。他们抓住你的胳膊和腿，把你举到空中，然后把你压在了一捆干草上。他们按住你的肩膀，让你的<<bottom>>对着雷米。
+			<br><br>
+
+			你听到了<<his>>的长鞭挥舞的声音。"这是为你好，"<span class="red"><<he>>抽打着你的<<bottom>>,</span>你痛的大叫，眼泪流了出来。
+			<<ggpain>><<pain 12>>
+			<br><br>
+
+			当雷米再次挥起鞭子时，聚集在一起的农场工人大笑起来。鞭子一次又一次地抽打你的皮肤，一次比一次痛。
+			<<gggpain>><<pain 24>>
+			<br><br>
+
+			雷米气喘吁吁地停了下来。<<He>>把鞭子别在<<his>>的腰间。"把它牵回牛群里去，"<<he>>说着翻身骑到了<<his>>的<<livestock_horse>>背上。"希望它足够聪明，能牢记这次教训。"
+			<br><br>
+
+			农场工人松开你的肩膀，拉起你的项圈。他们推着你沿着小路来到田野。大门在你身后哐当关上了。
+			<br><br>
+
+			<<endevent>>
+
+			<<link [[继续|Livestock Field]]>><</link>>
+			<br>
+	<</if>> */
+
+:: Livestock Caught Horse Molestation
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $NPCList[0].stance to "top">><<set $position to "doggy">><<set $position_lock to 1>><<prop haybale>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Livestock Caught Horse Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Livestock Caught Horse Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Caught Horse Molestation Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+	当<<beasttype>>从你身边退去时，观众们发出了哄笑。
+	<<if $NPCList[0].penis isnot "none">>
+		精液从<<bhis>>的阴茎中射出，聚集在<<bhim>>下面的地板上。
+	<</if>>
+	<br><br>
+	"好<<if $NPCList[0].pronoun is "m">>男孩<<else>>女孩<</if>>，"雷米俯身拍了拍<<bhis>>的脖子。<<nnpc_He "Remy">>低头看着你。"把它送回去，希望它足够聪明，能理解这个教训。"
+	<br><br>
+
+	农场工人松开你的肩膀，把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+	<br>
+<<else>>
+	<<if $monster is 1>>
+		半人马惊恐地从你身边退开。"我——我只是没心情，"<<bhe>>结结巴巴地说，试图挽回面子。
+	<<else>>
+		马从你身边退开，惊恐地呜呜叫着。
+	<</if>>
+	当<<bhis>>的主人抓住<<bhis>>头发时，<<bHe>>缩了一下。
+	<br><br>
+
+	"很好，"雷米低头看着你说道。"下次你可能会表现得更糟。希望你够聪明，能明白这个教训。"
+
+	农场工人松开你的肩膀，把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Caught Dog Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Livestock Caught Dog Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Livestock Caught Dog Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Caught Dog Molestation Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+	<<if $monster is 1>>
+		当<<beasttype>>瘫倒在你身上时，农场工人们哈哈大笑。他们松开你的肩膀，把<<bhim>>抬到地面。
+	<<else>>
+		当狗和你结束打斗时，农场工人们哈哈大笑。
+	<</if>>
+	<br><br>
+
+	"希望它足够聪明，能够理解这个教训，"雷米看向<<nnpc_his "Remy">>的坐骑后。"我是唯一能保护它不受狼群伤害的人。"
+
+	农场工人把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+	<br>
+<<else>>
+	<<beasttype>>呜咽着从干草堆上滚了下来。<<bHe>>爬到农场工人们身边，躲在他们的腿后面。
+	<br><br>
+
+	"很好，"雷米骑在马上说道。"记住，外面真的有狼。你在他们面前不会有好下场的。我是唯一能保护你的人。"
+	<br><br>
+	农场工人把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Caught Female Centaur Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastNEWinit 1 horse f penis monster>>
+	<<beastCombatInit>>
+	<<set $NPCList[_n].stance to "top">><<set $position to "doggy">><<set $position_lock to 1>><<prop haybale>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Livestock Caught Female Centaur Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Livestock Caught Female Centaur Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Caught Female Centaur Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+	<<npc Remy>><<person1>>
+	当半人马从你身边退去时，观众们发出了哄堂大笑。精液从她巨大的阴茎中射出，聚集在下面的地板上。
+	<br><br>
+	"好姑娘，"雷米俯下身，拍了拍她的脖子。<<He>>俯视着你。"把它拿回去给其他人。让我们希望它足够聪明，能够理解这个教训。"
+	<br><br>
+
+	农场工人松开你的肩膀，把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+
+<<else>>
+	<<npc Remy>><<person1>>
+	半人马惊恐地从你身边退开。"我——我只是没心情，"她结结巴巴地说，试图挽回面子。当她的主人抓住她的头发时，她退缩了。
+	<br><br>
+
+	"很好，"雷米低头看着你说道。"下次你可能会表现得更糟。希望你够聪明，能明白这个教训。"
+
+	农场工人松开你的肩膀，把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+
+<</if>>
+
+:: Livestock Caught Female Centaur Vagina Rape
+<<if $molestationstart is 1>>
+<<set $molestationstart to 0>>
+<<controlloss>>
+<<violence 1>>
+<<neutral 1>>
+<<molested>>
+
+<<beastNEWinit 1 horse f vagina monster>>
+	<<beastCombatInit>>
+<<set $NPCList[_n].stance to "top">><<set $position to "missionary">><<set $position_lock to 1>><<prop haybale>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Livestock Caught Female Centaur Vagina Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Livestock Caught Female Centaur Vagina Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Caught Female Centaur Vagina Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<beastejaculation>>
+	<<npc Remy>><<person1>>
+	当半人马从你身边退去时，观众们发出了哄堂大笑。
+	<br><br>
+	"好姑娘，"雷米俯下身，拍了拍她的脖子。<<He>>俯视着你。"把它拿回去给其他人。让我们希望它足够聪明，能够理解这个教训。"
+	<br><br>
+
+	农场工人松开你的肩膀，把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+
+<<else>>
+	<<npc Remy>><<person1>>
+	半人马惊恐地从你身边退开。"我——我只是没心情，"她结结巴巴地说，试图挽回面子。当她的主人抓住她的头发时，她退缩了。
+	<br><br>
+
+	"很好，"雷米低头看着你说道。"下次你可能会表现得更糟。希望你够聪明，能明白这个教训。"
+
+	农场工人松开你的肩膀，把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+
+<</if>>
+
+:: Livestock Caught Male Centaur Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastNEWinit 1 horse m penis monster>>
+	<<beastCombatInit>>
+	<<set $NPCList[_n].stance to "top">><<set $position to "doggy">><<set $position_lock to 1>><<prop haybale>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Livestock Caught Male Centaur Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Livestock Caught Male Centaur Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Caught Male Centaur Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<beastejaculation>>
+	<<npc Remy>><<person1>>
+	当半人马从你身边退开时，观众们叫嚣着。精液仍从他巨大的阴茎中流出，积聚在他身下的地板上。
+	<br><br>
+	"好孩子，"雷米俯下身，拍了拍他的脖子。<<He>>俯视着你。"把它拿回去给其他人。让我们希望它足够聪明，能够理解这个教训。"
+	<br><br>
+
+	农场工人松开你的肩膀，把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+
+<<else>>
+	<<npc Remy>><<person1>>
+	半人马惊恐地从你身边退开。"我——我只是没心情，"他结结巴巴地说，试图挽回面子。当他的主人抓住他的头发时，他退缩了。
+	<br><br>
+
+	"很好，"雷米低头看着你说道。"下次你可能会表现得更糟。希望你够聪明，能明白这个教训。"
+
+	农场工人松开你的肩膀，把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+
+<</if>>
+
+:: Livestock Caught Male Centaur Vagina Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastNEWinit 1 horse m vagina monster>>
+	<<beastCombatInit>>
+	<<set $NPCList[_n].stance to "top">><<set $position to "missionary">><<set $position_lock to 1>><<prop haybale>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Livestock Caught Male Centaur Vagina Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Livestock Caught Male Centaur Vagina Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Caught Male Centaur Vagina Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<beastejaculation>>
+	<<npc Remy>><<person1>>
+	当半人马从你身边退去时，观众们发出了哄堂大笑。
+	<br><br>
+	"好孩子，"雷米俯下身，拍了拍他的脖子。<<He>>俯视着你。"把它拿回去给其他人。让我们希望它足够聪明，能够理解这个教训。"
+	<br><br>
+
+	农场工人松开你的肩膀，把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+
+<<else>>
+	<<npc Remy>><<person1>>
+	半人马惊恐地从你身边退开。"我——我只是没心情，"他结结巴巴地说，试图挽回面子。当他的主人抓住他的头发时，他退缩了。
+	<br><br>
+
+	"很好，"雷米低头看着你说道。"下次你可能会表现得更糟。希望你够聪明，能明白这个教训。"
+
+	农场工人松开你的肩膀，把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+
+<</if>>
+
+:: Livestock Caught Horse Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastNEWinit 1 horse m penis beast>>
+	<<beastCombatInit>>
+	<<set $NPCList[_n].stance to "top">><<set $position to "doggy">><<set $position_lock to 1>><<prop haybale>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Livestock Caught Horse Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Livestock Caught Horse Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Caught Horse Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<beastejaculation>>
+	当那匹马从你身边退去时，观众发出阵阵笑声。精液从它巨大的阴茎中射出，聚集在下面的地板上。
+	<br><br>
+	"好孩子，"雷米俯下身拍了拍它的脖子。<<nnpc_He "Remy">>俯视着你。"把它带回去给其他人。让我们希望它足够聪明，能够理解这个教训。"
+	<br><br>
+
+	农场工人松开你的肩膀，把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+
+<<else>>
+	马从你身边退开，惊恐地呜呜叫着。当主人抓住它的头发时，它畏缩了。
+	<br><br>
+
+	"很好，"雷米低头看着你说道。"下次你可能会表现得更糟。希望你够聪明，能明白这个教训。"
+
+	农场工人松开你的肩膀，把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+
+<</if>>
+
+:: Livestock Caught Horse Female Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastNEWinit 1 horse m vagina beast>>
+	<<beastCombatInit>>
+	<<set $NPCList[_n].stance to "top">><<set $position to "missionary">><<set $position_lock to 1>><<prop haybale>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Livestock Caught Horse Female Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Livestock Caught Horse Female Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Caught Horse Female Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<beastejaculation>>
+	当马从你身边跑开时，观众们发出了哄堂大笑。
+	<br><br>
+	"好姑娘，"雷米俯下身拍了拍它的脖子。<<nnpc_He "Remy">>俯视着你。"把它带回去给其他人。让我们希望它足够聪明，能够理解这个教训。"
+	<br><br>
+
+	农场工人松开你的肩膀，把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+
+<<else>>
+	马从你身边退开，惊恐地呜呜叫着。当主人抓住它的头发时，它畏缩了。
+	<br><br>
+
+	"很好，"雷米低头看着你说道。"下次你可能会表现得更糟。希望你够聪明，能明白这个教训。"
+
+	农场工人松开你的肩膀，把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+
+<</if>>
+
+:: Livestock Caught Doggirl Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastNEWinit 1 dog f vagina monster>>
+	<<beastCombatInit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Livestock Caught Doggirl Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Livestock Caught Doggirl Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Caught Doggirl Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<beastejaculation>>
+	当犬娘倒在你身上时，农场工人们哈哈大笑。他们松开你的肩膀，把她抬到地上。
+	<br><br>
+
+	"希望它足够聪明，能够理解这个教训，"雷米看向<<nnpc_his "Remy">>的<<livestock_horse>>后。"我是唯一能保护它不受狼群伤害的人。"
+
+	农场工人把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+	<br>
+
+<<else>>
+	犬娘呜咽着从干草堆上摔了下来。她爬到一群农场工人身边，躲在他们的腿后面。
+	<br><br>
+
+	"很好，"雷米骑在<<nnpc_his "Remy">>的<<livestock_horse>>身上说道。"记住，外面真的有狼。你在他们面前不会有好下场的。我是唯一能保护你的人。"
+	<br><br>
+	农场工人把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+	<br>
+
+<</if>>
+
+:: Livestock Caught Dog Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastNEWinit 1 dog f vagina beast>>
+	<<beastCombatInit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Livestock Caught Dog Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Livestock Caught Dog Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Caught Dog Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<beastejaculation>>
+	当狗和你结束打斗时，农场工人们哈哈大笑。
+	<br><br>
+
+	"希望它足够聪明，能够理解这个教训，"雷米看向<<nnpc_his "Remy">>的<<livestock_horse>>后。"我是唯一能保护它不受狼群伤害的人。"
+
+	农场工人把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+	<br>
+
+<<else>>
+	狗呜咽着从干草堆上滚了下来。它爬到农场工人身边，躲在他们的腿后面。
+	<br><br>
+
+	"很好，"雷米骑在马上说道。"记住，外面真的有狼。你在他们面前不会有好下场的。我是唯一能保护你的人。"
+	<br><br>
+	农场工人把你拉起来。<<tearful>>你沿着小路被推到田野。大门在你身后哐当关上了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Livestock Field]]>><</link>>
+	<br>
+
+<</if>>
+
+:: Pregnancy Birth Livestock
+<!-- Placeholder. In the future, the player will not be released after giving birth. -->
+<<set $outside to 0>><<effects>>
+<<npc "Remy">><<person1>>
+<<livestockescape>>
+<<set $livestockEscape to "birth">>
+
+你渐渐失去了意识。一条大毯子盖在你身上。你听到了一个<<if $harperintro is 1>>熟悉的<</if>>声音。
+<br><br>
+
+"这个人应该立即被送往医院。"有人拍了拍你的膝盖，就在你感到手臂刺痛之前。你身体里所有的疼痛几乎立刻就消失了。
+<br><br>
+
+你听到另一个声音在抗议，是雷米。<<He>>不知道在和谁争吵，你头脑眩晕听不清他们的谈话内容。随着时间一分一秒地过去，你失去了注意力，意识到自己在某个时刻被牵走了。
+<br><br>
+
+"别担心，一切都会好的。"救护车门关上时，这句话在你耳边回响。
+<br><br>
+
+<<link [[继续 (1:00)|Pregnancy Birth Hospital]]>><<endevent>><<pass 1 hour>><<set $phase to 1>><</link>>
+
+

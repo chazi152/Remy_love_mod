@@ -1,0 +1,59 @@
+:: Widgets Job [widget]
+<<widget "dance_job_init">>
+	/*First argument is how long the job should last in minutes. Second argument is the starting interest of the audience, out of 100. Higher is easier. */
+
+	<<if Time.hour gte 20>>
+		<<set $dance_job_time to 1>>
+	<<else>>
+		<<if _args[0]>>
+			<<set $dance_job_time to $timeStamp + (_args[0] * 60)>>
+		<<else>>
+			<<set $dance_job_time to $timeStamp + (180 * 60)>>
+		<</if>>
+	<</if>>
+	<<if _args[1]>>
+		<<set $dance_job_interest to _args[1]>>
+	<<else>>
+		<<set $dance_job_interest to 50>>
+	<</if>>
+	<<set $dance_job_stage to 1>>
+	<<set $dance_job_stage_explore to 0>>
+<</widget>>
+
+<<widget "dance_job_end">>
+	<<unset $dance_job_time>>
+	<<unset $dance_job_interest>>
+	<<unset $dance_job_bunny>>
+	<<unset $dance_job_exhib>>
+	<<unset $dance_job_stage>>
+	<<unset $dance_job_exposed>>
+	<<unset $dance_job_stage_explore>>
+	<<set $weekly.danceJob to "done">>
+<</widget>>
+
+<<widget "dance_job_text">>
+	观众们看起来
+	<<if $dance_job_interest gte 100>>
+		<span class="green">陶醉入迷。</span>
+	<<elseif $dance_job_interest gte 80>>
+		<span class="teal">神魂颠倒。</span>
+	<<elseif $dance_job_interest gte 60>>
+		<span class="lblue">十分殷切。</span>
+	<<elseif $dance_job_interest gte 40>>
+		<span class="blue">饶有兴趣。</span>
+	<<elseif $dance_job_interest gte 20>>
+		<span class="purple">闷闷不乐。</span>
+	<<elseif $dance_job_interest gte 1>>
+		<span class="pink">心烦意乱。</span>
+	<<else>>
+		<span class="red">出离愤怒。</span>
+	<</if>>
+	<br><br>
+<</widget>>
+
+<<widget "dance_job_interest">>
+	<<if _args[0]>>
+		<<set $dance_job_interest += _args[0]>>
+	<</if>>
+<</widget>>
+

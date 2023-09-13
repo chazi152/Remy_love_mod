@@ -1,0 +1,567 @@
+/*
+IMPORTANT:
+	When adding variables to the options menu, state variables must use the $options object.
+	Otherwise changes won't be applied when options overlay is closed. See updateOptions().
+ */
+
+:: Options Overlay [widget]
+<<widget "setupOptions">>
+	<<set _optionsRefresh to false>>
+	<<script>>
+		settingsDisableElement();
+		window.Theme.initControl();
+		onInputChanged(() => {
+			if(!T.optionsRefresh) T.optionsRefresh = true;
+			Wikifier.wikifyEval("<<setFont true>>");
+		});
+	<</script>>
+<</widget>>
+
+<<widget "optionsgeneral">>
+	<<setupOptions>>
+	<span class="gold">通用</span>
+	<br>
+
+	<<if $debug is 1>>
+		/*<label><<checkbox "$notifyUpdate" false true autocheck>> Notify when there's a new game update available</label>
+		<br>*/
+		<<link "检查更新">>
+			<<run checkNewVersion()>>
+		<</link>>
+		<br><br>
+	<</if>>
+	<div>
+		<div class="settingsToggle">
+			<label>
+				<<checkbox "$options.neverNudeMenus" false true autocheck>>
+				在菜单中隐藏玩家裸体
+			</label>
+		</div>		
+		<div class="settingsToggle">
+			<label data-disabledif="V.ironmanmode===true">
+				<<checkbox "$options.autosaveDisabled" false true autocheck>>禁用睡眠时的自动保存
+			</label>
+		</div>		
+		<div class="settingsToggle">
+			<label data-disabledif="!StartConfig.enableLinkNumberify">
+				<<checkbox "$options.numberify_enabled" 0 1 autocheck>>启用数字链接导航
+				<mouse class="tooltip linkBlue">(?)<span>允许使用键盘导航</span></mouse>
+			</label>
+		</div>
+		<div style="clear:both;">/*保持在切换按钮的末端*/</div>
+	</div>
+	<br>
+	<span class="gold">侧边栏</span>
+	<div>
+		<div class="settingsToggle">
+			在关闭的侧边栏上显示状态:
+			<<listbox "$options.sidebarStats" autoselect>>
+				<<option "禁用" "disabled">>
+				<<option "显示部分" "limited">>
+				<<option "全部显示" "all">>
+			<</listbox>>
+		</div>
+		<div class="settingsToggle">
+			在关闭的侧边栏上显示时间:
+			<<listbox "$options.sidebarTime" autoselect>>
+				<<option "禁用" "disabled">>
+				<<option "显示在顶部" "top">>
+				<<option "显示在底部" "bottom">>
+			<</listbox>>
+		</div>
+		<div class="settingsToggle">
+			时间格式:
+			<label><<radiobutton "$options.timestyle" "military" autocheck>>24-小时制</label> |
+			<label><<radiobutton "$options.timestyle" "ampm" autocheck>>12-小时制</label>
+		</div>
+		<div class="settingsToggle">
+			<label><<checkbox "$options.oldclock" false true autocheck>>在侧边栏中使用旧版本时钟样式</label>
+		</div>
+		<div class="settingsToggle">
+			<label><<checkbox "$options.showCaptionText" false true autocheck>>在侧边栏显示标题文本</label>
+		</div>
+
+		<!-- Old renderer should stop being supported very soon.
+		Sidebar character renderer:
+		<label><<radiovar "$options.sidebarRenderer" "img">><<updatesidebarimg>><</radiovar>> Old</label> |
+		<label><<radiovar "$options.sidebarRenderer" "canvas">><<updatesidebarimg>><</radiovar>> New</label> |
+		<label><<radiovar "$options.sidebarRenderer" "both">><<updatesidebarimg>><</radiovar>> Both</label>
+		<br>
+		-->
+		<div class="settingsToggle">
+			避孕套显示:
+			<label><<radiovar "$options.condomsDisplay" "standard">><<updatesidebarimg>><</radiovar>>标准</label> |
+			<label><<radiovar "$options.condomsDisplay" "none">><<updatesidebarimg>><</radiovar>>隐藏</label>
+		</div>
+		<div class="settingsToggle">
+			防狼喷雾图标显示:
+			<<listbox "$options.pepperSprayDisplay" autoselect>>
+				<<option "喷雾罐图标" "sprays">>
+				<<option "紧凑型 (点状) " "compact">>
+				<<option "没有" "none">>
+			<</listbox>>
+		</div>
+		<div class="settingsToggle">
+			<label><<checkbox "$options.tipdisable" "t" "f" autocheck>>启用侧边栏提示和小贴士</label>
+		</div>
+		<div class="settingsToggle">
+			<label><<checkbox "$options.debugdisable" "t" "f" autocheck>>启用额外的错误消息</label>
+		</div>
+		<div style="clear:both;">/*保持在切换按钮的末端*/</div>
+	</div>
+	<br>
+	<span class="gold">战斗</span>
+	<div>
+		<div class="settingsToggle">
+			以 "你自己 "为目标：
+			<label><<radiobutton "$options.targetYourself" false autocheck>>禁用</label> |
+			<label><<radiobutton "$options.targetYourself" true autocheck>>启用</label>
+		</div>
+		<div class="settingsToggle">
+			<label>
+				<<checkbox "$options.scrollRemember" false true autocheck>>
+				在战斗中记录滚动的位置
+			</label>
+		</div>
+		<div class="settingsToggle">
+			战斗控制:
+			<<listbox "$options.combatControls" autoselect>>
+				<<option "单选按钮" "radio">>
+				<<option "单选按钮 (列中) " "columnRadio">>
+				<<option "列表 (无宽度限制) " "lists">>
+				<<option "列表 (有宽度限制) " "limitedLists">>
+			<</listbox>>
+		</div>
+		<div style="clear:both;">/*保持在切换按钮的末端*/</div>
+	</div>
+
+	<<if $map isnot undefined>>
+		<br>
+		<span class="gold">地图</span>
+		<div>
+			<div class="settingsToggle">
+				<label data-target="images" data-disabledif="V.options.images===0"><<checkbox "$options.mapMovement" false true autocheck>>通过点击/触摸地图图标来实现地点移动</label>
+			</div>
+			<div class="settingsToggle">
+				<label data-target="images" data-disabledif="V.options.images===0"><<checkbox "$options.mapLegacy" false true autocheck>>禁用SVG地图，如果城镇地图不可见则启用。</label>
+			</div>
+			<div class="settingsToggle">
+				<label data-target="['images', 'maplegacy]" data-disabledif="V.options.images===0||V.options.mapLegacy"><<checkbox "$options.mapMarkers" false true autocheck>>在地图上显示可点击区域</label>
+			</div>
+			<div class="settingsToggle">
+				<label data-target="images" data-disabledif="V.options.images===0"><<checkbox "$options.mapTop" false true autocheck>>将地图移动到页面上方</label>
+			</div>
+			<div style="clear:both;">/*保持在切换按钮的末端*/</div>
+		</div>
+	<</if>>
+	<br>
+	<span class="gold">弹窗</span>
+	<div>
+		<div class="settingsToggle">
+			弹窗中关闭按钮的位置
+			<mouse class="tooltip linkBlue">(?)<span>下次打开弹窗时更新</span></mouse><br>
+			<label><<radiobutton "$options.closeButtonMobile" false autocheck>>标准</label> |
+			<label><<radiobutton "$options.closeButtonMobile" true autocheck>>手机端 (左侧)</label>
+		</div>
+		<div style="clear:both;">/*保持在切换按钮的末端*/</div>
+	</div>
+	<br>
+	<span class="gold">更多信息</span>
+	<div>
+		<div class="settingsToggle">
+			在屏幕的右上方显示点击次数
+			<br>
+			<label><<radiobutton "$options.passageCount" "disabled" autocheck>>禁用</label>
+			<br>
+			<label><<radiobutton "$options.passageCount" "changes" autocheck>>段落跳转计数</label>
+			<mouse class="tooltip linkBlue">(?)<span>新段落点击的总次数 (在大多数情况下点击跳转链接)，诸如设置之类的段落被排除在外，在"0.3.12.X"及更早版本中未被追踪</span></mouse>
+			<br>
+			<label><<radiobutton "$options.passageCount" "total" autocheck>>段落计数</label>
+			<mouse class="tooltip linkBlue">(?)<span>新段落加载的总次数 (在大多数情况下点击跳转链接)，诸如设置之类的段落被排除在外，在"0.3.12.X"及更早版本中未被追踪</span></mouse>
+		</div>
+		<div class="settingsToggle">
+			在屏幕右上方显示游玩时间
+			<mouse class="tooltip linkBlue">(?)<span>格式化为'h:mm:ss'，要注意的是，离开游戏数小时后再保存会有时间追踪，为了避免这一情况，请在结束游戏前保存游戏，然后在恢复游戏时加载存档。在"0.3.13.X"和更早的版本中不被使用。</span></mouse>
+			<br>
+			<label><<radiobutton "$options.playtime" false autocheck>>禁用</label>
+			<br>
+			<label><<radiobutton "$options.playtime" true autocheck>>启用</label>
+		</div>
+		<div style="clear:both;">/*保持在切换按钮的末端*/</div>
+	</div>
+
+	<<if $passage isnot "Start">>
+		<br>
+		<<button "重启游戏">>
+			<<script>>
+				SugarCube.UI.restart();
+			<</script>>
+		<</button>>
+	<</if>>
+<</widget>>
+
+<<widget "optionstheme">>
+	<<setupOptions>>
+	<span class="gold">主题</span>
+	<br>
+
+	主题:
+	<label><input type="radio" name="theme" value="system-default" />默认</label> |
+	<label><input type="radio" name="theme" value="dark" />黑色标准风格</label> |
+	<label><input type="radio" name="theme" value="arctic" />灰蓝风格</label> |
+	<label><input type="radio" name="theme" value="zen" />灰暗风格</label> |
+	<label><input type="radio" name="theme" value="monokai" />80年代摇滚风格</label> |
+	<label><input type="radio" name="theme" value="storm" />深海风格</label> |
+	<br><br>
+
+	<span class="gold">线条高度</span>
+	<div>
+		<div class="settingsToggle">
+			段落:
+			<<listbox "$options.passageLineHeight" autoselect>>
+				<<option "默认" undefined>>
+				<<option "1" 1>>
+				<<option "1.25" 1.25>>
+				<<option "1.5" 1.5>>
+				<<option "1.75" 1.75>>
+				<<option "2" 2>>
+			<</listbox>>
+		</div>
+		<div class="settingsToggle">
+			弹窗:
+			<<listbox "$options.overlayLineHeight" autoselect>>
+				<<option "默认" undefined>>
+				<<option "1" 1>>
+				<<option "1.25" 1.25>>
+				<<option "1.5" 1.5>>
+				<<option "1.75" 1.75>>
+				<<option "2" 2>>
+			<</listbox>>
+		</div>
+		<div class="settingsToggle">
+			边栏:
+			<<listbox "$options.sidebarLineHeight" autoselect>>
+				<<option "默认" undefined>>
+				<<option "1" 1>>
+				<<option "1.25" 1.25>>
+				<<option "1.5" 1.5>>
+				<<option "1.75" 1.75>>
+				<<option "2" 2>>
+			<</listbox>>
+		</div>
+		<div style="clear:both;">/*保持在切换按钮的末端*/</div>
+	</div>
+	<br>
+	<span class="gold">字体大小</span>
+	<div>
+		<div class="settingsToggle">
+			段落:
+			<<listbox "$options.passageFontSize" autoselect>>
+				<<option "默认" undefined>>
+				<<option "10px" 10>>
+				<<option "12px" 12>>
+				<<option "14px" 14>>
+				<<option "16px" 16>>
+				<<option "18px" 18>>
+				<<option "20px" 20>>
+			<</listbox>>
+		</div>
+		<div class="settingsToggle">
+			弹窗<mouse class="tooltip linkBlue">(?)<span>默认值等于显示字体大小.</span></mouse>:
+			<<listbox "$options.overlayFontSize" autoselect>>
+				<<option "默认" undefined>>
+				<<option "10px" 10>>
+				<<option "12px" 12>>
+				<<option "14px" 14>>
+				<<option "16px" 16>>
+				<<option "18px" 18>>
+				<<option "20px" 20>>
+			<</listbox>>
+		</div>
+		<div class="settingsToggle">
+			边栏:
+			<<listbox "$options.sidebarFontSize" autoselect>>
+				<<option "默认" undefined>>
+				<<option "12px" 12>>
+				<<option "14px" 14>>
+				<<option "16px" 16>>
+				<<option "18px" 18>>
+				<<option "20px" 20>>
+			<</listbox>>
+		</div>
+		<div style="clear:both;">/*保持在切换按钮的末端*/</div>
+	</div>
+	<br>
+
+	<span class="gold">字体风格</span>
+	<br>
+	<label><<radiobutton "$options.font" "" `$options.font is undefined ? 'checked' : 'autocheck'`>>默认</label> |
+	<br>
+	无衬线字体:
+	<label class="Arial"><<radiobutton "$options.font" "Arial" autocheck>> Arial</label> |
+	<label class="Verdana"><<radiobutton "$options.font" "Verdana" autocheck>> Verdana</label> |
+	<br>
+	衬线字体:
+	<label class="TimesNewRoman"><<radiobutton "$options.font" "TimesNewRoman" autocheck>> Times New Roman</label> |
+	<label class="Georgia"><<radiobutton "$options.font" "Georgia" autocheck>> Georgia</label> |
+	<label class="Garamond"><<radiobutton "$options.font" "Garamond" autocheck>> Garamond</label> |
+	<br>
+	等宽字体:
+	<label class="CourierNew"><<radiobutton "$options.font" "CourierNew" autocheck>> Courier New</label> |
+	<label class="LucidaConsole"><<radiobutton "$options.font" "LucidaConsole" autocheck>> Lucida Console</label> |
+	<label class="Monaco"><<radiobutton "$options.font" "Monaco" autocheck>> Monaco</label> |
+	<br>
+	草书:
+	<label class="ComicSans"><<radiobutton "$options.font" "ComicSans" autocheck>> Comic Sans</label> |
+
+	<br><br>
+<</widget>>
+
+<<widget "optionsperformance">>
+	<<setupOptions>>
+	<span class="gold">图像</span>
+	<br>
+	<<if StartConfig.enableImages is true>>
+		<div>
+			<div class="settingsToggle">
+				<label><<checkbox "$options.images" 0 1 autocheck>>启用图像</label>
+				<mouse class="tooltip-small linkBlue">(?)<span>某些早期安卓系统可能无法正常显示图片</span></mouse>
+			</div>
+			<div class="settingsToggle">
+				<label data-target="options.images" data-disabledif="V.options.images===0"><<checkbox "$options.combatImages" 0 1 autocheck>> 启用战斗图像</label>
+			</div>
+
+			<div class="settingsToggle">
+				<label data-target="options.images" data-disabledif="V.options.images===0">
+					<<checkbox "$options.bodywritingImages" false true autocheck>>启用身体涂鸦图像
+					<mouse class="tooltip-small linkBlue">(?)<span>禁用可能会提高性能，并有可能防止图像不能正确加载的问题</span></mouse>
+				</label>
+			</div>
+			<div class="settingsToggle">
+				<label data-target="options.images" data-disabledif="V.options.images===0"><<checkbox "$options.silhouetteEnabled" false true autocheck>>启用NPC轮廓剪影</label>
+			</div>
+			<div class="settingsToggle">
+				<label data-target="options.images" data-disabledif="V.options.images===0">
+					<<checkbox "$options.tanImgEnabled" false true autocheck>>玩家和NPC肤色的视觉表现
+					<mouse class="tooltip-small linkBlue">(?)<span>可能会影响某些设备的性能</span></mouse>
+				</label>
+			</div>
+			<div class="settingsToggle">
+				<label data-target='["options.images", "tanimgenabled"]' data-disabledif="V.options.images===0||V.options.tanImgEnabled===false">
+					<<checkbox "$options.tanningEnabled" false true autocheck>>皮肤会因为日晒而变黑
+					<mouse class="tooltip-small linkBlue">(?)<span>禁用选项可能会在以后的更新中删除</span></mouse>
+				</label>
+			</div>
+			<div style="clear:both;">/*保持在切换按钮的末端*/</div>
+		</div>
+		<br>
+		<span class="gold">动画</span>
+		<div>
+			<div class="settingsToggle">
+				<label data-target="options.images" data-disabledif="V.options.images===0"><<checkbox "$options.sidebarAnimations" false true autocheck>>侧边栏的动画</label>
+			</div>
+			<div class="settingsToggle">
+				<label data-target='["options.images", "sidebaranimations"]' data-disabledif="V.options.images===0||V.options.sidebarAnimations===false"><<checkbox "$options.blinkingEnabled" false true autocheck>>人物会时不时的眨眼</label>
+			</div>
+			<div class="settingsToggle">
+				<label data-target="images" data-disabledif="V.options.images===0||V.options.combatImages===0">
+					<<checkbox "$options.combatAnimations" false true autocheck>>战斗动画
+					<mouse class="tooltip-small linkBlue">(?)<span>禁用可能会有助于提高性能，并防止图像加载错误。但Gif图像将不会受到影响，在此之前请先尝试禁用侧边栏图像</span></mouse>
+				</label>
+			</div>
+			<<if $eyelidTEST is true>>
+				<div class="settingsToggle">
+					<label data-target='["options.images", "sidebaranimations"]' data-disabledif="V.options.images===0||V.options.sidebarAnimations===false"><<checkbox "$options.halfClosedEnabled" false true autocheck>>启用半睁眼的动画</label></div>
+					<div class="description">在侧边栏中显示出因高度兴奋而半睁半闭的眼睛。
+				</div>
+			<</if>>
+			<div style="clear:both;">/*保持在切换按钮的末端*/</div>
+		</div>
+		<br>
+		<span class="gold">角色背景照明</span>
+		<div>
+			<div class="settingsToggle" onchange="new Wikifier(null, '<<updatesidebarimg>>')">
+				<label data-target="options.images" data-disabledif="V.options.images===0">
+					<<checkbox "$options.characterLightEnabled" false true autocheck>> 启用角色背景照明
+				</label>
+			</div>
+			<div style="clear:both;">/*保持在切换按钮的末端*/</div>
+			<div data-target='["images", "characterLightEnabled"]' data-disabledif="V.options.images===0||V.options.characterLightEnabled===false" oninput="new Wikifier(null, '<<updatesidebarimg>>')">
+				<div class="settingsToggle">
+					<label>
+						足部高光<br>
+						<<numberslider "$options.lightSpotlight" $options.lightSpotlight 0 1 0.05>>
+					</label>
+				</div>
+				<div class="settingsToggle">
+					<label>
+						渐变<br>
+						<<numberslider "$options.lightGradient" $options.lightGradient 0 1 0.05>>
+					</label>
+				</div>
+				<div class="settingsToggle">
+					<label>
+						自发光<br>
+						<<numberslider "$options.lightGlow" $options.lightGlow 0 1 0.05>>
+					</label>
+				</div>
+				<div class="settingsToggle">
+					<label>
+						背景光<br>
+						<<numberslider "$options.lightFlat" $options.lightFlat 0 1 0.05>>
+					</label>
+				</div>
+				<div class="settingsToggle">
+					<label data-target="images" data-disabledif="V.options.images===0||V.options.combatImages===0">
+						战斗灯光<br>
+						<<numberslider "$options.lightCombat" $options.lightCombat 0 1 0.05>>
+					</label>
+				</div>
+				<div class="settingsToggle">
+					<label>
+						天使/恶魔TF颜色成分<br>
+						<<numberslider "$options.lightTFColor" $options.lightTFColor 0 1 0.05>>
+					</label>
+				</div>
+			</div>
+			<div style="clear:both;">/*保持在切换按钮的末端*/</div>
+		</div>
+	<<else>>
+		<br>
+		图像禁用
+	<</if>>
+	<br>
+	<span class="gold">历史记录回溯功能</span>
+	<br>
+	<div class="description">能够回溯历史N-1个段落。</div>
+	<div class="settingsToggle">
+		<<numberslider "$options.maxStates" $options.maxStates 1 20 1 $ironmanmode>>
+		<label>
+			<<ind>><<checkbox "$options.sessionHistory" false true autocheck>>刷新页面时保留历史记录。
+			<mouse class="tooltip-small linkBlue">(?)<span>不利于游戏性能。只有在你需要在F5后恢复全部历史时才有用。</span></mouse>
+		</label>
+	</div>
+	<br><br>
+<</widget>>
+
+<<widget "optionsadvanced">>
+	<<setupOptions>>
+	<span class="gold">高级设置</span>
+	<div>
+		<div class="settingsToggle">
+			<label>
+				<<checkbox "$options.numpad" false true autocheck>>
+				启用屏幕小键盘
+				<mouse class="tooltip-small linkBlue">(?)<span>如果链接因翻译软件而中断，那么在手机上会很有用</span></mouse>
+			</label>
+		</div>
+		<div class="settingsToggle">
+			<label>
+				<<checkbox "$options.newWardrobeStyle" true false autocheck>>
+				使用旧的衣柜样式
+			</label>
+		</div>
+		<div class="settingsToggle">
+			<label>
+				<<checkbox "$options.useNarrowMarket" false true autocheck>>
+				使用 "窄屏"版本的菜单
+			</label>
+		</div>
+		<div class="settingsToggle">
+			<label>
+				<<checkbox "$options.skipStatisticsConfirmation" false true autocheck>>
+				查看隐藏统计时跳过确认选项
+			</label>
+		</div>
+		<div class="settingsToggle">
+			<label><<checkbox "$options.showDebugRenderer" false true autocheck>>启用渲染器调试程序</label>
+		</div>
+		<div class="settingsToggle">
+			<label id="idbToggle">
+				/* checkbox macro doesn't allow changing variables that do not start with "$" or "_". this is a bypass hack. */
+				<<run setTimeout(() => jQuery(document.createElement("input"))
+					.attr({ id: "checkbox-idbactive", name: "checkbox-idbactive", type: "checkbox", checked: idb.active, disabled: idb.lock })
+					.addClass("macro-checkbox")
+					.on("change.macros", () => idb.active = document.getElementById("checkbox-idbactive").checked)
+					.prependTo("#idbToggle"))>>启用 indexedDB
+			</label>
+		</div>
+		<div style="clear:both;">/*保持在切换按钮的末端*/</div>
+	</div>
+	<br>
+	<span class="gold">游戏缩放</span>
+	<mouse class="tooltip linkBlue">(?)<span>让你调整游戏元素、文本的尺寸
+	<span class="red">
+		请小心修改此项，改好了再保存。每次重启游戏会将此项重设为最后一次修改时所设的值。
+		取决于你所使用的设备和浏览器不同，此项可能会出现不可预知的问题。
+	</span></span></mouse>
+	<br>
+	<span class="red">并非全部浏览器都支持</span>
+	<br>
+	<br>
+
+	<<numberslider "$options.zoom" $options.zoom 50 200 1>>
+	<input type="button" value="设置" onclick='zoom()'/>
+	<input type="button" value="重设" onclick='zoom(100)'/>
+<</widget>>
+
+<<widget "setFont">>
+	<<removeclass "#passages" "fontSize10">>
+	<<removeclass "#passages" "fontSize12">>
+	<<removeclass "#passages" "fontSize14">>
+	<<removeclass "#passages" "fontSize16">>
+	<<removeclass "#passages" "fontSize18">>
+	<<removeclass "#passages" "fontSize20">>
+	<<if $options.passageFontSize>><<addclass "#passages" `"fontSize" + $options.passageFontSize`>><</if>>
+
+	<<removeclass "#story-caption" "fontSize12">>
+	<<removeclass "#story-caption" "fontSize14">>
+	<<removeclass "#story-caption" "fontSize16">>
+	<<removeclass "#story-caption" "fontSize18">>
+	<<removeclass "#story-caption" "fontSize20">>
+	<<if $options.sidebarFontSize>><<addclass "#story-caption" `"fontSize" + $options.sidebarFontSize`>><</if>>
+
+	<<if _args[0]>><!--For elements that are not sugarcube specific and wont be loaded when the widget is normally called-->
+		<<removeclass "#customOverlay" "fontSize10">>
+		<<removeclass "#customOverlay" "fontSize12">>
+		<<removeclass "#customOverlay" "fontSize14">>
+		<<removeclass "#customOverlay" "fontSize16">>
+		<<removeclass "#customOverlay" "fontSize18">>
+		<<removeclass "#customOverlay" "fontSize20">>
+		<<if $options.overlayFontSize>><<addclass "#customOverlay" `"fontSize" + $options.overlayFontSize`>><</if>>
+	<</if>>
+
+	<<removeclass "#passages" "lineHeight1">>
+	<<removeclass "#passages" "lineHeight125">>
+	<<removeclass "#passages" "lineHeight15">>
+	<<removeclass "#passages" "lineHeight175">>
+	<<removeclass "#passages" "lineHeight2">>
+	<<if $options.passageLineHeight>><<addclass "#passages" `"lineHeight" + $options.passageLineHeight.toString().replace('.','')`>><</if>>
+
+	<<removeclass "#story-caption" "lineHeight1">>
+	<<removeclass "#story-caption" "lineHeight125">>
+	<<removeclass "#story-caption" "lineHeight15">>
+	<<removeclass "#story-caption" "lineHeight175">>
+	<<removeclass "#story-caption" "lineHeight2">>
+	<<if $options.sidebarLineHeight>><<addclass "#story-caption" `"lineHeight" + $options.sidebarLineHeight.toString().replace('.','')`>><</if>>
+
+	<<if _args[0]>>
+		<<removeclass "#customOverlay" "lineHeight1">>
+		<<removeclass "#customOverlay" "lineHeight125">>
+		<<removeclass "#customOverlay" "lineHeight15">>
+		<<removeclass "#customOverlay" "lineHeight175">>
+		<<removeclass "#customOverlay" "lineHeight2">>
+		<<if $options.overlayLineHeight>><<addclass "#customOverlay" `"lineHeight" + $options.overlayLineHeight.toString().replace('.','')`>><</if>>
+	<</if>>
+
+	<<removeclass "html" "Arial">>
+	<<removeclass "html" "Verdana">>
+	<<removeclass "html" "TimesNewRoman">>
+	<<removeclass "html" "Georgia">>
+	<<removeclass "html" "Garamond">>
+	<<removeclass "html" "CourierNew">>
+	<<removeclass "html" "LucidaConsole">>
+	<<removeclass "html" "Monaco">>
+	<<removeclass "html" "ComicSans">>
+	<<if $options.font>><<addclass "html" $options.font>><</if>> <!--Adding to the body would remove it on changing passage-->
+<</widget>>

@@ -1,0 +1,74 @@
+:: Widgets Parasites [widget]
+<<widget "parasiteinit">>
+	<<set $parasite to {}>>
+	<<set $parasite.bodyparts to [
+		"nipples",
+		"bottom",
+		"penis",
+		"balls",
+		"clit",
+		"anus",
+		"vagina",
+		"labia",
+		"left_thigh",
+		"right_thigh",
+		"left_foot",
+		"right_foot",
+		"left_arm",
+		"right_arm",
+		"left_hand",
+		"right_hand",
+		"tummy",
+		"back",
+		"face",
+		"mouth",
+		"left_ear",
+		"right_ear",
+		"hair"]>>
+	<<set $parasite.types to [
+		"urchin",
+		"slime",
+		"maggot"]>>
+
+	<<for _part range $parasite.bodyparts>>
+		<<set $parasite[_part] to {}>>
+		/*<<set $parasite[_part].bodypart to _part.replace(/_/g, " ")>>*/
+	<</for>>
+
+	<<for _type range $parasite.types>>
+		<<set $parasite[_type] to []>> /*This seems a bit redundant but not having to iterate through every body part every time StoryCaption updates seems worth it*/
+	<</for>>
+<</widget>>
+
+<<widget "parasite">>
+	/*First argument is the body part you want to attach a parasite to, second argument is the type of parasite*/
+	<<if _args[0] and _args[1]>>
+		<<set _temp0 to _args[0]>>
+		<<set _temp1 to _args[1]>>
+
+		<<set $parasite[_temp0].name to _temp1>>
+		<<set $parasitestat += 1>>
+
+		<<if _temp0 isnot "left_ear" and _temp0 isnot "right_ear">> /*Keeps ears from 'sucking and massaging' in the StoryCaption*/
+			<<set _temp0 to _temp0.replace(/_/g, " ")>>/*Replaces underscores with spaces to make sidebar description more presentable.*/
+			<<set $parasite[_temp1].push(_temp0)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "removeparasite">>
+	/*Argument is the body part you want to free from parasites*/
+	<<if _args[0]>>
+		<<set _temp0 to _args[0]>>
+
+		<<run delete $parasite[_temp0].name>>
+
+		<<set _temp0 to _temp0.replace(/_/g, " ")>>/*Removes underscores from argument to match with the change made in the <<parasite>> widget.*/
+		<<for _type range $parasite.types>>
+			<<set $parasite[_type].delete(_temp0)>>
+		<</for>>
+		<<if $parasite.left_ear.name isnot "slime" and $parasite.right_ear.name isnot "slime">>
+			<<set $corruption_slime to 0>>
+		<</if>>
+	<</if>>
+<</widget>>

@@ -1,0 +1,326 @@
+:: School Swimming Late
+<!-- no effects, this is included not called -->
+
+<<if $exposed gte 2 and $swimall is 1>>
+	<<set $cstate to "fine">>
+<<elseif $exposed gte 2 and $swimall isnot 1>>
+	<<if $swimnudecounter is 0>>
+		<<set $cstate to "naked">>
+	<<else>>
+		<<set $cstate to "fine">>
+	<</if>>
+<<elseif $swimall is 1>>
+	<<if $exposed gte 2>>
+		<<set $cstate to "fine">>
+	<<else>>
+		<<set $cstate to "clothed">>
+	<</if>>
+<<elseif ($worn.under_lower.type.includes("swim") or $worn.lower.type.includes("swim"))
+and ($worn.under_upper.type.includes("swim") or $worn.upper.type.includes("swim") or ($worn.under_upper.type.includes("naked") and $worn.upper.type.includes("naked") and ($player.gender_appearance is "m" or $daily.swimCrossdressPermission)))
+and (($worn.upper.type.includes("naked") or $worn.upper.type.includes("swim")) and ($worn.lower.type.includes("naked") or $worn.lower.type.includes("swim")))>>
+	<<set $cstate to "fine">>
+<<else>>
+	<<set $cstate to "wrong">>
+<</if>>
+
+<<if $cstate is "nakedfirst">>
+	<<schoolpoolexposed>>
+	<!-- no asking to swin naked here, you're late -->
+	<!-- detention 6 already is in the widget -->
+<<else>>
+
+	<<npc Mason>><<person1>>你走进游泳馆。
+	<br><br>
+	<<if $rng gte 50>>
+		梅森和全班同学在泳池中了。
+	<<elseif $rng gte 25>>
+		梅森站在游泳池边上，向全班同学解释着什么。
+	<<elseif $rng gte 5 or $swimall is 1>>
+		梅森正在泳池边演示一种游泳技术。
+	<<else>>
+		全班同学都在游泳池里，但梅森却不在其中。过了一会儿，<<he>>从一个侧门进来，同时手里拿着一件
+		<<print either("泳衣", "泳裤")>>。<<He>>把它交给在水里的一个<<generatey2>><<person2>><<person>><<person1>>，
+		之后<<he>>转头看向你。
+	<</if>>
+	<<rng>>
+
+	<<if $daily.school.swimmingExcused>>
+		<<run delete $daily.school.swimmingExcused>>
+		"你在这里，"<<he>>说道："我不会追究你的迟到，但你来得实在太晚了，课程已经要结束了。"
+		<br><br>
+
+		<<He>>看向角落里的一个座位："你为什么不在那里坐一坐？"
+		<br><br>
+
+		<<link [[坐着等待|School Swimming Late Wait]]>><<endevent>><</link>>
+		<br>
+		<<if $exposed lte 0>>
+			<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><<detention 1>><<endevent>><</link>><<gdelinquency>>
+			<br>
+			<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><<detention 1>><<endevent>><</link>><<gdelinquency>>
+		<<elseif $exposed gte 1>>
+			<<maleicon>><<link [[抓起一把毛巾进到男更衣室|School Boy Changing Room]]>><<towelupm>><<detention 1>><<endevent>><</link>><<gdelinquency>>
+			<br>
+			<<femaleicon>><<link [[抓起一把毛巾前往女更衣室|School Girl Changing Room]]>><<towelup>><<detention 1>><<endevent>><</link>><<gdelinquency>>
+		<</if>>
+	<<elseif (($delinquency gte 800 and $rng lte 90) or ($delinquency gte 500 and $rng lte 50) or $daily.school.swimmingLate) and $swimall isnot 1>>
+		<!-- Note Mason won't do this if they are naked. Or will they? -->
+		"又是你,"<<he>>说道. "我受够了，让礼顿头疼你吧。 课已经上完了."<<detention 2>>
+		<<He>>抓起你的手把你领到出口<<if $exposed is 1>>甚至没有因为你感到害羞顾及到你<</if>>.
+		<<if $exposed gte 2 and ($rightarm is "bound" or $leftarm is "bound")>>
+			一路上<<he>>从架子上顺手拿了条毛巾缠在你腰上。
+			<!-- Note: Mason's stressed so they will miss towelling up breasts -->
+			"我一点也不想知道你怎么把自己绑起来的,"<<he>>大声说道, "你去跟礼顿解释去吧。"<<detention 1>>
+			<br><br>
+
+			<<link [[继续|School Swimming Late Detention]]>><<endevent>><<pass 2>><<towelupm>><</link>>
+		<<elseif $exposed gte 2>>
+			出去的路上<<he>>抄起架子上的一条毛巾。"把这个穿上,"<<he>>说。
+			<br><br>
+
+			<<link [[披上毛巾 (0:02)|School Swimming Late Detention]]>><<endevent>><<pass 2>><<towelup>><</link>>
+			<!-- TODO: refuse -->
+		<<else>>
+			<br><br>
+
+			<<link [[继续|School Swimming Late Detention]]>><<endevent>><<pass 2>><</link>>
+		<</if>>
+	<<elseif $rng gte 25>>
+		"很高兴你能加入我们,"<<he>>说道. "我很担心你来的太迟以至于
+		耽误到练习。<<if $cstate isnot "fine">>还有你的穿着好像不是那么
+		<<if $swimall is 1>><<detention 5>>'正确的'<!-- Mason may be a bit miffed having to teach naked because of you --><<else>><<detention 1>>正确的<</if>>.<</if>>"
+
+		<<He>>指着角落里的一把椅子 "坐在那里，不要动。"<<detention 1>><<gdelinquency>>
+		<br><br>
+
+		<<link [[坐着等待|School Swimming Late Wait]]>><<endevent>><</link>>
+		<br>
+		<<if $exposed lte 0>>
+			<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><<detention 1>><<endevent>><</link>><<gdelinquency>>
+			<br>
+			<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><<detention 1>><<endevent>><</link>><<gdelinquency>>
+		<<elseif $exposed gte 1>>
+			<<maleicon>><<link [[抓起一把毛巾进到男更衣室|School Boy Changing Room]]>><<towelupm>><<detention 1>><<endevent>><</link>><<gdelinquency>>
+			<br>
+			<<femaleicon>><<link [[抓起一把毛巾前往女更衣室|School Girl Changing Room]]>><<towelup>><<detention 1>><<endevent>><</link>><<gdelinquency>>
+		<</if>>
+	<<elseif $rng gte 10>>
+		"总之我很高兴你能来，"<<he>>说。"<<nnpc_title "Leighton">>有话想和你谈谈。"
+		<br><br>
+		<<He>>指向出口的门。<<detention 1>><<gdelinquency>>
+		<br><br>
+
+		<<link [[离开 (0:02)|School Pool Entrance]]>><<pass 2>><<endevent>><</link>>
+		<br>
+		<<if $exposed gte 1>>
+			<<maleicon>><<link [[抓起一把毛巾进到男更衣室|School Boy Changing Room]]>><<towelupm>><<detention 1>><<endevent>><</link>><<gdelinquency>>
+			<br>
+			<<femaleicon>><<link [[抓起一把毛巾前往女更衣室|School Girl Changing Room]]>><<towelup>><<detention 1>><<endevent>><</link>><<gdelinquency>>
+		<</if>>
+	<<else>>
+		<<He>><<print either("疲惫地", "委婉地")>>摇了摇头: "不知道你为什么这么晚才来。"<<He>>指了指更衣室。<<detention 1>>
+		<br><br>
+
+		<<if $exposed lte 0>>
+			<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><<endevent>><</link>>
+			<br>
+			<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><<endevent>><</link>>
+		<<elseif $exposed gte 1>>
+			<<maleicon>><<link [[抓起一些毛巾前往男更衣室|School Boy Changing Room]]>><<towelupm>><<endevent>><</link>>
+			<br>
+			<<femaleicon>><<link [[抓起一些毛巾前往女更衣室|School Girl Changing Room]]>><<towelup>><<endevent>><</link>>
+		<</if>>
+	<</if>>
+<</if>>
+
+
+:: School Swimming Late Wait
+<<set $outside to 0>><<set $location to "pool">><<schooleffects>><<effects>>
+
+你坐在椅子上。
+<<if $exposed gte 2>>
+	<<if $swimall isnot 1>>
+		<<if $exhibitionism gte 75>>
+			你露出了<<genitalsandbreasts is are>>，全班人都看得到。<<arousal 600>>
+		<<else>>
+			你用手遮掩着你暴露在外的<<genitalsandbreasts>>。<<arousal 300>><<stress 1>>
+		<</if>>
+	<<else>>
+		虽然你裸露了<<genitalsandbreasts is are>>，但这里的其他人
+		也是如此。<<arousal 100>>
+	<</if>>
+<</if>>
+你感受到了来着同学的视线。<<stress 1>><<status 1>><<gcool>><!-- rulebreaker bonus -->
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<link [[你眼前一黑…|School Passout]]>><</link>>
+<<else>>
+	<<link [[等待|School Swimming Late Wait End]]>><<stress 1>><<advancetohour>><</link>><<gstress>>
+	<br>
+	<<if $exposed lte 0>>
+		<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><<detention 1>><</link>><<gdelinquency>>
+		<br>
+		<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><<detention 1>><</link>><<gdelinquency>>
+	<<elseif $exposed gte 1>>
+		<<maleicon>><<link [[抓起一些毛巾进入男更衣室|School Boy Changing Room]]>><<towelupm>><<detention 1>><</link>><<gdelinquency>>
+		<br>
+		<<femaleicon>><<link [[抓起一些毛巾前往女更衣室|School Girl Changing Room]]>><<towelup>><<detention 1>><</link>><<gdelinquency>>
+	<</if>>
+<</if>>
+
+
+:: School Swimming Late Wait End
+<<set $outside to 0>><<set $location to "pool">><<schooleffects>><<effects>>
+
+<<if $swimall is 1>>
+	铃声响起。标志着课程的结束。梅森在每个同学经过时递给他们毛巾, 同时避免眼神接触。
+<<else>>
+	铃响了，这表示下课时间到了。
+<</if>>
+<br><br>
+
+<<if $exposed lte 0>>
+	<<maleicon>><<link [[男更衣室|School Boy Changing Room]]>><</link>>
+	<br>
+	<<femaleicon>><<link [[女更衣室|School Girl Changing Room]]>><</link>>
+<<elseif $exposed gte 1>>
+	<<maleicon>><<link [[抓起一些毛巾前往男更衣室|School Boy Changing Room]]>><<towelupm>><</link>>
+	<br>
+	<<femaleicon>><<link [[抓起一些毛巾前往女更衣室|School Girl Changing Room]]>><<towelup>><</link>>
+<</if>>
+
+
+:: School Swimming Late Detention
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+你在学校走廊里。<<pass 2>>
+
+<<if Time.hour gte 15>>
+	下课了，走廊上都是放学的学生。
+<<else>>
+	你可以听到各个教室门后的说话声，有些课程刚刚结束，学生们正涌出教室。
+<</if>>
+<br><br>
+梅森紧紧抓住你，把你拖到礼顿的办公室。
+<br><br>
+
+<<if $exposed gte 1>>
+	你被引导绕过一个拐角，进入一条满是<<peopley>>的走廊。<<covered>>
+	边上的一个<<persony>>看着你<<if $exposed gte 2>>，一脸震惊的表情<<else>>窃笑着<</if>>.<<stress 1>>
+	其他人也有类似的反应。随着噪音越来越大，所有人都被引得转过头去看你。
+	<br><br>
+<<else>>
+	大多数学生忽视了你, 但一个<<generatey1>><<person1>><<person>>指着你. "有人要去见礼顿了,"<<he>>对着
+	<<his>>的朋友低声说道.<<stress 1>>
+	<br><br>
+<</if>>
+
+<<if $stress gte $stressmax>>
+	<<link [[你眼前一黑…|School Passout]]>><<endevent>><</link>>
+<<else>>
+	<<link [[进去|School Swimming Late Detention 2]]>><<endevent>><<set $phase to 1>><</link>>
+	<br>
+	<<if $exposed gte 2 and $exhibitionism gte 75>>
+		<<link [[调情|School Swimming Late Detention Flaunt]]>><<endevent>><</link>><<exhibitionist5>>
+		<br>
+	<<elseif $exposed gte 1 and $exhibitionism gte 55>>
+		<<link [[调情|School Swimming Late Detention Flaunt]]>><<endevent>><</link>><<exhibitionist4>>
+		<br>
+	<</if>>
+	<<if $exhibitionism gte 55 and ($rightarm isnot "bound" or $leftarm isnot "bound") and $exposed lt 2>>
+		<<checkdroptowel>>
+		<<if _exlevel gte 2>>
+			<<link [[脱下毛巾来诱惑|School Swimming Late Detention Flaunt]]>><<droptowel>><<endevent>><</link>><<exhibitionist5>>
+			<br>
+		<<elseif _exlevel>>
+			<<link [[脱下毛巾来诱惑|School Swimming Late Detention Flaunt]]>><<droptowel>><<endevent>><</link>><<exhibitionist4>>
+			<br>
+		<</if>>
+	<</if>>
+	<<if $feetuse isnot "bound">>
+		<<link [[逃跑|School Swimming Late Detention 2]]>><<endevent>><<set $phase to 2>><</link>><<athleticsdifficulty 100 600>>
+	<</if>>
+<</if>>
+
+
+:: School Swimming Late Detention Flaunt
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<flaunting>>你像走t台一样在走廊上展示着。有些人脸红着移开了视线。
+不过大多人都热衷与将这招摇的<<if $worn.lower.type.includes("naked") and $worn.under_lower.type.includes("naked")>>春光<<else>>半露春光<</if>><<girl>>收进眼底。
+<br><br>
+
+"尽情看吧," 你大声宣布道. "没什么好害羞的。"<<status 5>><<arousal 50>>
+<br><br>
+
+<<if $exposed gte 2>>
+	<<exhibitionism5>>
+	<<fameexhibitionism 50>>
+	<<npc Mason>><<person1>>梅森正努力把你的身体挡在身后。
+	<br><br>
+
+	<<link [[进去|School Swimming Late Detention 2]]>><<endevent>><<set $phase to 1>><</link>>
+	<br>
+	<<if $feetuse isnot "bound">>
+		<<link [[尝试溜走|School Swimming Late Detention 2]]>><<endevent>><<set $phase to 2>><</link>><<athleticsdifficulty 1 400>>
+		<br>
+		<<link [[尝试躲藏|School Swimming Late Detention 2]]>><<endevent>><<set $phase to 2>><</link>><<dancedifficulty 100 600>>
+	<</if>>
+<<else>>
+	<<exhibitionism4>>
+	<<fameexhibitionism 25>>
+	<<npc Mason>><<person1>>梅森握紧<<his>>的手，推着你往前走, 尽最大努力把你挡在身后。
+	<br><br>
+
+	<<link [[进去|School Swimming Late Detention 2]]>><<endevent>><<set $phase to 1>><</link>>
+	<br>
+	<<if $feetuse isnot "bound">>
+		<<link [[尝试溜走|School Swimming Late Detention 2]]>><<endevent>><<set $phase to 2>><</link>><<athleticsdifficulty 200 1000>>
+	<</if>>
+<</if>>
+
+
+:: School Swimming Late Detention 2
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<if $phase is 2 and $danceSuccess>>
+	你快速地挣开梅森的手，在其他学生之间穿梭。梅森在追，但你
+	成功躲进了附近的一个维修壁柜。
+	<br><br>
+
+	<<link [[继续 (0:10)|Hallways]]>><<pass 10>><</link>>
+<<elseif $phase is 2 and $athleticsSuccess>>
+	你猛地一震，摆脱了梅森的控制并跳到了其他学生之间.虽然梅森开始追赶你，但你
+	成功躲进了附近的一个维修壁柜。
+	<br><br>
+
+	<<link [[继续 (0:10)|Hallways]]>><<pass 10>><</link>>
+<<else>>
+	<<if $phase is 2>>
+		你尝试挣脱，但梅森抓的太紧了。<<gpain>><<pain 4>>
+		<br><br>
+	<</if>>
+
+	你在走廊上，站在礼顿的办公室门前。<<pass 2>>
+
+	<<if Time.hour gte 15>>
+		刚下课，走廊上挤满了学生。
+	<<else>>
+		你可以听到各个教室门后的说话声，有些课程刚刚结束，学生们正涌出教室。
+	<</if>>
+	<<if $exposed gte 1>><<covered>><</if>>
+	<br><br>
+	<<if $carried.upper.name isnot "naked" or $carried.lower.name isnot "naked">> <!-- Detention scene doesn't account for you being naked, put the towel back on if you took it off -->
+		你刚把毛巾遮好
+		<<silently>><<clotheson>><</silently>>
+	<</if>>
+	梅森就打开了校长办公室的门把你推了进去。<!-- Mason would accompany you but "School Detention" assumes you're alone -->
+	<br><br>
+
+	<<link [[进入|School Detention]]>><</link>>
+	<br>
+	<<if $phase is 1 and $feetuse isnot "bound">>
+		<<link [[逃跑|School Swimming Late Detention 2]]>><<endevent>><<set $phase to 2>><</link>><<athleticsdifficulty 200 800>>
+	<</if>>
+<</if>>

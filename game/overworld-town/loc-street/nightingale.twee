@@ -1,0 +1,101 @@
+:: Nightingale Street
+
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "nightingale">><<getTarget true>>
+你现在正在南丁格尔街上，这里最主要的建筑就是那栋医院，但也有几座办公楼坐落于此。
+<<if Time.dayState is "day">>
+	<<if $weather is "rain">>
+		尽管在下雨，医院周围来往的人也并没有减少。
+	<<else>>
+		医院周围有很多来往的行人。
+	<</if>>
+<<elseif Time.dayState is "dawn">>
+	<<if $weather is "rain">>
+		停车场处停满了车辆，车上下来的人们匆匆赶往工作地点。
+	<<elseif $weather is "snow">>
+		停车场处停满了车辆，车上下来的人们匆匆赶往工作地点。
+	<<else>>
+		人们正忙着去上班.
+	<</if>>
+<<elseif Time.dayState is "dusk">>
+	<<if $weather is "rain">>
+		人们在雨中匆忙地赶着回家.
+	<<elseif $weather is "snow">>
+		人们在雪中匆忙地赶着回家.
+	<<else>>
+		人们正在向着家的方向前进。
+	<</if>>
+<<elseif Time.dayState is "night">>
+	<<if $weather is "rain">>
+		医院的灯光照亮了这雨夜。
+	<<elseif $weather is "snow">>
+		医院的灯光照亮了周围地雪地.
+	<<else>>
+		医院的灯光照亮了周围的绿地。
+	<</if>>
+<</if>>
+<<streeteffects>>
+<br><br>
+<<if $exposed gte 1>>
+	<<exhibitionism "street">>
+<</if>>
+<<if $arousal gte $arousalmax>>
+	<<orgasmstreet>>
+<</if>>
+<<if $stress gte $stressmax and !$possessed>>
+	<<passoutstreet>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if ($danger gte (9900 - $allure) or $eventforced) and $eventskip is 0>>
+		<<eventsstreet>>
+	<<else>>
+		<<if $options.mapTop is true>>
+			<<map "nightingale">>
+			<br>
+		<</if>>
+		可访问地点
+		<br>
+		<<hospitalicon>><<link [[医院 (0:01)->Hospital front]]>><<pass 1>><</link>>
+		<br>
+		<<if $exposed lte 0>>
+			<<if $chef_state is 4>>
+				<<photographystudioicon>><<link [[摄影工作室 (3:00)|Photography Chef]]>><</link>>
+				<br>
+			<<elseif Time.dayState is "day">>
+				<<if $photo_known is 1>>
+					<<photographystudioicon>><<link [[摄影工作室 (0:01)|Photo Entrance]]>><<pass 1>><</link>>
+					<br>
+				<<elseif $photo_known gte 2>>
+					<<photographystudioicon>><<link [[摄影工作室 (0:01)|Photo]]>><<pass 1>><</link>>
+					<br>
+				<</if>>
+			<</if>>
+		<</if>>
+		<<if $nextPassageCheck is "Forest">>
+			<span class="nextLink"><<foresticon>><<link [[森林 (0:02)|Forest]]>><<pass 2>><</link>></span>
+		<<else>>
+			<<foresticon>><<link [[森林 (0:10)|Forest]]>><<set $eventskip to 1>><<pass 10>><<set $forest to 0>><</link>>
+		<</if>>
+		<br><br>
+		<<if $exposed gte 1 and Time.dayState isnot "night">>
+		<<else>>
+			<<add_link "其他区域<br>">><<hideDisplay>>
+			<<wolf>>
+			<<elk>>
+			<<high>>
+			<<oxford>>
+			<<if $exposed lte 0>>
+				<<buswait>>
+			<</if>>
+			<<loiter>>
+		<</if>>
+		<<add_link "<br>快捷小路<br>">><<hideDisplay>>
+		<<park>>
+		<<stormdrain>>
+		<<displayLinks>>
+		<<if $options.mapTop isnot true>>
+			<br>
+			<<map "nightingale">>
+		<</if>>
+	<</if>>
+<</if>>
+<<set $eventskip to 0>>

@@ -1,0 +1,724 @@
+:: Widgets Exhibitionism [widget]
+<<widget "exhibitionism1">>
+	<<exhibitionismN 1>>
+<</widget>>
+
+<<widget "exhibitionism2">>
+	<<exhibitionismN 2>>
+<</widget>>
+
+<<widget "exhibitionism3">>
+	<<exhibitionismN 3>>
+<</widget>>
+
+<<widget "exhibitionism4">>
+	<<exhibitionismN 4>>
+<</widget>>
+
+<<widget "exhibitionism5">>
+	<<exhibitionismN 5>>
+<</widget>>
+
+<<widget "exhibitionism6">>
+	<<exhibitionismN 6>>
+<</widget>>
+
+<<widget "exhibitionismN">>
+	<<set $_n to _args[0]>>
+	<<set $_scaledExhibitionismMax to 20 * $_n>>
+	<<if $desperateaction is 1>>
+		你觉得恶心，但这总比贝利为你准备的要好。
+	<<elseif $desperateaction is 2>>
+		你觉得恶心，但这已经是最好的选择了。
+	<<elseif typeof $desperateaction is "string">>
+		你觉得恶心，但<<print $desperateaction>>。
+	<<else>>
+		<<if $control lt $controlmax>>
+			<<if $_n is 6>>
+				如此堕落的行径<span class="green">彻底恢复了你的控制感</span>，<span class="red">但你的精神受到了打击</span>。
+			<<elseif $exhibitionism lt $_scaledExhibitionismMax>>
+				这样淫荡的行为会让你感到兴奋，<span class="green">你的控制感和自我价值感缓慢地恢复了</span>，但这只是暂时的。
+			<<else>>
+				做出这样的淫荡行为会让你兴奋，但并不足以驱散笼罩在你头上的阴霾。<span class="pink">也许你需要做一些更极端的事情？</span>
+			<</if>>
+		<<else>>
+			<<if $_n is 6>>
+				你已感到一切尽在掌握之中，<span class="red">但为徒劳的堕落行径而感到空虚。</span>。
+			<<elseif $exhibitionism lt $_scaledExhibitionismMax>>
+				你已感到一切尽在掌握之中，如此的猥亵行为会<span class="green">抚慰</span>着你，并让你感到兴奋异常。
+			<<else>>
+				你已感到一切尽在掌控之中。即使这种行为<span class="pink">过于平淡而无法抚慰你</span>，但它的确让你感到非常的兴奋。
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<!-- separating the code from the written text -->
+	<<if $desperateaction is 1 or $desperateaction is 2 or typeof $desperateaction is "string">>
+		<<control `$_n * -10`>>
+		<<switch $_n>>
+			<<case 1>><<lcontrol>>
+			<<case 2>><<llcontrol>>
+			<<case 3>><<llcontrol>>
+			<<case 4>><<llcontrol>>
+			<<case 5>><<lllcontrol>>
+		<</switch>>
+		<<gtrauma>><<trauma $_n>>
+	<<else>>
+		<<if $_n is 6>>
+			<<set $exhibitionism += 2>>
+			<<if $control lt $controlmax>><<set $control to $controlmax>><<gggcontrol>><</if>><<trauma 40>><<ggtrauma>>
+		<<elseif $exhibitionism lt $_scaledExhibitionismMax>>
+			<<set $exhibitionism += 2>>
+			<<if $control lt $controlmax>>
+				<<ggcontrol>>
+			<</if>>
+			<<control 25>><<stress $_n -300>><<combattrauma `$_n * -30`>><<ltrauma>><<lstress>>
+		<<else>>
+			<<if V.daily["exhibitionismStress" + $_n] isnot 1 and $statFreeze isnot true>>
+				<<set V.daily["exhibitionismStress" + $_n] to 1>><<lstress>><<stress $_n -100>>
+			<</if>>
+		<</if>>
+		<<arousal `$_n * 100`>><<garousal>>
+	<</if>>
+	<br><br>
+	<<unset $desperateaction>>
+	<<set $exhibitionism to Math.clamp($exhibitionism, 0, 100)>>
+<</widget>>
+
+<<widget "exhibitionism">>
+	<<if _args[0] is "street">>
+		<<if $uncomfortable.nude is false>>
+			<<if $exposed is 1>>
+				<<if Time.dayState is "night">>
+					<<arousal 20>>
+					你正赤身裸体地站在公共街道上！寒冷的夜风吹过你裸露的皮肤，周围似乎没有其他人存在，但你不知道会不会有人路过。
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+					这里很暗，你可以借助阴影来保持隐蔽——当然，你也可以完全避开街道区域。虽然你没有特别的裸露感，但是总有什么不祥的预兆在黑暗中等待着你……
+					<br><br>
+				<<else>>
+					<<arousal 40>>
+					你正赤身裸体地呆在公共街道上！你躲在一辆停着的汽车后面，暂时把自己隐蔽起来。
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<</if>>
+			<<elseif $exposed is 2>>
+				<<if Time.dayState is "night">>
+					<<arousal 40>>
+					你赤身裸体地站在一条大街道上！寒冷的夜风吹过你裸露的皮肤。周围似乎没有其他人存在，但你不知道会不会有人路过。
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>,……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+					这里很暗，你可以借助阴影来保持隐蔽——当然，你也可以完全避开街道区域。虽然你没有特别的裸露感，但是总有什么不祥的预兆在黑暗中等待着你……
+					<br><br>
+				<<else>>
+					<<arousal 80>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>,……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<if $exposed is 1>>
+				<<if Time.dayState is "night">>
+					<<arousal 20>>
+					你正赤身裸体地站在公共街道上！寒冷的夜风吹过你裸露的皮肤，周围似乎没有其他人存在，但你不知道会不会有人路过。
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+					这里很暗，你可以借助阴影来保持隐蔽——当然，你也可以完全避开街道区域。虽然你没有特别的裸露感，但是总有什么不祥的预兆在黑暗中等待着你……
+					<br><br>
+				<<else>>
+					<<arousal 10>>
+					你正赤身裸体地呆在公共街道上！你躲在一辆停着的汽车后面，暂时把自己隐蔽起来。
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<</if>>
+			<<elseif $exposed is 2>>
+				<<if Time.dayState is "night">>
+					<<arousal 10>>
+					你赤身裸体地站在一条大街道上！寒冷的夜风吹过你裸露的皮肤。周围似乎没有其他人存在，但你不知道会不会有人路过。
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+					这里很暗，你可以借助阴影来保持隐蔽——当然，你也可以完全避开街道区域。虽然你没有特别的裸露感，但是总有什么不祥的预兆在黑暗中等待着你……
+					<br><br>
+				<<else>>
+					<<arousal 5>>
+					你正赤身裸体地呆在公共街道上！你躲在一辆停着的汽车后面，暂时把自己隐蔽起来。
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<</if>>
+	<<elseif _args[0] is "alley">>
+		<<if $uncomfortable.nude is false>>
+			<<if $exposed is 1>>
+				<<if Time.dayState is "night">>
+					<<arousal 20>>
+					你正赤身裸体地站在公共小巷里！寒冷的夜风吹过你裸露的皮肤，你不知道会不会有人路过。
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 40>>
+					你脱去了衣服，就这么站在一条公共小巷里。
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<</if>>
+			<<elseif $exposed is 2>>
+				<<if Time.dayState is "night">>
+					<<arousal 40>>
+					你正站在一条小巷之中，<span class="red">你所有脆弱的部位都彻底地暴露了出来！</span>寒冷的夜风吹过你裸露的皮肤。周围似乎没有其他人，但你不知道什么时候会有人路过。
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>,……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 80>>
+					你正站在一条小巷之中，<span class="red">你所有脆弱的部位都彻底地暴露了出来！</span>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>,……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<if $exposed is 1>>
+				<<if Time.dayState is "night">>
+					<<arousal 20>>
+					你正赤身裸体地站在公共小巷里！寒冷的夜风吹过你裸露的皮肤，你不知道会不会有人路过。
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 10>>
+					你脱去了衣服，就这么站在一条公共小巷里。
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<</if>>
+			<<elseif $exposed is 2>>
+				<<if Time.dayState is "night">>
+					<<arousal 10>>
+					你正站在一条小巷之中，<span class="red">你所有脆弱的部位都彻底地暴露了出来！</span>寒冷的夜风吹过你裸露的皮肤。周围似乎没有其他人，但你不知道什么时候会有人路过。
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 5>>
+					你正站在一条小巷之中，<span class="red">你所有脆弱的部位都彻底地暴露了出来！</span>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<</if>>
+	<<elseif _args[0] is "park">>
+		<<if $uncomfortable.nude is false>>
+			<<if $exposed is 1>>
+				<<if Time.dayState is "night">>
+					<<arousal 20>>
+					你站在灌木丛旁，随时准备躲起来。夜晚寒冷的空气吹拂着你赤裸的皮肤。 
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 40>>
+					你躲在灌木丛的后面，躲避着在公园玩耍的人。如果你足够小心的话，你可以通过植物来隐蔽自己。 
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<</if>>
+			<<elseif $exposed is 2>>
+				<<if Time.dayState is "night">>
+					<<arousal 40>>
+					<br><br>
+					你站在灌木丛旁，随时准备躲起来。夜晚寒冷的空气吹拂着你赤裸的皮肤。 
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>,……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 80>>
+					<br><br>
+					你躲在灌木丛的后面，躲避着在公园玩耍的人。如果你足够小心的话，你可以通过植物来隐蔽自己。 
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>,……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<if $exposed is 1>>
+				<<if Time.dayState is "night">>
+					<<arousal 20>>
+					<br><br>
+					你躲在灌木丛后面。夜晚寒冷的空气吹拂着你赤裸的皮肤。你很庆幸公园晚上大部分时间都是空的——但这可能会让你更加的显眼。 
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 10>>
+					<br><br>
+					你躲在灌木丛后面。如果你足够小心的话，你可以通过植物来隐蔽自己。你希望没人注意到你，但你不知道这可能会持续多久。 
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<</if>>
+			<<elseif $exposed is 2>>
+				<<if Time.dayState is "night">>
+					<<arousal 10>>
+					<br><br>
+					你躲在灌木丛后面。夜晚寒冷的空气吹拂着你赤裸的皮肤。你很庆幸公园晚上大部分时间都是空的——但这可能会让你更加的显眼。 
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 5>>
+					你躲在灌木丛后面。如果你足够小心的话，你可以通过植物来隐蔽自己。你希望没人注意到你，但你不知道这可能会持续多久。 
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<</if>>
+	<<elseif _args[0] is "roof">>
+		<<if $uncomfortable.nude is false>>
+			<<if $exposed is 1>>
+				<<if Time.dayState is "night">>
+					<<arousal 20>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 40>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<</if>>
+			<<elseif $exposed is 2>>
+				<<if Time.dayState is "night">>
+					<<arousal 40>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>,……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 80>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>,……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<if $exposed is 1>>
+				<<if Time.dayState is "night">>
+					<<arousal 20>>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 10>>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<</if>>
+			<<elseif $exposed is 2>>
+				<<if Time.dayState is "night">>
+					<<arousal 10>>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 5>>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<</if>>
+	<<elseif _args[0] is "garden">>
+		<<if $uncomfortable.nude is false>>
+			<<if $exposed is 1>>
+				<<if Time.dayState is "night">>
+					<<arousal 20>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 40>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<</if>>
+			<<elseif $exposed is 2>>
+				<<if Time.dayState is "night">>
+					<<arousal 40>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>,……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 80>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>,……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<if $exposed is 1>>
+				<<if Time.dayState is "night">>
+					<<arousal 20>>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 10>>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<</if>>
+			<<elseif $exposed is 2>>
+				<<if Time.dayState is "night">>
+					<<arousal 10>>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 5>>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<</if>>
+	<<elseif _args[0] is "building">>
+		<<if $uncomfortable.nude is false>>
+			<<if $exposed is 1>>
+				<<if Time.dayState is "night">>
+					<<arousal 20>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 40>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<</if>>
+			<<elseif $exposed is 2>>
+				<<if Time.dayState is "night">>
+					<<arousal 40>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>,……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 80>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>,……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<if $exposed is 1>>
+				<<if Time.dayState is "night">>
+					<<arousal 20>>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<<else>><<arousal 10>>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<</if>>
+			<<elseif $exposed is 2>>
+				<<if Time.dayState is "night">>
+					<<arousal 10>>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 5>>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<</if>>
+	<<elseif _args[0] is "classroom">>
+		<<if $uncomfortable.nude is false>>
+			<<if $exposed is 1>>
+				<<if Time.dayState is "night">>
+					<<arousal 20>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 40>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<</if>>
+			<<elseif $exposed is 2>>
+				<<if Time.dayState is "night">>
+					<<arousal 40>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>,……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 80>>
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>,……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<if $exposed is 1>>
+				<<if Time.dayState is "night">>
+					<<arousal 20>>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 10>>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<</if>>
+			<<elseif $exposed is 2>>
+				<<if Time.dayState is "night">>
+					<<arousal 10>>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 5>>
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<</if>>
+	<<elseif _args[0] is "beach">>
+		<<if $uncomfortable.nude is false>>
+			<<if $exposed is 1>>
+				<<if Time.dayState is "night">>
+					<<arousal 20>>
+					你现在周围没人，但穿着如此淫荡的衣服既令人恐惧又令人兴奋。
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 40>>
+					就算是去海边游泳，你现在的衣着也太过暴露了——你紧紧地缩在了外套的后面。
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<</if>>
+			<<elseif $exposed is 2>>
+				<<if Time.dayState is "night">>
+					<<arousal 40>>
+					你现在周围没人，但穿着如此淫荡的衣服既令人恐惧又令人兴奋。
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>,……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 80>>
+					你完全暴露在光天化日之下！但庆幸的是，你还有一件外套来遮挡身体。
+					<br><br>
+					这也太刺激了！如果你再不赶紧找东西遮盖你裸露的身体，那么这种兴奋感将变得愈加地强烈<<if $leftarm is "bound" and $rightarm is "bound">>,……不过你的双手被绑起来了，所以什么也做不了<<else>>。<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<if $exposed is 1>>
+				<<if Time.dayState is "night">>
+					<<arousal 20>>
+					你现在周围没人，但穿着如此淫荡的衣服既令人恐惧又令人兴奋。
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 10>>
+					你感觉自己穿得也淫荡了！兴奋与恐惧压抑着你。如果你保持隐蔽，也许可以捡用别人遗落在海滩上的外套来遮蔽自己。
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<</if>>
+			<<elseif $exposed is 2>>
+				<<if Time.dayState is "night">>
+					<<arousal 10>>
+					你现在周围没人，但穿着如此淫荡的衣服既令人恐惧又令人兴奋。
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<<else>>
+					<<arousal 5>>
+					你在光天化日之下就这么的裸着！这对你来说一点都不好！如果你想保持低调，也许可以使用散落在海滩上的众多衣物来保护你的身体。
+					<br><br>
+					你因自己的暴露而升出强烈的窘迫<<if $leftarm is "bound" and $rightarm is "bound">>，但是你的双臂被绑住了，你无法挡住自己的裸体。<<else>>，你尽可能地遮掩自己。<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<</if>>
+	<<else>>
+		BUG - Missing/typo'd location in "exhibitionism" widget<br><br>
+	<</if>>
+<</widget>>
+
+<<widget "exhibitionismgarden">>
+	<<if $exposed is 1>>
+		<<arousal 20>>
+		<<if Time.dayState is "night">>
+			你躲在花园小屋后面。寒冷的夜风吹过你裸露的皮肤，你希望自己能在没有人看到你的情况下回到卧室。
+			<br><br>
+			你因暴露而无比的尴尬，
+			<<if $leftarm is "bound" and $rightarm is "bound">>
+				但你的双臂还被束缚着，无法遮掩你的身体。
+			<<else>>
+				并尽可能地遮掩身体。
+			<</if>>
+			<br><br>
+		<<else>>
+			你躲在花园小屋后面。你希望自己能在没有人看到你的情况下回到卧室。
+			<br><br>
+			你因暴露而无比的尴尬，
+			<<if $leftarm is "bound" and $rightarm is "bound">>
+				但你的双臂还被束缚着，无法遮掩你的身体。
+			<<else>>
+				并尽可能地遮掩身体。
+			<</if>>
+			<br><br>
+		<</if>>
+	<<elseif $exposed is 2>>
+		<<arousal 50>>
+		<<if Time.dayState is "night">>
+			你躲在花园小屋后面。寒冷的夜风吹过你裸露的皮肤，你希望自己能在没有人看到你的情况下回到卧室。
+			<br><br>
+			你因暴露而无比的尴尬，
+			<<if $leftarm is "bound" and $rightarm is "bound">>
+				但你的双臂还被束缚着，无法遮掩你的身体。
+			<<else>>
+				并尽可能地遮掩身体。
+			<</if>>
+			<br><br>
+		<<else>>
+			你躲在花园小屋后面。你希望自己能在没有人看到你的情况下回到卧室。
+			<br><br>
+			你因暴露而无比的尴尬，
+			<<if $leftarm is "bound" and $rightarm is "bound">>
+				但你的双臂还被束缚着，无法遮掩你的身体。
+			<<else>>
+				并尽可能地遮掩身体。
+			<</if>>
+		<</if>>
+	<</if>>
+	<br><br>
+<</widget>>
+
+<<widget "exhibitionismroof">>
+	<<if $exposed is 1>>
+		<<arousal 20>>
+		<<if Time.dayState is "night">>
+		凉爽的夜风让你不禁颤抖起来。尽管周围没有人，但户外的空气会让你感觉比以往任何时候都更加的暴露。
+		<br><br>
+			你因暴露而无比的尴尬，
+			<<if $leftarm is "bound" and $rightarm is "bound">>
+				但你的双臂还被束缚着，无法遮掩你的身体。
+			<<else>>
+				并尽可能地遮掩身体。
+			<</if>>
+			<br><br>
+		<<else>>
+			尽管周围没有人，但户外的空气会让你感觉比以往任何时候都更加的暴露。
+			<br><br>
+			你因暴露而无比的尴尬，
+			<<if $leftarm is "bound" and $rightarm is "bound">>
+				但你的双臂还被束缚着，无法遮掩你的身体。
+			<<else>>
+				并尽可能地遮掩身体。
+			<</if>>
+			<br><br>
+		<</if>>
+	<<elseif $exposed is 2>>
+		<<arousal 50>>
+		<<if Time.dayState is "night">>
+				凉爽的夜风让你不禁颤抖起来。尽管周围没有人，但户外的空气会让你感觉比以往任何时候都更加的暴露。
+				<br><br>
+			你因暴露而无比的尴尬，
+			<<if $leftarm is "bound" and $rightarm is "bound">>
+				但你的双臂还被束缚着，无法遮掩你的身体。
+			<<else>>
+				并尽可能地遮掩身体。
+			<</if>>
+			<br><br>
+		<<else>>
+			尽管周围没有人，但户外的空气会让你感觉比以往任何时候都更加的暴露。
+			<br><br>
+			你因暴露而无比的尴尬，
+			<<if $leftarm is "bound" and $rightarm is "bound">>
+				但你的双臂还被束缚着，无法遮掩你的身体。
+			<<else>>
+				并尽可能地遮掩身体。
+			<</if>>
+		<</if>>
+	<</if>>
+	<br><br>
+<</widget>>
+
+<<widget "exhibitionismbuilding">>
+	<<if $exposed is 1>>
+		<<arousal 20>>
+		<<if Time.dayState is "night">>
+			你现在周围没人，但穿着如此淫荡的衣服既令人恐惧又令人兴奋。
+			<br><br>
+			你因暴露而无比的尴尬，
+			<<if $leftarm is "bound" and $rightarm is "bound">>
+				但你的双臂还被束缚着，无法遮掩你的身体。
+			<<else>>
+				并尽可能地遮掩身体。
+			<</if>>
+			<br><br>
+		<<else>>
+			你在公共场所穿得如此下流！你感到既兴奋又恐惧。
+			<br><br>
+			你因暴露而无比的尴尬，
+			<<if $leftarm is "bound" and $rightarm is "bound">>
+				但你的双臂还被束缚着，无法遮掩你的身体。
+			<<else>>
+				并尽可能地遮掩身体。
+			<</if>>
+			<br><br>
+		<</if>>
+	<<elseif $exposed is 2>>
+		<<arousal 50>>
+		<<if Time.dayState is "night">>
+			你现在周围没人，但穿着如此淫荡的衣服既令人恐惧又令人兴奋。
+			<br><br>
+			你因暴露而无比的尴尬，
+			<<if $leftarm is "bound" and $rightarm is "bound">>
+				但你的双臂还被束缚着，无法遮掩你的身体。
+			<<else>>
+				并尽可能地遮掩身体。
+			<</if>>
+			<br><br>
+		<<else>>
+			你在公共场合暴露了自己的秘密！你感到既兴奋又恐惧。
+			<br><br>
+			你因暴露而无比的尴尬，
+			<<if $leftarm is "bound" and $rightarm is "bound">>
+				但你的双臂还被束缚着，无法遮掩你的身体。
+			<<else>>
+				并尽可能地遮掩身体。
+			<</if>>
+		<</if>>
+	<</if>>
+	<br><br>
+<</widget>>
+
+<<widget "exhibitionclassroom">>
+	<<if $exposed gte 1>>
+		你独自一人待在房间。平常这里都是拥挤不堪，人来人往。一想到会发生什么，你就浑身颤抖起来，无法不去在意自己的<<nudity>>。
+		<br><br>
+	<</if>>
+<</widget>>

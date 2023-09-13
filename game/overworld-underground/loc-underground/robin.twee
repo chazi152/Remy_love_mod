@@ -1,0 +1,1833 @@
+:: Widgets Underground Robin [widget]
+
+<<widget "undergroundRobinTopic">>
+	<<if $undergroundbrothel.robin>>
+		<<set $_state to _args[1] ? _args[1] : "discussed">>
+		<<set $undergroundbrothel.robinTopics[_args[0]] to $_state>>
+	<</if>>
+<</widget>>
+
+<<widget "undergroundEscapeForestRobin">>
+	<<endcombat>>
+	<<clotheson>>
+
+	你来到了森林里，不顾方向地开始逃跑，罗宾则紧跟在你后面。但<span class="red"><<nnpc_Hes "Robin">>不是唯一一个跟着你的人。</span>
+	<br><br>
+
+	<<link [[继续|Underground Robin Escape Stalk]]>><<set $molestationstart to 1>><</link>>
+<</widget>>
+
+<<widget "undergroundRobinTopicRefresh">>
+	<<if Object.entries(V.undergroundbrothel.robinTopics).filter(pair => pair[1] === "undiscussed").length lte 0>>
+		<<set $undergroundbrothel.robinTopics to {
+			"cold": "undiscussed",
+			"lonely": "undiscussed",
+			"dark": "undiscussed",
+			"scared": "undiscussed",
+			"touch": "undiscussed"
+		}>>
+	<</if>>
+<</widget>>
+
+<<widget "undergroundRobinInterlude">>
+	<<set _rRNG to random(1,3)>>
+	<<if _rRNG gte 2>>
+		<<print either(
+			"你听到了罗宾的喊声。",
+			"罗宾痛苦地喊叫着。",
+			"罗宾呜咽。"
+		)>>
+		<<npcincr Robin trauma 1>><<grtrauma true>>
+		<br><br>
+	<</if>>
+<</widget>>
+
+<<widget "undergroundRobinKiss">>
+	<<set $speechdisable to 1>>
+	<<if $robinFucked>>
+		<<if _args[0] is "kissback">>
+			<<print either(
+				"罗宾犹豫着给了你一个回吻，罗宾在<<person3>><<person>>凌辱<<person2>><<him>>时低声呜咽着。",
+				"当你亲吻<<He>>时，<<him>>紧紧地闭上了<<his>>的眼睛，每次<<person3>><<person>>用下体拍打罗宾的小穴时<<him>>都会抽搐。",
+				"伴随着<<person3>><<persons>>凶狠的撞击，<<He>>对着你尖叫。"
+			)>>
+		<<else>>
+			<<print either(
+				"看到罗宾抽泣的样子，<<person3>><<person>>放声大笑。",
+				"每当<<person3>><<person>>撞向<<person2>><<him>>时，<<He>>都会发出呜咽。",
+				"<<He>>满脸泪水，浑身颤抖的抱着你。每当<<person3>><<person>>猛拉<<person2>><<his>>的皮带时，<<his>>的身体都会颤抖。"
+			)>>
+		<</if>>
+		<<npcincr Robin trauma 3>><<grtrauma true>>
+	<<elseif $timer gte 5>>
+		<<if _args[0] is "kissback">>
+			<<He>>在<<person3>><<person>>的紧握下挣扎着，和你一起接吻。
+		<<else>>
+			罗宾在<<person3>><<persons>>的紧握中挣扎扭动。
+		<</if>>
+	<<elseif $timer gte 3>>
+		<<if _args[0] is "kissback">>
+			<<person3>><<person>>猛拉罗宾的皮带，<<person2>><<he>>对着你的嘴大叫。
+		<<else>>
+			<<person3>><<person>>猛拉罗宾的皮带，<<person2>><<he>>痛苦的大叫。
+		<</if>>
+	<<elseif $timer gte 1>>
+		<<if _args[0] is "kissback">>
+			罗宾害怕地闭上眼睛，试图把注意力集中在你的嘴唇上。
+		<<else>>
+			罗宾用力摇头，在恐惧中对着你的嘴哭泣。
+		<</if>>
+	<<else>>
+		<<set $robinFucked to 1>>
+		<span class="red">罗宾尖叫，因为<<person3>><<person>>突然把<<his>>的<<npcPenis>>插入了罗宾阴茎下的
+			<<if _robin.vagina isnot "none">>
+				<<NPCVirginityTakenByOther "Robin" "vaginal" $NPCList[2].fullDescription>>
+				<<if _npcVirgin.vaginal is true>>
+					处子小穴中。
+				<<else>>
+					小穴中。
+				<</if>>
+			<<else>>
+				<<NPCVirginityTakenByOther "Robin" "anal" $NPCList[2].fullDescription>>
+				<<if _npcVirgin.vaginal is true>>
+					从未被侵犯过的屁股。
+				<<else>>
+					屁股。
+				<</if>>
+			<</if>>
+		</span>
+		<<npcincr Robin trauma 5>><<ggrtrauma true>><<control -10>><<lcontrol>>
+	<</if>>
+
+	<<if _args[0] is "kissback">>
+		<<set $kissTurns++>>
+	<</if>>
+<</widget>>
+
+:: Underground Cell Robin Talk
+<<set $outside to 0>><<set $location to "underground">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+<<npc Robin>>
+
+<<if $undergroundbrothel.robin>>
+	你走向连接你和罗宾的手的那个洞，你呼唤着<<person1>><<him>>。
+<</if>>
+<<switch $undergroundbrothel.robinTalk>>
+	<<case 0>> /* First interaction */
+		"你知道我们在哪儿吗?”罗宾问道。你可以听到<<him>>在向你移动。
+		<br><br>
+
+		"某种地下监狱，”你一边倒在墙上一边回答。
+		<br><br>
+
+		你听到罗宾在<<his>>的牢房里摸索。“一定有办法让我们离开这里……"
+		<<He>>站起身走来走去。“我不会让这种事情发生在<<print (_robin.dom gte 60 ? "你" : "我们")>>身上。"
+	<<case 6>> /* Sixth interaction. They'll have been here a while by this point. */
+		<<if $undergroundbrothel.escape is 0>>
+			罗宾回答说:“我还在想办法离开这个地方。不过如果他们能给我们点儿光线就好了。"
+		<<else>>
+			罗宾回答说:“我还在挖床垫下面的洞。他们肯定没发现，不然早就来想办法阻止我了。”在<<his>>的声音中有一丝希望。
+		<</if>>
+	<<default>>
+		<!-- select a random topic from robinTopics that is undiscussed. Priority topics always happen before undiscussed -->
+		<<set _topicList to Object.entries(V.undergroundbrothel.robinTopics)>>
+		<<if _topicList.filter(pair => pair[1] === "priority").length gte 1>>
+			<<set _topic to _topicList.filter(pair => pair[1] === "priority").random()[0]>>
+		<<elseif _topicList.filter(pair => pair[1] === "undiscussed").length gte 1>>
+			<<set _topic to _topicList.filter(pair => pair[1] === "undiscussed").random()[0]>>
+		<</if>>
+		<<if _topic>>
+			<<undergroundRobinTopic _topic>>
+		<</if>>
+		<<switch _topic>>
+			<<case "scared">>
+				"不可能……”罗宾的声音又低又虚弱。
+				<br><br>
+
+				<<if $speech_attitude is "meek">>
+					"你——你还好吧?”你把手靠在墙上。
+				<<elseif $speech_attitude is "bratty">>
+					"怎么了?他们对你做什么了吗?”你的声音提高了。
+				<<else>>
+					"罗宾?你还好吗?”你问。
+				<</if>>
+				<br><br>
+
+				<<if _robin.dom gte 70>>
+					"对不起，我只是，我一时不知所措，”罗宾颤抖地说。
+					"我一定要坚强。”<<He>>说这话似乎更多是为了给<<his>>自己打气。
+				<<else>>
+					"我不想死在这里。”你听到罗宾在抽泣。
+					<br><br>
+
+					<<if $speech_attitude is "meek">>
+						"不要放弃希望，我们一定会成功的，”你温柔地说。
+					<<elseif $speech_attitude is "bratty">>
+						"他们就是想让你这么想。他们想让你放弃，接受现实！”你的手撞到了墙上。
+					<<else>>
+						"别担心，我们会成功的，我保证！”你说。
+					<</if>>
+					<br><br>
+
+					"谢谢，谢谢你安慰我。”罗宾的啜泣声慢慢停止了。
+				<</if>>
+			<<case "touch">>
+				"我可以…摸摸你吗?”罗宾的声音在颤抖。“我想感受到真正的爱。"
+				<br><br>
+
+				你把手指伸进连接你们两人的小洞里。这是你唯一能做的了。很快的，你感觉到有什么柔软的东西压在了上面。
+				过了一会儿，你感觉到罗宾温柔地亲吻了你的指尖，然后<<he>>推回了你的手指。
+				<br><br>
+
+				"谢谢…我比你想象的更需要它。"
+			<<case "dark">>
+				"在黑暗中走动真的很难习惯，”罗宾干巴巴地笑着说。“我喝水的时候总是被床垫绊倒。"
+				<br><br>
+
+				<<if $speech_attitude is "meek">>
+					"我也是，感觉像是盲人一样，”你同情地说。
+				<<elseif $speech_attitude is "bratty">>
+					"他们不希望自己的商品在牢房里太舒服。”你双臂交叉。
+				<<else>>
+					"我和你处境相同，”你同情地说。
+				<</if>>
+				<br><br>
+
+				"等待久了，我们说不定会拥有夜视能力呢？或者是声呐!就像蝙蝠一样!”你能看出来罗宾正在努力想让你开心起来。
+			<<case "lonely">>
+				"那个……”罗宾听起来很沮丧。
+				<<if _robin.dom gte 60>>
+					"我真的好想念孤儿院里的那些小伙伴……不知道他们过得好不好……"
+					<br><br>
+
+					<<if $speech_attitude is "meek">>
+						"肯定会过得很好的，”你试着让<<him>>高兴起来。
+					<<elseif $speech_attitude is "bratty">>
+						"我们一定要离开这里回去看望他们，”你说。
+					<<else>>
+						"那我们就努力尽快回去见他们吧，”你说。
+					<</if>>
+					<br><br>
+
+					"你说得对，他们肯定不愿意看到我变成现在这样。我必须保持坚强，”罗宾的语气听起来更像<<his>>平常的自己。
+				<<else>>
+					"我很怀念和你在一起的时光，我真的好想回家。"
+					<br><br>
+
+					<<if $speech_attitude is "meek">>
+						"罗宾，不要失去希望。”你轻声说。
+					<<elseif $speech_attitude is "bratty">>
+						"不要被击垮了。我们会逃出去的，我保证！”你自信地说。
+					<<else>>
+						"我们会逃出去的，别担心。”你在黑暗中微笑。
+					<</if>>
+					<br><br>
+
+					"谢谢，”罗宾说，“如果只有我一个人，我一定撑不下去。"
+				<</if>>
+			<<case "cold">>
+				"那个……你还好吗?”<<he>>语气颤抖。
+				<br><br>
+
+				<<if $speech_attitude is "meek">>
+					"你——你还好吧?”你问。
+				<<elseif $speech_attitude is "bratty">>
+					"罗宾，你还好吗?”你离墙更近了。
+				<<else>>
+					"怎么了?”你问。
+				<</if>>
+				<br><br>
+
+				"我的衣服很破旧，”罗宾回答，“对抵御寒冷没有帮助。”<<He>>在继续之前停顿了一下。
+				<<if _robin.dom gte 60>>
+					"别为我担心。就像我卖热巧克力一样!"
+				<<else>>
+					"我希望他们至少能把这些房间暖起来。"
+				<</if>>
+			<<case "tattoo">>
+				"你也被纹身了吗?”罗宾的声音有些紧张。“我是164号。”<<He>>的话语顿住了。
+				"我们能把纹身洗掉吗?<<print (_robin.trauma gte 70 ? "或许是" : "等什么时候")>>我们能出去的时候？我还是喜欢我自己的名字。"
+				<<He>>发出痛苦的笑声。
+				<br><br>
+
+				<<if $speech_attitude is "meek">>
+					"我很抱歉你也要经历这些，”你的声音颤抖。
+				<<elseif $speech_attitude is "bratty">>
+					"那些该死的混蛋也给我纹身了，一定就在你之前。”你用手抚摸着刻在皮肤上的数字“163”。
+				<<else>>
+					"我是‘163’号。”你的声音空洞。
+				<</if>>
+			<<case "pig">>
+				<<if $bestialitydisable is "t" or $monsterchance gte 100>>
+					<<set _animals to "monsters">>
+				<<else>>
+					<<set _animals to "animals">>
+				<</if>>
+				"那个，”罗宾的语气听起来很乐观，但你可以感觉到<<hes>>是假装的。“你知道猪是最聪明的动物之一吗?"
+				它们学东西很快，记忆力也很好。它们也很干净，虽然人们的刻板印象中猪就是全身泥巴，但是在我成长的过程中，我一直很喜欢它们。"
+				<br><br>
+
+				<<Hes>>沉默了几秒钟。“我觉得我不再喜欢猪了，”<<his>>的声音很虚弱。
+			<<case "dice">>
+				"我从来不知道骰子还能这么用，”罗宾说。<<if _robin.trauma gte 40>><<his>>声音颤抖<<else>><<his>>勉强的笑了笑<</if>>。“这就是他们的游戏理念吗?"
+				<br><br>
+
+				<<if $speech_attitude is "meek">>
+					"我也是，”你低声说。
+				<<elseif $speech_attitude is "bratty">>
+					"如果那些大骰子是用来给他们死亡倒计时的该多好，”你嘟哝道。
+				<<else>>
+					"这当然是个游戏，”你嘟哝道。“这地方就是这样。"
+				<</if>>
+				<br><br>
+
+				<<if _robin.trauma gte 70>>
+					"对他们来说，这是一场游戏，”罗宾重复道。<<He>>发出一声空洞的笑声。“现在也只是一场游戏结束了。"
+				<<else>>
+					"如果这是一款电子游戏就好了，”<<he>>说。“那我们就可以用激光剑和大炮反抗了。然后还可以用更多别的武器。”<<He>>听起来更开朗了，罗宾一定是又想家了。
+				<</if>>
+			<<case "tentacles">>
+				"我很抱歉你不得不那样做，”罗宾喃喃地说。“我是说把我弄下去。那些金属东西在攻击你。"
+				<br><br>
+
+				<<if $speech_attitude is "meek">>
+					"我喜欢和你一起做，”你回答说。“只是……不是那样的方式。"
+				<<elseif $speech_attitude is "bratty">>
+					"这算不上什么惩罚，”你嗤之以鼻。“我是说，和我的<<nnpc_girlfriend "Robin">>做爱?他们觉得这会让我痛苦吗?"
+					<<if $trauma gte ($traumamax * 0.6)>>
+						你尽量不让自己的声音颤抖。尽管很痛苦，但你还是做到了。
+					<</if>>
+				<<else>>
+					"我很高兴他们没有伤害你，”你说。
+				<</if>>
+				<br><br>
+
+				罗宾沉默了几秒钟。“他们给我灌了一种又浓又酸的饮料。它让我身体麻木，又很冷……我对你对我做的事一点儿感觉都没有。"
+			<<case "machineHigh">>
+				<<set _noOptions to true>>
+				<<He>>语气空洞的说着。“好疼。"
+				<br><br>
+
+				你等着<<him>>继续，<<he>>无助的抽泣。“机器把我弄的很疼。又快又颠簸，我现在坐都坐不下来了。为什么?你为什么要让他们把我的翻过来?”罗宾的声音因泪水而变得哽咽。“你知道这会伤害我，对吧?为什么?"
+				<br><br>
+
+				<<if $speech_attitude is "meek">>
+					"对不起，”你低声说，你无法回答。
+				<<elseif $speech_attitude is "bratty">>
+					你想说点儿什么，但是什么都说不出口。
+				<<else>>
+					"我当时很害怕，”你平静地说。
+				<</if>>
+				<br><br>
+
+				"为什么?”罗宾继续说，<<his>>的声音提高了。“你知道那会伤害我的!太疼了!你为什么要那样对我?你怎么了?!"
+				<<stress 6>><<gstress>>
+				<br><br>
+
+				你哑口无言，“罗宾……"
+				<br><br>
+
+				"你说过要保护我的!”<<he>>冲你吐了口唾沫。“可是你看看你现在，你连你自己都保护不了!"
+				<<stress 12>><<trauma 12>><<ggstress>><<ggtrauma>>
+				<br><br>
+
+				<<link [[道歉|Underground Cell Robin Talk 2]]>><<stress 6>><<npcincr Robin love 1>><<npcincr Robin dom 1>><<set $phase to "machineHighApologise">><</link>><<gstress>><<glove>><<gdom>>
+				<br>
+				<<link [[保持沉默|Underground Cell Robin Talk 2]]>><<trauma -6>><<npcincr Robin dom -10>><<set $phase to "machineHighSilent">><</link>><<ltrauma>><<lldom>>
+			<<case "machineNormal">>
+				过了一会儿，罗宾用颤抖的声音开口，“那……那个……
+				<<if _robin.dom gte 50>>
+					你还好吧?”<<He>>安慰你。“我刚刚好像说的有点儿太过了。"
+				<<else>>
+					太伤人了……”<<he>>说的那些话让你的心都要碎了。<<He>>停顿了一下，然后继续问:“你还好吗?"
+				<</if>>
+				<br><br>
+
+				<<if $pain gte 60>>
+					<<if $speech_attitude is "meek">>
+						你放声大哭，这也是你们现在少有的能释放痛苦的方法了。
+					<<elseif $speech_attitude is "bratty">>
+						"……我没事，”你颤抖的声音泄露了你的真实情绪，泪水顺着你的脸颊流了下来。
+					<<else>>
+						"没，没事……”你的眼泪顺着脸颊流了下来。
+					<</if>>
+					<br><br>
+
+					罗宾一开始似乎很惊讶，但很快就恢复了以往的温和。“一切都会好起来的，我们要从这里逃出去，我们会获得自由，等我们成功逃离了，他们就再也无法伤害到我们。"
+					停了一会儿，<<he>>低声说:“我要变得足够强大，强大到可以让我们两个都安心的生活。"
+					<<pain -20>><<lpain>><<npcincr Robin dom 2>><<gdom>>
+				<<else>>
+					<<if $speech_attitude is "meek">>
+						"我会没事的，不过还是谢谢你的关心。”因为<<his>>的关心你的脸上情不自禁的露出了微笑。
+					<<elseif $speech_attitude is "bratty">>
+						"想打倒我可没那么简单！"你为罗宾装出一副勇敢的样子。
+					<<else>>
+						"嗯，我也很高兴你没事，”你说着，把背靠在阻拦在你们中间的墙壁上。
+					<</if>>
+					<br><br>
+
+					<<if _robin.trauma gte 70>>
+						罗宾抽泣着说:“太好了，一切都结束了。"
+					<<else>>
+						罗宾平静下来。“我们能挺过去的，肯定可以的。"
+					<</if>>
+				<</if>>
+			<<case "machineLow">>
+				"你还好吗?”罗宾几乎立刻回应，<<his>>的声音里清晰地流露出关切。
+				<<if _robin.dom gte 50>>
+					"我早该知道他们不会等我回答的，”<<he>>说。
+				<<else>>
+					"我很抱歉，我不知道他们不会等你回答，”<<he>>说。
+				<</if>>
+				"我能做些什么让你感觉好点吗?”罗宾试图安慰你。
+				<br><br>
+
+				<<if $pain gte 60>>
+					<<if $speech_attitude is "meek">>
+						"请握紧我的手。”你把手指伸进洞里，罗宾轻轻地抓住它。
+						<br><br>
+
+						"没事的。”<<He>>握着你的手指，在你开始哭泣的时候轻轻地揉搓它。“放心，一切都会好起来的。"
+					<<elseif $speech_attitude is "bratty">>
+						"我已经没事了。”你哽咽着说，但罗宾显然不相信。
+						<br><br>
+
+						"等我们出去后，我给你买些冰淇淋怎么样?”罗宾勉强打起精神，微笑着说。
+						"我请客。"
+					<<else>>
+						"我们还能回家吗?”你低喃。
+						<br><br>
+
+						当你轻声哭泣时，罗宾鼓励你说:“发泄出来吧。等我们回家后我一定会让你快乐起来，让你忘记这一切。"
+					<</if>>
+					<<pain -20>><<lpain>><<trauma -5>><<ltrauma>><<npcincr Robin dom 2>><<gdom>>
+				<<else>>
+					<<if $speech_attitude is "meek">>
+						"好，谢谢你。”你微微颤抖着说。
+					<<elseif $speech_attitude is "bratty">>
+						"不过是有点儿酸痛而已，没什么大不了的，我会活下去的，”你说。
+					<<else>>
+						"还好已经结束了……”你说。
+					<</if>>
+
+					"你没事就好，需要什么就告诉我，好吗?”罗宾听起来如释重负。
+				<</if>>
+			<<case "machinePlayer">>
+				"你还好吗?”罗宾几乎立刻回应，<<his>>的声音里清晰地流露出关切。
+				"我很高兴他们停下来了，如果能更早一点儿该多好……”<<He>>没有说完。
+				<br><br>
+
+				<<if $speech_attitude is "meek">>
+					你靠着墙，有那么一瞬间，你仿佛能感觉到墙那边罗宾的温暖。
+					"我——我会没事的。谢谢你。"
+				<<elseif $speech_attitude is "bratty">>
+					"我只是很高兴他们没有伤害到你。”你摇了摇头，勉强挤出一个微笑。
+				<<else>>
+					"我真的没事，”你说着把手放在连接你们俩的墙上。“没有在欺骗你。"
+				<</if>>
+			<<case "machineNone">>
+				<<if _robin.trauma lte 40>>
+					"他们见识到我们的反抗了!”罗宾高兴地说，“也许他们下次折磨我们之前会多想想后果。"
+				<<else>>
+					"我很高兴我们安全了，那台机器造成的伤害我肯定承受不了。”罗宾听起来松了口气，但仍然很紧张。
+				<</if>>
+				<br><br>
+
+				<<if $speech_attitude is "meek">>
+					"我很高兴我们都完好无损。那些机器太可怕了，”你松了一口气。
+				<<elseif $speech_attitude is "bratty">>
+					"这就是他们试图伤害我们的后果。”尽管如此，你还是觉得自己在微笑。
+				<<else>>
+					"我很高兴他们放弃了，我还担心他们会再试一次呢，”你笑着说。
+				<</if>>
+			<<case "kissBack">>
+				"谢谢你吻我，”<<he>>停顿了一会儿后说道。“我知道这听起来很奇怪，但是……它帮助我忽略了正在发生的事情，分散了我的注意力。"
+				<br><br>
+
+				<<if $speech_attitude is "meek">>
+					"我也应该感谢你，”你说。
+				<<elseif $speech_attitude is "bratty">>
+					"我应该做得更多，”你咬紧牙关说。“我讨厌他们。"
+				<<else>>
+					"这是我最起码能做的，”你说。
+				<</if>>
+			<<case "hunt">>
+				<<if _robin.dom gte 70>>
+					"我们就在那里，”<<he>>喃喃自语。“我们当时在森林里，我们本可以……”<<He>>叹了一口气。“我应该更坚强一点。那样我就能救你，我们就能离开这里了。"
+					<br><br>
+
+					<<if $speech_attitude is "meek">>
+						"你不需要保护我，”你平静地说。
+					<<elseif $speech_attitude is "bratty">>
+						"你不是唯一一个犯错的人，”你喃喃自语。
+					<<else>>
+						"不要责怪自己，”你说。“我们是一起的，我和你一样应该受到责备。"
+					<</if>>
+					<br><br>
+
+					罗宾沉默了几秒钟。“我们一定要离开这里。下次他们再让我们去到阳光下，我们就想办法逃走。"
+				<<else>>
+					"我很高兴能再次看到太阳，”<<he>>勉强打起精神。“还有小草。真的……太好了。"
+					<br><br>
+
+					<<if $speech_attitude is "meek">>
+						"是很温暖，”你试图高兴起来，但是很难保持希望。“我希望这地方能不这么冷。"
+					<<elseif $speech_attitude is "bratty">>
+						"比这个地方强，”你咕哝着，轻轻地踢着墙。“下面什么都看不见。希望他们至少能开一盏灯。"
+					<<else>>
+						"我希望我们能在外面多待一会儿，”你说。
+					<</if>>
+					<br><br>
+
+					"是的，”罗宾点点头。“我……”<<He>>的声音逐渐消失。“我希望我们能离开这里。"
+				<</if>>
+			<<default>>
+				<<Hes>>沉默了。“你还好吗?"
+				<br><br>
+
+				罗宾回答之前停顿了一下。
+				<<if _robin.trauma gte 70>>
+					"我们——我们必须离开这里……”罗宾的声音在颤抖。
+				<<else>>
+					"我没事，”<<he>>微弱地笑了笑。“我只需要打起精神来。”罗宾颤抖的声音和<<his>>的话不一致。
+				<</if>>
+				<<undergroundRobinTopicRefresh>>
+		<</switch>>
+<</switch>>
+<<set $undergroundbrothel.timepass to false>><<set $undergroundbrothel.robinTalk++>><<set $undergroundbrothel.robinSpoke to true>>
+<br><br>
+
+<<if !_noOptions>>
+	<<link [[继续|Underground Cell]]>><<endevent>><</link>>
+<</if>>
+
+:: Underground Cell Robin Talk 2
+<<effects>><<run statusCheck("Robin")>>
+<<switch $phase>>
+	<<case "machineHighApologise">>
+		"罗宾，我很抱歉，”你说。你解释说你当时很害怕，没有好好思考，你很后悔。你不断的道歉，直到你的喉咙嘶哑。
+		<br><br>
+
+		罗宾沉默了，几分钟后带着哭腔说。“我们得离开这里，一起离开这里。等出去了我们就不用继续担心了，因为…这种事不会再发生了。"
+		<br><br>
+
+		<<He>>沉默了一会儿。“我原谅你，很抱歉我吼了你。这个地方让我受不了了。"
+	<<case "machineHighSilent">>
+		你保持沉默，让牢房里充满了令人不安的沉默。几分钟后，罗宾哭了起来。
+		<br><br>
+
+		"对不起，”<<he>>低声说。“别恨我。我不该那么说的。对不起，对不起，求你了。”<<His>>的声音被哭泣和颤抖的呼吸打断。“我需要你。我爱你！求你不要恨我！"
+		<br><br>
+
+		你告诉罗宾你原谅了<<him>>，<<him>>又开始哭了。但这次是宽慰的哭泣。几分钟后，<<his>>的声音变小了。
+	<<default>>
+		"嗯?”罗宾说。“什么?"
+		<br><br>
+
+		你考虑告诉罗宾这个场景被窃听了，$$phase被错误地设置为$phase，但你决定不这么做。通知弗勒尼尔会更值得你浪费时间。
+<</switch>>
+<br><br>
+
+<<link [[继续|Underground Cell]]>><<endevent>><</link>>
+
+:: Underground Robin Stage Intro
+<<set $outside to 0>><<set $location to "underground">><<effects>>
+你再一次被带到舞台上，人群在那里等待着。罗宾已经上台了。<<covered>>
+
+<<if $rng gte 51 and ($monster is 1 or $bestialitydisable is "f")>>
+	<<beastNEWinit 1 pig>>
+	一到那里，一个金属百叶窗就在你身后咔哒一声打开，两个巨大的<<beastsplural>>走了出来。第一个向罗宾冲去，而第二个向你冲来。观众为他们欢呼。
+	<br><br>
+
+	<<link [[继续|Underground Robin Stage Pig]]>><<set $molestationstart to 1>><</link>>
+<<else>>
+	<<generate1>><<generate2>>
+	已经有一群<<fullGroup>>在等待你。<<person2>><<person>>牵着罗宾的皮带，而<<person1>><<person>>牵着你的皮带。他们把你们拉开，强迫你们正对着观众。“你们觉得谁会第一个高潮?朋友们，下注吧。"
+	<br><br>
+
+	<<link [[继续|Underground Robin Stage Molestation]]>><<set $molestationstart to 1>><</link>>
+<</if>>
+
+:: Underground Robin Stage Pig
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br>
+<<undergroundRobinInterlude>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Underground Robin Stage Pig Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Underground Robin Stage Pig]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Underground Robin Stage Pig Finish
+<<if $enemyhealth lte 0>>
+	<<beasttype>>在痛苦和恐惧中逃跑，在观众中四处乱窜，试图寻找出口。第二只也吓的跑开了，罗宾站了起来。
+	<br><br>
+
+	<<tearful>>你和罗宾从舞台上跳下来，跑向楼梯。观众都分心了，根本没办法阻止你们。你们尽可能快地爬上楼梯，脚下的脚步声震耳欲聋。
+	<br><br>
+
+	<<undergroundEscapeForestRobin>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<undergroundRobinTopic "pig" "undiscussed">>
+	<<beastejaculation>><<famebestiality 50>>
+
+	当你被领下舞台回到你的牢房时，观众们大声鼓掌。罗宾也被领回去了。
+
+	<<undergroundReturnToCell>>
+<</if>>
+
+:: Underground Robin Stage Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<set $enemyno to 1>><<set $enemynomax to 1>>
+	<<maninit>>
+	<<set $enemytrust -= 120>>
+<</if>>
+
+<<effects>>
+<<effectsman>><<man>>
+<<undergroundRobinInterlude>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Underground Robin Stage Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Underground Robin Stage Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Underground Robin Stage Molestation Finish
+<<if $enemyhealth lte 0>>
+	<<person1>><<person>>痛苦地向后退缩，从舞台上摔了下来。<<person2>><<person>>被突然的响声吓了一跳。<<tearful>>你泪流满面地把<<him>>从罗宾身上拽下来，和罗宾一起跑向楼梯。观众们都很困惑，他们没有阻止你。
+	<br><br>
+
+	你们尽可能快地爬上楼梯，脚下的脚步声震耳欲聋。
+
+	<<undergroundEscapeForestRobin>>
+
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	<<person2>><<person>>恼怒地看着你。当你被领下舞台回到你的牢房时，观众们大声鼓掌。罗宾也被领回去了。
+	<<undergroundReturnToCell>>
+<</if>>
+
+:: Underground Robin Dice Intro
+<<effects>>
+<<generate1>><<generate2>><<person1>>
+你被带出牢房，进入外面的走廊。它看起来和你的牢房很像，但有现代的家具。你转过一个拐角，看到一大群<<people>>正围着一个舞台。罗宾已经在舞台上了，正被一个<<person>>注视着。你看到房间对面有一个楼梯，可能是出去的路。
+<<covered>>
+<br><br>
+
+大多数观众都盯着罗宾，但当你被带到中央讲台时，所有的目光都投向了你。有音乐在播放。
+<br><br>
+
+"我们要掷这些，”<<person2>><<person>>拿着一对大石头骰子说。“你们的命运就由它们决定了，祈祷自己的点数小点儿吧。"
+<br><br>
+
+"大点数！大点数！”观众高呼。
+<br><br>
+
+<<link [[继续|Underground Robin Dice Intro 2]]>><</link>>
+
+:: Underground Robin Dice Intro 2
+<<effects>>
+
+<<He>>掷下石头骰子。骰子们在舞台上滚动发出了刺耳的声音。
+<br><br>
+<<set $uDice1 to random(1, 6)>>
+<<set $uDice2 to random(1, 6)>>
+<<set _d1Color to ["","green","blue","red"][Math.ceil($uDice1/2)]>>
+<<set _d2Color to ["","green","blue","red"][Math.ceil($uDice2/2)]>>
+
+<div id="die_text">
+	<span id="die_1">
+		<<if $options.images is 1>>
+			<img src="img/misc/die_stone_roll.gif">
+		<<else>>
+			?
+		<</if>>
+	</span>
+
+	<span id="die_2">
+		<<if $options.images is 1>>
+			<img src="img/misc/die_stone_roll.gif">
+		<<else>>
+			?
+		<</if>>
+	</span>
+	<br>
+	=
+	<br>
+</div>
+
+<<timed 2s>>
+	<<replace "#die_1">>
+	<<if $options.images is 1>>
+		<img @src="'img/misc/die_stone_' + $uDice1 + '.png'">
+	<<else>>
+		$uDice1
+	<</if>>
+	<</replace>>
+<</timed>>
+<<timed 4s>>
+	<<replace "#die_2">>
+	<<if $options.images is 1>>
+		<img @src="'img/misc/die_stone_' + $uDice2 + '.png'">
+	<<else>>
+		$uDice2
+	<</if>>
+	<</replace>>
+<</timed>>
+
+<<timed 5s>>
+	<span id="die_text">
+		<<if $uDice1 is $uDice2>>
+			<<switch $uDice1>>
+				<<case 1>>
+					<span @class="_d1Color">两个一</span>
+				<<case 6>>
+					<span @class="_d1Color">两个六</span>
+				<<default>>
+					<span @class="_d1Color">两个<<number $uDice1>></span>
+			<</switch>>
+		<<else>>
+			<span @class="_d1Color"><<Number $uDice1>></span>和<span @class="_d2Color"><<number $uDice2>></span>
+		<</if>>
+	</span>
+	<<replace "#temp_br">>
+		<br>
+	<</replace>>
+<</timed>>
+
+<<timed 6s>>
+	<<replace "#temp_br">>
+		<br>
+		($uDice1, $uDice2)
+	<</replace>>
+<</timed>>
+
+<span id="temp_br">
+	<br><br>
+</span>
+<br><br>
+
+<<link [[继续|Underground Robin Dice Intro 3]]>><</link>>
+<br>
+
+:: Underground Robin Dice Intro 3
+<<effects>>
+
+<<if $uDice1 lte 3 and $uDice2 lte 3>>
+	观众对你的低点数报以嘘声和嘲笑，还有一些人往舞台上扔垃圾。
+	<<if $uDice1 + $uDice2 lte 4>>
+		"该死的!”一位特别沮丧的观众喊道。
+	<</if>>
+<<elseif $uDice1 gte 4 and $uDice2 gte 4>>
+	人群因大点数而兴奋地欢呼起来。
+	<<if $uDice1 + $uDice2 gte 10>>
+		一些人开始跺脚。
+	<</if>>
+<<elseif $uDice1 gte 5 and $uDice2 lte 2 or $uDice1 lte 2 and $uDice2 gte 5>>
+	人群看到差异巨大的数字发出“哇”的惊叹声。
+<<else>>
+	看到结果，人群窃窃私语。
+<</if>>
+<br><br>
+
+<<person>>向前走了几步。
+<<set $diceAnnouncer to _text_output>>
+<<endevent>>
+
+<<if $uDice1 is $uDice2>>
+	"决定了，”$diceAnnouncer宣布。“没有考虑的余地。"
+	<<for _d to 1; _d lte $uDice1; _d++>>
+		<<generateNPC _d>>
+	<</for>>
+	<<person1>>
+	<<if $uDice1 is 1>>
+		观众中有两个人爬上了舞台。第一个<<person>>接近你，第二个向罗宾走去。
+	<<else>>
+		观众中两组<<number $uDice1>>的人爬上了舞台。第一组<<fullGroup>>接近你，而第二组向罗宾走去。
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Underground Robin Dice Molestation]]>><<set $robinDice to $playerDice to $uDice1>><<set $molestationstart to 1>><</link>>
+<<else>>
+	"现在，来做决定吧，”$diceAnnouncer对你说。“你要<<number $uDice1>>还是<<number $uDice2>>?”你不选的那个数字就归你朋友了。"
+	<br><br>
+
+	你注意到观众在向你投来淫荡的目光，你非常紧张。$diceAnnouncer让你选择有多少人攻击你，有多少人攻击罗宾。你考虑过逃跑，但是有太多的眼睛盯着你。罗宾看起来很害怕。
+	<br><br>
+
+	<<silently>><<number $uDice1>><<set _option1 to _text_output>><<number $uDice2>><<set _option2 to _text_output>><</silently>>
+	<<link [["选" + _option1|Underground Robin Dice Intro 4]]>>
+		<<set $playerDice to $uDice1>><<set $robinDice to $uDice2>>
+		<<if $uDice1 gt $uDice2>><<stress 6>><<else>><<npcincr Robin love -1>><</if>>
+	<</link>><<if $uDice1 gt $uDice2>><<gstress>><<else>><<llove>><</if>>
+	<br>
+	<<link [["选" + _option2|Underground Robin Dice Intro 4]]>>
+		<<set $playerDice to $uDice2>><<set $robinDice to $uDice1>>
+		<<if $uDice2 gt $uDice1>><<stress 6>><<else>><<npcincr Robin love -1>><</if>>
+	<</link>><<if $uDice2 gt $uDice1>><<gstress>><<else>><<llove>><</if>>
+<</if>>
+
+:: Underground Robin Dice Intro 4
+<<effects>>
+
+"<<number $playerDice>>，”$diceAnnouncer说。"那么<<nnpc_he "Robin">>将得到<<number $robinDice>>。"罗宾<<print $playerDice gt $robinDice ? "非常感激" : "感觉被背叛了">>。
+<br><br>
+
+<<for _d to 1; _d lte $playerDice; _d++>>
+	<<generateNPC _d>>
+<</for>>
+<<person1>>
+<<if $playerDice is 1>>
+	观众中的一个<<person>>爬上舞台，向你走来。
+<<else>>
+	观众中一些<<fullGroup>>爬上舞台，向你靠近。
+<</if>>
+<<if $robinDice is 1>>
+	另一个人爬上舞台，走近罗宾。
+<<else>>
+	<<Number $robinDice>>更多的人爬上舞台，走近罗宾。
+<</if>>
+<br><br>
+
+<<link [[继续|Underground Robin Dice Molestation]]>><<set $molestationstart to 1>><</link>>
+
+:: Underground Robin Dice Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $enemytrust -= 80>>
+	<<set $enemyanger += 60>>
+	<<set _rTrauma to [0,4,8,12,16,20,25][$robinDice]>>
+	<<npcincr Robin trauma _rTrauma>>
+<</if>>
+
+<<effects>>
+<<effectsman>><<man>>
+<<undergroundRobinInterlude>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Underground Robin Dice Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Underground Robin Dice Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Underground Robin Dice Molestation Finish
+<<if $enemyhealth lte 0>>
+
+	<<person1>><<person>>痛苦地向后退缩，从舞台上摔了下来。
+	<<if $playerDice gt 2>>
+		其他的被<<his>>的四肢缠住，也掉了下来。
+	<<elseif $playerDice is 2>>
+		<<person2>><<person>>也被<<his>>的四肢缠住而摔倒。
+	<</if>>
+	罗宾周围的人暂停了攻击，在骚动中转过身来。
+	<br><br>
+
+	<<tearful>>你把他们推开，抓住罗宾的胳膊跑向楼梯。观众们都很困惑，他们没有阻止你。
+	<br><br>
+
+	<<undergroundEscapeForestRobin>>
+
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<undergroundRobinTopic "dice" "undiscussed">>
+	<<ejaculation>>
+
+	当你被领下舞台回到你的牢房时，观众们热烈的鼓掌。罗宾也被领回去了。
+	<<undergroundReturnToCell>>
+<</if>>
+<<unset $uDice1>><<unset $uDice2>><<unset $playerDice>><<unset $robinDice>><<unset $diceAnnouncer>>
+
+:: Underground Robin Tentacles Intro
+<<effects>><<set $robinMetal to true>><<undergroundRobinTopic "tentacles" "undiscussed">>
+<<generate1>><<person1>>
+
+你再一次被带到舞台上，人群在那里等待着。罗宾已经在那儿了。<<covered>>
+<br><br>
+
+你注意到罗宾被脱光了衣服，被用金属手铐铐在墙上。<<nnpc_He "Robin">>恳求地看着你。
+<br><br>
+
+"尽你所能让<<nnpc_him "Robin">>离开，”<<person>>说。“为了你自己。”金属卷帘门打开了，一群红色的金属触手向你涌来。罗宾紧紧地闭上了眼睛。
+<br><br>
+
+<<link [[继续|Underground Robin Tentacles]]>><<endevent>><<set $molestationstart to 1>><</link>>
+
+:: Underground Robin Tentacles
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<npc Robin>><<person1>>
+	<<maninit>>
+	<<silently>><<npc_submissive>><</silently>>
+	<<npcexpose>>
+	<<set $breakIgnore to true>>
+	<<set $fightTargets to []>>
+	<<tentaclestart 10 15 "tentacle" "metal">>
+	<<set $enemyarousalmax to 800>>
+<</if>>
+<<set $enemyanger to 0>><<set $enemytrust to 100>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<effectstentacles>>
+<<tentacles>>
+<<audience>>
+<<statetentacles>>
+<<stateman>>
+<<actionsOmni>>
+
+<<if _combatend or ($tentacles.active lte ($tentacles.max / 2))>>
+	<span id="next"><<link [[继续|Underground Robin Tentacles Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Underground Robin Tentacles]]>><</link>></span><<nexttext>>
+<</if>>
+<br>
+
+:: Underground Robin Tentacles Finish
+<<effects>><<unset $robinMetal>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	观众欢呼起来，金属触手从你身上缩回来。罗宾被从墙上解开，你们两个被带离舞台回到牢房。
+	<br><br>
+
+	<<undergroundReturnToCell>>
+<<else>>
+	金属触手颤抖着，冒着火花失去了活力。罗宾身上的手铐自动缩回去了。
+	<br><br>
+
+	<<person>>对着对讲机大吼，“系统被损坏了！”<<tearful>>你抓住罗宾的胳膊跑向楼梯，罗宾低垂着脑袋。观众们都很困惑，他们没有阻止你。
+	<br><br>
+
+	<<undergroundEscapeForestRobin>>
+<</if>>
+
+:: Underground Robin Machine Intro
+<<effects>>
+<<set _robin to statusCheck("Robin")>>
+<<generate1>><<person1>>
+<<set $machineHandler to $NPCList[0].fullDescription>>
+
+你再一次被带到舞台上，人群在那里等待着。罗宾已经在那里了，正在被一个<<person>>注视着。<<covered>>
+<br><br>
+
+你注意到一对奇怪的机器被推了进来。它们身上有锁链和生殖器工具。罗宾被抓起来拖进去了，没多久也轮到了你。你们背对着对方。
+<br><br>
+
+"如果你承受不住了，”那个<<person>>说。“<span class="gold">请告诉我们。</span><span class="red">我们将把权重定向到另一个。</span>"
+<<if _robin.trauma gte 60 or _robin.dom lte 20>>
+	罗宾惊恐地哽咽了一下。
+<<else>>
+	你听到罗宾的锁链互相碰撞的声音，<<nnpc_he "Robin">>挣扎着。
+<</if>>
+<br><br>
+
+<<link [[继续|Underground Robin Machine]]>><<endevent>><<set $molestationstart to 1>><</link>>
+
+:: Underground Robin Machine
+<<set _robin to statusCheck("Robin")>>
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+
+	<<set $machine_health to 6>><<set $machine_ammo to 8>>
+	<<if $player.vaginaExist and $analdisable is "f">>
+		<<machine_init vaginal anal arm_chains leg_chains>>
+		<<set $machine.vaginal.armed to 1>><<set $machine.anal.armed to 1>>
+	<<elseif $player.vaginaExist>>
+		<<machine_init vaginal arm_chains leg_chains>>
+		<<set $machine.vaginal.armed to 1>>
+	<<else>>
+		<<machine_init anal arm_chains leg_chains>>
+		<<set $machine.anal.armed to 1>>
+	<</if>>
+
+	<<if _robin.dom gte 80 and _robin.trauma lte 20>>
+		<<set $timer to 12>>
+	<<elseif _robin.dom gte 60 and _robin.trauma lte 40>>
+		<<set $timer to 10>>
+	<<elseif _robin.dom gte 40 and _robin.trauma lte 60>>
+		<<set $timer to 9>>
+	<<else>>
+		<<set $timer to 8>>
+	<</if>>
+	<<set $robinFucked to false>><<set $robinMachineSpeed to 2>>
+<</if>>
+
+<<effects>>
+<<machine_effects>>
+<<machine_combat>>
+
+<<if $phase is 1>>
+	你让他们让你的机器慢下来。$machineHandler打开一个开关，你的性爱机器减慢到一个更合理的水平。
+	<<if $robinFucked>>
+		罗宾发出了一声痛苦的叫声，因为<<nnpc_his "Robin">>的机器再次加速。
+		<<npcincr Robin trauma 1>><<grtrauma true>>
+	<<else>>
+		罗宾发出了既宽慰又担心的声音。
+	<</if>>
+	<<machine_speed 2>>
+	<<set $timer to random(2,4)>>
+<<elseif $phase is 2>>
+	你让他们让你的机器慢下来。$machineHandler打开一个开关，你的性爱机器慢下来了。
+	<<if $robinFucked>>
+		罗宾发出一声尖叫，<<nnpc_his "Robin">>的机器更响了。你能听到它不断抽插<<nnpc_him "Robin">>的声音。
+		<<npcincr Robin trauma 3>><<npcincr Robin dom -5>><<ggrtrauma true>><<lldom "Robin">>
+	<<else>>
+		罗宾惊恐地大叫。
+	<</if>>
+	<<npcincr Robin love -1>><<llove>>
+	<<machine_speed 1>>
+	<<set $timer to random(2,4)>>
+<<else>>
+	<<if $robinFucked is true>>
+		<<if $anusfucked is 1 or $vaginafucked is 1 or $penisfucked is 1>>
+			<<set _fucking to "操着">>
+		<<else>>
+			<<set _fucking to "威胁着">>
+		<</if>>
+		<<switch $robinMachineSpeed>>
+			<<case 3>>
+				<<if random(-100,60) gte (_robin.dom - _robin.trauma) and $timer lte 0>>
+					"<span class="red">慢点儿!</span>"罗宾哭着喊道。“慢点儿,求你们了!我受不了了!"
+					<br><br>
+
+					$machineHandler拨动一个开关，然后_fucking你的机器降到了正常速度。罗宾松了一口气，不时抽泣一声。
+					<<machine_speed 2>>
+					<<set $timer to random(3,5)>>
+				<<else>>
+					<<print either(
+						"罗宾痛苦地尖叫。",
+						"你听到罗宾发出痛苦的哀号。",
+						"机器折磨得罗宾奄奄一息，<<nnpc_he \"Robin\">>挣扎着喘着气。"
+					)>>
+					<<npcincr Robin trauma 3>><<ggrtrauma true>>
+				<</if>>
+			<<case 2>>
+				<<if random(-100,30) gte (_robin.dom - _robin.trauma) and $timer lte 0>>
+					"你……”罗宾虚弱地对你喊道。“你介意他们放慢我的速度吗?你不答应也——"
+					<br><br>
+
+					$machineHandler在你回答之前就按下了一个开关，_fucking你的机器<span class="red">加速了。</span>罗宾大声抗议。“喂，<<pshe>>还没有回答呢！喂！"
+					<<machine_speed 3>>
+					<<set $timer to random(3,5)>>
+				<<else>>
+					<<print either(
+						"罗宾大声呼救。",
+						"你听见罗宾正试图挣脱束缚<<nnpc_his \"Robin\">>的锁链。",
+						"罗宾抽泣,<<nnpc_his \"Robin\">>的声音打断了机器的推力。"
+					)>>
+					<<npcincr Robin trauma 1>><<grtrauma true>>
+				<</if>>
+			<<case 1>>
+				<<print either(
+					"罗宾不舒服地呻吟着。",
+					"罗宾虚弱地挣扎着，但似乎并不害怕。",
+					"罗宾咆哮着想要挣脱。"
+				)>>
+		<</switch>>
+	<<else>>
+		<<if $timer gte 8>>
+			<span class="green">罗宾大声反抗。你能听到塑料撞击的声音。</span>
+		<<elseif $timer gte 6>>
+			<span class="lblue">你听到罗宾在挣扎，<<nnpc_he "Robin">>踢着机器。</span>
+		<<elseif $timer gte 4>>
+			<span class="blue">你听到罗宾在挣扎。机器被撞击的声音变弱了。</span>
+		<<elseif $timer gte 2>>
+			<span class="purple">你听到罗宾的呼喊，伴随着叮当作响的链条。</span>
+		<<elseif $timer is 1>>
+			<span class="pink">罗宾惊恐地大叫。</span>
+		<<else>>
+			<<set $robinFucked to true>>
+			<<NPCVirginityTakenByOther "Robin" "anal" "性爱机器">>
+			<<if _robin.vagina isnot "none">>
+				<<NPCVirginityTakenByOther "Robin" "vaginal" "性爱机器">>
+			<</if>>
+			<span class="red">你听到罗宾痛苦的尖叫，机器穿透了<<nnpc_his "Robin">>的
+				<<if _npcVirgin.vaginal and _npcVirgin.anal>>
+					从未被侵犯过的小穴和屁股。
+				<<elseif _npcVirgin.vaginal>>
+					处女穴，还有<<nnpc_his "Robin">>的屁股。
+				<<elseif _npcVirgin.anal>>
+					<<if _robin.vagina isnot "none">>
+						从未被侵犯过的屁股，以及<<nnpc_his "Robin">>的小穴。
+					<<else>>
+						从未被侵犯过的屁股。
+					<</if>>
+				<<else>>
+					<<if _robin.vagina isnot "none">>
+						小穴和屁股。
+					<<else>>
+						屁股。
+					<</if>>
+				<</if>>
+			</span>
+			人群兴奋地欢呼起来。
+			<<npcincr Robin trauma 5>><<ggrtrauma true>><<control -10>><<lcontrol>>
+		<</if>>
+	<</if>>
+<</if>>
+<br><br>
+
+<<audience>>
+
+<<set $phase to 0>>
+<<machine_state>>
+
+<<if $orgasmdown gte 1 or $pain gte 100 and $willpowerpain is undefined>>
+<<else>>
+	<br>
+	你的嘴是空闲着的。
+	<<if ($anusfucked is 1 or $vaginafucked is 1 or $penisfucked is 1) and $machine.speed gte 2>>
+		你可以叫他们让你的机器慢下来，但罗宾会吃苦头的。
+	<</if>>
+	<br>
+	<label><<radiobutton "$phase" 0 autocheck>> 什么也不说</label> |
+	<<if $anusfucked is 1 or $vaginafucked is 1 or $penisfucked is 1>>
+		<<if $machine.speed is 3>>
+			<label><<radiobutton "$phase" 1 autocheck>> <span class="brat">让他们慢下来</span></label> |
+		<<elseif $machine.speed is 2>>
+			<label><<radiobutton "$phase" 2 autocheck>> <span class="brat">让他们慢下来</span></label> |
+		<</if>>
+	<</if>>
+	<br><br>
+<</if>>
+
+<<machine_actions>>
+
+<<if $machine.number lte 0>>
+	<span id="next"><<link [[继续|Underground Robin Machine End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Underground Robin Machine]]>><</link>></span><<nexttext>>
+<</if>>
+<br>
+
+:: Underground Robin Machine End
+<<effects>>
+
+<<if ($anusfucked is 1 or $vaginafucked is 1 or $penisfucked is 1) and $robinFucked>>
+	当机器停下来时，人群鼓掌欢呼。
+<<else>>
+	机器停止运转时，人群发出嘘声。
+	<<if !$robinFucked>>
+		罗宾看起来如释重负。
+	<</if>>
+<</if>>
+$machineHandler放开了你和罗宾，并将你们带离舞台，拉回了你们的牢房。
+<<if $robinMachineSpeed is 3>>
+	罗宾不看你。
+<<elseif $robinMachineSpeed is 1>>
+	罗宾看了你一眼，然后迅速移开视线。
+<</if>>
+<br>
+
+<<machine_end>>
+
+<<switch $robinMachineSpeed>>
+	<<case 1>>
+		<<undergroundRobinTopic "machineLow" "undiscussed">>
+	<<case 2>>
+		<<undergroundRobinTopic "machineNormal" "undiscussed">>
+	<<case 3>>
+		<<undergroundRobinTopic "machineHigh" "priority">>
+	<<default>>
+		<<if $anusfucked is 1 or $vaginafucked is 1 or $penisfucked is 1>>
+			<<undergroundRobinTopic "machinePlayer" "undiscussed">>
+		<<else>>
+			<<undergroundRobinTopic "machineNone" "undiscussed">>
+		<</if>>
+<</switch>>
+<<unset $machineHandler>><<unset $robinFucked>><<unset $robinMachineSpeed>>
+
+<<undergroundReturnToCell>>
+
+:: Underground Robin Kiss Intro
+<<effects>>
+<<set _robin to statusCheck("Robin")>>
+<<generate1>><<npc Robin 2>><<generate3>><<generate4>>
+<<if $NPCList[0].penis is "none">>
+	<<npcstrapon 0>>
+<</if>>
+<<if $NPCList[2].penis is "none">>
+	<<npcstrapon 2>>
+<</if>>
+你被带到地牢的另一边，进入了一个光线充足的房间。一个<<person4>><<person>>已经在这里了，<<he>>手里还拿着相机。<<him>>旁边站着一个<<person1>><<person>>和<<person3>><<person>>，那个<<person>>牵着罗宾的皮带。
+<br><br>
+
+<<person4>><<person>>点头，另外两个把你和罗宾拉到一起。
+<<if $worn.face.type.includes("covered")>>
+	<<person>>脱掉你的$worn.face.cn_name_cap。
+	<<faceruined>><<set $worn.face.type.push("broken")>>
+<</if>>
+<<person1>><<person>>抓住你的头发，把你的脸撞到罗宾的脸上。罗宾痛苦的呻吟。<<pain 1>><<gpain>>
+<br><br>
+
+<<He>>和<<person3>><<person>>调整你们的头，就像你们是人体模型一样，直到你们的嘴互相压在一起。你挣扎的时候被人用力的按住了，<<person4>><<person>>把你们的项圈系在一起。你想挣扎，罗宾也是，但是你们被锁在了一起。你们俩之间几乎没有任何空间。
+<<takeKissVirginity "Robin" "loveRape">>
+<br><br>
+
+罗宾困惑地看着你，突然站在<<he>>身后的<<person3>><<person>>猛拉了罗宾的项圈。罗宾<<if _robin.trauma gte 70>>痛苦的大喊大叫<<else>>啜泣<</if>>，<<person1>><<person>>对你也做了同样的事，<<his>>把<<print $NPCList[0].penisdesc>>按在你的<<bottom>>上。<<person4>><<person>>动手调整<<his>>的相机。
+<br><br>
+
+<<link [[继续|Underground Robin Kiss Molestation]]>><<set $molestationstart to 1>><</link>>
+
+:: Underground Robin Kiss Molestation
+<<set _robin to statusCheck("Robin")>>
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<set $enemyno to 2>><<set $enemynomax to 2>><<maninit>><<npcexpose>>
+	<<set $enemyhealth to $NPCList[0].health>><<set $enemyhealthmax to $enemyhealth>>
+	<<npc_attempt_sex>>
+	<<set $fightTargets to [0]>><<set $robinDungeonKiss to true>><<set $robinFucked to false>>
+	<<set $kissTurns to 0>>
+	<<set $position to "doggy">>
+	<<set $NPCList[0].lefthand to "hair">>
+	<<set $NPCList[1].lefthand to "idle">><<set $NPCList[1].righthand to "idle">>
+	<<if $NPCList[1].penis isnot "none">><<set $NPCList[1].penis to "idle">><</if>>
+	<<if $NPCList[1].vagina isnot "none">><<set $NPCList[1].vagina to "idle">><</if>>
+	<<set $NPCList[1].location.head to "head">><<set $NPCList[1].mouth to "kiss">>
+	<<set $mouthstate to "kiss">><<set $mouthuse to "kiss">><<set $mouthtarget to 0>><<set $head to "bound">>
+	<<if _robin.dom gte 80 and _robin.trauma lte 20>>
+		<<set $timer to 6>>
+	<<elseif _robin.dom gte 60 and _robin.trauma lte 40>>
+		<<set $timer to 5>>
+	<<elseif _robin.dom gte 40 and _robin.trauma lte 60>>
+		<<set $timer to 4>>
+	<<else>>
+		<<set $timer to 3>>
+	<</if>>
+	<<set $turnCount to 0>>
+<</if>>
+
+<<effects>>
+<<effectsman>><<man>>
+<<set $turnCount++>>
+
+<<person4>><<person>>
+<<if $timer % 3 is 0 or random(1,4) is 4>>
+	把镜头凑近
+	<<print either(
+		"你和罗宾的脸。",
+		"你和罗宾的脸。",
+		"你的<<breasts>>。",
+		"你的<<bottom>>。",
+		"你的<<genitals>>。",
+		"罗宾的" +_robin.breastsdesc + "。",
+		"罗宾的下体。",
+		"罗宾的<<nnpc_genitals \"Robin\">>。",
+	)>>
+<<else>>
+	继续拍摄。
+<</if>>
+<<if $face isnot "covered">>
+	<<fameexhibitionism 1>><<famerape 1>>
+<</if>>
+<<if $timer is 0>>
+	<<set $timer to 3>>
+<</if>>
+<<set $speechdisable to 0>>
+<br><br>
+
+<<if $enemyno lte 1>>
+	<<set $enemyhealthmax to 1>>
+<</if>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Underground Robin Kiss Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Underground Robin Kiss Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Underground Robin Kiss Molestation Finish
+<<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+<<if $enemyhealth lte 0>>
+	<<person1>><<person>>绊倒，撞在了<<person3>><<person>>身上。被逗乐了的<<person4>><<person>>把镜头转过去，看着他们俩在地上挣扎。
+	<br><br>
+
+	<<person1>><<person>>挣扎着。“闭嘴!”<<he>>说。“他们要逃走了！”但你速度很快。当他们站起来的时候，你已经从罗宾的项圈上解开了你的项圈，你拉着罗宾跑过走廊，经过你的牢房，然后进入了空荡荡的大厅。你们跑向另一边的楼梯，以最快的速度爬上去，脚下的脚步声震耳欲聋。
+	<br><br>
+
+	<<undergroundEscapeForestRobin>>
+	<br><br>
+
+<<else>>
+	<<if $kissTurns gte $turnCount/2>>
+		<<undergroundRobinTopic "kissBack" "undiscussed">>
+	<</if>>
+	<<set $enemynomax to 1>>
+
+	<<if $robinFucked>>
+		<<person3>><<person>>呻吟着起身，把<<he>>推向罗宾。
+		<<if npcHasStrapon(2)>>
+			<<He>>抽出<<his>>的$NPCList[2].penisdesc用它拍打罗宾的屁股，<<nnpc_him "Robin">><<print _robin.trauma gte 70 ? "畏缩着" : "大声尖叫">>。
+		<<else>>
+			<<He>>拔出，让<<his>>的精液顺着罗宾的腿往下流。
+		<</if>>
+	<<else>>
+		<<person3>><<person>>在<<he>>穿透罗宾之前抽搐着。
+		<<if npcHasStrapon(2)>>
+			被激怒了，<<he>>拔出了<<his>>的$NPCList[2].penisdesc，然后猛地撞向罗宾的后脑勺，<<nnpc_him "Robin">><<print _robin.trauma gte 70 ? "畏缩着" : "大声尖叫">>。
+		<<else>>
+			<<he>>愤怒的打向罗宾的后脑勺。
+		<</if>>
+	<</if>>
+	<<npcincr Robin trauma 3>><<grtrauma true>>
+	<br><br>
+
+	<<ejaculation>>
+
+	"完美！”<<person4>><<person>>停止了拍摄。想到别人会看到你和罗宾的遭遇，你很害怕，但是你只能无能为力的任由<<person1>><<person>>把你带回牢房。你可以隐约听到罗宾在哭泣。
+	<br><br>
+
+	<<undergroundReturnToCell>>
+	<br>
+<</if>>
+<<unset $robinDungeonKiss>><<unset $robinFucked>><<unset $kissTurns>><<unset $turnCount>>
+
+:: Underground Robin Hunt Intro
+<<location "forest">><<effects>>
+
+你被领着走过空荡荡的舞台，然后走上台阶。空气变得越来越凉爽且新鲜，然后你终于回到了地面上。
+
+<<if Time.dayState is "dawn">>
+	太阳被树梢遮挡住了，不过你觉得现在是黎明。
+<<elseif Time.dayState is "dusk">>
+	太阳被树梢遮挡住了，不过你觉得现在是黄昏。
+<<elseif Time.dayState is "day">>
+	你用手遮住过于强烈的阳光，你现在才意识到地下牢房究竟是有多昏暗。
+<<elseif Time.dayState is "night">>
+	夜晚凉爽的空气吹在了你的皮肤上。
+<</if>>
+很明显，你现在正在森林里。
+<br><br>
+
+罗宾和几个赤身裸体的<<victimgirls>>站成一排，他们前面悬挂着一根绳子。一大群人站在他们周围斜眼看他们。<<victimgirls>>埋头盯着他们的脚尖。<<covered>>你被拖到队伍的末尾。
+<<if $worn.feet.type.includes("shackle")>>
+	你听到一声咔嗒声，你脚踝上的镣铐被解开了。
+	<<remove_shackle>>
+<</if>>
+<br><br>
+<<beastNEWinit 1 dog>><<generate2>>
+
+<<person2>>一个穿着马甲的<<person>>进入空地，<<him>>手里用皮带牵着三个<<beasttype 0>>。它们用力的扯着<<person2>><<him>>手上的绳子。“我们准备好了，”<<he>>挥舞着手枪说。“第一枪，猎物逃跑。第二枪，我们就开始狩猎!”人群欢呼起来。你听到其中一个<<victimgirls>>在哭泣。
+<br><br>
+
+<<silently>><<beasttype 0>><<set $robinBeast to _text_output>><</silently>>
+
+<<link [[跑|Underground Robin Hunt]]>><</link>><<athleticsdifficulty 1 1200>>
+
+:: Underground Robin Hunt
+<<location "forest">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+枪响了，你和罗宾开始逃跑。
+<br><br>
+
+你刚走到树下，第二声枪响了。
+
+<<if $athleticsSuccess>>
+	<<pass 5>>
+	你尽可能快地逃跑。你听到<<victimgirls>>一个个的被抓住，森林中尖叫声不断响起。
+	<<if _robin.dom gte 70>>
+		你继续冲刺，罗宾跟在你身后。你摔倒了，<<nnpc_he "Robin">>抓住你的胳膊继续跑。
+		<br><br>
+
+		最后你们俩气喘吁吁的靠在一棵树上。你只能听到自己的心跳，罗宾的喘气声和风吹过树叶的沙沙声。
+		<br><br>
+
+		罗宾含泪对你微笑。“我们逃走了。”<<nnpc_He "Robin">>紧紧地抱着你。“我们逃走了!"
+		<br><br>
+
+		<<endevent>><<dungeonescape>>
+
+		<<link [[继续|Underground Robin Escape Orphanage]]>><<set $phase to 1>><<unset $robinBeast>><</link>>
+	<<else>>
+		<<if $rng gte 51 and ($monster is 1 or $bestialitydisable is "f")>>
+			<span class="red">罗宾大声的哭泣，一个<<beasttype 0>>抓住了<<nnpc_him "Robin">>。</span>你迅速转身冲向<<beasttype 0>>，<<beasttype 0>>转身看向你。
+			<br><br>
+
+			"我们出现了一个英雄啊，”当<<person>>赶上来时，你听到<<he>>说。<<He>>不是一个人，很多人都跟在<<him>>后面。“你知道英雄通常会有怎样的下场吗?”人群在你周围围成一圈。
+			<br><br>
+
+			<<link [[继续|Underground Robin Hunt Dog]]>><<set $molestationstart to 1>><<set $phase to 1>><</link>>
+		<<else>>
+			<span class="red">罗宾被<<person>>抓住时大哭起来。</span>你迅速转身冲过去，那个<<person>>转身看向了你。
+			<br><br>
+
+			"真勇敢，”那个<<person>>笑着说，又是一些人追了上来。“我一直想毁掉一个英雄。"
+			<br><br>
+
+			<<saveNPC 1 "underground_hunt_1">>
+			<<endevent>>
+			<<loadNPC 0 "underground_hunt_1">>
+			<<clearNPC "underground_hunt_1">>
+
+			<<link [[继续|Underground Robin Hunt Molestation]]>><<set $molestationstart to 1>><<set $phase to 1>><</link>>
+		<</if>>
+	<</if>>
+<<else>>
+	<<if $rng gte 51 and ($monster is 1 or $bestialitydisable is "f")>><!-- Modified for BeastPeople -->
+		你尽可能快地逃跑。你听到<<victimgirls>>一个个的被抓住，森林中尖叫声不断响起。
+		你听到有什么在你背后的草地上跑过来，随后感觉有<<print ($monster is 1 ? "手" : "爪子")>>把你摁倒在地。
+		那只<<beasttype 0>>开始摆动<<if $NPCList[0].penis isnot "none">>，你感觉到<<bhis 0>>的肉棒在戳着你的<<bottom>><</if>>。
+		<br><br>
+
+		"看起来<<bhe 0>>很喜欢你，”你听到追上来的<<person>>说。<<He>>不是一个人，有很多人跟在<<him>>身后。
+		"只有这样<<bhe 0>>才能随心所欲地对待<<bhis 0>>的猎物。”人群围成一圈，包围着你。
+		<br><br>
+
+		<<link [[继续|Underground Robin Hunt Dog]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<else>>
+		你尽可能快地逃跑。你听到<<victimgirls>>一个个的被抓住，森林中尖叫声不断响起。
+		你听到有什么东西的你身后奔跑，下一秒，你被摁倒在地。
+		<br><br>
+
+		"抓到你了”<<person>>说，又是一些人追了上来。“现在该猎人享受猎物了。"
+		<br><br>
+
+		<<saveNPC 1 "underground_hunt_1">>
+		<<endevent>>
+		<<loadNPC 0 "underground_hunt_1">>
+		<<clearNPC "underground_hunt_1">>
+
+		<<link [[继续|Underground Robin Hunt Molestation]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Underground Robin Hunt Dog
+<<set _robin to statusCheck("Robin")>>
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $enemytrust -= 80>>
+	<<if _robin.dom gte 70>>
+		<<enable_rescue>>
+	<</if>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<br>
+<<beast>>
+<br>
+<<if _robin.dom lt 70 and $phase is 0>>
+	<<undergroundRobinInterlude>>
+<</if>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Underground Robin Hunt Dog Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Underground Robin Hunt Dog]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Underground Robin Hunt Dog Finish
+<<location "forest">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<undergroundRobinTopic "hunt" "undiscussed">>
+	<<beastejaculation>>
+
+	<<beasttype 0>>快乐地吠叫。“好狗，”<<person2>><<person>>说。当<<he>>抓住你的皮带，把你拉起来时，人群之间窃窃私语。
+	<<if !$worn.feet.type.includes("shackle")>>
+		你的脚裸再次被冰冷的枷锁所铐住了。
+		<<shackle_feet>>
+	<</if>>
+	"我希望其他人也和我们一样，能和猎物玩得开心。"
+	<br><br>
+
+	附近响起了一声尖叫，人群冲出去调查，留下那个<<person>>把你拖回地牢，回到你的牢房。罗宾很快就倒下了。
+	<<undergroundReturnToCell>>
+
+<<elseif $enemyhealth lte 0>>
+	<<beasttype 0>>呜咽着逃跑了。<<tearful>>你爬了起来。
+	<<if _robin.dom gte 70>>
+		罗宾推开了<<if $rng gte 51>>一个$robinBeast<<else>>攻击<<nnpc_him "Robin">>的<<person2>><<person>><</if>>并抓住了你的手，
+	<<else>>
+		你把<<if $rng gte 51>>一个$robinBeast<<else>><<person2>><<person>><</if>>从罗宾身边推开，然后抓住<<nnpc_his "Robin">>的手，
+	<</if>>
+	你们一起逃跑。<<person2>><<person>>试图阻止你们，但你们躲开了<<him>>并逃进了森林。
+	<br><br>
+
+	<<undergroundEscapeForestRobin>>
+
+<<else>>
+	罗宾推开了<<if $rng gte 51>>一个$robinBeast<<else>>攻击<<nnpc_him "Robin">>的<<person2>><<person>><</if>>，并在抓住你的手之前踢开了<<beasttype 0>>。
+	你们一起逃跑。<<person2>><<person>>试图阻止你们，但你们躲开了<<him>>并逃进了森林。
+	<br><br>
+
+	<<undergroundEscapeForestRobin>>
+<</if>>
+<<unset $robinBeast>>
+
+:: Underground Robin Hunt Molestation
+<<set _robin to statusCheck("Robin")>>
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<if _robin.dom gte 70>>
+		<<enable_rescue>>
+	<</if>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<if _robin.dom lt 70>>
+	<<undergroundRobinInterlude>>
+<</if>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Underground Robin Hunt Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Underground Robin Hunt Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Underground Robin Hunt Molestation Finish
+<<set $outside to 0>><<set $location to "underground">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<undergroundRobinTopic "hunt" "undiscussed">>
+	<<ejaculation>>
+	当那个<<person>>抓住你的皮带，把你拉起来时，你听到人群之间窃窃私语。
+	<<if !$worn.feet.type.includes("shackle")>>
+		你的脚裸再次被冰冷的枷锁所铐住了。
+		<<shackle_feet>>
+	<</if>>
+	"我希望其他人也和我们一样，能和猎物玩得开心。"
+	<br><br>
+
+	附近响起了一声尖叫，人群冲出去调查，留下那个<<person>>把你拖回地牢，回到你的牢房。罗宾很快就倒下了。
+	<<undergroundReturnToCell>>
+<<elseif $enemyhealth lte 0>>
+	<<person>>倒在一棵树上。<<tearful>>你爬了起来。
+	<<if _robin.dom gte 70>>
+		罗宾推开攻击<<nnpc_him "Robin">>的$robinBeast，抓住你的手，
+	<<else>>
+		你把$robinBeast从罗宾身上推下来，抓住<<nnpc_his "Robin">>的手，
+	<</if>>
+	你们一起逃跑。<<person1>><<person>>试图阻止你们，但你们躲开了<<him>>并逃进了森林。
+	<br><br>
+
+	<<undergroundEscapeForestRobin>>
+
+<<else>>
+	罗宾推开攻击<<nnpc_him "Robin">>的$robinBeast，并推开<<person>>，然后抓住你的手。
+	你们一起逃跑。<<person2>><<person>>试图阻止你们，但你们躲开了<<him>>并逃进了森林。
+	<br><br>
+
+	<<undergroundEscapeForestRobin>>
+<</if>>
+<<unset $robinBeast>>
+
+:: Underground Robin Escape Stalk
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<location "forest">>
+	<<violence 1>>
+	<<neutral 1>>
+
+	<<generate1>><<generate2>><<generate3>>
+
+	<<maninit>>
+	<<stalk_init>>
+	<<stalk_run>>
+	<<set $combatgoal to "confront">>
+	<<set $NPCList[0].bold to 10000>>
+	你紧紧握住罗宾的手穿过森林。<span class="pink">有人在追你们。</span>
+<</if>>
+
+<<effects>>
+
+<<effectsman>><<man>>
+<br><br>
+
+<<print either(
+	"罗宾紧紧握着你的手。",
+	"罗宾回头看。",
+	"罗宾的手在发抖。"
+)>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if $stalk_end>>
+	<span id="next"><<link [[继续|Underground Robin Escape Stalk End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Underground Robin Escape Stalk]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Underground Robin Escape Stalk End
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<run statusCheck("Robin")>>
+
+<<person1>>
+<<if $stalk_end is "confront">>
+	<<if $feetaction is "confront">>
+		<<if $speech_attitude is "meek">>
+			"我能做到，”你安慰自己。“罗宾，注意安全，好吗?”你转身面对追赶你的人。
+		<<elseif $speech_attitude is "bratty">>
+			"继续!我会赶上来的。”你对罗宾笑了笑，然后转向追赶你的人。
+		<<else>>
+			"罗宾，继续跑，不要停，就这样跑回家吧！”面对追赶的人你说。
+		<</if>>
+	<<else>>
+		<<if !$stalk_assess>>一双手从后面抓住了你。<<else>><<person1>><<person>>的手从后面抓住了你。<</if>>
+		<br><br>
+
+		你让罗宾继续跑。
+	<</if>>
+	罗宾犹豫地点了点头，然后消失在树林中。
+	<br><br>
+
+	罗宾安全了，你松了一口气。
+	<br><br>
+
+	<<saveNPC 0 dungeon_1>><<saveNPC 1 dungeon_2>><<saveNPC 2 dungeon_3>>
+	<<endcombat>>
+	<<loadNPC 0 dungeon_1>><<loadNPC 1 dungeon_2>><<loadNPC 2 dungeon_3>>
+	<<clearNPC dungeon_1>><<clearNPC dungeon_2>><<clearNPC dungeon_3>>
+	<<run delete $NPCList[0].state>><<run delete $NPCList[1].state>><<run delete $NPCList[2].state>>
+
+	当<<person2>><<person>>和<<person3>><<person>>走到<<him>>旁边时，<<person1>><<person>>偏了偏头。“<<nnpc_his "Robin">>跑了也无所谓，你就连着<<nnpc_him "Robin">>的那份一起受着吧！”他们向你逼近。
+	<br><br>
+
+	<<link [[继续|Underground Robin Escape Fight]]>><<set $fightstart to 1>><</link>>
+<<elseif $stalk_end is "hide">>
+	你从藏身之处出来。<<if $stalk_assess>><<person1>><<person>><<else>>跟踪你的人<</if>>无处可寻。<<tearful>>你转向罗宾。<<nnpc_He "Robin">>紧紧地拥抱你。
+	<br><br>
+
+	罗宾往外偷看。“他们走了吗?"
+	<br><br>
+
+	你点点头，抓住罗宾的手，继续穿过森林。
+	<br><br>
+
+	<<endcombat>><<clotheson>>
+
+	<<link [[继续|Underground Robin Escape Orphanage]]>><<set $phase to 1>><</link>>
+<<else>>
+	你们成功逃掉了，罗宾喘了口气。“我还想要…拥抱，"<<nnpc_he "Robin">>喘息着。<<tearful>>你把<<nnpc_him "Robin">>抱进了怀中，罗宾也紧紧的回应了你。
+	<br><br>
+
+	罗宾靠在你身上几分钟后，你握住<<nnpc_his "Robin">>的手，带着<<nnpc_him "Robin">>回了孤儿院。
+	<br><br>
+
+	<<endcombat>><<clotheson>>
+
+	<<link [[继续|Underground Robin Escape Orphanage]]>><<set $phase to 1>><</link>>
+<</if>>
+
+:: Underground Robin Escape Fight
+
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $enemyanger += 200>>
+	<<set $enemytrust -= 100>>
+	<<set $position to ["missionary","doggy"].pluck()>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Underground Robin Escape Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Underground Robin Escape Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Underground Robin Escape Fight Finish
+<<effects>>
+
+<<if $enemyhealth lte 0>>
+	<<person>>踉跄着后退，然后被树根绊倒了，摔在了攻击你的另外几个人身上。他们倒下的时候，你快速的跑掉了。
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation "short">>
+	他们停下来喘气，你趁机跑开了。
+<<else>>
+	<<set _defeat to true>>
+	你瘫倒在地，伤得动弹不得。
+	<br><br>
+
+	<<fullGroup>>在森林中拉着你，岩石和树根摩擦着你的脸。最终你发现自己又回到了地下。
+	<br><br>
+
+	他们来到罗宾的旧牢房，把你扔了进去。
+	<<if $undergroundbrothel.water gte 1>>
+		"你会屈服的，”<<he>>说。“继续反抗可没有好果子吃，为什么要为难自己呢?”<<He>>用力把门关上。
+	<<else>>
+		"那就这样了?”<<he>>失望地说。“很好，我们要看看没有水你还能有多固执。”<<He>>用力把门关上。
+		<<set $undergroundbrothel.water to 1>>
+	<</if>>
+	<br><br>
+
+	<<run delete $undergroundbrothel.robin>>
+	<<run delete $undergroundbrothel.robinSpoke>>
+	<<run delete $undergroundbrothel.robinTalk>>
+	<<run delete $undergroundbrothel.robinTopics>>
+	<<set $undergroundbrothel.robinGone to true>>
+
+	<<undergroundReturnToCell "Robin">>
+<</if>>
+<br><br>
+
+<<if !_defeat>>
+	<<tearful>>你哭着回到孤儿院。
+	<<endcombat>><<clotheson>>
+
+	<<link [[继续|Underground Robin Escape Orphanage]]>><<set $phase to 0>><</link>>
+<</if>>
+
+:: Underground Robin Escape Swim
+<<location "sea">><<water>><<effects>>
+
+<<if $swimmingSuccess>>
+	真的很难，你一边游泳一边帮助罗宾，但你最终努力的和<<him>>一起游到了岸边。
+<<else>>
+	你尽力了，但你和罗宾都不擅长游泳。你试图向岸边游去，却在途中昏了过去。
+	<<pass 120>>
+	不知过了多久，你醒了过来，你发现你正倒在沙滩上。罗宾在几英尺外呻吟着。<<stress 6>><<gstress>><<npcincr Robin trauma 5>><<grtrauma true>>
+<</if>>
+<br><br>
+
+<<link [[继续|Underground Robin Escape Shore]]>><</link>>
+<br>
+
+:: Underground Robin Escape Shore
+<<location "beach">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+你在海滩上。
+<br><br>
+<<if $exposed gte 1>>
+	<<towelup>>
+	罗宾跑进附近的更衣室，然后拿着毛巾回来了。<<He>>在拥抱你之前轻轻地把它裹在了你身上。
+<<else>>
+	罗宾走近拥抱了你。
+<</if>>
+<<if _robin.dom gte 40>>
+	"我们从那里出来了!”<<He>>把你的头靠在<<his>>的肩膀上，用手梳理你的头发。
+<<else>>
+	"我们成功了!我们自由了!”<<He>>把头埋在你的肩膀里。
+<</if>>
+<<He>>放开了你，把你的手握在<<his>>手中。“我们回家吧，”<<he>>边说边把你拉向孤儿院。
+<br><br>
+
+<<link [[跟随罗宾(1:00)|Underground Robin Escape Orphanage]]>><<set $phase to 1>><<pass 60>><<endevent>><<npcincr Robin dom 1>><</link>><<gdom>>
+<br>
+<<link [[留在原地|Underground Robin Escape Stay]]>><<npcincr Robin dom -1>><</link>><<ldom>>
+<br>
+
+:: Underground Robin Escape Orphanage
+<<set $outside to 0>><<set $location to "home">>
+<<npc Robin>>
+<<if $phase is 1>>
+	罗宾带着你回到孤儿院，一起进入了大厅。刚回去，<<he>>就把你带进了<<his>>的房间，然后把你抱到床上。
+	"我们自由了!”<<He>>笑得很开心。
+	<<if $home_gone gte 24>>
+		"我从没想过我会如此想念我的房间，”罗宾仍然紧紧的抱着你。
+	<<elseif $home_gone gte 72>>
+		喜悦的泪水顺着<<his>>的脸流到了你身上。罗宾抱得更紧了。
+	<<else>>
+		罗宾微笑，“回来真好。"
+	<</if>>
+<<else>>
+	你走进孤儿院，敲了敲罗宾的房门。门马上就打开了。罗宾把你拉进去，紧紧的拥抱了你。
+	"你回来了!"
+<</if>>
+<<npcincr Robin trauma -10>><<npcincr Robin love 5>><<llrtrauma>><<glove>>
+<<home_effects>>
+<br><br>
+
+你们俩聊了一会儿。罗宾说，每次<<hes>>想拥抱你的时候，<<he>>都会抱你一次。<<He>>也一直都是这么做的。
+<<stress -4>><<trauma -4>><<lstress>><<ltrauma>>
+<br><br>
+
+<<robinoptions>>
+
+:: Underground Robin Escape Stay
+<<location "beach">><<effects>>
+<<run statusCheck("Robin")>>
+
+罗宾松开你的手。“好吧，如果你确定你会没事的话。"
+<<He>>不情愿地向你挥手告别，并开始向孤儿院走去。
+<br><br>
+
+<<link [[继续|Beach]]>><</link>>

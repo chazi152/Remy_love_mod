@@ -1,0 +1,435 @@
+:: Flats
+<<set $outside to 0>><<location "flats">><<effects>>
+
+你在倒钩街某幢公寓的一楼，这里的墙壁和地板虽然很普通，但却很干净而且维护得很好。走廊的两侧有很多的门，在尽头处有一个楼梯。
+<br><br>
+
+<<if Time.dayState is "night">>
+    公寓里一片寂静，这里的住户们一定是睡着了。
+    <br><br>
+<<elseif $exposed gte 1>>
+    你躲在楼梯间下面，你很清楚，你之所以躲在这里是因为你正处于<<nudity>>的状态。
+    <br><br>
+<<else>>
+
+<</if>>
+
+<<if $stress gte $stressmax and !$possessed>>
+    <span class="red">你把自己逼得太紧了。</span> 你昏了过去。
+    <br><br>
+	<<passout_flats>>
+<<elseif $exposed lt 1 and $housekeeping gte 200 and $flats_superintendent is undefined>>
+
+    <<generate1>><<generate2>><<person2>>
+    一扇门被打开了，一个<<person>>从里面走了出来，"我他妈的不干了！<<he>>一边愤愤地说着，一边朝着跟在其后面的那个<<person1>><<person>>竖起了中指，那个<<person2>><<He>>径直地从你身边走了过去.
+    <br><br>
+
+    "这只是一个建议，"<<person1>><<person>>说道，<<his>>在你旁边停下来休息，"嗯，你是？"<<his>>扭头看向你，然后说道："我见过你，你是为公寓里的人做零工那个？我是这栋公寓的管理员。"<<He>>向你伸出手。
+    <br><br>
+
+    <<link [[握手|Flats Superintendent Intro]]>><<set $phase to 1>><<set $flats_superintendent to 1>><<saveNPC 0 "flats_superintendent">><</link>>
+    <br>
+    <<link [[不握手|Flats Superintendent Intro]]>><<set $phase to 0>><<set $flats_superintendent to 1>><<saveNPC 0 "flats_superintendent">><</link>>
+    <br>
+
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if ($danger gte (9900 - $allure) or $eventforced) and $eventskip is 0>>
+        <<cleareventpool>>
+
+        <<if $exposed gte 1>>
+            <<addinlineevent "flats_exposed_1" 1>>
+                你听到前方的声音，<<covered>>你转过身，听到那个方向也有声音传来。<span class="pink">你迷路了。</span>
+                <br><br>
+
+                一边有一个没有上锁的窗户，另一边则有两扇门，你不确定它们是否有上锁。
+                <br><br>
+                <<link [[试着打开门|Flats Exposed Door]]>><</link>><<difficulty 50>>
+                <br>
+                <<link [[从窗户爬出去|Flats Exposed Window]]>><</link>>
+                <br>
+
+            <</addinlineevent>>
+
+            <<addinlineevent "flats_exposed_2" 1>>
+                你来到一扇打开的门前，你听到里面有音乐，狂欢和咚咚声，你打开一道缝偷看，它看起来像一个聚会。所以很难在没有人注意的情况下通过，不过也许你动作够快的话，人们可能会认为自己只是眼花了.
+                <br><br>
+
+                <<link [[冲过去|Flats Exposed Dash]]>><</link>><<difficulty 50>>
+                <br>
+                <<link [[想办法绕过去 (0:05)|Flats]]>><<stress 6>><<pass 5>><<set $eventskip to 1>><</link>><<gstress>>
+                <br>
+            <</addinlineevent>>
+
+            <<addinlineevent "flats_exposed_3" 1>>
+                一个人从前面的楼梯上走了下来，在即将要看见你的时候，你蹲在一株大盆栽后面隐藏自己。
+                <br><br>
+
+                <<generate1>><<person1>>
+                <<person>>向这边走来，你蹲在一棵看起来很奇怪的植物后面。
+                <br><br>
+
+                <<link [[保持蹲下的姿势|Flats Exposed Crouch]]>><</link>>
+                <br>
+                <<link [[拾起植物挡在前面并行走|Flats Exposed Pick]]>><</link>><<difficulty 40>>
+                <br>
+            <</addinlineevent>>
+        <<else>>
+            <<addinlineevent "flats_1" 1>>
+                <<generatey1>><<generatey2>><<generatey3>><<person1>>
+                一个<<person>>还有<<person2>><<person>>和<<person3>><<person>>从一个角落的转角走了出来。你认识那几个家伙，那些家伙是学校里的那些坏学生。
+                <br><br>
+                <<if random(1, 2) is 2>>
+                    <<if $whitneyromance is 1>>
+                        <<person1>><<person>>站在你前面。"惠特尼的<<girl>>在这里做什么?"<<he>>问道。
+                        <<if random(1, 2) is 2>>
+                            <<He>>停顿了一下，<span class="pink">然后把你推到墙上</span>。"无所谓，你现在可是在我们的地盘上。给我跪下。"<<gtrauma>><<gstress>><<gpain>><<trauma 6>><<stress 6>><<pain 4>>
+                            <br><br>
+
+                            <<link [[下跪|Flats Events Knees]]>><<sub 1>><</link>>
+                            <br>
+                            <<link [[尖叫|Flats Events Scream]]>><<pain 4>><</link>><<gpain>>
+                            <br>
+                            <<link [[反抗|Flats Events Fight]]>><<def 1>><<set $fightstart to 1>><</link>>
+                            <br>
+                        <<else>>
+                            <<He>>犹豫了一会儿<span class="teal">然后退到了一边。</span>
+                            <br><br>
+
+                            他们看着你离开。
+                            <br><br>
+
+                            <<link [[继续|Flats]]>><<set $eventskip to 1>><<endevent>><</link>>
+                            <br>
+                        <</if>>
+                    <<else>>
+                        <<person1>><<person>>站在你前面。"像你这样的人在这儿干什么?"<<he>>把你推到墙上。<<His>>的朋友靠近了。"跪下。"<<gtrauma>><<gstress>><<gpain>><<trauma 6>><<stress 6>><<pain 4>>
+                        <br><br>
+
+                        <<link [[下跪|Flats Events Knees]]>><<sub 1>><</link>>
+                        <br>
+                        <<link [[尖叫|Flats Events Scream]]>><<pain 4>><</link>><<gpain>>
+                        <br>
+                        <<link [[反抗|Flats Events Fight]]>><<def 1>><<set $fightstart to 1>><</link>>
+                        <br>
+                    <</if>>
+                <<else>>
+                    <<person1>><<person>>做了个鬼脸，但是没有再做什么别的过分的事情。
+                    <br><br>
+
+                    <<link [[继续|Flats]]>><<set $eventskip to 1>><<endevent>><</link>>
+                    <br>
+                <</if>>
+            <</addinlineevent>>
+
+            <<addinlineevent "flats_2" 1>>
+                <<beastNEWinit 1 dog>>
+                <<generate2>><<person2>>
+                一只<<beasttype 0>>走过，后面跟着一个牵着绳子的<<person2>><<person>>。<<bHe 0>>停下来嗅了嗅你，但是<<person>>把<<bhim 0>>强行牵走了。
+                <br><br>
+
+                <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+                <br>
+            <</addinlineevent>>
+
+            <<addinlineevent "flats_3" 1>>
+                <<generate1>><<person1>>
+                一个<<person>>在楼梯间向你搭讪，<<He>>一只手搂着你的腰，另一只手抓住你的手腕，把你拉向<<him>>。"多可爱的<<girl>>啊，"<<he>>一边说一边把你拉近。<<He>>倾身亲吻你。<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+                <br><br>
+
+                <<link [[扇耳光|Flats Events Slap]]>><<def 1>><</link>><<physiquedifficulty 1 16000>>
+                <br>
+                <<link [[踩脚|Flats Events Stomp]]>><<def 1>><</link>><<physiquedifficulty 5000 13000>>
+                <br>
+                <<link [[忍受|Flats Events Endure]]>><<trauma 6>><<stress 6>><<sub 1>><</link>><<difficulty 50>><<kissvirginitywarning>><<gtrauma>><<gstress>>
+                <br>
+            <</addinlineevent>>
+
+            <<addinlineevent "flats_4" 1>>
+                <<generate1>><<person1>>
+                你经过了一个门卫，<<person>><<He>>正戴着耳机，似乎没有注意到你。
+                <br><br>
+                <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+                <br>
+            <</addinlineevent>>
+
+            <<if $hookah_state is undefined>>
+                <<addinlineevent "flats_5" 0.6>>
+                    其中一间公寓的前门半开着，一盏紫色的灯在里面闪烁。你闻到一股奇怪的香味。<<garousal>><<arousal 600>><<set $hallucinogen += 10>>
+                    <br><br>
+                    <<link [[调查|Flats Hookah]]>><<set $hallucinogen += 10>><</link>>
+                    <br>
+                    <<link [[忽视|Flats]]>><</link>>
+                    <br>
+                <</addinlineevent>>
+            <</if>>
+
+            <<addinlineevent "flats_6" 1>>
+                <<generate1>><<person1>>
+                一个<<person>>在经过你时，回头很热情的对你抛了个媚眼。
+                <br><br>
+
+                <<if $promiscuity gte 35>>
+                    <i>少收费会让<<him>>更容易被说服。</i>
+                    <br><br>
+                    <<link [[要价50英镑|Flats Events Solicit]]>><<set $phase to 1>><</link>><<promiscuous3>>
+                    <br>
+                    <<link [[要价100英镑|Flats Events Solicit]]>><<set $phase to 2>><</link>><<promiscuous3>>
+                    <br>
+                    <<link [[要价150英镑|Flats Events Solicit]]>><<set $phase to 3>><</link>><<promiscuous3>>
+                    <br>
+                <<else>>
+                    <span class="blue">你还不够淫乱，不能付出更多。</span>
+                    <br><br>
+                <</if>>
+                <<link [[忽视|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+                <br>
+            <</addinlineevent>>
+
+            <<addinlineevent "flats_7" 1>>
+                <<generatey1>><<generatey2>><<person1>>
+                一个<<person>>和<<person2>><<person>>在楼梯井下聊天。你走过的时候，他们压低了声音。
+                <br><br>
+
+                <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+                <br>
+            <</addinlineevent>>
+
+            <<addinlineevent "flats_8" 1>>
+                你听到了一间公寓里的喊叫声，但听起来没有人有危险。
+                <br><br>
+
+                <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+                <br>
+            <</addinlineevent>>
+
+            <<addinlineevent "flats_9" 1>>
+                <<dancedifficulty 1 200 true>>
+                <<if $danceSuccess>>
+                    你在潮湿的地板上打滑，<span class="green">但仍能站稳。</span>
+                    <br><br>
+
+                    <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+                    <br>
+                <<else>>
+                    你在潮湿的地板上打滑，<span class="red">失去了立足点。</span>你狼狈的摔倒在地。<<gpain>><<pain 4>><<gstress>><<stress 6>>
+                    <br><br>
+
+                    <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+                    <br>
+                <</if>>
+            <</addinlineevent>>
+
+            <<addinlineevent "flats_10" 1>>
+                一个<<generate1>><<person1>><<person>>好像在跟着你。
+                <br><br>
+
+                <<link [[忽视|Flats Events Ignore]]>><</link>><<difficulty 90>>
+                <br>
+                <<link [[跑|Flats Events Run]]>><<stress 6>><</link>><<gstress>>
+                <br>
+            <</addinlineevent>>
+        <</if>>
+
+        <<runeventpool>>
+	<<else>>
+        <<if Time.dayState is "night">>
+            <<flatdooricon>><<link [[走近其中一个公寓(0:01)|Flats Lock]]>><<pass 1>><</link>>
+            <br>
+        <<elseif $exposed lt 1>>
+            <<if $flats_progress is undefined>>
+                <<flatdooricon>><<link [[敲其中一间公寓的门(0:01)|Flats Knock Intro]]>><<pass 1>><</link>>
+                <br>
+            <<else>>
+                <<flatdooricon>><<link [[敲门(0:01)|Flats Knock]]>><<pass 1>><</link>>
+                <br>
+            <</if>>
+        <</if>>
+        <<if $flats_window_init gte 2 and $exposed lt 1>>
+            <<if Time.dayState is "night">>
+                <span class="blue">作为一个窗户清洁工，你需要更多的日光。</span>
+                <br>
+            <<else>>
+                <<link [[做一名窗户清洁工(1:00)|Flats Window]]>><<housekeeping 1 300>><</link>><<ghousekeeping 300>>
+                <br>
+            <</if>>
+        <</if>>
+        <<if $hookah_state gte 2>>
+            <<flatdooropenicon>><<link [[水烟馆 (0:01)|Flats Hookah]]>><<pass 1>><</link>>
+            <br>
+        <<elseif $exposed lt 1>>
+            <<flatdooropenicon>><<link [[水烟馆 (0:20)|Flats Hookah]]>><<pass 20>><</link>>
+            <br>
+        <</if>>
+        <<if $flats_superintendent is 1 or $flats_superintendent is 2>>
+            <<if Time.dayState is "day">>
+                <<if $exposed lt 1>>
+                    <<ind>><<link [[主管办公室(0:01)|Flats Superintendent]]>><<pass 1>><</link>>
+                    <br>
+                <</if>>
+            <<else>>
+                <<ind>><span class="blue">主管办公室今晚关门</span>
+                <br>
+            <</if>>
+        <</if>>
+        <br><br>
+        <<ind>><<link [[离开|Barb Street]]>><</link>>
+        <br>
+    <</if>>
+<</if>>
+<<set $eventskip to 0>>
+
+:: Flats Superintendent
+<<effects>>
+
+<<loadNPC 0 "flats_superintendent">><<person1>>
+你走进主管办公室，
+<<if $flats_superintendent is 2>>
+    <<set $flats_superintendent to 3>>
+    发现房间是空的。一只杯子倒在一边，茶洒了一桌子。一件外套躺在地板上。一股淡淡的香在空气中徘徊。
+    <br><br>
+<<else>>
+    发现<<him>>坐在<<his>>的桌旁。听到了门口的动静<<He>>抬起了头。
+    <br><br>
+    "找到水烟店了吗?"
+    <br><br>
+    <<if $hookah_state gte 1>>
+        <<if $hookah_state gte 2>>
+            <<link [[说你已经找到了，也知道去那里的路(0:01)|Flats Superintendent Found Quick]]>><<set $flats_superintendent to 2>><<pass 1>><</link>>
+            <br>
+        <<else>>
+            <<link [[说你已经找到了，也知道去那里的路(0:20)|Flats Superintendent Found]]>><<set $flats_superintendent to 2>><<pass 20>><</link>>
+            <br>
+        <</if>>
+    <</if>>
+<</if>>
+
+<<link [[离开|Flats]]>><<endevent>><</link>>
+<br>
+
+:: Flats Superintendent Intro
+<<effects>>
+
+<<if $phase is 1>>
+    你和<<person>>握手。
+<<else>>
+    你把手放在身体两侧。<<person>>的表现看起来漫不经心。
+<</if>>
+<br><br>
+
+"听着，"<<he>>说。"也许你能帮我个忙。居民里有一户让其他人都怨声连连。那户人家开了一家水烟店，把整栋楼都熏得冒烟。"
+<br><br>
+"因为那些烟雾，"<<he>>抓了抓<<his>>的头发。"小区总是收到投诉。开水烟店的人可能不止一个，但我就是找不到他们。如果你遇到了他们，告诉我，我会给你报酬的。"
+<br><br>
+
+<<if $hookah_state gte 1>>
+    <<if $hookah_state gte 2>>
+        <<link [[说你已经找到了，也知道去那里的路(0:01)|Flats Superintendent Found Quick]]>><<set $flats_superintendent to 2>><<pass 1>><</link>>
+        <br>
+    <<else>>
+        <<link [[说你已经找到了，也知道去那里的路(0:20)|Flats Superintendent Found]]>><<set $flats_superintendent to 2>><<pass 20>><</link>>
+        <br>
+    <</if>>
+    <<link [[什么都不说|Flats Superintendent Nod]]>><</link>>
+    <br>
+<<else>>
+    <<link [[继续|Flats]]>><<endevent>><</link>>
+    <br>
+<</if>>
+
+:: Flats Superintendent Found Quick
+<<effects>>
+
+"太棒了，"<<person1>><<person>>说。"带路吧!"
+<br><br>
+
+你把<<him>>直接领到了水烟馆。"啊，"<<he>>叹了口气。"我闻到了!难怪人们那么激动！"<<He>>环顾四周。"真奇怪，明明我不是第一次走这条路，为什么以前没注意到？"
+<br><br>
+
+<<He>>耸了耸肩。"算了，这是给你的一点小礼物。"<<He>>递给你一叠现金。你获得了<<moneyGain 150>>.
+<br><br>
+
+"我要去拜访一下店主，"<<he>>离开了。"等我把文件整理好后。"
+<br><br>
+
+<<link [[继续|Flats]]>><<endevent>><</link>>
+<br>
+
+:: Flats Superintendent Found
+<<effects>>
+
+"太棒了，"<<person1>><<person>>说。"带路吧!"
+<br><br>
+
+你花了一段时间才找到它，但<<he>>耐心地跟着你，直到你找到它。"啊，"<<he>>说。"我闻到了!难怪人们那么激动！"<<He>>环顾四周。"真奇怪，明明我不是第一次走这条路，为什么以前没注意到？"
+<br><br>
+
+<<He>>耸了耸肩。"算了，这是给你的一点小礼物。"<<He>>递给你一叠现金。你获得了<<moneyGain 150>>.
+<br><br>
+
+"我要去拜访一下店主，"<<he>>离开了。"等我把文件整理好后。"
+<br><br>
+
+<<link [[继续|Flats]]>><<endevent>><</link>>
+<br>
+
+
+:: Flats Superintendent Nod
+<<effects>>
+
+"你可以在入口处找到我的办公室，"<<person1>><<person>>说。"恭喜恭喜。"
+<br><br>
+
+<<link [[继续|Flats]]>><<endevent>><</link>>
+<br>
+
+:: Flats Knock Intro
+<<effects>>
+
+<<generate1>><<person1>>
+你敲了敲一扇门。脚步声在另一边响起，然后门打开了，露出一个穿着背心和牛仔裤的<<person>>。
+<br><br>
+
+<<His>>的目光掠过你的身体。"有什么需要的吗?"
+<br><br>
+
+<<link [[想要一份工作(1:00)|Flats Knock Intro 2]]>><<pass 60>><</link>>
+<br>
+<<link [[说你敲错门了，然后离开|Flats]]>><<endevent>><</link>>
+<br>
+
+
+:: Flats Knock Intro 2
+<<effects>>
+
+"我的浴室需要打扫，"<<he>>说着把你领到了浴室前。"右边第一扇门，清洁工具我都放在架子上。"
+<br><br>
+
+<<if $housekeeping gte 100>>
+    <<set $flats_progress to 1>>
+    你走进浴室。浴室已经很干净了，只有些细微的污渍。架子上有几个瓶子，还有一块抹布。抹布也几乎是干净的。你看了一圈瓶子，却发现它们完全没有标记。你试着打开最近的那个。盖子卡住了，但你用抹布罩在上面想办法拧开了。
+    <br><br>
+    你把清洁剂倒在浴缸表面，在等待化学物质起作用的时候，你离开了一会儿去清理架子和窗台上的灰尘。你打开水龙头，用淋浴装置冲洗浴缸上的污渍。浴缸满满变得干净，留下了珍珠般的白色。
+    <br><br>
+    当你结束的时候，<<person>>走了进来。<span class="green">"还不错。"</span><<He>>说道："这里有些现金。其他居民肯定也会满意你的巧手。"你赚了<<moneyGain 10>>。
+    <br><br>
+    "等等，"<<he>>在你离开公寓时喊道。"你要注意一栋门把手形状像一朵莲花的公寓。<span class="purple">离它远点。</span>像你这样的好<<girl>>不应该和那种人来往。"
+    <br><br>
+    <i>你现在可以在倒钩街的公寓里做清洁工了</i>
+    <br><br>
+<<else>>
+    你走进浴室。浴室已经很干净了，就是有污渍。架子上有几个瓶子，还有一块抹布。抹布也几乎是干净的。你看了一圈瓶子，却发现它们完全没有标记。你试着打开一个，但是盖子卡住了。在尝试下一个的时候你幸运的打开了，但你不知道这是否是你需要的那种。
+    <br><br>
+    你把它倒进浴缸里，几分钟后又打开了水龙头。水冲完了，但是污渍还在。你轮流尝试每一瓶清洁剂，但是浴缸还是脏的。你试着用抹布擦浴盆，但没有效果。只剩下最后一瓶了。
+    <br><br>
+    你用尽全力拧开盖子。它松了，<span class="red">但是太用力了。</span>瓶子从你手中猛地一甩，把里面的东西洒进了浴缸里。当你把它捞起来的时候，它已经空了一半。
+    <br><br>
+    <<person>>走进了浴室。"该死，"<<he>>吼道。"这么简单的工作都做不好——"<<he>>深吸了口气。"蠢货，我不可能给你付工资的，给我滚！"
+    <br><br>
+    <span class="blue">作为一名公寓清洁工，你至少需要具备<span class="pink">F+</span>家政技能。</span>
+    <br><br>
+<</if>>
+
+<<link [[继续|Flats]]>><<endevent>><</link>>
+<br>
+

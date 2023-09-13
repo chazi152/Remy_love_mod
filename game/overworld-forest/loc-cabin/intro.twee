@@ -1,0 +1,439 @@
+:: Forest Hunter Nod
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+<<He>>微笑道："很好。直到你被驯服为止，我都不会解开你的皮带。"<<He>>将皮带的一端系在木梁上。"不过，这个长度应该够让你在整个小屋里逛逛。"
+
+<br><br>
+
+<<link [[继续|Forest Cabin]]>><<set $forestleashed to 1>><<set $eventskip to 1>><<endevent>><</link>>
+<br>
+
+:: Forest Hunter Refuse
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+"你不是这个意思，"<<he>>说道。"这比我对你更有益。"<<He>>抓住你，让你趴在<<his>>腿上。"但我不能让你这么无礼地逃脱惩罚。"
+<br><br>
+
+<<link [[继续|Forest Hunter Punishment]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Forest Hunter Punishment
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>><<npcspank>><<set $enemyhealth to 600>><<set $enemyhealthmax to 600>><<set $enemyanger += 200>>
+	<<if $phase is 1>>
+		<<npcoral>>
+	<</if>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or $enemyanger lte 0>>
+	<span id="next"><<link [[继续|Forest Hunter Punishment Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Forest Hunter Punishment]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Forest Hunter Punishment Finish
+<<set $outside to 1>><<set $location to "cabin">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>因为劳累而喘息着。"我希望你已经学到了教训。"
+	<br><br>
+
+	<<tearful>>你避开<<his>>的目光。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Forest Cabin]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+
+	"你这个忘恩负义的贱人，"<<he>>说道："我就该把你赶出去，把你丢到狼群里！"<<He>>抽了抽鼻子，抱着自己的身体。"我得做点什么才行。"
+	<br><br>
+
+	<<tearful>>你振作起来。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Forest Cabin]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<elseif $enemyanger lte 0>>
+	<<He>>看起来感到满意，松开了你。 "我希望你已经学到了教训。"
+	<br><br>
+
+	<<tearful>>你避开<<his>>的目光。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Forest Cabin]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Forest Cabin
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+<<npc Eden>><<person1>>
+<<if $exposed gte 1>>
+	<<towelup>>
+<</if>>
+
+<<if $forestleashed is 1>>
+	<<if $NPCName[$NPCNameList.indexOf("Eden")].trust gte 200>>
+		<span class="green">伊甸从木梁上解下了绳索。</span>"你表现得很好，<<girl>>，所以我会给你更多的自由。但你可别敢对我逃走。只待在小屋和外面的空地上。"
+		<<set $forestleashed to 0>>
+	<<else>>
+		你被牢牢地绑在一根木梁上，无法逃脱。
+	<</if>>
+	<br><br>
+<<else>>
+	<<if $NPCName[$NPCNameList.indexOf("Eden")].trust lt 100>>
+		<span class="red">伊甸把你的绳索绑在了一根木梁上。</span>"你表现得很糟糕，<<girl>>，所以我要确保你不会离开这里。"
+		<br><br>
+		<<set $forestleashed to 1>>
+	<</if>>
+<</if>>
+
+<<if $forestleashed isnot 1>>
+	<<if $syndromeeden is undefined>>
+		<<set $syndromeeden to 1>><<set $NPCName[$NPCNameList.indexOf("Eden")].lust to 0>><<set $edenshrooms to 0>><<set $edengarden to 0>><<set $edenspring to 0>><<set $wardrobes.edensCabin.unlocked to true>>
+		<span class="red"><i>伊甸并不是那么糟糕，<<hes>>只是孤独而已。在这片森林里独自生活肯定很难。</i>
+		<br>
+		你获得了"斯德哥尔摩综合症：伊甸"特质.</span>
+		<br><br>
+
+		<<if $loveInterest.primary is "None">>
+			<<set $loveInterest.primary to "Eden">>
+			<span class = "gold">伊甸现在是你的爱人！危险感已经过去了，你在这里感觉更安全了</span>
+		<<else>>
+			<span class = "gold">伊甸现在可以成为你的爱情伴侣了！危险已经过去，在这里你将会感到无与伦比的安全。<br>你可以在"态度"菜单中改变你的爱情对象。</span>
+		<</if>>
+		<br><br>
+	<</if>>
+
+	<<link [[继续|Eden Cabin]]>><<endevent>><</link>>
+	<br>
+
+<<else>>
+	<<if Time.hour lte 6>>
+		伊甸把你抱到床上。
+		<<if $forestleashed is 1>>
+			<<He>>将你的皮带缠绕在床头板的横杆上，将你固定到位。
+		<</if>>
+		<<He>>斜眼看着你，<<his>>眼里流露出贪婪的神情。"你太火辣了。我会好好享用的。"
+		<br><br>
+
+		<<link [[继续|Cabin Night Rape]]>><<set $molestationstart to 1>><</link>>
+		<br>
+
+	<<elseif Time.hour lte 8>>
+		伊甸向你介绍该如何准备<<his>>的早餐。
+		<br><br>
+
+		<<link [[按照指示准备食物(2:00)|Forest Cabin Food]]>><<npcincr Eden trust 10>><<sub 1>><<pass 2 hours>><</link>><<gtrust>><<gstockholm>>
+		<br>
+		<<link [[在鸡蛋里吐口水 (2:00)|Forest Cabin Spit]]>><<npcincr Eden trust -10>><<def 1>><<pass 2 hours>><</link>><<ltrust>><<lstockholm>>
+		<br>
+
+	<<elseif Time.hour lte 16>>
+		伊甸带领你走出去，做<<his>>的日常事务。
+		<<if $forestleashed is 1>>
+			<<He>>把你一直带在身边，当<<He>>需要用双手时，再把你的皮带系在树上。
+		<<else>>
+			<<He>>让你时刻保持亲密。
+		<</if>>
+		<br><br>
+
+		<<if $forestleashed is 1>>
+			<<link [[削弱束缚|Forest Cabin Weaken]]>><<def 1>><</link>>
+			<br>
+		<</if>>
+		<<link [[乖乖的|Forest Cabin Good]]>><<sub 1>><</link>>
+		<br>
+
+	<<elseif Time.hour lte 18>>
+		伊甸泡在一个澡盆里。<<He>>慢慢地把身体放进水里，然后看着你。"你还在等什么？脱光衣服，进来给我洗澡。"
+		<br><br>
+
+		<<link [[清洗 (2:00)|Cabin Bath]]>><<pass 2 hours>><<npcincr Eden trust 10>><<sub 1>><</link>><<gtrust>><<gstockholm>>
+		<br>
+		<<link [[拒绝 (2:00)|Cabin Bath Refuse]]>><<pass 2 hours>><<npcincr Eden trust -10>><<def 1>><</link>><<ltrust>><<lstockholm>>
+		<br>
+
+	<<elseif Time.hour lte 22>>
+		伊甸安坐下来读书，还给火炉添了些柴火。
+		<br><br>
+
+		<<link [[拥抱 (4:00)|Cabin Cuddle]]>><<sub 1>><<npcincr Eden trust 20>><<npcincr Eden love 1>><<pass 4 hours>><</link>><<glove>><<gtrust>><<ggstockholm>>
+		<br>
+		<<link [[睡一觉 (4:00)|Forest Cabin]]>><<def 1>><<tiredness -12>><<tiredness -12>><<pass 4 hours>><<endevent>><</link>><<ltiredness>>
+		<br>
+
+	<<else>>
+		伊甸把你抱到床上。
+		<<if $forestleashed is 1>>
+			<<He>>将你的皮带缠绕在床头板的横杆上，将你固定到位。
+		<</if>>
+		<<He>>斜眼看着你，<<his>>眼里流露出贪婪的神情。"你太火辣了。我会好好享用的。"
+		<br><br>
+
+		<<link [[继续|Cabin Night Rape]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Cabin Night Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>><<set $enemyhealth to 600>><<set $enemyhealthmax to 600>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Cabin Night Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Cabin Night Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Cabin Night Rape Finish
+<<set $outside to 1>><<set $location to "cabin">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	伊甸叹了口气，翻了个身背对你。你很快就听到了<<his>>的鼾声。
+<<elseif $enemyhealth lte 0>>
+	伊甸听懂了你的意思，转身面向远离你的一侧。你很快就听到<<his>>的鼾声。
+<</if>>
+<br><br>
+
+<<tearful>>你不知道该怎么办。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Cabin Night]]>><</link>>
+
+:: Cabin Night
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+<<if $forestleashed is 1>>
+	伊甸睡着了，但你的脖子紧紧地系在床上，你不能走很远。
+	<br><br>
+
+	<<link [[睡觉|Cabin Night Sleep]]>><<cabintime>><</link>><<ltiredness>>
+	<br>
+	<<link [[削弱束缚|Cabin Night Leash]]>><<cabintime>><</link>>
+	<br>
+<<else>>
+	伊甸睡着了。如果你愿意，你可以逃跑。
+	<br><br>
+
+	<<link [[睡觉|Cabin Night Sleep]]>><<cabintime>><</link>><<ltiredness>>
+	<br>
+	<<link [[逃脱|Cabin Night Escape]]>><<set $stress -= 2000>><</link>>
+	<br>
+<</if>>
+
+:: Cabin Night Sleep
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+<<npc Eden>><<person1>>
+你静下心来试着入睡。
+<br><br>
+
+过了一会儿，你被伊甸亲吻你的脸颊吵醒了。"早上好。"<<He>>打哈欠，伸懒腰。"该吃早餐了。"
+<br><br>
+
+<<link [[继续|Forest Cabin]]>><<endevent>><</link>>
+<br>
+
+:: Cabin Night Leash
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+<<if $forestleashedwear gte 1>>
+	<<set $forestleashedwear += 1>>
+<<else>>
+	<<set $forestleashedwear to 1>>
+<</if>>
+
+你试图用绳索摩擦床头的木板，希望能够磨薄它。你似乎感觉到绳索变得越来越细了。
+<br><br>
+
+<<if $forestleashedwear gte 3>>
+	当绳子断裂时，阳光抚摸着你的脸，让你自由了。伊甸还在沉睡，没有什么能阻止你逃离。
+	<<detach_leash>>
+	<<set $forestleashed to 0>><<set $forestleashedwear to 0>>
+	<br><br>
+
+	<<link [[留在原地|Cabin Leash Broken]]>><</link>><<gtrust>><<gggstockholm>>
+	<br>
+	<<link [[逃脱|Cabin Night Escape]]>><<set $stress -= 2000>><</link>><<lllstockholm>>
+	<br>
+
+<<else>>
+	<<npc Eden>><<person1>>
+	过了一会儿，你听到伊甸动了一下。<<He>>翻了个身，亲了亲你的脸颊。"早上好。"<<He>>打了个哈欠，伸了个懒腰。"是时候吃早餐了。"
+	<br><br>
+
+	<<link [[继续|Forest Cabin]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Cabin Night Escape
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+你悄悄朝小屋入口靠近，试了试门把手。门开了，你逃进了森林。
+<br><br>
+
+<<link [[继续|Forest]]>><<npcincr Eden trust -200>><<set $forest to 80>><</link>>
+<br>
+
+:: Cabin Leash Broken
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+<<npc Eden>><<person1>>
+过了一会儿，你听到伊甸动了一下。<<He>>翻了个身，亲了亲你的脸颊。"早上好。"<<He>>打了个哈欠，伸了个懒腰。"是时候吃早餐了。"<<He>>注意到你的狗绳断了。"哦，亲爱的，我还以为这些东西更结实。你真是个好<<girl>>，没有逃跑。"<<He>>俯身亲吻了你的额头，然后若有所思地看着断裂的狗绳。
+<<npcincr Eden trust 200>>
+<br><br>
+
+<<if $NPCName[$NPCNameList.indexOf("Eden")].trust gte 100>>
+	"我认为再也没有必要把你拴着了。只要不要从我这里逃走就行了。呆在小屋和外面的空地上，那里很安全。"
+
+	<<if $syndromeeden is undefined>>
+		<<set $syndromeeden to 1>><<set $NPCName[$NPCNameList.indexOf("Eden")].lust to 0>><<set $edenshrooms to 0>><<set $edengarden to 0>><<set $edenspring to 0>><<set $wardrobes.edensCabin.unlocked to true>>
+		<br><br>
+
+		<span class="red"><i>伊甸并不是那么糟糕，<<hes>>只是孤独而已。在这片森林里独自生活肯定很难。</i>
+		<br>
+		你获得了"斯德哥尔摩综合症：伊甸"特质.</span>
+		<br><br>
+
+		<<if $loveInterest.primary is "None">>
+			<<set $loveInterest.primary to "Eden">>
+			<span class = "gold">伊甸现在是你的爱人！危险感已经过去了，你在这里感觉更安全了</span>
+		<<else>>
+			<span class = "gold">伊甸现在可以成为你的爱情伴侣了！危险已经过去，在这里你将会感到无与伦比的安全。<br>你可以在"态度"菜单中改变你的爱情对象。</span>
+		<</if>>
+	<</if>>
+<</if>>
+<br><br>
+
+<<if $NPCName[$NPCNameList.indexOf("Eden")].trust gte 100>>
+	<<link [[继续|Eden Cabin]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<link [[继续|Forest Cabin]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Forest Cabin Food
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+你准备了食物，把它放在<<him>>面前的桌子上。<<him>>咬了一口，然后微笑着拍了拍你的头。<<He>>分给你一些一起吃。伊甸讲了很多在这生活发生的琐事，时不时停顿等你的回应。你每次都点头，这似乎足以让<<him>>感到满足。
+<br><br>
+
+<<His>>的盘子空了，<<he>>站起来朝窗外看。
+
+<<if $weather is "clear">>
+	"今天天气真好！我们能做很多工作。"
+<<elseif $weather is "rain">>
+	"我们今天有很多工作要做。一点雨也不会阻止我们。"
+<<elseif $weather is "overcast">>
+	"云层在咕哝着。希望它们不会在我们完成今天的工作之前下雨。"
+<<elseif $weather is "snow">>
+	"今天很冷。最好保持活跃。"
+<</if>>
+<br><br>
+
+<<link [[继续|Forest Cabin]]>><<endevent>><</link>>
+<br>
+
+:: Forest Cabin Spit
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+你准备好食物，放在<<him>>面前的桌子上。<<He>>咬了一口。"你对这个做了什么，是吗？"你试图忍住不让自己露出挑衅的微笑，但是嘴角的抽搐暴露了你。<<He>>抓住你，让你弯在<<his>>的大腿上。
+<br><br>
+
+<<link [[继续|Forest Hunter Punishment]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Cabin Cuddle
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+你依偎在伊甸身边。<<He>>有些吃惊，但很快<<his>>的脸变得柔和，<<he>>环抱着你。
+<br><br>
+
+<<link [[继续|Forest Cabin]]>><<endevent>><</link>>
+<br>
+
+:: Cabin Bath
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+你脱掉衣服，进入浴缸。你用海绵洗<<his>>的背。<<He>>转向你。"你真是个温柔的人。现在给我清洗胸部。"你继续洗涮，尽管当你看到<<his>>的脸时感觉更加尴尬。
+<<wash>><<garousal>><<arousal 1000>>
+
+<br><br>
+<<link [[继续|Forest Cabin]]>><<endevent>><</link>>
+
+:: Cabin Bath Refuse
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+<<He>>一把拉住你的狗绳，把你拖进浴缸，然后把你拉到<<his>>的大腿上。
+<br><br>
+
+<<link [[继续|Forest Hunter Punishment]]>><<set $molestationstart to 1>><<npcexpose>><<set $phase to 1>><</link>>
+<br>
+
+:: Forest Cabin Weaken
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+你把狗绳磨擦在树上，小心不被注意到。你感觉狗绳变得更细了。
+<br><br>
+
+过了一会儿，伊甸喘着气，伸了个懒腰，看着落日。"我需要洗个澡。走吧，回家。"
+<<if $forestleashedwear gte 1>>
+	<<set $forestleashedwear += 1>>
+<<else>>
+	<<set $forestleashedwear to 1>>
+<</if>>
+<br><br>
+
+<<link [[继续|Forest Cabin]]>><<pass 8 hours>><<endevent>><</link>>
+<br>
+
+:: Forest Cabin Good
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+过了一会儿，伊甸喘着气，伸了个懒腰，看着落日。"我需要洗个澡。走吧，回家。"
+
+<br><br>
+
+<<link [[继续|Forest Cabin]]>><<pass 8 hours>><<endevent>><</link>>
+<br>

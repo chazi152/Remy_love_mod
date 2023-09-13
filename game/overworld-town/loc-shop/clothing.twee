@@ -1,0 +1,227 @@
+:: Clothing Shop [exitCheckBypass]
+<div id="clothingShop-div" class="main-shop-div">
+	<<clothingShop-main>>
+</div>
+
+:: Clothing Shop Widgets [widget]
+
+<<widget "clothingShop-main">>
+	<<if $tryOn.autoReset isnot false>><<tryOnReset>><</if>><<unset $tempDisable>>
+	<<set $outside to 0>><<set $location to "shopping_centre">><<effects>>
+	<<set $shopName = "clothing">>
+
+	你在服装店里。这里有大量的普通衣服，但如果你想找一些异国情调的东西，你需要去其他地方。
+	<br><br>
+
+	<<if $stress gte $stressmax>>
+	<<passoutshop>>
+	<<else>>
+		<<if Time.hour is 21>>
+			现在要关门了。保安正把大家赶到外面。<<if $exposed gte 1>>你意识到如果保安发现你穿成这样，你会有多大风险时，你内心感到了恐慌。<</if>>
+			<br><br>
+
+			<<if $exposed lte 0>>
+				<<link [[出去|High Street]]>><</link>>
+				<br>
+			<<else>>
+				<<link [["藏起来直到结束 (1:00)"|Clothing Shop]]>><<pass 1 hour>><</link>>
+			<</if>>
+		<<else>>
+			<div id="tryonstats-div"><<tryOnStats>></div>
+			<<unset $shopListStartCount>>
+			<<unset $clothes_choice>>
+			<<set $shopPage = 0>>
+
+			<<if Time.dayState is "night">>
+				你独自一人在黑暗中。
+				<br><br>
+			<<elseif $exposed gte 1>>
+				你躲在一排衣服里，以保护你的尊严。
+				<br><br>
+			<</if>>
+
+			<span>保暖度:</span>
+			<<warmthscale>>
+			<div id="warmth-description">
+				<<warmth_description>>
+			</div>
+			<br><br>
+			<<clothingcategoryicon "all">>
+			<<link "浏览全部">><<replace "#clothingShop-div">><<AllShop>><</replace>><</link>>
+			<br><br>
+			<<if $debug is 1>>
+				<<clothingcategoryicon "overoutfit">>
+				<<link "浏览外套">><<replace "#clothingShop-div">><<OverOutfitShop>><</replace>><</link>>
+				<br><br>
+			<</if>>
+			<<clothingcategoryicon "outfit">>
+			<<link "查看套装">><<replace "#clothingShop-div">><<OutfitShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "upper">>
+			<<link "查看上装">><<replace "#clothingShop-div">><<TopShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "lower">>
+			<<link "查看下装">><<replace "#clothingShop-div">><<BottomShop>><</replace>><</link>>
+			<br><br>
+			<<clothingcategoryicon "underoutfit">>
+			<<link "查看内衣（套装）">><<replace "#clothingShop-div">><<UnderOutfitShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "underupper">>
+			<<link "查看内衣（上衣）">><<replace "#clothingShop-div">><<UnderTopShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "underlower">>
+			<<link "查看内衣（下衣）">><<replace "#clothingShop-div">><<UnderBottomShop>><</replace>><</link>>
+			<br><br>
+			<<clothingcategoryicon "head">>
+			<<link "查看头饰">><<replace "#clothingShop-div">><<HeadShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "face">>
+			<<link "查看面饰">><<replace "#clothingShop-div">><<FaceShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "neck">>
+			<<link "查看颈饰">><<replace "#clothingShop-div">><<NeckShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "hand">>
+			<<link "查看手饰">><<replace "#clothingShop-div">><<HandsShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "legs">>
+			<<link "查看袜子">><<replace "#clothingShop-div">><<LegsShop>><</replace>><</link>>
+			<br>
+			<<clothingcategoryicon "feet">>
+			<<link "查看鞋类">><<replace "#clothingShop-div">><<FeetShop>><</replace>><</link>>
+			/*<br>
+			*<<clothingcategoryicon "strapon">> <!-- disable for now-->
+			*<<link "View Genital wear">><<replace "#clothingShop-div">><<GenitalShop>><</replace>><</link>>*/
+			<br><br>
+			<<run linkifyDivs('.button-back-to-shop')>>
+
+			<<if $clothingrebuy is 1>>
+				<<link [[禁用服装自动重购功能|Rebuy Shop]]>><</link>>
+				<br>
+			<<else>>
+				<<link [[启用服装自动重购功能|Rebuy Shop]]>><</link>>
+				<br>
+			<</if>>
+
+			<<if Time.dayState is "night" and Time.hour isnot $closinghour and !$weekly.theft.clothingShop>>
+				<<link [[检查收银机|Clothing Shop Register]]>><</link>>
+				<br>
+			<</if>>
+
+			<br>
+
+			<<if Time.dayState is "night" or $tryOn.value is 0>>
+				<<if Time.dayState is "night" and $clothingShop.spotted is true and $clothingShop.stolenClothes gt 0>>
+					<<link [[离开|Clothing Shop Night Guard Found]]>>
+						<<shopClothingFilterReset>>
+						<<ShowUnderEquip "normal">>
+						<<ShowUnderEquip "over">>
+						<<set $tryOn.autoReset to true>>
+						<<crimeup `$tryOn.value / 100`>>
+						<<shopHoodCheck>>
+					<</link>>
+				<<else>>
+					<<link [[离开|Shopping Centre Top]]>>
+						<<shopClothingFilterReset>>
+						<<ShowUnderEquip "normal">>
+						<<ShowUnderEquip "over">>
+						<<set $tryOn.autoReset to true>>
+						<<crimeup `$tryOn.value / 100`>>
+						<<shopHoodCheck>>
+					<</link>>
+				<</if>>
+				<<if $tryOn.value gt 0>>
+					<<crime>>
+				<</if>>
+				<br><br>
+			<<elseif $tryOn.value gt 0>>
+				<<link "Return clothes">><<clothingReset>>
+					<<updatesidebarimg>>
+					<<updatesidebardescription>>
+					<<updateallure>>
+					<<updatewarmthscale>>
+					<<updatewarmthdescription>>
+					<<updateclothingshop>>
+					<<run updateMoment()>>
+				<</link>>
+				<br>
+				<<if $tryOn.value lt $money>>
+					<<sendItemsToDropdown>>
+					<<link "Buy clothes">><<buyTryOnClothes "wear">><<updateclothingshop>><</link>>
+					<br>
+					<<link "买下衣服并送到衣柜中">>
+						<<buyTryOnClothes "wardrobe">>
+						<<updatesidebarmoney>>
+						<<updatesidebarimg>>
+						<<updatesidebardescription>>
+						<<updateallure>>
+						<<updatewarmthscale>>
+						<<updatewarmthdescription>>
+						<<updateclothingshop>>
+						<<run updateMoment()>>
+					<</link>>
+					<br>
+				<</if>>
+				<<link [[带着偷到的衣服离开|Stolen Clothing Shop Result]]>><<shopClothingFilterReset>><<shopHoodCheck>><</link>>
+				<br>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "clothingcategoryicon">>
+	<<icon `"clothes/categories/" + _args[0] + ".png"`>>
+<</widget>>
+
+:: Clothing Shop Sneak
+<<set $outside to 0>><<effects>><<set $lock to 0>>
+
+	<<if currentSkillValue('skulduggery') gte $lock>>
+	<span class="green">这把锁看起来很容易撬开。</span>
+	<br><br>
+
+	<<link [[撬开它 (0:10)|Clothing Shop]]>>
+		<<pass 10>><<crimeup 1>>
+		<<if $clothingShop.ban gt 0 or $crime gte 50000 or $clothingShop.rng gte $skulduggery>>
+			<<set $clothingShop.spotted to true>>
+		<</if>>
+		<<set $clothingShop.rng to random(0,1000)>>
+	<</link>><<crime>>
+	<br>
+	<<else>>
+	<span class="red">这把锁看上去超出了你的能力范围。</span>
+	<<skulduggeryrequired>>
+	<br><br>
+	<</if>>
+
+<<link [[离开|Shopping Centre Top]]>><</link>>
+<br>
+
+:: Rebuy Shop
+<<set $outside to 0>><<effects>>
+
+<<if $clothingrebuy is 1>>
+
+禁用服装自动重购功能将使你所有服装中的芯片失效。它们在被破坏时将不再购买替换品，也不会向你收取任何费用。
+<br><br>
+
+你想禁用服装自动重购功能吗？
+<br><br>
+
+<<link [[是|Clothing Shop]]>><<set $clothingrebuy to 0>><</link>>
+<br>
+
+<<else>>
+
+启用服装自动重购功能将激活所有你衣服中的芯片。当衣服损坏到无法修复时会自动订购更换。费用是衣服的价格，再加上额外的50%服务费。扣除时若你没有足够的钱，这将不起作用。
+<br><br>
+
+你想启用这个功能吗？
+<br><br>
+
+<<link [[是|Clothing Shop]]>><<set $clothingrebuy to 1>><</link>>
+<br>
+
+<</if>>
+<<link [[否|Clothing Shop]]>><</link>>
+<br>

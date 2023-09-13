@@ -1,0 +1,2673 @@
+:: Widgets School Events [widget]
+<<widget "eventsschooltoilets">>
+	<<rng>>
+	<<if Time.schoolDay and $schoolstate isnot "early" and $schoolstate isnot "late">>
+		<<if $exposed gte 1>>
+			<<if $changingRoomGender is "boys">>
+				<<generateym1>><<generateym2>><<generateym3>>
+				你听到声音正在接近，在被抓到前设法躲在一个摊位之前，显示着你的<<lewdness>>。
+				<br><br>
+				一个<<fullGroup>>进入房间，在他们之间聊天。
+				<<storeon "schoolboys" "check">>
+				<<if _store_check is 1 and maleChance() isnot 0>>
+					声音突然停止了。<<person1>><<person>>打破了沉默。"谁会把这些衣服放在这儿?我们应该把它们拿去失物招领处。"他们拿了你的衣服!
+					<br><br>
+					<<link [[呼喊|School Toilets Clothes]]>><<set $phase to 2>><</link>>
+					<br>
+					<<link [[保持安静|School Toilets Clothes]]>><<set $phase to 1>><</link>>
+					<br>
+				<<else>>
+					他们很快就离开了，谁也不知道。
+					<<gstress>><<garousal>><<stress 2>><<arousal 100>>
+					<br><br>
+					<<endevent>>
+					<<link [[继续 (0:05)|School Boy's Toilets]]>><<set $eventskip to 1>><<pass 5>><</link>>
+					<br>
+				<</if>>
+			<<else>>
+				<<generateyf1>><<generateyf2>><<generateyf3>>
+				你听到声音正在接近，在被抓到前设法躲在一个摊位之前，显示着你的<<lewdness>>。
+				<br><br>
+				一个<<fullGroup>>进入房间，在他们之间聊天。
+				<<storeon "schoolgirls" "check">>
+				<<if _store_check is 1 and maleChance() isnot 100>>
+					声音突然停下了。<<person1>><<person>>打破了沉默。“谁会把这些衣服留在这儿呢？我们应该把它们拿去失物招领处。”他们拿走了你的衣服！
+					<br><br>
+					<<link [[呼喊|School Toilets Clothes]]>><<set $phase to 2>><</link>>
+					<br>
+					<<link [[保持安静|School Toilets Clothes]]>><<set $phase to 1>><</link>>
+					<br>
+				<<else>>
+					他们很快就离开了，谁也不知道。
+					<<gstress>><<garousal>><<stress 2>><<arousal 100>>
+					<br><br>
+					<<endevent>>
+					<<link [[继续 (0:05)|School Girl's Toilets]]>><<set $eventskip to 1>><<pass 5>><</link>>
+					<br>
+				<</if>>
+			<</if>>
+		<<elseif $whitney_toilet is 1 and C.npc.Whitney.state is "active" and $rng gte 51 and $daily.whitney.toiletCheck isnot 1>>
+			<<set $daily.whitney.toiletCheck to 1>>
+			<<if $player.gender is "h">>
+				<<set _correctBathroom to ($NPCName[$NPCNameList.indexOf("Whitney")].pronoun is "m" ? "boys" : "girls")>>
+			<</if>>
+			<<if $changingRoomGender is "boys" and $player.gender is "m" or $changingRoomGender is "girls" and $player.gender is "f" or $player.gender is "h" and $changingRoomGender isnot _correctBathroom>>
+				<<if $player.gender is $NPCName[$NPCNameList.indexOf("Whitney")].pronoun>>
+					<<npc Whitney>><<person1>>
+					你撞上了惠特尼。<<His>>表情阴沉下来。“敢在这儿露面？还记得我说过的话么？”<<he>>说。“我要让你长点记性。"
+					<br><br>
+					<<His>>朋友堵住了出口。
+					<br><br>
+					<<link [[继续|Bully Toilets Fight]]>><<set $fightstart to 1>><</link>>
+				<<else>>
+					<<generatey1>><<generatey2>><<generatey3>><<person1>>
+					惠特尼的几个朋友进了厕所，当他们看到你的时候，他们得意地笑了。
+					<br><br>
+					"真淫荡，”一个<<person>>说。“你没听到过你不能再来这里了吗?还是你只是在找一个被惩罚的借口?你走运了。惠特尼说我们可以在这里对你做任何我们想做的事。"
+					<br><br>
+					他们把你包围起来。
+					<br><br>
+					<<if $submissive lte 500>>
+						<<link [[威胁|Bully Friends Threaten]]>><<def 1>><</link>><<defianttext>>
+						<br>
+					<<elseif $submissive gte 1500>>
+						<<link [[认输|Bully Friends Rape]]>><<set $molestationstart to 1>><<set $phase to 1>><<sub 1>><</link>><<submissivetext>>
+						<br>
+					<</if>>
+					<<link [[忍耐|Bully Friends Rape]]>><<set $phase to 0>><<set $molestationstart to 1>><</link>>
+					<br>
+				<</if>>
+			<<else>>
+				<<if $player.gender is $NPCName[$NPCNameList.indexOf("Whitney")].pronoun>>
+					惠特尼的几个朋友进了浴室，他们笑着互相推搡。尽管他们没有表现出攻击性，但他们拒绝放过你。
+					<br><br>
+					"我们只是在这里确保你<<if $player.gender is "m">>坐下来小便<<else>>知道如何使用小便池<</if>>，这是惠特尼的命令。"
+					<br><br>
+					他们依旧在说着什么，看来惠特尼还没允许他们对你动手，于是他们很快就厌倦了，回到了走廊。
+					<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+					<br><br>
+					<<endevent>>
+					<<if $changingRoomGender is "boys">>
+						<<link [[继续|School Boy's Toilets]]>><<set $eventskip to 1>><</link>>
+					<<else>>
+						<<link [[继续|School Girl's Toilets]]>><<set $eventskip to 1>><</link>>
+					<</if>>
+				<<else>>
+					<<npc Whitney>><<person1>>
+					你撞到了惠特尼，<<Hes>>很高兴在这里见到你。
+					<<if random(1, 100) gte 51>>
+						"真是个好时机，骚货，”<<he>>说。<<His>>的朋友和<<him>>在一起。<<He>>抓住你的肩膀，试图把你逼到一个小隔间里。
+						<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+						<br><br>
+						<<link [[让它发生|Bully Toilets Sex]]>><<trauma 6>><<stress 6>><<sub 1>><<npcincr Whitney dom 1>><<set $molestationstart to 1>><</link>><<gtrauma>><<gstress>><<gdom>>
+						<br>
+						<<if $promiscuity gte 15>>
+							<<link [[口交|Bully Toilets Sex]]>><<sub 1>><<npcincr Whitney dom 1>><<set $sexstart to 1>><<npcincr Whitney love 1>><</link>><<promiscuous2>><<glove>><<gdom>>
+							<br>
+						<</if>>
+						<<link [[战斗|Bully Toilets Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+						<br>
+					<<else>>
+						"真是听话，婊子，"<<he>>笑了起来。"我很高兴你能听我的命令。"<<Hes>>独自一人，走过你身边，拍了拍你的<<bottom>>。
+						<<gstress>><<stress 6>>
+						<br><br>
+						<<endevent>>
+						<<if $changingRoomGender is "boys">>
+							<<link [[继续|School Boy's Toilets]]>><<set $eventskip to 1>><</link>>
+						<<else>>
+							<<link [[继续|School Girl's Toilets]]>><<set $eventskip to 1>><</link>>
+						<</if>>
+					<</if>>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<if $changingRoomGender is "boys">>
+				<<generateym1>><<generateym2>><<generateym3>>
+				<<if $player.gender_appearance is "f">>
+					一个<<fullGroup>>一边聊天一边走进来。他们一看到你就吓呆了。"这个<<girl>>在这里干什么？"<<person1>><<person>>说，<<his>>颤抖的声音出卖了<<his>>的内心。
+					<br><br>
+					<<link [[道歉然后离开|School Toilets Encounter]]>><<set $phase to 1>><<stress 2>><</link>><<gstress>>
+					<br>
+					<<if maleChance() isnot 0>>
+						<<link [[调情|School Toilets Encounter]]>><<set $phase to 2>><</link>><<promiscuous1>>
+						<br>
+						<<if $promiscuity gte 15>>
+							<<link [[色诱|School Toilets Sex]]>><<set $sexstart to 1>><</link>><<promiscuous2>>
+							<br>
+						<</if>>
+					<</if>>
+				<<else>>
+					一个<<fullGroup>>一边聊天一边走进来。他们没注意到你，很快便离开了。
+					<br><br>
+					<<endevent>>
+					<<link [[继续|School Boy's Toilets]]>><<set $eventskip to 1>><</link>>
+					<br>
+				<</if>>
+			<<else>>
+				<<generateyf1>><<generateyf2>><<generateyf3>>
+				<<if $player.gender_appearance is "m">>
+					一个<<fullGroup>>一边聊天一边走进来。他们一看到你就吓呆了。"这个<<girl>>在这里干什么？"<<person1>><<person>>说，<<his>>颤抖的声音出卖了<<his>>的内心。
+					<br><br>
+					<<link [[道歉然后离开|School Toilets Encounter]]>><<set $phase to 1>><<stress 2>><</link>><<gstress>>
+					<br>
+					<<if maleChance() isnot 100>>
+						<<link [[调情|School Toilets Encounter]]>><<set $phase to 2>><</link>><<promiscuous1>>
+						<br>
+						<<if $promiscuity gte 15>>
+							<<link [[色诱|School Toilets Sex]]>><<set $sexstart to 1>><</link>><<promiscuous2>>
+							<br>
+						<</if>>
+					<</if>>
+				<<else>>
+					一个<<fullGroup>>一边聊天一边走进来。他们没注意到你，很快便离开了。
+					<br><br>
+					<<endevent>>
+					<<link [[继续|School Girl's Toilets]]>><<set $eventskip to 1>><</link>>
+					<br>
+				<</if>>
+			<</if>>
+		<</if>>
+	<<else>>
+		<!-- Modified for Beast People -->
+		<<beastNEWinit 1 cat>>
+		<<if $monster is 1 or $bestialitydisable is "f">>
+			你身后的一阵低吼打破了寂静，一只身形庞大的<<beasttype>>从阴影中冲出并将你扑倒在地。
+			<br><br>
+			<<if $cat gte 6>>
+				<<link [[发出嘶嘶声|School Toilets Hiss]]>><</link>><<cat>>
+				<br>
+			<</if>>
+			<<link [[战斗|School Toilets Cat]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<<else>>
+			你身后的一阵低吼打破了寂静，一只大猫从阴影中猛地朝你扑来。你设法逃了出来，但很呛。
+			<<beastescape>>
+			<br><br>
+			<<link [[继续|School Toilets]]>><<endevent>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "eventschoolhallwaysexposed">>
+	<<rng>>
+	<<if $rng gte 81>>
+		你离开了储藏室的保险柜，走到了一条空荡荡的走廊。你已经走到半路了，突然听到前面有声音传来。你试着原路返回，但声音又出现在了你的后面，看上去你被困在这了。你四处寻找躲藏的地方，但附近除了教室之间靠墙排列的储物柜之外什么也没有。
+		<br><br>
+		<<link [[透过窗户看教室里面，一定有一间是空的|Hallways Exposed Classroom]]>><</link>>
+		<br>
+		<<link [[检查储物柜，一定有没上锁的|Hallways Exposed Lockers]]>><</link>>
+		<br>
+	<<elseif $rng gte 61>>
+		<<generatey1>><<generatey2>><<person1>>
+		你听见靠近的脚步声，然后躲在了一间储藏室里。当门把手吱嘎作响的时候，你的心跳漏了一拍。<<gstress>><<stress 6>>
+		<br><br>
+		"它卡住了，”一个<<personsimple>>的声音说。“等我一会儿。"
+		<br><br>
+		你环视整个房间。那儿有一扇小窗，尽管你需要爬上什么东西才能够到它，而且你还不知道另一侧会有什么。
+		<br><br>
+
+		<<link [[爬出窗户|Hallways Exposed Storeroom Window]]>><</link>>
+		<br>
+		<<link [[遮住你自己然后离开|Hallways Exposed Storeroom]]>><<fameexhibitionism 2>><<stress 6>><<trauma 6>><</link>><<gtrauma>><<gstress>>
+		<br>
+	<<else>>
+		<<if random(1, 2) is 2 and $hypnosis gte 1 and $hypnosisdisable is "f">>
+			当一群人走下楼梯时，你躲在下面的角落，<<hypnosisicon>><span class="blue">有什么东西不对劲，你还处于恍惚之中。</span><<hypnosisicon>>但你最终醒悟过来，发现自己已经到了开阔场地，强烈的声音催促着你继续。
+			<br><br>
+
+			<<link [[走入开阔地|Hallways Exposed Hypnosis]]>><<hypnotised 1>><<trauma -6>><<stress -6>><</link>><<ltrauma>><<lstress>>
+			<br>
+			<<link [[抵抗|Hallways Exposed Hypnosis Resist]]>><</link>><<willpowerdifficulty 1 `150 + ($hypnosis * 50)`>>
+			<br>
+		<<else>>
+			当一群人走下楼梯时，你躲在下面的角落，台阶在他们经过时震动着。
+			<<gstress>><<stress 6>>
+			<br><br>
+			<<link [[继续|Hallways]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "eventsschoolhallways">>
+	<<rng>>
+
+	<<set _fameRumour to []>>
+	<<run ["exhibitionism", "sex", "rape", "prostitution"].forEach(name => {if (V.fame[name] >= 400) T.fameRumour.push(name)})>>
+	<<if ($monsterchance gte 1 or $bestialitydisable is "f") and $fame.bestiality gte 400>>
+		<<set _fameRumour.push("bestiality")>>
+	<</if>>
+
+	<<if $schoolfameboard isnot 1 and $schoolfameblackmail gte 3 or $schoolfameboard isnot 1 and $schoolfamerefused is 1>>
+		<<set $schoolfameboard to 1>>
+
+		<<schoolfameboard>>
+
+	<<elseif fameSum("sex","rape","prostitution","bestiality") gte 4000 and $schoolfameblackmail is undefined>>
+		<<set $schoolfameblackmail to 0>>
+		<<npc Leighton>><<person1>>校长从<<his>>的办公室里走出来后示意着让你进去，你注意到<<He>>的脸上挂着奇怪的笑容.
+		<br><br>
+
+		<<link [[进去|School Fame Blackmail]]>><</link>>
+		<br>
+		<<link [[拒绝|School Fame Blackmail Refuse]]>><<detention 1>><</link>><<gdelinquency>>
+		<br>
+
+	<<elseif Time.days gte 7 and $NPCName[$NPCNameList.indexOf("Kylar")].init isnot 1 and $kylarignored isnot 1>>
+		<<npc Kylar>><<initnpc Kylar>><<generatey2>><<generatey3>>某人的包洒落在你的面前，里面的东西掉了一地，钢笔和书籍散落在地板上，现场惨不忍睹。当你走过转角时，你看见了包的主人。一个<<nnpc_gendery "Kylar">>被拽着衣领高高举起，然后被狠狠推到了柜子上。<<He>>挣扎着去蹬抓住<<person1>><<him>>的<<person2>><<person>>。 但<<person2>><<person>>只是不屑的笑了笑："就这？"<<he>>在说着的同时用<<He>>那空出来的手揪住那个<<nnpc_gendery "Kylar">>那凌乱的黑发。"算你走运，没有哪个白痴敢和老子对着干。"
+		<br><br>
+
+		其他学生要么对正在发生的霸凌视而不见，要么是在一旁看得津津有味。
+		<br><br>
+
+		<<link [[干预|Kylar Intro Intervene]]>><<npcset Kylar state "active">><<status -10>><<npcincr Kylar love 1>><</link>><<glove>><<lcool>>
+		<br>
+		<<link [[旁观，但是在事后确认没有啥问题|Kylar Intro Help]]>><<npcset Kylar state "active">><<npcincr Kylar love 1>><</link>><<glove>>
+		<br>
+		<<link [[无视|Kylar Intro Ignore]]>><<set $kylarignored to 1>><</link>>
+		<br>
+
+	<<elseif Time.days gte 14 and $kylarignored is 1 and $NPCName[$NPCNameList.indexOf("Kylar")].state isnot "active" and $NPCName[$NPCNameList.indexOf("Kylar")].state isnot "prison">>
+		<<npcset Kylar state "active">>
+
+		<<npc Kylar>><<person1>>当你走过一个转角时，你碰到了一个<<nnpc_gendery "Kylar">>。<<He>>紧皱着眉头看着你，但随后<<his>>便放松了下来，并张嘴说道：
+		<br><br>
+
+		"我，我是...那个..."凯拉尔结结巴巴地继续说着，"我，我叫凯拉尔。" 你本以为<<he>>可能是低年级的学生，但<<he>>似乎与你一样大。
+		<<switch $bodysize>>
+			<<case 0>>
+				你自认为你的身材已经是同龄人里最矮小的那一批了，但即使这样<<hes>>也只比你高那么一点点。
+			<<case 1>>
+				尽管你的身高已经足够矮小了，但即便这样<<hes>>看起来也比你矮上那么一丢丢。
+			<<case 2>>
+				<<Hes>>很矮小。
+			<<case 3>>
+				如果和你相比的话，那<<Hes>>确实十分矮小.
+		<</switch>>
+		<<He>>转身向<<he>>来时的路跑了过去。
+		<br><br>
+		<<endevent>>
+		<<link [[继续|Hallways]]>><<set $eventskip to 1>><</link>>
+		<br>
+
+	<<elseif $bullytimer gte $rng and !["dungeon", "pillory"].includes(C.npc.Whitney.state)>>
+		<<set $bullytimer to 0>>
+		<<schoolbully>>
+
+	<<elseif $NPCName[$NPCNameList.indexOf("Kylar")].state is "active" and $kylar.timer.halls gte $rng>>
+		<<set $kylar.timer.halls to 0>>
+		<<kylarhallways>>
+
+	<<elseif $mathsproject is "ongoing" and $mathsdruggedstudent isnot 1 and $mathsprojectdays lt 20 and $stimdealerknown is 1>>
+		<<set $mathsdruggedstudent to 1>>
+		<<generatey1>><<person1>>你认出了那个数学课上的<<person>>。<<Hes>>正坐在地板上，纸笔散落在周围，而<<he>>本人呆滞地看着前方，你注意到那些纸上写满了关于数学竞赛问题的部分解决方程。
+		<br><br>
+
+		<<link [[寻求帮助|Maths Drugged Help]]>><<famegood 5>><<detention -6>><<trauma -6>><</link>><<ldelinquency>><<ltrauma>>
+		<br>
+		<<link [[抄下来|Maths Drugged Copy]]>><<set $mathsinfo += 1>><</link>><<note "+ 数学见解" "green">>
+		<br>
+		<<link [[抢过来|Maths Drugged Rob]]>><<detention 6>><<set $mathsstim += 1>><</link>><<gdelinquency>><<note "+ 兴奋剂" "green">>
+		<br>
+
+	<<elseif $halloween is 1 and !$halloween_lake>>
+		<<halloween_lake_invite>>
+	<<elseif $rng gte 100>>
+		<<generatey1>><<person1>><<generatey2>>
+		一只手从后面捂住了你的嘴，另一只手臂环住你的腰。"别动，"捂着你嘴的<<person>>说道。"我只想让你帮我做点事。"<<He>>试着把你拉进一个空教室。
+		<<if $whitneyromance is 1>>
+			<br><br>
+			"我想，"<<person2>>从后面又出来一个<<person>>说道："我认为那是惠特尼的<<girl>>。"
+			<br>
+			"他妈的，"<<person1>><<person>>说着的同时将你放开，"你最好别告诉<<nnpc_him "Whitney">>我碰了你。" 在放完狠话后，这两个家伙溜了。
+			<br><br>
+			<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<br>
+		<<else>>
+			一个<<person2>><<person>>跟在后面，观察大厅里是否有可能捣乱的家伙。
+			<br><br>
+			<<link [[尽力反抗|Hallways Rape Struggle]]>><</link>><<physiquedifficulty 1 16000>>
+			<br>
+			<<link [[顺其自然|Hallways Rape Let]]>><</link>>
+			<br>
+		<</if>>
+	<<elseif $rng gte 91>>
+		<<if $rng % 2 == 0>><<set $lock to 0>>
+
+			当你走过走廊时，突然听到一个储物柜里传来声音。当你向它靠近时，沉闷的敲打声与和呼喊声愈发的清晰，
+			<span class="yellow">有人被锁在里面。</span>
+			<br><br>
+			<<link [[撬锁把人放出来 (0:10)|Hallways Locker Victim]]>><<pass 10>><<set $phase to 0>><</link>>
+			<br>
+			<<link [[去找老师帮忙 (0:03)|Hallways Locker Victim]]>><<pass 3>><<set $phase to 1>><</link>>
+			<br>
+			<<if $sadism gte 300 or $delinquency gte 600 or ($soldCount gte 1 and $money lt $rentmoney)>>
+				<<link [[要求资金帮助 (0:10)|Hallways Locker Victim]]>><<pass 10>><<set $phase to 2>><</link>><<if $soldCount gte 1 and $money lt $rentmoney>><<note "你需要给贝利交钱!" "red">><<else>><<note "现金?" "gold">><</if>>
+				<br>
+			<</if>>
+			<<link [[无视|Hallways Locker Victim]]>><<set $phase to 3>><</link>>
+		<<else>>
+			<<generatey1>><<person1>><<generateyp2>>
+			一个<<person>>正在走廊上跟踪一个<<person2>><<person>>。那个<<person1>><<persons>>凶神恶煞，看起来不怀好意，<<person2>>
+			<<print either("但那<<person>>没有注意到，尚且没有。","而<<person>>看起来害怕极了。","而<<person>>看起来很被吓到了。","而<<person>>看起来完全没有注意到。")>>
+			<span class = "red">没有老师在你视线范围内。</span>
+			<br><br>
+			<<link [[上前干涉 (0:02)|Hallways Stalker Intervention]]>><<set $phase to 0>><<pass 2>><</link>>
+			<br>
+			<<link [[引起老师的注意 (0:01)|Hallways Stalker Intervention]]>><<pass 1>><<set $phase to 1>><</link>>
+			<br>
+			<<link [[无视|Hallways Stalker Intervention]]>><<set $phase to 2>><</link>>
+			<br>
+		<</if>>
+	<<elseif $rng gte 81>>
+		<<bodywritingExposureCheck>>
+		<<if _bodywriting_exposed is 1>>
+			当你从一群学生身边路过时，有人指着你的<<bodypart _bodypart>>上的<<tattoo _bodypart>>窃窃私语，你的脸顿时红了。
+			<<lcool>><<status -10>><<gtrauma>><<trauma 6>><<gstress>><<stress 10>>
+			<br><br>
+
+			<<link [[继续|Hallways]]>><<set $eventskip to 1>><</link>>
+			<br>
+
+		<<else>>
+			<<if $cool gte 400>>
+				你经过一群学生时，他们都停止了交谈，迅速地把你围住，抢着引起你的注意。看起来你相当的受欢迎。
+				<<ltrauma>><<lstress>><<trauma -6>><<stress -12>>
+				<br><br>
+
+				<<link [[继续|Hallways]]>><<set $eventskip to 1>><</link>>
+				<br>
+
+			<<elseif $cool gte 160>>
+				当你路过一群学生时，所有人都微笑着向你打招呼。
+				<<ltrauma>><<trauma -6>>
+				<br><br>
+
+				<<link [[继续|Hallways]]>><<set $eventskip to 1>><</link>>
+				<br>
+
+			<<elseif $cool gte 120>>
+				<<if $schoolrep.herm gte 5 and !$worn.face.type.includes("mask")>>
+					你从一群学生身边路过，他们开始窃窃私语起来，似乎是一些关于扶她之类的谣言。
+				<<elseif $schoolrep.crossdress gte 5 and !$worn.face.type.includes("mask")>>
+					你从一群学生身边路过，他们开始窃窃私语起来。似乎是一些关于异装癖之类的谣言。
+				<<else>>
+					你从一群学生旁边路过，而他们完全无视了你。看来对他们来说，你就是空气。
+				<</if>>
+				<br><br>
+
+				<<link [[继续|Hallways]]>><<set $eventskip to 1>><</link>>
+				<br>
+
+			<<elseif $cool gte 40>>
+				<<if $schoolrep.herm gte 5 and !$worn.face.type.includes("mask")>>
+					你经过一群学生，他们笑着叫你怪胎。
+				<<elseif $schoolrep.crossdress gte 5 and !$worn.face.type.includes("mask")>>
+					你经过一群嘲笑你衣着的学生。
+				<<else>>
+					你经过一群嘲笑你的学生。
+				<</if>>
+				<<gstress>><<stress 6>>
+				<br><br>
+
+				<<link [[继续|Hallways]]>><<set $eventskip to 1>><</link>>
+				<br>
+
+			<<else>>
+				你看到前面有一群学生，考虑到你当前的处境，在没有老师的情况下，最好不要贸然前进。
+				<br><br>
+
+				<<link [[绕道而行（0:05）|Hallways]]>><<set $eventskip to 1>><<pass 5>><</link>>
+				<br>
+				<<link [[别浪费时间了，直接冲|Hallways Low Status]]>><</link>><<gtrauma>><<gstress>>
+				<br>
+
+			<</if>>
+		<</if>>
+	<<elseif $rng gte 71 and $hypnosis gte 1 and $hypnosisdisable is "f">>
+		<<generatey1>><<person1>>你路过一个蹲在自己柜子前摸索着什么的<<person>>，<<hypnosisicon>><span class="blue">你感到不对劲，意识开始恍惚，</span><<hypnosisicon>>一个淫荡的想法让你兴奋起来。
+		<br><br>
+
+		<<link [[打屁股|Hallways Hypnosis Spank]]>><<def 1>><<hypnotised 1>><<trauma -6>><<stress -12>><<detention 3>><</link>><<gdelinquency>><<ltrauma>><<llstress>>
+		<br>
+		<<link [[抵抗|Hallways Hypnosis Spank Resist]]>><</link>><<willpowerdifficulty 1 `150 + ($hypnosis * 50)`>>
+		<br>
+	<<elseif $rng gte 61>>
+		<<if playerBellyVisible()>>
+			<<rng>>
+			<<generates1>><<generates2>><<generates3>>
+			一群学生走向你，他们的目光聚焦在你的腹部。
+			<br><br>
+
+			"是你！"其中一个<<person1>><<person>>说道。"你就是那个怀孕了的<<girl>>！"
+			<br>
+			"真神奇啊"<<person2>><<person>>附和道。"我能摸摸你的肚子吗？我会很小心的，我发誓！"
+			<br><br>
+
+			<<link [[让他们摸 (0:01)|Hallways Pregnant Touch]]>><<pass 1>><</link>>
+			<br>
+			<<link [[离开|Hallways Pregnant Leave]]>><</link>>
+			<br>
+		<<elseif $delinquency gte 400>>
+			<<generatey1>><<person1>>当你路过时，一个<<person>>给了你一个令人毛骨悚然的眼神并开始跟踪你，在周围有人的情况下，<<he>>不可能尝试做些什么，但你很快就走到了一条空荡荡的走廊。
+			<br><br>
+			<<link [[绕道而行 (0:05)|Hallways]]>><<set $eventskip to 1>><<endevent>><<pass 5>><</link>>
+			<br>
+			<<link [[没时间浪费了，直接过去吧|Hallways High Delinquency]]>><</link>>
+			<br>
+		<<elseif $delinquency gte 10>>
+			<<generatey1>><<person1>>当你路过时，一个<<person>>给了你一个令人毛骨悚然的眼神并开始跟踪你，庆幸的是，<<He>>在一位老师走过来之后便停止了跟踪。
+			<<gstress>><<stress 2>>
+			<br><br>
+			<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<br>
+		<<else>>
+			<<generatey1>><<person1>>一个<<person>>在你路过时给了你一个恐怖的眼神。
+			<<gstress>><<stress 1>>
+			<br><br>
+			<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<br>
+		<</if>>
+	<<elseif $rng gte 51 and $schoolrep.herm gte 5 and !$worn.face.type.includes("mask")>>
+		<<generatey1>><<generatey2>><<generatey3>>
+		你听到身后的低语。
+		<br>
+		<<if $player.gender_appearance is "m">>
+			<<if random(1, 2) is 2>>
+				"但是他看起来像个正常的男孩，”一个<<person1>><<person>>说。
+			<<else>>
+				"不可能，”一个<<person1>><<person>>说。“他看起来是正常的。"
+			<</if>>
+			<br>
+			<<if random(1, 2) is 2>>
+				"每个人都这么说，"一个<<person2>><<person>>回答，"他也有个小穴"。
+			<<else>>
+				"他看起来是很正常，"一个<<person2>><<person>>回答。"但你看他的裤裆！"
+			<</if>>
+			<br>
+			<<if random(1, 2) is 2>>
+				"真是个怪胎，"一个<<person3>><<person>>补充道。"要是在过去，他一出生就会被淹死。"
+			<<else>>
+				"我想知道它是什么样子的，"一个<<person3>><<person>>补充道。你觉得他会操自己吗?"
+			<</if>>
+			<br><br>
+			他们三个瞥了你一眼，发现你在看他们就急忙走开了。<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+			<br><br>
+		<<else>>
+			<<if random(1, 2) is 2>>
+				"但是她看起来像个正常的女孩，”一个<<person1>><<person>>说。
+			<<else>>
+				"不可能，”一个<<person1>><<person>>说。“她看起来很正常。"
+			<</if>>
+			<br>
+			<<if random(1, 2) is 2>>
+				"每个人都这么说，"一个<<person2>><<person>>回答。"她长了根吊。"
+			<<else>>
+				"她看起来很正常，"一个<<person2>><<person>>回答。"直到你看到她的裆部。"
+			<</if>>
+			<br>
+			<<if random(1, 2) is 2>>
+				"真是个怪物，"一个<<person3>><<person>>补充道。"要是在过去，她一出生就会被淹死的。"
+			<<else>>
+				"我想知道它是什么样子的，"一个<<person3>><<person>>补充道。你觉得她会操自己吗?"
+			<</if>>
+			<br><br>
+			他们三个瞥了你一眼，发现你在看他们就急忙走开了。<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+			<br><br>
+		<</if>>
+
+		<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<<elseif $rng gte 51 and $schoolrep.crossdress gte 5 and !$worn.face.type.includes("mask")>>
+		<<generatey1>><<generatey2>><<generatey3>>
+		你听到身后的低语。
+		<br>
+		<<if $player.gender_appearance is "f">>
+			<<if $player.gender is "f">>
+				<<if !playerBellyVisible()>>
+					<<if random(1, 2) is 2>>
+						"她穿得像个男孩？"一个<<person1>><<person>>说。“她现在看起来像个女孩了。"
+					<<else>>
+						"是她吗？”一个<<person1>><<person>>说。“就是那个男装大佬？真看不出来。"
+					<</if>>
+					<br>
+					<<if random(1, 2) is 2>>
+						"她不是一直这样的。"一个<<person2>><<person>>回答说，"我敢说她这么做只是为了骗别人上床。"
+					<<else>>
+						"只要她想，她随时可以扮成男人。"一个<<person2>><<person>>回答说，"我敢说这是为了骗别人上床。"
+					<</if>>
+					<br>
+					<<if random(1, 2) is 2>>
+						"不管什么原因，"一个<<person3>><<person>>接话，"她是个怪人。"
+					<<else>>
+						"一定是它了，"一个<<person3>><<person>>补充道。"她是个变态。"
+					<</if>>
+				<<else>>
+					<<if random(1, 2) is 2>>
+						"她穿得像个男孩？怎么会？"一个<<person1>><<person>>问道，"很明显她怀孕了……"
+					<<else>>
+						"你确定她就是那个穿得像男孩的吗？"一个<<person1>><<person>>问道。"她就算想变装也变不了。"
+					<</if>>
+					<br>
+					<<if random(1, 2) is 2>>
+						"很显然，她并不总是这样穿。”一个<<person2>><<person>>回答道，"我敢打赌她这样做只是为了潜入男更衣室。"
+					<<else>>
+						"也许她只是想穿得像个男孩，”一个<<person2>><<person>>回答道，"我敢打赌她就是这样骗人把她肚子搞大的。"
+					<</if>>
+					<br>
+					<<if random(1, 2) is 2>>
+						"不管什么原因，”一个<<person3>><<person>>补充道，“她是个变态。"
+					<<else>>
+						"一定是它了，”一个<<person3>><<person>>补充道，"真是一个怪胎！"
+					<</if>>
+					<<schoolrep crossdress -1>>
+				<</if>>
+			<<else>>
+				<<if !playerBellyVisible()>>
+					<<if random(1, 2) is 2>>
+						"你确定她是男孩吗?"一个<<person1>><<person>>问，"她看起来就像个女孩。"
+					<<else>>
+						"你一定是糊涂了，”一个<<person1>><<person>>说。“那不可能是个男孩。"
+					<</if>>
+					<br>
+					<<if random(1, 2) is 2>>
+						"错不了的，他就是男的。"一个<<person2>><<person>>回答道，"我敢说他这么做是为了骗别人上床。"
+					<<else>>
+						"我就说他是男的，"一个<<person2>><<person>>回答。"我敢说他想上老师。"
+					<</if>>
+					<br>
+					<<if random(1, 2) is 2>>
+						"不管什么原因，"一个<<person3>><<person>>补充道，"他是个怪人。"
+					<<else>>
+						"一定是它了，"一个<<person3>><<person>>补充道。"他是个变态。"
+					<</if>>
+				<<else>>
+					<<if random(1, 2) is 2>>
+						"你确定她是男的?”一个<<person1>><<person>>问，"她怀孕了，一个男的怎么可能怀孕！？"
+					<<else>>
+						"你个白痴， ”一个<<person1>><<person>>说。 “那怎么可能是男的，她怀孕了！"
+					<</if>>
+					<br>
+					<<if random(1, 2) is 2>>
+						"嗯，”<<person2>><<person>>附和，“我从来都不知道男的也能怀孕。"
+					<<else>>
+						"你肯定搞错人了，她就是个姑娘。” 一个<<person2>><<person>>补充道，“你上实验课睡糊涂了吧。"
+					<</if>>
+					<br>
+					<<if random(1, 2) is 2>>
+						"你倒是看啊，明明那个大个肚子。"一个<<person3>><<person>>说。"她不是个男的，也依旧是个彻底的婊子。"
+					<<else>>
+						"不管怎样，"一个<<person3>><<person>>说。"你还敢这样来学校，也真是不要脸。"
+					<</if>>
+					<<schoolrep crossdress -1>>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<if $player.gender is "m">>
+				<<if !playerBellyVisible()>>
+					<<if random(1, 2) is 2>>
+						"他是女装大佬?"一个<<person1>><<person>>说，"现在换过来了。"
+					<<else>>
+						"他？"一个<<person1>><<person>>说道。"穿得像女生的那人？光看着我还不知道他是男的呢。"
+					<</if>>
+					<br>
+					<<if random(1, 2) is 2>>
+						"他不总是这样的，"一个<<person2>><<person>>回复道。"我敢说他只在骗人上床时这么做。"
+					<<else>>
+						"当他想要的时候，他看起来就像一个女孩。"一个<<person2>><<person>>回答说，"我敢说这是为了骗别人上床。"
+					<</if>>
+					<br>
+					<<if random(1, 2) is 2>>
+						"不管什么原因，"一个<<person3>><<person>>补充道，"他是个怪人。"
+					<<else>>
+						"一定是它了，"一个<<person3>><<person>>补充道。"他是个变态。"
+					<</if>>
+				<<else>>
+					<<if random(1, 2) is 2>>
+						"他穿的像女的？” 一个<<person1>><<person>>问。“女的穿得像男的！"
+					<<else>>
+						"他？”一个<<person1>><<person>>问。“你确定不是‘她’？肚子一天天的那么明显。"
+					<</if>>
+					<br>
+					<<if random(1, 2) is 2>>
+						"一定是哪里搞错了，"一个<<person2>><<person>>回答，"她要是个男的就不会怀孕。"
+					<<else>>
+						"错了，她是女的，” 一个<<person2>><<person>>说，“要么哪个老师要么其他啥的给上了然后怀了。"
+					<</if>>
+					<br>
+					<<if random(1, 2) is 2>>
+						"我不管，”一个<<person3>><<person>>补充道，“她就是个变态。"
+					<<else>>
+						"不管怎样，"一个<<person3>><<person>>补充道，"你居然还敢这样来学校，真不要脸。"
+					<</if>>
+				<</if>>
+			<<else>>
+				<<if !playerBellyVisible()>>
+					<<if random(1, 2) is 2>>
+						"你确定他是个女的？"一个<<person1>><<person>>问道。"这不男的吗？"
+					<<else>>
+						"你一定是糊涂了，"一个<<person1>><<person>>说道。"那不可能是个女孩。"
+					<</if>>
+					<br>
+					<<if random(1, 2) is 2>>
+						"没搞错，她是女的，"一个<<person2>><<person>>回复道。"我敢说她这么做是为了骗人上床。"
+					<<else>>
+						"那确实，她就是女的，"一个<<person2>><<person>>回答。"她一定和老师搞过。"
+					<</if>>
+					<br>
+					<<if random(1, 2) is 2>>
+						"不管什么原因，"一个<<person3>><<person>>接话，"她是个怪人。"
+					<<else>>
+						"一定是它了，"一个<<person3>><<person>>补充道。"她是个变态。"
+					<</if>>
+				<<else>>
+					<<if random(1, 2) is 2>>
+						她以为在唬谁呢？？”一个<<person1>><<person>>说。“这么大个肚子说她是男的谁信啊……"
+					<<else>>
+						"你想啊，她要是知道就好了，”一个<<person1>><<person>>说，“那么大的肚子怎么可能会有人相信她是男的。"
+					<</if>>
+					<br>
+					<<if random(1, 2) is 2>>
+						"不开玩笑哈，” 一个<<person2>><<person>>说，“我猜她这样只是为了潜入男更衣室。"
+					<<else>>
+						"不开玩笑，"一个<<person2>><<person>>回道，"我敢打赌她这样做只是为了骗其他人上床。"
+					<</if>>
+					<br>
+					<<if random(1, 2) is 2>>
+						"不管怎样，”一个<<person3>><<person>>补充，“她是个变态。"
+					<<else>>
+						"一定是它了，”一个<<person3>><<person>>补充道，"真是一个怪胎！"
+					<</if>>
+				<</if>>
+			<</if>>
+		<</if>>
+		<br><br>
+		他们三个瞥了你一眼，发现你在看他们就急忙走开了。<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+		<br><br>
+		<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<<elseif $rng gte 41 and _fameRumour.length gt 0>>
+		/* Using random in case the player has fame in multiple categories */
+		<<set _selectedRumour to _fameRumour.random()>>
+		<<set _trauma to false>>
+		<<generatey1>><<generatey2>>
+		当你走过走廊时，一群学生经过。<br><br>
+		<<if _selectedRumour is "bestiality">>
+			<<if $bestialitydisable is "f">>
+				<<if $cool gte 120>>
+					"我发誓！"你听到<<person1>><<person>>说道。"我听到巷子里传来呻吟声，然后几只狗从那里走了出来！"<br>
+					"但你没有往里面看？"<br>
+					"我可不想看到里面是什么情况。"
+				<<else>>
+					"是的，是狗！"<<person1>><<person>>小声地说道。"大概有三只，骑在<<phim>>身上，一个接一个。"<br>
+					"天哪，太恶心了吧！"<br>
+					"我感觉这还挺色的。"<<set _trauma to true>>
+				<</if>>
+			<<else>>
+				<<if $cool gte 120>>
+					"你在逗我吗，"其中一个<<person1>><<person>>说，"谁会去日……"<br>
+					"我是认真的！"另一个<<person2>><<person>>说，"人的XP是多样的。"<br>
+					<<person1>><<He>>摇摇头，"不是，这正常么？"
+				<<else>>
+					"因为<<pShe>>没办法让正常人喜欢上<<phim>>，"一个<<person1>><<person>>窃笑着说，"这就是为什么<<pshe>>要去日……"后面的对话已经听不清了。
+					"不可能，"<<his>>的同伴愣住了。"肯定是疯了才会这么干。"<br>
+					"你又没见过<<phim>>，你怎么知道？"<<set _trauma to true>>
+				<</if>>
+			<</if>>
+		<<elseif _selectedRumour is "exhibitionism">>
+			<<if $cool gte 120>>
+				"真的！"你偷听到那个<<person1>><<person>>说道。"好多人都见过有个学生全裸着到处跑，整个镇子都知道！"<br>
+				"既然那个人没穿衣服，其他人又是怎么知道那人是个学生呢？"<br>
+				"呃，我的意思是..."
+			<<else>>
+				"我就看见了！"那个<<person1>><<person>>小声说道。"<<pShe>>全裸着到处跑，并且看上去很享受这样。"<br>
+				"天哪，真是个变态！"<br>
+				"真希望当时我也在那儿，就能亲眼目睹了。"<<set _trauma to true>>
+			<</if>>
+		<<elseif _selectedRumour is "sex">>
+			<<if $cool gte 120>>
+				"你知道吗？"你偷听到<<person1>><<person>>的话。"我听说我们学校有个荡妇。"<br>
+				"就一个吗？"那群人笑了起来。<br>
+				"嘛，有一个是里面最骚的。"
+			<<else>>
+				"我跟你说，"那个<<person1>><<person>>小声说道。"<<pShe>>就是个荡妇！只要你想，随便上！"<br>
+				"没什么好惊讶的。"<br>
+				"看来我也得去碰碰运气了。"<<set _trauma to true>>
+			<</if>>
+		<<elseif _selectedRumour is "prostitution">>
+			<<if $cool gte 120>>
+				"真的！"你偷听到<<person1>><<person>>的话，"我看到有学生进了那个丰收街上那个很破的建筑。"<br>
+				"真的吗？是谁啊？"<br>
+				"呃，那个人的脸看不太清……"
+			<<else>>
+				"确实，"那个<<person1>><<person>>小声说，"<<pShe>>就是个娼妓，还很便宜，五英镑就能爽！"<br>
+				"五英镑对<<phim>>来说太多了吧。"那群人哈哈大笑。<br>
+				"我估计最多给<<phim>>几便士。"<<set _trauma to true>>
+			<</if>>
+		<<elseif _selectedRumour is "rape">>
+			<<if $cool gte 120>>
+				"我不清楚细节，"你偷听到<<person1>><<person>>的话，"但我听说有学生被袭击了。"<br>
+				"有人被强奸了?在这地方？"<<person2>><<He>>翻了个白眼，"从来没听说过。"<br>
+				"嗯，也许你是对的。"
+			<<else>>
+				"对啊，就是<<pshe>>被强奸了，"那个<<person1>><<person>>小声说，"还是被不止一个人。"<br>
+				"就那个小婊子？我赌<<pshe>>估计还挺享受吧！"那群人哈哈大笑。<br>
+				"也许我们哪天也可以去爽一爽？"<<set _trauma to true>>
+			<</if>>
+		<</if>>
+		<br><br>
+		你走开了。他们不可能是在讨论你，对吧？<<gstress>><<stress 2>><<if _trauma>><<gtrauma>><<trauma 2>><</if>>
+		<br><br>
+		<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<<elseif $rng gte 31>>
+		<<generatey1>><<person1>>
+		<<rng>>
+		<<if $rng gte 66>>
+			当你路过时，一个<<person>>捏了捏你的<<bottom>>。
+		<<elseif $rng gte 33>>
+			当你越过一个<<person>>时，你感觉到<<his>>的手飞快的掐了一把你的<<bottom>>.
+		<<else>>
+			当你越过一个<<person>>时，你感觉有人拍了一下你的<<bottom>>.
+		<</if>>
+		<br><br>
+		<<if $promiscuity gte 15 and $submissive gte 1500>>
+			<<link [[调戏|Hallways Flirt Squeeze]]>><<trauma -6>><<arousal 100>><</link>><<ltrauma>><<garousal>><<promiscuous1>>
+			<br>
+		<</if>>
+		<<link [[掌掴|Hallways Slap]]>><<trauma -6>><<stress -12>><<detention 1>><</link>><<gdelinquency>><<ltrauma>><<lstress>>
+		<br>
+		<<link [[无视|Hallways]]>><<endevent>><<set $eventskip to 1>><<trauma 1>><<stress 1>><</link>><<gtrauma>><<gstress>>
+		<br>
+
+	<<elseif $rng gte 26>>
+
+		人群穿梭往来。你走得很慢，穿行在走廊之间，尽量避免撞到其他人。
+		<br><br>
+
+		<<if $cool gte 160>>
+
+			你被一群较大的队伍堵住了。当其中一人注意到你时，他向别人示意让你通过。道路顿时畅通无阻，你继续前进。
+			<br><br>
+
+			<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+
+		<<else>>
+
+			最终，停滞不前的学生堵住了你的去路，他们叽叽喳喳。你寻找着出路，却突然感觉到<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>一只手拉开了你裙子上的链子。<<else>>有手在你的裤腰上徘徊。<</if>>
+			<br><br>
+
+			<<link [[抓住他们|Hallways Pantsed Grab]]>><</link>><<athleticsdifficulty 1 1000>>
+			<br>
+			<<link [[什么都不干|Hallways Pantsed]]>><<set $phase to 1>><</link>>
+
+		<</if>>
+
+	<<elseif $rng gte 21>>
+		<<generatey1>><<person1>>
+
+		<<if $parasite.left_ear.name is "slime" or $parasite.right_ear.name is "slime">>
+			<<if $player.perceived_breastsize gte 6>>
+				一个<<person>>对你喊道。"漂亮的大奶子！"你的脸颊因尴尬而泛起红晕。
+				<<insecurity "breasts_big" 1>><<ginsecurity "breasts_big">><<gtrauma>><<gstress>><<trauma 2>><<stress 2>>
+				<br><br>
+				<span class="lewd">你感觉到你脑袋里的史莱姆在命令你脱光衣服。</span> 它承诺如果你遵守的话，就给予你奖励，如果你不遵守的话，就要承担相应的后果。
+				<br><br>
+
+				<<if $promiscuity gte 55 and $submissive gte 1900>>
+					<<link [[心甘情愿地服从|Hallways Slime Breasts Submit willingly]]>><<corruption 3>><<pain -8>><<stress -12>><<trauma -24>><<sub 2>><</link>><<promiscuous4>><<ggcorruption>><<llpain>><<llltrauma>><<llstress>>
+					<br>
+				<</if>>
+				<<link [[服从|Hallways Slime Breasts Obey]]>><<corruption 1>><<pain -4>><<stress -6>><<trauma -12>><<sub 1>><</link>><<gcorruption>><<lpain>><<lltrauma>><<lstress>>
+				<br>
+				<<link [[拒绝|Hallways Slime Breasts Defy]]>><<corruption -1>><<pain 8>><<stress 6>><<trauma 6>><<def 1>><</link>><<lcorruption>><<ggpain>><<ggtrauma>><<ggstress>>
+				<br>
+
+			<<else>>
+				一个<<person>>对你喊道。<<schoolcatcall>>你的脸颊因尴尬而泛起红晕。
+				<<gtrauma>><<gstress>><<trauma 2>><<stress 2>>
+				<br><br>
+				<span class="lewd">你感觉到你脑袋里的史莱姆在命令你脱光衣服。</span> 它承诺如果你遵守的话，就给予你奖励，如果你不遵守的话，就要承担相应的后果。
+				<br><br>
+
+				<<if $promiscuity gte 75 and $submissive gte 1900>>
+					<<link [["心甘情愿的服从"|Hallways Slime Strip Submit willingly]]>><<corruption 3>><<pain -8>><<stress -12>><<trauma -24>><<sub 2>><</link>><<promiscuous5>><<ggcorruption>><<llpain>><<llltrauma>><<llstress>>
+					<br>
+				<</if>>
+				<<link [[服从|Hallways Slime Strip Obey]]>><<corruption 1>><<pain -4>><<stress -6>><<trauma -12>><<sub 1>><</link>><<gcorruption>><<lpain>><<lltrauma>><<lstress>>
+				<br>
+				<<link [[拒绝|Hallways Slime Strip Defy]]>><<corruption -1>><<pain 8>><<stress 6>><<trauma 6>><<def 1>><</link>><<lcorruption>><<ggpain>><<ggtrauma>><<ggstress>>
+				<br>
+
+			<</if>>
+		<<else>>
+			<<if $player.perceived_breastsize gte 6>>
+				一个<<person>>对你喊道。"漂亮的大奶子！"你的脸颊因尴尬而泛起红晕。
+				<<insecurity "breasts_big" 1>><<ginsecurity "breasts_big">><<gtrauma>><<gstress>><<trauma 2>><<stress 2>>
+				<br><br>
+				<<link [[炫耀展示胸部|Hallways Breast Tease]]>><</link>><<exhibitionist1>>
+				<br>
+			<<else>>
+				一个<<person>>对你喊道。<<schoolcatcall>>你的脸颊因尴尬而泛起红晕。
+				<<gtrauma>><<gstress>><<trauma 2>><<stress 2>>
+				<br><br>
+			<</if>>
+
+			<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+				<<if $worn.under_lower.type.includes("naked") and $exhibitionism gte 55>>
+					<<link [[展示|Hallways Lewd Flash]]>><</link>><<exhibitionist4>>
+					<br>
+				<<elseif $exhibitionism gte 15>>
+					<<link [[展示|Hallways Flash]]>><</link>><<exhibitionist2>>
+					<br>
+				<</if>>
+			<</if>>
+			<<link [[调情|Hallways Catcall Flirt]]>><</link>><<promiscuous1>>
+			<br>
+			<<link [[无视|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<br>
+		<</if>>
+	<<elseif $rng gte 11 and !$worn.lower.type.includes("naked")>>
+		<<lockerevent>>
+	<<else>>
+		<<generatey1>>一个<<person1>><<person>>走近你。"嗨，"<<he>>说。<<he>>似乎和你想谈谈。
+		<br><br>
+
+		<<link [[嗨(0:05)|Hallways Encounter]]>><<pass 5>><<trauma -6>><<stress -12>><</link>><<ltrauma>><<lstress>>
+		<br>
+		<<link [[无视|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+
+	<</if>>
+<</widget>>
+
+<<widget "courtyard">>
+	<<if $bus is "schoolfrontcourtyard">>
+		<<link [[继续|School Front Courtyard]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|School Rear Courtyard]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "lockerevent">>
+	<<generatey1>><<generatey2>><<person1>>
+	<<if $cool gte 240 or $worn.under_lower.type.includes("naked")>>
+		在走过大堂的时候，你感觉什么东西拽住了你的$worn.lower.cn_name_cap。
+		你转过身去看罪魁祸首，一个<<person>>把你衣服上那段布料挂在最近的柜子里面，然后砰地关上了门。<<stress 5>><<gstress>>
+		<br><br>
+		<<set $phase to 0>>
+	<<elseif $cool gte 120>>
+		在走过大堂的时候，你感觉有什么拽住了你的后<<print setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1 ? "下摆" : "腰带">>
+		你的$worn.under_lower.cn_name_cap。你转过身去看罪魁祸首，一个<<person>>把你衣服上那段布料挂在最近的柜子里面。
+		<<He>>砰地一声关上了门，紧紧的压迫着你的<<bottom>>。<<pain 2>><<gpain>><<stress 5>><<gstress>>
+		<br><br>
+		<<set $phase to 1>>
+	<<else>>
+		在走过大堂的时候，你感觉有什么拽住了你的前<<print setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1 ? "下摆" : "腰带">>
+		你的$worn.under_lower.cn_name_cap。你低头看向罪魁祸首，一个<<person>>把你衣服上那段布料挂在最近的柜子里面。
+		<<He>>砰地一声关上了门，紧紧的压迫着你的<<genitals>>.<<pain 5>><<gpain>><<stress 5>><<gstress>>
+		<br><br>
+		<<set $phase to 2>>
+	<</if>>
+	"哦，不好意思，"<<he>>贱笑着离开了。
+	<br><br>
+	<<set $lock to 50>>
+	<<lockereventpassages>>
+<</widget>>
+
+<<widget "lockereventpassages">>
+	<<if currentSkillValue('skulduggery') gte $lock>>
+		<<link [[尝试开锁 (0:05)|Hallways Pick Locker Attempt]]>><<pass 5>><<crimeup 30>><<stress 5>><</link>><<crime>><<gstress>>
+		<br>
+	<<else>>
+		<span class="red">这把锁看上去超出了你的能力范围。</span><<skulduggeryrequired>>
+		<br><br>
+	<</if>>
+	<<set _physiquemax to $physiquemax * 1.05>>
+	<<link [[强行挣脱 (0:01)|Hallways Locker Struggle Free Attempt]]>><<pass 1>><</link>><<physiquedifficulty 2000 _physiquemax>>
+	<<if $worn.lower.type.includes("naked") and $exhibitionism gte 35>>
+		<br>
+		<<link [[脱掉 (0:01)|Hallways Strip Locker Clothing]]>><<pass 1>><</link>><<exhibitionist3>>
+	<<elseif !$worn.lower.type.includes("naked") and $exhibitionism gte 15>>
+		<br>
+		<<link [[脱掉 (0:01)|Hallways Strip Locker Clothing]]>><<pass 1>><</link>><<exhibitionist1>>
+	<</if>>
+<</widget>>
+
+<<widget "lockereventnext">>
+	<<if $worn.lower.type.includes("naked") and $worn.under_lower.type.includes("naked")>>
+		<<if $exhibitionism gte 35>>
+			<<flaunting>>你留下衣服，直接走开了。
+		<<else>>
+			<<tearful>>你蹒跚离开，留下你的衣服<<covered>>
+		<</if>>
+	<<elseif $worn.lower.type.includes("naked")>>
+		<<if $exhibitionism gte 35>>
+			<<flaunting>>你走开了。
+		<<else>>
+			<<tearful>>你逃走了。<<embarrassment>><<gtrauma>><<trauma 5>>
+		<</if>>
+	<<else>>
+		你走开了.
+	<</if>>
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Hallways]]>><</link>>
+<</widget>>
+
+<<widget "eventscourtyard">>
+	<!-- Jimmy TODO: Convert this to use the macros: <<cleareventpool>>, <<addinlineevent>> and <<runeventpool>>. -->
+	<<if !["early", "late", "earlynoschool", "latenoschool", "daynoschool"].includes($schoolstate)>>
+		<<set _whitney to $NPCName[$NPCNameList.indexOf("Whitney")]>>
+		<<if $exposed gte 1>>
+			一些学生发现你探出了头并挥手示意。你<<nervously>>挥着手，心跳加速。你不认为他们发现了什么异常。
+			<<gstress>><<stress 6>><<garousal>><<arousal 600>>
+			<br><br>
+
+			<<endevent>>
+
+			<<courtyard>>
+
+		<<elseif _whitney.love gte 20 and $whitneyromance isnot 1 and !["dungeon", "pillory"].includes(C.npc.Whitney.state)>>
+			<<set $whitneyromance to 1>>
+			<<npc Whitney>><<person1>>
+
+			惠特尼靠近你，把你放倒在墙上。<<He>>看起来比平常更生气。
+			<br><br>
+			<<takeKissVirginity "Whitney" "loveInterest">>
+			"你这小骚货，"<<he>>说道。<<He>>用双臂牢牢地将你禁锢。"你一直渴望的就是这个，别想否认。"<<He>>以令人惊讶的温柔亲吻着你。"你现在是我的<<girlfriend>>了。你最好心存感激。"<<He>>再次吻住了你，这一次啃咬着你的唇瓣。<<He>>拉开距离后头也不回地离开了。
+			<<npcincr Whitney lust 5>><<glust>>
+			<br><br>
+
+			<<tearful>>你稳住了身形。
+			<<gstress>><<garousal>><<stress 6>><<arousal 600>>
+			<br><br>
+
+			<<if $loveInterest.primary is "None">>
+				<<set $loveInterest.primary to "Whitney">>
+				<span class = "gold">Whitney现在是你的爱人了！看来在这件事上你别无选择。</span>
+				<br><br>
+			<<else>>
+				<span class = "gold">Whitney现在可以说是你的爱人！看来在这件事上你别无选择。
+				<br>
+				你可以在"态度"菜单中改变你的爱慕对象。</span>
+				<br><br>
+			<</if>>
+
+			<<endevent>>
+
+			<<courtyard>>
+		<<elseif $flyover_caught is "naked">>
+			<<unset $flyover_caught>>
+			<<generatey1>><<generatey2>><<generatey3>>
+			你听到附近一群学生的笑声。一个<<person1>><<person>>拿出手机。<<His>>的朋友们围在身后。
+			<br>
+
+			"我认得他们，"一个<<person2>><<person>>说。"他们在这里上学。"
+			<br><br>
+
+			你踮着脚尖在人群中窥探着。手机里播放着一段关于一个人爬楼梯到立交桥的视频，他赤身裸体着。<span class="lewd">那个人就是你。</span>
+			<<ggarousal>><<ggstress>><<arousal 18>><<stress 18>>
+			<br><br>
+
+			"那是学校外面的桥，"你飞速溜走，一个<<person3>><<person>>说，"变态。"
+			<br><br>
+
+			你试图溜走，但<<person2>><<person>>转身来注意到了你。"就是<<phim>>！"<<he>>大声说。其余的人也转过身来，眼中闪过一丝兴奋。
+			<br><br>
+			<<schoolrep_naked>>
+			<<link [[走开|Courtyard Flyover Walk]]>><<status -10>><</link>><<lcool>>
+			<br>
+			<<if $exhibitionism gte 75>>
+				<<link [[抢过来|Courtyard Flyover Own]]>><</link>><<exhibitionist5>>
+				<br>
+			<</if>>
+
+		<<elseif $flyover_caught is "mask">>
+			<<unset $flyover_caught>>
+			<<generatey1>><<generatey2>><<generatey3>>
+			你听到附近一群学生的笑声。一个<<person1>><<person>>拿出手机。<<His>>的朋友们围在身后。
+			<br>
+
+			"再试一次，"一个<<person2>><<person>>说，"我打赌我们能找出它是谁。"
+			<br><br>
+
+			你踮着脚尖在人群中窥探着。手机里播放着一段关于一个人爬楼梯到立交桥的视频，他赤身裸体着。<span class="lewd">那个人就是你。</span>
+			<br><br>
+
+			"那是学校外面的桥，"你飞速溜走，一个<<person3>><<person>>说，"一定是这里的学生。"
+			<br>
+
+			"真是个变态。"<<person2>><<person>>插话说。"视频发我，我帮你弄。"
+			<br><br>
+
+			在别人注意到你脸上进一步加深的红晕时你溜走了。
+			<<garousal>><<gstress>><<arousal 600>><<stress 6>>
+			<br><br>
+
+			<<endevent>>
+			<<courtyard>>
+
+		<<elseif !["dungeon", "pillory"].includes(C.npc.Whitney.state) and $bullytimeroutside gte $rng and Time.hour gte 15 and _whitney.init is 1>>
+			<<set $bullytimeroutside to 0>>
+
+			<<schoolbullyoutside>>
+
+		<<elseif $panty_thief is undefined and Time.days gte 7>>
+			<<generate1>><<person1>><<npcClothesType $NPCList[0] "default">>
+			你听到附近的栅栏发出响声，你转过身来，看到一个<<person>>盯着你。"嘿，"<<he>>说，"想赚点钱吗？"
+			<br>
+
+			<<if $promiscuity gte 35 or $uncomfortable.prostituting is false>>
+				你开始报价，但<<he>>打断了你。
+			<<else>>
+				<<if $speech_attitude is "meek">>
+					"我-我不做那种事情，"你回答。
+				<<elseif $speech_attitude is "bratty">>
+					"你是在说我是个妓女吗？"你问。"你是想被打吗？"
+				<<else>>
+					"我不是那种小姐"，你回答。
+				<</if>>
+				<br>
+			<</if>>
+			"不是那样的！"<<he>>说，"我需要学校里的人帮忙，仅此而已。"
+			<br>
+			<<if $speech_attitude is "meek">>
+				"那你-你想要什么?"
+			<<elseif $speech_attitude is "bratty">>
+				"那就直说，我可没有那么多时间。"
+			<<else>>
+				"所以什么事？"
+			<</if>>
+			<br><br>
+			<<He>>瞥了一眼周围。"内裤，我需要学生内裤作为收藏。他们不让我通过大门，但你可以在上课时去更衣室，从储物柜里把它们拿出来。<span class="gold">每条我给你£10。"</span>
+			<br><br>
+
+			这个<<personsimple>>是个怪人，但你需要钱。
+			<br><br>
+
+			<<link [[同意|Events Panty Accept]]>><</link>>
+			<br>
+			<<link [[拒绝|Events Panty Refuse]]>><</link>>
+			<br>
+		<<else>>
+			<<if $rng gte 91 and $worn.face.type.includes("cool") and $schoolstate isnot "afternoon">>
+				<<npc River>><<person1>>"你，<<girl>>。停下。" 你听到身后瑞沃的声音。你转过身来，看到<<him>>向你走来。"这绝对不是验光眼镜。马上把它给我。" 一群学生在附近看着。
+				<br><br>
+
+				<<link [[交出去|Events Shades Hand]]>><<status -10>><<trauma 6>><<faceruined>><<npcincr River dom 1>><</link>><<lcool>><<gtrauma>>
+				<br>
+				<<link [[竖起中指|Events Shades Flip]]>><<status 1>><<trauma -6>><<detention 4>><<npcincr River dom -1>><<npcincr River love -1>><</link>><<gcool>><<ltrauma>><<gdelinquency>>
+				<br>
+
+			<<elseif $rng gte 91 and $worn.face.type.includes("glasses")>>
+				<<generatey1>><<person1>>一只手从你身后袭来剥去了你的眼镜。<<facestrip>>
+				<br><br>
+
+				你转过身，看到一个<<person>>拿着它。"你从哪里弄来的这玩意儿？都能当成文物了，"<<he>>说道。<<He>>将它扔在地上。"哇，质量不错啊。"<<He>>的脚在它上面徘徊。
+				"我可以把它弄坏，除非你能给我看看你的<<print ($player.gender_appearance is "f" ? "内裤" : "内衣")>>。"
+				<br><br>
+				<<if $worn.under_lower.type.includes("naked")>>
+					<<link [[说你什么都没穿|Glasses No Underwear]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+				<<else>>
+					<<link [[展示|Glasses Underwear]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+				<</if>>
+				<br>
+				<<link [[拒绝|Glasses Refuse]]>><</link>>
+				<br>
+			<<elseif $rng gte 81 and $player.gender_appearance is "f" and $player.perceived_breastsize gte 3>>
+				<<generates1>><<person1>>身后传来脚步声。你还没来得及转身，就有人撞到你，差点把你推倒。有手指在你的背上乱摸。
+				<<if $worn.under_upper.type.includes("naked") or $worn.under_upper.type.includes("sticky")>>
+					"我找不到带子。"动手的那个<<person>>惊呼道。"她没有穿胸罩啥的。"<<He>>跑回<<he>>那些傻笑着的朋友身边。你的脸红了。
+					<<gpain>><<pain 1>><<trauma 6>><<stress 6>><<gtrauma>><<gstress>><<fameexhibitionism 3>>
+					<br><br>
+
+					<<endevent>>
+
+					<<courtyard>>
+				<<elseif setup.clothes.under_upper[clothesIndex('under_upper', $worn.under_upper)].strap is 1>>
+					你的$worn.under_upper.cn_name_cap在你的$worn.upper.cn_name_cap里松动了。他们解开了带子。
+					<br><br>
+
+					罪魁祸首，一个<<person>>，跑回了<<he>>那些傻笑着的朋友那里。
+					<<gpain>><<pain 1>><<trauma 6>><<stress 6>><<gtrauma>><<gstress>>
+					<br><br>
+
+					<<link [[找个安静的地方整理好衣服|Bra Strap Quiet]]>><</link>>
+					<br>
+					<<if $exhibitionism gte 55>>
+						<<link [[就在这里整理好衣服|Bra Strap Exhibitionism]]>><</link>><<exhibitionist4>>
+						<br>
+					<</if>>
+				<<else>>
+					动手的<<person>>把你推开。"她居然真的穿着，"<<he>>说出来的时候，<<His>>的朋友们看起来很失望。
+					<<gpain>><<pain 1>>
+					<br><br>
+
+					<<link [[容忍|Bra Strap Turn]]>><<stress 6>><</link>><<gstress>>
+					<br>
+					<<link [[生气|Bra Strap Angry]]>><<stress -6>><<detention 2>><<def 1>><</link>><<gdelinquency>><<lstress>>
+					<br>
+				<</if>>
+			<<elseif $rng gte 71>>
+				<<if $beauty gte random(($beautymax / 2), ($beautymax + 1000))>>
+					<<generatey1>><<generatey2>><<person2>>
+					一个<<person>>走近你。"我的朋友喜欢你，"<<he>>说。
+
+					<<rng>>
+					<<if $rng gte 81>><<set $phase to 0>>
+						<<He>>指着一个坐在长椅上，吃着三明治的<<person1>><<person>>。<<person2>><<person>>停顿了一下，等待你的回应。
+						<<ltrauma>><<trauma -6>>
+						<br><br>
+					<<elseif $rng gte 61>><<set $phase to 1>>
+						<<He>>指着一个坐在长椅上，对你微笑的<<person1>><<person>>。<<person2>><<person>>停顿了一下，等待你的回应。
+						<<ltrauma>><<trauma -6>>
+						<br><br>
+					<<elseif $rng gte 41>><<set $phase to 2>>
+						<<He>>指着一个坐在长椅上，装作不看你的<<person1>><<person>>。<<person2>><<person>>停顿了一下，等待你的回应。
+						<<ltrauma>><<trauma -6>>
+						<br><br>
+					<<elseif $rng gte 21>><<set $phase to 3>>
+						<<He>>指着一个坐在长椅上，正在拙劣地搔首弄姿的<<person1>><<person>>。<<person2>><<person>>停顿了一下，等待你的回应。
+						<<ltrauma>><<trauma -6>>
+						<br><br>
+					<<else>><<set $phase to 4>>
+						<<He>>指着一张长椅，那里坐着一个盯着自己大腿的<<person1>><<person>>。"他太害羞了，什么都不说。"<<person2>><<He>>停顿了一下，等待你的回应。
+					<<ltrauma>><<trauma -6>>
+					<br><br>
+					<</if>>
+
+					<<link [[调情 (0:05)|Courtyard Crush Flirt]]>><<pass 5>><<status 1>><</link>><<promiscuous1>><<gcool>>
+					<br>
+					<<link [[无视|Courtyard Crush Ignore]]>><</link>>
+					<br>
+				<<elseif $rng gte 61 and $hypnosis gte 1 and $hypnosisdisable is "f">>
+					<<generatey1>><<person1>>
+					你看到一个<<person>>在自行车棚附近看着你。当你的目光与<<hers>>相遇时，<<He>>转过头去。尽管很难看清，但<<he>>可能在脸红。
+					<br><br>
+
+					<<hypnosisicon>><span class="blue">你感到有什么东西侵入了你的意识，让你仿佛变得精神恍惚了。</span><<hypnosisicon>>然后你发现自己站在<<personsimple>>面前，嘴里全是荤话。<<He>>神情紧张的盯着你，等待着。
+					<br><br>
+
+					你的内心敦促你继续。
+					<br><br>
+
+					<<link [[提议|Courtyard Hypnosis Offer]]>><<hypnotised 1>><<trauma -6>><<stress -6>><</link>><<ltrauma>><<lstress>>
+					<br>
+					<<link [[抵抗|Courtyard Hypnosis Resist]]>><</link>><<willpowerdifficulty 1 `150 + ($hypnosis * 50)`>>
+					<br>
+				<<elseif $rng gte 56 and $photo and $photo.nude_footage is 1>>
+					<<set $photo.nude_footage to 0>>
+					<<generatey1>><<generatey2>><<generatey3>><<person1>>
+					你注意到<<person>>在看着你，<<his>>的脸上有一种奇怪的笑意。发现你看到他，<<He>>就转过头去了。
+					<br><br>
+
+					你转过身，看到一个<<person2>><<person>>指着你。<<Hes>>站在一个<<person3>><<person>>旁边，<<person2>><<his>>手里拿着一个电话。
+					<br><br>
+
+					<<link [[调查|Courtyard Nude Footage Investigate]]>><<trauma 6>><</link>><<gtrauma>>
+					<br>
+					<<link [[无视|Courtyard Footage Ignore]]>><<stress 12>><<status -10>><</link>><<lcool>><<ggstress>>
+					<br>
+				<<elseif $rng gte 51 and $photo and $photo.assault_footage is 1>>
+					<<set $photo.assault_footage to 0>>
+					<<generatey1>><<generatey2>><<generatey3>><<person1>>
+					你注意到<<person>>在看着你，<<his>>的脸上有一种奇怪的笑意。发现你看到他，<<He>>就转过头去了。
+					<br><br>
+
+					你转过身，看到一个<<person2>><<person>>指着你。<<Hes>>站在一个<<person3>><<person>>旁边，<<person2>><<his>>手里拿着一个电话。
+					<br><br>
+
+					<<link [[调查|Courtyard Assault Footage Investigate]]>><<trauma 12>><</link>><<ggtrauma>>
+					<br>
+					<<link [[无视|Courtyard Footage Ignore]]>><<stress 12>><<status -20>><</link>><<llcool>><<ggstress>>
+					<br>
+				<<else>>
+					<<generatey1>><<generatey2>>
+					你无意中听到一个<<fullGroup>>在分享他们的暗恋对象。
+					<<rng>>
+					<<if $rng gte 96 and $NPCName[$NPCNameList.indexOf("Robin")].init is 1>>
+						<<person1>><<person>>承认自己喜欢罗宾。
+						<br><br>
+						<<if $robinromance gte 1>>
+							你感到有些许嫉妒。
+							<br><br>
+
+							<<link [[生气|Courtyard Crush Robin Angry]]>><<status 1>><<def 1>><</link>><<gcool>>
+							<br>
+							<<link [[无视|Courtyard Crush Robin Ignore]]>><<stress 6>><</link>><<gstress>>
+						<<else>>
+							<<endevent>>
+							<<npc Robin>><<person1>>
+							你在想罗宾知不知道自己有仰慕者。
+							<br><br>
+							<<endevent>>
+							<<courtyard>>
+						<</if>>
+					<<elseif $rng gte 81 and $NPCName[$NPCNameList.indexOf("Whitney")].init is 1>>
+						<<person1>><<person>>承认自己喜欢惠特尼。
+						<br><br>
+						<<if $whitneyromance gte 1>>
+							你感到有些许嫉妒。
+							<br><br>
+							<<link [[生气|Courtyard Crush Whitney Angry]]>><<status 1>><<def 1>><</link>><<gcool>>
+							<br>
+							<<link [[无视|Courtyard Crush Whitney Ignore]]>><<stress 6>><</link>><<gstress>>
+							<br>
+						<<else>>
+							<<endevent>>
+							<<npc Whitney>><<person1>>
+							你怀疑惠特尼知道<<he>>有仰慕者。
+							<br><br>
+							<<endevent>>
+							<<courtyard>>
+						<</if>>
+					<<elseif $rng gte 71 and $NPCName[$NPCNameList.indexOf("Sydney")].init is 1>>
+						<<person1>><<person>>承认自己喜欢悉尼。
+						<br><br>
+						<<if $sydneyromance gte 1>>
+							你感到有些许嫉妒。
+							<br><br>
+							<<link [[生气|Courtyard Crush Sydney Angry]]>><<status 1>><<def 1>><</link>><<gcool>>
+							<br>
+							<<link [[无视|Courtyard Crush Sydney Ignore]]>><<stress 6>><</link>><<gstress>>
+							<br>
+						<<else>>
+							<<endevent>>
+							你想知道悉尼是否知道<<nnpc_he "Sydney">>有了仰慕者，等等，<<nnpc_he "Sydney">>知道这是什么意思吗？
+							<br><br>
+							<<courtyard>>
+						<</if>>
+					<<else>>
+						他们笑着环顾四周，焦虑不安。 对于不想被偷听的人来说，他们的声音太大了。
+						<br><br>
+						<<endevent>>
+						<<courtyard>>
+					<</if>>
+				<</if>>
+			<<elseif $rng gte 61 and $schoolrep.herm gte 5 and !$worn.face.type.includes("mask")>>
+				<<generatey1>><<generatey2>><<generatey3>>
+				一个<<fullGroup>>包围了你。
+				<br><br>
+				"就是这个，”<<person1>><<person>>说。“这个有几把和逼的怪胎。"
+				<br><br>
+				"不错，"一个<<person2>><<person>>说，斜眼看着你的胯部。"你给我们看怎么样？"<<He>>抓住了你的$worn.lower.cn_name_cap，但你闪开了。
+				<br><br>
+				<<if playerBellyVisible() and $pregnancyspeechdisable is "f">>
+					"所以，<<phers>>的大肚子，"<<person3>><<person>>盯着你怀孕的肚子发问："你认为<<pshe>>是用<<pher>>的精液让<<pherself>>怀孕了吗？"
+					<br><br>
+					<<famepregnancy 1>>
+				<</if>>
+
+				你被包围了，但员工休息室就在附近，也许某位老师会听到你的呼救。
+				<br><br>
+
+				<<link [[斗争|Courtyard Herm Resist]]>><<def 1>><</link>>
+				<br>
+				<<link [[大声呼救|Courtyard Herm Call]]>><<set $rescued += 1>><<status -10>><<trauma -6>><<stress -6>><</link>><<lcool>><<ltrauma>><<lstress>>
+				<br>
+				<<link [[给他们看|Courtyard Herm Show]]>><<sub 1>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+				<br>
+				<<if $exhibitionism gte 75>>
+					<<link [[炫耀|Courtyard Herm Flaunt]]>><</link>><<exhibitionist5>>
+					<br>
+				<</if>>
+			<<elseif $rng gte 61 and $schoolrep.crossdress gte 5 and $player.gender isnot $player.gender_appearance and !$worn.face.type.includes("mask")>>
+				<<generatey1>><<generatey2>><<generatey3>>
+				一个<<fullGroup>>包围了你。
+				<br><br>
+				"就是这个人，"那个<<person1>><<person>>说道。"他们说<<pshes>>真的是个<<if $player.gender is "f">>女生<<else>>男生<</if>>。"
+				<br><br>
+				<<if !playerBellyVisible()>>
+					"不错，"一个<<person2>><<person>>说，斜眼看着你的胯部。"你给我们看怎么样？"<<He>>抓住了你的$worn.lower.cn_name_cap，但你闪开了。
+					<br><br>
+
+					你被包围了，但员工休息室就在附近，也许某位老师会听到你的呼救。
+					<br><br>
+
+					<<link [[斗争|Courtyard Herm Resist]]>><<def 1>><</link>>
+					<br>
+					<<link [[大声呼救|Courtyard Herm Call]]>><<set $rescued += 1>><<status -10>><<trauma -6>><<stress -6>><</link>><<lcool>><<ltrauma>><<lstress>>
+					<br>
+					<<link [[给他们看|Courtyard Herm Show]]>><<sub 1>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+					<br>
+					<<if $exhibitionism gte 75>>
+						<<link [[炫耀|Courtyard Herm Flaunt]]>><</link>><<exhibitionist5>>
+						<br>
+					<</if>>
+				<<elseif $player.gender_appearance is "f">>
+					"你知道的，"一个<<person2>><<person>>看着你的肚子说，"她现在是个孕妇，让她自个儿呆着去吧，反正她暂时穿不了男装。"
+					<br><br>
+					他们在走之前都要再三观摩你的肚子。
+					<<schoolrep crossdress -1>>
+					<br><br>
+					<<endevent>>
+					<<courtyard>>
+				<<else>>
+					"就她这逼样还男装。”<<person2>><<person>>看着你的肚子说，“你确实是怀了，但给老子们再爽爽怎么样？”<<He>>扯住你的$worn.lower.cn_name_cap，但你最终还是闪开了。
+					<br><br>
+
+					你被包围了，但员工休息室就在附近，也许某位老师会听到你的呼救。
+					<br><br>
+
+					<<link [[斗争|Courtyard Herm Resist]]>><<def 1>><</link>>
+					<br>
+					<<link [[大声呼救|Courtyard Herm Call]]>><<set $rescued += 1>><<status -10>><<trauma -6>><<stress -6>><</link>><<lcool>><<ltrauma>><<lstress>>
+					<br>
+					<<link [[给他们看|Courtyard Herm Show]]>><<sub 1>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+					<br>
+					<<if $exhibitionism gte 75>>
+						<<link [[炫耀|Courtyard Herm Flaunt]]>><</link>><<exhibitionist5>>
+						<br>
+					<</if>>
+				<</if>>
+			<<else>>
+				<<if $cool lt 120>>
+					<<generatey1>><<person1>>一个<<person>>指着你，向<<his>>的朋友们耳语。 他们突然大笑起来。
+					<<gstress>><<stress 6>>
+				<<else>>
+					一些学生认出了你并朝你挥手，你也挥手回应。
+					<<lstress>><<stress -6>>
+				<</if>>
+				<br><br>
+
+				<<endevent>>
+				<<courtyard>>
+			<</if>>
+		<</if>>
+	<<else>>
+		<<if $rng gte 51>>
+			<<beastNEWinit 1 dog>>
+			<<rng>>
+			<<if $rng gte 61>>
+				<<if $monster is 1 or $bestialitydisable is "f">>
+					你看到一只<<beasttype>>正在厨房后面翻找垃圾。<<bhis>>竖起了耳朵，<<bhe>>向你奔来。
+					<br><br>
+
+					<<link [[继续|Rear Courtyard Dog]]>><<set $molestationstart to 1>><</link>>
+					<br>
+				<<else>>
+					你看到一只狗正在厨房后面翻找垃圾。它竖起了耳朵，向你奔来。
+					<br><br>
+
+					你设法逃脱了，但并非毫发无伤。
+					<<beastescape>>
+					<<endevent>>
+					<br><br>
+
+					<<courtyard>>
+				<</if>>
+			<<else>>
+				你看到一只<<beasttype>>正在厨房后面翻找垃圾。<<bHe>>听到了你的声音，<<bhe>>逃跑了。
+				<<endevent>>
+				<br><br>
+
+				<<courtyard>>
+			<</if>>
+		<<else>>
+			<<generate1>><<person1>>
+			一个保安靠在墙上,
+			<<if $weather is "rain">>
+				在壁凹处躲雨。
+			<<elseif $weather is "snow">>
+				在壁凹处躲雨。
+			<<else>>
+				<<if Time.dayState is "night">>
+					看着蝙蝠俯冲略过头顶。
+				<<else>>
+					看着小鸟在树林间飞翔。
+				<</if>>
+			<</if>>
+			<br><br>
+
+			<<rng>>
+			<<if $rng gte 81>>
+				<<He>>发现了你，并在靠近时解下警棍。"好，好，"<<he>>说道。"你不应该在这里，跟我过来。"<<gstress>><<stress 6>>
+				<br><br>
+
+				<<link [[潜行过去|Courtyard Guard Quiet]]>><</link>>
+				<br>
+				<<link [[跑|Courtyard Guard Run]]>><</link>><<athleticsdifficulty 1 400>>
+				<br>
+				<<link [[战斗|Courtyard Guard Fight]]>><<set $fightstart to 1>><</link>>
+				<br>
+			<<elseif $rng gte 41>>
+				<<He>>发现了你，皱着眉头。"你不应该呆在这里，"<<he>>说道。"如果你不想惹上麻烦，就赶紧离开。"
+				<br><br>
+
+				<<link [[离开|Courtyard Guard Leave]]>><</link>>
+				<br>
+				<<link [[说服|Courtyard Guard Convince]]>><</link>><<englishdifficulty 1 600>>
+				<br>
+			<<else>>
+				你不应该在这里，但是<<hes>>正在摸鱼，并没有注意到你。<<gstress>><<stress 6>>
+				<br><br>
+				<<endevent>>
+				<<courtyard>>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "schoolbully">>
+	<<set _whitney to $NPCName[$NPCNameList.indexOf("Whitney")]>>
+	<<npc Whitney>><<person1>>
+
+	<<if $bullyevent is 0>>
+		<<set $bullyevent += 1>>
+
+		有人把你推到了墙上。你转身面对罪魁祸首，但<<he>>直接固定住了你的双臂。是惠特尼，一个有名的不良学生。
+
+		"别再挡我的路，"<<he>>说道，对遮住了一只眼睛的金色碎发毫不在意。<<His>>的朋友们站在<<him>>两侧。"否则我会让你明白你的地位。"
+		<<if $player.gender is $player.gender_appearance>>
+			<<He>>将<<his>>的膝盖压入你的胯部片刻，然后松开了你。<<He>>和<<his>>朋友们离开了，但你怀疑这一切只是开始。
+		<<else>>
+			<<He>>将<<his>>的膝盖压入你的胯部片刻，皱着眉头停顿了一会儿才松开你。<<He>>和<<his>>朋友们离开了，但你怀疑这一切只是开始。
+		<</if>>
+		<<npcincr Whitney lust 5>><<glust>><<trauma 6>><<stress 6>><<gtrauma>><<gstress>>
+		<br><br>
+
+		<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+
+	<<elseif $whitneyReunionScene isnot undefined>>
+		<<unset $whitneyReunionScene>>
+
+		你在走廊里，惠特尼走到你的面前。<<His>>的手下从侧面围住了你，防止你转身就跑。"你在这儿啊，婊子。"惠特尼看起来十分恼火。"怎么，你以为我最喜欢的骚货失踪了，我不会注意到吗？"当<<he>>将<<his>>的嘴压上你的嘴唇时，你来不及反应。<<takeKissVirginity "Whitney" "loveInterest">>
+		<br><br>
+
+		惠特尼的手臂绕在你的腰间，<<he>>按住你的后脑勺。<<He>>向前倾，强迫你弯腰。满怀期待观看着的<<his>>的手下们大笑起来。
+		<br><br>
+
+		"操<<phim>>!"
+		<br>
+		"打<<phim>>!"
+		<br>
+		"拿走<<pher>>的衣服!"
+		<br><br>
+
+		惠特尼瞪着你，<<his>>抓住你的手是你倒地前的最后一根稻草。你发誓你看见了<<his>>的眼睛里闪过一丝微弱的泪痕。而在它进一步发展下去之前，<<he>>松手让你摔到了地上。
+		<br><br>
+
+		惠特尼的呼吸变得更加沉重。半晌，<<He>>开口说道："只有......只有我可以绑架你，明白了吗？" 在这群人离开的时候，惠特尼回头瞥了你一眼。<<npcincr Whitney dom 3>><<stress 6>><<gstress>><<ggdom>>
+		<br><br>
+
+		<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<<elseif $bullyevent is 1>>
+		<<set $bullyevent += 1>>
+
+		惠特尼和<<his>>的朋友们将你围堵在储物柜这里，"你又开始了，想找点乐子？”<<he>>在说着的同时打开了你身边的储物柜，<<He>>似乎试图将你推进去。
+		<br><br>
+
+		<<link [[屈服 (0:30)|Bully Locker]]>><<sub 1>><<npcincr Whitney dom 1>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>><<gdom>>
+		<br>
+		<<link [[干架|Bully Fight]]>><<def 1>><<npcincr Whitney dom -1>><<set $fightstart to 1>><</link>><<ldom>>
+		<br>
+
+	<<elseif $bullyevent is 2>>
+		<<set $bullyevent += 1>>
+		<<if $player.gender_appearance is "m" and $worn.upper.type.includes("naked")>>
+			惠特尼和<<his>>朋友们包围了你，把你逼到紧靠着储物柜。“不穿件上衣就到处晃？”<<he>>说。“我打赌你喜欢让<<nnpc_gendery "Whitney">>们看你的法子。”<<He>>转向<<his>>朋友们。“来吧，我们有比取悦这婊子更好的事做。”他们没再进一步骚扰你。
+			<<npcincr Whitney lust 5>><<glust>><<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+			<br><br>
+
+			<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<br>
+		<<else>>
+			惠特尼和<<his>>朋友们包围了你，把你逼到紧靠着储物柜。"路过是要付出代价的，"<<he>>戳了戳你的胸口并抓住你的$worn.upper.cn_name_cap。"给我们看看你的奶子就行。"
+			<br><br>
+
+			<<link [[屈服|Bully Top]]>><<npcincr Whitney dom 1>><<trauma 6>><<stress 6>><<sub 1>><</link>><<gtrauma>><<gstress>><<garousal>><<gdom>>
+			<br>
+			<<if $exhibitionism gte 15>>
+				<<link [[炫耀|Bully Top Flaunt]]>><<npcincr Whitney dom 1>><<sub 1>><<npcincr Whitney love 1>><</link>><<exhibitionist2>><<glove>><<gdom>>
+				<br>
+			<</if>>
+			<<link [[战斗|Bully Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+			<br>
+		<</if>>
+
+	<<elseif $bullyevent is 3>>
+		<<set $bullyevent += 1>>
+		惠特尼和<<his>>朋友们包围了你，把你逼到紧靠着储物柜。"路过是要付出代价的，"<<he>>邪恶地咧嘴一笑，抓住了你的衣服。"给我们看看你的内裤就行。"
+		<br><br>
+
+		<<if $worn.under_lower.type.includes("naked")>>
+			<<if $speech_attitude is "meek">>
+				你看着你的腿。"我...我没穿..."
+			<<elseif $speech_attitude is "bratty">>
+				你瞪着惠特尼。 "就算我穿着内裤我也不会照你说的去做。"
+			<<else>>
+				"但我...我没穿内裤，"你说道。
+			<</if>>
+			<br><br>
+
+			<<He>>笑了。"这就是当个婊子的代价。脱了。"
+			<br><br>
+		<</if>>
+
+		<<link [[屈服|Bully Strip]]>><<trauma 6>><<stress 6>><<sub 1>><<npcincr Whitney dom 1>><</link>><<gtrauma>><<gstress>><<garousal>><<gdom>>
+		<br>
+		<<if $worn.under_lower.type.includes("naked") and $exhibitionism gte 55>>
+			<<link [[炫耀|Bully Strip Flaunt]]>><<npcincr Whitney dom 1>><<sub 1>><<npcincr Whitney love 1>><</link>><<exhibitionist4>><<glove>><<gdom>>
+			<br>
+		<<elseif $exhibitionism gte 35>>
+			<<link [[炫耀|Bully Strip Flaunt]]>><<npcincr Whitney dom 1>><<sub 1>><<npcincr Whitney love 1>><</link>><<exhibitionist3>><<glove>><<gdom>>
+			<br>
+		<</if>>
+		<<link [[战斗|Bully Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+		<br>
+
+	<<elseif $bullyevent is 4>>
+		<<set $bullyevent += 1>>
+		惠特尼和<<his>>的朋友包围着你，把你困在储物柜旁边。"看看这是谁，"<<he>>邪恶地笑着，一把抓住你的衣领。"脱光衣服。"
+		<br><br>
+
+		<<if $worn.under_lower.type.includes("naked")>>
+			<<if $speech_attitude is "meek">>
+				你看着你的腿。"我...我没穿..."
+			<<elseif $speech_attitude is "bratty">>
+				你瞪着惠特尼。 "就算我穿着内裤我也不会照你说的去做。"
+			<<else>>
+				"但我...我没穿内裤，"你说道。
+			<</if>>
+			<br><br>
+
+			<<He>>笑了。"这就是当个婊子的代价。脱了。"
+			<br><br>
+		<</if>>
+
+		<<link [[屈服|Bully Strip]]>><<trauma 6>><<stress 6>><<sub 1>><<npcincr Whitney dom 1>><</link>><<gtrauma>><<gstress>><<garousal>><<gdom>>
+		<br>
+		<<if $worn.under_lower.type.includes("naked") and $exhibitionism gte 55>>
+			<<link [[炫耀|Bully Strip Flaunt]]>><<npcincr Whitney dom 1>><<sub 1>><<npcincr Whitney love 1>><</link>><<exhibitionist4>><<glove>><<gdom>>
+			<br>
+		<<elseif $exhibitionism gte 35>>
+			<<link [[炫耀|Bully Strip Flaunt]]>><<npcincr Whitney dom 1>><<sub 1>><<npcincr Whitney love 1>><</link>><<exhibitionist3>><<glove>><<gdom>>
+			<br>
+		<</if>>
+		<<link [[战斗|Bully Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+		<br>
+
+	<<elseif $bullyevent is 5>>
+		<<set $bullyevent += 1>>
+		惠特尼和<<his>>的朋友包围着你，把你困在储物柜旁边。“正是我需要的荡妇，”<<he>>说。 <<He>>把<<his>>的手放在你的头上，然后向下按压。“跪下。”<<his>>的朋友们在一旁窃窃私语。
+		<br><br>
+
+		<<link [[静观其变|Bully Oral]]>><<trauma 6>><<stress 6>><<sub 1>><<npcincr Whitney dom 1>><<set $molestationstart to 1>><</link>><<gtrauma>><<gstress>><<gdom>>
+		<br>
+		<<if $promiscuity gte 55>>
+			<<link [[同意口|Bully Oral]]>><<sub 1>><<npcincr Whitney dom 1>><<set $sexstart to 1>><<npcincr Whitney love 1>><</link>><<promiscuous4>><<glove>><<gdom>>
+			<br>
+		<</if>>
+		<<link [[战斗|Bully Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+		<br>
+
+	<<elseif $bullyevent is 6>>
+		<<if $pillory_tenant.special.name is "Leighton">>
+			<!-- does not increase bullyevent counter -->
+			你不知道到底发生了什么，但你觉得惠特尼和<<his>>的团伙可能在利用礼顿的缺席做什么事情，等校长一回来，他们中至少有一人会被留堂。
+			<br><br>
+			不管是好是坏，无论他们在做什么，显然都还没涉及到你……至少现在没有。
+			<br><br>
+
+			<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<<else>>
+			<<set $bullyevent += 1>>
+			惠特尼转过一个弯，径直撞上你，你被逼向了一个储物柜。“我需要的就是这样一个<<bitch>> ”，<<he>>一边说一边用手按着你的胸口。"我被雷顿叫去办公室了，肯定又是长篇大论。不过，我肯定不会无聊的，因为你会伺候我的<<if $NPCList[0].penis isnot "none">>肉棒<<else>>小穴<</if>>对吧？” <<He>>抓住你的衣领把你拉进。“你们在外面等着，”<<he>>对<<his>>的朋友说。
+			<br><br>
+
+			<<link [[就这样吧(0:10)|Bully Detention]]>><<trauma 6>><<stress 6>><<sub 1>><<npcincr Whitney dom 1>><</link>><<gtrauma>><<gstress>><<garousal>><<gdom>>
+			<br>
+			<<link [[战斗|Bully Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+			<br>
+		<</if>>
+	<<elseif $bullyevent is 7>>
+		<<set $bullyevent += 1>>
+		<<if $whitneyromance is 1>>
+			惠特尼和<<his>>的朋友们围着你。<<He>>把你按在一个储物柜上，给你一个吻。<<He>>握住你的手，就这么斜靠在你的身边，想低声说些什么，但最后只是轻轻啄了一下你的耳朵。<<He>>在与<<his>>的朋友一起离开之前，回头给了你暗示性的一瞥。
+			<<npcincr Whitney lust 5>><<glust>><<garousal>><<arousal 600 "mouth">>
+			<br><br>
+
+			<<link [[无视|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<br>
+			<<if $submissive lte 500>>
+				<<link [[绊倒惠特尼|Bully Trip]]>><<def 1>><</link>><<defianttext>><<npcincr Whitney dom -1>><<ldom>>
+				<br>
+			<</if>>
+		<<else>>
+			惠特尼和<<his>>的朋友们围住了你。惠特尼向你扑过来<<if $leftarm is "bound" and $rightarm is "bound">>。你踉踉跄跄地向后退去，试图举起被绑住的双臂。<<else>>，令你踉跄着向后退去，举起手臂来自卫。<</if>>然而，<<he>>却在离你不远的地方停下了脚步，接着大笑起来。"你太容易被吓到了。我只是想打个招呼。"失去平衡的你摔倒在地。笑声更响亮了。"你真是个小废物。我们走吧，别让<<pshe>>把我们给传染了。"<<tearful>>你从地上爬了起来。
+			<<npcincr Whitney lust 5>><<glust>>
+			<br><br>
+
+			<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<br>
+		<</if>>
+	<<elseif $bullyevent is 8>>
+		<<set $bullyevent += 1>>
+		惠特尼和<<his>>朋友们包围了你。
+
+		<<He>>把你推到一个储物柜前。"今天我们要拿你怎么办？"<<he>>喃喃自语着。"想到了。"<<He>>笑了笑。"我们会......宠着你。"<<he>>轻拍你的脑袋，<<his>>的朋友们也都被逗笑了。
+		<br><br>
+
+		<<link [[顺其自然|Bully Pat]]>><<npcincr Whitney love 1>><<npcincr Whitney dom 1>><<arousal 600>><</link>><<garousal>><<glove>><<gdom>>
+		<br>
+		<<link [[抖开|Bully Shake]]>><<stress 6>><</link>><<gstress>>
+		<br>
+
+	<<elseif $bullyevent is 9>>
+		<<set $bullyevent += 1>>
+		<<if _whitney.dom gte 20 and ($worn.neck.collared is 1 or $whitneyromance is 1)>>
+			<<if $worn.neck.collared is 1>>
+				惠特尼和<<his>>的朋友们围着你。<<He>>把你推到柜子上，用手指抚摸你脖子上的项圈。
+				"很高兴你终于看清了自己的位置，”<<he>>说。"宠物都是不穿衣服的，裸着，包括内衣"
+				<br><br>
+
+				<<link [[顺其自然|Bully Strip 2]]>><<strip>><<trauma 6>><<stress 3>><<set $submissive += 1>><<npcincr Whitney dom 1>><</link>><<gtrauma>><<gstress>><<garousal>><<gdom>>
+				<br>
+
+				<<if $exhibitionism gte 55>>
+					<<link [[夸耀|Bully Strip Flaunt 2]]>><<strip>><<npcincr Whitney dom 1>><<set $submissive += 1>><<npcincr Whitney love 1>><</link>><<exhibitionist4>><<glove>><<gdom>>
+					<br>
+				<</if>>
+				<<link [[战斗|Bully Fight]]>><<set $fightstart to 1>><<set $submissive -= 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+				<br>
+			<<else>>
+				惠特尼和<<his>>的朋友们围着你。<<He>>把你推给了一个<<his>>的手下，<<his>>的手下又把你推到了另一个手下身边。
+				这句话又重复了一遍。混乱之中，你觉得有东西紧紧地套在你的脖子上。"你觉得我的礼物怎么样？"<<he>>问道，对着你的耳朵呼了一口气。
+				"我觉得你戴着很合适。"<<He>>和<<his>>朋友走开了。
+				<<neckwear 21>>
+				<<npcincr Whitney lust 5>><<glust>><<garousal>><<arousal 600>>
+				<br><br>
+
+				<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+				<br>
+			<</if>>
+		<<else>>
+			惠特尼和<<his>>的朋友走过时把你推倒在地。"滚开，小骚货，"<<he>>头也不回地笑着离开了。<<tearful>>你站了起来。
+			<<npcincr Whitney lust 5>><<glust>>
+			<br><br>
+
+			<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<br>
+		<</if>>
+	<<elseif $bullyevent is 10>>
+		<<set $bullyevent += 1>>
+		<<WhitneyPantyCheck>>
+	<<elseif $bullyevent is 11>>
+		<<set $bullyevent += 1>>
+		<<if $whitney_toilet is undefined and $genderknown.includes("Whitney") and _whitney.dom gte 18>>
+			惠特尼和<<his>>朋友们包围了你。惠特尼假笑着抓住你的肩膀。
+			<!-- dev note: Keep in mind that this scene uses player.gender directly and not player.gender_appearance. That's why we have to do complicated things. -->
+			<<if $player.gender is _whitney.pronoun>>
+				<<He>>尝试把你推进<<print ($player.gender is "m" ? "女" : "男")>>厕所。
+				<br><br>
+				"现在有个新规矩，小贱货，"<<he>>说道。"你这种失败的<<print ($player.gender is "m" ? "男孩" : "女孩")>>。不配跟我用同一间厕所。"
+				<<He>>把你推得更近。
+			<<else>>
+				<!-- includes player.gender is "h" -->
+				<<He>>尝试把你推进<<nnpc_gendery "Whitney">>厕所。
+				<br><br>
+				<!-- dev note: This scene is weird for herm PCs that normally choose the same toilets as Whitney. They aren't hiding from Whitney. How should Whitney's rule apply to herms? -->
+				<!-- dev note: This is ALSO weird for crossdresser PCs, because gender_appearance is what dictates getting thrown out of bathrooms, not gender, so they're ALSO already using the bathroom Whitney wants. -->
+				"新规矩，荡妇，"<<he>>说，"别再在浴室里躲着我了。不管你是不是<<if $player.gender is "m">>男人<<elseif $player.gender is "h">>怪物<<else>>女人<</if>>, 你都是我的所有物。我要用到你的时候，你就得在我身边。也就是说从现在起你只能使用<<nnpc_gendery "Whitney">>厕所了。"
+				<br><br>
+				<<He>>把你推得更近。
+			<</if>>
+			<br><br>
+			<<link [[顺其自然|Bully Toilets]]>><</link>>
+			<br>
+			<<link [[战斗|Bully Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+		<<else>>
+			惠特尼和<<his>>的朋友们围着你。<<He>>抓住你的手臂，把它们拉到你的头顶，然后把你推到柜子上。
+			<br><br>
+			"我最喜欢的荡妇怎么样啊？"<<he>>问道，将<<his>>的身体紧紧压在你身上。<<npcincr Whitney lust 5>><<glust>>
+			<br><br>
+			<<He>>在你还没反应过来之前就把你推到一边。<<He>>和<<his>>朋友离开了。
+			<br><br>
+			<<tearful>>你从地上爬起来。
+			<br><br>
+
+			<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<br>
+		<</if>>
+
+	<<elseif $bullyevent is 12>>
+		<<set $bullyevent += 1>>
+		/* parasite bully event */
+		<<if $parasitedisable is "f">>
+			<<generatey2>><<person1>>
+			一双手从背后抓住了你。你惊慌地转过身去，面对惠特尼和<<his>>的朋友们。"嘿，荡妇，"<<he>>说道。<<Hes>>在背后藏着什么东西。"我给你带了一件小礼物，你肯定会喜欢的。"<<He>>拿出一个小包。你困惑地看着<<he>>在包里翻找的动作，<<his>>的脸上带着些厌恶和恶作剧的笑容，增加了你的忧虑。最终<<he>>抓住了在里面四处寻找的东西把它从包里拿了出来。是寄生虫。
+			<br><br>
+			看到那个东西你起了一身的鸡皮疙瘩，一个<<eventwhitneyparasiteadjective>>的想法浮现在你的脑海里。<<Hes>>不会做出你想的那种事的，对吧？
+			<<if $deviancy gte 75>><<arousal 20>><<garousal>><<else>><<stress 20>><<gstress>><</if>>
+			<br><br>
+
+			<<link [[静观其变|Whitney Bully Parasite Event Submit]]>><<npcincr Whitney dom 1>><<sub 1>><</link>><<gdom>>
+			<br>
+			<<link [[尝试逃跑|Whitney Bully Parasite Event Escape Attempt]]>><<npcincr Whitney dom -1>><</link>><<physiquedifficulty 1 $physiquemax>><<ldom>>
+		<<else>>
+			你看到惠特尼和<<his>>的朋友们有说有笑地朝你的方向走来。惠特尼似乎全神贯注地在谈话中，根本没有注意到你。
+			<br><br>
+
+			<<if $player.breastsize gte 4>>
+				在<<he>>从你身边经过时，惠特尼抬起一只手到你的胸口，用手抓住了你的<<breasts>>，但是并没有看你。
+				<<stress 3>><<gstress>><<arousal 20 "breasts">><<garousal>>
+			<<else>>
+				<<He>>从你身边经过，看都不看一眼，然后你觉得屁股被狠狠地打了一下。
+				<<pain 3>><<gpain>><<arousal 20 "bottom">><<garousal>>
+			<</if>>
+			<<npcincr Whitney lust 5>><<glust>>
+			<br><br>
+
+			<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<br>
+		<</if>>
+
+	<<elseif $bullyevent is 13>>
+		<<set $bullyevent += 1>>
+
+		一双手从后面抓住你并推了你一下。
+		<<if currentSkillValue('physique') gte random(4000,16000)>>
+			你几乎无法站稳脚跟。
+			<br><br>
+
+			你转身向袭击者，迎面就是一股浓烟。你咳嗽着用手挥散烟雾，推开惠特尼凑近的笑脸。<<He>>把一叠课本塞进你的怀里。
+			<br><br>
+
+			"我累了。帮我拿书。"
+			<br><br>
+
+			<<link [[服从|Bully Textbooks]]>><<set $phase to 0>><<trauma 6>><<stress 3>><<sub 1>><<npcincr Whitney dom 1>><</link>><<gtrauma>><<gstress>><<gdom>>
+			<br>
+			<<link [[战斗|Bully Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+			<br>
+		<<else>>
+			书的重量差点儿让你脸朝下摔倒。你试图支撑住自己，但有重物重重地砸在你的背上。你摔倒在地，四肢摊开躺在瓷砖上。<<pain 2>><<gpain>>
+			<br><br>
+
+			一支抽完的烟蒂掉在你的脸上，接着一只脚后跟把它碾碎。"嘿，荡妇，"惠特尼从上面说道，"我累了，帮我拿书。"
+			<br><br>
+
+			<<link [[服从|Bully Textbooks]]>><<set $phase to 1>><<trauma 6>><<stress 3>><<sub 1>><<npcincr Whitney dom 1>><</link>><<gtrauma>><<gstress>><<gdom>>
+			<br>
+			<<link [[战斗|Bully Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+			<br>
+		<</if>>
+	<<elseif $bullyevent is 14>>
+		<<set $bullyevent += 1>>
+		惠特尼转过拐角，<<his>>的朋友尾随身后。<<He>>笑着，推开其他学生，直直地朝你大步走来。
+		<br><br>
+		"我听说了一些事，"<<he>>说着，同时摆出一幅严肃的表情上下打量你。"你最近是不是在外面跟人乱搞啊，小贱货？"
+		<br><br>
+
+		<<link [[是的|Bully Accuse Yes]]>><<npcincr Whitney lust 5>><</link>><<promiscuous1>><<gglust>>
+		<br>
+		<<link [[没有|Bully Accuse No]]>><</link>>
+		<br>
+	<<elseif $bullyevent is 15>>
+		<<set $bullyevent += 1>>
+		<<if $whitneypantiescheck is 2 and !$whitneyskirtcheck and $forcedcrossdressingdisable is "f" and _whitney.dom gte 18>>
+			惠特尼转过拐角，<<his>>朋友尾随身后。<<He>>咧嘴笑着，直直的朝着你走来，<<he>>一边前进一边迫使别人让开道路。你注意到<<he>>似乎有一条裙子在<<his>>手里。
+			<br><br>
+			"我在想啊，”<<he>>说，看着你的$worn.lower.cn_name_cap。
+			<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1 and $worn.lower.reveal gt 200>>
+				"新规定，你从现在开始要穿裙子，这样我就更容易检查你是否穿着内裤了，很高兴看到你听话。"
+				<<npcincr Whitney lust 5>><<glust>>
+				<br><br>
+
+				<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<<else>>
+				"新规矩，从现在开始你要穿裙子。这样我就更容易检查你是否穿着内裤了。"
+				<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+					"我甚至已经给你准备了一条更短的裙子，就在这里等着你换上。这世上还是好人多啊，你说呢？"
+				<<else>>
+					"我甚至已经给你提前准备了一条更短的，就在这等着你换上呢，我对你真好，不是吗？"
+				<</if>>
+				<br><br>
+
+				<<link [[遵从|Bully Skirt]]>><<set $phase to 1>><<trauma 6>><<stress 3>><<sub 1>><<npcincr Whitney dom 1>><</link>><<gtrauma>><<gstress>><<gdom>>
+				<br>
+				<<link [[战斗|Bully Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+				<br>
+			<</if>>
+		<<elseif $whitneypantiescheck is 2 and $whitneyskirtcheck and $forcedcrossdressingdisable is "f" and _whitney.dom gte 18 and $worn.genitals.name is "naked">>
+			一双手从后面抓住了你，然后把你推到一个空教室。随着咔哒一声，门被惠特尼锁住了。
+			<br><br>
+			<<if $whitneychastity is 1>>
+				把你的衣服脱了，骚逼，"<<he>>看着你的腹股沟处"我草你的贞操锁呢？是不是你想勃起想的自己弄开了？要不要我锁一个新的上去？"
+				<br><br>
+				<<strip>>
+				<br><br>
+				<<link [[说是的|Bully Chastity]]>>
+					<<if $player.penissize is -2>>
+						<<genitalswear 7 "pink">>
+					<<elseif $player.penissize lte 0>>
+						<<genitalswear 6 "pink">>
+					<<else>>
+						<<genitalswear 2>>
+					<</if>>
+					<<set $worn.genitals.origin to "Whitney">>
+					<<set $phase to 0>><<npcincr Whitney dom 1>>
+				<</link>><<gdom>>
+				<br>
+				<<link [[说不是。|Bully Chastity]]>><<set $whitneychastity to 2>><<set $phase to 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+			<<else>>
+				骚货，把你衣服脱了。"<<he>>看着你的腹股沟处，
+				<<if $whitneychastity is 2>>
+					"还没穿贞操锁? 我不喜欢你没经过你在我允许的情况下就能让别人怀孕。"
+				<<else>>
+					"我不喜欢你能在我没允许的情况下可以让别人怀孕，所以我要解决这个问题。"
+				<</if>>
+				<br><br>
+				<<strip>>
+				<<if $player.penissize is -2>>
+					<<He>>的手里拿着一个扁平的粉红色贞操锁。 "你的短小肉棒真的让我怀疑... 你会为了我戴上这个么?"
+					<<set _cageIndex to 7>>
+					<<set _cageColor to "pink">>
+				<<elseif $player.penissize lte 0>>
+					<<He>>的手里拿着一个小号的粉红色贞操锁"看看你的小肉棒，应该戴上去不会有什么问题，你会为了我戴吧?"
+					<<set _cageIndex to 6>>
+					<<set _cageColor to "pink">>
+				<<else>>
+					<<He>>的手里拿着一个贞操锁 "虽然锁上后可能会有些问题，但是你会为了我戴吧?"
+					<<set _cageIndex to 2>>
+				<</if>>
+				<br><br>
+				<<link [[说是的|Bully Chastity]]>>
+					<<set $worn.genitals.type.push("broken")>>
+					<<genitalsruined>>
+					<<genitalswear _cageIndex _cageColor>>
+					<<set $worn.genitals.origin to "Whitney">>
+					<<set $phase to 0>><<set $whitneychastity to 1>><<npcincr Whitney dom 1>>
+					<<if !$whitneychastity>><<npcincr Whitney love 1>><</if>>
+				<</link>><<gdom>><<if !$whitneychastity>><<glove>><</if>>
+				<br>
+				<<link [[说不是。|Bully Chastity]]>><<set $whitneychastity to 2>><<set $phase to 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+			<</if>>
+			<br>
+		<<else>>
+			<<WhitneyPantyCheck>>
+		<</if>>
+
+	<<elseif $bullyevent is 16>>
+		<<set $bullyevent += 1>>
+		<<if $whitneyromance is 1 and $footdisable is "f">>
+			在你走路的时候，突然有人搂住了你的肩膀。是惠特尼，并且<<his>>的几个朋友环绕着你。
+			<br><br>
+
+			"骚货，既然你最近表现挺乖的，所以我决定给你一个奖励"<<he>>说。
+			<br><br>
+
+			有些人试图压制住窃笑，惠特尼几乎是拖着你前行。
+			<br><br>
+
+			"怎么样？”<<he>>问道，“我想是时候回报你为我所付出的努力了，你觉得呢？"
+			<br><br>
+
+			<<link [[继续|Bully Foot Humiliation]]>><</link>>
+			<br>
+			<<link [[拒绝|Bully Foot Humiliation No]]>><</link>><<ldom>><<npcincr Whitney dom -1>>
+
+		<<else>>
+			在你走路的时候，突然有人搂住了你的肩膀。是惠特尼，并且<<his>>的几个朋友环绕着你。
+			<br><br>
+
+			在你还没有意识到发生了什么之前，惠特尼转身将你推向走廊的另一边，你失去平衡，撞到了储物柜上。<<gpain>><<violence 6>>
+			<br><br>
+
+			"下次给我当心点！”惠特尼和<<his>>跟班大摇大摆地离开了，你听到当中有人在笑。<<gstress>><<stress 6>>
+			<br><br>
+
+			<<link [[继续|Hallways]]>><<set $eventskip to 1>><</link>>
+
+		<</if>>
+
+	<<else>>
+		<<set $bullyevent to 4>>
+		有人从背后抓住你的头发，把你的头往后拉，是惠特尼。看着你狼狈的样子<<his>>的朋友们在一旁哈哈大笑，<<he>>也笑了。
+		<<npcincr Whitney lust 5>><<glust>><<gstress>><<stress 6>><<gtrauma>><<trauma -6>>
+		<br><br>
+
+		<<link [[忍耐|Bully Hair]]>><<npcincr Whitney dom 1>><</link>><<gdom>>
+		<br>
+		<<link [[推|Bully Hair Shove]]>><<pain 4>><<npcincr Whitney dom -1>><</link>><<ldom>><<gpain>><<ltrauma>><<trauma -6>>
+		<br>
+
+	<</if>>
+<</widget>>
+
+<<widget "eventwhitneyparasitecontinue">>
+	/* roll of the die where they place what parasite */
+	/* 6 possibilities, 2 kinds of parasite, 3 target locations */
+	/* rng is set to _roll so we can have random events in this */
+	<<if playerChastity()>>
+		<<rng 2 5>>
+	<<else>>
+		<<rng 0 5>>
+	<</if>>
+	<<set _eventnum to $rng>>
+
+	/* lets handle common events in one place */
+	<<if $worn.upper.type.includes("naked") and $worn.lower.type.includes("naked") and $worn.under_lower.type.includes("naked") or $worn.upper.type.includes("naked") and $worn.lower.type.includes("naked") and playerChastity()>>
+		<<eventwhitneyparasitepeniscomment>>
+	<<else>>
+		<<if _eventnum is 0 or _eventnum is 1>>
+			<<eventwhitneyparasiteexposelower>>
+
+			/* lets comment on penis size if we have one */
+			<<set _iscrowd to 0>>
+			<<eventwhitneyparasitepeniscomment>>
+
+		<<elseif _eventnum is 2 or _eventnum is 3>>
+			<<eventwhitneyparasiteexposebutt>>
+
+		<<elseif _eventnum is 4 or _eventnum is 5>>
+			<<eventwhitneyparasiteexposeupper>>
+		<</if>>
+	<</if>>
+
+	<br><br>
+
+	<<switch _eventnum>>
+	<<case 0>>
+		<<if !$player.vaginaExist and !$player.penisExist>>
+			<<eventwhitneyparasitenogenitalspresent>>
+		<<else>>
+			<<if $player.penisExist and !$parasite.penis.name>>
+				你的<<genitals>>暴露在外，无助的不知道该怎么办，也阻止不了惠特尼的嘲笑，他们把海胆直接塞进了你脆弱的地方，它坚硬的刺刚到里面就紧紧地抓住了你。声音既淫荡又令人作呕。
+				<<parasite penis urchin>>
+				<br><br>
+				<<eventwhitneyparasitesucessful>>
+			<<elseif $player.vaginaExist and !$parasite.clit.name and !$player.penisExist>>
+				你的<<genitals>>暴露在外，无助的不知道该怎么办，也阻止不了惠特尼的嘲笑，他们把海胆直接塞进了你脆弱的地方，它坚硬的刺刚到里面就紧紧地抓住了你。声音既淫荡又令人作呕。
+				<<parasite clit urchin>>
+				<br><br>
+				<<eventwhitneyparasitesucessful>>
+			<<else>>
+				<<eventwhitneyparasitehasparasiteson>>
+			<</if>>
+		<</if>>
+	<<case 1>>
+		<<if !$player.vaginaExist and !$player.penisExist>>
+			<<eventwhitneyparasitenogenitalspresent>>
+		<<else>>
+			<<if $player.penisExist and !$parasite.penis.name>>
+				你的<<genitals>>暴露在外，你无助的不知道该怎么办，也阻止不了惠特尼的嘲笑，他们把史莱姆直接弄到了你脆弱的地方，史莱姆立即粘到了你身上。它发出的声音既淫荡又令人作呕。
+				<<parasite penis slime>><<arousal 5 "genitals">><<garousal>>
+				<br><br>
+				<<eventwhitneyparasitesucessful>>
+			<<elseif $player.vaginaExist and !$parasite.clit.name and !$player.penisExist>>
+				你的<<genitals>>暴露在外，你无助的不知道该怎么办，也阻止不了惠特尼的嘲笑，他们把史莱姆直接弄到了你脆弱的地方，史莱姆立即粘到了你身上。它发出的声音既淫荡又令人作呕。
+				<<parasite clit slime>><<arousal 5 "genitals">><<garousal>>
+				<br><br>
+				<<eventwhitneyparasitesucessful>>
+			<<else>>
+				<<eventwhitneyparasitehasparasiteson>>
+			<</if>>
+		<</if>>
+	<<case 2>>
+		<<if !$parasite.bottom.name>>
+			你的<<bottom>>暴露在外，无力抵挡惠特尼的嘲笑。他们把海胆直接塞到了你脆弱的洞口里，瞬间蠕动进你的体内……声音既淫荡又令人作呕。
+			<<parasite bottom urchin>><<arousal 5 "bottom">><<garousal>>
+			<br><br>
+			<<eventwhitneyparasitesucessful>>
+		<<else>>
+			<<eventwhitneyparasitehasparasiteson>>
+		<</if>>
+	<<case 3>>
+		<<if !$parasite.bottom.name>>
+			你的<<bottom>>暴露在外，你完全无法阻止惠特尼的嘲笑，他们把史莱姆直接弄到了你脆弱的洞前。那东西立刻蠕动到你身上，发出的声音既淫荡又令人作呕。
+			<<parasite bottom slime>><<arousal 5 "bottom">><<garousal>>
+			<br><br>
+			<<eventwhitneyparasitesucessful>>
+		<<else>>
+			<<eventwhitneyparasitehasparasiteson>>
+		<</if>>
+	<<case 4>>
+		<<if !$parasite.nipples.name>>
+			你的<<breasts>>暴露在外，你根本阻止不了惠特尼的嘲弄，他们直接把海胆放到了你颤抖的胸部前面。那东西立刻抓住了你，发出的声音既淫荡又令人作呕。
+			<<parasite nipples urchin>><<arousal 5 "breasts">><<garousal>>
+			<br><br>
+			<<eventwhitneyparasitesucessful>>
+		<<else>>
+			<<eventwhitneyparasitehasparasiteson>>
+		<</if>>
+	<<case 5>>
+		<<if !$parasite.nipples.name>>
+			你的<<breasts>>暴露在外，你完全无法阻止惠特尼的嘲笑，他们把史莱姆直接弄到了你颤抖的胸部前面。史莱姆立刻就附着在了你身上，声音既淫荡又令人作呕。
+			<<parasite nipples slime>><<arousal 5 "breasts">><<garousal>>
+			<br><br>
+			<<eventwhitneyparasitesucessful>>
+		<<else>>
+			<<eventwhitneyparasitehasparasiteson>>
+		<</if>>
+	<</switch>>
+
+	<<if _iscrowd is 1>>
+		看着你以如此屈辱的方式被侵犯，人群心满意足的散开了，他们一路上都在嘲笑你.<<status -30>><<llcool>>
+	<</if>>
+
+	<<endevent>>
+	<<clotheson>>
+	<br><br>
+	<<link [[继续|Hallways]]>><<set $eventskip to 1>><</link>>
+<</widget>>
+
+<<widget "eventwhitneyparasiteadjective">>
+	<<if $deviancy gte 75>>
+		<<print ["淫荡", "<<EZdisgusting>>却又令人快乐"].pluck()>>
+	<<else>>
+		<<EZdisgusting>>
+	<</if>>
+<</widget>>
+
+<<widget "eventwhitneyparasiteexposelower">>
+	"准备好，伙计们，"惠特尼命令道。<<He>>带着<<eventwhitneyparasiteadjective>>的东西向前靠近，你的思维飞速运转，不知道他们会对你做什么。现在你的手臂被束缚，你的身体无法反抗，你根本就阻止不了他们。
+	<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+		把你的裙子抬高到腰以上
+		<<if not $worn.under_lower.exposed>>
+			<<rng 4>>
+			<<if $rng is 4>>
+				从你的臀部把$worn.under_lower.cn_name_cap撕破,<<underlowerruined>>
+			<<else>>
+				然后移开了你的$worn.under_lower.cn_name_cap，<<underlowerstrip>>
+			<</if>>
+		<</if>>向惠特尼露出你的<<genitals>>，从学校大厅里吹来的一阵凉风，以及所有路过的人都有幸成为了观众。
+	<<else>>
+		粗暴地把你的衣服拉下来，你的<<genitals>>暴露在了惠特尼面前，暴露在了学校大厅里凉爽的空气里，暴露在了每个经过的人面前。
+	<</if>>
+	<<if !playerChastity("hidden")>>
+		<<run $genderknown.pushUnique("Whitney")>>
+	<</if>>
+
+	<<schoolrep_naked>>
+<</widget>>
+<<widget "eventwhitneyparasiteexposeupper">>
+	"准备好，"惠特尼对<<his>>的朋友们命令道。<<He>>带着<<eventwhitneyparasiteadjective>>的东西向前靠近，你的思维飞速运转，不知道他们会对你做什么。现在你的手臂被束缚，你的身体无法反抗，你根本就阻止不了他们。
+	<<rng 4>>
+	<<if $rng is 4>>
+		他们用手抓住并撕扯你的衣服，直到曾经包裹着你的身体的衣服被撕成碎片。你的整个上半身现在暴露在惠特尼，学校大厅的凉爽空气，和每一个过路人眼中。
+		<<upperruined>>
+	<<else>>
+		他们在你的衣服上摸索，直到你的两个<<nipples>>都明显的暴露出来，很容易引起旁观者的注意。
+	<</if>>
+<</widget>>
+<<widget "eventwhitneyparasiteexposebutt">>
+	"准备好，"惠特尼对<<his>>的朋友们命令道。<<He>>带着<<eventwhitneyparasiteadjective>>的东西向前靠近，你的思维飞速运转，不知道他们会对你做什么。现在你的手臂被束缚，你的身体无法反抗，你根本就阻止不了他们。
+	<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+		他们强迫你转身弯下腰，抓住并拉起你裙子的下摆，让你的后背完全暴露在惠特尼、凉爽的空气和所有经过的人面前。
+	<<else>>
+		他们强迫你转身弯下腰，抓住你的腰带，拉到膝盖，把你脆弱的小洞完全暴露给惠特尼，凉爽的空气，还有路过的每个人面前。
+	<</if>>
+<</widget>>
+
+<<widget "eventwhitneyparasitepeniscomment">>
+	<<if $player.penisExist>>
+		<<if $player.penissize is 4 or $player.penissize lte 1>>
+			一个路过的学生停下来，直直的盯着你暴露在外的生殖器，然后放声大笑。
+			<<Penisremarkstopquote>>
+			<<incgpenisinsecurity>>
+			<<rng 5>>
+			<<if $rng isnot 5>>
+				<br><br>
+				这场骚动吸引了一小群学生，迫切想要享受你被当众羞辱的乐趣。
+				<<arousal 20>><<stress 20>><<trauma 20>><<garousal>><<gstress>><<gtrauma>>
+				<<set _iscrowd to 1>>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "eventwhitneyparasitenogenitalspresent">>
+	/* i have no idea under what circumstances this would occur but cover your bases i guess */
+	"搞什么鬼，你那个东西呢？"<<he>>困惑地说，<<he>>后退远离你那奇怪的无性的身体。
+	"不，不，不，这也太他妈奇怪了，我要离开这里。"惠特尼说，他们扔掉寄生虫，退后，显然是在为你没有生殖器而感到奇怪。
+	无论如何，被强行暴露让你感到很羞耻。
+<</widget>>
+
+<<widget "eventwhitneyparasitehasparasiteson">>
+	"哦，原来你身上已经满是这些东西了。看来我今天准备的玩意儿没什么用处了。"
+	略带恼怒的是，<<he>>向路过的学生扔东西，然后强迫你在同学面前暴露身体，让你独自一个人解决后续。
+<</widget>>
+
+<<widget "eventwhitneyparasitesucessful">>
+	"别把自己给玩坏了，你这个荡妇。"惠特尼<<print ["嘲讽道", "嘲弄道"].pluck()>>，<<he>>缓缓走开，同时示意<<his>>的朋友们把你放开。
+	<<print [
+		"你从他们的束缚中解脱，尽最大的努力找回你生命中仅剩的可怜的尊严，即使你",
+		"你从他们的束缚中解脱，尽最大的努力来恢复你在生命中所剩无几的尊严，即使你",
+	].pluck()>>
+	<<print [
+		"被侵犯",
+		"被羞辱",
+	].pluck()>>
+	于你的同学面前。
+<</widget>>
+
+<<widget "schoolbullyoutside">>
+	<<if $whitneyReunionScene isnot undefined>>
+		<<npc Whitney>><<person1>>
+		<<unset $whitneyReunionScene>>
+		在你踏上操场时，有东西抓住了你的手臂。还没等你反应过来，你就被拉了过去。你抬头就看到了惠特尼的脸。<<His>>的手下们在你的侧面堵着你，阻止你逃跑。"你在这儿啊，婊子，"惠特尼一脸恼怒地说："什么？你以为我不会注意到我最喜欢的荡妇不见了吗？"<<his>>的嘴唇压在你的唇上亲吻你，你紧张得做不出任何反应。<<takeKissVirginity "Whitney" "loveInterest">>
+		<br><br>
+
+		惠特尼的手臂绕在你的腰间，<<he>>按住你的后脑勺。<<He>>向前倾，强迫你弯腰。满怀期待观看着的<<his>>的手下们大笑起来。
+		<br><br>
+
+		"操<<phim>>!"
+		<br>
+		"打<<phim>>!"
+		<br>
+		"拿走<<pher>>的衣服!"
+		<br><br>
+
+		惠特尼瞪着你，<<his>>抓住你的手是你倒地前的最后一根稻草。你发誓你看见了<<his>>的眼睛里闪过一丝微弱的泪痕。而在它进一步发展下去之前，<<he>>松手让你摔到了地上。
+		<br><br>
+
+		惠特尼的呼吸更重了。<<He>>说，"只有...我可以绑架强迫你，明白了吗？"<<He>>狠狠地把你推出大门，目不转睛地看着你.<<npcincr Whitney dom 3>><<stress 6>><<gstress>><<ggdom>>
+		<br><br>
+
+		<<endevent>><<set $eventskip to 1>>
+		<<courtyard>>
+	<<elseif $bullyeventoutside is 0>>
+		<<set $bullyeventoutside += 1>>
+		<<npc Whitney>><<person1>>你转过一个弯，径直走进惠特尼和<<his>>的小团伙中。“看看这是谁，”<<he>>说。<<his>>的朋友们围着你转，把你堵在了中间。"来得正是时候。我们刚要离开学校。你也该和我们一起。"<<He>>抓住你的手臂。
+		<br><br>
+
+		<<link [[顺其自然 (0:20)|Bully Theft]]>><<sub 1>><<npcincr Whitney dom 1>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>><<gdom>>
+		<br>
+		<<link [[战斗|Bully Outside Fight]]>><<def 1>><<npcincr Whitney dom -1>><<set $fightstart to 1>><</link>><<ldom>>
+		<br>
+
+	<<elseif $bullyeventoutside is 1>>
+		<<set $bullyeventoutside += 1>>
+
+		<<npc Whitney>><<person1>>你听到奔跑的脚步声靠近。惠特尼和<<his>>的手下们把你围了起来。“看看这是谁，”<<he>>说。“正是我要找的人。”<<He>>抓住你的手臂。
+		<br><br>
+
+		<<link [[顺其自然 (0:20)|Bully Light]]>><<sub 1>><<npcincr Whitney dom 1>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>><<gdom>>
+		<br>
+		<<link [[战斗|Bully Outside Fight]]>><<sub 1>><<npcincr Whitney dom -1>><<set $fightstart to 1>><</link>><<ldom>>
+		<br>
+
+	<<elseif $bullyeventoutside is 2>>
+		<<set $bullyeventoutside += 1>>
+
+		<<if $whitneyromance is 1>>
+			<<npc Whitney>><<person1>>惠特尼向你走来。 <<He>>把你推到墙上。<<his>>的朋友从侧面靠近。“嘿，<<girl>>，”<<he>>说。“该做你的工作了。”<<He>>抓住你的手臂。
+			<br><br>
+
+			<<link [[顺其自然 (0:20)|Bully Romance]]>><<sub 1>><<npcincr Whitney dom 1>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>><<gdom>>
+			<br>
+			<<link [[战斗|Bully Outside Fight]]>><<def 1>><<npcincr Whitney dom -1>><<set $fightstart to 1>><</link>><<ldom>>
+			<br>
+
+		<<else>>
+			<<npc Whitney>><<person1>>奔跑的脚步声越来越近。惠特尼冲向你，把你撞倒在地。<<He>>坐到你身上，鞋子搁在了你的脑袋上。“这么舒服，”<<he>>说，“可惜没空久坐。”<<He>>站起身来，“下次吧，贱人。"
+			<<gtrauma>><<gstress>><<gpain>><<trauma 6>><<stress 6>><<pain 15>><<npcincr Whitney lust 5>><<glust>>
+			<br><br>
+
+			<<tearful>>你爬了起来。
+			<br><br>
+
+			<<endevent>>
+			<<set $eventskip to 1>>
+			<<courtyard>>
+		<</if>>
+
+	<<elseif $bullyeventoutside is 3>>
+		<<set $bullyeventoutside += 1>>
+		<<npc Whitney>><<person1>>
+		当你走近大门时，你看到了惠特尼。<<He>>笑着推了一把<<his>>的朋友，向你走来。
+		<br><br>
+
+		"嘿，<<girl>>，"<<he>>说。“你要跟我们走。” <<He>>搂着你的肩膀，试图把你拉出大门。<<his>>的朋友们从你的侧面堵住你不许你走。
+		<br><br>
+
+		<<link [[顺其自然 (0:20)|Bully Strip Theft]]>><<sub 1>><<npcincr Whitney dom 1>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>><<gdom>>
+		<br>
+		<<link [[战斗|Bully Outside Fight]]>><<def 1>><<npcincr Whitney dom -1>><<set $fightstart to 1>><</link>><<ldom>>
+		<br>
+
+	<<elseif $bullyeventoutside is 4>>
+		<<set $bullyeventoutside += 1>>
+
+		<<npc Whitney>><<person1>>有人抓住了你的头发。是惠特尼。"来吧，荡妇，"<<he>>边说边拖着你走："带你去个好地方。"
+		<br><br>
+
+		<<link [[顺其自然 (0:20)|Bully Whore]]>><<sub 1>><<npcincr Whitney dom 1>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>><<gdom>>
+		<br>
+		<<link [[战斗|Bully Outside Fight]]>><<def 1>><<npcincr Whitney dom -1>><<set $fightstart to 1>><</link>><<ldom>>
+		<br>
+	<<elseif $bullyeventoutside is 5>>
+		<<set $bullyeventoutside += 1>>
+		<<npc Whitney>><<person1>>
+		当你走近大门时，你看到了惠特尼。<<He>>笑着推了一把<<his>>的朋友，向你走来。
+		<br><br>
+		"嘿，小贱货！"你听到<<him>>叫你。<<His>>的朋友们把你团团围住。<<He>>继续说道，"听着，小贱货，我现在有些事儿需要让你来干。这样，我们先走着。"你能感觉到<<his>>的朋友们在背后用手推搡着你朝学校大门走去。你不知道他们到底想让你干什么。
+		<br><br>
+
+		<<link [[任其发生 (0:20)|Bully Dog Walk 1]]>><<sub 1>><<npcincr Whitney dom 1>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>><<gdom>>
+		<br>
+		<<link [[战斗|Bully Outside Fight]]>><<def 1>><<npcincr Whitney dom -1>><<set $fightstart to 1>><</link>><<ldom>>
+		<br>
+	<<else>>
+		<<set $bullyeventoutside to 0>>
+		<<npc Whitney>><<person1>>
+		惠特尼绕过一个角落，把<<his>>的手臂搭在你的肩膀上。<<his>>的朋友们很快也出现了，一起把你困在了墙角。
+		<br><br>
+		"这不是我那婊子嘛，”<<he>>说。
+		<<set $phase to 0>>
+		<<if $bodywritingLvl gte 2>>
+			<<set $_targetLocs to ["forehead","left_cheek","right_cheek","left_shoulder","right_shoulder"].filter(loc => $skin[loc].special is "Whitney" or !$skin[loc].pen or ["pen","lipstick","mud"].includes($skin[loc].pen))>>
+
+			<<set $_whitneyTattooedLocs to $_targetLocs.filter(loc => $skin[loc].special is "Whitney" and $skin[loc].pen is "tattoo")>>
+			<<set $_whitneyWritingLocs to $_targetLocs.filter(loc => $skin[loc].special is "Whitney")>>
+			<<set $_erasableWritingLocs to $_targetLocs.filter(loc => ["pen","lipstick","mud"].includes($skin[loc].pen))>>
+			<<set $_writableLocs to $_targetLocs.filter(loc => !$skin[loc].pen)>>
+
+			<<if $_whitneyTattooedLocs.length gte 1>>
+				<<set $_loc to $_whitneyTattooedLocs.random()>>
+				<<if ($_loc is "left_cheek" or $_loc is "right_cheek") and $worn.face.type.includes("mask")>>
+					<<He>>把你的面罩拉到一边
+				<<elseif ($_loc is "left_shoulder" or $_loc is "right_shoulder") and !($worn.upper.open is 1 or $worn.upper.name is "naked")>>
+					<<He>>拉下你的$worn.upper.cn_name_cap并
+				<<else>>
+					<<He>>
+				<</if>>
+				检查你的<span class="lewd">"<<print $skin[$_loc].writ_cn>>"纹身。</span>
+				"很好，那还在。”<<He>>用舌头舔你，之后离开。“下次，婊子。"
+				<<glove>><<npcincr Whitney love 1>><<gdom>><<npcincr Whitney dom 1>>
+
+			<<elseif $_whitneyWritingLocs.length gte 1>>
+				<<set $_loc to $_whitneyWritingLocs.random()>>
+				<<if $_loc is "forehead">>
+					<<He>>抚摸你的额头
+				<<elseif $_loc is "left_cheek" or $_loc is "right_cheek">>
+					<<if $worn.upper.type.includes("mask")>>
+						<<He>>把你的面罩拉到一边，抚摸你的脸颊。
+					<<else>>
+						<<He>>抚摸你的脸颊。
+					<</if>>
+				<<elseif $_loc is "left_shoulder" or $_loc is "right_shoulder">>
+					<<if !($worn.upper.open is 1 or $worn.upper.name is "naked")>>
+						<<He>>拉下你的$worn.upper.cn_name_cap，轻抚你的肩膀。
+					<<else>>
+						<<He>>抚摸你的肩膀。
+					<</if>>
+				<</if>>
+				"还留着标记，很好。"<<He>>抓住你的衣领。"让我们把它永远留在你身上吧。"<<He>>把你拉到大街上。
+				<<set $phase to 2>><<set $daily.whitney.writingTarget to $_loc>>
+				<br><br>
+				<<link [[顺其自然 (0:20)|Bully Tattoo]]>><<sub 1>><<npcincr Whitney dom 1>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>><<gdom>>
+				<br>
+				<<link [[战斗|Bully Outside Fight]]>><<def 1>><<npcincr Whitney dom -1>><<set $fightstart to 1>><</link>><<ldom>>
+				<br>
+
+			<<elseif $_erasableWritingLocs.length gte 1>>
+				<<set $_loc to $_erasableWritingLocs.random()>>
+				<<bodywriting_clear $_loc>>
+				<<if $_loc is "forehead">>
+					<<He>>倾身舔你的额头，然后用<<his>>的袖子擦拭干净。"我想到了更好的办法。"<<He>>从<<his>>的口袋里掏出一支笔。"别动。"
+				<<elseif $_loc is "left_cheek" or $_loc is "right_cheek">>
+					<<if $worn.face.type.includes("mask")>>
+						<<He>>靠过来，把你的面罩拉到一边，舔舐你的脸颊。"我有了个好主意。"<<He>>一边从口袋里掏出钢笔，一边用<<his>>的袖子擦你的脸。"别动。"
+					<<else>>
+						<<He>>靠上来舔了舔你的脸颊。"我有了个好主意。"<<He>>一边从口袋里掏出钢笔，一边用<<his>>的袖子擦你的脸。"别动。"
+					<</if>>
+				<<elseif $_loc is "left_shoulder" or $_loc is "right_shoulder">>
+					<<if $worn.upper.open is 1 or $worn.upper.name is "naked">>
+						<<He>>倾身舔你的肩膀，同时从<<his>>的口袋里掏出一支笔。"我想到了更好的办法。"<<He>>用袖子摩擦你的肩膀。"别动。"
+					<<else>>
+						<<He>>靠过来，把你的$worn.upper.cn_name_cap拉到一边，舔了舔你的肩膀。"我有了个好主意。"<<He>>一边从口袋里掏出钢笔，一边用<<his>>的袖子擦你的肩膀。"别动。"
+					<</if>>
+				<</if>>
+				<<set $phase to 1>><<set $daily.whitney.writingTarget to $_loc>>
+
+			<<elseif $_writableLocs.length gte 1>>
+				<<set $_loc to $_writableLocs.random()>>
+				<<if $_loc is "forehead">>
+					<<He>>靠过来舔你的额头。
+				<<elseif $_loc is "left_cheek" or $_loc is "right_cheek">>
+					<<if $worn.face.type.includes("mask")>>
+						<<He>>靠过来，把你的面罩拉到一边，然后舔你的脸颊。
+					<<else>>
+						<<He>>靠过来舔你的脸颊。
+					<</if>>
+				<<elseif $_loc is "left_shoulder" or $_loc is "right_shoulder">>
+					<<if $worn.upper.open is 1 or $worn.upper.name is "naked">>
+						<<He>>靠过来舔你的肩膀。
+					<<else>>
+						<<He>>靠过来，把你的$worn.upper.cn_name_cap拉到一边，舔了舔你的肩膀。
+					<</if>>
+				<</if>>
+				我决定好好标记你。"<<He>>从口袋里掏出一支钢笔。"别动。"
+				<<set $phase to 1>><<set $daily.whitney.writingTarget to $_loc>>
+
+			<<else>>
+				<<He>>抓住你的头发，把你的头往后拉，用舌头舔了舔你的脸。<<He>>在你还没反应过来之前就把你推开了。
+				<br><br>
+				"下次再见，婊子。”<<He>>和<<his>>朋友走了。
+			<</if>>
+		<<else>>
+			<<He>>抓住你的头发，把你的头往后拉，用舌头舔了舔你的脸。<<He>>在你还没反应过来之前就把你推开了。
+			<br><br>
+			"下次再见，婊子。”<<He>>和<<his>>朋友走了。
+		<</if>>
+
+		<<if $phase is 1>>
+			<br><br>
+			<<link [[顺其自然 (0:20)|Bully Tattoo Write]]>><<sub 1>><<npcincr Whitney dom 1>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>><<gdom>>
+			<br>
+			<<link [[战斗|Bully Outside Fight]]>><<def 1>><<npcincr Whitney dom -1>><<set $fightstart to 1>><</link>><<ldom>>
+			<br>
+		<<elseif $phase is 0>>
+			<<if $whitneyromance isnot 1>>
+				<<gtrauma>><<trauma 6>>
+			<</if>>
+			<<gstress>><<stress 6>><<garousal>><<arousal 600 "mouth">><<glust>><<npcincr Whitney lust 1>>
+			<br><br>
+			<<endevent>><<set $eventskip to 1>>
+			<<courtyard>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "kylarhallways">>
+	<<run statusCheck("Kylar")>>
+	<<rng>>
+	<<if _kylarStatus.includes("Love")>>
+		<<if $rng gte 60>>
+			<<npc Kylar>><<person1>>凯拉尔出现在你身旁，紧紧抓住你的手臂。"嘿。"<<he>>微笑着说道。<<He>>注意到有个<<generatey2>><<person2>><<person>>正注视着这里，就向<<him>>挥了挥手。"这是我的<<girlfriend>>。"<<person1>><<he>>宣示主权。更多的人转过头来看。有人发出了窃笑。
+			<<status -10>><<lcool>>
+			<br><br>
+
+			<<He>>转向你，"我想让每个人都知道我们有多相爱。"<<He>>紧紧抱着你的手臂，你们一起漫步在走廊上。
+			<<glove>><<npcincr Kylar love 1>>
+			<br><br>
+
+			<<link [[继续|Hallways]]>><<set $eventskip to 1>><<endevent>><</link>>
+			<br>
+		<<elseif $rng gte 30>>
+
+			<<npc Kylar>><<person1>>凯拉尔拉住你的手臂。<<He>>朝一个开着的壁橱点了点头。
+			<br><br>
+
+			<<link [[和凯拉尔一起走 (0:05)|Kylar Cupboard]]>><<pass 5>><</link>><<promiscuous1>>
+			<br>
+			<<link [[拒绝|Kylar Refuse]]>><<npcincr Kylar love -1>><<npcincr Kylar lust 5>><<npcincr Kylar rage 5>><</link>><<llove>><<gglust>><<ggksuspicion>>
+			<br>
+
+		<<elseif $rng gte 10>>
+
+			<<npc Kylar>><<person1>><<generatey2>>你听到前方凯拉尔的声音。"是真的，"<<he>>说道。"<<pShes>>是我的<<girlfriend>>。"<<Hes>>正在和<<person2>><<person>>和<<his>>的朋友们聊天。他们看起来不太相信。
+			<br><br>
+
+			凯拉尔面向你。“告诉他们，”<<person1>><<he>>说。"告诉他们是真的"
+			<br><br>
+
+			<<link [[承认你们在交往|Kylar True]]>><<npcincr Kylar love 5>><<npcincr Kylar rage -5>><<status -10>><</link>><<lcool>><<gglove>>
+			<br>
+			<<link [[凯拉尔在撒谎|Kylar Lie]]>><<npcincr Kylar love -5>><<npcincr Kylar rage 5>><<status 1>><</link>><<lllove>><<ggksuspicion>><<gcool>>
+			<br>
+			<<link [[走开|Kylar Walk 2]]>><<npcincr Kylar love -1>><<npcincr Kylar rage 1>><</link>><<llove>><<gksuspicion>>
+			<br>
+			<<if $syndromekylar gte 1>>
+				<<link [[强吻凯拉尔|Kylar Kiss]]>><<npcincr Kylar love 10>><<npcincr Kylar rage -10>><<status -20>><</link>><<kissvirginitywarning>><<llcool>><<ggglove>>
+				<br>
+			<</if>>
+		<<else>>
+			<<npc Kylar>><<person1>>你听到笑声。你走到拐角处，发现了一群人。<<generatey2>>是凯拉尔，<<him>>的手臂被<<person2>><<person>>压在储物柜上。<<person1>>凯拉尔后面的柜子开着。在周围的人看到你后，笑声更大了。
+			<<gstress>><<stress 6>>
+			<br><br>
+
+			你走近一步，想看看发生了什么。凯拉尔的柜子里有个下流的小雕像。雕像的脸上还贴着一张铅笔肖像画。那幅画画得很好，很明显能看出是你的脸。在它的底部，花朵排列成圆形图案，看起来像一个神龛。
+			<br><br>
+
+			<<link [[羞辱凯拉尔|Kylar Bully]]>><<npcincr Kylar love -5>><<status 1>><</link>><<lllove>><<gcool>>
+			<br>
+			<<link [[保护凯拉尔|Kylar Defend]]>><<npcincr Kylar love 5>><<status -10>><</link>><<lcool>><<gglove>>
+			<br>
+			<<link [[走开|Kylar Walk]]>><<npcincr Kylar love -1>><</link>><<llove>>
+			<br>
+		<</if>>
+	<<else>>
+		<<if $rng gte 50>>
+
+			你看到一个人影在走廊上看着你。<<npc Kylar>><<person1>>是凯拉尔。当你看向<<him>>时，<<He>>马上就躲了起来。
+			<br><br>
+
+			<<link [[打招呼|Kylar Greet]]>><<npcincr Kylar love 1>><</link>><<glove>>
+			<br>
+			<<link [[无视|Hallways]]>><<set $eventskip to 1>><<endevent>><</link>>
+			<br>
+
+		<<else>>
+
+			<<npc Kylar>><<person1>>你听到笑声。你走到拐角处，发现了一群人。<<generatey2>>是凯拉尔，<<him>>的手臂被<<person2>><<person>>压在储物柜上。<<person1>>凯拉尔后面的柜子开着。在周围的人看到你后，笑声更大了。
+			<<gstress>><<stress 6>>
+			<br><br>
+
+			你走近一步，想看看发生了什么。凯拉尔的柜子里有个下流的小雕像。雕像的脸上还贴着一张铅笔肖像画。那幅画画得很好，很明显能看出是你的脸。在它的底部，花朵排列成圆形图案，看起来像一个神龛。
+			<br><br>
+
+			<<link [[羞辱凯拉尔|Kylar Bully]]>><<npcincr Kylar love -5>><<status 1>><</link>><<lllove>><<gcool>>
+			<br>
+			<<link [[保护凯拉尔|Kylar Defend]]>><<npcincr Kylar love 5>><<status -10>><</link>><<lcool>><<gglove>>
+			<br>
+			<<link [[走开|Kylar Walk]]>><<npcincr Kylar love -1>><</link>><<llove>>
+			<br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "eventsschoolstump">>
+	<<rng>>
+	<<if $rng gte 51>>
+
+		一阵风吹过你。
+
+		<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+			<<if $schoolstate is "lunch" or $schoolstate is "morning" or $schoolstate is "afternoon">>
+				微风吹起你的$worn.lower.cn_name_cap，露出你的<<undies>>，直到你把衣服重新塞回去。应该没有人看见。
+				<<gstress>><<garousal>><<stress 1>><<arousal 600>>
+				<br><br>
+			<<else>>
+				微风吹起你的$worn.lower.cn_name_cap，露出你的<<undies>>，直到你把衣服重新塞回去。应该没有人看见。
+				<br><br>
+			<</if>>
+		<<else>>
+			你感觉有点儿冷。
+			<<lstress>><<stress -1>>
+			<br><br>
+		<</if>>
+
+		<<if $schoolstate isnot "late">>
+			<<link [[保持放松 (0:10)|School Stump]]>><<pass 10>><<stress -1>><<tiredness -1>><</link>><<ltiredness>><<lstress>>
+			<br>
+		<</if>>
+		<<link [[停止|School Rear Courtyard]]>><</link>>
+		<br>
+
+	<<else>>
+
+		<<generate1>><<person1>>"嘿，"一个声音压低说，"你在树桩上。"你睁开眼睛。一个<<person>>站在围墙的另一边，学校旁边的一条小巷里。"你衣服下面是什么？"
+		<br><br>
+
+		<<link [[无视|School Stump Ignore]]>><<stress 1>><</link>><<gstress>>
+		<br>
+		<<if $worn.under_lower.type.includes("naked") or playerChastity()>>
+			<<if $exhibitionism gte 75>>
+				<<link [[露出|School Stump Genital Flash]]>><</link>><<exhibitionist5>>
+				<br>
+			<</if>>
+		<<else>>
+			<<if $exhibitionism gte 15>>
+				<<link [[露出|School Stump Flash]]>><</link>><<exhibitionist2>>
+				<br>
+			<</if>>
+		<</if>>
+
+	<</if>>
+<</widget>>
+
+<<widget "WhitneyPantyCheck">>
+	<<if $whitneypantiescheck is 0 and _whitney.dom gte 18>>
+		惠特尼和<<his>>的朋友门围着你。他们把你推到柜子上。"新规矩，荡妇"<<He>>抓住你的$worn.lower.cn_name_cap，"不许穿内裤。"
+		<br><br>
+
+		<<if $worn.under_lower.type.includes("naked")>>
+			<<if $speech_attitude is "meek">>
+				"对，对不起，"你咕哝着。"我没，没有..."
+			<<elseif $speech_attitude is "bratty">>
+				你朝惠特尼看了一眼，"我现在已经没有在穿内裤了。"
+			<<else>>
+				"我—我都没穿……"
+			<</if>>
+			<br><br>
+
+			"不错啊，你都会提前考虑了，那我可要好好检查检查了，"<<he>>笑着说。"别让我抓到了。"
+			<br><br>
+
+			<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><<set $whitneypantiescheck to 1>><</link>>
+			<br>
+		<<else>>
+			<<link [[静观其变|Bully Panties]]>><<trauma 6>><<stress 3>><<sub 1>><<npcincr Whitney dom 1>><</link>><<gtrauma>><<gstress>><<garousal>><<gdom>>
+			<br>
+			<<link [[战斗|Bully Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+			<br>
+		<</if>>
+
+	<<elseif $whitneypantiescheck is 1>>
+		惠特尼和<<his>>朋友包围了你。"检查时间到，"<<he>>笑着说，并探向你的$worn.lower.cn_name_cap。
+		<br><br>
+
+		<<if $worn.under_lower.type.includes("naked")>>
+			<<if playerHasButtPlug()>>
+				当<<he>>发现肛塞时眼睛睁大了。“好吧，这是一个有趣的惊喜，”<<he>>笑着说。
+				<br><br>
+			<</if>>
+			"好<<girl>>，”<<he>>说。
+			<<if $player.gender is "m" and !playerChastity("hidden") and ($player.penissize lte 0 or playerChastity("cage")) and $forcedcrossdressingdisable is "f" and _whitney.dom gte 18>>
+				<<if $whitneypantiesoffered>>
+					"你知道的，我的提议仍然有效，你可以只穿内裤。"
+				<<elseif playerChastity("cage")>>
+					"哈，看着那个贞操笼，你可以直接穿女士内裤了。"
+				<<elseif $player.penissize lte 0>>
+					"你看看你，小的可怜，你可以直接穿女士内裤了。"
+				<<else>>
+					"看看你这逼样，你可以直接穿女士内裤了。"
+				<</if>>
+				<br><br>
+				<<link [[同意穿上内裤|Bully Panties 2]]>><<unset $whitneypantiesoffered>><<set $whitneypantiescheck to 2>><<set $phase to 0>><</link>> <i><small class="red">这会让惠特尼想出其他点子</small></i>
+				<br>
+				<<link [[口头哇路|Bully Panties 2]]>><<set $phase to 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+			<<else>>
+				"我之后再来看。"
+				<br><br>
+
+				<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<</if>>
+			<br>
+		<<else>>
+			"坏<<girl>>，"惠特尼笑着着责骂道。"我现在得把这些都收走。"
+			<br><br>
+
+			<<link [[静观其变|Bully Panties]]>><<trauma 6>><<stress 3>><<sub 1>><<npcincr Whitney dom 1>><</link>><<gtrauma>><<gstress>><<garousal>><<gdom>>
+			<br>
+			<<link [[战斗|Bully Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+			<br>
+		<</if>>
+	<<elseif $whitneypantiescheck is 2>>
+		<<if $whitneyskirtcheck is 1 and setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt isnot 1 and $forcedcrossdressingdisable is "f">>
+			惠特尼和<<his>>朋友们把你包围起来。当<<He>>注意到你穿着$worn.lower.cn_name_cap时，<<he>>皱起了眉头。"我曾经要求你穿裙子，坏孩子，"惠特尼责备道，"现在我必须拿走你所有的东西了。"
+			<br><br>
+			<<set _skirtCheckFailed to true>>
+		<<elseif $whitneyskirtcheck is 1 and setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1 and $worn.lower.reveal lte 200 and $forcedcrossdressingdisable is "f">>
+			惠特尼和<<his>>朋友们把你包围起来。当<<He>>注意到你穿着$worn.lower.cn_name_cap时，<<he>>皱起了眉头。"我叫你穿短裙的，坏孩子，"惠特尼责备道，"现在我必须拿走你所有的东西了。"
+			<br><br>
+			<<set _skirtCheckFailed to true>>
+		<<else>>
+			惠特尼和<<his>>朋友包围了你。"检查时间到，"<<he>>笑着说，并探向你的$worn.lower.cn_name_cap。
+			<br><br>
+		<</if>>
+		<<if _skirtCheckFailed>>
+			<<link [[静观其变|Bully Panties]]>><<trauma 6>><<stress 3>><<sub 1>><<npcincr Whitney dom 1>><</link>><<gtrauma>><<gstress>><<garousal>><<gdom>>
+			<br>
+			<<link [[战斗|Bully Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+			<br>
+		<<elseif $worn.under_lower.type.includes("naked")>>
+			<<if playerHasButtPlug()>>
+				当<<he>>感受到肛塞时，<<His>>睁大了眼睛，“啊哈，惊喜。”<<He>>笑了。
+				<br><br>
+			<</if>>
+			<<WhitneyChastityCheck>>
+
+			"虽然我让你穿女士内裤，但这还不赖。好<<girl>>，”<<he>>说，“我一会儿再来检查。"
+			<br><br>
+
+			<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<br>
+		<<elseif $worn.under_lower.gender is "f">>
+			<<set $worn.under_lower.name_simple to setup.clothes.under_lower[clothesIndex('under_lower', $worn.under_lower)].name_simple>>
+			"好<<girl>>。愿你那$worn.under_lower.cn_name_cap<<if $worn.under_lower.plural is 1>>are<<else>>is<</if>>紧凑适合，"<<he>>说道，"我一会再过来看。"
+			<br><br>
+			<<WhitneyChastityCheck>>
+			<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<br>
+		<<else>>
+			"坏<<girl>>，"惠特尼笑着着责骂道。"我现在得把这些都收走。"
+			<br><br>
+
+			<<link [[静观其变|Bully Panties]]>><<trauma 6>><<stress 3>><<sub 1>><<npcincr Whitney dom 1>><</link>><<gtrauma>><<gstress>><<garousal>><<gdom>>
+			<br>
+			<<link [[战斗|Bully Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+			<br>
+		<</if>>
+		<br><br>
+	<<else>>
+		惠特尼和<<his>>朋友围住了你，<<he>>把你推倒在地。"别忘了你属于谁。"<<he>>说完，转身离开。<<tearful>>你爬起来。
+		<<npcincr Whitney lust 5>><<glust>>
+		<br><br>
+
+		<<link [[继续|Hallways]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+
+	<</if>>
+<</widget>>
+
+<<widget "WhitneyChastityCheck">>
+	<<if $worn.genitals.origin is "Whitney">>
+		<<if ($player.penissize lte 0 and $worn.genitals.name is "chastity cage") or ($player.penissize is -2 and $worn.genitals.name is "small chastity cage")>>
+			<<He>>检查着你的$worn.genitals.cn_name_cap。“看上去那个贞操笼容不下你那个大鸡巴，需要把它放出来。"
+			<br><br>
+			<<set $worn.genitals.type.push("broken")>>
+			<<genitalsruined>>
+			<<if $player.penissize is -2>>
+				在你还未来得及说什么之前，<<He>>打开了笼子，并用一个光滑而粉红的贞操笼取代了它。"一切就绪。"
+				<<genitalswear 7 "pink">>
+			<<else>>
+				在你还未来得及说什么之前，<<He>>打开了笼子，并用一个小而粉红的贞操笼取代了它。"一切就绪。"
+				<<genitalswear 6 "pink">>
+			<</if>>
+		<<elseif $worn.genitals.integrity lte setup.clothes.genitals[clothesIndex('genitals',$worn.genitals)].integrity_max * 0.75>>
+			<<if $weekly.whitneyChastityReplace>>
+				<<He>>检查了你的$worn.genitals.cn_name_cap。“有点坏了，哈？这些东西不是树上长的，我可没工夫每次都因为你把它们操烂而替换它们。"
+				<br><br>
+			<<else>>
+				<<set $weekly.whitneyChastityReplace to 1>>
+				<<He>>检查了你的$worn.genitals.cn_name_cap。“有点坏了，哈？最好换一下。"
+				<br><br>
+				在你还没来得及说什么之前，<<He>>打开了笼子并替换了它。"一切都解决了。"
+				<<set $worn.genitals.integrity to setup.clothes.genitals[clothesIndex('genitals',$worn.genitals)].integrity_max>>
+			<</if>>
+		<<else>>
+			<<He>>检查了你的$worn.genitals.cn_name_cap。“很好，你保持的不错。"
+		<</if>>
+		<br><br>
+	<</if>>
+<</widget>>

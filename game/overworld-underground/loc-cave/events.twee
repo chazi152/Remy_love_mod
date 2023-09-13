@@ -1,0 +1,686 @@
+:: Beach Cave Hollow Open
+<<effects>>
+
+
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+
+	你对这个年代的锁并不陌生，但是这个家伙的设计明显比大多数的锁更高明，但还是你的技术更高明一些。<span class="green">它砰地打开了，</span>你顺势掀开了盖子。
+	<br><br>
+	内里很干燥。
+	<<if random(1, 3) is 3>>
+		里面是一把钢制弯刀，几乎没有锈迹和其他污痕。在它旁边是一把银制匕首。博物馆馆长会对它感兴趣的。
+		<<set $antiquemoney += 120>><<museumAntiqueStatus "antiquecutlass" "found">>
+		<<set $antiquemoney += 240>><<museumAntiqueStatus "antiquesilverdagger" "found">>
+	<<else>>
+		里面是一把钢制弯刀，几乎没有锈迹和其他污痕。博物馆馆长会对它感兴趣的。
+		<<set $antiquemoney += 120>><<museumAntiqueStatus "antiquecutlass" "found">>
+	<</if>>
+	<br><br>
+	<<skulduggeryuse>>
+
+
+	<<endevent>>
+	<<beach_cave_caught>>
+
+<<else>>
+
+	这个锁很老，但看起来很古怪并坚固。你摆弄了一会儿，<span class="red">直到你听到啪的一声。</span>现在它根本开不了了。
+	<br><br>
+
+	这个箱子太笨重了，不能随身携带，所以你把它留在了水里。
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+
+<</if>>
+
+
+:: Beach Cave Heavy Open
+<<effects>>
+
+
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+
+	你对这个年代的锁并不陌生，<span class="green">打开它对你而言轻而易举。</span>你掀开了盖子。
+	<br><br>
+	里面装满了水，
+	<<if random(1, 3) is 3 and $cave gte 15>>
+		你发现了一把弯刀的残骸，已经锈蚀得无法修复了。它值不了多少钱，但它的旁边还有一把银质匕首。博物馆馆长会对它们感兴趣的。
+		<<set $antiquemoney += 10>><<museumAntiqueStatus "antiquerustedcutlass" "found">>
+		<<set $antiquemoney += 240>><<museumAntiqueStatus "antiquesilverdagger" "found">>
+	<<else>>
+		你发现了一把弯刀的残骸，已经锈蚀得无法修复了。它值不了多少钱，但是博物馆馆长依旧会对它感兴趣的。
+		<<set $antiquemoney += 10>><<museumAntiqueStatus "antiquerustedcutlass" "found">>
+	<</if>>
+	<br><br>
+	<<skulduggeryuse>>
+
+	<<endevent>>
+	<<beach_cave_caught>>
+
+<<else>>
+
+	这个锁很老，但看起来很古怪并坚固。你摆弄了一会儿，<span class="red">直到你听到啪的一声。</span>现在它根本开不了了。
+	<br><br>
+
+	这个箱子太笨重了，不能随身携带，所以你把它留在了水里。
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+
+<</if>>
+
+:: Beach Cave Treasure
+<<effects>>
+
+<<if $phase is 0>>
+	你走左边的通道。
+<<else>>
+	你走右边的通道。
+<</if>>
+<<set $phase to 0>>
+你发现了个没上锁的箱子，半藏在岩石的后面。
+
+<<if random(1, 2) is 2>>
+	你在里面找到了一把银制匕首。对博物馆馆长来说它会很宝贵。
+	<<set $antiquemoney += 240>><<museumAntiqueStatus "antiquesilverdagger" "found">>
+	<br><br>
+<<else>>
+	里面有一把锈迹斑斑的老旧弯刀。对博物馆馆长来说它可能有点价值。
+	<<set $antiquemoney += 10>><<museumAntiqueStatus "antiquerustedcutlass" "found">>
+	<br><br>
+<</if>>
+
+<<endevent>>
+<<beach_cave_caught>>
+
+
+:: Beach Cave Back
+<<effects>>
+
+<<if $phase is 0>>
+	你走右边的通道。
+<<else>>
+	你走左边的通道。
+<</if>>
+<<set $phase to 0>>
+<<pass 5>><<set $cave -= 10>>
+你跟着它，直到洞穴再次出现岔道。你心中突然升起一阵奇怪的熟悉感。你感觉你之前来过这里。
+<br><br>
+
+
+
+<<link [[继续|Beach Cave]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Beach Cave Carry
+<<effects>>
+
+你顺着湍急的水流，让它带你穿过洞穴。
+<br><br>
+
+<<link [[继续|Beach Cave]]>><<set $cave -= 10>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Beach Cave Swim
+<<effects>>
+
+你逆着水流游动。
+
+<<if $swimmingSuccess>>
+	<span class="green">并设法抵抗住水流的拉力，</span>直到它平息下来。
+	<br><br>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	<span class="red">但是水流太猛烈了。</span>湍急的水流带着你穿过洞穴。
+	<br><br>
+
+	<<link [[继续|Beach Cave]]>><<set $cave -= 10>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+
+:: Beach Cave Explore
+<<effects>>
+
+你潜入水下，顺着洞穴前行。
+
+<<if $swimmingSuccess>>
+	<span class="green">你从对岸的水中浮出</span>，环顾四周。这里的空气更暖和。你在一块岩石后面看到了地衣般的光芒。那是把银质匕首，保存完好。博物馆馆长会对它感兴趣的。
+	<br><br>
+	<<set $antiquemoney += 240>><<museumAntiqueStatus "antiquesilverdagger" "found">>
+	<br><br>
+	你游回主洞穴。
+	<br><br>
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	你开始喘不过气来，<span class="red">但是你看不到前方的尽头。</span>你只好往回走。<<gstress>><<stress 6>>
+	<br><br>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+
+:: Beach Cave Eyes
+<<effects>>
+
+<<covered>>
+<<if $speech_attitude is "meek">>
+	"请...请别...别再盯着看了，"你恳求道。
+<<elseif $speech_attitude is "bratty">>
+	"把你的眼睛移开，"你警告道。
+<<else>>
+	"别...别盯着我看，"你这样说道。
+<</if>>
+你的声音在洞窟里回荡。这些眼睛眨了眨，闭上了。
+<br><br>
+
+<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Beach Cave Struggle
+<<effects>>
+
+<<effects>>
+<<if $struggle_start is 1>>
+	<<struggle_init>>
+	<<set $struggle.creature to "slug">>
+	<<struggle_creatures $pursuit 2>>
+	<<set $combat to 1>>
+	<<controlloss>>
+	<<violence 1>>
+	<<molested>>
+	<<unset $struggle_start>>
+<</if>>
+
+
+<<struggle>>
+
+
+
+<<if $struggle.done gte $struggle.number>>
+	<span id="next"><<link [[继续|Beach Cave Struggle End]]>><</link>></span>
+	<br>
+<<else>>
+	<span id="next"><<link [[继续|Beach Cave Struggle]]>><</link>></span>
+	<br>
+<</if>>
+
+
+:: Beach Cave Struggle End
+<<effects>>
+
+<<set $pursuit to 0>>
+
+<<if $stress gte $stressmax>>
+	你再也承受不住了。你失去了意识，眼前陷入一片黑暗。
+	<br><br>
+	<<passout>>
+
+	<<endcombat>>
+
+	<<slug_cave_intro>>
+
+<<else>>
+	最后的蛞蝓消失在湍急的水流中。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+
+:: Beach Cave Tentacle
+<<effects>>
+
+<<if $player.breastsize gte 3>>
+	触手环绕着你的<<breasts>>，推挤着它们，滑过了你的乳头。
+<<else>>
+	触手挤压着你的胸膛，滑过你的<<breasts>>。
+<</if>>
+<<garousal>><<arousal 600 "breasts">>
+<br><br>
+<<if random(1, 2) is 2 and $bestialitydisable is "f" and $slugdisable is "f">>
+	你听到一声闷响，触手解开了。它指着水的方向，好像在看着什么。一个身影从水中跃出。触手完全把你松开了，把你扔下并且吓得退缩。
+	<br><br>
+
+	你扑通一声进入水中。你并不是孤身一人。
+	<br><br>
+
+	<<link [[继续|Beach Cave Struggle]]>><<set $struggle_start to 1>><</link>>
+	<br>
+<<else>>
+	<<generate1>><<generate2>>
+	<<if $pursuit gte 3>>
+		<<generate3>>
+	<</if>>
+	<<if $pursuit gte 4>>
+		<<generate4>>
+	<</if>>
+	<<if $pursuit gte 5>>
+		<<generate5>>
+	<</if>>
+	<<if $pursuit gte 6>>
+		<<generate6>>
+	<</if>>
+	<<person1>>你听到身后传来一个<<personsimple>>的笑声。"发现了饭后甜点，"一个粗哑的声音说着。一双手抓住了你的臀部，将你转了过来，面对着他们。
+
+	一个<<person>><<if $cave gte 20>>站在<<else>>浮在<</if>>那里，另一个<<person2>><<person>>在<<person1>>的旁边。两人都穿着潜水衣。
+	<<if $pursuit gte 4>>
+		你感觉到其他身影潜伏在附近的黑暗中。
+	<<elseif $pursuit gte 3>>
+		你感觉到另一个身影潜伏在附近的黑暗中。
+	<<else>>
+	<</if>>
+	<br><br>
+
+	<<person2>><<person>>从<<his>>身边拿出一把刀，开始砍触手。它在刀刃触碰到它前便退入了黑暗中，将你丢在水里。
+	<br><br>
+	在你恢复前，他们的手放在你的身上。
+	<br><br>
+
+	<<link [[继续|Beach Cave Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+
+:: Beach Cave Tentacle Top
+<<effects>>
+
+<<set $worn.upper.integrity -= 50>>
+<<if $worn.upper.integrity lte 0>>
+	你蠕动着挣脱这个生物，它扑通一声掉进下面的水里。你仔细看。触手仍旧抓着你的$worn.upper.cn_name_cap。<<covered>>它把衣物拽进了黑暗中。
+	<br><br>
+	<<integritycheck no_text>>
+	<<exposure>>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	你蠕动着挣脱这个生物，它扑通一声掉进下面的水里。你的$worn.upper.cn_name_cap穿起来感觉更糟了，但你设法逃离了这个隧道。
+	<br><br>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Beach Cave Tentacle Under Top
+<<effects>>
+
+<<set $worn.under_upper.integrity -= 50>>
+<<if $worn.under_upper.integrity lte 0>>
+	你蠕动着挣脱这个生物，它扑通一声掉进下面的水里。你仔细看。触手仍旧抓着你的$worn.under_upper.cn_name_cap。<<covered>>它把衣物拽进了黑暗中。
+	<br><br>
+	<<integritycheck no_text>>
+	<<exposure>>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	你蠕动着挣脱这个生物，它扑通一声掉进下面的水里。你的$worn.under_upper.cn_name_cap穿起来感觉更糟了，但你设法逃离了这个隧道。
+	<br><br>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+
+:: Beach Cave Rope
+<<effects>>
+
+
+你感觉那些东西越来越近，
+<<if random(1, 2) is 2 and $bestialitydisable is "f" and $slugdisable is "f">>
+	你听到一声闷响，一道黑影从水里冲出，落在你的大腿上。是一个猫一样大的蛞蝓。又来了另一个，缠绕在绳子上。它快速地咬断了绳子，你扑通一声落入水中。
+	<br><br>
+
+	<<link [[继续|Beach Cave Struggle]]>><<set $struggle_start to 1>><</link>>
+	<br>
+<<else>>
+	<<generate1>><<generate2>>
+	<<if $pursuit gte 3>>
+		<<generate3>>
+	<</if>>
+	<<if $pursuit gte 4>>
+		<<generate4>>
+	<</if>>
+	<<if $pursuit gte 5>>
+		<<generate5>>
+	<</if>>
+	<<if $pursuit gte 6>>
+		<<generate6>>
+	<</if>>
+	<<person1>>你听到身后传来一个<<personsimple>>的笑声。"发现了饭后甜点，"一个粗哑的声音说着。一双手抓住了你的臀部，将你转了过来，面对着他们。
+
+	一个<<person>><<if $cave gte 20>>站在<<else>>浮在<</if>>那里，另一个<<person2>><<person>>在<<person1>>的旁边。两人都穿着潜水衣。
+	<<if $pursuit gte 4>>
+		你感觉到其他身影潜伏在附近的黑暗中。
+	<<elseif $pursuit gte 3>>
+		你感觉到另一个身影潜伏在附近的黑暗中。
+	<<else>>
+	<</if>>
+	<br><br>
+
+	<<person2>><<person>>从<<his>>身边拿出一把刀，开始切断绳子。你扑通一声落入水中。
+	<br><br>
+	在你恢复前，他们的手放在你的身上。
+	<br><br>
+
+	<<link [[继续|Beach Cave Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Beach Cave Rope Over Top
+<<effects>>
+
+<<set $worn.over_upper.integrity -= 50>>
+<<if $worn.over_upper.integrity lte 0>>
+	当你蠕动着试图挣脱时，绳子撕裂了你的$worn.over_upper.cn_name_cap，但你总算挣开了，扑通一声落入下面的水中。你抬头看。你破烂的$worn.over_upper.cn_name_cap悬在上面。
+	<br><br>
+	<<integritycheck no_text>>
+	<<exposure>>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	当你蠕动着试图挣脱时，绳子撕裂了你的$worn.over_upper.cn_name_cap，但是你总算挣脱开了，扑通一声落入下面的水中。
+	<br><br>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Beach Cave Rope Top
+<<effects>>
+
+<<set $worn.upper.integrity -= 50>>
+<<if $worn.upper.integrity lte 0>>
+	当你蠕动着试图挣脱时，绳子撕裂了你的$worn.upper.cn_name_cap，但你总算挣脱开了，扑通一声落入下面的水中。你抬头看，你破烂的$worn.upper.cn_name_cap悬在上面。
+	<br><br>
+	<<integritycheck no_text>>
+	<<exposure>>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	当你蠕动着试图挣脱时，绳子撕裂了你的$worn.upper.cn_name_cap，但是你总算挣脱开了，扑通一声落入下面的水中。
+	<br><br>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Beach Cave Rope Under Top
+<<effects>>
+
+<<set $worn.under_upper.integrity -= 50>>
+<<if $worn.under_upper.integrity lte 0>>
+	当你蠕动着试图挣脱时，绳子撕裂了你的$worn.under_upper.cn_name_cap，但你总算挣脱开了，扑通一声落入下面的水中。你抬头看。你破烂的$worn.under_upper.cn_name_cap悬在上面。
+	<br><br>
+	<<integritycheck no_text>>
+	<<exposure>>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	当你蠕动着试图挣脱时，绳子撕裂了你的$worn.under_upper.cn_name_cap，但你总算挣脱开了，扑通一声落入下面的水中。
+	<br><br>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+
+:: Beach Cave Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Beach Cave Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Beach Cave Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Beach Cave Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"我们得带着<<phim>>，"<<person1>><<person>>补充道，"其他人也会想来一发。"一个眼罩从你的背后蒙在你的头上，不光你的胳膊被绳子捆住，你的眼睛也被蒙住了。
+	<br><br>
+	<<facewear 5>>
+	<<bind>>
+	<<pass 10>>
+
+	<<link [[继续|Beach Cave Rape Finish 2]]>><</link>>
+	<br>
+
+<<else>>
+	<<set $pursuit to 0>>
+	你把<<group>>推开，清理出些许空间。
+	<<if $cave lt 50>>
+		<<tearful>>你潜入水下。你能听到他们低沉的喊声，他们正四处找你。但是水流太猛了，四周也很黑。你溜走了。
+	<<else>>
+		<<tearful>>你跑了起来。你听到身后有人急促踩在水上的声音，但你躲在了拐角处的一块岩石后面。追赶你的人凝视着前方的一片昏黑，从你面前飞奔而过。
+	<</if>>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Beach Cave Rape Finish 2
+<<effects>>
+
+<<pub_cave_arrival>>
+
+
+
+:: Beach Cave Soothe
+<<effects>>
+
+
+<<if $tendingSuccess>>
+	你唱着舒缓的曲调，<span class="green">触手松开了</span>，然后缩回了某个未知的缝隙里。
+	<br><br>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	你试图让他们平静下来，<span class="red">但你的声音在颤抖</span>，因为有一根触须戳到了你的<<bottom>>。
+	<br><br>
+
+	<<link [[继续|Beach Cave Tentacles]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Beach Cave Tentacles
+<<effects>>
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $combat to 1>>
+	<<set $enemytype to "tentacles">>
+	<<molested>>
+	<<controlloss>>
+
+	<<tentaclestart 3 8>>
+
+<</if>>
+
+<<statetentacles>>
+
+
+<<effects>>
+<<effectstentacles>>
+<<tentacles>>
+<<actionstentacles>>
+
+<<if $tentacles.active lte ($tentacles.max / 2)>>
+	<span id="next"><<link [[继续|Beach Cave Tentacles Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Beach Cave Tentacles]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Beach Cave Tentacles Finish
+<<effects>>
+
+触手缩回去了，消失在某个隐蔽的缝隙中。
+<br><br>
+
+<<tearful>>你继续穿过洞穴。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+<br>
+
+
+:: Beach Cave Ignore
+<<effects>>
+
+你无视了你的紧张情绪，从裂缝走过。
+<<if $rng gte (100 - ($pursuit * 15))>>
+	<<if $bestialitydisable is "f" and $slugdisable is "f" and random(1, 2) is 2>>
+		<span class="red">当你经过时，一只蛞蝓跳了出来，</span>差点错过你。<<set $pursuit += 1>>
+		<<if $pursuit gte 6>>
+			当它落入水中时，你急忙奔跑起来，<span class="red">但其他的游出了水面。</span>你被包围了。
+			<br><br>
+
+			<<link [[继续|Beach Cave Struggle]]>><<set $struggle_start to 1>><</link>>
+			<br>
+		<<else>>
+			当它落入水中时，你急忙奔跑起来。<<gtrauma>><<trauma 6>><<gstress>><<stress 6>>
+			<br><br>
+
+			<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		<span class="red">当你经过时，一只胳膊抓向你。</span>你急忙闪开，然后开始奔跑。<<set $pursuit += 1>>
+		<<if $pursuit gte 6>>
+			<<generate1>><<generate2>><<generate3>><<generate4>><<generate5>><<generate6>><<person1>>
+			你听到有人在你身后笑着，<span class="red">更多身影从水面浮现了。</span>他们穿着潜水衣。
+			<br><br>
+			你被包围了。
+			<br><br>
+			<<link [[继续|Beach Cave Rape]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<<else>>
+			你听到有人在你身后笑着。<<gtrauma>><<trauma 6>><<gstress>><<stress 6>>
+			<br><br>
+
+			<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<<else>>
+	无事发生。<<lstress>><<stress -6>>
+	<br><br>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip += 1>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Beach Cave Rush
+<<effects>>
+
+你冲过裂缝，边走边溅起水来。
+
+<<if $athleticsSuccess>>
+	<span class="green">什么事都没发生。</span><<lstress>><<stress -6>>
+	<br><br>
+
+	<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	<span class="red">你的脚被裂缝旁的一块岩石绊倒，</span>你滑进水里。
+	<br><br>
+
+	<<if $pursuit gte 6>>
+		<<if $bestialitydisable is "f" and $slugdisable is "f" and random(1, 2) is 2>>
+			<span class="red">一个形体从水中跃出。</span>它没有命中，降落在你身后的洞壁上。是一只巨大的蛞蝓。又有另一个向你游来。
+			<br><br>
+
+			<<link [[继续|Beach Cave Struggle]]>><<set $struggle_start to 1>><</link>>
+			<br>
+		<<else>>
+			<<generate1>><<generate2>><<generate3>><<generate4>><<generate5>><<generate6>><<person1>>
+
+			一个身影从拐角走来。一个穿着潜水服的<<person>>。<<He>>盯着你，微笑着。另外两个人加入了<<him>>。
+			<br><br>
+			"像你这样可爱的<<lass>>在我们的洞里在做什么呢？"
+			<br>
+			"我觉得需要给<<pshe>>上一堂课。"
+			<br>
+			"别想着能逃到哪去，<<girl>>。"
+			<br><br>
+
+			他们走得更近了。你转过身，与一个<<person4>><<person>>面对面。另外两个人也在<<him>>的侧翼。你被包围了。
+			<br><br>
+
+			<<link [[继续|Beach Cave Rape]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		你感觉你引到了什么存在的注意力。好像有什么在看着你。<<set $pursuit += 1>>
+		<br><br>
+
+		<<link [[继续|Beach Cave]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+
+:: Beach Cave Wrest
+<<effects>>
+
+你从淤泥中扭出你的腿，从中解放自己。
+<br><br>
+
+<<link [[继续|Beach Cave]]>><<set $eventskip += 1>><</link>>
+<br>
+
+:: Beach Cave Take
+<<effects>>
+
+你摆动着你的脚，同时轻轻地拉出淤泥。一点点地拉，直到你的脚终于自由。
+<br><br>
+
+<<beach_cave_caught>>

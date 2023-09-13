@@ -1,0 +1,2407 @@
+:: Ocean Breeze
+
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+你在海风咖啡馆。
+<<if $openinghours is 1>>
+	<<if $weather is "clear">>
+		大部分位子都是空的。
+	<<elseif $weather is "overcast">>
+		咖啡馆里人很多，尽管刮着大风，还是有人坐在外面。
+	<<elseif $weather is "rain">>
+		因为下雨，所以没有人坐在外面，咖啡馆里很拥挤。
+	<<elseif $weather is "snow">>
+		因为天寒地冻，所以没有人坐在外面，咖啡馆里显得很拥挤。
+	<</if>>
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutshop>>
+
+<<elseif $openinghours is 1 and $exposed lt 1 and $bunstat gte 50 and $chef_state is 1>>
+	<<set $chef_state to 2>><<set $bun_value to 10000>>
+	<<npc Sam>><<person1>>
+	萨姆走近你，用毛巾擦拭<<his>>的手，满面春风。
+	"我已经做了一个决定，"<<he>>说道："我想保持这些小面包的价格，但我们已经吸引了足够的客户兴趣。"
+	<<He>>拿出一本假日小册子，打开其中一页，上面写着小镇的广告。
+	有一张咖啡馆的照片，上面有一个标题，说他们的面包品质是 "世界一流"。
+	<br><br>
+
+	"世界一流！" 萨姆喜形于色。
+	"我决定把价格提高到<span class="gold">£100</span>。毕竟我们的供应有限，无法满足目前的需求。"
+	<br><br>
+
+	<<He>>哼着歌，回到工作岗位上。
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Ocean Breeze]]>><</link>>
+	<br>
+
+<<elseif $openinghours is 1 and $exposed lt 1 and $bunstat gte 200 and $chef_state is 2>>
+	<<set $chef_state to 3>>
+	<<npc Sam>><<person1>>
+	萨姆靠近你。
+	"我在一个聚会上，"<<he>>说道。
+	"也可能是我喝多了，但是我应该听见了有人在讨论我们的小面包.
+	人们对它的制作方式感到十分好奇，但当我告诉人们我并不知道如何制作，是一个新厨师负责的时候，那些家伙更加好奇了。
+	我认为你正在创造一项神话，一项以你为传说的神话。"
+	<br><br>
+	"无论怎样，"<<he>>继续说道，
+	"这让我想到，我想我可以在我们的广告中使用你的形象。
+	也许我们可以重新设计建筑物的正面招牌，公正的人们自然会知道谁该享受这样的待遇。"
+	<br><br>
+	"我愿意把你的分红增加到<span class="gold">30%</span>，<<he>>在打扫着一张空出的桌子时补充道："每卖出一个小面包都会给你分红。"
+	"我正在与一位专业摄影师交涉，请仔细考虑一下，然后告诉我你的想法。"
+	<br><br>
+
+	<<endevent>>
+
+	<<link [[继续|Ocean Breeze]]>><</link>>
+	<br>
+
+<<elseif $openinghours is 1 and $exposed lt 1 and $chef_state is 5>>
+	<<set $chef_state to 6>>
+	<<npc Sam>>萨姆向你走来，"摄影师把照片送过来了，"<<he>>说道。
+	"它们太棒了！新广告看起来很棒，就和之前说好的一样，从现在开始，每卖出一个小面包，你都会得到<span class="gold">30%</span>的分红。"
+	<<set $bun_cut to 0.3>>
+	<br><br>
+
+	萨姆哼着小曲回去工作了。
+	<br><br>
+	<<endevent>>
+
+	<<link [[继续|Ocean Breeze]]>><</link>>
+	<br><br>
+
+<<elseif $openinghours is 1 and $exposed lt 1 and $bunstat gte 400 and $chef_state is 6>>
+	<<set $chef_state to 7>>
+	<<set $chef_rework to 37>>
+	<<npc Sam>><<person1>>
+	萨姆顶着一副比平时更严肃地面孔走向你。"我做了一个决定，"<<he>>说道。
+	"小面包是我们的招牌菜品，但人们对我们的其他菜品也比以前更感兴趣了。
+	你可能已经注意到了，即使人们知道主厨并不在这栋楼里，仍然会在这排队等待吃饭。"
+	<br><br>
+	"所以我已经将隔壁的房子买了下来，"<<he>>继续说道。
+	"一个大咖啡馆，我打算把这几栋建筑合并，做成一个巨大的咖啡馆。一个能容纳我们所有顾客的咖啡馆，我一想到这个就兴奋不已！"
+	<br><br>
+	<span class="pink">"我们需要关门一个月,"</span><<he>>补充道.
+	"我知道这很不幸，但毕竟要改变的地方太多了，当它完成时，我们会有一个盛大的开幕活动，到时候将会由你来致辞。"
+	<br><br>
+	"我们会在一个星期内准备关门，我不想让你感到手足无措，所以等我们结束之后，你可以过来看看，我们会讨论开幕式的活动。"
+	<br><br>
+	<<He>>回到了工作岗位上。
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Ocean Breeze]]>><</link>>
+	<br>
+
+<<else>>
+	<<if Time.hour is $closinghour>>
+		关店时间到了，萨姆正在清场。
+		<<if $exposed gte 1>>
+			当你意识到如果你穿着这样的衣服你会有多暴露时，你感到一阵恐慌。
+		<</if>>
+		<br><br>
+
+	<<elseif $openinghours is 0>>
+		你独自待在黑暗之中。
+		<br><br>
+
+	<<elseif $exposed gte 1>>
+		你躲在桌子下面，以保护你的尊严。
+		<br><br>
+
+	<</if>>
+
+	<<if $arousal gte $arousalmax>>
+		<<orgasmLocation "cafe">>
+	<</if>>
+
+	<<if $openinghours is 1 and $exposed lt 1 and $oceanbreezejob isnot 1>>
+		<<if $oceanbreezejoboffer is 1>>
+			<<ind>><<link [[应聘工作|Ocean Breeze Ask Again]]>><</link>>
+			<br>
+		<<else>>
+			<<ind>><<link [[应聘工作|Ocean Breeze Ask]]>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+
+	<<if $openinghours is 1 and $exposed lt 1 and $oceanbreezejob is 1>>
+		<<if $chef_state is 0>>
+			<<ind>><<link [[接受工作机会|Chef Work Accept]]>><</link>>
+			<br>
+		<<elseif $chef_state gte 1>>
+			<<ind>><<link [[当厨师 (1:00)|Chef Work]]>><</link>>
+			<br>
+		<</if>>
+		<<if $chef_state is 3>>
+			<<ind>><<link [["接受萨姆的提议"|Chef Photographer]]>><</link>>
+			<br>
+		<</if>>
+		<<if $player.gender_appearance is "m">>
+			<<ind>><<link [[当服务员 (1:00)|Ocean Breeze Work]]>><<set $tablesservedstat += random(10,30)>><</link>>
+			<br>
+		<<else>>
+			<<ind>><<link [[当服务员 (1:00)|Ocean Breeze Work]]>><<set $tablesservedstat += random(10,30)>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+
+<<if $openinghours is 1 and $exposed lt 1 and $daily.cafeEaten isnot 1>>
+
+	<<if $money gte 200>>
+		<<coffeeicon>><<link [[买一杯咖啡 (0:02 £2)|Cafe Coffee]]>>
+			<<set $daily.cafeEaten to 1>><<set $money -= 200>><<stress -3>><<tiredness -4>><<pass 2>>
+		<</link>><<lstress>><<ltiredness>>
+		<br>
+	<</if>>
+	<<if $money gte 700>>
+		<<icon "beer_bottle.png">>
+		<<if Time.season is "winter">>
+			<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+				<span class="blue">当你知道自己怀有身孕时,你就不能再喝冬酿麦酒了.</span>
+			<<else>>
+				<<link [[买冬季麦芽酒 (0:10 £7)|Cafe Winter Ale]]>><<set $daily.cafeEaten to 1>><<set $money -= 700>><<stress -6>><<alcohol 100>><<pass 10>><</link>><<lstress>><<galcohol>>
+			<</if>>
+			<br>
+		<<elseif Time.season is "spring">>
+			<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+				<span class="blue">当你知道自己怀有身孕时,你就不能再喝果酒了.</span>
+			<<else>>
+				<<link [[买水果麦芽酒 (0:10 £7)|Cafe Spring Ale]]>><<set $daily.cafeEaten to 1>><<set $money -= 700>><<stress -6>><<alcohol 60>><<pass 10>><</link>><<lstress>><<galcohol>>
+			<</if>>
+			<br>
+		<<elseif Time.season is "summer">>
+			<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+				<span class="blue">当你知道自己怀有身孕时,你就不能再喝仙地酒了.</span>
+			<<else>>
+				<<link [[买鲜啤酒(0:10 £7)|Cafe Summer Ale]]>><<set $daily.cafeEaten to 1>><<set $money -= 700>><<stress -6>><<alcohol 40>><<pass 10>><</link>><<lstress>><<galcohol>>
+			<</if>>
+			<br>
+		<<else>>
+			<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+				<span class="blue">当你知道自己怀有身孕时,你就不能再喝秋酿麦酒了.</span>
+			<<else>>
+				<<link [[买秋艾酒 (0:10 £7)|Cafe Autumn Ale]]>><<set $daily.cafeEaten to 1>><<set $money -= 700>><<stress -6>><<alcohol 80>><<pass 10>><</link>><<lstress>><<galcohol>>
+			<</if>>
+			<br>
+		<</if>>
+	<</if>>
+	<<if $money gte 300>>
+		<<if ndef $milkshake>><<set $milkshake to 0>><</if>>
+		<<if $milkshake lt 2>>
+			<<milkshakeicon>><<link [[买奶昔带走 (0:02 £3)|Ocean Breeze]]>><<set $money -= 300>> <<set $milkshake +=1>> <<pass 2>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+	<<if $money gte 500>>
+		<<icon "food_fruitsalad.png">>
+		<<link [[买水果沙拉 (0:20 £5)|Cafe Fruit Salad]]>><<set $daily.cafeEaten to 1>><<set $money -= 500>><<stress -6>><<pass 20>><</link>><<lstress>>
+		<br>
+	<</if>>
+	<<if $money gte 1000>>
+		<<icon "food_pancakes.png">>
+		<<link [[买煎饼 (0:20 £10)|Cafe Pancakes]]>><<set $daily.cafeEaten to 1>><<set $money -= 1000>><<tiredness -6>><<pass 20>><</link>><<ltiredness>>
+		<br>
+	<</if>>
+	<<if $money gte 5000>>
+		<<icon "food_creambun.png">>
+		<<link [[购买豪华奶油面包 (0:20 £50)|Cafe Cream Bun]]>><<set $daily.cafeEaten to 1>><<transform cat 1>><<set $money -= 5000>><<pass 20>><<stress -18>><</link>><<llstress>>
+		<br>
+	<</if>>
+<</if>>
+
+<<if $openinghours is 0 and Time.hour isnot $closinghour and !$weekly.theft.oceanBreeze>>
+	<<link [[检查收银台|Ocean Breeze Register]]>><</link>>
+	<br>
+<</if>>
+
+<br>
+<<link [[离开|Cliff Street]]>><</link>>
+<br><br>
+
+<</if>>
+
+:: Ocean Breeze Lock
+<<set $outside to 0>><<effects>><<set $lock to 200>>
+
+<<openinghours>>
+
+<<if currentSkillValue('skulduggery') gte $lock>>
+	<span class="green">这把锁看起来很容易被撬开。</span>
+	<br><br>
+
+	<<link [[撬开它 (0:10)|Ocean Breeze]]>><<pass 10>><<crimeup 1>><</link>><<crime>>
+	<br>
+
+<<else>>
+	<span class="red">这把锁看起来超出了你的能力范围。</span><<skulduggeryrequired>>
+	<br><br>
+
+<</if>>
+
+<<link [[离开|Cliff Street]]>><</link>>
+<br>
+
+:: Ocean Breeze Ask
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+<<set $oceanbreezejoboffer to 1>>
+<<npc Sam>><<person1>>
+你走到柜台后面那个超重的<<personsimple>>面前，<<He>>对你笑了笑。
+"哪来的小可爱！有事么？"
+<br><br>
+
+听到你询问<<he>>是否有工作时，<<His>>的嘴都快咧到耳朵根了。
+"巧了么这不是，我正缺一个可爱的<<if $player.gender_appearance is "m">>服务员。<<else>>女服务员。<</if>>
+工资是每小时£5，还有小费。不过我要提醒你一下：有些顾客可能会对你动手动脚。
+请对他们耐心点，毕竟那些家伙并没有恶意！我们的人手总是不足，所以只要我们营业，你就可以来工作。"
+<br><br>
+
+<<link [[接受工作|Ocean Breeze Take Job]]>><</link>>
+<br>
+<<link [[拒绝工作|Ocean Breeze]]>><<endevent>><</link>>
+<br>
+
+:: Ocean Breeze Take Job
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+<<set $oceanbreezejob to 1>>
+
+"很好！"<<he>>一边说着一边握住你的手用力摇晃，"对了，我叫萨姆，来，我给你示范一下工作。"
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+
+:: Ocean Breeze Ask Again
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<npc Sam>><<person1>>你走向柜台后超重的<<personsimple>>。<<He>>冲着你笑。
+"欢迎回来！你重新考虑了吗？"
+<br><br>
+
+<br><br>
+
+<<link [[接受工作|Ocean Breeze Take Job]]>><</link>>
+<br>
+<<link [[拒绝工作|Ocean Breeze]]>><<endevent>><</link>>
+<br>
+
+:: Ocean Breeze Work
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+<<set $NPCName[$NPCNameList.indexOf("Sam")].love = Math.clamp($NPCName[$NPCNameList.indexOf("Sam")].love, -50, 50)>>
+<<rng 111>>
+<<if $rng gte 101>>
+	萨姆让你把盘子里的食物端到一大桌客人面前。
+	<br><br>
+	<<link [[分几次端|Ocean Breeze Plates]]>><<set $phase to 0>><</link>>
+	<br>
+	<<link [[一次全端出去|Ocean Breeze Plates]]>><<set $phase to 1>><</link>><<dancedifficulty 200 800>>
+<<elseif $rng gte 81 and $weather isnot "rain" and $weather isnot "snow">>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure)>>
+		<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+			在你为咖啡馆外面的桌位服务时，一阵强风从海上吹来，吹起了你的裙子并向所有看着的人暴露出你的<<undies>>。
+			<<undiestrauma>>
+			<br><br>
+
+			<<if !$worn.under_lower.type.includes("naked")>>
+				<<link [[保持这个姿态|Ocean Breeze Own]]>><<set $phase to 0>><</link>><<exhibitionist1>>
+				<br>
+			<<elseif $exhibitionism gte 35>>
+				<<link [[保持这个姿态|Ocean Breeze Own]]>><<set $phase to 1>><</link>><<exhibitionist3>>
+				<br>
+			<</if>>
+			<<link [[遮挡自己|Ocean Breeze Cover]]>><</link>>
+			<<if !$worn.under_lower.type.includes("naked")>>
+				<<fameexhibitionism 5>>
+			<<else>>
+				<<fameexhibitionism 10>>
+			<</if>>
+		<<else>>
+			在你为咖啡馆外的桌位服务时，一阵和风从海上吹来，轻柔地抚摸着你的皮肤。
+			<<lstress>><<stress -4>>
+			<br><br>
+
+			剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+			<<pass 1 hour>>
+			<br><br>
+
+			<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+		<</if>>
+	<<else>>
+		你轮班的大部分时间都用来服务外面的桌子和俯瞰大海。
+		<br><br>
+
+		剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+		<<pass 1 hour>>
+		<br><br>
+
+		<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+	<</if>>
+
+<<elseif $rng gte 81>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if playerBellyVisible() and $lactating is 1 and $breastfeedingdisable is "f">>
+		<<generate1>><<generate2>><<person1>>
+		一个声音在呼唤你。"喂，<<if $player.gender_appearance is "m">>服务员<<else>>服务员<</if>>！"你听到咖啡馆角落里传来的声音。你走近桌子，找到了那个叫你的<<person>>，<<him>>正怒视着你。还有一个<<person2>><<person>>坐在<<him>>旁边。
+		<br><br>
+
+		"我要了一个豪华奶油面包，结果得到了这个！"<<person1>><<person>>说："你管这叫豪华？上面几乎没有奶油！我花了£50买这个！你们是他妈的都傻了还是尿都倒流进脑子里了？"<<He>>大吼，迫使你在试图转移视线时听下去。
+		<br><br>
+
+		<<person2>><<person>>在朋友的言语攻击中保持沉默，但眼睛一直紧盯着你的胸部。"等等，你怀孕了是不是？"<<he>>问道，然后打断了朋友的长篇大论。"你的乳房一定涨的很厉害吧，你为什么不在面包上加上你自己的特色呢？这样我的朋友说不定就不会再抱怨了？"<<person1>><<person>>冷静下来，似乎对这个提议很满意。
+		<br><br>
+
+		<<if $milk_amount gte 1>>
+			<<link [[同意|Ocean Breeze Pregnant Milk Accept]]>><<npcincr Sam love 2>><</link>><<glove>><<promiscuous1>>
+			<br>
+		<<else>>
+			<span class = "pink">你剩下的奶水不够了。</span>
+			<br>
+		<</if>>
+		<<link [[拒绝|Ocean Breeze Pregnant Milk Refuse]]>><</link>>
+		<br>
+
+	<<elseif $danger gte (9900 - $allure)>>
+		<<generate1>><<person1>>你服务了一位点了个小面包的<<person>>。<<He>>舔舐着奶油。"那真棒，"<<he>>喘息道。
+		<<He>>从桌边拉出一把椅子并把盘子放到它前方，说道:"请坐下尝尝吧，我请客。"此刻的咖啡馆并不是很忙。
+		<br><br>
+
+		<<link [[坐|Ocean Breeze Sit]]>><</link>>
+		<br>
+		<<link [[拒绝|Ocean Breeze Sit Refuse]]>><</link>>
+		<br>
+	<<else>>
+		<<generate1>><<person1>>你服务了一位点了个小面包的<<person>>。<<He>>在紧盯着你的同时吮舔起了面包里的奶油。
+		<br><br>
+
+		剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+		<<pass 1 hour>>
+		<br><br>
+
+		<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+	<</if>>
+
+<<elseif $rng gte 71>>
+	<<generate1>><<person1>>一位<<person>>闭眼向后仰头，独坐桌旁。
+	<<if $awareness gte 400>>
+		<<generates2>>从那神情来看，<<hes>>很可能正在享受口交，而<<hes>>也几乎没有试图去隐藏它。
+		在缜密的观察后，你发现一个<<person2>><<person>>正藏在桌子下面
+		<<print either("轻轻地","热切地","精力充沛地","性感地","笨拙地","有力地","尽职地","娴熟地")>>
+		<<person1>>
+		<<if $NPCList[0].penis isnot "none">>
+			吮吸着<<personsimple>>.
+		<<else>>
+			吃着那<<personsimple>>.
+		<</if>>
+		<<garousal>><<arousal 200>>
+	<<elseif $awareness gte 200>>
+		<<if $weather is "clear">>
+			<<He>>看起来像是要从日光浴中获得性快感了。
+		<<else>>
+			如果不是那有节奏的蠕动，你几乎要觉得<<he>>都睡着了。
+		<</if>>
+		有一次，<<he>>以一种近乎高潮了的姿态颤抖。
+	<<else>>
+		<<if $weather is "clear">>
+			真是美好的一天-<<hes>>
+		<<else>>
+			<<Hes>>
+		<</if>>
+		可能打瞌睡了。
+	<</if>>
+
+	<br><br>
+	剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+	<<pass 1 hour>>
+	<br><br>
+
+	<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+
+<<elseif $rng gte 61>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure)>>
+		<<generate1>><<generate2>>你服务了一对年轻人，一个<<fullGroup>>。
+		<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+			<<if $worn.under_lower.type.includes("naked")>>
+				当你转身离开时，<<person1>><<person>>掀起你$worn.lower.cn_name_cap的下摆，向咖啡馆里的客人展示你裸露的<<bottom>>。
+				"没穿内衣？"<<he>>难以置信地说道。"你就是个荡妇吧？"
+				<<fameexhibitionism 10>><<stress 6>><<arousal 600>><<gstress>><<garousal>>
+				<br><br>
+
+				<<link [[生气|Ocean Breeze Angry]]>><</link>>
+				<br>
+				<<link [[无视|Ocean Breeze Ignore]]>><<trauma 6>><<stress 6>><<set $phase to 2>><</link>><<gtrauma>><<gstress>>
+				<br>
+			<<else>>
+				当你转身离开时，<<person1>><<person>>掀起你$worn.lower.cn_name_cap的下摆，向咖啡馆展示你的$worn.under_lower.cn_name_cap。
+				<<He>>和<<person2>><<person>>都笑了，吸引了更多注意力到你身上。
+				<<fameexhibitionism 1>><<stress 3>><<arousal 300>><<gstress>><<garousal>>
+				<br><br>
+
+				<<link [[生气|Ocean Breeze Angry]]>><</link>>
+				<br>
+				<<link [[无视|Ocean Breeze Ignore]]>><<trauma 3>><<stress 3>><<set $phase to 1>><</link>><<gtrauma>><<gstress>>
+				<br>
+			<</if>>
+		<<else>>
+			<<if $worn.under_lower.type.includes("naked")>>
+				当你转身离开时，<<person1>><<person>>从后方扯下你的$worn.lower.cn_name_cap，向咖啡馆里的客人展示你裸露的<<bottom>>。
+				"没穿内衣！"<<he>>不相信地说："我打赌你现在后悔了。"
+				<<fameexhibitionism 5>><<stress 3>><<arousal 300>><<gstress>><<garousal>>
+				<br><br>
+
+				<<link [[生气|Ocean Breeze Angry]]>><</link>>
+				<br>
+				<<link [[无视|Ocean Breeze Ignore]]>><<trauma 3>><<stress 3>><<set $phase to 1>><</link>><<gtrauma>><<gstress>>
+				<br>
+			<<else>>
+				当你转身离开时，<<person1>><<person>>从后方扯下你的$worn.lower.cn_name_cap，向咖啡馆展示你的$worn.under_lower.cn_name_cap。
+				<<fameexhibitionism 1>><<stress 2>><<arousal 200>><<gstress>><<garousal>>
+				<br><br>
+
+				<<link [[生气|Ocean Breeze Angry]]>><</link>>
+				<br>
+				<<link [[无视|Ocean Breeze Ignore]]>><<trauma 2>><<stress 2>><<set $phase to 0>><</link>><<gtrauma>><<gstress>>
+				<br>
+			<</if>>
+		<</if>>
+	<<else>>
+		<<generate1>><<generate2>>你服务了一对年轻人，一个<<fullGroup>>。
+		你认为你发现了<<person1>><<person>>正在打量着你,但那家伙并没有说些什么.
+		<br><br>
+
+		剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+		<<pass 1 hour>>
+		<br><br>
+
+		<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+
+<<elseif $rng gte 51>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	几个游客坐在你负责的其中一张桌子旁。
+	<<if $danger gte (9900 - $allure)>>
+		<<generate1>><<generate2>>
+		<<person1>>你听到那个<<person>>用沙哑的声音告知<<person2>><<person>>关于这个小镇的情况。
+		<br>
+		<<person1>>"我发誓，"<<he>>说道。"这镇子是我们这样的人的梦想。你可以做你想做的任何事。没人会阻止你的。"
+		<br>
+		"是不是连警察都不会——"
+		<br>
+		"警察？他们比谁都坏！给他们点钱，搞不好就能让他们帮你扣下一个<<girl>>。"
+		<br>
+		"哇哦，谁都行？不论是——"
+		<br>
+		"所有人。嘿，"<<he>>看向你。"你。<<if playerBellyVisible()>>你怀孕了。<<elseif $beauty gte($beautymax / 7) * 2>>你很可爱。<</if>>你已经被人强奸过了，对吧？"
+		<br><br>
+
+		<<if ($rapestat + $beastrapestat + $tentaclerapestat) gt 0>>
+			<<link [[点头|Ocean Breeze Tourist]]>><<set $phase to 1>><</link>>
+			<br>
+			<<link [[否认(撒谎)|Ocean Breeze Tourist]]>><<set $phase to 2>><</link>>
+			<br>
+			<<link [[拒绝回答|Ocean Breeze Tourist]]>><<set $phase to 3>><</link>>
+			<br>
+		<<else>>
+			<<link [[点头(撒谎)|Ocean Breeze Tourist]]>><<set $phase to 1>><</link>>
+			<br>
+			<<link [[否认|Ocean Breeze Tourist]]>><<set $phase to 2>><</link>>
+			<br>
+			<<link [[拒绝回答|Ocean Breeze Tourist]]>><<set $phase to 3>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		那两人详细谈论了
+		<<print either(
+			"海滩","冲浪","博物馆","男孩","女孩","食物","新闻",
+			"生命的最终意义","下周末的计划","政治局势"
+		)>>.
+		<br><br>
+		剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+		<<pass 1 hour>>
+		<br><br>
+
+		<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+	<</if>>
+
+<<elseif $rng gte 41>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+
+	<<generate1>><<person1>>一个<<person>>在进入咖啡馆后，独自找了个角落坐了下来.
+	<<if $danger gte (9900 - $allure)>>
+		<<He>>一直在偷瞄你，但当你去为<<his>>点菜时，<<he>>只要求一杯白水。
+		当你转身离开时，<<he>>抓住了你的手腕。
+		"你不会正好也在菜单上吧？"<<He>>笑着说道.
+		"和我找个安静的地方一起玩玩怎么样？我会让你不虚此行。"<<He>>在说着的同时轻敲了一下<<his>>的<<wallet>>.
+		<<His>>肯定不是请你过去喝咖啡的。
+		<br><br>
+		<<if $promiscuity gte 15>>
+			<<link [[接受提议|Ocean Breeze Whore]]>><<set $sexstart to 1>><</link>><<promiscuous2>>
+			<br>
+		<<elseif $uncomfortable.prostituting is false>>
+			<<His>>的提议让你感到反感，但你真的很需要钱。
+			<br><br>
+			<<link [[勉强接受提议|Ocean Breeze Whore]]>><<set $desperateaction to 1>><<set $sexstart to 1>><</link>><<promiscuous2>>
+			<br>
+		<<else>>
+			你还没有淫乱到可以接受这样的提议。
+			<br><br>
+		<</if>>
+		<<link [[拒绝|Ocean Breeze Whore Refuse]]>><</link>>
+	<<else>>
+		<<He>>一直在偷瞄你，但当你去为<<his>>点菜时，<<he>>却一直避免与你目光相接。
+		<br><br>
+		剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+		<<pass 1 hour>>
+		<br><br>
+
+		<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+	<</if>>
+
+<<elseif $rng gte 31>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure)>>
+		<<generateRole 0 0 "服务员/女服务员">><<person1>>
+		当你走出厨房时，一个<<person>>与你相撞，那家伙手里的热汤全都洒在了你的身上。
+		<<if $worn.upper.type.includes("naked")>>胸部<<else>>$worn.upper.cn_name_cap。<</if>>
+		"我很抱歉，"<<he>>说着的同时伸手，伸手去拿一条毛巾，而顾客们则转过身来观看。
+		<br><br>
+
+		<<link [[无视|Ocean Breeze Soup Ignore]]>><<npcincr Sam love 2>><<stress 6>><<pain 20>><</link>><<glove>><<gpain>><<gstress>>
+		<br>
+		<<link [[面对那些顾客|Ocean Breeze Soup Confront]]>><<npcincr Sam love -1>><<stress -6>><<trauma -6>><</link>><<llove>><<ltrauma>><<lstress>>
+		<br>
+		<<if !$worn.upper.type.includes("naked")>>
+			<<if $player.gender_appearance is "m" and $player.breastsize lte 2>>
+				<<link [[脱掉上身衣物|Ocean Breeze Remove]]>><<npcincr Sam love 2>><</link>><<glove>>
+				<br>
+			<<elseif $exhibitionism gte 55>>
+				<<link [[脱掉上身衣物|Ocean Breeze Remove Lewd]]>><<npcincr Sam love 2>><</link>><<glove>><<exhibitionist4>>
+				<br>
+			<</if>>
+		<</if>>
+	<<else>>
+		<<generateRole 0 0 "服务员/女服务员">><<person1>>
+		当你离开厨房时，一个<<person>>差点就撞上你了.
+		<br><br>
+
+		剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+		<<pass 1 hour>>
+		<br><br>
+
+		<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+	<</if>>
+
+<<elseif $rng gte 21>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure)>>
+		<<generate1>><<generate2>><<generate3>><<generate4>>
+		一大群人进入咖啡馆，并占据了几张桌子。
+		你试图为这群人点菜，但坐在首位的那个<<person1>><<person>>打断了你。
+		"今天是我的生日，你知道的，来点特别的怎么样？"<<He>>毫不避讳地窥视着你的身体，"想爬到桌子上给我们跳个舞吗？"
+		<br><br>
+
+		<<link [[为其跳舞|Ocean Breeze Dance]]>>
+			<<danceinit>><<set $dancing to 1>><<set $audience to 4>><<set $venuemod to 2>><<set $timer to 12>><<set $dancelocation to "cafe">>
+		<</link>><<exhibitionist1>><<gstress>><<gtiredness>>
+		<br><br>
+
+		<<link [[拒绝|Ocean Breeze Dance Refuse]]>><</link>>
+	<<else>>
+		一大群人进入咖啡馆，并占据了几张桌子，幸运的是那些家伙并没有来找你的麻烦.
+		<br><br>
+		剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+		<<pass 1 hour>>
+		<br><br>
+
+		<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+	<</if>>
+
+<<elseif $rng gte 11 and $chef_state is undefined>>
+	<<npc Sam>><<person1>>萨姆慌慌忙忙的从厨房冲了出来..
+
+	<<if $NPCName[$NPCNameList.indexOf("Sam")].love gte 10>>
+		<<He>>朝你这方向瞥了一眼，<span class="green">然后便匆匆跑了过来.</span>
+		"我遇到了一点麻烦，"<<he>>说道.
+		"我们的厨师又闹脾气了，我需要有人来帮忙应付一下。别担心，这并不难，而且我会付你双倍工资，所以你愿意帮我吗？"
+		<br><br>
+
+		<<link [[接受|Chef Help]]>><<npcincr Sam love 2>><</link>><<glove>>
+		<br>
+		<<link [[拒绝|Ocean Breeze Chef Refuse]]>><<npcincr Sam love -1>><</link>><<llove>>
+		<br>
+
+	<<else>>
+		<<He>>朝你这方向瞥了一眼，<span class="red">然后又看向了别处.</span>
+		<<He>>走向另一名服务员，并为那家伙提供更高的薪酬，以此来让其在这个轮班上替补一次厨师。
+		<i>如果<<he>>更喜欢你的话，也许萨姆会愿意给你一个机会。</i>
+		<br><br>
+
+		剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+		<<pass 1 hour>>
+		<br><br>
+
+		<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+	<</if>>
+
+<<else>>
+	<<rng>>
+	<!-- Modified for Monster People -->
+	<<beastNEWinit 1 dog>>
+	<<if $rng gte 51 and ($monster is 1 or $bestialitydisable is "f")>>
+		萨姆让你把一些垃圾丢到咖啡馆旁边的垃圾箱里。然而，在垃圾箱旁边有一只流浪<<beasttype>>，它在你走近时对你咆哮了起来。
+		<br><br>
+
+		<<link [[坚持完成任务|Ocean Breeze Dumpster Dog]]>><<stress 6>><</link>><<gstress>>
+		<br>
+		<<link [[忘掉这个任务，回去干活吧|Ocean Breeze Dumpster Refuse]]>><</link>>
+	<<else>>
+		<<endevent>>
+		<<generate1>><<generate2>>
+		萨姆让你把一些垃圾丢到咖啡馆旁边的垃圾箱里。
+		然而，在垃圾箱旁正待着一群<<fullGroup>>，那些家伙看起来就不好惹。
+		<br><br>
+
+		<<link [[坚持完成任务|Ocean Breeze Dumpster]]>><<stress 6>><</link>><<gstress>>
+		<br>
+		<<link [[忘掉这个任务，回去干活吧|Ocean Breeze Dumpster Refuse]]>><</link>>
+	<</if>>
+
+<</if>>
+
+:: Ocean Breeze Plates
+<<if $phase is 0>>
+	这需要几分钟，但你设法把所有的东西都摆到桌子上。
+	<br><br>
+	剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+	<br><br>
+<<elseif $phase is 1>>
+	<<if $danceSuccess>>
+		<<set $tipmod to 0.2>><<tipset "serving">>
+
+		<<set $tip += 500>>
+		<<set $tip += 100>>
+
+		你把盘子放到托盘上然后<<dancetext>>把它们放在肩上平衡，确保不让任何东西洒出来<span class="green">你把所有东西都完好无损地送到餐桌上。</span>
+		<br><br>
+		<<npc Sam>><<person1>>当<<he>>路过时，萨姆向你竖起大拇指。<<npcincr Sam love 1>><<glove>>
+		<br><br>
+		剩下的工作时间里无事发生。有人给了你一笔小费。<<tipreceive>>
+		<br><br>
+	<<else>>
+		你把盘子放到托盘上然后<<dancetext>>把它们放在肩上平衡，小心翼翼不让任何东西洒出来。然而，你在走出厨房时失去了平衡，<span class="red">不小心将几盘食物摔在地上。</span>萨姆向你投来不满的目光。<<npcincr Sam love -1>><<llove>><<stress 6>><<gstress>>
+		<br><br>
+		你一边收拾烂摊子一边叹气。
+		<br><br>
+		剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+		<br><br>
+	<</if>>
+<</if>>
+<<pass 1 hour>>
+<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+
+:: Ocean Breeze Soup Ignore
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<if $speech_attitude is "meek">>
+	"是....是我的错," 你小声说道.
+<<elseif $speech_attitude is "bratty">>
+	"只要你下次记得看路就行," 你说道.
+<<else>>
+	"没关系," 你说道.
+<</if>>
+那个<<personsimple>>点点头，便回到厨房干活去了，而你则将身上擦干了。
+<br><br>
+
+"你处理得很好，"萨姆在收银台后面说道。
+<br><br>
+
+剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+<<pass 1 hour>>
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+
+:: Ocean Breeze Soup Confront
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你本可以把我烫死的，"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"在这里上班还这么笨手笨脚？"你说道。
+<<else>>
+	"你是故意的吧。"你说道。
+<</if>>
+<<He>>低下了头，围观的人群窃窃私语，嘲笑着他。萨姆责怪的看了你一眼。
+<br><br>
+
+剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+<<pass 1 hour>>
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+
+:: Ocean Breeze Remove
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+你脱下了你的$worn.upper.cn_name_cap，让它快点干。
+<<personsimple>>避开了视线，有一名顾客吹了一声口哨，但你还是晾干了你的衣服，没有造成太大的骚动。
+<br><br>
+
+<<upperstrip>>
+
+<<set $tipmod to 0.2>><<tipset "serving">>
+
+<<set $tip += 500>>
+<<set $tip += 100>>
+
+剩下的工作时间里无事发生。有人给了你一笔小费。<<tipreceive>><<pass 1 hour>>
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><<clotheson>><<endevent>><</link>>
+
+:: Ocean Breeze Remove Lewd
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+你脱下了你的$worn.upper.cn_name_cap，让它快点干。
+<<personsimple>>避开了视线，看见你<<breasts>>，涨红了脸。
+一名顾客吹了一声口哨。你晾干了你的衣服，没有造成太大的骚动。
+<<exhibitionism4>>
+
+<<upperstrip>>
+
+<<set $tipmod to 0.2>><<tipset "serving">>
+
+<<set $tip += 500>>
+<<set $tip += 500>>
+
+剩下的工作时间里无事发生。有人给了你一笔小费。
+<<tipreceive>><<pass 1 hour>>
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><<clotheson>><<endevent>><</link>>
+
+:: Ocean Breeze Angry
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+<<npcincr Sam love -1>>
+
+你立马转身，怒视着<<person1>><<person>>。
+<<his>>脸上的笑容消失了。"咱就开个玩笑，生什么气啊。"萨姆瞪了你一眼，似乎不认可你的处理方法。
+<<llove>>
+<br><br>
+
+剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+<<pass 1 hour>>
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+
+:: Ocean Breeze Ignore
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<if $phase is 0>>
+	你穿好了你的$worn.lower.cn_name_cap，如同无事发生一般继续工作。
+	<br><br>
+
+	<<set $tipmod to 0.2>><<tipset "serving">>
+
+	<<set $tip += 500>>
+	<<set $tip += 100>>
+
+	剩下的工作时间里无事发生。有人给了你一笔小费。
+	<<tipreceive>>
+	<br><br>
+
+<<elseif $phase is 1>>
+	你穿好了你的$worn.lower.cn_name_cap，如同无事发生一般继续工作。
+	<br><br>
+
+	<<set $tipmod to 0.2>><<tipset "serving">>
+
+	<<set $tip += 500>>
+	<<set $tip += 200>>
+
+	剩下的工作时间里无事发生。有人给了你一笔小费。
+	<<tipreceive>>
+	<br><br>
+
+<<else>>
+	你穿好了你的$worn.lower.cn_name_cap，如同无事发生一般继续工作，却因为在公众面前露出受辱而涨红了脸。
+	<br><br>
+
+	<<set $tipmod to 0.2>><<tipset "serving">>
+
+	<<set $tip += 500>>
+	<<set $tip += 500>>
+
+	剩下的工作时间里无事发生。有人给了你一笔小费。
+	<<tipreceive>>
+	<br><br>
+
+<</if>>
+<<pass 1 hour>>
+
+<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+
+:: Ocean Breeze Whore
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 40>>
+	<<set $tipmod to 2>><<tipset "serving">>
+	"5分钟内来咖啡馆旁边的巷子里垃圾箱后面找我。"<<He>>头也不回的走了。
+	<<pass 5>>
+	你趁没人注意的时候溜了出来，看见<<him>>如约在垃圾箱后等着你。<<He>>直接进入了正题。
+	<<promiscuity2>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Ocean Breeze Whore Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Ocean Breeze Whore]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Ocean Breeze Whore Refuse
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+你告诉<<person>>本店只提供菜单上的菜品，转身为<<his>>倒水去了。你回来的时候，<<hes>>已经走了。
+<br><br>
+
+剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+<<pass 1 hour>>
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+
+:: Ocean Breeze Whore Finish
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<if $consensual is 1>>
+	<<if $enemyarousal gte $enemyarousalmax>>
+		<<ejaculation>><<set $prostitutionstat += 1>><<fameprostitution 1>>
+
+		"这是你的报酬，婊子，"<<He>>往你身上丢了些钱便离开了。<<tearful>>你趁还没人发现你离开，匆匆溜了回去。
+		<br><br>
+		<<tipreceive>>
+
+	<<else>>
+		"行吧，不过钱你就别想要了。"<<He>>厌恶的看了你一眼，便离开了。<<tearful>>你趁还没人发现你离开，匆匆溜了回去。
+		<br><br>
+
+	<</if>>
+<<else>>
+	<<if $enemyarousal gte $enemyarousalmax>>
+		<<ejaculation>><<fameprostitution 1>><<set $prostitutionstat += 1>>
+		"这是你的报酬，婊子，"<<He>>往你身上丢了些钱便离开了。<<tearful>>你趁还没人发现你离开，匆匆溜了回去。
+		<br><br>
+		<<tipreceive>>
+
+	<<elseif $enemyhealth lte 0>>
+		你成功的把<<person>>击退，这给了你逃跑的时间。<<tearful>>你逃回了咖啡馆里。
+		<br><br>
+
+	<</if>>
+	<<if $alarm gte 1>>
+		萨姆从咖啡馆后门冲了出来，想看看在吵什么。
+		<<person>>遮住自己的脸，拔腿就跑，把你撞倒在地上。萨姆把你扶了起来，轻柔的把你扶回了店里。
+		<<famerape 1>>
+		<br><br>
+
+	<</if>>
+<</if>>
+<br><br>
+
+<<clothesontowel>>
+
+<<endcombat>>
+
+剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+<<pass 53>>
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><</link>>
+
+:: Ocean Breeze Dance
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<danceeffects>>
+<<danceaudience>>
+<<danceactions>>
+
+<<if $danceevent is 0 and $exhibitionism lte 74 and $exposed gte 2>>
+	你不可能在如此暴露的情况下继续跳舞!你的脸红了，逃离了现场。
+	<br><br>
+<<elseif $danceevent is 0 and $exhibitionism lte 34 and $exposed gte 1 and !$worn.under_lower.type.includes("dance")>>
+	你不可能在如此暴露的情况下继续跳舞!你的脸红了，逃离了现场。
+	<br><br>
+<</if>>
+
+<<if $danceevent is "finish">>
+	<<link [[继续|Ocean Breeze]]>><<endevent>><<clotheson>><</link>>
+<<elseif $danceevent is 0>>
+	<<if $exposed gte 2 and $exhibitionism lte 74>>
+		<<link [[逃走|Ocean Breeze Dance Stop]]>><</link>>
+	<<elseif $exposed gte 1 and $exhibitionism lte 34>>
+		<<link [[逃走|Ocean Breeze Dance Stop]]>><</link>>
+	<<else>>
+		<<link [[停止|Ocean Breeze Dance Stop]]>><</link>>
+	<</if>>
+<</if>>
+
+:: Ocean Breeze Dance Refuse
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+<<pass 1 hour>>
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+
+:: Ocean Breeze Dance Stop
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+你冲进了一个里间，躲开了他人的目光。<<clotheson>>剩下的工作时间里无事发生，但很多看了你的舞蹈的客人还是时不时看你一眼。
+<br><br>
+
+你赚到了<<moneyGain 5>>。
+
+<<set _pass to 5 * Math.clamp($timer, 0, 12)>>
+<<pass _pass>>
+
+<br><br>
+
+<<clothesontowel>>
+<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+
+:: Ocean Breeze Dumpster
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure)>>
+	<<set $outside to 1>>
+	你觉得自己不过是想多了，直接向垃圾箱走去。然而，你转身想要离开时，那两人挡在了你面前。
+	<<person1>><<person>>抓住你的胳膊，捂住你的嘴，<<person2>><<person>>则对你露出了笑容。"真是个小可爱。"
+	<br><br>
+
+	<<link [[继续|Ocean Breeze Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	你觉得自己不过是想多了，直接向垃圾箱走去。你路过那两人时，他们看了你一眼，什么也没说道。
+	<br><br>
+
+	剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+	<<pass 1 hour>>
+	<br><br>
+
+	<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+<</if>>
+
+:: Ocean Breeze Dumpster Refuse
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+<<endevent>>
+<<npc Sam>><<person1>>你决定不冒险，回到了店里。萨姆表示了理解，但似乎不太高兴。
+<<npcincr Sam love -1>><<llove>>
+<br><br>
+
+剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+<<pass 1 hour>>
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+
+:: Ocean Breeze Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+
+	<<enable_rescue>>
+	<<maninit>>
+	<<set $leftarm to "grappled">><<set $rightarm to "grappled">><<hand_gag 0 left>><<set $NPCList[0].righthand to "arms">>
+<</if>>
+
+<<effects>>
+<<effectsman>><<man>>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if $enemyarousal lte $enemyarousalmax and $enemyhealth gt 0 and $alarm lte 0>>
+	<span id="next"><<link [[继续|Ocean Breeze Rape]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Ocean Breeze Rape Finish]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Ocean Breeze Rape Finish
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	两人心满意足的放开了你。<<tearful>>你趁还没人发现你离开，回到了店里。
+	<br><br>
+
+<<elseif $enemyhealth lte 0>>
+	你成功的把两人击退，他们撞到了垃圾箱上，这给了你逃跑的时间。<<tearful>>你逃回了咖啡馆里。
+	<br><br>
+
+<<elseif $alarm gte 1>>
+	萨姆从咖啡馆后门冲了出来，想看看在吵什么。那两人见状，一把把你推倒在地上后逃走了。
+	萨姆把你扶了起来，轻柔的把你扶回了店里。
+	<<set $rescued += 1>><<famerape 1>>
+	<br><br>
+<</if>>
+
+<<clothesontowel>>
+
+<<endcombat>>
+
+剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+<<pass 53>>
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><</link>>
+
+:: Ocean Breeze Dumpster Dog
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure)>>
+	<<set $outside to 1>>
+	你觉得自己不过是想多了，直接向垃圾箱走去。然而，你转身想要离开时，<<beasttype>>挡在了你面前。
+	<br><br>
+
+	<<link [[继续|Ocean Breeze Dog Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	你觉得自己不过是想多了，直接向垃圾箱走去。<<beasttype>>见你走近便逃跑了。
+	<br><br>
+
+	剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+	<<pass 1 hour>>
+	<br><br>
+
+	<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+
+<</if>>
+
+:: Ocean Breeze Dog Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<enable_rescue>>
+
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<beast $enemyno>>
+<br><br>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Ocean Breeze Dog Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Ocean Breeze Dog Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Ocean Breeze Dog Rape Finish
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+	心满意足的<<beasttype>>离开了。<<tearful>>你回到了咖啡馆里。
+	<br><br>
+
+<<elseif $enemyhealth lte 0>>
+	那只<<beasttype>>痛苦地叫了一声，逃走了。<<tearful>>你回到了咖啡馆里。
+	<br><br>
+
+<<elseif $alarm gte 1>>
+	萨姆从咖啡馆后门冲了出来，想看看在吵什么。
+	<<beasttype>>被吓跑了。你感到十分屈辱。萨姆把你扶了起来，轻柔的把你扶回了店里。
+	<<famebestiality 1>><<set $rescued += 1>>
+	<br><br>
+<</if>>
+
+<<clothesontowel>>
+
+<<endcombat>>
+
+剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+<<pass 53>>
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><</link>>
+
+:: Ocean Breeze Own
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<if $phase is 0>>
+	你原地转起了圈，裙子飘得更高了，让所有人都欣赏了一番你的裙下风光。
+	<<exhibitionism1>>
+
+	<<set $tipmod to 0.2>><<tipset "serving">>
+
+	<<set $tip += 500>>
+	<<set $tip += 200>>
+
+	剩下的工作时间里无事发生。有人给了你一笔小费。
+	<<tipreceive>>
+	<br><br>
+<<else>>
+	你按住你裙子前面，想要遮住你的<<genitals>>，但因为身体前倾，反倒让你裸露的臀部露了出来，让你感到一阵羞耻。
+
+	<<set $tipmod to 0.2>><<tipset "serving">>
+
+	<<set $tip += 500>>
+	<<set $tip += 500>>
+
+	剩下的工作时间里无事发生。有人给了你一笔小费。
+	<<tipreceive>>
+	<br><br>
+<</if>>
+
+<<link [[继续|Ocean Breeze]]>><<endevent>><<pass 1 hour>><</link>>
+
+:: Ocean Breeze Cover
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+你红透了脸，赶紧按住了你的裙子避免走光，匆匆的躲进了咖啡厅里。
+<br><br>
+
+<<if $player.gender_appearance is "f" and $player.penisExist>>
+	你逃回店里时，听到有人说了一句："她那是长了根屌吗？"
+	<br><br>
+<</if>>
+
+<<set $tipmod to 0.2>><<tipset "serving">>
+
+<<set $tip += 500>>
+<<set $tip += 100>>
+
+剩下的工作时间里无事发生。有人给了你一笔小费。<<tipreceive>>
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><<endevent>><<pass 1 hour>><</link>>
+
+:: Ocean Breeze Sit
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+你坐下了。<<person>>递给你一把勺子，然后低下头。"我鞋带散了。"<<He>>说着，叹了口气，钻进了桌子底下。
+<br><br>
+
+你把勺子插进面包里正想吃，却发现<<person>>从你双腿之间冒了出来。
+"我这一钻桌子，"<<he>>小声说着，"就想干点别的事了。"你环顾四周，并没有人注意到。
+<br><br>
+
+<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+	<<He>>伸手想掀起你的$worn.lower.cn_name_cap。
+<<else>>
+	<<He>>伸手想扒下你的$worn.lower.cn_name_cap。
+<</if>>
+<br><br>
+
+<<link [[坐着不动|Ocean Breeze Oral]]>><</link>><<promiscuous1>>
+<br>
+<<link [[离开|Ocean Breeze Stand]]>><</link>>
+<br>
+
+:: Ocean Breeze Sit Refuse
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<if $speech_attitude is "meek">>
+	"抱-抱歉，"你说道。"我还要工作。"
+<<elseif $speech_attitude is "bratty">>
+	"不行，"你说道。"我还有活要干呢。"
+<<else>>
+	"我还在上班，"你说道。"可不想惹上麻烦。"
+<</if>>
+<br><br>
+
+"那你可亏大了，"<<person>>说着，把面包拉回自己面前。"真是太好吃了。"
+<br><br>
+
+剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><<endevent>><<pass 1 hour>><</link>>
+
+:: Ocean Breeze Stand
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+你放下了勺子，站了起来，没让<<he>>继续。
+<br><br>
+
+<<person>>从桌子底下钻了出来。"没饿吗？"<<he>>说道。"你还真是可爱呢。"
+<br><br>
+
+剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><<endevent>><<pass 1 hour>><</link>>
+
+:: Ocean Breeze Oral
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+你任凭这个<<person>>继续下去，
+
+<<if playerChastity("hidden")>>
+	<<His>>的眼睛睁大，<<he>>露出你的<<print $worn.genitals.cn_name_cap>>.
+	<<promiscuity1>>
+
+	"你这都锁上了，"<<he>>说道。"我还想尝尝味道呢。"<<He>>钻回了桌子底下，从另一边爬了出来。
+	"我会帮你保密的。"<<He>>眨了眨眼。
+	<br><br>
+
+	<<set $tip += 500>>
+	<<set $tip += 100>>
+
+<<else>>
+	<<if $player.penisExist and $player.vaginaExist>>
+		<<He>>在看见你的<<genitals>>后一下子提起了精神。
+		"太美了，"<<he>>说着， 欣喜的闭上眼睛，一下下的亲吻着你的肉棒，从龟头到根部，再往下吻着你的阴唇。
+		<br><br>
+
+		<<if playerChastity("cage")>>你勃起作为回应。<</if>><<He>>拉开你的手检查战果。
+		<<if $player.virginity.penile is true or $player.virginity.vaginal is true>>
+			"这是你第一次吧，"<<he>>小声说着，用赞美的眼神看着你的腿间。"真是太珍贵了，我真是受宠若惊啊。那我温柔一点吧。"
+		<<else>>
+			"有反应了，"<<he>>小声说着，在感到十分满足后，
+		<</if>>
+		<<He>>再次俯下身，上下舔舐着你的阴茎。
+	<<else>>
+		<<His>>在看见你的<<genitals>>后一下子两眼冒光，然后欣喜的闭上眼睛，一下下的亲吻着它。随后<<He>>抬头看着你。
+		"你的<<print ($player.penisExist ? "肉棒" : "小穴")>>真是太美了，<<he>>说道。"<<He>>闭上了眼睛，又继续一下又一下的吻着。
+		<<promiscuity1>>
+
+		<<if $player.penisExist>>
+			<<if playerChastity("cage")>>你勃起作为回应。<</if>><<He>>拉开你的手检查战果。
+			<<if $player.virginity.penile is true>>
+				"这是你第一次吧，"<<he>>小声说着，用赞美的眼神看着你的腿间。"真是太珍贵了，我真是受宠若惊啊。那我温柔一点吧。"
+			<<else>>
+				"有反应了，"<<he>>小声说着，在感到十分满足后，
+			<</if>>
+			<<He>>再次俯下身，上下舔舐着你的阴茎。
+		<<else>>
+			<<He>>抬起头，仔细的看着。
+			<<if $player.virginity.vaginal is true>>
+				"这是你第一次吧，"<<he>>小声说着，用赞美的眼神看着你的腿间。"真是太珍贵了，我真是受宠若惊啊。那我温柔一点吧。"
+			<<else>>
+				"有反应了，"<<he>>小声说着，在感到十分满足后，
+			<</if>>
+			<<He>>再次俯下身，舔舐着你的阴蒂。
+		<</if>>
+	<</if>>
+	<br><br>
+
+	<<He>>继续舔舐着，亲吻着，吮吸着，目光在你的脸和<<genitals>>之间游走着。
+	<<Hes>>敏锐的感知着你的反应，在你快要习惯一个姿势之前便会变换姿势。你的呼吸急促了起来。
+	<br><br>
+
+	<<arousal 1000 "genitals">><<orgasm>>
+
+	<<if $player.penisExist>>
+		<<He>>闭上了眼睛，用脸接住了你颤抖着射出的精液。
+		<<He>>用手指抹了一些，舔舐着。"最棒的奶油，"<<he>>小声说着。
+	<<else>>
+		<<He>>看着你颤抖，露出了微笑。"希望你喜欢我的招待，"<<he>>小声说道。
+	<</if>>
+	<br><br>
+
+	<<He>>从桌下钻了出来，坐了回去。你回去工作时<<He>>还向你眨了眨眼。
+	<br><br>
+
+	<<set $tip += 500>>
+	<<set $tip += 500>>
+
+<</if>>
+
+<<set $tipmod to 0.2>><<tipset "serving">>
+
+剩下的工作时间里无事发生。有人给了你一笔小费。<<tipreceive>>
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><<endevent>><<pass 1 hour>><</link>>
+<br>
+
+:: Ocean Breeze Pregnant Milk Accept
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+你向他们点头，然后把你的
+<<if $worn.upper.type.includes("naked")>>
+	<<underupperstrip>>
+	$worn.under_upper.cn_name_cap
+<<else>>
+	<<upperstrip>>
+	$worn.upper.cn_name_cap
+	<<if !$worn.under_upper.type.includes("naked")>>
+		<<underupperstrip>>
+		和$worn.under_upper.cn_name_cap
+	<</if>>
+<</if>>
+弯下腰，把你的<<breasts>>放在圆面包上面。你小心翼翼的想在其他客人发现不了的情况下满足他们的要求.你把手放在胸前正打算挤奶，却被<<person1>><<person>>啪的一声打飞了。
+<br><br>
+
+"停，我自己来，"<<he>>嘲讽道。"我不想你再瞒着我们"<<He>>抓住你的<<breasts>>，挤压着你的乳房，丝毫不顾及你的不适。<<person2>><<person>>不想被排除在外，抓住你的另一个乳房用力拉，就像在和<<his>>的朋友竞争一样。用不了多久你就开始泌乳了。
+<<promiscuity1>><<breastfeed 5>>
+
+这两个人继续给你挤奶，直到他们的面包被你的乳汁覆盖，你的乳头因劳累而发痛。
+"我改变主意了，"<<person1>><<person>>说，<<his>>的声音比刚开始高兴多了。"这里的服务确实是贵宾级的，谢谢招待，<<girl>>."他们开始吃他们的面包，留下你一个人狼狈的整理衣服，咖啡馆的其他客人对着你窃窃私语。
+<br><br>
+
+萨姆从你身边走过。"他们刚刚一定很生气，谢谢你帮忙安抚他们。记住，无论发生什么客户永远都是对的！顾客就是上帝！"
+<br><br>
+<<set $tipmod to 0.2>><<tipset "serving">>
+
+<<set $tip += 500>>
+<<set $tip += 100>>
+
+剩下的工作时间里无事发生，有人给了你小费。<<tipreceive>><<pass 1 hour>>
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><<clotheson>><<endevent>><</link>>
+<br>
+
+:: Ocean Breeze Pregnant Milk Refuse
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+你摇头离开他们。"嘿，我在跟你说话呢，<<bitch>>！"<<person1>><<person>>讽刺道。
+<br><br>
+
+你尽量忽略<<him>>。萨姆听到了客人中发出的喊叫声，失望地盯着你，然后继续往前走。
+<br><br>
+
+剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+<<pass 1 hour>>
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+<br>
+
+:: Cafe Coffee
+<<endevent>>
+<<set _coffee to ["摩卡咖啡", "拿铁咖啡", "焦糖拿铁", "白巧摩卡", "平白咖啡", "焦糖冰拿铁"].pluck()>>
+你坐在了一个靠窗的架高座位上，点了一份<<print _coffee>>。
+咖啡很快就端了上来，香醇的咖啡气息扑面而来。
+
+<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1 and $exhibitionism gte 55>>
+	你啜了一口咖啡，脑中闪过一个邪恶的想法。
+	你坐在架高座位上，路人平视便能直接看到你的腿，而你还穿着裙子。
+	<<if $exhibitionism gte 75 and $worn.under_lower.exposed>>
+		你甚至还没穿内裤。<<arousal 500>><<garousal>>
+		<br><br>
+		<<link [[张开双腿(0:01)|Cafe Coffee Flash]]>><</link>><<exhibitionist4>>
+		<br>
+	<<elseif !$worn.under_lower.exposed>>
+		<<arousal 500>><<garousal>>
+		<br><br>
+		<<link [[张开双腿(0:02)|Cafe Coffee Flash]]>><<set $phase to 0>><<pass 2>><</link>><<exhibitionist3>>
+		<br>
+	<<else>>
+		<br><br>
+	<</if>>
+<<else>>
+	你慢慢品尝着咖啡，一口口的啜饮着，享受着令人陶醉的浓郁芬芳。
+<</if>>
+
+<br><br>
+<<link [[喝完|Cafe Coffee Finish]]>><</link>>
+
+:: Cafe Coffee Flash
+<<if ndef _caught>> <<set _caught to 0>> <</if>>
+<<if ndef $resting>> <<set $resting to 0>> <</if>>
+<<if ndef $cameras_raised>> <<set $cameras_raised to 0>> <</if>>
+<<if ndef $still>> <<set $still to 0>> <</if>>
+<<if ndef $coffee_sips>> <<set $coffee_sips to 12>> <</if>>
+
+<<if $coffee_sips gte 11>>
+	你面前摆着一杯几乎全满的咖啡。
+<<elseif $coffee_sips gte 8>>
+	你面前摆着大半杯咖啡。
+<<elseif $coffee_sips gte 5>>
+	你的咖啡还剩一半。
+<<elseif $coffee_sips gte 3>>
+	你的咖啡还剩不到半杯。
+<<elseif $coffee_sips gt 1>>
+	你的咖啡没剩多少了。
+<<elseif $coffee_sips is 1>>
+	你杯子里差不多空了。是时候起身走人了。
+<<else>>
+	你的咖啡杯空了。
+<</if>>
+<br><br>
+
+<<if $coffee_sips gt 1>>
+	<<if $resting>>
+		你啜了一口咖啡，回味着温暖的咖啡因所带来的愉悦。
+		<<cafecoffeesip>>
+	<<elseif $arousal gte $arousalmax - 20>>
+		<<orgasm>>
+		你还没从高潮中回过神来，抬头看着外面对你笑着的路人，其中有些还在窃笑着，互相私语着。
+		你被人发现了，你自己的身体出卖了你。
+		<<if $cameras_raised gte 1>>
+			<span class="pink">
+				甚至还有人拍到了你的高潮。
+			</span>
+			<<if $uncomfortable.nude is true>>
+				你感到无比的羞辱。
+				<<trauma 10>><<gtrauma>>
+			<<else>>
+				在公共场合被人围观高潮使你的小腹亢奋的颤抖着。
+				而且你还光是被人看着就高潮了。
+				<<stress -5>><<exhibitionism4>>
+			<</if>>
+			<<fameexhibitionism 50>>
+		<</if>>
+		<<set _caught to 1>>
+	<<else>>
+		<<switch $phase>>
+			<<case 0>>
+				<<if !$still>>
+					你把咖啡端到嘴边，稍微挡住一点脸，同时稍微张开了一点双腿。
+					没有张开太多，只有刚好在看的人才能稍微看见一丁点你的<<undies>>。
+					你啜了一口咖啡。
+					<<cafecoffeesip>>
+				<<else>>
+					你保持着双腿稍微分开一丁点的姿势，一边啜着咖啡一边感受着暴露的快感。
+					<<cafecoffeesip>>
+				<</if>>
+				<br><br>
+				<<if currentSkillValue('skulduggery') gte 100 + random(0, 50)>>
+					有几个路人看窗户的时间稍微长了一些，显然并不确定自己看到了什么。
+				<<else>>
+					有几个路人看窗户的时间稍微长了一些，然后又邪笑一下走开了。你太容易被发现了。
+					<<trauma $phase>><<gtrauma>>
+					<br><br>
+					<<set _caught to 1>>
+				<</if>>
+			<<case 1>>
+				<<if !$still>>
+					你又啜了一口咖啡，稍微再张开了一点双腿，
+					露出的<<undies>>面积恰好，十分诱人，但又不至于完全暴露。
+					<<cafecoffeesip>>
+				<<else>>
+					你又啜了一口咖啡，调整着双腿，保持着同样的暴露程度。这样挑逗别人真是有趣。
+					<<cafecoffeesip>>
+				<</if>>
+				<br><br>
+				<<if currentSkillValue('skulduggery') gte 200 + random(0, 50)>>
+					有些路人找个借口停下，看着你的方向。
+				<<else>>
+					有些路人找个借口停下，看向你的方向，然后又邪笑一下走开了。你太容易被发现了。
+					<<trauma $phase>><<gtrauma>>
+					<br><br>
+					<<set _caught to 1>>
+				<</if>>
+			<<case 2>>
+				<<if !$still>>
+					你为自己的暴露行为感到亢奋，挪动着双腿，露出了你的大腿，已经没有多少供人遐想的空间了。
+					你又啜了一口咖啡。
+					<<cafecoffeesip>>
+				<<else>>
+					你品味着露出带来的刺激，再次挪动双腿，将自己的<<undies>>完全暴露在外。
+					你又啜了一口咖啡。
+					<<cafecoffeesip>>
+				<</if>>
+				<br><br>
+				<<if currentSkillValue('skulduggery') gte 300 + random(0, 50)>>
+					有些路人聚成一团，一边互相低语着，一边试图掩饰自己偷窥的行为。
+				<<else>>
+					有些路人聚成一团，互相低语着，然后指向你笑了起来。你被发现了。
+					<<trauma $phase>><<gtrauma>>
+					<br><br>
+					<<set _caught to 1>>
+				<</if>>
+			<<case 3>>
+				你在喝下另一口咖啡的时候大胆<<seatedflashcrotchunderskirt>>地给旁观者看了你<<print ["漂亮的", "宜人的", "给劲的"].pluck()>>
+				<<undies>>。
+				<<cafecoffeesip>>
+				<br><br>
+				<<if currentSkillValue('skulduggery') gte 400 + random(0, 50)>>
+					有些路人被眼前的景象惊得目瞪口呆，难以演示自己猥亵的眼神。
+					有些人用手肘戳着身边的人，不想他们被你察觉而坏了好戏。
+				<<else>>
+					有些路人被眼前的景象惊得目瞪口呆，难以演示自己猥亵的眼神。
+					一些人对你指指点点，窃窃私语着回头看你，带着奸笑迎向你，你被抓住了。
+					<<trauma $phase>><<gtrauma>>
+					<br><br>
+					<<set _caught to 1>>
+				<</if>>
+			<<case 4>>
+				你将你的腿自然而然地闭合，这一刻，你为自己被放过而庆幸的笑了出来
+				这些找借口盯着着窗户看的陌生人们认为表演已经结束，渐渐散去了。
+				你又啜了一口咖啡。
+				<<cafecoffeesip>>
+				<br><br>
+				<<if $cameras_raised gt 0>>
+					<<if $cameras_raised gt 1>>
+						路人们收起手机，皱着眉头走了。
+					<<else>>
+						路人收起手机，皱着眉头走了。
+					<</if>>
+				<</if>>
+				<<set $cameras_raised to 0>>
+				<<set $resting to 1>>
+		<</switch>>
+
+		/* up to 3 strangers take photos
+		* each stranger gets 2 shots at taking a photo before they give up and move on
+		*/
+
+		<<if $cameras_raised gt 0>>
+			<br><br>
+			/* for loops seem to hate me so we'll have to do it this way i guess */
+			<<set _photos_taken to 0>>
+			<<if $cameras_raised gte 1>>
+				<!-- Necessary as attempting to clear the first NPC if it did not exist would cause issues with $eventslot. -->
+				<<if EventSystem.isSlotTaken(0)>>
+					<<clearsinglenpc 0>>
+				<</if>>
+				<span class="pink">
+				一名<<generate1>><<person1>><<person>>举起手机拍了张照。
+				</span>
+				<<if random(0,2) gte 1>>
+					<<He>>把手机凑到面前，露出了笑容，拍到你露出的<<undies>>似乎让<<his>>很开心。
+					<<set _photos_taken +=1>>
+				<<else>>
+					<<He>>把手机凑到面前，皱起了眉头，没拍到你露出的<<undies>>似乎让<<his>>很不爽。
+					<<he>>又举起手机，拍了一张你露出的<<undies>>的照片。
+					<<if random(0,2) gte 1>>
+						<<He>>把手机凑到面前，露出了笑容，拍到你露出的<<undies>>似乎让<<his>>很开心。
+						<<set _photos_taken +=1>>
+					<<else>>
+						<<He>>把手机凑到面前，皱起了眉头，收起手机沮丧的走了。
+					<</if>>
+				<</if>>
+				<br><br>
+			<</if>>
+
+			<<if $cameras_raised gte 2>>
+				<<if EventSystem.isSlotTaken(1)>>
+					<<clearsinglenpc 1>>
+				<</if>>
+				<span class="pink">
+				一名<<generate2>><<person2>><<person>>举起手机拍了张照。
+				</span>
+				<<if random(0,2) gte 1>>
+					<<He>>把手机凑到面前，露出了笑容，拍到你露出的<<undies>>似乎让<<his>>很开心。
+					<<set _photos_taken +=1>>
+				<<else>>
+					<<He>>把手机凑到面前，皱起了眉头，没拍到你露出的<<undies>>似乎让<<his>>很不爽。
+					<<he>>又举起手机，拍了一张你露出的<<undies>>的照片。
+					<<if random(0,2) gte 1>>
+						<<He>>把手机凑到面前，露出了笑容，拍到你露出的<<undies>>似乎让<<his>>很开心。
+						<<set _photos_taken +=1>>
+					<<else>>
+						<<He>>把手机凑到面前，皱起了眉头，收起手机沮丧的走了。
+					<</if>>
+				<</if>>
+				<br><br>
+			<</if>>
+
+			<<if $cameras_raised gte 3>>
+				<<if EventSystem.isSlotTaken(2)>>
+					<<clearsinglenpc 2>>
+				<</if>>
+				<span class="pink">
+				一名<<generate3>><<person3>><<person>>举起手机拍了张照。
+				</span>
+				<<if random(0,2) gte 1>>
+					<<He>>把手机凑到面前，露出了笑容，拍到你露出的<<undies>>似乎让<<his>>很开心。
+					<<set _photos_taken +=1>>
+				<<else>>
+					<<He>>把手机凑到面前，皱起了眉头，没拍到你露出的<<undies>>似乎让<<his>>很不爽。
+					<<he>>又举起手机，拍了一张你露出的<<undies>>的照片。
+					<<if random(0,2) gte 1>>
+						<<He>>把手机凑到面前，露出了笑容，拍到你露出的<<undies>>似乎让<<his>>很开心。
+						<<set _photos_taken +=1>>
+					<<else>>
+						<<He>>把手机凑到面前，皱起了眉头，收起手机沮丧的走了。
+					<</if>>
+				<</if>>
+				<br><br>
+			<</if>>
+			<<set _new_fame to (_photos_taken * $phase * 2)>>
+			<<fameexhibitionism _new_fame>>
+			<<set $cameras_raised to 0>>
+		<</if>>
+
+		<<if !$resting and random(0, 9) + $phase gte 8>>
+			<<set $cameras_raised to random(1, 3)>>
+			<<if $cameras_raised is 1>>
+				<span class="pink">一名围观的路人从口袋里掏出手机。</span>
+			<<else>>
+				<span class="pink"><<Number $cameras_raised>>名路人从口袋里掏出了手机。</span>
+			<</if>>
+		<</if>>
+
+		/* handle how aroused we feel about things */
+		<<cafecoffeeflasharousal>>
+	<</if>>
+
+	/* action choices */
+	<<set $still to 0>>
+
+	<br><br>
+	<<if $resting>>
+		<<link [[分开你的腿 (0:01)|Cafe Coffee Flash]]>>
+			<<set $phase to 0>>
+			<<set $resting to 0>>
+			<<pass 1>>
+
+		<</link>>
+		<br>
+		<<link [[夹紧双腿(0:01)|Cafe Coffee Flash]]>><<pass 1>><</link>>
+		<br>
+	<</if>>
+
+	<<if !_caught and !$resting>>
+		<<if $phase gt 0>>
+			<<link [[收敛一点(0:01)|Cafe Coffee Flash]]>>
+					<<set $phase -=1>>
+				<<pass 1>>
+			<</link>>
+			<br>
+		<</if>>
+		<<if $phase isnot 4>>
+			<<link [[保持双腿不动(0:01)|Cafe Coffee Flash]]>>
+				<<set $still to 1>>
+				<<pass 1>>
+			<</link>>
+			<br>
+		<</if>>
+
+		<<link [[继续(0:01)|Cafe Coffee Flash]]>>
+			<<if $phase lt 4>>
+				<<set $phase +=1>>
+			<<else>>
+				<<set $phase to 0>>
+			<</if>>
+			<<pass 1>>
+		<</link>>
+		<br>
+		<<link [[合上双腿(0:01)|Cafe Coffee Flash]]>>
+			<<set $phase to 4>>
+			<<pass 1>>
+		<</link>>
+		<br>
+	<</if>>
+<</if>>
+<<link [[喝完|Cafe Coffee Finish]]>><</link>>
+
+:: Cafe Coffee Finish
+<<unset $resting>>
+<<unset $cameras_raised>>
+<<unset $still>>
+<<unset $coffee_sips>>
+
+你喝完最后一点咖啡，把杯子放回桌子上，然后摇晃着离开座位.
+身体里的咖啡因让你感觉更精神了.
+<br><br>
+<<endevent>>
+<<link [[继续|Ocean Breeze]]>><</link>>
+
+:: Cafe Fruit Salad
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<if $weather is "rain">>
+	你坐下点了一份水果沙拉.
+	新鲜的草莓、蓝莓、猕猴桃和菠萝、美味又香甜可口。
+	你凝望着窗外下着雨的街道，感觉很惬意。
+	<br><br>
+<<elseif $weather is "snow">>
+	你坐下点了一份水果沙拉.
+	新鲜的草莓、蓝莓、猕猴桃和菠萝、美味又香甜可口。
+	你向窗外白雪皑皑的街道看去，感觉很惬意。
+	<br><br>
+<<else>>
+	你坐在了店外的一个位置，点了一份水果沙拉。
+	新鲜的草莓、蓝莓、猕猴桃和菠萝、美味又香甜可口。
+	你望向大海，享受着海风。
+	<br><br>
+<</if>>
+
+<<link [[继续|Ocean Breeze]]>><</link>>
+<br>
+
+:: Cafe Pancakes
+
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+<<if $weather is "rain">>
+	你坐了下来，点了一份煎饼。很快煎饼就端了上来，还送了一杯咖啡。
+	这比你在孤儿院吃过的任何东西都好吃。你凝望着窗外下着雨的街道，感觉很惬意。
+	<br><br>
+<<elseif $weather is "snow">>
+	你坐了下来，点了一份煎饼。很快煎饼就端了上来，还送了一杯咖啡。
+	这比你在孤儿院吃过的任何东西都好吃。你向窗外白雪皑皑的街道看去，感觉很惬意。
+	<br><br>
+<<else>>
+	你坐了下来，点了一份煎饼。很快煎饼就端了上来，还送了一杯咖啡。
+	这比你在孤儿院吃过的任何东西都好吃。你望向大海，享受着海风。
+	<br><br>
+<</if>>
+
+<<rng 10>>
+<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1 and $rng gte 6>>
+	<<endevent>>
+	你注意到咖啡馆另一边有一名<<generate1>><<person1>><<person>>正盯着你看。
+	你突然意识到自己无意识的张开了双腿，那个人正想要一窥你裙下的风光。
+	<<if $worn.under_lower.exposed>>
+		你想起自己没穿内裤。
+		<<arousal 500>><<garousal>>
+	<</if>>
+	<br><br>
+	/* check if we meet the basic requirements to expose ourselves */
+	<<if $exhibitionism gte 15>>
+		/* show our options depending on our possession of panties */
+		<<if $worn.under_lower.exposed>>
+			<<if $exhibitionism gte 75>>
+				<<link [[张开双腿并向他们抛媚眼|Cafe Exhibitionism Legs Part Pantiless Wink]]>><</link>><<exhibitionist5>>
+				<br>
+			<</if>>
+			<<if $exhibitionism gte 55>>
+				<<link [[张开双腿并假装没看见|Cafe Exhibitionism Legs Part Pantiless]]>><</link>><<exhibitionist4>>
+				<br>
+				<<link [[无视变态并赶紧吃完|Ocean Breeze]]>><<endevent>><</link>>
+				<br>
+			<</if>>
+			<<if $exhibitionism lte 54>>
+				你闭上了双腿，不让<<he>>继续看下去。
+				你一边继续吃着可口的煎饼， 一边不由自主的想象着张开双腿会是什么感觉
+				把一切都暴露在<<his>>窥探的双眼前。
+				<<arousal 15>><<garousal>>
+				<br><br>
+				<<link [[吃完|Ocean Breeze]]>><<endevent>><</link>>
+			<</if>>
+		<<else>>
+			<<link [[假装没发现并张开双腿|Cafe Exhibitionism Legs Part]]>><</link>><<exhibitionist2>>
+			<br>
+			<<link [[无视变态并赶紧吃完|Ocean Breeze]]>><<endevent>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		/* we don't, so shut your legs you dirty normie */
+		你阖上了双腿，不想让那个变态继续看下去。
+		<<stress 5>><<gstress>>
+		<br><br>
+		<<link [[无视变态并赶紧吃完|Ocean Breeze]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+
+<<else>>
+	<<CafeExhibitionismLegsPartNormalTerminate>>
+<</if>>
+
+:: Cafe Exhibitionism Legs Part
+你假装埋头吃煎饼，又尽可能自然的轻轻张开双腿。
+
+/* are we stealthy enough to pretend not to be putting on a show? */
+<<rng 50>>
+<<if currentSkillValue('skulduggery') gte (300 + $rng)>>
+	<<CafeExhibitionismLegsPartSuccessS1>>
+
+/* are we good enough to at least not provoke mockery at our poor attempts at stealth exhibitionism? */
+<<elseif currentSkillValue('skulduggery') gte 100>>
+	如此暴露自己的感觉让你不由得打了个寒颤，但你掩饰住没有暴露自己逐渐增长的性奋。
+	你发现<<his>>兴趣更浓了，决定调戏<<him>>一下。
+	<<flashcrotchunderskirt>>让<<him>>清晰地看到你被$worn.under_lower.cn_name_cap覆盖的胯部。
+	<<person>>啜了一口饮料，暗自邪笑着。看来你表现得没有自己想象的那么自然。
+	<br><br>
+	在咖啡馆向陌生人暴露内衣的行为让你有一种淫荡的快感，
+	而知道被<<he>>发现你是故意为之的想法则让你感到既紧张又兴奋。
+	<<exhibitionism3>>
+
+	你决定趁事情失控之前停下，吃完了你的煎饼，然后小心的从座位上站起来离开了。
+	<<His>>脸上带着邪笑目送你走向大门，但似乎并没有想缠着你的意思。
+	<br><br>
+	<<CafeExhibitionismLegsPartNormalTerminate>>
+
+/* were bad at this and should feel bad */
+<<else>>
+	如此暴露自己的感觉让你不由得打了个寒颤，尽力掩饰住自己逐渐增长的性奋。
+	<<person>>啜了一口饮料，暗自邪笑着，脸上的笑容都快压不住了。
+	看来你根本什么都没有掩饰住。
+	<br><br>
+	在咖啡馆向陌生人暴露内衣的行为让你有一种淫荡的快感，
+	而知道被<<he>>发现你是故意为之的想法则让你感到既紧张又兴奋。
+	<<exhibitionism2>>
+
+	你感到十分尴尬，赶紧吃完了煎饼，从座位上站起来离开了。
+	<<His>>脸上带着邪笑目送你走向大门，但似乎并没有想缠着你的意思。
+	<br><br>
+	<<CafeExhibitionismLegsPartNormalTerminate>>
+<</if>>
+
+:: Cafe Exhibitionism Legs Part Photo
+你兴奋到肚子疼，任由<<person>>用手机拍了一张又一张你暴露的$worn.under_lower.cn_name_cap的照片。
+你陶醉在让陌生人拍摄自己如此羞耻的照片所带来的刺激感中，时不时变换着双腿的姿势，让对方拍下了各种暴露的照片。
+<<arousal 15>><<garousal>>
+<br><br>
+最后，你觉得已经让对方拍够了，自然的合上了双腿。
+<<person>>稍微有些失望，但明显已经性奋了起来，把手机塞回口袋里，而你则遐想着自己的色情照片究竟会传播到哪个角落去。
+<<rng 5>>
+<<fameexhibitionism $rng "pic">>
+<<CafeExhibitionismLegsPartSuccessS2>>
+
+:: Cafe Exhibitionism Legs Part No Photo
+你不想自己穿着$worn.under_lower.cn_name_cap的照片被陌生人拍下，趁<<he>>还没拍照便合上了腿。
+<<person>>轻声骂了一句娘，把手机塞回口袋里，肯定是在寻思到底是被你发现在偷窥了，还是只是今天不走运。
+你把煎饼吃了个精光，离开了这里。
+<br><br>
+<<CafeExhibitionismLegsPartNormalTerminate>>
+
+:: Cafe Exhibitionism Legs Part Panty Takeoff
+你轻轻的放下叉子，前往咖啡馆的厕所。
+你把门锁紧，手钻进了衣服里，脱下了内衣，顿了一会，体会着接下来要做的事所带来的刺激感。
+你脱下了$worn.under_lower.cn_name_cap，打开厕所门，回到了自己的位置上，<<person>>丝毫没有起疑。
+<br><br>
+你坐了下来，<<person>>偷偷的看着你。
+你不想提前"剧透"，坐下的时候特意让裙边遮住了你暴露的<<genitals>>，没有让对方提前看见。
+你决定先调戏一下，一边吃着煎饼，一边晃动着双腿。
+你想先吸引<<his>>的注意，然后再进行下一步。
+<br><br>
+你慢慢的张开双腿。刚开始只张开一点，让<<him>>以为是自己看错了，
+然后你刻意俯身，似乎是在吃煎饼格外好吃的一部分，并完全张开了双腿，
+让自己的两条大腿根部和其之间的美景在<<him>>面前一览无余。
+<<persons>>明显因惊讶而瞪大了眼睛，死死盯着你裸露的<<genitals>>，面对你明确的故意暴露行为而不知所措。
+<<if $player.gender_appearance isnot $player.gender>>
+	从<<his>>的表情来看显然是没料到你
+	<<if $player.gender is "h">>
+		既有小穴又有肉棒。
+	<<else>>
+		是个<<print ($player.gender is "m" ? "男生" : "女生")>>。
+	<</if>>
+<</if>>
+你与<<his>>眼神相交，抛了个媚眼，又伸展了一下双腿，把最后一块煎饼也吃进嘴里，然后站起来离开了，
+只留下被极度震撼且明显性奋起来的<<person>>。
+<br><br>
+<<exhibitionism5>>
+<<CafeExhibitionismLegsPartNormalTerminate>>
+
+:: Cafe Exhibitionism Legs Part Premature End
+你见<<his>>越来越难以掩饰自己直勾勾的目光，决定赶紧吃完，
+趁<<he>>还没发现你是故意的，赶紧离开。
+你吃完最后一口，站起来往出口走去，从明显失望的<<person>>身旁路过。
+<br><br>
+<<CafeExhibitionismLegsPartNormalTerminate>>
+
+:: Cafe Exhibitionism Legs Part Pantiless
+你假装埋头吃煎饼，又尽可能自然的轻轻张开双腿。
+
+/* are we stealthy enough to pretend not to be putting on a show? */
+<<rng 50>>
+<<if currentSkillValue('skulduggery') gte (350 + $rng)>>
+	如此暴露自己的感觉让你不由得打了个寒颤，但你掩饰住没有暴露自己逐渐增长的性奋。
+	注意到<<his>>的兴趣增加，你决定多逗一下。<<flashcrotchunderskirt>>，让<<him>>清楚地看到你裸露的<<genitals>>。
+	<br><br>
+	在咖啡馆里把自己的<<genitals>>暴露给陌生人看的行为让你感到了一阵淫荡的快感。
+	<<exhibitionism5>>
+
+	/* check for photo scene */
+	<<rng 10>>
+	<<if $rng gte 8>>
+		/* person attempts to take photo */
+		<<CafeExhibitionismLegsPartPantilessPhotoDecision>>
+	<<else>>
+		<<CafeExhibitionismLegsPartNormalTerminate>>
+	<</if>>
+
+/* are we good enough to at least not provoke mockery at our poor attempts at stealth exhibitionism? */
+<<elseif currentSkillValue('skulduggery') gte 100>>
+	如此暴露自己的感觉让你不由得打了个寒颤，但你掩饰住没有暴露自己逐渐增长的性奋。
+	注意到<<his>>的兴趣增加，你决定戏弄一下。<<flashcrotchunderskirt>>让<<him>>清楚地看到你裸露的<<genitals>>。
+	<<person>>啜了一口饮料，暗自邪笑着。看来你表现得没有自己想象的那么自然。
+	<br><br>
+	在咖啡馆向陌生人暴露<<genitals>>的行为让你有一种淫荡的快感。
+	而知道被<<he>>发现你是故意为之的想法则让你感到既紧张又兴奋。
+	<<exhibitionism5>>
+
+	你决定趁事情失控之前停下，吃完了你的煎饼，然后小心的从座位上站起来离开了。
+	<<His>>脸上带着邪笑目送你走向大门，但似乎并没有想缠着你的意思。
+	<br><br>
+	<<CafeExhibitionismLegsPartNormalTerminate>>
+
+/* were bad at this and should feel bad */
+<<else>>
+	如此暴露自己的感觉让你不由得打了个寒颤，尽力掩饰住自己逐渐增长的性奋。
+	<<person>>啜了一口饮料，暗自邪笑着，脸上的笑容都快压不住了。
+	看来你根本什么都没有掩饰住。
+	<br><br>
+	在咖啡馆向陌生人暴露<<genitals>>的行为让你有一种淫荡的快感。
+	而知道被<<he>>发现你是故意为之的想法则让你感到既紧张又兴奋。
+	<<exhibitionism4>>
+
+	你感到十分尴尬，赶紧吃完了煎饼，从座位上站起来离开了。
+	<<His>>脸上带着邪笑目送你走向大门，但似乎并没有想缠着你的意思。
+	<br><br>
+	<<CafeExhibitionismLegsPartNormalTerminate>>
+<</if>>
+
+:: Cafe Exhibitionism Legs Part Pantiless Photo
+你兴奋到肚子疼，任由<<person>>用手机拍了一张又一张你暴露的<<genitals>>的照片。
+你陶醉在让陌生人拍摄自己如此羞耻的照片所带来的刺激感中，
+时不时变换着双腿的姿势，让对方拍下了各种极度暴露的照片。
+<<arousal 35>><<garousal>>
+<br><br>
+最后，你觉得已经让对方拍够了，自然的合上了双腿。
+<<person>>稍微有些失望，但明显已经性奋了起来，把手机塞回口袋里，而你则遐想着
+自己的色情照片究竟会传播到哪个角落去。
+<<rng 10>>
+<<fameexhibitionism $rng "pic">>
+<br><br>
+<<CafeExhibitionismLegsPartNormalTerminate>>
+
+:: Cafe Exhibitionism Legs Part Pantiless No Photo
+你不想自己<<genitals>>的照片被陌生人拍下，趁<<he>>还没拍照便合上了腿。
+<<person>>轻声骂了一句娘，把手机塞回口袋里，肯定是在寻思到底是被你发现在偷窥了，还是只是今天不走运。
+你把煎饼吃了个精光，离开了这里。
+<br><br>
+<<CafeExhibitionismLegsPartNormalTerminate>>
+
+:: Cafe Exhibitionism Legs Part Pantiless Wink
+你做好了心理准备，与<<person>>四目相对。
+你故意张开了双腿，向对方抛了个媚眼，直到两腿完全张开，将其间的风景暴露无遗。
+<<persons>>下巴都被惊掉了，死死盯着你的<<genitals>>，
+完全没想到自己的偷窥行为居然换来了如此大胆的暴露行为。
+<<flashcrotchunderskirt>>，给<<him>>一个长时间看你裸露的<<genitals>>的机会。
+<br><br>
+在咖啡馆向陌生人公然暴露自己的行为让你有一种淫荡的快感。
+<<exhibitionism5>>
+
+最后，你觉得已经让对方看够了，自然的合上了双腿。
+<<person>>稍微有些失望，但明显已经性奋了起来，目送你一边嚼着最后一口煎饼一边离开。
+<br><br>
+<<CafeExhibitionismLegsPartNormalTerminate>>
+
+:: Cafe Exhibitionism Skirt Flashing Act [widget]
+<<widget "flashcrotchunderskirt">>
+	<<print either(
+		"你伸着懒腰，抬起腿来，摇晃着脚丫，以延长暴露的时间",
+		"你伸着懒腰，双膝稍微张开了一点，双脚靠拢，以增大膝间的缝隙",
+		"你伸着懒腰，抬起腿来，往后靠了靠，摇晃着脚丫，\"无意间\"张开了双腿",
+		"你把手往下伸，把一条腿挪开，假装在腿上挠痒，一边把另一条腿也张开以保持平衡",
+		"你表现出好像被碎石硌住了脚的样子，将脚底高高抬起，假装寻找脚上那个并不存在的碎石"
+	)>>
+<</widget>>
+
+:: Cafe Cream Bun
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+你坐了下来，点了一份奶油面包，菜单上写着使用了"本地特产牛奶"。面包很快就端了上来。
+<br><br>
+
+份量很大，奶油四溢，吃起来的时候难免会有奶油从奇怪的角度流到盘子上。
+你吃的时候也未能幸免，奶油流了一盘子，但你并不介意。面包味道很好，让你感到温暖且满足。
+<br><br>
+
+<<link [[足够了|Ocean Breeze]]>><</link>>
+<br>
+<<link [[舔干净盘子|Cafe Cream Lick]]>><<transform cat 1>><<stress -6>><</link>><<lstress>>
+<br>
+
+:: Cafe Cream Lick
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+你端起盘子，直接从上面舔食奶油。
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure)>>
+	你发现一名<<generate1>><<person1>><<person>>正盯着你看，手里的勺子悬在了半空中。
+	<br><br>
+
+	<<link [[卖弄|Cafe Cream Show]]>><</link>><<exhibitionist1>>
+	<br>
+	<<link [[无视|Cafe Cream Ignore]]>><</link>>
+	<br>
+
+<<else>>
+	没人注意到你。你满足地靠在了椅背上。
+	<br><br>
+
+	<<link [[继续|Ocean Breeze]]>><</link>>
+	<br>
+
+<</if>>
+
+:: Cafe Cream Show
+
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+你与<<person>>四目相对，继续舔着盘子。
+你放缓了舔食的速度，夸大着自己的动作，每舔一下都让<<him>>好好瞧见自己舌头上的奶油，然后再吃进嘴里。
+你故作享受的半闭着眼睛，继续舔食着，直到把盘子舔了个干净。
+<<exhibitionism1>>
+你满足地靠在了椅背上。<<person>>移开了视线，脸涨得通红。
+<br><br>
+<<endevent>>
+<<link [[继续|Ocean Breeze]]>><</link>>
+<br>
+
+:: Cafe Cream Ignore
+
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+你无视了<<person>>，把盘子舔了个干净，然后满足的靠在了椅背上。
+<br><br>
+<<endevent>>
+<<link [[继续|Ocean Breeze]]>><</link>>
+<br>
+
+:: Cafe Winter Ale
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<if $weather is "rain">>
+	你坐了下来，点了一份冬日啤酒。
+	啤酒马上就端了上来；华丽的酒杯上带着曲线的设计，杯中的酒十分甘甜，盖过了苦涩味，十分可口。
+	你凝望着窗外下着雨的街道，感到体内一阵温暖。
+	<br><br>
+<<elseif $weather is "snow">>
+	你坐了下来，点了一份冬日啤酒。
+	啤酒马上就端了上来；华丽的酒杯上带着曲线的设计，杯中的酒十分甘甜，盖过了苦涩味，十分可口。
+	你向窗外白雪皑皑的街道看去，感受着体内的酒精带来的温暖。
+	<br><br>
+<<else>>
+	你坐了下来，点了一份冬日啤酒。
+	啤酒马上就端了上来；华丽的酒杯上带着曲线的设计，杯中的酒十分甘甜，盖过了苦涩味，十分可口。
+	你向窗外望去，感受着体内的酒精带来的温暖。
+	<br><br>
+<</if>>
+
+<<link [[继续|Ocean Breeze]]>><</link>>
+<br>
+
+:: Cafe Spring Ale
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<if $weather is "rain">>
+	你坐了下来，很符合季节特色的点了一杯果味啤酒。
+	啤酒马上就端了上来，装在一个普通的啤酒杯里。味道很甜很轻柔，十分可口。
+	你凝望着窗外下着雨的街道，感觉很惬意。
+	<br><br>
+<<elseif $weather is "snow">>
+	你坐了下来，很符合季节特色的点了一杯果味啤酒。
+	啤酒马上就端了上来，装在一个普通的啤酒杯里。味道很甜很轻柔，十分可口。
+	你向窗外白雪皑皑的街道看去，感觉很惬意。
+	<br><br>
+<<else>>
+	你坐了下来，很符合季节特色的点了一杯果味啤酒。
+	啤酒马上就端了上来，装在一个普通的啤酒杯里。味道很甜很轻柔，十分可口。
+	你望向大海，享受着海风。
+	<br><br>
+<</if>>
+
+<<link [[继续|Ocean Breeze]]>><</link>>
+<br>
+
+:: Cafe Summer Ale
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<if $weather is "rain">>
+	你坐了下来，很符合季节特色的点了一杯柠檬啤酒。
+	啤酒马上就端了上来，装在一个易拉罐里，还附了一个啤酒杯，明显是让你自己倒。是柠檬味的，十分清爽！
+	你凝望着窗外下着雨的街道，感觉很惬意。
+	<br><br>
+<<elseif $weather is "snow">>
+	你坐了下来，很符合季节特色的点了一杯柠檬啤酒。
+	啤酒马上就端了上来，装在一个易拉罐里，还附了一个啤酒杯，明显是让你自己倒。是柠檬味的，十分清爽！
+	你向窗外白雪皑皑的街道看去，感觉很惬意。
+	<br><br>
+<<else>>
+	你坐了下来，很符合季节特色的点了一杯柠檬啤酒。
+	啤酒马上就端了上来，装在一个易拉罐里，还附了一个啤酒杯，明显是让你自己倒。是柠檬味的，十分清爽！
+	你望向大海，享受着夏日的海风。
+	<br><br>
+<</if>>
+
+<<link [[继续|Ocean Breeze]]>><</link>>
+<br>
+
+:: Cafe Autumn Ale
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<if $weather is "rain">>
+	你坐了下来，点了一份秋日啤酒。
+	啤酒马上就端了上来。味道比较甜，有一丝焦糖味，十分可口。
+	你凝望着窗外下着雨的街道，感觉很惬意。
+	<br><br>
+<<elseif $weather is "snow">>
+	你坐了下来，点了一份秋日啤酒。
+	啤酒马上就端了上来。味道比较甜，有一丝焦糖味，十分可口。
+	你向窗外白雪皑皑的街道看去，感觉很惬意。
+	<br><br>
+<<else>>
+	你坐了下来，点了一份秋日啤酒。
+	啤酒马上就端了上来。味道比较甜，有一丝焦糖味，十分可口。
+	你望向大海，享受着秋日的海风。
+	<br><br>
+<</if>>
+
+<<link [[继续|Ocean Breeze]]>><</link>>
+<br>
+
+:: Ocean Breeze Tourist
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+<<set $tip to 0>> /*Ensure tip is 0 so that nothing can be carried over from anything else*/
+<<if ($rapestat + $beastrapestat + $tentaclerapestat) gt 0>>
+	<<if $phase is 1>>
+		你点头。
+		<br>
+		"感觉如何？"<<he>>邪笑着问。
+		<br>
+		<<if $trauma gte ($traumamax / 5) * 4>>
+			你用毫无起伏的空洞声音描述着你的经历，用医学描述一般准确的语言将每一个细节都解释得一清二楚。你平静的叙述，身体轻微的颤抖，
+			如同深渊一般空洞的眼神，让<<fullGroup>>都感到不安。
+			他们目送着你离开了。
+			<br>
+			"哇，这都给玩坏了？"
+			<br>
+			"是咯，"你听见<<person1>><<person>>紧张的笑了两声。"估计算是副作用吧。"
+			<<set $tip += 400>>
+		<<elseif $speech_attitude is "meek">>
+			你向他们描述着你所遭到的虐待与不堪，描述得极其细致，以求能满足他们病态的好奇。
+			<<if currentSkillValue('english') gte 400>>
+				你的描述开放、流利而又准确，他们显然十分感兴趣。
+				<<set $tip += 1000>>
+			<<else>>
+				你的话语并不能引起他们的共情，他们很快就失去了兴趣。
+				<<set $tip += 200>>
+			<</if>>
+		<<elseif $rapetrait gte 1>>
+			"当时觉得很难受，"你说道。"现在也很难受，但…我可能已经习惯了吧。"
+			<br>
+			<<He>>看向了自己的朋友。"我说什么来着？"
+			<<set $tip += 200>>
+		<<elseif $submissive lte 500>>
+			你拿起了桌上摆着的一个大号的圆柱型胡椒研磨器，在手上掂量了一会。
+			<br>
+			你猛地把研磨器拍在桌子上，引得<<his>>直直的盯着你。"真的想知道？"
+			<br>
+			<<if $rng % 2>>
+				<<He>>被你吓了一大跳，恐惧的摇着头。
+			<<else>>
+				他们紧张的笑了两声。
+			<</if>>
+			<br>
+			"谅你也不敢。"你离开了。
+		<<elseif $speech_attitude is "bratty">>
+			"很难过。准备好点单了吗？还是准备好滚蛋了？"
+			<br>
+			他们点了单。
+		<<else>>
+			"抱歉。这段经历太难受了，我不想聊。"
+			<br>
+			接下来几分钟他们都在骚扰你，想要问出细节。
+			<<gstress>><<stress 2>>
+		<</if>>
+	<<elseif $phase is 2>>
+		你摇了摇头。
+		<br>
+		<<if $fame.rape gte 800>>
+			旁边一名顾客笑了起来。"是哦！
+			<<if $player.gender_appearance isnot $player.gender>>
+				'<<pShes>>都出了名了！
+			<<else>>
+				<<Hes>>都出了名了！
+			<</if>>
+			大半个镇子的人都上过这辆公交车。"
+			<br>
+			你转身离开，而其他顾客已经开始给他们看照片了。
+		<<elseif $beauty lte ($beautymax / 7) * 2>>
+			"嘛，这只是例子没选好。谁想费这个劲强<<pher>>呢？我是说镇子上所有'漂亮的'人都被强奸过。"
+			<br>
+			你转身离开，任他们继续讨论。
+		<<else>>
+			"啊对对对，我才不信呢。"<<he>>邪恶的笑着。
+			<br>
+			你转身离开，任他们继续讨论。
+		<</if>>
+	<</if>>
+<<else>>
+	<<if $phase is 1>>
+		你点头。
+		<br>
+		"感觉如何？"<<he>>邪笑着问。
+		<br>
+		<<if $speech_attitude is "meek">>
+			你胡编乱造出了一些遭受虐待和不堪的故事，希望能满足他们病态的好奇。
+			<<if currentSkillValue('english') gte 400>>
+				你的描述流利而有说服力。他们听得很感兴趣。
+				<<set $tip += 500>>
+			<<else>>
+				你的语言空洞，编的故事根本说不通。他们很快就失去了兴趣。
+			<</if>>
+		<<else>>
+			"抱歉，"你和他们说道。"我不喜欢聊这个话题。"
+			<br>
+			接下来的几分钟里他们都缠着你，想要问出细节。
+			<<gstress>><<stress 2>>
+		<</if>>
+	<<elseif $phase is 2>>
+		你摇了摇头。
+		<br>
+		<<if $beauty lte ($beautymax / 7) * 2>>
+			"嘛，这只是例子没选好。谁想费这个劲强<<pher>>呢？我是说镇子上所有'漂亮的'人都被强奸过。"
+			<br>
+			你转身离开，任他们继续讨论。
+		<<else>>
+			"啊对对对，我才不信呢。"<<he>>邪恶的笑着。
+			<br>
+			你转身离开，任他们继续讨论。
+		<</if>>
+	<</if>>
+<</if>>
+<<if $phase is 3>>
+	你拒绝回答他们的问题。他们最终还是点了单。
+<</if>>
+<br><br>
+剩下的工作时间里无事发生。
+<<if $tip gt 0>>
+	<<set $tip += 500>>
+	有人给了你一笔小费。
+	<<tipreceive>><<pass 1 hour>>
+	<br><br>
+<<else>>
+	你赚到了<<moneyGain 5>>。
+	<<pass 1 hour>>
+	<br><br>
+<</if>>
+<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+
+:: Ocean Breeze Chef Refuse
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+萨姆点点头，但似乎有些愠怒。<<He>>找了另一名员工求助。
+<br><br>
+
+剩下的轮班时间平安无事的度过了，你赚取了<<moneyGain 5>>。
+<br><br>
+
+<<link [[继续|Ocean Breeze]]>><<endevent>><</link>>
+
+:: Ocean Breeze Rework
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+<<set $chef_state to 8>>
+<<npc Sam>><<person1>>
+你走进了重新装潢过的海风咖啡店。主厅比之前宽敞了很多，天花板也高了不少。你还发现店里有了二楼，楼上摆了不少桌子。
+二楼悬吊在一楼的正上方。曾经破旧的店面现在已经装潢得十分优雅。
+<br><br>
+萨姆站在大厅正中，正和另一名员工谈话。<<Hes>>穿着<<if $pronoun is "m">>西装打着领带<<else>>红色礼服<</if>>。
+<br><br>
+<<He>>转身面向你，露出了笑容。"我们的大厨来啦！"<<he>>说着，跑到你面前，抓起你的手。"这副新面貌看起来如何？"<<he>>问道。"我是说店面，不是我。"
+<br><br>
+
+<<link [[看上去很做作|Ocean Breeze Pretentious]]>><<npcincr Sam love -1>><</link>><<llove>>
+<br>
+<<link [[看上去非常好|Ocean Breeze Wonderful]]>><<npcincr Sam love 1>><</link>><<glove>>
+<br>
+<<link [[看上去还行|Ocean Breeze Okay]]>><</link>>
+
+:: Ocean Breeze Pretentious
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<if $speech_attitude is "meek">>
+	你低下了头。"我还是更喜欢咖啡馆原来的样子，"你实话实说，"抱歉。"
+<<elseif $speech_attitude is "bratty">>
+	你嗤笑一声。"咱就卖个奶油面包，"你说道。"不觉得有些华丽过头了吗？"
+<<else>>
+	"有些华丽过头了，"你承认到。
+<</if>>
+<br><br>
+
+萨姆的眉头皱了皱，但很快舒展了开来。"你低估了你的才能，"<<he>>说道。"我一直都想要这么个地方。"
+<br><br>
+
+<<He>>环顾房间。"我要准备开业典礼了，"<<he>>说道。
+"我希望你能登台亮相。不用做什么大事！稍微讲几句就行。
+会有来自世界各地的人们参加，小镇里有权有势的人也都会向露个脸。"
+<br><br>
+
+"不用害羞，"<<he>>补充道。"真的想说什么都行，大家就是想看看掌勺的是谁。"
+<br><br>
+
+<<link [[继续|Ocean Breeze Rework 2]]>><</link>>
+<br>
+
+:: Ocean Breeze Wonderful
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<if $speech_attitude is "meek">>
+	"太棒了"你说，"就像一场梦。"
+<<elseif $speech_attitude is "bratty">>
+	"这当然是进步。"你说道。
+<<else>>
+	"我很喜欢。"你说，"非常华丽。"
+<</if>>
+<br><br>
+
+萨姆点点头，"我知道！我一直想要一个这样的地方。"
+<br><br>
+
+<<He>>环顾房间。"我要准备开业典礼了，"<<he>>说道。
+"我希望你能登台亮相。不用做什么大事！稍微讲几句就行。
+会有来自世界各地的人们参加，小镇里有权有势的人也都会向露个脸。"
+<br><br>
+
+"不用害羞，"<<he>>补充道。"真的想说什么都行，大家就是想看看掌勺的是谁。"
+<br><br>
+
+<<link [[继续|Ocean Breeze Rework 2]]>><</link>>
+<br>
+
+:: Ocean Breeze Okay
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我，我不知道。"你说，"我不习惯华丽的东西。"
+<<elseif $speech_attitude is "bratty">>
+	"只要我能安心工作。"你说，"没关系。"
+<<else>>
+	"看起来还行。"你说，"确实很突出。"
+<</if>>
+
+<br><br>
+
+萨姆点点头。"我一直想要一个这样的地方。"
+<br><br>
+
+<<He>>环顾房间。"我要准备开业典礼了，"<<he>>说道。
+"我希望你能登台亮相。不用做什么大事！稍微讲几句就行。
+会有来自世界各地的人们参加，小镇里有权有势的人也都会向露个脸。"
+<br><br>
+
+"不用害羞，"<<he>>补充道。"真的想说什么都行，大家就是想看看掌勺的是谁。"
+<br><br>
+
+<<link [[继续|Ocean Breeze Rework 2]]>><</link>>
+<br>
+
+:: Ocean Breeze Rework 2
+<<set $outside to 0>><<set $location to "cafe">><<effects>>
+
+"我很想开始，"萨姆说，"但你是明星。"你准备好了我们就开门。晚上找个时间来，我们把事情定下来。"
+<br><br>
+<<set $chef_state to 8>>
+
+<<endevent>>
+
+<<link [[离开|Cliff Street]]>><<set $eventskip to 1>><</link>>
+<br>

@@ -1,0 +1,355 @@
+:: Hospital Arrest
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+<<generatePolice 1>><<generatePolice 2>>两名警察坐在大厅里。当你靠近时，他们站了起来："你被捕了，请安静地过来。"
+<<if $companion is "Robinrent">>
+	<<person1>>和<<person>>向罗宾做手势。"你的朋友可以留在这里。"
+	<br><br>
+
+	"一定要小心，"罗宾低声说。<<nnpc_He "Robin">>离你远了些。
+	<<unset $companion>>
+<</if>>
+<br><br>
+<<link [[跑|Hospital Arrest Run]]>><<crimeup 100>><</link>><<athleticsdifficulty 1 1000>><<crime>>
+<br>
+<<link [[安静的走|Hospital Arrest Journey]]>><</link>>
+<br>
+
+:: Hospital Arrest Run
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+你转身跑出医院。
+<<gathletics>><<athletics 1>><<physique>>
+<br><br>
+<<if $athleticsSuccess>>
+	<<rng>>
+	<<if $rng gte 81>>
+		警察紧跟在你身后，虽然你试图通过在街道和小巷里交叉奔跑来甩开警察，但他们依旧锲而不舍。直到你<span class="green">成功</span>的甩开警察一段距离后，却在拐弯时发现自己跑进了死胡同。
+		<br><br>
+		<<endevent>>
+		当你正准备放弃的时候，附近墙角处的一个小窗口打开了。你不知道里面有什么，但如果不钻进去的话就得直面警察。
+		<br><br>
+		<<link [[钻进窗口|Hospital Arrest Molestation]]>><<set $molestationstart to 1>><</link>>
+		<br>
+		<<link [[向警察自首|Hospital Arrest Surrender]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		警察紧跟在你身后，你试图通过在街道和小巷里交叉奔跑来甩开警察，这些酒囊饭袋的警察根本跟不上你的脚步。你<span class="green">成功</span>的逃脱了。
+		<br><br>
+		<<link [[继续|Industrial alleyways]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	你试图逃离医院，但<span class="red">没能</span>跑得过警察。你被警察按倒在地在地。
+	<br><br>
+	<<link [[继续|Hospital Arrest Journey]]>><</link>>
+	<br>
+<</if>>
+
+:: Hospital Arrest Journey
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+他们给你戴上手铐，然后将你带到还没熄火的车旁。在将你押在后座位后，警察坐在了前面并开车离开。
+<<set $leftarm to "bound">><<set $rightarm to "bound">>
+<br><br>
+<<if $crime gte 5000>>
+	坐在司机位的那个<<person1>><<person>>回头看向你，" "你一定是个坏<<girl>>吧？惹了各种各样的麻烦。"
+	<br><br>
+	坐在<<His>>旁边的那个<<person2>><<person>>插话道，"注意看路。"
+	<br><br>
+	<<person1>><<person>>张了张嘴巴，但还是什么都没有说。在其回头继续看着前方的道路后，车内就这样保持着诡异的寂静。
+	<br><br>
+	<<if $promiscuity gte 15>>
+		<<link [[用身体换取放行|Hospital Arrest Offer]]>><</link>><<promiscuous2>>
+		<br>
+	<</if>>
+	<<if $promiscuity lte 14 and $uncomfortable.prostituting is false>>
+		<<link [[勉强自己提供身体来换取放行|Hospital Arrest Offer]]>><<set $desperateaction to 2>><</link>><<promiscuous2>>
+		<br>
+	<</if>>
+	<<link [[静坐|Hospital Arrest Sit]]>><</link>>
+	<br>
+<<else>>
+	坐在司机位的那个<<person1>><<person>>回头看向你，" 如果你愿意合作的话，那么一切都会好起来的。"
+	<br><br>
+	<<if $promiscuity gte 15>>
+		<<link [[用身体换取放行|Hospital Arrest Offer]]>><</link>><<promiscuous2>>
+		<br>
+	<</if>>
+	<<if $promiscuity lte 14 and $uncomfortable.prostituting is false>>
+		<<link [[勉强自己提供身体来换取放行|Hospital Arrest Offer]]>><<set $desperateaction to 2>><</link>><<promiscuous2>>
+		<br>
+	<</if>>
+	<<link [[静坐|Hospital Arrest Sit]]>><</link>>
+	<br>
+<</if>>
+
+:: Hospital Arrest Molestation
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<set $outside to 0>><<generate1>><<generate2>><<generate3>><<generate4>><<maninit>>
+	你爬过洞，进入黑暗。你听到门在你身后关上，灯光亮起，露出四个人。"瞧瞧我们发现了什么?"<<person1>>一个<<person>>说道。"你觉得他们会希望把<<phim>>压在身下吗?"
+	<br><br>
+	"不知道，"一个蹲在你身边的<<person2>><<person>>回答说道。"我认为我们应该先自己试试。"
+	<br><br>
+	<<set $enemytrust -= 40>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $phase is 1)>>
+	<span id="next"><<link [[继续|Hospital Arrest Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Hospital Arrest Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Hospital Arrest Surrender
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+<<generatePolice 1>><<generatePolice 2>>
+<<person1>>
+你决定不去那个奇怪的门。警察气喘吁吁地赶到了。其中一人用泰瑟枪威胁你。"我们抓住你了，"<<he>>说道。"你跟我们走。"
+<br><br>
+<<link [[继续|Hospital Arrest Journey]]>><</link>>
+<br>
+
+:: Hospital Arrest Offer
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+<<if $crime gte 5000>>
+	<<set $seductiondifficulty to 10000>>
+	<<seductioncheck>>
+	<br><br>
+	<<if $seductionskill lt 1000>><span class="gold">你对自己的诱惑力更有信心了。</span><</if>><<seductionskilluse>>
+	<br><br>
+	<<if $seductionrating gte $seductionrequired>>
+		你透过镜子看<<person1>><<person>>。"我知道我一直很涩情，"你说道:"但如果你让我走，我会很感激的。非常感激。"你在后座上伸开四肢，展示你的身材。
+		<<promiscuity2>>
+
+		<<person2>><<person>>似乎没有被打动，但<<person1>><<person>>感觉不同。"反正没人知道我们遇到了<<phim>>。只会有更多的文书工作。"
+		<br><br>
+		"停，"<<person2>><<person>>说道。"你是在让自己难堪。"
+		<br><br>
+		<<person1>><<persons>>降低声音。"我们可以对<<phim>>做我们想做的任何事，但这并不是说<<pshe>>可以拒绝。"
+		<br><br>
+		<<person2>><<person>>暂时没有响应。<<person1>><<person>>张开<<his>>的嘴再次争辩，但是被其他人打断了。"靠边。"
+		<br><br>
+
+		<<person2>><<person>>把你从车里拖出来，拖到一条小巷里。你来到一扇金属门前，<<he>>用很大的力量把你推了进去，你差点摔倒。你以为你在一个空仓库里。
+		<br><br>
+		"别以为你能轻松脱身，"<<he>>说道。"对你这样的人渣太宽大了。不，你得到了你应得的。"
+		<br><br>
+		<<link [[继续|Police Molestation]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<else>>
+		你透过镜子看<<person1>><<person>>。"我知道我一直很涩情，"你说道:"但如果你让我走，我会很感激的。非常感激。"你在后座上伸开四肢，展示你的身材。
+		<<promiscuity2>>
+
+		<<person2>><<person>>似乎没有被打动，但<<person1>><<person>>感觉不同。"反正没人知道我们遇到了<<phim>>。只会有更多的文书工作。"
+		<br><br>
+		"停，"<<person2>><<person>>说道。"你是在让自己难堪。"
+		<br><br>
+		<<person1>><<persons>>降低声音。"我们可以对<<phim>>做我们想做的任何事，但这并不是说<<pshe>>可以拒绝。"
+		<br><br>
+		"我说了没有，"<<person2>><<person>>回答，<<his>>的语气平息了任何进一步的争论。值得一试。
+		<br><br>
+		<<link [[继续|Hospital Arrest Sit]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<set $seductiondifficulty to 6000>>
+	<<seductioncheck>>
+	<br><br>
+	<<if $seductionskill lt 1000>><span class="gold">你对自己的诱惑力更有信心了。</span><</if>><<seductionskilluse>>
+	<br><br>
+	<<if $seductionrating gte $seductionrequired>>
+		你透过镜子看<<person1>><<person>>。"我知道我一直很涩情，"你说道:"但如果你让我走，我会很感激的。非常感激。"你在后座上伸开四肢，展示你的身材。
+		<<promiscuity2>>
+
+		<<person2>><<person>>似乎没有被打动，但<<person1>><<person>>感觉不同。"反正没人知道我们遇到了<<phim>>。只会有更多的文书工作。"
+		<br><br>
+		"停，"<<person2>><<person>>说道。"你是在让自己难堪。"
+		<<person1>><<persons>>降低声音。"我们可以对<<phim>>做我们想做的任何事，但这并不是说<<pshe>>可以拒绝。"
+		<br><br>
+		<<person2>><<person>>暂时没有响应。<<person1>><<person>>张开<<his>>的嘴再次争辩，但是被其他人打断了。"靠边。"
+		<br><br>
+		<<person2>><<person>>把你从车里拖出来，拖到一条小巷里。你来到一扇金属门前，它通向一个很大的开放区域。你以为你在一个废弃的仓库里。
+		<br><br>
+		<<link [[继续|Police Molestation]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<else>>
+		你透过镜子看<<person1>><<person>>。"我知道我一直很涩情，"你说道:"但如果你让我走，我会很感激的。非常感激。"你在后座上伸开四肢，展示你的身材。
+		<<promiscuity2>>
+
+		<<person2>><<person>>似乎没有被打动，但<<person1>><<person>>感觉不同。"反正没人知道我们遇到了<<phim>>。只会有更多的文书工作。"
+		<br><br>
+		"停，"<<person2>><<person>>说道。"你是在让自己难堪。"
+		<<person1>><<persons>>降低声音。"我们可以对<<phim>>做我们想做的任何事，但这并不是说<<pshe>>可以拒绝。"
+		<br><br>
+		"我说了没有，"<<person2>><<person>>回答，<<his>>的语气平息了任何进一步的争论。值得一试。
+		<br><br>
+		<<link [[继续|Hospital Arrest Sit]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Hospital Arrest Sit
+<<set $outside to 0>><<set $location to "police_station">><<effects>>
+
+<<if $worn.face.type.includes("blindfold") or $worn.face.type.includes("gag")>>
+<<set $worn.face.type.push("broken")>>
+<<faceruined>>
+<</if>>
+<<unbind>>
+
+<<pass 5>>在剩下的旅程中，你静静地坐着。没过多久，你就把车停在了倒钩街的警察局，其他警察在那里等着你。一下车，他们就带你进去。你走下一段金属台阶，走下一条看上去阴森的走廊。他们把你塞进一个小牢房。"坐好，"<<person1>><<person>>说道。"我们很快就会决定怎么处置你。"
+<br><br>
+<<link [[等待(1:00)|Police Cell]]>><<pass 1 hour>><<endcombat>><</link>>
+<br>
+
+:: Police Molestation
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $outside to 0>>
+	<<if $crime gte 5000>>
+		<<set $enemytrust -= 120>><<set $enemyanger += 120>>
+	<<else>>
+		<<set $enemytrust -= 90>>
+	<</if>>
+<</if>>
+<<effects>>
+<<effectsman>><<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<span id="next"><<link [[继续|Police Molestation Finish]]>><</link>></span><<nexttext>>
+<<elseif $enemyhealth lte 0>>
+	<span id="next"><<link [[继续|Police Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Police Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Police Molestation Finish
+
+<<if $enemyhealth lte 0>>
+	你把<<person1>><<person>>推向<<person2>><<person>>，使他们互相绊倒，摔到地上。<<tearful>>你逃离仓库。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Industrial alleyways]]>><<set $stress -= 1000>><<set $eventskip to 1>><</link>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>><<set $prostitutionstat += 1>><<fameprostitution 1>>
+	"来吧，"<<person2>><<person>>说，"在我们错过之前。"<<unbind>>他们解开你的手铐，让你躺在仓库的地板上。<<tearful>>你站起身来，摇摇晃晃地走到外面。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Industrial alleyways]]>><<set $stress -= 1000>><<set $eventskip to 1>><</link>>
+<</if>>
+
+:: Police Cell
+/*Punishment explanation:
+First time caught with crime gte 5000: Pillory.
+Caught additional times with crime above 5000: Prison.
+Caught with crime lt 5000: Community service.
+Caught with crime lt 5000 while already performing community service: Pillory. */
+
+<<set $outside to 0>><<set $location to "police_station">><<effects>>
+你坐在肮脏的床上等着。
+<br><br>
+一个小时后，一个穿着警察制服的<<generatePolice 1>><<person1>><<person>>来到牢房旁边。"来吧，让我们给你办理手续。"<<he>>说着，打开了牢房的门。"转身。"
+<br><br>
+<<if $worn.neck.collared isnot 1>>
+	<<neckwear 21>>
+	你顺从了，听到<<him>>从<<his>>的腰带上取下什么东西。<<He>>把它系在你的脖子上，然后你听到它咔哒一声关上。"这个项圈有电击功能，只是为了确保你继续合作。你一服完刑，我们就把它取下来。"
+	<br><br>
+<<else>>
+	你服从。"哦，"<<he>>说道。"你已经戴上项圈了。"<<He>>走到你身后，更仔细地检查项圈。"而且电击功能似乎起作用了。"<<He>>系上皮带。"一切都井然有序。你一服完刑，我们就把它取下来。"
+	<br><br>
+<</if>>
+<<set $worn.neck.collaredpolice to 1>>
+<<He>>带你上另一段楼梯，进入一个小房间。三个西装革履的人坐在远处的一张桌子旁。坐在中间的<<generatePolice 2>><<person2>><<person>>对着<<him>>前面的椅子做手势。"请坐，"<<he>>说道："别耽搁了。"<<person1>><<person>>跟着你进来，然后关上你身后的门。
+<br><br>
+
+<<if $crime gte 5000>>
+	<<if $stat_police.pillory gte 1>>
+		坐下后，<<person2>><<person>>继续。"你真是个违法乱纪的惯犯<<girl>>。<span class="red">也许在监狱里呆一段时间会让你改过自新。</span>我判你<span class="red"><<print Math.trunc($crime / 250)>></span>天监禁。"<<He>>在<<him>>面前盖章了一份文件。"把这个坏蛋从我眼前带走。"
+		<br><br>
+
+		<<link [[继续|Police Prison Intro]]>><</link>>
+		<br>
+	<<else>>
+		坐下后，<<person2>><<person>>继续。"你不会以为你能逃脱惩罚吧?你到处都留下了自己的痕迹。然而，这些只是轻微的罪行，因此公开羞辱是一种适当的惩罚。把<<phim>>带到刑台去。"
+		<br><br>
+		<<link [[继续|Police Pillory Start]]>><<set $stat_police.pillory += 1>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<if $community_service gte 1>>
+		坐下后，<<person2>><<person>>继续。"你有机会回馈社会，但却不能保持自己的清白，不是吗?当众羞辱会教你更好。把<<phim>>带到刑台去。"
+		<br><br>
+		<<link [[继续|Police Pillory Start]]>><<set $stat_police.pillory += 1>><</link>>
+		<br>
+	<<else>>
+		坐下后，<<person2>><<person>>继续。"这些只是轻微的罪行。你将有机会弥补，并回馈社会。<span class="pink">从明天开始，你每天都要到警察局报到。</span>在那里你将被分配一个服务。大概要一个小时。你可以在白天的任何时间到达。"
+		<br><br>
+		"因这些罪行
+		<<set _service to Math.trunc($crime / 200)>>
+		罚你为社区提供<span class="pink">_service days</span>日的服务。如果你不改变你的态度，或者拒绝提供社区服务，那接下来的惩罚将会更加严厉。把<<phim>>带出去。"
+		<br><br>
+		<<set $community_service to _service>>
+		<<set $community_service_done to 1>>
+
+
+		<<link [[继续|Police Community Start]]>><<set $stat_police.community += 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Hospital Arrest Molestation Finish
+
+<<if $enemyhealth lte 0>>
+	他们从你身边退开，对你的力量感到惊讶。<<tearful>>你打开舱门，在他们阻止你之前逃到外面。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Industrial alleyways]]>><<set $stress -= 1000>><<set $eventskip to 1>><</link>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<if $phase is 1>>
+		<<ejaculation "short">>
+		第二次高潮对他们来说有点多，给你一个机会从门口逃脱。
+		<br><br>
+		<<clotheson>>
+		<<endcombat>>
+		<<link [[继续|Industrial alleyways]]>><<set $stress -= 1000>><<set $eventskip to 1>><</link>>
+	<<else>>
+		<<ejaculation>>
+		<<person2>>"<<pShe>>应该是有价值的。"，<<person>>说:"做个乖孩子，跟我们走。"<<He>>抓住你的手臂，试图把你拉进更深的建筑。
+		<br><br>
+		<<link [[安静地走|Underground Intro]]>><</link>>
+		<br>
+		<<link [[反抗|Hospital Arrest Molestation]]>><<set $phase to 1>><<set $enemyanger += 120>><<set $enemytrust -= 40>><<set $enemyarousal to 0>><</link>>
+	<</if>>
+<<elseif $phase is 1>>
+	你伤得太重了，不能再战斗了。<<person1>><<person>>和<<person2>><<person>>把你软弱无力的身体拖进大楼的深处。
+	<br><br>
+	<<link [[继续|Underground Intro]]>><<set $phase to 0>><</link>>
+	<br>
+<</if>>

@@ -1,0 +1,216 @@
+:: Tanning
+<!-- Tanning runs level 0 (pink) to 600 (dark tanned), 1 unit represents 1 minute sunbathing on beach-->
+<<location "beach">>
+
+<<if Time.season is "summer">>
+	<<switch random(1, 6)>>
+	<<case 1 2>>
+		你躺在烈日下的沙滩上。当阳光浸透你的皮肤时，你的思绪飘忽不定。
+		<br><br>
+		你感到温暖。
+		<<stress -6>><<lstress>><<gggtanned>><<tanned 120 "tanLines">>
+		<br><br>
+	<<case 3 4>>
+		你躺在海滩上。海浪翻涌着，一遍又一遍的拍打着沿岸，轻柔地触碰着你的脚心。阳光异常的温暖，浪花闪耀着，海被染成了金色。
+		<br><br>
+		你感到温暖。
+		<<stress -6>><<lstress>><<gggtanned>><<tanned 120 "tanLines">>
+		<br><br>
+	<<case 5 6>>
+		你躺在海滩上，享受着片刻的安宁。海浪冲刷着沿岸，远处有小孩子在嬉戏打闹，还有音乐声。
+		<br><br>
+		你感到温暖。
+		<<stress -6>><<lstress>><<gggtanned>><<tanned 120 "tanLines">>
+		<br><br>
+	<</switch>>
+<<elseif Time.season is "winter">>
+	<<switch random(1, 6)>>
+	<<case 1 2>>
+		你躺在阳光下的沙滩上。一阵凉风抚摸着你。
+		<br><br>
+		你身体颤抖。
+		<<stress 6>><<gstress>><<gtanned>><<tanned 20 "tanLines">>
+		<br><br>
+	<<case 3 4>>
+		你躺在沙滩上。在寒风中，你几乎感觉不到太阳。
+		<br><br>
+		你身体颤抖。
+		<<stress 6>><<gstress>><<gtanned>><<tanned 20 "tanLines">>
+		<br><br>
+	<<case 5 6>>
+		你们躺在海滩上。海浪翻涌着，一遍又一遍的拍打着沿岸，轻柔地触碰着你的脚心……有点冷。
+		<br><br>
+		你身体颤抖。
+		<<stress 6>><<gstress>><<gtanned>><<tanned 20 "tanLines">>
+		<br><br>
+	<</switch>>
+<<else>>
+	<<switch random(1, 6)>>
+	<<case 1 2>>
+		你躺在海滩上，享受着温和的日光，思绪逐渐向远方飘去。
+		<br><br>
+		你感到焕然一新。
+		<<stress -6>><<lstress>><<ggtanned>><<tanned 60 "tanLines">>
+		<br><br>
+	<<case 3 4>>
+		你们躺在海滩上。海浪翻涌着，一遍又一遍的拍打着沿岸，轻柔地触碰着你的脚心。阳光异常的温暖，浪花闪耀着，海被染成了金色。
+		<br><br>
+		你感到焕然一新。
+		<<stress -6>><<lstress>><<ggtanned>><<tanned 60 "tanLines">>
+		<br><br>
+	<<case 5 6>>
+		你躺在海滩上，享受着片刻的安宁。海浪冲刷着沿岸，远处有小孩子在嬉戏打闹，还有音乐声。
+		<br><br>
+		你感到焕然一新。
+		<<stress -6>><<lstress>><<ggtanned>><<tanned 60 "tanLines">>
+		<br><br>
+	<</switch>>
+<</if>>
+你有着<<skincolourtext>>
+<br><br>
+
+<<rng>>
+<<set $eventcheck to random(1, 10000)>>
+<<if $eventcheck gte (9900 - ($allure)) and $rng gte 91>>
+	<<endevent>>
+	<<link [[继续|Whitney Beach Sunbathing]]>><<set $eventskip to 1>><</link>>
+<<elseif $rng gte 81>>
+	<<endevent>>
+	<<link [[继续|Sunbathing Sabotage]]>><<set $eventskip to 1>><</link>>
+<<else>>
+	<<endevent>>
+	<<link [[继续|Beach]]>><<set $eventskip to 1>><</link>>
+<</if>>
+
+:: Sunbathing Sabotage
+海浪的热度和声音是如此令人舒适，让你昏昏欲睡。
+<<rng 5 20>>
+<<pass $rng>>
+<br><br>
+你醒了，<<print either ("感觉休息得很好","感觉有点迷糊", "不知道过了多久")>>。<<ltiredness>><<tiredness -6>>
+<br><br>
+当你站起来时，<span class="red">你的泳衣从身上掉了下来。</span>一定是有人在你睡觉时拿剪刀剪的。<<if $exhibitionism gte 80>>这样暴露在外让你兴奋得浑身发抖。<<else>>你迅速隐蔽起来，寻找最近的更衣室。<</if>><<gstress>><<stress 6>>
+<br><br>
+<<clothesruined>>
+<<endevent>>
+<<link [[继续|Beach]]>><<set $eventskip to 1>><</link>>
+
+:: Whitney Beach Sunbathing
+<<effects>>
+<<npc Whitney>><<person1>>
+<<print Time.season is "winter" ? "当你在阳光下努力保持温暖时，" : "当你沐浴在温暖的阳光下，">>一道黑影从你头顶掠过。你眨了几下眼睛，看见惠特尼带着几个朋友站在<<his>>身边。
+<br><br>
+"起来，婊子,”惠特尼命令道，用沙子踢你。你站了起来，<<he>>接着说: “我们觉得你一个人躺在沙滩上看起来有点孤单，所以我们给你找了个小朋友!"
+<br><br>
+惠特尼的手背在<<his>>的身后，但是你怀疑这个令人惊讶的“朋友”是否会令人愉快。
+<br><br>
+
+<<link[[打架|Whitney Beach Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+<br>
+<<link[[顺从|Whitney Beach Sunbathing Crab]]>><<npcincr Whitney dom 1>><<sub 1>><</link>><<gdom>>
+
+:: Whitney Beach Fight
+
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+		你冲向惠特尼。<<He>>在你们两个摔倒在沙滩上之前，<<hes>>抓住了<<his>>的一个朋友的手。
+	<<npcidlegenitals>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<set $audienceforceteen to 1>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<audience>>
+<<stateman>>
+<<enable_rescue>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Whitney Beach Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Whitney Beach Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Whitney Beach Fight Finish
+
+<<if $enemyhealth lte 0>>
+	你把惠特尼推开，然后逃走。惠特尼的朋友们似乎被什么东西滑向水面而分散了注意力。你在海滩上跑的时候根本没有机会好好看一眼。<<stress 2>><<gstress>>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Beach]]>><<set $eventskip to 1>><</link>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation "short">>
+	惠特尼低下头，脸涨得通红。<<his>>的一个朋友向<<his>>投来疑惑的目光。<<he>>冷笑一声，把<<himself>>从你身上推起，大声说："随你，荡妇。我们说到哪儿了？"
+	<br><br>
+	惠特尼期待地看着<<his>>的朋友们。他们耸耸肩，转移视线。<<He>>愁容满面。“真的吗？你们都疯了吗？你们这些白痴."
+	<br><br>
+	你利用接下来他们的争吵逃跑了。你最好别去看惠特尼为你准备的东西。<<stress 2>><<gstress>><<llust>><<npcincr Whitney lust -20>>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Beach]]>><<set $eventskip to 1>><</link>>
+<<elseif $alarm is 1 and $rescue is 1>>
+	"嘿!那边发生什么事了?大家都还好吗?"当<<generate1>><<person1>><<he>>轻快地向你跑过来时，一名值班的救生员喊道。
+	<br><br>
+	惠特尼推开了你。"一切都很好，我们到此为止。"<<nnpc_he Whitney>>说，"回头见，你这爱哭的小婊子。" 骚扰你的人离开了，救生员回到了<<his>>的岗位。
+	<br><br>
+	<<tearful>>你挣扎着站起来。
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Beach]]>><<set $eventskip to 1>><</link>>
+<<else>>
+	你躺在地上，伤痕累累，无法继续。“好了，贱人,”惠特尼站起来说，“既然你已经热身完毕，让我们回到你的新朋友身边吧！“<<gstress>><<stress 2>>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link[[继续|Whitney Beach Sunbathing Crab]]>><</link>>
+<</if>>
+
+:: Whitney Beach Sunbathing Crab
+<<effects>>
+另外两个小混混抓住你的胳膊，把你按在原地。惠特尼向你展示了<<his>>的惊喜: 一只活螃蟹，挥舞着它的腿和爪子试图逃跑。你深吸了一口气。
+<br><br>
+<<if C.npc.Whitney.dom lte 10>>
+	<<if $worn.upper is not "naked" or $worn.upper_lower is not "naked">>他们将你的上衣挪开，让你的<<breasts>>路过的人眼前。<</if>>惠特尼把螃蟹举到你的胸前，把它爪子放在你的乳头上，然后用力拍打螃蟹的头部。出于本能，螃蟹用力夹紧了钳子。
+	<br><br>
+	当爪子夹住你的乳头时，你痛苦地嚎叫。惠特尼和<<his>>的朋友们哈哈大笑，松开了你的胳膊，给了你一个逃跑的机会，你逃离了折磨你的人，一旦螃蟹缓和下来就把它拿走。你整理好衣服，尽可能地恢复，你的乳头还在疼痛。<<pain 4>><<stress 12>><<trauma 12>><<ggpain>><<ggstress>><<ggtrauma>>
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Beach]]>><<set $eventskip to 1>><</link>>
+<<elseif C.npc.Whitney.dom lte 15>>
+	他们把你的衣服后边拉了下来，随后惠特尼把螃蟹推到你的<<bottom>>前。 螃蟹张牙舞爪，拼命想办法逃脱你的$worn.under_lower.cn_name_cap。尖尖的肢体搔痒着你敏感的皮肤。
+	<br><br>
+	<<link [[保持冷静|Whitney Beach Sunbathing Still]]>><<set $phase to 1>><</link>><<willpowerdifficulty 1 600>>
+<<else>>
+	在惠特尼把螃蟹怼到你的<<genitals>>之前，他们把你的衣服拉开了。螃蟹挥舞着它的腿和钳子，拼命的想办法逃离你的$worn.under_lower.cn_name_cap。尖尖的蟹腿挠你的痒痒，刺激着你敏感的皮肤。
+	<br><br>
+	<<link [[保持冷静|Whitney Beach Sunbathing Still]]>><</link>><<willpowerdifficulty 1 800>>
+<</if>>
+
+:: Whitney Beach Sunbathing Still
+	<<effects>>
+	<<if $willpowerSuccess>>
+		<span class="green">你设法保持不动。</span> 当螃蟹挣脱你的衣服冲向大海时，你忍住了扭动身体的冲动。惠特尼显得很沮丧，他把你推到沙子里，随即走开。
+		<br><br>
+		<<endevent>>
+		<<link [[继续|Beach]]>><<set $eventskip to 1>><</link>>
+	<<else>>
+		你不由自主地抽搐，导致螃蟹惊慌失措。它是出于本能，<span class="red">用尽全力夹住了你的<<print $phase is 1 ? "屁股" : $player.penisExist ? "肉棒" : "阴蒂">></span>惠特尼和<<his>>的朋友们大笑起来，放开了你的胳膊，给了你逃跑的机会，你痛苦地叫着。
+		<br><br>
+		你逃离了折磨你的人，并在螃蟹松口后立即将它从你的$worn.under_lower.cn_name_cap上取下。你整理好衣服，尽力恢复，但你的<<print $phase is 1 ? "屁股" : $player.penisExist ? "阴茎" : "阴蒂">>仍因疼痛而紧绷。
+		<<if $phase is 1>>
+			<<pain 8>><<stress 18>><<trauma 18>><<gggpain>><<ggstress>><<gggtrauma>>
+		<<else>>
+			<<pain 12>><<stress 24>><<trauma 24>><<gggpain>><<gggstress>><<gggtrauma>>
+		<</if>>
+		<br><br>
+		<<endevent>>
+		<<link [[继续|Beach]]>><<set $eventskip to 1>><</link>>
+	<</if>>

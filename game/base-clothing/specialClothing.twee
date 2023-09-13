@@ -1,0 +1,83 @@
+:: Special Clothing [widget]
+
+<<widget "specialClothesEffectsSetup">>
+	<<if $specialClothesEffects is undefined>>
+		<<set $specialClothesEffects to {
+			bimbo:0,
+			bimboTotal:0,
+			bimboMessage:0
+		}>>
+	<</if>>
+<</widget>>
+
+<<widget "bimboCheck">>
+	<<if $worn[_args[0]].type.includes("bimbo")>>
+		<<set $specialClothesEffects.bimbo++>>
+	<</if>>
+<</widget>>
+
+<<widget "bimboUpdate">>
+	<<if $specialClothesEffects.bimbo gt 0>>
+		<<set $breastgrowthtimer -= $specialClothesEffects.bimbo * 5>>
+		<<if $player.penisExist>>
+			<<set $penisgrowthtimer += $specialClothesEffects.bimbo * 5>>
+		<</if>>
+		<<set $bottomgrowthtimer -= $specialClothesEffects.bimbo * 5>>
+		<<if $specialClothesEffects.bimboTotal lt 10000>>
+			<<set $specialClothesEffects.bimboTotal += $specialClothesEffects.bimbo>>
+		<</if>>
+		<<set $specialClothesEffects.bimbo to 0>>
+
+		<<if $specialClothesEffects.bimboTotal gte 400 and $specialClothesEffects.bimboMessage is 0>>
+			<<set $specialClothesEffects.bimboMessage to 1>><<set _skipEvent to true>>
+			<<if $player.gender_body is "m">>
+				<<set $player.gender_body to "a">>
+			<</if>>
+			<span class="lewd">
+				你感觉自己变得跟之前不大一样了，但你不确定这是什么感觉。
+				<<if $worn.upper.type.includes("bimbo") or $worn.lower.type.includes("bimbo") or $worn.feet.type.includes("bimbo")>>
+					衣服紧贴着你的皮肤。
+				<</if>>
+			</span>
+			<br>
+		<<elseif $specialClothesEffects.bimboTotal lt 400 and $specialClothesEffects.bimboMessage is 1>>
+			<<set $specialClothesEffects.bimboMessage to 0>>
+		<</if>>
+		<<if $specialClothesEffects.bimboTotal gte 800 and $specialClothesEffects.bimboMessage is 1 and _skipEvent isnot true>>
+			<<set $specialClothesEffects.bimboMessage to 2>><<set _skipEvent to true>>
+			<<if $player.gender_body isnot "f">>
+				<<set $player.gender_body to "f">>
+			<</if>>
+			<span class="lewd">
+				你再次感觉自己变得不一样了，不过这次你能确定，有些事情正让你看起来更女性化。
+				<<if $worn.upper.type.includes("bimbo") or $worn.lower.type.includes("bimbo") or $worn.feet.type.includes("bimbo")>>
+					你又一次感觉自己变得跟之前不大一样了，但这次你好像有点意识到是什么在改变。
+				<<else>>
+					你的思绪转到之前你穿的那套衣服上.
+				<</if>>
+			</span>
+			<br>
+		<<elseif $specialClothesEffects.bimboTotal lt 800 and $specialClothesEffects.bimboMessage is 2>>
+			<<set $specialClothesEffects.bimboMessage to 1>>
+		<</if>>
+		<<if $specialClothesEffects.bimboTotal gte 1200 and $specialClothesEffects.bimboMessage is 2 and _skipEvent isnot true>>
+			<<set $specialClothesEffects.bimboMessage to 3>>
+			<<if !$backgroundTraits.includes("lustful")>>
+				<<run $backgroundTraits.pushUnique("lustful")>>
+			<</if>>
+			<<arousal 10000>>
+			<span class="lewd">你感到一种奇怪的渴望感在你心中滋长，你感觉自己被一种深深的渴望所填充，而那种难以忍受的情欲很快就占据了上风。</span>
+			<br>
+		<<elseif $specialClothesEffects.bimboTotal lt 1200 and $specialClothesEffects.bimboMessage is 3>>
+			<<set $specialClothesEffects.bimboMessage to 2>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "heelsUpdate">>
+	<<if $worn.feet.type.includes("heels")>>
+		<<if $feetskill lt $worn.feet.reveal>>
+			<<set $tiredness += (($worn.feet.reveal - $feetskill) / 150)>>
+		<</if>>
+	<</if>>
+<</widget>>

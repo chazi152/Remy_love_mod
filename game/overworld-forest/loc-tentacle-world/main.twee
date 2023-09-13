@@ -1,0 +1,1055 @@
+:: Widgets Tentacle World [widget]
+<<widget "passouttentacleworld">>
+	<<if isPlayerNonparasitePregnancyEnding()>>
+		<<pregnancyWatersBrokenPassout "tentacleworld">>
+	<<else>>
+		<<passout>>
+		<<link [[你眼前一黑…->Passout Tentacle World]]>><</link>>
+	<</if>>
+<</widget>>
+
+<<widget "tentacleworldintro">>
+	<<set $tentnorth to 0>>
+	<<set $tenteast to 0>>
+	<<if $rng gte 51>>
+		<<set $tentportalnorth to either(-5, -4, 4, 5)>>
+		<<set $tentportaleast to random(-5, 5)>>
+	<<else>>
+		<<set $tentportalnorth to random(-5, 5)>>
+		<<set $tentportaleast to either(-5, -4, 4, 5)>>
+	<</if>>
+<</widget>>
+
+<<widget "tentacleworldend">>
+	<<unset $tentacleadmire>>
+	<<unset $tentaclewolf>>
+	<<unset $tentacleangel>>
+	<<unset $tentaclefallenangel>>
+	<<unset $tentacleEntrance>>
+	<<unset $tentaclecat>>
+	<<unset $tentaclecow>>
+	<<unset $tentaclefox>>
+	<<unset $tentacleorgasmignore>>
+	<<unset $tentacle_forest_time>>
+	<<unset $tentacle_forest_stream>>
+	<<unset $tentacle_forest_lurker>>
+<</widget>>
+
+<<widget "tentacle_forest_safe_orgasm">>
+	<<if $arousal gte 10000 and $tentacle_forest_lurker.includes("defeated")>>
+		当感觉变得难以忍受时，你跪倒在地。<<orgasm>>
+		<br><br>
+		你挣扎着站起来。尽管处于脆弱状态，<span class="teal">没有什么可以攻击你。</span>
+		<br><br>
+	<</if>>
+<</widget>>
+
+<<widget "tentacle_forest_end_scene">>
+<span class="blue">有某种东西向你袭来。</span>你感觉着它。时间足够让它通过。它在你周围旋转，揭开了这个现实。
+<br><br>
+<<set $bus to "barb">>
+<<link [[继续|Flats Hookah End]]>><<tentacleworldend>><</link>>
+<br>
+<</widget>>
+
+<<widget "tentacle_forest_orgasm_scene">>
+当感觉变得难以忍受时，你跪倒在地。<<orgasm>>
+<br><br>
+大地震动，破裂开来。触手突然冒出，以猛烈有力的姿态移动着，直指你。
+<br><br>
+
+他们在你的性高潮消退之前抓住你的四肢，把你拖到下面。
+<br><br>
+
+<<link [[继续|Tentacle Forest Orgasm]]>><</link>>
+<br>
+<</widget>>
+
+<<widget "tentacle_forest_stress_scene">>
+	<<if isPlayerNonparasitePregnancyEnding()>>
+		<<pregnancyWatersBrokenPassout "tentacleforest">>
+	<<else>>
+		你把自己逼得太紧了，跪倒在地。
+		<br><br>
+		<span class="red">你脚下的地面开裂，几条触手出现。</span>它们抓住你的四肢，把你虚弱的身体拖到地下。
+		<br><br>
+
+		<<if $tentacle_forest_lurker.includes("defeated")>>
+			你落在森林下的洞穴里，坐在地上。<span class="red">奇怪的生物回来了</span>，蠕动着朝你靠近。
+		<<else>>
+			你坐在地上，周围是一滩浓稠的粉红色液体，周围是海绵状的墙壁。一个奇怪的生物向你蠕动。它没有明显的特征，除了一个巨大的胃。
+		<</if>>
+		<br><br>
+
+		<<link [[继续|Tentacle Forest Orgasm Defeat]]>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "tentaclewolf">>
+	<<if $wolfgirl gte 6 and $syndromewolves gte 1>>
+		<<if $tentaclewolf is undefined>>
+			<<set $tentaclewolf to 0>>
+			你听到远处传来微弱的声音，十分熟悉，但你说不上来到底是什么。它突破了这里的迷雾，让你回想起了森林。
+			<<lstress>><<larousal>><<stress -6>><<arousal -6>>
+			<br><br>
+		<<elseif $tentaclewolf is 0>>
+			<<set $tentaclewolf to 1>>
+			你又听到了那个声音。它从<<tentacledirection>>传来
+			<<lstress>><<larousal>><<stress -6>><<arousal -6>>
+			<br><br>
+		<<elseif $tentaclewolf is 1>>
+			<<set $tentaclewolf to 2>>
+			熟悉的声音越来越响了。听起来像是嚎叫。它来自<<tentacledirection>>
+			<<lstress>><<larousal>><<stress -6>><<arousal -6>>
+			<br><br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "tentacledirection">>
+	<<if $tentportalnorth gt $tentnorth>>
+		<<if $tentportaleast gt $tenteast>>
+			东北。
+		<<elseif $tentportaleast lt $tenteast>>
+			西北。
+		<<else>>
+			北方。
+		<</if>>
+	<<elseif $tentportalnorth lt $tentnorth>>
+		<<if $tentportaleast gt $tenteast>>
+			东南。
+		<<elseif $tentportaleast lt $tenteast>>
+			西南。
+		<<else>>
+			南方。
+		<</if>>
+	<<else>>
+		<<if $tentportaleast gt $tenteast>>
+			东方。
+		<<elseif $tentportaleast lt $tenteast>>
+			西方
+		<<else>>
+			近在咫尺的地方
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "tentacle_forest_pass">>
+<<if _args[0]>>
+	<<pass _args[0]>>
+	<<set $tentacle_forest_time += _args[0]>>
+	<<set $tentacle_forest_time to Math.clamp($tentacle_forest_time, 0, 120)>>
+<</if>>
+<</widget>>
+
+<<widget "tentacle_forest_time">>
+剩余的森林时间：<<print (60 - $tentacle_forest_time)>>
+<</widget>>
+
+<<widget "destination_tentacle_forest">>
+<<switch $bus>>
+	<<case "tentacle_forest_main">>
+		<<link [[继续|Tentacle Forest]]>><</link>>
+		<br>
+	<<case "tentacle_forest_stream">>
+		<<link [[继续|Tentacle Forest Stream]]>><</link>>
+		<br>
+	<<case "tentacle_forest_flowers">>
+		<<link [[继续|Tentacle Forest Flowers]]>><</link>>
+		<br>
+	<<case "tentacle_forest_cliff">>
+		<<link [[继续|Tentacle Forest Cliff]]>><</link>>
+		<br>
+	<<case "tentacle_forest_pool">>
+		<<link [[继续|Tentacle Forest Pool]]>><</link>>
+		<br>
+	<<case "tentacle_forest_plants">>
+		<<link [[继续|Tentacle Forest Plants]]>><</link>>
+		<br>
+	<<case "tentacle_forest_door">>
+		<<link [[继续|Tentacle Forest Door]]>><</link>>
+		<br>
+	<<case "tentacle_forest_prison">>
+		<<link [[继续|Tentacle Forest Prison]]>><</link>>
+		<br>
+	<<default>>
+		<<link [[继续|Tentacle Forest]]>><</link>>
+		<br>
+	<</switch>>	
+<</widget>>
+
+<<widget "tentacle_forest_events">>
+<<cleareventpool>>
+
+<<addinlineevent "tentacle_forest_1" 1>>
+	一条藤蔓般的触手从上方的树冠中伸出，划破空气，对你的<<bottom>>进行猛烈的打击。<<gpain>><<ggarousal>><<pain 4>><<arousal 1800>>
+	<br><br>
+
+	你突然被一股力量向前推进。
+
+	<<dancedifficulty 1 1000>>
+	<<if $danceSuccess>>
+		你差点被另一根触手绊倒，<span class="green">但设法站稳了。</span>
+		<br><br>
+
+		<<destination_tentacle_forest>>
+	<<else>>
+		<span class="red">你绊倒在另一个触手上</span>，它横在地面上。它缠绕在你的腰上，使你无法动弹，第一个触手开始沿着你的大腿蠕动。
+		<br><br>
+
+		<<if $player.penisExist>>
+			你感觉到你的<<genitals 1>>被轻弹了一下。触手在你的长度上上下滑动，以有节奏的方式挤压。
+		<<else>>
+			你感到阴唇被轻弹了一下。触手滑过你的皮肤，缠绕在你的阴蒂上，有节奏地挤压。
+		<</if>>
+		你把两条触手都拉开，让你站起来，但你无法阻止热量上升。<<gggarousal>><<arousal 3600>>
+		<br><br>
+
+		<<destination_tentacle_forest>>
+	<</if>>
+<</addinlineevent>>
+
+<<addinlineevent "tentacle_forest_2" 1>>
+	其中一个较大的触手上的孔打开，喷出浓浓的粉红色雾气。它让你感到头晕目眩。<<ggarousal>><<arousal 1800>>
+	<br><br>
+
+	<<destination_tentacle_forest>>
+<</addinlineevent>>
+
+<<addinlineevent "tentacle_forest_3" 1>>
+	你感到脚下有一种黏糊糊的感觉。你移动着脚步，看到一只大眼睛正盯着你。它眨着眼睛。眼睑变成了一对嘴唇。一声低语，你发现自己仰面躺着， 凝视着头顶摇曳的触手。
+	<br><br>
+	你不记得说了什么。
+	<<if $awarness lt 600>>
+		<<gawareness>><<awareness 3>>
+	<<else>>
+		<<ggarousal>><<arousal 1800>>
+	<</if>>
+	<br><br>
+
+	<<destination_tentacle_forest>>
+<</addinlineevent>>
+
+<<addinlineevent "tentacle_forest_4" 1>>
+	一团光滑的黏糊糊的东西从上面掉下来。
+	<<random_goo>>
+	<br><br>
+
+	<<destination_tentacle_forest>>
+<</addinlineevent>>
+
+<<addinlineevent "tentacle_forest_5" 1>>
+	<<set _rng to random(1, 4)>>
+	<<switch _rng>>
+		<<case 1>>
+			你听到有人低声说出你的名字。
+		<<case 2>>
+			无数双眼睛睁开，四面八方到处都是凝视着你的眼睛。你眨眼，它们就不见了。
+		<<case 3>>
+			一阵颤抖震动了地面，一直传到巨大的触手上，把它们震得直到顶端。
+		<<default>>
+			你听到远处传来哀嚎声，诡异的声音此起彼伏。
+	<</switch>>
+	<<ggstress>><<stress 18>>
+	<br><br>
+	<<destination_tentacle_forest>>
+<</addinlineevent>>
+
+<<runeventpool>>
+<</widget>>
+
+:: Tentacle World Intro
+<<location "tentworld">><<effects>><<set $phase to 0>>
+<<tentacleworldintro>>
+
+你推开门，眼前是外星一般的诡异景色。触及天空的巨大触手在地平线上蠕动。<span class="red">在这里高潮可能会十分危险。</span>
+<br><br>
+
+<<link [[继续|Tentacle Plains]]>><<set $tentacleEntrance to "asylum">><</link>>
+<br>
+
+:: Passout Tentacle World
+<<location "tentworld">><<effects>>
+<<strip>>
+你睁开眼睛，惊恐地意识到你正赤身裸体地被困在一群触手中。它们把你举到离地面几英尺高的地方，
+触手温柔地爬上你的身体和四肢，力度很轻，但十分坚定。你挣扎着晃动，想要摆脱触手的控制，但已
+于事无补。你的每一下动作都被它们毫不费力地击退。你的挣扎越来越弱，绝望感开始涌上心头。
+<br><br>
+
+但涌上来的不仅仅是绝望感而已。麝香味的空气涌入你的鼻腔。当无数的触须在你的手臂、臀部和小腿上
+游走、挑逗时，你的身体先于大脑，做出了更诚实的反应。秘汁从你的下面渗出，身体变得滚烫，胸前的
+<<nipples>>变得挺立。由于之前的高潮没有得到满足，你的身体正渴望着被抚摸，被玩弄，被蹂躏。
+<br><br>
+
+出乎意料的是，这些触手并没有靠近你的<<genitals_are 1>>和屁股。它们似乎更享受于束缚和观察猎物的
+反应。你体内的欲望一波又一波的涌了上来，尽管你试着去想逃离的方法，但你滚烫的身体让你无法思考，
+你绝望地闭上眼睛，充满情欲的呻吟声从你唇间漏出。
+<br><br>
+
+你的声音似乎刺激到了它们，一些触手开始移动，爬上了你的乳房、背部、大腿和小腹。它们刻意避开了
+你最敏感的部位，但带来的快感足以将人逼疯。你的下体因肿胀而隐隐发痛，你的理智已然被欲望彻底击碎。
+<br><br>
+
+你没法再忍受了。尽管你的四肢仍然被牢牢地控制着，但或许正因如此，你感到酥麻的感觉开始在下半身聚集。
+你抑制不住地呻吟着，因为触手提高了速度，爱液从你的下体喷出，触电般的快感缓慢的涌入其中。
+一股暖流涌上你的胯间，你深吸了一口气。你已经忍不住了。
+<br><br>
+
+你呻吟着高潮了，在你的俘虏身上抽搐。 它持续了很多秒，触手滑过你的肉体
+随着快乐在你体内跳动。 你僵硬的身体倒下，长长地吐出一口疲惫的气。
+<<orgasmstat>><<orgasmcount 1>>
+<br><br>
+
+<<link [[继续|Passout Tentacle World 2]]>><</link>>
+<br>
+
+:: Passout Tentacle World 2
+<<location "tentworld">><<effects>>
+
+但这还没有结束。 在你回过神来之前，两条顽皮的触手找到了你的<<nipples>>，并开始用力摩擦它们。
+你因这种快感尖叫而尖叫，当你低头看着你的胸部时，你的眼睛飞快地睁开。
+这种新的攻击并没有让你的高潮消散，反而似乎在你的神经系统中创造了一个回音室，你惊恐地意识到
+一个新的高潮正在你体内开始形成。
+<br><br>
+
+然而，在它达到顶峰之前，第三根触手从你的屁股之间滑过，并在你的洞口上猛烈地摩擦，
+当你的<<nipples>>和菊穴的快感汇成海啸，向你袭来时，你会发出更大声的尖叫。
+你的高潮向你加速，你张开嘴尖叫。
+<br><br>
+
+触手迫使你用力高潮时，你大声喊叫。 你在你的束缚上挣扎扭动。 你的眼睛颤抖着睁开又闭上。
+当你忍受高潮时，呻吟声从你的喉咙里逸出，时间随着你的高潮而变得模糊不清。
+<<orgasmstat>><<orgasmcount 1>>
+<br><br>
+
+最终，强烈的感情开始消退。 尽管触手仍在挑逗你的身体，你仍能感受到的高潮的影响
+在减小。 你的思绪，在无休止的愉悦迷雾中浸泡了这么久，开始变得清晰起来。
+<br><br>
+
+<<link [[继续|Passout Tentacle World 3]]>><</link>>
+<br>
+
+:: Passout Tentacle World 3
+<<location "tentworld">><<effects>>
+
+然后触手轻弹你的<<print ($player.penisExist ? "肉棒" : "阴蒂")>>的尖端，你的大脑被快感冲击的一阵恍惚。
+触手折磨着你的屁股和乳头，这是对你最敏感的地方的唯一攻击，直到现在还没有受到任何感觉，使你的系统超载。
+你突然高潮了，你的身体对无法阻挡的快感毫无准备。
+你体内的爆炸导致你的身体痉挛，你的手紧握，你的脚胡乱的踢动。
+<<orgasmstat>><<orgasmcount 1>>
+<br><br>
+
+在这个最新的高潮能够完全消退之前，你的<<genitals_are 1>>又遭受了一次猛烈的打击，使你进入第四次高潮。
+当刺痛打破你的精神障碍时，你尖叫起来。
+<<orgasmstat>><<orgasmcount 1>>
+<br><br>
+
+又一声巴掌声。
+<<set $arousal to 10000>><<orgasm>>
+
+又一次。
+<<set $arousal to 10000>><<orgasm>>
+
+它一直持续下去，你的身体已经分不清一个高潮与另一个高潮。 你的喘息声无比急促，
+你的身体在与强加给你的快感进行一场注定失败的战斗，你的思想开始崩溃。
+<br><br>
+
+被无休止的性高潮淹没，你最终陷入昏迷。
+<br><br>
+
+<<link [[继续|Passout Tentacle World 4]]>><<clotheson>><</link>>
+<br>
+
+:: Passout Tentacle World 4
+
+<<set $outside to 0>><<effects>>
+<<if $tentacleEntrance is "mirror">><<set $location to "home">>
+	你在镜子旁边的地板上醒来。 那真是一场噩梦。
+	<br><br>
+	<<tentacleworldend>>
+	<<link [[继续|Bedroom]]>><</link>>
+<<else>>
+	<<set $location to "asylum">>
+	你在黑暗中醒来。 你回到了精神病院的小房间里。<<endevent>><<npc Harper>><<person1>>
+	<br><br>
+	<<tentacleworldend>>
+	<<link [[继续|Asylum Room 2]]>><</link>>
+<</if>>
+<br>
+
+:: Tentacle Plains
+
+<<location "tentworld">><<effects>>
+<<if $tentacleorgasmignore is undefined>><<set $tentacleorgasmignore to 0>><</if>>
+你在触手平原上。 触手从地面伸直伸向你的<<genitals>>，抚摸着你的大腿和
+他们可以到达的任何其他地方。 空气是甜的。
+<<drugs 10>><<ggarousal>><<arousal 1200>>
+<br><br>
+<<if $phase is 1>>
+	你向北走。
+	<br><br>
+<</if>>
+<<if $phase is 2>>
+	你向南走。
+	<br><br>
+<</if>>
+<<if $phase is 3>>
+	你向东走。
+	<br><br>
+<</if>>
+<<if $phase is 4>>
+	你向西走。
+	<br><br>
+<</if>>
+<<tentaclewolf>>
+<<set $phase to 0>>
+<<if $stress gte $stressmax>>
+	<<passouttentacleworld>>
+<<elseif $arousal gte $arousalmax and $eventskip isnot 1 and $tentacleorgasmignore lte 0>>
+	<<orgasm>>
+	充满活力，你周围的触手比平时飞得更高。 他们缠住你的手臂，把你拖到地上。
+	<br><br>
+	<<link [[继续|Tentacle Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	<<if $arousal gte $arousalmax and $tentacleorgasmignore gte 1>>
+		<<orgasm>><<set $tentacleorgasmignore -= 1>>
+		触手没有抓到你的破绽。
+		<br><br>
+	<</if>>
+	<<if $tentnorth is 0 and $tenteast is 0>>
+		<<if $tentacleEntrance is "mirror">>
+			你站在镜子前。
+			<br>
+			<<link [[穿过|Tentacle Home Return]]>><</link>>
+		<<else>>
+			收容所的门就在附近。
+			<br>
+			<<link [[返回避难所|Tentacle Return]]>><</link>>
+		<</if>>
+		<br><br>
+	<</if>>
+	<<if $tentnorth is $tentportalnorth and $tenteast is $tentportaleast>>
+		<<if $wolfgirl gte 6 and $syndromewolves gte 1>>
+			你在远处看到另一扇门，与带你到这里的那扇门相似。 它被触手包围着。 门敞开着，森林就在另一边，有望逃脱。 在对其中一根卷须发出咆哮之前，你会看到黑色的模糊变化。
+			<br><br>
+			<<link [[往门口跑|Tentacle Wolf Escape]]>><</link>>
+			<br><br>
+		<<else>>
+			一扇门在这里敞开着。 那边是一片森林。
+			<br>
+			<<link [[进入|Tentacle Escape]]>><</link>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<if $tentnorth gte 5 or $tentnorth lte -5 or $tenteast gte 5 or $tenteast lte -5>>
+		平原一直延伸到地平线。 你不想离开门太远。
+		<br><br>
+	<</if>>
+	<<if $tentnorth is 4 and $tenteast is 4 and $tentspray isnot 1>>
+		一道红光在齐胸高的空中盘旋，由细长的触手高高举起。
+		<br>
+		<<link [[触碰|Tentacle Plains Spray]]>><<set $spraymax += 1>><<set $tentspray to 1>><<spray 5>><</link>><<gspraymax>>
+		<br><br>
+	<</if>>
+	<<if $tentnorth lt 5>>
+		<<link [[北(0:10)|Tentacle Plains]]>><<pass 10>><<set $tentnorth += 1>><<set $phase to 1>><</link>>
+		<br>
+	<</if>>
+	<<if $tentnorth gt -5>>
+		<<link [[南(0:10)|Tentacle Plains]]>><<pass 10>><<set $tentnorth -= 1>><<set $phase to 2>><</link>>
+		<br>
+	<</if>>
+	<<if $tenteast lt 5>>
+		<<link [[东(0:10)|Tentacle Plains]]>><<pass 10>><<set $tenteast += 1>><<set $phase to 3>><</link>>
+		<br>
+	<</if>>
+	<<if $tenteast gt -5>>
+		<<link [[西(0:10)|Tentacle Plains]]>><<pass 10>><<set $tenteast -= 1>><<set $phase to 4>><</link>>
+		<br>
+	<</if>>
+	<<if $demon gte 6 and $tentacleadmire gte 1>>
+		<<link [[献上自己|Tentacle Plains Admire]]>><</link>><<demon>>
+		<br>
+	<<elseif $demon gte 6>>
+		<<link [[欣赏|Tentacle Plains Admire]]>><</link>><<demon>>
+		<br>
+	<</if>>
+	<<if $tentaclewolf gte 2>>
+		<<link [[嚎叫|Tentacle Plains Howl]]>><<transform wolf 1>><</link>><<wolfgirl>>
+		<br>
+	<</if>>
+	<<if $angel gte 6 and $tentacleangel gte 2>>
+		<<link [[反抗|Tentacle Plains Resist]]>><</link>><<angel>>
+		<br>
+	<<elseif $angel gte 6>>
+		<<link [[专注|Tentacle Plains Resist]]>><</link>><<angel>>
+		<br>
+	<</if>>
+	<<if $fallenangel gte 2>>
+		<<link [[绝望|Tentacle Plains Despair]]>><</link>><<fallenangel>>
+		<br>
+	<</if>>
+	<<if $cat gte 6>>
+		<<link [[突袭|Tentacle Plains Cat]]>><<transform cat 1>><</link>><<cat>>
+		<br>
+	<</if>>
+	<<if $cow gte 6 and $breastfeedingdisable is "f">>
+		<<link [[让触手在你的胸前榨乳|Tentacle Cow Breasts]]>><<transform cow 1>><</link>><<cow>>
+		<br>
+	<</if>>
+	<<if $cow gte 6 and $player.penisExist and !playerChastity("penis")>>
+		<<link [[让触手榨精|Tentacle Cow Penis]]>><<transform cow 1>><</link>><<cow>>
+		<br>
+	<</if>>
+	<<if $harpy gte 6>>
+		<<link [[从高处俯瞰|Tentacle Bird]]>><<transform bird 1>><</link>><<flight_text>>
+		<br>
+	<</if>>
+	<<if $fox gte 6>>
+		<<link [[寻找能偷的东西|Tentacle Plains Fox]]>><<transform fox 1>><</link>><<fox>>
+		<br>		
+	<</if>>
+<</if>>
+<<set $eventskip to 0>>
+
+:: Tentacle Home Return
+
+<<set $location to "home">><<set $outside to 0>><<effects>>
+你穿过镜子，回到自己的房间。 诡异的光芒渐渐消散，仿佛从未存在过。
+<br><br>
+<<tentacleworldend>>
+<<link [[继续|Bedroom]]>><</link>>
+<br>
+
+:: Tentacle Plains Despair
+
+<<location "tentworld">><<effects>>
+<<if $tentaclefallenangel is undefined>>
+	<<set $tentaclefallenangel to 0>>
+	你对这种情况的不公怒吼。 过去几天的回忆在你的脑海中回荡，让你充满愤怒和恐惧。 你到底做错了什么？ 世界夺走了你的纯洁，现在把你丢在这里。 你对脚下的触手进行了恶毒的踢击。 你已经堕落到这种地步了。 你的愤怒分散了你内心淫荡的温暖。
+	<<gstress>><<larousal>><<stress 6>><<arousal -600>>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<<elseif $tentaclefallenangel is 0>>
+	<<set $tentaclefallenangel to 1>>
+	愤怒不断积聚。 对你们犯下的不公正都回来了。 你所经历的痛苦的记忆全力浮现，撕裂了本应早已愈合的伤口。 疼痛就像你第一次感受到它时一样真实，让你在痛苦中倒下。 你周围的触手后退。
+	<<gpain>><<llarousal>><<pain 20>><<arousal -1200>>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<<elseif $tentaclefallenangel is 1>>
+	<<set $tentaclefallenangel to 2>>
+	你记得所有冤枉你的人的脸。 每个人都在你身边漂浮，嘲笑你的折磨，嘲笑你的软弱。 他们齐声嘲笑令人作呕的甜蜜空气。 每一个词都是你破烂存在的另一个伤疤。 你倒在地上，痛苦地扭动着身体。 泪水刺痛了你的脸。
+	<<gpain>><<lllarousal>><<pain 20>><<arousal -1800>>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<<elseif $tentaclefallenangel is 2>>
+	<<set $tentaclefallenangel to 3>>
+	世界辜负了你。 你被遗弃在异乡。 当疼痛压倒你时，你的视力开始衰退。 触手爬得更近了。
+	<br><br>
+	"不。" 对自己的声音感到惊讶，你迅速恢复了全神贯注。 你重新站起来。 痛苦几乎无法承受。 几乎。 你把头向后仰，发出痛苦的尖叫。 它承载着折磨你的一生的折磨。
+	<br><br>
+	触手退缩。 这个世界认为它可以把你扔在这里被遗忘并被外星生物当作玩具使用。 也许你应得的，但你不会让它发生。
+	<br><br>
+	无论这个世界是否真实，你都出于纯粹的恶意而决心让它回到你自己的世界。 你会展示给他们看的。 没有人见过你们最后一面，但他们会希望他们见过。
+	<<gpain>><<lltrauma>><<llstress>><<lllarousal>><<pain 30>><<trauma -18>><<stress -18>><<arousal -2400>>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<<else>>
+	每一段回忆都是更多的痛苦，你不缺。 它驱使你继续前进，当你寻找出路时，刺痛会让你保持警觉。
+	<<gpain>><<llarousal>><<pain 10>><<arousal -1800>>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<</if>>
+
+:: Tentacle Plains Resist
+
+<<location "tentworld">><<effects>>
+<<if $tentacleangel is undefined>>
+	<<set $tentacleangel to 0>>
+	你跪下并反思将你带到这个地方的事件。 你对周围的环境感到完全厌恶，但你找到了继续前进的意志力。 这些恐怖不会阻止你。
+	<<llarousal>><<arousal -1200>>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<<elseif $tentacleangel is 0>>
+	<<set $tentacleangel to 1>>
+	当你在贫瘠的平原上冥想时，你周围的地面似乎变得更加明亮。 你对自己的处境感觉好多了。
+	<<lstress>><<stress -6>><<llarousal>><<arousal -1200>>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<<elseif $tentacleangel is 1>>
+	<<set $tentacleangel to 2>>
+	在你的脑海深处，你听到远处的合唱团在唱一个音符。你头顶的光环越来越亮，你身上的淫荡暖意消散。<span class="gold">这个地方容不下你。</span>
+	<<lllarousal>><<arousal -2400>>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<<elseif $tentacleangel is 2>>
+	<<set $tentacleangel to 3>>
+	你是一盏明灯。抓住你脚的触手从你身边缩回。你在这片荒原之上，它不值得你光彩照人。你不断地对自己重复那句话。<span class="gold">这个地方容不下你。</span>
+	<<lllarousal>><<arousal -2400>>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<<else>>
+	你的光环发出的光很刺眼。 你在这个地方之上。 你在这个地方之上。 你大声重复咒语。 地面离你越来越远。 你看不到触手。 来自你光环的光笼罩着一切。 你感觉自己飞的越来越高，黑暗的天空对你的上升没有任何阻力。 你越飞越高。
+	<br><br>
+	<<if $tentacleEntrance is "asylum">>
+		<<asylumescape>>
+	<</if>>
+	<<endevent>><<tentacleworldend>>
+	<<set $forest to random(50, 100)>>
+	<<link [[继续|Mirror]]>><<set $location to "home">><</link>>
+	<br>
+<</if>>
+
+:: Tentacle Wolf Escape
+
+<<location "tentworld">><<effects>>
+你疯狂地冲向门，每一块肌肉都绷紧到极限。黑狼转过身来看见了你。它对着你的到来欢呼雀跃。触手把注意力转移到了你身上。一只单独的触手抓住你的腿，把你绊倒。
+<br><br>
+你扭过身去咬触手，用尖牙刺穿它。 它后退。 你站起来继续前进。
+<br><br>
+门在伸手可及的范围内。 当一条触手追逐你时，你向前跳跃以完成最后一段距离。有几条触手缠绕住了你的腿，但黑狼<<npc "Black Wolf">><<if $monster isnot 1>>用它的嘴叼住了你的脖子，并把你拖过门槛<</if>>。
+<br><br>
+
+你向前倒下并踢掉剩下的触手。 门在你身后砰的一声关上，然后消失了。 你在森林深处。 精神病院就在你面前。 黑狼粗暴地舔你的脸。
+<<if $monster is 1>>
+	"听到声音，闻到味道。知道求救。坏土地。现在安全了。回家。"<<bHe>>将你抱起来，然后带着你前往洞穴。
+<<else>>
+	狼让你爬到它的背上，然后你们一起进了洞穴。
+<</if>>
+<<lstress>><<ltrauma>><<stress -6>><<trauma -6>>
+<br><br>
+<<if $tentacleEntrance is "asylum">>
+	<<asylumescape>>
+<</if>>
+<<endevent>><<tentacleworldend>>
+<<set $forest to random(50, 100)>>
+<<link [[继续(0:30)|Wolf Cave Clearing]]>><<pass 30>><</link>>
+<br>
+
+:: Tentacle Plains Howl
+
+<<location "tentworld">><<effects>>
+你把头向后仰，对着凄凉的天空嚎叫。<<tentacledirection>>发出更响亮、更有活力的嚎叫声。当你的狂野精神被点燃时，你可以感受到肾上腺素激增。你不知道如什么，但你觉得逃避就在眼前，这个想法驱使你继续下去。
+<br><br>
+<<link [[继续|Tentacle Plains]]>><</link>>
+<br>
+
+:: Tentacle Plains Cat
+<<location "tentworld">><<effects>>
+<<if $tentaclecat is undefined>>
+	<<set $tentaclecat to 1>>
+	你的眼睛聚焦。 这里有很多扭动、滑溜溜的小东西。 一只小触手在擦过你的脚时引起了你的注意。 你碰了碰，它马上就往后缩了。
+	<<larousal>><<lstress>><<arousal -120>><<stress -6>>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<<elseif $tentaclecat is 1>>
+	<<set $tentaclecat to 2>>
+	你扑向另一条触手。 其他触手开始从你身边溜走。 这个很有趣！
+	<<larousal>><<llstress>><<arousal -120>><<stress -12>>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<<elseif $tentaclecat is 2>>
+	<<set $tentaclecat to 3>>
+	你猛扑过去，抓住了一条小触手并咬了下去。 你抓住另一个。 还有一个。 你做了一小束触手，然后用爪子四处乱摸。
+	<<larousal>><<llstress>><<arousal -120>><<stress -12>>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<<else>>
+	<<unset $tentaclecat>>
+	你猛扑过去，抓住一条更大的触手，咬住它并将它摔倒在地。 它迅速从你身边撤退。
+	<<set $tentacleorgasmignore += 1>><span class = green>附近没有其他触手。 你的下一次高潮可能不会那么危险。</span>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<</if>>
+
+:: Tentacle Plains Fox
+<<location "tentworld">><<effects>>
+<<if $tentaclefox is undefined>>
+	<<set $tentaclefox to 1>>
+	你环顾四周。 有很多动人的东西，但很少有闪亮的东西引起你的注意。 一根特别光滑的触手，看着就够闪亮的。 你抓住它，但它溜走了。
+	<<larousal>><<lstress>><<arousal -120>><<stress -6>>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<<elseif $tentaclefox is 1>>
+	<<set $tentaclefox to 2>>
+	你趴在地上，跟踪另一条闪亮的触手。你在其长度的一半处看到一个肿块。 你的瞳孔放大。
+	<br><br>
+
+	你猛扑过去，但没有击中，触手滑入地面。 你不满的跳了起来，直接潜入同一个地方。 你最终被埋到腰部，上半身卡在地上。
+	<br><br>
+
+	完全按照计划。 你可以用右手抓住触手，然后迅速将自己从柔软的地面上挖出的新洞中推出。 它蠕动无济于事。
+	<br><br>
+
+	你带着你的奖品出来了。
+	<<larousal>><<llstress>><<arousal -120>><<stress -12>>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<<elseif $tentaclefox is 2>>
+	<<set $tentaclefox to 3>>
+	你突袭了另一个触手巢穴，找到了另一个块状触手。 你挤压它们，挤出了两个小小的蛋形物体！
+	<br><br>
+
+	你毫不犹豫地把它们都塞进嘴里。
+	<br><br>
+
+	你立即意识到这样做是多么愚蠢。<<drugs 70>><<ghallucinogens>>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<<else>>
+	<<unset $tentaclefox>>
+	你笨拙地东倒西歪，试图找到更多的触手来骚扰。
+	<<set $tentacleorgasmignore += 1>><span class = green>但他们似乎在避开你。 你的下一次高潮可能不会那么危险。</span>
+	<br><br>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<</if>>
+
+:: Tentacle Cow Breasts
+<<location "tentworld">><<effects>>
+<<if $tentaclecow is undefined>>
+	<<set $tentaclecow to 1>>
+	你认为你知道满足触手的方法。
+<<else>>
+	你准备满足触手的饥渴。
+<</if>>
+你四肢着地，他们开始爬上你的手臂。
+<<if $worn.upper.name isnot "naked">>
+	<<if $leftarm is "bound" or $rightarm is "bound">>
+		一对触手
+	<<else>>
+		你
+	<</if>>
+	脱掉了你的$worn.upper.cn_name_cap<<if $worn.under_upper.name isnot "naked">>和$worn.under_upper.cn_name_cap<<underupperstrip>><</if>>。<<upperstrip>>
+<<else>>
+	<<if !$worn.under_upper.type.includes("naked")>>
+		<<if $leftarm is "bound" or $rightarm is "bound">>
+			一对触手
+		<<else>>
+			你
+		<</if>>
+		脱掉了你的$worn.under_upper.cn_name_cap。<<underupperstrip>>
+	<</if>>
+<</if>>
+你在原地扭动，将注意力吸引到你的<<breasts>>。 响应几乎是立即的。 触手抓住你的胸部，开始吮吸。
+<br><br>
+乳汁从你的花蕾中流出，你的身体颤抖。你的液体被触手吸走了。你仍然用手和膝盖着地，两条触手紧贴着你的<<breasts>>。<<arousal 1000 "breasts">><<ggarousal>>
+<br><br>
+<<if $lactating is 1>>
+	<<set _tentacles_milk to ($milk_amount / 2)>>
+	<<milk_amount `-_tentacles_milk`>>
+	<<set $milk_produced_stat += Math.trunc(_tentacles_milk)>>
+
+	<<if _tentacles_milk gte 50>>
+		<<set $tentacleorgasmignore += 1>>
+		触手完全释放你并散开。<span class = "green">他们似乎很满意。你的下一次高潮可能不会那么危险。</span>
+	<<else>>
+		触手不停吸吮。<span class = "red">他们对你生产的牛奶量不满意。</span>最终，他们的吸吮变得痛苦，迫使你将他们拉下来。<<pain 10>><<gpain>>
+	<</if>>
+<<else>>
+	你没有流出一滴奶。<span class = "red">触手不满意。</span>
+<</if>>
+<<purity -5>>
+<<clotheson>>
+<<endcombat>>
+
+
+<<link [[继续|Tentacle Plains]]>><<endevent>><</link>>
+<br>
+
+:: Tentacle Cow Penis
+<<location "tentworld">><<effects>>
+<<if $tentaclecow is undefined>>
+	<<set $tentaclecow to 1>>
+	你认为你知道满足触手的方法。
+<<else>>
+	你准备满足触手的饥渴。
+<</if>>
+你四肢着地，它们开始爬上你的腿。
+<<if $worn.lower.name isnot "naked">>
+	<<if $feetuse is "bound">>
+		一对触手
+	<<else>>
+		你
+	<</if>>
+	脱掉了你的 $worn.lower.cn_name_cap<<if $worn.under_lower.name isnot "naked">>和 $worn.under_lower.cn_name_cap<<underlowerstrip>><</if>>.<<lowerstrip>>
+<<else>>
+	<<if $worn.under_lower.name isnot "naked">>
+		<<if $feetuse is "bound">>
+			一对触手
+		<<else>>
+			你
+		<</if>>
+		脱掉了你的$worn.under_lower.cn_name_cap。<<underlowerstrip>>
+	<</if>>
+<</if>>
+<<set $penisuse to "tentacle">><<set $tentaclePenis to "tentacle">>
+<<set _tentacles_semen to ($semen_amount / 2)>>
+你摆动你的<<bottom>>，将注意力吸引到你的<<penis>>。 响应几乎是立即的。一条触手抓住你，开始吸吮。
+<br><br>
+你为这种感觉倒吸一口冷气。 触手在吸吮时膨胀和收缩。<<arousal 10000>><<ggarousal>>
+<<orgasm>>
+<br><br>
+你的精液被吸走，触手松开你。 在你做出反应之前，另一条触手取代了它。
+<<orgasm>>
+<br><br>
+
+<<semen_amount `-_tentacles_semen`>>
+<<set $semen_produced_stat += _tentacles_semen>>
+
+<<if _tentacles_semen gte 100>>
+	<<set $tentacleorgasmignore += 1>>
+	触手完全释放你并散开。<span class = "green">他们似乎很满意。你的下一次高潮可能不会那么危险。</span>
+<<else>>
+	触手不停吸吮。<span class = "red">它对你产生的精液量不满意。</span>最终，它的吸吮变得疼痛，迫使你把它拉下来。<<pain 10>><<gpain>>
+<</if>>
+
+<<purity -20>>
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Tentacle Plains]]>><<endevent>><</link>>
+<br>
+
+:: Tentacle Plains Admire
+
+<<location "tentworld">><<effects>>
+<<if $tentacleadmire is undefined>>
+	<<set $tentacleadmire to 0>>
+	当你的眼睛扫视一望无际的地平线时，一切似乎都变慢了。 触手的平稳摇摆对你来说几乎是催眠的。 不久你也会原地摇摆。 你脚下的触须让你发痒。
+	<<ltrauma>><<lstress>><<garousal>>
+	<br><br>
+	<<trauma -6>><<stress -6>><<arousal 600>>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<<elseif $tentacleadmire is 0>>
+	<<set $tentacleadmire to 1>>
+	当你专注于风景时，一切都开始融化。 其他似乎都不重要。 外面的世界没有意义。 你唯一的想法就是这个领域可以为你提供的巨大乐趣。 你的尾巴在幻影微风中移动，触手轻轻爬上你的腿。
+	<<ltrauma>><<lstress>><<garousal>>
+	<br><br>
+	<<trauma -6>><<stress -6>><<arousal 600>>
+	<<link [[继续|Tentacle Plains]]>><</link>>
+	<br>
+<<elseif $tentacleadmire is 1>>
+	<<set $tentacleadmire to 2>>
+	当热量在你体内积聚时，你不会感到内疚或自我厌恶。 每根触手似乎都在挑衅地示意你靠近一步。 你不能再帮助自己了。 你跪倒在地，向周围无数的触手展示自己。 他们回应你的提议，并蛇行在你的胳膊、腿和尾巴上。
+	<<gcontrol>><<control 25>><<ltrauma>><<lstress>><<ggarousal>>
+	<br><br>
+	<<trauma -6>><<stress -6>><<arousal 1200>>
+	<<if $leftarm is "bound" or $rightarm is "bound" or $feetuse is "bound">>
+		一对触手到达你的<<if $leftarm is "bound" or $rightarm is "bound">>手臂<</if>><<if ($leftarm is "bound" or $rightarm is "bound") and $feetuse is "bound">>和<</if>><<if $feetuse is "bound">>腿<</if>>并在你的绳子上喷射粘性液体，慢慢溶解它们。<<unbind>>
+		<br><br>
+	<</if>>
+	<<link [[继续|Tentacle Plains Admire Sex]]>><<set $sexstart to 1>><</link>>
+<<else>>
+	只是想着将要发生的事情会让你发疯。 你可以随时离开，但你却留在这里。 你蹲在地上，每只手各拿一根触手。 他们热切地回应你的触摸，很快就会有一大群触手向你袭来。
+	<<gcontrol>><<control 25>><<ltrauma>><<lstress>><<ggarousal>>
+	<br><br>
+	<<trauma -6>><<stress -6>><<arousal 1200>>
+	<<link [[继续|Tentacle Plains Admire Sex]]>><<set $sexstart to 1>><</link>>
+<</if>>
+
+:: Tentacle Plains Admire Sex
+
+<<location "tentworld">>
+
+<<if $sexstart is 1>><<set $sexstart to 0>>
+	<<set $combat to 1>>
+	<<set $enemytype to "tentacles">>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<tentaclestart 6 8>>
+	<<set $tentacles[0].shaft to "waist">>
+<</if>>
+<<statetentacles>>
+
+<<effects>>
+<<effectstentacles>>
+<<tentacles>>
+<<actionstentacles>>
+<<if $tentacles.active lte ($tentacles.max / 2)>>
+	<span id="next"><<link [[继续|Tentacle Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Tentacle Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Tentacle Plains Admire Sex Finish
+
+<<effects>>
+当你的身体完全被温暖、扭动的团块覆盖时，你又看了一眼周围的土地。 这个扭曲的世界是对一切正确事物的歪曲，是对你所知道的世界的卑鄙嘲弄。 它是污秽的，它是腐败的，它是邪恶的。 就像你一样。
+<br><br>
+<<set $eventskip to 1>>
+<<clotheson>>
+<<endcombat>>
+<<link [[继续|Tentacle Plains]]>><</link>>
+<br>
+
+:: Tentacle Escape
+
+<<location "tentworld">><<effects>>
+
+你走进门。 它在你身后关闭。 你在森林里。
+<br><br>
+<<if $tentacleEntrance is "asylum">>
+	<<asylumescape>>
+<</if>>
+<<endevent>><<tentacleworldend>>
+<<set $forest to random(50, 100)>>
+<<link [[继续|Forest]]>><</link>>
+<br>
+
+:: Tentacle Return
+
+<<location "tentworld">><<effects>>
+你穿过门回到庇护所。 它在你身后关闭。
+<br><br>
+<<endevent>><<npc Harper>><<person1>><<tentacleworldend>>
+<<link [[继续|Asylum Room 2]]>><</link>>
+<br>
+
+:: Tentacle Rape
+
+<<location "tentworld">>
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $combat to 1>>
+	<<set $enemytype to "tentacles">>
+	<<controlloss>>
+	<<molested>>
+	<<tentaclestart 12 15>>
+	<<set $tentacles[0].shaft to "waist">>
+<</if>>
+
+<<statetentacles>>
+
+
+<<effects>>
+<<effectstentacles>>
+<<tentacles>>
+<<actionstentacles>>
+
+<<if $tentacles.active lte ($tentacles.max / 2)>>
+	<span id="next"><<link [[继续|Tentacle Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Tentacle Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Tentacle Rape Finish
+
+<<effects>>
+触手暂时对你失去兴趣。<<tearful>>你挣扎着站起来。
+<br><br>
+<<set $eventskip to 1>>
+<<clotheson>>
+<<endcombat>>
+<<arousal -1000>>
+<<link [[继续|Tentacle Plains]]>><</link>>
+<br>
+
+:: Tentacle Plains Spray
+
+<<location "tentworld">><<effects>>
+光在你触摸时闪烁并消失。 触手脱落。 你的防狼喷雾感觉很温暖。
+<br><br>
+<span class="gold">你获得了额外的防狼喷雾。</span>
+<br><br>
+<<link [[继续|Tentacle Plains]]>><</link>>
+<br>
+
+
+:: Tentacle Bird
+<<effects>>
+
+你腾空而起，将扭动的触手留在下方很远的地方。 你的翅膀很快就会疲倦，但你可以获得良好的视野。
+<br><br>
+
+
+<<set _tent_portal_north to $tentnorth - $tentportalnorth>>
+<<set _tent_portal_east to $tenteast - $tentportaleast>>
+
+<<set _tent_spray_north to $tentnorth - 4>>
+<<set _tent_spray_east to $tenteast - 4>>
+
+
+<<if _tent_portal_north lte 2 and _tent_portal_north gte -2 and _tent_portal_east lte 2 and _tent_portal_east gte -2>>
+	<<set _tent_found to true>>
+	你看到一扇绿色的门。
+	<<if _tent_portal_north is 0>>
+	<<elseif _tent_portal_north gte 1>>
+		向南<<Number _tent_portal_north*10>>分钟。
+	<<elseif _tent_portal_north lt 0>>
+		向北<<Number _tent_portal_north*-10>>分钟。
+	<</if>>
+	<<if _tent_portal_east is 0>>
+	<<elseif _tent_portal_east gte 1>>
+		向西<<Number _tent_portal_east*10>>分钟。
+	<<elseif _tent_portal_east lt 0>>
+		向东<<Number _tent_portal_east*-10>>分钟。
+	<</if>>
+	<br>
+<</if>>
+<<if $tentnorth gte -2 and $tentnorth lte 2 and $tenteast gte -2 and $tenteast lte 2>>
+	<<set _tent_found to true>>
+	<<if $tentacleEntrance is "mirror">>
+		你看到你卧室的镜子。
+	<<else>>
+		你看到精神病院的门了。
+	<</if>>
+	<<if $tentnorth is 0>>
+	<<elseif $tentnorth gte 1>>
+		向南<<Number $tentnorth*10>>分钟。
+	<<elseif $tentnorth lt 0>>
+		向北<<Number $tentnorth*-10>>分钟。
+	<</if>>
+	<<if $tenteast is 0>>
+	<<elseif $tenteast gte 1>>
+		向西<<Number $tenteast*10>>分钟。
+	<<elseif $tenteast lt 0>>
+		向东<<Number $tenteast*-10>>分钟。
+	<</if>>
+	<br>
+<</if>>
+<<if _tent_spray_north gte -2 and _tent_spray_north lte 2 and _tent_spray_east gte -2 and _tent_spray_east lte 2>>
+	<<set _tent_found to true>>
+	你看到一个奇怪的物体。
+	<<if _tent_spray_north is 0>>
+	<<elseif _tent_spray_north gte 1>>
+		向南<<Number _tent_spray_north*10>>分钟。
+	<<elseif _tent_spray_north lt 0>>
+		向北<<Number _tent_spray_north*-10>>分钟。
+	<</if>>
+	<<if _tent_spray_east is 0>>
+	<<elseif _tent_spray_east gte 1>>
+		向西<<Number _tent_spray_east*10>>分钟。
+	<<elseif _tent_spray_east lt 0>>
+		向东<<Number _tent_spray_east*-10>>分钟。
+	<</if>>
+	<br>
+<</if>>
+<<if _tent_found isnot true>>
+	你看不到任何有趣的东西。
+	<br>
+<</if>>
+<br><br>
+
+<<link [[继续|Tentacle Plains]]>><<set $eventskip to 1>><</link>>
+<br>

@@ -1,0 +1,247 @@
+:: Danube Street
+
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "danube">><<getTarget true>>
+你正待在多瑙河街的大街上，这里的房子大多宽敞而庄严。
+<<if Time.dayState is "day">>
+	<<if $weather is "rain">>
+		人们因为大雨而不得不躲在室内。
+	<<elseif $weather is "snow">>
+		人们因为大雪而不得不躲在室内。
+	<<else>>
+		你可以听到围墙后面传来的声音。
+	<</if>>
+<<elseif Time.dayState is "dawn">>
+	<<if $weather is "rain">>
+		人们中匆忙地从豪宅走入雨中，然后快速地进入豪车当中.
+	<<elseif $weather is "snow">>
+		偌大的园圃在清晨的雪地上看起来如诗如画。
+	<<else>>
+		你可以透过窗户看到某些人正在运动.
+	<</if>>
+<<elseif Time.dayState is "dusk">>
+	<<if $weather is "rain">>
+		上方的雨云早早地投下了它的影子。
+	<<elseif $weather is "snow">>
+		雪在夜幕的掩护下缓缓地下了起来.
+	<<else>>
+		那些东西在昏暗的灯光下投下令人毛骨悚然的阴影。
+	<</if>>
+<<elseif Time.dayState is "night">>
+	<<if $weather is "rain">>
+		你能看到来自窗户的光斑，那离马路还很远。
+	<<elseif $weather is "snow">>
+		光线穿过那些华丽的窗户，径直地投射到雪地上。
+	<<else>>
+		从窗户中透出的光线几乎无法缓解黑暗。
+	<</if>>
+<</if>>
+<<if $halloween is 1>>
+一些家庭置办了奢侈的万圣节装饰。
+<</if>>
+<<streeteffects>>
+<br><br>
+<<if $exposed gte 1>>
+	<<exhibitionism "street">>
+<</if>>
+<<if $arousal gte $arousalmax>>
+	<<orgasmstreet>>
+<</if>>
+<<if $stress gte $stressmax and !$possessed>>
+	<<passoutstreet>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if ($danger gte (9900 - $allure) or $eventforced) and $eventskip is 0>>
+		<<eventsstreet>>
+	<<else>>
+		<<if $options.mapTop is true>>
+			<<map "danube">>
+			<br>
+		<</if>>
+		可访问地点
+		<br>
+		<<foresticon>><<link [[森林 (0:10)|Forest]]>><<pass 10>><<set $forest to 0>><<set $eventskip to 1>><</link>>
+		<br>
+		<<if $exposed lte 0 and $openinghours is 1>>
+			<<spaicon>><<link [[水疗中心 (0:02)|Spa]]>><<pass 2>><</link>>
+			<br>
+		<<elseif $openinghours is 0>>
+			<<spaicon>><<link [[水疗中心 (0:02)|Spa Lock]]>><<pass 2>><</link>>
+			<br>
+		<</if>>
+		<<if $syndromekylar gte 1>>
+			<<kylarmanoricon>><<link [[凯拉尔的庄园 (0:02)|Manor Garden]]>><<pass 2>><</link>>
+			<br>
+		<</if>>
+		<<if $exhibitionismrun is "danube" and $exposed lte 1>>
+			<<oakicon>><<link [[水疗中心的后门橡树 (0:02)|Danube Challenge]]>><<pass 2>><</link>>
+			<br>
+		<</if>>
+		<<if Time.dayState is "night">>
+			<<danubehouseicon>><<link [[走向其中一幢豪宅 (0:02)|Danube House Lock]]>><<pass 2>><</link>>
+			<br>
+		<<elseif $exposed lte 0>>
+			<<danubehouseicon>><<link [[敲其中一栋豪宅的门 (0:02)|Danube House Knock]]>><<pass 2>><</link>>
+			<br>
+		<</if>>
+		<br>
+		<<if $exposed gte 1 and Time.dayState isnot "night">>
+		<<else>>
+			<<add_link "其他区域<br>">><<hideDisplay>>
+			<<domus>>
+			<<wolf>>
+			<<connudatus>>
+			<<if $exposed lte 0>>
+				<<buswait>>
+			<</if>>
+			<<loiter>>
+		<</if>>
+		<<add_link "<br>快捷小路<br>">><<hideDisplay>>
+		<<residential>>
+		<<stormdrain>>
+		<<displayLinks>>
+		<<if $options.mapTop isnot true>>
+			<br>
+			<<map "danube">>
+		<</if>>
+	<</if>>
+<</if>>
+<<set $eventskip to 0>>
+
+:: Danube Challenge
+
+<<set $outside to 1>><<set $location to "town">><<effects>>
+
+<<if $exhibitionismrunon is 0>>
+
+	你走到水疗中心后面，找到纸条上提到的那棵橡树。它就矗立在森林的边缘，这是你被告知要脱衣服的地方，在周围没有其他人。
+	<br><br>
+	<<if $exhibitionism gte 35>>
+		<<link [[脱衣服|Danube Challenge Strip]]>><<set $phase to 0>><</link>><<exhibitionist3>>
+		<br>
+	<<else>>
+		<span class="blue">你的露出癖还不够做这件事.</span>
+		<br>
+	<</if>>
+	<<link [[离开|Danube Street]]>><</link>>
+	<br>
+
+<<else>>
+
+	你回到了水疗中心后面的橡树下，周围没有人，从马路那边也看不到你。你看向树枝，虽然你看不到相机，但你知道它就在那里。
+	<br><br>
+
+	<<if $exhibitionism gte 35>>
+		<<link [[脱衣服|Danube Challenge 2]]>><</link>><<exhibitionist3>>
+		<br>
+	<<else>>
+		<span class="blue">你的露出癖还不够做这件事.</span>
+		<br>
+	<</if>>
+	<<link [[离开|Danube Street]]>><</link>>
+
+<</if>>
+
+:: Danube Challenge Strip
+
+<<set $challengetimer to 10>>
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<strip>>
+<<if $phase is 0>>
+	你<<nervously>>按照纸条上说的做，脱掉你的衣服并赤身裸体地站在森林边缘。
+<<else>>
+	你深吸一口气，然后扫视了一圈四周。你在心里告诉自己这可是一大笔钱.随后你<<nervously>>按照纸条上说的做，脱掉你的衣服并赤身裸体地站在森林边缘。
+<</if>>
+<<exhibitionism3>>
+橡树的树枝上有什么东西在闪动，是一台摄像机。<<covered>>你感觉你的脸有些发热，但马上你就注意到了你上方有别的东西飘了下来，一个小降落伞带着一个小盒子飘了下来，你抓住它，发现里面有一张纸条。
+<br><br>
+<i>很高兴与你合作。</i>
+<br><br>
+在纸的后面还有着<<moneyGain 100>>，你用你那颤抖的手飞速地穿上衣服。你认为除了摄像机没有人看见你。
+<br><br>
+<<set $exhibitionismrun to undefined>><<set $exhibitionismrunon to 1>>
+<<link [[离开|Danube Street]]>><<clotheson>><</link>>
+<br>
+
+:: Danube Challenge 2
+<<effects>><<strip>>
+
+你迅速脱掉你所有的衣服，你最后看了一下周围，确保没有人看到你的裸体。树枝上有一道闪光，就像上次一样，但你感觉还差一点。
+<br><br>
+
+<<if $exhibitionism gte 75>>
+
+	<<link [[手淫|Danube Challenge Masturbate]]>><<set $masturbationstart to 1>><</link>><<exhibitionist5>>
+	<br>
+
+<<else>>
+
+	<<link [[手淫|Danube Challenge Masturbate]]>><<set $masturbationstart to 1>><<trauma 6>><<stress 12>><</link>><<ggtrauma>><<ggstress>>
+	<br>
+
+<</if>>
+
+	<<link [[离开|Danube Street]]>><<clotheson>><</link>>
+	<br>
+
+:: Danube Challenge Masturbate
+<<strip>><<effects>>
+
+<<if $masturbationstart is 1>>
+	<<set $masturbationstart to 0>>
+	<<set $masturbationstat += 1>>
+	你哆嗦着开始奖励自己.
+	<<exhibitionism5>>
+	<<masturbationstart>>
+<</if>>
+
+<<masturbationeffects>>
+<<masturbationactions>>
+
+<div id="masturbationButtons">
+	<<if $orgasmdown gte 1>>
+		<div id="next"><<link [[继续|Danube Challenge Masturbate End]]>><</link>><<nexttext>></div>
+	<<else>>
+		<div id="next"><<link [[继续|Danube Challenge Masturbate]]>><</link>><<nexttext>></div>
+	<</if>>
+
+	<<if $corruptionMasturbation isnot true and random(0,3) gt $orgasmcurrent and $corruption_slime gt (currentSkillValue('willpower') / 10)>>
+		<div><<link [[停止|$passage]]>><<set $corruptionMasturbation to true>><</link>></div>
+	<<elseif $corruptionMasturbation isnot true>>
+		<div><<link [[停止|Danube Challenge Masturbate End]]>><<set $finish to 1>><</link>></div>
+	<<else>>
+		<div class="red">你耳朵里的史莱姆让你无法停下。</div>
+	<</if>>
+</div>
+
+:: Danube Challenge Masturbate End
+<<effects>><<set $challengetimer to 10>>
+
+<<if $orgasmdown gte 1>>
+	<<fameexhibitionism 1>><<generate1>><<person1>>
+	你在做完之后喘了口气，你的皮肤上覆盖着一层薄薄的汗水。没过多久，另一个降落伞载着一个盒子在你面前落下。你打开盒子，发现<<moneyGain 300>>和另一张纸条。 
+	<br><br>
+
+	<i>您又完美的完成一次任务，这是这次的报酬，期待与您的再次联系.</i>
+	<br><br>
+
+	当你数着钱的时候，你眼角的余光貌似撇到了什么。你转身看去，一个<<person1>><<person>>正站在桑拿房的后门处，<<He>>正震惊地盯着你，一根香烟从<<his>>的嘴角落到地上。毕竟你现在正完全赤身裸体地站在<<him>>面前，而<<he>>则可以看清一切。<<if $exhibitionism gte 75>><<ggarousal>><<arousal 1200>><<else>><<gtrauma>><<gstress>><<trauma 6>><<stress 6>><</if>>
+	<br><br>
+
+	<<if $speech_attitude is "bratty">>
+		你拿起衣服遮住自己，然后对<<person1>><<person>>喊道:"嘿，滚开！" 这句话让<<him>>清醒过来，<<he>>迅速离开了这里。
+	<<else>>
+		你大叫一声，然后抓起衣服就跑，在找一个安静的地方后才把衣服穿上。 
+	<</if>>
+
+	<<endmasturbation>>
+	<<endcombat>>
+	<<set $exhibitionismrun to undefined>><<set $exhibitionismrunon to 2>><<clotheson>>
+	<<link [[离开|Danube Street]]>><<endevent>><</link>>
+
+<<else>>
+	你停止你正在做的事情，然后开始等待着另一个气球或另一个照相机的闪光，但什么也没有发生。在几分钟后，你穿上衣服离开了。纸条上说要达到高潮，而你在高潮之前就停了下来。
+	<br><br>
+	<<endmasturbation>>
+	<<endcombat>>
+	<<link [[继续|Danube Street]]>><<clotheson>><</link>>
+<</if>>

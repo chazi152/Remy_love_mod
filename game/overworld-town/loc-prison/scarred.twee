@@ -1,0 +1,972 @@
+:: Prison Scarred
+<<effects>>
+<<endevent>><!-- Fully make sure no event failures prior can cause a failure here with NPC gen, because saveNPC of scarred_inmate occurs later. -->
+<<generate_scarred_inmate 0>><<person1>>
+你进入了<<scarred_inmate 0 apo>>的单人牢房。
+
+<<if $prison.scarred gte 60 and $NPCList[0].name_known isnot 1>>
+	<<He>>坐在床上并将<<his>>的头埋入<<his>>的双手中。
+	<br><br>
+
+	<<link [[询问发生了什么事|Prison Scarred Ask]]>><</link>>
+	<br>
+	<<link [[离开|Prison Walkway]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<He>>看着你，舔了舔嘴唇。
+	<br><br>
+
+	<<switch $prison.scarred_level>>
+		<<case 0>>
+			"你能来这里很明智，"<<he>>说道。<<He>>靠过来, 闻了闻。"嗯…味道真新鲜。"<<He>>把<<his>>的手伸向<<his>>的裤子，从那拽出一根长绳来。 "转过去，扶着栏杆，<<bitch>>。"
+			<br><br>
+
+			<<link [[转过身，抓着栏杆|Prison Scarred Bars]]>><<set $prison.scarred_level to 1>><<prison_rep scarred 5>><</link>><<gglove>>
+			<br>
+		<<case 1>>
+			"正是我想要看见的<<bitch>>，"<<he>>说着，把<<his>>的手伸向<<his>>的裤子，从那拽出一根长绳来。 "转过去，扶着栏杆，<<bitch>>。"
+			<br><br>
+
+			<<link [[转过身，抓着栏杆|Prison Scarred Pair]]>><<set $prison.scarred_level to 2>><<prison_rep scarred 5>><</link>><<gglove>>
+			<br>
+		<<case 2>>
+			"你，"<<he>>说着，从<<his>>床上起身，  在<<his>>手上已经拿着一根长绳，"转过去，扶着栏杆，<<bitch>>。"
+			<br><br>
+
+			<<link [[转过身，抓着栏杆|Prison Scarred Molestation]]>><<set $prison.scarred_level to 3>><<prison_rep scarred 5>><</link>><<gglove>>
+			<br>
+		<<case 3>>
+			"你，"<<he>>说着，从<<his>>床上起身，<<his>>手上已经拿着一根长绳，"转过去，<<bitch>>。"
+			<br><br>
+			<<link [[转过身|Prison Scarred Turn]]>><<prison_rep scarred 5>><</link>><<gglove>>
+			<br>
+		<<default>>
+			"正是我想要看见的<<bitch>>，"<<he>>说着，从<<his>>床上起身。<<his>>手上已经拿着一根长绳。 "转过去，<<bitch>>。"
+			<br><br>
+
+			<<link [[转过身|Prison Scarred Turn]]>><<prison_rep scarred 5>><</link>><<gglove>>
+			<br>
+	<</switch>>
+
+	<<link [[拒绝|Prison Scarred Refuse]]>><</link>>
+	<br>
+<</if>>
+
+:: Prison Scarred Bars
+<<effects>>
+<<bind>>
+你转过身去，扶住牢房的栏杆。<<His>>手在<<he>>捆住你时动作快得几乎看不清，这只花了他几秒时间。"那么现在，"<<he>>喃喃着， "我该对你做点什么呢？"<<He>>摸着你无助的<<bottom>>陷入思考。
+<br><br>
+"我真蠢，"<<he>>继续说， "答案不就在这么。"<<He>>抽回<<his>>他的手，狠狠打在你的<<bottom>>上。<<gpain>><<pain 4>>
+<br><br>
+
+<<link [[继续|Prison Scarred Bars 2]]>><</link>>
+<br>
+
+:: Prison Scarred Bars 2
+<<effects>>
+
+"喜欢这样吗，<<bitch>>?"<<he>>问道，又抽了一巴掌。
+
+<<if $worn.face.type.includes("gag")>>
+	"你就是我的被堵住嘴的小骚货，对不对？"
+	<br><br>
+	<<link [[只是啜泣|Prison Scarred Bars Sob]]>><<pain -4>><</link>><<lpain>>
+	<br>
+<<else>>
+	"说<i>'感谢你惩罚我，<<mummy>>。'</i>"<<He>>又打向你。"说道。"<<gpain>><<pain 4>>
+	<br><br>
+
+	<<link [[说出来|Prison Scarred Bars Say]]>><<sub 1>><</link>><<willpowerdifficulty 1 100>>
+	<br>
+	<<link [[拒绝|Prison Scarred Bars Refuse]]>><<def 1>><</link>><<willpowerdifficulty 1 1000>>
+	<br>
+	<<link [[只是啜泣|Prison Scarred Bars Sob]]>><<sub 1>><<pain -4>><</link>><<lpain>>
+	<br>
+<</if>>
+
+
+:: Prison Scarred Bars Say
+<<effects>>
+
+<<willpowerdifficulty 1 100 no_text>>
+<<if $willpowerSuccess>>
+	<span class="green">"感谢你惩罚我，<<mummy>>，"</span>你勉强说，尽管身后重复着被抽打。
+	<br><br>
+
+	"乖<<girl>>,"<<he>>说着，揉了揉你的头发。<<He>>灵巧地解开了绳子，就像<<he>>用它把你捆起来的时候一样, 你马上恢复了自由。
+	<<prison_unbind>>
+	<br><br>
+	"感觉没那么糟，对吧？你可以走了。"
+	<br><br>
+<<else>>
+	你想说些什么， <span class="red">却因为</span>又落下的一击，痛得哭了出来。<<gwillpower>><<gpain>><<pain 4>>
+	<br><br>
+
+	"我让你说那句话，你他妈个该死的<<bitch>>!"<<He>>一下又一下地抽打你，每一下比上一次更重，然后<<his>>气喘吁吁地躺在床上.
+	<br><br>
+
+	"行，"<<He>>猛地站起来，灵巧地解开了绳子，就像<<he>>用它把你捆起来的时候一样。"走吧。"
+	<br><br>
+<</if>>
+
+<span class="green">你获得了<<scarred_inmate 0 apo>>的保护。</span><<set $prison.protection to "scarred">>
+<br><br>
+<<prison_unbind>>
+<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+<br>
+
+
+:: Prison Scarred Bars Refuse
+<<effects>>
+<<willpowerdifficulty 1 1000 no_text>>
+<<if $willpowerSuccess>>
+	你闭紧了嘴。<<scarred_inmate 0 cap>>又抽了你一下以惩罚你的沉默。<<gpain>><<pain 4>>
+	<br><br>
+
+	"我让你说那句话，你他妈个该死的<<bitch>>！"<<He>>一下又一下地抽打你，每一下都下手更重，<span class="green">然后倒在<<his>>床上，气喘吁吁。</span>
+	<br><br>
+
+	"行，"<<He>>猛地站起来，灵巧地解开了绳子，就像<<he>>用它把你捆起来的时候一样。"走吧。"
+	<br><br>
+<<else>>
+	你想保持沉默, <span class="red">却因为</span>又落下的一击痛得哭了出来。<<gwillpower>><<gpain>><<pain 4>>
+	<br><br>
+
+	"我让你说那句话，你他妈个该死的<<bitch>>!"<<He>>一下又一下地抽打你，每一下比上一次更重，然后<<his>>气喘吁吁地躺在床上.
+	<br><br>
+
+	"行，"<<He>>猛地站起来，灵巧地解开了绳子，就像<<he>>用它把你捆起来的时候一样。"走吧。"
+	<br><br>
+<</if>>
+<span class="green">你获得了<<scarred_inmate 0 apo>>的保护。</span><<set $prison.protection to "scarred">>
+<br><br>
+<<prison_unbind>>
+<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+<br>
+
+:: Prison Scarred Bars Sob
+<<effects>>
+
+你啜泣着。<<scarred_inmate 0 cap>>张开<<his>>胳膊，想再打一下，却犹豫了。<<He>>倒在<<his>>床上，用手捂住了头。
+<br><br>
+"妈的，行，"<<he>>过了一会才说，<<He>>站起来，灵巧地解开了绳子，就像<<he>>用它把你捆起来的时候一样，"走吧。"
+<br><br>
+
+<span class="green">你获得了<<scarred_inmate 0 apo>>的保护。</span><<set $prison.protection to "scarred">>
+<br><br>
+<<prison_unbind>>
+<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+<br>
+
+:: Prison Scarred Refuse
+<<effects>>
+
+你向后退。<<scarred_inmate 0 cap>>舔了舔<<his>>牙齿。 "行，"<<he>>说道。"你会回来的，不然你就会被操到昏过去，之后我一样把你捡回来。"
+<br><br>
+
+<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+<br>
+
+
+:: Prison Scarred Pair
+<<effects>>
+<<bind>>
+你转过身去，扶住牢房的栏杆。<<His>>手在<<he>>捆住你时动作快得几乎看不清，这只花了他几秒时间。"那么现在，"<<he>>喃喃着， "我该对你做点什么呢？"<<He>>摸着你无助的<<bottom>>陷入思考。
+<br><br>
+
+<<link [[继续|Prison Scarred Pair 2]]>><</link>>
+<br>
+
+:: Prison Scarred Pair 2
+<<effects>>
+
+<<generate2>><<person2>>
+一个<<person>>走过。"喂，混蛋，"<<scarred_inmate 0>>说道。"快进来。"<<person2>><<person>>看了你一眼，然后沿着走道往回走。
+<br><br>
+
+"帮我决定如何处置我的<<bitch>>。"
+<br>
+"他妈的。你为什么要我告诉——"
+<br>
+<<scarred_inmate 0 cap>>把<<person>>推到墙上。<<person1>><<his>>手里拿着块玻璃碎片。"别顶嘴。"<<ggstress>><<stress 12>>
+<br>
+<<person2>><<person>>举起<<his>>的双手。"等等，别紧张！我没想做坏事。"
+<br><br>
+<<link [[告诉有疤痕的囚犯冷静下来|Prison Scarred Pair Calm]]>><</link>>
+<br>
+<<link [[保持沉默|Prison Scarred Pair Silent]]>><</link>>
+<br>
+
+
+:: Prison Scarred Pair Calm
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	<<gagged_speech "请- 请不要伤害<<person2>><<him>>，">>
+	<<person1>>
+<<elseif $speech_attitude is "bratty">>
+	<<gagged_speech "把东西放下，你这个疯子，">>你喊道。
+<<else>>
+	<<gagged_speech "你反应过度了，">>你劝说道，<<gagged_speech "停手吧。">>
+<</if>>
+<br><br>
+
+<<scarred_inmate 0 cap>>把<<person2>><<person>>从墙上拉到一边，用手狠狠拍了你的<<bottom>>。"我的<<bitch>>比你更需要惩罚，"<<person1>><<he>>说道。"打<<phim>>屁股，我就不收拾你。"
+<br><br>
+
+<<person2>><<person>>有点犹豫, 直到<<scarred_inmate 0>>拿刀摁在<<his>>背上。<<He>>挥掌拍向你的<<bottom>>。<<gpain>><<pain 4>>
+<br><br>
+
+<<link [[继续|Prison Scarred Pair Spank]]>><</link>>
+<br>
+
+:: Prison Scarred Pair Spank
+<<effects>>
+
+"使点劲！我他妈要看见有眼泪流出来。"<<person2>><<person>>不得不屈从,<<he>>看起来<<himself>>都快哭出来了。<<ggpain>><<pain 8>>
+<br><br>
+最后，<<scarred_inmate 0>>把<<person2>><<person>>从你身边拉开。"给我滚蛋。"
+<br><br>
+"你也一样。"<<scarred_inmate 0 cap>>用刀片割断<<his>>绳索："滚。"
+<br><br>
+<span class="green">你获得了<<scarred_inmate 0 apo>>的保护。</span><<set $prison.protection to "scarred">>
+<br><br>
+<<prison_unbind>>
+<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+<br>
+
+
+:: Prison Scarred Pair Silent
+<<effects>>
+
+<<scarred_inmate 0 cap>>失声大笑，一拳打在<<person2>><<person>>的肚子上。<<He>>翻倒在地，<<scarred_inmate 0>>接着对<<his>>的后背又是一痛暴揍。
+<br><br>
+
+"舒坦多了。"<<He>>一脚把<<person2>><<person>>瘫软的身体踢到外面的人行道上，然后割断了<<his>>的绳索。"混吧。"
+<br><br>
+<span class="green">你获得了<<scarred_inmate 0 apo>>的保护。</span><<set $prison.protection to "scarred">>
+<br><br>
+<<prison_unbind>>
+
+<<link [["帮" + $NPCList[1].pronouns.him + "去接受治疗(0:05)"|Prison Scarred Pair Help]]>><<prison_hope 1>><<trauma -6>><<pass 5>><<tiredness 3>><</link>><<ghope>><<gtiredness>><<ltrauma>>
+<br>
+<<link [[无视|Prison Walkway]]>><<endevent>><</link>>
+<br>
+
+:: Prison Scarred Pair Help
+<<effects>>
+
+<<person2>><<person>>还有点知觉，医务室也就在不远处。但<<he>>没法靠<<his>>自己站起来。当你赶到时，你的肌肉正在隐隐作痛。
+<br><br>
+
+<<generate_methodical_guard 2 cap>><<person3>>
+<<methodical_guard 2 cap>>甚至没多瞅一眼，而是指了指一张空床。
+<br><br>
+<<person2>>
+当你让<<him>>躺下时，这名囚犯试图说点什么，却说不出来。
+<br><br>
+
+<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+<br>
+
+:: Prison Scarred Molestation
+<<effects>>
+<<bind>>
+你转过身去，扶住牢房的栏杆，<<His>>的手在<<he>>捆住你时动作快得几乎看不清，这只花了他几秒时间。"等的就是这个。"<<he>>说，
+<<if $worn.lower.name is "naked">>
+	<<if $worn.under_lower.name is "naked">>
+		边用手抚摸你的<<bottom>>。
+	<<else>>
+		边拉下了你的$worn.under_lower.cn_name_cap。
+	<</if>>
+<<else>>
+	<<if $worn.under_lower.name is "naked">>
+		边拉下了你的$worn.lower.cn_name_cap。
+	<<else>>
+		边拉下了你的$worn.lower.cn_name_cap和$worn.under_lower.cn_name_cap。
+	<</if>>
+<</if>>
+<<if playerChastity()>>
+	<<He>>抓住了你的$worn.genitals.cn_name_cap，拉扯着。
+	<br><br>
+	"操，"<<he>>边说着，用力扯到连上面的金属都深深地陷进你的皮肤里。"我怎么才能把这玩意弄下来？"<<gpain>><<pain 4>>
+	<br><br>
+	<<set $worn.genitals.integrity -= 100>>
+	<br><br>
+	<<if $worn.genitals.integrity lte 0>>
+		<<He>>从一块松动的石头后面取来了各种工具，一把螺丝刀、一把锤子，还有把钳子。<<He>>一点不带手软，<span class="red">设法用钳子把金属钳掉。</span>
+		<br><br>
+		<<set $worn.genitals.type.push("broken")>>
+		<<genitalsruined>>
+		<<He>>满意地拍拍你的屁股，然后蹲到你身后。
+		<br><br>
+
+		<<link [[继续|Prison Scarred Molestation 2]]>><</link>>
+		<br>
+	<<else>>
+		<<He>>从一块松动的石头后面取来了各种工具，一把螺丝刀、一把锤子，还有把钳子。<<He>>的动作并不温柔，但没有一个管用。<<He>>在解开<<his>>的细绳之前，先狠狠地打了你的屁股。"走吧。"<<ggpain>><<ggtrauma>><<ggstress>><<pain 8>><<stress 12>><<trauma 12>>
+		<<prison_unbind>>
+		<br><br>
+		<span class="green">你获得了<<scarred_inmate 0 apo>>的保护。</span><<set $prison.protection to "scarred">>
+		<br><br>
+		<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<br><br>
+
+	<<link [[继续|Prison Scarred Molestation 2]]>><</link>>
+	<br>
+<</if>>
+
+:: Prison Scarred Molestation 2
+<<effects>>
+
+<<if $NPCList[0].penis isnot "none">>
+	你感觉<<his>>的呼吸喷洒在你的
+	<<if $player.penisExist>>
+		<<penis>>
+	<<else>>
+		小穴
+	<</if>>
+	片刻，然后<<he>>起身，把<<his>><<print $NPCList[0].penisdesc>>靠在你的背上。
+	<br><br>
+<<else>>
+	<<if $player.penisExist>>
+		<<He>>抓住你的<<penis>>，把它瞄向地面。"我想成功一次，"<<he>>急切地说道，"从后面干你，但上一次没能成功。"
+		<br><br>
+	<<else>>
+		<<He>>用手指抚摸你的小穴。"别动，等我弄完。"<<he>>沉声说道。
+		<br><br>
+	<</if>>
+<</if>>
+
+<<link [[继续|Prison Scarred Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Prison Scarred Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<if $NPCList[0].penis isnot "none">>
+		<<set $NPCList[0].penis to 0>>
+	<<else>>
+		<<set $NPCList[0].vagina to 0>>
+	<</if>>
+	<<set $position to "doggy">>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+
+<<if $alarm is 1>>
+	<<set $alarm to 0>>
+	另一个囚犯前来调查你的哭声，<span class="purple">但在看到<<scarred_inmate 0>>后便离开了。</span>
+	<br><br>
+<</if>>
+
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Prison Scarred Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Prison Scarred Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Prison Scarred Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>最后打了你的<<bottom>>一下，然后解开细绳。"好<<bitch>>。"<<he>>缓声道，"走吧。"
+	<br><br>
+	<<tearful>>你离开了牢房。
+	<br><br>
+	<<clotheson>>
+	<span class="green">你获得了<<scarred_inmate 0 apo>>的保护。</span><<set $prison.protection to "scarred">>
+	<br><br>
+	<<endcombat>>
+	<<prison_unbind>>
+	<<link [[继续|Prison Walkway]]>><</link>>
+	<br>
+
+<<else>>
+	<<He>>狠狠地打了你的<<bottom>>一下。"这就是你想要的吗？"<<he>>说着，一击紧接着一击。<<ggpain>><<gtrauma>><<gstress>><<pain 8>><<trauma 6>><<stress 6>>
+	<br><br>
+	<<He>>毫不留情地辱骂你，直到<<his>>的胳膊或别的累了，<<he>>才松开了<<his>>的细绳。"走，滚你妈的。"
+	<br><br>
+	<<tearful>>你离开了牢房。
+	<br><br>
+	<<clotheson>>
+	<br><br>
+	<span class="green">你获得了<<scarred_inmate 0 apo>>的保护。</span><<set $prison.protection to "scarred">>
+	<br><br>
+	<<endcombat>>
+	<<prison_unbind>>
+	<<link [[继续|Prison Walkway]]>><</link>>
+	<br>
+<</if>>
+
+:: Prison Scarred Turn
+<<effects>>
+<<bind>>
+你按照指示转身。<<scarred_inmate 0 cap>>马上把你的双手绑在身后。
+<<if $worn.neck.type.includes("leash")>>
+	<<He>>牵住你的链条。
+<<else>>
+	<<He>>咬断细绳，然后将剩余部分系在你的项圈上。
+	<<attach_leash>>
+<</if>>
+ "我们去散会步吧。"
+<br><br>
+
+<<He>>试图将你拉出牢房。
+<br><br>
+
+<<link [[顺其自然|Prison Scarred Walk]]>><</link>>
+<br>
+<<link [[反抗|Prison Scarred Resist]]>><</link>>
+<br>
+
+:: Prison Scarred Resist
+<<effects>>
+
+你反抗。
+
+<<if $prison.scarred gte 80>>
+	<<scarred_inmate 0 cap>>沮丧地咆哮道，"你真是个臭小孩。行吧。"<<He>>拧开你项圈上的绳子。"走。"<<llove>><<prison_rep scarred -5>>
+	<br><br>
+	<<prison_detach_leash>>
+	<span class="green">你获得了<<scarred_inmate 0 apo>>的保护。</span><<set $prison.protection to "scarred">>
+	<br><br>
+	<<prison_unbind>>
+	<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+<<else>>
+	<<scarred_inmate 0 cap>>咆哮。
+	<br><br>
+
+	<<link [[继续|Prison Scarred Fight]]>><<set $fightstart to 1>><</link>>
+	<br>
+<</if>>
+
+
+
+
+:: Prison Scarred Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Prison Scarred Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Prison Scarred Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Prison Scarred Fight Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<scarred_inmate 0 cap>>倒在床上，把<<his>>的前臂搁在脸上。<<glove>><<prison_rep scarred 1>>
+	<br><br>
+	<<tearful>>你逃出了牢房。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Prison Walkway]]>><</link>>
+	<br>
+
+<<elseif $enemyhealth lte 0>>
+	<<scarred_inmate 0 cap>>踉跄后退，绊倒在<<his>>的床上。<<llove>><<prison_rep scarred -1>><<grespect>><<prison_inmates 1>>
+	<br><br>
+	<<tearful>>你逃出了牢房。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Prison Walkway]]>><</link>>
+	<br>
+
+<<else>>
+	你伤得太重，不能继续战斗了。<<scarred_inmate 0 cap>>用你的皮带稳住你，把你拉出牢房。
+	<br><br>
+	<<endcombat>>
+	<<link [[继续|Prison Scarred Walk]]>><<generate_scarred_inmate 0>><<person1>><</link>>
+	<br>
+
+<</if>>
+
+<<set $daily.prison.scarredDone to true>>
+
+:: Prison Scarred Walk
+<<effects>>
+
+<<scarred_inmate 0 cap>>拉着你沿着人行道走时，用<<his>>的拳头猛击栏杆，引起了人们的注意。一群被逗乐的囚犯聚集在楼梯底部。
+<br><br>
+
+"谁想看我骑我的<<bitch>>？"<<scarred_inmate 0>>问。有人小声说想看。"你听到了吧？荡妇，弯腰。"<<He>>猛拉皮带，把你扯得跪倒在地。
+<br><br>
+
+<<Hes>>一下趴在你的背上，迫使你的身体下沉。"那就去吧。"<<he>>鼓励道，"加把劲儿。"
+<br><br>
+
+<<if $prison.scarred_level is 3>>
+	<<link [[继续|Prison Scarred Walk 2]]>><</link>>
+	<br>
+<<else>>
+	<<link [[继续|Prison Scarred Yard]]>><</link>>
+	<br>
+<</if>>
+
+:: Prison Scarred Walk 2
+<<effects>>
+
+<<scarred_inmate 0 cap>>骑着你在监狱里走来走去，不时地抽打你的<<bottom>>。其他囚犯在一旁观看，被这一奇观逗乐了。有些人问他们是否可以换一种方式骑你。<<scarred_inmate 0 cap>>考虑了一下，但决定还是自己留着。<<lrespect>><<prison_inmates -1>>
+<br><br>
+
+<<He>>最后打了下你的屁股，然后从你背上爬下。"现在大家都知道你是我的了，"<<he>>边说边解开绳子。
+<br><br>
+
+<span class="green">你获得了<<scarred_inmate 0 apo>>的保护，</span> <span class="red">但下一次可能会很危险。</span><<set $prison.scarred_level to 4>><<set $prison.protection to "scarred">>
+<br><br>
+<<prison_unbind>>
+<<prison_detach_leash>>
+
+<<link [[继续|Prison Block]]>><<clotheson>><<endevent>><</link>>
+<br>
+
+:: Prison Scarred Yard
+<<effects>>
+
+<<scarred_inmate 0 cap>>骑着你走过整个监区，不时地抽打你的<<bottom>>。当<<he>>把你带到外面时，其他囚犯跟在后面。
+<br><br>
+
+<<He>>把你赶到院子中央，然后拉扯着你的链子。更多的囚犯走过来，在你周围围成一圈。<<scarred_inmate 0 cap>>从你背上爬了下来，但依旧紧紧抓着你的绳子。<<He>>坐到草地上，把你拉到腿上，狠狠地打了下你的屁股。<<gpain>><<pain 4>>
+<br><br>
+
+其他囚犯越来越色迷迷地盯着。他们在你和<<scarred_inmate 0>>之间互相打量，权衡着自己的机会。<<He>>似乎没有注意到。<span class="purple">要是你高潮了，你会让整个人群都兴奋起来。</span>
+<br><br>
+
+<<if $worn.face.type.includes("gag")>>
+	<span class="blue">你的嘴被堵住了，无法警告<<him>>。</span>
+	<br>
+<<else>>
+	<<link [[警告|Prison Scarred Yard Warn]]>><</link>>
+	<br>
+<</if>>
+<<link [[保持沉默|Prison Scarred Yard Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Prison Scarred Yard Warn
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"如果你不小心一点的话，他们会强奸我的。"你强调道。
+<<elseif $speech_attitude is "bratty">>
+	"如果我们不小心行事，他们就要给你戴绿帽子了。"你强调道。
+<<else>>
+	"如果我们不小心行事，他们会强奸我的。"你强调道。
+<</if>>
+<br><br>
+
+<<if $prison.scarred gte 85>>
+	<<scarred_inmate 0 cap>>环顾四周，<span class="green">然后拉着你朝监狱区走去。</span>"我们找个隐秘点的地方。"
+	<br><br>
+	其中一名囚犯试图摸你，但<<scarred_inmate 0>>给了<<him>>的鼻子来了个血淋淋的教训。
+	<br><br>
+
+	<<link [[继续|Prison Scarred Yard End]]>><</link>>
+	<br>
+<<else>>
+	<<scarred_inmate 0 cap>><span class="red">击打着你的<<bottom>>。</span>"你是逃不掉的，婊子。"
+<br><br>
+
+<<link [[继续|Prison Scarred Yard Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+<</if>>
+
+:: Prison Scarred Yard End
+<<effects>>
+
+<<scarred_inmate 0 cap>>把你领回<<his>>的牢房，随后躺在自己的床上，试着把你拉到<<his>>身上。
+<br><br>
+<<endevent>>
+<<generate_scarred_inmate 0>>
+<<link [[顺其自然|Prison Scarred Sex]]>><<set $sexstart to 1>><</link>><<promiscuous1>>
+<br>
+<<link [[拒绝|Prison Scarred Sex Refuse]]>><<prison_rep scarred -1>><</link>><<llove>>
+<br>
+
+:: Prison Scarred Yard Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<npcspank>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or $orgasmdown gte 1>>
+	<span id="next"><<link [[继续|Prison Scarred Yard Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Prison Scarred Yard Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Prison Scarred Yard Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>把你拉起来。"幸运的家伙，免费看了一场表演"。<<He>>狠狠地打了你的<<bottom>>一下，把你打得往前踉跄。<<lrespect>><<glove>><<prison_rep scarred 1>><<prison_inmates -1>>
+	<br><br>
+	<<tearful>>你深呼吸。这很危险。
+	<br><br>
+	<<clotheson>>
+	<span class="green">你获得了<<scarred_inmate 0 apo>>的保护。</span><<set $prison.protection to "scarred">>
+	<br><br>
+	<<endcombat>>
+	<<prison_unbind>>
+	<<prison_detach_leash>>
+	<<link [[继续|Prison Yard]]>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	你把<<scarred_inmate 0>>推倒在地。围观的囚犯哄堂大笑。<<llove>><<grespect>><<prison_rep scarred -1>><<prison_inmates 1>>
+	<br><br>
+	<<tearful>>你逃出了院子。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Prison Block]]>><</link>>
+	<br>
+<<else>>
+	<<scarred_inmate 0 cap>>拳打一个靠得太近的围观者。围观者的朋友试图还击。而<<scarred_inmate 0 cap>>也打了那人一拳。但还有另一个人，再来了另一个人。他们把<<him>>绊倒在地，其他人则向你走来。
+	<br><br>
+
+	<<endcombat>>
+	<<link [[继续|Prison Scarred Inmate Rape]]>><<generate1>><<generate2>><<generate3>><<generate4>><<generate5>><<generate6>><<person1>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+
+:: Prison Scarred Inmate Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Prison Scarred Inmate Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Prison Scarred Inmate Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Prison Scarred Inmate Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	其他人争先恐后，直到一声哨响划破喧嚣。
+	<br><br>
+	<<tearful>>你挣扎着站起身来。
+	<span class="green">你获得了<<scarred_inmate 0 apo>>的保护。</span><<set $prison.protection to "scarred">>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<generate_veteran_guard 0>><<person1>>
+	"你扰乱了这个地方的和平与安宁，"<<veteran_guard 0>>说着，将手放在你的肩膀上，"你跟我来。"
+	<br><br>
+	<<link [[安静地跟上|Prison Punishment]]>><<endevent>><</link>>
+	<br>
+	<<link [[战斗|Prison Punishment Fight]]>><<set $fightstart to 1>><</link>>
+	<br>
+
+<<else>>
+	人群纷纷后退，被你展现出的力量所震慑。<<gggrespect>><<prison_inmates 10>>
+	<br><br>
+	<<clotheson>>
+	<span class="green">你获得了<<scarred_inmate 0 apo>>的保护。</span><<set $prison.protection to "scarred">>
+	<br><br>
+	<<endcombat>>
+	<<tearful>>你找回了方向。你看见<<generate_scarred_inmate 0>><<person1>><<scarred_inmate 0>>躺在泥里。
+	<br><br>
+	<<link [["帮助" + $NPCList[0].pronouns.him|Prison Scarred Inmate Help]]>><<prison_rep scarred 3>><</link>><<gglove>><<gghope>><<prison_hope 3>>
+	<br>
+	<<link [[走开|Prison Yard]]>><<prison_inmates 3>><<endevent>><</link>><<ggrespect>>
+	<br>
+
+<</if>>
+
+:: Prison Scarred Inmate Help
+<<effects>>
+
+你扶起<<scarred_inmate 0>>，带<<him>>去看医生。
+
+<<generate_methodical_guard 1>><<person2>><<methodical_guard 1 cap>>没有抬头看就指了张床出来。
+<br><br>
+
+"这帮混蛋，"<<scarred_inmate 0>>躺下时骂骂咧咧，"他们最好好好享受这最后的时光。"
+<br><br>
+
+当门在你身后关上时，<<Hes>>还在笑。
+<br><br>
+
+<<prison_unbind>>
+<<prison_detach_leash>>
+
+<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+<br>
+
+
+:: Prison Scarred Sex
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 50>><<promiscuity1>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Prison Scarred Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Prison Scarred Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Prison Scarred Sex Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"这楼里最棒的<<bitch>>，"<<he>>边说边摆弄你的束缚，"你可以走了。"<<glove>><<prison_rep scarred 1>>
+	<br><br>
+	<<tearful>>你离开了牢房。
+	<br><br>
+	<<clotheson>>
+	<span class="green">你获得了<<scarred_inmate 0 apo>>的保护。</span><<set $prison.protection to "scarred">>
+	<br><br>
+	<<endcombat>>
+	<<prison_unbind>>
+	<<prison_detach_leash>>
+	<<link [[继续|Prison Walkway]]>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	你把<<scarred_inmate 0>>推开。<<llove>><<prison_rep scarred -1>>
+	<br><br>
+	<<tearful>>你逃出了牢房。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Prison Walkway]]>><</link>>
+	<br>
+<<else>>
+	"他妈的荡妇"，<<scarred_inmate 0>>一边摆弄着你身上的绑带一边说道。"走吧。"
+	<br><br>
+	<<tearful>>你离开了牢房。
+	<br><br>
+	<<clotheson>>
+	<span class="green">你获得了<<scarred_inmate 0 apo>>的保护。</span><<set $prison.protection to "scarred">>
+	<br><br>
+	<<endcombat>>
+	<<prison_unbind>>
+	<<prison_detach_leash>>
+	<<link [[继续|Prison Walkway]]>><</link>>
+	<br>
+<</if>>
+
+:: Prison Scarred Ask
+<<effects>>
+
+<<generate2>>
+<<if $speech_attitude is "meek">>
+	<<gagged_speech "怎- 怎么了吗？">>你问道，<<gagged_speech "你可以告诉我的。">>
+<<elseif $speech_attitude is "bratty">>
+	<<gagged_speech "不习惯看到你这个样子，">>你问道，<<gagged_speech "发生什么了？">>
+<<else>>
+	<<gagged_speech "有什么问题吗?">>你问道，<<gagged_speech "你可以告诉我的。">>
+<</if>>
+<br><br>
+
+"给我滚。"<<he>>说道。
+
+<<if $worn.face.type.includes("gag")>>
+	<<He>>看着你的$worn.face.cn_name_cap。<span class="blue">"等你能用嘴的时候再来吧。"</span>
+	<br><br>
+
+	<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	"等等。<<He>>把手放在膝盖上，站起身来。"我有事需要你帮忙。有人来看我，但我不想见<<person2>><<him>>。你能去让<<he>>滚蛋吗？"
+	<br><br>
+	<<person1>>
+
+	<<link [[同意|Prison Scarred Sibling Agree]]>><<prison_rep scarred 25>><</link>><<ggglove>>
+	<br>
+	<<link [[拒绝|Prison Scarred Sibling Refuse]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Prison Scarred Sibling Refuse
+<<effects>>
+
+"行吧，"<<he>>骂骂咧咧，"你也可以滚蛋了。"<<He>>把<<his>>的头再度埋了下去。
+<br><br>
+
+<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+<br>
+
+:: Prison Scarred Sibling Agree
+<<effects>>
+
+<<generate_methodical_guard 2>><<person3>>
+你沿着水泥走廊向访客室走去，发现<<methodical_guard 2>>正站在一扇金属门旁等候。
+<br><br>
+"我没在等你，"<<he>>开口道。
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"对- 对不起，"你道着歉，"我是代替<<person1>><<his>>过来的。"
+<<elseif $speech_attitude is "bratty">>
+	"我是来代替<<person1>><<his>>的位置。"你回答道。
+<<else>>
+	"我是来代替<<person1>><<his>>的位置。"你回答道。
+<</if>>
+<br><br>
+
+<<methodical_guard 2 cap>><<person3>><<his>>的写字板上写下了什么东西。"一分钟。"<<He>>打开了门。
+<br><br>
+
+<<link [[继续|Prison Scarred Sibling 2]]>><</link>>
+<br>
+
+:: Prison Scarred Sibling 2
+<<effects>>
+
+你进入一个小房间，麦克风和窗户前有一把椅子。玻璃的另一边有一个<<person2>><<person>>。<<He>>看到你显得很失望。
+<br><br>
+
+"对不起，"<<he>>说道。"我没想到我的<<person1>><<if $pronoun is "m">>兄弟<<else>>姐妹<</if>>会来，但我还是希望..."
+<br><br>
+
+<<link [[诚实相待|Prison Scarred Sibling 3]]>><<set $phase to 1>><</link>>
+<br>
+<<link [[撒一个弥天大谎|Prison Scarred Sibling 3]]>><<set $phase to 0>><</link>>
+<br>
+
+
+
+:: Prison Scarred Sibling 3
+<<effects>>
+
+<<if $phase is 1>>
+	<<if $speech_attitude is "meek">>
+		"你的<<if $pronoun is "m">>兄弟<<else>>姐妹<</if>>不想来，"你回答道，"抱歉。"
+	<<elseif $speech_attitude is "bratty">>
+		"你的<<if $pronoun is "m">>兄弟<<else>>姐妹<</if>>让我代来。"你答道。
+	<<else>>
+		"你的<<if $pronoun is "m">>兄弟<<else>>姐妹<</if>>让我代来。"你答道。
+	<</if>>
+<<else>>
+	<<if $speech_attitude is "meek">>
+		"不好意思，你的<<if $pronoun is "m">>兄弟<<else>>姐妹<</if>>生病了。"你答道，"所以<<he>>让我代替<<he>>来。"
+	<<elseif $speech_attitude is "bratty">>
+		"你的<<if $pronoun is "m">>兄弟<<else>>姐妹<</if>>被痛殴了，"你答道，"所以<<he>>就喊我替<<he>>来。"
+	<<else>>
+		"你的<<if $pronoun is "m">>兄弟<<else>>姐妹<</if>>生病了，"你答道，"所以<<he>>就喊我替<<he>>来。"
+	<</if>>
+<</if>>
+<br><br>
+
+
+
+<<set $NPCList[0].name_known to 1>>
+<<save_scarred_inmate>>
+
+<<person2>><<person>>点头。"我明白了。告诉<<scarred_inmate 0>>，我们期待再次见到<<person1>><<him>>。我们知道<<he>>很羞愧，但<<hes>>不必如此。我们不以<<him>>为耻。我们本想多来看看，但要过来是件很麻烦的事情。"
+<br><br>
+<<person2>><<He>>安静了一会。"告诉<<person1>><<his>>，<<if $pronoun is "m">>爸爸<<else>>妈妈<</if>>......跟<<he>>情况一样。"
+<br><br>
+
+
+<<link [[继续|Prison Scarred Sibling 4]]>><</link>>
+<br>
+
+
+:: Prison Scarred Sibling 4
+<<effects>>
+
+<<scarred_inmate 0 cap>>正在<<his>>的牢房里等你。你把消息转告给<<his>>。
+<br><br>
+
+"我并不感到羞愧，"<<he>>坚持道，"我只是没办法和家人打交道。不过还是谢谢你。"<<He>>躺在床上，一只胳膊枕在<<his>>伤痕累累的脸上。
+<br><br>
+
+<span class="green">你获得了<<scarred_inmate 0 apo>>的保护。</span><<set $prison.protection to "scarred">>
+<br><br>
+
+<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+<br>
+
+:: Prison Scarred Sex Refuse
+<<effects>>
+
+"随你便，"<<person1>><<he>>撇嘴，"反正你以后会求我的。"
+<br><br>
+
+<span class="green">你获得了<<scarred_inmate 0 apo>>的保护。</span><<set $prison.protection to "scarred">>
+<br><br>
+<<prison_unbind>>
+<<prison_detach_leash>>
+<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+<br>

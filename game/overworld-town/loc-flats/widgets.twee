@@ -1,0 +1,192 @@
+:: Widgets Flats [widget]
+<<widget "hookah_master">>
+<<if $pronoun is "f">>女主人<<else>>主人<</if>>
+<</widget>>
+
+<<widget "hookah_init">>
+<<set $hookah to {}>>
+<<set $hookah.lurkers to 1>>
+<<set $hookah.juice to 0>>
+<</widget>>
+
+<<widget "hookah_juice">>
+
+<<if $hookah.juice gte 1>>
+    水烟机里还有足够<<number $hookah.juice>>次<<print $hookah.juice is 1 ? "使用" : "使用">>的果汁，
+<<else>>
+    水烟机里没有液体了，
+<</if>>
+冰箱里
+<<switch $hookah.lurkers>>
+    <<case 5>>
+        <span class="green">还有五只</span>
+    <<case 4>>
+        <span class="teal">还有四只</span>
+    <<case 3>>
+        <span class="lblue">还有三只</span>
+    <<case 2>>
+        <span class="blue">还有两只</span>
+    <<case 1>>
+        <span class="purple">还有一只</span>
+    <<default>>
+        <span class="pink">没有</span>
+<</switch>>
+<<print $hookah.lurkers is 1 ? "潜伏者" : "潜伏者">>。
+<br><br>
+
+<<if $hookah.juice is 0>>
+    <<if $lurkers_held gte 1>>
+        <<link [[用携带的潜伏者补充液体|Flats Hookah Juice Carried]]>><<set $lurkers_held -= 1>><<set $hookah.juice += 50>><</link>>
+        <br>
+    <<else>>
+        <<set _no_lurkers_held to 1>>
+    <</if>>
+    <<if $hookah.lurkers gte 1>>
+        <<link [[用冰箱里的潜伏者补充液体|Flats Hookah Juice Fridge]]>><<set $hookah.lurkers -= 1>><<set $hookah.juice += 50>><</link>>
+        <br>
+    <<else>>
+        <<set _no_lurkers_stored to 1>>
+    <</if>>
+    <<if _no_lurkers_held is 1 and _no_lurkers_stored is 1>>
+        <span class="blue">你没有潜伏者来补充液体。</span>
+        <br>
+    <</if>>
+<</if>>
+<<if $lurkers_held gte 1 and $hookah.lurkers lt 5>>
+    <<link [[在冰箱中储存一个潜伏者|Flats Hookah Fridge]]>><<set $lurkers_held -= 1>><<set $hookah.lurkers += 1>><</link>>
+    <br>
+<</if>>
+<</widget>>
+
+<<widget "flats_canal">>
+<<if _args[0]>>
+    <<set $flats_canal += _args[0]>>
+    <<set $flats_canal to Math.clamp($flats_canal, 0, 100)>>
+<</if>>
+<</widget>>
+
+<<widget "flats_canal_defeat">>
+<<if $flats_canal gte 50>>
+    "没关系，"<<person1>><<person>>说道，<<his>>的声音里充满愤怒。"你可以用另一种方式付款，<span class="red">你欠我们每个人的。"</span>
+    <br><br>
+    <<generate2>><<generate3>><<generate4>><<generate5>><<generate6>>
+    <<link [[继续|Flats Canal Rape]]>><<set $molestationstart to 1>><</link>>
+    <br>
+<<else>>
+    他们放了你，只是为了一场风暴般的踢打袭击你的身体。你蜷缩起来。<<ggpain>><<gtrauma>><<gstress>><<pain 4>><<trauma 6>><<stress 6>>
+    <br><br>
+    攻击停止了，那个<<person>>抓住你的头发，把你拉到膝盖上。"没关系，"<<he>>用充满愤怒的声音说道:"你可以用另一种方式付款。"
+    <br><br>
+
+    <<link [[继续|Flats Canal Oral]]>><<set $molestationstart to 1>><</link>>
+    <br>
+<</if>>
+<</widget>>
+
+<<widget "flats_canal_run">>
+<<link [[跑|Flats Canal Run]]>><<flats_canal 9>><</link>>
+<<if $weather is "rain" or $weather is "snow">>
+    <<athleticsdifficulty 400 1400>><<gggimpatience>><<note "恶劣的天气使运河里充满了泥浆，使航行变得困难，失败可能会非常危险" "red">>
+    <br>
+<<else>>
+    <<athleticsdifficulty 1 1000>><<gggimpatience>><<note "失败可能会非常危险的" "red">>
+    <br>
+<</if>>
+<</widget>>
+
+<<widget "passout_flats">>
+<<passout>>
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure)>>
+	<<link [[继续|Flats Auction]]>><</link>>
+    <br>
+<<else>>
+	<<ambulance>>
+<</if>>
+<</widget>>
+
+<<widget "flats_auction_end">>
+<<unset $flats_auction>>
+<<unset $flats_auction_fame>>
+<<unset $flats_auction_select>>
+<</widget>>
+
+<<widget "flats_alarm_time">>
+<<switch $flats_alarm_time>>
+    <<case 4>>
+        <span class="purple">"还有四分钟，"广播声音响起。</span>
+        <br><br>
+        <<flats_alarm_links>>
+    <<case 3>>
+        <span class="blue">"还有三分钟，"传来声音。"请采取顺从的姿态。"</span>
+        <br><br>
+        <<flats_alarm_links>>
+    <<case 2>>
+        <span class="purple">"还有两分钟，"广播声音响起。</span>
+        <br><br>
+        <<flats_alarm_links>>
+    <<case 1>>
+        <span class="pink">"还剩一分钟，"传来声音。"援助迫在眉睫。"</span>
+        <br><br>
+        <<flats_alarm_links>>
+    <<default>>
+        <<generate1>><<generate2>>
+        <span class="red">"警察在现场，"传来声音。"祝你有愉快的一天。"</span>百叶窗打开了，两个警察，一个<<person1>><<person>>和<<person2>><<person>>走了进来。
+        <br><br>
+
+        "我们有一个活的，"<<person1>><<person>>说。"最好悄悄地来。"<<person2>><<person>>拿着一副袖口走过来。
+        <br><br>
+
+        <<link [[安静地走|Hospital Arrest Journey]]>><<flats_alarm_end>><</link>>
+        <br>
+        <<link [[战斗|Flats Sneak Fight]]>><<set $fightstart to 1>><</link>>
+        <br>
+<</switch>>
+<</widget>>
+
+<<widget "flats_alarm_links">>
+<<if $flats_alarm_time is 1 and $flats_alarm_fabric lte 1 or $flats_alarm_time is 2 and $flats_alarm_fabric lte 0>>
+    <span class="blue">没有足够的时间完成一根绳子。</span>
+    <br>
+<<else>>
+    <<link [[用布料做一根绳子(0:01)|Flats Sneak Housekeeping]]>><<pass 1>><<set $flats_alarm_time -= 1>><</link>><<housekeepingdifficulty 1 700>>
+    <br>
+<</if>>
+<<link [[砸出一条路来(0:01)|Flats Sneak Physique]]>><<pass 1>><<set $flats_alarm_time -= 1>><</link>><<physiquedifficulty 1 35000>>
+<br>
+<<if $flats_alarm_time lte 3>>
+    <<link [[摆出顺从的姿势等待警察|Flats Sneak Assume]]>><</link>>
+    <br>
+<</if>>
+<<if $flats_alarm_time lte 1>>
+    <<link [[藏起来|Flats Sneak Hide]]>><</link>><<difficulty 0>>
+    <br>
+<</if>>
+<</widget>>
+
+<<widget "flats_alarm_end">>
+<<unset $flats_alarm_time>>
+<<unset $flats_alarm_fabric>>
+<</widget>>
+
+<<widget "flats_vents_init">>
+<<set $flats_vents_distance to 0>>
+<</widget>>
+
+<<widget "flats_vents_end">>
+<<unset $flats_vents_distance>>
+<</widget>>
+
+<<widget "flats_vents_links">>
+<<if $flats_vents_distance lt 24>>
+    <<link [[爬行更深|Flats Vents]]>><<set $flats_vents_distance += 1>><</link>>
+    <br>
+<</if>>
+<<if $flats_vents_distance gt 0>>
+    <<link [[爬向入口|Flats Vents]]>><<set $flats_vents_distance -= 1>><</link>>
+<</if>>
+<<if $flats_vents_distance is 0>>
+    <<link [[洗衣房|Flats Vents Leave]]>><</link>>
+    <br>
+<</if>>
+<</widget>>

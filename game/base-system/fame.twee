@@ -1,0 +1,164 @@
+:: Widgets Fame [widget]
+<<widget "fame">>
+	<!-- Usage: <<fame 10 "scrap" "good">>. Raises fames regardless of mask, gloryhole, etc. -->
+	<<if _args.length gte 2 and $statFreeze isnot true>>
+		<<set [$_gain, ...($_fameTypes)] to _args>> <!-- remove first element of array since it's the number -->
+		<<run $_fameTypes.forEach(fameType => $fame[fameType] += $_gain)>> <!-- add the specified amount to each specified fame type -->
+		<<fameclamp>>
+	<</if>>
+<</widget>>
+
+<<widget "fameexhibitionism">>
+	<<if _args[0] and $statFreeze isnot true>>
+		<<if $face isnot "covered" and !$worn.face.type.includes("mask") and !$gloryhole and !($npc.length is 1 and ["Eden", "Robin", "Kylar", "Sydney"].includes($npc[0])) or _args[2] is true>>
+			<<set $fame.exhibitionism += _args[0]>>
+			<<set $fame.exhibitionism to Math.clamp($fame.exhibitionism, 0, 2000)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "fameprostitution">>
+	<<if _args[0] and $statFreeze isnot true>>
+		<<if $face isnot "covered" and !$worn.face.type.includes("mask") and !$gloryhole or _args[2] is true>>
+			<<set $fame.prostitution += _args[0]>>
+			<<set $fame.prostitution to Math.clamp($fame.prostitution, 0, 2000)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "famebestiality">>
+	<<if _args[0] and $statFreeze isnot true>>
+		<<if $face isnot "covered" and !$worn.face.type.includes("mask") and !$gloryhole or _args[2] is true>>
+			<<set $fame.bestiality += _args[0]>>
+			<<set $fame.bestiality to Math.clamp($fame.bestiality, 0, 2000)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "famerape">>
+	<<if _args[0] and $statFreeze isnot true>>
+		<<if ($face isnot "covered" and !$worn.face.type.includes("mask") and !$gloryhole and !($npc.length is 1 and ["Eden", "Robin", "Kylar", "Sydney"].includes($npc[0]))) or _args[2] is true>>
+			<<set $fame.rape += _args[0]>>
+			<<set $fame.rape to Math.clamp($fame.rape, 0, 2000)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "famesex">>
+	<<if _args[0] and $statFreeze isnot true or _args[2] is true>>
+		<<if $face isnot "covered" and !$worn.face.type.includes("mask") and !$gloryhole and !($npc.length is 1 and ["Eden", "Robin", "Sydney"].includes($npc[0])) or _args[2] is true>>
+			<<set $fame.sex += _args[0]>>
+			<<set $fame.sex to Math.clamp($fame.sex, 0, 2000)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "famepregnancy">>
+	<<if _args[0] and $statFreeze isnot true and playerBellyVisible()>>
+		<<if $face isnot "covered" and !$worn.face.type.includes("mask") and !$gloryhole or _args[2] is true>>
+			<<set $fame.pregnancy += _args[0]>>
+			<<set $fame.pregnancy to Math.clamp($fame.pregnancy, 0, Math.clamp(playerNormalPregnancyTotal(),1,8) * 250)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "fameimpreg">>
+	<<if _args[0] and $statFreeze isnot true>>
+		<<if $face isnot "covered" and !$worn.face.type.includes("mask") and !$gloryhole or _args[2] is true>>
+			<<set $fame.impreg += _args[0]>>
+			<<set $fame.impreg to Math.clamp($fame.impreg, 0, 2000)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "famegood">>
+	<<if _args[0] and $statFreeze isnot true>>
+		<<if $face isnot "covered" and !$worn.face.type.includes("mask") and !$gloryhole or _args[2] is true>>
+			<<set $fame.good += _args[0]>>
+			<<set $fame.good to Math.clamp($fame.good, 0, 2000)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "famebusiness">>
+	<<if _args[0] and $statFreeze isnot true>>
+		<<if $face isnot "covered" and !$worn.face.type.includes("mask") and !$gloryhole or _args[2] is true>>
+			<<set $fame.business += _args[0]>>
+			<<set $fame.business to Math.clamp($fame.business, 0, 2000)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "famepimp">>
+	<<if _args[0] and $statFreeze isnot true>>
+		<<if $face isnot "covered" and !$worn.face.type.includes("mask") and !$gloryhole or _args[2] is true>>
+			<<set $fame.pimp += _args[0]>>
+			<<set $fame.pimp to Math.clamp($fame.pimp, 0, 2000)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "famescrap">>
+	<<if _args[0] and $statFreeze isnot true>>
+		<<if $face isnot "covered" and !$worn.face.type.includes("mask") and !$gloryhole or _args[2] is true>>
+			<<set $fame.scrap += _args[0]>>
+			<<set $fame.scrap to Math.clamp($fame.scrap, 0, 2000)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "famesocial">>
+	<<if _args[0] and $statFreeze isnot true>>
+		<<if $face isnot "covered" and !$worn.face.type.includes("mask") and !$gloryhole or _args[2] is true>>
+			<<set $fame.social += _args[0]>>
+			<<set $fame.social to Math.clamp($fame.social, 0, 2000)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "famemodel">>
+	<<if _args[0] and $statFreeze isnot true>>
+		<<if $face isnot "covered" and !$worn.face.type.includes("mask") and !$gloryhole or _args[2] is true>>
+			<<set $fame.model += _args[0]>>
+			<<set $fame.model to Math.clamp($fame.model, 0, 2000)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "famedance">>
+	<<exposure>>
+	<<if $face isnot "covered" and !$worn.face.type.includes("mask") and !$gloryhole and $statFreeze isnot true>>
+		<<if $exposed is 1>>
+			<<set $fame.exhibitionism += $audience>>
+		<<elseif $exposed gte 2>>
+			<<set $fame.exhibitionism += ($audience * 2)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "fameschoolex">>
+	<<if _args[0] and $statFreeze isnot true>>
+		<<if $face isnot "covered" and !$worn.face.type.includes("mask") and !$gloryhole>>
+			<<set $fame.exhibitionism += _args[0]>>
+			<<set $fame.exhibitionism to Math.clamp($fame.exhibitionism, 0, 2000)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "fameProse">>
+	<<switch _args[0]>>
+		<<case "scrap">>
+			<<set $_output to "战斗">>
+		<<case "good">>
+			<<set $_output to "善良">>
+		<<case "social">>
+			<<set $_output to "社交">>
+		<<case "model">>
+			<<set $_output to "模特">>
+		<<case "impreg">>
+			<<set $_output to "授孕">>
+		<<default>>
+			<<set $_output to _args[0].replace("sex","淫乱").replace("prostitution","卖淫").replace("rape","强奸").replace("bestiality","兽交").replace("scrap","战斗").replace("exhibitionism","露出").replace("model","模特").replace("pregnancy","怀孕").replace("impreg","授孕").replace("good","善良").replace("business","商业").replace("social","社交").replace("pimp","皮条")>>
+	<</switch>>
+	<<print $_output>>
+<</widget>>

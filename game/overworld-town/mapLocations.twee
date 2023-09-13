@@ -1,0 +1,68 @@
+:: mapLocations [widget]
+<<widget "mapLocations">>
+	<!--keeps track of old settings for older versions-->
+	<<if $avaliableMapsVersion is 2>>
+		<<set _map to clone($map)>>
+	<</if>>
+	<<set $map to {
+		"hideLinks": false,
+		"available": {
+			"Domus Street": ["Barb Street", "Danube Street", "Residential alleyways"],
+
+			"Barb Street": ["Domus Street", "Cliff Street", "Connudatus Street", "Residential alleyways"],
+			"Danube Street": ["Domus Street", "Wolf Street", "Connudatus Street", "Residential alleyways"],
+
+			"Connudatus Street": ["Barb Street", "Danube Street", "Cliff Street", "Wolf Street", "Residential alleyways", "Commercial alleyways"],
+
+			"Cliff Street": ["Barb Street", "Starfish Street", "Connudatus Street", "High Street", "Commercial alleyways"],
+			"Wolf Street": ["Danube Street", "Nightingale Street", "Connudatus Street", "High Street", "Commercial alleyways"],
+
+			"High Street": ["Cliff Street", "Wolf Street", "Starfish Street", "Nightingale Street", "Commercial alleyways", "Park"],
+
+			"Starfish Street": ["Cliff Street", "Mer Street", "High Street", "Oxford Street", "Park"],
+			"Nightingale Street": ["Wolf Street", "Elk Street", "High Street", "Oxford Street", "Park"],
+
+			"Oxford Street": ["Starfish Street", "Nightingale Street", "Mer Street", "Elk Street", "Park", "Industrial alleyways"],
+
+			"Mer Street": ["Starfish Street", "Oxford Street", "Harvest Street", "Industrial alleyways"],
+			"Elk Street": ["Nightingale Street", "Oxford Street", "Harvest Street", "Industrial alleyways"],
+
+			"Harvest Street": ["Mer Street", "Elk Street", "Industrial alleyways"],
+
+			"Residential alleyways": ["Domus Street", "Barb Street", "Danube Street", "Connudatus Street", "Commercial alleyways"],
+			"Commercial alleyways": ["Connudatus Street", "Cliff Street", "Wolf Street", "High Street", "Residential alleyways", "Park"],
+			"Park": ["High Street", "Starfish Street", "Oxford Street", "Nightingale Street", "Commercial alleyways", "Industrial alleyways"],
+			"Industrial alleyways": ["Oxford Street", "Mer Street", "Elk Street", "Harvest Street", "Park"]
+		},
+		"arrayList": ["Domus Street","Barb Street","Danube Street","Connudatus Street","Cliff Street","Wolf Street","High Street","Starfish Street","Nightingale Street","Oxford Street","Mer Street","Elk Street","Harvest Street","Residential alleyways","Commercial alleyways","Park","Industrial alleyways"]
+	}>>
+	<<set $availableMapsVersion to 3>>
+<</widget>>
+
+:: Widget displayLinks [widget]
+<<widget "displayLinks">>
+	<<for _i to 0; _i lt $link_table.length; _i++>>
+		<<if $map.hideLinks is true and $options.mapMovement is true>>
+			<<if $map.hideLinksCheck[_i] is true>>
+				<<continue>>
+			<</if>>
+		<</if>>
+		<<print $link_table[_i]>>
+	<</for>>
+<</widget>>
+
+<<widget "add_link">>
+	<<if _args[0]>>
+		<<set $link_table[$link_table.length] to _args[0]>>
+	<</if>>
+<</widget>>
+
+<<widget "hideDisplay">>
+	<<if $map.hideLinks is true and $options.mapMovement is true>>
+		<<if _args[0] is true>>
+			<<set $map.hideLinksCheck.push(true)>>
+		<<else>>
+			<<set $map.hideLinksCheck.push(false)>>
+		<</if>>
+	<</if>>
+<</widget>>

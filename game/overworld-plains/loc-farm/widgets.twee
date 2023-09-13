@@ -1,0 +1,2887 @@
+:: Farm Widgets [widget]
+<<widget "destinationfarmroad">>
+	<<if $bus is "farmroad1">>
+		<<link [[继续|Farm Road 1]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<<elseif $bus is "farmroad2">>
+		<<link [[继续|Farm Road 2]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<<elseif $bus is "farmroad3">>
+		<<link [[继续|Farm Road 3]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<<elseif $bus is "farmroad4">>
+		<<link [[继续|Farm Road 4]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<<elseif $bus is "farmroad5">>
+		<<link [[继续|Farm Road 5]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<<else>>
+		<<link [[继续|Farm Road 6]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<</if>>
+<</widget>>
+
+<<widget "fox_gen">>
+	<!-- Modified for monster people -->
+	<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+		<<if maleChance() lt random(1, 100)>>
+			<<set $foxGen to "female">>
+		<<else>>
+			<<set $foxGen to "male">>
+		<</if>>
+	<<else>>
+		<<if beastMaleChance() lt random(1, 100)>>
+			<<set $foxGen to "vixen">>
+		<<else>>
+			<<set $foxGen to "reynard">>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "fox_text">>
+	<<if $foxGen is "male">>
+		<<set _text_output to "狐狸少年">>
+	<<elseif $foxGen is "female">>
+		<<set _text_output to "狐狸少女">>
+	<<elseif $foxGen is "vixen">>
+		<<set _text_output to "雌狐">>
+	<<elseif $foxGen is "reynard">>
+		<<set _text_output to "狐狸">>
+	<</if>>
+	<<print _text_output>>
+<</widget>>
+
+<<widget "farm_work_time">>
+	<<set _farm_work_time to Math.trunc(((Time.hour * 60) / 20) - 17)>>
+	<<if _farm_work_time gte 46 or _args[0] is "midnight">>
+		<<set _farm_work_time to 46>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_milk_check">>
+	<<farm_work_time>>
+	<<if _farm_work_time gte 30>>
+		<<set $farm_work.cattle_need to (18 - $farm_work.cattle_milked)>>
+	<<elseif _farm_work_time gte 10>>
+		<<set $farm_work.cattle_need to (12 - $farm_work.cattle_milked)>>
+	<<else>>
+		<<set $farm_work.cattle_need to (6 - $farm_work.cattle_milked)>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_work_update">>
+	<<alexclamp>>
+	<<farm_work_time _args[0]>>
+
+	<<if _args[0] is "midnight" and $farm_work>>
+		<<if $farm_work.recent_shift gte 660>>
+			<<earnFeat "Dawn to Dusk">>
+		<</if>>
+	<</if>>
+
+	<<if $farm_work is undefined>>
+		<<set $farm_work to {}>>
+		<<set $farm_work.time to 0>>
+		<<set $farm_work.shower to 0>>
+		<<set $farm_work.border to 0>>
+		<<set $farm_work.yard to 0>>
+		<<set $farm_work.chickens_fed to 0>>
+		<<set $farm_work.chickens_out to 0>>
+		<<set $farm_work.pigs_fed to 0>>
+		<<set $farm_work.pigs_out to 0>>
+		<<set $farm_work.horses_brushed to 0>>
+		<<set $farm_work.horses_out to 0>>
+		<<set $farm_work.horses_satisfied to 0>>
+		<<set $farm_work.cattle_out to 0>>
+		<<set $farm_work.cattle_milked to 0>>
+		<<set $farm_work.cattle_need to 0>>
+		<<set $farm_work.dogs_fed to 0>>
+		<<set $farm_work.alex_relax to 0>>
+		<<set $farm_work.still to 0>>
+		<<set $farm_work.tending to 0>>
+		<<set $farm_work.hay to 0>>
+		<<set $farm_work.admin to 0>>
+		<<if $farm>>
+			<<if $farm.woodland>>
+				<<set $farm_work.woodland to 0>>
+			<</if>>
+		<</if>>
+		<<set $farm_work.event_time to random(60, 300)>>
+		<<set $farm_work.recent_shift to 0>>
+		<<if $farm_stage gte 5>>
+			<<set $farm_work.fence_damage to 0>>
+			<<farm_fence_damage 6>>
+		<<else>>
+			<<if random(1, 3) is 3>>
+				<<set $farm_work.fence_damage to random(0, 6)>>
+			<</if>>
+		<</if>>
+
+		<<set $farm_work.dog to {}>>
+		<<set $farm_work.pig to {}>>
+		<<set $farm_work.horse to {}>>
+		<<set $farm_work.cattle to {}>>
+			<!-- Modified for monster people -->
+		<<set $farm_work.horse.monster_roll to false>>
+		<<set $farm_work.pig.monster_roll to false>>
+		<<set $farm_work.dog.monster_roll to false>>
+		<<set $farm_work.cattle.monster_roll to false>>
+		<<if $hallucinations gte 1 or $monsterhallucinations is "f">>
+			<<set $farm_work.horse.monster_roll to $monsterchance gte random(1, 100)>>
+			<<set $farm_work.pig.monster_roll to $monsterchance gte random(1, 100)>>
+			<<set $farm_work.dog.monster_roll to $monsterchance gte random(1, 100)>>
+			<<set $farm_work.cattle.monster_roll to $monsterchance gte random(1, 100)>>
+		<</if>>
+		<<unset $farm_kennel>>
+		<<farm_gen_all>>
+	<</if>>
+	<<set _farm_alex_actions to _farm_work_time - $farm_work.time>>
+
+	<<for _i = 0; _i < _farm_alex_actions; _i++>>
+		<<if $farm_work.chickens_panic gte 1>>
+			<<set $farm_work.chickens_panic to 0>>
+			<<set $farm_work.alex to "chickens_panic">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.pigs_panic gte 1>>
+			<<set $farm_work.pigs_panic to 0>>
+			<<set $farm_work.alex to "pigs_panic">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.horses_panic gte 1>>
+			<<set $farm_work.horses_panic to 0>>
+			<<set $farm_work.alex to "horses_panic">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.cattle_panic gte 1>>
+			<<set $farm_work.cattle_panic to 0>>
+			<<set $farm_work.alex to "cattle_panic">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.dogs_panic gte 1>>
+			<<set $farm_work.dogs_panic to 0>>
+			<<set $farm_work.alex to "dogs_panic">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.shower lt 1>>
+			<<set $farm_work.shower to 1>>
+			<<set $farm_work.alex to "shower">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.border lt 1>>
+			<<set $farm_work.border to 1>>
+			<<set $farm_work.alex to "border">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.yard lt 1>>
+			<<set $farm_work.yard to 1>>
+			<<set $farm_work.alex to "yard">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.chickens_fed lt 1>>
+			<<set $farm_work.chickens_fed to 1>>
+			<<set $farm_work.alex to "chickens_fed">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.chickens_out lt 1>>
+			<<set $farm_work.chickens_out to 1>>
+			<<set $farm_work.alex to "chickens_out">>
+			<<continue>>
+		<<elseif $farm_work.chickens_out lt 2 and _farm_work_time gte 40>>
+			<<set $farm_work.chickens_out to 2>>
+			<<set $farm_work.alex to "chickens_in">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.pigs_out lt 1>>
+			<<set $farm_work.pigs_out to 1>>
+			<<set $farm_work.alex to "pigs_out">>
+			<<continue>>
+		<<elseif $farm_work.pigs_out lt 2 and _farm_work_time gte 40>>
+			<<set $farm_work.pigs_out to 2>>
+			<<set $farm_work.alex to "pigs_in">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.horses_out lt 1>>
+			<<set $farm_work.horses_out to 1>>
+			<<set $farm_work.alex to "horses_out">>
+			<<continue>>
+		<<elseif $farm_work.horses_out lt 2 and _farm_work_time gte 40>>
+			<<set $farm_work.horses_out to 2>>
+			<<set $farm_work.alex to "horses_in">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.cattle_out lt 1>>
+			<<set $farm_work.cattle_out to 1>>
+			<<set $farm_work.alex to "cattle_out">>
+			<<continue>>
+		<<elseif $farm_work.cattle_out lt 2 and _farm_work_time gte 40>>
+			<<set $farm_work.cattle_out to 2>>
+			<<set $farm_work.alex to "cattle_in">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.fence_damage gte 1>>
+			<<set $farm_work.fence_damage -= 1>>
+			<<set $farm_work.alex to "fence_damage">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.hay lt 6>>
+			<<set $farm_work.hay += 1>>
+			<<set $farm_work.alex to "hay">>
+			<<continue>>
+		<</if>>
+		<<if $farm>>
+			<<if $farm.woodland>>
+				<<if $farm_work.woodland lt $farm.woodland>>
+					<<set $farm_work.woodland += 1>>
+					<<set $farm_work.alex to "woodland">>
+					<<continue>>
+				<</if>>
+			<</if>>
+		<</if>>
+		<<if $farm_work.cattle_milked lt 6>>
+			<<set $farm_work.cattle_milked += 6>>
+			<<set $farm_work.alex to "cattle_milked">>
+			<<continue>>
+		<<elseif $farm_work.cattle_milked lt 12 and _farm_work_time gte 16>>
+			<<set $farm_work.cattle_milked += 6>>
+			<<set $farm_work.alex to "cattle_milked">>
+			<<continue>>
+		<<elseif $farm_work.cattle_milked lt 18 and _farm_work_time gte 36>>
+			<<set $farm_work.cattle_milked += 6>>
+			<<set $farm_work.alex to "cattle_milked">>
+			<<continue>>
+		<</if>>
+		<<farm_milk_check>>
+		<<if $farm_work.chicken_eggs lt 1 and _farm_work_time gte 26>>
+			<<set $farm_work.chicken_eggs to 1>>
+			<<est $farm_work.alex to "chicken_eggs">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.dogs_fed lt 1 or (_farm_work_time gte 40 and $farm_work.dogs_fed lt 2)>>
+			<<set $farm_work.dogs_fed += 1>>
+			<<set $farm_work.alex to "dogs_fed">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.pigs_fed lt 6>>
+			<<set $farm_work.pigs_fed += 1>>
+			<<set $farm_work.alex to "pigs_fed">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.horses_brushed lt 6>>
+			<<set $farm_work.horses_brushed += 6>>
+			<<set $farm_work.alex to "horses_brushed">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.alex_relax lt 3 and _farm_work_time gte 16>>
+			<<set $farm_work.alex_relax += 1>>
+			<<set $farm_work.alex to "relax">>
+			<<continue>>
+		<</if>>
+		<<if $farm_work.still lt 3>>
+			<<set $farm_work.still += 1>>
+			<<set $farm_work.alex to "still">>
+			<<continue>>
+		<</if>>
+		<<if $farm_stage gte 7>>
+			/*The PC handles the fields from this point.*/
+		<<elseif $farm_stage gte 6>>
+			<<if $farm_work.tending lt 18>>
+				<<set $farm_work.tending += 1>>
+				<<set $farm_work.alex to "tending">>
+				<<continue>>
+			<</if>>
+		<<elseif $farm_stage gte 5>>
+			<<if $farm_work.tending lt 14>>
+				<<set $farm_work.tending += 1>>
+				<<set $farm_work.alex to "tending">>
+				<<continue>>
+			<</if>>
+		<<elseif $farm_stage gte 4>>
+			<<if $farm_work.tending lt 10>>
+				<<set $farm_work.tending += 1>>
+				<<set $farm_work.alex to "tending">>
+				<<continue>>
+			<</if>>
+		<<else>>
+			<<if $farm_work.tending lt 6>>
+				<<set $farm_work.tending += 1>>
+				<<set $farm_work.alex to "tending">>
+				<<continue>>
+			<</if>>
+		<</if>>
+		<<if $farm_work.admin lt 6 or $farm_stage is 12>>
+			<<set $farm_work.admin += 1>>
+			<<set $farm_work.alex to "admin">>
+			<<continue>>
+		<</if>>
+
+		<<set $farm.clearing -= 1>>
+		<<set $farm_work.alex to "clearing">>
+	<</for>>
+
+
+	<<if _farm_work_time gte 0 or _args[0] is "midnight">>
+		<<set $farm_work.time to _farm_work_time>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_alex">>
+	<span class="lblue">
+		<<switch $farm_work.alex>>
+			<<case "shower">>
+				你听到农舍旁边的棚屋里传来流水声。艾利克斯正在洗澡。
+			<<case "border">>
+				艾利克斯沿着农场的边界走，检查围墙和栅栏是否有损坏。
+			<<case "yard">>
+				<<if $weather is "snow">>
+					艾利克斯正在清理院子里的雪。
+				<<else>>
+					艾利克斯正在清理院子里的落叶。
+				<</if>>
+			<<case "chickens_fed">>
+				艾利克斯正在喂鸡。
+			<<case "chickens_out">>
+				艾利克斯已经把鸡放进了院子，正在打扫鸡笼。
+			<<case "chickens_in">>
+				艾利克斯正在把鸡赶回鸡笼。
+			<<case "pigs_out">>
+				艾利克斯已经把<<farm_text_many pig>>放进了室外的猪圈，正在打扫猪圈。
+			<<case "pigs_in">>
+				艾利克斯正把<<farm_text_many pig>>赶回猪圈。
+			<<case "horses_out">>
+				艾利克斯正牵着<<farm_text_many horse>>去田野。
+			<<case "horses_in">>
+				艾利克斯正把<<farm_text_many horse>>赶回马厩。
+			<<case "cattle_out">>
+				艾利克斯已经把<<farm_text_many cattle>>放进了田地，正在打扫它们的牛棚。
+			<<case "cattle_in">>
+				艾利克斯正把<<farm_text_many cattle>>赶回牛棚。
+			<<case "cattle_milked">>
+				艾利克斯正在把<<farm_text_many cattle>>连接到挤奶机上。
+			<<case "chicken_eggs">>
+				艾利克斯正在收集鸡蛋。
+			<<case "pigs_fed">>
+				艾利克斯正提着沉重的猪饲料桶穿过院子。
+			<<case "horses_brushed">>
+				艾利克斯正在刷马。
+			<<case "relax">>
+				艾利克斯在树下休息。
+			<<case "still">>
+				<<if $farm_stage gte 9>>
+					艾利克斯正在实验室工作。
+				<<else>>
+					艾利克斯消失在一座古老的石头建筑里。门锁上了。
+				<</if>>
+			<<case "tending">>
+				艾利克斯正在照料庄稼。
+			<<case "clearing">>
+				<<if $farm_stage is 12>>
+					艾利克斯倚在农舍楼上的窗台上打电话。
+				<<else>>
+					艾利克斯正在与杂草作斗争，这些杂草荒废了田地。
+				<</if>>
+			<<case "chickens_panic">>
+				艾利克斯正在安抚小鸡。
+			<<case "pigs_panic">>
+				艾利克斯正在试图让<<farm_text_many pig>>平静下来。
+			<<case "horses_panic">>
+				艾利克斯正在抚慰<<farm_text_many horse>>.
+			<<case "cattle_panic">>
+				艾利克斯正在安抚<<farm_text_many cattle>>.
+			<<case "dogs_panic">>
+				艾利克斯抚摸着<<farm_text_many dog>>.
+			<<case "panic">>
+				艾利克斯四处奔忙，试图安抚动物们。
+			<<case "fence_damage">>
+				艾利克斯正在修复外围。
+			<<case "dogs_fed">>
+				艾利克斯正在喂<<farm_text_many dog>>.
+			<<case "hay">>
+				<<if Time.season is "winter">>
+					艾利克斯正在检查建筑物是否有损伤。
+				<<elseif Time.season is "spring">>
+					艾利克斯正在照料干草地。
+				<<else>>
+					艾利克斯正在收集干草。
+				<</if>>
+			<<case "woodland">>
+				艾利克斯在树林里工作。
+			<<case "admin">>
+				艾利克斯倚在农舍楼上的窗台上打电话。
+		<</switch>>
+	</span>
+	<br><br>
+<</widget>>
+
+<<widget "farm_status">>
+	<span class="purple">
+		<<if $farm_work.border lt 1>>
+			需要有人检查边境是否有入室盗窃和其他损坏。
+			<br>
+		<<elseif $farm_work.fence_damage gte 10>>
+			<span class="red">四周急需修理。</span>
+			<br>
+		<<elseif $farm_work.fence_damage gte 5>>
+			<span class="pink">四周急需修理。</span>
+			<br>
+		<<elseif $farm_work.fence_damage gte 1>>
+			<span class="purple">四周需要修理。</span>
+			<br>
+		<</if>>
+		<<if $farm_work.yard lt 1>>
+			<<if $weather is "snow">>
+				院子里覆盖着雪。
+			<<else>>
+				院子里堆满了落叶。
+			<</if>>
+			<br>
+		<</if>>
+		<<if $farm_work.chickens_panic gte 1>>
+			<span class="pink">小鸡在叽叽喳喳的乱叫，快要把人耳朵吵聋了。</span>
+			<br>
+		<<elseif $farm_work.chickens_out lt 1>>
+			鸡在鸡笼边咯咯地叫，渴望被放出去。
+			<br>
+		<<elseif $farm_work.chickens_fed lt 1>>
+			饥饿的小鸡跟着你穿过院子。
+			<br>
+		<<elseif $farm_work.chickens_out lt 2 and _farm_work_time gte 36>>
+			鸡避开越来越大的阴影。
+			<br>
+		<</if>>
+		<<if $farm_work.pigs_panic gte 1>>
+			<span class="pink"><<farm_text_many pig>>正在疯狂地乱叫。它们正试图挖出一条出路。</span>
+			<br>
+		<<elseif $farm_work.pigs_out lt 1>>
+			<<farm_text_many pig>>焦躁不安。
+			<br>
+		<<elseif $farm_work.pigs_fed lt 1>>
+			<<farm_text_many pig>>在泥土里翻找着剩余的食物。
+			<br>
+		<<elseif $farm_work.pigs_fed lt 6>>
+			<<farm_text_many pig>>有一些食物，但不足以满足它们的胃口。
+			<br>
+		<<elseif $farm_work.pigs_out lt 2 and _farm_work_time gte 36>>
+			<<farm_text_many pig>>挤在一起取暖。
+			<br>
+		<</if>>
+		<<if $farm_work.horses_panic gte 1>>
+			<<if $farm_work.horses_out lt 1 or $farm_work.horses_out gte 3>>
+				<span class="pink"><<farm_text_many horse>>在田野上疾驰，惊慌地嘶鸣。</span>
+			<<else>>
+				<span class="pink"><<farm_text_many horse>>猛撞马厩的门，试图逃跑。</span>
+			<</if>>
+			<br>
+		<<elseif $farm_work.horses_out lt 1>>
+			<<if $farm_work.horse.monster is true>>
+				半人马对你大喊大叫，要求你放它们出去。
+				<br>
+			<<else>>
+				马在马厩里踱来踱去。
+				<br>
+			<</if>>
+		<<elseif $farm_work.horses_brushed lt 1>>
+			<<if $farm_work.horse.monster is true>>
+				半人马需要刷毛了。
+				<br>
+			<<else>>
+				这些马需要刷毛了。
+				<br>
+			<</if>>
+		<<elseif $farm_work.horses_brushed lt 2>>
+			<<if $farm_work.horse.monster is true>>
+				一个半人马被刷了毛，但其他的还需要注意。
+				<br>
+			<<else>>
+				一匹马被刷毛了，但其他的马还需要照料。
+				<br>
+			<</if>>
+		<<elseif $farm_work.horses_brushed lt 6>>
+			<<if $farm_work.horse.monster is true>>
+				半人马需要更多的刷洗。
+				<br>
+			<<else>>
+				马需要更多的刷洗。
+				<br>
+			<</if>>
+		<<elseif $farm_work.horses_out lt 2 and _farm_work_time gte 36>>
+			<<if $farm_work.horse.monster is true>>
+				一些半人马躺在草地上，疲惫不堪。
+				<br>
+			<<else>>
+				有几匹马躺在草地上，一天下来已经筋疲力尽了。
+				<br>
+			<</if>>
+		<<elseif $deviancy gte 35 and $farm_work.horses_satisfied lt 6 and $farm_work.horses_out lt 2>> <!-- Modified for Beast People -->
+			<<if $farm_work.horse.monster is true and $horsedisable is "f">>
+				半人马似乎很激动。他们需要"特别"的关注。
+				<br>
+			<<elseif $bestialitydisable is "f" and $horsedisable is "f">>
+				马似乎很激动。它们需要"特别"的关注。
+				<br>
+			<</if>>
+		<</if>>
+		<<if $farm_work.cattle_panic gte 1>>
+			<span class="pink"><<farm_text_many cattle>>步伐颤抖。</span>
+			<br>
+		<<elseif $farm_work.cattle_out lt 1>>
+			<<farm_text_many cattle>>在牛棚里哞哞叫着，渴望被放出去。
+			<br>
+		<<elseif $farm_work.cattle_milked lt 6>>
+			<<farm_text_many cattle>>们的步伐有些奇怪，它们看起来需要被挤奶。
+			<br>
+		<<elseif $farm_work.cattle_milked lt 12 and _farm_work_time gte 10>>
+			<<farm_text_many cattle>>们的步伐有些奇怪，它们看起来需要被挤奶。
+			<br>
+		<<elseif $farm_work.cattle_milked lt 18 and _farm_work_time gte 30>>
+			<<farm_text_many cattle>>们的步伐有些奇怪，它们看起来需要被挤奶。
+			<br>
+		<<elseif $farm_work.cattle_out lt 2 and _farm_work_time gte 36>>
+			<<farm_text_many cattle>>在牛棚里恐惧的聚集在一起，害怕越来越大的阴影。
+			<br>
+		<</if>>
+		<<if $farm_work.dogs_panic gte 1>>
+			<span class="pink"><<farm_text_many dog>>对着天空嚎叫。</span>
+			<br>
+		<<elseif $farm_work.dogs_fed lt 1 or ($farm_work.dogs_fed lt 2 and _farm_work_time gte 36)>>
+			<<farm_text_many dog>>看着通往田野的大门，渴望着它们的食物。
+			<br>
+		<</if>>
+		<<if $farm_stage is 6 and $farm_work.tending lte 18>>
+			庄稼需要照料。
+			<br>
+		<<elseif $farm_stage is 5 and $farm_work.tending lte 14>>
+			庄稼需要照料。
+			<br>
+		<<elseif $farm_stage is 4 and $farm_work.tending lte 10>>
+			庄稼需要照料。
+			<br>
+		<<elseif ($farm_stage is 3 or $farm_stage is 2) and $farm_work.tending lte 6>>
+			庄稼需要照料。
+			<br>
+		<</if>>
+		<<if $farm_work.woodland lt $farm.woodland>>
+			林地需要照料。
+			<br>
+		<</if>>
+	</span>
+	<br>
+<</widget>>
+
+<<widget "farm_actions">>
+	<<farm_gen_all>>
+	<<set _actions to 0>>
+	<<if $farm_work.alex is "shower" and !$daily.farmAlexShowerSpy>>
+		<<set $skulduggerydifficulty to 700>>
+		<<ind>><<link [[偷看艾利克斯 (0:20)|Farm Spy]]>><<pass 20>><</link>><<promiscuous1>><<skulduggerydifficulty>>
+		<br>
+	<</if>>
+	<<if Time.hour gte 6>>
+		<<if $farm_work.border lt 1>>
+			<<investigateicon>><<link [[调查周边(0:20)|Farm Border]]>><<farm_count 20>><<set $farm_work.border to 1>><<pass 20>><</link>><<run _actions++>>
+			<br>
+		<<elseif $farm_work.fence_damage gte 1>>
+			<<if $farm_work.alex is "fence_damage">>
+				<<ind>><<link [[帮助艾利克斯修复周边 (0:20)|Farm Perimeter Alex]]>><<npcincr Alex love 1>><<farm_count 20>><<set $farm_work.fence_damage -= 1>><<pass 20>><</link>><<glove>><<run _actions++>>
+				<br>
+			<<else>>
+				<<ind>><<link [[修复周边(0:20)|Farm Perimeter]]>><<farm_count 20>><<set $farm_work.fence_damage -= 1>><<pass 20>><</link>><<run _actions++>>
+				<br>
+			<</if>>
+		<</if>>
+	<</if>>
+		<<if $farm_work.yard lt 1>>
+			<<clearyardicon>><<link [[清理庭院(0:20)|Farm Yard]]>><<farm_count 20>><<set $farm_work.yard to 1>><<pass 20>><<tiredness 2>><</link>><<gtiredness>><<run _actions++>>
+			<br>
+		<</if>>
+	<<if Time.hour gte 6>>
+		<<if $farm_work.chickens_panic gte 1>>
+			<<chickenicon>><<link [[让鸡安静下来(0:20)|Farm Chickens Calm]]>><<farm_count 20>><<pass 20>><</link>><<tendingdifficulty 1 300>><<run _actions++>>
+			<br>
+		<<elseif $farm_work.chickens_out lt 1>>
+			<<chickenicon>><<link [[把鸡放出来(0:20)|Farm Chickens Out]]>><<farm_count 20>><<set $farm_work.chickens_out to 1>><<pass 20>><</link>><<run _actions++>>
+			<br>
+		<<elseif $farm_work.chickens_fed lt 1>>
+			<<chickenicon>><<link [[喂鸡(0:20)|Farm Chickens Feed]]>><<farm_count 20>><<set $farm_work.chickens_fed to 1>><<pass 20>><</link>><<run _actions++>>
+			<br>
+		<<elseif $farm_work.chickens_out lt 2 and _farm_work_time gte 36>>
+			<<chickenicon>><<link [[把鸡赶到鸡笼里(0:20)|Farm Chickens In]]>><<farm_count 20>><<set $farm_work.chickens_out to 2>><<pass 20>><</link>><<run _actions++>>
+			<br>
+		<</if>>
+		<<if $farm_work.pigs_panic gte 1>>
+			<<pigicon>><<link [[让猪安静下来(0:20)|Farm Pigs Calm]]>><<farm_count 20>><<pass 20>><</link>><<physiquedifficulty 1 $physiquemax>><<run _actions++>>
+			<br>
+		<<elseif $farm_work.pigs_out lt 1>>
+			<<pigicon>><<link [[把猪放出去(0:20)|Farm Pigs Out]]>><<farm_count 20>><<set $farm_work.pigs_out to 1>><<pass 20>><</link>><<run _actions++>>
+			<br>
+		<<elseif $farm_work.pigs_fed lt 6>>
+			<<if $farm_work.alex is "pigs_fed">>
+				<<pigicon>><<link [[帮助艾利克斯喂猪 (0:20)|Farm Pigs Feed Alex]]>><<farm_count 20>><<set $farm_work.pigs_fed += 1>><<pass 20>><</link>><<run _actions++>>
+				<br>
+			<<else>>
+				<<pigicon>><<link [[喂猪(0:20)|Farm Pigs Feed]]>><<farm_count 20>><<set $farm_work.pigs_fed += 1>><<pass 20>><<tiredness 2>><</link>><<gtiredness>><<run _actions++>>
+				<br>
+			<</if>>
+		<<elseif $farm_work.pigs_out lt 2 and _farm_work_time gte 36>>
+			<<pigicon>><<link [[把猪赶到猪圈里(0:20)|Farm Pigs In]]>><<farm_count 20>><<set $farm_work.pigs_out to 2>><<pass 20>><</link>><<run _actions++>>
+			<br>
+		<</if>>
+		<<if $farm_work.horses_panic gte 1>>
+			<<horseicon>><<link [[让马平静下来(0:20)|Farm Horses Calm]]>><<farm_count 20>><<pass 20>><</link>><<tendingdifficulty 1 1000>><<run _actions++>>
+			<br>
+		<<elseif $farm_work.horses_out lt 1>>
+			<<if $farm_work.horse.monster is true>>
+				<<horseicon>><<link [[把半人马放出来(0:20)|Farm Horses Out]]>><<farm_count 20>><<set $farm_work.horses_out to 1>><<pass 20>><</link>><<run _actions++>>
+			<<else>>
+				<<horseicon>><<link [[把马放出去(0:20)|Farm Horses Out]]>><<farm_count 20>><<set $farm_work.horses_out to 1>><<pass 20>><</link>><<run _actions++>>
+			<</if>>
+			<br>
+		<<elseif $farm_work.horses_brushed lt 6>>
+			<<if $farm_work.horse.monster is true>>
+				<<horseicon>><<link [[帮半人马刷毛(0:20)|Farm Horses Brush]]>><<farm_count 20>><<set $farm_work.horses_brushed += 1>><<pass 20>><<tending 2>><<trauma -2>><</link>><<gtending>><<ltrauma>><<run _actions++>>
+			<<else>>
+				<<horseicon>><<link [[帮马刷毛(0:20)|Farm Horses Brush]]>><<farm_count 20>><<set $farm_work.horses_brushed += 1>><<pass 20>><<tending 2>><<trauma -2>><</link>><<gtending>><<ltrauma>><<run _actions++>>
+			<</if>>
+			<br>
+		<<elseif $farm_work.horses_out lt 2 and _farm_work_time gte 36>>
+			<<if $farm_work.horse.monster is true>>
+				<<horseicon>><<link [[把半人马赶到马厩去(0:20)|Farm Horses In]]>><<farm_count 20>><<set $farm_work.horses_out to 2>><<pass 20>><</link>><<run _actions++>>
+			<<else>>
+				<<horseicon>><<link [[把马赶到马厩去(0:20)|Farm Horses In]]>><<farm_count 20>><<set $farm_work.horses_out to 2>><<pass 20>><</link>><<run _actions++>>
+			<</if>>
+			<br>
+		<!-- Modified for Beast People -->
+		<<elseif $deviancy gte 35 and $farm_work.horses_satisfied lt 6 and $farm_work.horses_out lt 2 and $horsedisable is "f">>
+			<<if $farm_work.horse.monster is true>>
+				<<horseicon>><<link [[接近半人马|Farm Horses Lewd]]>><</link>><<run _actions++>>
+			<<elseif $bestialitydisable is "f">>
+				<<horseicon>><<link [[接近一匹马|Farm Horses Lewd]]>><</link>><<run _actions++>>
+			<</if>>
+			<br>
+		<</if>>
+		<<if $farm_work.cattle_panic gte 1>>
+			<<cowicon>><<link [[安抚牛群(0:20)|Farm Cattle Calm]]>><<farm_count 20>><<pass 20>><</link>><<tendingdifficulty 1 500>><<run _actions++>>
+			<br>
+		<<elseif $farm_work.cattle_out lt 1>>
+			<<cowicon>><<link [[把牛放出去(0:20)|Farm Cattle Out]]>><<farm_count 20>><<set $farm_work.cattle_out to 1>><<pass 20>><</link>><<run _actions++>>
+			<br>
+		<<elseif $farm_work.cattle_milked lt 6>>
+			<<cowicon>><<link [[给牛挤奶|Farm Cattle Milk]]>><</link>><<run _actions++>>
+			<br>
+		<<elseif $farm_work.cattle_milked lt 12 and _farm_work_time gte 10>>
+			<<cowicon>><<link [[给牛挤奶|Farm Cattle Milk]]>><</link>><<run _actions++>>
+			<br>
+		<<elseif $farm_work.cattle_milked lt 18 and _farm_work_time gte 30>>
+			<<cowicon>><<link [[给牛挤奶|Farm Cattle Milk]]>><</link>><<run _actions++>>
+			<br>
+		<<elseif $farm_work.cattle_out lt 2 and _farm_work_time gte 36>>
+			<<cowicon>><<link [[把牛赶进牛棚(0:20)|Farm Cattle In]]>><<farm_count 20>><<pass 20>><<set $farm_work.cattle_out to 2>><</link>><<run _actions++>>
+			<br>
+		<</if>>
+		<<if $farm_work.dogs_panic gte 1>>
+			<<dogicon>><<link [[让狗安静下来(0:20)|Farm Dogs Calm]]>><<farm_count 20>><<pass 20>><</link>><<tendingdifficulty 1 700>><<run _actions++>>
+			<br>
+		<<elseif $farm_work.dogs_fed lt 1 or _farm_work_time gte 36 and $farm_work.dogs_fed lt 2>>
+			<<dogicon>><<link [[喂狗(0:20)|Farm Dogs Feed]]>><<farm_count 20>><<pass 20>><<set $farm_work.dogs_fed += 1>><</link>><<run _actions++>>
+			<br>
+		<</if>>
+	<</if>>
+
+	<<if $farm_work.alex is "relax" and ($exposed lt 2 or $exhibitionism gte 75)>>
+		<<ind>><<link [[加入艾利克斯 (0:20)|Farm Rest]]>><<farm_count 20>><<trauma -2>><<stress -2>><<npcincr Alex love 1>><<set $phase to 1>><<pass 20>><</link>><<glove>><<ltrauma>><<lstress>>
+		<br>
+	<<if $farm_stage gte 4 and $milkshake gte 2>>
+		<<ind>><<link [[送奶昔(0:20)|Alex Give Milkshake]]>><<farm_count 20>><<pass 20>><<set $milkshake -= 2>><<set $daily.alex.milkshake to true>><<npcincr Alex love 1>><<stress -5>><</link>><<glove>><<lstress>>
+		<br>
+	<</if>>
+	<<if $farm_stage gte 7 and $alex_countdown is undefined and $milkshake gte 1>>
+		<<ind>><<link [[分享奶昔(0:20)|Alex Share Milkshake]]>><<farm_count 20>><<pass 20>><<set $milkshake -= 1>><<set $daily.alex.milkshake to true>><<npcincr Alex love 2>><<stress -10>><</link>><<gglove>><<lstress>>
+		<br>
+	<</if>>
+	<</if>>
+	<<if $farm_stage gte 7>>
+		/*The PC tends the field in more detail via the tending system after this point.*/
+	<<elseif $farm_stage gte 6 and $farm_work.tending lte 18>>
+		<<if $farm_work.alex is "tending">>
+			<<if ($exposed lt 2 or $exhibitionism gte 75)>>
+				<<ind>><<link [[帮艾利克斯照料庄稼 (0:20)|Farm Tending Alex]]>><<farm_count 20>><<pass 20>><<tending 2>><<tiredness 2>><<physique 2>><<set $farm_work.tending += 1>><</link>><<gtiredness>><<gtending>><<run _actions++>>
+				<br>
+			<</if>>
+		<<else>>
+			<<ind>><<link [[照料庄稼(0:20)|Farm Tending]]>><<farm_count 20>><<pass 20>><<tending 2>><<tiredness 2>><<physique 2>><<set $farm_work.tending += 1>><</link>><<gtiredness>><<gtending>><<run _actions++>>
+			<br>
+		<</if>>
+	<<elseif $farm_stage gte 5 and $farm_work.tending lte 14>>
+		<<if $farm_work.alex is "tending">>
+			<<if ($exposed lt 2 or $exhibitionism gte 75)>>
+				<<ind>><<link [[帮艾利克斯照料庄稼 (0:20)|Farm Tending Alex]]>><<farm_count 20>><<pass 20>><<tending 2>><<tiredness 2>><<physique 2>><<set $farm_work.tending += 1>><</link>><<gtiredness>><<gtending>><<run _actions++>>
+				<br>
+			<</if>>
+		<<else>>
+			<<ind>><<link [[照料庄稼(0:20)|Farm Tending]]>><<farm_count 20>><<pass 20>><<tending 2>><<tiredness 2>><<physique 2>><<set $farm_work.tending += 1>><</link>><<gtiredness>><<gtending>><<run _actions++>>
+			<br>
+		<</if>>
+	<<elseif $farm_stage gte 4 and $farm_work.tending lte 10>>
+		<<if $farm_work.alex is "tending">>
+			<<if ($exposed lt 2 or $exhibitionism gte 75)>>
+				<<ind>><<link [[帮艾利克斯照料庄稼 (0:20)|Farm Tending Alex]]>><<farm_count 20>><<pass 20>><<tending 2>><<tiredness 2>><<physique 2>><<set $farm_work.tending += 1>><</link>><<gtiredness>><<gtending>><<run _actions++>>
+				<br>
+			<</if>>
+		<<else>>
+			<<ind>><<link [[照料庄稼(0:20)|Farm Tending]]>><<farm_count 20>><<pass 20>><<tending 2>><<tiredness 2>><<physique 2>><<set $farm_work.tending += 1>><</link>><<gtiredness>><<gtending>><<run _actions++>>
+			<br>
+		<</if>>
+	<<elseif ($farm_stage is 3 or $farm_stage is 2) and $farm_work.tending lte 6>>
+		<<if $farm_work.alex is "tending">>
+			<<if ($exposed lt 2 or $exhibitionism gte 75)>>
+				<<ind>><<link [[帮艾利克斯照料庄稼 (0:20)|Farm Tending Alex]]>><<farm_count 20>><<pass 20>><<tending 2>><<tiredness 2>><<physique 2>><<set $farm_work.tending += 1>><</link>><<gtiredness>><<gtending>><<run _actions++>>
+				<br>
+			<</if>>
+		<<else>>
+			<<ind>><<link [[照料庄稼(0:20)|Farm Tending]]>><<farm_count 20>><<pass 20>><<tending 2>><<tiredness 2>><<physique 2>><<set $farm_work.tending += 1>><</link>><<gtiredness>><<gtending>><<run _actions++>>
+			<br>
+		<</if>>
+	<</if>>
+	<<if $farm_stage isnot 12 and $farm_work.alex is "clearing" and ($exposed lt 2 or $exhibitionism gte 75) and Time.dayState isnot "night">>
+		<<ind>><<link [[帮助艾利克斯清理农田 (0:20)|Farm Clearing]]>><<farm_count 20>><<pass 20>><<tiredness 2>><<physique 2>><<set $farm.clearing -= 1>><</link>><<gtiredness>><<run _actions++>>
+		<br>
+	<</if>>
+	<<if $farm_stage isnot 12 and $farm_stage gte 7 and _actions is 0 and $farm_work.alex isnot "clearing" and ($exposed lt 2 or $exhibitionism gte 75)>>
+		<<ind>><<link [[独自清理农田(0:40)|Farm Clearing Alone]]>><<farm_count 40>><<pass 40>><<tiredness 4>><<physique 3>><<set $farm.clearing -= 1>><</link>><<ggtiredness>><<run _actions++>>
+		<br>
+	<</if>>
+
+	<<if (_actions lt 2 or $farm_stage lt 7) and ($farm_work.alex isnot "relax" or $exposed gte 0)>>
+		<!-- as worker you can be lazy any time, but as partner you only get that luxury when there's (nearly) nothing else to do.
+			also, if Alex is resting you should join them unless you're too naked for comfort -->
+		<<ind>><<link [[在马厩附近休息(0:15)|Farm Stables Rest]]>><<pass 15>><<stress -2>><</link>><<lstress>>
+	<</if>>
+	<br>
+<</widget>>
+
+<<widget "farm_work">>
+	<<if Time.dayState isnot "night">>
+		<<farm_alex>>
+		<<farm_status>>
+	<</if>>
+	<<farm_actions>>
+	<br>
+<</widget>>
+
+<<widget "fields_init">>
+	<<plots_init farm 4 earth 3 large>>
+<</widget>>
+
+<<widget "farm_init">>
+	<<farm_work_update>>
+	<<if $farm_work.horses_out lt 1>>
+		<<set $farm_work.horses_out to 1>>
+	<</if>>
+	<<if $farm_work.chickens_fed lt 1>>
+		<<set $farm_work.chickens_fed to 1>>
+	<</if>>
+	<<if $farm_work.cattle_out lt 1>>
+		<<set $farm_work.cattle_out to 1>>
+	<</if>>
+	<<if $farm_work.cattle_milked lt 6>>
+		<<set $farm_work.cattle_milked to 6>>
+	<</if>>
+	<<set $farm to {}>>
+	<<set $farm.beasts to {}>>
+	<<set $farm.wage to 15>>
+	<<set $farm.beasts.pigs to 0>>
+	<<set $farm.beasts.horses to 0>>
+	<<set $farm.beasts.cattle to 0>>
+	<<set $farm.beasts.dogs to 0>>
+	<<set $farm_naked_alex to 1>>
+	<<set $farm.clearing to 100>>
+
+	<<farm_update>>
+<</widget>>
+
+<<widget "farm_update">>
+	<<if $farm isnot undefined>>
+		<<if $farm.milking is undefined>>
+			<<set $farm.milking to {
+				caught: false,
+				alexNightEvent: false,
+				catchChance: 0,
+				dayMilking: false,
+			}>>
+		<</if>>
+		<<if $farm.milking.catchChance is NaN>>
+			<<set $farm.milking.catchChance to 0>>
+		<</if>>
+		<<if $farm.build_finished is undefined or $farm.build_finished is 0>>
+			<<set $farm.build_finished to []>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_pigs">>
+	<<if _args[0]>>
+		<<set $farm.beasts.pigs += _args[0]>>
+		<<set $farm.beasts.pigs = Math.clamp($farm.beasts.pigs, -30, 30)>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_horses">>
+	<<if _args[0]>>
+		<<set $farm.beasts.horses += _args[0]>>
+		<<set $farm.beasts.horses = Math.clamp($farm.beasts.horses, -30, 30)>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_cattle">>
+	<<if _args[0]>>
+		<<set $farm.beasts.cattle += _args[0]>>
+		<<set $farm.beasts.cattle = Math.clamp($farm.beasts.cattle, -30, 30)>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_dogs">>
+	<<if _args[0]>>
+		<<set $farm.beasts.dogs += _args[0]>>
+		<<set $farm.beasts.dogs = Math.clamp($farm.beasts.dogs, -30, 30)>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_trust">>
+	<<if _args[0] is "horses">>
+		<<set $enemytrust += ($farm.beasts.horses * 3)>>
+	<<elseif _args[0] is "pigs">>
+		<<set $enemytrust += ($farm.beasts.pigs * 3)>>
+	<<elseif _args[0] is "cattle">>
+		<<set $enemytrust += ($farm.beasts.cattle * 3)>>
+	<<elseif _args[0] is "dogs">>
+		<<set $enemytrust += ($farm.beasts.dogs * 3)>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_gen">>
+	<<if $farm_work[_args[0]].monster_roll is true and ($hallucinations gte 1 or $monsterhallucinations is "f")>>
+		<<set $farm_work[_args[0]].monster to true>>
+		<<if beastMaleChance() gte 100>>
+			<<set $farm_work[_args[0]].gender_plural to "m">>
+		<<elseif beastMaleChance() gte 1>>
+			<<set $farm_work[_args[0]].gender_plural to "b">>
+		<<else>>
+			<<set $farm_work[_args[0]].gender_plural to "f">>
+		<</if>>
+		<<if beastMaleChance() gte random(1, 100)>>
+			<<set $farm_work[_args[0]].gender to "m">>
+			<<if $cbchance gte random(1, 100)>>
+				<<set $farm_work[_args[0]].genitals to "vagina">>
+			<<else>>
+				<<set $farm_work[_args[0]].genitals to "penis">>
+			<</if>>
+		<<else>>
+			<<set $farm_work[_args[0]].gender to "f">>
+			<<if $dgchance gte random(1, 100)>>
+				<<set $farm_work[_args[0]].genitals to "penis">>
+			<<else>>
+				<<set $farm_work[_args[0]].genitals to "vagina">>
+			<</if>>
+		<</if>>
+	<<else>>
+		<<set $farm_work[_args[0]].monster to false>>
+		<<if beastMaleChance() gte 100>>
+			<<set $farm_work[_args[0]].gender_plural to "m">>
+		<<elseif beastMaleChance() gte 1>>
+			<<set $farm_work[_args[0]].gender_plural to "b">>
+		<<else>>
+			<<set $farm_work[_args[0]].gender_plural to "f">>
+		<</if>>
+		<<if beastMaleChance() gte random(1, 100)>>
+			<<set $farm_work[_args[0]].gender to "m">>
+			<<set $farm_work[_args[0]].genitals to "penis">>
+		<<else>>
+			<<set $farm_work[_args[0]].gender to "f">>
+			<<set $farm_work[_args[0]].genitals to "vagina">>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_gen_all">>
+	<<farm_gen horse>>
+	<<farm_gen pig>>
+	<<farm_gen dog>>
+	<<farm_gen cattle>>
+<</widget>>
+
+<<widget "farm_brush">>
+	<<if currentSkillValue('tending') gte 600>>
+		你刷着<<farm_his horse>>的毛发，这是一个大工程，<span class="green">但你能判断出<<farm_text horse>>真正需要被刷的地方</span>。<<farm_He horse>>很享受这种关注。
+		<br><br>
+
+		另外的<<farm_text horse>>正在等待轮到它。你快速完成了第一个任务，然后继续完成第二个任务。
+		<br><br>
+		<<set $farm_work.horses_brushed += 1>>
+	<<else>>
+		你刷着<<farm_his horse>>的毛发，这是一个漫长的过程，因为有很多地方都需要刷到，但是<<farm_text horse>>似乎很享受这个过程。
+		<br><br>
+	<</if>>
+	<<set $danger to random(1, 10000)>>
+	<<if $danger gte (9900 - $allure)>>
+	<!-- Modified for monster people -->
+		<<if $horsedisable is "f" and ($bestialitydisable is "f" or $farm_work.horse.monster is true)>>
+			你完成了刷毛的工作，拿起毛刷清理上面沾着的毛发，朝着大门走去。你听到身后传来马蹄声，<<farm_text horse>>开始追赶你。
+			<br><br>
+
+			<<if $farm_work.horse.monster is true>>
+				"我还没完呢，"<<farm_he horse>>说道。"回来。"
+			<<else>>
+				它对你嘶鸣，好像在生气。
+			<</if>>
+			<br><br>
+
+			<<link [[跑|Farm Horses Brush Run]]>><</link>><<athleticsdifficulty 1 1100>>
+			<br>
+			<<link [[等待|Farm Horses Brush Wait]]>><<farm_horses -1>><<stress 6>><</link>><<gstress>><<lrespect>>
+			<br>
+		<<else>>
+			当你停下来的时候，<<farm_text horse>>咬了一口你的肩膀，似乎想要更多。<<gpain>><<gstress>><<pain 4>><<stress 6>>
+			<br><br>
+
+			<<link [[继续|Farm Work]]>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		你完成了刷毛的工作，清理了毛刷上的毛发。
+		<br><br>
+		<<link [[继续|Farm Work]]>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "farm_milk_actions">>
+	<<farm_milk_check>>
+	<<farm_gen cattle>>
+	<<set $outside to 0>>
+	<<if $farm_work.cattle_need gte 1>>
+		<span class="purple">$farm_work.cattle_need</span>要挤奶。
+		<br>
+	<<else>>
+		<span class="teal">牛很满意。</span>
+		<br><br>
+	<</if>>
+
+	<<if Time.hour is 21 and $farm_end is undefined and $alex_to_bed isnot 1>>
+		<<set $farm_end to 1>>
+		<<npc Alex>><<person1>>
+		<<if $exposed gt 0 and Time.season is "winter">>
+			艾利克斯走进了谷仓，擦着额头上的汗水，走近你。"又完成了一天的工作，"<<he>>说道，脸红了起来。"天气越来越冷了，你可能需要穿些保暖的衣服。"<<glust>><<npcincr Alex lust 1>>
+		<<elseif $exposed gt 0>>
+			艾利克斯走进了牛棚，擦着额头上的汗水，走近你。"又完成了一天的工作，"<<he>>说道，脸红了起来。"天气会越来越冷，你可能需要穿得更多一点。"<<glust>><<npcincr Alex lust 1>>
+		<<else>>
+			艾利克斯走进了牛棚，擦着额头上的汗水，走近你。"又完成了一天的工作，"<<he>>笑着说道。
+		<</if>>
+		<<if $farm_count gte 1 and $farm_stage lte 6>>
+			"这是额外的一点，"<<he>>递给你<<moneyGain $farm.wage>>.
+		<</if>>
+		<br><br>
+		"我来关门，"<<he>>说，你们一起走出了牛棚。<<if $farm_stage lt 7>>"一路顺风。"<<set _exitfarm to true>><</if>>
+		<br><br>
+
+	<<elseif $farm_work.cattle_need gte 1>>
+		<<beastNEWinit 1 cow>><<person1>>
+		<<link [[用机器挤牛奶(0:20)|Farm Cattle Milk Machine]]>><<pass 20>><<endevent>><<farm_count 20>><<tending 2>>
+			<<if $farm_work.cattle_need gte 6>>
+				<<set $farm_work.cattle_milked += 6>>
+				<<set $cattle_milked += 6>>
+			<<else>>
+				<<set $farm_work.cattle_milked += $farm_work.cattle_need>>
+				<<set $cattle_milked += $farm_work.cattle_need>>
+			<</if>>
+		<</link>><<gtending>>
+		<br><br>
+	<!-- Modified for monster people -->
+
+		<<beasttype>>对你紧张的哞哞叫。
+		<br>
+		<<if currentSkillValue('tending') gte 1500>>
+			<<set _cattleMilkHand to 3>>
+		<<elseif currentSkillValue('tending') gte 1200>>
+			<<set _cattleMilkHand to 4>>
+		<<else>>
+			<<set _cattleMilkHand to 5 * (6 - Math.ceil(Math.clamp(currentSkillValue('tending'), 0, 1000) / 200))>>
+		<</if>>
+		<<link [["用手挤奶(0:" + String(_cattleMilkHand).padStart(2, '0') + ")"|Farm Cattle Milk Hand]]>><<farm_yield 1>><<set $cattle_milked += 1>><<set $farm_work.cattle_milked += 1>><<tending 1>><<farm_cattle 1>><<set $phase to _cattleMilkHand>><<pass _cattleMilkHand>><</link>><<deviant1>><<gfarm>><<gtending>><<grespect>>
+		<br>
+		<<if $deviancy gte 55 and ($bestialitydisable is "f" or $monster is 1)>>
+			<<link [[用嘴挤奶(0:03)|Farm Cattle Milk Mouth]]>><<set $cattle_milked += 1>><<set $farm_work.cattle_milked += 1>><<tending 1>><<farm_count 3>><</link>><<deviant4>><<gtending>>
+			<<if $NPCList[0].penis isnot "none" and $player.virginity.oral is true>>
+				| <span class="red">这行动会夺走你的口穴童贞。</span>
+			<</if>>
+			<br>
+		<</if>>
+
+	<<elseif $deviancy gte 15 and $farm.milking.dayMilking is true>>
+		<<if $breastfeedingdisable is "f" and $milk_amount gte 1>>
+			<<link [[给自己挤奶(0:30)|Farm Barn Breasts]]>>
+				<<if $cow gte 6>>
+					<<transform cow 1>>
+				<</if>>
+			<</link>><<deviant2>>
+			<br>
+		<</if>>
+		<<if $player.penisExist and $semen_amount gte 1>>
+			<<if playerChastity("penis")>>
+				<span class="blue">你可以给你的阴茎挤"奶"，如果<<print $worn.genitals.cn_name_cap>>不碍事的话。</span>
+				<br>
+			<<else>>
+				<<link [[用你的阴茎挤奶(0:30)|Farm Barn Penis]]>>
+					<<if $cow gte 6>>
+						<<transform cow 1>>
+					<</if>>
+				<</link>><<deviant2>>
+				<br>
+			<</if>>
+		<</if>>
+	<</if>>
+	<<if _exitfarm>>
+		<<link [[继续|Farmland]]>><<endevent>><</link>>
+	<<else>>
+		<<link [[离开|Farm Work]]>><<endevent>><</link>>
+	<</if>>
+
+	<br>
+<</widget>>
+
+<<widget "farm_count">>
+	<<if _args[0]>>
+		<<set $farm_count to ($farm_count || 0) + _args[0]>>
+		<<set $farm_shift += _args[0]>>
+		<<set $farm_work.recent_shift += _args[0]>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_aggro">>
+	<<if _args[0]>>
+		<<set _aggro_mod to 1>>
+		<<if _args[0] gt 0>>
+			<<if $farm.wall gte 1>>
+				<<set _aggro_mod -= 0.05>>
+			<</if>>
+			<<if $farm.tower gte 2 and $farm.tower_guard>>
+				<<set _aggro_mod -= 0.10>>
+				<<set _aggro_mod -= (0.02 * ($farm.tower_guard_skill / 200))>>
+			<<elseif $farm.tower gte 1 and $farm.tower_guard>>
+				<<set _aggro_mod -= 0.05>>
+				<<set _aggro_mod -= (0.02 * ($farm.tower_guard_skill / 200))>>
+			<</if>>
+			<<if $farm.kennel gte 1>>
+				<<set _aggro_mod -= 0.10>>
+			<</if>>
+		<</if>>
+		<<set $farm.aggro += (_args[0] * _aggro_mod)>>
+		<<set $farm.aggro = Math.clamp($farm.aggro, 0, 100)>>
+		<<set $farm.aggro = Math.trunc($farm.aggro)>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_relax_chat">>
+	<<switch random(1, 10)>>
+		<<case 1>>
+			艾利克斯和你聊天，并谈到了<<his>>的家庭。"我有十二个兄弟姐妹，"<<he>>在谈话间提道。"<<if $pronoun is "m">>妈妈<<else>>爸爸<</if>>不知道该拿我们怎么办。"
+		<<case 2>>
+			艾利克斯和你聊天，谈论农场的猪。"把它们所有的食物都搬过来很累，"<<he>>说道。"不过，松露是值得的。"
+		<<case 3>>
+			艾利克斯和你聊天，谈论农场的马。"它们的大多数主人都是富有的城镇居民，"<<he>>说道。"它们需要保持活跃和健康。"
+		<<case 4>>
+			艾利克斯和你聊天，谈论农场的牛。"它们是大坏蛋，"<<he>>说道。"但也很温顺。真希望其他动物也能这么好管。"
+		<<case 5>>
+			艾利克斯和你聊天，谈论农场的狗。"它们不是宠物，"<<he>>说道。"不要害怕让它们守规矩。"
+		<<case 6>>
+			<<if $farm_stage gte 12>>
+				艾利克斯和你聊天，谈论田野。"没人相信我们能清理完九块农田，"<<he>>说道。"森林长得很快，所以我们需要保持警惕。"
+			<<else>>
+				艾利克斯和你聊天，谈论田野。"总共有九块田，"<<he>>说道。"森林已经把它们中的大部分开垦出来了。就好像树木一夜之间长出来一样。"<<He>>笑着说道。
+			<</if>>
+		<<case 7>>
+			艾利克斯和你聊天，询问镇上的生活。"我不喜欢这种噪音，"<<he>>说道。"我猜你会习惯的。"
+		<<case 8>>
+			艾利克斯和你聊天，并询问学校的情况。"父母教我的，"<<he>>说道。"有时我的哥哥姐姐会帮忙。"
+		<<case 9>>
+			艾利克斯和你聊天，谈到了沼地。"晚上不要去那里，"<<he>>警告说道。"有人曾经在里面失踪，太危险了。"
+		<<case 10>>
+			艾利克斯和你聊天，谈论大海。"你不需要走很远，"<<he>>说道。"如果你知道路的话。"
+	<</switch>>
+<</widget>>
+
+<<widget "farm_relax_end">>
+	<<farm_work_update>>
+	<<if $farm_work.alex_relax lt 3>>
+		<<He>>看了看<<his>>的手表，然后斜倚着，把<<his>>的帽檐拉到<<his>>的脸上。
+		<br><br>
+
+		<<link [[休息 (0:20)|Farm Rest]]>><<set $phase to 0>><<trauma -2>><<stress -2>><<npcincr Alex love 1>><<pass 20>><</link>><<glove>><<ltrauma>><<lstress>>
+		<br>
+		<<link [[离开|Farm Work]]>><<endevent>><<unset $farm_relax_drink>><</link>>
+		<br>
+	<<else>>
+		<<He>>看着<<his>>的手表，叹了口气。"我最好回去工作了，"<<he>>站起来。"谢谢你的陪伴。"
+		<br><br>
+
+		<<link [[继续|Farm Work]]>><<endevent>><<unset $farm_relax_drink>><<set $farm_work.alex to "still">><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "eventsfarm">>
+	<<if $farm.build isnot undefined and $farm.build isnot 0 and Time.hour gte 6 and random(1, 3) gte 2>>
+		<<if $exposed gte 2 and $uncomfortable.nude is true or $exposed is 1 and $uncomfortable.underwear is true>>
+			你偷看了一下小屋。远处的院子看起来很干净。你深吸一口气，跑到空旷的地方。
+			<br><br>
+
+			你觉得没人在看，但你的心还是在打雷。当你走到最前面<span class="pink">时，你听到了旁边传来的声音</span>。<<gstress>><<stress 6>>
+			<br><br>
+
+			你可以退到小屋去，但前面的小屋更近。有可能门把手又卡住了。你也可以逃离那些声音。小路向大路倾斜，地形可能会把你藏起来。
+			<br><br>
+
+			<<link [[跑到小屋|Farm Builders Exposed Cottage]]>><</link>>
+			<br>
+			<<link [[退回小屋|Farm Builders Exposed Shed]]>><</link>><<athleticsdifficulty 1 1100>>
+			<br>
+			<<link [[跑到路上|Farm Builders Exposed Road]]>><</link>>
+			<br>
+		<<else>>
+			<<rng 5>>
+			<<switch $rng>>
+			<<case 1>>
+				<<npc Alex>><<generate2>><<generate3>><<generate4>><<person2>>
+				<<if $player.breastsize gte 3 and random(1, 2) is 2>>
+					"漂亮的奶子，"一个<<personsimple>>的声音说道。
+				<<elseif $player.bottomsize gte 3 and random(1, 2) is 2>>
+					"漂亮的屁股，"一个<<personsimple>>的声音说道。
+				<<else>>
+					你听到狼的口哨声。
+				<</if>>
+				你转过身，看到了罪魁祸首，一个建筑工人，一个<<person>>。<<He>>带着<<his>>的工具大摇大摆地穿过院子。<<his>>的两个朋友站在<<him>>左右。<<He>>对你笑。
+				<br><br>
+				<<person1>>
+				<<link [[无视|Farm Work]]>><<stress 6>><<endevent>><</link>><<gstress>>
+				<br>
+				<<link [[昂首阔步|Farm Builders Strut]]>><</link>><<exhibitionist1>>
+				<br>
+				<<link [[生气|Farm Builders Angry]]>><<def 1>><</link>>
+				<br>
+				<<if $submissive lte 500>>
+					<<link [[威胁|Farm Builders Threaten]]>><<trauma -6>><<def 1>><</link>><<ltrauma>><<defianttext>>
+					<br>
+				<</if>>
+			<<case 2>>
+				<<generate1>><<generate2>><<generate3>>
+				一些建筑工人坐在
+				<<if $weather is "snow">>
+					小屋的门廊上躲雪。
+				<<elseif $weather is "rain">>
+					小屋的门廊上避雨。
+				<<else>>
+					小屋边喝茶。
+				<</if>>
+				<br><br>
+
+				他们在你经过时点头。
+				<br><br>
+				<<link [[鼓励 (0:15)|Farm Builders Encourage]]>><<pass 15>><</link>><<note "低概率加速建造" "green">>
+				<br>
+				<<link [[只是点头回应|Farm Work]]>><<endevent>><</link>>
+				<br>
+
+			<<case 3>>
+				<<generate1>><<person1>>
+				其中一个建筑工人，一个<<person>>呼唤你。"你能给我们倒杯茶吗，亲爱的?"
+				<br><br>
+
+				<<link [[泡茶(0:05)|Farm Builders Tea]]>><</link>>
+				<br>
+				<<link [[边泡茶边聊天(0:20)|Farm Builders Tea Chat]]>><<pass 20>><</link>>
+				<br>
+				<<link [[生气|Farm Builders Tea Angry]]>><<trauma -6>><</link>><<ltrauma>>
+				<br>
+				<<link [[无视|Farm Work]]>><<endevent>><</link>>
+				<br>
+			<<case 4>>
+				<<generate1>><<generate2>><<generate3>><<person1>>
+				建筑工人正在把材料拖过院子。
+				<br><br>
+
+				<<link [[帮忙 (1:00)|Farm Builders Help]]>><<pass 60>><</link>><<physiquedifficulty 1 16000>><<note "如果成功有几率加快施工进度" "green">>
+				<br>
+				<<link [[无视|Farm Work]]>><<endevent>><</link>>
+				<br>
+			<<default>>
+				<<generate1>><<person1>>
+				<<if $worn.over_lower.name is "naked" and setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+					其中一个建筑工人，一个<<person>>在你经过的时候撩起你的裙子。<<gstress>><<stress 6>>
+					<br><br>
+
+					<<if $worn.under_lower.name is "naked">>
+						"居然不穿<<panties>>，"<<he>>说道。"顽皮的<<girl>>。"<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+					<</if>>
+					<br><br>
+					<<link [[无视|Farm Work]]>><<endevent>><<stress 6>><</link>><<gstress>>
+					<br>
+					<<link [[生气|Farm Builders Skirt Angry]]>><<trauma -6>><<def 1>><</link>><<ltrauma>>
+					<br>
+					<<if $worn.under_lower.name is "naked">>
+						<<if $exhibitionism gte 55>>
+							<<link [[夸耀|Farm Builders Skirt Flaunt]]>><<set $phase to 1>><</link>><<exhibitionist4>>
+							<br>
+						<</if>>
+					<<else>>
+						<<if $exhibitionism gte 15>>
+							<<link [[夸耀|Farm Builders Skirt Flaunt]]>><<set $phase to 0>><</link>><<exhibitionist2>>
+							<br>
+						<</if>>
+					<</if>>
+				<<else>>
+					其中一个建筑工人，一个<<person>>在你经过的时候抓了一把你的<<bottom>>。<<gstress>><<stress 6>><<gtrauma>><<trauma 6>>
+					<br><br>
+
+					<<link [[无视|Farm Work]]>><<endevent>><<stress 6>><</link>><<gstress>>
+					<br>
+					<<link [[生气|Farm Builders Skirt Angry]]>><<def 1>><<trauma -6>><</link>><<ltrauma>>
+					<br>
+					<<link [[调情|Farm Builders Bottom Flirt]]>><</link>><<promiscuous1>>
+					<br>
+
+				<</if>>
+			<</switch>>
+		<</if>>
+	<<else>>
+		<<rng 10>>
+		<<switch $rng>>
+		<<case 1>>
+			一声尖叫划破了空气。它来自沼地，<span class="pink">它使动物们陷入恐慌和疯狂之中。</span><<llfarm>><<farm_yield -5>>
+			<br><br>
+
+			艾利克斯跑过院子，冲过去安抚动物们。
+			<<set $farm_work.alex to "panic">>
+			<br><br>
+
+			<<link [[继续|Farm Work]]>><</link>>
+			<br>
+			<<set $farm_work.horses_panic to 1>>
+			<<set $farm_work.chickens_panic to 1>>
+			<<set $farm_work.pigs_panic to 1>>
+			<<set $farm_work.dogs_panic to 1>>
+			<<set $farm_work.cattle_panic to 1>>
+		<<case 2>>
+			<<npc Alex>><<person1>><<generate2>><<person2>>
+			<<if $farm_work.horses_out lt 1 or $farm_work.horses_out gte 3>>
+				艾利克斯站在一个<<person2>><<person>>身边，看着马在田野里奔跑。
+			<<else>>
+				艾利克斯和一个<<person2>><<person>>站在马厩旁边。
+			<</if>>
+			<br><br>
+
+			<<person2>><<person>>看着你。"这一定是你的农场工人，"<<he>>说道。
+			<br>
+			<<person1>>
+			<<if $farm_stage gte 7>>
+				"实际上是合作人。"艾利克斯回答道。"我们都陷入了困境。"<<He>>看着你，对着<<person2>><<person>>做手势
+			<<else>>
+				"没错，"艾利克斯回答。<<He>>看着你，并在<<person2>><<person>>做手势。
+			<</if>>
+			"这是我们的一位客户。我们在照顾<<his>>的马。"
+			<br><br>
+
+			<<if $farm_work.horse.monster is true>>
+				<<if $farm_work.horse.gender is "f">>
+					这匹马是一匹半人马，她双臂交叉放在乳房下观看。
+				<<else>>
+					这匹马是半人马，他抱着双臂看着。
+				<</if>>
+				<<if $farm.beasts.horses gte 5>>
+					<<farm_He horse>>转向你，尊敬地点点头。
+				<<elseif $farm.beasts.horses lte -5>>
+					<<farm_He horse>>转向你，发出一声嘲弄的笑声。
+				<</if>>
+			<<else>>
+				<<if $farm_work.horse.gender is "f">>
+					这匹马是一匹母马，它盯着你看。
+				<<else>>
+					这匹马是一匹公马，它注视着你们。
+				<</if>>
+				<<if $farm.beasts.horses gte 5>>
+					<<farm_He horse>>转向你，发出欢快的嘶鸣。
+				<<elseif $farm.beasts.horses lte -5>>
+					<<farm_He horse>>转向你，嘲笑地哼了一声。
+				<</if>>
+			<</if>>
+			<br><br>
+			<<if $farm.beasts.horses gte 5>>
+				"看起来<<farm_he horse>>很喜欢你，"<<person2>><<person>>说道。"继续保持好工作。"<<gfarm>><<farm_yield 1>>
+			<<elseif $farm.beasts.horses lte -5>>
+				"<<farm_he horse>>不喜欢你吗？"<<person>>笑了笑。"我想这是无可奈何的。"
+			<<else>>
+				"我喜欢我所看到的，"<<person>>说道。"保持下去。"
+			<</if>>
+			<br><br>
+
+			艾利克斯把客户带到了农场的边缘。
+			<br><br>
+
+			<<link [[继续|Farm Work]]>><<endevent>><</link>>
+			<br>
+		<<case 3>>
+			<<npc Alex>><<person1>>
+			<<if $exposed gte 1>>
+				"嘿，"艾利克斯走过来，脸红了起来。"需要买些杂货。你介意照顾一下吗？"<<He>>递给你一张购物清单，还有一些钱和一条毛巾。"如果你要出门的话，需要遮起来。否则人们会想到我们在干什么。"
+				<br><br>
+			<<else>>
+				"嘿，"艾利克斯走过来。"需要买些杂货。你介意照顾一下吗？"<<He>>递给你一张购物清单，还有一些钱。
+				<br><br>
+			<</if>>
+
+			<<link [[去购物(0:30)|Farm Shopping]]>><<farm_count 30>><<pass 30>><<npcincr Alex love 1>><<towelup>><</link>><<glove>>
+			<br>
+			<<link [[拒绝|Farm Shopping Refuse]]>><<npcincr Alex love -1>><<npcincr Alex dom -1>><</link>><<llove>><<ldom>>
+			<br>
+		<<case 4>>
+			<<npc Alex>><<person1>>
+			"看谁先跑到树林里去！"艾利克斯说，出现在了你的身后。<<He>>飞奔过去。
+			<br><br>
+			<<link [[赛跑(0:02)|Farm Race]]>><<pass 2>><<farm_count 2>><</link>><<athleticsdifficulty 800 1000>><<glove>>
+			<br>
+			<<link [[跟在艾利克斯后面 (0:05)|Farm Race Walk]]>><<pass 5>><<farm_count 5>><</link>>
+			<br>
+			<<link [[拒绝|Farm Race Refuse]]>><<npcincr Alex love -1>><</link>><<llove>>
+			<br>
+		<<case 5>>
+			<<if $farm.aggro gte 10 and ($farm.wall is undefined or $farm.wall lt 3)>>
+				<<generate1>><<generate2>><<person1>>
+				<<if $farm.wall gte 3>>
+					你听到一连串尖锐的金属撞击声。你调查声音，并发现一<<fullGroup>>用斧头攻击栅栏。
+				<<elseif $farm.wall gte 1>>
+					你听到一连串的撞击声和裂缝声。你调查声音，并发现一<<fullGroup>>用斧头攻击墙壁。
+				<<else>>
+					你听到一连串的撞击声和木头的嘎吱声。你调查声音，并发现一<<fullGroup>>用斧头攻击栅栏。
+				<</if>>
+				<br><br>
+
+				<<person1>><<person>>轻推<<his>>的同事，他们都盯着你看。
+				<br><br>
+
+				<<link [[呼唤艾利克斯|Farm Axe Alex]]>><<farm_aggro 5>><<npcincr Alex dom 1>><<npcincr Alex love 1>><<farm_fence_damage 1>><</link>><<gaggro>><<gdom "Alex">><<glove>>
+				<br>
+				<<link [[威胁|Farm Axe Threaten]]>><<def 1>><</link>><<englishdifficulty 400 1200>>
+				<br>
+				<<link [[战斗|Farm Axe Attack]]>><<def 1>><</link>>
+				<br>
+			<<else>>
+				<<generate1>><<person1>>
+				你看到一个人影站在农场外面的小山上。在这个距离你看不出来，但感觉就像<<hes>>正盯着你看。
+				<<if $farm_stage gte 5>>
+					<<gaggro>><<farm_aggro 5>>
+				<</if>>
+				<<gstress>><<stress 6>>
+				<br><br>
+
+				<<He>>转身消失在山顶上。
+				<br><br>
+
+				<<link [[继续|Farm Work]]>><<endevent>><</link>>
+				<br>
+			<</if>>
+		<<case 6>>
+			<<if $farm.aggro gte 20>>
+				<<rng 5>>
+				<<switch $rng>>
+				<<case 1>>
+					你听到<<farm_text_many horse>>惊恐的嘶鸣声。<span class="pink">有什么东西惊吓到了它们。</span><<gaggro>><<farm_aggro 5>>
+					<br><br>
+
+					<<set $farm_work.horses_panic to 1>>
+					<<link [[继续|Farm Work]]>><</link>>
+					<br>
+				<<case 2>>
+					你听到<<farm_text_many cattle>>惊恐的哞叫声。<span class="pink">有什么东西惊吓到了它们。</span><<gaggro>><<farm_aggro 5>>
+					<br><br>
+
+					<<set $farm_work.cattle_panic to 1>>
+					<<link [[继续|Farm Work]]>><</link>>
+					<br>
+				<<case 3>>
+					你听到<<farm_text_many pig>>惊恐的尖叫声。<span class="pink">有什么东西惊吓到了它们。</span><<gaggro>><<farm_aggro 5>>
+					<br><br>
+
+					<<set $farm_work.pigs_panic to 1>>
+					<<link [[继续|Farm Work]]>><</link>>
+					<br>
+				<<case 4>>
+					你听到<<farm_text_many dog>>惊恐的嚎叫声。<span class="pink">他们被什么东西吓到了。</span><<gaggro>><<farm_aggro 5>>
+					<br><br>
+
+					<<set $farm_work.dogs_panic to 1>>
+					<<link [[继续|Farm Work]]>><</link>>
+					<br>
+				<<case 5>>
+					你听到鸡群惊恐的咯咯声。<span class="pink">有什么东西惊吓到了它们。</span><<gaggro>><<farm_aggro 5>>
+					<br><br>
+
+					<<set $farm_work.chickens_panic to 1>>
+					<<link [[继续|Farm Work]]>><</link>>
+					<br>
+				<</switch>>
+			<<else>>
+				你听到愤怒的吠叫。两只狗在打架。
+				<br><br>
+
+				<<link [[训斥(0:10)|Farm Dogs Split]]>><<pass 10>><<farm_count 10>><</link>><<tendingdifficulty 1 800>>
+				<br>
+				<<link [[无视|Farm Work]]>><<farm_yield -1>><</link>><<lfarm>>
+				<br>
+			<</if>>
+		<<case 7>>
+			<<if $farm.aggro gte 100>>
+				<<npc Alex>><<generate2>>
+				你听到来自农场前方的喊叫声。你走过去，看到一辆卡车停在通往公路的小巷尽头。司机躺在外面的地上，被三个粗鲁的恶棍从各个角度踢打。<<llfarm>><<farm_yield -3>>
+				<br><br>
+
+				<<person1>>
+				艾利克斯来到你的身边。"该死的，"<<he>>说道。"你们这些混蛋放开<<person2>><<him>>了。"他们放开了<<him>>，但转身向艾利克斯走去。他们卷起袖子。
+				<br><br>
+				艾利克斯坚定地站在<<person1>><<his>>的原地，没有后退。
+				<br><br>
+
+				<<link [[把艾利克斯拉到安全地带 (0:15)|Farm Lorry Safety]]>><<farm_yield -3>><<npcincr Alex love -1>><<npcincr Alex dom 1>><</link>><<llfarm>><<llove>><<ldom>>
+				<br>
+				<<link [[和艾利克斯站在一起|Farm Lorry Stand]]>><<npcincr Alex love 3>><</link>><<gglove>>
+				<br>
+
+			<<else>>
+				<<generate1>><<person1>>
+				一辆货车停在农场外面，司机向你挥手。
+				<br><br>
+				"给艾利克斯的快递，"<<he>>走出去后说道。<<He>>打开后面，取出两个没有标记的棕色盒子。
+				<br><br>
+
+				<<He>>帮忙把一个搬到农舍，并把它放在门廊上。<<He>>拿出一个记事本。"在这里签字。"
+				<br><br>
+
+				<<He>>回到<<his>>的货车。
+				<br><br>
+				<<endevent>>
+				<<set $skulduggerydifficulty to 400>>
+				<<link [[偷看|Farm Lorry Peek]]>><</link>><<skulduggerydifficulty>>
+				<br>
+				<<link [[把它们带进去|Farm Lorry Inside]]>><</link>>
+				<br>
+			<</if>>
+		<<case 8>>
+			<<if $farm.aggro gte 40>>
+				<<generate1>><<person1>>
+				你听到身后传来急促的脚步声。你还没来得及转身，一只手就捂住了你的嘴，一根舌头轻拂着你的脸颊。
+				<br><br>
+
+				<<link [[继续|Farm Rape]]>><<set $molestationstart to 1>><</link>>
+				<br>
+			<<else>>
+				<<npc Alex>><<generate2>><<person1>>
+				"可爱的<<nnpc_gendery "Alex">>在农场做什么?"你环顾四周，看到一个<<person2>><<person>>探过栅栏，斜眼看着艾利克斯。
+				<br><br>
+
+				<<rng 5>>
+				<<switch $rng>>
+				<<case 1>>
+					艾利克斯没有理会纠缠。
+				<<case 2>>
+					艾利克斯转向<<him>>。<<person1>>"滚开，"<<he>>说道。"不然我就把你当猪饲料。"
+				<<case 3>>
+					艾利克斯转向<<him>>。<<person1>>"我很忙，"<<he>>说："你在狗窝里可能会更走运。"
+				<<case 4>>
+					艾利克斯转向<<him>>。<<person1>>"附近有一条河，"<<he>>说道。"去凉快凉快。"
+				<<case 5>>
+					艾利克斯没有看<<him>>。<<person1>>"我很忙，"<<he>>说道："滚回家去吧。"
+				<</switch>>
+				<br><br>
+				<<person2>><<person>>举起手。"好吧，我去。"<<He>>转身走开了。
+				<br><br>
+
+				<<link [[继续|Farm Work]]>><<endevent>><</link>>
+				<br>
+			<</if>>
+		<<case 9>>
+			<<npc Alex>><<person1>>
+			"小心!"艾利克斯在上面说道。你抬头一看，正好看到一捆干草朝你压过来。
+			<br><br>
+
+			<<if currentSkillValue('physique') gte 12000>>
+				你举起双臂去接住它，<span class="green">然后轻轻把它放到地上。</span>
+				<br><br>
+				"接得好，"艾利克斯说，落在你身边的地上。<<He>>把大包扛到<<his>>的肩上。"得把它们放在仓库里，免得受天气影响。"<<He>>走开。
+				<br><br>
+
+				<<link [[继续|Farm Work]]>><<endevent>><</link>>
+				<br>
+			<<elseif currentSkillValue('danceskill') gte 800>>
+				你站到一边，<span class="green">草包落在你身边。</span>
+				<br><br>
+				"不错的闪避，"艾利克斯说，倒在地上。<<He>>把大包扛到<<his>>的肩上。"得把它们放在仓库里，免得受天气影响。"<<He>>走开。
+				<br><br>
+
+				<<link [[继续|Farm Work]]>><<endevent>><</link>>
+				<br>
+			<<else>>
+				你举起手去接它，<span class="red">但是它太重了。</span>你躺在地上。<<gpain>><<gstress>><<pain 4>><<stress 6>>
+				<br><br>
+
+				艾利克斯笑了，倒在你身边的地上。"对不起，我忍不住了。"<<He>>把包抬到<<his>>的肩膀上，解放了你。<<gdom>><<npcincr Alex dom 1>>
+				<br><br>
+
+				<<link [[一笑而过|Farm Bale Laugh]]>><<npcincr Alex love 1>><<stress -6>><</link>><<glove>><<lstress>>
+				<br>
+				<<link [[发火|Farm Bale Angry]]>><<npcincr Alex dom -1>><<npcincr Alex love -1>><</link>><<llove>><<ldom>>
+				<br>
+			<</if>>
+		<<case 10>>
+			<<npc Alex>><<person1>>
+			<<if $exposed gte 1>>
+				你发现艾利克斯在远处向你抛媚眼，尽管<<he>>假装不是。<<glust>><<npcincr Alex lust 1>>
+				<br><br>
+
+				<<link [[继续|Farm Work]]>><<endevent>><</link>>
+				<br>
+			<<elseif $farm_stage gte 7>>
+				艾利克斯在你经过的时候拍了你的<<bottom>>。<<gpain>><<pain 1>>
+				<br><br>
+
+				<<link [[训斥|Farm Spank Scold]]>><</link>>
+				<br>
+				<<link [[反击|Farm Spank Retaliate]]>><</link>><<athleticsdifficulty 400 1000>>
+				<br>
+				<<link [[刺激|Farm Spank Goad]]>><</link>>
+				<br>
+				<<link [[忽视|Farm Spank Ignore]]>><</link>>
+				<br>
+			<<else>>
+				当<<he>>经过时，艾利克斯拍了拍你的肩膀。
+				<br><br>
+
+				<<link [[继续|Farm Work]]>><<endevent>><</link>>
+				<br>
+			<</if>>
+		<</switch>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_forest_event">>
+	<<if $NPCName[$NPCNameList.indexOf("Alex")].dom gte 10>>
+		<<He>>赶紧把<<himself>>放在你和噪音来源之间。
+	<<else>>
+		<<He>>冲向你的身边。
+	<</if>>
+	<br><br>
+
+	<<if $rng gte 71>>
+		"不管是什么，"艾利克斯小声说道。"它是无害的。大概吧。"灌木丛沙沙作响，一只鼻子探了出来，随之而来的是庞大的身躯。是一头野猪。
+		<br><br>
+		"该死，"艾利克斯说道。"我们得走了。马上。"
+		<br><br>
+		野猪向你冲来!<<ggstress>><<stress 12>>
+		<br><br>
+
+		<<link [[坚守阵地|Farm Race Stand]]>><</link>>
+		<br>
+		<<link [[跑|Farm Race Run]]>><</link>><<athleticsdifficulty 800 1000>>
+		<br>
+	<<else>>
+		<<fox_gen>>
+		"不管是什么，"艾利克斯小声说道。"它是无害的。大概吧。灌木丛沙沙作响，一只<<fox_text>>跑了出来。它掠过落叶飞扬的大地，消失在一堆泥土下面。
+		<br><br>
+		<<unset $foxGen>>
+		艾利克斯叹了口气。"只是一只狐狸。你害怕吗?"
+		<br><br>
+
+		<<link [[是的|Farm Race Yes]]>><<npcincr Alex dom 1>><</link>><<gdom>>
+		<br>
+		<<link [[不是|Farm Race No]]>><</link>>
+		<br>
+		<<link [[没有你那么害怕|Farm Race Comeback]]>><<npcincr Alex dom -1>><</link>><<ldom>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "farm_knotted">>
+	<<if $phase is 0>>
+		<<npc Alex>><<person1>><<generate2>>
+		<<earnFeat "A Knot to Remember">>
+		"这是我们的马厩。"是艾利克斯。<<farm_text dog>>的耳朵猛地竖了起来，向前扑去，<span class="red"><<farm_his dog>>的锁结仍在你体内。</span>
+		<br><br>
+
+		你被拖着穿过场地，向后，四肢着地。你试着挣脱，但绳结根本没有收缩。太紧了。
+		<br><br>
+
+		"我印象深刻，"一个不知名的<<person2>><<personsimple>>的声音说道。
+		<br>
+		"谢谢，"艾利克斯回答。"我们还没有让一个顾客不满意。"
+		<br><br>
+
+
+		当你靠近场地边缘时，他们的声音越来越近。<span class="blue">如果你不快点行动，别人会看到你的。</span><<ggstress>><<stress 12>>
+		<br><br>
+
+	<<elseif $phase is 1>>
+
+		当你走近大门时，你听到艾利克斯和那个<<personsimple>>在聊天。<span class="purple">如果你不快点行动，别人会看到你的。</span><<ggstress>><<stress 12>>
+		<br><br>
+
+	<<elseif $phase is 2>>
+
+		当你到达门口时，你听到艾利克斯和<<personsimple>>在讨论报酬。<span class="pink">如果你现在不行动，你会被看到的。</span><<ggstress>><<stress 12>>
+		<br><br>
+
+
+	<<else>>
+
+		<span class="red">你被从田地拉到了通往马厩的路上。</span>
+		<br><br>
+
+	<</if>>
+
+	<<if $phase lte 2>>
+		<<link [[捧一簇草|Farm Knotted Hold]]>><</link>><<physiquedifficulty 2000 30000>>
+		<br>
+		<<link [[训斥|Farm Knotted Scold]]>><</link>><<tendingdifficulty 100 1500>>
+		<br>
+		<<if $deviancy gte 75>>
+			<<link [[夸耀|Farm Knotted Deviant]]>><<stress 12>><<trauma 12>><<famebestiality 10 "vid">><<farm_yield 10>><<npcincr Alex love -3>><<npcincr Alex dom 5>><<npcincr Alex lust 5>><</link>><<deviant5>><<lllove>><<gggdom>><<gglust>><<gggfarm>>
+			<br>
+		<<else>>
+			<<link [[顺其自然|Farm Knotted Seen]]>><<stress 12>><<trauma 12>><<famebestiality 10 "vid">><<farm_yield 10>><<npcincr Alex love -3>><<npcincr Alex dom 5>><<npcincr Alex lust 5>><</link>><<ggtrauma>><<ggstress>><<lllove>><<gggdom>><<gglust>><<gggfarm>>
+			<br>
+		<</if>>
+	<<else>>
+		<<link [[继续|Farm Knotted Seen]]>><<set $phase to 5>><<stress 12>><<trauma 12>><<famebestiality 10 "vid">><<farm_yield 10>><<npcincr Alex love -3>><<npcincr Alex dom 5>><<npcincr Alex lust 5>><</link>>
+		<br>
+	<</if>>
+	<<set $phase += 1>>
+<</widget>>
+
+<<widget "farm_tending_events">>
+	<<rng 3>>
+	<<if $rng is 3>>
+		<<if $bestialitydisable is "f" and $lurkerdisable is "f" and random(1, 2) is 2>>
+			你在挖土的时候看到一个黑暗的东西在你的周围移动，离地面很近。你一看就不见了。
+			<br><br>
+
+			<<link [[继续工作|Farm Tending Lurker Work]]>><</link>>
+			<br>
+			<<if Time.hour lt 21 or Time.hour gt 4>>
+				<<link [[呼叫艾利克斯 (0:05)|Farm Tending Lurker Alex]]>><<npcincr Alex dom 1>><<farm_count 5>><<pass 5>><</link>><<gdom "Alex">>
+			<<else>>
+				<<link [[呼叫艾利克斯 (0:05)|Farm Tending Lurker Alex Fail]]>><<farm_count 5>><<pass 5>><</link>><<gdom "Alex">>
+			<</if>>
+			<br>
+		<<else>>
+			在挖土的时候，你看到一个黑暗的东西在你的周围移动，离地面很近。你还没来得及看，它就向你扑过来了。你向后跌倒。<<gtrauma>><<gstress>><<gpain>><<trauma 6>><<stress 6>><<pain 4>>
+			<br><br>
+			它消失的速度和它出现的速度一样快，掠过你的头顶，进入对面的植物。
+			<br><br>
+
+			<<destination_farm>>
+		<</if>>
+	<<elseif $rng is 2>>
+		<<if $tentacledisable is "f" and random(1, 2) is 2 and ($hallucinations gte 2 or $backgroundTraits.includes("plantlover"))>>
+			你的脚踝被什么东西绊倒了，你跌倒在一堆<<if $weather is "rain" or $weather is "snow">>泥浆<<else>>土壤<</if>>上。你回头看去，看到一根粗壮的笋条缠绕在你的腿上。另一根笋条从树篱中拔地而起，抓住了你的另一个脚踝。<<gpain>><<gstress>><<pain 4>><<stress 6>>
+			<br><br>
+
+			它们试图把你拉进灌木丛。
+			<br><br>
+
+			<<link [[安抚|Farm Tending Soothe]]>><</link>><<tendingdifficulty 1 1200>>
+			<br>
+			<<link [[挣扎脱身|Farm Tending Tentacle Struggle]]>><</link>><<physiquedifficulty 1 24000>>
+			<br>
+			<<if Time.hour lt 21 or Time.hour gt 4>>
+				<<link [[尖叫|Farm Tending Scream]]>><<npcincr Alex dom 3>><<sub 1>><</link>><<ggdom "Alex">>
+			<<else>>
+				<<link [[尖叫|Farm Tending Scream Fail]]>><<sub 1>><</link>><<ggdom "Alex">>
+			<</if>>
+			<br>
+			<<link [[振作起来|Farm Tending Brace]]>><</link>>
+			<br>
+		<<else>>
+			你的脚踩在了什么东西上，你踩在了一堆<<if $weather is "rain" or $weather is "snow">>泥浆<<else>>泥土<</if>>上。你回头看，却看不清是什么绊倒了你。<<gpain>><<gstress>><<pain 4>><<stress 6>>
+			<br><br>
+
+			<<destination_farm>>
+			<br>
+		<</if>>
+	<<else>>
+		<<if $farm_stage gte 5 and $farm.aggro gte 10 and random(1, 2) is 2>>
+			<<if $farm.wall gte 4>>
+				<<generate1>><<generate2>><<generate3>><<person1>>
+				"嘿，<<girl>>，"一个声音说道。你抬起头，看到一个<<person>>隔着栅栏斜眼看着你。<<person1>><<him>>的侧面站着<<person2>><<person>>和<<person3>><<person>>。<span class="green">他们盯着上面的铁丝网。</span>
+				<br><br>
+				"你的设置不错，"<<he>>继续说道。"别以为一点点金属就能保证你的安全。"
+				<br><br>
+
+				<<link [[嘲讽|Farm Tending Barb Taunt]]>><<def 1>><<trauma -6>><</link>><<ltrauma>>
+				<br>
+				<<link [[无视|Farm Tending Barb Ignore]]>><</link>>
+				<br>
+				<<if $exhibitionism gte 2>>
+					<<link [[夸耀|Farm Tending Barb Flaunt]]>><</link>><<exhibitionist2>>
+				<</if>>
+			<<elseif $farm.wall gte 3 and random(1, 2) is 2>>
+				<<generate1>><<generate2>><<generate3>><<person1>>
+				"嘿，<<girl>>，"一个声音说道。你抬起头，看到一个<<person>>隔着栅栏斜眼看着你。<<person1>><<him>>的侧面站着<<person2>><<person>>和<<person3>><<person>>。<span class="green">他们试图爬上围栏，但只爬了一半就滑了下来。</span>
+				<br><br>
+				"你的设置不错，"<<he>>继续说道。"别以为一点点金属就能保证你的安全。"
+				<br><br>
+
+				<<link [[嘲讽|Farm Tending Barb Taunt]]>><<def 1>><<trauma -6>><</link>><<ltrauma>>
+				<br>
+				<<link [[无视|Farm Tending Barb Ignore]]>><</link>>
+				<br>
+				<<if $exhibitionism gte 2>>
+					<<link [[夸耀|Farm Tending Barb Flaunt]]>><</link>><<exhibitionist2>>
+				<</if>>
+			<<else>>
+				<<generate1>><<generate2>><<generate3>><<person1>>
+				"嘿，<<girl>>，" 一个声音说。你抬起头，看到一个在栅栏外的<<person>>向你抛媚眼。"这么可爱的<<if playerBellyVisible() and $pregnancyspeechdisable is "f">>孕妇<</if>><<girl>>在农场做什么？"
+				<br><br>
+
+				<<if currentSkillValue('skulduggery') gte random(500, 700)>>
+					<span class="green">你打了一个寒战。</span>有些不对劲。这不是你遇到的普通变态。你四处张望，发现他们了。<<person2>><<person>>和<<person3>><<person>>在作物中悄悄地潜行，试图偷偷靠近你。
+					<br><br>
+					<<if Time.hour lt 21 or Time.hour gt 4>>
+						<<link [[尖叫|Farm Tending Group Alex]]>><<sub 1>><<npcincr Alex dom 1>><</link>><<gdom "Alex">>
+					<<else>>
+						<<link [[尖叫|Farm Tending Group Alex Fail]]>><<sub 1>><</link>><<gdom "Alex">>
+					<</if>>
+					<br>
+					<<link [[掌握主动权|Farm Tending Group Fight]]>><<def 1>>/*<<farm_aggro -5>>*/<</link>>/*<<laggro>>*/
+					<br>
+				<<else>>
+					<span class="red">你听到一侧有动静。</span>你转过身，看到一个<<person2>><<person>>向你冲来。你还没来得及回应，一只手就从后面捂住了你的嘴。
+					<br><br>
+
+					<<person1>><<person>>爬过栅栏，走近了。"我不会说谎，"<<he>>说道。"我喜欢我的工作。"
+					<br><br>
+
+					<<link [[继续|Farm Tending Gang Rape]]>><<set $molestationstart to 1>><</link>>
+					<br>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<generate1>><<person1>>
+			"嘿，<<girl>>，"一个声音说道。你抬起头，看到一个<<person>>在向你抛媚眼
+			<<if $farm.wall gte 3>>
+				穿过栅栏。
+			<<elseif $farm.wall gte 1>>
+				隔着墙。
+			<<else>>
+				越过栅栏。
+			<</if>>
+
+			"这么可爱的<<if playerBellyVisible() and $pregnancyspeechdisable is "f">>孕妇<</if>><<girl>>在农场做什么？"
+			<br><br>
+
+			<<link [[无视|Farm Tending Ignore]]>><<set $phase to 0>><</link>>
+			<br>
+			<<link [[礼貌的回应|Farm Tending Polite]]>><</link>>
+			<br>
+			<<link [[调情|Farm Tending Flirt]]>><</link>><<promiscuous1>>
+			<br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_tending_alex_events">>
+	<<cleareventpool>>
+
+	/* seasonal events */
+	<<if Time.season is "summer" and $weather is "clear">>
+		<<addinlineevent "farm_tending_alex_summer_1">>
+			<<npc Alex>><<person1>>
+
+			艾利克斯用<<his>>的脸扇风，擦了擦<<his>>的额头上的汗水。<<He>>眯着眼睛看着天空，喘着气。"太热了。"
+			<br><br>
+
+			<<He>>开始解开<<his>>的衬衫纽扣，一个接一个，似乎没有注意到你的目光。
+			<br><br>
+
+			<<if $promiscuity gte 15>>
+				<<link [["触碰" + $NPCList[0].pronouns.him|Farm Tending Alex Summer]]>><<set $phase to 2>><<if $farm_stage lt 7 or ($farm_stage gte 7 and $alex_countdown isnot undefined)>><<npcincr Alex love -1>><</if>><<npcincr Alex dom -1>><<npcincr Alex lust 3>><</link>><<promiscuous2>><<if $farm_stage lt 7 or ($farm_stage gte 7 and $alex_countdown isnot undefined)>><<llove>><</if>><<ldom>><<gglust>>
+				<br>
+			<</if>>
+			<<link [[偷看|Farm Tending Alex Summer]]>><<set $phase to 1>><<arousal 300>><<npcincr Alex lust 1>><</link>><<garousal>><<glust>>
+			<br>
+			<<link [[无视|Farm Tending Alex Summer]]>><<set $phase to 0>><</link>>
+			<br>
+		<</addinlineevent>>
+	<</if>>
+
+	/* general events */
+	<<addinlineevent "farm_tending_alex_general_1">>
+		<<npc Alex>><<person1>>
+		你听到艾利克斯惊讶地大叫。你冲过去，发现<<him>>仰面倒在地上。
+		<br><br>
+		"把我吓了一跳，该死的家伙。"<<he>>说道。
+		<br><br>
+
+
+		<<link [[伸出援手|Farm Tending Alex Arm]]>><<npcincr Alex love 1>><<npcincr Alex dom -1>><</link>><<ldom>><<glove>>
+		<br>
+		<<link [["捉弄" + $NPCList[0].pronouns.his + "一下"|Farm Tending Alex Laugh Expense]]>><<npcincr Alex dom -1>><<stress -6>><</link>><<ldom>><<lstress>>
+		<br>
+		<<link [[回去工作|Farm Tending Alex Back]]>><</link>>
+		<br>
+	<</addinlineevent>>
+
+	<<addinlineevent "farm_tending_alex_general_2">>
+		<<npc Alex>><<person1>>
+		<<if $NPCName[$NPCNameList.indexOf("Alex")].lust gte 10 and random(1, 2) is 2>>
+			你发现艾利克斯在偷偷地看你，<<he>>认为你没有在看。
+			<br><br>
+
+			<<link [[调情|Farm Tending Alex Flirt]]>><</link>><<promiscuous1>>
+			<br>
+			<<link [[无视|Farm Tending Alex Ignore]]>><</link>>
+			<br>
+		<<elseif $exposed gte 1>>
+			你发现艾利克斯在偷偷地看你，<<he>>认为你没有在看。<<garousal>><<arousal 600>>
+			<br><br>
+
+			<<link [[无视|Farm Tending Alex Ignore]]>><<npcincr Alex lust 1>><</link>><<glust>>
+			<br>
+			<<link [[挑逗|Farm Tending Alex Tease]]>><<npcincr Alex lust 1>><<arousal 1800>><<trauma -6>><<npcincr Alex dom -1>><</link>><<glust>><<ldom>><<ggarousal>><<ltrauma>>
+			<br>
+		<<else>>
+			艾利克斯从场地的另一边向你挥手。你挥挥手。<<lstress>><<stress -6>>
+			<br><br>
+
+			<<destination_farm>>
+			<br>
+		<</if>>
+	<</addinlineevent>>
+
+	<<addinlineevent "farm_tending_alex_general_3">>
+		你在艾利克斯旁边工作，一直在聊天。<<ltrauma>><<lstress>><<trauma -6>><<stress -6>>
+		<br><br>
+
+		<<destination_farm>>
+		<br>
+	<</addinlineevent>>
+
+	<<addinlineevent "farm_tending_alex_general_4">>
+		<<npc Alex>><<person1>>
+		你一边工作一边和艾利克斯聊天。<<Hes>>热衷于分享<<his>>的耕作技术。
+		<br><br>
+
+		<<if $tending lt 1000>>
+			<<link [[倾听(0:10)|Farm Tending Alex Listen]]>><<farm_count 10>><<tending 6>><<pass 10>><<npcincr Alex dom 1>><</link>><<gdom>><<gtending>>
+			<br>
+		<<else>>
+			<<link [[教艾利克斯 (0:10)|Farm Tending Alex Teach]]>><<pass 10>><<farm_count 10>><<npcincr Alex love 1>><<npcincr Alex dom -1>><</link>><<ldom>><<glove>>
+			<br>
+		<</if>>
+		<<link [[专注工作|Farm Tending Alex Focus]]>><</link>>
+		<br>
+	<</addinlineevent>>
+
+	<<runeventpool>>
+<</widget>>
+
+<<widget "barn_img">>
+	<<machine_init>>
+
+	<<if _args[2]>>
+		<<set $_prop to _args[2]>>
+	<<else>>
+		<<set $_prop to "haybale">>
+	<</if>>
+
+	<<if _args[0] is "penis">>
+		<<if _args[1] is "livestock">>
+			<<set _barn_semen to $livestock_semen>>
+		<<elseif _args[1] is "half_livestock">>
+			<<set _barn_semen to ($livestock_semen / 2)>>
+		<<elseif _args[1] is "no_livestock">>
+			<<set _barn_semen to 0>>
+		<<else>>
+			<<set _barn_semen to $semen_amount>>
+		<</if>>
+		<<if _barn_semen gte 3000>>
+			<<set _semen_img to "semen_7">>
+		<<elseif _barn_semen gte 2000>>
+			<<set _semen_img to "semen_6">>
+		<<elseif _barn_semen gte 1500>>
+			<<set _semen_img to "semen_5">>
+		<<elseif _barn_semen gte 1000>>
+			<<set _semen_img to "semen_4">>
+		<<elseif _barn_semen gte 500>>
+			<<set _semen_img to "semen_3">>
+		<<elseif _barn_semen gte 200>>
+			<<set _semen_img to "semen_2">>
+		<<else>>
+			<<set _semen_img to "semen_1">>
+		<</if>>
+		<<prop $_prop semen penis_pump>>
+	<<elseif _args[0] is "breasts">>
+		<<if _args[1] is "livestock">>
+			<<set _barn_milk to $livestock_milk>>
+		<<elseif _args[1] is "half_livestock">>
+			<<set _barn_milk to ($livestock_milk / 2)>>
+		<<elseif _args[1] is "no_livestock">>
+			<<set _barn_milk to 0>>
+		<<else>>
+			<<set _barn_milk to $milk_amount>>
+		<</if>>
+		<<if _barn_milk gte 3000>>
+			<<set _milk_img to "milk_7">>
+		<<elseif _barn_milk gte 2000>>
+			<<set _milk_img to "milk_6">>
+		<<elseif _barn_milk gte 1500>>
+			<<set _milk_img to "milk_5">>
+		<<elseif _barn_milk gte 1000>>
+			<<set _milk_img to "milk_4">>
+		<<elseif _barn_milk gte 500>>
+			<<set _milk_img to "milk_3">>
+		<<elseif _barn_milk gte 200>>
+			<<set _milk_img to "milk_2">>
+		<<else>>
+			<<set _milk_img to "milk_1">>
+		<</if>>
+		<<prop $_prop milk breast_pump>>
+	<<else>>
+		<<if _args[1] is "livestock">>
+			<<set _barn_semen to $livestock_semen>>
+			<<set _barn_milk to $livestock_milk>>
+		<<elseif _args[1] is "half_livestock">>
+			<<set _barn_semen to ($livestock_semen / 2)>>
+			<<set _barn_milk to ($livestock_milk / 2)>>
+		<<elseif _args[1] is "no_livestock">>
+			<<set _barn_semen to 0>>
+			<<set _barn_milk to 0>>
+		<<else>>
+			<<set _barn_semen to $semen_amount>>
+			<<set _barn_milk to $milk_amount>>
+		<</if>>
+		<<if _barn_semen gte 3000>>
+			<<set _semen_img to "semen_7">>
+		<<elseif _barn_semen gte 2000>>
+			<<set _semen_img to "semen_6">>
+		<<elseif _barn_semen gte 1500>>
+			<<set _semen_img to "semen_5">>
+		<<elseif _barn_semen gte 1000>>
+			<<set _semen_img to "semen_4">>
+		<<elseif _barn_semen gte 500>>
+			<<set _semen_img to "semen_3">>
+		<<elseif _barn_semen gte 200>>
+			<<set _semen_img to "semen_2">>
+		<<else>>
+			<<set _semen_img to "semen_1">>
+		<</if>>
+		<<if _barn_milk gte 3000>>
+			<<set _milk_img to "milk_7">>
+		<<elseif _barn_milk gte 2000>>
+			<<set _milk_img to "milk_6">>
+		<<elseif _barn_milk gte 1500>>
+			<<set _milk_img to "milk_5">>
+		<<elseif _barn_milk gte 1000>>
+			<<set _milk_img to "milk_4">>
+		<<elseif _barn_milk gte 500>>
+			<<set _milk_img to "milk_3">>
+		<<elseif _barn_milk gte 200>>
+			<<set _milk_img to "milk_2">>
+		<<else>>
+			<<set _milk_img to "milk_1">>
+		<</if>>
+		<<prop $_prop semen penis_pump milk breast_pump>>
+	<</if>>
+	<<if $options.images is 1 and $options.combatImages is 1>>
+		<br><br>
+		<<timed 100ms>>
+			<<combatimg>>
+			<br>
+		<</timed>>
+	<</if>>
+<</widget>>
+
+<<widget "farmCatchChance">>
+	<<if _args[0] gt 0 or _args[0] lt 0>>
+		<<set $farm.milking.catchChance to Math.clamp(parseFloat($farm.milking.catchChance) + parseFloat(_args[0]),0,100).toFixed(3)>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_fight_init">>
+	<<set $farm_fight to {}>>
+	<<set $farm_fight.action to "rest">>
+	<<set $farm_fight.stage to 0>>
+	<<set $farm_fight.distraction to 0>>
+	<<set $farm_fight.door to 14>>
+	<<set $farm_fight.screws to 10>>
+<</widget>>
+
+<<widget "farm_fight_end">>
+	<<unset $farm_fight>>
+<</widget>>
+
+<<widget "farm_fight_alex">>
+	<<person1>>
+	<<if $farm_fight.distraction is 2>>
+		<<set $farm_fight.distraction -= 1>>
+		<<He>>在围绕着<<him>>的恶棍之间穿梭，每当他们靠近时就刺戳他们。
+	<<elseif $farm_fight.distraction is 1>>
+		<<set $farm_fight.distraction -= 1>>
+		<span class="green">艾利克斯从<<person2>><<person>>左侧的<<person1>><<his>>扔来的午餐中避开了。</span>
+		<<if $farm_fight.stage gte 5>>
+			<span class="pink">但是<<person6>><<person>>从后面冲向<<person1>><<him>>，再次抓住了<<his>>的手臂。</span>
+		<<else>>
+			<<if $farm_fight.stage gte 5>>
+				<span class="pink">但是<<person6>><<person>>紧跟着这个攻击，从后面抓住了<<person1>><<him>>，恶棍们逐渐靠近。</span>
+			<<else>>
+				<span class="pink">但是<<person3>><<person>>紧跟着这个攻击，让<<person1>><<him>>失去了平衡。恶棍们逐渐靠近。</span>
+			<</if>>
+		<</if>>
+	<<else>>
+
+		<<switch $farm_fight.stage>>
+			<<case 0>>
+				艾利克斯踢开了抓住<<person1>><<him>>的<<person3>><<person>>的手，<span class="teal">挣扎着挣脱。</span>
+			<<case 1>>
+				<span class="lblue">艾利克斯从一个<<person4>><<person>>挥出的拳头下躲了过去。</span>
+			<<case 2>>
+				一个<<person5>><<person>>抓住了艾利克斯的胳膊，<span class="lblue">但是<<person1>><<he>>设法将它挣脱了。</span>
+			<<case 3>>
+				一个<<person6>><<person>>挥舞着他的拳头向艾利克斯打来，<span class="blue">但这位年轻的农民在最后一刻闪身躲开了。</span>
+			<<case 4>>
+				暴徒们把艾利克斯关在他们中间。他们犹豫着要不要接近，<span class="blue">但是艾利克斯很累。</span>
+			<<case 5>>
+				<<person5>><<person>>再次试图抓住艾利克斯，<<person6>><<person>>支持着<<person5>><<him>>。 <span class="purple">艾利克斯躲开了前者，但后者从后面抓住了<<person1>><<his>>的手臂。</span><<npcincr Alex dom -1>><<ldom>>
+			<<case 6>>
+				<span class="purple">艾利克斯挣扎着挣脱<<person6>><<persons>>的掌控。</span>
+			<<case 7>>
+				<<person2>><<person>>从前方接近苦斗中的艾利克斯。艾利克斯设法用双脚将他挡在身外，<span class="pink">但<<person6>><<person>>把<<person1>><<him>>逼到了跪在地上。</span><<npcincr Alex dom -3>><<lldom>>
+			<<case 8>>
+				<span class="pink">在<<person1>><<his>>的手臂被人从后面抓住的时候，<<person4>><<person>>和<<person5>><<person>>踢着跪在地上的艾利克斯。<<person1>><<He>>含着牙关忍受着他们的攻击。</span>
+			<<case 9>>
+				<span class="red">艾利克斯再也无法忍受了。<<he>>倒在地上，蜷缩成一团。</span><<npcincr Alex dom -9>><<llldom>>
+			<<default>>
+				<span class="red">艾利克斯仍然蜷缩在地上，被从各个角度踢来踢去。</span>
+		<</switch>>
+		<<set $farm_fight.stage += 1>>
+<</if>>
+<</widget>>
+
+<<widget "farm_fight_door">>
+	<<if $farm_fight.door gte 14>>
+		<span class="pink">门是实心的</span>
+	<<elseif $farm_fight.door gte 11>>
+		<span class="purple">门上出现了细细的裂缝。</span>
+	<<elseif $farm_fight.door gte 8>>
+		<span class="blue">门上的裂缝变宽了。</span>
+	<<elseif $farm_fight.door gte 5>>
+		<span class="lblue">风从门上的厚缝里透了进来。</span>
+	<<elseif $farm_fight.door gte 2>>
+		<span class="teal">门上的裂缝几乎可以伸进一只胳膊。</span>
+	<<else>>
+		<span class="green">门上满是碎片。它承受不了更多了。</span>
+	<</if>>
+	<<if $farm_fight.screws gte 10>>
+		<span class="pink">所有的门螺丝都完好无损。</span>
+	<<elseif $farm_fight.screws gte 8>>
+		<span class="purple">门上的螺丝大部分都完好无损。</span>
+	<<elseif $farm_fight.screws gte 6>>
+		<span class="blue">门上的许多螺丝已经被拆了，但它仍然很坚固。</span>
+	<<elseif $farm_fight.screws gte 4>>
+		<span class="blue">门上的许多螺丝都被拆了。它在风中格格作响。</span>
+	<<elseif $farm_fight.screws gte 2>>
+		<span class="teal">门上的螺丝大部分都被拆了。</span>
+	<<else>>
+		<span class="green">只有一颗螺丝可以把门固定住。</span>
+	<</if>>
+<</widget>>
+
+<<widget "farm_fight_options">>
+	<<link [[砸门|Farm Fight]]>><<set $farm_fight.action to "bash">><</link>><<physiquedifficulty 10000 20000>>
+	<br>
+	<<if $farm_fight.toolbox is 1>>
+		<<link [[用锤子把门砸开|Farm Fight]]>><<set $farm_fight.action to "hammer">><</link>><<physiquedifficulty 5000 15000>>
+		<br>
+		<<link [[拧开门的螺丝|Farm Fight]]>><<set $farm_fight.action to "unscrew">><</link>>
+		<br>
+	<</if>>
+	<<if $farm_fight.sheet is 1>>
+		<<if $farm_fight.chainsaw is 2>>
+			<<link [[锯门|Farm Fight]]>><<set $farm_fight.action to "chainsaw">><</link>>
+			<br>
+		<<elseif $farm_fight.chainsaw is 1>>
+			<<if $farm_fight.cupboard is 1>>
+				<<link [[给电锯加油|Farm Fight]]>><<set $farm_fight.action to "refuel">><</link>>
+				<br>
+			<</if>>
+		<<elseif $farm_fight.chainsaw is undefined>>
+			<<link [[弄清楚如何打开电锯的开关|Farm Fight]]>><<set $farm_fight.action to "science">><</link>><<skill_difficulty "$science" "科学" 1 700>>
+			<br>
+		<</if>>
+	<</if>>
+	<<if $farm_fight.shelf is undefined or $farm_fight.toolbox is undefined or $farm_fight.cupboard is undefined or $farm_fight.rakes is undefined or $farm_fight.sheet is undefined>>
+		<<link [[搜索棚子|Farm Fight Search]]>><<set $farm_fight.action to 0>><</link>>
+		<br>
+	<</if>>
+	<<if $farm_fight.stage gte 2 and $farm_fight.distraction lte 0>>
+		<<if $farm_fight.breasts isnot 1>>
+			<<if $player.gender is "f" or $player.gender_appearance is "f">>
+				<<if $exhibitionism gte 55>>
+					<<link [[从窗户露出你的胸部|Farm Fight]]>><<set $farm_fight.action to "breasts">><<set $farm_fight.breasts to 1>><</link>><<exhibitionist4>>
+					<br>
+				<</if>>
+			<<else>>
+				<<link [[从窗户露出你的胸部|Farm Fight]]>><<set $farm_fight.action to "chest">><<set $farm_fight.breasts to 1>><</link>><<exhibitionist1>>
+				<br>
+			<</if>>
+		<</if>>
+		<<if $farm_fight.bottom isnot 1>>
+			<<if $exhibitionism gte 35>>
+				<<link [[把你的屁股露出窗外|Farm Fight]]>><<set $farm_fight.action to "bottom">><<set $farm_fight.bottom to 1>><</link>><<exhibitionist3>>
+				<br>
+			<</if>>
+		<</if>>
+		<<if $farm_fight.genitals isnot 1>>
+			<<if $exhibitionism gte 75>>
+				<<if $player.penisExist and $player.vaginaExist>>
+					<<link [[透过窗户露出你的生殖器|Farm Fight]]>><<set $farm_fight.action to "penis">><<set $farm_fight.genitals to 1>><</link>><<exhibitionist5>>
+					<br>
+				<<elseif $player.penisExist>>
+					<<link [[把你的阴茎暴露在窗外|Farm Fight]]>><<set $farm_fight.action to "penis">><<set $farm_fight.genitals to 1>><</link>><<exhibitionist5>>
+					<br>
+				<<else>>
+					<<link [[透过窗户露出你的阴部|Farm Fight]]>><<set $farm_fight.action to "vagina">><<set $farm_fight.genitals to 1>><</link>><<exhibitionist5>>
+					<br>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_sleep_options">>
+	<<nightmareCheck "Farm Sleep">>
+
+	<<if $sleeptrouble is 1 and $controlled is 0>>
+		<<link [[睡10个小时|Farm Sleep]]>><<set $sleephour to 10>><<incrementautosave>><</link>> (<<timeAfterXHours 10>>)<<ltiredness>>
+		<br>
+		<<link [[睡9个小时|Farm Sleep]]>><<set $sleephour to 9>><<incrementautosave>><</link>> (<<timeAfterXHours 9>>)<<ltiredness>>
+		<br>
+	<</if>>
+	<<link [[睡8个小时|Farm Sleep]]>><<set $sleephour to 8>><<incrementautosave>><</link>> (<<timeAfterXHours 8>>)<<ltiredness>>
+	<br>
+	<<link [[睡7个小时|Farm Sleep]]>><<set $sleephour to 7>><<incrementautosave>><</link>> (<<timeAfterXHours 7>>)<<ltiredness>>
+	<br>
+	<<link [[睡6个小时|Farm Sleep]]>><<set $sleephour to 6>><<incrementautosave>><</link>> (<<timeAfterXHours 6>>)<<ltiredness>>
+	<br>
+	<<link [[睡5个小时|Farm Sleep]]>><<set $sleephour to 5>><<incrementautosave>><</link>> (<<timeAfterXHours 5>>)<<ltiredness>>
+	<br>
+	<<link [[睡4个小时|Farm Sleep]]>><<set $sleephour to 4>><<incrementautosave>><</link>> (<<timeAfterXHours 4>>)<<ltiredness>>
+	<br>
+	<<link [[睡3个小时|Farm Sleep]]>><<set $sleephour to 3>><<incrementautosave>><</link>> (<<timeAfterXHours 3>>)<<ltiredness>>
+	<br>
+	<<link [[睡2个小时|Farm Sleep]]>><<set $sleephour to 2>><<incrementautosave>><</link>> (<<timeAfterXHours 2>>)<<ltiredness>>
+	<br>
+	<<link [[睡1个小时|Farm Sleep]]>><<set $sleephour to 1>><<incrementautosave>><</link>> (<<timeAfterXHours 1>>)<<ltiredness>>
+	<br>
+	<<link [[只是睡觉|Farm Sleep]]>><<set $sleephour to -1>><<incrementautosave>><</link>> (??:??)<<ltiredness>>
+	<br><br>
+	<<if $bus is "farm_alex_room">>
+		<<link [[爬下床|Farm Alex Bedroom]]>>
+			<<storeon "farm alex bed" "check">>
+			<<if _store_check is 1>>
+				<<storeon "farm alex bed">>
+				<<set $wardrobe_location to "alexFarm">>
+				<<wardrobeSelection true>>
+			<</if>>
+			<<loadTempHairStyle>>
+		<</link>>
+		<br>
+	<<else>>
+		<<link [[爬下床|Farm Bedroom]]>><<storeon "Farm Bed">><<set $wardrobe_location to "alexFarm">><<loadTempHairStyle>><<wardrobeSelection>><<loadTempHairStyle>><</link>>
+	<</if>>
+	<br><br>
+<</widget>>
+
+<<widget "farm_tell_alex">>
+	<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+	<<if random(1, 14) is 14 and $fame.model gte 30>>
+		你谈论你的模特工作。
+		<<if $rng gte 60 and $alex_countdown is undefined and $farm_stage gte 7>>
+			"你做过模特？我信，"<<He>>脸红。"毕竟你这么漂亮。"
+		<<elseif $rng gte 30 and $farm_stage gte 6>>
+			"希望你不要长得太大，"<<he>>说道。"我从来没有从我的<<if $pronoun is "m">>爸爸<<else>>妈妈<</if>>那里听到它的结尾。"
+		<<else>>
+			"不要让它进入你的头脑，"<<he>>挑逗。"如果我在电视上看到你，我肯定会大喊大叫的。"
+		<</if>>
+	<<elseif random(1, 14) is 13 and $fame.scrap gte 30>>
+		你告诉<<him>>你知道如何保护自己。
+		<<if isLoveInterest("Alex")>>
+			"我知道我的<<girl>>是个坚强的人，"<<he>>笑着说道。"无论发生什么，我都会支持你。"
+		<<elseif $bodysize lte 0>>
+			"听到你这样的小个子说出来，我很惊讶，"<<he>>笑了。"无意冒犯。"
+		<<else>>
+			<<He>>赞同地点头。"这是一项任何人都该有的好技能，"<<he>>说道。"变态该滚了。"
+		<</if>>
+	<<elseif random(1, 14) is 12 and $fame.good gte 30>>
+		你告诉<<him>>你在尽力帮助别人。有人叫你天使。
+		<<if _alex.love lte -10>>
+			"有些事情就是不合理，"<<he>>的语气听起来很恼火。"对不起，我不是有意无礼的。但你可以对我好一点。"
+		<<elseif $alex_countdown is undefined and $farm_stage gte 7>>
+			"你是我的天使，"<<he>>轻声笑道。也是我的<<if $player.gender_appearance is "f">>女<</if>>人。
+		<<elseif $angel gte 6 and $transformationParts.angel.halo isnot "hidden" and $transformationParts.angel.wings isnot "hidden">>
+			"我很高兴我不是个例外，"<<he>>对你微笑道。"你看起来确实很专业。"
+		<<elseif $demon gte 2>>
+			"我从没想过你是那种正直的人，"<<he>>调侃道。"带着你那恶魔般的笑容。"
+		<<else>>
+			"我不知道，"<<he>>转了转眼睛。"我在开玩笑。从我们第一次见面起，我就知道你心地善良。"
+		<</if>>
+	<<elseif random(1, 14) is 11 and $fame.business gte 30>>
+		你告诉<<him>>你是一个企业家。
+		<<if $farm_stage gte 7>>
+			"你付出了很大的努力，"<<he>>微笑着，指着田野。"让你成为合伙人是我做过的最好的决定之一。"
+		<<else>>
+			<<He>>点头微笑。"我喜欢你到目前为止所做的。坚持下去。"
+		<</if>>
+	<<elseif random(1, 14) is 10 and $fame.socialite gte 30>>
+		你和<<him>>分享你在镇里的见闻。 "真高兴居然有一个精英人士不介意弄脏<<pher>>的手，愿意和我这样一个乡下人<<nnpc_gendery "Alex">>交流"，<<he>>调侃道。
+	<<elseif random(1, 14) is 9 and $adultshopclerk>>
+		你告诉<<him>>你还是一名成人用品店店员。"你有员工折扣吗?我很费这种……"<<He>>的表情笑嘻嘻的，但是没有说完。"我开玩笑的。"
+	<<elseif random(1, 14) is 8 and $spa_job gte 1>>
+		你告诉<<him>>你在镇上的水疗中心给客户按摩。"可惜我之前办的会员卡已经过期了，"<<he>>说道。"洗过泥浴吗?很舒服的。"
+	<<elseif random(1, 14) is 7 and $oceanbreezejob is 1>>
+		你告诉<<him>>你也在镇上的咖啡馆当服务员。"我可能第一天上班就会被解雇，"<<he>>说道。"我不喜欢被骚扰。"
+	<<elseif random(1, 14) is 6 and $chef_state gte 1>>
+		你告诉<<him>>你也在镇上的咖啡馆做厨师。"听起来是个不错的生意，"<<he>>笑着说道。"我们应该找个时间来个厨艺大赛。"
+	<<elseif random(1, 14) is 5 and $dockwork is 1>>
+		你告诉<<him>>你还是一个码头工人。"小心你的脊椎，"<<he>>警告说道。"相信我。我很有经验。"
+	<<elseif random(1, 14) is 4 and $stripclubbartendingintro is 1>>
+		你告诉<<him>>你兼职做酒保。"你会调酒?你为什么不早点说呢?"<<His>>的脸亮了起来，<<he>>继续对酒赞不绝口。
+	<<elseif random(1, 14) is 3 and $stripclubdancingintro is 1 or $dance_job_intro is 1>>
+		你告诉<<him>>你还是个舞者。<<He>>笑了好一会儿。"我应该也很擅长这个。我吸引过一大群人呢。"你不认为<<he>>指的是和你一样的舞蹈。
+	<<elseif random(1, 14) is 2 and $brotheljob is 1 and $fame.prostitution gte 30>>
+		"我在妓院里听到了关于你的谣言。我很惊讶你还会出现在这里。你一定很能赚钱吧。"<<He>>上下打量你，然后捧腹大笑，注意到你的眼神后<<He>>咳嗽了一声，看向别处。
+		<<if $uncomfortable.lewd is true>>
+			<<stress 6>><<gstress>>
+		<</if>>
+	<<elseif random(1, 14) is 1 and $fame.sex gte 400>>
+		"有传言说你特别厉害，被你打倒的人能堆成一座山，"<<he>>敬畏地笑着。
+		<<if $alex_countdown is undefined and $farm_stage gte 7>>
+			"你是一个很合我心意的<<if $player.gender_appearance is "f">>女<</if>>人，你知道吗?"
+		<<else>>
+			"肯定需要非常努力吧，我认为很值得尊重。"
+		<</if>>
+	<<else>>
+		你耸了耸肩，看着<<if Time.hour is 5>>窗外。<<else>>天空。<</if>><<He>>也这样做。
+	<</if>>
+<</widget>>
+
+<<widget "farm_cottage_options">>
+	<<link [[你的房间(0:01)|Farm Bedroom]]>><<pass 1>><<endevent>><</link>>
+	<br>
+	<<link [[艾利克斯的房间 (0:01)|Farm Alex Bedroom]]>><<pass 1>><<endevent>><</link>>
+	<br>
+	<<if $farm.stock>>
+		<<link [[检查库存|Farm Stock]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+	<br>
+	<<link [[去外面(0:01)|Farm Work]]>><<pass 1>><<endevent>><</link>>
+	<br>
+<</widget>>
+
+<<widget "farm_cottage_tv_options">>
+	<<if $alex_countdown is undefined>>
+		<<link [[拥抱艾利克斯 (0:20)|Farm Breakfast Cuddle]]>><<npcincr Alex love 1>><<pass 20>><</link>><<glove>>
+		<br>
+		<<link [[和艾利克斯一起看电视 (0:20)|Farm Breakfast TV]]>><<stress -2>><<pass 20>><</link>><<lstress>>
+		<br>
+	<<else>>
+		<<link [[和艾利克斯一起看电视 (0:20)|Farm Breakfast TV]]>><<stress -2>><<pass 20>><</link>><<lstress>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "destination_farm">>
+	<<if $bus is "farm_fields">>
+		<<link [[继续|Farm Fields]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Farm Work]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+
+<<widget "cottage_bailey_options">>
+	<<babyRent>>
+	<<if $money gte $rentmoney + ($babyRent or 0)>>
+		<<link [[付款|Farm Cottage Bailey Pay]]>><</link>>
+		<br>
+		<<link [[拒绝|Farm Cottage Bailey Refuse]]>><<def 1>><</link>>
+		<br>
+	<<else>>
+		<<set $baileypaychain to 0>>
+		<<if $speech_attitude is "meek">>
+			"我没钱，"你告诉贝利。"请不要伤害艾利克斯。"
+		<<elseif $speech_attitude is "bratty">>
+			"我没钱，"你告诉贝利。"就算我有，我也不会给你一分。"
+		<<else>>
+			"我没钱，"你告诉贝利。"你在浪费时间。"
+		<</if>>
+		<br>
+		艾利克斯把手放在你的肩膀上。"我们不会被勒索的，"<<he>>怒视着闯入者。"他妈的滚，离开
+		<<if $NPCName[$NPCNameList.indexOf("Alex")].dom gte 20>>
+			我的
+		<<else>>
+			我们的
+		<</if>>产业。"
+		<br><br>
+
+		"很好，"贝利说道。"我的朋友们会很高兴的。"<<nnpc_He Bailey>>转身走开。
+		<br><br>
+
+		<<if $bailey_encroach gte 1>>
+			<span class="pink"><i>贝利将会给雷米更多的支持，让侵占的速度更快。<<nnpc_He Bailey>>将在雷米进攻时派遣增援部队。</i></span>
+		<<else>>
+			<span class="pink"><i>贝利将支持雷米对农场的攻击，使入侵速度加快。<<nnpc_He Bailey>>将在雷米进攻时派遣增援部队。</i></span>
+		<</if>>
+		<br><br>
+
+		<<link [[继续|Farm Cottage Bailey Refuse 2]]>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "farm_build_day">>
+	<<if $farm_stage gte 7>>
+		<<if $farm.build_timer gte 1>>
+			<<set $farm.build_timer -= 1>>
+		<</if>>
+		<<if $farm.build_timer lte 0>>
+			<<switch $farm.build>>
+				<<case "wall 1">>
+					<<set $farm.wall to 1>>
+				<<case "wall 2">>
+					<<set $farm.wall to 2>>
+				<<case "wall 3">>
+					<<set $farm.wall to 3>>
+				<<case "wall 4">>
+					<<set $farm.wall to 4>>
+				<<case "tower 1">>
+					<<set $farm.tower to 1>>
+				<<case "tower 2">>
+					<<set $farm.tower to 2>>
+				<<case "woodland 1">>
+					<<set $farm.woodland to 1>>
+				<<case "woodland 2">>
+					<<set $farm.woodland to 2>>
+				<<case "woodland 3">>
+					<<set $farm.woodland to 3>>
+				<<case "kennel 1">>
+					<<set $farm.kennel to 1>>
+				<<case "barn 1">>
+					<<set $farm.barn to 1>>
+				<<case "barn 2">>
+					<<set $farm.barn to 2>>
+				<<case "stable 1">>
+					<<set $farm.stable to 1>>
+				<<case "coop 1">>
+					<<set $farm.coop to 1>>
+				<<case "coop 2">>
+					<<set $farm.coop to 2>>
+				<<case "parasites 1">>
+					<<set $farm.parasitebarn to 1>>
+				<<case "parasites 2">>
+					<<set $farm.parasitebarn to 2>>
+					<<set _container to $container.farm>>
+					<<set _container.upgrades.capacity to 1>>
+					<<set _container.maxCount to 7>>
+					<<set _container.upgrades.foodStorage to 1>>
+					<<set _container.maxDaysWithoutFood to 31>>
+					<<set _container.upgrades.luxury to 3>>
+				<<case "irrigation">>
+					<<if $farm.irrigation is undefined>>
+						<<set $farm.irrigation to 1>>
+					<<elseif $farm.irrigation lt 9>>
+						<<set $farm.irrigation++>>
+					<</if>>
+			<</switch>>
+			<<if $farm.build_finished is undefined or $farm.build_finished is 0>>
+				<<set $farm.build_finished to []>>
+			<</if>>
+			<<run $farm.build_finished.pushUnique($farm.build)>>
+			<<set $farm.build to 0>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_fence_damage">>
+	<<if _args[0]>>
+		<<set _fence_mod to 1>>
+		<<if $farm.wall gte 2>>
+			<<set _fence_mod -= 0.5>>
+		<</if>>
+		<<set $farm_work.fence_damage += (_args[0] * _fence_mod)>>
+		<<set $farm_work.fence_damage = Math.clamp($farm_work.fence_damage, 0, 100)>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_fence">>
+	<<if $farm.wall gte 3>>
+		<<set _text_output to "围栏">>
+	<<elseif $farm.wall gte 1>>
+		<<set _text_output to "墙">>
+	<<else>>
+		<<set _text_output to "围栏">>
+	<</if>>
+	<<print _text_output>>
+<</widget>>
+
+<<widget "guard_terms">>
+	<<farm_guard_wage>>
+	安保技能: <<guard_skill_text>>
+	<br>
+	周薪: <<printmoney $farm.tower_guard_wage>>
+	<br>
+	<i>技能会随着时间的推移而提高，但<<he>>会要求更高的报酬。</i>
+<</widget>>
+
+<<widget "guard_skill_text">>
+	<<if _args[0] is "tower" and $farm.tower_guard_skill isnot undefined>>
+		<<set _guard_skill to $farm.tower_guard_skill>>
+	<<else>>
+		<<set _guard_skill to $NPCList[0].skills.security>>
+	<</if>>
+	<<if _guard_skill gte 1000>>
+		<span class="green">S</span>
+	<<elseif _guard_skill gte 800>>
+		<span class="teal">A</span>
+	<<elseif _guard_skill gte 600>>
+		<span class="lblue">B</span>
+	<<elseif _guard_skill gte 400>>
+		<span class="blue">C</span>
+	<<elseif _guard_skill gte 200>>
+		<span class="purple">D</span>
+	<<else>>
+		<span class="pink">F</span>
+	<</if>>
+<</widget>>
+
+<<widget "farm_guard_pay">>
+	<<if $farm.tower_guard_unpaid gte 1>>
+		<<set _owed to ($farm.tower_guard_wage * $farm.tower_guard_unpaid)>>
+		你欠<<him>><<printmoney _owed>>工资。
+		<br>
+		<<if $money gte _owed>>
+			<<link [[支付|Farm Tower Pay]]>><<set $money -= _owed>><<set $NPCList[0].trust += 1>><<farm_guard_paid>><</link>><<gtrust>><<note "+ 安保技能" "green">><<note "+ 工资" "red">>
+			<br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_guard_wage">>
+	<<set $farm.tower_guard_wage to 30000 + ($NPCList[0].skills.security * 100)>>
+<</widget>>
+
+<<widget "farm_guard_paid">>
+	<<set $NPCList[0].skills.security += (20 * $farm.tower_guard_unpaid)>>
+	<<set $NPCList[0].skills.security to Math.clamp($NPCList[0].skills.security, 0, 1000)>>
+	<<set $farm.tower_guard_skill to clone($NPCList[0].skills.security)>>
+	<<farm_guard_wage>>
+	<<set $farm.tower_guard_unpaid to 0>>
+	<<if $NPCList[0].skills.security gte 1000>>
+		<<earnFeat "Reliable Employer">>
+	<</if>>
+<</widget>>
+
+<<widget "farm_stock_init">>
+	<<set $farm.stock to {}>>
+	<<set $farm.stock.truffles to 0>>
+	<<set $farm.stock.eggs to 0>>
+	<<set $farm.stock.milk to 0>>
+<</widget>>
+
+<<widget "farm_stock">>
+	<<if _args[0]>>
+		<<if _args[1] and _args[2]>>
+			<<set $farm.stock[_args[0]] += random(_args[1], _args[2])>>
+		<<elseif _args[1]>>
+			<<set $farm.stock[_args[0]] += _args[1]>>
+		<<else>>
+			<<set $farm.stock[_args[0]] += 1>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_ride_events">>
+	<<rng 4>>
+	<<if $rng is 4>>
+		<<if $farm.aggro gte 80>>
+			你听到马蹄从后面靠近。雷米的两个打手<span class="red">跟在你后面。</span>
+			<br><br>
+
+			<<generate2>><<generate3>>
+			<<link [[骑得更快|Farm Ride Aggro Faster]]>><</link>><<skill_difficulty "$thighskill" "腿部技巧" 400 1400>>
+			<br>
+			<<link [[面对|Farm Ride Aggro Confront]]>><</link>>
+			<br>
+		<<elseif $farm.aggro gte 40>>
+			你听到马蹄从后面靠近。雷米的两个打手跟在你后面。他们正在迎头赶上。
+			<br><br>
+			<<generate2>><<generate3>>
+			<<link [[骑得更快|Farm Ride Faster]]>><</link>><<skill_difficulty "$thighskill" "腿部技巧" 1 1000>>
+			<br>
+			<<link [[面对|Farm Ride Confront]]>><</link>>
+			<br>
+		<<else>>
+			你听到马蹄从后面靠近。雷米的两个打手跟着你，但他们保持距离。<<gstress>><<stress 6>><<gaggro>><<farm_aggro 1>>
+			<br><br>
+
+			<<destination_farm_ride>>
+		<</if>>
+	<<elseif $rng is 3>>
+		<<if $farm.beasts.horses lt -20 and $horsedisable is "f" and ($monster is 1 or $bestialitydisable is "f")>><!-- Modified for Beast People -->
+			<<beasttype>>猛地朝另一个方向跑去，开始冲刺，跑过一片开阔的田野。它停在一个干草捆旁边，身子向前倾，把你从马鞍上扔下来。
+			<br><br>
+			你落在干草上，但在你逃脱之前，<<beasttype>>用<<bhis>>的重量压住了你。
+			<<if $monster gte 1>>
+				"该履行你的职责了，"<<bhe>>说道。"荡妇"。
+			<</if>>
+			<<if $NPCList[0].penis isnot "none">>
+				一个坚硬的物体压在你的<<bottom>>上。
+			<</if>>
+			<br><br>
+
+			<<link [[继续|Farm Ride Rape]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<<elseif $farm.beasts.horses lt 0 and $horsedisable is "f" and ($monster is 1 or $bestialitydisable is "f")>><!-- Modified for Beast People -->
+			<<beasttype>>停了下来，拒绝再往前走一步。
+			<<if $monster is 1>>
+				"我很沮丧，"<<bhe>>说道。"解决这个问题是你的工作。"
+			<<else>>
+				它沮丧地嘶鸣。
+			<</if>>
+			<br><br>
+
+
+			<<if $deviancy gte 35>>
+				<<link [[上手艺活|Farm Ride Hand]]>><</link>><<deviant3>>
+				<br>
+			<</if>>
+			<<link [[强制它继续|Farm Ride Force]]>><</link>><<skill_difficulty "$thighskill" "腿部技巧" 1 1400>>
+			<br>
+			<<link [[步行剩下的路程|Farm Ride Foot]]>><</link>>
+			<br>
+		<<elseif $farm.beasts.horses lt 20>>
+			<<if $monster gte 1>>
+				当你骑着马时，<<beasttype>>沉默了，似乎陷入了沉思。
+			<<else>>
+				<<beasttype>>在你骑的时候不会引起麻烦。
+			<</if>>
+			<br><br>
+			<<destination_farm_ride>>
+		<<else>>
+			<<if $monster gte 1>>
+				<<beasttype>>在你骑马的时候聊天，并赞扬你对农场的管理。
+			<<else>>
+				<<beasttype>>似乎很乐意伸展<<bhis>>的腿，也很乐意让你骑。
+			<</if>>
+			<br><br>
+			<<destination_farm_ride>>
+		<</if>>
+	<<elseif $rng is 2>>
+		<<beasttype>>速度放缓。已经很累了。
+		<br><br>
+
+		<<link [[休息一下(0:10)|Farm Ride Break]]>><<pass 10>><</link>>
+		<br>
+		<<link [[推|Farm Ride Push]]>><</link>><<skill_difficulty "$thighskill" "腿部技巧" 1 1000>>
+		<br>
+	<<else>>
+		一辆汽车驶过时鸣笛，激怒了你的<<beasttype>>。<<bHe>>偏离了道路，差点掉进沟里。
+		<br><br>
+
+		<<link [[安抚|Farm Ride Soothe]]>><</link>><<tendingdifficulty 1 1200>>
+		<br>
+		<<link [[负责|Farm Ride Charge]]>><<def 1>><</link>><<skill_difficulty "$thighskill" "腿部技巧" 1 1200>>
+		<br>
+		<<link [[无视|Farm Ride Ignore]]>><<farm_horses -1>><</link>><<lrespect>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "destination_farm_ride">>
+	<<if $bus is "farm">>
+		你到了农场，下了马。
+		<br><br>
+
+		<<link [[继续|Farm Work]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		你看到前面的城镇了。你把你的马留在田野里吃草，剩下的路就步行走完。
+		<br><br>
+
+		<<link [[继续|Harvest Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "farm_attack_auto">>
+	<<set _farm_fight to 0>>
+	<<if $farm.kennel gte 1>>
+		<<set _farm_fight += 1>>
+	<</if>>
+	<<if $farm.wall gte 4>>
+		<<set _farm_fight += 4>>
+	<<elseif $farm.wall gte 3>>
+		<<set _farm_fight += 3>>
+	<<elseif $farm.wall gte 2>>
+		<<set _farm_fight += 2>>
+	<<elseif $farm.wall gte 1>>
+		<<set _farm_fight += 1>>
+	<</if>>
+	<<if $farm.tower gte 2 and $farm.tower_guard>>
+		<<set _farm_fight += Math.trunc($farm.tower_guard_skill / 250)>>
+	<<elseif $farm.tower gte 1 and $farm.tower_guard>>
+		<<set _farm_fight += Math.trunc($farm.tower_guard_skill / 500)>>
+	<</if>>
+	<<switch $farm_stage>>
+		<<case 12>>
+			<<set _farm_damage to (9 - _farm_fight)>>
+		<<case 11>>
+			<<set _farm_damage to (8 - _farm_fight)>>
+		<<case 10>>
+			<<set _farm_damage to (7 - _farm_fight)>>
+		<<case 9>>
+			<<set _farm_damage to (6 - _farm_fight)>>
+		<<case 8>>
+			<<set _farm_damage to (5 - _farm_fight)>>
+		<<default>>
+			<<set _farm_damage to (4 - _farm_fight)>>
+	<</switch>><<set $farm_test to _farm_fight>>
+	<<if _farm_damage is 0 and $farm_stage gte 12>>
+		<<earnFeat "Heroic Victory">>
+	<</if>>
+	<<damage_farm "loop" _farm_damage>>
+	<<set $farm_attack_timer to random(17, 24)>>
+	<<set $farm_attacked to 1>>
+<</widget>>
+
+<<widget "damage_farm">>
+	<<if $fields_damaged is undefined>>
+		<<set $fields_damaged to 0>>
+	<</if>>
+	<<if _args[0] is "target">>
+		<<clear_plot farm _args[1]>>
+		<<set $fields_damaged++>>
+	<<elseif _args[0] is "loop">>
+		<<set _field_number to _args[1]>>
+		<<for _i to 0; _i lt _field_number; _i++>>
+			<<if $plots.farm[_i]>>
+				<<if $plots.farm[_i].stage gte 1>>
+					<<clear_plot farm _i>>
+					<<set $fields_damaged++>>
+				<<else>>
+					<<set _field_number++>>
+				<</if>>
+			<<else>>
+				<<set $farm_destroyed to true>>
+				<<break>>
+			<</if>>
+		<</for>>
+	<</if>>
+<</widget>>
+
+<<widget "farm_damage_report">>
+	<<if $fields_damaged is 0>>
+		<<if $farm_destroyed is true>>
+			你不在的时候农场被袭击了，<span class="blue">但是没有田地可以烧。</span>
+		<<else>>
+			你不在的时候，农场遭到了攻击，<span class="green">但是守卫者战斗英勇，没有失去一块田地。</span>
+		<</if>>
+	<<elseif $field_damaged is 1>>
+		你不在的时候，农场遭到了攻击，<span class="purple">在防守者把他们赶走之前，一片田地被烧毁了。</span><<gtrauma>><<trauma 6>>
+	<<elseif $fields_damaged is 9>>
+		你不在的时候，农场被攻击了，守卫者被打败了，<span class="red">所有的田地都被烧毁了。</span><<gggtrauma>><<trauma 24>>
+	<<else>>
+		你不在的时候，农场遭到了攻击，<span class="pink"><<number $fields_damaged>>块田地被烧毁了</span>。<<ggtrauma>><<trauma 12>>
+	<</if>>
+	<br><br>
+	<<unset $fields_damaged>>
+	<<unset $farm_destroyed>>
+	<<unset $farm_attacked>>
+<</widget>>
+
+<<widget "farm_assault_intro">>
+	<span class="green">艾利克斯已经准备好战斗了。</span>
+	<br>
+	<<if $farm.kennel gte 1>>
+		<span class="green">这些猎犬经过训练，随时准备保护它们的主人。</span>
+	<<else>>
+		<span class="blue">这些猎犬已准备好保卫农场，但没有受过任何特殊训练。</span>
+	<</if>>
+	<br>
+	<<if $farm.tower gte 2>>
+		<<if $farm.tower_guard>>
+			<span class="green">瞭望塔和探照灯由$farm.tower_guard操作,</span>有着<<guard_skill_text "tower">>安全技能。
+		<<else>>
+			<span class="red">瞭望塔是空的，</span>但是你可以用它来获得更好的视野。
+		<</if>>
+	<<elseif $farm.tower gte 1>>
+		<<if $farm.tower_guard>>
+			<span class="teal">这个瞭望塔是由$farm.tower_guard管理的，</span>有着<<guard_skill_text "tower">>安全技能。
+		<<else>>
+			<span class="red">瞭望塔是空的，</span>但是你可以用它来获得更好的视野。
+		<</if>>
+	<</if>>
+	<br>
+	<<if $farm.wall gte 4>>
+		<span class="green">农场周围的铁丝网是爬不上去的。入侵者需要破门而入，这需要一些时间。</span>
+	<<elseif $farm.wall gte 3>>
+		<span class="teal">农场周围高大的金属栅栏将大大减缓袭击速度。</span>
+	<<elseif $farm.wall gte 2>>
+		<span class="lblue">农场周围的加固墙将减缓袭击速度。</span>
+	<<elseif $farm.wall gte 1>>
+		<span class="blue">农场周围的墙会稍微减缓袭击者的速度。</span>
+	<<else>>
+		<span class="purple">农场周围的墙和栅栏提供了一个微弱的屏障。</span>
+	<</if>>
+	<br><br>
+<</widget>>
+
+<<widget "farm_upgrades_current">>
+	<<if $farm.build>>
+		<<switch $farm.build>>
+			<<case "parasites 1">>
+				寄生虫畜棚正在建造中。
+			<<case "parasites 2">>
+				寄生虫畜棚正在扩建。
+			<<case "wall 1">>
+				正在对墙体进行彻底维修。
+			<<case "wall 2">>
+				正在对这堵墙进行加固。
+			<<case "wall 3">>
+				石墙上正在建造金属栅栏。
+			<<case "wall 4">>
+				围栏顶上正在加装铁丝网.
+			<<case "tower 1">>
+				在田野的边缘正在建造一座瞭望塔。
+			<<case "tower 2">>
+				瞭望塔顶上正在安装探照灯。
+			<<case "kennel 1">>
+				护卫犬训练设施正在建设中。
+			<<case "barn 1" "barn 2">>
+				牛棚正在扩建。
+			<<case "woodland 1" "woodland 2" "woodland 3">>
+				附近的林地周围正在建篱笆。
+			<<case "stable 1">>
+				马厩正在扩建。
+			<<case "coop 1" "coop 2">>
+				鸡笼正在扩大。
+			<<case "irrigation">>
+				田地里正在安装灌溉装置。
+		<</switch>>
+		<<if $farm.build_timer is 1>>
+			明天就能完成。
+		<<else>>
+			还需要<<number $farm.build_timer>>天才能完成。
+		<</if>>
+		<br><br>
+	<</if>>
+<</widget>>
+
+<<widget "farm_upgrades_status">>
+	<<set _upgrade_count to 0>>
+	围墙:
+	<<if $farm.wall gte 4 or $farm.build is "wall 4">>
+		<span class="green">最为坚固</span>
+		<<set _upgrade_count += 1>>
+	<<elseif $farm.wall is 3 or $farm.build is "wall 3">>
+		<<link [[铁丝网|Farm Upgrades Wall 4]]>><</link>>
+	<<elseif $farm.wall is 2 or $farm.build is "wall 2">>
+		<<link [[金属栅栏|Farm Upgrades Wall 3]]>><</link>>
+	<<elseif $farm.wall is 1 or $farm.build is "wall 1">>
+		<<link [[加固|Farm Upgrades Wall 2]]>><</link>>
+	<<else>>
+		<<link [[完全修复|Farm Upgrades Wall 1]]>><</link>>
+	<</if>>
+	<br>
+	<<if $farm_stage gte 8>>
+		安保:
+		<<if $farm.tower is 2 or $farm.build is "tower 2">>
+			<span class="green">最高警惕</span>
+			<<set _upgrade_count += 1>>
+		<<elseif $farm.tower is 1 or $farm.build is "tower 1">>
+			<<link [[探照灯|Farm Upgrades Tower 2]]>><</link>>
+		<<else>>
+			<<link [[瞭望塔|Farm Upgrades Tower]]>><</link>>
+		<</if>>
+		<br>
+		林地:
+		<<if $farm.woodland gte 3 or $farm.build is "woodland 3">>
+			<span class="green">尽归农场</span>
+			<<set _upgrade_count += 1>>
+		<<elseif $farm.woodland gte 2 or $farm.build is "woodland 2">>
+			<<link [[购买更多|Farm Upgrades Woodland 3]]>><</link>>
+		<<elseif $farm.woodland gte 1 or $farm.build is "woodland 1">>
+			<<link [[购买更多|Farm Upgrades Woodland 2]]>><</link>>
+		<<else>>
+			<<link [[购买|Farm Upgrades Woodland 1]]>><</link>>
+		<</if>>
+		<br>
+		狗窝:
+		<<if $farm.kennel gte 1 or $farm.build is "kennel 1">>
+			<span class="green">最新技术</span>
+			<<set _upgrade_count += 1>>
+		<<else>>
+			<<link [[配备训练设施|Farm Upgrades Kennel 1]]>><</link>>
+		<</if>>
+		<br>
+		牛棚:
+		<<if $farm.barn gte 2 or $farm.build is "barn 2">>
+			<span class="green">最高配置</span>
+			<<set _upgrade_count += 1>>
+		<<elseif $farm.barn gte 1 or $farm.build is "barn 1">>
+			<<link [[扩大|Farm Upgrades Barn 2]]>><</link>>
+		<<else>>
+			<<link [[配备新的挤奶设备|Farm Upgrades Barn 1]]>><</link>>
+		<</if>>
+		<br>
+		马厩:
+		<<if $farm.stable gte 1 or $farm.build is "stable 1">>
+			<span class="green">最佳训练</span>
+			<<set _upgrade_count += 1>>
+		<<else>>
+			<<link [[扩大|Farm Upgrades Stable 1]]>><</link>>
+		<</if>>
+		<br>
+		鸡笼:
+		<<if $farm.coop gte 2 or $farm.build is "coop 2">>
+			<span class="green">最大规模</span>
+			<<set _upgrade_count += 1>>
+		<<elseif $farm.coop gte 1 or $farm.build is "coop 1">>
+			<<link [[再次扩大|Farm Upgrades Coop 2]]>><</link>>
+		<<else>>
+			<<link [[扩大|Farm Upgrades Coop 1]]>><</link>>
+		<</if>>
+		<br>
+		农场灌溉:
+		<<if $farm.irrigation gte 9>>
+			<span class="green">每片土地都有灌溉</span>
+			<<set _upgrade_count += 1>>
+		<<elseif $farm.irrigation is $plots.farm.length>>
+			<span class="green">每个当前的田地都有灌溉</span>
+		<<else>>
+			<<link [[修建农田灌溉系统|Farm Upgrades Irrigation]]>><</link>>
+		<</if>>
+		<br>
+		<<if ($sexStats.anus.pregnancy.motherStatus gte 1 or $sexStats.vagina.pregnancy.motherStatus gte 1) and ($farm.parasitebarn gte 1 or $farm.build is "parasites 1")>>
+			寄生虫畜棚:
+			<<if $farm.parasitebarn gte 2 or $farm.build is "parasites 2">>
+				<span class="green">最大规模</span>
+			<<else>>
+				<<link [[扩大|Farm Upgrades Parasite Barn 2]]>><</link>>
+			<</if>>
+			<br>
+		<</if>>
+		<br>
+	<</if>>
+<</widget>>

@@ -1,0 +1,718 @@
+:: Prison Canteen
+<<set $bus to "canteen">><<set $outside to 0>><<effects>><<effects_prison>>
+
+你正身处食堂。偌大的房间中摆满了一排排的桌子。天花板低到那些略高的狱友们都无法站直，尽管足够宽敞，它还是产生了一种狭隘的感觉。
+<<if $prison.schedule is "wake" or $prison.schedule is "lunch" or $prison.schedule is "dinner">>
+	囚犯们正在排队打饭，而<<generate_methodical_guard 0>><<methodical_guard 0 cap>>正站在角落里翻阅着一本书。
+<<elseif $prison.schedule is "work">>
+	你听到厨房里传来咔哒咔哒的声音。
+<<else>>
+	这里暂时空无一人。
+<</if>>
+<<endevent>>
+<br><br>
+<<if Time.hour is 20>>
+	铃声响了起来。 "禁闭时间，"<<generate_methodical_guard 0>><<methodical_guard 0>>喊道，"回到你们自己的牢房。"
+	<br><br>
+	你和其他的囚犯陆陆续续地动身。
+	<br><br>
+	<<link [[继续|Prison Cell]]>><<endevent>><</link>>
+	<br>
+<<elseif $stress gte $stressmax>>
+	<<passout_prison>>
+<<else>>
+
+	<<if $prison.schedule isnot "lockdown" and $prison.attention gte 100>>
+		<<events_prison_attention>>
+	<<else>>
+		<<if $prison.schedule isnot "lockdown" and $eventskip isnot 1>>
+			<<events_prison>>
+		<</if>>
+		<<if $prison_event_trigger>>
+			<<events_prison_triggered>>
+		<<else>>
+			<<if random(1, 5) is 5 and $eventskip isnot 1 and ($prison.schedule is "wake" or $prison.schedule is "lunch" or $prison.schedule is "dinner")>>
+				<<prison_guard_watch methodical>>
+			<<else>>
+				<<if $prison.schedule is "wake">>
+					<<link [[吃早餐(最多只有一个小时)|Prison Breakfast]]>><<stress -6>><</link>><<lstress>>
+					<br>
+				<<elseif $prison.schedule is "lunch">>
+					<<link [[吃午餐(最多只有一个小时)|Prison Lunch]]>><<stress -6>><</link>><<lstress>>
+					<br>
+				<<elseif $prison.schedule is "dinner">>
+					<<link [[吃晚餐(最多只有一个小时)|Prison Dinner]]>><<stress -6>><</link>><<lstress>>
+					<br>
+				<</if>>
+				<br><br>
+				<<link [[离开|Prison Yard]]>><</link>>
+				<br>
+				<<prison_map canteen>>
+			<</if>>
+		<</if>>
+		<<set $eventskip to 0>>
+	<</if>>
+<</if>>
+
+
+:: Prison Breakfast
+<<effects>>
+<<pass 1>><<advancetohour>>
+
+
+<<if $leftarm is "bound" and $rightarm is "bound">>
+	<<generate1>><<person1>>
+	你和其他囚犯一起排队。食柜后面的那个<<person>>将一碗稀粥装满之后，放在了你的头上。
+	<<if $worn.face.type.includes("gag")>>
+		里面有一根吸管，也许你可以通过口塞的空隙将其吐出去。
+	<</if>>
+	<br><br>
+	<<endevent>>
+	<<if $worn.face.type.includes("gag")>>
+		<span class="blue">如果不是因为你戴着口塞的话，也许你就可以寻求帮助.</span>
+		<br>
+	<<else>>
+		<<link [[向别人求助|Prison Breakfast Help]]>><<prison_inmates -1>><</link>><<lrespect>>
+		<br>
+	<</if>>
+	<<link [[小心翼翼地找一个座位坐下|Prison Breakfast Careful]]>><</link>><<dancedifficulty 1 600>>
+	<br>
+<<else>>
+	你和其他囚犯一起排队，你拿到了一碗稀粥。
+	<<if $worn.face.type.includes("gag")>>
+		里面有一根吸管，也许你可以通过口塞的空隙将其吐出去。
+	<</if>>
+	<br><br>
+
+	你试图寻找一个空位。
+	<<if $prison.protection is "scarred">>
+		<<generate_scarred_inmate 0>><<scarred_inmate 0 cap>><<person1>>要求你坐在<<his>>的大腿上。
+		<br><br>
+
+		<<link [[坐在其大腿上|Prison Breakfast Scarred]]>><<prison_rep scarred 1>><<prison_attention 1>><</link>><<glove>><<gattention prison>>
+		<br>
+		<<link [[拒绝|Prison Breakfast Scarred Refuse]]>><<prison_inmates 1>><</link>><<grespect>>
+	<<else>>
+		<br><br>
+
+		<<link [[继续|Prison Breakfast Prayer]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Prison Breakfast Help
+<<effects>>
+
+<<generate1>><<person1>>
+<<if $speech_attitude is "meek">>
+	"谁-谁能帮帮我？"你有些不知所措，"拜托了？"
+<<elseif $speech_attitude is "bratty">>
+	"谁来帮我一把？"你有些不知所措。
+<<else>>
+	"谁能来帮我个忙？"你有些不知所措。
+<</if>>
+<br><br>
+
+一个<<person>>将你头上的碗拿走。"当然了亲爱的，"<<he>>顺带着拍了一下你的<<bottom>>，"快走吧。"
+<br><br>
+
+<<He>>在其他囚犯的注视之下用手喂你，那些囚犯似乎看的很开心。
+<br><br>
+
+<<link [[继续|Prison Breakfast Prayer]]>><<endevent>><</link>>
+<br>
+
+:: Prison Breakfast Careful
+<<effects>>
+
+<<if $danceSuccess>>
+	你走到一个空着的座位，几个囚犯伸出腿试图绊倒你，<span class="green">但你努力保持住了平衡。</span>
+	<br><br>
+
+	<<link [[继续|Prison Breakfast Prayer]]>><</link>>
+	<br>
+<<else>>
+	你走到一个空着的座位。有个囚犯伸出腿试图绊倒你，<span class="red">你狠狠地摔在了地面上，</span>碗哐啷落地，里面的食物撒的到处都是。
+	<br><br>
+
+	<<if $worn.face.type.includes("gag")>>
+		<<generate_veteran_guard 0>><<person1>>
+		在你能站起来之前，你身后就传来了皮靴的声音。<<veteran_guard 0>>踩住你的背，笑了起来。"你弄脏了我们干净整洁的地板？这我可无法接受。"
+		<br><br>
+
+		<<link [[继续|Prison Breakfast Lick Refuse]]>><<set $phase to 1>><</link>>
+		<br>
+	<<else>>
+		<<generate_veteran_guard 0>><<person1>>
+		在你能站起来之前，你身后就传来了皮靴的声音。<<veteran_guard 0>>踩住你的背，笑了起来。"你弄脏了我们干净整洁的地板？这我可无法接受。把它们舔干净，快一点。"
+		<br><br>
+
+		<<link [[舔干净|Prison Breakfast Lick]]>><<prison_inmates -3>><<trauma 6>><</link>><<llrespect>><<gtrauma>>
+		<br>
+		<<link [[拒绝|Prison Breakfast Lick Refuse]]>><<prison_inmates 3>><<pain 8>><<trauma 12>><<stress 12>><<prison_guards -1>><</link>><<ggpain>><<ggtrauma>><<ggstress>><<gsuspicion>><<ggrespect>>
+		<br><br>
+	<</if>>
+<</if>>
+
+
+
+:: Prison Breakfast Lick
+<<effects>>
+
+你可以感觉到其他囚犯正在看着你。你忍受着屈辱舔干净了地板，<<veteran_guard 0 cap>>才把脚松开。"很好，"<<he>>满意地点了点头，"现在坐下来吧。"
+<br><br>
+
+<<link [[继续|Prison Breakfast Prayer]]>><<endevent>><</link>>
+<br>
+
+
+:: Prison Breakfast Lick Refuse
+<<effects>>
+
+<<generate_methodical_guard 1>>
+
+<<veteran_guard 0 cap>>脱下了靴子，只用警棍就把你打的躺回到了地上。在<<he>>一次又一次的打击下，你尽可能在双臂被捆绑的情况下蜷缩起来。<<if $phase is 1>><<prison_inmates 3>><<pain 8>><<trauma 12>><<stress 12>><<prison_guards -1>><<ggpain>><<ggtrauma>><<ggstress>><<gsuspicion>><<ggrespect>><</if>>
+<br><br>
+
+"已经够了，"<<methodical_guard 1>>插话道，"我不会把祈祷的时间浪费在这里。"
+<br><br>
+
+<<veteran_guard 0 cap>>离开了你，<<tearful>>你重新找了个位置坐了下来。
+<br><br>
+
+<<link [[继续|Prison Breakfast Prayer]]>><<endevent>><</link>>
+<br>
+
+:: Prison Breakfast Scarred
+<<effects>>
+
+你坐在了<<scarred_inmate 0 apo>>的大腿上。
+
+<<if $prison.scarred gte 80>>
+	<<He>>拿着你的碗用勺子亲自喂你吃。一旁的同伙十分地困惑，但没有说什么。
+<<elseif $prison.scarred gte 20>>
+	<<He>>在你吃饭的时候将你手中的碗接了过去。
+<<else>>
+	你太高了，放在桌子上吃太麻烦了，你只得将碗放在你的腿上。
+<</if>>
+<br><br>
+<<if random(1, 2) is 2>>
+	你忍受着囚犯们的骚扰揩油。<<gstress>><<gpain>><<stress 6>><<pain 4>>
+<</if>>
+<br><br>
+
+<<link [[继续|Prison Breakfast Prayer]]>><<endevent>><</link>>
+<br>
+
+:: Prison Breakfast Scarred Refuse
+<<effects>>
+
+你拒绝了<<scarred_inmate 0>>，坐在了其他地方。
+<<if $prison.scarred gte 80>>
+	看上去很痛。
+<<else>>
+	你听到身后传来了愤怒的咆哮。
+<</if>>
+<br><br>
+
+<<link [[继续|Prison Breakfast Prayer]]>><<endevent>><</link>>
+<br>
+
+:: Prison Breakfast Prayer
+<<effects>>
+
+<<generate_methodical_guard 0>><<methodical_guard 0 cap>><<person1>><<his>>清了清嗓子，低头看了下手里的书。"低头，现在祈祷。"大多数囚犯开始摆出祈祷的姿势。
+<br><br>
+
+<<link [[低下你的头|Prison Breakfast Prayer Bow]]>><<sub 1>><<purity 2>><</link>><<gpurity>>
+<br>
+<<link [[低头，并胡思乱想|Prison Breakfast Prayer Daydream]]>><<stress -6>><</link>><<lstress>>
+<br>
+<<link [[拒绝|Prison Breakfast Prayer Refuse]]>><<def 1>><<prison_inmates 1>><<suspicion 1>><</link>><<gsuspicion>><<grespect>>
+<br>
+<<if $angel gte 6 and !$worn.face.type.includes("gag")>>
+	<<link [[提议举行布道|Prison Breakfast Prayer Angel]]>><<prison_hope 1>><</link>><<angel>><<ghope>>
+	<br>
+<</if>>
+<<if $fallenangel gte 2 and !$worn.face.type.includes("gag")>>
+	<<link [[提议举行布道|Prison Breakfast Prayer Fallen]]>><<prison_reb 3>><<prison_hope -1>><</link>><<fallenangel>><<lhope>><<ggreb>>
+	<br>
+<</if>>
+<<if $demon gte 6 and !$worn.face.type.includes("gag")>>
+	<<link [[提议举行布道|Prison Breakfast Prayer Demon]]>><<prison_reb 1>><</link>><<demon>><<greb>>
+	<br>
+<</if>>
+
+:: Prison Breakfast Prayer Angel
+<<effects>>
+
+你起身，走到了那个<<methodical_guard 0>>的面前。<<He>>似乎被你的无礼所激怒了，但你眼神中的某种东西缓和了<<he>>。
+
+<<if $leftarm is "bound" and $rightarm is "bound">>
+	你的双臂被束缚着，无法拿起祈祷书。但你并不需要它，不是吗？你凭着记忆就能诵经布道。
+<<else>>
+	<<He>>拿出祈祷书，但你不需要它。你把手放在胸前，凭着记忆诵经布道.
+<</if>>
+<br><br>
+
+囚犯们全神贯注地听着。你觉得有些人在低头掩面而泣。
+<<methodical_guard 0 cap>>神情恍惚，呆呆地看着你，直到突然想起还有任务规划，才晃过了神来。"起立。"<<he>>深吸了一口气，"所有人都出去。"
+<br><br>
+
+<<link [[继续|Prison Yard]]>><<endevent>><</link>>
+<br>
+
+:: Prison Breakfast Prayer Fallen
+<<effects>>
+
+你起身，走到了那个<<methodical_guard 0>>的面前。<<He>>似乎被你的无礼所激怒了，但你眼神中的某种东西吓到了<<he>>。
+<<if $leftarm is "bound" and $rightarm is "bound">>
+	你的双臂被束缚着，无法拿起祈祷书。但你并不需要它，不是吗？你凭着记忆就能诵经布道。
+<<else>>
+	<<He>>拿出祈祷书，但你不需要它。你把手放在胸前，凭着记忆诵经布道.
+<</if>>
+<br><br>
+
+这不是在神殿里会作出的布道，在公共场合也不会——但在这里，很合适。你谈的是空虚与失落，诅咒与绝望。一片阴云笼罩着整个房间，就连<<methodical_guard 0>>也受到了影响。"别说了，"<<he>>呆滞地摇着头，"起来，大家都出去。"
+<br><br>
+
+<<link [[继续|Prison Yard]]>><<endevent>><</link>>
+<br>
+
+:: Prison Breakfast Prayer Demon
+<<effects>>
+
+你起身，走到了那个<<methodical_guard 0>>的面前。<<He>>似乎被你的无礼所激怒了，但你眼神中的某种东西吸引住了<<he>>。
+
+<<if $leftarm is "bound" and $rightarm is "bound">>
+	你的双臂被束缚着，无法拿起祈祷书。但你并不需要它，不是吗？你凭着记忆就能诵经布道。
+<<else>>
+	<<He>>拿出祈祷书，但你不需要它。你把手放在胸前，凭着记忆诵经布道.
+<</if>>
+<br><br>
+
+你时不时地改换着细节，加入影射讽刺与亵渎之语。一些学识渊博的囚犯忍俊不禁，<<methodical_guard 0 cap>>扫视着房间，企图寻找罪魁祸首。"够了，"<<he>>摆了摆手。"起来，都出去。"
+<br><br>
+
+<<link [[继续|Prison Yard]]>><<endevent>><</link>>
+<br>
+
+
+:: Prison Breakfast Prayer Bow
+<<effects>>
+
+你将头低了下去。那个<<methodical_guard 0 cap>>在诵读了一连串关于惩罚的经文后将书合上，"抬起头吧，现在所有人都离开。"
+<br><br>
+
+你和其他囚犯一起在外面晃荡着。
+<br><br>
+
+<<link [[继续|Prison Yard]]>><<endevent>><</link>>
+<br>
+
+
+:: Prison Breakfast Prayer Daydream
+<<effects>>
+
+你低着头，但完全没有在意<<methodical_guard 0 apo>>说的话。
+
+<<if random(1,3) is 3>>
+	<<if isLoveInterest("Robin")>>
+		你想起了罗宾，你希望<<nnpc_he "Robin">>在没有你的情况下也能过得很好。
+	<<elseif isLoveInterest("Whitney")>>
+		你想起了惠特尼，你敢打赌<<nnpc_he Whitney>>也在想你，哪怕<<nnpc_he Whitney>>也许并不会承认。
+	<<elseif isLoveInterest("Eden")>>
+		你想起了伊甸，你希望<<nnpc_he Eden>>不会太担心你。你怀疑如果<<nnpc_he Eden>>知道你在这的话，能直接过来将你带走。
+	<<elseif isLoveInterest("Kylar") and $NPCName[$NPCNameList.indexOf("Kylar")].state is "prison">>
+		你想起了凯拉尔。你想知道<<nnpc_he "Kylar">>是否成功越狱了，尽管你对此仍有疑虑。
+	<<elseif isLoveInterest("Avery")>>
+		你想起了艾弗里，你想知道<<nnpc_he Avery>>是否能帮你赎身。
+	<<elseif isLoveInterest("Sydney")>>
+		你想起了悉尼，你知道你也正在被<<nnpc_his Sydney>>所思念着。
+	<<elseif isLoveInterest("Alex")>>
+		你想起了艾利克斯，好奇农场现在怎么样了。
+	<<elseif isLoveInterest("Black Wolf")>>
+		你想起了黑狼和族群。你希望它们食物充足。
+	<<elseif isLoveInterest("Great Hawk")>>
+		你想起了巨鹰。<<nnpc_He "Great Hawk">>一定在找你，但你觉得<<nnpc_he "Great Hawk">>到不了那么远的地方。
+	<<else>>
+		你想起了你的镇子，想起了你曾理所应当的拥有的一切。
+	<</if>>
+<<else>>
+	<<if $rng gte 81>>
+		你希望孤儿们都没事。
+	<<elseif $rng gte 61>>
+		你想起了学校，希望你的缺席不算旷课。
+	<<elseif $rng gte 41>>
+		你的思绪四处飘荡着。
+	<<elseif $rng gte 21>>
+		你不知道有多少其他囚犯会注意到这一点。
+	<<else>>
+		你听到了<<his>>的声音。它似乎在回响着，但又有些不对劲。就像<<his>>的声音与外界相重叠。
+	<</if>>
+<</if>>
+<br><br>
+
+过了不知多久，<<He>>将书本合上。"抬起头吧，现在所有人都离开。"
+<br><br>
+
+你和其他囚犯一起在外面晃荡着。
+<br><br>
+
+<<link [[继续|Prison Yard]]>><<endevent>><</link>>
+<br>
+
+:: Prison Breakfast Prayer Refuse
+<<effects>>
+
+<<if $prison.shock is 1>>
+	<<if $prison.guards gte 40>>
+		你盯着那个<<methodical_guard 0>>，"144号犯人，"<<he>>冷笑了一声。"<span class="green">我再给你一次机会，</span>低下你的头，立刻马上!"
+		<br><br>
+
+		<<link [[低头|Prison Breakfast Prayer Bow]]>><<sub 1>><<purity 2>><</link>><<gpurity>>
+		<br>
+		<<link [[再次拒绝|Prison Breakfast Prayer Refuse 2]]>><<prison_inmates 1>><<prison_guards -1>><</link>><<gsuspicion>><<grespect>>
+		<br>
+	<<else>>
+		你盯着<<methodical_guard 0>>。<<He>>将手伸进了上衣口袋，<span class="red">一阵可怖的刺痛席卷了你的全身——从你的颈部而来。</span>过程并不漫长，但足以让你倒地。你翻着白眼，身体不住地抽搐着。<<gtrauma>><<ggstress>><<gggpain>><<trauma 4>><<stress 4>><<pain 4>>
+		<br><br>
+		你痛得无法反抗，任凭双手被铁铐铐住。你从食堂里被拖了出去，其他的几个囚犯窃窃私语着开着你的玩笑，但并没有什么恶意。
+		<<bind>>
+		<br><br>
+		<<link [[继续|Prison Punishment]]>><<endevent>><</link>>
+	<</if>>
+<<else>>
+	你盯着<<methodical_guard 0>>。<<He>>将手伸进了上衣口袋，<span class="green">却犹豫了起来。</span><<He>>并没有提及你的存在。
+	<br><br>
+	<<He>>在诵读了一连串关于惩罚的经文后合上了书本。"抬起头吧，现在所有人都离开。"
+	<br><br>
+
+	你和其他囚犯一起在外面晃荡着。
+	<br><br>
+
+	<<link [[继续|Prison Yard]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+:: Prison Breakfast Prayer Refuse 2
+<<effects>>
+
+你盯着<<methodical_guard 0>>。<<He>>将手伸进了上衣口袋，<span class="red">一阵可怖的刺痛席卷了你的全身——从你的颈部而来。</span>过程并不漫长，但足以让你倒地。你翻着白眼，身体不住地抽搐着。<<gtrauma>><<ggstress>><<gggpain>><<trauma 4>><<stress 4>><<pain 4>>
+<br><br>
+你痛得无法反抗，任凭双手被铁铐铐住。你从食堂里被拖了出去，其他的几个囚犯窃窃私语着开着你的玩笑，但并没有什么恶意。
+<<bind>>
+<br><br>
+<<link [[继续|Prison Punishment]]>><<endevent>><</link>>
+
+:: Prison Lunch
+<<effects>>
+<<pass 1>><<advancetohour>>
+<<if $leftarm is "bound" and $rightarm is "bound">>
+	<<generate1>><<person1>>
+	你和其他囚犯一起排队。食柜后面的那个<<person>>将一碗很稀的土豆汤装满之后放在了你的头上。
+	<<if $worn.face.type.includes("gag")>>
+		里面有一根吸管，也许你可以通过口塞的空隙将其吐出去。
+	<</if>>
+	<br><br>
+	<<endevent>>
+	<<if $worn.face.type.includes("gag")>>
+		<span class="blue">如果不是因为你戴着口塞的话，也许你就可以寻求帮助.</span>
+		<br>
+	<<else>>
+		<<link [[向别人求助|Prison Breakfast Help]]>><<prison_inmates -1>><</link>><<lrespect>>
+		<br>
+	<</if>>
+	<<link [[小心翼翼地找一个座位坐下|Prison Breakfast Careful]]>><</link>><<dancedifficulty 1 600>>
+	<br>
+<<else>>
+	你和其他囚犯一起排队，得到了一碗土豆汤。
+	<<if $worn.face.type.includes("gag")>>
+		里面有一根吸管，也许你可以通过口塞的空隙将其吐出去。
+	<</if>>
+	<br><br>
+
+	你试图寻找一个空位。
+	<<if $prison.protection is "tattooed">>
+		<<generate_tattooed_inmate 0>><<tattooed_inmate 0 cap>><<person1>>挡住了你的去路。"我的<<girl>>不该一个人坐着，"<<he>>抓住了你的胳膊。
+		<br><br>
+
+		<<link [[屈服|Prison Lunch Tattooed]]>><<prison_rep tattooed 1>><<prison_attention 1>><</link>><<glove>><<gattention prison>>
+		<br>
+		<<link [[拒绝|Prison Lunch Tattooed Refuse]]>><<prison_inmates 1>><</link>><<grespect>>
+	<<else>>
+		<br><br>
+
+		<<link [[继续|Prison Breakfast Prayer]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Prison Lunch Tattooed
+<<effects>>
+
+你坐在<<tattooed_inmate 0>>的身边，旁边则围着<<his>>的小团体。
+<<if $prison.tattooed gte 80>>
+	<<He>>不停地对别人吹嘘"拥有 "着你，并试图拦下路过的囚犯来宣誓主权。
+<<elseif $prison.tattooed gte 20>>
+	<<He>>不停地对别人吹嘘"拥有 "着你，
+<<else>>
+	顿时引来了一大批目光。<<he>>似乎很想被他人看到和你在一起。
+<</if>>
+<br><br>
+
+<<if random(1, 2) is 2>>
+	你忍受着偶尔袭来的猥亵。<<gstress>><<stress 6>><<garousal>><<arousal 3 "breasts">><<arousal 3 "bottom">>
+	<br><br>
+<</if>>
+
+<<link [[继续|Prison Breakfast Prayer]]>><<endevent>><</link>>
+<br>
+
+
+:: Prison Lunch Tattooed Refuse
+<<effects>>
+
+你甩开了<<tattooed_inmate 0 apo>>的手。
+<<if $prison.tattooed gte 80>>
+	"草，你他妈的？"<<he>>震惊地看着你，"好吧，那你只能小心不要让某个混蛋强奸了你。"
+<<else>>
+	<<He>>再一次抓住了你，但<<him>>身边的一个<<generate2>><<person2>><<person>>反过来抓住<<his>>的胳膊，并瞥了守卫一眼。<<tattooed_inmate 0 cap>>松开了你，瞪了你一眼。
+<</if>>
+<br><br>
+
+你找了个地方坐了下来，开始喝你的汤。
+<br><br>
+
+<<link [[继续|Prison Breakfast Prayer]]>><<endevent>><</link>>
+<br>
+
+:: Prison Dinner
+<<effects>>
+<<pass 1>><<advancetohour>>
+<<if $leftarm is "bound" and $rightarm is "bound">>
+	<<generate1>><<person1>>
+	你和其他囚犯一起排队。食柜后面的那个<<person>>将一碗蔬菜肉丁汤装满之后放在了你的头上。
+	<<if $worn.face.type.includes("gag")>>
+		里面有一根吸管，你也许可以把它插进你的嘴里——至少这对喝汤有很大的帮助。
+	<</if>>
+	<br><br>
+	<<endevent>>
+	<<if $worn.face.type.includes("gag")>>
+		<span class="blue">如果不是因为你戴着口塞的话，也许你就可以寻求帮助.</span>
+		<br>
+	<<else>>
+		<<link [[向别人求助|Prison Breakfast Help]]>><<prison_inmates -1>><</link>><<lrespect>>
+		<br>
+	<</if>>
+	<<link [[小心翼翼地找一个座位坐下|Prison Breakfast Careful]]>><</link>><<dancedifficulty 1 600>>
+	<br>
+<<else>>
+	你和其他囚犯一起排队，得到了一碗蔬菜肉丁汤。
+	<<if $worn.face.type.includes("gag")>>
+		里面有一根吸管，你也许可以把它插进你的嘴里——至少这对喝汤有很大的帮助。
+	<</if>>
+	<br><br>
+	<<if $prison.kylar is "active">>
+		凯拉尔出现在你的身后，紧紧跟随着你。
+		<br><br>
+		<<npc Kylar>><<person1>>
+		<<link [["让" + $NPCList[0].pronouns.him + "坐在你身边"|Prison Dinner Kylar]]>><<npcincr Kylar love 1>><<npcincr Kylar rage -1>><<prison_inmates -1>><</link>><<lrespect>><<glove>><<lksuspicion>>
+		<br>
+		<<link [[坚持要求单独坐着|Prison Dinner Kylar Refuse]]>><<npcincr Kylar love -1>><<npcincr Kylar rage 1>><<prison_inmates 1>><</link>><<llove>><<gksuspicion>><<grespect>>
+		<br>
+	<<elseif $rng gte 81>>
+		你找了个地方坐下，开始吃你的饭。
+		<br><br>
+		<<generate1>><<person1>>
+		"嘿，<<girl>>，"坐在你对面的那个<<person>>把<<He>>的胳膊搭在桌上，"来掰个手腕？"
+		<br><br>
+
+		<<if $leftarm is "bound" and $rightarm is "bound">>
+			<span class="blue">你不能在手臂被捆绑的情况下去掰手腕。</span>
+		<<else>>
+			<<link [[掰一把手腕|Prison Dinner Wrestle]]>><</link>><<physiquedifficulty 2000 16000>>
+		<</if>>
+		<br>
+		<<link [[谢绝|Prison Dinner Wrestle Decline]]>><<prison_inmates -1>><</link>><<lrespect>>
+		<br>
+	<<elseif $rng gte 61>>
+		<<generate1>><<person1>>
+		"嘿，"一个<<person>>把<<his>>的托盘甩在你的面前，"这是老子的座位。"
+		<br><br>
+
+		<<link [[恐吓|Prison Dinner Threaten]]>><<prison_inmates 1>><</link>><<grespect>>
+		<br>
+		<<link [[换个位置|Prison Dinner Move]]>><<prison_inmates -1>><</link>><<lrespect>>
+		<br>
+	<<else>>
+		没人理会你。
+		<br><br>
+		<<link [[继续|Prison Breakfast Prayer]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Prison Dinner Kylar
+<<effects>>
+
+你找了个位置，凯拉尔则挨着你坐了下来，<<he>>身旁的囚犯看见情况赶忙挪位，厌恶地看了你们一眼。
+<br><br>
+
+凯拉尔坚持在你吃任何东西之前先品尝一下你的食物。
+<br><br>
+
+<<link [[继续|Prison Breakfast Prayer]]>><<endevent>><</link>>
+<br>
+
+:: Prison Dinner Kylar Refuse
+<<effects>>
+
+你在一个拥挤的地方坐了下来。虽然凯拉尔试图挤到你的身边，但其身旁的囚犯将<<him>>一把推开。<<he>>就这么狼狈地摔倒在地，食物也散落在地上。
+<br><br>
+
+<<He>>捂着自己的脸从食堂跑了出去。
+<br><br>
+
+<<link [[继续|Prison Breakfast Prayer]]>><<endevent>><</link>>
+<br>
+
+
+
+
+:: Prison Dinner Wrestle
+<<effects>>
+
+你抓住<<his>>的手，准备开始掰手腕。
+<<if $physiqueSuccess>>
+	<<He>>死死抓住你不放，但你还是找到了破绽，<span class="green">重重地推开了<<him>>。</span> "你比你看上去要壮实，"<<he>>尴尬地搓着<<his>>手。<<grespect>><<prison_inmates 1>>
+	<br><br>
+<<else>>
+	你使出浑身解数，<span class="red">但<<he>>得势不饶人，</span>把你的手按在了桌上。"抓到你了！"<<he>>得意地说道。<<gpain>><<pain 4>>
+	<br><br>
+<</if>>
+
+<<link [[继续|Prison Breakfast Prayer]]>><<endevent>><</link>>
+<br>
+
+:: Prison Dinner Wrestle Decline
+<<effects>>
+
+你拒绝了挑战。
+<br><br>
+
+"孬种，"<<he>>冷笑了一声，然后又去骚扰<<him>>身边的<<generate2>><<person2>><<person>>了。
+<br><br>
+
+<<link [[继续|Prison Breakfast Prayer]]>><<endevent>><</link>>
+<br>
+
+:: Prison Dinner Threaten
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	你站了起来，握紧拳头，瞪着<<person>>。<<gagged_speech "我-我才不会移座位呢，">>你的脸涨得通红。
+<<elseif $speech_attitude is "bratty">>
+	你站起来推搡那个<<person>>。<<gagged_speech "你有种逼我啊，">>你威胁道。
+<<else>>
+	你猛然起身怒视着<<person>>。<<gagged_speech "不，">>你握紧了拳头。<<gagged_speech "你能把我怎样？">>
+<</if>>
+<br><br>
+
+<<if $prison.inmates gte random(1, 100)>>
+	<<He>>深吸一口气，<span class="green">然后笑了起来。</span> "看来这还真不是我的位子，"<<he>>站起身，"那你坐着吧。"<<He>>找了个远处的位子坐下了。
+	<br><br>
+
+	<<link [[继续|Prison Breakfast Prayer]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<He>>深吸一口气，<span class="red">然后抬起<<his>>拳头准备来上一拳。</span>
+	<br><br>
+
+	<<link [[躲闪|Prison Dinner Dodge]]>><</link>><<dancedifficulty 1 500>>
+	<br>
+	<<link [[闪开并讽刺|Prison Dinner Humiliate]]>><</link>><<dancedifficulty 1 1000>>
+	<br>
+	<<link [[打回去|Prison Dinner Punch]]>><</link>><<physiquedifficulty 1 16000>>
+	<br>
+<</if>>
+
+
+:: Prison Dinner Dodge
+<<effects>>
+
+<<generate_methodical_guard 1>>
+<<if $danceSuccess>>
+	<span class="green">你躲过<<persons>>的拳击，以极其漂亮的动作闪到了<<he>>的身后。</span>其他囚犯欢呼雀跃，但一声哨响刺破了喧嚣。<<grespect>><<prison_inmates 1>>
+	<br><br>
+	"肃静，"<<methodical_guard 1>>喊道："我要你们都肃静！"你重新坐回座位，<<person>>极不情愿地坐在了其他的地方。
+	<br><br>
+<<else>>
+	你试图躲避，<span class="red">但拳头还是击中了你的脸颊。</span>你呜咽着躺倒在了地上。<<gpain>><<gstress>><<lrespect>><<pain 4>><<stress 6>><<prison_inmates -1>>
+	<br><br>
+
+	"肃静，"<<methodical_guard 1>>喊道："我要你们都肃静！"<<person>>大摇大摆地坐在了你的位子上，你只好另寻别处。
+	<br><br>
+<</if>>
+
+<<link [[继续|Prison Breakfast Prayer]]>><<endevent>><</link>>
+<br>
+
+:: Prison Dinner Humiliate
+<<effects>>
+
+<<generate_methodical_guard 1>>
+<<if $danceSuccess>>
+	<span class="green">你躲过<<persons>>的拳击，以极其漂亮的动作闪到了<<he>>的身后，</span>随后抓住<<his>>的裤子下摆，<span class="lewd">把裤子拽到<<his>>的膝盖处。</span>
+	<br><br>
+	<<He>>慌乱的遮住了<<his>>
+	<<if $NPCList[0].penis isnot "none">>
+		<<print $NPCList[0].penisdesc>>不知所措地挥舞着四肢，
+	<<else>>
+		下体，
+	<</if>>
+	而其他囚犯则哄堂大笑。
+	<<ggrespect>><<prison_inmates 3>>
+	<br><br>
+
+	"肃静，"<<methodical_guard 1>>喊道："我要你们都肃静！"你重新坐回座位。<<person>>气急败坏，找了别处坐下。
+	<br><br>
+<<else>>
+	你试图躲避，<span class="red">但拳头还是击中了你的脸颊。</span>你呜咽着躺倒在了地上。<<gpain>><<gstress>><<lrespect>><<pain 4>><<stress 6>><<prison_inmates -1>>
+	<br><br>
+
+	"肃静，"<<methodical_guard 1>>喊道："我要你们都肃静！"<<person>>大摇大摆地坐在了你的位子上，你只好另寻别处。
+	<br><br>
+<</if>>
+
+<<link [[继续|Prison Breakfast Prayer]]>><<endevent>><</link>>
+<br>
+
+:: Prison Dinner Punch
+<<effects>>
+
+<<if $physiqueSuccess>>
+	<span class="green">你的速度更胜一筹，</span>重重地打向<<him>>的鼻子。<<He>>的脸扭曲着，踉跄地向后退步，狱友们为你欢呼。<<ggrespect>><<prison_inmates 3>>
+	<br><br>
+	"肃静，"<<methodical_guard 1>>喊道："我要你们都肃静！"你坐回自己座位，而<<person>>自讨没趣地找了别处。
+	<br><br>
+<<else>>
+	你试图反击，<span class="red">但是你太慢了。</span>拳头猛地朝你的脸挥去，你呜咽倒地。<<gpain>><<gstress>><<lrespect>><<pain 4>><<stress 6>><<prison_inmates -1>>
+	<br><br>
+
+	"肃静，"<<methodical_guard 1>>喊道："我要你们都肃静！"<<person>>大摇大摆地坐在了你的位子上，你只好另寻别处。
+	<br><br>
+<</if>>
+
+<<link [[继续|Prison Breakfast Prayer]]>><<endevent>><</link>>
+<br>
+
+:: Prison Dinner Move
+<<effects>>
+
+你决定另寻别处。狱友们渴望着好戏开场，但你并不在乎。
+<br><br>
+
+<<link [[继续|Prison Breakfast Prayer]]>><</link>>
+<br>

@@ -1,0 +1,7564 @@
+:: Robin's Room Entrance
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+<<if $robindebt gte $robindebtlimit and $robindebtintro isnot 1 and $robinpaid isnot 1>>
+	<<set $robinconsole to 0>>
+	<<set $robineventnote to 1>>
+	<<set $robindebtintro to 1>>
+	<<robinPunishment "docks">>
+	你去了罗宾的房间，你敲了敲门，但没有回应，门上也没有贴任何留言。你往里面窥视，房间里空无一人。
+	<br><br>
+	一个<<npc Robin>><<generatec2>><<person2>><<person>>经过。你抓住了<<his>>的手臂。"罗宾平时都会在门上留纸条的。"你说，“发生什么事了吗？"
+	<br><br>
+	<<person>>的表情看起来充满了恐惧。"别…千万不要说是我告诉你的，"<<he>>说道："罗宾付不起房租，贝利把<<person1>><<him>>带走了。"<<if $robindebtknown isnot 1>><span class="red">你想知道为什么罗宾从来没有告诉过你<<he>>必须给贝利钱，同时也意识到你其实也一直在向罗宾隐瞒。</span><</if>>
+	<br><br>
+	<<set $robindebtknown to 1>>
+	"我不确定,"<<person2>><<person>>说，"但是贝利好像有提到过<span class="gold">码头。</span>希望罗宾没事。" 你放开了<<person2>><<his>>的手。
+	<br><br>
+	<<endevent>>
+	<<link [[离开|Orphanage]]>><</link>>
+	<br>
+<<elseif $robinmissing isnot 0>>
+	你去了罗宾的房间，你敲了敲门，但没有回应，门上也没有贴任何留言。你往里面窥视，房间里空无一人。
+	<br><br>
+	<<if $robinmissing is "pillory" and !$robinPillory.known and Time.hour gte 7 and Time.hour lte 15>>
+		<<link [[离开|Robin Pillory Intro]]>><</link>>
+	<<else>>
+		<<link [[离开|Orphanage]]>><</link>>
+	<</if>>
+	<br>
+<<elseif $christmas_robin_lewd is 1>>
+	<<unset $christmas_robin_lewd>>
+	<<npc Robin>><<person1>>
+	罗宾的门上有张纸条。它指定只有你可以进入。
+	<br><br>
+	你进去后发现罗宾正坐在床上。<<His>>的衣服不见了，身体上缠着包装纸和丝带。刚好够遮盖住<<his>>隐秘的部位，别的地方半遮半露的，非常诱人。
+	<br><br>
+	"我……我想给你一个惊喜，"罗宾的脸很红，但是<<his>>的目光从未离开过你。
+	<br><br>
+
+	"你…想要来拆开我这份礼物吗？"<<ggarousal>><<arousal 600>>
+	<br><br>
+	<<link [[是的|Robin Unwrap]]>><</link>><<promiscuous1>>
+	<br>
+	<<link [[不要|Robin Unwrap No]]>><</link>>
+	<br>
+
+<<elseif _robin_location is "school">>
+	你前往了罗宾的房间，门上有张纸条;"去上学了！"
+	<br><br>
+	<<link [[离开|Orphanage]]>><</link>>
+	<br>
+<<elseif _robin_location is "sleep">>
+	你去了罗宾的房间，门上有张纸条："在睡觉！"
+	<<if _robin.lust gte 80 and $robinromance is 1 and between(Time.hour, 21, 23) and !$daily.robin.sleepMasturbate>>
+		<<set $daily.robin.sleepMasturbate to true>>
+		<span class="lewd">你注意到门微微打开了一道缝隙。</span>
+		<br><br>
+
+		<<link [[窥视一下|Robin Mischief]]>><</link>>
+		<br>
+		<<link [[关门|Robin Mischief Close]]>><</link>>
+	<<else>>
+		<br><br>
+
+		<<link [[离开|Orphanage]]>><</link>>
+	<</if>>
+	<br>
+	<<if $debug is 1>>
+		<<link [[等待罗宾 (调试)|$passage]]>><<passTimeUntil 7>><</link>>
+	<</if>>
+
+<<elseif _robin_location is "bath">>
+	<<set $robinBathKnown to true>>
+	你前往罗宾的房间，门上有一张纸条："去洗澡了！"
+	<br><br>
+	<<link [[去浴室 (0:01)|Robin Bath]]>><</link>>
+	<br>
+	<<link [[离开|Orphanage]]>><</link>>
+<<elseif _robin_location is "beach">>
+	你去了罗宾的房间。门上有张纸条。“出去卖柠檬水了！"
+	<br><br>
+	<<link [[离开|Orphanage]]>><</link>>
+	<br>
+<<elseif _robin_location is "park">>
+	你去了罗宾的房间。门上有张纸条。"出去卖热巧克力了！"
+	<br><br>
+	<<link [[离开|Orphanage]]>><</link>>
+	<br>
+<<elseif _robin_location is "halloween">>
+	你去了罗宾的房间。门上有张纸条。"出门过万圣节了！"
+	<br><br>
+	<<link [[离开|Orphanage]]>><</link>>
+	<br>
+<<elseif _robin_location is "englishPlay">>
+	你前往了罗宾的房间，上有张纸条：“参加学校的演出！"
+	<br><br>
+	<<link [[离开|Orphanage]]>><</link>>
+	<br>
+<<elseif false /*$robin_kicked_out is true*/>>
+	你前往罗宾的房间，但罗宾现在不想见你。
+	<br><br>
+	<<link [[离开|Orphanage]]>><</link>>
+	<br>
+<<else>>
+	<<set _uniqueoptions to false>>
+	<<robinroom>>
+<</if>>
+
+:: Robin Room Naked
+<<effects>><<npc "Robin">>
+
+你打开<<if $bus is "orphanage_bathroom">>浴室门<<else>>你的卧室门<</if>>环顾四周。
+<br><br>
+
+你偷偷溜进走廊，每次听到脚步声就会停下来躲起来，以免被抓住。前进的很慢，但你的心兴奋得怦怦直跳。
+<br><br>
+
+最后你胜利地站在罗宾的房间外，
+
+<<if $exposed gte 2>>
+	以浑身赤裸的样子。
+<<elseif $worn.upper.type.includes("naked") and $worn.under_upper.type.includes("naked") and $player.breastsize gte 4>>
+	你的整个<<breasts>>都裸露着。
+<<elseif $worn.lower.type.includes("naked") and $worn.under_lower.type.includes("naked")>>
+	你的腰部以下完全赤裸。
+<<else>>
+	你除了内衣什么都没穿。
+<</if>>
+<br><br>
+
+<<if $robin_naked_room is 1>>
+	<<link [[继续|Robin's Room Entrance]]>><</link>>
+<<elseif $robin_naked_fail is 1>>
+	<<link [[继续|Robin Room Naked Fail]]>><</link>>
+<<else>>
+	<<link [[继续|Robin Room Naked 2]]>><</link>>
+<</if>>
+<br>
+
+:: Robin Room Naked 2
+<<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+<<if $robinromance isnot 1>>
+
+	<<if C.npc.Robin.love lte 49>>
+		确定没人在附近后你敲响了罗宾的门。
+		<br><br>
+
+		"进来吧！”<<he>>说。
+		<br><br>
+
+		你打开门进去，罗宾正坐在床上。
+		<br><br>
+
+		<<He>>正要说些什么，但是<<he>>注意到了你的裸体。<<He>>脸色苍白，惊恐地盯着你。
+		<br><br>
+
+		<<link [[继续|Robin Room Naked Fail]]>><</link>>
+
+	<<else>>
+		"进来吧！”<<he>>说。
+		<br><br>
+
+		你深吸一口气，走进房间。
+		<br>
+
+		你走进来的时候，罗宾正坐在<<his>>的床上。<<He>>抬头看你，在<<he>>注意到你淫荡的状态时罗宾整个人都僵住了。
+		<br><br>
+
+		<<his>>的脸很快浮起了红晕。<<He>>移开了目光，过了好一会儿<<he>>才开始说话。<<glust>><<npcincr Robin lust 1>>
+		<br>
+
+		"……你还好吗?需不需要我给你拿条毛巾？"<<He>>的手伸向梳妆台。
+		<br><br>
+
+		<<link [[调戏|Robin Room Naked Flirt]]>><<set $phase to 1>><</link>><<promiscuous1>>
+		<br>
+		<<link [[安抚|Robin Room Naked Reassure]]>><<set $phase to 1>><</link>>
+		<br>
+		<<link [[收下毛巾|Robin Room Naked Towel]]>><</link>>
+
+	<</if>>
+
+<<else>>
+	你打开罗宾的门，自信的走了进去，毫不掩饰你的裸体。罗宾惊讶地看着你，然后<<his>>的脸上露出了关切焦虑的表情。
+	<br><br>
+
+	"你还好吗?"<<he>>问。"你难道是这样直接穿过走廊的? 如果被人看到了怎么办? 需要我帮你拿件衣服吗?"
+	<br><br>
+
+	<<link [[调情|Robin Room Naked Flirt]]>><<set $phase to 2>><</link>><<promiscuous1>>
+	<br>
+	<<link [[安抚|Robin Room Naked Reassure]]>><<set $phase to 2>><</link>>
+
+<</if>>
+
+:: Robin Room Naked Fail
+<<effects>>
+
+<<if $robin_naked_fail is 1>>
+	你打开罗宾的门走了进去。罗宾在你进门时瞥了你一眼，但是很快就把目光移开了。
+	<br><br>
+
+	"我不喜欢你这个样子进来，"<<he>>说。 "你能出去，等穿好衣服衣服后再回来吗?"
+	<br><br>
+
+	不想争论些什么，你听话的走出了罗宾的房间，回到自己的卧室。
+	<br><br>
+
+	<<link [[继续|Bedroom]]>><<endevent>><</link>>
+
+<<else>>
+	<<if $speech_attitude is "meek">>
+		"你还好吗?" 你问道，你忍住了解释的冲动。
+	<<elseif $speech_attitude is "bratty">>
+		"怎么样？"你不紧不慢地说，抬起下巴打招呼。
+	<<else>>
+		"怎么了？"你问。
+	<</if>>
+	<br><br>
+
+	"什...什么..."<<he>>结结巴巴地说，然后转过头去，脸涨得通红。<<glust>><<npcincr Robin lust 1>>
+	<br><br>
+
+	<<He>>纠结了几分钟才再次开口。 "你在做什么?为什么穿成这个样子?"
+	<br><br>
+
+	你不知道该说什么，只好耸耸肩。
+	<br><br>
+
+	"请离开，"<<he>>说，"你不能不打招呼就这样进别人房间。"<<llove>><<npcincr Robin love -1>>
+	<br><br>
+
+	<<link [[询问|Robin Room Naked Fail Ask]]>><<pass 1>><</link>>
+	<br>
+	<<link [[离开(0:01)|Robin Room Naked Fail Leave]]>><<pass 1>><</link>>
+
+<</if>>
+
+:: Robin Room Naked Fail Ask
+<<effects>>
+
+"好吧，那我现在就打招呼，”你说，“罗宾，请问我可以这样进你的房间吗？"
+<br><br>
+
+<<if $NPCName[$NPCNameList.indexOf("Robin")].dom lte 50>>
+	罗宾脸上泛着红晕。“不行，”<<he>>低声说。<<his>>的声音带着轻微的颤音。“对不起，但是...请出去。等你穿好衣服回来，我们再一起出去玩吧。"
+<<else>>
+	罗宾脸上泛着红晕。“不行，”<<he>>的语气很坚定，尽管<<his>>的表情明显透着尴尬。“我已经请你离开了。你穿好衣服再回来吧，好吗？"
+<</if>>
+<br><br>
+
+在罗宾坚持的时候你不可能改变<<hes>>的想法。你很了解罗宾，因此你在道别之后就直接离开了，你沿着走廊溜回了你的卧室。
+<br><br>
+
+<<link [[继续|Bedroom]]>><<set $robin_naked_fail to 1>><<endevent>><</link>>
+
+:: Robin Room Naked Fail Leave
+<<effects>>
+
+你等了几秒钟，但罗宾没有再说什么。你道别后离开，沿着走廊溜回你安全的卧室。
+<br><br>
+
+<<link [[继续|Bedroom]]>><<set $robin_naked_fail to 1>><<endevent>><</link>>
+
+:: Robin Room Naked Reassure
+<<effects>>
+
+<<if $phase is 1>>
+	<<if $exposed gte 2>>
+		<<if $speech_attitude is "meek">>
+			"哦不，不，"你插嘴说。"没事的，我只是有时喜欢裸着。希望你不介意?"
+		<<elseif $speech_attitude is "bratty">>
+			"不！"你插嘴道。"没事的，我只是有时喜欢光着屁股到处走。你不介意吧，对吗？"
+		<<else>>
+			"不，"你插嘴说。"没事的，我只是有时喜欢裸着到处走。希望你不介意。"
+		<</if>>
+		<br><br>
+
+	<<elseif $worn.upper.type.includes("naked") and $worn.under_upper.type.includes("naked")>>
+		<<if $speech_attitude is "meek">>
+			"不，我很好，"你安慰<<him>>说。"只是有时赤裸上身的感觉很好。这让我感觉很好。希望不会给你添麻烦。"
+		<<elseif $speech_attitude is "bratty">>
+			"不，一切都很好，"你安慰<<him>>说。"我只是有时喜欢把乳头露出来。这不会困扰到你，对吗？"
+		<<else>>
+			"哦，不，没关系，"你安慰<<him>>说。"我只是有时喜欢赤裸上身。希望不会困扰到你。"
+		<</if>>
+		<br><br>
+
+	<<elseif $worn.lower.type.includes("naked") and $worn.under_lower.type.includes("naked")>>
+		<<if $speech_attitude is "meek">>
+			"我没事，我保证，"你安慰<<him>>说。"只是有时不穿裤子感觉很好。这样更...透气。好吗？"
+		<<elseif $speech_attitude is "bratty">>
+			"我没事，"你说，打断了<<his>>的思路。"我只是有时喜欢把一切都抛开。让事情喘口气感觉很好。这对你来说可以吗？"
+		<<else>>
+			"我没事，我保证。"你打断道。"我有时喜欢不穿裤子到处走走。微风很舒服。可以吗？"
+		<</if>>
+		<br><br>
+
+	<<else>>
+		<<if $speech_attitude is "meek">>
+			"我没事，"你说，对<<him>>轻轻一笑。"我只是有时喜欢穿着内衣。希望不会给你添麻烦。"
+		<<elseif $speech_attitude is "bratty">>
+			"我没事，"你对<<him>>说。"我只是想穿着内衣出去玩。你不在乎，对吗？我是说，只是内衣而已。"
+		<<else>>
+			"我没事，"你对<<him>>说。"我只是有时喜欢穿着内衣走来走去。你不介意吧，对吗？"
+		<</if>>
+		<br><br>
+
+	<</if>>
+
+	<<if $NPCName[$NPCNameList.indexOf("Robin")].dom lte 50>>
+		<<if !$worn.upper.type.includes("naked") and !$worn.under_upper.type.includes("naked") and $worn.lower.type.includes("naked") and !$worn.under_lower.type.includes("naked")>>
+			<<He>>似乎考虑了一下你的提议，然后点了点<<his>>的头。
+			<br><br>
+
+			"我想这并不坏，如果只是你的内衣...如果你愿意，可以就这样进来。"
+			<br><br>
+
+			你微笑着走进房间，关上身后的门。
+			<br><br>
+
+		<<else>>
+			<<He>>低着头，尽量不看你，然后才说话。
+			<br><br>
+
+			"啊...好吧，”<<he>>吞吞吐吐的说。“如果你愿意的话，那就这样吧。"
+			<br><br>
+
+			你走进房间坐下。罗宾并没有盯着你看，但是你发现<<him>>偷偷地快速瞥了你一眼。
+			<br><br>
+
+		<</if>>
+
+	<<else>>
+		<<if !$worn.upper.type.includes("naked") and !$worn.under_upper.type.includes("naked") and $worn.lower.type.includes("naked") and !$worn.under_lower.type.includes("naked")>>
+			"我不在乎。你这样的行为挺傻的，只穿着内衣就走来走去。顺便说一句，内衣的款式很可爱。"
+			<br><br>
+
+			你微笑着摆了个pose对着罗宾展示你的身体，然后快速关上了身后的门。
+			<br><br>
+
+		<<else>>
+			罗宾看起来很开心。“没事，我不介意。我们毕竟是朋友，对吧？”<<He>>对你微笑。
+			<br><br>
+
+			"谢谢！”你关上门坐下。罗宾不盯着看，但也没有刻意回避你。
+			<br><br>
+
+		<</if>>
+		
+	<</if>>
+
+<<else>>
+	<<if $exposed gte 2>>
+		<<if $speech_attitude is "meek">>
+			"哦不，不，" 你插嘴道。"没事的，我只是有时候喜欢裸着。你之前见过我裸体了，所以我希望你不介意?"
+		<<elseif $speech_attitude is "bratty">>
+			"不！"你插嘴道。"没关系，我只是有时喜欢光着屁股走来走去。你不会介意吧？你又不是没见过我裸体。" 你冲<<him>>咧嘴一笑。
+		<<else>>
+			"不，"你插嘴道。"没关系，我只是有时喜欢裸体走动。我以为你不会介意，因为你以前看过我裸体。"
+		<</if>>
+		<br><br>
+
+	<<elseif $worn.upper.type.includes("naked") and $worn.under_upper.type.includes("naked")>>
+		<<if $speech_attitude is "meek">>
+			"不，我很好，"你安慰<<him>>说。"只是有时赤裸上身的感觉很好。这让我感觉很好。希望不会给你添麻烦。"
+		<<elseif $speech_attitude is "bratty">>
+			"不，一切都很好，"你安慰<<him>>说。"我只是有时喜欢露出乳房。这不会打扰到你吧？毕竟你以前见过的。"
+		<<else>>
+			"哦，不，没关系，"你安慰<<him>>说。"我只是有时喜欢赤裸上身。你以前也见过，希望这不会困扰到你。"
+		<</if>>
+		<br><br>
+
+	<<elseif $worn.lower.type.includes("naked") and $worn.under_lower.type.includes("naked")>>
+		<<if $speech_attitude is "meek">>
+			"我没事，我保证，"你安慰<<him>>说。"只是有时不穿裤子感觉很好。这样更...透气。你以前见过我裸体，所以我希望这样可以？"
+		<<elseif $speech_attitude is "bratty">>
+			"我没事，"你说，打断了<<his>>的思路。"我只是有时喜欢把一切都抛开。让事情喘口气感觉很好。你觉得这样可以吗？我是说，你又不是没见过我的裸体。"
+		<<else>>
+			"我没事，我保证。"你打断道。"有时候我喜欢不穿裤子到处走走。微风很舒服。你以前看过我裸体，我想应该没问题。"
+		<</if>>
+		<br><br>
+
+	<<else>>
+		<<if $speech_attitude is "meek">>
+			"我没事，"你说，对<<him>>轻轻一笑。"我只是有时喜欢穿着内衣。希望不会给你添麻烦。"
+		<<elseif $speech_attitude is "bratty">>
+			"我没事，"你对<<him>>说。"我只是想穿着内衣出去玩。你不在乎，对吗？我是说，只是内衣而已，你以前已经看过我裸体了。"
+		<<else>>
+			"我没事，"你对<<him>>说。"我只是有时喜欢穿着内衣走来走去。你不介意吧，对吗？"
+		<</if>>
+		<br><br>
+
+	<</if>>
+
+	<<if $NPCName[$NPCNameList.indexOf("Robin")].dom lte 50>>
+		罗宾似乎不知道该说什么。<<He>>没有看你很久，尽管<<hes>>以前见过你的裸体。
+		<br><br>
+		
+		最后<<he>>说，"这样也挺好的，你觉得舒服就好了。"
+		<br><br>
+
+	<<else>>
+		罗宾的关切神情变成了愉悦和兴奋。<<He>>注视着你的身体。你一动不动，让<<him>>看到<<he>>想看的一切。
+		<br><br>
+
+		"我真的不明白，但我不介意，"<<he>>说。"其实我挺喜欢看你这样的。"
+		<br><br>
+
+	<</if>>
+
+	你微笑着关上身后的门，走进房间，和罗宾一起坐下。
+	<br><br>
+
+<</if>>
+
+<<link [[继续|Robin's Room Entrance]]>><<set $robin_naked_room to 1>><<endevent>><</link>>
+
+:: Robin Room Naked Flirt
+<<effects>>
+
+<<if $phase is 1>>
+	<<if $exposed gte 2>>
+		"我很好，"你说道:"我只是想让你看看我的天生的东西。我相信你会喜欢这美景的。" 你调整身体的角度，尽量让罗宾看到更多。
+		<br><br>
+
+	<<elseif $worn.upper.type.includes("naked") and $worn.under_upper.type.includes("naked")>>
+		"哦，当然，"你说。你把<<breasts>>挤在一起，捏着乳头。"我这里有一对漂亮的乳房，想给你看看。"
+		<br><br>
+
+	<<elseif $worn.lower.type.includes("naked") and $worn.under_lower.type.includes("naked")>>
+		"哦，我很完美" 你转身向罗宾展示你的光屁股 "我的屁股也是，你不觉得吗？"
+		<br><br>
+
+	<<else>>
+		"不需要毛巾，"你说。"我只是穿这样的内裤很可爱，想让你看看。"
+		<br><br>
+
+	<</if>>
+
+	<<if $NPCName[$NPCNameList.indexOf("Robin")].dom lte 50>>
+		罗宾羞红了脸，别过头去。<<He>>花了几秒钟才反应过来。"我...我想没关系。你可以...保持这样...如果你愿意的话。"<<glust>><<npcincr Robin lust 1>>
+		<br><br>
+
+		你关上门并且坐下。
+		<br><br>
+
+	<<else>>
+		罗宾笑了，但掩饰不住<<his>>的脸红。
+		<br><br>
+
+		"我永远分不清你是不是在开玩笑，"<<he>>说。
+		<br><br>
+
+		"如果你愿意，可以一直这样。我们是朋友，对吧？只是把门关上，免得被人看见。"
+		<br><br>
+
+		你微笑着关上了门。罗宾没有盯着你看，但也没有避开你。
+		<br><br>
+
+	<</if>>
+
+	<<link [[继续|Robin's Room Entrance]]>><<set $robin_naked_room to 1>><<endevent>><</link>>
+
+<<else>>
+	你向前倾身，用身体拥抱罗宾，在<<his>>耳边低语。
+	<br><br>
+
+	<<if $speech_attitude is "meek">>
+		"只要是为了你，我不介意暴露自己。你喜欢你看到的吗？"
+	<<elseif $speech_attitude is "bratty">>
+		"谁在乎是否有人看到我？我只是迫不及待地想和你一起裸体。"
+	<<else>>
+		"我不在乎是否有人看到我。反正这是为你准备的。"
+	<</if>>
+	<br><br>
+
+	<<if $NPCName[$NPCNameList.indexOf("Robin")].dom lte 50>>
+		罗宾和你分开了，脸涨得通红。<<He>>转过身去，在<<he>>努力整理<<himself>>的时候，避免看你。最后，<<he>>转向你，但避开了你的目光。<<glust>><<npcincr Robin lust 1>>
+		<br><br>
+
+		"谢谢...没关系...既然我们正在约会。你可以穿你喜欢的衣服..."
+		<br><br>
+
+		你笑了 "谢谢，但我希望你也能享受这一切。"
+		<br><br>
+
+		罗宾温顺地笑了笑。
+		<br><br>
+
+		<<link [[鼓励罗宾看你|Robin Room Naked Encourage]]>><</link>><<promiscuous1>>
+		<br>
+		<<link [[随他去|Robin's Room Entrance]]>><<set $robin_naked_room to 1>><<endevent>><</link>>
+
+	<<else>>
+		罗宾回应你的拥抱。
+
+		<<if $exposed gte 2 or ($worn.lower.type.includes("naked") and $worn.under_lower.type.includes("naked"))>>
+			你感觉到<<his>>的手从你背上滑下，直到<<hes>>摸到你光溜溜的屁股
+			<br><br>
+
+		<<else>>
+			你感觉到<<his>>的手从你的$worn.under_lower.cn_name_cap往下滑落，罩住你的一瓣屁股。
+			<br><br>
+
+		<</if>>
+
+		你心中升起一股暖流。罗宾在你耳边低语 ："你这样很可爱。我想我可能会喜欢你不穿衣服出现的样子..."<<He>>咯咯地笑起来。
+		<br><br>
+
+		<<if $NPCName[$NPCNameList.indexOf("Robin")].lust gte 20>>
+			罗宾的摸索越来越主动，很快<<hes>>就亲吻你的脖子，把你推回床上。你可以看出罗宾想要更多。
+			<br><br>
+
+			<<if $promiscuity gte 15>>
+				<<link [[回应|Robin Room Naked Return]]>><<set $phase to 1>><</link>><<promiscuous2>>
+				<br>
+			<</if>>
+			<<link [[拒绝|Robin Room Naked Decline]]>><</link>><<npcincr Robin dom -1>><<ldom>>
+
+		<<else>>
+			<<He>>在你的嘴唇上吻了一下，又深又长，然后给了你一个离别的拥抱。你们分开，一起坐在床上。
+			<br><br>
+
+			<<link [[继续|Robin's Room Entrance]]>><<set $robin_naked_room to 1>><<endevent>><</link>>
+
+		<</if>>
+
+	<</if>>
+
+<</if>>
+
+:: Robin Room Naked Return
+<<effects>>
+
+当<<he>>把你引向床时，你回报了罗宾的爱意，并轻咬<<his>>的脖子。当你的膝盖碰到床架时，你翻倒在床垫上，把<<him>>拽到你身上。在你的帮助下，<<he>>很快脱掉了<<his>>的衣服，并且深深地吻了你。
+<br><br>
+
+<<link [[继续|Robin Room Naked Sex]]>><<set $sexstart to 1>><</link>>
+
+:: Robin Room Naked Sex
+
+<<set _robin to statusCheck("Robin")>>
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 500>><<npcexpose>>
+<</if>>
+
+<<set $enemyanger to 0>>
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Robin Room Naked Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Robin Room Naked Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Robin Room Naked Sex Finish
+<<effects>>
+<<ejaculation>>
+
+<<if $orgasmcurrent is 0 and not playerChastity()>>
+	<<set _mouthful to 0>>
+	<br>
+	罗宾看起来
+	<<if $NPCName[$NPCNameList.indexOf("Robin")].dom lte 11>>
+		很担心。"但是……"<<he>>的脸很红。"我的意思是...没什么。"
+	<<elseif $NPCName[$NPCNameList.indexOf("Robin")].dom lte 26>>
+		很担心。"但是，"<<he>>低语道。"你没有射。我希望你也能舒服……"
+		<br>
+		你点头。
+	<<elseif $NPCName[$NPCNameList.indexOf("Robin")].dom lte 41>>
+		<<if $player.penisExist>>
+			<<set $penisuse to 0>><<set $penisstate to 0>>
+		<</if>>
+		很俏皮。“但你还没射，”<<he>>小声说。<<His>>的手在你的<<genitals>>上徘徊。
+		<<arousal 2500 "genitals">>
+		<<if $arousal gte $arousalmax>>
+			<<orgasm>>罗宾看起来很高兴。
+		<<else>>
+			几分钟后<<he>>停了下来。"对不起，我……我真的不知道我在做什么。"
+			<br>
+			"很舒服。”你告诉<<him>>，"真的，相信我。"
+			<br>
+		<</if>>
+	<<else>>
+		<<set _mouthful to 1>>
+		<<if $player.penisExist>>
+			<<set $penisuse to "othermouth">><<set $penisstate to "othermouth">>
+		<</if>>
+		很俏皮。"现在，"<<he>>笑了："<<print either("我做到让你快乐了","你快乐了","轮到你了","你高潮了","我让你射了","我让你射出来了")>>。"
+		<br>
+		罗宾消失在被罩之下。片刻之后，你感觉到<<his>>的舌头正在舔你的<<genitals>>。
+		<br>
+		<<arousal 4000 "genitals">>
+		<<if $arousal gte $arousalmax>>
+			<<orgasm>>
+		<<else>>
+			<br>
+			就这样过了一会儿后，罗宾又爬了起来："我不会放弃的，"<<he>>喘着粗气说道，随后<<He>>又咬着你的耳朵继续说道："那是不可能的。"
+			<br>
+			罗宾又消失在被子里，并以新的决心继续努力。
+			<<if $player.penisExist>>
+				<<set $NPCList[$npcrow[$npc.indexOf('Robin')]].mouth to "penis">>
+				<<takeNPCVirginity "Robin" "oral">>
+				<<penilestat>>
+			<</if>>
+			<<set $arousal to 10000>>
+			<<if $arousal gte $arousalmax>>
+				<<orgasm>>
+			<</if>>
+		<</if>>
+	<</if>>
+<</if>>
+
+"我爱你，"罗宾喃喃地说，俯身在你的脸颊上吻了一下。
+<br><br>
+
+<<if $phase is 1 and $NPCName[$NPCNameList.indexOf("Robin")].dom gte 51>>
+	"你...真的该穿上衣服了。"
+	<br><br>
+
+	"来...我给你拿点东西。"<<he>>说，<<his>>的脸悄悄地红了。<<He>>在<<his>>的衣服里翻找了一会儿，拿出一条毛巾，递给你。"对不起，可能还有点湿..."
+	<br><br>
+
+	你感谢<<him>>给你的毛巾，然后把它穿上，而<<he>>坐在你身边的床上。<<towelup>>
+	<br><br>
+<</if>>
+
+<<endcombat>>
+
+<<link[[继续|Robin's Room Entrance]]>><</link>>
+
+:: Robin Room Naked Decline
+<<effects>>
+
+你把手搭在罗宾的肩膀上，在上<<his>>的床之前阻止了<<him>>。
+<br><br>
+
+"我想我还是出去逛逛吧，如果可以的话，你说。"我真的没心情。"
+<br><br>
+
+罗宾看起来很失望，但还是点头表示同意。
+<br><br>
+
+<<link [[继续|Robin's Room Entrance]]>><<set $robin_naked_room to 1>><<endevent>><</link>>
+
+:: Robin Room Naked Towel
+<<effects>><<towelup>>
+
+"是啊，那太好了，谢谢。"你说道。
+<br><br>
+
+罗宾扔给你一条毛巾，你赶紧裹在身上。你走进房间，和罗宾一起坐下。
+<br><br>
+
+<<link [[继续|Robin's Room Entrance]]>><<set $robin_naked_room to 1>><<endevent>><</link>>
+
+:: Robin Room Naked Request
+<<effects>>
+
+<<if $robinromance isnot 1 and C.npc.Robin.love lte 49>>
+	<<if $robin_naked_fail isnot 1>>
+		<<set $robin_naked_fail to 1>>
+		"嘿，介意我把这些脱掉吗？"你突然问道。
+		<br><br>
+
+		罗宾疑惑地看着你 "脱什么？"<<he>>问。"你的鞋子？"
+		<br><br>
+
+		<<He>>低头看着你的脚，但你打断了他。"不，我是说我的衣服。我能脱掉吗？"
+		<br><br>
+
+		罗宾还是一副<<hes>>不确定<<he>>有没有听错的样子。"你...想...脱光？"<<he>>又问了一遍。
+		<br><br>
+
+		罗宾脸红了，但<<his>>眉头却皱了起来。<<He>>看起来很不自在。"不，我宁愿你不要。我不喜欢这样。"
+		<br><br>
+
+	<<else>>
+		"嘿，介意我脱光吗？"
+		<br><br>
+
+		罗宾皱起了眉头。"请不要这样，我希望你不要再问了。"
+		<br><br>
+
+	<</if>>
+
+	<<robinoptions>>
+
+<<else>>
+	<<unset $robin_naked_fail>>
+
+	<<if $robin_naked_room isnot 1>>
+
+		<<if $robinromance is 1>>
+			"嘿，介意我脱光吗？"你问。
+			<br><br>
+
+			<<if $NPCName[$NPCNameList.indexOf("Robin")].dom lte 50>>
+				罗宾脸红了，移开<<his>>的目光，但你看到<<his>>的笑容。<<He>>很快点了点头。"如果你愿意，"<<he>>说。
+				<br><br>
+
+				你微笑着站起来。
+				<br><br>
+
+			<<else>>
+				"当然不是，"<<he>>说。"你是想把我弄上床吗？"
+				<br><br>
+
+				"也许吧，"你狡猾地说，"不过，我只是喜欢和你裸体在一起。和你在一起我感觉很舒服。"
+				<br><br>
+
+				罗宾的笑容更深了。你站到<<him>>面前。<<garousal>><<arousal 600>>
+				<br><br>
+
+			<</if>>
+
+			<<link [[给罗宾来个脱衣秀|Robin Room Naked Tease]]>><</link>><<glust>><<npcincr Robin lust 1>>
+			<br>
+			<<link [[只是脱掉衣服|Robin Room Naked Take]]>><</link>>
+			
+			<<set $robin_naked_room to 1>>
+
+		<<else>>
+			"你介意我脱掉衣服吗？"
+			<br><br>
+
+			罗宾惊讶地看着你，<<hes>>不敢相信自己的耳朵。
+			<br><br>
+
+			<<if $NPCName[$NPCNameList.indexOf("Robin")].dom lte 50>>
+				"什么?"<<he>>说.
+				<br><br>
+
+				"我想脱光衣服，可以吗？"
+				<br><br>
+
+				罗宾的脸变得通红。<<He>>看向别处，有那么一秒钟你想知道<<hes>>会不会哭。
+				<br><br>
+
+				"我们是朋友，对吧？”你试图让<<him>>平静下来。"我不介意你看我裸体。"
+				<br><br>
+
+				罗宾沉默了几秒钟，然后转过身来看你。<<He>>还是躲避着你的目光，罗宾犹豫的点头。"没……没错，我们是朋友。如果你……你不在乎的话，那好吧。"
+				<br><br>
+
+			<<else>>
+				然后<<He>>笑了，但你注意到<<his>>的脸变得越来越红。“你......你是认真的吗？为什么？"
+				<br><br>
+
+				"我只是喜欢光着身子出去玩。我想，既然我们是朋友，让你看到应该没问题。"
+				<br><br>
+
+				<<He>>勉强的笑了笑，你可以看出<<hes>>的纠结。最后<<his>>对你耸耸肩，<<his>>的脸还是很红。"好吧，我明白了，你有喜欢像刚出生一样赤裸着到处走的习惯，我不介意。"
+				<br><br>
+
+			<</if>>
+
+			<<set $robin_naked_room to 1>>
+
+			<<link [[继续|Robin Room Naked Request 2]]>><<set $phase to 1>><</link>>
+
+		<</if>>
+
+	<<else>>
+
+		"喂，介意我再脱一次衣服吗？"你问道。
+		<br><br>
+
+		<<if $NPCName[$NPCNameList.indexOf("Robin")].dom lte 50>>
+			罗宾脸红了，像往常一样把头转开。过了几分钟后<<He>>结结巴巴地回答。
+			<br><br>
+
+			"如...如果你想的话，"<<he>>说。
+			<br><br>
+
+			<<strip>> 你站起来，迅速脱光衣服，直到在罗宾面前一丝不挂。当你坐下来时，罗宾并没有看你，但你的眼角余光却捕捉到<<him>>在偷瞄你。<<if $daily.robin_naked_lust isnot 1>><<set $daily.robin_naked_lust to 1>><<gglust>><<npcincr Robin lust 2>><</if>>
+			<br><br>
+		<<else>>
+			<<undress "Robin's Room">><<set $robin_naked_room_clothes to 1>><<exposure>>
+			罗宾灿然一笑，但<<his>>的脸红得无以复加。"当然可以了，因为你就是很喜欢裸体吧？"
+			<br><br>
+
+			你微笑着站了起来。迅速脱掉衣服，你就这样一丝不挂地站在罗宾面前。<<He>>试图表现得很随意，但你注意到<<him>>在瞥你的身体。你又坐了回去。<<if $daily.robin_naked_lust isnot 1>><<set $daily.robin_naked_lust to 1>><<gglust>><<npcincr Robin lust 2>><</if>>
+			<br><br>
+
+			"这样很舒服?"<<he>>询问.
+			<br><br>
+
+		<</if>>
+
+		<<robinoptions>>
+
+	<</if>>
+
+<</if>>
+
+:: Robin Room Naked Request 2
+<<effects>>
+
+你微笑着站起身脱衣服。
+<br><br>
+
+<<if $player.breastsize gte 4>>
+	你脱下<<upperwear>>, <span class="lewd">露出了你的<<breasts>>.</span>你假装没注意到罗宾盯着你的乳头的目光。
+<<else>>
+	你脱下上衣, <span class="lewd">露出了你裸露的胸部.</span>罗宾在你脱衣服的时候一直在旁边盯着，你假装没注意到。
+<</if>>
+<br><br>
+
+你转过身并把你的<<bottoms>>脱了下来，<span class="lewd">漏出了你的屁股。</span>你看不见罗宾的脸，但是你确定<<hes>>正在看着你。
+<br><br>
+
+<<link [[继续|Robin Room Naked Request 3]]>><</link>>
+
+:: Robin Room Naked Request 3
+<<effects>><<undress "Robin's Room">><<set $robin_naked_room_clothes to 1>><<exposure>>
+
+终于你全身赤裸了，你转身面对罗宾。
+<br><br>
+
+<<if $NPCName[$NPCNameList.indexOf("Robin")].dom lte 50>>
+	罗宾不敢面对你，<<him>>转过身去，整张脸涨的通红。
+	<br><br>
+
+	你走过去，和<<him>>一起坐下。罗宾尽力维持着，不去看你。但你还是发现<<him>>在以为你不注意的时候偷偷地瞄向你。<<glust>><<npcincr Robin lust 1>>
+	<br><br>
+
+<<else>>
+	<<He>>没有转过身去，但<<he>>尽量避免盯着你的任何私密部位。脸还是红红的。
+	<br><br>
+
+	你走过去，和<<him>>一起坐下。罗宾试图表现得很随意，但你发现<<him>>在<<he>>以为你不注意的时候偷偷地看了你一眼。<<glust>><<npcincr Robin lust 1>>
+	<br><br>
+
+<</if>>
+
+<<robinoptions>>
+
+:: Robin Room Naked Tease
+<<effects>>
+<<npc Robin 0>>
+
+<<if $worn.upper.name isnot "naked">>
+	<<set _it to $worn.upper.plural is 1 ? "them" : "it">>
+	与罗宾保持眼神交流，你开始慢慢脱下你的$worn.upper.cn_name_cap。你把衣服拉过头顶然后优雅地让它掉在地上。
+	<br><br>
+<</if>>
+
+<<if $worn.under_upper.name isnot "naked">>
+	<<set _it to $worn.under_upper.plural is 1 ? "them" : "it">>
+	你脱掉你的$worn.under_upper.cn_name_cap并把它扔到一边。
+	<br><br>
+<</if>>
+
+<<if $player.breastsize gte 4>>
+	你的<<breasts>>现在<span class="lewd">完全暴露在外。</span>在罗宾的注视下，你把玩了几秒钟。在继续之前，你捏了捏乳头。
+<<else>>
+	<span class="lewd">你裸露的胸部</span>现在完全暴露在外。
+<</if>>
+<br><br>
+
+<<if $worn.lower.name isnot "naked">>
+	<<set _it to $worn.lower.plural is 1 ? "them" : "it">>
+	你伸手拉下你的$worn.lower.cn_name_cap，然后一只脚一只脚地跨出它。
+	<br><br>
+<</if>>
+
+<<if $worn.under_lower.name isnot "naked">>
+	<<set _it to $worn.under_lower.plural is 1 ? "them" : "it">>
+	最后，你把手指伸进你的$worn.under_lower.cn_name_cap的后面。你慢慢地，自信地，把手指从腿上撩下来，<span class="lewd">向罗宾展示你的<<bottom>></span>。
+<<else>>
+	最后，你慢慢地，自信地，把手放在腿上，弯下腰，<span class="lewd">向罗宾展示你的<<bottom>></span>。
+<</if>>
+<br><br>
+
+你从膝盖下面探出头来。罗宾正直勾勾地盯着你弯腰的裸臀。你转过身，让罗宾看的清清楚楚。<<gglust>><<npcincr Robin lust 4>>
+<br><br>
+
+<<undress "Robin's Room">><<set $robin_naked_room_clothes to 1>>
+
+<<if C.npc.Robin.lust gte 20>>
+	<<link [[继续|Robin Room Naked Tease 2]]>><</link>>
+<<else>>
+	<<link [[继续|Robin's Room Entrance]]>><</link>>
+<</if>>
+
+:: Robin Room Naked Tease 2
+<<effects>>
+
+<<He>>站起来，走到你身边，一直盯着你的身体。
+<br><br>
+
+<<if $NPCName[$NPCNameList.indexOf("Robin")].dom gte 51>>
+	"你这样看起来真可爱，"<<he>>说，"我们能这样到床上去吗？"
+<<else>>
+	"你想吗？”<<He>>在你耳边低语。
+<</if>>
+<br><br>
+
+<<link [[想|Robin Room Naked Tease 3]]>><<set $phase to 1>><<npcincr Robin dom 1>><</link>><<gdom>>
+<br>
+<<link [[不想|Robin Room Naked Tease 3]]>><<set $phase to 2>><<npcincr Robin dom -1>><<trauma -1>><<stress -6>><</link>><<ldom>><<ltrauma>><<lstress>>
+
+:: Robin Room Naked Tease 3
+<<effects>>
+
+<<if $phase is 1>>
+	你微笑着点头。罗宾快速的亲吻了你，<<him>>带着你到了床上。你躺在床上看着<<his>>，罗宾迅速的脱掉了<<his>>自己的衣服。
+	<br><br>
+
+	<<link [[继续|Robin Room Naked Sex]]>><<unset $phase>><<set $sexstart to 1>><</link>>
+
+<<else>>
+	"如果可以的话，我想还是出去逛逛吧，"你说。"我没什么心情"
+	<br><br>
+
+	罗宾看起来很失望，但还是点头表示同意。
+	<br><br>
+
+	<<robinoptions>>
+
+<</if>>
+
+:: Robin Room Naked Take
+<<effects>><<undress "Robin's Room">><<set $robin_naked_room_clothes to 1>><<exposure>>
+
+你脱掉衣服，让罗宾一直看着你。脱光后，你和<<him>>一起坐下。
+<br><br>
+
+"这样很舒服?"<<he>>询问.
+<br><br>
+
+"没错，"你说，然后给了<<him>>一个快速的吻。<<glust>><<npcincr Robin lust 1>>
+<br><br>
+
+<<robinoptions>>
+
+:: Robin Room Naked Encourage
+<<effects>>
+
+"罗宾，”你说道。“如果你愿意，你可以这样看着我。我们现在在一起了，我希望你和我在一起能舒服些。"
+<br><br>
+
+罗宾在直视你之前犹豫了几秒钟。你大大方方的展示着自己的身体，你在<<hes>>面前快速的转了几圈，让罗宾能看到你身上的每一个角落。在你转身的时候，<<hes>>仍然盯着你的身体。<<glust>><<npcincr Robin lust 1>>
+<br><br>
+
+"谢谢,"<<he>>说，我……我爱你。"
+<br><br>
+
+<<robinoptions>>
+
+:: Robin Room Naked Put
+<<effects>><<storeon "Robin's Room">><<unset $robin_naked_room_clothes>>
+
+你从罗宾的床上拿起衣服，自己穿上。罗宾看向相反的方向，直到你穿好为止。
+<br><br>
+
+<<robinoptions>>
+
+:: Robin Unwrap
+<<effects>>
+
+你解开绑在罗宾胸前的丝带，包装纸掉到床上。当你解开缠绕在<<his>>胯部的丝带时，罗宾倒吸了一口凉气。<<Hes>>一丝不挂地出现在了你面前。
+<<promiscuity1>>
+
+罗宾指着上面的槲寄生。“抓到你了，”还没等你开口说话，<<his>>的胳膊就搂住了你的身体，把你拉到了床上。<<His>>亲吻着你的双唇。<<takeKissVirginity "Robin" `($robinromance is 1?"loveInterest":"romantic")`>>
+<br><br>
+
+<<link [[继续|Robin Unwrap Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+
+
+
+:: Robin Unwrap No
+<<effects>>
+
+
+<<if $speech_attitude is "meek">>
+	你摇摇头。“不，不要，”然后你笑了，"但我很高兴你是我的礼物。"
+<<elseif $speech_attitude is "bratty">>
+	你摇摇头。"我现在没心情。"然后你笑了，"但你真的是一个很棒的礼物。"
+<<else>>
+	你摇摇头。“现在不行，”然后你笑了，“但你是我所能要求的最好的礼物。"
+<</if>>
+<br><br>
+
+罗宾的眼睛亮了起来，<<he>>站起来，用手指着上方，那里有槲寄生。"抓到你了，"<<he>>在你的嘴唇上轻轻啄了一下。<<takeKissVirginity "Robin" `($robinromance is 1?"loveInterest":"romantic")`>>
+<br><br>
+
+<<He>>笑了。"我要换上你给我带来的衣服。"你点点头，然后离开了。
+<br><br>
+
+<<link [[继续|Orphanage]]>><<endevent>><</link>>
+<br>
+
+
+:: Robin Unwrap Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 500>><<npcexpose>>
+	<<set $enemyarousalmax to 600>>
+<</if>>
+
+<<set $enemyanger to 0>>
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Robin Unwrap Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Robin Unwrap Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Robin Unwrap Sex Finish
+<<set $outside to 0>><<set $location to "home">><<schooleffects>><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	罗宾微笑着紧紧抓住了你。
+	<br><br>
+
+<<elseif $enemyhealth lte 0>>
+
+	"哇噢！”罗宾说，<<Hes>>仍然在笑。
+	<br><br>
+
+<<elseif $finish is 1>>
+
+	罗宾微笑着紧紧抓住了你。
+	<br><br>
+
+<</if>>
+
+<<He>>凝视着你的眼睛，“我爱你。”<<He>>再次吻你。
+
+<<if $penisfucked is 1>>
+	"有你在我身体里感觉真好。"
+<<elseif $vaginafucked is 1>>
+	"你里面的感觉真好。"
+<</if>>
+
+<<if $orgasmcurrent is 0 and not playerChastity()>><<set _mouthful to 0>>
+	<br>
+	罗宾看起来
+	<<if $NPCName[$NPCNameList.indexOf("Robin")].dom lte 11>>
+		很担心。"但是……"<<he>>的脸很红。"我的意思是...没什么。"
+	<<elseif $NPCName[$NPCNameList.indexOf("Robin")].dom lte 26>>
+		很担心。"但是，"<<he>>低语道。"你没有射。我希望你也能舒服……"
+		<br>
+		你点头。
+	<<elseif $NPCName[$NPCNameList.indexOf("Robin")].dom lte 41>>
+		<<if $player.penisExist>>
+			<<set $penisuse to 0>><<set $penisstate to 0>>
+		<</if>>
+		很俏皮。“但你还没射，”<<he>>小声说。<<His>>的手在你的<<genitals>>上徘徊。
+		<<arousal 2500 "genitals">>
+		<<if $arousal gte $arousalmax>>
+			<<orgasm>>罗宾看起来很高兴。
+		<<else>>
+			几分钟后<<he>>停了下来。"对不起，我……我真的不知道我在做什么。"
+			<br>
+			"很舒服。”你告诉<<him>>，"真的，相信我。"
+			<br>
+		<</if>>
+	<<else>>
+		<<set _mouthful to 1>>
+		<<if $player.penisExist>>
+			<<set $penisuse to "othermouth">><<set $penisstate to "othermouth">>
+		<</if>>
+		很俏皮。"现在，"<<he>>笑了："<<print either("我做到让你快乐了","你快乐了","轮到你了","你高潮了","我让你射了","我让你射出来了")>>。"
+		<br>
+		罗宾消失在被罩之下。片刻之后，你感觉到<<his>>的舌头正在舔你的<<genitals>>。
+		<br>
+		<<arousal 4000 "genitals">>
+		<<if $arousal gte $arousalmax>>
+			<<orgasm>>
+		<<else>>
+			<br>
+			就这样过了一会儿后，罗宾又爬了起来："我不会放弃的，"<<he>>喘着粗气说道，随后<<He>>又咬着你的耳朵继续说道："那是不可能的。"
+			<br>
+			罗宾又消失在被子里，并以新的决心继续努力。
+			<<if $player.penisExist>>
+				<<set $NPCList[$npcrow[$npc.indexOf('Robin')]].mouth to "penis">>
+				<<takeNPCVirginity "Robin" "oral">>
+				<<penilestat>>
+			<</if>>
+			<<set $arousal to 10000>>
+			<<if $arousal gte $arousalmax>>
+				<<orgasm>>
+			<</if>>
+		<</if>>
+	<</if>>
+	<<He>>再次吻你并说道，"我爱你。"
+	<br>
+	<<His>>闭上了眼睛, 并平稳的进入了梦乡.
+<<else>>
+	<<His>>闭上了眼睛, 并平稳的进入了梦乡.
+<</if>>
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+<<npc Robin>><<person1>>
+"圣诞快乐，"罗宾轻声说，随后<<He>>吻了一下你的脸颊，"我知道这很突然，但我希望你能开心。"
+<br><br>
+<<He>>坐起身来，"我要去换上你给我买的衣服！" 你点点头，然后离开了。
+<br><br>
+
+
+<<link [[继续|Orphanage]]>><<endevent>><</link>>
+<br>
+
+
+
+
+:: Robin Hug Stop
+
+<<set $outside to 0>><<set $location to "home">><<effects>>
+你与罗宾拉开距离。
+<br><br>
+<<robinoptions>>
+
+:: Robin Trauma Hug
+
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+你把罗宾抱在怀里。在最开始<<he>>没有动，也没有说话。但是几分钟后<<he>>突然哭了起来，一开始只是抽泣，随后哭声越来越大，<<hes>>趴在你的肩上嚎哭起来。
+<br><br>
+
+"我...我"<<he>>在啜泣的同时说道，"我.....我不能...我忘不掉..."
+<br><br>
+
+"没事了，"你说，"你现在安全了，我会保护你的。"
+<br><br>
+
+<<He>>继续在你的怀里哭泣着。
+<<pain 10>>
+你意识到你也在流泪，"谢谢你，"<<he>>在过了一段时间后说，"我现在好多了。"那留有泪痕的面庞勉强挤出了一个笑容，"我们能到厨房去吗？我有点渴了。"
+<br><br>
+
+你拉着<<him>>的手走向厨房，你给<<him>>倒了一杯水，<<him>>目光呆滞的靠在柜台上。"我知道你很忙，"当你把水递给<<he>>时，<<he>>说道："我…想回自己房间里静静，不用担心，我不会有事的…"<<He>>对你露出了一个笑容，然后离开了厨房。
+<br><br>
+
+<<endevent>>
+
+<<link [[继续|Orphanage]]>><</link>>
+<br>
+
+:: Robin Console
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+"为了付给贝利的房租你卖掉了游戏机？"罗宾点点头，你叹了口气。"没事儿，我会给你买一个新的游戏机。"
+<br><br>
+
+<<He>>惊讶的张大了嘴，"不，算了吧，太贵了。"<<he>>摇摇头。
+<br><br>
+
+"这是我的钱，我想怎么花就怎么花，"你打断道，"好了，你有什么想要的游戏卡带吗？我也可以一起买给你。"
+<br><br>
+
+<<He>>有些困扰的皱着眉，但最后还是笑了。
+<br><br>
+
+你们一起来到商业街，当游戏商店出现在视线内后，<<His>>明显加快了脚步。
+五分钟后，<<hes>>抱着一个大盒子满载而出，虽然你为此付了£400，但在看到<<His>>的笑容后，你觉得这也挺值的。
+<br><br>
+
+一回到宅邸街，<<He>>就走到你前头，兴奋地想要快点儿回去试玩新的游戏机。
+<br><br>
+<<endevent>>
+<<link [[继续|Domus Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Robin Hospital
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+"你受伤了，"你对罗宾说，"你需要去看医生。"
+<br><br>
+
+<<He>>摇了摇头， "我哪里也不想去，让我就这么待着吧。"
+<br><br>
+
+"不要害怕，"你担忧地看着罗宾。"我会陪你一起的，我保证。" 你站起来将门打开。<<He>>依旧没有动。"求你了，"你恳求道。<<He>>这才面无表情地站了起来。
+<br><br>
+
+你不确定<<he>>是否还有能力走路，所以你们一起坐了公交车去医院，你带着<<He>>走进医院的门厅的那一路上，<<him>>的脑袋一直低垂着。
+<br><br>
+
+<<generate2>><<person2>>今天的病人不是很多。你走到前台，"有什么需要帮助的吗？"坐在柜台后面的那个<<person>>问道。
+<br><br>
+
+"我的朋友受伤了，"你说，"但是我不知道具体有多严重，<<person1>><<He>>现在好像行走都有些困难。"
+<br><br>
+
+<<person2>>那个<<person>>微笑着看向罗宾，"我去看看哪个医生今天有空，你们先坐下休息一会儿吧。"
+<br><br>
+
+没过多长时间，一个<<generate3>><<person3>><<person>>来到了门厅前，在扫视了一圈后<<he>>对你说道，"请跟我来。"
+<br><br>
+
+你紧握着罗宾的手，在确保<<person1>><<he>>不会跑掉后，你们跟着医生前往了办公室。
+你们进去找了位置坐下，医生开始对罗宾进行检查，<<He>>看起来很不安。
+"现在这样我没办法检查你的全部伤势，请把衣服脱下来。" 罗宾紧张的闭上了<<his>>的眼睛。
+你把手放在<<him>>的肩膀上，"没事的，照着医生说的做吧，"你劝说道，"医生会帮助你的。"
+<br><br>
+
+你站起身准备离开房间，想要给罗宾一些隐私，但是<<person1>><<he>>抓住了你的胳膊，"请留下来，不要让我一个人，"<<he>>哀求道，你只能再次坐了下来。
+<br><br>
+
+医生转过身去，在<<person3>><<his>>的电脑上处理着什么文件，罗宾开始脱衣服。<<person1>>
+<br><br>
+
+<<link [[看罗宾换衣服|Robin Hospital Watch]]>><<npcincr Robin lust 5>><</link>><<glust>><<promiscuous1>>
+<br>
+<<link [[移开视线|Robin Hospital 2]]>><</link>>
+<br>
+
+:: Robin Trauma Talk
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<run statusCheck("Robin")>>
+
+<<if $rng gte 51>>
+	<<set _topic to $robinLastPunishment>>
+	<<set _recently to "recently">>
+<<elseif $rng gte 15>>
+	<<set _topic to $robinPunishments.random()>>
+	<<set _recently to "a while ago">>
+<<else>>
+	<<set _topic to "default">>
+<</if>>
+<<switch _topic>>
+	<<case "underground">>
+		你和罗宾谈起了<<print _recently.replace("recently","最近").replace("a while ago","一段时间之前")>><<his>>在地下的那段日子。
+		<<switch random(1, 3)>>
+			<<case 1>>
+				"我们难道就是被人拿来娱乐的工具吗?”罗宾双眼无神地盯着地板，手随意的敲打着<<his>>的床。
+			<<case 2>>
+				罗宾抬头看着房间里的灯，茫然地说道：“它能带来如此大的变化，真令人惊讶。"
+			<<case 3>>
+				罗宾的眼角流出几滴眼泪，已经不想继续说下去了。
+		<</switch>>
+	<<case "docks">>
+		你和罗宾谈起了<<print _recently.replace("recently","最近").replace("a while ago","一段时间之前")>><<his>>在码头的那段时间。
+		<<switch random(1, 3)>>
+			<<case 1>>
+				"我究竟做错了什么，那些家伙要这样打我？" 泪水在<<his>>的眼眶里打转，你不知道该怎么回答。
+			<<case 2>>
+				罗宾前后晃动着腿，偶尔会说起海滩上经常出现的谈话内容，以及<<he>>是怎么在休息时间听到这些的。
+			<<case 3>>
+				罗宾指了指<<his>>肚子上的一个地方，一边指一边咬牙切齿的说，"这是那些家伙最喜欢打的地方。"
+		<</switch>>
+	<<case "landfill">>
+		你和罗宾谈起<<print _recently.replace("recently","最近").replace("a while ago","一段时间之前")>><<his>>最近在垃圾场的遭遇。
+		<<if $robinSeen.includes("robinRape")>>
+			<<switch random(1, 3)>>
+				<<case 1>>
+					"我很抱歉......" 罗宾尽量避免与你对视。
+				<<case 2>>
+					"我应该阻止自己的。" 你慢慢地拍打着罗宾的背安慰<<his>>，罗宾哭了出来。
+				<<case 3>>
+					"我在那根杆子上被绑了好几个小时，我很想逃跑，但是那些气体让我无法控制自己......" 你轻轻地抱住了<<him>>，罗宾沉默了。
+			<</switch>>
+		<<else>>
+			"我还以为……我这辈子都离不开那个地方了……" 罗宾颤抖着说道。
+		<</if>>
+	<<case "dinner">>
+		你和罗宾谈起了<<print _recently.replace("recently","最近").replace("a while ago","一段时间之前")>><<his>>在晚宴上的那段时间。
+		<<switch random(1, 3)>>
+			<<case 1>>
+				"那么多的人，都想…"<<He>>把话说到一半就停下了。
+			<<case 2>>
+				"我真的很害怕，害怕那些家伙把我撕成碎片……"<<he>>浑身颤抖，整个人蜷缩了起来。
+			<<case 3>>
+				"为什么有人会做出这种事？" 罗宾颤抖着说，"我是人，我不是食物啊......"
+		<</switch>>
+	<<case "pillory">>
+		你和罗宾谈起了<<print _recently.replace("recently","最近").replace("a while ago","一段时间之前")>><<his>>在颈手枷上的那段时间。
+		<<switch random(1, 3)>>
+			<<case 1>>
+				"我没有犯过罪......" 罗宾呜咽着说。
+			<<case 2>>
+				"我在路过那条街时经常为被绑在上面的人难过，但是我从没有想过，有一天我也会成为他们中的一员……”罗宾叹了口气。
+			<<case 3>>
+				"……被扔水果，至少比被人扔石头要好，所以也没那么糟，对吧？"罗宾痛苦的笑了笑。
+		<</switch>>
+	<<case "mansion">>
+		你和罗宾谈起了<<print _recently.replace("recently","最近").replace("a while ago","一段时间之前")>><<his>>在豪宅的那段时间。
+		<<switch random(1, 3)>>
+			<<case 1>>
+				"那些人中有人一直向我吐口水，"<<he>>抱怨道。"被那些家伙吐到脸上时，我只能用手擦掉。"
+			<<case 2>>
+				"他们非常粗鲁，几乎把我穿的女仆装撕成了碎片，"<<he>>说。
+			<<case 3>>
+				"就算是现在，我也总是觉得那些家伙在盯着我......" 罗宾呜咽道。
+		<</switch>>
+	<<default>>
+		你想和罗宾说话，但是罗宾一直都沉默的低着头，你不想逼迫<<him>>，很长一段时间后<<him>>开口了。
+		罗宾断断续续的说起了<<hes>>遭受过的那些虐待，<<He>>哭了。你紧紧的抱住了<<he>>。
+<</switch>>
+<br><br>
+
+你安慰了罗宾一阵子，拥抱着<<him>>，温柔的鼓励<<him>>振作起来。<<He>>似乎很感激你。
+<br><br>
+
+<<robinoptions>>
+
+:: Robin Hospital Watch
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<if $pronoun is "f">>
+	你看着罗宾脱衣服的过程，<<He>>脱下了<<his>>的裙子，露出了下面那条印着粉红色爱心图案的纯白内裤。
+	再然后<<He>>将内裤也脱了下来，并没有向你遮掩<<his>>私处的意图，你注意到<<his>>的私处现在也还在青肿着。
+	<br><br>
+
+<<else>>
+	你看着罗宾脱衣服的过程，<<He>>脱下了<<his>>的短裤，露出了下面那条白色三角裤。
+	再然后<<He>>将内裤也脱了下来，并没有向你遮掩<<his>>私处的意图，你注意到<<his>>的私处现在也还在青肿着。
+
+<</if>>
+<<promiscuity1>>
+
+你意识到<<hes>>正看着你。"我…我很好看吗？"<<he>>小声的问到，"你看着我的眼神很…" 你为打量<<him>>身体的行为感到很内疚，所以当<<his>>脱下<<his>>的衬衫时，你把目光移开了。
+<br><br>
+
+<<link [[继续|Robin Hospital 2]]>><</link>>
+<br>
+
+:: Robin Hospital 2
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+医生回头看向罗宾，现在其正赤身裸体地站着，<<person3>><<He>>从头到脚观察着罗宾的身体，"我认为你不需要缝针，"<<he>>说，"但是淤伤也太多了，你们两个是兄弟姐妹吗？"
+<br><br>
+
+<<if $robinromance is 1>>
+	"我们，呃，"罗宾结结巴巴地说，"不，我们不是，<<pShes>>是我的<<girlfriend>>。"
+<<else>>
+	"没错，"罗宾说道，"我是说，那个人……<<pShes>>就像是我的<<if $player.gender_appearance is "f">>姐姐<<else>>哥哥<</if>>一样。"
+<</if>>
+<br><br>
+
+"你住在哪里？"医生问道。
+<br><br>
+
+"孤儿院，"罗宾回答。
+<br><br>
+
+医生皱起眉头，"有些地方需要包扎，而且你还需要一些止痛药......"
+<br><br>
+
+<<person1>>医生正在处理罗宾的伤口，而你则坐在旁边紧握着<<his>>的手，罗宾在穿好衣服后转向你。"你看，我现在像不像木乃伊？"<<he>>说着的同时指了指缠在<<his>>头上的绷带，这一瞬间，你仿佛又看到了平常那个阳光开朗的<<He>>。
+<<set $robinSeen.pushUnique("hospitalMummy")>>
+<br><br>
+
+在回家后，罗宾紧紧的抱住了你。"谢谢，"<<he>>满脸泪水的笑着说，"我已经好多了。" 在说完之后，<<his>>回了自己的房间。
+<br><br>
+<<endevent>>
+<<link [[继续|Orphanage]]>><</link>>
+<br>
+
+:: Robin Walk School
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+<<if $tutorial is 0 and $debug is 0>>
+	<<endevent>>
+	<<generate1>><<person1>>在你和罗宾一起离开孤儿院时，你不小心撞到了一个路过的<<person>>。<<He>>踉跄了一下差点儿摔倒，那个人愤怒地回头看向你，但当<<his>>看到你的脸时，<<he>>的愤怒变成了下流的笑容，"你是我这周见过的最可爱的孩子！跟我走吧。"
+	<br><br>
+	罗宾惊讶的看着<<He>>把你拖进一条小巷。
+	<br><br>
+	<<link [[继续|Tutorial]]>><<set $molestationstart to 1>><<set $tutorialExit to "Robin Walk School Tutorial">><</link>>
+<<elseif $robinromance is 1>>
+	你和罗宾一起离开孤儿院走路去上学。
+
+	<<He>>用<<his>>的手背摩擦你的手背。你握住它。<<takeHandholdingVirginity "Robin" "romantic">>
+	<<if _robin.trauma gte 80>>
+	<<elseif _robin.trauma gte 40>>
+	<<else>>
+		你一边走一边和<<him>>聊天。
+	<</if>>
+	<<ltrauma>><<lstress>><<lrtrauma>><<trauma -2>><<stress -4>><<npcincr Robin trauma -2>>
+	<br><br>
+	<<endevent>>
+<<else>>
+	你和罗宾一起离开孤儿院走路去上学。
+
+	<<if _robin.trauma gte 80>>
+		<<if $robin_injured gte 1>>
+			<<Hes>>一瘸一拐的。
+		<<else>>
+			<<He>>慢慢地走着。
+		<</if>>
+		你也慢慢的走着，让<<He>>能跟上你的步伐。<<him>>在一路上都保持着沉默，每当有人经过你们身边时，<<He>>都会下意识的向你靠近。
+	<<elseif _robin.trauma gte 40>>
+		你们在路上闲聊了几句，但只要有其他人经过你们身边，<<he>>就会陷入沉默。
+	<<else>>
+		你在路上和<<him>>一起聊天。
+		<<ltrauma>><<lstress>><<lrtrauma>><<trauma -2>><<stress -4>><<npcincr Robin trauma -2>>
+	<</if>>
+	<br><br>
+	<<endevent>>
+<</if>>
+
+<<if $tutorial is 0 and $debug is 0>>
+	<<set $tutorial to 1>>
+
+<<elseif $NPCName[$NPCNameList.indexOf("Avery")].love gte random(20, 100) and $NPCName[$NPCNameList.indexOf("Avery")].state is "active" and $robinaverybeat isnot 1>>
+	<<npc Avery>><<person1>>
+	<<if $NPCName[$NPCNameList.indexOf("Avery")].rage gte 20 and $averyragerevealed is 1>>
+		一辆汽车停在你身边。当车窗摇下来的时候，罗宾紧张了起来，坐在驾驶位的是一个<<if $pronoun is "m">>穿着西装的男人<<else>>穿着优雅裙子的女人<</if>>，是艾弗里。<<he>>从车里走了出来，用愤怒的眼神看着你。艾弗里抓住了你的手臂，"给我进去！"<<He>>冷淡的瞥了一眼站在一旁的罗宾，继续把你拉向还没有熄火的车，"至于你的朋友，就自己走路吧。"
+		<br><br>
+
+		<<if $NPCName[$NPCNameList.indexOf("Robin")].dom gte 91>><<set $robinaverybeat to 1>>
+			你跌跌撞撞地被艾弗里拉扯着往前走，正当<<His>>的怒火稍稍减弱时，一个书包突然撞向了<<his>>的脸。伴随着一声惨叫，<<his>>倒在了车上。罗宾走上前去，拿起<<endevent>><<npc Robin>><<person1>><<his>>的书包，把它用力的砸在了艾弗里的头上，包里沉甸甸的书籍打得一定很痛。"放开<<phim>>！" 罗宾喊道："<<pShes>>是我的！"
+			<br><br>
+
+			<<endevent>><<npc Avery>><<person1>>
+
+			艾弗里抬起<<his>>的双臂防御，并匆忙地回到了<<his>>的车上。<<He>>生气地瞪着罗宾，“你会后悔的，我保证！”<<His>>的汽车开走了。
+			<br><br>
+
+			<<endevent>><<npc Robin>><<person1>>
+
+			罗宾用<<his>>的双臂抱住你，<<Hes>>浑身都在发抖，直到艾弗里的身影彻底消失才放下心来。
+			<br><br>
+
+			<<link [[向罗宾道谢|Avery Walk Thank]]>><<npcincr Robin love 3>><</link>><<gglove>>
+			<br>
+			<<link [[调戏罗宾|Avery Walk Tease]]>><<npcincr Robin love 1>><<npcincr Robin lust 1>><</link>><<glove>><<glust>>
+			<br>
+		<<else>>
+			<<endevent>><<npc Robin>><<person1>>
+			罗宾低头盯着自己的脚尖。
+			<br><br>
+			<<endevent>><<npc Avery>><<person1>>
+
+			<<link [[服从|Avery Walk Comply]]>><<npcincr Avery rage -5>><</link>><<larage>>
+			<br>
+			<<link [[拒绝|Avery Walk Refuse 2]]>><<npcincr Avery rage 5>><</link>><<garage>>
+			<br>
+		<</if>>
+	<<else>>
+		<<if $averywalkintro is 1>>
+			一辆汽车停在你身边，当窗户落下时，罗宾紧张了起来。车门打开，<<if $pronoun is "m">>穿着西装的男人<<else>>穿着优雅裙子的女人<</if>>探出头来，是艾弗里。"我来载你一程，"<<he>>说，"上车。"
+			<br><br>
+
+			<<endevent>><<npc Robin>><<person1>>
+			罗宾皱眉等待着你的回应，<<He>>看起来很紧张。
+			<br><br>
+			<<endevent>><<npc Avery>><<person1>>
+
+			<<link [[让罗宾放心|Avery Walk School]]>><</link>>
+			<br>
+			<<link [[拒绝|Avery Walk Refuse]]>><<npcincr Avery rage 1>><</link>><<garage>>
+			<br>
+		<<else>>
+			一辆汽车停在你身边，当窗户落下时，罗宾紧张了起来，车门打开，一个<<if $pronoun is "m">>穿着西装的男人<<else>>穿着优雅裙子的女人<</if>>探出头来，是艾弗里。“我正要去上班，”<<he>>说。“刚好顺路，让我载你一程吧。”<<He>>瞥了罗宾一眼。“……至于你的朋友嘛，也可以一起。"
+			<br><br>
+
+			<<endevent>><<npc Robin>><<person1>>
+			罗宾皱眉等待着你的回应，<<He>>看起来很紧张。
+			<br><br>
+			<<endevent>><<npc Avery>><<person1>>
+
+			<<link [[让罗宾放心|Avery Walk School]]>><</link>>
+			<br>
+			<<link [[拒绝|Avery Walk Refuse]]>><<npcincr Avery rage 1>><</link>><<garage>>
+			<br>
+		<</if>>
+	<</if>>
+	<<set $averywalkintro to 1>>
+<<else>>
+	<<link [[继续|School Front Courtyard]]>><</link>>
+	<br>
+<</if>>
+
+:: Robin Walk School Tutorial
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<npc Robin>><<person1>>
+罗宾看着你走出小巷。“还好吗？”，<<he>>带着担心的表情问道，“你没有受伤吧？"
+<br><br>
+你点点头，说自己没事。你和罗宾继续向学校走去。剩下的一路都平安无事。
+<br><br>
+<<link [[继续|School Front Courtyard]]>><<endevent>><</link>>
+
+:: Robin Walk Home
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+<<npc Robin>><<person1>>你跑向罗宾。
+
+<<if $robinReunionScene is "dungeon">>
+	<<unset $robinReunionScene>><<set $robinPostMortem to true>>
+	你轻拍了一下<<his>>的肩膀<<if _robin.trauma gte 40>>，<<him>>吓的大叫了一声<</if>>。<<He>>转过身，在发现是你之后激动的说不出来话，紧紧的抱住了你。
+	<br>
+	"你还活着!"，罗宾激动的尖叫， "我……我还以为你再也回不来了! 我真的……"
+	<br><br>
+
+	过了一会儿罗宾才平静下来。“我们回家后再讨论这个问题吧，”<<he>>说，“不用担心，等你愿意跟我说的时候再告诉我，我不会逼迫你。"
+	<br><br>
+
+	你们一起走回了孤儿院，罗宾一直都紧紧的跟在你身边。
+	<<ltrauma>><<lstress>><<trauma -2>><<stress -4>>
+	<br><br>
+<<elseif $robinReunionScene is "dungeonRobin">>
+	<<unset $robinReunionScene>>
+	你轻拍了一下<<his>>的肩膀<<if _robin.trauma gte 40>>，<<him>>吓的大叫了一声<</if>>。<<He>>转过身，在发现是你之后激动的说不出来话，紧紧的抱住了你。
+	<br>
+	"你回来了！" 罗宾尖叫着喊道，"我...希望那些家伙没有对你做更多可怕的事情......"
+	<br><br>
+
+	终于罗宾平静了下来。"太好了，你自由了，"<<he>>温柔的对你微笑。“我们一起回家吧。"
+	<br><br>
+
+	你们一起走回了孤儿院，罗宾一直都紧紧的跟在你身边。
+	<<ltrauma>><<lstress>><<trauma -2>><<stress -4>>
+	<br><br>
+<<elseif $robinReunionScene is "asylum">>
+	<<unset $robinReunionScene>>
+	你轻拍了一下<<his>>的肩膀<<if _robin.trauma gte 40>>，罗宾吓的大叫了一声<</if>>，<<He>>转过身来，在看到是你后<<him>>激动的快速喘息着。<<He>>看起来很惊喜。
+	<br><br>
+
+	<<if _robin.trauma gte 40>>
+		"嗨，"<<he>>轻声说。"我以为医生把你带走了，如果我知道你要回来的话，我一定会想办法给你弄点东西的。"罗宾哆嗦着说道。
+	<<else>>
+		"哦，嘿！"<<he>>笑着说。“我以为你会在医生那里待一段时间的，如果我知道你会回来的话，我一定会为你准备一些东西的。”罗宾解释道。
+	<</if>>
+	<br><br>
+
+	你摇摇头，告诉<<him>>他们不会帮你，所以你提前“退房”了。罗宾似乎很困惑，但<<him>>还是点了点头。<<him>>给了你一个拥抱。
+	<br>
+
+	<<if _robin.trauma gte 40>>
+		"嗯，我很高兴能再见到你，”<<he>>喃喃地说，然后紧紧地抱住了你。
+	<<else>>
+		"好吧，我很高兴你在我身边。我希望你感觉好些了，"<<he>>说。
+	<</if>>
+	"来吧，我们回家。"
+	<br><br>
+
+	你们两个一起回了孤儿院。
+	<<ltrauma>><<lstress>><<trauma -2>><<stress -4>>
+	<br><br>
+<<elseif $robinromance is 1>>
+	<<He>>拥抱你。 "我们能牵手吗？"<<he>>说。<<takeHandholdingVirginity "Robin" "romantic">>
+	<br><br>
+
+	你们一起走回孤儿院。
+
+	<<ltrauma>><<lstress>><<trauma -2>><<stress -4>>
+	<br><br>
+
+<<elseif $weather is "rain">>
+	<<if _robin.trauma gte 80>>
+		<<He>>站在雨中，慢慢地被淋湿。当<<him>>看到你时，<<him>>微微一笑。“嘿，”<<he>>的眼睛半被湿头发遮住了。
+		<br><br>
+
+		你们一起走回孤儿院，<<if $robin_injured>>依旧有些一瘸一拐的，所以你慢慢地走，方便让<<him>>跟上。<</if>><<He>>一路上一直沉默着，而且每当有其他人经过你们身边时，<<He>>都会更贴近你。
+		<<lrtrauma>><<npcincr Robin trauma -2>>
+	<<else>>
+		<<He>>撑起一把伞，使你们两个人都能待在伞下，"不知道为什么，我就是知道你又忘带了，"<<he>>轻笑着说道。
+		<br><br>
+
+		雨伞让你能保持干燥，你们一起走回了孤儿院<<if $robinromance>>，在回家的一路上你们都紧紧的牵着对方的手。<<takeHandholdingVirginity "Robin" "romantic">><<else>>。<</if>>
+		<<ltrauma>><<lstress>><<trauma -2>><<stress -4>>
+		<<dry>>
+	<</if>>
+	<br><br>
+
+<<else>>
+
+	<<if _robin.trauma gte 80>>
+		当<<He>>看到你时，<<he>>对你笑了笑，"你，你好啊,"<<he>>说道。
+		<br><br>
+
+		你们一起走回孤儿院，<<if $robin_injured>>依旧有些一瘸一拐的，所以你慢慢地走，方便让<<him>>跟上。<</if>><<He>>一路上一直沉默着，而且每当有其他人经过你们身边时，<<He>>都会更贴近你。
+		<<lrtrauma>><<npcincr Robin trauma -1>>
+		<br><br>
+
+	<<elseif _robin.trauma gte 40>>
+		当<<He>>看到你时，<<he>>露出了微笑。"嘿，"<<he>>说道，"我很高兴你来了，我觉得一个人走回家不安全。"
+		<br><br>
+
+		你们一起走回了孤儿院，虽然你们中途聊了几句，但只要有其他人经过你们身边，<<he>>就会紧张并陷入沉默。
+		<<lrtrauma>><<npcincr Robin trauma -1>>
+		<br><br>
+
+	<<else>>
+		当<<He>>看到你时，<<he>>露出了微笑。"嘿，"<<he>>说道，"我很高兴你来了，我不太喜欢一个人走回家。"
+		<br><br>
+
+		你们两个在回孤儿院路上聊着天。
+		<<ltrauma>><<lstress>><<trauma -2>><<stress -4>>
+		<br><br>
+
+	<</if>>
+<</if>>
+<<npcincr Robin love 1>>
+<<endevent>>
+<<link [[继续|Orphanage]]>><</link>>
+<br>
+
+:: Robin Walk Home Topless
+<<set $outside to 1>><<set $location to "town">><<effects>>
+
+<<npc Robin>><<person1>>你跑向罗宾。
+
+<<if $robinReunionScene is "dungeonRobin">>
+	<<unset $robinReunionScene>>
+	你轻拍了一下<<his>>的肩膀，<<if $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 40>>，<<him>>吓得叫了出来<</if>>。<<He>>转身看向你，随后在稍微喘气平复了一下自己的心情之后，立即扑进了你的怀中。
+	<br>
+	<<He>>要么是没有注意到，要么就是不在乎你现在的穿着。
+	<br>
+	"你回来了！" 罗宾尖叫着喊道，"我...希望那些家伙没有对你做更多可怕的事情......"
+	<br><br>
+
+	<<He>>话音刚落，突然意识到<<his>>的脸正贴在你<<if !$worn.under_upper.name.includes("naked")>>几乎<</if>>全裸的<<breasts>>上。<<He>>急忙从你身边退开，神色慌张。<<npcincr Robin lust 3>><<gglust>>
+	<br>
+	"你的衬衫呢？不，这并不重要，你还好吗？"<<he>>说一边说着一边下意识的提高嗓门。
+	<br>
+	你轻声地安慰<<him>>说你现在很好，罗宾点点头，在过了一会后，<<he>>平静了下来，<<his>>的呼吸也随之变得平稳，然而<<His>>脸上的红晕并没有消退。
+	<br><br>
+
+	"无论如何，我很高兴你安全了，我们可以回去在房间里谈一谈吗？"<<His>>的眼睛瞟向你的<<breasts>>，然后很快的看向别处。"但首先，你能不能穿上一些东西？"
+	<br><br>
+
+	你们两个人一起走回了孤儿院，尽管<<his>>看起来有些尴尬，但依旧紧紧地抱着你。
+	<<ltrauma>><<lstress>><<trauma -2>><<stress -4>>
+	<br><br>
+	<<npcincr Robin love 1>><<npcincr Robin lust 1>><<npcincr Robin trauma -2>>
+	<<if $robin_oxford_bare is undefined>>
+		<<set $robin_oxford_bare to 1>>
+	<<elseif $robin_oxford_bare lte 4>>
+		<<set $robin_oxford_bare += 1>>
+	<</if>>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+	<br>
+<<elseif $robinReunionScene is "dungeon">>
+	<<unset $robinReunionScene>><<set $robinPostMortem to true>>
+	你轻拍了一下<<his>>的肩膀，<<if $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 40>>，<<him>>吓得叫了出来<</if>>。<<He>>转身看向你，随后在稍微喘气平复了一下自己的心情之后，立即扑进了你的怀中。
+	<br>
+	<<He>>要么是没有注意到，要么就是不在乎你现在的穿着。
+	<br>
+	"我的天呐!"<<he>>尖叫着， "我...我以为你永远离开了! 我真的..."
+	<br><br>
+
+	<<He>>话音刚落，突然意识到<<his>>的脸正贴在你<<if !$worn.under_upper.name.includes("naked")>>几乎<</if>>全裸的<<breasts>>上。<<He>>急忙从你身边退开，神色慌张。<<npcincr Robin lust 3>><<gglust>>
+	<br>
+	"你的衬衫呢？不，这并不重要，你去哪里了？"<<he>>说一边说着一边下意识的提高嗓门。
+	<br>
+	你轻声地安慰<<him>>说你现在很好，罗宾点点头，在过了一会后，<<he>>平静了下来，<<his>>的呼吸也随之变得平稳，然而<<His>>脸上的红晕并没有消退。
+	<br><br>
+
+	"无论如何，我很高兴你安全了，我们可以回去在房间里谈一谈吗？"<<His>>的眼睛瞟向你的<<breasts>>，然后很快的看向别处。"但首先，你能不能穿上一些东西？"
+	<br><br>
+
+	你们两个人一起走回了孤儿院，尽管<<his>>看起来有些尴尬，但依旧紧紧地抱着你。
+	<<ltrauma>><<lstress>><<trauma -2>><<stress -4>>
+	<br><br>
+	<<npcincr Robin love 1>><<npcincr Robin lust 1>><<npcincr Robin trauma -2>>
+	<<if $robin_oxford_bare is undefined>>
+		<<set $robin_oxford_bare to 1>>
+	<<elseif $robin_oxford_bare lte 4>>
+		<<set $robin_oxford_bare += 1>>
+	<</if>>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+	<br>
+<<elseif $robinReunionScene is "asylum">>
+	<<unset $robinReunionScene>>
+	你轻拍了一下<<his>>的肩膀，<<if $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 40>>，这把<<him>>吓得叫了出来<</if>>，<<He>>转身看向你，虽然<<He>>在喘气平复自己的心情，但你注意<<He>>看起来很是惊喜。
+	<br><br>
+
+	"哦！你从......医生那里回来了......" 当<<His>>的目光落到你暴露的<<breasts>>上时，<<his>>的声音有些颤抖。<<He>>的脸有些涨红，但并没有停下问话，好像这没有什么不妥。
+	<br>
+	"我...我不知道你这么快就回来了，我本来要准备一些东西接风的。"<<He>>停顿了一下，你注意到<<his>>的眼睛在你的身体和人行道之间来回飘忽着，"那么，治疗效果如何…？"
+	<br><br>
+
+	你摇摇头，告诉<<him>>，那些人并不打算帮助你，所以你提前 "出院 "了，罗宾似乎并不太注意你的话，但<<he>>还是点了点头。
+	<br>
+
+	"好吧，不管怎样，我很高兴你回来了，"<<he>>说道，"让我送你回家吧，要在别人注意到你的......"
+	<br>
+	<<He>>又退缩了，随之在笨拙地咳嗽了几声后，突然抓住你的胳膊拉着你向前走。
+	<br><br>
+
+	你们二人回到了孤儿院，罗宾环顾四周，查看是否有人注意到了你这边，虽然这个举动本身就引起了很多人的注意，但罗宾坚持要赶路，这意味着你要抓紧时间。
+	<br><br>
+	<<npcincr Robin love 1>><<npcincr Robin lust 1>><<npcincr Robin trauma -2>>
+	<<if $robin_oxford_bare is undefined>>
+		<<set $robin_oxford_bare to 1>>
+	<<elseif $robin_oxford_bare lte 4>>
+		<<set $robin_oxford_bare += 1>>
+	<</if>>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+	<br>
+<<elseif $robin_oxford_bare is undefined>>
+	<<set $robin_oxford_bare to 1>>
+	<<He>>看到你暴露的<<undertop>>，惊讶地丢下了<<his>>的书包。"你为什么不穿衬衫？"<<he>>低声说道：随后<<He>>开始在包里翻找起来，"我记得我有一条毛巾的，但我现在找不到任何东西。"
+	<br><br>
+
+	<<He>>紧张的环顾了一下四周， "我们应该在别人注意到之前回家."
+	<br><br>
+	你们二人回到了孤儿院，罗宾环顾四周，查看是否有人注意到了你这边，虽然这个举动本身就引起了很多人的注意，但罗宾坚持要赶路，这意味着你要抓紧时间。
+	<br><br>
+
+	<<npcincr Robin love 1>><<npcincr Robin lust 1>><<npcincr Robin trauma -2>>
+	<<endevent>>
+	<<link [[继续|Orphanage]]>><</link>>
+
+<<elseif $robin_oxford_bare lte 4>>
+	<<set $robin_oxford_bare += 1>>
+	<<He>>略显无奈的扶了一下<<his>>的额头："你又忘了你的衬衫！"<<he>>气急败坏地低声说道。
+	<br><br>
+
+	<<He>>紧张的环顾了一下四周， "我们应该在别人注意到之前回家."
+	<br><br>
+	你们二人回到了孤儿院，罗宾环顾四周，查看是否有人注意到了你这边，虽然这个举动本身就引起了很多人的注意，但罗宾坚持要赶路，这意味着你要抓紧时间。
+	<br><br>
+
+	<<npcincr Robin love 1>><<npcincr Robin lust 1>><<npcincr Robin trauma -2>>
+	<<endevent>>
+	<<link [[继续|Orphanage]]>><</link>>
+
+<<else>>
+	在看到你暴露的<<undertop>>时，<<he>>把手伸进包里，从里面拿出一条毛巾。"我就知道你又忘了你的衬衫，"<<he>>轻声说道，"给你。"
+	<br><br>
+
+	<<link [[穿上毛巾|Robin Walk Home Towel]]>><<upperwear 3>><</link>>
+	<br>
+	<<if $exhibitionism gte 15>>
+		<<link [[拒绝|Robin Walk Home Refuse]]>><</link>><<exhibitionist2>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Robin Walk Home Towel
+<<set $outside to 1>><<set $location to "town">><<effects>>
+
+你把毛巾裹在胸前，罗宾看起来依旧很紧张："在别人注意到你只穿着一条毛巾之前，我们回家吧。"
+<br><br>
+你们二人回到了孤儿院，罗宾环顾四周，查看是否有人注意到了你这边，虽然这个举动本身就引起了很多人的注意，但罗宾坚持要赶路，这意味着你要抓紧时间。
+<br><br>
+
+<<npcincr Robin love 1>><<npcincr Robin lust 1>><<npcincr Robin trauma -2>>
+<<endevent>>
+<<link [[继续|Orphanage]]>><</link>>
+
+:: Robin Walk Home Refuse
+<<set $outside to 1>><<set $location to "town">><<effects>>
+
+你拒绝了毛巾，并告诉罗宾你会没事的。但<<He>>看起来并不相信。
+<<exhibitionism2>>
+
+<<He>>紧张的环顾了一下四周， "我们应该在别人注意到之前回家."
+<br><br>
+你们二人回到了孤儿院，罗宾环顾四周，查看是否有人注意到了你这边，虽然这个举动本身就引起了很多人的注意，但罗宾坚持要赶路，这意味着你要抓紧时间。
+<br><br>
+
+<<npcincr Robin love 1>><<npcincr Robin lust 1>><<npcincr Robin trauma -2>>
+<<endevent>>
+<<link [[继续|Orphanage]]>><</link>>
+
+:: Docks_Robin
+<<set $outside to 1>><<set $location to "docks">><<effects>>
+
+<<set $docksrobinintro to 1>><<set $robindebtknown to 1>>
+<<npc Robin>><<person1>>你在码头上寻找罗宾，你发现<<him>>正被赤身裸体地绑在一艘游艇上的桌子上，<<His>>的身上布满了伤痕和瘀伤，<<He>>就那样直勾勾的盯着你看，你从<<his>>的眼睛里看不到一丝光亮。
+<br><br>
+
+<<endevent>>
+
+<<generate1>><<generate2>><<generate3>>有三个<<if $NPCList[0].pronoun is "m" and $NPCList[1].pronoun is "m" and $NPCList[2].pronoun is "m">>男人<<elseif $NPCList[0].pronoun is "f" and $NPCList[1].pronoun is "f" and $NPCList[2].pronoun is "f">>女人<<else>>家伙<</if>>在船上. 其中两个人正在争吵. "你他妈的已经把玩具弄坏了，"那个<<person1>><<person>>说道，"我们甚至还没有出海呢。"
+<br><br>
+
+"我只是在对它进行测试,"那个<<person2>><<person>>毫不在意的说道： "我怎么知道它会坏的这么快?"
+<br><br>
+
+"你甩鞭子的时候就像一个疯子，"<<person1>><<person>>继续说道，"现在看看，"<<He>>拽住罗宾的私处，用力拉扯一下，这光是看起来就十分的痛苦，但罗宾没有发出任何声音。"操一个破布娃娃一样的家伙一点意思都没有。"
+<br><br>
+
+"你要我怎么做？我们又不能退钱。"
+<br><br>
+
+"女士们，"那个<<person3>><<person>>说道："我们有客人了。" 所有人的目光聚焦在你身上。
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"让...让我的朋友离开，"你说道："你们现在的所作所为是错误的。"
+	<br><br>
+<<elseif $speech_attitude is "bratty">>
+	"放了我的朋友。"你威胁道，“否则……"
+	<br><br>
+<<else>>
+	"放了我的朋友。"你说。
+	<br><br>
+<</if>>
+
+他们停了一会儿，然后哈哈大笑起来。“没问题，”<<person1>><<person>>说。"你来顶替你朋友的位置，我们就放了你的朋友。否则免谈，别耽误我们起航。"
+<br><br>
+<<if $dockstatus gte 80>>
+	<<link [[向码头工人寻求帮助|Docks_Robin Get Help]]>><</link>>
+	<br>
+<</if>>
+<<link [[取代罗宾的位置|Docks_Robin Swap]]>><</link>>
+<br>
+<<link [[战斗|Docks_Robin Fight]]>><<set $fightstart to 1>><</link>>
+<br>
+<<link [[离开|Mer Street]]>><<endevent>><</link>>
+<br>
+
+:: Docks_Robin Get Help
+<<set $outside to 1>><<set $location to "docks">><<effects>>
+
+你跑下码头，寻找熟悉的面孔。你的心跳得很快。你必须快点。
+<br><br>
+<<link [[继续|Docks_Robin Get Help 2]]>><</link>>
+
+:: Docks_Robin Get Help 2
+<<set $outside to 1>><<set $location to "docks">><<effects>>
+<<generate4>><<generate5>>
+你注意到一群码头工人把板条箱从船上运到仓库。
+<br><br>
+"嘿！你好吗，伙计？”一位<<person4>><<person>>问道，脸上洋溢着笑容。
+<br><br>
+<<if $speech_attitude is "meek">>
+	"求你了！坏人要把我的朋友带走！”你的眼泪涌上了眼眶。
+<<elseif $submissive gt 850>>
+	"我需要你们的帮助，伙计们。这是生死攸关的事，”你们说。
+<<else>>
+	"把这些该死的盒子放下，我需要你的帮助，现在！”你几乎大叫起来。
+<</if>>
+<br><br>
+"慢点，孩子。”一个<<person5>><<person>>边说边把板条箱放到地上。“告诉我们发生了什么事。"
+<br><br>
+你告诉他们你和罗宾所处的情况，避免一些可能会让你和贝利陷入麻烦的细节。码头工人听你把话说完了。有些人装出一本正经的样子，而另一些人则忍不住厌恶地退缩。
+<br><br>
+"妈的，太可怕了！"
+<br><br>
+"我们必须阻止他们。"
+<br><br>
+"但--但我们在值班。如果他们报警呢？或者更坏的人..."
+<br><br>
+<<person>>将<<his>>的脚踩在<<his>>的板条箱上，发出砰的一声巨响。
+"大家听好了！我有个主意，但我需要一些<<person4>><<if $pronoun is "m">>小伙子们<<else>>小鸡<</if>>跟我一起走。我不会丢下我朋友的朋友不管。如果你们要和我一起，就跟着我走。而你，"<<he>>转向你。“你去那里玩，争取时间。我们马上就到。"
+<br><br>
+你点点头然后跑回罗宾那里。
+<br><br>
+<<link [[继续|Docks_Robin Get Help 3]]>><</link>>
+
+:: Docks_Robin Get Help 3
+<<set $outside to 1>><<set $location to "docks">><<effects>>
+
+你靠近游艇，罗宾还绑在桌子上。看起来船员们正准备从岸边出发。
+你喊着让他们停下来。
+<br><br>
+"又是你？”<<person1>><<person>>眯着眼睛看你。"我已经告诉过你了。如果你想要那个肉袋，就上船吧。否则滚蛋"
+<br><br>
+"你想要什么？”你问。“钱？我可以给你带钱。"
+<br><br>
+<<He>>突然大笑起来。"像你这样的混蛋什么时候有足够的钱付赎金了？"
+<br><br>
+<<if $speech_attitude is "meek">>
+	"我……我工作，有存款，”你低下头。"如果你放了我的朋友，我可以把我的钱都给你。"
+<<elseif $speech_attitude is "bratty">>
+	"我打人渣为生，”你给船员一个邪恶的微笑。"相信我，这个小镇的白痴已经够多了."
+<<else>>
+	"当然是工作。"你说，“不上班，哪里来的钱生活。"
+<</if>>
+<br><br>
+"哦，真的吗？那...你们他妈的是谁？"
+<br><br>
+你回头看，看到四个健壮的身影，他们身上穿着宽松的雨衣，脸上戴着临时的面罩。他们迈着坚定的步伐接近游艇，其中至少有一人紧握着一把大扳手。
+<br><br>
+"妈的！他妈的启动引擎！"
+<br><br>
+在他们设法点火并逃跑之前，蒙面人已经跳上船并开始殴打。
+<br><br>
+<<if $submissive lte 500>>
+	<<link [[帮助码头工人|Docks_Robin Get Help 4]]>><<set $phase to 1>><</link>><<defianttext>>
+	<br>
+<</if>>
+<<link [[抓住罗宾|Docks_Robin Get Help 4]]>><<set $phase to 2>><</link>>
+
+:: Docks_Robin Get Help 4
+<<set $outside to 1>><<set $location to "docks">><<effects>>
+<<if $phase is 1>>
+	你跳上船，冲向最近的弯道。机组人员很少注意你，太专注于更大的扳手问题。没过多久，由于码头工人的干预，整个船的船员都被打昏了。
+	<br><br>
+	"这是最后一批吗？”其中一个蒙面人问道。
+	<br><br>
+	"看起来是的。"
+	<br><br>
+	"很好。”那个人转向你，“带上你的朋友走吧。剩下的我们来处理。你欠我们几桶啤酒，明白吗？"
+	<br><br>
+	你点点头，抱住罗宾，罗宾似乎不明白发生了什么。
+<<else>>
+	你跳上船，抱起罗宾逃跑，剩下的留给伪装的码头工人。
+<</if>>
+<br><br>
+<<link [[继续|Docks_Robin Rescue]]>><<endevent>><</link>>
+
+:: Docks_Robin Swap
+<<location "sea">><<effects>>
+
+<<set $robindebtevent to 0>><<set $robinmissing to 0>>
+
+<<person1>><<person>>解开了罗宾，罗宾似乎不知道发生了什么。他们把你推到桌子上，很快就把你绑起来。
+<br><br>
+
+<<robinpay>>
+
+<<upperruined>><<lowerruined>><<underruined>>
+<<set $leftarm to "bound">><<set $rightarm to "bound">>
+"你用不着这些了，”<<person2>><<person>>扯下你的衣服说。“好，我们走。"
+<br><br>
+
+游艇开始移动。你看到罗宾躺在码头上，但<<person3>><<person>>挡住了路。“那我们要拿你怎么办？"
+<br><br>
+
+"我们可以用<<phim>>作为诱饵，”<<person2>><<person>>建议。“我打赌我们会钓到大鱼。"
+<br><br>
+
+"别傻了，”<<person1>><<person>>说，“我们会把船弄沉的。”不管怎样，我想在某个时候好好干<<phim>>。"
+<br><br>
+
+他们争论了一会儿，话题就离你远去了。当他们喝酒驾驶游艇离开海岸时，你一个人被留下了。
+<<pass 30>>
+<br><br>
+
+<<link [[继续|Docks_Robin Swap 2]]>><</link>>
+<br>
+
+:: Docks_Robin Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>><<set $enemyanger += 80>>
+	你跳上船。“好<<girl>>，现在--”你打断<<him>>，一拳打在了<<his>>愚蠢的脸上。
+	<<set $enemyhealth -= 20>>
+	<br><br>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Docks_Robin Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Docks_Robin Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Docks_Robin Fight Finish
+<<set $outside to 1>><<set $location to "docks">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	你抓住这个机会，在他们发现你逃跑之前把罗宾带下了游艇。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Docks_Robin Rescue]]>><</link>>
+	<br>
+
+<<elseif $enemyhealth lte 0>>
+
+	<<person1>><<person>>向后滚下了船。其他人跑过去帮助<<him>>。你抓住机会，在他们发现你逃跑之前把罗宾带下了游艇。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Docks_Robin Rescue]]>><</link>>
+	<br>
+
+<<else>>
+
+	你瘫成一滩烂泥。"谁给新的留个地方"
+	<br><br>
+
+	<<link [[继续|Docks_Robin Swap]]>><<clotheson>><</link>>
+	<br>
+
+<</if>>
+
+:: Docks_Robin Rescue
+<<set $outside to 1>><<set $location to "docks">><<effects>>
+<<npc Robin>><<person1>><<set $robindebtevent to 0>><<set $robinmissing to 0>>
+你抱紧罗宾离开码头。你得想办法在车停下来的时候找东西给罗宾保暖。<span class="purple">是贝利。</span>
+<br><br>
+
+<<endevent>><<npc Bailey>><<person1>>“你跑得比我预料的快，”<<he>>对罗宾说，罗宾没有回应。贝利看着你。“<<endevent>>把<<npc Robin>><<person1>><<him>>交给我吧。还是你宁愿带着<<he>>像这样在城里走？你可以走路。"
+<br><br>
+
+贝利把罗宾推到后座上，开车离开了。
+<br><br>
+<<endevent>>
+
+<<robinpay>>
+
+<<link [[继续|Mer Street]]>><</link>>
+<br>
+
+:: Bailey's Office
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<npc Bailey>><<person1>>
+
+<<if Time.hour lte 6 or Time.hour gte 10>>
+	你进入贝利的办公室。<<Hes>>不在那里。<<He>>在早上7点到9点之间才会在里面工作。
+	<br><br>
+
+	<<if $kylar_camera is 3>>
+		<span class="blue">凯拉尔的猫头鹰，就是你送给孤儿的那只，在角落里的柜子顶上看着你。</span>一定是贝利没收的。
+		<br>
+		<<link [[检查猫头鹰|Bailey's Office Owl]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	你走进贝利的办公室，发现<<him>>坐在<<his>>的办公桌旁。
+
+	<<if !$daily.baileyVisit>>
+		<<set $daily.baileyVisit to 0>>
+		<<set _options to 1>>
+		<<if $dissociation gte 1>>
+			<<He>>看着你的眼睛和鬼脸。“我敢肯定有人喜欢它，”<<he>>嘟囔着，把一篇<<he>>一直在读的文件放在一边。
+		<<elseif $pain gte 40>>
+			<<He>>看着你满是泪水的脸冷笑。"浴室里有绷带"
+		<<elseif $goooutsidecount + $semenoutsidecount gte 25>>
+			<<He>>看着你的身体，上面沾满了<<if $semenoutsidecount gte 1 and $goooutsidecount gte 1>>精液和粘液<<elseif $semenoutsidecount gte 1>>精液<<else>>粘液<</if>>，贝利转过身去：“把自己洗干净，你真丢人。"
+		<<elseif $arousal gte ($arousalmax / 5) * 3>>
+			<<He>>看着你泛着潮红的脸。“这么性欲旺盛，你<<if $beauty lte 3000>>应该<</if>>随便找个人就能解决了，”<<he>>边说边回到<<his>>的文书工作上。“记得顺便赚点儿钱。"
+		<<else>>
+			<<He>>看着你。“你最好别浪费我的时间。"
+		<</if>>
+	<<elseif $daily.baileyVisit is 1>>
+		<<set _options to 1>>
+		<<if $daily.robin.debtAsk is 1>>
+			<<He>>盯着你看。"最好是关于你提到的那笔付款的事。"
+		<<elseif $mason_pond is 2>>
+			<<He>>盯着你。"是有关喷泉的事吗？你最好有钱。"
+		<<else>>
+			<<He>>瞪着你。“又是你？滚开。"
+		<</if>>
+	<<elseif $daily.baileyVisit is 2>>
+		<<set _options to 1>>
+		<<He>>瞪着你。"别再烦我了，滚蛋。"
+	<<elseif $daily.baileyVisit is 3>>
+		<<set _options to 2>>
+		<<He>>怒视着你，然后愤怒的从椅子上的站起来，大步向你走去。“我告诉过你别再烦我了，”<<he>>咬着牙说。"你就是不能让自己一个人呆着是吗？"<<He>>在你反应过来之前抓住你，把你压在<<his>>的桌子上。
+		<br><br>
+		<<link [[继续|Bailey Beating]]>><<set $molestationstart to 1>><<set $phase to 0>><</link>>
+	<<elseif $daily.baileyVisit is 100>>
+		<<He>>看起来很疲惫。“你没有更好的事情做吗？"
+	<<else>>
+		<<He>>无视了你。
+		<<if ($robinpaid isnot 1 and $robindebtknown is 1) or ($pub_hack_job is 3 and not $hacker_tasks.includes("bailey")) or $mason_pond is 1 or $mason_pond is 2 or $bailey_pound is 1 or isPubfameTaskAccepted("bailey")>>
+			<span class="blue">你今天已经烦到<<him>>了，<<him>>现在不愿意你说的任何话。</span>
+		<</if>>
+	<</if>>
+	<<set $daily.baileyVisit++>>
+<</if>>
+<br><br>
+
+<<if _options is 1>>
+	<<if $pub_hack_job is 3 and !$hacker_tasks.includes("bailey")>>
+		贝利正在处理<<his>>计算机上的某些东西。你已准备好了黑客的设备。
+		<br><br>
+		<<set $skulduggerydifficulty to 800>>
+
+		<<link [[欺骗贝利|Bailey's Office Hack]]>><<set $phase to 1>><</link>><<skulduggerydifficulty>>
+		<br>
+	<<elseif isPubfameTaskAccepted("bailey")>>
+		贝利正在处理<<his>>计算机上的某些东西。你已准备好了黑客的设备。
+		<br><br>
+		<<set $skulduggerydifficulty to 800>>
+
+		<<link [[欺骗贝利|Bailey Sheet]]>><<set $phase to 1>><</link>><<skulduggerydifficulty>>
+		<br>
+	<</if>>
+
+	<<if $robinpaid isnot 1 and $robindebtknown is 1>>
+		<<link [[承担罗宾的债务|Bailey's Office Robin]]>><</link>><<note "双倍每周债务" "red">>
+		<br>
+	<</if>>
+
+	<<if $renttime is 1 and ($promiscuity gte 35 or $uncomfortable.prostituting is false) and $baileyOfficeSeduced is undefined>>
+		<<link [[诱惑贝利|Bailey Office Seduce]]>><<set $baileyOfficeSeduced to 1>><<trauma 6>><</link>><<gtrauma>><<promiscuous3>>
+		<br>
+	<</if>>
+
+	<<if $mason_pond is 1>>
+		<<link [[询问喷泉的事|Bailey Pond]]>><<set $mason_pond to 2>><</link>>
+		<br>
+	<</if>>
+	<<if $mason_pond is 2>>
+		<<link [[询问喷泉的事|Bailey Pond 2]]>><</link>>
+		<br>
+	<</if>>
+
+	<<if $bailey_pound is 1>>
+		<<link [[就你在收容所发现的文件当面对质|Bailey Pound]]>><<awareness 18>><<set $bailey_pound to 2>><</link>><<gggawareness>>
+		<br>
+	<</if>>
+<</if>>
+
+<<if _options isnot 2>>
+	<<link [[离开|Orphanage]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Bailey Pound
+<<effects>>
+
+<<earnFeat "Pounded Pound">>
+你把文件放在贝利面前。<<He>>对它没什么兴趣。"这就是你在浪费我时间的原因？"<<he>>说，“我以前和这家公司打交道。那又怎么样？"
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"以--以前？”你指着你的名字上面红色的"<span class="red">B</span>"。
+<<elseif $submissive gte 850>>
+	"以前？”你问。“那解释一下这个。”你指着你的名字，上面有个红色的"<span class="red">B</span>"。
+<<else>>
+	"以前？”你问。你指着你的名字，上面有个红色的"<span class="red">B</span>"。
+<</if>>
+<br><br>
+贝利的眉头微微一皱。<<He>>从<<his>>的口袋里掏出手机。“你可以走了，”<<he>>说，“走吧。"
+<br><br>
+
+<<link [[继续|Orphanage]]>><<endevent>><</link>>
+<br>
+
+:: Bailey Pond
+<<effects>>
+
+你问贝利是否有可能像梅森建议的那样在孤儿院的花园里修一个喷泉。“这是可能的，”贝利说，一条地下水流就在我们的正下方流淌。我查过一次，要花2000英镑。"
+<br><br>
+
+<<He>>盯着你。“我可以修一个。<span class="gold">£6000</span>，这是我的价格。现在滚开。"
+<br><br>
+
+<<if $money gte 600000>>
+	<<link [[为喷泉付款 (£6000)|Bailey Pond Pay]]>><<set $money -= 600000>><</link>>
+	<br>
+<</if>>
+<<link [[离开|Orphanage]]>><<endevent>><</link>>
+<br>
+
+:: Bailey Pond 2
+<<effects>>
+
+"又是这件事？"<<he>>冷笑。“你最好拿到了足够的钱。"
+<br><br>
+
+<<if $money gte 600000>>
+	<<link [[为喷泉付款 (£6000)|Bailey Pond Pay]]>><<set $money -= 600000>><</link>>
+	<br>
+<</if>>
+<<link [[离开|Orphanage]]>><<endevent>><</link>>
+<br>
+
+:: Bailey Pond Pay
+<<effects>>
+<<set $mason_pond to 3>><<set $mason_pond_timer to 7>>
+你把钱放在桌子上。贝利一把抢过钱，躺在椅子上数着。"很好，"点完钱后<<he>>说道，“我会找人动工的。”<<He>>转向<<his>>的电脑。
+<br><br>
+
+<<link [[离开|Orphanage]]>><<endevent>><</link>>
+<br>
+
+:: Bailey Office Seduce
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if $promiscuity lt 35>><<set $desperateaction to 1>><</if>>
+<<set $seductiondifficulty to 10000>>
+<<silently>><<seductioncheck>><</silently>>
+
+<br><br>
+<<if $seductionrating gte $seductionrequired>>
+	你走到贝利的桌子旁，身子向前倾。<<He>>瞪了你一眼。你用恳求的眼神对<<him>>回望过去。<<promiscuity3>>
+	"你知道在一天之内我就可以赚到你想要的钱，”你轻声地说。“这就是我所需要的。你不想看到我离开，对吗？”你温顺地往下看，用手指在桌子上划过。<<His>>的瞪眼渐渐变成了冷笑。
+	<br><br>
+	贝利离开了<<his>>的桌子，<<He>>压住你，然后把你推到地板上
+	<<if $baileyseduced is 1>>
+		，<<his>>的眼中充满着凶光。
+		<br>
+		"好吧，你这个小混蛋，"<<he>>低沉的嗓音说道。“如果这能让你闭嘴，我就给你一根骨头。"
+	<<else>>
+		，然后<<he>>笑了。"你说得对，我不想。"
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Bailey Office Sex]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	你走到贝利的桌子旁，身子向前倾，收获了<<him>>的一瞪。你摆出最可爱的撅嘴表情。“我知道比钱更好的东西，”你用一种狡猾的、性感的声音低声说。<<promiscuity3>>
+	<<if $baileyseduced is 1>>
+		贝利抬起头来看着你，一点也不开心。“我告诉过你我想从你这里得到什么了。明天就给我。否则就，”<<He>>的视线回到手头的工作上，"给，我，滚，我很忙。"
+	<<else>>
+		<span class="red">“出去，”贝利不高兴地说，“现在，马上。”</span>
+	<</if>>
+	<br>
+	"但是我-"
+	<br>
+	"出去！”贝利吼道。
+	<br><br>
+	你走出贝利的办公室。至少尝试是值得的。
+	<br><br>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Bailey Office Sex
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $enemytrust -= 200>>
+	<<set $enemyanger += 30>>
+	<<set $enemyarousalmax to 1000>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Bailey Office Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Bailey Office Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Bailey Office Sex Finish
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>><<earnFeat "Bailey's Trouble Maker">>
+	贝利舒了口气，看着你。<<His>>的表情变成了一种恐惧。
+	<br>
+	"妈的，"<<he>>嘟囔着离开了你。"他妈的！我他妈的刚才做了什么？"
+	<br><br>
+
+	这位监护人脸上露出愤怒的表情。<<He>>抓住你的头发，把你拉起来，让你的眼睛与<<him>>直视。
+	<br>
+	<span class="green">“你只有一天时间，”</span>贝利咆哮道。<<He>>放开你，推了你一把。“出去，现在！"
+	<<set $renttime += 1>>
+	<<if $rentday is 7>>
+		<<set $rentday to 1>>
+	<<else>>
+		<<set $rentday += 1>>
+	<</if>>
+	<br><br>
+
+	<<tearful>>你离开了办公室.
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Orphanage]]>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	贝利向后退去，对你的反抗感到惊讶。<<He>>摸着身上的淤伤。<<tearful>>你赶紧爬了起来离开办公室。
+	<br><br>
+
+	你觉得<<he>>不会重新考虑你的付款安排。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Orphanage]]>><</link>>
+	<br>
+<</if>>
+
+:: Bailey's Office Owl
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+猫头鹰向下凝视着你。它变得有点磨损，可能是因为和孤儿们玩了一些粗暴的游戏。或者是和贝利。
+<br><br>
+
+<<link [[把它拿回去|Bailey's Office Owl Take]]>><<set $kylar_camera to 2>><</link>>
+<br>
+<<link [[离开|Bailey's Office]]>><</link>>
+<br>
+
+:: Bailey's Office Owl Take
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+你把猫头鹰带回房间，把它放在衣柜上，在这里看着你应该是安全的。
+<br><br>
+
+<<run Furniture.set('owlplushie', 'owlplushie', {
+	name	: 'owl plushie',
+	nameCap	: 'Owl plushie'
+})>>
+
+
+<<link [[继续|Bedroom]]>><</link>>
+<br>
+
+:: Bailey's Office Robin
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if $daily.robin.debtAsk is 1>>
+	"这次你决定好了吗？"<<he>>问道。
+<<else>>
+	<<set $daily.robin.debtAsk to 1>>
+	"你想承担那个毫无价值的流浪儿的债务吗？为什么？"，贝利说，"别回答。我不在乎。"<<He>>笑了。
+<</if>>
+"反正别人会为你的屁股付更多钱。"
+<br><br>
+
+<i>承担罗宾的债务是永久的。</i>
+<br><br>
+
+<<link [[确认|Bailey's Office Robin 2]]>><</link>>
+<br>
+<<link [[离开|Orphanage]]>><<endevent>><</link>>
+<br>
+
+:: Bailey's Office Robin 2
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<set  to 1>>
+<<set $rentmoney *= 2>>
+<<if $robineventnote is 1>>
+	<<set $robineventnote to 0>>
+<</if>>
+
+"很好，”贝利说。"那么，你这周欠我<<printmoney $rentmoney "red">>。如果我是你，我会很忙。"
+<br><br>
+<<endevent>>
+<<link [[继续|Orphanage]]>><</link>>
+<br>
+
+:: Docks_Robin Swap 2
+"所以，”<<person1>><<person>>轻蔑地说。"如果我们真的用<<phim>>做诱饵，我打赌我们会钓到鲸鱼."
+<br><br>
+
+"这里没有鲸鱼，笨蛋，”<<person2>><<person>>回答。“他们不会那样捕鲸的。"
+<br><br>
+
+"有鲸鱼。我见过一个。"
+<br><br>
+
+"骗子。"
+<br><br>
+
+"我知道。"<<person3>><<person>>说道。
+"我们把<<phim>>放入水中。如果没有鲸鱼，我们就把<<phim>>拉回船上。如果有的话，我们可以吃鲸鱼。"
+<br><br>
+
+"这真是个绝妙的主意，”<<person1>><<person>>一边说一边慢慢的走着。
+他们把一段绳子绑在你的胳膊上，然后把你从桌子上放下来。他们把你推到游艇边上。
+<br><br>
+
+"我已经把绳子系好了，”<<person3>><<person>>说。
+<br><br>
+
+<<person1>><<person>>和<<person2>><<person>>把你抬到栏杆上。他们把你推下船，你掉进了海里。
+<br><br>
+
+<<endcombat>>
+
+<<if $voredisable is "f">>
+
+	你浮到水面上喘气。有东西抓住你的大腿把你往下拉。你感觉到绳子断了。
+	<br><br>
+
+	<<link [[继续|Sea Vore]]>><<unbind>><<set $molestationstart to 1>><<set $sea to 40>><</link>>
+	<br>
+
+<<else>>
+	你感觉到绳子断了，船从你身边飞快的开走了。
+	<br><br>
+
+	<<link [[继续|Sea]]>><<set $sea to 80>><</link>>
+	<br>
+
+<</if>>
+
+:: Robin Note
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+你看了纸条。
+<br><br>
+
+"<i>有一件事我一直都想告诉你，但当我每次靠近你的时候，都感觉自己说不出口。<br>我知道你正在帮我给贝利付款，这让我感到既欣慰又羞愧。
+<br><br>
+
+当你跟我说话时，我能感觉到自己的心在砰砰直跳；当你抱住我的时候，我觉得自己的心都快要被你融化掉了。<br> 你愿意成为我的
+<<if ($player.gender isnot $player.gender_appearance and $player.gender isnot "h") or $backgroundTraits.includes("crossdresser")>>
+	<<girlfriend>>么? 或者说，是做我的<<print ($player.gender_appearance is "m" ? "女朋友" : "男朋友")>>? (当然不论是哪一种我都会非常高兴。)
+<<else>>
+	<<girlfriend>>?
+<</if>>
+你不愿意也没关系的，就装作从没有读过这封信就好，否则我会尴尬死的 T_T
+<br><br>
+
+谢谢你的照顾，
+罗宾</i>"
+<br><br>
+
+<<link [[继续|Bedroom]]>><</link>>
+<br>
+
+:: Robin Romance
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+"我看了你留下的纸条，”你说。<<He>>很紧张。
+
+<<if $speech_attitude is "meek">>
+	"我很高兴你写了那些。"
+<<elseif $speech_attitude is "bratty">>
+	"你写下那些文字真是勇敢。"
+<<else>>
+	"非常甜蜜。"
+<</if>>
+<br><br>
+
+"对不起，”<<he>>说。“我不是故意让你难堪的。”你向前倾，吻<<him>>。
+<<glove>><<npcincr Robin love 1>><<garousal>><<ltrauma>><<lstress>><<arousal 600 "mouth">><<trauma -6>><<stress -12>>
+<<takeKissVirginity "Robin" "loveInterest">>
+<br><br>
+
+你握住<<his>>的手。<<takeHandholdingVirginity "Robin" "romantic">>你感到<<his>>的心跳加速。你后退了两步，但<<he>>倾身向前，再次亲吻了你。<<His>>的脸颊被泪水打湿了。
+<br><br>
+
+你再次抽离，这次转过身去，这样<<his>>的吻就会落在你的脸颊上。<<He>>一直吻你。当<<he>>用鼻子蹭你的脖子时你笑了。“我爱你，”<<he>>悄悄地说。
+<br><br>
+
+<<if $loveInterest.primary is "None">>
+	<<set $loveInterest.primary to "Robin">>
+	<span class = "gold">罗宾现在是你的爱人了！这个想法让你感到温暖。</span>
+	<br><br>
+<<else>>
+	<span class = "gold">罗宾现在可以被称为你的爱人了！这个想法让你感到温暖。<br>你可以在"态度"菜单中改变你的爱人。</span>
+	<br><br>
+<</if>>
+
+<<robinoptions>>
+
+:: Robin Stroke
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<set _robin to statusCheck("Robin")>>
+
+<<if $robinromance is 1 and random(0,100) gte _robin.lust>>
+	<<He>>发出满意的声音。“和你在一起我感觉很安全，”<<he>>叹了口气。
+	<br><br>
+<<else>>
+	你抚摸<<his>>的头发。
+	<<if _robin.trauma lt 20>>
+		很柔软。
+	<<elseif _robin.trauma gte 80>>
+		<<He>>不在乎被你揉乱的头发。
+	<</if>>
+	<br><br>
+
+	<<if _robin.trauma gte 80>>
+		过了一会儿，<<He>>揉了揉眼睛，"停，你再揉下去我就要睡着了。"
+		<br><br>
+
+		你把手移开。
+
+	<<else>>
+		过了一会儿，<<He>>出声道。"停，"<<he>>昏昏欲睡地说。“你会让我睡着的。"
+		<br><br>
+
+		<<if _robin.dom gte 20 and _robin.love gte 40>>
+			<<if _robin.dom gte 50>>
+				你慢慢把手移开，但罗宾一把抓住它，又把它拉了回来。“我并不是真的要你停。"
+			<<else>>
+				你慢慢把你的手移开，但罗宾抓住它并把它移了回来。"等等，我并不是真的要你停"，<<he>>红着脸说。
+			<</if>>
+		<<else>>
+			你把手移开。“我不是真的要你停下来。"
+		<</if>>
+	<</if>>
+	<br><br>
+
+	<<if _robin.lust gte 80>>
+		又过了一小会儿，你意识到<<hes>>开始慢慢地把<<his>>的头压在你的胯部上。
+		<<if _robin.penis isnot "none" and _robin.penissize gte 2>>
+			你往下看的时候，眼睛被罗宾<<npcClothesText _robin "lower">>上的凸起吸引住了。
+			<<if _robin.penissize is 3>>
+				好大。
+			<<elseif _robin.penissize gte 4>>
+				好巨大。
+			<</if>>
+		<</if>>
+		<<if _robin.vagina isnot "none" or _robin.penissize lte 1>>
+			<<He>>似乎一边玩，一边还挤压着自己的双腿。
+		<</if>>
+		<<if $awareness gt 100>>
+			显然，<<Hes>>比自己意识到的更兴奋。
+		<</if>>
+		<br><br>
+
+		不知何故，罗宾仍然沉浸在游戏中，没有注意到这一点。
+		/* there's room here to expand this into a sex scene if you want. or a grope scene? */
+		/* another possibility is just making robin cum right here at even higher lust. */
+		<br><br>
+
+	<</if>>
+<</if>>
+
+<<robinoptions>>
+
+:: Robin Kiss
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 200>><<npckiss>><<set $enemyarousalmax to 500>><<npcidlegenitals>>
+
+	你躺在<<him>>旁边，轻轻地转过<<his>>的头面对着你。<<He>>忘记了游戏。
+	<<promiscuity1>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Robin Kiss Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Robin Kiss]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Robin Options
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+你和罗宾在<<his>>的房间里。
+<br><br>
+
+<<robinoptions>>
+
+:: Robin Kiss Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	罗宾紧紧地抱着你。<<Hes>>微笑着，看起来很满足。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+<<elseif $enemyhealth lte 0>>
+
+	"不要那么粗暴！”罗宾说。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+<<elseif $finish is 1>>
+
+	"我希望我们稍后继续，”罗宾微笑着说。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+<<npc Robin>><<person1>>
+<br><br>
+
+<<robinoptions>>
+
+:: Canteen Lunch Intervene
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+你走向罗宾。
+
+<<if $speech_attitude is "meek">>
+	"停，”你说。“那是我的朋友。"
+<<elseif $speech_attitude is "bratty">>
+	"嘿，废物们！"，你大喊。
+<<else>>
+	你站在罗宾和霸凌者们之间。
+<</if>>
+<br><br>
+
+其中一个<<generatey1>><<person1>><<person>>笑了。"啊，这是你的<<girlfriend>>？真可爱。"
+<<His>>握紧拳头。"看来我得让你们俩明白自己的地位了。"
+<br><br>
+
+<<link [[继续|Canteen Lunch Fight]]>><<set $fightstart to 1>><</link>>
+<br>
+
+:: Canteen Lunch Robin
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>><<sydneySchedule>>
+
+<<npc Robin>><<person1>>
+
+<<if $cool lte 40>>
+	你坐在罗宾旁边，桌边的其他同学拿起食物离开，害怕被人看见和你在一起。罗宾不在乎。"嘿，"<<he>>说。
+
+<<else>>
+	<<if $rng gte 91>>
+		你坐在罗宾旁边。<<He>>张开嘴想说话，但是停住了，急忙咀嚼着盘里的食物。"嘿，"<<he>>吃完后说道。
+	<<else>>
+		你坐在罗宾旁边。“嘿，”<<he>>说。
+	<</if>>
+<</if>>
+
+<<bodywritingExposureCheck>>
+<<if $pain gte 40>>
+	<<He>>看起来很担心。“怎么了？”<<He>>搂着你。“没关系，我想我有纸巾。”你会感觉好一点。
+	<<pain -5>>
+<<elseif _skin_array.includes("forehead") and !["tattoo", "brand", "magic"].includes($skin.forehead.pen) or
+_skin_array.includes("left_cheek") and !["tattoo", "brand", "magic"].includes($skin.left_cheek.pen) or
+_skin_array.includes("right_cheek") and !["tattoo", "brand", "magic"].includes($skin.right_cheek.pen)>>
+	<<He>>皱起眉头，伸手去拿纸巾。“你脸上有墨水。”在你做出反应之前，<<hes>>轻抹你的皮肤。
+
+	<<if ["pen", "lipstick", "mud"].includes($skin.forehead.pen)>>
+		<<bodywriting_clear forehead>>
+	<</if>>
+	<<if ["pen", "lipstick", "mud"].includes($skin.left_cheek.pen)>>
+		<<bodywriting_clear left_cheek>>
+	<</if>>
+	<<if ["pen", "lipstick", "mud"].includes($skin.right_cheek.pen)>>
+		<<bodywriting_clear right_cheek>>
+	<</if>>
+	<br><br>
+	<<if $skin.forehead.pen is "marker" and _skin_array.includes("forehead") or
+	$skin.left_cheek.pen is "marker" and _skin_array.includes("left_cheek") or
+	$skin.right_cheek.pen is "marker" and _skin_array.includes("right_cheek")>>
+		"对不起。”过了一会儿，<<he>>说：“我没法全擦掉。"
+	<<else>>
+		"都是干净的"<<he>>说。
+	<</if>>
+<<elseif $rng gte 91>>
+	"数学怎么样？我希望我能做得更好。"
+<<elseif $rng gte 81>>
+	"我今天过得很愉快。"
+<<elseif $rng gte 71>>
+	"我听到了一个最好笑的笑话。"
+<<elseif $rng gte 61>>
+	<<if $stress gte ($stressmax / 5) * 3>>
+		"你还好吗？你看起来压力有点大。"
+	<<else>>
+		"我希望你没有把自己逼得太紧。"
+	<</if>>
+<<elseif $rng gte 51>>
+	<<if $arousal gte ($arousalmax / 5) * 3>>
+		"你的脸都红了，你是不是太热了？"
+	<<else>>
+		"我一直希望我们能一起吃饭。"
+	<</if>>
+<<elseif $rng gte 41>>
+	"我今天不太饿。"
+<<elseif $rng gte 31>>
+	"这里的食物比孤儿院的好"
+<<elseif $rng gte 21>>
+	<<He>>看起来很开心。"有个学姐说我很<<if $pronoun is "m">>帅气<<else>>漂亮<</if>>！"
+<<elseif $rng gte 11>>
+	"谢谢你和我坐在一起"
+<<else>>
+	"我希望其他老师也像多伦那样."
+<</if>>
+<br><br>
+
+<<if $robinReunionScene is "asylum">>
+	<<unset $robinReunionScene>>
+	罗宾看起来很不安，好像有什么心事。你问<<hes>>是否还好。
+	<br>
+	<<if $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 40>>
+		"我以为医生把你带走了，”罗宾用颤抖的声音解释道。“早知道你要回来，我就给你买点东西了。”<<He>>再次暂停。“他们没有伤害你吧？"
+	<<else>>
+		"我以为你会在医生那里待一段时间，”罗宾解释说。“早知道你要回来，我就准备好了。”<<He>>摇摇头，微笑着。"总之，怎么样？医生帮你好起来了吗？"
+	<</if>>
+	<br><br>
+
+	你摇摇头，告诉<<him>>他们不会帮你，所以你提前“退房”了。罗宾似乎很困惑，但<<him>>还是点了点头。<<him>>给了你一个拥抱。
+	<br>
+
+	<<if $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 40>>
+		"好吧，我很高兴至少你自由了，"<<he>>小声说着的同时紧紧地抱住了你。
+	<<else>>
+		"嗯，我很高兴再次见到你。我希望你感觉好些了，"<<he>>说。
+	<</if>>
+	<br><br>
+
+	你默默地和罗宾吃完午餐。“我要先去教室里等着，”你吃完后<<he>>说：“我不喜欢迟到。"<<He>>拥抱你。
+	<br><br>
+
+	<<if $NPCName[$NPCNameList.indexOf("Kylar")].state is "active">>
+		凯拉尔在食堂对面看着。
+		<<gksuspicion>><<npcincr Kylar rage 1>>
+		<br><br>
+	<</if>>
+	<<endevent>>
+
+	<<link [[继续|Canteen]]>><</link>>
+	<br>
+<<elseif $NPCName[$NPCNameList.indexOf("Kylar")].state is "active" and $NPCName[$NPCNameList.indexOf("Kylar")].love gte 60 and random(1, 100) gte 50>>
+	<<endevent>><<npc Kylar>><<person1>>
+	你边吃边和罗宾聊天，直到有人强行打断你。
+	凯拉尔挤到座位上，看着你笑了笑。“你--你没看到我在那里，”<<he>>说。“没关系，我不介意换个位置。"
+	<br><br>
+
+	<<link [[让凯拉尔走开|Kylar Canteen Away]]>><<npcincr Kylar love -1>><<npcincr Kylar rage 5>><</link>><<llove>><<ggksuspicion>>
+	<br>
+	<<link [[让凯拉尔留下来|Kylar Canteen Stay]]>><<npcincr Kylar love 1>><<npcincr Kylar rage -1>><</link>><<glove>><<lksuspicion>>
+	<br>
+
+<<elseif $robinromance is 1 and $NPCName[$NPCNameList.indexOf("Robin")].trauma lte 10>>
+	<<link [[吃|Canteen Lunch Robin End]]>><</link>>
+	<br>
+	<<link [[在桌子底下挑逗|Canteen Lunch Robin Tease 1]]>><<npcincr Robin lust 1>><</link>><<promiscuous1>><<glust>>
+	<br>
+<<elseif $sydneyromance is 1 and _sydney_location is "library" and $schoolstate is "lunch" and Time.minute lte 35 and random(1, 100) gte 50>>
+	/* Checks if _sydney_location is "library" instead of "canteen" because it's impossible for it to be "canteen" given the time passed from eating with Robin */
+	你边吃边跟罗宾聊天。
+	你注意到悉尼站在食堂的角落里，悉尼在收集<<nnpc_his "Sydney">>的书籍，然后快速走向图书馆。
+	<<nnpc_He "Sydney">>停在你的桌边，亲吻你的脸颊，差点让<<nnpc_his "Sydney">>的一本书掉在你的座位上。
+	<<arousal 50>><<garousal>>
+	<br><br>
+	<<if $robinnote is 1 and $robinromance isnot 1>>
+		罗宾说到一半就停了下来。
+		"悉尼很适合你。我为你高兴。”<<Hes>>微笑着，但你在<<his>>的声音中捕捉到了一丝悲伤。
+		你边吃边和<<him>>聊天，尽量避开悉尼的话题。
+	<<elseif $robinromance is 1>>
+		罗宾说到一半停了下来，<<his>>呆呆地盯着悉尼，悉尼已经又急着去图书馆了。
+		<<if $NPCName[$NPCNameList.indexOf("Robin")].dom gte 50>>
+			<<He>>撅着嘴，亲吻你的脸颊，就像悉尼那样。“我做得更好。"
+		<<else>>
+			"为什么...刚才发生的事？"<<He>>皱着眉头。
+		<</if>>
+		你边吃边和<<him>>聊天，尽量避开悉尼的话题。
+	<<else>>
+		罗宾说到一半时停了下来，并用肘轻推了一下逗你。
+		"有人得到了<<nnpc_girlfriend "Sydney">>！悉尼很适合你，我为你高兴。"
+		你们边吃边愉快地聊悉尼。
+	<</if>>
+	"我要先去教室里等着，”你吃完后<<he>>说：“我不喜欢迟到。"<<He>>拥抱你。
+	<br><br>
+
+	<<if $NPCName[$NPCNameList.indexOf("Kylar")].state is "active">>
+		凯拉尔在食堂对面看着。
+		<<if $robinromance is 1 and $NPCName[$NPCNameList.indexOf("Robin")].dom gte 50 and $NPCName[$NPCNameList.indexOf("Kylar")].love gte 60>>
+			罗宾一走<<nnpc_he "Kylar">>就走到你的桌子前抓住你的脸，凯拉尔在同一位置粗暴地亲吻你。“你不需要他们，”<<nnpc_he "Kylar">>嘶哑着嗓音说。“他们都不需要。你只需要我。"<<nnpc_He "Kylar">>同样粗暴地吻你的另一侧脸颊，然后走开了。
+		<</if>>
+		<<ggksuspicion>><<npcincr Kylar rage 3>>
+		<br><br>
+	<</if>>
+	<<endevent>>
+
+	<<link [[继续|Canteen]]>><</link>>
+	<br>
+<<else>>
+	你边吃边和<<him>>愉快地聊天。"我要在教室里等你，"<<he>>等你讲完。“我不喜欢迟到。”<<He>>拥抱你。
+	<br><br>
+
+	<<if $NPCName[$NPCNameList.indexOf("Kylar")].state is "active">>
+		凯拉尔在食堂对面看着。
+		<<gksuspicion>><<npcincr Kylar rage 1>>
+		<br><br>
+	<</if>>
+	<<endevent>>
+
+	<<link [[继续|Canteen]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Canteen Lunch Robin End
+<<schooleffects>><<effects>><<sydneySchedule>>
+
+<<if $sydneyromance is 1 and _sydney_location is "library" and $schoolstate is "lunch" and Time.minute lte 35 and random(1, 100) gte 50>>
+	/* Checks if _sydney_location is "library" instead of "canteen" because it's impossible for it to be "canteen" given the time passed from eating with Robin */
+	你边吃边和罗宾聊天，你注意到悉尼站在食堂的角落里，悉尼拿着<<nnpc_his "Sydney">>的书快步走向图书馆。<<nnpc_He "Sydney">>在你的桌边停下来亲你的脸颊，差点把<<nnpc_his "Sydney">>的一本书掉在你的桌子上。<<arousal 50>><<garousal>>
+	<br><br>
+	<<if $robinnote is 1 and $robinromance isnot 1>>
+		罗宾说到一半就停了下来。“悉尼很适合你。我为你高兴。”<<Hes>>微笑着，但你在<<his>>的声音中捕捉到了一丝悲伤。
+		你边吃边和<<him>>聊天，尽量避开悉尼的话题。
+	<<elseif $robinromance is 1>>
+		罗宾说到一半停了下来，<<his>>呆呆地盯着悉尼，悉尼已经又急着去图书馆了。
+		<<if $NPCName[$NPCNameList.indexOf("Robin")].dom gte 50>>
+			<<He>>撅着嘴，亲吻你的脸颊，就像悉尼那样。“我做得更好。"
+		<<else>>
+			"为什么...刚才发生的事？"<<He>>皱着眉头。
+		<</if>>
+		你边吃边和<<him>>聊天，尽量避开悉尼的话题。
+	<<else>>
+		罗宾说到一半就停了下来，还逗你玩。"有人得到了<<nnpc_girlfriend "Sydney">>！悉尼很适合你，我为你高兴。"
+		你在吃饭时和<<him>>聊得很愉快，因为你们一直在谈论悉尼。
+	<</if>>
+	"我要先去教室里等着，”你吃完后<<he>>说：“我不喜欢迟到。"<<He>>拥抱你。
+	<br><br>
+
+	<<if $NPCName[$NPCNameList.indexOf("Kylar")].state is "active">>
+		凯拉尔在食堂对面看着。
+		<<if $robinromance is 1 and $NPCName[$NPCNameList.indexOf("Robin")].dom gte 50 and $NPCName[$NPCNameList.indexOf("Kylar")].love gte 60>>
+			罗宾一走<<nnpc_he "Kylar">>就走到你的桌子前抓住你的脸，凯拉尔在同一位置粗暴地亲吻你。“你不需要他们，”<<nnpc_he "Kylar">>嘶哑着嗓音说。“他们都不需要。你只需要我。"<<nnpc_He "Kylar">>同样粗暴地吻你的另一侧脸颊，然后走开了。
+		<</if>>
+		<<ggksuspicion>><<npcincr Kylar rage 3>>
+		<br><br>
+	<</if>>
+	<<endevent>>
+
+	<<link [[继续|Canteen]]>><</link>>
+	<br>
+<<else>>
+	你和罗宾边吃边愉快地聊天。“我要先去教室里等着，”你吃完后<<he>>说：“我不喜欢迟到。"<<He>>拥抱你。
+	<br><br>
+
+	<<if $NPCName[$NPCNameList.indexOf("Kylar")].state is "active">>
+		凯拉尔在食堂对面看着。
+		<<gksuspicion>><<npcincr Kylar rage 1>>
+		<br><br>
+	<</if>>
+	<<endevent>>
+
+	<<link [[继续|Canteen]]>><</link>>
+	<br>
+<</if>>
+
+:: Canteen Lunch Robin Tease 1
+<<effects>>
+
+你把胳膊伸到桌子下面，在罗宾的大腿上来回抚摸，偶尔轻轻捏一下。
+罗宾的眼睛闭上了，<<he>>试图控制住任何令人尴尬的声音。即便如此食堂还是很忙，早晚会有人注意到的。
+<<promiscuity1>>
+
+一声轻柔的呻吟从罗宾的嘴唇中溢出，促使<<him>>把一只手放在<<his>>嘴边。你把手放回桌子上，给<<him>>一个沾沾自喜的微笑。
+<br><br>
+<<if $NPCName[$NPCNameList.indexOf("Robin")].dom gte 50>>
+	<<He>>回眸一笑，眼中充满欲望。“真是太涩情了，”<<he>>小声说。
+<<else>>
+	<<He>>与你进行了短暂的眼神交流后，尴尬地往下看。
+<</if>>
+<br><br>
+
+<<if $promiscuity gte 15>>
+	<<link [[继续挑逗|Canteen Lunch Robin Tease 2]]>><<npcincr Robin lust 1>><</link>><<promiscuous2>><<glust>>
+	<br>
+<</if>>
+<<link [[吃午饭|Canteen Lunch Robin End Embarrassed]]>><</link>>
+<br>
+
+
+:: Canteen Lunch Robin End Embarrassed
+<<effects>>
+
+你把注意力放回食物上。罗宾的脸颊依然红扑扑的。
+"我要在教室里等，”吃完食物后，<<he>>说。
+"我--”<<He>>停顿了一下，并把你抱得比平时更近一点。<<He>>一声不吭就走了。
+<br><br>
+<<if $NPCName[$NPCNameList.indexOf("Kylar")].state is "active">>
+	凯拉尔在食堂对面看着。
+	<<ggksuspicion>><<npcincr Kylar rage 3>>
+	<br><br>
+<</if>>
+<<endevent>>
+<<link [[继续|Canteen]]>><</link>>
+<br>
+
+
+:: Canteen Lunch Robin Tease 2
+<<effects>>
+
+你觉得很大胆，你再次下移你的手，更激情的挤压和摩擦罗宾的大腿。你的手指爬向<<his>>的腹股沟。
+<br><br>
+<<if $speech_attitude is "meek">>
+	"你很紧张，”你说，期待着<<him>>允许你继续。
+<<elseif $speech_attitude is "bratty">>
+	"你在发抖。我就当你是想让我继续了，"你低声说。
+<<else>>
+	"我可以吗？”你低声说。
+<</if>>
+你的手靠近<<his>>的<<if $NPCList[0].penis isnot "none">>肉棒<<else>>小穴<</if>>。<<promiscuity2>>
+
+<<if $NPCName[$NPCNameList.indexOf("Robin")].lust gte 20>>
+	<<if $NPCName[$NPCNameList.indexOf("Robin")].lust gte 60>>
+		罗宾忽视了周围是否有人在看<<him>>，<<he>>把你拉进一个吻里，然后用<<his>>的双手抚摸你。
+		<<His>>的呼吸不稳定，但<<he>>设法在你的耳边低声说“请”。
+	<<else>>
+		罗宾环顾食堂四周，确保没有人在看。
+		<<He>>微微点了点头，满怀期待地咬着<<his>>的嘴唇，紧握<<his>>的双手。
+	<</if>>
+	<br><br>
+	慢慢地，你把手按在罗宾的腹股沟上，引起<<him>>发出可爱的、压抑的喘息声。
+	<<if $NPCList[0].penis isnot "none">>
+		你穿过衣服触摸<<his>>的柱身，然后抚摸。
+	<<else>>
+		你穿过<<his>>的衣服抚摸着<<his>>阴道。
+	<</if>>
+	<<He>>再次捂住<<his>>的嘴。你加快步伐，搓揉和按摩<<his>>下身区域的速度越来越快。
+	罗宾用手捂住脸的其余部分，以掩盖<<his>>越来越红的脸。
+	<br><br>
+	<<generatey2>><<person2>>
+	就在你要全部投入的时候，罗宾对面坐下了一个拿着课本的学生。
+	<<He>>似乎没有察觉到你们两个的行为，<<his>>翻开了书本。罗宾不敢动了，无助的盯着你看。
+	<br><br>
+	<<person1>>
+	<<if $promiscuity gte 35>>
+		<<link [[继续|Canteen Lunch Robin Tease 3]]>><<npcincr Robin lust 1>><</link>><<promiscuous3>><<glust>>
+		<br>
+	<</if>>
+	<<link [[停止|Canteen Lunch Robin End Interrupted]]>><</link>>
+	<br>
+
+<<else>>
+	"等等！”罗宾说。“我们不能在这里这么做！"
+	<<Hes>>的声音太大了，附近的学生们都奇怪地看着你们。
+	<<He>>尴尬地埋头看着地板。“对不起，”<<he>>小声说。“我只是不想那样做，也许改天吧。"
+	<br><br>
+
+	<<link [[吃午饭|Canteen Lunch Robin End Embarrassed]]>><</link>>
+<</if>>
+<br>
+
+
+
+:: Canteen Lunch Robin End Interrupted
+<<effects>>
+
+你把手收回去了，不想冒这个被抓的险。罗宾喘了口气，然后笑了。“好险。"
+<br><br>
+你继续吃。罗宾的脸颊在午饭剩下的时间里都红扑扑的。
+"我要在教室里等，”<<he>>完成后说。
+"我-我，”<<He>>停顿了一下，并把你抱得比平时更近一点。<<He>>一声不吭就走了。
+<br><br>
+<<if $NPCName[$NPCNameList.indexOf("Kylar")].state is "active">>
+	凯拉尔在食堂对面看着。
+	<<ggksuspicion>><<npcincr Kylar rage 3>>
+	<br><br>
+<</if>>
+<<endevent>>
+<<link [[继续|Canteen]]>><</link>>
+<br>
+
+
+:: Canteen Lunch Robin Tease 3
+<<effects>>
+
+你看着罗宾的眼睛，小声地问<<he>>是否想继续。<<He>>吸了一口气，点了点头。
+<br><br>
+
+你再次加快步伐，全心全意地摩擦<<him>>。
+罗宾一只手抓住桌子，另一只手捂着嘴。你可以听到<<his>>的呻吟，尽管<<his>>努力掩盖它们。
+<<His>>脸更红了，一滴汗珠顺着<<his>>的脸流下来。
+<br><br>
+<<person2>>
+周围的某个学生一脸的担忧地看着罗宾说道:“你还好吗？”<<he>>问道：“你需要去医务室么？"
+<br><br>
+<<person1>>
+罗宾摇了摇头，手仍然捂着嘴。学生看起来还有点疑惑，所以罗宾把手移开了。
+"我……"<<he>>想回话，但却突然倒抽一口气。<<He>>挣扎着说：“我，我没事。谢谢……谢谢你的关心。"
+<br><br>
+罗宾再次捂住<<his>>的嘴，<<his>>紧握桌子。学生耸耸肩，继续看<<person2>><<his>>的书。
+<br><br>
+
+<<endevent>>
+<<npc Robin>><<person1>>
+
+<<link [[继续|Canteen Lunch Robin Tease 4]]>><</link>>
+<br>
+
+:: Canteen Lunch Robin Tease 4
+<<effects>>
+
+你不停地抚摸罗宾，知道<<he>>不会再忍下去了。
+罗宾打断了你，抓住你的手猛地站起来。对面的学生又困惑地看了<<him>>一眼。
+罗宾拉着你的胳膊，你们从座位上站起来。
+<br><br>
+
+"这，这里不行，”<<he>>小声说。
+<br><br>
+
+<<He>>带你穿过走廊，然后进了卫生间。卫生间里没人。罗宾把你带进一个隔间，锁上了门。
+<<He>>转身吻你，差点把你推倒。<<He>>脱掉<<his>>的衬衫。
+<br><br>
+
+<<link [[继续|Canteen Robin Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+
+
+:: Canteen Robin Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 500>>
+	<<set $enemyarousalmax to 600>>
+<</if>>
+
+<<set $enemyanger to 0>>
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Canteen Robin Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Canteen Robin Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Canteen Robin Sex Finish
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>><<npcincr Robin lust -20>>
+	罗宾微笑着紧紧抓住了你。
+	<br><br>
+<<elseif $enemyhealth lte 0>>
+	"哇噢！”罗宾说，<<Hes>>仍然在笑。
+	<br><br>
+<<else>>
+	罗宾微笑着紧紧抓住了你。
+	<br><br>
+<</if>>
+
+<<He>>凝视着你的眼睛，“我爱你。”<<He>>再次吻你。
+<<if $penisfucked is 1>>
+	"有你在我身体里感觉真好。"
+<<elseif $vaginafucked is 1>>
+	"你里面的感觉真好。"
+<</if>>
+罗宾靠在你身上，气喘吁吁，汗珠滴落在<<his>>赤裸的身体上。“我不敢相信我们在这里做了这件事。"
+<<if $orgasmcurrent is 0 and not playerChastity()>><<set _mouthful to 0>>
+	<br>
+	<<He>>看起来
+	<<if $NPCName[$NPCNameList.indexOf("Robin")].dom lte 26>>
+		很担心。“但是，”罗宾说，“你没有做完。你至少感觉很好吧？"<<he>>问道。你点了点头，然后<<he>>开心地笑了。“那就好。"
+	<<elseif $NPCName[$NPCNameList.indexOf("Robin")].dom lte 41>>
+		<<if $player.penisExist>>
+			<<set $penisuse to 0>><<set $penisstate to 0>>
+		<</if>>
+		很失望。“但是你还没有高潮，”罗宾说。<<His>>的手在你的<<genitals>>上徘徊，一股坚定掠过<<his>>的脸。<br><br>
+		<<arousal 2500 "genitals">>
+		<<if $arousal gte $arousalmax>>
+			<<orgasm>>罗宾看起来很满意，<<he>>亲吻你的脸颊。
+		<<else>>
+			几分钟后，<<he>>叹了一口气就放弃了。“对不起。”罗宾皱着眉头说。
+			<br><br>
+			"你很好，罗宾，”你告诉<<him>>。“你太棒了。”罗宾听到这句话后有点振奋起来。
+			<br><br>
+
+		<</if>>
+	<<else>>
+		<<if $player.penisExist>>
+			<<set $penisuse to "othermouth">><<set $penisstate to 0>>
+		<</if>>
+		很顽皮。“但是你还没有高潮，”罗宾笑着说。“坐在座位上。”你按<<he>>说的做。
+		<<He>>跪下来，来到了你的两腿之间。
+		<br><br>
+
+		<<if $player.gender is "h">>
+			<<He>>亲吻你<<penis>>的龟头，并沿着你的肉棒移动<<his>>的舌头。
+			同时，<<he>>把手指插进你的褶子里，开始抽进抽出。<<He>>抬头看着你。
+		<<elseif $player.penisExist>>
+			<<He>>亲吻你的<<penis>>的龟头，然后用<<his>>的舌头沿着你的肉棒移动，不断的轻弹和舔弄。
+		<<else>>
+			<<He>>用<<his>>的舌头探索你的<<pussy>>，偶尔关注你的阴蒂。
+		<</if>>
+		<<His>>的眼睛向上凝视着你，乞求你达到高潮。
+		<br>
+
+		<<arousal 4000 "genitals">>
+		<<if $arousal gte $arousalmax>>
+			<<orgasm>>
+		<<else>>
+			<br>
+			<<if $player.penisExist and $player.vaginaExist>>
+				罗宾向后退去，用<<his>>空出的手向你伸出手来。
+				<<He>>上下摩擦你光滑的肉棒，同时仍然在你的阴部滑进滑出<<his>>的手指。
+				"我不会放弃的，”<<he>>一边说，一边加快速度。
+				<<He>>身体前倾，你感觉到<<his>>舌头的温暖压迫着你的阴唇。
+				<<He>>以一种奇怪但确定的方式移动。
+				<<Hes>>用<<his>>的舌头拼写<<his>>的名字，每个字母都比前一个字母更慢、更牢固。
+				<br><br>
+
+				<<He>>在拼完"N"后，将<<his>>的舌头拖到你的<<print ($player.ballsExist ? "卵蛋" : "阴蒂")>>上，并以轻弹结束。
+				<br>
+
+				<<set $arousal to 10000>>
+				<<if $arousal gte $arousalmax>>
+					<<orgasm>>
+				<</if>>
+			<<elseif $player.penisExist>>
+				罗宾向后退去，用<<his>>空出的手向你伸出手来。
+				<<He>>上上下下摩擦你光滑的肉棒。“我不会放弃的，”<<he>>一边说，一边加快速度。
+				<br>
+
+				<<set $arousal to 10000>>
+				<<if $arousal gte $arousalmax>>
+					<<orgasm>>
+				<</if>>
+			<<else>>
+				罗宾向后退去，向你伸出手来。<<He>>揉了揉你的阴蒂，<<his>>专注地看着你。
+				"我不会放弃的，”<<he>>一边说，一边加快速度。
+				<<He>>身体前倾，你感觉到<<his>>舌头的温暖再次压迫着你的阴唇。
+				<<He>>以一种奇怪但确定的方式移动。
+				<<Hes>>用<<his>>的舌头拼写<<his>>的名字，每个字母都比前一个字母更慢、更牢固。
+				<br><br>
+
+				<<He>>在拼完"N"后，拖动<<his>>的舌头到你的阴蒂上，并以轻弹结束。
+				<br>
+
+				<<set $arousal to 10000>>
+				<<if $arousal gte $arousalmax>>
+					<<orgasm>>
+				<</if>>
+			<</if>>
+		<</if>>
+		罗宾走开了，一个充满爱意的微笑照亮了<<his>>的脸。
+	<</if>>
+	<br><br>
+	你们都穿好衣服，走出隔间。罗宾走到洗手池，把手洗干净，然后看了看墙上的钟。
+	"我最好去上课了，"<<he>>说。<<He>>在临走前亲吻了你的脸颊。
+<<else>>
+	<br><br>
+	你们抱着对方一分钟，沐浴着对方的温暖。“我最好去上课了，”罗宾说，脸上露出歉意的表情。
+	你穿好衣服离开隔间。罗宾洗手，出去的时候亲吻你的脸颊。
+<</if>>
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+
+<<link [[继续|Hallways]]>><</link>>
+<br>
+
+
+
+:: Canteen Lunch Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyhealthmax -= 100>>
+	<<set $enemyhealth -= 100>>
+	<<set $enemyanger += 150>>
+	<<npcidlegenitals>>
+	<<enableSchoolRescue "Whitney">>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Canteen Lunch Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Canteen Lunch Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Canteen Lunch Fight Finish
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	<<His>>的朋友们笑道：“是不是这个小东西让你射了？"
+	<br><br>
+
+	"不，不是的，”<<he>>说，<<his>>的脸变红了。其他人觉得这很有趣，他们忘记了罗宾继续讨论这个话题。
+	<br><br>
+
+	<<endevent>><<npc Robin>><<person1>>
+
+	罗宾的手臂从背后抱住你。“你救了我，”<<he>>说。"我的英雄。"你也觉得脸红了。
+	你边吃边坐着和罗宾聊天。“我要在教室里等着。”你吃完后，<<he>>说。“我不喜欢迟到。"
+	<<ltrauma>><<lstress>><<trauma -2>><<stress -4>><<pass 20>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+<<elseif $enemyhealth lte 0>>
+
+	"哎哟，好疼，”<<he>>说道。“我想我需要护士。”当<<him>>离开食堂时，<<he>>的朋友们跟着并取笑<<him>>。
+	<<tearful>>然后得意的站起身来。
+	<<ltrauma>><<lstress>><<gcool>><<trauma -6>><<stress -12>><<status 1>>
+	<br><br>
+
+	<<endevent>><<npc Robin>><<person1>>
+
+	罗宾的手臂从背后抱住你。“你救了我，”<<he>>说。"我的英雄。"你觉得脸红了。
+	你边吃边坐着和罗宾聊天。“我要在教室里等着。”你吃完后，<<he>>说。“我不喜欢迟到。"
+	<<ltrauma>><<lstress>><<trauma -2>><<stress -4>><<pass 20>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+<<elseif $alarm is 1 and $rescue is 1>>
+	<<person1>><<person>>突然被
+	<<print either(
+		"一罐汽水砸到。",
+		"空托盘砸到。",
+		"数学课本砸到。",
+		"一盒牛奶砸到。",
+		"吃了一半的糕点砸到。",
+		"一团土豆泥砸到。"
+	)>>
+	"喂！谁扔的？”<<he>>询问。当<<him>>看到惠特尼和<<nnpc_his "Whitney">>的手下的脸时，<<His>>的愤怒变成了恐慌。<<Hes>>迅速跑出了食堂。<<status 1>><<gcool>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<npc Robin>><<person1>>
+	<<if $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 10>>
+		罗宾的手臂从背后抱住你。<<He>>抽泣着，“我吓坏了。”你送<<him>>回到了桌子上，抱着<<him>>直到<<he>>平静下来。<<stress 6>><<gstress>><<npcincr Robin dom -1>><<ldom>>
+	<<else>>
+		罗宾扶你站起来。"你还好吗？"<<he>>问道。
+		<<if $robinromance is 1>>
+			"我从没见惠特尼这么生气过。”一阵尴尬的沉默。罗宾看起来好像有什么话要说，但是<<he>>静静地回到桌子边.<<npcincr Robin dom -1>><<ldom>>
+		<<elseif $NPCName[$NPCNameList.indexOf("Robin")].dom gte 80>>
+			"我希望惠特尼不要老是在你身边晃悠，”<<him>>叹了口气。"<<nnpc_He "Whitney">>这次帮我们摆脱了麻烦，但<<nnpc_hes "Whitney">>并不总是那么好。"<<He>>捏着你的肩膀。“只是......小心点。"
+		<<elseif $NPCName[$NPCNameList.indexOf("Robin")].dom gte 60>>
+			"惠特尼很可怕。你确定...”<<He>>停下来摇摇头。"你很安全，这才是最重要的"
+		<<elseif $NPCName[$NPCNameList.indexOf("Robin")].dom gte 20>>
+			"我从来没见惠特尼这么生气过。”<<He>>皱着眉头沉思着，最后露出了柔和的微笑。“我想每个人都有弱点。”<<He>>笑着戳了你一下。
+		<<else>>
+			"我从没见惠特尼这么生气过。<<nnpc_He "Whitney">>一定很喜欢你。"<<He>>咯咯地笑。"有什么问题吗？每个人都在谈论这件事！"
+		<</if>>
+	<</if>>
+	<<endevent>>
+	<br><br>
+
+	你边吃边坐着和罗宾聊天。“我要在教室里等，”<<nnpc_he "Robin">>在你吃完时说。“我不喜欢迟到。"
+	<<ltrauma>><<lstress>><<trauma -2>><<stress -4>><<pass 20>>
+	<br><br>
+<<else>>
+
+	你倒在地上，伤得太重，不能继续战斗。
+	"没错，”<<person1>><<person>>说，“像个婊子一样趴在地上。”<<He>>和<<his>>的朋友们在食堂笑了起来。
+	<<lcool>><<status -10>>
+	<br><br>
+
+	<<endevent>><<npc Robin>><<person1>>
+
+	罗宾的手臂从背后抱住你。
+	"你救了我，”<<he>>说。“我的英雄。”你脸红了。你坐下来和罗宾一边聊天，一边吃饭。
+	"我要在教室里等你，”<<he>>等你吃完。“我不喜欢迟到。"
+	<<ltrauma>><<lstress>><<trauma -2>><<stress -4>><<pass 20>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+
+<br><br>
+<<link [[继续|Canteen]]>><</link>>
+
+:: Bed Robin Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<if $exposed lt 2>>
+		你从衣服里钻出来。<<strip>>
+	<</if>>
+	<<maninit>>
+	<<set $enemytrust += 500>><<npckiss>>
+	<<set $enemyarousalmax to 600>>
+<</if>>
+
+<<set $enemyanger to 0>>
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Bed Robin Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Bed Robin Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Bed Robin Sex Finish
+<<set $outside to 0>><<set $location to "home">><<schooleffects>><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>><<npcincr Robin lust -20>>
+
+	罗宾微笑着紧紧抓住了你。
+	<br><br>
+<<elseif $enemyhealth lte 0>>
+	"哇噢！”罗宾说，<<Hes>>仍然在笑。
+	<br><br>
+<<elseif $finish is 1>>
+	罗宾微笑着紧紧抓住了你。
+	<br><br>
+<</if>>
+
+<<He>>凝视着你的眼睛，“我爱你。”<<He>>再次吻你。
+
+<<if $penisfucked is 1>>
+	"有你在我身体里感觉真好。"
+<<elseif $vaginafucked is 1>>
+	"你里面的感觉真好。"
+<</if>>
+<<His>>闭上了眼睛, 并平稳的进入了梦乡.
+<br><br>
+<<endcombat>>
+
+<<if $kylar_camera is 2 and $NPCName[$NPCNameList.indexOf("Kylar")].state is "active">>
+	<<if !$syndromekylar>>
+		一阵可怕的颤抖传遍了你全身。<span class="blue">有东西正在监视你.</span><<set $kylar_mad to 1>>
+		<br><br>
+	<<else>>
+		猫头鹰玩偶看着你，从黑暗中判断你的动作。<<gggksuspicion>><<npcincr Kylar rage 10>>
+		<br><br>
+	<</if>>
+<</if>>
+
+<<link [[继续|Bed]]>><<clotheson>><</link>>
+<br>
+
+:: Robin Room Bed Intro
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+<<set $robinbed to "theirs">><<set $bedGuest to "Robin">>
+
+<<if $robinromance is 1 and _robin.trauma lt 50>>
+	<<He>>红着脸把目光移开了。"是，是的，"<<he>>说。“你可以留下。"
+<<else>>
+	<<He>>紧紧地抱着你。“太谢谢你了。"
+<</if>>
+<br><br>
+
+<<listsleepoutfits "Robin Bed">>
+
+<<bedicon>><<link [[直接爬到床上|Robin Room Bed]]>><<set $wear_outfit to "none">><</link>>
+
+:: Robin Room Bed
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+<<wearoutfit>>
+
+<<if $robinromance is 1 and _robin.trauma lt 50>>
+	<<He>>关上灯，你会听到<<him>>动来动去的声音。可能是脱衣服。你脱掉衣服，爬上床。<<He>>爬到你身边。
+	<br><br>
+
+	<<He>>翻身拥抱你。当你感觉到<<his>>裸露的身体紧贴着你的身体时，你的心跳加速。
+	<<if _robin.lust gte 40>>
+		<br><br>
+
+		你能感觉到罗宾被挑起欲望了。
+		<<if _robin.dom gte 60>>
+			<<He>>开始轻轻地摩擦你。“你想吗？”<<He>>在你耳边低语。
+		<<else>>
+			<<He>>似乎想把它藏起来。
+		<</if>>
+	<</if>>
+<<elseif $robinromance>>
+	你爬上<<his>>的床，<<he>>关灯，<<He>>动来动去，可能换上了睡衣。
+	你感觉到<<him>>爬到你身边，<<he>>把你抱得很紧。"我爱你，"<<he>>在你耳边低语。
+<<else>>
+	你爬上<<his>>的床，<<he>>关灯，<<He>>动来动去，可能换上了睡衣。
+	你感觉到<<him>>爬得离你很近。“晚安，”<<he>>轻声说。
+<</if>>
+<br><br>
+
+<<if $robinromance is 1 and _robin.trauma lt 50>>
+	<<link [[更进一步|Robin Room Bed Sex]]>><<strip "strap-on">><<set $sexstart to 1>><</link>>
+	<br>
+<</if>>
+<<link [[睡觉|Robin Bed]]>><<endevent>><<trauma -6>><<stress -12>><<npcincr Robin trauma -3>><</link>><<ltrauma>><<lstress>><<lrtrauma>>
+<br>
+
+:: Robin Room Bed Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 500>><<npcexpose>>
+	<<set $enemyarousalmax to 600>>
+<</if>>
+
+<<set $enemyanger to 0>>
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Robin Room Bed Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Robin Room Bed Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Robin Room Bed Sex Finish
+<<set $outside to 0>><<set $location to "home">><<schooleffects>><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	罗宾微笑着紧紧抓住了你。
+	<br><br>
+
+<<elseif $enemyhealth lte 0>>
+
+	"哇噢！”罗宾说，<<Hes>>仍然在笑。
+	<br><br>
+
+<<elseif $finish is 1>>
+
+	罗宾微笑着紧紧抓住了你。
+	<br><br>
+
+<</if>>
+
+<<He>>凝视着你的眼睛，“我爱你。”<<He>>再次吻你。
+
+<<if $penisfucked is 1>>
+	"有你在我身体里感觉真好。"
+<<elseif $vaginafucked is 1>>
+	"你里面的感觉真好。"
+<</if>>
+
+<<if $orgasmcurrent is 0 and not playerChastity()>>
+	<<set _mouthful to 0>>
+	<br>
+	罗宾看起来
+	<<if $NPCName[$NPCNameList.indexOf("Robin")].dom lte 11>>
+		很担心。"但是……"<<he>>的脸很红。"我的意思是...没什么。"
+	<<elseif $NPCName[$NPCNameList.indexOf("Robin")].dom lte 26>>
+		很担心。"但是，"<<he>>低语道。"你没有射。我希望你也能舒服……"
+		<br>
+		你点头。
+	<<elseif $NPCName[$NPCNameList.indexOf("Robin")].dom lte 41>>
+		<<if $player.penisExist>>
+			<<set $penisuse to 0>><<set $penisstate to 0>>
+		<</if>>
+		很俏皮。“但你还没射，”<<he>>小声说。<<His>>的手在你的<<genitals>>上徘徊。
+		<<arousal 2500 "genitals">>
+		<<if $arousal gte $arousalmax>>
+			<<orgasm>>罗宾看起来很高兴。
+		<<else>>
+			几分钟后<<he>>停了下来。"对不起，我……我真的不知道我在做什么。"
+			<br>
+			"很舒服。”你告诉<<him>>，"真的，相信我。"
+			<br>
+		<</if>>
+	<<else>>
+		<<set _mouthful to 1>>
+		<<if $player.penisExist>>
+			<<set $penisuse to "othermouth">><<set $penisstate to "othermouth">>
+		<</if>>
+		很俏皮。"现在，"<<he>>笑了："<<print either("我做到让你快乐了","你快乐了","轮到你了","你高潮了","我让你射了","我让你射出来了")>>。"
+		<br>
+		罗宾消失在被罩之下。片刻之后，你感觉到<<his>>的舌头正在舔你的<<genitals>>。
+		<br>
+		<<arousal 4000 "genitals">>
+		<<if $arousal gte $arousalmax>>
+			<<orgasm>>
+		<<else>>
+			<br>
+			就这样过了一会儿后，罗宾又爬了起来："我不会放弃的，"<<he>>喘着粗气说道，随后<<He>>又咬着你的耳朵继续说道："那是不可能的。"
+			<br>
+			罗宾又消失在被子里，并以新的决心继续努力。
+			<<if $player.penisExist>>
+				<<set $NPCList[0].mouth to "penis">>
+				<<takeNPCVirginity "Robin" "oral">>
+			<</if>>
+			<<set $arousal to 10000>>
+			<<if $arousal gte $arousalmax>>
+				<<orgasm>>
+			<</if>>
+		<</if>>
+	<</if>>
+	<<He>>再次吻你并说道，"我爱你。"
+	<br>
+	<<His>>闭上了眼睛, 并平稳的进入了梦乡.
+<<else>>
+	<<His>>闭上了眼睛, 并平稳的进入了梦乡.
+<</if>>
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Robin Bed]]>><<endevent>><</link>>
+<br>
+
+:: Robin Hug
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<if $arousal gte $arousalmax>>
+	<<orgasm>><<npcincr Robin lust 1>>
+<</if>>
+<<if $robinroomentered is 1>>
+	<<if $trauma gte ($traumamax / 7) * 3 or $stress gte ($stressmax / 7) * 5>>
+		你拼命地用你的整个身体紧紧抓住罗宾，最后几乎把<<him>>拉到床上。罗宾似乎被这件事吓了一跳。
+	<<elseif $trauma gte ($traumamax / 7) * 2 or $stress gte ($stressmax / 7) * 3>>
+		你紧紧抓住罗宾的肩膀，把头埋在<<his>>的背上。罗宾似乎不知道这是怎么回事。
+	<<elseif $trauma gte ($traumamax / 7) * 1 or $stress gte ($stressmax / 7) * 1>>
+		你从后面抱住罗宾，把头靠在<<his>>的肩膀上。罗宾似乎不知道这是怎么回事。
+	<<else>>
+		你高高兴兴地抱着罗宾。<<He>>似乎不知道这是怎么回事。
+	<</if>>
+<<else>>
+	<<if $trauma gte ($traumamax / 7) * 3 or $stress gte ($stressmax / 7) * 5>>
+		你失去控制，扑进罗宾的胸口，把<<him>>抱到床上，紧紧地抱住<<his>>的身体。
+		罗宾似乎对此感到震惊。
+		<<set $robinstunned to 1>>
+	<<elseif $trauma gte ($traumamax / 7) * 2 or $stress gte ($stressmax / 7) * 3>>
+		你紧紧抓住罗宾的胸口，几乎要把<<him>>压到床上。罗宾似乎被这件事吓了一跳。
+	<<elseif $trauma gte ($traumamax / 7) * 1 or $stress gte ($stressmax / 7) * 1>>
+		你搂住罗宾的肩膀，把头埋进<<his>>的脖子里。罗宾似乎不知道这是怎么回事。
+	<<else>>
+		你愉快地漫步到罗宾身边，把<<him>>抱在怀里。<<He>>似乎不知道这是怎么回事。
+	<</if>>
+<</if>>
+<br><br>
+
+<<robinhug>>
+
+:: Robin Hug Break
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if $NPCName[$NPCNameList.indexOf("Robin")].love gte 80 and $robinhugbreak gte 1>>
+	你紧紧抓住罗宾，几乎把<<him>>推到床上，你呜咽着大声哭泣。
+	<br><br>
+
+	"怎么了？”罗宾大叫，对你的行为感到恐惧。
+	"哦，不，又出事了，是不是？”<<He>>拥抱你，在你卸下发生在你身上的一切时尽<<his>>最大努力给予安慰。
+	<br><br>
+
+	"这真是太糟糕了！”罗宾一脸严肃地说。“我们得告诉别人！"
+	罗宾试图安慰你。
+	<br><br><br><br>
+	<<robinhug>>
+
+<<elseif $NPCName[$NPCNameList.indexOf("Robin")].love gte 80>>
+	<<set $robinhugbreak to 1>>
+	你紧紧抓住罗宾，几乎把<<him>>推到床上，你呜咽着大声哭泣。
+	<br><br>
+
+	"怎么了？”罗宾大叫，对你的行为感到恐惧。
+	<<He>>双臂抱住你，看起来<<he>>正处于惊恐发作的边缘，<<he>>试图找出办法应对你的痛苦。
+	<br><br>
+
+	"太可怕了！”罗宾一脸惊恐地回应道：“这......我们得告诉别人！"
+	当<<he>>抚摸你的后背时，<<he>>会给出更多关于如何处理问题的安慰性承诺。
+	<br><br>
+	<<robinhug>>
+
+<<elseif $NPCName[$NPCNameList.indexOf("Robin")].love gte 40 and $robinhugbreak gte 1>>
+	你紧紧抓住罗宾，几乎把<<him>>推到床上，你呜咽着大声哭泣。
+	<br><br>
+
+	"怎么了？”罗宾大叫，对你的行为感到恐惧。"又来了！发生了什么事！？"
+	<<He>>拥抱你，在你卸下发生在你身上的一切时尽<<his>>最大努力给予安慰。
+	<br><br>
+
+	"这真是太糟糕了！”罗宾一脸严肃地说。“我们得告诉别人！"
+	罗宾试图安慰你。
+	<br><br>
+	<<robinhug>>
+
+<<elseif $NPCName[$NPCNameList.indexOf("Robin")].love gte 40 or $robinbaileyhelp gte 1>>
+	<<set $robinhugbreak to 1>>
+	你紧紧抓住罗宾，几乎把<<him>>推到床上，你呜咽着大声哭泣。
+	<br><br>
+
+	"怎么了？”罗宾大叫，对你的行为感到恐惧。
+	<<He>>用<<his>>的双臂抱住你，不安地环顾房间，但<<he>>允许你继续。
+	<<He>>试图安慰你，因为你设法说出你的眼泪和卸载一切已经发生在你身上的痛苦。
+	<br><br>
+
+	"太可怕了！”罗宾一脸惊恐地回应道：“这......我们得告诉别人！"
+	<<He>>试图挣脱你的控制，但你紧紧地抓住<<him>>。最终，<<he>>变得温和，直到你哭完。
+	<br><br>
+	<<robinhug>>
+
+<<else>>
+	<<set $robinhugbreak to 1>>
+	你紧紧抓住罗宾，几乎把<<him>>推到床上，你呜咽着哭泣。
+	<br><br>
+
+	"怎么了？”罗宾大叫，对你的行为感到恐惧。
+	你羞于向<<him>>露出这种表情，但你被逼得太紧了。在这一点上没有办法让你重新振作起来。
+	<br><br>
+
+	罗宾挣脱了你的控制，站了起来。"在这儿等着！我去找人来帮忙！"
+	说完<<he>>就跑出房间，这让你感觉被抛弃了。
+	你信任<<him>>来展示你脆弱的一面，现在<<hes>>却可能要把贝利带到这里来见你。
+	<br><br>
+
+	<<link [[留下|Robin Hug Break 2]]>><<set $phase to 1>><<trauma 6>><<stress 6>><<npcincr Robin love 1>><</link>><<gtrauma>><<gstress>><<glove>>
+	<br>
+	<<link [[回自己的房间 (0:05)|Robin Hug Break 2]]>><<pass 5>><<set $phase to 2>><<npcincr Robin love -1>><</link>><<llove>>
+	<br>
+	<<link [[逃跑|Robin Hug Break 2]]>><<set $phase to 0>><<npcincr Robin love -1>><</link>><<llove>>
+	<br>
+<</if>>
+
+:: Robin Hug Break 2
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if $phase is 0>>
+	罗宾带着贝利回来的时候你不能在这里。你设法振作起来，冲出大楼。
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Domus Street]]>><</link>>
+	<br>
+
+<<elseif $phase is 1>>
+	<<set $robinbaileyhelp to 1>>
+	你蜷缩成胎儿的姿势，双手捂住脸，继续哭泣。
+	几分钟后，你听到有人跺脚进来，你被人抓住头发拉到坐的姿势。
+	<span class="red">是贝利.</span>
+	<br><br>
+
+	<<npc Bailey 2>><<person2>>
+	"你到底有什么问题？"<<He>>对你咆哮。罗宾站在门框里。贝利用严厉的目光看着你，然后扇了你一耳光。
+	很疼，你吓得不哭了。<<pain 2>>
+	<br>
+	"闭嘴。你让这个流浪儿担心到来烦我。我不会在你身上浪费时间的。"
+	<br><br>
+
+	"别再用没用的废话来烦我了，”当<<he>>从房间里出来的时候<<he>>对罗宾说。
+	<br><br>
+
+	<<person1>>
+	罗宾冲向你，抓住你的手臂。当你振作起来的时候，<<He>>难以置信地盯着门外。
+	你对整个场景感到厌恶，然后跑回你的房间。
+	<br><br>
+
+	<<endevent>>
+	<<link [[继续|Bedroom]]>><</link>>
+	<br>
+
+<<else>>
+	罗宾带着贝利回来的时候你不能在这里。你收拾一下，回到你自己的房间。
+	当你到达那里的时候，你疯狂的眼泪已经平静下来。
+	<br><br>
+	大约五分钟后，你听到有人敲门的声音。是罗宾。
+	<<He>>询问你是否在房间里，但不等待回答，<<his>>就自己打开了门。
+	<br><br>
+	"你在这儿！”<<he>>跑进来说。“贝利在你不在我房间的时候对我大喊大叫。发生了什么事？"
+	<br><br>
+	<<link [[抱怨 (0:05)|Robin Hug Break 3]]>><<set $phase to 0>><<pass 5>><<stress -12>><</link>><<lstress>>
+	<br>
+	<<link [[责备 (0:05)|Robin Hug Break 3]]>><<set $phase to 1>><<pass 5>><<npcincr Robin love -1>><<npcincr Robin dom -1>><<npcincr Robin trauma 1>><<trauma -6>><<stress -12>><</link>><<ltrauma>><<llstress>><<grtrauma>><<llove>><<ldom>>
+	<br>
+	<<link [[迫害 (0:05)|Robin Hug Break 3]]>><<set $phase to 2>><<pass 5>><<npcincr Robin love -1>><<npcincr Robin dom -1>><<npcincr Robin trauma 3>><<stress -12>><<trauma -12>><</link>><<lltrauma>><<llstress>><<ggrtrauma>><<llove>><<ldom>>
+	<br>
+	<<link [[分开|Robin Hug Break 3]]>><<set $phase to 3>><</link>>
+	<br>
+
+<</if>>
+
+:: Robin Hug Break 3
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if $phase is 0>>
+	你对发生在你身上的事情给罗宾一些抱怨，
+	但你对<<him>>的信任不够，不能告诉他到底发生了什么，所以你对更重要的事情含糊其辞。
+	<<He>>似乎真的不知道如何回应，甚至在你还没把问题列出来之前就溜出了你的房间。
+	<br><br>
+
+	<<endevent>>
+	<<link [[继续|Bedroom]]>><</link>>
+	<br>
+<<elseif $phase is 1>><<set $robinbaileyhelp to 1>>
+	你反驳<<him>>，告诉<<him>>这都要怪<<him>>去找贝利，并打消了<<his>>的顾虑。
+	你最终还是把<<him>>送出了自己的房间，还在为这样的情节感到尴尬。
+	<br><br>
+
+	<<endevent>>
+	<<link [[继续|Bedroom]]>><</link>>
+	<br>
+<<elseif $phase is 2>><<set $robinbaileyhelp to 1>>
+	你责怪罗宾在你崩溃的时候离开，还去找贝利。
+	你对<<him>>大喊大叫然后把<<him>>咬了一口，
+	把你之前的崩溃带来的所有未实现的挫折转化为对罗宾的愤怒，因为罗宾做了这么愚蠢的事情。
+	<<He>>流着泪离开你的房间。
+	<br><br>
+
+	<<endevent>>
+	<<link [[继续|Bedroom]]>><</link>>
+	<br>
+<<else>>
+	你对罗宾不屑一顾，拒绝与<<him>>说话。最终，<<he>>接受了暗示并离开了。
+	<br><br>
+
+	<<endevent>>
+	<<link [[继续|Bedroom]]>><</link>>
+	<br>
+<</if>>
+
+:: Robin Hug Cry
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<set _robinlove to $NPCName[$NPCNameList.indexOf("Robin")].love>>
+<<if $robincrycount is undefined>>
+	<<set $robincrycount to 0>>
+<</if>>
+
+<<if _robinlove gte 80 and $robincrycount gte 5>>
+	<<set $robincrycount += 1>>
+	罗宾似乎已经意识到有什么不对劲，并用双臂抱住了你，
+	<<he>>没有问发生了什么事，只是用温柔的话语悄悄地安慰你，同时用手在你的背上摩擦。
+	当<<he>>试着安慰你时，你重新获得了眼泪之外的说话能力，并开始卸下最近发生在你身上的所有麻烦。
+<<elseif _robinlove gte 60 and $robincrycount gte 1>>
+	<<set $robincrycount += 1>>
+	罗宾似乎愣了一下，但很快就适应了这种情况，并用<<his>>的双臂抱住了你。
+<<elseif _robinlove gte 40>>
+	当<<he>>注意到你哭泣的脸庞时候，罗宾似乎愣了一下。
+	过了一会儿，<<he>>温柔但不安地拥抱你，让你一直这样，直到你哭完。
+<<elseif _robinlove gte 20>>
+	"嗯......”罗宾看到你在肩膀上哭泣时回答说。<<He>>似乎不确定如何回应，但<<he>>抚摸你的头发。
+<<else>>
+	你对着罗宾的肩膀默默哭泣。<<He>>似乎对此感到不舒服，但不会阻止你。
+<</if>>
+<br><br>
+
+<<robinhug>>
+
+:: Robin Hug Complain
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if $trauma gte ($traumamax / 7) * 3>>
+	你抱怨你最近的一些烦心事，罗宾听着你说的话，但你对一些更重要的事情有所保留。
+	尽管如此，仅仅谈论一些小事就足以让生活变得更容易处理。
+	<br><br>
+	<<robinhug>>
+
+<<else>>
+	你抱怨最近的一些烦心事，罗宾倾听你的诉说，这样的经历让你更容易处理。
+	<br><br>
+	<<robinhug>>
+
+<</if>>
+
+:: Robin Hug Cuddle
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+你和罗宾依偎在一起，<<he>>看起来很开心地用<<his>>的双臂抱住你，并向后依偎。
+<br><br>
+<<robinoptions>>
+
+:: Robin Complain
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+你对你的一天感到烦躁，所以你开始把你的情绪压力卸给罗宾，发泄和抱怨那些困扰你的小事情。
+你把更大的事情从桌子上拿开，你不会真的想让罗宾知道这些事情。罗宾很有礼貌地听着。
+<br><br>
+<<robinoptions>>
+
+:: Robin Blame
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if $daily.robin.policeBody is 1>>
+	你对罗宾感到愤怒，所以你告诉<<him>>你对你对那些警察所做的事有什么想法。
+	你没有给出任何细节，但你明确表示你对此感到愤怒，不想再这样做。<<He>>垂下头点了点头。
+	<br><br>
+	<<robinoptions>>
+
+<<elseif $daily.robin.policePay is 1>>
+	你对罗宾感到很生气，所以你告诉<<him>>你对必须为<<him>>没有许可证而付费的想法。
+	<<He>>垂下<<his>>的头，点了点头。
+	<br><br>
+	<<robinoptions>>
+
+<<elseif $rng gte 51>>
+	你对罗宾感到愤怒，你告诉<<him>>你对<<his>>游戏的品味有什么看法。
+	这有点小气，但会让你感觉好点。<<Hes>>很生气，但不反驳。
+	<br><br>
+	<<robinoptions>>
+
+<<else>>
+	你对罗宾感到愤怒，所以你告诉<<him>>你对<<him>>如此天真的事情有什么想法。
+	你有点取笑<<him>>。<<Hes>>很生气，但是没有反驳。
+	<br><br>
+	<<robinoptions>>
+
+<</if>>
+
+:: Robin Persecute
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if $daily.robin.policeBody is 1>>
+	你早些时候说你没事，但自从你用你的身体收买了那些警察以后，你就越来越紧张了。
+	你开始向罗宾吐露心声，并斥责<<him>>没有许可证，
+	当你做完这些之后，你就会开始发现<<his>>的每一个小缺点，你可能会去挖掘<<him>>。
+	<<He>>没有抱怨，但在你的话语结束时泪流满面。
+	<br><br>
+	<<robinoptions>>
+
+<<else>>
+	你经历了很多。
+	你知道这一切都不是罗宾的错，但你还是去找<<him>>，把你能想到的每件事的细节都告诉给了<<him>>。
+	<<He>>泪流满面，但是没有抱怨。
+	<br><br>
+	<<robinoptions>>
+
+<</if>>
+
+:: Robin Money
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if $robinpaid isnot 1>>
+	<<if $robinmoney lte 200>>
+		"唔，"<<he>>看向别处。“对不起，但我需要它。”<<He>>看起来很惭愧。
+		<br><br>
+
+		<<if $submissive gte 500>>
+			<<link [[要钱|Robin Money Demand]]>><<def 1>><<set $robindebt += 1>><<npcincr Robin trauma 3>><<npcincr Robin love -1>><<npcincr Robin dom -1>><</link>><<llove>><<ldom>>
+			<br>
+		<</if>>
+		<<robinoptions>>
+	<<else>>
+		"当然可以，”<<he>>说，伸手到<<his>>的抽屉里拿出钱，然后为你数钱。你获得了<<moneyGain 100>>。
+		<<set $robinmoney -= 100>>
+		<br><br>
+
+		<<robinoptions>>
+	<</if>>
+<<else>>
+	<<if $robinmoney lte 0>>
+		"对不起，贝利真的要求太多了吗？对不起，我已经把我挣来的一切都给你了。"
+		<br><br>
+
+		<<robinoptions>>
+	<<else>>
+		"是的，好吧，"<<he>>说。<<He>>把钱拿出来交给你。<<He>>看起来有点矛盾。
+		"我想贝利的要求有点苛刻，是吧？我--我很抱歉你也得为我付钱。"你获得了<<print $robinmoney>>英镑。
+		<br><br>
+		<<set $money += ($robinmoney * 100)>><<set $robinmoney to 0>>
+		<<robinoptions>>
+	<</if>>
+<</if>>
+
+:: Robin Money Demand
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+你要求罗宾给你钱，
+<<if $speech_attitude is "bratty">>
+	和<<him>>玩各种情感操纵游戏。
+<<else>>
+	你甚至开始威胁<<him>>。
+<</if>>
+
+最后，<<he>>让步并给了你钱。你获得了<<print $robinmoney>>英镑。<<He>>看起来很担心。
+<<set $money += ($robinmoney * 100)>><<set $robinmoney to 0>>
+<br><br>
+
+<<robinoptions>>
+
+:: Robin Cat
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if $robincat isnot 1>>
+	<<set $robincat to 1>>
+
+	你把头靠在罗宾的肩膀上。<<He>>看着你微笑。
+	<<if $transformationParts.cat.ears isnot "hidden">>"你从哪儿弄来的？<<he>>伸手去摸你的猫耳朵。<</if>>
+	<<His>>的触摸让你的头皮和脊椎产生愉悦的颤抖。你发出舒服的呼噜声。
+	<br><br>
+
+	罗宾笑了。“好猫咪！”<<He>>不停地抚摸，并用<<his>>的另一只手臂搂住你的腰。你的眼睛闭上。世界上除了罗宾的触摸什么都没有。
+	<br><br>
+
+	<<robinoptions>>
+
+<<else>>
+
+	你把头靠在罗宾的肩膀上。<<He>>看着你微笑。
+	"谁是好猫咪，”<<he>>说着，伸出手抚摸着你的耳朵。
+	<<His>>的触摸让你的头皮和脊椎产生愉悦的颤抖。你发出舒服的呼噜声。
+	<br><br>
+
+	你靠着<<him>>休息了一会儿，<<he>>紧紧地抱着你，抚摸着你。
+	<br><br>
+
+	<<robinoptions>>
+
+<</if>>
+
+:: Robin Cow
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if $NPCName[$NPCNameList.indexOf("Robin")].dom gte 50>>
+	你爬到罗宾身边，嗅着<<his>>的耳朵。你哞叫以求引起注意。
+	<br><br>
+	<<if $livestock_robin is 1>>
+		<<set $livestock_robin += 1>>
+		"真痒，”<<he>>咯咯笑着拍了你之一下。
+		<<if $rng gte 76>>
+			"谁是可爱的奶牛？"
+		<<elseif $rng gte 51>>
+			"吃草的时间到了吗？"
+		<<elseif $rng gte 26>>
+			<<He>>抚摸着你的下巴。
+		<<else>>
+			你真是一头可爱的奶牛。
+		<</if>>
+		<br><br>
+	<<elseif $livestock_robin is 2>>
+		<<set $livestock_robin += 1>>
+		罗宾皱起眉头。“有人这样对你吗？”<<he>>问道。<<He>>紧紧抓住<<his>>的控制器。
+		<br><br>
+		你高兴地哞一声，然后点头。<<He>>张着<<his>>的嘴，好像想说话，但什么也没说出来。
+		<<if $robinconsole is 0>>
+			<<He>>盯着窗外。
+		<<else>>
+			<<He>>转回电视屏幕。
+		<</if>>
+		<br><br>
+	<<elseif $livestock_robin is 3>>
+		<<set $livestock_robin += 1>>
+		在一个突然的动作中，罗宾抓住你的肩膀，把你拉进<<his>>的胸部。太紧了，你哞哞叫抗议。<<He>>放手了。
+		<br><br>
+		"对不起，我不是故意要伤害你的，”罗宾遗憾地说。你微笑着发出快乐的哞声。
+
+		<<if $robinconsole is 0>>
+			<<He>>凝视着窗外，却不时地瞥你一眼。
+		<<else>>
+			<<He>>回到<<his>>的游戏中，但你注意到<<him>>不时地瞥您一眼。
+		<</if>>
+		<br><br>
+	<<elseif $livestock_robin is 4>>
+		<<set $livestock_robin += 1>>
+		"你有一段时间没回家，”罗宾脸上露出阴沉的表情。“贝利把你带走了吗？发生什么事了吗？"
+		<br><br>
+		你对<<his>>的问题哞叫。
+		<<if $robinconsole is 0>>
+			<<He>>没有说别的，但是当<<he>>盯着窗外看时<<he>>看起来很紧张。
+		<<else>>
+			<<He>>没说别的，但你能听到<<his>>的控制器上的塑料压力。
+		<</if>>
+		<br><br>
+	<<elseif $livestock_robin is 5>>
+		<<set $livestock_robin += 1>>
+		罗宾盯着你。“我知道你身上发生了不好的事情。请和我谈谈，"<<he>>恳求道。
+		<br><br>
+		你点点头，开始描述你和雷米在一起的时光。当你保持活跃和富有成效的时候，你会详细讲述他们为保护你所做的努力。然而，你知道你必须回家，所以你离开了。
+		<br><br>
+		你说话的时候罗宾用手捂住了<<his>>的嘴，惊恐地瞪大了眼睛。眼泪顺着<<his>>的面颊流了下来。当你结束时，<<He>>温柔地拥抱你，轻声细语。“我保证我们会解决的。我会支持你的。我很抱歉。”<<gggdom>><<npcincr Robin dom 10>>
+		<br><br>
+		你不知道<<he>>是什么意思，但你还是高兴地哞了一声。
+		<br><br>
+	<<elseif $livestock_robin is 6>>
+		<<set $livestock_robin += 1>>
+		"没关系，”罗宾说着握住你的手，“我在你身边。我会帮你好起来的。"
+		<br><br>
+
+		<<set _noOptions to 1>>
+		<<link [[坚持你是幸福的|Robin Cow Happy]]>><</link>>
+		<br>
+		<<link [[点头|Robin Cow Help]]>><</link>><<lstress>><<ltrauma>>
+		<br>
+	<<elseif $livestock_robin is 10>>
+		罗宾对你微笑。<<He>>知道你很开心，但<<hes>>还是担心你。<br><br>
+		<<if $robinconsole is 0>>
+			<<He>>盯着窗外，但经常看着你。
+		<<else>>
+			<<He>>继续<<his>>的游戏，但经常瞥你一眼。
+		<</if>>
+		<br><br>
+	<<else>>
+		"没关系，”罗宾说着握住你的手，“我在这里等你。我会帮你好起来的。”<br><br>
+		<<if $robinconsole is 0>>
+			<<He>>盯着窗外，但经常看着你。
+		<<else>>
+			<<He>>继续<<his>>的游戏，但经常瞥你一眼。
+		<</if>>
+		<br><br>
+	<</if>>
+<<else>>
+	你爬到罗宾身边，嗅着<<his>>的耳朵。你哞叫以求引起注意。
+	<br><br>
+
+	"真痒，”<<he>>咯咯笑着拍了你之一下。
+	<<if $rng gte 76>>
+		"谁是可爱的奶牛？"
+	<<elseif $rng gte 51>>
+		"吃草的时间到了吗？"
+	<<elseif $rng gte 26>>
+		<<He>>抚摸着你的下巴。
+	<<else>>
+		你真是一头可爱的奶牛。
+	<</if>>
+	<<if $robinconsole is 0>>
+		当<<he>>凝视窗外时，你把头放在<<him>>膝上。
+	<<else>>
+		当<<he>>玩游戏时，你将头放在<<his>>的膝上。
+	<</if>>
+	<br><br>
+
+<</if>>
+
+<<if _noOptions isnot 1>>
+	<<robinoptions>>
+<</if>>
+
+:: Robin Harpy
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if $halloween is 1>>
+	你觉得好玩，坐在罗宾的床边，开始唱一首轻柔但令人毛骨悚然的曲子。你可以看到罗宾在颤抖。
+	歌曲快结束时，你靠近罗宾，用翅膀轻轻拥抱<<him>>。<<His>>紧张的情绪几乎立即缓解了下来。
+	<br><br>
+
+	"谢谢，”罗宾脸红着说。
+
+<<elseif $christmas is 1>>
+	随着庆祝活动的进行，你开始唱起欢快的圣诞歌曲。
+	罗宾和你一起欢快地唱歌，房间里充满了节日的欢呼声。
+	<br><br>
+
+	当你和<<him>>唱完这首歌后，罗宾说：“太有趣了！"
+<<else>>
+	<<if $NPCName[$NPCNameList.indexOf("Robin")].dom gte 50>>
+		你坐在罗宾的床沿上，开始唱起欢快的曲调。你引起了罗宾的注意，然后<<he>>跟着你优美的歌声一起哼唱。
+		尽管无法完全跟上你，你还是对罗宾的努力感到惊讶。<<He>>继续跟着唱，直到你完成了这首歌。
+		<br><br>
+	<<else>>
+		你蜷缩在罗宾身边，开始唱起轻柔的曲子。罗宾微笑着，偶尔也加入你的行列。
+		<br><br>
+	<</if>>
+	<<if $robinconsole is 0 and $rng lte 25>>
+		"你总是知道如何让我感觉好些，”罗宾说着，微微一笑。
+	<<else>>
+		<<switch random(1,6)>>
+			<<case 1>>“你很擅长这个，”罗宾说。
+			<<case 2>>“你在哪里学得这么好？”罗宾对你笑了。
+			<<case 3>>“你是一只可爱的小鸟，”罗宾说着，轻轻地用手穿过你的翅膀。
+			<<case 4>>“那套服装看起来很贵！”罗宾气喘吁吁地说。
+			<<case 5>>“有时间我们应该一起飞走，”罗宾咯咯地笑着。
+			<<case 6>>“我一直想看看天空，”罗宾说，看上去若有所思。
+			<<default>>
+		<</switch>>
+	<</if>>
+<br><br>
+<</if>>
+<<if $robinconsole is 0>>
+	你把头放在<<his>>膝盖上，而<<he>>则盯着窗外。
+<<else>>
+	当<<he>>玩游戏时，你把头放在<<his>>的膝上。
+<</if>>
+<br><br>
+
+<<robinoptions>>
+
+:: Robin Wolf
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+感觉到一种突然的冲动，你仰面朝天，把你的肚子露给罗宾。<<He>>似乎没有注意到这种爱意的迹象，所以你抱怨来吸引<<his>>的注意。<<He>>看着你咯咯地笑。“你在干什么，傻瓜？”你扭动着喘气。罗宾明白了这一点，揉了揉你暴露在外的肚子。你感到安全和温暖。这几乎就像你被拉进了一个令人费解的平静漩涡。
+<br><br>
+每次罗宾打到你的最佳位置，你都觉得有必要踢，但你忍住了。“谁是好<<girl>>？你是！是的，你是好<<girl>>！"<<He>>微笑着抚摸着你，让你的心充满喜悦。你闭上眼睛，屈服于愉悦的感觉。
+<br><br>
+
+
+<<robinoptions>>
+
+:: Robin Fox
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+你来回摆动尾巴，直到它落在<<his>>的腿上。<<He>>不在意地伸手抚摸它，然后露出惊讶的样子。“太软了！"
+<br><br>
+
+你花了一点时间抚摸你的尾巴，高兴得发抖。
+<br><br>
+
+<<robinoptions>>
+
+:: Robin Kiyoura Start
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<npc Whitney>><<person1>>你坐在罗宾对面，边吃边聊天。
+你刚吃完饭，惠特尼和<<his>>的朋友们就走向了你。
+"失败者，我要借你的<<girlfriend>>帮我口交一下，"<<him>>对罗宾挑衅的微笑，同时把一只手搭在你的肩膀上。
+<br><br>
+罗宾低头看着你，等待你的回应。
+<br><br>
+<<link [[拒绝惠特尼|Robin Kiyoura canteen fight]]>><<set $fightstart to 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+<br>
+
+<<link [[愤愤不平地跟惠特尼走|Robin Kiyoura canteen oral]]>><<trauma 6>><<stress 6>><<sub 1>><<npcincr Whitney dom 1>><<set $molestationstart to 1>><<set $sexstart to 0>><</link>><<gtrauma>><<gstress>><<gdom>>
+<br>
+
+<<if $promiscuity gte 55>>
+	<<link [[心甘情愿地走|Robin Kiyoura canteen oral]]>><<sub 1>><<npcincr Whitney dom 1>><<set $sexstart to 1>><<set $molestationstart to 0>><<npcincr Whitney love 1>><</link>><<promiscuous4>><<glove>><<gdom>>
+	<br>
+<</if>>
+<<endevent>>
+
+:: Robin Kiyoura canteen fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<npc Whitney>><<person1>><<maninit>>你告诉惠特尼你不会和<<him>>一起走。
+	"好吧，”惠特尼指着罗宾说。他们把罗宾推开，留下你和那个恶霸。"是时候给你上一课了。"
+	<br><br>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Robin Kiyoura canteen fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Robin Kiyoura canteen fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Robin Kiyoura canteen fight Finish
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<if $enemyhealth lte 0>>
+
+	你把惠特尼推回去，然后<<he>>绊了一跤。“小混蛋，”<<he>>冷笑着，想挽回面子。
+	<<His>>的朋友们离开罗宾，跟着惠特尼走出了食堂。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Robin Kiyoura after fight]]>><</link>>
+
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation "short">>
+
+	"你...笨蛋..."<<he>>喘息着靠在你身上。<<his>>的朋友们对<<his>>的状态感到非常困惑，以至于他们没有注意到罗宾溜走了。
+	<<llust>><<npcincr Whitney lust -20>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Robin Kiyoura after fight]]>><</link>>
+
+<<else>>
+
+	你倒在地上，不堪一击。惠特尼狠狠地踢了你一脚。“下次给我记得，”<<he>>说。"放尊重点。"
+	<<His>>的朋友们离开罗宾，跟着<<him>>走出了食堂。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Robin Kiyoura after fight]]>><</link>>
+<</if>>
+
+:: Robin Kiyoura after fight
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<npc Robin>><<person1>>抓住<<his>>的半边身子，罗宾冲向你。“你还好吗？”<<his>>声音颤抖地问道。
+<br><br>
+
+<<link [[拥抱罗宾|Robin Kiyoura cuddle]]>><<npcincr Robin love 1>><<trauma -1>><<stress -1>><</link>><<glove>><<ltrauma>><<lstress>>
+<br>
+<<if $trauma gte $traumamax / 5>>
+	<<link [[指责罗宾软弱|Robin Kiyoura weak]]>><<npcincr Robin love -6>><<npcincr Robin trauma 3>><<trauma -3>><<stress -3>><</link>><<lllove>><<ltrauma>><<lstress>><<grtrauma>>
+	<br>
+<</if>>
+
+:: Robin Kiyoura cuddle
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<endevent>>
+<<npc Robin>><<person1>>你在投入<<his>>的怀抱之前检查罗宾是否受伤。
+<<He>>几分钟都没有说话，直到你离开。“我需要为下一节课做好准备，”<<he>>说。
+<<He>>看起来仍然很担心，当<<he>>离开食堂时向你挥手。
+<br><br>
+<<pass 3>>
+<<link [[继续|Canteen]]>><<endevent>><</link>>
+
+:: Robin Kiyoura weak
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我好害怕。”，你说。“而你没有帮忙。"
+<<elseif $speech_attitude is "bratty">>
+	"你真是个胆小鬼。”，你说。“我不会让这种事发生在你身上的。"
+<<else>>
+	"那是你的错，”，你说。"你应该保护我"
+<</if>>
+<br><br>
+
+<<endevent>>
+<<npc Robin>><<person1>>当你说话的时候，泪水在<<him>>眼中形成，但<<him>>擦去泪水，点着头说：“我会变得更坚强。我会努力的。"
+<<gdom Robin>><<npcincr Robin dom 2>>
+<br><br>
+
+<<link [[拥抱罗宾|Robin Kiyoura cuddle]]>><<npcincr Robin love 1>><<trauma -1>><<stress -1>><</link>><<ltrauma>><<lstress>>
+<br>
+ <<link [[转身离去|Canteen]]>><<endevent>><</link>>
+
+:: Robin Kiyoura canteen oral
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+
+	<<npc Whitney>><<person1>><<maninit>>
+	惠特尼抓住你的手腕，把你拖到食堂后面一个僻静的地方，<<he>>
+	<<npcUndressText $NPCName[$NPCNameList.indexOf("Whitney")] "lower" "self">>,
+	<<if $NPCList[0].penis isnot "none">>
+		掏出<<his>>的<<npcPenis>>。“张开腿，”<<he>>说。
+	<<else>>
+		露出了<<his>>的小穴。“来，快开始，”<<he>>说。
+	<</if>>
+	<<His>>的朋友们为<<him>>加油。
+	<br><br>
+
+	<<npcoral>><<set $NPCList[0].lefthand to "hair">><<set $enemyanger to 70>>
+
+<</if>>
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<npc Whitney>><<person1>><<maninit>>
+	<<set $enemytrust += 100>>
+	你跟着惠特尼走出餐厅，<<he>>带你到餐厅后面的一个僻静的地方，<<npcUndressText $NPCName[$NPCNameList.indexOf("Whitney")] "lower" "self">>，露出了<<his>>的<<if $NPCList[0].penis isnot "none">>阴茎<<else>>小穴<</if>>.“该检查一下你的声带了，”<<he>>笑着说。<<His>>的朋友们听了这个笑话都笑了。
+	<<promiscuity4>>
+	<<npcoral>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Robin Kiyoura canteen oral Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Robin Kiyoura canteen oral]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Robin Kiyoura canteen oral Finish
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>><<npcincr Whitney lust -30>>
+
+	<<if $NPCList[0].penis isnot "none">>
+		<<He>>按住你直到<<he>>完成交配。"好荡妇。"
+	<<else>>
+		<<He>>按住你直到<<he>>完成交配。"好荡妇。"
+	<</if>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Robin Kiyoura Back to Robin]]>><<set $phase to 0>><</link>>
+
+<<else>>
+
+	<<if $finish isnot 1>>你把惠特尼从身边推开，<</if>><<tearful>>你跑走了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Robin Kiyoura Back to Robin]]>><<set $phase to 1>><</link>>
+
+<</if>>
+
+:: Robin Kiyoura Back to Robin
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<if $phase is 0>>
+	<<npc Whitney>><<person1>>
+	惠特尼和你一起走回餐厅，罗宾在那里等着。
+	"你的<<girlfriend>>回来了，<<pshe>>刚刚帮了我大忙呢，”<<he>>笑着说，<<he>>走开了。
+	<br><br>
+
+	<<npc Robin 2>>
+	罗宾看起来很担心。“你还好吗？有没有伤到你？”<<person2>><<he>>问。
+	<br><br>
+
+	<<link [[保守秘密|Robin Kiyoura Secret]]>><</link>>
+	<br>
+
+	<<link [[告诉罗宾发生了什么并且说自己不是自愿的|Robin Kiyoura Didn't want to]]>><<npcincr Robin dom 1>><<pain -10>><</link>><<gdom>><<lpain>>
+	<br>
+
+	<<link [[告诉罗宾发生了什么并且你很享受|Robin Kiyoura Enjoyed it]]>><<npcincr Robin love -5>><<npcincr Robin dom -1>><<npcincr Robin trauma 3>><<npcincr Robin lust 1>><</link>><<grtrauma>><<lllove>><<ldom>><<glust>>
+	<br>
+
+<<else>>
+
+	<<npc Robin>><<person1>>你回到食堂的罗宾那里。<<He>>看起来很担心。"你还好吗？<<nnpc_he "Whitney">>有伤到你吗？"<<he>>问道。
+	<br><br>
+
+	<<link [[保守秘密|Robin Kiyoura Secret]]>><</link>>
+	<br>
+
+	<<link [[告诉罗宾发生了什么并且说自己不是自愿的|Robin Kiyoura Didn't want to]]>><<npcincr Robin dom 1>><<pain -10>><</link>><<gdom>><<lpain>>
+	<br>
+
+<</if>>
+
+:: Robin Kiyoura Secret
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+你告诉罗宾什么事也没发生。尽管如此，<<He>>还是拥抱了你。
+"我要在教室里等着，”<<he>>说。"尽量不要再遇到<<nnpc_him "Whitney">>。"
+<br><br>
+
+<<endevent>>
+<<link [[继续|Canteen]]>><</link>>
+<br>
+
+:: Robin Kiyoura Didn't want to
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<if $RobinKiyoura isnot 1>><<set $RobinKiyoura to 1>><</if>>
+
+你告诉罗宾发生了什么，你说你别无选择。你是被迫的。
+当你说话时，<<His>>的脸变得苍白，<<he>>紧紧地抱住你。“这不公平，”<<he>>说。你觉得<<his>>的眼泪落在了你的肩膀上。
+<br><br>
+
+<<pass 3>>
+<<He>>等了你几分钟，直到你告诉<<him>><<he>>快要没有时间准备<<his>>的课程了。“我不在乎，”<<he>>说。
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"我现在没事了，”你说。"你让我有安全感"
+<<elseif $speech_attitude is "bratty">>
+	"我可以照顾自己，”你说。
+<<else>>
+	"我没事，"你说。"你不能永远粘着我"
+<</if>>
+<br><br>
+
+<<He>>一开始会抗拒，但你进一步向<<him>>保证你会没事的。<<He>>离开前最后一次握紧你的手。
+<br><br>
+
+<<endevent>>
+<<link [[继续|Canteen]]>><</link>>
+<br>
+
+:: Robin Kiyoura Enjoyed it
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<if $RobinKiyoura isnot 1>><<set $RobinKiyoura to 1>><</if>>
+
+<<if $robinromance is 1>>
+
+	你告诉罗宾发生了什么，发生在哪里，你有多喜欢。
+	<<His>>紧握拳头，热泪盈眶。<<He>>拿起<<his>>的包，一言不发地离开了。
+	<br><br>
+
+<<else>>
+
+	你告诉罗宾发生了什么，发生在哪里，你有多喜欢。
+	<<He>>难以进行眼神交流或想出适当的回应。
+	<br><br>
+
+	"我-我应该，”<<he>>结结巴巴地说。“我要去教室里等上课了。"
+	<br><br>
+
+<</if>>
+
+<<endevent>>
+<<link [[继续|Canteen]]>><</link>>
+<br>
+
+:: Robin Bailey Forgive
+<<effects>>
+
+你搂着<<his>>的肩膀。
+<<if $speech_attitude is "meek">>
+	"这不是你的错，"你说，"是我的错。请不要感到羞愧。"
+<<elseif $speech_attitude is "bratty">>
+	"没事"，你说。“你不知道。"
+<<else>>
+	"没事的。"，你说。“这不是你的错。"
+<</if>>
+<br><br>
+
+罗宾拥抱着你，微笑着说：“谢谢你。”，<<he>>说。“我不会再那么傻了。"
+<br><br>
+
+<<robinoptions>>
+
+:: Robin Bailey Subject
+<<effects>>
+
+你把目光移开，提起一个不相干的话题。<<His>>的眼神仍然很阴郁。
+<br><br>
+
+<<robinoptions>>
+
+:: Robin Bed Dominant
+<<effects>>
+
+你拥抱罗宾，但<<his>>的手继续徘徊和摸索。<<He>>把你拉近。
+<br><br>
+
+<<link [[坚持只拥抱|Bed]]>><<endevent>><<trauma -6>><<stress -12>><<npcincr Robin love -1>><<npcincr Robin dom -1>><</link>><<llove>><<ldom>><<ltrauma>><<lstress>>
+<br>
+<<link [[屈服|Bed Robin Sex]]>><<set $sexstart to 1>><<npcincr Robin dom 1>><</link>><<gdom>>
+<br>
+
+:: Bailey's Office Hack
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<set $hacker_tasks.pushUnique("bailey")>>
+
+<<rng>>
+<<if $pronoun is "m">>"先生,"<<else>>"贝利小姐,"<</if>>
+<<if $rng gte 67>>
+	你大喊。"花园里有个<<personsimple>>想把一个孤儿拖走！"
+	<br>
+	贝利冷笑了一声，大步走出办公室，朝花园的方向走去。
+<<elseif $rng gte 33>>
+	你小声说。“有个奇怪的<<personsimple>>从后窗往外偷看。太吓人了。"
+	<br>
+	贝利冷笑了一声，大步走出办公室。
+	<br>
+	<<He>>向宿舍方向大步走出。
+<<else>>
+	你喘气。“外面有个<<personsimple>>在喊这个地方应该关闭。但是我们住哪里？"
+	<br>
+	贝利皱着眉头，大步走出办公室。
+<</if>>
+<br><br>
+
+<<skulduggerycheck>>
+<br><br>
+<<if $skulduggerysuccess is 1>>
+	<span class="green">贝利已经离开了足够长的时间，你可以安装设备并逃离。</span>
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	<<if $hacker_tasks.length gte 2>>
+		<span class="green">你已经完成了黑客的任务。你应该和兰德里谈谈。</span>
+		<br><br>
+	<</if>>
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+	<br>
+
+<<else>>
+	你成功安装了设备，但当你转身逃生时，<span class="red">怒目而视的贝利挡住了门</span>。
+	<br>
+	"为什么你们这些小笨蛋喜欢浪费我的时间？"
+	<br>
+	<<He>>抓住你的手臂。
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	<<link [[继续|Bailey Beating]]>><<set $molestationstart to 1>><</link>>
+	<br>
+
+<</if>>
+
+:: Bailey Beating
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>><<npcspank>><<npcidlegenitals>>
+	<<set $enemyanger += 150>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or $enemyanger lte 0>>
+	<span id="next"><<link [[继续|Bailey Beating Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Bailey Beating]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Bailey Beating Finish
+<<set $outside to 0>><<set $location to "home">><<schooleffects>><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>><<earnFeat "Bailey's Trouble Maker">>
+	当<<him>>摇头，意识到刚才发生了什么时，清晰的感觉又回到<<his>>眼中。<<if $phase is 1>>"给我出去."<<else>>"出去.现在。"<</if>>
+	<br>
+	<<tearful>>你从房间走出来。
+	<br><br>
+<<elseif $enemyhealth lte 0>>
+	<<He>>吃痛退开，你从<<his>>束缚中挣脱出来。
+	<br>
+	"别再浪费我的时间了！”你听到<<him>>的喊声。
+	<br><br>
+<<else>>
+	<<He>>释放你，"别浪费我的时间。明白了吗？"
+	<br>
+	<<He>>示意你离开。<<tearful>>你照做了。
+	<br><br>
+<</if>>
+<<clotheson>>
+<<if $phase is 1>>
+	<<if $hacker_tasks.length gte 2>>
+		<span class="green">你已经完成了黑客的任务。你应该和兰德里谈谈。</span>
+		<br><br>
+	<<elseif $pubfame and $pubfame.task is "bailey" and $pubfame.status isnot "done">>
+		<span class="red">你不能肯定地说米奇不在<<his>>的电脑上忙。你需要再试一次。</span>
+	<</if>>
+<</if>>
+<<endcombat>>
+<<link [[继续|Orphanage]]>><</link>>
+<br>
+
+:: Bailey Sheet
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<rng>>
+<<if $pronoun is "m">>"先生,"<<else>>"贝利小姐,"<</if>>
+<<if $rng gte 67>>
+	你大喊。"花园里有个<<personsimple>>想把一个孤儿拖走！"
+	<br>
+	贝利冷笑了一声，大步走出办公室，朝花园的方向走去。
+<<elseif $rng gte 33>>
+	你小声说。“有个奇怪的<<personsimple>>从后窗往外偷看。太吓人了。"
+	<br>
+	贝利冷笑了一声，大步走出办公室。
+	<br>
+	<<He>>向宿舍方向大步走出。
+<<else>>
+	你喘气。“外面有个<<personsimple>>在喊这个地方应该关闭。但是我们住哪里？"
+	<br>
+	贝利皱着眉头，大步走出办公室。
+<</if>>
+<br><br>
+
+<<skulduggerycheck "silent">><<skulduggeryuse>>
+
+在插上USB后，桌面上立即弹出了一个文件夹，应该是USB自行找到了什么。
+<br><br>
+
+<<rng>>
+<<if $rng gte 76 and $skulduggerysuccess is 1>>
+	你翻看文件夹，贝利离开了足够长的时间，你可以相对彻底地看一遍。<span class="green">你找不到任何关于米奇的信息。</span>
+	<<pubfameComplete "bailey">>
+
+	你在贝利回来之前拿走装置并离开。
+	<br><br>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+
+<<elseif $rng gte 51 and $skulduggerysuccess is 0>>
+	你翻看了一遍文件夹，找不到任何关于米奇的信息。当<span class="red">贝利回到房间</span>时，你还在翻看文档。
+	<br>
+	"我就知道是你在搞鬼，混蛋。"
+	<br>
+	<<He>>把设备扯出来并抓住你的胳膊。
+	<br><br>
+
+	<<link [[继续|Bailey Beating]]>><<set $molestationstart to 1>><</link>>
+
+<<elseif $rng gte 26>>
+	<<set $pubfame.detail to "baileyList">>
+	你浏览文件夹，找到了一个文本文件夹，里面列出了一周要做的事情。你快速的浏览着所有文件。不一会，你看到某个文件名字为<span class="blue">正在搜查黑客</span>这几个字，你觉得这指的就是米奇。
+	<br><br>
+
+	<<if $skulduggerysuccess is 1>>
+		你删除了这个名字并在其位置添加一条关于“重新加注燃油”的新内容。<span class="green">贝利已经离开了足够长的时间了，你可以取出USB并逃跑了。</span>
+		<<pubfameComplete "bailey" "list">>
+
+		<<link [[继续|Orphanage]]>><<endevent>><</link>>
+	<<else>>
+		你删除了这个名字并在其位置添加一条关于“重新加注燃油”的新内容。但当你拔下USB并准备离开时，<span class="red">愤怒的贝利出现在了门口</span>。
+		<br>
+		"我就知道是你在搞鬼，混蛋。"
+		<br>
+		<<He>>抓住你的手臂。
+		<br><br>
+
+		<<pubfameComplete "bailey" "list">>
+
+		<<link [[继续|Bailey Beating]]>><<set $molestationstart to 1>><</link>>
+	<</if>>
+<<else>>
+	你翻看文件夹，找到一个电子表格。你打开它并开始浏览，上面写满了几十个名字，<span class="red">而且全都是全都是从孤儿院逃跑的孤儿。</span>
+	<br><br>
+
+	你认出了两周前失踪的那个<<girl>>名字，她后来又出现在孤儿院了，<<pShes>>的名字出现在了"已捉回"的表格中。其他的一些名字分别列在了"已售出"、"已释放"、"已逃逸"和"其他"列里，而米奇的名字在逃逸列中，同时这这是唯一一个没有列出姓氏的。
+	<br><br>
+
+	你可以把米奇从名单上删除来确保那家伙的安全，你也可以尝试删除整个电子表格，但贝利可能会十分生气。
+	<<if $skulduggerysuccess is 1>>
+		而且这所需要的时间十分久，久到无论贝利被你支走多长都一定会抓到你。
+	<</if>>
+	<br><br>
+
+	<<link [[删除米奇的内容|Bailey Sheet 2]]>><<set $phase to $skulduggerysuccess>><</link>>
+	<br>
+	<<link [[删除整个文件|Bailey Sheet 2]]>><<set $phase to 2>><</link>><<dangerousText>>
+<</if>>
+
+:: Bailey Sheet 2
+<<effects>>
+<<if $phase is 0>>
+	<<set $pubfame.detail to "baileyList">>
+	你把米奇的名字从名单上删掉，然后保存并关闭文件，在你拔出USB并准备离开时，<span class="red">愤怒的贝利拦在了门口</span>。
+	<br>
+	"我就知道是你在搞鬼，混蛋。"
+	<br>
+	<<He>>抓住你的手臂。
+	<br><br>
+
+	<<pubfameComplete "bailey" "list">>
+
+	<<link [[继续|Bailey Beating]]>><<set $molestationstart to 1>><</link>>
+<<elseif $phase is 1>>
+	<<set $pubfame.detail to "baileyList">>
+	你把米奇的名字从名单上删除，保存并关闭文件，然后拔出了USB。<span class="green">贝利已经走了足够长的时间让你逃脱。</span>
+	<<pubfameComplete "bailey" "list">>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+<<elseif $phase is 2>>
+	<<set $pubfame.detail to "baileyWiped">><<set $pubfame.bailey.fight to "ready">>
+	退出文件并将其从文件夹中删除。你还可以清除文件的历史记录。然后将其从回收站中删除，并使用USB上的程序清除缓存。它还会自动删除所有系统还原点，这是你没有想到要做的。
+	<br><br>
+
+	<<pubfameComplete "bailey" "clear">>
+
+	当你还在电脑前的时候，贝利大步走进房间。<<He>>打了个响指。"离那里远点。现在。"你走开，贝利查看了<<his>>的电脑。"我就知道你要..."
+	<br><br>
+
+	<<He>>慢悠悠地盯着屏幕，偶尔点击或打字。<<His>>的表情绷紧了。你看不到<<hes>>在做什么，但你可以想象<<hes>>正在检查文件历史记录，然后是回收站，然后是缓存，最后是还原点。<<His>>的表情在整个过程中几乎没有变化。
+	<br><br>
+
+	最后，<<he>>抬头看着你。“我明白了。”<<He>>不舒服地盯着你看了很长时间。“你可以走了。”当你离开时，你感觉到<<his>>的眼睛在看着你。
+	<br><br>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+<</if>>
+
+:: Bailey Sheet Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+	<<set $apologised to 1>>
+<</if>>
+
+<<effects>>
+<<effectsman>><<man>>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Bailey Sheet Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Bailey Sheet Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Bailey Sheet Fight Finish
+<<effects>><<set $pubfame.bailey.fight to "done">>
+<<if $enemyhealth lte 0>>
+	<<earnFeat "Slip Through the Backdoor">>
+	<<person1>><<person>>踉跄着退了回来，护理着伤口。"该死，"<<he>>说。"老板对我们不会满意的"
+	<br><br>
+
+	"让我们离开小镇，为我们争取几个星期的时间，”<<person3>><<person>>说，随着人群的散去。
+	<br><br>
+
+	<span class="gold">贝利一定是在你删除了电子表格后雇佣了他们.</span><<tearful>>你看着他们散开。
+	<br><br>
+
+	<<endcombat>><<clotheson>>
+
+	<<destinationeventend>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<earnFeat "Slip Through the Backdoor">>
+	<<ejaculation>>
+
+	<<tearful>>你趁他们昏头昏脑的时候逃走。
+	<br><br>
+
+	<span class="gold">贝利一定是在你删除了电子表格后雇佣了他们.</span><<tearful>>你看着他们散开。
+	<br><br>
+
+	<<endcombat>><<clotheson>>
+
+	<<destinationeventend>>
+<<else>>
+	<<pass 5>>
+	你瘫倒在地，伤得动弹不得。
+	<br><br>
+
+	<<person1>><<person>>把你的手臂绑在一起，然后把你拖进一辆卡车。砰的一声关上后备箱。几分钟后，卡车起飞了。你试着打开后备箱但从另一边锁上了。
+	<br><br>
+
+	时间过去了，卡车停了下来。有人打开后备箱。<span class="red">是贝利。</span>
+	<br><br>
+
+	<<if $renttime lte 0>>
+		"反正你也该付钱了，”<<he>>冷笑道。
+	<<else>>
+		"还没到付款日呢，”<<he>>冷笑道。
+	<</if>>
+	"但我不在乎。你让我受了那么多苦，我不会接受比这更差的。"
+	<br><br>
+
+	<<link [[继续|Rent Intro]]>><<clotheson>><<endcombat>><</link>>
+<</if>>
+
+:: Robin Give Milkshake
+<<effects>>
+<<pass 20>>
+你递给罗宾一杯奶昔，然后在床上坐在<<him>>旁边。“哦，谢谢你，”<<he>>说，<<he>>从你手中接过奶昔。接下来的二十分钟，你们一起喝着奶昔聊天。
+<<npcincr Robin love 1>><<glove>>
+<br><br>
+
+<<robinoptions>>
+
+:: Robin Share Milkshake
+<<effects>>
+<<pass 20>>
+你坐在床上，拿出一杯奶昔递给罗宾。“那是给我的吗？”<<he>>问道，<<he>>从你手中接过奶昔。
+<br><br>
+"我想我们可以一起分享，”你说着跑到<<him>>旁边。接下来的二十分钟里，你一边喝着奶昔，一边聊天。
+<<npcincr Robin love 2>><<gglove>>
+<br><br>
+
+<<robinoptions>>
+
+
+:: Robin Cow Happy
+<<effects>><<set $livestock_robin to 10>>
+你告诉罗宾你现在这样很开心。<<He>>看起来不太服气，你笑了笑。<br>
+罗宾简短地点了点头。“好吧，如果你这么说的话。”<<He>>对你微笑。“如果你开心，那我也开心。"
+<br><br>
+<<robinoptions>>
+
+
+:: Robin Cow Help
+<<effects>><<set $livestock_robin to 7>>
+你给罗宾一个简单的点头。<br>
+"我保证，”<<He>>一脸坚定地说，“我会帮助你。我会让你变得更好。”<<trauma -4>><<stress -4>>
+<br><br>
+
+<<robinoptions>>
+
+:: Robin Trauma Visit
+<<set $outside to 0>><<set $location to "home">><<home_effects>><<effects>>
+<<set $robinTraumaVisit to true>>
+<<npc Robin>><<person1>>
+
+<<if $phase is 0>>
+	<<set $robindestination to "Bedroom">>
+<<elseif $phase is 1>>
+	<<set $robindestination to "Orphanage">>
+<<elseif $phase is 2>>
+	<<set $robindestination to "Domus Street">>
+<</if>>
+
+你走到<<if $phase is 0>>屋里<<else>>towards大厅<</if>>，但最后在罗宾的房间外停了下来。
+门下没有灯光，你也听不到里面的声音。
+<br><br>
+
+罗宾一般不会睡这么早。你感到深深的恐惧.<<stress 2>><<gstress>>
+<br><br>
+
+你克服了忧虑，悄悄地转动门的把手，慢慢地把门打开。你往里面一看，发现床罩上好像有个肿块。
+你可以听到罗宾在下面轻轻抽泣。
+<br><br>
+
+罗宾很久没有离开<<his>>的房间了，也没有来和你说过话。<<He>>可能需要人倾诉。
+<br><br>
+
+<<link [[花时间和罗宾在一起 (3:00)|Robin Trauma Visit 2]]>><<npcincr Robin love 1>><<npcincr Robin dom -1>><<npcincr Robin trauma -5>><<unset $robindestination>><</link>><<glove>><<lrtrauma>><<ldom>>
+<br>
+<<link [[关门|Robin Trauma Visit Close]]>><<stress 6>><</link>><<gstress>>
+<br>
+
+:: Robin Trauma Visit Close
+<<set $outside to 0>><<set $location to "home">><<home_effects>><<effects>>
+
+你慢慢地关上门，留下罗宾一个人呆在房间里。
+<br><br>
+
+<<link [[离开|$robindestination]]>><<endevent>><<unset $robindestination>><</link>>
+
+:: Robin Trauma Visit 2
+<<set $outside to 0>><<set $location to "home">><<home_effects>><<effects>>
+
+你推开罗宾的门。它嘎吱嘎吱地打开，走廊里的灯光驱散了<<his>>的房间里的黑暗。
+当你进入房间时，你听到一声惊恐的喘息声，罗宾把被子紧紧地盖在了<<himself>>自己身上。
+<br>
+当你呼唤罗宾的名字时，房间里充满了一种诡异的寂静。
+<br>
+几秒钟内，什么也没发生，整个房间继续在不安中徘徊。直到你看到罗宾的头从被窝里钻出来。
+<<He>>盯着你看了一秒钟，<<his>>的眼睛从明亮的灯光中退缩。<<He>>发现你后又躲到<<his>>的床罩下。
+<br><br>
+
+你关上身后的门，把房间带回一片漆黑。你设法走到罗宾的床边，跪在床边。
+<br><br>
+
+你再喊一次罗宾的名字，这次更小声点。当你伸手去触摸时，灯光闪烁着，温暖的橙色光芒笼罩着整个房间。
+你待在<<his>>的床边，保持安静，直到<<he>>露出了<<himself>>自己。
+<br><br>
+
+<<His>>的眼睛肿胀，因流泪而变红。泪痕从脸上流下来。你能感觉到从<<him>>身上散发出来的痛苦。你问<<hes>>感觉如何。
+<br>
+<<if $robin_injured gte 1>>
+	<<Hes>>沉默了一会儿。“我--我没事，”<<he>>喃喃自语。<<he>>说话时不看你。"真的。"
+<<else>>
+	"很--很好，"<<he>>回答，强忍住流鼻涕。"止痛药起到了作用，瘀伤和肿胀也在消失。"
+<</if>>
+<br><br>
+
+接下来的几个小时里，你们两个会谈论任何你想到的事情，比如即将发布的最新视频游戏和学校。
+罗宾有时很难谈论<<himself>>自己和<<his>>的状况，但每当你提到想带<<him>>出去逛街时，<<him>>似乎总是会振作起来。
+<br><br>
+
+<<link [[继续|Robin Trauma Visit 3]]>><<pass 3 hours>><</link>>
+<br>
+
+:: Robin Trauma Visit 3
+<<set $outside to 0>><<set $location to "home">><<home_effects>><<effects>>
+
+罗宾看了看钟，似乎很惊讶。“我没意识到我们聊了这么久，”<<he>>笑着说。你已经很久没有听到<<him>>这样做了。
+<br><br>
+
+"我知道你一定很忙。我不想占用你更多的时间，"<<he>>继续说道，但语气有些勉强。看来罗宾还有更多话要说。
+<br><br>
+
+罗宾的脸变红了。你问怎么了。
+<br>
+"没什么，只是..."
+<br>
+罗宾的声音里充满了尴尬，导致<<him>>在挣扎着找出合适的话来说话的时候绊住了<<him>>。
+<br><br>
+
+"如果你觉得这要求不过分的话，你能和我在一起吗？今晚在这里？我发现有时很难入睡，"<<he>>说。"也许和你在一起我会觉得安全些？"
+<br><br>
+
+<<link [[好 (8:00)|Robin Trauma Visit Yes]]>><<npcincr Robin love 1>><<npcincr Robin lust 1>><<npcincr Robin dom -1>><<npcincr Robin trauma -10>><</link>><<glove>><<glust>><<lrtrauma>><<ldom>>
+<br>
+<<link [[不要|Robin Trauma Visit No]]>><<npcincr Robin love -1>><</link>><<llove>>
+<br>
+
+:: Robin Trauma Visit No
+<<set $outside to 0>><<set $location to "home">><<home_effects>><<effects>>
+
+<<if $speech_attitude is "meek">>
+	"对不起，罗宾，”你嘟囔着，盯着自己的脚。“我做不到。"
+<<elseif $speech_attitude is "bratty">>
+	"抱歉，罗宾。"，你说。"我还有别的地方要去。但你自己能行的。"
+<<else>>
+	"对不起，罗宾。我今天有些事要做。"
+<</if>>
+<br><br>
+
+"哦......”罗宾的声音里夹杂着失望和悲伤。"没关系！我是一个大<<personsimple>>了，我会没事的！"
+<br>
+你不服气，但你还是朝门口走去。
+<br><br>
+
+就在你关上门的时候，你听到罗宾发出了一声沮丧的叹息。你回到你的房间，感到一阵内疚。<<stress 2>><<gstress>>
+<br><br>
+
+<<link [[继续|Bedroom]]>><<endevent>><</link>>
+<br>
+
+:: Robin Trauma Visit Yes
+<<set $outside to 0>><<set $location to "home">><<home_effects>><<effects>>
+
+"我当然会留下来，”你告诉<<him>>。
+<br>
+"真的吗？太好了，一起睡吧！”<<he>>尖叫着，兴奋地举起手臂。
+<br>
+"我们得睡在我的床上，”<<he>>继续说。“如果<<nnpc_he "Bailey">>抓到你睡在地板上，贝利会对我发火的。反正我也不希望你睡在下面。"
+<br><br>
+
+罗宾给了你一个友好的微笑。你们两个又聊了一会儿，直到太阳完全落山，星星照亮夜空。
+<br><br>
+
+你坐到<<him>>旁边的床上，关上灯。
+<br>
+"谢谢，"<<he>>突然说。“我是说，谢谢你和我在一起，我已经觉得安全多了。"
+<br>
+<<He>>将头靠在你的胸前，<<his>>靠得很近。你感觉有点不舒服，但罗宾似乎很满足很高兴。你能感觉到<<his>>的体温传达到你身上的温暖。
+<br><br>
+
+"我不知道没有你我会在哪里。"
+<br><br>
+
+<<His>>的声音渐渐变成了打哈欠。没过多久，你就听到了罗宾轻柔的呼吸声。很快的你也感受到了困意，你闭上眼睛陷入到了睡眠中。
+<br><br>
+
+<<link [[睡觉|Robin Trauma Visit Sleep]]>><<set $robinbed to "yours">><<set $bedGuest to "Robin">><<set $sleephour to 8>><<incrementautosave>><</link>><<ltiredness>>
+<br>
+
+:: Robin Trauma Visit Sleep
+<<set _autosavehere to true>>
+<<sleep>><<effects>>
+<<sleepeffects>>
+<<if $wraith.nightmare is 2 and isBloodmoon()>>
+	你梦见一个美丽的身影，它披着白袍，站在红月下，张开双臂欢迎你。当你走近的时候，你会感觉到它的凝视在你的脑海中变得空洞。
+	<br><br>
+	它被向内弯曲的树木包围，整个人漂浮在湖面上。所有的东西都在你周围移动，你发现自己悬在一大片废墟上。你无法呼吸。
+	<br><br>
+	你慢慢睁开眼睛，懒洋洋地从罗宾的床上起身。你的耳朵嗡嗡作响，但是你的动作很小心。你不想惊醒<<nnpc_him "Robin">>。
+	<br><br>
+	<<wraithPossess "home">>
+	<span class="nextLink"><<link [[行走|Bedroom]]>><<unset $robinbed>><<endevent>><</link>></span>
+	<br>
+<<else>>
+	你一觉醒来精神焕发，准备好迎接新的一天。罗宾仍然睡得很香，<<his>>躺在你的身边，脸上还带着笑容。罗宾<<his>>一定做了一个美梦吧？你动作小心的从<<his>>的床上离开，不打扰这个熟睡中的孤儿。
+	<br><br>
+
+	你回了自己的房间。
+	<br><br>
+
+	<<link [[继续|Bedroom]]>><<unset $robinbed>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Robin Dungeon Talk
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<unset $robinPostMortem>>
+
+罗宾的表情变暗了，但还是点了点头。
+<br>
+"想说多少就说多少，好吗？"<<he>>轻声细语，轻轻抚摸你的手臂。“如果你觉得不舒服，可以停下来。"
+<br>
+开始前你点头深呼吸。
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	你低下头，开始描述你被锁在牢房里的经历。
+	你告诉罗宾任何反抗的行为都会带来可怕的后果。
+	很快，你开始描述你所忍受的侵犯，在你的声音消失之前。
+	<br><br>
+
+	你热泪盈眶地抓住罗宾的手，乞求<<him>>原谅你。
+
+	<<if $robinromance is 1>>
+		你试着解释他们对你做了什么，而你别无选择。
+	<<else>>
+		你告诉<<him>>你很抱歉把家里弄得这么乱。你没有办法。
+	<</if>>
+	<br>
+	罗宾轻轻地把<<his>>的手放在你的脸颊上，抬起你的下巴，凝视着你的眼睛。<<Hes>>哭了。
+	<br>
+	"别说了，”<<he>>低声安慰道。“你能回家，我还能再见到你，我真的很高兴。”<<He>>紧紧的拥抱你，让你靠在<<his>>的胸前。
+<<elseif $speech_attitude is "bratty">>
+	你告诉罗宾<<he>>想知道的事情。你详细描述了你被关在地下的一个地点。
+	无尽的侵犯和堕落充斥着每个囚犯的生活。尽管如此，你还是努力撑着坚持了下来。
+	直到某天，你终于找到了一个脱身的机会，你成功逃了出来。
+	<br><br>
+
+	罗宾似乎对你的勇敢感到惊讶，同时似乎对这样一个地方的存在感到悲伤。“我很抱歉你经历了这些，”<<he>>的声音听起来闷闷的。
+	<br>
+	<<He>>很快就振作了起来，对你露出了微笑。"希望有一天我能像你一样勇敢。"<<He>>把你拥入怀中，用鼻子蹭了蹭你的肩膀。
+<<else>>
+	你描述了你在某个未知地点的黑暗牢房里度过的时光。
+	根据罗宾的要求，你详细描述了你被迫忍受的恐怖。
+	你很少有不被侵犯的时刻。你可以看得出来罗宾仍然为此感到震惊，但是<<he>>一直在认真听你讲的话。
+	最后你逃出来了，你告诉<<him>>还有很多没那么幸运的人。
+	<br><br>
+
+	罗宾怀疑地看着你。"太可怕了！你和那些可怜的人..."
+	<br>
+	<<He>>把你拉进<<his>>的胸前，用<<his>>的双臂抱住你，抚摸你的头发。
+	"我不会让这种事再发生在你身上，”<<he>>低声说，<<his>>声音颤抖。"我保证"
+<</if>>
+<<lstress>><<ltrauma>><<ggdom>>
+<br><br>
+
+你花了一段时间沉浸在罗宾的怀抱里。你最终抽离，罗宾把手放在你的肩膀上。
+<br>
+"我很抱歉让你经历这些，”罗宾说。"如果你需要我做什么，就算只是聊聊天，也请一定要告诉我。好吗？"
+<br>
+你慢慢点头。罗宾弱弱地笑了笑，<<if $robinconsole is 1>>，然后将<<his>>的注意力转回到屏幕上。<<He>>一直盯着你<</if>>。
+<br><br>
+
+<<robinoptions>>
+
+:: Robin After Class
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<npc Robin>><<person1>>
+
+<<if $robinReunionScene is "dungeon">>
+	<<unset $robinReunionScene>><<set $robinPostMortem to true>>
+	你走到走廊里，还没走远，一双胳膊就从后面抱住了你。
+	<br><br>
+
+	"对不起，”一个熟悉的声音说，是罗宾。<<He>>把你转过来面对<<him>>。<<His>>在流泪。
+	<br>
+	"我没想到今天会在课堂上见到你，”<<he>>勉强地笑着说，“我还以为再也见不到你了。太好了，我还以为你..."
+	<br>
+	<<His>>的声音渐渐消失，<<him>>又一次拥抱了你，<<him>>把脸埋进你的胸前，维持着这样的姿势过了好一会儿才把你放开。
+	<br><br>
+
+	"对不起，我上课要迟到了。但放学后我们得谈谈。"<<He>>捏捏你的肩膀。“当然，是在你准备好的时候。"
+	<br><br>
+
+	你看着<<him>>离开，挥手看着<<him>>消失在走廊里。
+<<elseif $robinReunionScene is "dungeonRobin">>
+	<<unset $robinReunionScene>>
+	你走到走廊里，还没走远，一双胳膊就从后面抱住了你。
+	<br><br>
+
+	"对不起，”一个熟悉的声音说，是罗宾。<<He>>把你转过来面对<<him>>。<<His>>在流泪。
+	<br>
+	"我没想到今天会在课堂上见到你，”<<he>>勉强地笑着说，“我还以为再也见不到你了，真的。我以为他们..."
+	<br>
+	<<His>>的声音渐渐消失，<<him>>又一次拥抱了你，<<him>>把脸埋进你的胸前，维持着这样的姿势过了好一会儿才把你放开。
+	<br><br>
+
+	"对不起，我上课要迟到了。但是我真的很高兴你能回家。”<<He>>抱了抱你的肩膀。“我爱你。"
+	<br><br>
+
+	你看着<<him>>离开，挥手看着<<him>>消失在走廊里。
+<<elseif $robinReunionScene is "asylum">>
+	<<unset $robinReunionScene>>
+	你走到走廊里。在你走远之前，
+
+	<<if $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 40>>
+		你感觉到有什么东西轻轻地拉着你的手臂。你转过身发现罗宾在你身边。你没听到<<him>>向你走来的声音。
+		<br><br>
+
+		"嗨，”当走近时，<<he>>轻声地说，“我以为今天见不到你了，我以为医生把你带走了。如果我早点儿知道你要回来，我就会给你买些东西了，”罗宾的声音颤抖着。
+	<<else>>
+		有人从后面喊了你的名字。你转过身，发现罗宾正急切地向你招手。<<He>>小跑到你身边。
+		<br><br>
+
+		"你出来了！"<<he>>在你感到舒服的距离说道。"你今天居然出现在了课堂上！我还以为你要在医生那里呆一阵子呢，如果我早点儿知道你要回来，我肯定会好好准备欢迎你回家的，"罗宾解释道。
+	<</if>>
+	<br><br>
+
+	你摇摇头，告诉<<him>>他们根本就没有帮助你，所以你才会提前“退房”。罗宾似乎很困惑，但<<him>>还是点了点头。你们边走边聊，直到罗宾到了<<him>>下一堂课的教室。
+	<br><br>
+
+	<<if $NPCName[$NPCNameList.indexOf("Robin")].trauma gte 40>>
+		当<<him>>双臂抱住你紧紧地搂着你时，<<Hes>>一直都很安静。“我真的很高兴，你又自由了。"
+	<<else>>
+		"……到时间了，我必须得走了，”<<he>>说着给了你一个拥抱。"但是我真的很高兴能再见到你！我希望你感觉好些了。"
+	<</if>>
+	<br>
+	<<He>>进入教室，把你留在了走廊里。
+<<else>>
+	你走进走廊，你不小心撞到了罗宾背上。你们俩摔倒在地。
+	<br><br>
+
+	"对不起！"<<he>>笑着说。你帮<<him>>收拾<<his>>的东西，然后和<<him>>道别，因为<<he>>赶着去上<<his>>下一节课。
+<</if>>
+<br><br>
+
+<<link [[继续|Hallways]]>><<endevent>><</link>>
+<br>
+
+:: Robin Brothel
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+<<generate1>><<person1>>
+
+你穿过人群去找罗宾。<<nnpc_He "Robin">>张开嘴说了些什么，但在音乐声中听不到<<nnpc_him "Robin">>的声音。<<nnpc_He "Robin">>温柔地抓住你的手带你离开。很明显<<nnpc_hes "Robin">>不确定要去哪里，你指着一个空房间。
+<br><br>
+
+<<set _robinPossibleComments to []>>
+<<if $fame.sex gte 400>>
+	<<set _robinPossibleComments.push("sex")>>
+<</if>>
+<<if $fame.rape gte 400>>
+	<<set _robinPossibleComments.push("rape")>>
+<</if>>
+<<if $fame.bestiality gte 400>>
+	<<set _robinPossibleComments.push("beast")>>
+<</if>>
+<<if $scienceprojectwon is 1 or $mathsprojectwon is 1>>
+	<<set _robinPossibleComments.push("smart")>>
+<</if>>
+<<set _robinPossibleComments.push("generic1")>>
+<<set _robinPossibleComments.push("generic2")>>
+<<set _robinPossibleComments.push("generic3")>>
+<<set _robinPossibleComments.push("generic4")>>
+<<set _robinPossibleComments.push("generic5")>>
+
+<<set _robinComment to _robinPossibleComments.random()>>
+
+一位顾客经过，看着你们俩。
+
+<<switch _robinComment>>
+	<<case "sex">>
+		"亲爱的，你会得到款待的。”<<person>>对罗宾说。
+	<<case "rape">>
+		"你想怎么做就怎么做。<<pShe>>很难说‘不’，"<<person>>冷笑。
+	<<case "beast">>
+		"做完后一定要洗澡。<<pShe>>床上的喜好有些变态，"<<person>>笑着说。
+	<<case "smart">>
+		"<<pShes>>是个聪明能干的孩子，不过在床上要更能干，"<<person>>嘲笑道。
+	<<case "generic1">>
+		"我不介意自己尝一尝，”<<person>>的声音里带着几分嫉妒。
+	<<case "generic2">>
+		"是个不错的荡妇，虽然<<pshes>>很爱讨价还价，"<<person>>对罗宾说。
+	<<case "generic3">>
+		"不要花太长时间了，我等会儿也想试试，”<<person>>告诉罗宾。
+	<<case "generic4">>
+		"我永远也搞不定那个荡妇，”那个<<person>>喃喃，<<he>>打量着你。
+	<<case "generic5">>
+		"很可爱，”<<person>>说。
+	<<default>>
+		在你们去房间的路上没人停下来或评论。
+<</switch>>
+<br><br>
+<<endevent>>
+<<npc Robin>><<person1>>
+
+你注意到了罗宾脸上的厌恶表情。罗宾眉头紧锁，不理睬主顾，加快了<<his>>的步伐。你很快就发现自己和罗宾到了一个空房间里。
+<br><br>
+
+<<link [[继续|Robin Brothel 2]]>><</link>>
+<br>
+
+:: Robin Brothel 2
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+<<if $robinBrothelVisit gte 1>>
+	你坐在床边羞愧地盯着地面。罗宾微笑着，尽管你能看出来那笑容背后掩藏的痛苦。
+	<br><br>
+	<<if _robin.trauma gte 50>>
+		"我们回家吧，拜托了，"<<he>>伸出颤抖的手。"这里不安全。"
+	<<else>>
+		"没关系，我只是来接你的，"<<he>>解释道。<<He>>伸出<<his>>的手。“我没生气，我们回家吧。"
+	<</if>>
+<<elseif $dissociation gte 1>>
+	你坐在床边。你空洞的眼神让罗宾不安地扭动着。沉默被打破了，你呆滞的开口报价，问罗宾愿意花多少钱睡你。
+	<br>
+	<<if _robin.trauma gte 50>>
+		罗宾从你的目光中察觉到了什么。"对不起……"
+	<<else>>
+		罗宾马上打断了你。“求你了，我不是为那个来的，"
+	<</if>>
+	<<he>>说着走上前拥抱你。一开始你很害怕，但是很快的你感觉你身上传来了一股陌生又熟悉的温暖。那温暖的感觉让你忍不住的想要流泪，眼泪完全止不住，你像开闸的洪水一样放声大哭。一直以来压在你心头的阴云终于消散了。
+	<br><br>
+
+	你激动的情绪让罗宾有些不安，但<<he>>一直都在默默地听着，听着你歇斯底里的抱怨，听着你描述你一直以来承受的痛苦，罗宾试图安慰你。
+	<br><br>
+
+	你冷静下来后罗宾开始说话。"我是来带你回家的。
+	<<if _robin.trauma gte 50>>
+		我不能失去你，不想和你分开。"
+	<<else>>
+		我真的无法坐视不理，我不能看着你再这样下去。"
+	<</if>>
+<<elseif $uncomfortable.prostituting is false>>
+	你在床边坐下。你脸上的厌恶显而易见，罗宾很快就注意到了。<<He>>走到你身边拥抱你。
+	<br><br>
+
+	<<if _robin.trauma gte 50>>
+		"没关系，我不会那么做的。”罗宾轻轻地抚摸着你的背，<<his>>的手在颤抖。
+		"我听到了一些事情，一想到会像这样失去你......”罗宾打了个寒颤，没有把话说完。
+		<br><br>
+
+		你紧紧拥抱罗宾，把你的烦恼发泄出来。你说话的时候罗宾把你抱得更紧了。
+		是贝利，贝利让你陷入了深不见底的深渊，让你为了钱每天担惊受怕。你详细描述了你在孤儿院里失踪期间发生的事。
+		<br><br>
+
+		"我真的很想知道，这些事为什么会发生在我们身上……贝利真的太残忍了。”罗宾低声说，试图让你平静下来。过了一会儿，你安静了下来。
+		<br><br>
+
+		罗宾看了你一会儿，然后开口说：“我想让你回家，这个地方，我...我不能让你这样对自己。"
+	<<else>>
+		"没关系，我不是为这个来的。”罗宾试图安慰你。“我听说了一些事情，我不能让这种事发生在你身上。"
+		<br><br>
+
+		你紧紧拥抱罗宾，把你的烦恼发泄出来。罗宾一开始很震惊，但似乎理解了你的困境。是贝利，贝利让你陷入了深不见底的深渊，让你因为金钱时刻担心受怕。你详细描述了你在孤儿院失踪期间发生的事。
+		<br>
+		"贝利太残忍了，”罗宾低声说，试图让你平静下来。过了一会儿，你安静了下来。
+		<br><br>
+
+		罗宾看了你一会儿，然后开口道，“回家吧，你不能留在这个地方，我做不到眼睁睁的看着你这样下去。"
+	<</if>>
+<<else>>
+	你坐在床边，罗宾坐在一旁的沙发上。很长一段时间里，你们两个人谁都没有说话，只有从墙后传来的微弱音乐声。<<He>>无言地看了你一会儿，才终于开口。
+	<br>
+	<<if _robin.trauma gte 50>>
+		"我调查了一下这个地方......我还听说了一些关于你的事情。”你看到罗宾紧张起来了。又是一段长时间的沉默。罗宾慢慢地抬起头。<<His>>泪眼汪汪地盯着你。
+		<br><br>
+
+		"你......你还爱我吗？"
+		<br><br>
+
+		<<if $speech_attitude is "meek">>
+			"我，我当然爱你。我这么做是为了钱，”你结结巴巴地说。"为，为了给贝利付房租。"
+		<<elseif $speech_attitude is "bratty">>
+			"你为什么这么问？我当然知道我在做什么。为了付给贝利的租金这是唯一的办法了。”你解释道。
+		<<else>>
+			"我真的很爱你，罗宾。但是贝利要的租金我真的支撑不住了，这是我唯一能想到的来钱快的工作了，”你解释道。
+		<</if>>
+		<br>
+		罗宾点头表示理解，但眼泪还是在流。<<He>>从沙发上站起来，坐在你旁边。罗宾把你拥入怀中，你也紧紧抱住了<<He>>。
+		<br><br>
+
+		"这是不对的，”罗宾说。“我希望你回家。我会永远在你身边，就像你在我身边一样。我们可以一起想办法。"<<He>>红着眼睛放开了你。
+	<<else>>
+		"我调查了一下这是个什么样的地方，而且我还听说了一些关于你的事情。"你看到罗宾紧张了起来。又是一段长时间的沉默。罗宾慢慢地抬起头。<<His>>紧紧盯着你的眼睛。
+		<br><br>
+
+		"你还爱我吗？"
+		<br><br>
+
+		<<if $speech_attitude is "meek">>
+			"我，我当然爱你。我这么做是为了钱，”你结结巴巴地说。"为，为了给贝利付房租。"
+		<<elseif $speech_attitude is "bratty">>
+			"你为什么这么问？我当然知道我在做什么。为了付给贝利的租金这是唯一的办法了。”你解释道。
+		<<else>>
+			"我真的很爱你，罗宾。但是贝利要的租金我真的支撑不住了，这是我唯一能想到的来钱快的工作了，”你解释道。
+		<</if>>
+		<br>
+		罗宾点头表示理解，但是<<He>>脸上的表情还是很郁闷。<<He>>从沙发上站起来，坐在你旁边。罗宾把你拥入怀中，你也紧紧的抱住了<<He>>。
+		<br><br>
+
+		"这是不对的，”罗宾说，“我想让你回家。我们可以想出办法，我不能让你这样对自己。”<<He>>放开了你，热泪盈眶。
+	<</if>>
+<</if>>
+<br><br>
+
+<<if $robinBrothelVisit is undefined>><<set $robinBrothelVisit to 1>><</if>>
+
+<<link [[和罗宾一起离开|Robin Brothel 3]]>><<set $phase to 0>><<npcincr Robin love 5>><<npcincr Robin dom 5>><<npcincr Robin trauma -5>><</link>><<gglove>><<ggdom>><<lrtrauma>>
+<br>
+<<link [[待在这儿|Robin Brothel 3]]>><<set $phase to 1>><<npcincr Robin love -1>><</link>><<llove>>
+<br>
+
+:: Robin Brothel 3
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+<<if $phase is 0>>
+	罗宾微笑道：“谢谢。"
+	<<if $exposed gte 1>>
+		<<towelup>>
+		<<He>>拉着你的手带你走出大楼，一起到了附近的一个公交站，在你们离开前罗宾让你先去更衣室换了身衣服。
+	<<else>>
+		然后<<he>>拉着你的手带你走出大楼，来到了附近的公交站。
+	<</if>>
+	你一边和罗宾聊天一边等待。很明显，<<hes>>试图忽略你刚才正在做的事情。
+	<br><br>
+
+	<<if Time.dayState is "night">>
+		<<generate2>><<generate3>>
+		一辆公共汽车很快停了下来，你和罗宾坐在后面。你看了<<him>>一眼。
+		<<He>>看起来很累。你因为让<<him>>这么晚还在外面而感到内疚。<<stress 2>><<gstress>>
+		<br><br>
+
+		整个过程波澜不惊，直到坐在你前面的<<person2>><<person>>在座位上转过身来，<<he>>咧着嘴笑。
+		<br>
+		"你真是太可爱了，"<<he>>低声说道。"你应该知道不能在晚上乘公共汽车。"
+		<br>
+		罗宾动了动，皱起了眉头。
+		<<if _robin.trauma gte 50>>
+			<<He>>紧紧地抱着你，尽最大努力保护你。
+		<<else>>
+			"离<<phim>>远点儿，否则我就要报警了。"
+		<</if>>
+		<br><br>
+
+		<<personsimple>>笑了笑，然后看了看<<person2>><<him>>旁边的<<person3>><<person>>，对方耸耸肩。
+		<<person>>向后看，做出一副放弃的样子。
+		<br>
+		"好吧，你赢了。反正今晚不需要两个担架。"
+		<br>
+		<<endevent>>
+		<<npc Robin>><<person1>>
+		罗宾的表情依然紧张，<<he>>把手伸进了<<his>>的口袋里。
+		最终，<<he>>决定不使用它，不管它是什么。不管你怎么努力，你都看不出来是什么。
+		<br><br>
+
+		剩下的旅途顺利通过了。
+	<<else>>
+		回家的路上风平浪静。罗宾把头靠在你的肩上，手仍然和你的手缠在一起。
+		<<stress -2>><<trauma -2>><<lstress>><<ltrauma>>
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Robin Brothel Home]]>><</link>>
+	<br>
+<<elseif $phase is 1>>
+	<<if $speech_attitude is "meek">>
+		你盯着自己的脚。“我需要这样做。如果我不的话，贝利就会......”你慢慢地走开了。
+	<<elseif $speech_attitude is "bratty">>
+		你背对着罗宾。你不能强迫自己看着<<him>>的眼睛。“这就是世界的规律。"
+	<<else>>
+		你摇摇头，"如果我不付钱，我们两个人都会变成我现在的境地。我很抱歉，罗宾……"
+	<</if>>
+	<br><br>
+	罗宾怀疑地看着你。
+	<<if _robin.trauma gte 50>>
+		"但是...拜托，我们可以一起努力。我们可以另想办法。一个不会伤害我们的办法..."
+		<<He>>往下看，<<his>>的手在颤抖。“只是，请一定要回家......”<<His>>的声音变得低沉呜咽。
+	<<else>>
+		"我不想看到你糟蹋自己，即使这是为了我们好。"
+		<<He>>抓住你的肩膀。<<His>>的手在颤抖。“求你了，和我回家吧！"
+	<</if>>
+	<br><br>
+
+	你不确定你是否想留在这里，但你意识到如果你想继续下去，你必须坚定。
+	<br><br>
+
+	<<link [[和罗宾离开|Robin Brothel 3]]>><<set $phase to 0>><<npcincr Robin love 3>><<npcincr Robin trauma -2>><</link>><<glove>><<lrtrauma>>
+	<br>
+	<<link [[坚持留下来|Robin Brothel 3]]>><<set $phase to 2>><<npcincr Robin love -10>><<npcincr Robin dom -20>><<npcincr Robin trauma 4>><</link>><<lllove>><<llldom>><<grtrauma true>>
+	<br>
+<<elseif $phase is 2>>
+	尽管罗宾一想到你在这里工作就绝望，你还是不让步。<<He>>陷入沉默，在失败中点头。
+	眼泪从<<his>>的脸颊上滚下来，<<he>>看着你，希望你能重新考虑考虑。你没有理会。
+	<br><br>
+	<<if _robin.trauma gte 50>>
+		"对不起，打扰你了..."
+	<<else>>
+		"好吧，我不打扰你了。只是……"
+	<</if>>
+	罗宾结结巴巴地说：“小心点。"
+	<br><br>
+
+	在离开房间之前，罗宾又用含泪的眼睛看了你一眼，门在身后轻轻地关上了。
+	<<stress 6>><<trauma 6>><<gstress>><<gtrauma>><<npcincr Robin trauma 4>><<grtrauma true>>
+	<br><br>
+
+	<<link [[继续|Brothel]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Robin Brothel Home
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+你们到达孤儿院，一起走下了公共汽车。罗宾送你回了你的房间。
+<br><br>
+
+<<if $robinBrothelVisit gte 1>>
+	<<if _robin.trauma gte 50>>
+		<<He>>强颜欢笑。“谢谢你和我一起回家，”<<he>>含泪地笑着说。
+		"一想到失去你，我就害怕......”<<He>>紧紧地抱着你，<<his>>的双臂紧张地颤抖着。
+		<br>
+		"你不需要独自承受这一切，”<<he>>抽泣着。“我们会熬过去的，贝利阻止不了我们，<<nnpc_him "Bailey">>不是无法战胜的魔鬼。"
+		<br>
+		<<He>>紧紧地抱住着你，过了好久才松开手。<<Hes>>微笑着，但是眼中却含着泪水。
+	<<else>>
+		<<He>>对你微笑。"你能回家真的太好了，我们肯定能想出办法的。"
+		<<He>>将你抱在<<his>>的怀里，轻轻抚摸你的后脑勺。
+		<br>
+		"你不需要独自承受这一切，”<<he>>轻声说，"我们会熬过去的，贝利阻止不了我们。"
+		<br>
+		<<He>>紧紧地抱着你，过了好久才松开手。<<Hes>>对你微笑。
+	<</if>>
+<<else>>
+	<<if _robin.trauma gte 50>>
+		进房间后，罗宾坐到了床上。
+		<br><br>
+		你把一只手放在罗宾的肩膀上，温柔地安抚<<him>>。这似乎能让<<his>>精神振奋一点。
+		<br><br>
+		"对不起。我真的很在乎你，而且..."<<He>>叹了口气，看起来很沮丧。“请不要生气......我只是不想你落得和我一样的下场。"
+		<br>
+		你紧紧抱着<<him>>直到<<he>>停止颤抖。“我们会想办法的，”<<he>>说着，微微一笑。
+	<<else>>
+		进房间后，<<he>>开始说话。"对不起。我没想过要提你的工作，但是我很担心你，而且......"
+		<<He>>叹了口气，看起来很沮丧。“我希望你不会生气。"
+		<br>
+		你把一只手放在罗宾的肩膀上，温柔地安抚<<him>>。这似乎能让<<his>>精神振奋一点。
+		"我们会想办法的，”<<he>>说着，微微一笑。
+	<</if>>
+<</if>>
+<br><br>
+
+<<if Time.dayState is "night">>
+	罗宾瞥了一眼钟。
+	<<if _robin.trauma gte 50>>
+		<<He>>打了个呵欠。“我想我现在要回我的房间了。”<<he>>不情愿地说。
+	<<else>>
+		"时间不早了，”<<he>>打着哈欠。“休息一下吧，我们都需要休息。"
+	<</if>>
+	<br><br>
+
+	<<link [[点头|Robin Brothel Sleep]]>><<set $phase to 0>><</link>>
+	<br>
+	<<link [[叫罗宾陪着你|Robin Brothel Sleep]]>><<set $phase to 1>><<stress -6>><<trauma -6>><<npcincr Robin love 1>><<npcincr Robin dom 1>><<npcincr Robin lust 1>><</link>><<lstress>><<ltrauma>><<glove>><<gdom>><<glust>>
+	<br>
+<<else>>
+	罗宾在你房间里又待了一会儿，以确保你没事。几分钟后，<<he>>亲了亲你的脸颊，然后站了起来。
+	<br>
+	<<if _robin.trauma gte 50>>
+		"我想我还是回房间去吧，”<<he>>不情愿地说。<<He>>在门口徘徊片刻，关切地盯着你。“注意安全。"
+	<<else>>
+		"我要回房间了，”<<he>>在门口徘徊片刻，关切地盯着你。"一定要注意安全。"
+	<</if>>
+	<br><br>
+	<<He>>拖着脚走进走廊，把你一个人留在了房间里。
+	<br><br>
+
+	<<link [[继续|Bedroom]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Robin Brothel Sleep
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+<<if $phase is 0>>
+	<<if _robin.trauma gte 50>>
+		你点头跟罗宾说晚安。<<He>>给了你一个紧紧的拥抱。你试图改变方向，促使<<him>>放手。
+		<br>
+		罗宾原本打算离开，但是却在门口停住了。<<He>>关切地盯着你，好像害怕一旦<<he>>离开你就会发生什么事。
+		"请注意安全，”<<he>>犹豫着说，然后离开了，顺便轻轻关上了身后的门。
+	<<else>>
+		你点了点头，向罗宾道晚安。<<He>>微笑着，临走前吻了吻你的脸颊。
+		<br>
+		"明天见，"<<He>>在门口徘徊片刻，关切地盯着你。"一定要注意安全。"
+	<</if>>
+	<br><br>
+
+	<<He>>拖着脚走进走廊，把你一个人留在了房间里。
+	<br><br>
+
+	<<link [[继续|Bedroom]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	罗宾因为你的要求脸红了，但还是点了点头。
+	<br>
+	"当然，”<<he>>说。"你想要什么都行。"
+	<br><br>
+
+	罗宾把灯关了，你听到了<<he>>脱衣服时衣服沙沙作响的声音。
+	你也脱下了衣服，然后在床的一边睡下，给罗宾留出了位置。<<He>>蜷缩在你身边，用鼻子蹭着你的脖子。
+	<br>
+	<<if _robin.trauma gte 50>>
+		罗宾紧紧地抓着你，紧的像是害怕<<he>>一放手你就会消失。"我不知道没有你我该怎么办..."
+		<br><br>
+
+		罗宾紧紧地抱着你，很久才安下心来。你们两人在彼此的怀抱中入睡了。
+	<<else>>
+		"晚安，”<<he>>喃喃地说。<<His>>用双臂抱着你，抱得很紧很紧。"我保证，我会为了你尽我所能..."
+	<</if>>
+	<br><br>
+
+	<<Hes>>很快就睡着了，温柔的呼吸喷洒在你的皮肤上，你觉得有些痒痒的。
+	<br><br>
+
+	<<link [[睡觉|Bed]]>><<endevent>><<undressSleep "bed">><<set $robinbed to "yours">><<set $bedGuest to "Robin">><<trauma -6>><<stress -12>><</link>>
+	<br>
+<</if>>
+
+:: Robin Room Wake
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<npc Robin>><<person1>>
+<<set _robin to statusCheck("Robin")>>
+<!-- Phase 0: Robin's still asleep / Phase 1: Robin wakes up with the player / Phase 2: Robin's already awake / Phase 3: Robin is not present -->
+<<if $phase is 3>>
+	<<storeon "bed">>
+	你一个人在罗宾的房间里。
+	<br><br>
+
+	<<link [[离开|Orphanage]]>><<endevent>><</link>>
+	<br>
+<<elseif Time.hour lte 5 or Time.hour gte 21>>
+	你在罗宾醒了之前便醒来了。
+	<br><br>
+
+	<<link [[继续睡觉|Robin Bed]]>><<endevent>><<set $wear_outfit to "none">><</link>>
+	<br>
+	<<link [[离开|Orphanage]]>><<endevent>><<storeon "bed">><</link>>
+<<else>>
+	<<storeon "bed">>
+	<<if $phase is 0>> <!-- player wakes up before robin -->
+		<<if $rng gte 75>>
+			<<if _robin.trauma gte 50>>
+				罗宾在睡梦中紧紧地抱着你，<<his>>的脸上出了一层冷汗。<<He>>在你动的时候醒了过来，<<He>>对你微笑。
+				"有你在，我觉得一切都会好起来的。"
+			<<else>>
+				罗宾抱着你入睡。你一动<<He>>就醒了过来，<<he>>对你微笑。"早上好。"<<he>>打了个哈欠。
+			<</if>>
+		<<elseif $rng gte 50>>
+			你温柔地叫醒罗宾，<<he>>呻吟着慢慢地从床上爬了起来。"早上好。"<<he>>打了个哈欠。
+		<<elseif $rng gte 25>>
+			罗宾在睡梦中流口水。你轻轻地叫醒<<him>>并递给<<him>>一张纸巾。"嗯？哦！谢谢你，"<<he>>红着脸颊说。
+		<<else>>
+			<<if _robin.trauma gte 50>>
+				罗宾在睡梦中哭泣。你叫醒了<<him>>。<<He>>睁大着眼睛猛地醒来，但当<<He>>看到你时，<<he>>又平静了下来。
+			<<else>>
+				你去叫醒罗宾。<<He>>不情愿地睁开<<his>>的眼睛，但当<<he>>看到你时<<he>>笑了。
+			<</if>>
+		<</if>>
+	<<elseif $phase is 1>> <!-- robin waking up at the same time as the player -->
+		<<if $rng gte 75>>
+			罗宾昏昏沉沉地为一天做好了准备，偶尔会喃喃地说些你随意的话。
+		<<elseif $rng gte 50>>
+			罗宾爬下床，还没有完全准备好醒来。
+		<<elseif $rng gte 25>>
+			罗宾打了个哈欠，然后翻身，当<<him>>看到你回头看<<him>>时，<<his>>睡眼惺忪的脸上露出了笑容。“我很高兴你在这里，”<<he>>说。
+		<<else>>
+			罗宾呻吟着，嘟囔着<<if Time.schoolDay>>家庭作业的事<<else>>一天的计划<</if>>。
+		<</if>>
+	<<else>> <!-- robin awake before player -->
+		<<if $rng gte 75>>
+			罗宾在床上吃三明治。“哦，你要来点儿吗？”<<He>>分了你一半。
+		<<elseif $rng gte 50>>
+			<<if $robinconsole is 1>>
+				罗宾玩着一款紧张刺激的电子游戏。<<He>>试图和你交谈，但是<<He>>玩游戏太专心了，每个话题到最后都变成了嗯嗯嗯，好好好的敷衍。
+			<<else>>
+				罗宾读了一本青年小说。“它没有我想象的那么好，”<<he>>说。
+			<</if>>
+		<<elseif $rng gte 25>>
+			罗宾看着<<his>>的衣柜。“你说我该买件新衣服吗？”<<He>>问道。“我在考虑要不要买顶帽子。"
+		<<else>>
+			<<if _robin.trauma gte 50>>
+				罗宾看起来像是哭了。“没什么，真的，”<<he>>向你保证。
+			<<else>>
+				罗宾随意的踢着腿。“你今天想做点儿什么吗？"
+			<</if>>
+		<</if>>
+	<</if>>
+	<br><br>
+
+	<<robinoptions>>
+<</if>>
+
+:: Robin Mist Intro
+<<set $location to "landfill">><<set $outside to 1>><<effects>>
+<<npc Robin>><<person1>>
+<<run statusCheck("Robin")>>
+<<set $mistrobinintro to 1>>
+
+当你进入垃圾填埋场的最深处时，你绝望地再次呼唤罗宾的名字。你的声音变得嘶哑。
+<br><br>
+
+在寂静中，你可以听到微弱但清晰的人类声音，几乎像是痛苦的。你加快步伐，冲向源头。
+然后，转过一个弯，你看到一个<<personsimple>>，<<his>>的手和腿被绑在空地中央的一根细金属杆上。
+<span class="green">是罗宾。</span><<Hes>>被剥光衣服，蒙上眼睛，你可以看到<<his>>满身的污垢和汗水。
+<<His>>手腕被绳子绑在竿子上的地方很粗糙。
+某种装置被绑在<<his>>的口鼻上，侧面有一个小罐子。
+<br><br>
+
+你取下眼罩。<<His>>的眼睛忽开忽闭。
+<<if $speech_attitude is "meek">>
+	"罗，罗宾！”你哭了。"一定要没事啊..."你把装置拿下来，然后迅速地把它丢到地上。
+<<elseif $speech_attitude is "bratty">>
+	"罗宾！谁把你弄成这样的？”你询问，然后快速的把设备从<<his>>口中取出，用脚把它踩的粉碎。
+<<else>>
+	"罗宾！你没事吧？”你问道。“我会把你弄下来的。”你解开装置让它掉到地上。
+<</if>>
+<br><br>
+
+这个装置不断地喷出粉红色的雾，罗宾开始剧烈地咳嗽。
+你解开<<him>>，然后在<<him>>咳嗽时尽可能轻柔地将<<he>>放倒在地上。
+<<His>>的皮肤因为被抚摸不断的颤抖。
+<br><br>
+
+罗宾跪着坐了一会儿，渐渐停止了咳嗽。你轻轻地把手放在<<his>>的背上。
+<<He>>转过头看着你，瞳孔大大地放大，脸涨红了。
+<<if $awareness gte 200>>
+	你发现呼吸中的甜味是一种强大的催情剂。<span class="red">你想知道<<him>>在柱子上被绑了多久。</span>
+<</if>>
+<br><br>
+
+"我...我需要你，”罗宾说，<<his>>的声音模糊而颤抖。<<He>>向你伸出一只手臂，你抓住它。
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"我也需要你，”你紧紧握住<<his>>的手说。
+<<elseif $speech_attitude is "bratty">>
+	"我知道，这就是为什么我在这里。你现在没事了，”你一边说一边安慰<<him>>。
+<<else>>
+	"我在这儿，别担心，”你一边说一边试图让<<him>>放心。
+<</if>>
+<br><br>
+
+罗宾抓着你的手颤抖，然后收紧。<<His>>的手伸向你的手臂，突然猛地一动，<span class="red"><<he>>把你推到了地上。</span>
+<br><br>
+
+"你不明白，”<<he>>呜咽着。“我需要你。”<<He>>压在你的身上，眼中充满了欲望和泪水。
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"罗，罗宾？你在......”你被罗宾扑向你的动作打断了。你开始慌了。
+<<elseif $speech_attitude is "bratty">>
+	"别说了！我是在帮你！”你开始慌了。
+<<else>>
+	"罗宾？你在干什么？”你开始慌了。
+<</if>>
+<<if $worn.upper.name isnot "naked" or !$worn.under_upper.type.includes("naked")>>
+	罗宾拽着你的衣服，想要把它扯下来。
+<</if>>
+<br><br>
+
+<<link [[反抗|Robin Mist Fight]]>><<set $molestationstart to 1>><</link>>
+<br><br>
+
+:: Robin Mist Fight
+<<run statusCheck("Robin")>>
+<<if $molestationstart is 1>>
+	<<set $robinmist to 1>>
+	<<set $noBodyWriting to true>>
+	<<set $molestationstart to 0>>
+	<<npcexpose>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $enemyarousalmax *= 1.5>>
+	<<npc_attempt_sex>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<npcincr Robin trauma 2>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Robin Mist Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Robin Mist Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Robin Mist Fight Finish
+<<set $location to "landfill">><<set $outside to 1>><<effects>>
+<<unset $robinmist>>
+<<set $robinSeen.pushUnique("robinRape")>>
+<<set _robin to statusCheck("Robin")>>
+<<if _robin.trauma lt 25>>
+	<<set _robin.trauma to 25>>
+<</if>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<if $penisfucked is 1>>
+		"有你在我身体里感觉真好，"
+	<<elseif $vaginafucked is 1>>
+		"你里面的感觉真好，"
+	<<else>>
+		"你让我很开心，"
+	<</if>>
+	罗宾用一种空洞的、几乎不连贯的声音低喃，"……爱你。"
+	<br><br>
+
+	<<if $rapetrait is 1 or $trauma gte ($traumamax / 5) * 4>>
+		"我也爱你，”你低声说。这是自然反应。有那么一瞬间，你让自己忘记了事情有多可怕。在那种情况下只有你和罗宾。
+		<br><br>
+
+		意识终于回笼了，你和罗宾害怕着从彼此身上分开。
+	<<else>>
+		你小心地离开罗宾，<<his>>终于恢复了意识，罗宾从你身边害怕的后退。
+	<</if>>
+<<elseif $enemyhealth lte 0>>
+	罗宾倒在地上剧烈的咳嗽。你担心<<he>>，不知道<<he>>有没有受伤。就那样躺了一会儿后<<He>>摇摇头，<<his>>脸上不正常的红消失了。
+<<else>>
+	你失去了意识。你眼前最后的画面是，罗宾眼含泪水紧紧地抱着你的样子。
+<</if>>
+<br><br>
+<<endcombat>>
+<<clotheson>>
+
+<<link [[继续|Robin Mist Rescue]]>><</link>>
+
+:: Robin Mist Rescue
+<<set $location to "landfill">><<set $outside to 1>><<effects>>
+<<set $robindebtevent to 0>>
+<<set $robinmissing to 0>>
+<<unset $robinmistknown>>
+<<set _robin to statusCheck("Robin")>>
+<<npc Robin>><<person1>>
+
+"对不起，真的非常对不起！你还好吧？"罗宾在哭泣，<<His>>仍然赤裸着身体。罗宾哽咽着断断续续的说话，话语中带着哭腔。
+"对不起，真的非常对不起……我其实有意识，我知道我都做出了些什么禽兽的行为。但是我控制不了……我真的没有办法……"<<He>>的眼泪不断的从脸颊上滑落。
+<<if _robin.dom gte 50>>
+	"我应该保护你，而不是伤害你..."
+<<else>>
+	"我伤害了你......我永远无法原谅自己。"
+<</if>>
+<br><br>
+
+<<link [[原谅罗宾|Robin Mist Forgive]]>><<stress 10>><<npcincr Robin trauma -5>><</link>><<ggstress>><<llrtrauma>>
+<br>
+<<link [[沉默不语|Robin Mist Silence]]>><<stress -3>><<npcincr Robin trauma 3>><</link>><<lstress>><<grtrauma true>>
+
+:: Robin Mist Forgive
+<<set $location to "landfill">><<set $outside to 1>><<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我原谅你......”你低声说。“那不是你。"
+<<elseif $speech_attitude is "bratty">>
+	"不是你的错"，你说。“我知道你平时不会这么做的。"
+<<else>>
+	"你一定经历了很多"，你给了<<him>>一个虚弱的微笑。“我原谅你。"
+<</if>>
+<br><br>
+
+罗宾紧紧的抱着你，<<he>>一直在流泪，过了好久才放开。
+<br><br>
+
+<<link [[继续|Robin Mist Rescue 2]]>><</link>>
+
+:: Robin Mist Silence
+<<set $location to "landfill">><<set $outside to 1>><<effects>>
+
+你说不出话来。
+<br><br>
+
+因为你的沉默回应，罗宾哭得更厉害了。“真的对不起......”<<he>>不断的重复着，一直在强忍着泪水。
+<br><br>
+
+<<link [[继续|Robin Mist Rescue 2]]>><</link>>
+
+:: Robin Mist Rescue 2
+<<set $location to "landfill">><<set $outside to 1>><<effects>>
+<<set $trash to 0>>
+
+整理好思绪后，你握住罗宾的手站起来。
+罗宾紧紧抓住你，只有在你的帮助下才能站起来。
+<<takeHandholdingVirginity "Robin" "consensual">>
+<br><br>
+
+但是在你转身时，你注意到之前绑着罗宾的那根杆子的顶部有什么东西在闪烁。<span class="red">是相机。</span>
+它正对着你们两人。
+<<famerape 40 "video" true>>
+<br><br>
+
+"你受伤了吗？”罗宾担忧的询问。你摇了摇头，罗宾承受了太多痛苦了，没有注意到那个东西。
+<br><br>
+
+回到垃圾填埋场入口的速度很慢。幸运的是你们没有遇到任何麻烦，
+<<if $robin_injured>>
+	但罗宾需要经常休息。
+<<else>>
+	但罗宾的眼泪停不下来。
+<</if>>
+<br><br>
+
+一路上，你从垃圾中找到了一些破旧的衣服给<<him>>穿上。很脏，但至少<<he>>不再是裸体了。
+<<if $exposed gt 0>>
+	你自己拿了一个包。
+	<<towelup>>
+<</if>>
+当你们走出垃圾填埋场时，罗宾用红肿的眼睛看着你。
+<br><br>
+
+<<link [[送罗宾回家 (1:00)|Robin Mist Walk]]>><<pass 60>><<npcincr Robin love 10>><<npcincr Robin trauma -6>><</link>><<gglove>><<llrtrauma>>
+<br>
+<<link [[丢下罗宾直接离开|Robin Mist Abandon]]>><<npcincr Robin love -5>><<npcincr Robin trauma 5>><</link>><<lllove>><<ggrtrauma true>>
+
+:: Robin Mist Walk
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+罗宾在回家的路上一直紧紧地抱着你。<<he>>已经停止哭泣了，但是<<him>>的身体一直都在颤抖，这一路上罗宾一句话也没说。
+<br><br>
+
+你们走进孤儿院，你把罗宾送回了<<his>>的房间。<<He>>把自己裹在了被子里，整个人蜷成了一个球。
+你坐在<<him>>的旁边，轻轻地隔着被子抚摸<<his>>的后背，被子下面偶尔会传来抽泣声。
+<br><br>
+
+罗宾安静下来后，你离开了房间，轻轻地关上门，以免吵醒<<him>>。
+<<run setRobinLocationOverride("sleep", numbersBetween(Time.hour, 24))>>
+<br><br>
+
+<<link [[继续|Orphanage]]>><<endevent>><</link>>
+
+:: Robin Mist Abandon
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "elk">>
+
+<<if $speech_attitude is "meek">>
+	"你能一个人回去吗？我还有事......”你不敢看罗宾的眼睛。
+<<elseif $speech_attitude is "bratty">>
+	"我们孤儿院见吧，我需要一些时间思考，”你说。
+<<else>>
+	"你能一个人回去吗？我还有事，不能陪你了，”你说。
+<</if>>
+<br><br>
+
+罗宾紧咬着嘴唇，但还是点了点头。“我……我知道了。”<<He>>的身体还没有完全恢复，只能脚步缓慢的向孤儿院走。走出去几步后罗宾回头看了你一眼，<<He>>再也忍不住，哭着跑走了。
+<<run setRobinLocationOverride("sleep", numbersBetween(Time.hour, 24))>>
+<br><br>
+
+<<link [[继续|Elk Street]]>><<endevent>><</link>>
+
+:: Robin Pillory Intro
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<generatec1>><<person1>>
+<<npc Robin 2>>
+
+一个年幼的孤儿经过房间时在走廊里发现了你。“罗宾走了有一段时间了，”<<he>>说。“<<person2>><<he>>能去哪儿呢？"
+<br><br>
+
+<<person1>><<He>>用问题轰炸你。很快又有一个孤儿接近你，并做了同样的事。
+
+"<<person2>><<he>>不会有事吧？<<he>>去哪儿了？"
+<br><br>
+
+<<link [[如实回答|Robin Pillory Truth]]>><</link>>
+<br>
+<<link [[回避问题|Robin Pillory Evade]]>><</link>>
+
+:: Robin Pillory Truth
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<set $robinPillory.known to 1>>
+
+<<if $speech_attitude is "meek">>
+	"我们被卖了，因为我们没付钱，”你说，“罗宾被带走了。"
+<<elseif $speech_attitude is "bratty">>
+	"那个混蛋贝利把我们卖了。"，你说。"罗宾被买下<<person2>><<him>>的人带走了."
+<<else>>
+	"贝利把我们卖了。"，你说。“他们把罗宾带走了。"
+<</if>>
+<br><br>
+
+"我--我看到发生了什么，”你身边的一个孤儿大声说，他们鼓起勇气。"是一位警官，罗宾被他们铐住了."
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"警察带走了<<him>>？你能告诉我在哪里吗？"你紧张的心跳加快了。
+<<elseif $speech_attitude is "bratty">>
+	"什么？警察？”你忍不住提高了音量。“他们把<<him>>带到哪里去了？”你握紧拳头。
+<<else>>
+	"警察？”你惊讶的提高了音量，“……你知道<<he>>被带去哪儿了吗？”你紧张的额头冒出了汗水。
+<</if>>
+<br><br>
+
+"我也不知道，”<<person1>><<he>>摇摇头。"希望<<he>>不会进监狱……那几个警察说他们想拿罗宾示众，用来警惕群众不要犯罪。"
+<br><br>
+
+"我见过<<person2>><<him>>！"一个<<generatec3>><<person3>><<person>>跑到你们中间大声说，因为剧烈运动<<him>>不停的喘着粗气。"他们差点儿抓住我，但是我幸运的跑掉了。
+那些警察要把<<person2>><<him>>在<<ampm 15 00>>锁在颈手枷里！就在市政厅那条街上！"
+<br><br>
+
+<<person3>><<His>>的言语使其他孤儿感到恐惧。他们看起来很害怕。
+其中一人大声说道：“是指那个颈手枷吗？哦不，我们听过很多故事...我希望罗宾会没事。"
+<br><br>
+
+另一个孤儿插嘴说。"你现在过去也许能救<<person2>><<him>>。"
+<<person1>><<He>>接着说，“我们都听说了那里发生的事情。不要让它也发生在罗宾身上。"
+<br><br>
+
+<span class="gold">罗宾有麻烦了。警官们已经安排在峭壁街的刑台上公开惩罚罗宾。</span>
+<span class="red">你剩下的时间不多了。</span>
+<br><br>
+
+<<link [[继续|Orphanage]]>><<endevent>><</link>>
+<br>
+
+:: Robin Pillory Evade
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if $speech_attitude is "meek">>
+	"会没事的，”你说着试图让他们放心："我会找到<<person2>><<him>>。"
+<<elseif $speech_attitude is "bratty">>
+	"很好，”你勇敢地说。"我会自己处理这件事。"
+<<else>>
+	"让我来处理这件事，”你说。"照顾好你们自己"
+<</if>>
+<br><br>
+
+他们点头回应。孤儿们依依不舍地四散而去，回了自己的房间。
+<br><br>
+
+<span class="gold">罗宾有麻烦了。你认为你记得罗宾被卖的时候被称为<i>嫌疑犯</i>。</span>
+<span class="red">你剩下的时间不多了。</span>
+<br><br>
+
+<<link [[继续|Orphanage]]>><<endevent>><</link>>
+<br>
+
+:: Robin Pillory Watch
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<set _robin to statusCheck("Robin")>>
+<<npc Robin>><<person1>>
+
+你加入峭壁街上的人群围着刑台。罗宾被锁在镇上的刑台上。一小群人看着罗宾被迫俯卧。
+<br><br>
+<<if Time.dayState is "day">>
+	人群中的一些人用好色的眼神望着罗宾，但是他们似乎不愿意在白天做得太过火。
+<<elseif Time.dayState is "dusk">>
+	随着太阳落山，罗宾现在的处境似乎比白天更危险。
+<<elseif Time.dayState is "night">>
+	罗宾有危险了。在黑暗中，没有什么能阻止市民们。
+<</if>>
+<br><br>
+
+<!-- Robin's composure -->
+<<if $robinPillory.danger lte 3>>
+	<<if _robin.dom gte 70>>
+		<<He>>试图通过保持镇静来装出一副勇敢的样子，但你注意到<<his>>的膝盖在颤抖。
+	<<else>>
+		<<He>>惊恐万分，任凭众人摆布。<<His>>的身体剧烈地颤抖。
+	<</if>>
+	<br><br>
+
+	<<switch random(1, 8)>>
+		<<case 1>>
+			许多人在<<generate2>><<person2>><<person>>的带领下嘲笑罗宾，并大声辱骂罗宾。
+		<<case 2>>
+			周围的人嘲笑罗宾，彼此窃窃私语。
+		<<case 3>>
+			周围的人指着罗宾，嘴里嘟囔着。
+		<<case 4>>
+			周围的人斜眼看着罗宾并拍照。罗宾试着把目光从镜头上移开。
+		<<case 5>>
+			周围的人以嘲笑罗宾自娱自乐。
+		<<case 6>>
+			一个<<generate2>><<person2>><<person>>试图向人群讲道理，声称罗宾是无辜的。很多人
+			<<print either("一脸羞愧，有些人甚至直接离开。","无视<<him>>，继续嘲笑。")>>
+		<<case 7>>
+			一个<<generate2>><<person2>><<person>>向罗宾扔水果。无法移动或防御的<<person1>><<him>>，被水果直接砸中了脸。
+			<<if _robin.dom gte 70>>
+				罗宾闭上了<<his>>的眼睛，没有给他们任何反应。<<person2>><<person>>对此毫不在意。
+			<<else>>
+				当果汁流进<<his>>的眼睛里时，罗宾痛苦地大叫。
+			<</if>>
+		<<case 8>>
+			一群学生从学校路过，目瞪口呆地看着罗宾。他们似乎认出了<<him>>。
+			<<print either("你看到他们互相闲聊。", "他们困惑地望向这里。")>>
+	<</switch>>
+<<elseif $robinPillory.danger lte 7>>
+	<<if _robin.dom gte 70>>
+		罗宾原本的勇敢瓦解掉了，<<he>>因为羞耻满脸通红，泪眼汪汪。
+	<<else>>
+		罗宾大哭着求他们住手，无人理会。
+	<</if>>
+	<<if $robinPillory.danger lte 5>>
+		<<His>>的<<npcClothesText _robin "lower">>被脱掉了，露出了<<his>>的<<if _robin.pronoun is "f">>粉色心形印花男式短裤<<else>>浅蓝色三角裤<</if>>
+		对着人群。
+	<<else>>
+		<<His>>的屁股露在空气中，所有人都看到了<<his>>的<<if _robin.penis isnot "none">>阴茎<<else>>小穴<</if>>。
+		<<if _robin.breastsize gte 1>>
+			<<His>>衬衫也被撕开，在人群中露出了<<his>>的胸部。
+		<</if>>
+	<</if>>
+	<br><br>
+
+	<<switch random(1, 4)>>
+		<<case 1>>
+			一个<<generate2>><<person2>><<person>>走到罗宾面前，狠狠地打<<person1>><<his>>的屁股。
+			罗宾尖叫，被击打的声音回荡在整个街道上。
+		<<case 2>>
+			一个<<generate2>><<person2>><<person>>走到刑台上面下流的
+			<<print (_robin.breastsize gte 1 ? "抚摸罗宾的乳房" : "掐罗宾的乳头")>>。
+		<<case 3>>
+			人们嘲笑着罗宾，和这位无助的孤儿谈论他们拍下的照片。<<He>>拒绝去看。
+		<<case 4>>
+			周围的人试图嘲讽罗宾，他们一边拍照一边在<<him>>周围摆姿势。罗宾厌恶地把目光移开，眼里噙着泪水。
+	<</switch>>
+<<elseif $robinPillory.danger lte 11>>
+	<<if _robin.dom gte 70>>
+		罗宾的尊严和反抗的想法已经全部消失了。
+	<</if>>
+	<<He>>对人群的欲望保持被动和顺从。<<his>>的脸上布满泪痕。<<He>>偶尔会哽咽着抽泣。
+	<<His>>的脸上到处都是瘀伤和水果渣。罗宾的衣服早就被扒光了。
+	<<if !$robinPillory.naked>>
+		<<set $robinPillory.naked to true>>
+	<</if>>
+	<br><br>
+
+	<<switch random(1, 4)>>
+		<<case 1>>
+			罗宾的脸被人们用来发泄，上面沾满了淫荡的液体。<<He>>哭了，眼睛红红的。
+		<<case 2>>
+			罗宾的身体上布满了吻痕和咬痕。<<He>>尽可能的遮掩着自己。
+		<<case 3>>
+			罗宾在呜咽之间不停地干呕，很明显<<his>>的嘴遭受过惨无人道的侵犯。
+		<<case 4>>
+			一个<<generate2>><<person2>><<person>>带着狡黠的笑容离开了罗宾。罗宾的屁股上多出了很多红色手印。
+	<</switch>>
+<<else>>
+	<<His>>低垂着头，看不见<<his>>的表情。<<He>>看起来很凄惨，浑身赤裸，<<his>>的身上到处都是汗水、唾液和黏液。
+	<br><br>
+
+	<<switch random(1, 4)>>
+		<<case 1>>
+			罗宾试图眨出眼睛里的淫液。<<Hes>>痛苦地呜咽着。
+		<<case 2>>
+			罗宾的身体上满是淤青。每次被碰到<<He>>都会发抖。
+		<<case 3>>
+			罗宾大声咳嗽，吐出嘴里的液体。
+		<<case 4>>
+			<<generate2>><<person2>><<person>>和<<generate3>><<person3>><<person>>愉快地用他们的生殖器摩擦罗宾的脸颊。
+			他们没有用罗宾的嘴，似乎满足于他们造成的羞辱。
+	<</switch>>
+<</if>>
+<br><br>
+
+你仔细看着那个刑台。
+<<if $robinPillory.locks is 1>>
+	罗宾身上只有最后一把锁了，
+<<else>>
+	有<<number $robinPillory.locks>>把锁
+<</if>>
+很快就能重获自由了。
+<<if $robinPillory.distracted>>
+	他们分心了。现在是你撬锁的机会。
+<<else>>
+	<<if $robinPillory.lockpicked>>
+		现在去撬锁太危险了。人们在怀疑地盯着你。
+	<<else>>
+		你没有太多时间去开锁，但如果你分散了人群的注意力，也许会给你更多的空间。
+	<</if>>
+<</if>>
+<br><br>
+<<if Time.hour lte 22>>
+	<<link [[看着罗宾 (0:10)|Robin Pillory Watch]]>><<pass 10>><<endevent>><</link>>
+	<br>
+	<<if !$robinPillory.distracted>>
+		<<link [[分散人群的注意力|Robin Pillory Distractions]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+	<<set $skulduggerydifficulty to ($robinPillory.distracted ? 100 : 800)>>
+	<<if !$robinPillory.lockpicked || $robinPillory.locks gt 0>>
+		<<link [[撬锁 (0:30)|Robin Pillory Lockpick]]>><<endevent>><<set $robinPillory.distracted to 0>><<pass 30>><</link>><<skulduggerydifficulty>>
+	<</if>>
+	<br>
+	<<link [[离开|Cliff Street]]>><</link>>
+<<else>>
+	<span class="red">你来的太晚了.</span>
+	<br><br>
+	<<link [[继续|Robin Pillory Failure]]>><<pass 10>><<endevent>><</link>>
+<</if>>
+<br>
+
+:: Robin Pillory Failure
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<set _robin to statusCheck("Robin")>>
+<<set $robinPilloryFail to true>>
+<<npc Robin>><<person1>>
+<<robinPilloryFailure>>
+
+罗宾红肿的眼睛变得呆滞，<<him>>身上布满了伤痕和淤青。你可以看到<<him>>正在边虚弱的喘气边低语着什么。
+人群逐渐散去。“没有反应可就没乐趣了，”有人喃喃地说。
+<br><br>
+
+你走近罗宾，<<hes>>一开始似乎没认出你。<<his>>干涩的嘴唇一直在重复着破碎的句子。
+<<if _npcVirgin.vaginal is true or _npcVirgin.anal is true>>
+	"是他们偷的..."
+<<else>>
+	"请停下来...我想回家..."
+<</if>>
+罗宾低声说，虽然听起来更像是喉咙嘶哑的难听音调。
+<br><br>
+
+<<if (maleChance() gte 1 and $cbchance lte 99) or (maleChance() lte 99 and $dgchance gte 1)>>
+	就在这时，你注意到有精液从罗宾的
+	<<if _robin.vagina isnot "none">>
+		阴道和肛门流出。
+	<<else>>
+		肛门流出。
+	<</if>>
+<<else>>
+	<<his>>身上的黏液在夜晚的空气中冷却，罗宾打着寒颤。
+<</if>>
+<br><br>
+
+你听到身后有声音说。“离被定罪的人远点。”<<generatePolice 2>><<person2>><<person>>拿着一串钥匙接近罗宾。
+"时间到，<<person1>>对<<him>>的审判结束了，"<<person2>><<he>>边说边打开了刑具。<<person1>>"<<Hes>>可以走了。"
+刑具一打开，罗宾就瘫倒在地。<<person2>><<person>>没有多看一眼就离开了。
+<br><br>
+
+<<link [[继续|Robin Pillory Failure 2]]>><<pass 60>><<endevent>><</link>>
+<br>
+
+:: Robin Pillory Failure 2
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<npc Robin>><<person1>>
+
+你走到罗宾身边，扶<<him>>起来。人群已经完全散去了，他们对一个坏掉的玩具不感兴趣。
+<br><br>
+
+罗宾摇摇晃晃地站起来，你抱住<<his>>还在颤抖的身体。"不要……"<<his>>虚弱地胡言乱语。你感到很心痛。
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"对不起..."你不知道还能说什么。
+<<elseif $speech_attitude is "bratty">>
+	"该死的..."你诅咒自己的无能为力，“我应该做得更好。"
+<<else>>
+	"罗宾......"你不知道还能说什么。
+<</if>>
+<br><br>
+
+<<He>>略带清醒地看着你，“这不是你的错。”<<his>>的嘴唇虚弱地颤抖着，好像是想对你微笑。
+<br><br>
+
+你扶着一瘸一拐的罗宾回家，到了孤儿院后你紧紧抱住了<<him>>。
+<br><br>
+
+<<link [[继续|Robin Pillory Failure 3]]>><</link>>
+<br>
+
+:: Robin Pillory Failure 3
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+
+你们一起回了孤儿院，前往<<his>>的房间。<<He>>一直都温顺地跟在你身后，最后整个人瘫倒在了床上。
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	你温柔地把手放在<<him>>肩上。<<He>>稍微放松了一点儿，但仍然非常紧张。
+<<elseif $speech_attitude is "bratty">>
+	你把手握成拳头，想着<<him>>遭遇的一切。
+<<else>>
+	你给了<<him>>一个拥抱，但<<him>>没有回应。
+<</if>>
+你给<<him>>恢复的时间，轻轻地拍着<<him>>的背。<<he>>慢慢放松了下来。
+<br><br>
+
+"我...我想看到人们善良的一面，”罗宾低声说，“但有时候这很难。”<<He>>不再赘述，但你对<<him>>表示同情。
+罗宾低垂着脑袋坐在床上，几分钟后<<he>>转身看着你的眼睛。
+<br><br>
+
+"还是有好人存在的，你和所有的孤儿。也许我们可以一起……改变。让小镇变得更好......"罗宾蜷缩着。
+当<<him>>触摸到<<him>>脸上的淤青时，所有的希望都从<<him>>的声音中消失了。"我在骗谁呢？黑暗永远不会消失。”一滴泪从罗宾的脸颊滑落。
+<br><br>
+
+<<link [[安慰|Robin Pillory Failure Optimism]]>><</link>>
+<br>
+<<link [[现实一点|Robin Pillory Failure Pessimism]]>><</link>>
+<br>
+
+:: Robin Pillory Failure Optimism
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<run statusCheck("Robin")>>
+
+<<if $speech_attitude is "meek">>
+	"不管目标是什么，我们都能一起做到。"你笑得很温柔。
+<<elseif $speech_attitude is "bratty">>
+	"我们会没事的，我们只需要让他们知道我们不好惹，”你一边说一边紧紧地握着罗宾的手。
+<<else>>
+	"一切都会好起来的，”你对罗宾微笑着说。
+<</if>>
+<br><br>
+
+罗宾试着微笑。“我很高兴你这么想。我不想失去希望。”<<He>>拥抱着你，有那么一瞬间，你能感觉到<<his>>的积极光芒穿透了你。
+你们互相依偎了一会儿，直到<<his>>的呼吸减慢，慢慢在你的臂弯中入睡。
+<<npcincr Robin trauma -5>><<trauma -4>><<ltrauma>><<lrtrauma>>
+<br><br>
+
+你轻轻地把<<him>>放在床上，然后帮<<him>>盖好被子。“晚安，罗宾，”你在关门前低声说。
+<<run setRobinLocationOverride("sleep", numbersBetween(1, 24))>>
+<br><br>
+
+<<link [[离开|Orphanage]]>><<endevent>><</link>>
+
+
+:: Robin Pillory Failure Pessimism
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<run statusCheck("Robin")>>
+
+<<if $speech_attitude is "meek">>
+	"世界是残酷的，想要获得安全......很难，”你的声音轻微颤抖。
+<<elseif $speech_attitude is "bratty">>
+	"我们必须在世界上拥有自己的一席之地，不是所有人都像你一样善良，”你抬头看着天花板说。
+<<else>>
+	"我不知道我们是否会安全，"你不想隐瞒真相。
+<</if>>
+<br><br>
+
+罗宾皱起眉头，但点了点头，“谢谢你对我坦诚相待。”<<He>>在坐到你旁边之前深吸一口气。
+你们互相依偎了一会儿，直到<<his>>的呼吸减慢，慢慢在你的臂弯中入睡。
+<br><br>
+
+你轻轻地把<<him>>放在床上，然后帮<<him>>盖好被子。“晚安，罗宾，”你在关门前低声说。
+<<run setRobinLocationOverride("sleep", numbersBetween(Time.hour, 24))>>
+<br><br>
+
+<<link [[离开|Orphanage]]>><<endevent>><</link>>
+
+:: Robin Pillory Lockpick
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<set _robin to statusCheck("Robin")>>
+<<npc Robin>><<person1>>
+<<set $robinPillory.distracted to 0>>
+
+你开始撬把罗宾锁在刑台上的锁。
+<<skulduggerycheck>>
+<br><br>
+
+<<if $skulduggerysuccess is 1>>
+	随着你的动作，<span class="green">锁开了。</span>人们对你的行为一无所知。
+	<<set $robinPillory.locks -= 1>>
+	<br><br>
+	<<if $robinPillory.locks gte 1>>
+		<<if $robinPillory.danger lte 3>>
+			<<if _robin.dom gte 70>>
+				"谢谢。我就知道我可以依靠你……"罗宾给了你一个虚弱的微笑。
+			<<else>>
+				"求你了，快一点儿！”罗宾的身体在发抖。
+			<</if>>
+		<<elseif $robinPillory.danger lte 7>>
+			"谢谢你，”罗宾虚弱地说。
+		<<elseif $robinPillory.danger lte 11>>
+			罗宾想说点什么，但是<<his>>只吐出了几个不成句的音节。罗宾神情黯淡。
+		<<else>>
+			罗宾好像没注意到你的存在。你希望现在还不算太晚。
+		<</if>>
+	<<else>>
+		当最后一把锁被解开时，你打开了刑台。
+		<br><br>
+
+		<<if $robinPillory.danger lte 3>>
+			当<<him>>对你微笑时，罗宾的眼里充满了泪水。"我以为我死定了。"
+		<<elseif $robinPillory.danger lte 7>>
+			罗宾紧紧地拥抱你，"我们回家吧..."
+		<<elseif $robinPillory.danger lte 11>>
+			罗宾呜咽着紧紧抱着你。<<He>>不想放手。
+		<<else>>
+			你摇晃着罗宾的身体，<<him>>认出了你。你一言不发地把<<him>>的手臂挽到肩膀上，开始向安全的地方移动。
+		<</if>>
+		<br><br>
+
+		一个<<generate2>><<person2>><<person>>指着你们两个。"嘿！<<pShes>>把那个贱人放出来了！"罗宾在你身后，你紧紧抓住<<person1>><<his>>的手一起逃跑。
+	<</if>>
+<<else>>
+	当你听到一个声音对你大喊大叫的时候，你感觉自己快到了。<span class="red">"快来，<<pshes>>把<<him>>放出来了！"</span>
+	你停下脚步，隐藏你的工具。
+	<<stress 10>><<ggstress>>
+	<br><br>
+
+	你隐藏了起来，但人群似乎更激动了。你得等一会儿才能安全的再试一次。
+<</if>>
+<<set $robinPillory.lockpicked to 1>>
+<br><br>
+
+<<if $robinPillory.locks is 0>>
+	<<link [[继续|Robin Pillory Escape]]>><<set $molestationstart to 1>><<endevent>><</link>>
+<<elseif Time.hour lte 22>>
+	<<link [[继续|Robin Pillory Watch]]>><<endevent>><</link>>
+<<else>>
+	<<link [[继续|Robin Pillory Failure]]>><<endevent>><</link>>
+<</if>>
+
+:: Robin Pillory Distractions
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<if !$robinPillory.distractions>>
+	<<set $robinPillory.distractions to []>>
+<</if>>
+
+你想办法分散人群对罗宾的注意力。
+<br><br>
+
+<<if !$robinPillory.distractions.includes("speech")>>
+	<<link [[让人们为自己的行为感到羞愧(1:00)|Robin Pillory Speech]]>><<pass 60>><</link>><<englishdifficulty 1 600>>
+	<br>
+<</if>>
+<<if !$robinPillory.distractions.includes("fruit")>>
+	<<link [[抓住水果 (1:00)|Robin Pillory Fruit]]>><<pass 60>><</link>><<dancedifficulty 1 600>>
+	<br>
+<</if>>
+<<if $money gte 20000 and !$robinPillory.distractions.includes("money")>>
+	<<link [[用钱分散注意力 (1:00 £200)|Robin Pillory Money]]>><<set $money -= 20000>><<pass 60>><</link>>
+	<br>
+<</if>>
+<<if !$robinPillory.distractions.includes("crime")>>
+	<<link [[制造骚乱 (1:00)|Robin Pillory Crime]]>><<pass 60>><<crimeup 100>><</link>><<gcrime>>
+	<br>
+<</if>>
+<<if $money gte 2000 and !$robinPillory.distractions.includes("flower")>>
+	<<link [[使罗宾失去吸引力 (1:00 £20)|Robin Pillory Flower]]>><<pass 60>><</link>><<tendingdifficulty 1 600>>
+	<br>
+<</if>>
+<<if Time.hour lte 22>>
+	<<link [[返回|Robin Pillory Watch]]>><</link>>
+<<else>>
+	<<link [[返回|Robin Pillory Failure]]>><</link>>
+<</if>>
+<br>
+
+:: Robin Pillory Speech
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<npc Robin>><<person1>>
+
+你在人群注意力的中心走到了刑台前，
+<<if $speech_attitude is "meek">>
+	你咽下你的焦虑，开始为罗宾说话。“罗宾是无辜的！”你花时间详细描述罗宾有多善良。
+<<elseif $speech_attitude is "bratty">>
+	当你看着罗宾被虐待时，你的双手紧握成了拳头。你没有办法使用武力制止，所以你决定用你的语言。
+	"你们这些混蛋应该为自己感到羞愧！看看你们对<<him>>做了些什么！”你大声的斥责围观群众。
+<<else>>
+	你试图用你的话来劝阻群众们。
+	"罗宾没做错什么！”你把时间花在谈论这整个情况是多么的错误。
+<</if>>
+<br><br>
+
+<<if $englishSuccess>>
+	人群开始<span class="green">互相争吵，</span>虽然只有一部分人离开了。
+	<<set $robinPillory.distracted to 1>>
+	<br><br>
+
+	<span class="gold">人群分散了注意力，现在是你开锁的机会。</span>
+	<<set $robinPillory.distractions.push("speech")>>
+	<br><br>
+
+<<else>>
+	你的话没起任何作用，人们开始向你扔水果，<span class="red"></span>他们继续骚扰罗宾。
+	<<pain 6>><<gstress>>
+	<br><br>
+
+<</if>>
+<<if Time.hour lte 22>>
+	<<link [[继续|Robin Pillory Watch]]>><</link>>
+<<else>>
+	<<link [[继续|Robin Pillory Failure]]>><</link>>
+<</if>>
+<br>
+
+:: Robin Pillory Fruit
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+
+你看着面前的这一群罪犯，他们的手上拿着水果，正怒视着罗宾。你突然想到了一个主意。
+<br><br>
+
+其中一个罪犯拿起一颗水果砸向罗宾的头。
+<br><br>
+
+<<if $danceSuccess>>
+	<span class="green">你接住它</span>，他们继续扔，你一一接住了。你接的越多，他们就越绝望。罗宾瞪大了眼睛看着你。
+	<br><br>
+
+	人们注意到了他们的失败，一些人开始嘲笑他们，而不是罗宾。
+	<br><br>
+
+	<span class="gold">人群分散了注意力，现在是你开锁的机会。</span>
+	<<set $robinPillory.distracted to 1>>
+	<<set $robinPillory.distractions.push("fruit")>>
+<<else>>
+	你试图接住它，但<span class="red">它重重的打在了你的脸上</span>。罪犯们被他们的成功所鼓舞，并且专门针对你投掷更多的东西。
+	你逃出了刑台，直到他们看不见你。
+	<<pain 6>><<gpain>>
+<</if>>
+<br><br>
+
+<<if Time.hour lte 22>>
+	<<link [[继续|Robin Pillory Watch]]>><</link>>
+<<else>>
+	<<link [[继续|Robin Pillory Failure]]>><</link>>
+<</if>>
+<br>
+
+:: Robin Pillory Money
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+
+你突然想到一个主意。你抓起了一把现金，走到人群后面，然后把它扔向空中。
+这个突然的动作引来了越来越多人的注意，你悄悄溜走了。
+<br><br>
+
+看到散落的钱，人群中的许多人开始疯狂地争抢。
+<br><br>
+
+<span class="gold">应该能分散他们的注意力一段时间。</span>
+<<set $money -= 20000>>
+<<set $robinPillory.distracted to 1>>
+<<set $robinPillory.distractions.push("money")>>
+<br><br>
+
+<<if Time.hour lte 22>>
+	<<link [[继续|Robin Pillory Watch]]>><</link>>
+<<else>>
+	<<link [[继续|Robin Pillory Failure]]>><</link>>
+<</if>>
+<br>
+
+:: Robin Pillory Crime
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+
+你偷偷溜出人群，走进附近的商店，进去后等到没人注意，打开了火警。
+<br><br>
+
+随着一声巨响，火警从商店里，响彻整个街道，你在混乱中偷偷溜出去。
+人们正在寻找一场根本不存在的火灾，<span class="gold">他们应该能被分散一段时间注意力。</span>
+<<set $robinPillory.distracted to 1>>
+<<set $robinPillory.distractions.push("crime")>>
+<br><br>
+
+<<if Time.hour lte 22>>
+	<<link [[继续|Robin Pillory Watch]]>><</link>>
+<<else>>
+	<<link [[继续|Robin Pillory Failure]]>><</link>>
+<</if>>
+<br>
+
+:: Robin Pillory Flower
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "cliff">>
+<<npc Robin>><<person1>>
+
+你靠近罗宾。
+<<switch $robinPillory.danger>>
+	<<case 0 1 2 3 4 5 6 7>>
+		<<He>>看着你，如释重负。
+	<<case 8 9 10 11>>
+		<<He>>泪眼汪汪地看着你。
+	<<default>>
+		<<He>>似乎不承认你的存在。
+<</switch>>
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"我有个主意，我可以用一种难闻的植物把你盖住，好吗？它会让你失去吸引力，”你向罗宾解释你的计划。
+<<elseif $speech_attitude is "bratty">>
+	"我要给你穿上一件臭烘烘的衣服，好吗？如果你脏了，那些混蛋就不会想碰你了，”你解释道。
+<<else>>
+	"我需要用一些犯规的东西来掩护你，"你试图解释。"这会让他们对你不那么感兴趣。"
+<</if>>
+<br><br>
+
+<<if $robinPillory.danger lte 7>>
+	"如果真的有用的话……"罗宾叹了口气。"我相信你，我宁愿这样也不愿意发生更不好的事情。"
+<<elseif $robinPillory.danger lte 11>>
+	罗宾温顺地点点头。
+<<else>>
+	罗宾眨了眨眼睛，仍然无神的注视着远方。
+<</if>>
+<br><br>
+
+你跑到附近的园艺商店，开始寻找一些有用的东西。
+<<if $tendingSuccess>>
+	<span class="green">你发现了一种花，虽然无毒，但是可以加工成难闻的糊状物.</span>
+	你买下了足够的材料，让罗宾能涂抹全身。加工需要一些时间，但是你成功带着浆糊回到了罗宾那里。
+	<br><br>
+
+	<<if $robinPillory.danger lte 7>>
+		"好难闻！"罗宾一闻到它的气味就皱起了眉。
+	<<elseif $robinPillory.danger lte 11>>
+		罗宾的眼睛睁得大大的，咳嗽起来。
+	<<else>>
+		罗宾的鼻子抽搐了一下，但是<<he>>一动不动。
+	<</if>>
+	<br><br>
+
+	你在罗宾身上涂上一层薄薄的糊状物。效果不会持续很长时间，但应该足够用来<span class="gold">分散人群的注意力了</span>。
+	<<set $robinPillory.distracted to 1>>
+	<<set $robinPillory.distractions.push("flower")>>
+<<else>>
+	你试着找到一些东西，任何气味难闻到足以击退人群，但却无法找到的东西。但是失败了，你空着手回到了罗宾身边。
+	<br><br>
+
+	<<if $robinPillory.danger lte 7>>
+		"没关系，我们会想出别的办法的！”<<He>>试着装出一副勇敢的样子。
+	<<elseif $robinPillory.danger lte 11>>
+		罗宾的眼睛落在了人群上。“哦，不......"
+	<<else>>
+		罗宾看起来快要哭了。
+	<</if>>
+<</if>>
+<br><br>
+
+<<if Time.hour lte 22>>
+	<<link [[继续|Robin Pillory Watch]]>><<endevent>><</link>>
+<<else>>
+	<<link [[继续|Robin Pillory Failure]]>><<endevent>><</link>>
+<</if>>
+<br>
+
+:: Robin Pillory Escape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<violence 1>>
+	<<neutral 1>>
+
+	<<generate1>>
+	<<npc Robin 2>>
+
+	<<set $enemyno to 1>>
+	<<set $enemynomax to 1>>
+
+	<<maninit>>
+	<<stalk_init>>
+	<<stalk_run>>
+	<<set $combatgoal to "confront">>
+	<<set $NPCList[0].bold to 10000>>
+	紧紧抓住罗宾的手，你转身就跑。<span class="pink">你正在被追赶.</span>
+<</if>>
+
+<<effects>>
+
+<<effectsman>><<man>>
+<br><br>
+
+<<print either(
+	"罗宾紧紧抓住你的手。",
+	"罗宾回头看.",
+	"罗宾的手在颤抖."
+)>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if $stalk_end>>
+	<span id="next"><<link [[继续|Robin Pillory Escape End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Robin Pillory Escape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Robin Pillory Escape End
+<<set $outside to 1>><<set $location to "town">><<effects>>
+<<set _robin to statusCheck("Robin")>>
+
+<<person1>>
+<<if $stalk_end is "confront">>
+	<<if $feetaction is "confront">>
+		<<if $speech_attitude is "meek">>
+			"我能做到，”你安慰自己，"罗宾，注意安全，好吗？"你转身面对那些追赶的人。
+		<<elseif $speech_attitude is "bratty">>
+			"继续跑！别害怕，我会追上你的。”在转向那些人之前，你给了罗宾一个微笑。
+		<<else>>
+			"罗宾，继续跑，不要停，就这样跑回家吧！”面对追赶的人你说。
+		<</if>>
+	<<else>>
+		<<if !$stalk_assess>>一双手从背后抓住你<<else>><<person1>><<person>>从背后抓住你<</if>>。
+		<br><br>
+
+		你让罗宾继续跑。
+	<</if>>
+	<br><br>
+
+	<<if _robin.dom gte 70>>
+		"不要。”罗宾的双手紧握成拳头。“我不想再做别人的负担了。”罗宾转身和你一起面对他们。
+		<br><br>
+
+		<<person1>><<person>>瞪着你。"你为什么要放了<<person2>><<him>>，你这个婊子！我还没上过<<him>>呢！！"
+		<<person1>><<He>>粗暴地摇晃你。“至少那个荡妇知道不该继续逃跑，”<<he>>对着在你身边发抖的罗宾微笑。
+		"我们去喝点酒怎么样……"
+		<br><br>
+
+		<<him>>还没来得及继续，罗宾就重重的打了<<him>>一拳。然后罗宾抓住你的手，在<<person1>><<person>>痛苦地后退时逃跑。
+		<br><br>
+
+		<<link [[继续|Robin Pillory Escape Orphanage]]>><<endcombat>><<set $phase to 1>><</link>>
+	<<else>>
+		罗宾犹豫地点点头，朝孤儿院跑去。
+		<br><br>
+
+		罗宾安全了，你松了一口气。
+		<br><br>
+
+		<<person1>><<person>>瞪着你。"你为什么要放了<<person2>><<him>>，你这个婊子！我还没上过<<him>>呢！！"
+		<<person1>><<He>>粗暴地摇晃着你。“至少我还能和你玩玩儿。”<<He>>色咪咪地盯着你。
+		<<saveNPC 0 "robin_stalk">>
+		<<endcombat>>
+		<<loadNPC 0 "robin_stalk">>
+		<<clearNPC "robin_stalk">>
+		<br><br>
+
+		<<link [[继续|Robin Pillory Escape Sex]]>><<set $molestationstart to 1>><</link>>
+	<</if>>
+<<elseif $stalk_end is "hide">>
+	你从藏身之处现身。<<if $stalk_assess>><<person1>><<person>><<else>>跟踪你的人<</if>>没有发现你的身影。
+	<<tearful>>你转向罗宾。<<person2>><<He>>紧紧拥抱你。
+	<br><br>
+
+	"他们走了吗？”罗宾瞥了一眼身后。
+	<br><br>
+
+	你点点头，抓住罗宾的手回了孤儿院。
+	<br><br>
+
+	<<link [[继续|Robin Pillory Escape Orphanage]]>><<endcombat>><<set $phase to 1>><</link>>
+<<else>>
+	罗宾在你们摆脱掉追赶的人时松了一口气。
+	"我需要......几秒钟，”<<person2>><<he>>气喘吁吁地说。
+	<br><br>
+
+	给了罗宾几分钟时间后，你握住<<him>>的手，把<<him>>带回了孤儿院。<<takeHandholdingVirginity "Robin" "romantic">>
+	<br><br>
+
+	<<link [[继续|Robin Pillory Escape Orphanage]]>><<endcombat>><<set $phase to 1>><</link>>
+<</if>>
+
+:: Robin Pillory Escape Sex
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<stalk_attack>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+
+	<<set $enemyno to 1>>
+	<<set $enemynomax to 1>>
+
+	<<if Time.dayState isnot "night">>
+		<<enable_rescue>>
+	<</if>>
+<</if>>
+
+<<effects>>
+
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Robin Pillory Escape Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Robin Pillory Escape Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Robin Pillory Escape Sex Finish
+<<effects>>
+
+<<if $enemyhealth lte 0>>
+	你击退攻击你的人，当<<person1>><<he>>痛苦地后退时，你向<<person1>><<he>>冲去。
+<<elseif $rescue is 1>>
+	一个过路人看到正在发生的事情跑了过来。寡不敌众，袭击者逃跑了。
+	<br><br>
+
+	"你还好吗？”<<generate3>><<person3>><<person>>问道。
+	<br><br>
+
+	你快速点了点头，然后继续向孤儿院跑去。你得确保罗宾没事。
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<person1>><<person>>因为高潮身体颤抖。你把它当作离开的信号。
+<</if>>
+<br><br>
+
+<<tearful>>你回到孤儿院。
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Robin Pillory Escape Orphanage]]>><<endevent>><<set $phase to 0>><</link>>
+
+:: Robin Pillory Escape Orphanage
+<<set _robin to statusCheck("Robin")>>
+<<set $outside to 0>><<set $location to "home">><<effects>>
+<<npc Robin>><<person1>>
+
+<<if $phase is 1>>
+	你和罗宾进了孤儿院。
+	<br><br>
+
+	<<He>>紧紧的拥抱你。“我真的很感谢你。"
+	<br><br>
+
+	<<if $robinPillory.naked>>
+		直到现在罗宾才意识到<<his>>的裸体。<<He>>迅速躲在你身后，把你带进了浴室。
+		<br><br>
+
+		到了浴室，在确保没有其他人后，<<he>>打开水龙头，往浴缸里放满了水。
+		"对不起，我表现的这么害怕……”罗宾叹了口气。
+		<br><br>
+		<<if $robinPillory.danger gte 11>>
+			罗宾的手在颤抖，<<he>>正在调整洗澡水。<<He>>已经停止了哭泣，但你可以看出<<hes>>仍然很沮丧。
+			<<his>>的身上到处都是瘀伤。
+		<<else>>
+			罗宾身上的伤已经恢复了一些，但是<<his>>的身上仍然带着伤痕，看着让人触目惊心。<<his>>的双手还在颤抖。
+		<</if>>
+		你想知道<<he>>现在状态如何。
+	<<else>>
+		意识到<<his>>的身上还带着水果屑后，<<he>>很快松开了怀抱向浴室走去。
+		<<if _robin.dom gte 60>>
+			"对不起……把你的衣服弄脏了吧？我会给你洗干净的。”罗宾停顿了一下。“你愿意和我一起洗澡吗？我真的很感谢你的陪伴。"
+		<<else>>
+			"我要去洗个澡......你能和我一起吗？”罗宾拘谨的用手握着胳膊，盯着地面不敢看你。
+			"我现在真的不想一个人待着……"
+		<</if>>
+	<</if>>
+<<else>>
+	在你走进孤儿院的时候，你看到门旁突然闪过一道身影。罗宾把你抱进了怀中。
+	<<if $robinPillory.naked>>
+		<<He>>已经穿上了衣服，但还是有些脏兮兮的。
+		<<set $robinPillory.naked to false>>
+	<<else>>
+		看起来<<he>>还没有清洗过。<<He>>肯定一直在这里等你。
+	<</if>>
+	<br><br>
+
+	"你没事！"罗宾继续抱着你一会儿才放手。"我很担心你。"
+	罗宾叹了口气，“我该去洗洗了。我太担心了，不想冒着错过你的风险。"
+	<<He>>似乎很犹豫要不要离开你。
+	<<if _robin.dom gte 60>>
+		"你愿意和我一起去吗？我真的很感谢你的陪伴。"
+	<<else>>
+		"你能和我一起去吗？"罗宾温顺地问，“我现在真的不想一个人待着。"
+	<</if>>
+<</if>>
+<br><br>
+
+<<link [[帮罗宾洗澡 (0:30)|Robin Pillory Bath]]>><<pass 30>><</link>>
+<br>
+<<link [[在外面等 (0:30)|Robin Pillory Bath Wait]]>><<pass 30>><</link>>
+<br>
+
+:: Robin Pillory Bath
+<<set _robin to statusCheck("Robin")>>
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if !$robinPillory.naked>>
+	<<if $speech_attitude is "meek">>
+		"如果你不介意的话......”你回答，你知道罗宾现在很脆弱，很需要他人的陪伴。
+	<<elseif $speech_attitude is "bratty">>
+		"当然，只要你需要我，我就会在这里。”你说着，给了罗宾一个安慰的微笑。
+	<<else>>
+		"我可以和你一起，”你对<<him>>微笑。
+	<</if>>
+	<br><br>
+
+	当你走进浴室时，<<he>>带着淡淡的微笑说，“谢谢你。"
+	罗宾打开水龙头，让浴缸里放满了足够的水。
+	由于受到过虐待，<<him>>浑身上下都伤痕累累淤青遍布。甚至脱衣服的动作也会让<<him>>感到痛苦。
+	<br><br>
+<</if>>
+
+<<He>>钻进浴缸，在热水中蜷缩着身子。"如果你不在的话，我...我真的没办法..."<<He>>安静下来。
+<<He>>坐在浴缸里背对着你。
+<br><br>
+
+<<if _robin.dom gte 60>>
+	"我不知道为什么会这样，我曾经做错过什么让<<nnpc_him "Bailey">>讨厌我的事吗？"罗宾忍住了眼泪。
+<<else>>
+	"好可怕......”罗宾抽泣着，<<he>>全裸着。“那些人为什么要这样对我？"
+<</if>>
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	你坐在浴缸旁边温柔地握住罗宾的手。
+<<elseif $speech_attitude is "bratty">>
+	你跪在浴缸旁边擦洗罗宾的头发。
+<<else>>
+	你坐在浴缸旁边，给了<<him>>一个安心的拥抱。
+<</if>>
+"现在结束了。"
+<<npcincr Robin trauma -5>><<llrtrauma>>
+<br><br>
+
+罗宾试图冲洗<<his>>的身体，但每次<<he>>移动的时候，看起来都非常痛苦。
+"看起来肾上腺素终于消退了，"罗宾痛苦地笑了笑。
+<br><br>
+
+你拿来一块毛巾，抹上肥皂，然后轻轻地开始清洗罗宾的身体。<<He>>一开始似乎很惊讶，但没有说出任何抱怨。
+你得把浴缸里的水倒掉几次才能保持水的干净。
+<br><br>
+
+罗宾又开始哭了，你在一旁<<print ($submissive gte 1150 ? "担忧" : "关心")>>地看着<<him>>，<<he>>埋着头，一句话也不说。
+"我不知道我做了什么，竟然值得有你这样的人出现在我的生命中，”<<he>>说道。<<his>>的脸上带着苦涩的笑容，接着幸福的泪水从<<his>>的脸颊上流了下来。
+<br><br>
+
+你一定要把所有的脏东西<<if $robinPillory.danger gte 11>>, 水果和下流的液体<<else>>和水果<</if>>都从<<his>>身体上清除掉.
+在罗宾洗干净后，你帮<<him>>穿上毛巾，然后你们都前往<<him>>的房间。
+<br><br>
+
+<<link [[继续|Robin Pillory Finish]]>><</link>>
+<br>
+
+
+:: Robin Pillory Bath Wait
+<<run statusCheck("Robin")>>
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我在外面等你，"你想给罗宾一点隐私。
+<<elseif $speech_attitude is "bratty">>
+	"对不起，我去外面等你，”你说。“别担心，没人会打扰你的。"
+<<else>>
+	"对不起，罗宾，你一个人行吗？"过了很长一段时间，罗宾点了点头，你离开了，让<<him>>一个人去洗澡。
+<</if>>
+<br><br>
+
+罗宾洗澡的时候，你在浴室外面等着，确保没有人试图进来。
+水声慢慢消失了，很快罗宾裹着毛巾走出了浴室。你们一起回了<<him>>的房间。
+<br><br>
+
+<<link [[继续|Robin Pillory Finish]]>><</link>>
+<br>
+
+:: Robin Pillory Finish
+<<unset $robinPillory>>
+<<set _robin to statusCheck("Robin")>>
+<<set $outside to 0>><<set $location to "home">><<effects>>
+
+刚进房间，罗宾就走到床边坐下，你走过去坐在了<<him>>身边。
+<br><br>
+
+<<if _robin.trauma gte 80>>
+	罗宾沉默地趴在你身上。你轻轻地抚摸着<<his>>的背。
+<<elseif _robin.trauma gte 40>>
+	罗宾紧紧抱着你，把<<him>>的身体靠在你身上。
+<<else>>
+	你们紧紧依偎着。
+<</if>>
+<br><br>
+
+罗宾的呼吸慢了下来，渐渐的睡着了，然后你又陪了<<him>>一会儿。
+<br><br>
+
+你轻轻地把<<him>>放在床上，然后帮<<him>>盖好被子。“晚安，罗宾，”你在关门前低声说。
+
+<<set $robinmissing to 0>>
+<<run setRobinLocationOverride("sleep", numbersBetween(1, 24))>>
+<br><br>
+
+<<link [[离开|Orphanage]]>><<endevent>><</link>>
+
+:: Robin Mischief
+<<effects>><<set _robin to statusCheck("Robin")>>
+<<npc Robin>><<person1>>
+
+你打开门进去看。
+<br><br>
+
+一开始你没注意到任何异常。你几乎要关门了，这时你无意中听到从罗宾的被子里传来一声微弱的呻吟。盖子不是静止不动的，它从一边移动到另一边，就好像罗宾在翻来覆去。
+<br><br>
+
+当被子滑下时，你看到了<<npcRevealText $NPCList[0] "lower" "name">>。<<His>>裸露的臀部和<<npcGenitals>>全都露了出来。似乎没有意识到你的存在，<<him>>伸手到你的眼前，享受着快乐。<<He>>一边用一只手摩擦<<his>>的<<personpenis>>一边用另一只手摸索<<his>>的$NPCList[0].breastdesc。<<He>>咬着<<his>>的枕头来掩盖<<his>>的呻吟，尽管你仍然能隐约听到。
+<<arousal 600>><<garousal>>
+<br><br>
+
+<<if _robin.dom gte 60>>
+	突然，<<he>>停止了移动，罗宾转过头向门口微笑。你能清楚地看到<<his>>赤裸的身体。"请进，"<<he>>小声说。
+	<br><br>
+
+	<<link [[进房间|Robin Mischief Enter]]>><<npcincr Robin dom 1>><</link>><<gdom>>
+	<br>
+	<<link [[道歉然后离开|Robin Mischief Leave]]>><<npcincr Robin lust -5>><<npcincr Robin love -1>><</link>><<lllust>><<llove>>
+<<else>>
+	<<link [[看|Robin Mischief Watch]]>><<pass 5>><<arousal 1200>><</link>><<garousal>>
+	<br>
+	<<link [[关门|Robin Mischief Close]]>><</link>>
+	<br>
+	<<if $promiscuity gte 55>>
+		<<link [[手淫|Robin Mischief Masturbation]]>><<set $masturbationstart to 1>><</link>><<promiscuous4>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Robin Mischief Watch
+<<effects>><<set _robin to statusCheck("Robin")>>
+
+<<He>>继续抽插着<<his>>的<<personpenis>>。<<his>>半裸的身体随着<<his>>手的每次移动而抽动。几分钟后，<<his>>弯起了身子，
+<<if _robin.penis isnot "none">>
+	精液从<<his>>的<<print $NPCList[0].penisdesc>>中射出。罗宾身体颤抖，
+<</if>>
+<<he>>倒在床上。
+<br><br>
+
+在恢复呼吸后，罗宾转到翻了个身，用被子盖住<<his>>自己。你决定离开，让<<him>>好好休息，你关上了门。
+<br><br>
+
+<<link [[继续|Orphanage]]>><<endevent>><</link>>
+
+:: Robin Mischief Close
+<<effects>>
+
+你决定不去打扰罗宾。你关上门回到大厅。
+<br><br>
+
+<<link [[继续|Orphanage]]>><<endevent>><</link>>
+
+:: Robin Mischief Masturbation
+<<effects>>
+<<if $masturbationstart is 1>>
+	<<set $masturbationstart to 0>>
+	<<set $masturbationstat += 1>>
+	你想摸摸自己。你看的太色情了。你尽量在门后找个舒服的姿势。
+	<<masturbationstart>>
+	<<set $timer to random(12,48)>>
+	<<promiscuity4>>
+<</if>>
+<<masturbationeffects>>
+<<masturbationactions>>
+
+<div id="masturbationButtons">
+	<<if $orgasmcurrent gte 1>>
+		<div><<link [[停止|Robin Mischief Masturbation Finish]]>><<set $finish to 1>><</link>></div>
+	<<else>>
+		<<if $timer lte 0>>
+			<div id="next"><<link [[继续|Robin Mischief Masturbation Finish]]>><</link>><<nexttext>></div>
+		<<else>>
+			<div id="next"><<link [[继续|Robin Mischief Masturbation]]>><</link>><<nexttext>></div>
+		<</if>>
+
+		<<if $corruptionMasturbation isnot true and random(0,3) gt $orgasmcurrent and $corruption_slime gt (currentSkillValue('willpower') / 10)>>
+			<div><<link [[停止|$passage]]>><<set $corruptionMasturbation to true>><</link>></div>
+		<<elseif $corruptionMasturbation isnot true>>
+			<div><<link [[停止|Robin Mischief Masturbation Finish]]>><<set $finish to 1>><</link>></div>
+		<<else>>
+			<div class="red">你耳朵里的史莱姆让你无法停下。</div>
+		<</if>>
+	<</if>>
+</div>
+
+:: Robin Mischief Masturbation Finish
+<<effects>>
+<<if $masturbationorgasm gte 1>>
+	你用一只手捂住嘴以避免暴露。几乎同时，
+<<else>>
+	在你进入高潮之前，
+<</if>>
+罗宾弯起了身子，
+<<if $NPCList[0].penis isnot "none">>
+	精液从<<his>>的<<print $NPCList[0].penisdesc>>中射出。罗宾身体颤抖，
+<</if>>
+<<he>>倒在床上。你在<<he>>注意到你之前走开。
+<br><br>
+
+在恢复呼吸后，罗宾转到翻了个身，用被子盖住<<his>>自己。你决定离开，让<<him>>好好休息，你关上了门。
+<br><br>
+
+<<endmasturbation>>
+<<endcombat>>
+
+<<link [[继续|Orphanage]]>><<clotheson>><</link>>
+<br>
+
+:: Robin Mischief Leave
+<<effects>>
+
+你道歉然后关上门。你听到罗宾在放弃之前对你喊。
+<br><br>
+
+<<link [[继续|Orphanage]]>><<endevent>><</link>>
+
+:: Robin Mischief Enter
+<<effects>><<set _robin to statusCheck("Robin")>>
+
+你进来的时候把门关上。罗宾拍了拍床边的，你坐下了。
+<br><br>
+
+"我很抱歉让你看到我那样，”<<he>>红着脸说。“我最近感觉很奇怪，这对我很有帮助。"
+<br><br>
+
+在你回答之前，<<he>>抓住你的肩膀，把你推到床上，跨坐在你身上，倾身亲吻你。你本能地向后靠，罗宾就停下来了。
+<br><br>
+
+"对不起，”<<he>>说，一脸羞愧。“我应该先问的。”<<He>>试图微笑，但<<his>>眼中流露出歉意。“你可以回你的房间了。我不希望你因为我而失眠。"
+<br><br>
+
+<<link [[亲吻罗宾|Robin Mischief Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+<<link [[离开|Robin Mischief Enter Leave]]>><</link>>
+
+:: Robin Mischief Enter Leave
+<<effects>>
+
+你从床上起来离开房间。罗宾不看你。
+<br><br>
+
+<<link [[继续|Orphanage]]>><<endevent>><</link>>
+
+:: Robin Mischief Sex
+<<set _robin to statusCheck("Robin")>>
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 500>><<npcexpose>>
+	<<npckiss>>
+	<<set $enemyarousalmax to 600>>
+	<<set _robin.lovewake to 1>>
+	在<<he>>抽离之前，你靠过去，把嘴唇压在<<his>>唇上。当你们的双唇相遇时，<<His>>眼睛睁大，然后在幸福中合上。
+<</if>>
+
+<<set $enemyanger to 0>>
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Robin Mischief Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Robin Mischief Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Robin Mischief Sex Finish
+<<set $outside to 0>><<set $location to "home">><<schooleffects>><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	罗宾微笑着紧紧抓住了你。
+<<elseif $enemyhealth lte 0>>
+	"哇噢！”罗宾说，<<Hes>>仍然在笑。
+<<elseif $finish is 1>>
+	罗宾微笑着紧紧抓住了你。
+<</if>>
+<br><br>
+<<He>>凝视着你的眼睛，“我爱你。”<<He>>再次吻你。
+
+<<if $penisfucked is 1>>
+	"有你在我身体里感觉真好。"
+<<elseif $vaginafucked is 1>>
+	"你里面的感觉真好。"
+<</if>>
+
+<<if $orgasmcurrent is 0 and !playerChastity()>>
+	<<set _mouthful to 1>>
+	<<if $player.penisExist>>
+		<<set $penisuse to "othermouth">><<set $penisstate to "othermouth">>
+	<</if>>
+	罗宾看起来很高兴。“现在，”<<he>>笑了。 "<<print either("我会让你叫出来的。","你尖叫了。","轮到你了。","你高潮了。","我让你高潮了。","我帮你高潮了。")>>"
+	<br>
+	罗宾消失在被罩之下。片刻之后，你感觉到<<his>>的舌头正在舔你的<<genitals>>。
+	<br>
+	<<arousal 4000 "genitals">>
+	<<if $arousal gte $arousalmax>>
+		<<orgasm>>
+	<<else>>
+		<br>
+		就这样过了一会儿后，罗宾又爬了起来："我不会放弃的，"<<he>>喘着粗气说道，随后<<He>>又咬着你的耳朵继续说道："那是不可能的。"
+		<br>
+		罗宾又消失在被子里，并以新的决心继续努力。
+		<<if $player.penisExist>>
+			<<set $NPCList[0].mouth to "penis">>
+			<<takeNPCVirginity "Robin" "oral">>
+		<</if>>
+		<<set $arousal to 10000>>
+		<<if $arousal gte $arousalmax>>
+			<<orgasm>>
+		<</if>>
+	<</if>>
+	<<He>>再次吻你并说道，"我爱你。"
+<</if>>
+<br><br>
+
+<<Hes>>沉默了几秒钟，然后紧张地笑了起来。"你知道，"<<he>>说。"我很高兴是你走进来的，而不是别人。那会很尴尬的。"
+<br><br>
+
+<<His>>闭上了眼睛, 并平稳的进入了梦乡.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Orphanage]]>><</link>>
+<br>
+
+:: Robin Bath
+<<effects>><<npc Robin>><<set $robinBathKnown to true>>
+
+<<if C.npc.Robin.trauma gte 40>>
+	你把浴室的门打开。
+	<<if $robin_injured>>
+		你看到了躺在浴缸里一动不动的罗宾。<<He>>转过头双眼无神的看着你。你可以看到<<his>>身上的淤青和抓痕。
+		<<stress 6>><<gstress>>
+		<br><br>
+
+		<<link [[询问发生了什么|Robin Bath Trauma Ask]]>><</link>>
+	<<else>>
+		你看到了在浴缸里挣扎着想要出来的罗宾。在门开的时候<<he>>紧张地看着你，但是在<<he>>发现是你的时候<<he>>放松了下来。你可以看到<<his>>身上的瘀伤和抓痕正在愈合。
+		<br><br>
+
+		<<link [[我来帮你洗吧 (0:30)|Robin Bath Trauma]]>><<pass 30>><<npcincr Robin trauma -3>><</link>><<lrtrauma>>
+	<</if>>
+<<else>>
+	你打开浴室门，看到罗宾正在浴缸里洗澡。
+	<<if $robinromance is 1>>
+		<<He>>转过身大叫，但在看到是你后，<<He>>明显放松了下来。<<He>>微笑着向你挥手。
+		<br><br>
+
+		<<link [[留下来看 (0:30)|Robin Bath Watch]]>><<pass 30>><<arousal 600>><<npcincr Robin lust 1>><</link>><<garousal>><<glust>>
+		<<if $exhibitionism gte 15 and ($leftarm isnot "bound" or $rightarm isnot "bound")>>
+			<br>
+			<<link [[说想一起洗 (0:30)|Robin Bath Join]]>><<pass 30>><<npcincr Robin lust 3>><</link>><<exhibitionist2>><<gglust>>
+		<</if>>
+	<<elseif C.npc.Robin.love gte 60>>
+		<<He>>大叫，但在看到是你后，<<He>>很快就放松了下来。“你能......给我几分钟吗？我洗完就会马上回房间了。"
+		<br><br>
+
+		<<link [[留下来看 (0:30)|Robin Bath Watch]]>><<pass 30>><<arousal 600>><<npcincr Robin dom -1>><<pass 5>><</link>><<garousal>><<ldom>>
+		<<if $exhibitionism gte 15 and ($leftarm isnot "bound" or $rightarm isnot "bound")>>
+			<br>
+			<<link [[说想一起洗 (0:30)|Robin Bath Join]]>><<pass 30>><<npcincr Robin lust 3>><</link>><<exhibitionist2>><<gglust>>
+		<</if>>
+	<<else>>
+		<<He>>转过身来大叫，“请，请离开！"
+		<br><br>
+
+		<<link [[留下来看|Robin Bath Watch]]>><<arousal 600>><<npcincr Robin love -1>><<npcincr Robin dom -1>><</link>><<garousal>><<llove>><<ldom>>
+	<</if>>
+<</if>>
+<br>
+<<link [[离开|Orphanage]]>>
+	<<endevent>>
+	<<if C.npc.Robin.trauma gte 40>>
+		<<stress 6>><<npcincr Robin confidence -1>>
+	<</if>>
+<</link>>
+<<if C.npc.Robin.trauma gte 40>>
+	<<gstress>><<ldom>>
+<</if>>
+
+:: Robin Bath Trauma Ask
+<<effects>>
+
+你焦急的询问罗宾<<him>>身上到底发生了什么。<<Hes>>一句话也不说，只是一直流着泪。
+<<stress 6>><<trauma 6>><<gstress>><<gtrauma>>
+<br><br>
+
+<<link [[我来帮你洗吧 (0:30)|Robin Bath Trauma]]>><<pass 30>><<npcincr Robin trauma -3>><</link>><<lrtrauma>>
+<br>
+<<link [[离开|Orphanage]]>><<endevent>><<stress 6>><<npcincr Robin confidence -1>><</link>><<gstress>><<ldom>>
+
+:: Robin Bath Trauma
+<<effects>><<set $daily.robin.bath to true>>
+
+"让我帮你洗吧，”你说。罗宾紧张地看着你，但还是顺从的点了点头。
+<br><br>
+
+你小心地擦洗罗宾的皮肤，特别是在<<him>>的伤处。在<<his>>的伤口被水冲洗刺激到的时候，罗宾的身体抖了抖，闭着眼睛急促的喘气，但<<he>>还是乖乖的让你洗着。
+<br><br>
+
+你扶着罗宾从浴缸里站了起来，然后伸手去拿毛巾。“我，我会没事的，”罗宾轻声说着，用毛巾把自己裹了起来，然后摇摇晃晃地走回了房间。
+<br><br>
+
+<<link [[继续|Orphanage]]>><<endevent>><</link>>
+
+:: Robin Bath Watch
+<<effects>>
+
+<<if $robinromance is 1>>
+	<<set $daily.robin.bath to true>>
+	你关上身后的门，观察<<his>>的裸体。罗宾表现的很放松，继续清洗着<<his>>的身体。
+	<<if C.npc.Robin.dom gte 60>>
+		但是<<his>>清洗的动作发生了变化，<<his>>的姿势动作慢慢变得挑逗了起来。<<his>>的手指在<<npcChest>>周围诱惑的滑动着，腿还张开，大大方方的裸露着<<his>>的<<npcGenitals>>。
+		<<arousal 600>>
+	<<else>>
+		<<He>>一直害羞地看着你，但丝毫不掩饰自己的身体。
+	<</if>>
+	<br><br>
+
+	在洗完后，<<he>>用毛巾把自己裹了起来。“我在房间里等你，”说完后<<he>>亲了一下你的脸颊，然后走出了浴室。
+<<elseif C.npc.Robin.love gte 60>>
+	<<set $daily.robin.bath to true>>
+	你无视罗宾的请求，直勾勾的盯着<<his>>的裸体。罗宾的脸涨的通红，<<he>>加快了速度，想要快点儿结束这尴尬的洗澡时间。在整个过程中<<his>>都把自己的<<npcGenitals>>藏在水下，一点儿都没有露出来。在洗完后，<<He>>用毛巾裹住了身体然后转向你。“我......先回房间了，”<<he>>红着脸说，然后迅速的离开了浴室。
+<<else>>
+	你无视罗宾的请求，直勾勾的盯着<<his>>的裸体。罗宾的脸涨的通红，<<he>>努力遮挡着<<his>>的<<npcChest>>和<<npcGenitals>>。“请出去！”<<he>>再次恳求。你应该在有人进来之前离开。
+<</if>>
+<br><br>
+
+<<link [[继续|Orphanage]]>><<endevent>><</link>>
+
+:: Robin Bath Join
+<<effects>><<strip>><<wash>><<set $daily.robin.bath to true>>
+
+<<if $robinromance is 1>>
+	<<He>>笑了。“当然可以了！”<<He>>看起来很害羞很紧张，但是也很开心。
+	<<exhibitionism2>>
+
+	你脱光衣服，进入了浴缸里和罗宾一起洗澡。浴缸不是双人型的大浴缸，罗宾往角落里挪了挪为你腾出空间。"过来吧，"<<he>>温柔地让你把头靠在<<his>>的膝盖上。<<He>>把洗发水涂抹到你的头发上，然后洗了起来，<<his>>哼唱着你熟悉的小调。
+	<<stress -6>><<trauma -6>><<lstress>><<ltrauma>>
+	<br><br>
+
+	洗完头发后，罗宾开始帮你清洗身体。罗宾为你擦干净身上的泡沫和水渍，你也为<<him>>做了同样的事。
+	<<if C.npc.Robin.dom gte 80 and C.npc.Robin.lust gte 60>>
+		<<he>>给你洗澡时，<<his>>的手移动到了你的<<breasts>>和<<genitals>>上。你能感觉到<<his>>的动作从擦洗慢慢变成了揉捏、摸索。
+		<br><br>
+
+		<<link [[坚持只洗澡|Robin Bath Out]]>><<set $phase to 1>><<trauma -6>><<stress -6>><<npcincr Robin dom -1>><</link>><<lstress>><<ltrauma>><<ldom>>
+		<br>
+		<<link [[拥抱|Robin Bath Sex]]>><<set $phase to 1>><<npcincr Robin dom 1>><<set $sexstart to 1>><</link>><<gdom>>
+	<<else>>
+		你们互相擦洗，直到你们俩都干净了。
+		<br><br>
+
+		<<link [[离开浴缸|Robin Bath Out]]>><<set $phase to 0>><</link>>
+		<<if $promiscuity gte 15>>
+			<br>
+			<<link [[要求更进一步|Robin Bath Sex]]>><<set $phase to 0>><<npcincr Robin love 1>><<npcincr Robin dom 1>><<set $sexstart to 1>><</link>><<glove>><<gdom>>
+		<</if>>
+	<</if>>
+<<else>>
+	<<He>>脸红了，但还是点了点头。“好......好吧，你进来吧，”<<he>>勉强的说，<<he>>看起来有些别扭。
+	<<exhibitionism2>>
+
+	你脱光衣服，进入了浴缸和罗宾一起洗澡。浴缸不是双人型的大浴缸，罗宾往角落里挪了挪为你腾出空间。
+	<<if C.npc.Robin.lust gte 40>>
+		你注意到罗宾正满脸通红地盯着你的身体，
+	<<else>>
+		<<He>>尽量避免盯着你看，
+	<</if>>
+	手还一直遮挡着<<his>>自己的<<npcGenitals>>。
+	<br><br>
+
+	<<if $promiscuity gte 15>>
+		<<link [[挑逗|Robin Bath Join Tease]]>><<npcincr Robin lust 1>><</link>><<glust>><<promiscuous2>>
+		<br>
+	<</if>>
+	<<link [[忽视|Robin Bath Join Ignore]]>><</link>>
+<</if>>
+
+:: Robin Bath Join Ignore
+<<effects>>
+
+你和罗宾洗得干干净净。罗宾先出去用毛巾把<<himself>>包了起来。“我会……在我自己的房间里，”<<he>>说完后迅速的离开了浴室。
+<br><br>
+
+<<link [[继续|Bath Finish]]>><<endevent>><</link>>
+
+:: Robin Bath Join Tease
+<<effects>>
+
+你将手臂伸过头顶，向罗宾露出<<chest>>。“我太累了，”你说，“你能帮我洗洗吗？"
+<<promiscuity2>>
+
+<<if C.npc.Robin.lust gte 40>>
+	<<He>>震惊地盯着你的<<chest>>，脸涨得通红。你抓住<<his>>的手腕，并轻轻引导<<his>>把双手放在你的<<chestsimple>>上。
+	<<if C.npc.Robin.lust gte 80>>
+		<span class="lewd"><<His>>的手踌躇着。</span><<He>>慢慢地揉着你的<<breasts>>，<<his>>的表情充满了茫然。<<He>>似乎没有意识到<<hes>>在抚摸你。
+		<<arousal 600>><<garousal>>
+		<br><br>
+
+		过了几秒钟，<<he>>睁大了眼睛，<<he>>才把<<his>>的手抽了回去。“对不起！”<<he>>大叫。"我不是故意的……！我只是想帮你洗……"<<He>>结结巴巴地说了几句话，然后迅速的从浴缸里爬了出去，把<<himself>>裹在毛巾里，跑出了浴室。
+	<<else>>
+		当<<his>>的手指拂过你乳头的那一刻，<<he>>像触电一样收回了手。“对不起，”<<he>>说，“那，那个……反正我也快洗完了，我先走了。”<<He>>迅速离开浴缸，用毛巾把<<himself>>裹了起来，然后跑出了浴室。
+	<</if>>
+<<else>>
+	罗宾很快把目光移开。“对不起，”<<he>>说，“反正我也快洗完了，我先走了。”<<He>>迅速离开浴缸，用毛巾把<<himself>>裹了起来，然后离开了浴室。
+<</if>>
+<br><br>
+
+<<link [[继续|Bath Finish]]>><<endevent>><</link>>
+
+:: Robin Bath Out
+<<effects>>
+<<if $phase is 1>>
+	"现在不行，”你推开<<him>>，罗宾点了点头，回到给你擦洗的地方。
+	<br><br>
+
+	最终，
+<</if>>
+罗宾走出浴室，<<him>>用毛巾包裹着身体。“我在房间里等你，”说完后<<he>>亲了一下你的脸颊，走出了浴室。<<wash>>
+<br><br>
+
+<<link [[继续|Bath Finish]]>><<endevent>><</link>>
+
+:: Robin Bath Sex
+<<set _robin to statusCheck("Robin")>>
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 500>><<npcexpose>>
+	<<if $phase is 1>>
+		你把<<him>>拉近。<<He>>把<<his>>赤裸的身体压在你的身上。
+	<<else>>
+		"光是洗澡真的很无聊，”你低声说，把你赤裸的身体贴在<<his>>身上。<<His>>呼吸一滞，然后紧紧的抱住了你。
+	<</if>>
+<</if>>
+
+<<set $enemyanger to 0>>
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Robin Bath Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Robin Bath Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Robin Bath Sex Finish
+<<set $outside to 0>><<set $location to "home">><<schooleffects>><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	罗宾微笑着紧紧抓住了你。
+<<elseif $enemyhealth lte 0>>
+	"哇噢！”罗宾说，<<Hes>>仍然在笑。
+<<elseif $finish is 1>>
+	罗宾微笑着紧紧抓住了你。
+<</if>>
+<br><br>
+<<He>>凝视着你的眼睛，“我爱你。”<<He>>再次吻你。
+
+<<if $penisfucked is 1>>
+	"有你在我身体里感觉真好。"
+<<elseif $vaginafucked is 1>>
+	"你里面的感觉真好。"
+<</if>>
+
+<<if $orgasmcurrent is 0 and !playerChastity()>>
+	<<set _mouthful to 1>>
+	<<if $player.penisExist>>
+		<<set $penisuse to "othermouth">><<set $penisstate to "othermouth">>
+	<</if>>
+	罗宾看起来很高兴。“现在，”<<he>>笑了。 "<<print either("我会让你叫出来的。","你尖叫了。","轮到你了。","你高潮了。","我让你高潮了。","我帮你高潮了。")>>"
+	<br>
+	罗宾消失在水下。片刻之后，你感觉到<<his>>舌头开始舔你的<<genitals>>。
+	<br>
+	<<arousal 4000 "genitals">>
+	<<if $arousal gte $arousalmax>>
+		<<orgasm>>
+	<<else>>
+		<br>
+		过了一会儿，罗宾从水下又浮了出来。“我不会放弃的，”<<he>>喘着气，舔咬着你的耳朵。“永远不会。"
+		<br>
+		罗宾消失在水下，继续努力舔舐了起来。
+		<<if $player.penisExist>>
+			<<set $NPCList[0].mouth to "penis">>
+			<<takeNPCVirginity "Robin" "oral">>
+		<</if>>
+		<<set $arousal to 10000>>
+		<<if $arousal gte $arousalmax>>
+			<<orgasm>>
+		<</if>>
+	<</if>>
+	<<He>>再次吻你并说道，"我爱你。"
+<</if>>
+<br><br>
+
+罗宾低头盯着你的身体。“我们得再洗一次澡了，”<<he>>开玩笑说。在接下来的时间里，你们两个互相帮助对方把身体清洗干净了。<<wash>>
+<br><br>
+
+罗宾洗完后，用毛巾包裹住了身体。“我在房间里等你，”<<he>>说完后亲了一下你的脸颊，然后走出了浴室。
+<br><br>
+
+<<endcombat>>
+
+<<link [[继续|Bath Finish]]>><<endevent>><</link>>
+
+:: Bath Robin Tease
+<<effects>>
+
+"我不介意你看着我，”你低声说，然后继续洗澡。
+<<exhibitionism2>>
+
+<<if C.npc.Robin.love gte 60>>
+	罗宾犹豫了一下。“我，我还是觉得这不太好……，”<<he>>红着脸说。"如果有人进来怎么办？我先回房间了。"<<He>>转身快速的离开了浴室。
+<<else>>
+	罗宾不顾你的邀请，迅速退后离开了浴室。
+<</if>>
+<br><br>
+
+<<link [[继续|Bath]]>><<endevent>><</link>>
+
+:: Bath Robin Help
+<<effects>><<wash>>
+
+"你能帮我洗澡吗？”你微笑着问<<him>>。
+<<promiscuity2>>
+
+<<if $robinromance is 1>>
+	罗宾在门口停了下来，转过身来。“当然可以！”<<He>>跪在浴缸旁边。"过来吧，"<<he>>边说边温柔地把你的头拉向浴缸边缘。<<He>>把洗发水涂抹到了你的头发上，然后洗了起来，<<his>>哼唱着你熟悉的<<he>>常听的曲子。
+	<<stress -6>><<trauma -6>><<lstress>><<ltrauma>>
+	<br><br>
+
+	在洗完头发后，<<he>>的手移动到了你身体的其他部位。<<His>>按摩着你紧绷的肩膀和后背。然后<<He>>拿着肥皂在你的<<chest>>和<<genitals>>上擦了起来。
+	<<arousal 600>><<garousal>>
+	<br><br>
+
+	罗宾把你洗干净后，扶着你从浴缸里站起身。<<He>>从一叠毛巾中抓起一条，温柔地擦干你湿漉漉的身体。“我先走了，你去穿衣服吧，”<<He>>临走前在你的脸颊上亲了一下。
+	<br><br>
+
+	<<link [[继续|Bath Finish]]>><<endevent>><</link>>
+<<else>>
+	罗宾紧张地看着你，但还是点了点头。<<He>>慢慢靠近浴缸，尽量不让<<his>>的眼睛在任何地方停留太长时间。
+	<br><br>
+
+	"过来吧，"<<he>>边说边温柔地把你的头拉向浴缸的边缘。<<He>>把洗发水涂抹到你的头发上，然后洗了起来，<<his>>哼唱着你熟悉的小调。
+	<<stress -6>><<trauma -6>><<lstress>><<ltrauma>>
+	<br><br>
+
+	洗完头发后，<<he>>的手移动到了你身体的其他部位。<<His>>按摩着你紧绷的肩膀和后背。
+	<<if C.npc.Robin.lust gte 60>>
+		<<He>>一直都尽量避免着碰到你的<<chest>>，但是却忍不住盯着看。
+	<<else>>
+		<<He>>避免触摸你的<<chest>>。
+	<</if>>
+	<br><br>
+
+	<<link [[完成沐浴|Bath Robin Help 2]]>><<set $phase to 0>><</link>>
+	<br>
+	<<link [[挑逗|Bath Robin Help 2]]>><<set $phase to 1>><<npcincr Robin lust 1>><</link>><<promiscuous2>><<glust>>
+<</if>>
+
+:: Bath Robin Help 2
+<<effects>>
+
+<<if $phase is 0>>
+	"剩下的部分你自己来洗吧，”罗宾站了起来。“我先回自己的房间了。”当<<he>>离开浴室时，可以看到<<His>>泛红的脸。
+<<else>>
+	"我不介意你和我一起，”你说。罗宾发出了奇怪的声音。
+	<<promiscuity2>>
+
+	罗宾沉默了，加快速度冲洗着你的肩膀和背部。“剩下的你自己洗吧，”<<he>>站了起来。“我先回自己的房间了。”当<<he>>离开浴室时，可以看到<<His>>泛红的脸。
+<</if>>
+<br><br>
+
+罗宾帮你洗的很干净仔细，需要你自己做的部分很少，你很快就洗完澡了。
+<br><br>
+
+<<link [[继续|Bath Finish]]>><<endevent>><</link>>
+
+:: Bath Robin Join
+<<effects>><<set $phase to 0>>
+
+"你为什么不和我一起洗呢？"你问，“你平时也是这个点洗澡的吧？”在你的要求下，罗宾脱掉了衣服，急切地和你一起进了浴缸。
+<<promiscuity2>>
+
+浴缸不是双人型大浴缸，要容纳两个人有点儿勉强。你往角落里挪了挪，给罗宾腾出空间。"过来吧，"<<he>>温柔地把你的头靠到了<<his>>的膝盖上，<<He>>把洗发水涂抹到你的头发上，然后洗了起来。<<his>>哼唱着你熟悉的小调。
+<<stress -6>><<trauma -6>><<lstress>><<ltrauma>>
+<br><br>
+
+洗完头发后，罗宾温柔地帮你清洗着身体，你也帮<<him>>洗澡。你们互相擦洗着，直到你们俩都干净了。
+<br><br>
+
+<<link [[离开浴缸|Robin Bath Out]]>><</link>>
+<br>
+<<link [[要求更进一步|Robin Bath Sex]]>><<npcincr Robin love 1>><<npcincr Robin dom 1>><<set $sexstart to 1>><</link>><<glove>><<gdom>>
+
+:: Bath Robin Join 2
+<<effects>>
+
+<<if $phase is 0>>
+	罗宾僵住了，<<his>>脱衬衫的动作卡在了中途。“那，那好吧，”<<he>>有些困惑，“我先回房间了……”<<He>>尴尬地穿上衣服离开浴室。
+	<br><br>
+
+	<<link [[继续|Bath]]>><<endevent>><</link>>
+<<else>>
+	罗宾微笑着脱光衣服，然后进入浴缸。浴缸不是双人型的大浴缸，容纳两个人有些勉强。罗宾往角落里挪了挪为你腾出空间。"过来吧，"<<he>>温柔地把你的头拉到<<his>>的膝盖上。<<He>>把洗发水涂抹到你的头发上，然后洗了起来，<<his>>哼唱着你熟悉的小调。
+	<<stress -6>><<trauma -6>><<lstress>><<ltrauma>>
+	<br><br>
+
+	洗完头发后，罗宾开始帮你清洗身体。罗宾为你擦干净身上的泡沫和水渍，你也为<<him>>做了同样的事。
+	<<if C.npc.Robin.dom gte 80 and C.npc.Robin.lust gte 60>>
+		<<he>>给你洗澡时，<<his>>的手移动到了你的<<breasts>>和<<genitals>>上。你能感觉到<<his>>的动作从擦洗慢慢变成了揉捏、摸索。
+		<br><br>
+
+		<<link [[坚持只洗澡|Robin Bath Out]]>><<set $phase to 1>><<trauma -6>><<stress -6>><<npcincr Robin dom -1>><</link>><<lstress>><<ltrauma>><<ldom>>
+		<br>
+		<<link [[拥抱|Robin Bath Sex]]>><<set $phase to 1>><<npcincr Robin dom 1>><<set $sexstart to 1>><</link>><<gdom>>
+	<<else>>
+		你们互相擦洗，直到你们俩都干净了。
+		<br><br>
+
+		<<link [[离开浴缸|Robin Bath Out]]>><<set $phase to 0>><</link>>
+		<<if $promiscuity gte 15>>
+			<br>
+			<<link [[要求更进一步|Robin Bath Sex]]>><<set $phase to 0>><<npcincr Robin love 1>><<npcincr Robin dom 1>><<set $sexstart to 1>><</link>><<glove>><<gdom>>
+		<</if>>
+	<</if>>
+<</if>>
+
+:: Robin Pregnancy Purpose
+<<effects>>
+
+<<if $robinromance is 1>>
+	罗宾紧握着拳头，你说话的时候，<<his>>的脸涨红了。<<He>>看向别处，隐藏着自己的表情。"我……我还以为……"<<he>>强忍住抽泣。“我还以为你也喜欢我……”<<He>>用手臂遮住<<his>>的脸。“对不起，我不该这么说。我还是很爱你，但是我现在想一个人待会儿。”<<lllove>><<npcincr Robin love -3>>
+	<br><br>
+
+	你离开了罗宾，让<<his>>一个人待着。
+	<br><br>
+	<<link [[离开|Orphanage]]>><<set $fromRobinRoom to true>><<set $robin_kicked_out to true>><<set $daily.robin.kickedOut to true>><<endevent>><</link>>
+	<br>
+<<else>>
+	罗宾点点头，但是还是皱着眉头。“我明白，”<<he>>说。"或许真的能成功呢！贝利也会帮忙的，没什么好怕的。"<<He>>握紧了你的手。<<gglove>><<npcincr Robin love 3>>
+	<br><br>
+
+	<<robinoptions>>
+<</if>>
+
+:: Robin Pregnancy Accident
+<<effects>>
+
+<<if $robinromance is 1>>
+	你说话时，罗宾把目光移开了，<<his>>隐藏着自己的表情。"我……"<<he>>开口想要说些什么，但是很快就停了下来，转而看着窗外。“对不起。我应该支持你的，我会支持你，但是我现在想一个人待会儿。"
+	<br><br>
+	你离开了罗宾，让<<his>>一个人待着。
+	<br><br>
+	<<link [[离开|Orphanage]]>><<set $fromRobinRoom to true>><<set $robin_kicked_out to true>><<set $daily.robin.kickedOut to true>><<endevent>><</link>>
+	<br>
+<<else>>
+	罗宾笑了。“没关系，”<<he>>说，"无论如何我都会支持你的！"<<He>>抱着你，"或许真的能成功呢！贝利也会帮忙的，没什么好怕的。"
+	<br><br>
+
+	<<robinoptions>>
+<</if>>
+
+:: Robin Pregnancy Raped
+<<effects>>
+
+"我很抱歉，”罗宾都要哭出来了。“不管发生什么，我都会陪在你身边。”<<He>>紧紧地抱住你，不愿放开。<<ggglove>><<npcincr Robin love 9>>
+<br><br>
+
+<<robinoptions>>

@@ -1,0 +1,644 @@
+:: Widgets Home Events [widget]
+
+<<widget "homeevent">>
+	<<rng>>
+	<<if Time.monthName is "December" and Time.monthDay is 1>>
+		<<npc Bailey>><<generatey2>><<generatey3>><<generatey4>>
+		你听到外边传来激动的呼喊，几个孤儿院里的孩子围在窗台纷纷挥舞着手臂——啊，外面下雪了。
+		<br><br>
+		"我想堆个雪人。"
+		<br>
+		"这里的雪不够。"
+		<br>
+		"那里好像有很多雪！"
+		<br>
+		"只要确保你穿得暖和就行了。"
+		<br><br>
+		一个<<person2>><<person>>冲向了大门。但在开门的瞬间，<<His>>脸上的笑容消失了。只见贝利大步走来，将门砰的一声关上了。<<lhope>><<hope -1>>
+		<br><br>
+
+		<<link [[继续|Orphanage]]>><<endevent>><</link>>
+		<br>
+	<<elseif $christmas is 1 and $christmas_event is undefined>>
+		<<set $christmas_event to 1>>
+		<<generatey1>><<generatey2>>
+		你无意中听到两个孤儿在聊天。
+		<br><br>
+		"你觉得今年圣诞节我们会收到什么礼物呢？"一个<<person1>><<person>>漫不经心地问着，不停地用拇指把玩着手心里的小物件。
+		<br>
+		"贝利让我们来装饰这里，"那个<<person2>><<person>>回话，"但你说礼物？哈，也许圣诞老人会给我们带点儿？"<<He>>推了<<person1>><<person>>一把，但那人看起来并不是很信服。
+		<br><br>
+		<i>对于很多孤儿来说，一些新衣服通常是最棒的，也许你可以去购物中心逛一逛。当然，你也可以在森林商店或购物中心为罗宾买些东西。</i>
+		<br><br>
+
+		<<endevent>>
+		<<link [[继续|Orphanage]]>><</link>>
+		<br>
+	<<elseif $home_event_timer lte 0>><<set $home_event_timer to 6>>
+		<<switch $home_event_count>>
+			<<case 0>><<set $home_event_count += 1>>
+				<<homeeventnorm>>
+			<<case 1>><<set $home_event_count += 1>>
+				<<npc Bailey>><<generateyv2>><<person1>>"你本周欠我 £200，"你听到贝利在前面跺着脚。"付清它。"
+				<br><br>
+				<<saveNPC 1 orphan_rent>>
+				那个<<person2>><<person>>双手抱胸，语气异常的激动。"这钱可是我辛辛苦苦赚来的，可不会说给你就给你…放马过来吧！"<<he>>挑衅地握紧了拳头。
+				<br><br>
+
+				贝利冷哼了一声，拿出了一个黑色的面罩和一节绳子。"好吧，"<<person1>><<he>>绷紧了绳结，"别动。"其他的孤儿纷纷将视线移开。
+				<br><br>
+
+				<<link [[干涉|Home Intervene]]>><</link>>
+				<br>
+				<<link [[旁观|Home Watch]]>><</link>>
+				<br>
+				<<link [[无视|Orphanage]]>><<endevent>><<set $orphan_rent to "taken">><</link>>
+				<br>
+
+			<<case 2>><<set $home_event_count += 1>>
+				<<generateyv1>><<generateyv2>>
+				你看到一群孤儿们围成一圈，他们听起来很是兴奋。当你走近时，你看到了一只大狗。那是一只法国獒犬，看起来相当友善，对所有抚摸它的孤儿都报以热情的回应。
+				<br><br>
+
+				"他在外面一直站着，所以我把他牵了进来，"一位<<person1>><<person>>兴奋地抚摸着狗子的毛发，向大家解释着缘由。
+				<br><br>
+
+				"我想留下他，"一个<<person2>><<person>>突然开口提议，孤儿们都激动起来，纷纷达成了一致。
+				<br><br>
+
+				<<person1>><<person>>伸手拿起项圈上的标签。"他的名字叫麦克思，"当麦克思听到有人叫他的名字时，他转头看向了那位<<person>>。"这有个电话号码，他已经有主人了。"
+				<br><br>
+
+				一些孤儿失望地叹了口气。"无论怎样，贝利是不会让我们养狗的。"<<person>>悲伤地摇了摇头，"我去找一下他的主人。"
+				<br><br>
+
+				<<link [[抚摸(0:30)|Home Max]]>><<pass 30>><<trauma -24>><<stress -24>><</link>><<lltrauma>><<llstress>>
+				<br>
+				<<link [[无视|Orphanage]]>><<endevent>><</link>>
+				<br>
+
+			<<case 3>><<set $home_event_count += 1>>
+				你无意中听到两个居民低声交谈。<<generateyv1>><<generateyv2>><<person1>>"我还能做些什么呢？"另一个<<person>>低语道，"现在是越来越难了。"
+				<br><br>
+
+				"一定还会有更好的办法，"<<person2>><<person>>叹了口气。
+				<br><br>
+
+				远处传来了喇叭的嘶鸣。<<person1>><<person>>将手伸进<<his>>的包里。"他们来了，"<<he>>掏出一瓶酒，准备一饮而尽，直到<<he>><span class="red">被酒辣到了嗓子。</span>
+				<br><br>
+
+				"我没事，"<<he>>咳嗽了起来，看了一眼酒瓶。<<he>>没再说话，只是深吸了一口气，无言地离开了。
+				<br><br>
+
+				你看向窗外，一个<<generate3>><<person3>><<person>>正在一辆没熄火的汽车旁等待着。<<He>>在催促<<person1>><<persons>>上车时摸了一把<<he>>的屁股，随后二人一起开车离开了。你注意到<<person2>><<person>>正满脸担忧地在另一个窗口看着。
+				<<lhope>><<hope -1>>
+				<br><br>
+
+				<<link [[继续|Orphanage]]>><<endevent>><</link>>
+				<br>
+			<<case 4>><<set $home_event_count += 1>>
+				<<if $orphan_rent is "paid">>
+				<<loadNPC 0 orphan_rent>><<person1>>"嘿！"一个声音在你身后大喊。是你从贝利那救出来的那个<<person>>。"我说过我会还给你的，<<He>>伸手从<<his>>的口袋里掏出一捆钞票。"<span class="gold">£1000</span>。"<<He>>微笑着伸出<<his>>的手，"请拿着吧。"
+				<br><br>
+
+				<<link [[收下|Home Money Take]]>><<set $money += 100000>><</link>>
+				<br>
+				<<link [[拒绝|Home Money Refuse]]>><<hope 1>><</link>><<ghope>>
+				<br>
+				<<else>>
+				<<npc Bailey>><<loadNPC 1 orphan_rent>><<person1>>"你本周欠我£1000，"你听到贝利在前面跺着脚，"付清它。"<<Hes>>在与<<person1>><<him>>之前带走的那个<<person2>><<person>>谈话。
+				<br><br>
+
+				<<person2>><<persons>>那桀骜不驯的神态已不复存在了，<<He>>沉默地盯着地面，毫无怨言地将钱交了出去。
+				<<lhope>><<lreb>><<hope -1>><<reb -1>>
+				<br><br>
+
+				<<link [[继续|Orphanage]]>><<endevent>><</link>>
+				<br>
+				<</if>>
+			<<case 5>><<set $home_event_count += 1>>
+				<<set $loft_known to 1>><<set $loft_upgrade to 0>>
+				<<npc Bailey>><<generateyv2>><<generateyv3>>你听到楼梯上方传来兴奋的蹦跳声。一个<<person2>><<person>>和<<person3>><<person>>正轮流的跳跃起来，好想是要抓到天花板上的什么东西。
+				<br><br>
+
+				你顺着楼梯走到楼上，看见<<person2>><<person>>正试图通过踩着凳子来让自己抓的更高。<<person3>><<person>>在看见你后对你微笑。"你比我们都要高。"<<he>>说道。"上面有一根绳子，你能拉一下吗？我们想看看会发生什么。
+				<br><br>
+
+				<<link [[拉动绳子|Orphanage Loft Intro]]>><<set $phase to 0>><</link>>
+				<br>
+				<<link [[拒绝|Orphanage Loft Intro]]>><<set $phase to 1>><</link>>
+				<br>
+
+			<<case 6>>
+			<<homeeventnorm>>
+		<</switch>>
+	<<elseif $rng gte 71>>
+		<<rng 6>>
+		<<if $rng gte 6>>
+			<<if $loft_kylar>>
+				<<homeeventkylar>>
+			<<else>>
+				<<homeeventnorm>>
+			<</if>>
+		<<elseif $rng gte 5>>
+			<<if $chef_speech is "bailey">>
+				<<homeeventchef>>
+			<<else>>
+				<<homeeventnorm>>
+			<</if>>
+		<<elseif $rng gte 4>>
+			<<if $loft_river>>
+				<<homeeventriver>>
+			<<else>>
+				<<homeeventnorm>>
+			<</if>>
+		<<elseif $rng gte 3>>
+			<<if $mason_pond gte 5>>
+				<<homeeventpond>>
+			<<else>>
+				<<homeeventnorm>>
+			<</if>>
+		<<elseif $rng gte 2>>
+			<<if $alex_greenhouse gte 3>>
+				<<homeeventalex>>
+			<<else>>
+				<<homeeventnorm>>
+			<</if>>
+		<<else>>
+			<<homeeventnorm>>
+		<</if>>
+	<<else>>
+		<<rng>>
+		<<if $rng gte 51>>
+			<<if $orphan_hope gte random(1, 50)>>
+				<<homeeventhopehi>>
+			<<elseif $orphan_hope lte random(-50, -1)>>
+				<<homeeventhopelo>>
+			<<else>>
+				<<homeeventnorm>>
+			<</if>>
+		<<else>>
+			<<if $orphan_reb gte random(1, 50)>>
+				<<homeeventrebhi>>
+			<<elseif $orphan_reb lte random(-50, -1)>>
+				<<homeeventreblo>>
+			<<else>>
+				<<homeeventnorm>>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "homeeventnorm">>
+	<<switch random(1, 12)>>
+		<<case 1>>
+			<<generateyv1>><<person1>>一个<<person>>向你走了过来。"请问您能给我点钱吗？"<<he>>恳求道，"我真的很需要它。"
+			<br><br>
+
+			<<if $money gte 500>>
+				<<link [[给予 £5|Home Beg Give]]>><<set $phase to 0>><<set $money -= 500>><<hope 1>><</link>><<ghope>>
+				<br>
+			<</if>>
+			<<if $money gte 2500>>
+				<<link [[给予 £25|Home Beg Give]]>><<set $phase to 1>><<set $money -= 2500>><<hope 2>><</link>><<gghope>>
+				<br>
+			<</if>>
+			<<if $money gte 10000>>
+				<<link [[给予 £100|Home Beg Give]]>><<set $phase to 2>><<set $money -= 10000>><<hope 3>><<reb -1>><</link>><<lreb>><<ggghope>>
+				<br>
+			<</if>>
+			<<if $skulduggery gte 100>>
+				<<link [[鼓励他们行窃|Home Beg Skulduggery]]>><<reb 1>><</link>><<greb>>
+				<br>
+			<</if>>
+			<<if $promiscuity gte 35>>
+				<<link [[鼓励他们卖淫|Home Beg Prostitution]]>><<reb 1>><</link>><<greb>>
+				<br>
+			<</if>>
+			<<link [[拒绝|Home Beg Refuse]]>><<hope -1>><</link>><<lhope>>
+			<br>
+		<<case 2>>
+			<<generateyv1>><<person1>>一个<<person>>向你走了过来，"我的书包好像丢了，"<<he>>的表情十分担忧，"我到处都翻过了，但还是找不到，您能帮帮我吗？"
+			<br><br>
+
+			<<link [[帮忙 (0:30)|Home School Bag]]>><<hope 1>><<pass 30>><</link>><<ghope>>
+			<br>
+			<<link [[拒绝|Home School Bag Refuse]]>><<hope -1>><</link>><<lhope>>
+			<br>
+
+		<<case 3>>
+			<<generateyv1>><<person1>>一个<<person>>踉跄着穿过前门，<<His>>的衣服被撕破了。<<He>>径直走向<<his>>的房间。<<lhope>><<hope -1>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br>
+
+		<<case 4>>
+			<<npc Bailey>><<generate2>><<person2>>一个<<person>>从楼梯上滚了下来。贝利跟在<<him>>的后面走了下来。<<person>>连滚带爬地向前门跑去。
+			<br><br>
+
+			"如果让我发现你再闯入，"贝利刚开口还没说完，<<person>>就站起来向门外冲去。
+			<br><br>
+
+			贝利在窗户后面看着。在得到满意的结果后，<<person1>><<he>>返回了<<his>>的办公室。
+			<<lreb>><<reb -1>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br>
+
+		<<case 5>>
+			<<npc Bailey>><<generate2>><<generateyv3>>你听见某个房间里突然传来尖叫声。
+			<br><br>
+
+			<<link [[调查|Home Scream]]>><</link>>
+			<br>
+			<<link [[无视|Home Scream Ignore]]>><<hope -1>><</link>><<lhope>>
+			<br>
+
+		<<case 6>>
+			<<generateyv1>><<person1>>一个<<person>>从贝利的办公室出来，脸被泪水打湿，捂着<<his>>的屁股。<<lreb>><<reb -1>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br>
+
+		<<case 7>>
+			<<generateyv1>><<person1>>一个<<person>>拦住每一个走过的人，问他们是否见过<<his>>的朋友。然而没人见过。<<lhope>><<hope -1>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br>
+
+		<<case 8>>
+			<<generatey1>><<person1>>你走过浴室，发现有扇门是半掩着的，似乎有人在里面。
+			<br><br>
+
+			<<link [[偷看|Home Peek]]>><<arousal 600>><</link>><<garousal>>
+			<br>
+			<<link [[关上门|Home Close]]>><<famegood 1>><</link>>
+			<br>
+
+		<<case 9>>
+			<<generatey1>><<generatey2>>你靠近那两个孤儿，是<<fullGroup>>。当<<person1>><<person>>看到你时，<<he>>的脸涨得通红。而<<person2>><<person>>看着<<person1>><<him>>的样子不由得笑了出来。
+			<br><br>
+
+			<<link [[调查|Home Pair]]>><</link>>
+			<br>
+			<<link [[无视|Orphanage]]>><<endevent>><</link>>
+			<br>
+
+		<<case 10>>
+			<<npc Bailey>>贝利将你推到一边，手里拿着厨房的食材。
+			<<pain 1>><<gpain>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br>
+
+		<<case 11>>
+			<<rng>>
+			<<generatey1>><<generatey2>>当你走过<<fullGroup>>时，无意中听到两个孤儿的窃窃私语。
+			<<if $NPCName[$NPCNameList.indexOf("Robin")].init is 1 and $rng gte 50>>
+				你听到他们好像提到了罗宾。
+				<br><br>
+
+				<<link [[偷听|Home Rumor Eavesdrop Robin]]>><</link>>
+				<br>
+				<<link [[无视|Orphanage]]>><<endevent>><</link>>
+				<br>
+			<<else>>
+				<br><br>
+				<<link [[偷听|Home Rumor Eavesdrop]]>><</link>>
+				<br>
+				<<link [[无视|Orphanage]]>><<endevent>><</link>>
+				<br>
+			<</if>>
+		<<case 12>>
+			<<generateyv1>><<person1>>
+			一个胳膊上缠着绷带的<<person>>走进孤儿院。
+			<<if $tending gte 200>>
+				<<He>>低着头，避开任何人的视线，沉默着走向<<his>>的房间。
+				<br><br>
+
+				当<<he>>经过你身边时，你的注意力被吸引到了绷带上，<span class="green">你注意到</span>它需要重新处理一下。
+				<br><br>
+
+				<<link [[提供帮助 (0:10)|Home Bandage]]>><<pass 10>><<hope 1>><</link>><<ghope>>
+				<br>
+				<<link [[无视|Orphanage]]>><<hope -1>><</link>><<lhope>>
+				<br>
+			<<else>>
+				<<He>>避开每个人的目光，径直走向<<his>>的房间。<<lhope>><<hope -1>>
+				<br><br>
+
+				<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<</if>>
+	<</switch>>
+<</widget>>
+
+<<widget "homeeventhopehi">>
+	<<switch random(1, 5)>>
+		<<case 1>>
+			<<npc Bailey>><<person1>>一群孤儿们正围坐在一起聊天，但贝利将他们分开了。
+			<<lreb>><<reb -1>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br>
+		<<case 2>>
+			<<npc Bailey>><<person1>>有人在大厅里贴了一张用于振奋人心的海报。但贝利把它撕了下来。
+			<<lhope>><<hope -1>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br>
+		<<case 3>>
+			<<generatey1>><<generateyp2>><<person1>>一个<<person>>通过假装看书从而悄悄地看着大厅对面的那个<<person2>><<person>>。<<person>>正笑着和朋友聊天。<<He>>只是不经意间看了一眼<<person1>><<person>>，后者就将<<his>>那涨红的脸庞藏在书本后面。
+			<br><br>
+
+			<<link [[鼓励|Home Encourage]]>><<hope 1>><</link>><<ghope>>
+			<br>
+			<<link [[调情|Home Flirt]]>><</link>><<promiscuous1>>
+			<br>
+			<<link [[无视|Orphanage]]>><<endevent>><</link>>
+			<br>
+		<<case 4>>
+			<<generateyv1>><<person1>>一个<<person>>在大厅里安慰一个哭泣的孤儿，还是个小孩子。看到这一幕，你感到很温馨。<<ltrauma>><<trauma -6>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br>
+		<<case 5>>
+			你在大厅里看见一张用以鼓舞人心的手绘海报。一定是其中某个孤儿将它挂起来的。不知怎么的，它让你感觉更好。
+			<<lstress>><<stress -6>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br>
+	<</switch>>
+<</widget>>
+
+<<widget "homeeventhopelo">>
+	<<switch random(1, 5)>>
+		<<case 1>>
+			<<generateyv1>><<person1>>你听到短促的抽泣声。一个<<person>>正独自站在墙角面壁。
+			<br><br>
+
+			<<link [[安慰 (1:00)|Home Comfort]]>><<famegood 1>><<pass 60>><<hope 1>><</link>><<ghope>>
+			<br>
+			<<link [[无视|Orphanage]]>><<endevent>><</link>>
+			<br>
+
+		<<case 2>>
+			孤儿们的神情都很低迷，不停的在大厅内来回踱着步。
+			<<lhope>><<hope -1>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><</link>>
+			<br>
+
+		<<case 3>>
+			<<generateyv1>><<person1>>你看见一个<<person>>正抚慰一对年纪很小的、哭泣的孤儿。<<He>>看起来很憔悴，也很疲惫。<<lreb>><<reb -1>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br>
+
+		<<case 4>>
+			<<generateyv1>><<generateyv2>>你走过一群<<fullGroup>>。那<<person1>><<person>>用手捂着<<his>>的脸，同时<<his>>的朋友在尝试安慰<<him>>。<<gtrauma>><<trauma 6>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br>
+
+		<<case 5>>
+			<<generateyv1>><<person1>>你看见一个<<person>>正抚慰一对年纪很小的、哭泣的孤儿。<<He>>看起来很憔悴，也很疲惫。<<lreb>><<reb -1>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br>
+	<</switch>>
+<</widget>>
+
+<<widget "homeeventrebhi">>
+	<<switch random(1, 5)>>
+		<<case 1>>
+			<<npc Bailey>><<person1>>你看到贝利在各个房间之间来回走动，同时手里拿着被没收的零食。
+			<<lhope>><<hope -1>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br>
+		<<case 2>>
+			<<npc Bailey>><<person1>>几个孤儿在贝利的监督下清理着墙上的涂鸦。
+			<<lreb>><<reb -1>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br>
+		<<case 3>>
+			你发现一个信封粘在你卧室的门上，上面写有你的名字。你拆开一看，里面有着<span class="gold">£100</span>和一张便条。便条上面写着:
+
+			<<switch random(1, 10)>>
+				<<case 1>>
+					"你能做到的!"
+				<<case 2>>
+					"你就是我们的希望！"
+				<<case 3>>
+					<<if $skulduggery gte 200>>
+						"我以你为榜样，人们应该更好地照顾自己的身体。"
+					<<else>>
+						"不用担心我从哪儿弄到的。"
+					<</if>>
+				<<case 4>>
+					<<if $fame.prostitution gte 100>>
+						"你是我的榜样，如果有谁渴望得到我的身体，那他们就得付钱了。"
+					<<else>>
+						"别担心，我还有钱。"
+					<</if>>
+				<<case 5>>
+					"我们永远在你身边。"
+				<<case 6>>
+					"去他妈的贝利。"
+				<<case 7>>
+					"你一定要坚强。"
+				<<case 8>>
+					<<if $fame.good gte 100>>
+						"我希望有一天我能像你一样关心他人。"
+					<<else>>
+						"我乐于分享."
+					<</if>>
+				<<case 9>>
+					"别放弃。"
+				<<case 10>>
+					"继续加油。"
+			<</switch>>
+			<br><br>
+
+			<<set $money += 10000>>
+			<<link [[继续|Orphanage]]>><</link>>
+			<br>
+		<<case 4>>
+			<<generateyv1>><<person1>>一个<<person>>撞到了你。"对不起，"<<he>>俯身看着什么东西，"这是你掉的吧。"
+
+			<<if $spray gte $spraymax or random(1, 100) gte 71>>
+				<<He>>将一个你从未见过的鼓鼓囊囊的信封交给你，你打开查看，里面装的是
+				<<if $museumAntiques.antiques.antiquesilverbrooch isnot "found" and $museumAntiques.antiques.antiquesilverbrooch isnot "talk" and $museumAntiques.antiques.antiquesilverbrooch isnot "museum">>
+					一枚看起来有些年头的银饰针。或许博物馆馆长会对它感兴趣。
+					<<set $antiquemoney += 50>><<museumAntiqueStatus "antiquesilverbrooch" "found">>
+				<<else>>
+					<<switch random(1, 3)>>
+						<<case 1>>
+							一枚看起来有些年头的银饰针。或许博物馆馆长会对它感兴趣。
+							<<set $antiquemoney += 50>><<museumAntiqueStatus "antiquesilverbrooch" "found">>
+						<<case 2>>
+							一对银耳环。它们可能是赃物，但你也许能找到买家。
+							<<set $blackmoney += 30>>
+						<<case 3>>
+							一块手表。它可能是偷来的，但你也许能找到买家。
+							<<set $blackmoney += 40>>
+					<</switch>>
+				<</if>>
+				<br><br>
+			<<else>>
+				<<spray 1>>
+				<<He>>递给你一个鼓鼓囊囊的信封，里面是装填防狼喷雾的费用。
+				<<gspray>>
+				<br><br>
+
+			<</if>>
+			<<endevent>>
+			<<link [[继续|Orphanage]]>><</link>>
+			<br>
+		<<case 5>>
+			一群孤儿正在玩飞镖，而飞镖的靶子是一张贝利的照片。
+			<br><br>
+
+				<<if $handskill lte 999>>
+					<<link [[参与其中 (0:30)|Home Darts]]>><<pass 30>><<handskill 5>><<stress -3>><</link>><<ghandskill>><<lstress>>
+				<<else>>
+					<<link [[加入 (0:30)|Home Darts]]>><<pass 30>><<control 10>><<stress -3>><</link>><<gcontrol>><<lstress>>
+				<</if>>
+				<br>
+
+				<<link [[无视|Orphanage]]>><</link>>
+				<br>
+	<</switch>>
+<</widget>>
+
+<<widget "homeeventreblo">>
+	<<switch random(1, 5)>>
+		<<case 1>>
+			<<npc Bailey>><<person1>>贝利穿过大厅，孤儿们都将头别了过去，不敢直视<<his>>的目光。
+			<<lreb>><<reb -1>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br>
+		<<case 2>>
+			<<npc Bailey>><<generateyv2>>你无意中听到一个<<person2>><<person>>在和贝利说话。<<Hes>>正在告发另一个住客。<<lhope>><<hope -1>>
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br>
+		<<case 3>>
+			<<generateyv1>><<person1>>一个<<person>>绊倒了，将一桶脏水泼到了整面地板上。 "不！天呐！"<<he>>惊慌失措地尖叫着，"贝利马上就要到了！"<<He>>挤出拖把中的水，试图擦干地板上的水，但<<his>>却滑倒在地。
+			<br><br>
+
+			<<link [[提供帮助 (0:20)|Home Spill Help]]>><<pass 20>><<famegood 1>><</link>>
+			<br>
+			<<link [[忽视|Orphanage]]>><<endevent>><<hope -1>><</link>><<lhope>>
+			<br>
+		<<case 4>>
+			<<generateyv1>><<person1>>你走到一个<<person>>身边，不小心吓到了<<him>>。<<he>>尖叫起来。<<gstress>><<stress 6>>
+			<br><br>
+
+			"对，对不起。"<<he>>垂下了脑袋，"我还以为你是贝利。"
+			<br><br>
+
+			<<link [[继续|Orphanage]]>><<endevent>><</link>>
+			<br><br>
+		<<case 5>>
+			<<generate1>><<generateyv2>>"你看起来不错，"外面一个声音喊道，你透过窗户往外看，但那人并没有在叫你，而是在和刚刚从前门进来的<<person2>><<person>>说话。"和你做一次要多少钱?"
+			<br><br>
+
+			<<person>>将头转了过去。"£50，"<<he>>的声音很冷淡。
+			<br><br>
+
+			<<person1>><<person>>嘲笑道："你的屁股可没那么值钱，"<<he>>顿了顿，继续说道： "我给你£20。"说罢，<<He>>挥了挥手里的钞票。
+			<br><br>
+
+			在<<person2>><<person>>思考了片刻后，转身朝<<person1>><<person>>走去。
+			<br><br>
+
+			<<link [[干涉|Home Solicitation]]>><<hope -1>><</link>><<lhope>>
+			<br>
+			<<link [[无视|Orphanage]]>><<endevent>><</link>>
+			<br>
+	<</switch>>
+<</widget>>
+
+<<widget "homeeventkylar">>
+	<span class="teal">你无意中听到一个<<generateyv1>><<generateyv2>>和<<fullGroup>>互相讲述着自己用防狼喷雾反击性骚扰者的故事。</span><<greb>><<reb 1>>
+	<br><br>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+	<br>
+<</widget>>
+
+<<widget "homeeventriver">>
+	<<generateyv1>><<generateyv2>>
+	<span class="teal">在<<fullGroup>>背着包经过你身边时，你可以瞥见包里的面粉。这些孩子们径直走向阁楼，看起来很有精神。</span><<gghope>><<hope 3>>
+	<br><br>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+	<br>
+<</widget>>
+
+<<widget "homeeventchef">>
+	<<generateyv1>><<generateyv2>><<person1>>
+	<span class="teal">你看到一群孤儿在门口附近的一个盒子前聚集，拿着什么。一个<<person>>满脸微笑地离开了，<<his>>的怀里抱着一捧糖果。
+	<br><br>
+	你往盒子里看去，里面有着更多的糖果。还夹有一张便条，上面写着：
+	<br>
+	<i>请坚强起来，依然有人关心着你们。
+	<br>
+	-你的一个朋友。</i>
+
+	</span><<hope 3>><<gghope>>
+	<br><br>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+	<br>
+<</widget>>
+
+<<widget "telltalepenissize">>
+	<<if $player.penissize lte 1>>
+		隔着墙壁，你听到<<him>>跑过走廊。"猜猜谁有<<EZsmall>>的小鸡鸡！"<<he>>喊道，随之而来的是一阵阵笑声。
+		<<stress 15>><<trauma 15>>
+	<<elseif $player.penissize is 4>>
+		隔着墙壁，你听到<<him>>跑过走廊。"猜猜谁有<<EZbig>>的牛子！"<<he>>喊道，随之而来的是一阵阵笑声。
+		<<stress 10>><<trauma 10>>
+	<</if>>
+	<<gtrauma>><<gstress>>
+	<<incgpenisinsecurity>>
+<</widget>>
+
+<<widget "homeeventpond">>
+	一对孤儿从花园里走出，虽然双脚湿漉漉的，但是他们的脸上挂着快乐的笑容。
+	<<ghope>><<hope 1>>
+	<br><br>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+	<br>
+<</widget>>
+
+<<widget "homeeventalex">>
+	一对孤儿从花园里出来，手里捧着花园里的花朵。
+	<<ghope>><<hope 1>>
+	<br><br>
+
+	<<link [[继续|Orphanage]]>><<endevent>><</link>>
+	<br>
+<</widget>>

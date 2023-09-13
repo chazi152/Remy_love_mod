@@ -1,0 +1,292 @@
+:: Widgets Beach [widget]
+<<widget "beachday1">>
+	<<generatey1>>你听到有人在你身后。你转过身正好看到一个<<person1>><<person>>向你冲过来。<<He>>把你拖到沙滩上，试图脱掉你的衣服!
+	<br><br>
+	<<link [[继续|Beach Day Molestation]]>><<set $molestationstart to 1>><<set $eventskip to 1>><</link>>
+<</widget>>
+
+<<widget "beachday2">>
+	<<if !$worn.over_upper.type.includes("naked")>>
+		<<set _slot to "over_lower">>
+	<<else>>
+		<<set _slot to "lower">>
+	<</if>>
+	<<beastNEWinit 1 dog>>
+	你觉得有什么东西在拽你的<<print $worn[_slot].cn_name_cap>>。从你的肩膀上看过去，你会看到一个小小的<<beasttype>>，你的衣服夹在<<bhis>>的牙齿之间。
+
+	<<if $worn.over_lower.integrity lte 20 and !$worn.over_upper.type.includes("naked")>>
+		<<set $worn.over_lower.integrity -= 20>>
+		你试图将它从你的衣服上弄下去，但你的$worn.over_lower.cn_name_cap<<overlowerplural>>被撕碎了！
+		<<if $worn.under_lower.type.includes("naked") and $worn.lower.type.includes("naked")>>
+			<<beasttype>>跑开，让你被羞辱，让你的<<genitals>>被展示。
+			<<gtrauma>><<trauma 1>><<stress 1>><<gstress>>
+		<<else>>
+			<<beasttype>>跑掉，你的$worn.over_lower.cn_name_cap露在了外面，感到非常丢脸。
+			<<stress 1>><<gstress>>
+		<</if>>
+		<<overlowerruined>><<trauma 6>>
+	<<elseif $worn.lower.integrity lte 20 and $worn.over_upper.type.includes("naked")>>
+		<<set $worn.lower.integrity -= 20>>
+		你试着从它的嘴里挣脱你的衣服，但是你的$worn.lower.cn_name_cap<<lowerplural>>从你的身上被撕下来!
+		<<if $worn.under_lower.type.includes("naked")>>
+			<<beasttype>>跑开，让你被羞辱，让你的<<genitals>>被展示。
+			<<gtrauma>><<trauma 1>><<stress 1>><<gstress>>
+		<<else>>
+			<<beasttype>>会跑掉，你的$worn.under_lower.cn_name_cap露在了外面，感到非常丢脸。
+			<<stress 1>><<gstress>>
+		<</if>>
+		<<lowerruined>><<trauma 6>>
+	<<else>>
+		你设法把你的衣服从<<bhis>>的胃里挣脱出来，尽管这场磨难让它们有点磨损。
+	<</if>>
+	<br><br>
+	<<link [[继续|Beach]]>><<set $eventskip to 1>><<endevent>><</link>>
+<</widget>>
+
+<<widget "beachday3">>
+	<<generate1>><<set $NPCList[0].virginity.penile to false>><<set $NPCList[0].virginity.vaginal to false>>你看到一个<<person1>><<person>>在看着你。<<He>>似乎在和<<his>>的孩子们在远处玩沙子。在被你抓到后，<<He>>又看向了别处。
+	<br><br>
+
+	<<link [[把目光移开|Beach]]>><<set $eventskip to 1>><<endevent>><</link>>
+	<br>
+	<<link [[靠近|Beach Day Encounter]]>><<set $phase to 0>><</link>>
+	<br>
+<</widget>>
+
+<<widget "beachday4">>
+	一阵风从海上吹来，愉快地抚摸着你的皮肤。
+	<<lstress>><<stress -2>>
+	<br><br>
+	<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+		/* variables */
+		<<set _helpless to 0>>
+		<<if $leftarm is "bound" and $rightarm is "bound">>
+			<<set _helpless to 1>>
+		<</if>>
+		<<set _nopan to 0>>
+		<<if $worn.under_lower.type.includes("naked")>>
+			<<set _nopan to 1>>
+		<</if>>
+		<<set _trauma_gain to 0>>
+		<<set _arousal_gain to 0>>
+
+		<<set _seen to 0>>
+		<<if random(0, 10) gte 5>>
+			<<set _seen to 1>>
+		<</if>>
+
+		<<set _caught_on_camera to 0>>
+		<<if _seen and random(0, 10) gte 7>>
+			<<set _caught_on_camera to 1>>
+		<</if>>
+
+		/* event */
+		它把你的裙子掀起来，露出你的
+		<<if _nopan>>
+			<<set _arousal_gain += 200>>
+			<<set _trauma_gain += .5>>
+			<<genitals>>
+		<<else>>
+			<<set _arousal_gain += 100>>
+			$worn.under_lower.cn_name_cap
+		<</if>>在海滩中央。
+
+		<<if _helpless>>
+			<<set _arousal_gain += 100>>
+			<<set _trauma_gain += 1>>
+			你被束缚着，无助地忍受着风对你的暴露玩弄，直到最终风停了下来，裙摆恢复了原本的位置。
+		<</if>>
+		<<if _seen>>
+			<<print [
+			"突然的咯咯笑使你转过身来，面对着旁观者。",
+			"突然的咯咯笑抓住了你的注意力。",
+			"一个旁观者震惊得倒吸了一口气，吸引了你的注意力。",
+			"一个旁观者的咯咯笑吸引了你的注意力。",
+			"一群人在震惊中喘着气，吸引了你的注意力。",
+			"一群人的笑声吸引了你的注意力。"
+			].pluck()>>
+			<<fameexhibitionism 1>>
+
+			<<if _caught_on_camera>>
+				<<endevent>>
+				<span class="pink">
+					你注意到一部手机正对着你，意识到他们可能在拍摄。
+				</span>
+				<<fameexhibitionism 5 "vid">>
+				<<set _trauma_gain += 2>>
+				<<set _arousal_gain += 100>>
+			<<else>>
+				他们一定什么都看到了。
+				<<set _trauma_gain += 1>>
+				<<set _arousal_gain += 50>>
+			<</if>>
+		<</if>>
+
+		<<if $uncomfortable.nude and $exhibitionism gte 75 and _trauma_gain>>
+			在这样的公共场合被暴露，你的胃翻腾得很厉害，你尽力把它抛在脑后，试图恢复一些尊严。
+			<<set _trauma_gain += 1>>
+		<<else>>
+			在这样的公共场合被曝光，你的胃里兴奋得翻腾，你忍不住要记住这一刻的感觉，假装恢复一些尊严。
+			<<set _arousal_gain += 50>>
+		<</if>>
+
+		/* stats application */
+		<<if _arousal_gain>>
+			<<garousal>><<arousal _arousal_gain>>
+		<</if>>
+		<<if _trauma_gain and $uncomfortable.nude>>
+			<<gtrauma>><<trauma _trauma_gain>>
+		<</if>>
+
+		/* choices */
+		<br><br>
+		<<if _helpless>>
+			<<link [[继续|Beach]]>><<set $eventskip to 1>><</link>>
+		<<else>>
+			<<link [[试着把你的裙子拉下来|Beach Skirt Flare Stop]]>><</link>>
+			<<if $exhibitionism gte 35 and !$worn.under_lower.type.includes("naked")>>
+				<br>
+				<<link [[顺其自然|Beach Skirt Flare Allow]]>><</link>><<exhibitionist2>>
+			<<elseif $exhibitionism gte 55>>
+				<br>
+				<<link [[顺其自然|Beach Skirt Flare Allow]]>><</link>><<exhibitionist4>>
+			<</if>>
+		<</if>>
+
+		/* cleanup */
+		<<unset _helpless>>
+		<<unset _nopan>>
+		<<unset _arousal_gain>>
+		<<unset _trauma_gain>>
+		<<unset _seen>>
+		<<unset _caught_on_camera>>
+	<<else>>
+		<<link [[继续|Beach]]>><<set $eventskip to 1>><</link>>
+	<</if>>
+<</widget>>
+
+<<widget "beachday5">>
+	你正沿着海岸线走着，突然听到身后一阵骚动。你回头看到几个同学朝你跑了过来。
+	<br><br>
+	<<link[[停下等待|Beach Day Classmates]]>><<set $phase to 0>><</link>><br>
+	<<link[[跑|Beach Day Classmates]]>><<set $phase to 1>><</link>><<athleticsdifficulty 1 800>>
+<</widget>>
+
+<<widget "beachday6">>
+	<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt isnot 1 and !$worn.lower.type.includes("naked")>>
+	<<generatey1>><<person1>>
+	你正在海岸边漫步，一个<<person>>拽住了你的腰带，让你的<<bottom>>露了出来。还没等你来得及反应，<<he>>就把一大桶沙子倒进了你的<<if $worn.under_lower.name is "naked" or $worn.under_lower.one_piece is 1>>$worn.lower.cn_name_cap<<else>>$worn.under_lower.cn_name_cap<</if>>里。<<He>>狠狠地打了下你的屁股，然后就跑开了，估计是去找另一个受害者恶作剧去了。
+	<br><br>
+	你尽力把衣服上的沙子抖掉。有些沙子不可避免地卡在了你的屁股缝里，让你又痛又恼。<<gpain>><<gstress>><<pain 1>><<stress 2>>
+	<br><br>
+	<<link [[继续|Beach]]>><<set $eventskip to 1>><</link>>
+<<else>>
+	一阵风从海上吹来，愉快地抚摸着你的皮肤。
+	<<lstress>><<stress -2>>
+	<br><br>
+	<<link [[继续|Beach]]>><<set $eventskip to 1>><</link>>
+<</if>>
+<</widget>>
+
+<<widget "beachnight1">>
+	<<beastNEWinit 1 dog>>
+	<<if $monster is 1>>
+		一只<<beasttype>>从黑暗中走出来。<<bHis>>蓬松的身体让<<bhim>>看起来野性十足。<<bHe>>露出锐利的獠牙，眼中闪烁着饥饿的光芒，盯着你。
+	<<else>>
+		一只看起来很狂野的<<beasttype>>从黑暗中出现，牙齿露在外面，眼睛里闪烁着饥饿的光芒。
+	<</if>>
+	<br><br>
+	<!-- Modified for Beast People -->
+	<<if $monster is 1 or $bestialitydisable is "f">>
+		<<link [[继续|Beach Night Dog]]>><<set $eventskip to 1>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<else>>
+		你设法逃脱了，但并非毫发无损。<<beastescape>>
+		<br><br>
+		<<link [[继续|Beach]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<</if>>
+<</widget>>
+
+<<widget "beachnight2">>
+	<<generate1>>天太黑了，你根本看不到躺在沙滩上的<<person1>><<person>>，直到<<he>>抓住你的脚踝把你拉到地上。
+	<br><br>
+	<<link [[继续|Beach Night Molestation]]>><<set $molestationstart to 1>><</link>>
+<</widget>>
+
+<<widget "beachex1">>
+	<<generatey1>>一个<<person1>><<person>>在你脆弱的状态下发现你并大声喊出来，<<lewdcatcall>>其他人也转过头来回应，你很快发现自己成为了关注的中心。
+	<<if $panicattacks gte 1>>
+		你被焦虑压倒了。被剥夺了思想，你无能为力地逃离人群，被嘲笑的笑声追赶。
+		<<fameexhibitionism 30>><<gstress>><<gtrauma>><<stress 6>><<trauma 6>>
+		<br><br>
+		当你的恐惧消退时，你会发现自己瘫倒在更衣室的内墙上。
+		<br><br>
+		<<link [[更衣室|Changing Room]]>><<endevent>><</link>>
+	<<else>>
+		<<gstress>><<gtrauma>><<stress 6>><<trauma 6>>
+		<br><br>
+		<<link [[继续走|Beach Exhibition]]>><<set $phase to 0>><</link>>
+		<br>
+		<<link [[寻求帮助|Beach Exhibition]]>><<set $phase to 1>><</link>>
+	<</if>>
+<</widget>>
+
+<<widget "beachex2">>
+	<<generatey1>>一个<<person1>><<person>>发现了你脆弱的状态，并叫来了<<his>>的朋友。你很快发现自己被包围了。那个<<person>>说:"你知道这不是一个裸体海滩，对吧?事实上，我想我应该举报你。"当<<he>>明显地吸气时，你紧张起来，仿佛期待着<<he>>发出呐喊，吸引更多的注意力。然而，<<he>>和<<his>>的朋友却突然放声大笑。"或者，你知道，我可以帮你一把，给你一些东西来遮盖。当然，我会想要一些回报。跪下来。"
+	<<fameexhibitionism 20>>
+	<br><br>
+	<<if $promiscuity gte 35>>
+		<<link [[服从|Beach Exhibit Molestation]]>><<set $phase to 1>><<set $sexstart to 1>><</link>>
+		<br>
+	<</if>>
+	<<if $promiscuity lte 34 and $uncomfortable.prostituting is false>>
+		<<link [[不情愿地服从|Beach Exhibit Molestation]]>><<set $desperateaction to 2>><<set $phase to 1>><<set $sexstart to 1>><</link>>
+		<br>
+	<</if>>
+	<<link [[拒绝|Beach Exhibit Molestation]]>><<set $phase to 0>><<set $molestationstart to 1>><</link>>
+	<br>
+<</widget>>
+
+:: Widgets Events Beach [widget]
+<<widget "eventsbeach">>
+	<<set $dangerevent to random(1, 100)>>
+	<<if Time.dayState is "night">>
+		<<if $dangerevent lte 15>>
+			<<beachnight1>>
+		<<elseif $dangerevent lte 30>>
+			<<beachnight2>>
+		<<elseif $dangerevent lte 100>>
+			<<beachday4>>
+		<</if>>
+	<<elseif $exposed gte 1>>
+		<<if $dangerevent lte 80>>
+			<<beachex1>>
+		<<elseif $dangerevent lte 100>>
+			<<beachex2>>
+		<</if>>
+	<<else>>
+		<<if $dangerevent lte 10>>
+			<<beachday1>>
+		<<elseif $dangerevent lte 20 and !$worn.lower.type.includes("naked")>>
+			<<beachday2>>
+		<<elseif $dangerevent lte 50>>
+			<<beachday3>>
+		<<elseif $dangerevent lte 70>>
+			<<beachday4>>
+		<<elseif $dangerevent lte 90>>
+			<<beachday5>>
+		<<elseif $dangerevent lte 100>>
+			<<beachday6>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+:: Widgets Passout Beach [widget]
+
+<<widget "passoutbeach">>
+	<<if isPlayerNonparasitePregnancyEnding()>>
+		<<pregnancyWatersBrokenPassout "beach">>
+	<<else>>
+		<<link [[你眼前一黑…->Passout Beach]]>><</link>>
+	<</if>>
+<</widget>>

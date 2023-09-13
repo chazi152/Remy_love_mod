@@ -1,0 +1,1240 @@
+:: Transformation Widgets [widget]
+
+<<widget "setupTransformationPiecesObject">>
+	<<if $transformationParts is undefined>>
+		<<set $transformationParts to {
+			traits: {fangs:"disabled", sharpEyes:"disabled", mateForLife:"disabled", flaunting:"disabled"},
+			angel: {halo:"disabled", wings:"disabled"},
+			fallenAngel: {halo:"disabled", wings:"disabled"},
+			demon: {horns:"disabled", wings:"disabled", tail: "disabled"},
+			cat: {ears:"disabled", tail:"disabled", heterochromia:"disabled"},
+			cow: {horns:"disabled", ears:"disabled", tail:"disabled"},
+			wolf: {ears:"disabled", tail:"disabled", pubes:"disabled", pits:"disabled"},
+			bird: {tail:"disabled", wings:"disabled", eyes:"disabled", malar:"disabled", plumage:"disabled", pubes:"disabled"},
+			fox: {ears:"disabled", tail:"disabled", cheeks:"disabled"},
+		}>>
+		<<if $specialTransform is 1>>
+			<<if $angel gte 4>>
+				<<set $transformationParts.angel.halo to "default">>
+			<</if>>
+			<<if $angel gte 6>>
+				<<set $transformationParts.angel.wings to "default">>
+			<</if>>
+			<<if $fallenangel gte 2>>
+				<<set $transformationParts.fallenAngel.halo to "default">>
+				<<set $transformationParts.fallenAngel.wings to "default">>
+			<</if>>
+			<<if $demon gte 2>>
+				<<set $transformationParts.demon.horns to "default">>
+			<</if>>
+			<<if $demon gte 4>>
+				<<set $transformationParts.demon.tail to "default">>
+			<</if>>
+			<<if $demon gte 6>>
+				<<set $transformationParts.demon.wings to "default">>
+			<</if>>
+		<</if>>
+		<<if $physicalTransform is 1>>
+			<<if $wolfgirl gte 2>>
+				<<set $transformationParts.traits.fangs to "default">>
+			<</if>>
+			<<if $wolfgirl gte 4>>
+				<<set $transformationParts.wolf.ears to "default">>
+				<<set $transformationParts.wolf.pubes to "default">>
+				<<set $transformationParts.wolf.pits to "default">>
+			<</if>>
+			<<if $wolfgirl gte 6>>
+				<<set $transformationParts.wolf.tail to "default">>
+			<</if>>
+			<<if $cat gte 2>>
+				<<set $transformationParts.traits.fangs to "default">>
+			<</if>>
+			<<if $cat gte 4>>
+				<<set $transformationParts.cat.ears to "default">>
+			<</if>>
+			<<if $cat gte 6>>
+				<<set $transformationParts.cat.tail to "default">>
+			<</if>>
+			<<if $cat gte 7>>
+				<<set $transformationParts.cat.heterochromia to "default">>
+			<</if>>
+			<<if $cow gte 2>>
+				<<set $transformationParts.cow.horns to "default">>
+			<</if>>
+			<<if $cow gte 4>>
+				<<set $transformationParts.cow.ears to "default">>
+			<</if>>
+			<<if $cow gte 6>>
+				<<set $transformationParts.cow.tail to "default">>
+			<</if>>
+		<</if>>
+	<</if>>
+	<<if $transformationParts.fallenAngel.halo is 1>>
+		<<set $transformationParts.fallenAngel.halo to "default">>
+		<<set $transformationParts.fallenAngel.wings to "default">>
+	<</if>>
+	<<if $transformationParts.demon.horns is 1>>
+		<<set $transformationParts.demon.horns to "default">>
+		<<set $transformationParts.demon.tail to "default">>
+		<<set $transformationParts.demon.wings to "default">>
+	<</if>>
+	<<if $angel lt 4>>
+		<<set $transformationParts.angel.halo to "disabled">>
+	<</if>>
+	<<if $angel lt 6>>
+		<<set $transformationParts.angel.wings to "disabled">>
+	<</if>>
+	<<if $fallenangel is 1>>
+		<<set $transformationParts.fallenAngel.halo to "disabled">>
+		<<set $transformationParts.fallenAngel.wings to "disabled">>
+	<</if>>
+	<<if $transformationParts.wolf.cheeks is undefined>>
+		<<if $wolfgirl gte 6>>
+			<<set $transformationParts.wolf.cheeks to "hidden">>
+		<<else>>
+			<<set $transformationParts.wolf.cheeks to "disabled">>
+		<</if>>
+	<</if>>
+	<<if $transformationParts.bird is undefined>>
+		<<set $transformationParts.bird to {tail:"disabled", wings:"disabled", eyes:"disabled", malar:"disabled", plumage:"disabled"}>>
+	<</if>>
+	<<if $transformationParts.bird.pubes is undefined>>
+		<<if $harpy gte 6>>
+			<<set $transformationParts.bird.pubes to "hidden">>
+		<<else>>
+			<<set $transformationParts.bird.pubes to "disabled">>
+		<</if>>
+	<</if>>
+	<<if $transformationParts.fox is undefined>>
+		<<set $transformationParts.fox to {ears:"disabled", tail:"disabled", cheeks:"disabled"}>>
+	<</if>>
+	<<if $transformationParts.traits is undefined>>
+		<<set $transformationParts.traits to {fangs:"disabled", sharpEyes:"disabled", mateForLife:"disabled", flaunting:"disabled"}>>
+		<<if $wolfgirl gte 2 or $cat gte 2 or $fox gte 2>>
+			<<set $transformationParts.traits.fangs to "default">>
+		<</if>>
+		<<if $cat gte 2 or $harpy gte 2 or $fox gte 2>>
+			<<set $transformationParts.traits.sharpEyes to "default">>
+		<</if>>
+	<</if>>
+	/* Setup chimera's config */
+	<<set _defaultChimeraConfig to {
+		demoncat: {
+			tail: true
+		},
+		demoncow: {
+			horns: true
+		},
+		demonharpy: {
+			wings: true
+		},
+	}>>
+	/* Convert chimera obj back to an object if it was something else. Necessary for object.assign next. */
+	<<if typeof $chimera !== 'object'>>
+		<<set $chimera to {}>>
+	<</if>>
+	/* Takes default object, and transposes chimera config ontop of it, assigning the result to chimera config. */
+	<<set $chimera to Object.assign(_defaultChimeraConfig, $chimera || {})>>
+<</widget>>
+
+<<widget "transform">>/*First arg is transformation, second is the intensity of change.*/
+	<<if _args[1]>>
+		<<switch _args[0]>>
+			<<case "wolf">>  <<set $wolfbuild  = Math.clamp($wolfbuild  + _args[1], 0, 100)>>
+			<<case "cat">>   <<set $catbuild   = Math.clamp($catbuild   + _args[1], 0, 100)>>
+			<<case "cow">>   <<set $cowbuild   = Math.clamp($cowbuild   + _args[1], 0, 100)>>
+			<<case "bird">>  <<set $birdbuild  = Math.clamp($birdbuild  + _args[1], 0, 100)>>
+			<<case "fox">>   <<set $foxbuild   = Math.clamp($foxbuild   + _args[1], 0, 100)>>
+			<<case "angel">> <<set $angelbuild = Math.clamp($angelbuild + _args[1], 0, 100)>>
+			<<case "fallen">> <<set $fallenbuild = Math.clamp($fallenbuild + _args[1], 0, 100)>>
+			<<case "demon">> <<set $demonbuild = Math.clamp($demonbuild + _args[1], 0, 100)>>
+		<</switch>>
+	<</if>>
+	<<if _args[0] isnot "angel" and _args[0] isnot "demon" and _args[1] gte 1>>
+		<<if _args[0] isnot "wolf" and $worn.neck.name isnot "spiked collar" and $worn.neck.name isnot "spiked collar with leash">>
+			<<set $wolfbuild = Math.clamp($wolfbuild - _args[1], 0, 100)>>
+		<</if>>
+		<<if _args[0] isnot "cat" and $worn.neck.name isnot "cat bell collar">>
+			<<set $catbuild  = Math.clamp($catbuild  - _args[1], 0, 100)>>
+		<</if>>
+		<<if _args[0] isnot "cow" and $worn.neck.name isnot "cow bell">>
+			<<set $cowbuild  = Math.clamp($cowbuild  - _args[1], 0, 100)>>
+		<</if>>
+		<<if _args[0] isnot "bird" and $worn.head.name isnot "feathered hair clip">>
+			<<set $birdbuild = Math.clamp($birdbuild - _args[1], 0, 100)>>
+		<</if>>
+		<<if _args[0] isnot "fox" and $worn.head.name isnot "spirit mask">>
+			<<set $foxbuild = Math.clamp($foxbuild - _args[1], 0, 100)>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+
+<<widget "transformationStateUpdate">>
+	<<if $wolfbuild gte 1 and $worn.neck.name isnot "spiked collar" and $worn.neck.name isnot "spiked collar with leash" and playerNormalPregnancyType() isnot "wolf">>
+		<<transform wolf -1>>
+	<</if>>
+
+	<<if $catbuild gte 1 and $worn.neck.name isnot "cat bell collar" and playerNormalPregnancyType() isnot "cat">>
+		<<transform cat -1>>
+	<</if>>
+
+	<<if $cowbuild gte 1 and $worn.neck.name isnot "cow bell" and playerNormalPregnancyType() isnot "cow">>
+		<<transform cow -1>>
+	<</if>>
+
+	<<if $birdbuild gte 1 and $worn.head.name isnot "feathered hair clip" and playerNormalPregnancyType() isnot "bird">>
+		<<transform bird -1>>
+	<</if>>
+
+	<<if $foxbuild gte 1 and $worn.head.name isnot "spirit mask" and playerNormalPregnancyType() isnot "fox">>
+		<<transform fox -1>>
+	<</if>>
+
+	<<if $wolfgirl gte 6>>
+		<<def 5>>
+	<</if>>
+
+	<<transformationAlteration>>
+
+	<<if $cat gt 0 or $wolfgirl gt 0 or $cow gt 0 or $harpy gt 0 or $fox gt 0>>
+		<<set $physicalTransform to 1>>
+	<<else>>
+		<<set $physicalTransform to 0>>
+	<</if>>
+	<<if $physicalTransform is 1 or $specialTransform is 1>>
+		<<if $harpy gte 6 and ($angel gte 6 or $fallenangel gte 2 or $demon gte 6)>>
+			<<if $transformationParts.bird.wings is "hidden" and ($transformationParts.demon.wings is "hidden" or $transformationParts.angel.wings is "hidden" or $transformationParts.fallenAngel.wings is "hidden")>>
+			<<else>>
+				<<set _excludeWings to true>>
+			<</if>>
+		<</if>>
+		<<set _keys to Object.keys($transformationParts)>>
+		<<if $panicattacks gte 2>>
+			<<for _i to 0; _i lt _keys.length; _i++>>
+				<<set _key to _keys[_i]>>
+				<<for _label, _value range $transformationParts[_key]>>
+					<<if _value is "hidden" and !["pubes", "pits", "cheeks", "flaunting"].includes(_label) and !(_label is "wings" and _excludeWings is true)>>
+						<<set $transformationParts[clone(_key)][clone(_label)] to "default">>
+						<<set _hidingFailed to true>>
+					<</if>>
+				<</for>>
+			<</for>>
+			<<if _hidingFailed>>
+				<span class="red">你的精神状态太脆弱了，你无法继续隐藏自己的内在人格。</span>
+			<</if>>
+		<<else>>
+			<<for _i to 0; _i lt _keys.length; _i++>>
+				<<set _key to _keys[_i]>>
+				<<for _label, _value range $transformationParts[_key]>>
+					<<if _value is "hidden" and !["pubes", "pits", "cheeks", "flaunting"].includes(_label) and !(_label is "wings" and _excludeWings is true)>>
+						<<trauma 15>>
+						<<set _hiddenTrauma to true>>
+					<</if>>
+				<</for>>
+			<</for>>
+			<<if _hiddenTrauma is true>>
+				<span class="red">隐藏自己的内在人格使你的精神状态受到了影响。</span>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "transformationAlteration">>
+	<<if $transformdisabledivine is "f">>
+		<<if ($demonbuild gte 5 and $specialTransform isnot 1) or ($demon gte 1 and $specialTransform is 1)>>
+			<<demonTransform $demon>>
+		<<elseif ($angelbuild gte 5 and $specialTransform isnot 1) or ($angel gte 1 and $specialTransform is 1)>>
+			<<angelTransform $angel>>
+ 		<<elseif $fallenangel gte 2>>
+			<<fallenButNotOut $fallenangel>>
+		<</if>>
+	<</if>>
+
+
+	<<if $transformdisable is "f">>
+		<<if ($wolfbuild gte 5 and $physicalTransform isnot 1) or ($wolfgirl gte 1 and $physicalTransform is 1)>>
+			<<wolfTransform $wolfgirl>>
+		<<elseif ($catbuild gte 5 and $physicalTransform isnot 1) or ($cat gte 1 and $physicalTransform is 1)>>
+			<<catTransform $cat>>
+		<<elseif ($cowbuild gte 5 and $physicalTransform isnot 1) or ($cow gte 1 and $physicalTransform is 1)>>
+			<<cowTransform $cow>>
+		<<elseif ($birdbuild gte 5 and $physicalTransform isnot 1) or ($harpy gte 1 and $physicalTransform is 1)>>
+			<<harpyTransform $harpy>>
+		<<elseif ($foxbuild gte 5 and $physicalTransform isnot 1) or ($fox gte 1 and $physicalTransform is 1)>>
+			<<foxTransform $fox>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "hirsuteHideCheck">>
+	<<if $pbdisable is "t" and !["hidden", "disabled"].includes($transformationParts.wolf.pubes)>>
+		<<set $transformationParts.wolf.pubes to "hidden">>
+	<</if>>
+	<<if $pbdisable is "t" and !["hidden", "disabled"].includes($transformationParts.wolf.pits)>>
+		<<set $transformationParts.wolf.pits to "hidden">>
+	<</if>>
+	<<if $pbdisable is "t" and !["hidden", "disabled"].includes($transformationParts.bird.pubes)>>
+		<<set $transformationParts.bird.pubes to "hidden">>
+	<</if>>
+<</widget>>
+
+/* Used to temporarily hide all transformation parts, such as when needing to turn the player into Janet. showTransformations will bring back all parts this widget hid. */
+<<widget "hideTransformations">>
+	<<set $saveTransformtaions to clone($transformationParts)>>
+	<<for _transformation, _parts range $transformationParts>>
+		<<for _part, _value range _parts>>
+			<<if _value isnot "disabled" and _value isnot "hidden">>
+				<<set $transformationParts[_transformation][_part] to "hidden">>
+			<</if>>
+		<</for>>
+	<</for>>
+<</widget>>
+
+<<widget "showTransformations">>
+	<<if $saveTransformtaions isnot undefined>>
+		<<set $transformationParts to clone($saveTransformtaions)>>
+		<<unset $saveTransformtaions>>
+	<</if>>
+<</widget>>
+
+<<widget "fallenTransform">>
+	<<if $angel gte 6>>
+		<span class="red">你的光环支离破碎，你的羽翼散落，褪为黑色。令人绝望的失落感笼罩了你。</span>
+		<<set $trauma to $traumamax>>
+		<<set $fallenangel to 2>>
+		<<set $transformationParts.fallenAngel.halo to ($transformationParts.angel.halo is "hidden" ? "default" : $transformationParts.angel.halo)>>
+		<<set $transformationParts.fallenAngel.wings to "default">>
+		<<earnFeat "Fallen Angel">>
+	<<elseif $angel gte 4>>
+		<span class="red">你的光环支离破碎，消逝在了空中。</span>
+	<</if>>
+	<<if $angel gt 0>>
+		<<angelTransform 99>>
+	<</if>>
+	<<if $fallenangel is 2>>
+		<<set $specialTransform to 1>>
+	<</if>>
+<</widget>>
+
+<<widget "fallenButNotOut">>
+	<<if _args[0] gte 0>>
+	 	<<switch _args[0]>>
+			<<case 2>>
+				<<if $fallenbuild gte 20>>
+					<<set $fallenangel to 3>>
+					<span class="gold">你的翅膀上新生了一些羽毛。</span>
+				<</if>>
+			<<case 3>>
+				<<if $fallenbuild gte 30>>
+					<<set $fallenangel to 4>>
+					<span class="gold">柔软羽毛的熟悉感受使你充满了希望。</span>
+					<<set $transformationParts.fallenAngel.wings to "fallenplus">>
+					<<if $transformationParts.bird.wings is "default">>
+						<<set $transformationParts.fallenAngel.wings to "hidden">>
+					<</if>>
+				<</if>>
+			<<case 99>>
+				<<set $specialTransform to 0>>
+				<<set $fallenangel to 0>>
+				<<set $transformationParts.fallenAngel.halo to "disabled">>
+				<<set $transformationParts.fallenAngel.wings to "disabled">>
+		<</switch>>
+	<</if>>
+<</widget>>
+
+<<widget "fallenDescend">>
+	<<set $demonbuild to 30>>
+	<<set $demon to 6>>
+	<<set $fallenangel to 1>>
+	<<set $specialTransform to 1>>
+	<span class="gold">你灰色的羽翼变得更加的黑暗。破碎的光环消失了，取而代之的是恶魔的坚硬犄角和尾巴。你不再感到失落，而是对复仇的无尽渴望。</span>
+
+	<<set $transformationParts.fallenAngel.halo to "disabled">>
+	<<set $transformationParts.fallenAngel.wings to "disabled">>
+
+	<<set $transformationParts.demon.horns to "default">>
+	<<set $transformationParts.demon.tail to "default">>
+	<<set $transformationParts.demon.wings to "default">>
+	<<earnFeat "Demon">>
+	<<garousal>><<arousal 600>>
+<</widget>>
+
+
+/* <<angelTransform step>> If neither is provided, force full transformation */
+<<widget "angelTransform">>
+	<<if _args[0] gte 0>>
+		<<switch _args[0]>>
+			<<case 0>>
+				<<if $angelbuild gte 25>>
+					<<set $angel to 1>>
+					<<set $specialTransform to 1>>
+					<span class="gold">尽管经历了一切，你依旧是如此地纯洁无瑕。你感到非常的欣慰。</span>
+					<br><br>
+				<</if>>
+			<<case 1>>
+				<<if $angelbuild gte 30>>
+					<<set $angel to 2>>
+					<span class="gold">你是纯洁的，你决定继续保持下去。</span>
+					<br><br>
+				<<elseif $angelbuild lt 25>>
+					<<set $angel to 0>><<set $specialTransform to 0>>
+					<span class="gold">你感到被玷污了。</span>
+					<br><br>
+				<</if>>
+			<<case 2>>
+				<<if $angelbuild gte 35>>
+					<<set $angel to 3>>
+					<span class="gold">你感到自己的肩膀变得无比地轻盈。</span>
+					<br><br>
+				<<elseif $angelbuild lt 30>>
+					<<set $angel to 1>>
+					<span class="gold">你感到被亵渎了。</span>
+					<br><br>
+				<</if>>
+			<<case 3>>
+				<<if $angelbuild gte 40>>
+					<<set $angel to 4>>
+					<span class="gold">金色的光芒在你头顶闪耀。</span>
+					<<set $transformationParts.angel.halo to "default">>
+					<br><br>
+				<<elseif $angelbuild lt 35>>
+					<<set $angel to 2>>
+					<span class="gold">你感到某种存在压在了你的肩膀上。</span>
+					<br><br>
+				<</if>>
+			<<case 4>>
+				<<if $angelbuild gte 45 and $transformdisabledivine is "f">>
+					<<set $angel to 5>>
+					<span class="gold">一股令人舒适的温暖感涌上你的后背。</span>
+					<br><br>
+				<<elseif $angelbuild lt 40>>
+					<<set $angel to 3>>
+					<span class="gold">你头顶的光芒消散了。</span>
+					<<set $transformationParts.angel.halo to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 5>>
+				<<if $angelbuild gte 50 and $transformdisabledivine is "f">>
+					<<set $angel to 6>>
+					<span class="gold">你感到轻盈无比。你新生的羽翼轻轻拍打着你的脸颊。</span>
+					<<set $transformationParts.angel.wings to "default">>
+					<<if $transformationParts.bird.wings is "default">>
+						<<set $transformationParts.angel.wings to "hidden">>
+					<</if>>
+					<<earnFeat "Angel">>
+					<br><br>
+				<<elseif $angelbuild lt 45>>
+					<<set $angel to 4>>
+					<span class="gold">你背上的暖意消失了。</span>
+					<br><br>
+				<</if>>
+			<<case 6>>
+				<<if $angelbuild lt 50>>
+					<span class="gold">你的翅膀褪去了。</span>
+					<<set $angel to 5>>
+					<<set $transformationParts.angel.wings to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 99>>
+				<<set $specialTransform to 0>>
+				<<set $angel to 0>>
+				<<set $angelbuild to 0>>
+				<<set $transformationParts.angel.halo to "disabled">>
+				<<set $transformationParts.angel.wings to "disabled">>
+		<</switch>>
+	<<else>>
+		<<clearDivineTransformations>>
+		<<set $specialTransform to 1>>
+		<<set $angel to 6>>
+		<<set $angelbuild to 50>>
+		<<set $transformationParts.angel.halo to "default">>
+		<<set $transformationParts.angel.wings to "default">>
+		<<if $transformationParts.bird.wings is "default">>
+			<<set $transformationParts.angel.wings to "hidden">>
+		<</if>>
+	<</if>>
+<</widget>>
+
+/* <<demonTransform step>> If neither is provided, force full transformation */
+<<widget "demonTransform">>
+	<<if _args[0] gte 0>>
+		<<switch _args[0]>>
+			<<case 0>>
+				<<if $demonbuild gte 5 and $transformdisabledivine is "f" and $specialTransform isnot 1>>
+					<<set $demon to 1>><<set $specialTransform to 1>>
+					<span class="gold">你的头皮发痒。</span>
+					<<garousal>><<arousal 600>>
+					<br><br>
+				<</if>>
+			<<case 1>>
+				<<if $demonbuild gte 10 and $transformdisabledivine is "f">>
+					<<set $demon to 2>>
+					<span class="gold">坚硬的犄角从你头上长出。</span>
+					<<garousal>><<arousal 600>>
+					<<set $transformationParts.demon.horns to "default">>
+					<br><br>
+				<<elseif $demonbuild lt 5>>
+					<<set $demon to 0>><<set $specialTransform to 0>>
+					<span class="gold">你感觉一道无形的光烧掉了你所有的不洁。</span>
+					<<if $demonFeat is true>>
+						<<unset $demonFeat>>
+						<<earnFeat "The Path to Redemption">>
+					<</if>>
+					<br><br>
+				<</if>>
+			<<case 2>>
+				<<if $demonbuild gte 15 and $transformdisabledivine is "f">>
+					<<set $demon to 3>>
+					<span class="gold">你的屁股发痒。</span>
+					<br><br>
+				<<elseif $demonbuild lt 10>>
+					<<set $demon to 1>>
+					<<set $transformationParts.demon.horns to "disabled">>
+					<span class="gold">你的犄角褪去了。</span>
+					<br><br>
+				<</if>>
+			<<case 3>>
+				<<if $demonbuild gte 20 and $transformdisabledivine is "f">>
+					<<set $demon to 4>>
+					<span class="gold">一条尾巴从你的后背伸展而出。</span>
+					<<set $transformationParts.demon.tail to "default">>
+					<br><br>
+				<<elseif $demonbuild lt 15>>
+					<<set $demon to 2>>
+					<span class="gold">你屁股上的瘙痒感停止了。</span>
+					<br><br>
+				<</if>>
+			<<case 4>>
+				<<if $demonbuild gte 25 and $transformdisabledivine is "f">>
+					<<set $demon to 5>>
+					<span class="gold">你感到后背在灼烧着。</span>
+					<<garousal>><<arousal 600>>
+					<br><br>
+				<<elseif $demonbuild lt 20>>
+					<<set $demon to 3>>
+					<span class="gold">你的尾巴消失了。</span>
+					<<set $transformationParts.demon.tail to "disabled">>
+					<<set $transformationParts.traits.flaunting to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 5>>
+				<<if $demonbuild gte 30 and $transformdisabledivine is "f">>
+					<<set $demon to 6>><<set $demonFeat to true>>
+					<span class="gold">你感到轻盈无比。你新生的羽翼轻轻拍打着你的脸颊。</span>
+					<<garousal>><<arousal 600>>
+					<<set $transformationParts.demon.wings to "default">>
+					<<if $transformationParts.bird.wings is "default">>
+						<<set $transformationParts.demon.wings to "hidden">>
+					<</if>>
+					<<earnFeat "Demon">>
+					<br><br>
+				<<elseif $demonbuild lt 25>>
+					<<set $demon to 4>>
+					<span class="gold">你后背的灼烧感停止了。</span>
+					<br><br>
+				<</if>>
+			<<case 6>>
+				<<if $demonbuild lt 30>>
+					<span class="gold">你的翅膀消失了。</span>
+					<<set $demon to 5>>
+					<<set $transformationParts.demon.wings to "disabled">>
+					<br><br>
+				<<else>>
+					<<set $demonFeat to true>>
+				<</if>>
+			<<case 99>>
+				<<set $specialTransform to 0>>
+				<<set $demon to 0>>
+				<<set $demonbuild to 0>>
+				<<set $transformationParts.demon.horns to "disabled">>
+				<<set $transformationParts.demon.tail to "disabled">>
+				<<set $transformationParts.demon.wings to "disabled">>
+				<<set $transformationParts.traits.flaunting to "disabled">>
+		<</switch>>
+	<<else>>
+		<<clearDivineTransformations>>
+		<<set $specialTransform to 1>>
+		<<set $demon to 6>>
+		<<set $demonbuild to 30>>
+		<<set $transformationParts.demon.horns to "default">>
+		<<set $transformationParts.demon.tail to "default">>
+		<<set $transformationParts.demon.wings to "default">>
+		<<if $transformationParts.bird.wings is "default">>
+			<<set $transformationParts.demon.wings to "hidden">>
+		<</if>>
+	<</if>>
+<</widget>>
+
+/* <<wolfTransform step>> If neither is provided, force full transformation */
+<<widget "wolfTransform">>
+	<<if _args[0] gte 0>>
+		<<switch _args[0]>>
+			<<case 0>>
+				<<if $wolfbuild gte 5>>
+					<<set $wolfgirl to 1>>
+					<<set $physicalTransform to 1>>
+					<span class="gold">你的牙齿隐隐作痛。</span>
+					<br><br>
+				<</if>>
+			<<case 1>>
+				<<if $wolfbuild gte 10>>
+					<<set $wolfgirl to 2>>
+					<span class="gold">你的嘴内发生了变化。新生的獠牙划过你的舌尖，你不禁打了个寒颤。</span>
+					<<set $transformationParts.traits.fangs to "default">>
+					<<set $transformationParts.wolf.cheeks to "hidden">>
+					<br><br>
+				<<elseif $wolfbuild lt 5>>
+					<<set $wolfgirl to 0>>
+					<<set $physicalTransform to 0>>
+					<span class="gold">你的牙痛停止了。</span>
+					<br><br>
+				<</if>>
+			<<case 2>>
+				<<if $wolfbuild gte 15>>
+					<<set $wolfgirl to 3>>
+					<span class="gold">你的头皮<<print ($pbdisable is "f" ? "和阴部开始发痒" : "开始发痒")>>。</span>
+					<br><br>
+				<<elseif $wolfbuild lt 10>>
+					<<set $wolfgirl to 1>>
+					<span class="gold">你的獠牙变回了普通牙齿。</span>
+					<<set $transformationParts.traits.fangs to "disabled">>
+					<<set $transformationParts.wolf.cheeks to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 3>>
+				<<if $wolfbuild gte 20>>
+					<<set $wolfgirl to 4>>
+					<span class="gold">你感觉头上似乎有什么东西。你伸手想要扯掉，但随即感到一阵疼痛。
+					你现在有了一对狼耳。
+					<<print ($pbdisable is "f" ? "你还注意到自己的阴部长出了又长又蓬松的毛发。":"")>></span>
+					<<set $transformationParts.wolf.ears to "default">>
+					<<set $transformationParts.wolf.pubes to ($pbdisable is "f"? "default" : "hidden")>>
+					<<set $transformationParts.wolf.pits to ($pbdisable is "f"? "default" : "hidden")>>
+					<br><br>
+				<<elseif $wolfbuild lt 15>>
+					<<set $wolfgirl to 2>>
+					<span class="gold">你的头皮<<print ($pbdisable is "f" ? "和下体不再发痒" : "不再发痒")>>.</span>
+					<br><br>
+				<</if>>
+			<<case 4>>
+				<<if $wolfbuild gte 25>>
+					<<set $wolfgirl to 5>>
+					<span class="gold">你的背部下方开始发痒。</span>
+					<br><br>
+				<<elseif $wolfbuild lt 20>>
+					<<set $wolfgirl to 3>>
+					<span class="gold">你的狼耳 <<print ($pbdisable is "f" ? "和身上多出来的毛发都":"")>>已经消失不见。</span>
+					<<set $transformationParts.wolf.ears to "disabled">>
+					<<set $transformationParts.wolf.pubes to "disabled">>
+					<<set $transformationParts.wolf.pits to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 5>>
+				<<if $wolfbuild gte 30>>
+					<<set $wolfgirl to 6>>
+					<span class="gold">你感觉尾椎骨上似乎有什么重物。你把手伸到身后，摸到了一条狼尾巴。</span>
+					<<set $transformationParts.wolf.tail to "default">>
+					<<earnFeat "Wolf">>
+					<br><br>
+				<<elseif $wolfbuild lt 25>>
+					<<set $wolfgirl to 4>>
+					<span class="gold">你背部下方的瘙痒感停止了。</span>
+					<br><br>
+				<</if>>
+			<<case 6>>
+				<<if $wolfbuild lt 30>>
+					<span class="gold">你感到身体的重心改变了。你的狼尾消失了。</span>
+					<<set $wolfgirl to 5>>
+					<<set $transformationParts.wolf.tail to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 99>>
+				<<set $physicalTransform to 0>>
+				<<set $wolfgirl to 0>>
+				<<set $wolfbuild to 0>>
+				<<set $transformationParts.traits.fangs to "disabled">>
+				<<set $transformationParts.wolf.cheeks to "disabled">>
+				<<set $transformationParts.wolf.ears to "disabled">>
+				<<set $transformationParts.wolf.pubes to "disabled">>
+				<<set $transformationParts.wolf.pits to "disabled">>
+				<<set $transformationParts.wolf.tail to "disabled">>
+		<</switch>>
+	<<else>>
+		<<clearAnimalTransformations>>
+		<<set $physicalTransform to 1>>
+		<<set $wolfgirl to 6>>
+		<<set $wolfbuild to 100>>
+		<<set $transformationParts.traits.fangs to "default">>
+		<<set $transformationParts.wolf.cheeks to "hidden">>
+		<<set $transformationParts.wolf.ears to "default">>
+		<<set $transformationParts.wolf.pubes to ($pbdisable is "f"? "default" : "hidden")>>
+		<<set $transformationParts.wolf.pits to ($pbdisable is "f"? "default" : "hidden")>>
+		<<set $transformationParts.wolf.tail to "default">>
+	<</if>>
+<</widget>>
+
+/* <<catTransform step>> If neither is provided, force full transformation */
+<<widget "catTransform">>
+	<<if _args[0] gte 0>>
+		<<switch _args[0]>>
+			<<case 0>>
+				<<if $catbuild gte 25>>
+					<<set $cat to 1>>
+					<<set $physicalTransform to 1>>
+					<span class="gold">你的牙痛得很奇怪。当一只甲虫从你的面前爬过时，你有一种扑上去的冲动。</span>
+					<br><br>
+				<</if>>
+			<<case 1>>
+				<<if $catbuild gte 30 and $transformdisable is "f">>
+					<<set $cat to 2>>
+					<span class="gold">你的嘴内发生了变化。新生的獠牙划过你的舌尖，你不禁打了个寒颤。</span>
+					<<set $transformationParts.traits.fangs to "default">>
+					<<set $transformationParts.traits.sharpEyes to "default">>
+					<br><br>
+				<<elseif $catbuild lt 25>>
+					<<set $cat to 0>><<set $physicalTransform to 0>>
+					<span class="gold">你的牙痛停止了。</span>
+					<br><br>
+				<</if>>
+			<<case 2>>
+				<<if $catbuild gte 35 and $transformdisable is "f">>
+					<<set $cat to 3>>
+					<span class="gold">你的头皮发痒。</span>
+					<br><br>
+				<<elseif $catbuild lt 30>>
+					<<set $cat to 1>>
+					<span class="gold">你的獠牙变回了普通牙齿。</span>
+					<<set $transformationParts.traits.fangs to "disabled">>
+					<<set $transformationParts.traits.sharpEyes to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 3>>
+				<<if $catbuild gte 40 and $transformdisable is "f">>
+					<<set $cat to 4>>
+					<span class="gold">你感到头上有什么东西抽动了一下。你伸出手去摸了摸，结果摸到了自己的猫耳朵。</span>
+					<<set $transformationParts.cat.ears to "default">>
+					<br><br>
+				<<elseif $catbuild lt 35>>
+					<<set $cat to 2>>
+					<span class="gold">你的头皮不再发痒。</span>
+					<br><br>
+				<</if>>
+			<<case 4>>
+				<<if $catbuild gte 45 and $transformdisable is "f">>
+					<<set $cat to 5>>
+					<span class="gold">你的背部下方开始发痒。</span>
+					<br><br>
+				<<elseif $catbuild lt 40>>
+					<<set $cat to 3>>
+					<span class="gold">你的猫耳消失了。</span>
+					<<set $transformationParts.cat.ears to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 5>>
+				<<if $catbuild gte 50 and $transformdisable is "f">>
+					<<set $cat to 6>>
+					<span class="gold">你感觉尾椎骨上似乎有什么重物，它似乎带给了你完美的平衡感。你把手伸到后面，摸到了你新长出来的猫猫尾巴。</span>
+					<<set $transformationParts.cat.tail to "default">>
+					<<earnFeat "Neko">>
+					<br><br>
+				<<elseif $catbuild lt 45>>
+					<<set $cat to 4>>
+					<span class="gold">背部的瘙痒停止了。</span>
+					<br><br>
+				<</if>>
+			<<case 6>>
+				<<if $catbuild gte 55>>
+					<<set $cat to 7>>
+					<<run window.determineCatEyeStages()>>
+					<<set $original_colour = [$leftEyeColour, $rightEyeColour]>>
+					<<set $transformationParts.cat.heterochromia to "default">>
+					<<catHeterochromiaTF 0>>
+					<span class="gold">你的眼睛发痒。</span>
+					<br><br>
+				<<elseif $catbuild lt 50>>
+					<<set $cat to 5>>
+					<span class="gold">你的猫猫尾巴消失了。</span>
+					<<set $transformationParts.cat.tail to "disabled">>
+					<<set $transformationParts.cat.heterochromia to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 7>>
+				<<if $catbuild gte 60>>
+					<<set $cat to 8>>
+					<<catHeterochromiaTF 1>>
+					<span class="gold">你的眼睛因瞳孔周围的灼烧感而流泪。</span>
+					<br><br>
+				<<elseif $catbuild lt 55>>
+					<<set $leftEyeColour to $original_colour[0]>>
+					<<set $rightEyeColour to $original_colour[1]>>
+					<span class="gold">你的眼睛不再发痒；你感觉自己之前多半是眼部过敏了。</span>
+					<br><br>
+					<<set $cat to 6>>
+				<</if>>
+			<<case 8>>
+				<<if $catbuild gte 65>>
+					<<set $cat to 9>>
+					<<catHeterochromiaTF 2>>
+					<span class="gold">你的眼部传来灼烧般的痛楚，疼得你几乎无法睁眼。你猜测也许是某种过敏源进入了眼部。</span>
+					<br><br>
+				<<elseif $catbuild lt 60>>
+					<<catHeterochromiaTF 0>>
+					<span class="gold">你的眼睛完全看不清周围的事物。</span>
+					<<set $cat to 7>>
+				<</if>>
+			<<case 9>>
+				<<if $catbuild gte 70>>
+					<<set $cat to 10>>
+					<<catHeterochromiaTF 3>>
+					<span class="gold">你的眼部不再感到灼烧感。尽管清晨周围一片漆黑，但你仍能捕捉到四周景色的每一个细节。</span>
+					<br><br>
+				<<elseif $catbuild lt 65>>
+					<<catHeterochromiaTF 1>>
+					<<set $cat to 8>>
+				<</if>>
+			<<case 10>>
+				<<if $catbuild lt 70>>
+					<<catHeterochromiaTF 2>>
+					<span class="gold">在你的视野里，周围看起来比以前要更暗一些。 </span>
+					<<set $cat to 9>>
+				<</if>>
+			<<case 99>>
+				<<set $physicalTransform to 0>>
+				<<set $cat to 0>>
+				<<set $catbuild to 0>>
+				<<set $transformationParts.traits.fangs to "disabled">>
+				<<set $transformationParts.traits.sharpEyes to "disabled">>
+				<<set $transformationParts.cat.ears to "disabled">>
+				<<set $transformationParts.cat.tail to "disabled">>
+		<</switch>>
+	<<else>>
+		<<clearAnimalTransformations>>
+		<<set $physicalTransform to 1>>
+		<<set $cat to 6>>
+		<<set $catbuild to 100>>
+		<<set $transformationParts.traits.fangs to "default">>
+		<<set $transformationParts.traits.sharpEyes to "default">>
+		<<set $transformationParts.cat.ears to "default">>
+		<<set $transformationParts.cat.tail to "default">>
+	<</if>>
+<</widget>>
+
+<<widget "catHeterochromiaTF">>
+	<<if _args[0] gte 0 or _args[0] == "hide">>
+		<<if $transformationParts.cat.heterochromia isnot "hidden" and _args[0] isnot "hide">>
+			<<set $leftEyeColour to "cat_tf_stage_" + _args[0] + "_left">>
+			<<set $rightEyeColour to "cat_tf_stage_" + _args[0] + "_right">>
+			<<if _args[0] >= 3>>
+				<<set $heterochromia to 1>>
+			<<else>>
+				<<set $heterochromia to 0>>
+			<</if>>
+		<<else>>
+			<<if V.original_colour isnot undefined>>
+				<<set $leftEyeColour to $original_colour[0]>>
+				<<set $rightEyeColour to $original_colour[1]>>
+			<</if>>
+			<<set $heterochromia to 0>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "cowTransform">>
+	<<if _args[0] gte 0>>
+		<<switch _args[0]>>
+			<<case 0>>
+				<<if $cowbuild gte 5>>
+					<<set $cow to 1>>
+					<<set $physicalTransform to 1>>
+					<span class="gold">你有一种想吃草的奇怪冲动。</span>
+					<br><br>
+				<</if>>
+			<<case 1>>
+				<<if $cowbuild gte 10>>
+					<<set $cow to 2>>
+					<<set $transformationParts.cow.horns to "default">>
+					<span class="gold">你的头皮发痒。你伸手摸了摸，发现一对小角长了出来。</span>
+					<br><br>
+				<<elseif $cowbuild lt 5>>
+					<<set $cow to 0>><<set $physicalTransform to 0>>
+					<span class="gold">你觉得草看起来不再那么好吃了。</span>
+					<br><br>
+				<</if>>
+			<<case 2>>
+				<<if $cowbuild gte 15>>
+					<<set $cow to 3>>
+					<span class="gold">你的耳朵有些发麻。</span>
+					<br><br>
+				<<elseif $cowbuild lt 10>>
+					<<set $cow to 1>>
+					<<set $transformationParts.cow.horns to "disabled">>
+					<span class="gold">你的小角不见了。</span>
+					<br><br>
+				<</if>>
+			<<case 3>>
+				<<if $cowbuild gte 20>>
+					<<set $cow to 4>>
+					<<set $transformationParts.cow.ears to "default">>
+					<span class="gold">你的耳朵痒了。你伸手去挠了挠，发现它们比你印象中的耳朵要大多了。你长出了一双牛耳朵。</span>
+					<br><br>
+				<<elseif $cowbuild lt 15>>
+					<<set $cow to 2>>
+					<span class="gold">你的耳朵不再刺痛。</span>
+					<br><br>
+				<</if>>
+			<<case 4>>
+				<<if $cowbuild gte 25>>
+					<<set $cow to 5>>
+					<span class="gold">你感到背部发麻。</span>
+					<br><br>
+				<<elseif $cowbuild lt 20>>
+					<<set $cow to 3>>
+					<<set $transformationParts.cow.ears to "disabled">>
+					<span class="gold">你的牛耳朵消失了。</span>
+					<br><br>
+				<</if>>
+			<<case 5>>
+				<<if $cowbuild gte 30>>
+					<<set $cow to 6>>
+					<<set $semen_max to 6000>>
+					<<set $milk_max to 6000>>
+					<<set $transformationParts.cow.tail to "default">>
+					<<earnFeat "Cattle">>
+					<span class="gold">你感觉尾椎骨上似乎有什么重物。你把手伸到身后，摸到了一条牛尾巴，你突然有种想要哞哞叫的冲动，但你抑制住了。</span>
+					<br><br>
+				<<elseif $cowbuild lt 25>>
+					<<set $cow to 4>>
+					<span class="gold">你的背部的刺痛停止了。</span>
+					<br><br>
+				<</if>>
+			<<case 6>>
+				<<if $cowbuild lt 30>>
+					<<set $semen_max to 3000>>
+					<<set $milk_max to 3000>>
+					<span class="gold">你感到身体的重心改变了。你的牛尾消失了。</span>
+					<<set $cow to 5>>
+					<<set $transformationParts.cow.tail to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 99>>
+				<<set $physicalTransform to 0>>
+				<<set $cow to 0>>
+				<<set $cowbuild to 0>>
+				<<set $semen_max to 3000>>
+				<<set $milk_max to 3000>>
+				<<set $transformationParts.cow.tail to "disabled">>
+				<<set $transformationParts.cow.ears to "disabled">>
+				<<set $transformationParts.cow.horns to "disabled">>
+		<</switch>>
+	<<else>>
+		<<clearAnimalTransformations>>
+		<<set $physicalTransform to 1>>
+		<<set $cow to 6>>
+		<<set $cowbuild to 100>>
+		<<set $semen_max to 6000>>
+		<<set $milk_max to 6000>>
+		<<set $transformationParts.cow.horns to "default">>
+		<<set $transformationParts.cow.ears to "default">>
+		<<set $transformationParts.cow.tail to "default">>
+	<</if>>
+	<<semenvolume 0>>
+	<<milkvolume 0>>
+<</widget>>
+
+/* <<harpyTransform step>> If neither is provided, force full transformation */
+<<widget "harpyTransform">>
+	<<if _args[0] gte 0>>
+		<<switch _args[0]>>
+			<<case 0>>
+				<<if $birdbuild gte 5 and $physicalTransform isnot 1>>
+					<<set $harpy to 1>>
+					<<set $physicalTransform to 1>>
+					<span class="gold">你的视野更清晰了。</span><br><br>
+				<</if>>
+			<<case 1>>
+				<<if $birdbuild gte 10>>
+					<<set $harpy to 2>>
+					<span class="gold">你感觉眼睛有些奇怪。你的视力提高了。</span>
+					<<set $transformationParts.bird.eyes to "default">>
+					<<set $transformationParts.bird.malar to "default">>
+					<<set $transformationParts.traits.sharpEyes to "default">>
+					<br><br>
+				<<elseif $birdbuild lt 5>>
+					<<set $harpy to 0>><<set $physicalTransform to 0>>
+					<span class="gold">你的视力已恢复正常。</span>
+					<br><br>
+				<</if>>
+			<<case 2>>
+				<<if $birdbuild gte 15>>
+					<<set $harpy to 3>>
+					<span class="gold">你的腰部和脖子痒痒的。
+					<<if $loveInterest.primary isnot "None">>
+						你想起了
+						<<if $loveInterest.primary is "Black Wolf" or $loveInterest.primary is "Great Hawk">>
+							$loveInterest.primary，
+						<<else>>
+							$loveInterest.primary，
+						<</if>>
+						同时产生了一股原始、近乎兽性的冲动，想要与<<print C.npc[$loveInterest.primary].pronouns.him>>在一起。
+					<<else>>
+						你忽然渴望寻得一位真心的伴侣。
+					<</if>>
+					</span>
+					<<set $transformationParts.traits.mateForLife to "default">>
+					<br><br>
+				<<elseif $birdbuild lt 10>>
+					<<set $harpy to 1>>
+					<span class="gold">你的眼力不再那么敏锐了。</span>
+					<<set $transformationParts.bird.eyes to "disabled">>
+					<<set $transformationParts.bird.malar to "disabled">>
+					<<set $transformationParts.traits.sharpEyes to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 3>>
+				<<if $birdbuild gte 20>>
+					<<set $harpy to 4>>
+					<span class="gold">你感觉自己变得轻盈了。你把手伸到身后，摸到了一条长着羽毛的尾巴。短小的羽毛保护着你的脖子。</span>
+					<<set $transformationParts.bird.tail to "default">>
+					<<set $transformationParts.bird.plumage to "default">>
+					<br><br>
+				<<elseif $birdbuild lt 15>>
+					<<set $harpy to 2>>
+					<span class="gold">你下背部和脖子的瘙痒感停止了，同时你不再疯狂地渴求伴侣。</span>
+					<<set $transformationParts.traits.mateForLife to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 4>>
+				<<if $birdbuild gte 25>>
+					<<set $harpy to 5>>
+					<span class="gold">你的背部<<print ($pbdisable is "f" ? "和阴部都感到一阵阵瘙痒" : "感到一阵阵瘙痒")>><span class="gold">。</span>
+					<br><br>
+				<<elseif $birdbuild lt 20>>
+					<<set $harpy to 3>>
+					<span class="gold">你的羽毛尾巴和脖子上的羽毛一起消失了。</span>
+					<<set $transformationParts.bird.tail to "disabled">>
+					<<set $transformationParts.bird.plumage to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 5>>
+				<<if $birdbuild gte 30>>
+					<<set $harpy to 6>>
+					<span class="gold">你感觉自己轻如鸿燕，翅膀垂下，刚好能抚摸到自己的脸。
+					<<print ($pbdisable is "f" ? " 你还注意到，自己的阴部长出了短小如羽毛状的东西。":"")>></span>
+					<<earnFeat "Harpy">>
+					<<set $transformationParts.bird.wings to "default">>
+					<<if $transformationParts.angel.wings is "default">>
+						<<set $transformationParts.angel.wings to "hidden">>
+					<<elseif $transformationParts.fallenAngel.wings is "default">>
+						<<set $transformationParts.fallenAngel.wings to "hidden">>
+					<<elseif $transformationParts.demon.wings is "default">>
+						<<set $transformationParts.demon.wings to "hidden">>
+					<</if>>
+					<<if $pbdisable is "f">>
+						<<set $transformationParts.bird.pubes to "default">>
+					<<else>>
+						<<set $transformationParts.bird.pubes to "hidden">>
+					<</if>>
+					<br><br>
+				<<elseif $birdbuild lt 25>>
+					<<set $harpy to 4>>
+					<span class="gold">你感觉自己变得笨重了<<print ($pbdisable is "f" ? ", 阴部也不再那么痒" : "")>>.</span>
+					<br><br>
+				<</if>>
+			<<case 6>>
+				<<if $birdbuild lt 30>>
+					<span class="gold">你感觉更重了。你的羽翼<<print ($pbdisable is "f" ? "和羽毛状的毛发一同":"")>>消失了。</span>
+					<<set $harpy to 5>>
+					<<set $transformationParts.bird.wings to "disabled">>
+					<<set $transformationParts.bird.pubes to "disabled">>
+					<<if $angel gte 6>>
+						<<set $transformationParts.angel.wings to "default">>
+					<</if>>
+					<<if $demon gte 6>>
+						<<set $transformationParts.demon.wings to "default">>
+					<</if>>
+					<<if $fallenangel gte 2>>
+						<<set $transformationParts.fallenAngel.wings to "default">>
+					<</if>>
+					<br><br>
+				<</if>>
+			<<case 99>>
+				<<set $physicalTransform to 0>>
+				<<set $harpy to 0>>
+				<<set $birdbuild to 0>>
+				<<set $transformationParts.bird.eyes to "disabled">>
+				<<set $transformationParts.bird.malar to "disabled">>
+				<<set $transformationParts.bird.tail to "disabled">>
+				<<set $transformationParts.bird.plumage to "disabled">>
+				<<set $transformationParts.bird.wings to "disabled">>
+				<<set $transformationParts.bird.pubes to "disabled">>
+				<<set $transformationParts.traits.sharpEyes to "disabled">>
+				<<set $transformationParts.traits.mateForLife to "disabled">>
+				<<if $angel gte 6>>
+					<<set $transformationParts.angel.wings to "default">>
+				<</if>>
+				<<if $demon gte 6>>
+					<<set $transformationParts.demon.wings to "default">>
+				<</if>>
+				<<if $fallenangel gte 2>>
+					<<set $transformationParts.fallenAngel.wings to "default">>
+				<</if>>
+		<</switch>>
+	<<else>>
+		<<clearAnimalTransformations>>
+		<<set $physicalTransform to 1>>
+		<<set $harpy to 6>>
+		<<set $birdbuild to 100>>
+		<<set $transformationParts.bird.eyes to "default">>
+		<<set $transformationParts.bird.malar to "default">>
+		<<set $transformationParts.bird.tail to "default">>
+		<<set $transformationParts.bird.plumage to "default">>
+		<<set $transformationParts.bird.wings to "default">>
+		<<set $transformationParts.traits.sharpEyes to "default">>
+		<<set $transformationParts.traits.mateForLife to "default">>
+		<<if $transformationParts.angel.wings is "default">>
+			<<set $transformationParts.angel.wings to "hidden">>
+		<<elseif $transformationParts.fallenAngel.wings is "default">>
+			<<set $transformationParts.fallenAngel.wings to "hidden">>
+		<<elseif $transformationParts.demon.wings is "default">>
+			<<set $transformationParts.demon.wings to "hidden">>
+		<</if>>
+		<<if $pbdisable is "f">>
+			<<set $transformationParts.bird.pubes to "default">>
+		<<else>>
+			<<set $transformationParts.bird.pubes to "hidden">>
+		<</if>>
+	<</if>>
+<</widget>>
+
+/* <<foxTransform step>> If neither is provided, force full transformation */
+<<widget "foxTransform">>
+	<<if _args[0] gte 0>>
+		<<switch _args[0]>>
+			<<case 0>>
+				<<if $foxbuild gte 5>>
+					<<set $fox to 1>>
+					<<set $physicalTransform to 1>>
+					<span class="gold">你诡异地牙痛了起来，眼睛也变得更加锐利。</span>
+					<br><br>
+				<</if>>
+			<<case 1>>
+				<<if $foxbuild gte 10>>
+					<<set $fox to 2>>
+					<span class="gold">你的嘴巴和眼睛变得有些不一样了。你在嘴里摸索了一番，当舌头抵在那颗前所未有的獠牙上的时候，你嚎叫了一声，同时急切地感到想去偷些什么。</span>
+					<<set $transformationParts.traits.fangs to "default">>
+					<<set $transformationParts.traits.sharpEyes to "default">>
+					<br><br>
+				<<elseif $foxbuild lt 5>>
+					<<set $fox to 0>>
+					<<set $physicalTransform to 0>>
+					<span class="gold">你的牙痛停止了。</span>
+					<br><br>
+				<</if>>
+			<<case 2>>
+				<<if $foxbuild gte 15>>
+					<<set $fox to 3>>
+					<span class="gold">你的头皮发痒。
+					<<if $loveInterest.primary isnot "None">>
+						你想起了
+ 						<<if $loveInterest.primary is "Black Wolf" or $loveInterest.primary is "Great Hawk">>
+							$loveInterest.primary，
+						<<else>>
+							$loveInterest.primary，
+						<</if>>
+						同时产生了一股原始、近乎兽性的冲动，想要与<<print C.npc[$loveInterest.primary].pronouns.him>>在一起。
+					<<else>>
+						你忽然渴望寻得一位真心的伴侣。
+					<</if>>
+					</span>
+					<<set $transformationParts.traits.mateForLife to "default">>
+					<br><br>
+				<<elseif $foxbuild lt 10>>
+					<<set $fox to 1>>
+					<span class="gold">你的獠牙变回了普通的牙齿，视力也不再那般清晰。</span>
+					<<set $transformationParts.traits.fangs to "disabled">>
+					<<set $transformationParts.traits.sharpEyes to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 3>>
+				<<if $foxbuild gte 20>>
+					<<set $fox to 4>>
+					<span class="gold">你感觉头上长了什么东西。你伸手一摸，便碰到了一对狐狸耳朵，那对耳朵抽动了一下，回应着你的触摸。</span>
+					<<set $transformationParts.fox.ears to "default">>
+					<br><br>
+				<<elseif $foxbuild lt 15>>
+					<<set $fox to 2>>
+					<span class="gold">你的头皮不再发痒，同时你不再疯狂地渴求伴侣。</span>
+					<<set $transformationParts.traits.mateForLife to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 4>>
+				<<if $foxbuild gte 25>>
+					<<set $fox to 5>>
+					<span class="gold">你的腰部痒痒的。你急切地想要别人帮你挠一下。此时你还注意到视野四周的颜色不再鲜艳。</span>
+					<<set $transformationParts.fox.cheeks to "default">>
+					<br><br>
+				<<elseif $foxbuild lt 20>>
+					<<set $fox to 3>>
+					<span class="gold">你的狐狸耳朵消失了。</span>
+					<<set $transformationParts.fox.ears to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 5>>
+				<<if $foxbuild gte 30>>
+					<<set $fox to 6>>
+					<span class="gold">你感觉尾椎骨上似乎有什么重物。你让它晃动了一下，是一条狐狸尾巴。摸起来舒服得很。</span>
+					<<set $transformationParts.fox.tail to "default">>
+					<<earnFeat "Fox">>
+					<br><br>
+				<<elseif $foxbuild lt 25>>
+					<<set $fox to 4>>
+					<span class="gold">你的腰部不再瘙痒，同时视野四周的颜色也重归鲜艳。</span>
+					<<set $transformationParts.fox.cheeks to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 6>>
+				<<if $foxbuild lt 30>>
+					<span class="gold">你感到身体的重心改变了。你的狐尾消失了。</span>
+					<<set $fox to 5>>
+					<<set $transformationParts.fox.tail to "disabled">>
+					<br><br>
+				<</if>>
+			<<case 99>>
+				<<set $physicalTransform to 0>>
+				<<set $fox to 0>>
+				<<set $foxbuild to 0>>
+				<<set $transformationParts.traits.fangs to "disabled">>
+				<<set $transformationParts.traits.sharpEyes to "disabled">>
+				<<set $transformationParts.traits.mateForLife to "disabled">>
+				<<set $transformationParts.fox.cheeks to "disabled">>
+				<<set $transformationParts.fox.ears to "disabled">>
+				<<set $transformationParts.fox.tail to "disabled">>
+		<</switch>>
+	<<else>>
+		<<clearAnimalTransformations>>
+		<<set $physicalTransform to 1>>
+		<<set $fox to 6>>
+		<<set $foxbuild to 100>>
+		<<set $transformationParts.traits.fangs to "default">>
+		<<set $transformationParts.traits.sharpEyes to "default">>
+		<<set $transformationParts.traits.mateForLife to "default">>
+		<<set $transformationParts.fox.cheeks to "default">>
+		<<set $transformationParts.fox.ears to "default">>
+		<<set $transformationParts.fox.tail to "default">>
+	<</if>>
+<</widget>>
+
+<<widget "clearAnimalTransformations">>
+	<<harpyTransform 99>>
+	<<cowTransform 99>>
+	<<catTransform 99>>
+	<<wolfTransform 99>>
+	<<foxTransform 99>>
+<</widget>>
+
+<<widget "clearDivineTransformations">>
+	<<demonTransform 99>>
+	<<angelTransform 99>>
+	<<fallenButNotOut 99>>
+<</widget>>

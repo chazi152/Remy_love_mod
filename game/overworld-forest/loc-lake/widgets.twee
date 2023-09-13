@@ -1,0 +1,611 @@
+:: Widgets Lake [widget]
+<<widget "lakeeffects">>
+	<<if Time.schoolDay>>
+		<<if Time.dayState is "day" or Time.dayState is "dusk">>
+			<<if Time.hour gte 15 and $weather isnot "rain" and $weather isnot "snow">>
+				<<set $laketeenspresent to 1>>
+			<<else>>
+				<<set $laketeenspresent to 0>>
+			<</if>>
+		<<else>>
+			<<set $laketeenspresent to 0>>
+		<</if>>
+	<<else>>
+		<<if Time.dayState is "day" or Time.dayState is "dusk">>
+			<<if $weather isnot "rain" and $weather isnot "snow">>
+				<<set $laketeenspresent to 1>>
+			<<else>>
+				<<set $laketeenspresent to 0>>
+			<</if>>
+		<<else>>
+			<<set $laketeenspresent to 0>>
+		<</if>>
+	<</if>>
+
+	<<if $weather isnot "rain" and $weather isnot "snow" and Time.hour gte 18>>
+		<<set $laketeensfire to 1>>
+	<<else>>
+		<<set $laketeensfire to 0>>
+	<</if>>
+
+	<<wPersist "forest">><<getTarget true>>
+<</widget>>
+
+<<widget "destinationlake">>
+	<<if $bus is "lakeshallows">>
+		<<link [[继续|Lake Shallows]]>><</link>>
+		<br>
+	<<elseif $bus is "lakedepths">>
+		<<link [[继续|Lake Depths]]>><</link>>
+		<br>
+	<<elseif $bus is "lakefirepit">>
+		<<link [[继续|Lake Firepit]]>><</link>>
+		<br>
+	<<elseif $bus is "lakefishingrock">>
+		<<link [[继续|Lake Fishing Rock]]>><</link>>
+		<br>
+	<<elseif $bus is "lakecampsite">>
+		<<link [[继续|Lake Campsite]]>><</link>>
+		<br>
+	<<elseif $bus is "lakewaterfall">>
+		<<link [[继续|Lake Waterfall]]>><</link>>
+		<br>
+	<<elseif $bus is "lakebus">>
+		<<link [[继续|Lake Bus]]>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Lake Shore]]>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "passoutlake">>
+	<<if isPlayerNonparasitePregnancyEnding()>>
+		<<pregnancyWatersBrokenPassout "lake">>
+	<<else>>
+		你把自己逼得太紧了。
+		<br><br>
+		<<passout>>
+
+		<<set $danger to random(1, 10000)>>
+
+		<<if $exposed gte 1 and $exhibitionism lte 54 and isLoveInterest("Eden") and random(1,2) is 2>>
+			<<link [[继续|Eden Passout Lake Rescue]]>><</link>>
+		<<elseif $danger gte (9900 - $allure)>>
+			<<if $laketeenspresent is 1 and Time.season isnot "winter">>
+				<<link [[继续|Lake Mermaid]]>><</link>>
+				<br>
+			<<else>>
+				<<link [[继续|Lake Ritual]]>><</link>>
+				<br>
+			<</if>>
+		<<else>>
+			<<set $foresthunt to 0>>
+			<<ambulance>>
+		<</if>>
+		<<pass 1 hour>>
+		<<trauma 6>><<set $stress -= 2000>>
+	<</if>>
+<</widget>>
+
+<<widget "lakejourney">>
+	<<beastNEWinit 1 wolf>>
+	同行的人们尖叫着往后退去，你顺着看了过去，是一只<<beasttype>>。
+	<<if $monster is 1>>
+		<<bhis>>的裸体给没有给人群留下了什么深刻印象，尽管<<bhis>>向人们充分地展示<<bhis>>的生殖器且毫不掩盖自己. 一部分人在紧张地笑着，而另一些人则遮住了自己的眼睛.
+	<</if>>
+	<<bHe>>站在远处看着。
+	<br><br>
+	<!-- Modified for Monster People -->
+	<<if $deviancy gte 15 and ($monster is 1 or $bestialitydisable is "f")>>
+		<<link [[处理它|Lake Wolf Sex]]>><<set $sexstart to 1>><</link>><<deviant2>><<gcool>>
+		<br>
+	<</if>>
+
+	<<link [[逃跑|Lake Wolf Run]]>><<stress 3>><</link>><<gstress>>
+	<br>
+<</widget>>
+
+<<widget "lakereturnjourney">>
+	<<if $laketeenspresent is 1 and Time.hour is 20>>
+		天色已晚，森林的影子也越来越长。人们正准备返回城镇。没有人愿意落单。
+		<br><br>
+
+		<<if $exposed lte 0>>
+			<<link [[和他们一起走 (0:30)|Lake Return Journey]]>><<set $foresthunt to 0>><<pass 30>><</link>>
+			<br><br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "eventlakesafe">>
+	<<if random(1, 20) is 1 and !$possessed>>
+		<<eventAmbient>>
+	<</if>>
+<</widget>>
+
+<<widget "eventlakewater">>
+	<<if wraithCanHunt() and $wraith.state and $wraith.hunt is 0 and $wraith.timer gte random(0, 10)>>
+		<<wHunt "lake">>
+	<<elseif $bus is "lakeshallows">>
+		<<if $laketeenspresent is 1>>
+			<<generatey1>><<person1>>一个<<person>>在岸边看着你。
+			<br><br>
+			<<link [[挥手 (0:01)|Lake Wave]]>><<stress -2>><<pass 1>><</link>><<lstress>>
+			<br>
+			<<link [[无视|Lake Shallows]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<br>
+			<<if $player.gender_appearance is "f" and $exhibitionism gte 35>>
+				<<link [[显摆露出|Lake Flash]]>><</link>><<exhibitionist3>>
+				<br>
+			<</if>>
+		<<else>>
+			你的腿被杂草缠住了。解放自己需要几分钟的努力。
+			<<gtiredness>><<tiredness 2>>
+			<br><br>
+			<<pass 3>>
+			<<link [[继续|Lake Shallows]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		<<if $rng gte 91 and $weather is "rain" and $bestialitydisable is "f" and $voredisable is "f" and $hallucinations gte 2 and $controlled is 0>>
+		一些巨大的东西在你下面的水中涌动。一条张开的触手夹住你的大腿。
+		<br><br>
+
+		<<link [[继续|Lake Vore]]>><<set $molestationstart to 1>><</link>>
+		<br>
+		<<elseif $rng gte 81 and $swarmdisable is "f">>
+			<<if $slimedisable is "f" and isBloodmoon()>>
+				水被搅动了。一簇簇苍白史莱姆包围着你。
+			<<else>>
+				水被搅动了。成群的小鱼包围着你。
+			<</if>>
+			<br><br>
+
+			<<link [[继续|Lake Depths Swarm]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<<else>>
+			<<if Time.dayState is "night" and $weather is "rain">>
+			有东西拂过你的腿，吓了你一跳。你在黑暗而猛烈的水下看，但什么也看不见。你觉得奇怪。
+			<<garousal>><<arousal 600>><<gstress>><<stress 6>>
+			<br><br>
+			<<else>>
+			有东西拂过你的腿，吓了你一跳。你往水下看，但什么也看不见。
+			<<garousal>><<arousal 600>><<gstress>><<stress 6>>
+			<br><br>
+			<</if>>
+
+		<<link [[继续|Lake Depths]]>><<set $eventskip to 1>><</link>>
+		<br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "eventlakeice">>
+	<<rng>>
+	<<if wraithCanHunt() and $wraith.state and $wraith.hunt is 0 and $wraith.timer gte random(0, 10)>>
+		<<wHunt "lake">>
+	<<elseif $rng gte 81>>
+		<<dancedifficulty 1 1000 true>>
+		<<if $danceSuccess>>
+			风刮起来，差点把你撞倒，<span class="green">但你设法站稳了脚跟。</span>
+		<<else>>
+			风越来越大，<span class="red">你失去立足点，</span>在冰上打滑。
+			<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+				你的手和膝盖因硬着陆而受伤，但至少你能够保护你的<<pregnancyBabyText "pc">>.<<gstress>><<gpain>><<stress 6>><<pain 4>>
+			<</if>>
+			<<gstress>><<gpain>><<stress 6>><<pain 4>>
+		<</if>>
+		<br><br>
+		<<destination_lake_ice>>
+	<<elseif $rng gte 61>>
+		你突然感到很恐怖，<span class="pink">就好像被谁监视了一样.</span>
+		<<if $laketeenspresent is 1>>
+			学生们的声音逐渐消失，直到只有你一个人为止。
+		<</if>>
+		<br><br>
+		下面有东西。
+		<br><br>
+
+		<<link [[无视|Lake Ice Ignore]]>><<def 1>><</link>><<willpowerdifficulty 1 $willpowermax>>
+		<br>
+		<<link [[俯视|Lake Ice Look]]>><</link>>
+		<br>
+	<<elseif $rng gte 41>>
+		你听到了一声沉重的嘎吱声，接着又是一声，湖面上的冰层可能不那么安全。
+		<br><br>
+
+		<<link [[小心一些(0:10)|Lake Ice Careful]]>><<pass 10>><</link>>
+		<br>
+		<<link [[正常地走过去|Lake Ice Normal]]>><</link>>
+		<br>
+	<<elseif $rng gte 21>>
+		<<if $weather is "snow">>
+			雪下得很大，遮盖了湖周围的树木。
+			<<if currentSkillValue('history') gte random(1, 1000)>>
+				<span class="green">很快它过去了。</span>
+				<br><br>
+			<<else>>
+				由于没有树木来帮助你辨认方向，<span class="red">你迷失了方向，</span>尽管暴雪很快就停了。<<gstress 6>>
+				<br><br>
+			<</if>>
+		<<elseif $weather is "clear">>
+			<<if Time.dayState is "night">>
+				<<if isBloodmoon()>>
+					红色的月亮倒映在冰面上，一阵恐惧袭上心头，让你感到刺痛。<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+					<br><br>
+				<<else>>
+					月亮映照在冰面上，这景象既冷酷又美丽。<<lstress>><<stress 6>>
+					<br><br>
+				<</if>>
+			<<else>>
+				太阳的强光反射在冰面上，你不得不捂住眼睛。
+				<br><br>
+			<</if>>
+		<<else>>
+			<<if Time.dayState is "night">>
+				在黑暗中，周围的树木几乎看不见了。<<gstress>><<stress 6>>
+				<br><br>
+			<<else>>
+				你看到一只狐狸在湖边的泥土中翻找。它的耳朵竖起来，然后在树林间跳跃着消失了。
+				<br><br>
+			<</if>>
+		<</if>>
+		<<destination_lake_ice>>
+	<<else>>
+		你在冰上滑倒了！<<gstress>><<stress 6>>
+		<br><br>
+
+		<<link [[打起精神|Lake Ice Brace]]>><<status -10>><</link>><<if $laketeenspresent is 1 and $bus is "lakeshallows">><<lcool>><</if>><<gstress>>
+		<br>
+		<<link [[试着保持站立|Lake Ice Stay]]>><</link>><<dancedifficulty 1 600>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "destination_lake_ice">>
+	<<if $bus is "lakedepths">>
+		<<link [[继续|Lake Depths Ice]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Lake Shallows Ice]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "eventlake">>
+	<<if wraithCanHunt() and $wraith.state and $wraith.hunt is 0 and $wraith.timer gte random(0, 10)>>
+		<<wHunt "lake">>
+	<<elseif $rng gte 81>>
+		<!-- Modified for Monster People -->
+		<<beastNEWinit 1 boar>>
+		你看到一只<<beasttype>>正在一棵树的底部翻找垃圾。它发现了你.
+		<br><br>
+		<<if $monster is 1 or $bestialitydisable is "f">>
+			<<link [[保持你的位置|Lake Boar Stand]]>><</link>>
+			<br>
+			<<link [[跑|Lake Boar Run]]>><</link>><<athleticsdifficulty>>
+			<br>
+		<<else>>
+			你转身跑进了森林，树枝撕扯着你，直到你绊倒在地，一头栽倒在地上。你认为自己逃掉了，但心脏仍在狂跳。<<beastescape>>
+			<br><br>
+			<<endevent>>
+			<<set $eventskip to 1>>
+			<<destinationlake>>
+		<</if>>
+	<<elseif $rng gte 51>>
+		<<if $wraith.state or $hallucinations gte 1>>
+			你觉得听到有人叫你的名字，但周围没有人。
+			<<gtrauma>><<trauma 3>>
+		<<else>>
+			风穿过树林时发出低沉的嚎叫声。<<if $awarelevel gte 1>>有一瞬间，似乎所有的树木都是从湖边往外吹的。<</if>>
+			<<gstress>><<stress 1>>
+		<</if>>
+		<br><br>
+		<<set $eventskip to 1>>
+		<<destinationlake>>
+	<<else>>
+		一双眼睛从树木间盯着你，然后消失了。
+		<<gstress>><<stress 6>>
+		<br><br>
+		<<set $eventskip to 1>>
+		<<destinationlake>>
+	<</if>>
+<</widget>>
+
+<<widget "meditateoptions">>
+	<<link [[平息你的想法 (1:00)|Lake Meditate]]>><<pass 60>><<set $phase to 2>><<willpower 1>>
+		<<if $willpower gte (($willpowermax / 7) * 6)>>
+			<<stress -6>><<awareness -2>><<arousal -1200>>
+		<<elseif $willpower gte (($willpowermax / 7) * 5)>>
+			<<stress -6>><<awareness -1>><<arousal -1000>>
+		<<elseif $willpower gte (($willpowermax / 7) * 4)>>
+			<<stress -5>><<awareness -1>><<arousal -800>>
+		<<elseif $willpower gte (($willpowermax / 7) * 3)>>
+			<<stress -4>><<awareness -1>><<arousal -600>>
+		<<elseif $willpower gte (($willpowermax / 7) * 2)>>
+			<<stress -3>><<awareness -1>><<arousal -500>>
+		<<elseif $willpower gte (($willpowermax / 7) * 1)>>
+			<<stress -2>><<awareness -1>><<arousal -400>>
+		<<else>>
+			<<stress -1>><<awareness -1>><<arousal -300>>
+		<</if>>
+	<</link>><<lawareness>><<gwillpower>><<lstress>><<larousal>>
+	<br>
+
+	<<if $insecurity_penis_tiny gte 1 and $player.penissize lte 0 and $acceptance_penis_tiny lte 999 and $daily.lakeMeditate isnot 1>>
+		<<link [[想着你的阴茎(1:00)|Lake Meditate]]>><<pass 60>><<set $phase to 4>><<willpower 1>><<set $daily.lakeMeditate to 1>>
+			<<if $willpower gte (($willpowermax / 7) * 6)>>
+				<<stress 5>><<acceptance "penis_tiny" 20>>
+			<<elseif $willpower gte (($willpowermax / 7) * 5)>>
+				<<stress 5>><<acceptance "penis_tiny" 18>>
+			<<elseif $willpower gte (($willpowermax / 7) * 4)>>
+				<<stress 6>><<acceptance "penis_tiny" 16>>
+			<<elseif $willpower gte (($willpowermax / 7) * 3)>>
+				<<stress 7>><<acceptance "penis_tiny" 14>>
+			<<elseif $willpower gte (($willpowermax / 7) * 2)>>
+				<<stress 8>><<acceptance "penis_tiny" 12>>
+			<<elseif $willpower gte (($willpowermax / 7) * 1)>>
+				<<stress 10>><<acceptance "penis_tiny" 10>>
+			<<else>>
+				<<stress 12>><<acceptance "penis_tiny" 8>>
+			<</if>>
+		<</link>><<gstress>><<gwillpower>><<gacceptance>>
+		<br>
+	<</if>>
+	<<if $insecurity_penis_small gte 1 and $player.penissize is 1 and $acceptance_penis_small lte 999 and $daily.lakeMeditate isnot 1>>
+		<<link [[想着你小小的阴茎(1:00)|Lake Meditate]]>><<pass 60>><<set $phase to 5>><<willpower 1>><<set $daily.lakeMeditate to 1>>
+			<<if $willpower gte (($willpowermax / 7) * 6)>>
+				<<stress 5>><<acceptance "penis_small" 20>>
+			<<elseif $willpower gte (($willpowermax / 7) * 5)>>
+				<<stress 5>><<acceptance "penis_small" 18>>
+			<<elseif $willpower gte (($willpowermax / 7) * 4)>>
+				<<stress 6>><<acceptance "penis_small" 16>>
+			<<elseif $willpower gte (($willpowermax / 7) * 3)>>
+				<<stress 7>><<acceptance "penis_small" 14>>
+			<<elseif $willpower gte (($willpowermax / 7) * 2)>>
+				<<stress 8>><<acceptance "penis_small" 12>>
+			<<elseif $willpower gte (($willpowermax / 7) * 1)>>
+				<<stress 10>><<acceptance "penis_small" 10>>
+			<<else>>
+				<<stress 12>><<acceptance "penis_small" 8>>
+			<</if>>
+		<</link>><<gstress>><<gwillpower>><<gacceptance>>
+		<br>
+	<</if>>
+	<<if $player.gender is "m">>
+		<<if $insecurity_penis_big gte 1 and $player.penissize gte 4 and $acceptance_penis_big lte 999 and $daily.lakeMeditate isnot 1>>
+			<<link [[想着你的大阴茎(1:00)|Lake Meditate]]>><<pass 60>><<set $phase to 6>><<willpower 1>><<set $daily.lakeMeditate to 1>>
+				<<if $willpower gte (($willpowermax / 7) * 6)>>
+					<<stress 5>><<acceptance "penis_big" 20>>
+				<<elseif $willpower gte (($willpowermax / 7) * 5)>>
+					<<stress 5>><<acceptance "penis_big" 18>>
+				<<elseif $willpower gte (($willpowermax / 7) * 4)>>
+					<<stress 6>><<acceptance "penis_big" 16>>
+				<<elseif $willpower gte (($willpowermax / 7) * 3)>>
+					<<stress 7>><<acceptance "penis_big" 14>>
+				<<elseif $willpower gte (($willpowermax / 7) * 2)>>
+					<<stress 8>><<acceptance "penis_big" 12>>
+				<<elseif $willpower gte (($willpowermax / 7) * 1)>>
+					<<stress 10>><<acceptance "penis_big" 10>>
+				<<else>>
+					<<stress 12>><<acceptance "penis_big" 8>>
+				<</if>>
+			<</link>><<gstress>><<gwillpower>><<gacceptance>>
+			<br>
+		<</if>>
+	<<else>>
+		<<if $insecurity_penis_big gte 1 and $player.penissize gte 2 and $acceptance_penis_big lte 999 and $daily.lakeMeditate isnot 1>>
+			<<link [[想着你的大阴茎(1:00)|Lake Meditate]]>><<pass 60>><<set $phase to 6>><<willpower 1>><<set $daily.lakeMeditate to 1>>
+				<<if $willpower gte (($willpowermax / 7) * 6)>>
+					<<stress 5>><<acceptance "penis_big" 20>>
+				<<elseif $willpower gte (($willpowermax / 7) * 5)>>
+					<<stress 5>><<acceptance "penis_big" 18>>
+				<<elseif $willpower gte (($willpowermax / 7) * 4)>>
+					<<stress 6>><<acceptance "penis_big" 16>>
+				<<elseif $willpower gte (($willpowermax / 7) * 3)>>
+					<<stress 7>><<acceptance "penis_big" 14>>
+				<<elseif $willpower gte (($willpowermax / 7) * 2)>>
+					<<stress 8>><<acceptance "penis_big" 12>>
+				<<elseif $willpower gte (($willpowermax / 7) * 1)>>
+					<<stress 10>><<acceptance "penis_big" 10>>
+				<<else>>
+					<<stress 12>><<acceptance "penis_big" 8>>
+				<</if>>
+			<</link>><<gstress>><<gwillpower>><<gacceptance>>
+			<br>
+		<</if>>
+	<</if>>
+	<<if $insecurity_breasts_tiny gte 1 and $player.breastsize lte 0 and $player.gender is "f" and $acceptance_breasts_tiny lte 999 and $daily.lakeMeditate isnot 1>>
+		<<link [[想着你的平胸(1:00)|Lake Meditate]]>><<pass 60>><<set $phase to 7>><<willpower 1>><<set $daily.lakeMeditate to 1>>
+			<<if $willpower gte (($willpowermax / 7) * 6)>>
+				<<stress 5>><<acceptance "breasts_tiny" 20>>
+			<<elseif $willpower gte (($willpowermax / 7) * 5)>>
+				<<stress 5>><<acceptance "breasts_tiny" 18>>
+			<<elseif $willpower gte (($willpowermax / 7) * 4)>>
+				<<stress 6>><<acceptance "breasts_tiny" 16>>
+			<<elseif $willpower gte (($willpowermax / 7) * 3)>>
+				<<stress 7>><<acceptance "breasts_tiny" 14>>
+			<<elseif $willpower gte (($willpowermax / 7) * 2)>>
+				<<stress 8>><<acceptance "breasts_tiny" 12>>
+			<<elseif $willpower gte (($willpowermax / 7) * 1)>>
+				<<stress 10>><<acceptance "breasts_tiny" 10>>
+			<<else>>
+				<<stress 12>><<acceptance "breasts_tiny" 8>>
+			<</if>>
+		<</link>><<gstress>><<gwillpower>><<gacceptance>>
+		<br>
+	<</if>>
+	<<if $insecurity_breasts_small gte 1 and $player.breastsize gte 1 and $player.breastsize lte 5 and $acceptance_breasts_small lte 999 and $daily.lakeMeditate isnot 1>>
+		<<link [[想着你的小胸(1:00)|Lake Meditate]]>><<pass 60>><<set $phase to 8>><<willpower 1>><<set $daily.lakeMeditate to 1>>
+			<<if $willpower gte (($willpowermax / 7) * 6)>>
+				<<stress 5>><<acceptance "breasts_small" 20>>
+			<<elseif $willpower gte (($willpowermax / 7) * 5)>>
+				<<stress 5>><<acceptance "breasts_small" 18>>
+			<<elseif $willpower gte (($willpowermax / 7) * 4)>>
+				<<stress 6>><<acceptance "breasts_small" 16>>
+			<<elseif $willpower gte (($willpowermax / 7) * 3)>>
+				<<stress 7>><<acceptance "breasts_small" 14>>
+			<<elseif $willpower gte (($willpowermax / 7) * 2)>>
+				<<stress 8>><<acceptance "breasts_small" 12>>
+			<<elseif $willpower gte (($willpowermax / 7) * 1)>>
+				<<stress 10>><<acceptance "breasts_small" 10>>
+			<<else>>
+				<<stress 12>><<acceptance "breasts_small" 8>>
+			<</if>>
+		<</link>><<gstress>><<gwillpower>><<gacceptance>>
+		<br>
+	<</if>>
+	<<if $player.gender is "f">>
+		<<if $insecurity_breasts_big gte 1 and $player.breastsize gte 8 and $acceptance_breasts_big lte 999 and $daily.lakeMeditate isnot 1>>
+			<<link [[想着你的巨乳(1:00)|Lake Meditate]]>><<pass 60>><<set $phase to 9>><<willpower 1>><<set $daily.lakeMeditate to 1>>
+				<<if $willpower gte (($willpowermax / 7) * 6)>>
+					<<stress 5>><<acceptance "breasts_big" 20>>
+				<<elseif $willpower gte (($willpowermax / 7) * 5)>>
+					<<stress 5>><<acceptance "breasts_big" 18>>
+				<<elseif $willpower gte (($willpowermax / 7) * 4)>>
+					<<stress 6>><<acceptance "breasts_big" 16>>
+				<<elseif $willpower gte (($willpowermax / 7) * 3)>>
+					<<stress 7>><<acceptance "breasts_big" 14>>
+				<<elseif $willpower gte (($willpowermax / 7) * 2)>>
+					<<stress 8>><<acceptance "breasts_big" 12>>
+				<<elseif $willpower gte (($willpowermax / 7) * 1)>>
+					<<stress 10>><<acceptance "breasts_big" 10>>
+				<<else>>
+					<<stress 12>><<acceptance "breasts_big" 8>>
+				<</if>>
+			<</link>><<gstress>><<gwillpower>><<gacceptance>>
+			<br>
+		<</if>>
+	<<else>>
+		<<if $insecurity_breasts_big gte 1 and $player.breastsize gte 6 and $acceptance_breasts_big lte 999 and $daily.lakeMeditate isnot 1>>
+			<<link [[想着你的巨乳(1:00)|Lake Meditate]]>><<pass 60>><<set $phase to 9>><<willpower 1>><<set $daily.lakeMeditate to 1>>
+				<<if $willpower gte (($willpowermax / 7) * 6)>>
+					<<stress 5>><<acceptance "breasts_big" 20>>
+				<<elseif $willpower gte (($willpowermax / 7) * 5)>>
+					<<stress 5>><<acceptance "breasts_big" 18>>
+				<<elseif $willpower gte (($willpowermax / 7) * 4)>>
+					<<stress 6>><<acceptance "breasts_big" 16>>
+				<<elseif $willpower gte (($willpowermax / 7) * 3)>>
+					<<stress 7>><<acceptance "breasts_big" 14>>
+				<<elseif $willpower gte (($willpowermax / 7) * 2)>>
+					<<stress 8>><<acceptance "breasts_big" 12>>
+				<<elseif $willpower gte (($willpowermax / 7) * 1)>>
+					<<stress 10>><<acceptance "breasts_big" 10>>
+				<<else>>
+					<<stress 12>><<acceptance "breasts_big" 8>>
+				<</if>>
+			<</link>><<gstress>><<gwillpower>><<gacceptance>>
+			<br>
+		<</if>>
+	<</if>>
+	<<if $insecurity_pregnancy gte 1 and $acceptance_pregnancy lte 999 and playerBellySize() gte 8 and $daily.lakeMeditate isnot 1>>
+		<<set _pregnancyLink to (playerAwareTheyArePregnant() ? "为你的孕肚冥想 (1:00)" : "为你那像是怀孕的肚子冥想 (1:00)")>>
+		<<link [[_pregnancyLink|Lake Meditate]]>><<pass 60>><<set $phase to 10>><<willpower 1>><<set $daily.lakeMeditate to 1>>
+			<<if $willpower gte (($willpowermax / 7) * 6)>>
+				<<stress 5>><<acceptance "pregnancy" 20>>
+			<<elseif $willpower gte (($willpowermax / 7) * 5)>>
+				<<stress 5>><<acceptance "pregnancy" 18>>
+			<<elseif $willpower gte (($willpowermax / 7) * 4)>>
+				<<stress 6>><<acceptance "pregnancy" 16>>
+			<<elseif $willpower gte (($willpowermax / 7) * 3)>>
+				<<stress 7>><<acceptance "pregnancy" 14>>
+			<<elseif $willpower gte (($willpowermax / 7) * 2)>>
+				<<stress 8>><<acceptance "pregnancy" 12>>
+			<<elseif $willpower gte (($willpowermax / 7) * 1)>>
+				<<stress 10>><<acceptance "pregnancy" 10>>
+			<<else>>
+				<<stress 12>><<acceptance "pregnancy" 8>>
+			<</if>>
+		<</link>><<gstress>><<gwillpower>><<gacceptance>>
+		<br>
+	<</if>>
+
+	<<link [[观察你的思维(1:00)|Lake Meditate]]>><<pass 60>><<set $phase to 3>><<willpower 1>>
+		<<if $willpower gte (($willpowermax / 7) * 6)>>
+			<<stress 5>><<awareness 2>>
+		<<elseif $willpower gte (($willpowermax / 7) * 5)>>
+			<<stress 5>><<awareness 1>>
+		<<elseif $willpower gte (($willpowermax / 7) * 4)>>
+			<<stress 6>><<awareness 1>>
+		<<elseif $willpower gte (($willpowermax / 7) * 3)>>
+			<<stress 7>><<awareness 1>>
+		<<elseif $willpower gte (($willpowermax / 7) * 2)>>
+			<<stress 8>><<awareness 1>>
+		<<elseif $willpower gte (($willpowermax / 7) * 1)>>
+			<<stress 10>><<awareness 1>>
+		<<else>>
+			<<stress 12>><<awareness 1>>
+		<</if>>
+	<</link>><<gawareness>><<gstress>><<gwillpower>>
+	<br>
+	<<link [[停止|Lake Fishing Rock]]>><</link>>
+	<br>
+<</widget>>
+
+<<widget "lakeclothes">>
+	<<if !$possessed>>
+		<br>
+		<<storeactions "lakeshore">>
+		<<wardrobeSelection true>>
+		<<set _store_location to "lakeshore">>
+		<<storeon _store_location "check">>
+		<<if _store_check is 1>>
+			<<set _clothes to clothingInStorage(_store_location)>>
+			<<if _clothes.length gt 0>>
+				<<if _clothes.length gt 2>>
+					你的衣服散落在一块岩石后面的地上。
+					<br>
+				<<elseif _clothes.length is 2>>
+					你的_clothes[0].cn_name_cap和你的_clothes[1].cn_name_cap散落在一块岩石后面的地上。
+					<br>
+				<<else>>
+					你的_clothes[0].cn_name_cap散落在一块岩石后面的地上。
+					<br>
+				<</if>>
+				<<dressasyouwereicon>><<link [[穿上衣服|$passage]]>><<set $eventskip to 1>><<storeload _store_location>><</link>>
+				<br><br>
+			<</if>>
+		<</if>>
+		//游泳套装://
+		<br>
+		<<listswimoutfits $wardrobe_location _store_location true>>
+		<<temperature>>
+		<br>
+		<<unset $wearoutfittext>>
+	<</if>>
+<</widget>>
+
+<<widget "destinationlakeruin">>
+	<<switch $bus>>
+		<<case "lakeunderwater">>
+			<<link [[继续|Lake Underwater]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<<case "lake_ruin">>
+			<<link [[继续|Lake Ruin]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<<case "lake_ruin_deep">>
+			<<link [[继续|Lake Ruin Deep]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<<case "lake_ruin_prison">>
+			<<link [[继续|Lake Ruin Prison]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<<default>>
+			<<link [[继续|Lake Ruin Deep]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<</switch>>
+	<br>
+<</widget>>
+
+<<widget "halloween_lake_invite">>
+	<<generates1>><<generates2>>
+	<<set $halloween_lake to 1>>
+	你经过<<person1>><<person>>身边，
+	<<if $location is "school">>
+		<<his>>的手臂下夹着一叠传单。
+	<<else>>
+		<<his>>肩上扛着一个冷却器。
+	<</if>>
+	在<<his>>的旁边，<<person2>><<person>>正在打电话，专心致志。<<He>>提到了一个万圣节派对。
+	<br><br>
+
+	<<link [[询问|Lake Halloween Invite Inquire]]>><</link>>
+	<br>
+	<<link [[忽视|Lake Halloween Invite Ignore]]>><</link>>
+	<br>
+<</widget>>

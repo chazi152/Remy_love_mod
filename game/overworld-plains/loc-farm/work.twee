@@ -1,0 +1,2818 @@
+:: Farm Work
+<<set $outside to 1>><<set $location to "alex_farm">><<set $bus to "farm">><<effects>>
+<<farm_work_update>>
+你在艾利克斯的农场。一座乡村风格的农舍俯瞰着一个院子和鸡笼。其他建筑物隐藏在树林和树篱丛之间。
+<<if $exhibitionism lt 75 and $exposed gte 2 and $farm_naked is 1>>
+	有这么多的地方可以隐藏你的<<lewdness>>，你应该尽量避免暴露自己，并尽可能避开艾利克斯。
+	<br><br>
+<</if>>
+
+<<if $farm.build isnot undefined and $farm.build isnot 0>>
+	<<switch $farm.build>>
+	<<case "wall 1">>
+		<span class="lblue">墙正在修复.</span>
+	<<case "wall 2">>
+		<span class="lblue">墙正在加固.</span>
+	<<case "wall 3">>
+		<span class="lblue">农场周围正在建一道现代化的篱笆。</span>
+	<<case "wall 4">>
+		<span class="lblue">铁丝网正被固定在围栏顶上.</span>
+	<<case "tower 1">>
+		<span class="lblue">一座塔正在田野旁建造.</span>
+	<<case "tower 2">>
+		<span class="lblue">探照灯被固定在瞭望塔的顶上。</span>
+	<<case "woodland 1">>
+		<span class="lblue">篱笆正在一片林地周围延伸.</span>
+	<<case "woodland 2">>
+		<span class="lblue">篱笆正延伸到一片富饶的林地周围.</span>
+	<<case "woodland 3">>
+		<span class="lblue">篱笆正延伸到一大片林地周围。</span>
+	<<case "kennel 1">>
+		<span class="lblue">狗窝里正在装陷阱.</span>
+	<<case "barn 1">>
+		<span class="lblue">牛棚里正在安装新的挤奶设备.</span>
+	<<case "barn 2">>
+		<span class="lblue">牛棚正在扩建.</span>
+	<<case "stable 1">>
+		<span class="lblue">马厩正在扩建.</span>
+	<<case "coop 1">>
+		<span class="lblue">鸡笼正在扩大.</span>
+	<<case "coop 2">>
+		<span class="lblue">鸡笼正在扩大.</span>
+	<<case "parasites 1">>
+		<span class="lblue">寄生虫畜棚正在建造中.</span>
+	<<case "parasites 2">>
+		<span class="lblue">寄生虫畜棚正在扩建.</span>
+	<<case "irrigation">>
+		<span class="lblue">灌溉系统正在田地里安装.</span>
+	<</switch>>
+	<<if Time.hour gte 6>>
+		<span class="blue">工人们在农场里闲逛着。</span>
+	<</if>>
+	<br><br>
+<</if>>
+
+<<if $farm_stage lte 6>>
+	每工作一小时，你就会获得<<moneyGainDisplay $farm.wage>>。
+<</if>>
+<br><br>
+
+<<if ($exposed gte 2 and $uncomfortable.nude is true) or ($exposed is 1 and $uncomfortable.underwear is true)>>
+	<<if $farm.build_timer gte 1 and Time.hour gte 6>>
+		你偷偷地穿过农场，并尽你所能的掩盖你的<<lewdness>>，你希望你没有被工人们发现。
+	<<else>>
+		你偷偷地穿过农场，并尽你所能的掩盖你的<<lewdness>>。
+	<</if>>
+	<br><br>
+<</if>>
+
+
+<<if $farm_stage lt 12>>
+	<<set _clearing to (100 - $farm.clearing)>>
+	<<set $percent=Math.floor((_clearing/100)*100)>>
+	其中一片田地正在被清理，
+	<<if $farm.clearing lte 0>>
+		<span class="green">并已经做好种植准备了！</span>
+		<div class="meter">
+		<<print '<div class="greenbar" style="width:' + $percent + '%"></div>'>>
+		</div>
+	<<elseif $farm.clearing lte 20>>
+		<span class="teal">并基本可以种植了!.</span>
+		<div class="meter">
+		<<print '<div class="tealbar" style="width:' + $percent + '%"></div>'>>
+		</div>
+	<<elseif $farm.clearing lte 40>>
+		<span class="lblue">它看起来没有那么荒芜了。</span>
+		<div class="meter">
+		<<print '<div class="lbluebar" style="width:' + $percent + '%"></div>'>>
+		</div>
+	<<elseif $farm.clearing lte 60>>
+		<span class="blue">其中一部分的土壤已经重现天日了.</span>
+		<div class="meter">
+		<<print '<div class="bluebar" style="width:' + $percent + '%"></div>'>>
+		</div>
+	<<elseif $farm.clearing lte 80>>
+		<span class="purple">但这里依旧处于乱糟糟的状态.</span>
+		<div class="meter">
+		<<print '<div class="purplebar" style="width:' + $percent + '%"></div>'>>
+		</div>
+	<<elseif $farm.clearing lte 99>>
+		<span class="pink">但看起来收效甚微。</span>
+		<div class="meter">
+		<<print '<div class="pinkbar" style="width:' + $percent + '%"></div>'>>
+		</div>
+	<<else>>
+		<span class="red">但它看起来依旧像一片原始丛林。</span>
+		<div class="meter">
+		<<print '<div class="redbar" style="width:' + $percent + '%"></div>'>>
+		</div>
+	<</if>>
+	<br>
+<</if>>
+
+
+<<if $farm_count is undefined>>
+	<<set $farm_count to 0>>
+<<elseif $farm_count gte 60>>
+	<<set $farm_count -= 60>>
+	<<if $farm_stage lte 6>>
+		你赚到了<<moneyGain $farm.wage>>
+		<br><br>
+	<</if>>
+<</if>>
+
+<<if $fields_damaged gte 0>>
+	<<farm_damage_report>>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<<elseif $stress gte 10000>>
+	<<passoutfarmroad>>
+<<elseif $farm_attack_timer is 0 and Time.hour gte 21>>
+	<<npc Alex>><<person1>>
+	艾利克斯冲了过来，<span class="red">"雷米来了，"</span><<he>>接着说道:"我们可以做到的，去准备吧，我会
+	<<if $farm.tower_guard>>
+		去看看$farm.tower_guard."
+	<<else>>
+		看看能不能找到那些家伙的位置。"
+	<</if>>
+	<br><br>
+
+	<<farm_assault_intro>>
+	<br><br>
+
+	<<link [[去做准备|Farm Assault Wardrobe]]>><<endevent>><<set $phase to 2>><</link>>
+	<br>
+<<elseif ($parasite.left_ear.name is "slime" or $parasite.right_ear.name is "slime") and $daily.slimeFarmNaked is undefined and $rng lte ($corruption_slime / 2) and $slimeFarmNakedStored is undefined and $exposed lt 2>>
+	<span class="lewd">你觉得你脑子里的史莱姆正在命令你在今天工作时暴露自己，并把衣服藏起来。</span>它承诺如果你遵守的话，就给予你奖励，如果你不遵守的话，就要承担相应的后果。
+	<br><br>
+
+	<<link [[服从|Farm Slime Strip Obey]]>><<corruption 1>><<pain -4>><<stress -6>><<trauma -12>><<sub 1>><</link>><<gcorruption>><<lpain>><<lltrauma>><<lstress>>
+	<br>
+	<<link [[违抗|Farm Slime Strip Defy]]>><<corruption -1>><<pain 8>><<stress 6>><<trauma 6>><<def 1>><</link>><<lcorruption>><<ggpain>><<ggtrauma>><<ggstress>>
+	<br>
+<<elseif ($parasite.left_ear.name is "slime" or $parasite.right_ear.name is "slime") and $daily.slimeFarmNaked is true and $slimeFarmNakedStored is undefined>>
+	按照史莱姆的命令，你找到一个你认为安全的地方，然后在去干活之前脱光了衣服.
+	<<undressclothes "farmHidingSpot">><<set $slimeFarmNakedStored to true>><<set $daily.slimeFarmNaked to true>>
+	<br><br>
+	<<link [[继续|Farm Work]]>><</link>>
+<<elseif ($parasite.left_ear.name is "slime" or $parasite.right_ear.name is "slime") and $daily.slimeFarmNaked is true and ($worn.lower.name.includes("towel") or $worn.upper.name.includes("towel")) and $farm_naked is 1>>
+	<<generalRuined "upper">><<generalRuined "lower">>
+	遵从史莱姆的要求，你将毛巾丢掉让艾利克斯去找。
+	<br><br>
+	<<link [[继续|Farm Work]]>><</link>>
+<<elseif (Time.hour lte 5 or Time.hour gte 22 or (Time.hour is 21 and $farm_end is 1)) and $farm_stage lt 7>>
+	<<link [[偷偷溜进畜棚(0:05)|Farm Barn]]>><<pass 5>><</link>>
+	<br><br>
+	<<link [[离开|Farmland]]>><</link>>
+	<br>
+<<elseif $exposed gte 2 and $farm_naked isnot 1 and $farm_stage lt 7>>
+	你躲在栅栏后面，以此来掩饰你的<<lewdness>>。
+	<br><br>
+	<<if $exhibitionism gte 75>>
+		<<link [[即便这样还是去工作|Farm Work Naked]]>><<npcincr Alex lust 3>><<set $farm_naked to 1>><</link>><<exhibitionist5>><<gglust>>
+		<br>
+	<<elseif $slimeFarmNakedStored is true>>
+		<<if $exhibitionism gte 55>>
+			<<set _stress to 10>>
+			<<set _trauma to 0>>
+		<<elseif $exhibitionism gte 35>>
+			<<set _stress to 20>>
+			<<set _trauma to 10>>
+		<<else>>
+			<<set _stress to 40>>
+			<<set _trauma to 40>>
+		<</if>>
+		<<link [[即便这样还是去工作|Farm Work Naked]]>><<npcincr Alex lust 3>><<set $farm_naked to 1>><<stress _stress>><<trauma _trauma>><</link>><<gglust>>
+		<<if _stress is 40>><<ggstress>><<else>><<gstress>><</if>>
+		<<if _trauma is 40>><<ggtrauma>><<elseif _trauma is 5>><<gtrauma>><</if>>
+		<br>
+	<</if>>
+	<<if $farm_work.alex isnot undefined and $farm_work.alex isnot "shower" and Time.hour gte 6 and Time.hour lte 20 and $slimeFarmNakedStored is undefined>>
+		<<if $worn.upper.exposed gte 2 or $worn.lower.exposed gte 2>>
+			<<link [[询问艾利克斯衣服相关 (0:05)|Farm Alex Clothes]]>><<pass 5>><<farm_yield -1>><<npcincr Alex dom 1>><<npcincr Alex lust 1>><</link>><<exhibitionist1>><<lfarm>><<gdom "Alex">><<glust>>
+			<br>
+		<<else>>
+			<<link [[向艾利克斯询问干燥衣服的相关 (0:05)|Farm Alex Dry]]>><<pass 5>><<farm_yield -1>><<npcincr Alex dom 1>><<npcincr Alex lust 1>><</link>><<exhibitionist1>><<lfarm>><<gdom "Alex">><<glust>>
+			<br>
+		<</if>>
+	<</if>>
+	<br>
+	<<link [[离开|Farmland]]>><</link>>
+	<br>
+<<elseif ($farm_shift gte 360 or $farm.clearing lte 50) and $farm_stage is 2>>
+	<<farmVisitor>>
+<<elseif $farm_stage is 3 and $farm.clearing lte 0>>
+	<<earnFeat "Farmhand">>
+	<<farmStage4>>
+<<elseif $farm_stage is 4 and $farm.clearing lte 0>>
+	<<set $farm.aggro to 0>>
+	<<farmStage5>>
+	<<set $remy_seen to "farm">>
+<<elseif $farm_stage is 5 and $farm.clearing lte 0>>
+	<<earnFeat "Farmer">>
+	<<set $farm_countdown to 3>>
+	<<farmStage6>>
+<<elseif $farm_stage is 6 and ($farm_countdown lte 0 or $farm.clearing lte 50)>>
+	<<npc Alex>><<person1>>
+	艾利克斯从<<his>>的棚子里出来。<<He>>看起来很担心。"你闻到了吗?"<<he>>问道。很微弱，但有东西在燃烧。
+	<br><br>
+	"邻居可能让篝火失去了控制，"<<he>>说，扫描着地平线上的烟雾。"最好注意安全。你能检查一下棚子吗?我要绕过农场。"
+	<br><br>
+
+	<<link [[继续|Farm Stage 7]]>><<set $farm_countdown to 7>><<set $farm_stage to 7>><<set $alex_countdown to 3>><<set $wardrobes.alexFarm.unlocked to true>><</link>>
+<<elseif $farm_stage gte 7 and $NPCName[$NPCNameList.indexOf("Alex")].love gte 50 and $alex_countdown lte 0>>
+	<<npc Alex>><<person1>>
+	你回到农舍前的院子里。你听到脚步声迅速靠近。你转身的时候正好看到艾利克斯。<<he>>笑着抓住你，把你拖走。
+	<br><br>
+
+	你是仰面朝天的。艾利克斯骑在你身上，把你的手腕按在地上。"怎么了?"<<he>>俯视着你。"你不能挣脱吗?"<<gglust>><<npcincr Alex lust 5>><<gdom>><<npcincr Alex dom 1>>
+	<br><br>
+
+	<<link [[翻身到上面|Farm Love Get]]>><<unset $alex_countdown>><</link>><<physiquedifficulty 1 16000>>
+	<br>
+	<<link [[感到恼火|Farm Love Annoyed]]>><<unset $alex_countdown>><</link>>
+	<br>
+	<<link [[调情|Farm Love Flirt]]>><<npcincr Alex love 1>><<npcincr Alex lust 5>><<unset $alex_countdown>><</link>><<promiscuous1>><<glove>><<gglust>>
+	<br>
+<<elseif $farm_stage is 7 and $farm.clearing lte 0>>
+	你观察第五片农田。不久前，这里还是一片混乱。
+	<br><br>
+	<<npc Alex>><<person1>><<generate2>>
+	你听到一个不熟悉的<<person2>><<personsimple>>的声音。
+	<<if $panicattacks gte 1 and $controlled is 0>>
+		你感到一阵恐慌。然后你听到艾利克斯的回应，<<his>>放松的声音让你平静下来。
+	<<else>>
+		<<Hes>>在和艾利克斯说话。
+	<</if>>
+	你走过去。
+	<br><br>
+
+	"它很贵，"<<person>>点头。"但如果你想要的是安全保障，你就会得到一分钱一分货。"
+	<br>
+	"谢谢，"艾利克斯回答。"我会保持联系的。"
+	<br><br>
+
+	<<if $exposed gte 1>>
+		<<person>>转身离开，但当<<he>>看到你时停了下来。<<covered>><<He>>恢复了<<his>>的镇静，在<<he>>离开农场时假装没有看你。
+	<<else>>
+		那个<<person>>在离开的时候向你点了点头。
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Farm Stage 8]]>><<set $farm.clearing to 100>><<set $farm_stage to 8>><<add_plot farm earth 3 large>><</link>>
+	<br>
+<<elseif $farm_stage is 8 and $farm.clearing lte 0>>
+	你观察第六片农田。不久前，这里还是一片混乱。
+	<br><br>
+	<<npc Alex>><<person1>>
+	你听到从艾利克斯的小屋传来一声巨响。门突然打开，一个奇怪的多肢生物跳出来，被烟雾包围着。艾利克斯拿着一个笼子跑出去追它。
+	<br><br>
+
+	<<link [[抓住它|Farm Stage 9 Catch]]>><<set $farm_stage to 9>><<set $farm.clearing to 100>><<add_plot farm earth 3 large>><</link>><<dancedifficulty 1 1000>>
+	<br>
+	<<link [[交给艾利克斯吧|Farm Stage 9 Leave]]>><<set $farm_stage to 9>><<set $farm.clearing to 100>><<add_plot farm earth 3 large>><</link>>
+	<br>
+<<elseif $farm_stage is 9 and $farm.clearing lte 0>>
+	你观察第七片农田。不久前，这里还是一片混乱。
+	<br><br>
+
+	<<npc Alex>><<person1>>
+	你听到一阵沙沙声。一个奇怪的皮革般的生物从下面窜了出来。
+	<br><br>
+	<span class="green">一张网从你身后抛来，</span>落在这个生物身上。当动物被罩住时，它收紧了。上面系着一根绳子。你转过身来，看到了艾利克斯。<<He>>把生物拉得更近。
+	<br><br>
+	"成功了!"当<<he>>举起蠕动的网时，<<he>>大叫。"这些害虫很难抓。"
+	<br><br>
+	<<link [[印象深刻|Farm Stage 10 Impressed]]>><<set $farm_stage to 10>><<set $farm.clearing to 100>><<add_plot farm earth 3 large>><<npcincr Alex love 1>><</link>><<glove>>
+	<br>
+	<<link [[不屑一顾|Farm Stage 10 Dismiss]]>><<set $farm_stage to 10>><<set $farm.clearing to 100>><<add_plot farm earth 3 large>><<npcincr Alex love -1>><<npcincr Alex love -3>><</link>><<llove>><<lldom>>
+	<br>
+<<elseif $farm_stage is 10 and $farm.clearing lte 0>>
+	你观察第八片农田。不久前，这里还是一片混乱。
+	<br><br>
+
+	<<npc Alex>><<person1>>
+	你看到艾利克斯跪在<<farm_fence>>的底部。<<He>>凝视着一朵奇怪的紫色的花。当<<his>>拨动手掌时，种子就会撒到手掌里。
+	<br><br>
+
+	"以前见过这样的杂草，"<<he>>说道。"在任何书里都找不到，也从来没有发现过一颗种子。"<<He>>把种子举了起来。"你觉得我们能让他们接受吗?雷米既然种了它们。那它们肯定有价值。"
+	<br><br>
+
+	<<link [[有信心|Farm Stage 11 Confident]]>><<set $farm_stage to 11>><<set $farm.clearing to 100>><<add_plot farm earth 3 large>><</link>>
+	<br>
+	<<link [[建议谨慎|Farm Stage 11 Caution]]>><<set $farm_stage to 11>><<set $farm.clearing to 100>><<add_plot farm earth 3 large>><</link>>
+	<br>
+<<elseif $farm_stage is 11 and $farm.clearing lte 0>>
+	<<earnFeat "Cultivator">>
+
+	你观察第九片农田。不久前，这里还是一片混乱。
+	<br><br>
+	<<npc Alex>><<person1>>
+	艾利克斯站在你身边。
+	<br><br>
+
+	<<link [[牵手|Farm Stage 12 Hands]]>><<set $farm_stage to 12>><<set $farm.clearing to 100>><<npcincr Alex love 1>><<add_plot farm earth 3 large>><</link>><<handholdingvirginitywarning>><<glove>>
+	<br>
+	<<link [[拍拍后背|Farm Stage 12 Pat]]>><<set $farm_stage to 12>><<set $farm.clearing to 100>><<add_plot farm earth 3 large>><</link>>
+	<br>
+<<elseif Time.hour is 21 and $farm_end is undefined and $farm_stage lt 7>>
+	<<set $farm_end to 1>>
+	<<npc Alex>><<person1>>
+	<<if $exposed gt 0 and Time.season is "winter">>
+		艾利克斯擦去额头上的汗水，走近你。"再干一天，"<<he>>说，脸红了。"天越来越冷了，你最好穿件暖和点的衣服。"<<glust>><<npcincr Alex lust 1>>
+	<<elseif $exposed gt 0>>
+		艾利克斯擦去额头上的汗水，走近你。"再干一天，"<<he>>说，脸红了。"天气会越来越冷，你可能需要多穿一点。"<<glust>><<npcincr Alex lust 1>>
+	<<else>>
+		艾利克斯擦去额头上的汗水，走近你。"又干了一天，"<<he>>笑着说道。
+	<</if>>
+	<<if $farm_count gte 1 and $farm_stage lte 6>>
+		"这是额外的一点。"<<He>>递给你<<moneyGain $farm.wage>>。
+	<</if>>
+	<br><br>
+	你沿着通往农场的路走下去。
+	<br><br>
+	<<link [[继续|Farmland]]>><<endevent>><</link>>
+<<elseif $farm.build_finished.includes("wall 1")>>
+	<<run $farm.build_finished.delete("wall 1")>>
+	你检查四周的墙。<span class="gold">石雕被修复，</span>现在包围了整个农场。除了入口、河流和大树篱。你会感到更有安全感。<<lltrauma>><<llstress>><<trauma -12>><<stress -12>>
+	<br><br>
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<<elseif $farm.build_finished.includes("wall 2")>>
+	<<run $farm.build_finished.delete("wall 2")>>
+	你检查四周的墙。<span class="gold">石头已经用水泥加固了。</span>雷米的打手要想破坏它就更难了。
+	<br><br>
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<<elseif $farm.build_finished.includes("wall 3")>>
+	<<run $farm.build_finished.delete("wall 3")>>
+	项目完成了。<span class="gold">一个高高的金属栅栏现在围绕着农场。</span>入侵者将更难进入。你会感到更有安全感。
+	<<lltrauma>><<llstress>><<trauma -12>><<stress -12>>
+	<br><br>
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<<elseif $farm.build_finished.includes("wall 4")>>
+	<<run $farm.build_finished.delete("wall 4")>>
+	<span class="gold">栅栏现在受到铁丝网的威胁。</span>没人能过来。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<<elseif $farm.build_finished.includes("tower 1")>>
+	<<run $farm.build_finished.delete("tower 1")>>
+	<<npc Alex>><<person1>>
+	<span class="gold">一座瞭望塔守卫着田野。</span>你站在它的底部。它隐约出现在你的头顶。一个头从上面伸出来。是艾利克斯。
+	<br><br>
+	"上来，"<<he>>说道。"景色太美了。"
+	<br><br>
+	你爬上木楼梯，到达顶层。头顶上有个屋顶，但其他地方都是敞开的。你可以看到整个农场，一个方向是沼地，另一个方向甚至是大海。
+	<br><br>
+	<span class="purple">"我们需要雇人，"</span>艾利克斯说，看着外面。"他们可以在这里站岗一夜。如果雷米<<nnpc_he Remy>>在我们睡觉的时候做任何事情，就能被当场抓住。"<<He>>试图摇动栏杆。看起来很结实。<span class="gold">"镇上有一家酒吧，靠近入口。</span>我的<<if $pronoun is "m">>爸爸<<else>>妈妈<</if>>以前在那里雇过员工。这就是我要找的地方。"
+	<br><br>
+	<<set $farm.tower_guard_can_hire to true>>
+
+	<<He>>转身走下楼梯。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<<elseif $farm.build_finished.includes("tower 2")>>
+	<<run $farm.build_finished.delete("tower 2")>>
+	<span class="gold">一盏探照灯现在从瞭望塔上凝视着。</span>不再躲在黑暗中。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<<elseif $farm.build_finished.includes("woodland 1")>>
+	<<run $farm.build_finished.delete("woodland 1")>>
+	<<location "forest">>
+	<span class="gold">你进入农场的新林地。</span>
+	<<if Time.dayState is "night">>
+		一只蝙蝠从头顶飞过，在昏暗的灯光下几乎看不见。
+	<<else>>
+		鸟儿在头顶鸣叫。
+	<</if>>
+	你感到宁静。<<ltrauma>><<llstress>><<trauma -6>><<stress -12>>
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<<elseif $farm.build_finished.includes("woodland 2")>>
+	<<run $farm.build_finished.delete("woodland 2")>>
+	<<location "forest">>
+	<span class="gold">你进入了新的林地。水果挂在头顶，肥硕的蘑菇到处生长。</span>你瞥见树间的栅栏，将你与外界的威胁隔开，你感到很自在。<<ltrauma>><<llstress>><<trauma -6>><<stress -12>>
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<<elseif $farm.build_finished.includes("woodland 3")>>
+	<<run $farm.build_finished.delete("woodland 3")>>
+	<<location "forest">>
+	<span class="gold">你探索农场的新林地，现在已经大到足以迷路了。</span>你发现艾利克斯已经在山顶的一棵树下懒洋洋地躺着。
+	<br><br>
+
+	<<npc Alex>><<person1>>
+	"过来这里休息会儿吧，"<<he>>说着站了起来。"上面的树枝让我有安全感。"
+	<br><br>
+
+	<<link [[说这也让你有安全感|Farm Woodland Safe]]>><<npcincr Alex love 1>><</link>><<glove>>
+	<br>
+	<<link [[说艾利克斯让你感觉更安全|Farm Woodland Safe Alex]]>><<npcincr Alex dom 1>><<npcincr Alex love 1>><<sub 1>><</link>><<ggdom>><<gglove>>
+	<br>
+	<<link [[什么也不说|Farm Woodland Safe Nothing]]>><</link>>
+	<br>
+	<<if Time.dayState is "night">>
+		<<link [[叫艾利克斯进屋 (0:05)|Farm Woodland Safe Indoors]]>><<npcincr Alex dom 1>><<pass 5>><</link>><<gdom>>
+		<br>
+	<</if>>
+<<elseif $farm.build_finished.includes("kennel 1")>>
+	<<run $farm.build_finished.delete("kennel 1")>>
+	你听到了猎狗的叫声。你跟着声音找到狗窝。<span class="gold">外面围了一个院子，作为<<farm_text_many dog>>的安全训练区。</span>你看着一条狗把人形假人的头扯下来。
+	<br><br>
+
+	"它们非常可怕，"艾利克斯说，全神贯注地看着。"不过他们知道谁说了算。"另一条<<farm_text dog>>加入了刚刚那条。假人的遗体飞向空中。"我认为。"
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<<elseif $farm.build_finished.includes("barn 1")>>
+	<<run $farm.build_finished.delete("barn 1")>>
+	"嘿，"是艾利克斯。"来看看这个。"
+	<br><br>
+	<<npc Alex>><<person1>>
+	你进入牛棚。艾利克斯站在中心的一个大型仪器旁边。<span class="gold">新挤奶机</span>上有一盏红灯，像一只眼睛，闪烁着生命。
+	<br><br>
+
+	"我们现在去弄些牛奶来。"<<He>>挠了挠一只<<farm_text cattle>>的耳后。"我认为我们的
+	<<if $farm_work.cattle.gender is "m">>
+		男孩
+	<<else>>
+		女孩
+	<</if>>
+	足以胜任。"
+	<br><br>
+
+	<<He>>关掉机器，然后走开。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<<elseif $farm.build_finished.includes("barn 2")>>
+	<<run $farm.build_finished.delete("barn 2")>>
+	<<npc Alex>><<person1>>
+	<span class="gold">进入扩展牛棚。</span>艾利克斯已经在那里了，艾利克斯正在安抚一个新来的，一只坏脾气的<<farm_text cattle>>。<<He>>向你挥手。"我们有一个活泼的牛群，"<<he>>说道。几乎和<<if $pronoun is "m">>爸爸的<<else>>妈妈的<</if>>一样大。反正<<he>>是那个直接管理的人。"
+	<br><br>
+
+	<<He>>关上大门，当<<he>>走过时，<<he>>把手放在你的肩膀上。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<<elseif $farm.build_finished.includes("stable 1")>>
+	<<run $farm.build_finished.delete("stable 1")>>
+	<span class="gold">你接近稳定。</span>室内播放着柔和的古典音乐。
+	<br><br>
+	<<if $farm_work.horse.monster_roll is true and (($hallucinations gte 1 or $monsterhallucinations is "f") or $bestialitydisable is "t")>>
+		"这更合适，"一个<<farm_text horse>>在你经过的时候说道。"谢谢你。"
+		<br><br>
+	<<else>>
+		当你经过时，一匹<<farm_text horse>>用鼻子蹭你的脖子以示感激。
+		<br><br>
+	<</if>>
+
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<<elseif $farm.build_finished.includes("coop 1")>>
+	<<run $farm.build_finished.delete("coop 1")>>
+	<span class="gold">你接近扩展的鸡笼。</span>
+	<<if $farm_work.chickens_out is 1>>
+		院子里比以往任何时候都忙。
+	<<else>>
+		它要长得多，整个长度上都有栖息的栖木。
+	<</if>>
+	会有很多鸡蛋卖。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<<elseif $farm.build_finished.includes("coop 2")>>
+	<<run $farm.build_finished.delete("coop 2")>>
+	<span class="gold">你接近扩展的鸡笼。</span>
+	<<if $farm_work.chickens_out is 1>>
+		迎接你的是一群鸡。它们成群结队地穿过院子寻找食物。
+	<<else>>
+		现在它有多个房间，每个房间都有很多鸡。
+	<</if>>
+	<br><br>
+	<<npc Alex>><<person1>>
+	艾利克斯可以吃<<he>>早餐想吃的所有鸡蛋。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<<elseif $farm.build_finished.includes("parasites 1")>>
+	<<run $farm.build_finished.delete("parasites 1")>>
+	<span class="gold">你接近新建的寄生虫畜棚。</span>
+	里面有足够的空间给你的寄生虫，有一些基本的设备来照顾它们。
+	<br><br>
+	<<npc Alex>><<person1>>
+	艾利克斯就在你身后，"不知道你想在这里养什么动物，你最好照顾好它们。"当<<He>>走过离开畜棚时，<<he>>把手放在你的肩膀上。
+	<br><br>
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<<elseif $farm.build_finished.includes("parasites 2")>>
+	<<run $farm.build_finished.delete("parasites 2")>>
+	<span class="gold">你接近扩大的寄生虫畜棚。</span>
+	扩大的内部充满了更多的空间为你的寄生虫，一些更先进的设备，以更好地照顾他们。
+	<br><br>
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<<elseif $farm.build_finished.includes("irrigation")>>
+	<<run $farm.build_finished.delete("irrigation")>>
+	<span class="gold">你接近田地。</span>
+	<<switch $farm.irrigation>>
+		<<case 1>>
+			第一块田地的灌溉系统已经完成，这是许多工作的第一步。
+		<<case 2 3 4>>
+			对另一块田地的灌溉系统的进一步扩展已经完成，但仍有许多工作要做。
+		<<case 5 6 7>>
+			对另一块田地的灌溉系统的进一步扩展已经完成，现在几乎已经完成。
+		<<case 8>>
+			灌溉系统进一步扩展到另一块田地已经完成，只剩下一块田地了。
+		<<case 9>>
+			最后一块田地的灌溉系统的最后扩展已经完成。
+		<<default>>
+			灌溉系统出了问题，请报告。
+	<</switch>>
+	<br><br>
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<<elseif $farm.tower_guard and $farm.tower_guard_unpaid gte 2 and $farm.tower_guard_patience isnot 1>>
+	<<loadNPC 0 "farm_tower_guard">><<person1>>
+	<<if $NPCList[0].traits.includes("relaxed")>>
+		"嘿，农民<<girl>>，"你的守卫<<print $NPCList[0].name>>说道。<<He>>接近你。"我是来领工资的。"
+	<<elseif $NPCList[0].traits.includes("sociable")>>
+		"你好吗?"<<print $NPCList[0].name>>，你的守卫说道。<<He>>接近你。"这是关于我的工资。"
+	<<elseif $NPCList[0].traits.includes("brooding")>>
+		<<print $NPCList[0].name>>, 你的守卫靠近你。"这是我的工资，"<<he>>说道。"你准备好了吗?"
+	<<else>>
+		"<<pshe>>在，"<<print $NPCList[0].name>>，你的守卫，当<<he>>昂首阔步地朝你走来的时候说道。"你知道你是我最喜欢的<<girl>>吗?尤其是你付钱给我的时候。"<<He>>伸出<<his>>的手。
+	<</if>>
+	<br><br>
+
+	<<farm_guard_pay>>
+	<<link [[说你现在负担不起|Farm Guard Pay Refuse]]>><</link>><<lltrust>>
+	<br>
+	<<if $promiscuity gte 35>>
+		<<link [[诱惑|Farm Guard Pay Seduce]]>><</link>><<promiscuous3>>
+		<br>
+	<</if>>
+<<else>>
+	<<if $farm_yield_alex gte 1 and not (Time.hour lte 5 or Time.hour gte 22 or (Time.hour is 21 and $farm_end is 1)) and $farm_work.alex isnot "shower">>
+			<<npc Alex>><<person1>>
+			<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+			"嘿，"艾利克斯喊着的同时大步朝你走来。"我们最近的产量比预期的要好，"<<he>>一边说着一边抓住你的手，随后把什么东西塞进了你的掌中。
+			<<if _alex.dom gte 30>>
+				<<if $farm_stage gte 7>>
+					<span class="pink">"你应该得到一点回报，伙计。"</span>
+				<<else>>
+					<span class="pink">"坚持下去。总有一天你会成为一个好农民的。"</span>
+				<</if>>
+				<br><br>
+
+				<<He>>走开了。<span class="gold">你获得了<<moneyGain `$farm_yield_alex * 9`>>.</span>
+				<br><br>
+			<<elseif _alex.dom lte -30>>
+			<<if $farm_stage gte 7>>
+				<span class="teal">"希望你不介意处理利润，合伙人。"</span>
+			<<else>>
+				<span class="teal">"我不知道没有你我该怎么办，所以这很公平。"</span>
+			<</if>>
+			<br><br>
+
+			<<He>>走开了。<span class="gold">你获得了<<moneyGain `$farm_yield_alex * 24`>>.</span>
+			<br><br>
+		<<else>>
+			<<if $farm_stage gte 7>>
+				<span class="blue">"合伙人，这是你的那份利润。"</span>
+			<<else>>
+				<span class="blue">"你做了很多，所以这是公平的。你对动物很有一套。"</span>
+			<</if>>
+			<br><br>
+
+			<<He>>走开了。<span class="gold">你获得了<<moneyGain `$farm_yield_alex * 18`>>.</span>
+			<br><br>
+		<</if>>
+
+		<<link [[继续|Farm Work]]>><<endevent>><</link>>
+		<br>
+		<<unset $farm_yield_alex>>
+	<<elseif $farm_work.recent_shift gte $farm_work.event_time and $farm_event isnot 1 and Time.dayState isnot "night">>
+		<<set $farm_event to 1>>
+		<<eventsfarm>>
+	<<else>>
+		<<if $arousal gte $arousalmax>>
+			<<orgasmLocation "alexFarmWork">>
+		<</if>>
+		<<if $farm_stage gte 7>>
+			<<cottageicon>><<link [[小屋 (0:01)|Farm Cottage]]>><<pass 1>><</link>>
+			<br>
+			<<ind>><<link [[农田 (0:05)|Farm Fields]]>><<pass 5>><<set $eventskip to 1>><</link>>
+			<br>
+
+			<<if $farm_work.alex isnot "shower">>
+				<<ind>><<link [[带淋浴的小屋 (0:01)|Farm Shed]]>><<pass 1>><</link>>
+				<br>
+			<</if>>
+			/* Go to farm barn passage if outside of farming hours, go to cattle milking passage otherwise. */
+			<<if Time.hour lte 5 or Time.hour gte 22 or (Time.hour is 21 and $farm_end is 1)>>
+				/* Determine whether you can access the barn normally with Alex's consent. */
+				<<if $farm.milking isnot undefined and $farm.milking.dayMilking>>
+					<<ind>><<link [[牛棚 (0:02)|Farm Barn]]>><<pass 2>><</link>>
+				<<else>>
+					<<ind>><<link [[溜进牛棚 (0:05)|Farm Barn]]>><<pass 5>><</link>>
+				<</if>>
+			<<else>>
+				<<ind>><<link [[牛棚 (0:02)|Farm Cattle Milk]]>><<pass 2>><</link>>
+			<</if>>
+			<br>
+		<</if>>
+		<<if $farm_stage gte 9>>
+			<<ind>><<link [[实验室 (0:01)|Farm Still]]>><<pass 1>><</link>>
+			<br>
+		<</if>>
+		<<if $farm.woodland gte 1>>
+			<<ind>><<link [[林场 (0:05)|Farm Woodland]]>><<pass 5>><</link>>
+			<br>
+		<</if>>
+		<<if $farm_stage gte 7 and !$farm_kennel>>
+			<<ind>><<link [[犬舍 (0:03)|Farm Kennel]]>><<pass 3>><</link>>
+			<br>
+		<</if>>
+		<<if $farm.parasitebarn gte 1>>
+			<<containersLink "ind">>
+		<</if>>
+		<br>
+
+		<<farm_work>>
+
+		<<if $farm_stage gte 7>>
+			<<if $farm.steed>>
+				<<link [[给马装鞍|Farm Saddle]]>><</link>>
+				<br>
+			<<else>>
+				<<link [[给马装鞍(0:10)|Farm Steed]]>><<pass 10>><</link>>
+				<br>
+			<</if>>
+		<</if>>
+		<<link [[离开|Farmland]]>><</link>>
+		<br>
+		<<if ($parasite.left_ear.name is "slime" or $parasite.right_ear.name is "slime") and $daily.slimeFarmNaked is undefined>>
+			<<set $daily.slimeFarmNaked to false>>
+		<</if>>
+	<</if>>
+<</if>>
+
+:: Farm Slime Strip Obey
+<<effects>>
+按照史莱姆的命令，你找到一个你认为安全的地方，然后在去干活之前脱光了衣服.
+
+<<undressclothes "farmHidingSpot">><<set $slimeFarmNakedStored to true>><<set $daily.slimeFarmNaked to true>>
+
+<br><br>
+
+<<link [[继续|Farm Work]]>><</link>>
+
+:: Farm Slime Strip Defy
+<<effects>>
+<<if $corruption_slime gte (currentSkillValue('willpower') / 10)>>
+	你试图忽略史莱姆，但它惩罚你的违抗，你感到一阵疼痛。然而，<span class="red">你无法</span>抵抗它的影响。<<ggwillpower>><<willpower 3>>
+	<br><br>
+	按照史莱姆的命令，你找到一个你认为安全的地方，然后在去干活之前脱光了衣服.
+	<<undressclothes "farmHidingSpot">><<set $slimeFarmNakedStored to true>><<set $daily.slimeFarmNaked to true>>
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><</link>>
+<<else>>
+	你试图忽略史莱姆，但它惩罚你的违抗，你感到一阵疼痛。你觉得它在尝试迫使你露出自己。<span class="green">但它失败了</span>。<<gwillpower>><<willpower 1>><<set $daily.slimeFarmNaked to false>>
+	<br><br>
+	<<link [[继续|Farm Work]]>><</link>>
+<</if>>
+
+:: Farm Work Naked
+<<effects>>
+
+<<if $farm_naked_alex is 1 and $exhibitionism gte 75>>
+	<<unset $farm_naked_alex>>
+
+	<<npc Alex>><<person1>>
+	<<flaunting>>你从你的藏身之处走出来，就在这时艾利克斯走进了院子。"谢谢——"<<he>>开始了，然后看了看你的方向，打断了。
+	<br><br>
+
+	<<if $worn.lower.exposed gte 1 or $worn.upper.exposed gte 1 and $player.gender_appearance isnot "m">>
+		<<if $speech_attitude is "meek">>
+			"出什么事了?"你问。"我担心我的衣服会被撕破，所以我决定少穿一些。"
+		<<elseif $speech_attitude is "bratty">>
+			"眼睛在上面，"你说道。"我不想让我的衣服被毁，但这并不意味着你可以随心所欲地打扮。"
+		<<else>>
+			"我不是故意吓你，"你说道。"但我担心我的衣服会被撕破。"
+		<</if>>
+	<<else>>
+		<<if $speech_attitude is "meek">>
+			"出什么事了?"你问。"我受够了老是换湿衣服。"
+		<<elseif $speech_attitude is "bratty">>
+			"眼睛在上面，"你说道。"我的衣服又要湿了。我会挺过去的。"
+		<<else>>
+			"我不是故意吓你，"你说道。"但是我受够了总是要换湿衣服。"
+		<</if>>
+	<</if>>
+	<<exhibitionism5>>
+
+	艾利克斯又看向别处，脸红了。"好吧，"<<he>>结结巴巴地说道。"小心点。"<<He>>继续忙碌，但你怀疑<<he>>等会儿会偷偷看你一眼。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<<elseif $farm_naked_alex is 1>>
+	<<unset $farm_naked_alex>>
+
+	<<npc Alex>><<person1>>
+	<<embarrassment>>尽管如此，你还是从藏身处走了出来，正好碰上艾利克斯走进院子。"谢谢你......"<<he>>开始说，然后看了看你的方向，断断续续地说。<<stress 10>><<gstress>><<trauma 10>><<gtrauma>>
+	<br><br>
+
+	<<if $worn.lower.exposed gte 1 or $worn.upper.exposed gte 1 and $player.gender_appearance isnot "m">>
+		<<if $speech_attitude is "meek">>
+			"出什么事了?"你问。"我担心我的衣服会被撕破，所以我决定少穿一些。"
+		<<elseif $speech_attitude is "bratty">>
+			"眼睛在上面，"你说道。"我不想让我的衣服被毁，但这并不意味着你可以随心所欲地打扮。"
+		<<else>>
+			"我不是故意吓你，"你说道。"但我担心我的衣服会被撕破。"
+		<</if>>
+	<<else>>
+		<<if $speech_attitude is "meek">>
+			"出什么事了?"你问。"我受够了老是换湿衣服。"
+		<<elseif $speech_attitude is "bratty">>
+			"眼睛在上面，"你说道。"我的衣服又要湿了。我会挺过去的。"
+		<<else>>
+			"我不是故意吓你，"你说道。"但是我受够了总是要换湿衣服。"
+		<</if>>
+	<</if>>
+
+	艾利克斯又看向别处，脸红了。"好吧，"<<he>>结结巴巴地说道。"小心点。"<<He>>继续忙碌，但你怀疑<<he>>等会儿会偷偷看你一眼。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<<elseif $exhibitionism lt 75>>
+	<<embarrassment>>尽管你从躲藏的地方走出来，准备工作。艾利克斯走过，假装没看。
+	<br><br>
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<<else>>
+	<<flaunting>>你从躲藏的地方走出来，准备工作。艾利克斯走过，假装没看。
+	<br><br>
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Farm Alex Dry
+<<effects>>
+
+<<npc Alex>><<person1>>
+你偷偷接近艾利克斯，不过你一直躲在灌木丛后面。
+
+<<if $speech_attitude is "meek">>
+	"艾利克斯，"你尖声说道。"我出了意外。你有什么东西可以让我擦干吗?"
+<<elseif $speech_attitude is "bratty">>
+	"嘿，"你喊道。"艾利克斯。有什么东西可以让我擦干吗?"
+<<else>>
+	"艾利克斯，"你说道。"我出了意外。你有什么东西可以让我擦干吗?"
+<</if>>
+<<exhibitionism1>>
+
+艾利克斯转过身，困惑了一会儿，然后笑了起来。"你把自己弄湿了?别担心。我给你拿点东西。"
+<br><br>
+
+你跟着<<him>>到了农舍。艾利克斯只需要转身看到你的<<lewdness>>，但<<him>>并没有占便宜。"等在这里，"<<he>>一边说一边爬上楼梯。"我要把一些东西扔下去。"
+<br><br>
+
+<<link [[继续|Farm Alex Dry 2]]>><</link>>
+<br>
+
+
+
+
+:: Farm Alex Dry 2
+<<effects>>
+
+
+一条毛巾从楼梯间掉下来，你在厨房里擦干身体。你听见艾利克斯走下楼梯。<<He>>在进入前问你是否得体。
+
+<<if $weather is "rain" and !$worn.head.type.includes("rainproof")>>
+	"如果雨让你心烦，就给自己买一件雨帽的吧。"，<<he>>说:"他们工作得很好。我最好回去工作了。"
+<<else>>
+	"你掉进河里了吗?"<<he>>笑着说道。"你小心点。我最好回去工作了。"
+<</if>>
+<br><br>
+
+<<dry>>
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Alex Clothes
+<<effects>>
+<<npc Alex>><<person1>>
+你偷偷接近艾利克斯，不过你一直躲在灌木丛后面。
+
+<<if $speech_attitude is "meek">>
+	"艾..艾利克斯，"你尖声说道。"我出了意外。你有我可以穿的衣服吗?"
+<<elseif $speech_attitude is "bratty">>
+	"嘿，"你喊道。"艾利克斯。有什么可以穿的吗?"
+<<else>>
+	"艾利克斯，"你说道。"我出了意外。你有我可以穿的衣服吗?"
+<</if>>
+<<exhibitionism1>>
+
+艾利克斯转过身，困惑了一会儿，然后笑了起来。"你给自己找麻烦了?"别担心。我给你拿点东西。"
+<br><br>
+
+你跟着<<him>>到了农舍。艾利克斯只需要转身看到你的<<lewdness>>，但<<him>>并没有占便宜。"等在这里，"<<he>>一边说一边爬上楼梯。"我要把一些东西扔下去。"
+<br><br>
+
+<<link [[继续|Farm Alex Clothes 2]]>><</link>>
+<br>
+
+
+:: Farm Alex Clothes 2
+<<effects>>
+
+一捆东西从上面掉了下来。
+
+<<if $worn.upper.type.includes("naked") and $worn.lower.type.includes("naked")>>
+	是一件棋盘格衬衫。<<upperwear 33>>
+	<<if $NPCName[$NPCNameList.indexOf("Alex")].dom gte $npcdomhigh and $NPCName[$NPCNameList.indexOf("Alex")].lust gte 10>>
+		紧随其后的是一条牛仔短裤。<<lowerwear 31>>
+	<<elseif playerBellySize() gte 8>>
+		又是一个捆绑的东西掉在你面前，是一条运动裤。<<lowerwear 67>>
+	<<else>>
+		又是一个捆绑的东西掉在你面前，是一条牛仔裤。<<lowerwear 22>>
+	<</if>>
+<<elseif $worn.upper.type.includes("naked")>>
+	是一件棋盘格衬衫。<<upperwear 33>>
+<<else>>
+	<<if $NPCName[$NPCNameList.indexOf("Alex")].dom gte $npcdomhigh and $NPCName[$NPCNameList.indexOf("Alex")].lust gte 10>>
+		一条牛仔短裤。<<lowerwear 31>>
+	<<elseif playerBellySize() gte 8>>
+		是一条运动裤。<<lowerwear 67>>
+	<<else>>
+		一条牛仔裤。<<lowerwear 22>>
+	<</if>>
+<</if>>
+<<if $upperwetstage gte 1 or $lowerwetstage gte 2>>
+	接着掉下来的是一条卷起来的毛巾。"擦干身体用的，"艾利克斯喊道。
+	<<dry>>
+<</if>>
+<br><br>
+
+
+你在厨房里穿好了衣服。你听到艾利克斯下了楼梯。<<he>>在进入厨房之前问你是否穿好了衣服。
+
+<<if $NPCName[$NPCNameList.indexOf("Alex")].dom gte $npcdomhigh and $NPCName[$NPCNameList.indexOf("Alex")].lust gte 10>>
+	<<His>>的眼睛扫视着你的身体。"你穿好像有点紧，"<<he>>说道。"走吧。我们需要回去工作了。"
+<<else>>
+	"穿得很合身，"<<he>>说道。"走吧。我们需要回去工作了。"
+<</if>>
+<br><br>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Border
+<<effects>>
+
+你绕着农场的边缘走。
+<<if $farm.wall gte 4>>
+	它被一道石墙所环绕，石墙作为高大金属栅栏的基础。栅栏顶部威胁着铁丝网刺。
+<<elseif $farm.wall is 3>>
+	它被一道石墙所环绕，石墙作为高大金属栅栏的基础。
+<<elseif $farm.wall is 2>>
+	它被石墙和水泥墙包围着，有些地方看起来要古老得多。
+<<elseif $farm.wall is 1>>
+	它被石墙包围着，有些地方看起来要古老得多。
+<<else>>
+	它的大部分都被木栅栏隔开，在一些地方被古老的石墙所取代。你在其他地方发现了石头的痕迹，好像它曾经包围了整个农场。
+<</if>>
+<br><br>
+
+一个巨大的树篱将大部分田野与远处的森林隔开，尽管有些被一条河隔开。农场周围的土地荒芜。你不确定它们是否被培育过。
+<br><br>
+
+<<if $farm_work.fence_damage gte 10>>
+	损失严重。<span class="red">看起来是故意的。</span>
+<<elseif $farm_work.fence_damage gte 5>>
+	<span class="pink">破坏范围很广，似乎是故意的。</span>
+<<elseif $farm_work.fence_damage gte 1>>
+	<span class="purple">墙和栅栏需要修理了。</span>
+<<else>>
+	一切似乎都井然有序。
+<</if>>
+<br><br>
+<<link [[继续|Farm Work]]>><</link>>
+<br>
+
+
+
+:: Farm Yard
+<<effects>>
+
+<<if $weather is "snow">>
+	你抓起一把铲子，开始铲院子里的雪。这是一项艰苦的工作，但你设法及时完成了。
+<<else>>
+	你拿起扫帚，开始扫院子里的落叶。这是一项艰苦的工作，但在将它们铲入堆肥之前，你设法将它们扫成一堆。
+<</if>>
+<br><br>
+
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure)>>
+	<<if $bestialitydisable is "f" and $lurkerdisable is "f">>
+		当你刚刚结束时，有东西从一堆<<if $weather is "snow">>雪<<else>>叶子<</if>>中跳出来!<<gstress>><<stress 6>>
+		<br><br>
+		<<if $deviancy gte 55>>
+			<<link [[站在原地|Farm Yard Stand Still]]>><</link>><<deviant4>>
+			<br>
+		<</if>>
+		<<link [[躲闪|Farm Yard Dodge]]>><</link>><<dancedifficulty 1 1200>>
+		<br>
+		<<link [[用铲子敲它|Farm Yard Whack]]>><</link>><<physiquedifficulty 1 24000>>
+		<br>
+		<<link [[尖叫|Farm Yard Scream]]>><</link>><<gdom "Alex">>
+		<br>
+		<<if $farm_stage gte 10 and $lurkers_held lt 1>>
+			<<link [[投掷捕捉网|Farm Yard Hurl net]]>><</link>><<dancedifficulty 1 1200>><<athleticsdifficulty 0 1200>>
+			<br>
+		<</if>>
+	<<else>>
+		有东西从<<if $weather is "snow">>雪<<else>>树叶<</if>>堆里飞出来，让你大吃一惊。<<gstress>><<stress 6>>
+		<br><br>
+
+		<<link [[继续|Farm Work]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<</if>>
+
+
+
+
+:: Farm Chickens Out
+<<effects>>
+
+你把鸡从鸡笼里放出来，然后进去打扫。它足够大，可以站进去，室外区域周围有铁丝围栏。
+<br><br>
+
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure)>>
+	<!-- Modified for Beast People -->
+	<<farm_gen dog>>
+	<<if $monster is 1 or $bestialitydisable is "f">>
+		<<if $farm_work.dog.monster is true>>
+			<<beastNEWinit 1 dog $farm_work.dog.gender $farm_work.dog.genitals monster>>
+		<<else>>
+			<<beastNEWinit 1 dog $farm_work.dog.gender $farm_work.dog.genitals beast>>
+		<</if>>
+		你听到身后有动静。你还没来得及转身去调查，就有东西从背后扑了上来。你双膝跪地，紧紧抓住铁丝栅栏以获得支撑。
+		<br><br>
+		<<if setup.clothes.upper[clothesIndex('upper', $worn.upper)].sleeve_img is 1>>
+			你感到有东西在拽你的手腕。几只鸡从铁丝的缝隙里探出了它们的喙，正在抓你的袖子。你的手臂保持在适当的位置。
+			<br><br>
+			<<bind>>
+			<<set $phase to 1>>
+		<<else>>
+			<<set $phase to 0>>
+		<</if>>
+		<<link [[继续|Farm Coop Rape]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<else>>
+		你听到身后的咔哒声。风把门吹关上了。卡住了。你设法把它拉开，但在此之前，你担心自己需要呼救。<<stress 6>><<gstress>>
+		<br><br>
+
+		<<link [[继续|Farm Work]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<<else>>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+
+<</if>>
+
+
+:: Farm Chickens Feed
+<<effects>>
+
+当你从院子旁边的棚子里取出一袋谷物时，鸡跟着你。
+
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure) and $exposed lte 0>>
+	<<if $worn.lower.outfitSecondary is undefined>>
+		<<set _broken to true>>
+	<<elseif $worn.lower.outfitSecondary[1] is "broken" or $worn.lower.outfitSecondary[1] is "split">>
+		<<set _broken to true>>
+	<</if>>
+	<<if _broken>>
+		一只跳起来，用它的喙咬住你的$worn.lower.cn_name_cap，<span class="purple">把它拽到你的腿上，露出你的<<undies>>。</span>你弯下腰去抓它，但这把沉重的袋子放在了鸟的射程内。然后其他鸡开始拉你的$worn.lower.cn_name_cap。你听到织物撕裂的声音。<<gstress>><<stress 6>>
+		<br><br>
+		<<lowerstrip>>
+		<<link [[冒着风险夺回衣物|Farm Chickens Retrieve]]>><</link>><<difficulty 50>>
+		<br>
+		<<link [[引诱鸡远离你的衣物|Farm Chickens Leave]]>><</link>>
+		<br>
+
+		<<if $submissive lte 500>>
+			<<link [[生气的大吼|Farm Chickens Roar]]>><<def 1>><</link>><<defianttext>>
+			<br>
+		<</if>>
+	<<else>>
+		<<set $worn.lower.integrity -= 15>>
+		<<if $worn.lower.integrity lte 0>>
+			一只跳起来，用喙咬住你的$worn.lower.cn_name_cap。它在那里挂了一会儿，直到重力把它扯掉，<span class="pink">你的$worn.lower.cn_name_cap仍然在它的掌控之中。</span>
+			<<integritycheck>><<exposure>><<gstress>><<stress 6>>
+			<br>
+			为了掩盖你的<<lewdness>>，你差点把麻袋掉在地上，但周围没有其他人。
+			<br><br>
+			<<if $exposed gte 2 and $exhibitionism gte 15>>
+				<<link [[完成工作|Farm Chickens Finish]]>><</link>><<exhibitionist2>>
+				<br>
+			<<elseif $exposed is 1>>
+				<<link [[完成工作|Farm Chickens Finish]]>><</link>><<exhibitionist1>>
+				<br>
+			<</if>>
+			<<link [[找点东西盖住(0:10)|Farm Chickens Cover]]>><<pass 10>><<farm_count 10>><</link>>
+			<br>
+		<<else>>
+			一只跳起来，用喙咬住你的$worn.lower.cn_name_cap。当你拽住它的时候，你听到它撕裂的声音。
+			<br><br>
+
+			你喂完鸡，把麻袋放回棚子。
+			<br><br>
+
+			<<link [[继续|Farm Work]]>><</link>>
+			<br>
+		<</if>>
+
+	<</if>>
+<<else>>
+	你把它撒开，它们跑开了。
+	<br><br>
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<</if>>
+
+
+
+
+:: Farm Chickens In
+<<effects>>
+
+你把鸡赶到鸡笼里，然后清点小鸡的数量，以确保你把它们都抓到了。
+
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure)>>
+	你弄丢了一只。
+	<br><br>
+
+	<<link [[寻找它(0:10)|Farm Chickens Look]]>><<pass 10>><<farm_count 10>><</link>>
+	<br>
+	<<if $cat gte 6>>
+		<<link [[寻找它|Farm Chickens Hunt]]>><</link>><<cat>>
+		<br>
+	<</if>>
+	<<link [[一切会好的|Farm Chickens Fine]]>><<set $catbuild += 1>><<farm_yield -1>><</link>><<lfarm>>
+	<br>
+<<else>>
+	满意之后，你关上并锁上了门。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Farm Pigs Out
+<<effects>>
+
+
+你走进猪圈，放出了<<farm_text_many pig>>。它们毫不迟疑地沿着过道走下来。你打开了远端的门，让它们进入了外面的一个小圈舍。
+<br><br>
+
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure)>>
+<!-- Modified for monster people -->
+	<<if $bestialitydisable is "f" or $farm_work.pig.monster is true>>
+		<<if $farm_work.pig.monster is true>>
+			最后一只动物抓住了你的头发，试图把你按倒在地。
+		<<else>>
+			最后一只动物站起后腿，试图将你按倒在地。
+		<</if>>
+		<br><br>
+
+		<<link [[训斥|Farm Pigs Scold]]>><</link>><<tendingdifficulty 1 600>>
+		<br>
+		<<link [[推开|Farm Pigs Shove]]>><</link>><<physiquedifficulty 1 12000>>
+		<br>
+		<<link [[忍耐|Farm Pigs Endure]]>><<trauma 6>><<stress 6>><<farm_pigs -1>><</link>><<lrespect>>
+		<br>
+		<<if $deviancy gte 35>>
+			<<link [[帮它一把|Farm Pigs Hand]]>><<set $sexstart to 1>><</link>><<deviant3>>
+			<br>
+		<</if>>
+	<<else>>
+		<<farm_text_many pig>>看起来很不安，有点让人害怕。<<gstress>>
+		<br><br>
+
+		<<link [[继续|Farm Work]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<</if>>
+
+:: Farm Pigs Feed Alex
+<<effects>>
+
+<<npc Alex>><<person1>>
+你看到艾利克斯手里拿着两个沉重的桶正在穿过院子。
+
+<<if $speech_attitude is "meek">>
+	"我能帮忙吗？"你问道。
+<<elseif $speech_attitude is "bratty">>
+	你伸手拿起其中的一个桶。"让我来帮忙，"你说道。
+<<else>>
+	"你需要帮忙吗？"你问道。
+<</if>>
+<br><br>
+
+当你拿起桶时，艾利克斯笑了。"谢谢。有我们两个人会更快的。"
+<br><br>
+
+你帮助艾利克斯搬运饲料穿过院子，有些洒出了篱笆外落到了槽里。
+
+
+<<if $farm_work.pigs_fed gte 6>>
+	<<farm_text_many pig>>热情地吃饲料，到最后<span class="green">它们侧躺着，满足了。</span>
+<<else>>
+	<span class="blue"><<farm_text_many pig>>猛吞着饲料，看起来它们还很饿。</span>
+<</if>>
+<br><br>
+
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure)>>
+	"趴下！"艾利克斯在你身后喊道。你转过身来，发现其中一只<<farm_text pig>>已经咬住了艾利克斯的<<if $pronoun is "f">>裙子<<else>>短裤<</if>>。
+	<br><br>
+
+	<<link [[训斥猪|Farm Pigs Alex Scold]]>><</link>><<tendingdifficulty 1 600>>
+	<br>
+	<<link [[看着|Farm Pigs Alex Watch]]>><<npcincr Alex lust 1>><<arousal 600>><</link>><<glust>><<garousal>>
+	<br>
+<<else>>
+
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+
+<</if>>
+
+
+:: Farm Pigs Feed
+<<effects>>
+
+<<if currentSkillValue('physique') gte 16000>>
+	你把饲料倒进了几个桶里，穿过田野。这些桶很重，<span class="green">但对于你这样强壮的人而言并不算什么问题。</span><<set $farm_work.pigs_fed += 1>><<physique 2>>
+	<br><br>
+<<else>>
+	你把饲料倒进了几个桶里，穿过田野。到了猪圈时，你的手臂已经有些酸痛了。<<physique 2>>
+	<br><br>
+<</if>>
+
+
+
+你把桶里的饲料倒进槽里。
+
+<<if $farm_work.pigs_fed gte 6>>
+	<<farm_text_many pig>>热情地吃饲料，到最后<span class="green">它们侧躺着，满足了。</span>
+<<else>>
+	<span class="blue"><<farm_text_many pig>>猛吞着饲料，看起来它们还很饿。</span>
+<</if>>
+<br><br>
+
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure) and $worn.lower.name isnot "naked" and ($bestialitydisable is "f" or $farm_work.pig.monster is true)>>
+<!-- Modified for Monster People -->
+	<<if $farm.beasts.pigs lte -20 and $rng gte 51>>
+		<<if $farm_work.pig.monster is true>>
+			当你从槽边转身离开时，感觉到头发被什么东西勾住了。原来是一只<<farm_text pig>>把头伸过了栅栏。 "你还没完成任务，"<<farm_he pig>>说道。<<farm_He pig>>试图把你拖到栅栏里。
+		<<else>>
+			当你从槽边转身离开时，感觉到头发被什么东西勾住了。原来是一只<<farm_text pig>>把头伸过了栅栏。它试图把你拖到栅栏里。
+		<</if>>
+		<br><br>
+
+		<<link [[训斥|Farm Pigs Feed Extreme Scold]]>><</link>><<tendingdifficulty 1 1100>>
+		<br>
+		<<link [[呼救|Farm Pigs Feed Extreme Help]]>><<npcincr Alex dom 1>><<farm_pigs -1>><</link>><<gdom "Alex">><<lrespect>>
+		<br>
+	<<else>>
+		<<if $farm_work.pig.monster is true>>
+			当你转身离开食槽时，有东西抓住了你的$worn.lower.cn_name_cap。其中一只<<farm_text pig>>把头伸出栅栏，用嘴叼着你的衣服。
+		<<else>>
+			当你转身离开食槽时，有东西抓住了你的$worn.lower.cn_name_cap。其中一只<<farm_text pig>>把它的鼻子伸出栅栏，用嘴叼着你的衣服。
+		<</if>>
+		<br><br>
+
+		<<link [[训斥|Farm Pigs Feed Scold]]>><</link>><<tendingdifficulty 1 600>>
+		<br>
+		<<link [[呼救|Farm Pigs Feed Help]]>><<npcincr Alex dom 1>><<farm_pigs -1>><</link>><<gdom "Alex">><<lrespect>>
+		<br>
+	<</if>>
+<<else>>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+
+<</if>>
+
+
+:: Farm Pigs In
+<<effects>>
+
+你把<<farm_text_many pig>>赶回猪圈。它们中的一部分似乎不愿移动，需要劝诱。
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure) and ($bestialitydisable is "f" or $farm_work.pig.monster is true)>>
+<!-- Modified for Monster People -->
+		<<if $farm_work.pig.monster is true>>
+			你设法让最后一个站起来。当你把<<farm_him pig>>带进去时，<<farm_he pig>>抓住你的手臂，试图把你逼到地上。
+		<<else>>
+			你设法让最后一个站起来。当你把它驱赶进去时，它用后腿站立并试图把你逼到地上。
+		<</if>>
+		<br><br>
+
+		<<link [[训斥|Farm Pigs Scold]]>><</link>><<tendingdifficulty 1 600>>
+		<br>
+		<<link [[推开|Farm Pigs Shove]]>><</link>><<physiquedifficulty 1 12000>>
+		<br>
+		<<link [[忍耐|Farm Pigs Endure]]>><<trauma 6>><<stress 6>><<farm_pigs -1>><</link>><<lrespect>>
+		<br>
+		<<if $deviancy gte 35>>
+			<<link [[帮它一把|Farm Pigs Hand]]>><<set $sexstart to 1>><</link>><<deviant3>>
+			<br>
+		<</if>>
+		<!-- The <<farm_text_many pig>> seems agitated. It's a little scary.<<gstress>><<stress 6>> -->
+		<!-- <br><br> -->
+
+		<!-- <<link [[继续|Farm Work]]>><</link>> -->
+		<!-- <br> -->
+<<else>>
+	<<if $farm_work.pig.monster is true>>
+		你设法让最后一个站起来，把<<farm_him pig>>带进去。
+	<<else>>
+		你设法让最后一个站起来，把它带进去。
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<</if>>
+
+
+
+
+:: Farm Horses Out
+<<effects>>
+
+你打开每个马厩，释放里面的<<farm_text_many horse>>。他们知道自己要去哪里，但你把他们引到小路上，打开通往田野的大门。
+<br><br>
+
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure) and $horsedisable is "f">>
+<!-- Modified for Monster People -->
+	<<if $bestialitydisable is "f" or $farm_work.pig.monster is true>>
+		大多数马跑过去，渴望伸伸腿锻炼锻炼，但也有一些马退缩了。
+		<<if $farm_work.horse.monster is true>>
+			其中一匹马挡在你面前，把你从门口推开。 "我们不喜欢被关在笼子里，"<<farm_he horse>>说道，一双有力的手从你背后抓住了你的肩膀。"你可以通过一些方式向我们道歉。"
+			<br><br>
+			手沿着你的手臂向下移动，将它们固定在你的身体两侧，而前面的半人马则用手指沿着你的胸膛向下移动。<<gstress>><<stress 6>>
+			<br><br>
+
+			<<link [[训斥|Farm Horses Scold]]>><</link>><<tendingdifficulty 1 800>>
+			<br>
+			<<link [[呼唤艾利克斯|Farm Horses Alex]]>><<farm_horses -1>><<npcincr Alex dom 1>><</link>><<lrespect>><<gdom "Alex">>
+			<br>
+			<<link [[忍耐|Farm Horses Endure]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+			<br>
+		<<else>>
+			其中一只用鼻子把你从门口推开，而另一只则阻止你逃跑。<<gstress>><<stress 6>>
+			<br><br>
+
+			<<if $farm.beasts.horses lte -20>>
+				<<link [[训斥|Farm Horses Scold]]>><</link>><<tendingdifficulty 1 1200>>
+				<br>
+			<<else>>
+				<<link [[训斥|Farm Horses Scold]]>><</link>><<tendingdifficulty 1 800>>
+				<br>
+			<</if>>
+			<<link [[呼唤艾利克斯|Farm Horses Alex]]>><<farm_horses -1>><<npcincr Alex dom 1>><</link>><<lrespect>><<gdom "Alex">>
+			<br>
+			<<link [[忍耐|Farm Horses Endure]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+			<br>
+		<</if>>
+	<<else>>
+		他们跑过去，渴望伸伸腿。当它经过的时候，一个人推挤你，把你撞倒在地。<<gpain>><<pain 4>><<gstress>><<stress 6>>
+		<br><br>
+
+		<<link [[继续|Farm Work]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	他们跑过去，渴望伸伸腿。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Farm Horses Brush
+<<effects>>
+
+<<if $rng gte 51>>
+
+	你走近一个<<farm_text horse>>，手里拿着刷子。
+
+	<<if $farm.beasts.horses gte 5>>
+		<<farm_He horse>>急切地向你跑来。
+	<<else>>
+		<<farm_He horse>>小心翼翼地看着你。
+	<</if>>
+	<br><br>
+
+	<<farm_brush>>
+
+<<else>>
+	<<farm_text_many horse>>绕着田野跑。你对其中一个大喊，告诉<<farm_him horse>>停下来，但是<<farm_he horse>>太享受其中了。
+	<br><br>
+
+	<<link [[追逐|Farm Horses Chase]]>><<tiredness 2>><</link>><<athleticsdifficulty 1 1000>><<gtiredness>>
+	<br>
+	<!-- Modified for Monster People -->
+	<<if $deviancy gte 15 and $horsedisable is "f" and ($bestialitydisable is "f" or $farm_work.horse.monster is true)>>
+		<<link [[诱惑|Farm Horses Seduce]]>><</link>><<deviant2>>
+		<br>
+	<</if>>
+	<<link [[等待(0:20)|Farm Horses Wait]]>><<pass 20>><<farm_count 20>><<farm_horses -1>><</link>><<lrespect>>
+	<br>
+<</if>>
+
+:: Farm Horses Lewd
+<<effects>>
+
+你接近一只<<farm_text horse>>。你拿着<<farm_his horse>>的缰绳，牵着<<farm_him horse>>走到田野的一角，一个被逐渐侵占的林地挡住视线的地方。你离得够远，主农场里应该没人能听到你。
+<br><br>
+
+
+<<link [[用手(0:05)|Farm Horses Lewd Hands]]>><<pass 5>><<farm_count 5>><<farm_yield 1>><<set $farm_work.horses_satisfied += 1>><<handskill 5>><<set $handstat += 1>><<set $handejacstat += 1>><</link>><<deviant3>><<gfarm>><<ghandskill>>
+<br>
+<<if $deviancy gte 55>>
+	<<link [[用嘴(0:05)|Farm Horses Lewd Mouth]]>><<pass 5>><<farm_count 5>><<farm_yield 1>><<set $farm_work.horses_satisfied += 1>><<oralskill 5>><</link>><<deviant4>><<gfarm>><<goralskill>>
+	<br>
+<</if>>
+<<if $deviancy gte 75>>
+	<<link [[让它骑在你身上|Farm Horses Lewd Mount]]>><</link>><<deviant5>>
+	<br>
+<</if>>
+<br><br>
+
+<<link [[走开|Farm Work]]>><</link>>
+<br>
+
+
+:: Farm Horses Lewd Hands
+<<effects>>
+
+你跪在<<farm_text horse>>旁边，观察<<farm_his horse>>的<<if $farm_work.horse.genitals is "vagina">>阴户<<else>>巨大的阴茎<</if>>。你伸出手触摸它。
+<<deviancy3>>
+
+<<if $farm_work.horse.monster is true>>
+	"我喜欢你的想法，"<<farm_text horse>>说道。"不需要温柔。"
+<<else>>
+
+<</if>>
+
+<<if $farm_work.horse.genitals is "vagina">>
+	你用双手揉搓，把手指伸进去。你移动你的身体，这样你可以得到一个更好的角度。
+<<else>>
+	你双手握住<<farm_his horse>>的柱身，感觉<<farm_him horse>>在你的触摸下变硬。你揉搓，把身体移动到一个更好的角度。
+<</if>>
+
+<br><br>
+<<if $handskill gte random(1, 1000)>>
+	<<farm_He horse>>开始压向你的手，<span class="green">但你设法跟上了。</span><<farm_his horse>>移动更快，直到<<farm_He horse>>全身在高潮中颤抖。
+
+
+	<<if $farm_work.horse.genitals is "penis">>
+		精液从<<farm_his horse>>的阴茎中射出，聚集在下面的草地上。
+	<</if>>
+	<br><br>
+
+	你给<<farm_him horse>>一点恢复的时间，然后牵着<<farm_him horse>>回到田野，<<farm_his horse>>快乐的跳跃着。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<<else>>
+	<<farm_He horse>>开始踢腾，你很难跟上它的节奏。
+	<br><br>
+
+	<<link [[继续(0:10)|Farm Horses Lewd Hands 2]]>><<pass 10>><<farm_count 10>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Farm Horses Lewd Hands 2
+<<effects>>
+
+你继续保持动作，直到那匹<<farm_text horse>>颤抖着达到了高潮。
+
+<<if $farm_work.horse.genitals is "penis">>
+	精液从<<farm_his horse>>的阴茎中射出，聚集在下面的草地上。
+<</if>>
+<br><br>
+
+你给<<farm_him horse>>一点恢复的时间，然后牵着<<farm_him horse>>回到田野，<<farm_his horse>>快乐的跳跃着。
+<br><br>
+
+<<link [[继续|Farm Work]]>><</link>>
+<br>
+
+
+
+:: Farm Horses Lewd Mouth
+<<effects>>
+
+你跪在<<farm_text horse>>旁边，观察<<farm_his horse>>的<<if $farm_work.horse.genitals is "vagina">>阴户<<else>>巨大的阴茎<</if>>。你身体前倾，伸出舌头然后舔了起来。
+<<deviancy4>>
+
+<<if $farm_work.horse.monster is true>>
+	"我正希望你这么做呢，"<<farm_text horse>>说道。
+<<else>>
+
+<</if>>
+
+<<if $farm_work.horse.genitals is "vagina">>
+	你在里面摆动舌头。它本来是为更大的东西准备的，所以你用灵巧来弥补，这样扭动，那样扭动，试图找到敏感点。
+<<else>>
+	你的舌头沿着它的柱身移动，每一次跳动都能感觉<<farm_his horse>>的勃起。你不可能把这么大的东西塞进嘴里，但你的舌头会尽可能多地关注它。
+<</if>>
+
+<br><br>
+
+<<if $oralskill gte random(1, 1000)>>
+	<<farm_He horse>>开始在你的脸上抽插。你抓住<<farm_his horse>>的后腿，<span class="green">并设法保持稳定。</span>它移动得更快，直到<<farm_his horse>>全身在高潮中颤抖。
+
+
+	<<if $farm_work.horse.genitals is "penis">>
+		精液从<<farm_his horse>>的阴茎射出，溅在你的脸上，滴在你的<<breasts>>上。
+		<<bodyliquid "face" "semen">><<bodyliquid "chest" "semen">><<faceejacstat>><<ejacstat>>
+	<</if>>
+	<br><br>
+
+	你给<<farm_text horse>>片刻的喘息时间，然后牵着<<farm_him horse>>回到田野，<<farm_his horse>>快乐的跳跃着。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<<else>>
+	<<farm_He horse>>开始猛撞你的脸，这让事情变得更加困难。
+	<br><br>
+
+	<<link [[继续(0:10)|Farm Horses Lewd Mouth 2]]>><<pass 10>><<farm_count 10>><</link>>
+	<br>
+<</if>>
+
+:: Farm Horses Lewd Mouth 2
+<<effects>>
+
+尽管困难重重，你还是坚持了下来，直到<<farm_text horse>>的身体在高潮中颤抖。
+
+<<if $farm_work.horse.genitals is "penis">>
+	精液从<<farm_his horse>>的阴茎射出，溅在你的脸上，滴在你的<<breasts>>上。
+	<<bodyliquid "face" "semen">><<bodyliquid "chest" "semen">><<faceejacstat>><<ejacstat>>
+<</if>>
+<br><br>
+
+
+你给<<farm_him horse>>一点恢复的时间，然后牵着<<farm_him horse>>回到田野，<<farm_his horse>>快乐的跳跃着。
+<br><br>
+
+<<link [[继续|Farm Work]]>><</link>>
+<br>
+
+
+:: Farm Horses Lewd Mount
+<<effects>>
+
+你在一捆干草上弯下腰，拉着<<farm_text horse>>，直到它站在你身上。本能从那里接管。<<deviancy5>>
+
+<<link [[继续|Farm Horses Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+
+:: Farm Horses Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+
+	<<if $farm_work.horse.monster is true>>
+		<<beastNEWinit 1 horse $farm_work.horse.gender $farm_work.horse.genitals monster>>
+	<<else>>
+		<<beastNEWinit 1 horse $farm_work.horse.gender $farm_work.horse.genitals beast>>
+	<</if>>
+	<<beastCombatInit>>
+
+	<<set $NPCList[0].stance to "top">>
+	<<if $farm_work.horse.genitals is "penis">>
+		<<set $position to "doggy">>
+	<<else>>
+		<<set $position to "missionary">>
+	<</if>>
+	<<set $position_lock to 1>>
+	<<prop haybale>>
+	<<farm_trust horses>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Farm Horses Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Farm Horses Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Farm Horses Sex Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<beastejaculation>>
+
+	你握住<<farm_text horse>>的缰绳，它在你上方摇晃。你从干草堆上爬下来。<<gfarm>><<farm_yield 1>><<set $farm_work.horses_satisfied += 1>>
+	<br><br>
+
+	<<clotheson>>
+
+	<<tearful>>你牵着<<farm_him horse>>回到田野。<<farm_He horse>>在台阶前一跃而过。
+	<br><br>
+
+	<<endcombat>>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+
+<<elseif $enemyhealth lte 0>>
+
+	<<farm_text horse>>逃回田野。
+	<br><br>
+
+	<<tearful>>你爬下干草捆。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+
+<<else>>
+
+	<<if $farm_work.horse.monster is true>>
+		"你真爱戏弄人，"半人马说道。<<farm_He horse>>转身跑回田野。
+	<<else>>
+		<<farm_text horse>>沮丧地嘶鸣着，跑回了田地。
+	<</if>>
+	<br><br>
+
+	<<tearful>>你爬下干草捆。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+
+<</if>>
+
+
+:: Farm Horses In
+<<effects>>
+
+你呼唤<<farm_text_many horse>>，并将它们带离田地。它们似乎很乐意离开。
+<br><br>
+
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure)>>
+	你把它们锁在各自的隔间里过夜。轮到最后一匹时却遇到了阻碍，它坚持想留在外面。<<farm_He horse>>太大了，无法用武力移动。
+	<br><br>
+
+	<<link [[鼓励|Farm Horses In Encourage]]>><</link>><<tendingdifficulty 1 800>>
+	<br>
+	<<link [[呼唤艾利克斯|Farm Horses In Alex]]>><<npcincr Alex dom 1>><<farm_horses -1>><</link>><<lrespect>><<gdom "Alex">>
+	<br>
+	<!-- Modified for Monster People -->
+	<<if $deviancy gte 15 and $horsedisable is "f" and ($bestialitydisable is "f" or $farm_work.horse.monster is true)>>
+		<<link [[诱惑|Farm Horses In Seduce]]>><</link>><<deviant2>>
+	<</if>>
+	<br>
+
+<<else>>
+	你把它们锁在各自的隔间里过夜。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Farm Cattle Out
+<<effects>>
+
+你打开牛棚的门，把<<farm_text_many cattle>>从围栏里释放出来。它们没有得到提示就小跑到地里去了。
+<br><br>
+
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure) and $worn.over_upper.name isnot "naked">>
+	<<set $worn.over_upper.integrity -= 10>>
+	<<if $worn.over_upper.integrity lte 0>>
+		当一头牛经过时，<<farm_he cattle>>用<<farm_his cattle>>的角拉住了你的$worn.over_upper.cn_name_cap，<span class="pink">把它从你身上扯下来。</span>
+		<<integritycheck no_text>><<exposure>>
+		<<covered>><<farm_text cattle>>继续，破烂的布料挂在<<farm_his cattle>>的脸上。
+		<br><br>
+
+		<<link [[继续|Farm Work]]>><</link>>
+		<br>
+	<<else>>
+		当一头牛经过时，<<farm_he cattle>>用<<farm_his cattle>>的角拉住了你的$worn.over_upper.cn_name_cap，使其磨损更严重。
+		<br><br>
+
+		<<link [[继续|Farm Work]]>><</link>>
+		<br>
+	<</if>>
+<<elseif $danger gte (9900 - $allure) and $worn.upper.name isnot "naked">>
+	<<set $worn.upper.integrity -= 10>>
+	<<if $worn.upper.integrity lte 0>>
+		当一头牛经过时，<<farm_he cattle>>用<<farm_his cattle>>的角拉住了你的$worn.upper.cn_name_cap，<span class="pink">把它从你身上扯下来。</span>
+		<<integritycheck no_text>><<exposure>>
+		<<covered>><<farm_text cattle>>继续，破烂的布料挂在<<farm_his cattle>>的脸上。
+		<br><br>
+
+		<<link [[继续|Farm Work]]>><</link>>
+		<br>
+	<<else>>
+		当一头牛经过时，<<farm_he cattle>>用<<farm_his cattle>>的角拉住了你的$worn.upper.cn_name_cap，使其磨损更严重。
+		<br><br>
+
+		<<link [[继续|Farm Work]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<</if>>
+
+:: Farm Cattle Milk
+<<effects>>
+
+
+你走进牛棚。
+<<if $farm.barn gte 1>>
+	中间是一台发光的大型挤奶机。
+<<else>>
+	中间有一台大型挤奶机。
+<</if>>
+农场的<<farm_text_many cattle>>喜欢用手挤牛奶，但是机器一次可以挤六头。
+<br><br>
+
+
+<<farm_milk_actions>>
+
+
+
+
+:: Farm Cattle Milk Machine
+<<effects>>
+
+你把<<farm_text_many cattle>>牵进牛棚，把它们绑在机器上。
+
+<!-- Modified for Monster People -->
+
+<<if $bestialitydisable is "f" or $farm_work.cattle.monster is true>>
+	<<if $cattle_milked lte 6>>
+		<<if $farm_work.cattle.monster_roll is true and ($hallucinations gte 1 or $monsterhallucinations is "f")>>
+			<<if $farm_work.cattle.gender_plural is "m">>
+				<<if $cbchance gte 100>>
+					艾利克斯给了你简单的指示，但当你要把吸管接到他们的乳头上时，你犹豫了。你要提醒自己，这一点也不猥亵。牛们期待地哞哞叫着。
+				<<else>>
+					艾利克斯给了你简单的指示，但当你要把吸管接到他们的肉棒上时，你犹豫了。你要提醒自己，这一点也不猥亵。牛们期待地哞哞叫着。
+				<</if>>
+			<<elseif $farm_work.cattle.gender_plural is "f">>
+				<<if $dgchance gte 1>>
+					艾利克斯给了你简单的指示，但当你要把吸管连接到他们的乳房和阴茎上时，你犹豫了。你要提醒自己，这一点也不猥亵。母牛们期待地哞哞叫着。
+				<<else>>
+					艾利克斯给了你简单的指示，但到了要把吸管接到她们乳房上的时候，你却犹豫了。你要提醒自己，这一点也不猥亵。母牛们期待地哞哞叫着。
+				<</if>>
+			<<else>>
+				艾利克斯给了你简单的指示，但当你要把吸管连接到他们的乳房和阴茎上时，你犹豫了。你要提醒自己，这一点也不猥亵。母牛和公牛们期待地哞哞叫着。
+			<</if>>
+		<<else>>
+			<<if $farm_work.cattle.gender_plural is "m">>
+				艾利克斯给了你简单的指示，但当你要把吸管接到他们的鸡巴上时，你犹豫了。你要提醒自己，这一点也不猥亵。公牛期待地哞哞叫着。
+			<<elseif $farm_work.cattle.gender_plural is "f">>
+				艾利克斯给了你简单的指示，但你发现这个过程很尴尬。当你把管子接在奶牛的乳房上时，它们会发出期待的叫声。
+			<<else>>
+				艾利克斯给了你简单的指示。乳房是够尴尬的，但你犹豫的时候，把吸管连接到了他们的肉棒上。你要提醒自己，这一点也不猥亵。牛期待地哞哞叫。
+			<</if>>
+		<</if>>
+	<<elseif $cattle_milked lte 1200>>
+		<<if $farm_work.cattle.monster_roll is true and ($hallucinations gte 1 or $monsterhallucinations is "f")>>
+			<<if $farm_work.cattle.gender_plural is "m">>
+				<<if $cbchance gte 100>>
+					你认为你已经掌握了要领，但当你把吸管插到他们的乳头上时，你仍然把目光移开。你要提醒自己，这一点也不猥亵。公牛们期待地哞哞叫着。
+				<<else>>
+					你认为你已经掌握了窍门，但当你把吸管插到他们的肉棒上时，你仍然把目光移开。你要提醒自己，这一点也不猥亵。公牛们期待地哞哞叫着。
+				<</if>>
+			<<elseif $farm_work.cattle.gender_plural is "f">>
+				<<if $dgchance gte 1>>
+					你认为你已经掌握了要领，但当你把吸管连接到他们的乳房和阴茎上时，你仍然把目光移开。你要提醒自己，这一点也不猥亵。母牛们期待地哞哞叫着。
+				<<else>>
+					你认为你已经掌握了要领，但当你把吸管连接到他们的乳房上时，你仍然把目光移开。你要提醒自己，这一点也不猥亵。母牛们期待地哞哞叫着。
+				<</if>>
+			<<else>>
+				你认为你已经掌握了要领，但当你把吸管连接到他们的乳房和阴茎上时，你仍然把目光移开。你要提醒自己，这一点也不猥亵。母牛和公牛们期待地哞哞叫着。
+			<</if>>
+		<<else>>
+			<<if $farm_work.cattle.gender_plural is "m">>
+				你认为你已经掌握了窍门，但当你把吸管插到他们的肉棒上时，你仍然把目光移开。你要提醒自己，这一点也不猥亵。公牛期待地哞哞叫着。
+			<<elseif $farm_work.cattle.gender_plural is "f">>
+				你认为你已经掌握了窍门，当你把吸管接在奶牛的乳房上时，它们发出期待的叫声。
+			<<else>>
+				你认为自己已经掌握了技巧。挤奶很容易，但当你需要把吸管固定在它们的阴茎上时，你犹豫了一下。你告诉自己这并不是什么淫秽的事情。牛兴奋地哞哞叫着。
+			<</if>>
+		<</if>>
+	<<else>>
+		<<if $farm_work.cattle.monster_roll is true and ($hallucinations gte 1 or $monsterhallucinations is "f")>>
+			<<if $farm_work.cattle.gender_plural is "m">>
+				<<if $cbchance gte 100>>
+					你一边做白日梦，一边把吸管接到他们的乳头上，你熟练的双手自动移动。牛仔们期待地哞哞叫着。
+				<<else>>
+					你一边做白日梦，一边把吸管接到他们的肉棒上，你熟练的双手自动移动。公牛们期待地哞哞叫着。
+				<</if>>
+			<<elseif $farm_work.cattle.gender_plural is "f">>
+				<<if $dgchance gte 1>>
+					你一边做白日梦，一边把吸管接到她们的乳房和肉棒上，你熟练的双手自动移动。母牛们期待地哞哞叫着。
+				<<else>>
+					你一边做白日梦，一边把吸管接到她们的乳房上，你熟练的双手自动移动。母牛们期待地哞哞叫着。
+				<</if>>
+			<<else>>
+				你一边做白日梦，一边把吸管接到她们的乳房和肉棒上，你熟练的双手自动移动。母牛和公牛们期待地哞哞叫着。
+			<</if>>
+		<<else>>
+			<<if $farm_work.cattle.gender_plural is "m">>
+				你一边做白日梦，一边把吸管接到他们的肉棒上，你熟练的双手自动移动。公牛期待地哞哞叫着。
+			<<elseif $farm_work.cattle.gender_plural is "f">>
+				你一边做白日梦，一边把吸管接到它们的乳房上，你熟练的手会自动移动。母牛期待地哞哞叫着。
+			<<else>>
+				你一边做白日梦，一边把吸管接到它们的乳房和鸡巴上，你熟练的手会自动移动。牛期待地哞哞叫。
+			<</if>>
+		<</if>>
+	<</if>>
+<<else>>
+	牛期待地哞哞叫。
+<</if>>
+
+<br><br>
+挤奶机工作得很快，很快就收完奶。你释放了<<farm_text_many cattle>>，它们跑开了。
+<br><br>
+
+
+
+<<farm_milk_actions>>
+
+:: Farm Cattle Milk Hand
+<<effects>>
+
+<<if $monster is 1>>
+	你牵着一只<<beasttype>>进入牛棚，坐在<<bhim>>旁边的凳子上。<<bHe>>跪在桶上，期待地叫着。
+
+	<<if $NPCList[0].pronoun is "m">>
+		<<if $NPCList[0].vagina isnot "none">>
+			你用双手捏住<<bhis>>的乳头并挤压。
+		<<else>>
+			你双手拿着<<bhis>>已经勃起的阴茎开始撸动。<<handstat>><<handejacstat>>
+		<</if>>
+	<<else>>
+		<<if $NPCList[0].penis isnot "none">>
+			你一手拿着<<bhis>>已经勃起的阴茎，一手抓住乳房，然后开始挑逗。<<handstat>><<handejacstat>>
+		<<else>>
+			你用双手抓住<<bhis>>的乳房并挤压。
+		<</if>>
+	<</if>>
+<<else>>
+	你把<<beasttype>>牵进牛棚，坐到了它旁边的一张凳子上。它满怀期待地哞哞叫着。你拿着它的
+	<<if $NPCList[0].penis isnot "none">>已经勃起的肉棒<<else>>乳房<</if>>
+	双手紧握，开始工作。
+<</if>>
+<br><br>
+<<if $cattle_milked lte 6 or $deviancy lt 15>>
+	这么亲力亲为感觉很奇怪。你提醒自己这没什么奇怪的，但这种感觉很难摆脱，
+<<elseif $cattle_milked lte 1200 or $deviancy lt 35>>
+	你已经习惯了给牛挤奶，<<beasttype>>喜欢你的关注。
+<<else>>
+	你一边做白日梦，一边工作，你那双训练有素的手可以自己活动。<<beasttype>>欣赏这种关注。
+<</if>>
+<<deviancy1>>
+
+你<<tendingtext>>挤压和摩擦。
+<<switch $phase>>
+	<<case 3>><<farm_count 3>>三分钟后，
+	<<case 4>><<farm_count 4>>四分钟后，
+	<<case 5>><<farm_count 5>>五分钟后，
+	<<case 10>><<farm_count 10>>十分钟后，
+	<<case 15>><<farm_count 15>>十五分钟后，
+	<<case 20>><<farm_count 20>>二十分钟后，
+	<<case 25>><<farm_count 25>>二十五分钟后，
+	<<default>><<farm_count 30>>三十分钟后，
+<</switch>>
+<<rng>>
+<<if $watersportsdisable is "f" and $NPCList[0].penis isnot "none" and $rng gte 96>>
+	你注意到桶里装的是尿液而不是奶水。你把它扔了。
+<<else>>
+	你有一桶<<beasttype>>的牛奶。
+<</if>>
+<br><br>
+
+<<if $farm_work.cattle_text is undefined>>
+	<<set $farm_work.cattle_text to 0>>
+<</if>>
+<<switch $farm_work.cattle_text>>
+<<case 0>>
+	<<set $farm_work.cattle_text += 1>>
+	那只<<beasttype>>跑开了。
+<<case 1>>
+	<<set $farm_work.cattle_text += 1>>
+	<<beasttype>>舔你的手，然后小跑离开。<<lstress>><<stress -1>>
+<<case 2>>
+	<<set $farm_work.cattle_text += 1>>
+	那只<<beasttype>>需要哄着才能让<<bhe>>回到田地里。
+<<case 3>>
+	<<set $farm_work.cattle_text += 1>>
+	那只<<beasttype>>匆匆离去，渴望回到田地里。
+<<case 4>>
+	<<set $farm_work.cattle_text to 0>>
+	那只<<beasttype>>有些找不到出口，但很快就小跑回到了田地。
+<</switch>>
+
+<br><br>
+<<endevent>>
+<<farm_milk_actions>>
+
+
+:: Farm Cattle Milk Mouth
+<<effects>>
+<<pass 3>>
+<<set  $consensual to 1>>
+<<if $monster is 1>>
+	你把一只<<beasttype>>带进了畜棚。<<bhe>>开始跪下，但是你打断了它的动作。相反，<<bhe>>带着困惑的表情看着你，你则开始
+
+	<!-- Milk Chest -->
+	<<if $pronoun is "f" or $NPCList[0].vagina isnot "none">>
+		俯身到<<bhis>>的胸部。
+		<br><br>
+
+		你把<<bhis>>乳头放进嘴里吮吸。<<bHe>>高兴地哞哞叫着，奶头里还流出了甜甜的牛奶。你把大部分吐到桶里，但你忍不住要吞了一些进喉咙里。<<transform cat 1>>
+
+		<!-- DG cowgirls get both milked -->
+		<<if $NPCList[0].penis isnot "none">>
+			<br><br>
+			接下来你跪下。
+		<</if>>
+	<<else>>
+		跪在<<bhim>>面前。
+		<br><br>
+	<</if>>
+
+	<!-- Milk Penis -->
+	<<if $NPCList[0].penis isnot "none">>
+		<<bHis>>的肉棒已经在期待中勃起了。你把它放进嘴里。<<if $player.virginity.oral is true>><span class="red">尝起来怪怪的。</span><</if>>
+		<<takeVirginity $NPCList[0].fullDescription "oral">><<oralstat>><<oralejacstat>><<ejacstat>><<animalsemenswallowedstat 15>>
+		<br><br>
+
+		当你前后摆动你的头时，你抓住<<bhis>>的大腿。<<beasttype>>带着腥味的奶油涌进了你的嘴里。你拉开距离，把牛奶吐到桶里，接下来又用同样的方式吸着剩余的奶水。<<beasttype>>高兴地叫着，你很快就把桶装满了。
+	<</if>>
+<<else>>
+	<<if $NPCList[0].penis isnot "none">>
+		你把一头公牛牵进畜棚，跪在它下面。它的肉棒在期待中已经立起来了。你把它放进嘴里。<<if $player.virginity.oral is true>><span class="red">尝起来怪怪的。</span><</if>>
+		<<takeVirginity $NPCList[0].fullDescription "oral">><<oralstat>><<oralejacstat>><<ejacstat>><<animalsemenswallowedstat 15>>
+
+		当你前后摆动你的头时，你抓住它的大腿。它的奶油涌进了你的嘴里。你拉开距离，把牛奶吐到桶里，接下来又用同样的方式吸着剩余的牛奶。它高兴地叫着，你很快就把桶装满了。
+		<<animalsemenswallowedstat 15>>
+	<<else>>
+		你把一头牛牵进畜棚，跪在它下面。你俯下身，把它的一个乳房含进嘴里。浓稠的奶水流进嘴里。你把大部分吐到桶里，但你忍不住要吞了一些进喉咙里。<<transform cat 1>>
+
+
+	<</if>>
+<</if>>
+
+<<deviancy4>>
+
+那只<<beasttype>>跑开了。
+<br><br>
+
+<<endevent>>
+<<farm_milk_actions>>
+
+
+
+:: Farm Cattle In
+<<effects>>
+
+那些<<farm_text_many dog>>帮助你把<<farm_text_many cattle>>赶进了牛棚。
+<br><br>
+
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure)>>
+	<<if $farm.beasts.dogs gte 20>>
+		<<farm_text_many dog>>看起来焦躁不安，<span class="green">但坚定的表情足以让它们保持目标。</span>
+		<br><br>
+
+		<<link [[继续|Farm Work]]>><</link>>
+		<br>
+	<<else>>
+		<<if $farm.beasts.cattle gte 20>>
+			<<farm_text_many dog>>看起来很激动。其中一只对着你咆哮并露出牙齿，<span class="green">直到一只<<farm_text cattle>>从牛群中挣脱出来，站在你和<<farm_text dog>>之间做出保护的姿态。</span>
+			<br><br>
+			狗不会打扰你。<<grespect>><<farm_dogs 1>>
+			<br><br>
+		<<else>>
+			<<farm_text_many dog>>似乎很激动，和牛一起对你咆哮。<<gstress>><<stress 6>>
+			<br><br>
+		<</if>>
+
+		<<link [[继续|Farm Work]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Farm Spy
+<<effects>>
+<<npc Alex>><<person1>>
+<<set $daily.farmAlexShowerSpy to true>>
+你偷偷溜到小屋，把门推开。
+<<promiscuity1>>
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+	<<earnFeat "I Spy">>
+	你从缝隙里偷看，看到了艾利克斯。<<His>>眼睛闭着，<span class="green"><<he>>没有注意到你。</span>
+	<br><br>
+
+
+	<<if $NPCList[0].gender is "f">>
+		<<if $NPCList[0].penis isnot "none">>
+			水流沿着<<his>>健美的身体流下，流过<<his>>的<<print $NPCList[0].breastsdesc>>和<<print $NPCList[0].penisdesc>>
+		<<else>>
+			水流沿着<<his>>的<<print $NPCList[0].breastsdesc>>流下，流过<<his>>健美的身体。
+		<</if>>
+	<<else>>
+		<<if $NPCList[0].penis isnot "none">>
+			水流沿着<<his>>健美的身体流下，流过<<his>>的<<print $NPCList[0].penisdesc>>。
+		<<else>>
+			水流沿着<<his>>健美的身体流下.
+		<</if>>
+	<</if>>
+
+	<<His>>的脸部、手臂和腿部的颜色比在阳光下暴晒后受到保护的部分要深得多。<<garousal>><<arousal 600>>
+
+	<br><br>
+
+	一股风从门缝里吹进来。艾利克斯睁开眼睛，但你已经走了。<<He>>关上门，没有发现你的偷窥。
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+
+<<else>>
+
+	<span class="red">门砰地一声关上了，你看到的只是一丝丝裸露的皮肤。</span>"你这个变态，"艾利克斯在门后喊道。"让我安静地洗澡吧。"<<llove>><<ldom>><<npcincr Alex love -1>><<npcincr Alex dom -1>><<glust>><<npcincr Alex lust 1>><<gstress>><<stress 6>>
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+
+<</if>>
+
+
+:: Farm Tending
+<<effects>>
+
+<<if $weather is "rain">>
+	你顶着雨搜寻入侵的杂草，在它们扼杀庄稼之前把它们连根拔起。
+<<elseif $weather is "clear">>
+	<<if $rng gte 51>>
+		<<if Time.dayState is "night">>
+		当你搜寻入侵的杂草时，星星在你头顶闪烁，在它们扼杀庄稼之前从根部挖掉。
+		<<else>>
+		当你在寻找入侵的杂草时，太阳照耀着你，在它们扼杀庄稼之前从根部挖掉。
+		<</if>>
+	<<else>>
+		<<if Time.dayState is "night">>
+		当你给庄稼浇水时，星星在你头顶闪烁。
+		<<else>>
+		你给庄稼浇水时，太阳炙烤着。
+		<</if>>
+	<</if>>
+<<elseif $weather is "snow">>
+	你忍受着寒冷，寻找入侵的杂草，在它们扼杀庄稼之前把它们连根拔起。
+<<else>>
+	<<if $rng gte 51>>
+		你要寻找入侵的杂草，在它们扼杀庄稼之前把它们连根拔起。
+	<<else>>
+		你给庄稼浇水。
+	<</if>>
+<</if>>
+<<if currentSkillValue('tending') gte 200>>
+	你还要检查它们是否有害虫和疾病的迹象。
+<<else>>
+	你还要检查农作物是否有害虫。
+<</if>>
+<<tendingdifficulty 1 1000 true>>
+<<if $tendingSuccess>>
+	这是一项艰苦的工作，<span class="green">但你做得很好。</span><<set $farm_work.tending += 1>>
+<<else>>
+	这是一项艰苦的工作，但你取得了进步。
+<</if>>
+<br><br>
+<<if $arousal gte $arousalmax>>
+	<<orgasmLocation "alexFarmTendingAlone">>
+<</if>>
+
+
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure)>>
+	<<farm_tending_events>>
+<<else>>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<</if>>
+
+:: Farm Tending Alex
+<<effects>>
+
+
+<<if $weather is "rain">>
+	你顶着雨，帮助艾利克斯寻找入侵的杂草，在它们扼杀庄稼之前从根部挖掉。
+<<elseif $weather is "clear">>
+	<<if $rng gte 51>>
+		<<if Time.dayState is "night">>
+		当你帮助艾利克斯搜寻入侵的杂草时，星星在你头顶闪烁，在它们扼杀庄稼之前从根部挖掉。
+		<<else>>
+		当你帮助艾利克斯寻找入侵的杂草时，太阳照耀着你，在它们扼杀庄稼之前从根部挖掉。
+		<</if>>
+	<<else>>
+		<<if Time.dayState is "night">>
+		当你帮艾利克斯给庄稼浇水时，星星在你头顶闪烁。
+		<<else>>
+		当你帮艾利克斯给庄稼浇水时，太阳直射下来。
+		<</if>>
+	<</if>>
+<<elseif $weather is "snow">>
+	你忍受着寒冷，帮助艾利克斯寻找入侵的杂草，在它们扼杀庄稼之前从根部挖掉。
+<<else>>
+	<<if $rng gte 51>>
+		你帮助艾利克斯寻找入侵的杂草，在它们扼杀庄稼之前从根部挖掉。
+	<<else>>
+		你帮艾利克斯给庄稼浇水。
+	<</if>>
+<</if>>
+<<if currentSkillValue('tending') gte 200>>
+	你还要检查它们是否有害虫和疾病的迹象。
+<<else>>
+	你还要检查它们有没有害虫。
+<</if>>
+<<tendingdifficulty 1 1000 true>>
+<<if $tendingSuccess>>
+	这是一项艰苦的工作，<span class="green">但你做得很好。</span><<set $farm_work.tending += 1>>
+<<else>>
+	这是一项艰苦的工作，但你取得了进步。
+<</if>>
+<br><br>
+<<if $arousal gte $arousalmax>>
+	<<orgasmLocation "alexFarmTending">>
+<</if>>
+
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure)>>
+	<<farm_tending_alex_events>>
+<<else>>
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+:: Farm Clearing
+<<effects>>
+
+<<if $weather is "rain">>
+	你忍受着雨水，帮助艾利克斯清除入侵的杂草，从根部挖掉它们，为耕种腾出土地。
+<<elseif $weather is "clear">>
+	<<if Time.dayState is "night">>
+	星空闪烁在你的头顶上，你帮助艾利克斯清除入侵的杂草，从根部挖掉它们，为耕种腾出土地。
+	<<else>>
+	当你帮助艾利克斯清除入侵的杂草时，阳光普照，你从根部挖掉它们，为耕种腾出土地。
+	<</if>>
+<<elseif $weather is "snow">>
+	你忍受着寒冷，帮助艾利克斯清除入侵的杂草，把它们连根拔起，腾出土地耕种。
+<<else>>
+	你帮助艾利克斯清除入侵的杂草，把它们连根拔起，腾出土地耕种。
+<</if>>
+<<if $rng gte 51>>
+	有些地方长着小树。艾利克斯坚持要在周围的林地附近给它们挖一个新家。
+<<else>>
+	有些植物扎根很深，需要把它们挖出来。
+<</if>>
+<br><br>
+
+<<if $farm.clearing gte 50>>
+	你取得了很好的进步，<span class="blue">但还有很长的路要走。</span>
+<<elseif $farm.clearing gte 10>>
+	你进步很大。<span class="lblue">农田大部分都清理好了。</span>
+<<elseif $farm.clearing gte 1>>
+	你进步很大。<span class="teal">农田几乎全部清理完了。</span>
+<<else>>
+	你取得了不错的进展，<span class="green">已经除去了最后的杂草!</span>
+<</if>>
+<br><br>
+<<if $arousal gte $arousalmax>>
+	<<orgasmLocation "alexFarmTending">>
+<</if>>
+
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure)>>
+	<<farm_tending_alex_events>>
+<<else>>
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Farm Clearing Alone
+<<effects>>
+
+<<if $weather is "rain">>
+	你忍受着雨水，清除入侵的杂草，从根部挖掉它们，为耕种腾出土地。
+<<elseif $weather is "clear">>
+	<<if Time.dayState is "night">>
+	当你清除入侵的杂草时，星星在夜空中闪烁，你把它们连根拔起，腾出土地耕种。
+	<<else>>
+	当你清除入侵的杂草时，阳光照耀着你，你把它们连根拔起，腾出土地耕种。
+	<</if>>
+<<elseif $weather is "snow">>
+	你忍受着寒冷，清除入侵的杂草，你把它们连根拔起，腾出土地耕种。
+<<else>>
+	你清除入侵的杂草，你把它们连根拔起，腾出土地耕种。
+<</if>>
+<<if $rng gte 51>>
+	有些植物扎根很深，需要把它们挖出来。
+<</if>>
+
+/* inexplicably, these strings were written assuming working at night. No idea why? Built new ones, but keeping these to reuse if we introduce sneaky night working or somesuch...
+<<set _rng to random(1, 6)>>
+<<if _rng is 1>>
+	You faintly hear a wet sound coming from the moor, but you can't see much in the darkness. <<gstress>><<stress 3>>
+<<elseif _rng is 2>>
+	You think you see a pair of eyes staring at you in the dark, but they're gone before you can get a better look. <<gstress>><<stress 6>>
+<<elseif _rng gte 3>>
+	You trip over something in the dark. <<pain 5>> <<gpain>>
+<</if>>
+*/
+
+<<set _rng to random(1, 6)>>
+<<if _rng is 1>>
+	你隐约听到从沼地里传来一种潮湿的声音。当你看的时候，你看不出是什么引起的。<<gstress>><<stress 3>>
+<<elseif _rng is 2>>
+	<br><br>
+	你有一种不舒服的感觉，好像有什么东西在看着你。你环顾四周，但什么也没有。<<gstress>><<stress 6>>
+<<elseif _rng gte 3>>
+	<br><br>
+	你被一堆荆棘绊倒在地，发出重重的撞击声。<<pain 5>><<gpain>>
+<</if>>
+
+<<if $farm.clearing gte 50>>
+	你取得了一些进展，<span class="blue">但是还有很长的路要走。没有艾利克斯，这项工作进行得很慢。</span>
+<<elseif $farm.clearing gte 10>>
+	你取得了一些进展。<span class="lblue">大部分田地已经清理完毕了，但没有艾利克斯，这项工作进行得很慢。</span>
+<<elseif $farm.clearing gte 1>>
+	你取得了一些进展。<span class="teal">这片田地几乎被清理干净了，但没有艾利克斯，这项工作进行得很慢。</span>
+<<else>>
+	你取得了不错的进展，<span class="green">已经除去了最后的杂草!</span>
+<</if>>
+<br><br>
+<<if $arousal gte $arousalmax>>
+	<<orgasmLocation "alexFarmTendingAlone">>
+<</if>>
+
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure * 1.5)>>
+	<<farm_tending_events>>
+<<else>>
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Farm Rest
+<<effects>>
+<<set _alex to $NPCName[$NPCNameList.indexOf("Alex")]>>
+
+<<if $phase is 1>>
+	<<npc Alex>><<person1>>
+	你靠近艾利克斯。
+	<<if $weather is "clear">>
+		<<He>>斜靠在树下的树荫里。
+	<<elseif $weather is "rain">>
+		<<He>>躲在树下的树荫里避雨。
+	<<elseif $weather is "snow">>
+		<<He>>躲在树下的树荫里避雪。
+	<<else>>
+		<<He>>斜靠在树下的树荫里。
+	<</if>>
+	<<He>>听到你的脚步声后抬起帽檐，看向你。
+	<<if $exposed gte 1>>
+		<<covered>><<He>>看向别处。
+	<</if>>
+	<br><br>
+
+	<<if _alex.love gte 10>>
+		<<if _alex.dom gte 10>>
+			"休息一下吧，"<<he>>说道。"这是你应得的。"
+		<<elseif _alex.dom lte -10>>
+			"我很高兴见到你，"<<he>>说道。"你愿意和我坐在一起吗?"
+		<<else>>
+			"我希望你能过来，"<<he>>指着<<him>>旁边的地面说道。
+		<</if>>
+	<<elseif _alex.love lte -10>>
+		<<if _alex.dom gte 10>>
+			"现在?"<<he>>叹了一口气。
+		<<elseif _alex.dom lte -10>>
+			"现在什么?"<<he>>问道。
+		<<else>>
+			"出什么事了?"<<he>>问道。
+		<</if>>
+	<<else>>
+		<<if _alex.dom gte 10>>
+			"如果你需要什么帮助，就告诉我，"<<he>>说道。
+		<<elseif _alex.dom lte -10>>
+			"偶尔休息一下也不错，"<<he>>说道。
+		<<else>>
+			"请随意加入我，"<<he>>说道。"偶尔休息一下是公平的。"
+		<</if>>
+	<</if>>
+	<br><br>
+<<else>>
+	<<farm_work_update>>
+<</if>>
+
+	<<if isLoveInterest("Alex")>>
+		<<if Time.season is "winter">>
+			你们挤在一起取暖。
+		<<elseif _alex.dom lte -10>>
+			<<He>>靠在你身上。
+		<<else>>
+			你坐下来靠着<<him>>.
+		<</if>>
+	<<else>>
+		你坐下来靠在树上。
+	<</if>>
+
+<<rng 2>>
+<<if $rng is 1 and $farm_stage gte 4>>
+	艾利克斯问起你。
+	<<farm_tell_alex>>
+<<else>>
+	<<farm_relax_chat>>
+<</if>>
+<br><br>
+
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure) and $farm_stage gte 4 and !playerBellyVisible()>>
+	<<if $farm_relax_drink is "accept">>
+		"再喝一杯吗?"<<he>>问道，从隐藏的地方拿出另一个瓶子。
+	<<elseif $farm_relax_drink is "refuse">>
+		"你确定不想喝一杯吗?"<<he>>问道，又把瓶子从隐藏的地方拉了出来。
+	<<else>>
+		"想喝一杯吗?"<<he>>突然问道。<<He>>从树根下面的坑里拿出一个瓶子递给你。"都说酒不该一个人喝。"
+	<</if>>
+	<br><br>
+
+	<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+		<span class="blue">你知道自己怀孕了，不能喝酒。</span>
+	<<else>>
+		<<link [[喝|Farm Rest Drink]]>><<alcohol 120>><<stress -6>><<npcincr Alex love 1>><</link>><<glove>><<lstress>>
+	<</if>>
+	<br>
+	<<link [[拒绝|Farm Rest Refuse]]>><</link>>
+	<br>
+
+<<elseif C.npc.Alex.love gte 60 and $phase isnot 5 and $weather isnot "rain" and $rng gte 81 and $exposed lte 0>>
+	"今天想出去走走吗？多点运动量也许是件好事。"
+	<br><br>
+
+	艾利克斯在树下伸了个懒腰。"我们也可以像往常一样坐在这里休息。我都不介意。"
+	<br><br>
+
+	<<He>>微笑着等待你的回答。
+	<br><br>
+
+	<<link [[同意 (0:20)|Farm Meadow Date]]>><<npcincr Alex love 1>><</link>><<glove>>
+	<br>
+	<<link [[进行一些休息|$passage]]>><<set $phase to 5>><</link>>
+
+<<else>>
+	<<farm_relax_end>>
+<</if>>
+
+:: Alex Give Milkshake
+<<effects>>
+<<npc Alex>><<person1>>
+
+你拿着奶昔走近艾利克斯。<<He>>拿着一个瓶子向你挥手，似乎没有察觉到你的意图。"嘿——"
+<br>
+"喝一杯?"你打断了艾利克斯的话，轻轻地摇了摇那杯奶昔。
+<br><br>
+
+"不是我想要的东西，"<<he>>笑着说，并把瓶子收起来。"我也不想之后喝到不省人事。但我会接受你的慷慨提议。干杯！"
+艾利克斯接过你手中的东西，在喝着饮料聊天聊了二十分钟后，<<his>>向你脱帽致意并告别。
+<br><br>
+
+<<link [[继续|Farm Work]]>><</link>>
+
+:: Alex Share Milkshake
+<<effects>>
+<<npc Alex>><<person1>>
+
+你坐在艾利克斯旁边，然后拿出了奶昔。"想来点喝的吗？"你们同时问对方。<<He>>也拿出了一瓶饮料给你。
+<br><br>
+
+<<if $worn.head.name is "naked">>
+	你拿下<<his>>的帽子，将帽檐拉到你的脸上。<<headwear 17>>
+<</if>>
+"都说不应该一个人喝酒，"你用最像艾利克斯的声音说道。
+<br><br>
+
+<<He>>突然失控地大笑起来，你和<<him>>一起笑了二十分钟。最后，你们一起分享了这个美味的奶昔。
+"谢谢你的甜点，"<<he>>喘息着擦了擦眼泪。等稍微喘口气，你们便分别离开了。
+<br><br>
+
+<<link [[继续|Farm Work]]>><</link>>
+
+:: Farm Stables Rest
+<<set $outside to 0>><<effects>>
+
+你在马厩旁的吊床上放松身心。
+<<if $weather is "rain" or $weather is "snow">>你很高兴能有个可以遮<<print ($weather is "rain"?'雨':'雪')>>的地方。<</if>>
+
+<<if $rng gte 75 and Time.dayState isnot "night" and $NPCName[$NPCNameList.indexOf("Alex")].love gte 80 and $farm_work.alex isnot "still" and $alex_countdown is undefined and $farm_stage gte 7>>
+	你看到艾利克斯走过来，向你招手。
+	"嘿，搭档，"<<nnpc_he "Alex">>微笑着靠在你的腿上。"我只是想过来看看。"
+	<br><br>
+
+	你斜倚着<<nnpc_him "Alex">>，被偶尔的微风吹拂。<<nnpc_He "Alex">>不情愿地站了起来，叹了口气。
+	"我该回去工作了。但我无法抗拒和你在一起。"
+<<elseif Time.dayState is "night">>
+	马睡着了，你能享受宁静了。
+<<elseif $farm_work.horses_out is 1>>
+	随着马在田野里奔跑，你可以享受和平与宁静。
+<<else>>
+	马在里面。你听到它们四处走动。
+<</if>>
+<br><br>
+
+<<link [[继续|Farm Work]]>><</link>>
+
+:: Farm Perimeter
+<<effects>>
+
+<<if $rng gte 51 or $farm.wall is 1>>
+	你沿着农场的边缘，从地上捡起石头，把它们放回旧墙上。
+	<br><br>
+<<else>>
+	你拿起锤子和钉子，修理田地周围的木栅栏。有些木板已经全部折断了，但有些需要更换。
+	<br><br>
+
+	你退后一步，欣赏自己的作品。
+	<br><br>
+
+<</if>>
+
+<<link [[继续|Farm Work]]>><</link>>
+<br>
+
+
+:: Farm Perimeter Alex
+<<effects>>
+
+<<npc Alex>><<person1>>
+
+<<if $rng gte 51 or $farm.wall is 1>>
+	你帮助艾利克斯沿着农场周界走，从地上捡起石头并把它们放回到旧墙上。<<He>>建议为了工作效率分开行动。
+	<br><br>
+<<else>>
+	你拿起锤子和钉子，帮助艾利克斯修理围绕着田地的木制栅栏。一些木板已经整个脱离了，但其他的需要被更换。艾利克斯向你挥手表示感谢，但似乎专注于修补<<him>>面前的损坏部分。
+	<br><br>
+
+	你退后一步，欣赏自己的作品。
+	<br><br>
+
+<</if>>
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Dogs Feed
+<<effects>>
+
+你把饲料送到地里去。一些年幼的<<farm_text_many dog>>跟着你讨要狗粮，但大多数在狗窝附近等待。
+<br><br>
+<<set $danger to random(1, 10000)>>
+<!-- Modified for Monster People -->
+<<if $danger gte (9900 - $allure) and $farm.beasts.dogs lte -20 and ($bestialitydisable is "f" or $farm_work.dog.monster is true)>>
+	你留给<<farm_text_many dog>>自己吃，但当你从田野走出来时，听到脚步声走近。
+	<<if $farm_work.dog.monster is true>>
+		在你转身之前，一双手落在你的肩膀上。一个重物把你压在地上。
+	<<else>>
+		在你转身之前，一对爪子落在你的肩膀上，一个下巴靠在你的脖子上。重量把你压在地上。
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Farm Dogs Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<!-- Modified for Monster People -->
+<<elseif ($danger gte (9900 - $allure) or $farm.beasts.dogs lte -5) and ($bestialitydisable is "f" or $farm_work.dog.monster is true)>>
+	你留给<<farm_text_many dog>>自己吃，但当你从田野走出来时，听到脚步声走近。
+	<<if $farm_work.dog.monster is true>>
+		一只<<farm_text dog>>将<<farm_his dog>>的手臂环绕在你的脖子上，并将<<farm_his dog>>的骨盆拱起。
+	<<else>>
+		一只<<farm_text dog>>将<<farm_his dog>>的爪子放在你的肩膀上，并压在你的<<bottom>>上。
+	<</if>>
+	<br><br>
+	<<link [[训斥|Farm Dogs Scold]]>><</link>><<tendingdifficulty 1 800>>
+	<br>
+	<<link [[忍耐|Farm Dogs Endure]]>><<sub 1>><<farm_dogs -1>><<trauma 6>><<stress 6>><</link>><<lrespect>><<gtrauma>><<gstress>>
+	<br>
+	<<if $deviancy gte 15>>
+		<<link [[跪下来|Farm Dogs Drop]]>><</link>><<deviant2>>
+		<br>
+	<</if>>
+<<elseif $danger gte (9900 - $allure)>>
+	其中一只年幼的<<farm_text dog>>对你咆哮，但它的长辈会控制它。<<gstress>><<stress 6>>
+	<br><br>
+
+	你留给<<farm_text_many dog>>自己吃，然后离开了田地。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<<else>>
+	你留给<<farm_text_many dog>>自己吃，然后离开了田地。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<</if>>
+
+:: Farm Barn
+<<set $outside to 0>><<effects>>
+<<farm_work_update>>
+你在牛棚里。周围回荡着<<farm_text_many cattle>>睡觉发出的声音。
+<<if $farm.barn gte 1>>
+	一个巨大，发着光的挤奶机位于中心位置。
+<<else>>
+	一个巨大的挤奶机位于中心位置。
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutfarmroad>>
+<<else>>
+	<<if Time.hour gte 6 and Time.hour lte 20>>
+		太阳透过高窗户照射进来，<<farm_text_many cattle>>开始活动。你悄悄地从建筑物里溜了出去。
+		<br><br>
+
+		<<link [[继续|Farm Work]]>><</link>>
+		<br>
+	<<else>>
+		<<if $deviancy gte 15>>
+			<<if $breastfeedingdisable is "f" and $milk_amount gte 1>>
+				<<link [[给自己榨乳(0:30)|Farm Barn Breasts]]>>
+					<<if $cow gte 6>>
+						<<transform cow 1>>
+					<</if>>
+				<</link>><<deviant2>>
+				<br>
+			<</if>>
+			<<if $player.penisExist and $semen_amount gte 1 and !playerChastity("penis")>>
+				<<link [[给肉棒榨精(0:30)|Farm Barn Penis]]>>
+					<<if $cow gte 6>>
+						<<transform cow 1>>
+					<</if>>
+				<</link>><<deviant2>>
+				<br>
+			<</if>>
+		<</if>>
+		<br>
+		<<link [[离开|Farm Work]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+
+:: Farm Barn Breasts
+<<effects>>
+<<farm_work_update>>
+<<if $cow gte 6>>
+	<<transform cow 1>>
+<</if>>
+<<milkvolume 5>>
+
+<<if $worn.upper.name isnot "naked">>
+	<<if $worn.under_upper.name isnot "naked">>
+		你脱掉$worn.upper.cn_name_cap和$worn.under_upper.cn_name_cap，并把它们放到机器前面。<<upperstrip>><<underupperstrip>>
+	<<else>>
+		你脱掉$worn.upper.cn_name_cap，并把它放到机器前面。<<upperstrip>>
+	<</if>>
+<<else>>
+	<<if $worn.under_upper.name isnot "naked">>
+		你脱掉$worn.under_upper.cn_name_cap，并把它放到机器前面。<<underupperstrip>>
+	<<else>>
+		你在机器前四肢着地。
+	<</if>>
+<</if>>
+你拿两根抽吸管，把它们连在你的<<breasts>>上。
+<br><br>
+<<if Time.dayState is "night">>
+	机器运转了起来，吮吸着你的胸膛。你<<if $cow gte 6>>发出牛叫<<else>>不断喘息<</if>>，差点吵醒了其中一头<<farm_text cattle>>。<<gggarousal>><<arousal 2000 "breasts">>
+	<br><br>
+<<else>>
+	机器运转了起来，吮吸着你的胸膛。你<<if $cow gte 6>>发出牛叫<<else>>不断喘息<</if>>，导致其中一头<<farm_text cattle>>把头转向你的方向<<if $cow gte 6>>并返回<</if>>。<<gggarousal>><<arousal 2000 "breasts">>
+	<br><br>
+<</if>>
+
+
+<<link [[继续|Farm Barn Breasts 2]]>><</link>>
+<br>
+
+
+:: Farm Barn Breasts 2
+<<effects>>
+
+机器继续着它那恶魔般的工作，更猛烈地吮吸着。你感到很温暖。<<arousal 10000>>
+<<orgasm>>
+<br>
+<<if $lactating is 1>>
+
+
+	当你的身体颤抖时，乳汁从你的蓓蕾中流出。你的液体被吸进机器，然后滴进一个玻璃罐里。
+	<br><br>
+
+	你保持双手和膝盖着地，两根吸管连接在你的<<breasts>>上，直到机器吸完乳汁。
+
+	<<if $farm.barn gte 1>>
+		<<set $farm_breast_milk to ($milk_amount / 1.5)>>
+	<<else>>
+		<<set $farm_breast_milk to ($milk_amount / 2)>>
+	<</if>>
+	<<milk_amount `-$farm_breast_milk`>>
+	<<set $milk_produced_stat += Math.trunc($farm_breast_milk)>>
+
+	<<if $farm_breast_milk gte 3000>>
+		<span class="green">玻璃罐里的牛奶几乎溢出来了。</span><<farmCatchChance 0.4>>
+	<<elseif $farm_breast_milk gte 2000>>
+		<span class="teal">你的牛奶已经满了一半了。</span><<farmCatchChance 0.2>>
+	<<elseif $farm_breast_milk gte 1000>>
+		<span class="lblue">玻璃罐里有大量的牛奶。</span><<farmCatchChance 0.1>>
+	<<elseif $farm_breast_milk gte 300>>
+		<span class="blue">玻璃罐里有相当多的牛奶。</span><<farmCatchChance 0.05>>
+	<<else>>
+		<span class="purple">玻璃罐里只有一点点牛奶。</span><<farmCatchChance 0.01>>
+	<</if>>
+	<br><br>
+	<<if $farm_breast_milk gte 2000>>
+		<<set $farm_breast_milk to Math.trunc($farm_breast_milk / 1000)>>
+		<span class="gold">你已经装满了$farm_breast_milk瓶的奶水。</span>
+		<<tending_give bottle_of_breast_milk $farm_breast_milk>>
+	<<elseif $farm_breast_milk gte 1000>>
+		<<set $farm_breast_milk to Math.trunc($farm_breast_milk / 1000)>>
+		<span class="gold">你把奶水装满了瓶子.</span>
+		<<tending_give bottle_of_breast_milk $farm_breast_milk>>
+	<<else>>
+		<<set $farm_breast_milk to Math.trunc($farm_breast_milk / 300)>>
+		<<if $farm_breast_milk lte 0>>
+			<<set $farm_breast_milk to 1>>
+		<</if>>
+		你的存量不够装满一瓶。你将其与牛奶混合。<<gfarm>>
+		<<farm_yield $farm_breast_milk>>
+	<</if>>
+	<br><br>
+
+	<<unset $farm_breast_milk>>
+	<<barn_img breasts>>
+<<else>>
+
+	你的<<breasts>>感觉更敏感了，但在机器停止工作之前，奶不会从你的蓓蕾中流出。
+	<br><br>
+<</if>>
+
+<<if $farm.milking.dayMilking is true and Time.hour gte 7 and Time.hour lte 21 and $farm_end is undefined>>
+	你用颤抖的手取出抽吸管，然后站起来。
+	<<deviancy2>>
+
+	<<link [[继续 (0:30)|Farm Cattle Milk]]>><<pass 30>><<clotheson>><<machine_end>><</link>>
+	<br>
+<<elseif $farm.milking.caught is true and $farm.milking.alexNightEvent is false>>
+	<<set $farm.milking.alexNightEvent to true>>
+	<<set $farm.milking.dayMilking to true>>
+	你用颤抖的手取出抽吸管。
+	<<deviancy2>>
+	<<link [[继续 (0:30)|Farm Barn Caught]]>><<pass 30>><<machine_end>><<endevent>><</link>>
+	<br>
+<<else>>
+	你用颤抖的手取出抽吸管，然后站起来。
+	<<deviancy2>>
+
+	<<link [[继续 (0:30)|Farm Barn]]>><<pass 30>><<clotheson>><<machine_end>><</link>>
+	<br>
+<</if>>
+
+:: Farm Barn Penis
+<<effects>>
+<<farm_work_update>>
+<<if $cow gte 6>>
+	<<transform cow 1>>
+<</if>>
+
+<<if $worn.lower.name isnot "naked">>
+	<<if $worn.under_lower.name isnot "naked">>
+		你脱掉你的<<bottoms>>和<<underbottoms>>，然后四肢着地趴在机器前面。<<lowerstrip>><<underlowerstrip>>
+	<<else>>
+		你脱下你的<<bottoms>>，四肢着地趴在机器前面。<<lowerstrip>>
+	<</if>>
+<<else>>
+	<<if $worn.under_lower.name isnot "naked">>
+		你脱掉你的<<underbottoms>>，然后四肢着地在机器前。<<underlowerstrip>>
+	<<else>>
+		你在机器前四肢着地。
+	<</if>>
+<</if>>
+你拿一根吸引管，把它连接到你的<<penis>>上。
+<br><br>
+
+<<if Time.dayState is "night">>
+	机器运转了起来，吮吸你的阴茎。你<<if $cow gte 6>>发出牛叫<<else>>不断喘息<</if>>，差点吵醒了其中一头<<farm_text cattle>>。<<gggarousal>><<arousal 2000 "genitals">>
+<br><br>
+<<else>>
+	机器运转了起来，吮吸你的阴茎。你<<if $cow gte 6>>发出牛叫<<else>>不断喘息<</if>>，导致其中一头<<farm_text cattle>>把头转向你的方向<<if $cow gte 6>>并返回<</if>>。<<gggarousal>><<arousal 2000 "genitals">>
+	<br><br>
+<</if>>
+
+<<link [[继续|Farm Barn Penis 2]]>><</link>>
+<br>
+
+
+
+:: Farm Barn Penis 2
+<<effects>>
+
+<<if $farm.barn gte 1>>
+	<<set $farm_penis_milk to ($semen_amount / 1.5)>>
+<<else>>
+	<<set $farm_penis_milk to ($semen_amount / 2)>>
+<</if>>
+<<set _original_amount to $semen_amount>>
+机器继续着它那恶魔般的工作，更猛烈地吮吸着。你感到很温暖。<<gggarousal>><<arousal 10000>>
+<<orgasm>>
+<br>
+你的精液被管子吸进一个玻璃罐里。机器不会给你恢复的机会。<<gggarousal>><<arousal 10000>>
+<<orgasm>>
+<<arousal 10000>>
+<<orgasm>>
+<br>
+
+当机器一次又一次地给你挤奶时，你仍然趴在地上，吮吸它能吸到的所有东西。就在你担心自己快要晕过去的时候，机器停了下来。
+<br><br>
+
+/* Either use the amount of semen produced by those three orgasms, or the original amount calculated for $farm_penis_milk, whichever is larger */
+<<set _orgasm_semen to _original_amount - $semen_amount>>
+<<if _orgasm_semen gt $farm_penis_milk>>
+	<<set $farm_penis_milk to _orgasm_semen>>
+<<else>>
+	<<semen_amount `-($farm_penis_milk - _orgasm_semen)`>>
+	<<set $semen_produced_stat += ($farm_penis_milk - _orgasm_semen)>>
+<</if>>
+
+<<if $farm_penis_milk gte 3000>>
+	<span class="green">精液几乎溢出了。</span><<farmCatchChance 0.4>>
+<<elseif $farm_penis_milk gte 2000>>
+	<span class="teal">你的精液已经满了一半了。</span><<farmCatchChance 0.2>>
+<<elseif $farm_penis_milk gte 1000>>
+	<span class="lblue">玻璃罐里有大量精液.</span><<farmCatchChance 0.1>>
+<<elseif $farm_penis_milk gte 300>>
+	<span class="blue">玻璃罐里有相当数量的精液。</span><<farmCatchChance 0.05>>
+<<else>>
+	<span class="purple">玻璃罐里只有一点点精液。</span><<farmCatchChance 0.01>>
+<</if>>
+<br><br>
+
+<<if $farm_penis_milk gte 2000>>
+	<<set $farm_penis_milk to Math.trunc($farm_penis_milk / 1000)>>
+	<span class="gold">你已经装满了$farm_penis_milk瓶的精液。</span>
+	<<tending_give bottle_of_semen $farm_penis_milk>>
+<<elseif $farm_penis_milk gte 1000>>
+	<<set $farm_penis_milk to Math.trunc($farm_penis_milk / 1000)>>
+	<span class="gold">你把精液装满了瓶子.</span>
+	<<tending_give bottle_of_semen $farm_penis_milk>>
+<<else>>
+	<<set $farm_penis_milk to Math.trunc($farm_penis_milk / 300)>>
+	<<if $farm_penis_milk lte 0>>
+		<<set $farm_penis_milk to 1>>
+	<</if>>
+	你的存量不够装满一瓶。你将其与牛奶混合。<<gfarm>>
+	<<farm_yield $farm_penis_milk>>
+<</if>>
+<br><br>
+
+<<unset $farm_penis_milk>>
+<<barn_img penis>>
+
+<<if $farm.milking.dayMilking is true and Time.hour gte 7 and Time.hour lte 21 and $farm_end is undefined>>
+	你用颤抖的手取出抽吸管，然后站起来。
+	<<deviancy2>>
+
+	<<link [[继续 (0:30)|Farm Cattle Milk]]>><<pass 30>><<clotheson>><<machine_end>><</link>>
+	<br>
+<<elseif $farm.milking.caught is true and $farm.milking.alexNightEvent is false>>
+	<<set $farm.milking.alexNightEvent to true>>
+	<<set $farm.milking.dayMilking to true>>
+	你用颤抖的手取出抽吸管。
+	<<deviancy2>>
+	<<link [[继续 (0:30)|Farm Barn Caught]]>><<pass 30>><<machine_end>><<endevent>><</link>>
+	<br>
+<<else>>
+	你用颤抖的手取出抽吸管，然后站起来。
+	<<deviancy2>>
+
+	<<link [[继续 (0:30)|Farm Barn]]>><<pass 30>><<clotheson>><<machine_end>><</link>>
+	<br>
+<</if>>
+
+:: Farm Barn Caught
+<<effects>>
+<<npc Alex>><<person1>>
+<span class="pink">艾利克斯从阴影中出现。</span>
+<br><br>
+"所以多出来的牛奶就是这么来的，"<<he>>红着脸说，"我知道我找过你帮忙，只是没想到你会走到这一步。"<<npcincr Alex love 1>><<glove>><<npcincr Alex lust 1>><<glust>>
+<br><br>
+<<He>>转身准备离开，但停下来说："只要牛得到照顾，我就没意见。"
+<br><br>
+<<link [[继续|Farm Barn]]>><<clotheson>><<endevent>><</link>>

@@ -1,0 +1,54 @@
+IMPORTANT: The release build uses a sugarcube version with all the below changes. The repo version is more up-do-date, and has other changes, but I've been unable to work out how to include all but the decompression change. Needs fixing. - Vrelnir
+
+
+These are the adjustments made to the base sugarcube version used by the release build.
+
+
+The adjustments are for "tweego\storyFormats\sugarcube-2\format.js"
+
+Save system:
+
+Find:  .append(document.createTextNode(s+1)),t.slots[s]?(d.append(
+Insert:  e(\"save\",\"ui-close\",L10n.get(\"savesLabelSave\"),s,Save.slots.save),
+
+Final result:  .append(document.createTextNode(s+1)),t.slots[s]?(d.append(e(\"save\",\"ui-close\",L10n.get(\"savesLabelSave\"),s,Save.slots.save),e(\"load\",\"ui-close\",L10n.get(\"savesLabelLoad\"),s,function(e)
+
+
+
+
+
+Find: &&(t.expired=[].concat(_toConsumableArray(V)))
+Or: H=r.expired===undefined?[]:[].concat(_toConsumableArray(r.expired))
+
+Remove .concat(_toConsumableArray(V))
+Or .concat(_toConsumableArray(r.expired))
+
+(or the entire string)
+The one you find and remove depends on the sugarcube version
+
+Removing the concat basically saves expired as [] every time it updates. Deleting the entire string removes State.expired entirely (at least from save files). I didn't run into any errors with either,
+ but I imagine if we tried to use visited, the first would assume its your first time every time, the other would throw an error that State.expired doesn't exist.
+
+
+
+
+
+To prevent scroll to top of page on reset:
+
+Find:  var t=jQuery(this);t.ariaIsDisabled()||(t.is("[aria-pressed]")&&t.attr("aria-pressed","true"===t.attr("aria-pressed")?"false":"true"),e.apply(this,arguments))
+Or:  var t=jQuery(this);t.ariaIsDisabled()||(t.is(\"[aria-pressed]\")&&t.attr(\"aria-pressed\",\"true\"===t.attr(\"aria-pressed\")?\"false\":\"true\"),e.apply(this,arguments))
+
+
+Replace with the following:
+
+var t=jQuery(this);const dataPassage = t.attr('data-passage');const initialDataPassage = window && window.SugarCube && window.SugarCube.State && window.SugarCube.State.passage;const savedYOffset = window.pageYOffset;t.is(\"[aria-pressed]\")&&t.attr(\"aria-pressed\",\"true\"===t.attr(\"aria-pressed\")?\"false\":\"true\"),e.apply(this,arguments);const doJump = function(){ window.scrollTo(0, savedYOffset); }if ( dataPassage && (window.lastDataPassageLink === dataPassage || initialDataPassage === dataPassage))    doJump();window.lastDataPassageLink = dataPassage;
+
+
+
+
+
+Decompresses saves and improves speed at cost of save file size:
+
+Find: {return LZString.compressToUTF16(JSON.stringify(e))}},{key:\"_deserialize\",value:function(e){return JSON.parse(LZString.decompressFromUTF16(e))}}]),e}();
+
+Replace: {return JSON.stringify(e)}},{key:\"_deserialize\",value:function(e){return JSON.parse((!e || e[0]==\"{\")?e:LZString.decompressFromUTF16(e))}}]),e}();

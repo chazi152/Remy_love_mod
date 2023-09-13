@@ -1,0 +1,340 @@
+:: overlayReplace [widget]
+
+/*
+	Displays overlay (#customOverlay element) with title and content defined by provided key.
+*/
+<<widget "overlayReplace">>
+	<<set _key to _args[0]>>
+	<<if _key>>
+		<<if _currentOverlay isnot _key>>
+
+			<<script>>
+				T.buttons.toggle();
+				updateOptions();
+				T.currentOverlay = T.key;
+				$("#customOverlay").removeClass("hidden").parent().removeClass("hidden");
+				$("#customOverlay").attr("data-overlay", T.currentOverlay);
+			<</script>>
+
+			<<switch _key>>
+				<<case "characteristics">>
+					<<replace #customOverlayTitle>><<titleCharacteristics>><</replace>>
+					<<replace #customOverlayContent>><<characteristics>><</replace>>
+				<<case "social">>
+					<<replace #customOverlayTitle>><<titleSocial>><</replace>>
+					<<replace #customOverlayContent>><<social>><</replace>>
+				<<case "traits">>
+					<<replace #customOverlayTitle>><<titleTraits>><</replace>>
+					<<replace #customOverlayContent>><<traits>><</replace>>
+				<<case "journal">>
+					<<replace #customOverlayTitle>><<titleJournal>><</replace>>
+					<<replace #customOverlayContent>><<journal>><</replace>>
+				<<case "statistics">>
+					<<replace #customOverlayTitle>><<titleStats>><</replace>>
+					<<replace #customOverlayContent>><<statistics>><</replace>>
+				<<case "gameFeats">>
+					<<replace #customOverlayTitle>><<titleFeats>><</replace>>
+					<<replace #customOverlayContent>><<feats>><</replace>>
+				<<case "startFeats">>
+					<<replace #customOverlayTitle>><<titleFeats>><</replace>>
+					<<replace #customOverlayContent>><<feats>><</replace>>
+				<<case "cheats">>
+					<<replace #customOverlayTitle>><<titleCheats>><</replace>>
+					<<replace #customOverlayContent>><<cheats>><</replace>>
+				<<case "options">>
+					<<replace #customOverlayTitle>><<titleOptions>><</replace>>
+					<<replace #customOverlayContent>><<optionsgeneral>><</replace>>
+				<<case "saves">>
+					<<replace #customOverlayTitle>><<titleSaves>><</replace>>
+					<<replace #customOverlayContent>><<saves>><</replace>>
+				<<case "blackjackHelp">>
+					<<replace #customOverlayTitle>><<titleBlackjackHelp>><</replace>>
+					<<replace #customOverlayContent>><<blackjackHelp>><</replace>>
+				<<case "eventExtraInfo">>
+					<<replace #customOverlayTitle>><<titleEventInfo>><</replace>>
+					<<replace #customOverlayContent>><<eventExtraInfo>><</replace>>
+				<<case "canvasModel">>
+					<<replace #customOverlayTitle>><<titleDebugRenderer>><</replace>>
+					<<replace #customOverlayContent>><<canvasModelEditor>><</replace>>
+				<<case "outfitEditor">>
+					<<replace #customOverlayTitle>><<titleOutfitEditor>><</replace>>
+					<<replace #customOverlayContent>><<outfitEditor>><</replace>>
+			<</switch>>
+		<<else>>
+			<<run closeOverlay()>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "titleCharacteristics">>
+	<<setupTabs>>
+	<div id="overlayTabs" class="tab">
+		<<closeButtonMobile>>
+		<<button "属性">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<characteristics>><</replace>>
+		<</button>>
+		<<colourCodes>>
+	</div>
+	<<closeButton>>
+<</widget>>
+
+<<widget "titleSocial">>
+	<<setupTabs>>
+	<div id="overlayTabs" class="tab">
+		<<closeButtonMobile>>
+		<<button "社交">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<social>><</replace>>
+		<</button>>
+		<<colourCodes>>
+	</div>
+	<<closeButton>>
+<</widget>>
+
+<<widget "titleTraits">>
+	<<setupTabs>>
+	<div id="overlayTabs" class="tab">
+		<<closeButtonMobile>>
+		<<button "特质">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<traits>><</replace>>
+		<</button>>
+	</div>
+	<<closeButton>>
+<</widget>>
+
+<<widget "titleJournal">>
+	<<setupTabs>>
+	<div id="overlayTabs" class="tab">
+		<<closeButtonMobile>>
+		<<button "日志">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<journal>><</replace>>
+		<</button>>
+	</div>
+	<<closeButton>>
+<</widget>>
+
+<<widget "titleStats">>
+	<<setupTabs>>
+	<div id="overlayTabs" class="tab">
+		<<closeButtonMobile>>
+		<<button "统计">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<statistics>><</replace>>
+		<</button>>
+		<<button "额外统计 (包含剧透)">>
+			<<toggleTab>>
+			<<if $options.skipStatisticsConfirmation>>
+				<<replace #customOverlayContent>><<extraStatistics>><</replace>>
+			<<else>>
+				<<replace #customOverlayContent>><<extraStatisticsWarning>><</replace>>
+			<</if>>
+		<</button>>
+	</div>
+	<<closeButton>>
+<</widget>>
+
+<<widget "titleFeats">>
+	<<setupTabs>>
+	<div id="overlayTabs" class="tab">
+		<<closeButtonMobile>>
+		<<button "成就">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<feats>><</replace>>
+		<</button>>
+	</div>
+	<<closeButton>>
+<</widget>>
+
+<<widget "titleCheats">>
+	<<setupTabs>>
+	<div id="overlayTabs" class="tab">
+		<<closeButtonMobile>>
+		<<button "统计信息">>
+			<<toggleTab>>
+			<<replace #cheatsShown>><<cheats-characterStats>><</replace>>
+			<<run $("#customOverlayContent").scrollTop(0);>>
+		<</button>>
+		<<button "外形">>
+			<<toggleTab>>
+			<<replace #cheatsShown>><<cheats-characterVisual>><</replace>>
+			<<run $("#customOverlayContent").scrollTop(0);>>
+		<</button>>
+		<<button "NPC们">>
+			<<toggleTab>>
+			<<replace #cheatsShown>><<cheats-npcs>><</replace>>
+			<<run $("#customOverlayContent").scrollTop(0);>>
+		<</button>>
+		<<if !$statFreeze>>
+			<<button "传送">>
+				<<toggleTab>>
+				<<replace #cheatsShown>><<cheats-teleport>><</replace>>
+				<<run $("#customOverlayContent").scrollTop(0);>>
+			<</button>>
+		<</if>>
+		<<button "其他">>
+			<<toggleTab>>
+			<<replace #cheatsShown>><<cheats-other>><</replace>>
+			<<run $("#customOverlayContent").scrollTop(0);>>
+		<</button>>
+	</div>
+	<<closeButton>>
+<</widget>>
+
+<<widget "titleOptions">>
+	<<setupTabs>>
+	<div id="overlayTabs" class="tab">
+		<<closeButtonMobile>>
+		<<button "通用">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<optionsgeneral>><</replace>>
+		<</button>>
+		<<button "主题">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<optionstheme>><</replace>>
+		<</button>>
+		<<button "性能">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<optionsperformance>><</replace>>
+		<</button>>
+		<<button "高级">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<optionsadvanced>><</replace>>
+		<</button>>
+	</div>
+	<<closeButton>>
+<</widget>>
+
+<<widget "titleSaves">>
+	<<setupTabs>>
+	<div id="overlayTabs" class="tab">
+		<<closeButtonMobile>>
+		<<button "存档">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<saves>><</replace>>
+		<</button>>
+		<<button "导出/载入">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<optionsExportImport>><</replace>>
+		<</button>>
+	</div>
+	<<closeButton>>
+<</widget>>
+
+<<widget "titleBlackjackHelp">>
+	<<setupTabs>>
+	<div id="overlayTabs" class="tab">
+		<<closeButtonMobile>>
+		<<button "二十一点新手引导">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<blackjackHelp>><</replace>>
+		<</button>>
+	</div>
+	<<closeButton>>
+<</widget>>
+
+<<widget "titleEventInfo">>
+	<<setupTabs>>
+	<div id="overlayTabs" class="tab">
+		<<closeButtonMobile>>
+		<<button "事件信息">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<eventExtraInfo>><</replace>>
+		<</button>>
+	</div>
+	<<closeButton>>
+<</widget>>
+
+<<widget "titleDebugRenderer">>
+	<<setupTabs 2>>
+	<div id="overlayTabs" class="tab">
+		<<closeButtonMobile>>
+		<<button "图层">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<canvasLayersEditor>><</replace>>
+		<</button>>
+		<<button "颜色">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<canvasColoursEditor `$cheatdisable is "f"`>><</replace>>
+		<</button>>
+		<<button "模型">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<canvasModelEditor>><</replace>>
+		<</button>>
+		<<if Renderer.lastAnimation>>
+			<<button "开始/停止动画">>
+				<<script>>
+					if (Renderer.lastAnimation.playing) { Renderer.lastAnimation.stop(); }
+					else { Renderer.lastAnimation.start(); }
+				<</script>>
+			<</button>>
+		<</if>>
+		<<button "刷新缓存">>
+			<<script>>
+				Renderer.Stats.logmsgLoad.value = "";
+				Renderer.Stats.logmsgRender.value = "";
+				Renderer.Stats.logmsgAnimate.value = "";
+				Renderer.ImageCaches = {};
+				Renderer.ImageErrors = {};
+				Renderer.lastAnimation.invalidateCaches();
+				Renderer.invalidateLayerCaches(Renderer.lastModel.layerList);
+				Renderer.lastModel.redraw();
+			<</script>>
+		<</button>>
+		<<script>>
+			output.append(Renderer.Stats.logmsgLoad.bindText($("<div class='rendererOutput'>")[0]));
+			output.append(Renderer.Stats.logmsgRender.bindText($("<div class='rendererOutput'>")[0]));
+			output.append(Renderer.Stats.logmsgAnimate.bindText($("<div class='rendererOutput'>")[0]));
+		<</script>>
+	</div>
+	<<closeButton>>
+<</widget>>
+
+<<widget "titleOutfitEditor">>
+	<<setupTabs>>
+	<div id="overlayTabs" class="tab">
+		<<closeButtonMobile>>
+		<<button "服装编辑器">>
+			<<toggleTab>>
+			<<replace #customOverlayContent>><<outfitEditor>><</replace>>
+		<</button>>
+	</div>
+	<<closeButton>>
+<</widget>>
+
+<<widget "colourCodes">>
+	<mouse class="tooltip-small colourCodes"><span>颜色分级</span>
+		<span><i class="green">极好</i> | <i class="teal">不错</i> |
+		<i class="lblue">还行</i> | <i class="blue">普通</i> |
+		<i class="purple">勉强</i> | <i class="pink">糟糕</i> |
+		<i class="red">极差</i></span>
+	</mouse>
+<</widget>>
+
+<<widget "setupTabs">>
+	<<script>>
+		T.tab = new window.Tab("overlayTabs", "tab-selected");
+		let active = V.options.closeButtonMobile ? 1 : 0;
+		T.tab.setActive((T.args[0] || 0) + active);
+	<</script>>
+<</widget>>
+
+<<widget "toggleTab">>
+	<<run T.tab.toggle()>>
+<</widget>>
+
+<<widget "closeButton">>
+	<<if !$options.closeButtonMobile>>
+		<div class="customOverlayClose" onclick="closeOverlay()"></div>
+	<</if>>
+<</widget>>
+
+<<widget "closeButtonMobile">>
+	<<if $options.closeButtonMobile>>
+		<<button "关闭">>
+			<<run closeOverlay()>>
+		<</button>>
+	<</if>>
+<</widget>>

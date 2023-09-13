@@ -1,0 +1,2539 @@
+:: Widgets Mirror [widget]
+<<widget "calchairlengthstage">>
+	<<if $hairlength gte 1000>>
+		<<set $hairlengthstage to "feet">>
+	<<elseif $hairlength gte 800>>
+		<<set $hairlengthstage to "thighs">>
+	<<elseif $hairlength gte 600>>
+		<<set $hairlengthstage to "navel">>
+	<<elseif $hairlength gte 400>>
+		<<set $hairlengthstage to "chest">>
+	<<elseif $hairlength gte 200>>
+		<<set $hairlengthstage to "shoulder">>
+	<<else>>
+		<<set $hairlengthstage to "short">>
+	<</if>>
+
+	<<if $fringelength gte 1000>>
+		<<set $fringelengthstage to "feet">>
+	<<elseif $fringelength gte 800>>
+		<<set $fringelengthstage to "thighs">>
+	<<elseif $fringelength gte 600>>
+		<<set $fringelengthstage to "navel">>
+	<<elseif $fringelength gte 400>>
+		<<set $fringelengthstage to "chest">>
+	<<elseif $fringelength gte 200>>
+		<<set $fringelengthstage to "shoulder">>
+	<<else>>
+		<<set $fringelengthstage to "short">>
+	<</if>>
+	<<set $hairlength = Math.clamp($hairlength, 0, 1000)>>
+	<<set $fringelength = Math.clamp($fringelength, 0, 1000)>>
+<</widget>>
+
+<<widget "mirror">>
+	<div id="mirror">
+		<<mirrorDisplay>>
+	</div>
+<</widget>>
+
+<<widget "preMirror">>
+	<<if (Browser.isMobile).any()>>
+		<<set $showMannequins to 0>>
+	<<else>>
+		<<set $showMannequins to 1>>
+	<</if>>
+<</widget>>
+
+<<widget "postMirror">>
+	<<shopClothingFilterReset>> /* Due to the reusing of shop code */
+<</widget>>
+
+<<widget "mirrorDisplay">>
+	<<switch $mirrorMenu>>
+		<<case "appearance">>
+			<<if playerBellyVisible(true) and !playerAwareTheyArePregnant()>>
+				<<mirrorAppearancePregnancy>>
+			<<else>>
+				<<mirrorAppearance>>
+			<</if>>
+		<<case "skin">>
+			<<mirrorSkin>>
+		<<case "hair">>
+			<<mirrorHair>>
+		<<case "makeup">>
+			<<mirrorMakeup>>
+		<<case "transformation">>
+			<<mirrorTransformation>>
+		<<case "debug">>
+			<<mirrorDebug>>
+		<<default>>
+			<<mirrorMenu _args[0]>>
+	<</switch>>
+	<<calchairlengthstage>>
+	<br><br>
+<</widget>>
+
+<<widget "mirrorwet">>
+	<<if _args[1] or _args[2] or _args[3]>>
+		<br>
+		<<set $_part to _args[0]>>
+		<<set $_semen to _args[1]>>
+		<<set $_slime to _args[2]>>
+		<<set $_nectar to _args[3]>>
+		你的<<print $_part.replace("neck","脖子").replace("right arm","右臂").replace("left arm","左臂").replace("thighs","大腿").replace("bottom","臀部").replace("tummy","肚子").replace("chest","胸部").replace("face","脸").replace("hair","头发").replace("feet","脚").replace("labia","外阴").replace("vagina","小穴").replace("penis","肉棒").replace("anus","菊穴").replace("mouth","嘴巴")>>
+		<<if $_part is "thighs" or $_part is "feet">>
+			<span></span>
+		<<else>>
+			<span></span>
+		<</if>>
+		<<if $_semen gt 0>>
+			<<switch Math.clamp($_semen, 1, 5)>>
+				<<case 1>><span class="blue">沾上了湿润的</span>
+				<<case 2>><span class="purple">沾上了</span>
+				<<case 3>><span class="purple">染上了</span>
+				<<case 4>><span class="pink">浸在了</span>
+				<<case 5>><span class="red">浸透了</span>
+			<</switch>>
+			<<if $_slime gt 0 and $_nectar gt 0>>
+				精液，
+			<<elseif $_slime gt 0 or $_nectar gt 0>>
+				精液和
+			<<else>>
+				精液。
+			<</if>>
+		<</if>>
+		<<if $_slime gt 0>>
+			<<switch Math.clamp($_slime, 1, 5)>>
+				<<case 1>><span class="blue">沾上了湿润的</span>
+				<<case 2>><span class="purple">沾上了</span>
+				<<case 3>><span class="purple">染上了</span>
+				<<case 4>><span class="pink">浸在了</span>
+				<<case 5>><span class="red">浸透了</span>
+			<</switch>>
+			<<if $_nectar gt 0>>
+				粘液和
+			<<else>>
+				粘液。
+			<</if>>
+		<</if>>
+		<<if $_nectar gt 0>>
+			<<switch Math.clamp($_nectar, 1, 5)>>
+				<<case 1>><span class="blue">沾上了湿润的</span>
+				<<case 2>><span class="purple">沾上了</span>
+				<<case 3>><span class="purple">染上了</span>
+				<<case 4>><span class="pink">浸在了</span>
+				<<case 5>><span class="red">浸透了</span>
+			<</switch>>
+			花蜜。
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "mirrorMenu">>
+	<<set $_mirror to _args[0] || '镜子'>>
+	你看着$_mirror。
+	<<if $fallenangel is 2>>
+		一个可悲的灵魂
+	<<elseif $hallucinogen gte 200>>
+		$_mirror融化成一个墨黑的水体，漂浮到你的跟前。
+		<<if $_mirror is '镜子'>>
+			玻璃碎片擦过你的皮肤，消溶在空气之中。
+		<</if>>
+		<br>
+		你凝视着虚空，而虚空
+	<<elseif $hallucinogen gte 100>>
+		表面以一个你无法理解的角度折叠起来，一些无法识别的东西
+	<<elseif $hallucinogen gt 0>>
+		镜面因你的出现而泛起涟漪，一个似曾相识的<<girl>>
+	<<elseif $trauma gte $traumamax>>
+		一个目光呆滞的<<girl>>
+	<<elseif $pain gte 100>>
+		一个哭泣的<<girl>>
+	<<elseif $pain gte 40>>
+		一个泪流满面的<<girl>>
+	<<elseif $pain gte 1>>
+		一个皱着眉头的<<girl>>
+	<<else>>
+		一个开朗的<<girl>>
+	<</if>>
+	正凝视着你。
+	<<if ["haunt", "despair"].includes($wraith.state) and $hallucinations gte 1 and random(1, 100) is 1>>
+		<span class="fading">身后站着一个苍白的身影。</span>
+	<</if>>
+	<br>
+	<<link "审视在别人眼中你是怎样的">><<set $mirrorMenu to "appearance">><<replace #mirror>><<mirrorDisplay>><</replace>><<numberify "#passages > .passage">><</link>>
+	<br><br>
+	<<if !$simpleMirror>>
+		__皮肤__
+		<br>
+		<<link "检查皮肤">><<set $mirrorMenu to "skin">><<replace #mirror>><<mirrorDisplay>><</replace>><<numberify "#passages > .passage">><</link>>
+		<br><br>
+	<</if>>
+	__头发__
+	<br>
+	<<link "改变发型">><<set $mirrorMenu to "hair">><<replace #mirror>><<mirrorDisplay>><</replace>><<numberify "#passages > .passage">><</link>>
+	<br><br>
+	__化妆__
+	<br>
+	<<link "化妆">><<set $mirrorMenu to "makeup">><<replace #mirror>><<mirrorDisplay>><</replace>><<numberify "#passages > .passage">><</link>>
+	<br><br>
+
+	<<if !$simpleMirror>>
+		<<if $specialTransform is 1 or $physicalTransform is 1>>
+			__转化__
+			<br>
+			<<link "审视你的内在">><<set $mirrorMenu to "transformation">><<replace #mirror>><<mirrorDisplay>><</replace>><<numberify "#passages > .passage">><</link>>
+		<<else>>
+			获得奇异的能力以解锁更多。
+		<</if>>
+	<</if>>
+	<br><br>
+
+	<<if $debug is 1>>
+		<<link "Debug">><<set $mirrorMenu to "debug">><<replace #mirror>><<mirrorDisplay>><</replace>><</link>>
+	<</if>>
+<</widget>>
+
+<<widget "mirrorAppearance">>
+	<<link "返回">><<replace #mirror>><<mirrorMenu>><</replace>><<numberify "#passages > .passage">><<unset $mirrorMenu>><</link>>
+	<br><br>
+	<<settextcolorfromgender $player.gender_appearance>>
+	你看起来像一个<span @class="_text_color"><<if playerBellyVisible(true)>>怀孕的<</if>><<girl>>。</span>
+	<br>
+	以下要素正发挥影响：
+	<br>
+	<<for _x range $player.gender_appearance_factors>>
+		<<if _x.femininity is 0 or !_x.factor>>
+			<<continue>>
+		<</if>>
+		<<settextcolorfromfemininity _x.femininity>>
+		<span @class="_text_color">
+			_x.factor
+			<<if $debug is 1>>
+				_x.femininity
+			<<else>>
+				<<print "+".repeat(
+					Math.trunc(Math.clamp(
+						Math.abs(_x.femininity) / 100, 0, 10
+					))
+				)>>
+			<</if>>
+		</span>
+		<br>
+	<</for>>
+	<<if $debug is 1>>
+		<<settextcolorfromfemininity $player.femininity>>
+		完全女性气质： <span @class="_text_color">$player.femininity</span>
+		<br><br>
+	<</if>>
+	<br>
+
+	<i>吸引力衡量的是你利用外表获取优势的能力。</i>
+	<br>
+	吸引力等级：
+	<<if $attractiveness gte 5000>>
+		<span class="green">S</span>
+	<<elseif $attractiveness gte 4000>>
+		<span class="teal">A</span>
+	<<elseif $attractiveness gte 3000>>
+		<span class="lblue">B</span>
+	<<elseif $attractiveness gte 2000>>
+		<span class="blue">C</span>
+	<<elseif $attractiveness gte 1000>>
+		<span class="purple">D</span>
+	<<else>>
+		<span class="pink">F</span>
+	<</if>>
+	<br><br>
+
+	<span class="green">
+		<<if $beauty gte ($beautymax / 7)>>
+			可爱
+			<br>
+		<</if>>
+		<<if $beauty gte ($beautymax / 7) * 2>>
+			尤物
+			<br>
+		<</if>>
+		<<if $beauty gte ($beautymax / 7) * 3>>
+			迷人
+			<br>
+		<</if>>
+		<<if $beauty gte ($beautymax / 7) * 4>>
+			美丽
+			<br>
+		<</if>>
+		<<if $beauty gte ($beautymax / 7) * 5>>
+			醉人
+			<br>
+		<</if>>
+		<<if $beauty gte ($beautymax / 7) * 6>>
+			神圣
+			<br>
+		<</if>>
+		头发长度
+		<br>
+		<<if $worn.upper.type.includes("naked")>>
+			赤裸上身
+			<br>
+		<<elseif $worn.upper.reveal gte 500>>
+			暴露的上装
+			<br>
+		<</if>>
+		<<if $worn.lower.type.includes("naked")>>
+			赤裸下身
+			<br>
+		<<elseif $worn.lower.reveal gte 500>>
+			暴露的下装
+			<br>
+		<</if>>
+		<<if $worn.under_lower.type.includes("naked")>>
+			没穿内裤
+			<br>
+		<<elseif $worn.under_lower.reveal gte 500>>
+			性感内衣
+			<br>
+		<</if>>
+		<<if $wolfgirl gte 6>>
+			狼化
+			<br>
+		<</if>>
+		<<if $cat gte 6>>
+			猫化
+			<br>
+		<</if>>
+		<<if $cow gte 6>>
+			牛化
+			<br>
+		<</if>>
+		<<if $harpy gte 6>>
+			鹰化
+			<br>
+		<</if>>
+		<<if $fox gte 6>>
+			狐化
+			<br>
+		<</if>>
+		<<if $angel gte 6>>
+			天使化
+			<br>
+		<</if>>
+		<<if $fallenangel gte 2>>
+			堕天使化
+			<br>
+		<</if>>
+		<<if $demon gte 6>>
+			恶魔化
+			<br>
+		<</if>>
+		<<if $makeup.lipstick != 0 or $makeup.eyeshadow != 0 or $makeup.mascara != 0>>
+			迷人的妆容
+			<br>
+		<</if>>
+		<<if $worn.head.reveal gte 50>>
+			迷人的头饰
+			<br>
+		<</if>>
+		<<if $worn.face.reveal gte 50>>
+			迷人的脸饰
+			<br>
+		<</if>>
+		<<if $worn.neck.reveal gte 50>>
+			迷人的项饰
+			<br>
+		<</if>>
+		<<if $worn.legs.reveal gte 50>>
+			迷人的裤袜
+			<br>
+		<</if>>
+		<<if $worn.feet.reveal gte 50>>
+			迷人的鞋子
+			<br>
+		<</if>>
+	</span>
+
+	<br>
+	<i>诱惑是吸引力的阴暗面，衡量人们想要调戏你的程度。</i>
+	<br>
+	诱惑：
+	<<if $allure gte 6000 * $alluremod>>
+		<span class="red">你看起来需要被蹂躏。</span>
+	<<elseif $allure gte 4000 * $alluremod>>
+		<span class="pink">你看起来很有伤风化。</span>
+	<<elseif $allure gte 3000 * $alluremod>>
+		<span class="purple">你看起来非常色情。</span>
+	<<elseif $allure gte 2000 * $alluremod>>
+		<span class="blue">你在人群中十分显眼。</span>
+	<<elseif $allure gte 1500 * $alluremod>>
+		<span class="lblue">你引人注目。</span>
+	<<elseif $allure gte 1000 * $alluremod>>
+		<span class="teal">偶尔有人会偷偷看你几眼。</span>
+	<<else>>
+		<span class="green">你看起来平平无奇。</span>
+	<</if>>
+	<br><br>
+
+	增加你的诱惑:
+	<br>
+	<span class="red">
+		<<if $beauty gte ($beautymax / 7)>>
+			可爱
+			<br>
+		<</if>>
+		<<if $beauty gte ($beautymax / 7) * 2>>
+			尤物
+			<br>
+		<</if>>
+		<<if $beauty gte ($beautymax / 7) * 3>>
+			迷人
+			<br>
+		<</if>>
+		<<if $beauty gte ($beautymax / 7) * 4>>
+			美丽
+			<br>
+		<</if>>
+		<<if $beauty gte ($beautymax / 7) * 5>>
+			醉人
+			<br>
+		<</if>>
+		<<if $beauty gte ($beautymax / 7) * 6>>
+			神圣
+			<br>
+		<</if>>
+		头发长度
+		<br>
+		<<if $worn.upper.type.includes("naked")>>
+			赤裸上身
+			<br>
+		<<elseif $worn.upper.reveal gte 500>>
+			暴露的上装
+			<br>
+		<</if>>
+		<<if $worn.lower.type.includes("naked")>>
+			赤裸下身
+			<br>
+		<<elseif $worn.lower.reveal gte 500>>
+			暴露的下装
+			<br>
+		<</if>>
+		<<if $worn.under_lower.type.includes("naked")>>
+			没穿内裤
+			<br>
+		<<elseif $worn.under_lower.reveal gte 500>>
+			性感内衣
+			<br>
+		<</if>>
+		<<if $wolfgirl gte 6>>
+			狼化
+			<br>
+		<</if>>
+		<<if $cat gte 6>>
+			猫化
+			<br>
+		<</if>>
+		<<if $cow gte 6>>
+			牛化
+			<br>
+		<</if>>
+		<<if $harpy gte 6>>
+			鹰化
+			<br>
+		<</if>>
+		<<if $fox gte 6>>
+			狐化
+			<br>
+		<</if>>
+		<<if $angel gte 6>>
+			天使化
+			<br>
+		<</if>>
+		<<if $fallenangel gte 2>>
+			堕天使化
+			<br>
+		<</if>>
+		<<if $demon gte 6>>
+			恶魔化
+			<br>
+		<</if>>
+		<<if $makeup.lipstick != 0 or $makeup.eyeshadow != 0 or $makeup.mascara != 0>>
+			诱人的妆容
+			<br>
+		<</if>>
+		<<if $worn.head.reveal gte 50>>
+			诱人的头饰
+			<br>
+		<</if>>
+		<<if $worn.face.reveal gte 50>>
+			诱人的面饰
+			<br>
+		<</if>>
+		<<if $worn.neck.reveal gte 50>>
+			诱人的项饰
+			<br>
+		<</if>>
+		<<if $worn.legs.reveal gte 50>>
+			诱人的裤袜
+			<br>
+		<</if>>
+		<<if $worn.feet.reveal gte 50>>
+			诱人的鞋子
+			<br>
+		<</if>>
+		<<if Time.dayState is "night">>
+			夜晚
+			<br>
+		<</if>>
+		<<if $exposed gte 1>>
+			裸露
+			<br>
+		<</if>>
+		<<if $liquidcount gte 1>>
+			精液的味道
+			<br>
+		<</if>>
+		<<if $liquidcount gte 10>>
+			沾染着精液
+			<br>
+		<</if>>
+		<<if $liquidcount gte 30>>
+			满身的精液
+			<br>
+		<</if>>
+		<<if isBloodmoon()>>
+			满月
+			<br>
+		<</if>>
+	</span>
+	<<if $fame.sex gte 1000>>
+		<span class="red">声名狼藉的骚货</span>
+		<br>
+	<<elseif $fame.sex gte 600>>
+		<span class="pink">著名的骚货</span>
+		<br>
+	<<elseif $fame.sex gte 400>>
+		<span class="purple">公认的骚货</span>
+		<br>
+	<<elseif $fame.sex gte 200>>
+		<span class="blue">知名的骚货</span>
+		<br>
+	<<elseif $fame.sex gte 100>>
+		<span class="lblue">低调的骚货</span>
+		<br>
+	<<elseif $fame.sex gte 30>>
+		<span class="teal">默默无闻的骚货</span>
+		<br>
+	<</if>>
+
+	<<if $fame.prostitution gte 1000>>
+		<span class="red">声名狼藉的娼妓</span>
+		<br>
+	<<elseif $fame.prostitution gte 600>>
+		<span class="pink">著名的娼妓</span>
+		<br>
+	<<elseif $fame.prostitution gte 400>>
+		<span class="purple">公认的娼妓</span>
+		<br>
+	<<elseif $fame.prostitution gte 200>>
+		<span class="blue">知名的娼妓</span>
+		<br>
+	<<elseif $fame.prostitution gte 100>>
+		<span class="lblue">低调的娼妓</span>
+		<br>
+	<<elseif $fame.prostitution gte 30>>
+		<span class="teal">默默无闻的娼妓</span>
+		<br>
+	<</if>>
+
+	<<if $fame.rape gte 1000>>
+		<span class="red">声名狼藉的肉便器</span>
+		<br>
+	<<elseif $fame.rape gte 600>>
+		<span class="pink">著名的肉便器</span>
+		<br>
+	<<elseif $fame.rape gte 400>>
+		<span class="purple">公认的肉便器</span>
+		<br>
+	<<elseif $fame.rape gte 200>>
+		<span class="blue">知名的肉便器</span>
+		<br>
+	<<elseif $fame.rape gte 100>>
+		<span class="lblue">低调的肉便器</span>
+		<br>
+	<<elseif $fame.rape gte 30>>
+		<span class="teal">默默无闻的肉便器</span>
+		<br>
+	<</if>>
+
+	<<if $bestialitydisable is "f">>
+		<<if $fame.bestiality gte 1000>>
+			<span class="red">声名狼藉的婊子</span>
+			<br>
+		<<elseif $fame.bestiality gte 600>>
+			<span class="pink">著名的婊子</span>
+			<br>
+		<<elseif $fame.bestiality gte 400>>
+			<span class="purple">公认的婊子</span>
+			<br>
+		<<elseif $fame.bestiality gte 200>>
+			<span class="blue">知名的婊子</span>
+			<br>
+		<<elseif $fame.bestiality gte 100>>
+			<span class="lblue">低调的婊子</span>
+			<br>
+		<<elseif $fame.bestiality gte 30>>
+			<span class="teal">默默无闻的婊子</span>
+			<br>
+		<</if>>
+	<<else>>
+		<<if $fame.bestiality gte 1000>>
+			<span class="red">声名狼藉的兽交者</span>
+			<br>
+		<<elseif $fame.bestiality gte 600>>
+			<span class="pink">著名的兽交者</span>
+			<br>
+		<<elseif $fame.bestiality gte 400>>
+			<span class="purple">公认的兽交者</span>
+			<br>
+		<<elseif $fame.bestiality gte 200>>
+			<span class="blue">知名的兽交者</span>
+			<br>
+		<<elseif $fame.bestiality gte 100>>
+			<span class="lblue">低调的兽交者</span>
+			<br>
+		<<elseif $fame.bestiality gte 30>>
+			<span class="teal">默默无闻的兽交者</span>
+			<br>
+		<</if>>
+	<</if>>
+
+	<<if $fame.exhibitionism gte 1000>>
+		<span class="red">声名狼藉的露出狂</span>
+		<br>
+	<<elseif $fame.exhibitionism gte 600>>
+		<span class="pink">著名的露出狂</span>
+		<br>
+	<<elseif $fame.exhibitionism gte 400>>
+		<span class="purple">公认的露出狂</span>
+		<br>
+	<<elseif $fame.exhibitionism gte 200>>
+		<span class="blue">知名的露出狂</span>
+		<br>
+	<<elseif $fame.exhibitionism gte 100>>
+		<span class="lblue">低调的露出狂</span>
+		<br>
+	<<elseif $fame.exhibitionism gte 30>>
+		<span class="teal">默默无闻的露出狂</span>
+		<br>
+	<</if>>
+	<<if $fame.pregnancy gte 1000>>
+		<span class="red">声名狼藉的孕母</span>
+		<br>
+	<<elseif $fame.pregnancy gte 600>>
+		<span class="pink">著名的孕母</span>
+		<br>
+	<<elseif $fame.pregnancy gte 400>>
+		<span class="purple">公认的饲养员</span>
+		<br>
+	<<elseif $fame.pregnancy gte 200>>
+		<span class="blue">知名的饲养员</span>
+		<br>
+	<<elseif $fame.pregnancy gte 100>>
+		<span class="lblue">低调的母亲</span>
+		<br>
+	<<elseif $fame.pregnancy gte 50>>
+		<span class="teal">默默无闻的母亲</span>
+		<br>
+	<</if>>
+	<<if $fame.impreg gte 1000>>
+		<span class="red">声名狼藉的种马</span>
+		<br>
+	<<elseif $fame.impreg gte 600>>
+		<span class="pink">著名的种马</span>
+		<br>
+	<<elseif $fame.impreg gte 400>>
+		<span class="purple">公认的种马</span>
+		<br>
+	<<elseif $fame.impreg gte 200>>
+		<span class="blue">广为人知的种马</span>
+		<br>
+	<<elseif $fame.impreg gte 100>>
+		<span class="lblue">低调的种马</span>
+		<br>
+	<<elseif $fame.impreg gte 50>>
+		<span class="teal">默默无闻的种马</span>
+		<br>
+	<</if>>
+
+	<br>
+	降低你的诱惑:
+	<br>
+
+	<<if $fame.scrap gte 1000>>
+		<span class="green">声名远扬的格斗家</span>
+		<br>
+	<<elseif $fame.scrap gte 600>>
+		<span class="teal">著名的格斗家</span>
+		<br>
+	<<elseif $fame.scrap gte 400>>
+		<span class="lblue">公认的格斗家</span>
+		<br>
+	<<elseif $fame.scrap gte 200>>
+		<span class="blue">知名的格斗家</span>
+		<br>
+	<<elseif $fame.scrap gte 100>>
+		<span class="purple">低调的格斗家</span>
+		<br>
+	<<elseif $fame.scrap gte 30>>
+		<span class="pink">默默无闻的格斗家</span>
+		<br>
+	<</if>>
+	<<if $fame.good gte 1000>>
+		<span class="green">声名远扬的好心人</span>
+		<br>
+	<<elseif $fame.good gte 600>>
+		<span class="teal">著名的好心人</span>
+		<br>
+	<<elseif $fame.good gte 400>>
+		<span class="lblue">公认的好心人</span>
+		<br>
+	<<elseif $fame.good gte 200>>
+		<span class="blue">知名的好心人</span>
+		<br>
+	<<elseif $fame.good gte 100>>
+		<span class="purple">低调的好心人</span>
+		<br>
+	<<elseif $fame.good gte 30>>
+		<span class="pink">默默无闻的好心人</span>
+		<br>
+	<</if>>
+	<<if $fame.business gte 1000>>
+		<span class="green">声名远扬的企业家</span>
+		<br>
+	<<elseif $fame.business gte 600>>
+		<span class="teal">著名的企业家</span>
+		<br>
+	<<elseif $fame.business gte 400>>
+		<span class="lblue">公认的企业家</span>
+		<br>
+	<<elseif $fame.business gte 200>>
+		<span class="blue">知名的企业家</span>
+		<br>
+	<<elseif $fame.business gte 100>>
+		<span class="purple">低调的企业家</span>
+		<br>
+	<<elseif $fame.business gte 30>>
+		<span class="pink">默默无闻的企业家</span>
+		<br>
+	<</if>>
+	<<if $fame.social gte 1000>>
+		<span class="green">声名远扬的社交名士</span>
+		<br>
+	<<elseif $fame.social gte 600>>
+		<span class="teal">著名的社交名士</span>
+		<br>
+	<<elseif $fame.social gte 400>>
+		<span class="lblue">公认的社交名士</span>
+		<br>
+	<<elseif $fame.social gte 200>>
+		<span class="blue">知名的社交名士</span>
+		<br>
+	<<elseif $fame.social gte 100>>
+		<span class="purple">低调的社交名士</span>
+		<br>
+	<<elseif $fame.social gte 30>>
+		<span class="pink">默默无闻的社交名士</span>
+		<br>
+	<</if>>
+	<<if $fame.model gte 1000>>
+		<span class="green">声名远扬的当红模特</span>
+		<br>
+	<<elseif $fame.model gte 600>>
+		<span class="teal">著名的模特</span>
+		<br>
+	<<elseif $fame.model gte 400>>
+		<span class="lblue">公认的模特</span>
+		<br>
+	<<elseif $fame.model gte 200>>
+		<span class="blue">知名的模特</span>
+		<br>
+	<<elseif $fame.model gte 100>>
+		<span class="purple">低调的模特</span>
+		<br>
+	<<elseif $fame.model gte 30>>
+		<span class="pink">默默无闻的模特</span>
+		<br>
+	<</if>>
+	<<if $moorLuck gt 5>>
+		<span class="green">????</span>
+		<br>
+	<<elseif $moorLuck gt 0>>
+		<span class="lblue">????</span>
+		<br>
+	<</if>>
+
+	<br><br>
+	__行为__
+	<br>
+	<<if $player.gender_posture is "n">>
+		你转过身来看着自己，你看起来像一个<<girl>>。如果你
+		的举止有所不同，你也许可以改变别人的看法。
+	<<elseif $player.gender_posture is "f">>
+		你摆出一些少女的姿势，发出你最女性化的声音。
+		<br>
+		<span class="pink">其他人会更容易认为你是个女孩。</span>
+	<<elseif $player.gender_posture is "m">>
+		你拱起你的肌肉，在你的声音中添加一些粗哑。
+		<br>
+		<span class="lblue">其他人会更容易认为你是个男孩。</span>
+	<</if>>
+	<br>
+	<<linkradiogroup "$player.gender_posture" `{
+		"自然行事": "n",
+		"摆出女性化的姿势": "f",
+		"摆出男性化的姿势": "m",
+	}`>>
+<</widget>>
+
+<<widget "mirrorAppearancePregnancy">>
+	<<run updateMoment()>>
+	<<type 100ms none>>
+		你看起来像个<span class="lewd">怀孕的<<girl>>...</span><<garousal>><<gstress>>
+	<</type>>
+	<<arousal 300>><<stress 10>>
+	<br><br>
+
+	<<if getPregnancyObject().potentialFathers.length is 1>>
+		<<set $_fatherName to pregnancyNameCorrection(getPregnancyObject().potentialFathers[0].source)>>
+		<span class="lewd">很明显，<<print $_fatherName === "yourself" ? "你是" : $_fatherName + "是">>孩子他爸。</span>
+	<<else>>
+		<span class="red">你想知道孩子的父亲是谁。</span>
+	<</if>>
+	<<set getPregnancyObject().awareOf to true>>
+<</widget>>
+
+<<widget "mirrorSkin">>
+	你审视起自己的肌肤。
+	<br>
+	<<link "返回">><<replace #mirror>><<mirrorMenu>><</replace>><<numberify "#passages > .passage">><<unset $mirrorMenu>><</link>>
+	<br><br>
+
+	<<if $liquidcount gt 0>>
+		__体液__
+		<<mirrorwet "neck" $player.bodyliquid.neck.semen $player.bodyliquid.neck.goo $player.bodyliquid.neck.nectar>>
+		<<mirrorwet "right arm" $player.bodyliquid.rightarm.semen $player.bodyliquid.rightarm.goo $player.bodyliquid.rightarm.nectar>>
+		<<mirrorwet "left arm" $player.bodyliquid.leftarm.semen $player.bodyliquid.leftarm.goo $player.bodyliquid.leftarm.nectar>>
+		<<mirrorwet "thighs" $player.bodyliquid.thigh.semen $player.bodyliquid.thigh.goo $player.bodyliquid.thigh.nectar>>
+		<<mirrorwet "bottom" $player.bodyliquid.bottom.semen $player.bodyliquid.bottom.goo $player.bodyliquid.bottom.nectar>>
+		<<mirrorwet "tummy" $player.bodyliquid.tummy.semen $player.bodyliquid.tummy.goo $player.bodyliquid.tummy.nectar>>
+		<<mirrorwet "chest" $player.bodyliquid.chest.semen $player.bodyliquid.chest.goo $player.bodyliquid.chest.nectar>>
+		<<mirrorwet "face" $player.bodyliquid.face.semen $player.bodyliquid.face.goo $player.bodyliquid.face.nectar>>
+		<<mirrorwet "hair" $player.bodyliquid.hair.semen $player.bodyliquid.hair.goo $player.bodyliquid.hair.nectar>>
+		<<mirrorwet "feet" $player.bodyliquid.feet.semen $player.bodyliquid.feet.goo $player.bodyliquid.feet.nectar>>
+		<<mirrorwet "labia" $player.bodyliquid.vaginaoutside.semen $player.bodyliquid.vaginaoutside.goo $player.bodyliquid.vaginaoutside.nectar>>
+		<<mirrorwet "vagina" $player.bodyliquid.vagina.semen $player.bodyliquid.vagina.goo $player.bodyliquid.vagina.nectar>>
+		<<mirrorwet "penis" $player.bodyliquid.penis.semen $player.bodyliquid.penis.goo $player.bodyliquid.penis.nectar>>
+		<<mirrorwet "anus" $player.bodyliquid.anus.semen $player.bodyliquid.anus.goo $player.bodyliquid.anus.nectar>>
+		<<mirrorwet "mouth" $player.bodyliquid.mouth.semen $player.bodyliquid.mouth.goo $player.bodyliquid.mouth.nectar>>
+	<<else>>
+		你的皮肤感觉很干净。
+	<</if>>
+	<br><br>
+	__身体涂鸦__<br>
+
+	<<if $bodyWritingSelected is null>>
+		<<unset $bodyWritingSelected>>
+	<</if>>
+	<<if $bodyWritingSelected isnot undefined>>
+		你写上
+		<<if isLoveInterest($skin[$bodyPartSelected].special)>>
+			"<span class="lewd"><<print $bodyWritingSelected>></span>"
+		<<elseif $skin[$bodyPartSelected].special isnot "none">>
+			"<span class="red"><<print $bodyWritingSelected>></span>"
+		<<elseif $skin[$bodyPartSelected].lewd is 1>>
+			"<span class="pink"><<print $bodyWritingSelected>></span>"
+		<<else>>
+			"<span class="purple"><<print $bodyWritingSelected>></span>"
+		<</if>>
+		在你的<<bodypart $bodyPartSelected>>上。
+		<<unset $bodyWritingSelected>>
+		<<unset $bodyPartSelected>>
+		<br><br>
+	<</if>>
+	<<bodywriting>>
+	<br>
+	<<set _bodyWritingOptions to {
+		General: {
+		"可爱男孩":"cute_boy",
+		"可爱女孩":"cute_girl",
+		"孤儿":"orphan"
+		}
+	}>>
+
+	<<if $beauty gte ($beautymax / 7) * 3>>
+		<<set _bodyWritingOptions.General["帅哥"] to "handsome">>
+		<<set _bodyWritingOptions.General["尤物"] to "pretty">>
+	<</if>>
+	<<if $beauty gte ($beautymax / 7) * 4>>
+		<<set _bodyWritingOptions.General["种马"] to "stud">>
+		<<set _bodyWritingOptions.General["美人"] to "beauty">>
+	<</if>>
+	<<if $beauty gte ($beautymax / 7) * 5>>
+		<<set _bodyWritingOptions.General["俏佳人"] to "beautiful">>
+	<</if>>
+
+	<<if $trauma gte (($traumamax / 5) * 2)>>
+		<<set _bodyWritingOptions.General["我爱糖爹"] to "daddy_issues">>
+		<<set _bodyWritingOptions.General["我爱糖妈"] to "mommy_issues">>
+		<<set _bodyWritingOptions.General["废物"] to "trashy">>
+	<</if>>
+	<<if $trauma gte (($traumamax / 5) * 3)>>
+		<<set _bodyWritingOptions.General["一文不值"] to "worthless">>
+		<<set _bodyWritingOptions.General["哦不"] to "oh_no">>
+		<<set _bodyWritingOptions.General["脑瘫婊子"] to "dumb_bitch">>
+	<</if>>
+
+	<<if $promiscuity gte 15>>
+		<<set _bodyWritingOptions.General["辣妹"] to "hot">>
+	<</if>>
+	<<if $promiscuity gte 35>>
+		<<set _bodyWritingOptions.Promiscuity = {}>>
+		<<set _bodyWritingOptions.Promiscuity["荡妇"] to "slut">>
+		<<set _bodyWritingOptions.Promiscuity["淫荡"] to "promiscuous">>
+		<<set _bodyWritingOptions.Promiscuity["浪荡"] to "wanton">>
+		<<set _bodyWritingOptions.Promiscuity["来淦！"] to "dtf">>
+	<</if>>
+
+	<<if $promiscuity gte 55>>
+		<<set _bodyWritingOptions.Promiscuity["欲求不满的婊子"] to "insatiable_slut">>
+		<<set _bodyWritingOptions.Promiscuity["免费公交车"] to "free_sex">>
+		<<set _bodyWritingOptions.Promiscuity["公用自行车"] to "town_bicycle">>
+		<<set _bodyWritingOptions.Promiscuity["我爱大屌"] to "size_queen">>
+		<<if $orgasmtrait gte 1>>
+			<<set _bodyWritingOptions.Promiscuity["性瘾者"] to "sex_addict">>
+			<<set _bodyWritingOptions.Promiscuity["让我高潮"] to "make_me_cum">>
+		<</if>>
+	<</if>>
+
+	<<if $promiscuity gte 75>>
+		<<set _bodyWritingOptions.Promiscuity["操我"] to "fuck_me">>
+		<<set _bodyWritingOptions.Promiscuity["吸精达人"] to "cocksucker">>
+		<<set _bodyWritingOptions.Promiscuity["储精罐"] to "cum_dump">>
+		<<set _bodyWritingOptions.Promiscuity["公用婊子"] to "public_slut">>
+		<<if $analstat gte 100>>
+			<<set _bodyWritingOptions.Promiscuity["菊穴骚货"] to "buttslut">>
+			<<set _bodyWritingOptions.Promiscuity["肛交娼妓"] to "anal_whore">>
+		<</if>>
+	<</if>>
+
+	<<if $promiscuity gte 35>>
+		<<set _bodyWritingOptions.Prostitution = {}>>
+		<<if $trauma gte (($traumamax / 5) * 2)>>
+			<<set _bodyWritingOptions.Prostitution["给我钱就不算强奸"] to "its_not_rape_if_you_pay_me">>
+		<</if>>
+		<<set _bodyWritingOptions.Prostitution["£5的娼妓"] to "five_pound_whore">>
+		<<set _bodyWritingOptions.Prostitution["口交—>£10"] to "ten_pound_a_pop">>
+		<<set _bodyWritingOptions.Prostitution["站街鸭子"] to "slut_for_hire">>
+	<</if>>
+	<<if $promiscuity gte 55>>
+		<<set _bodyWritingOptions.Prostitution["一炮£25"] to "twenty_five_pound_per_fuck">>
+		<<set _bodyWritingOptions.Prostitution["£100"] to "one_hundred_pound">>
+		<<set _bodyWritingOptions.Prostitution["肉便器出租"] to "body_for_sale">>
+		<<if $trauma gte (($traumamax / 5) * 3)>>
+			<<set _bodyWritingOptions.Prostitution["失智娼妓"] to "stupid_whore">>
+		<<else>>
+			<<set _bodyWritingOptions.Prostitution["娼妓"] to "whore">>
+		<</if>>
+		<<set _bodyWritingOptions.Prostitution["卖淫"] to "prostitute">>
+	<</if>>
+	<<if $exhibitionism gte 35>>
+		<<set _bodyWritingOptions.Exhibitionism to {}>>
+		<<set _bodyWritingOptions.Exhibitionism["变态"] to "pervert">>
+		<<set _bodyWritingOptions.Exhibitionism["多戏娼妓"] to "attention_whore">>
+		<<set _bodyWritingOptions.Exhibitionism["不要脸"] to "flaunter">>
+		<<set _bodyWritingOptions.Exhibitionism["只是个用品"] to "object">>
+		<<set _bodyWritingOptions.Exhibitionism["扒光我"] to "strip_me">>
+		<<set _bodyWritingOptions.Exhibitionism["裸体随时可以看嗷"] to "ask_to_see_me_naked">>
+	<</if>>
+	<<if $deviancy gte 55>>
+		<<set _bodyWritingOptions.Deviancy to {}>>
+		<<set _bodyWritingOptions.Deviancy["狗荡妇"] to "doggy_slut">>
+		<<set _bodyWritingOptions.Deviancy["畜生"] to "animal">>
+		<<set _bodyWritingOptions.Deviancy["兽交者"] to "beast_fucker">>
+		<<set _bodyWritingOptions.Deviancy["可饲育"] to "breedable">>
+		<<set _bodyWritingOptions.Deviancy["离经叛道"] to "deviant">>
+	<</if>>
+	<<if $masochism_level gte 1>>
+		<<set _bodyWritingOptions.Masochism to {}>>
+		<<set _bodyWritingOptions.Masochism["打我"] to "hit_me">>
+		<<set _bodyWritingOptions.Masochism["伤害我"] to "hurt_me">>
+		<<set _bodyWritingOptions.Masochism["对我粗鲁一点"] to "treat_me_bad">>
+		<<set _bodyWritingOptions.Masochism["让我叫出来"] to "make_me_squeal">>
+	<</if>>
+	<<if $submissive gte 1200>>
+		<<set _bodyWritingOptions.Submission to {}>>
+		<<set _bodyWritingOptions.Submission["服从"] to "submissive">>
+		<<set _bodyWritingOptions.Submission["宠物"] to "pet">>
+
+			<<if $deviancy gte 35>>
+			<<set _bodyWritingOptions.Submission["公共宠物"] to "public_pet">>
+		<</if>>
+
+		<<if $promiscuity gte 55>>
+			<<set _bodyWritingOptions.Submission["随意使用"] to "free_use">>
+			<<set _bodyWritingOptions.Submission["请使用我"] to "use_me">>
+		<</if>>
+
+		<<if $submissive gte 1500>>
+			<<set _bodyWritingOptions.Submission["奴隶"] to "slave">>
+			<<set _bodyWritingOptions.Submission["奴役我"] to "enslave_me">>
+			<<set _bodyWritingOptions.Submission["射精布"] to "cum_rag">>
+			<<if $promiscuity gte 75>>
+				<<set _bodyWritingOptions.Submission["性爱娃娃"] to "fuckdoll">>
+				<<set _bodyWritingOptions.Submission["肉便器"] to "fucktoy">>
+				<<if $player.penisExist>>
+					<<set _bodyWritingOptions.Submission["会走路的性爱玩具"] to "walking_dildo">>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</if>>
+	<<if ($player.vaginaExist or ($sexStats.anus.pregnancy.awareOf or $sexStats.anus.pregnancy.givenBirth gte 1)) and $promiscuity gte 75>>
+		<<set _bodyWritingOptions.Pregnancy to {}>>
+		<<set _bodyWritingOptions.Pregnancy["育卵母体"] to "brood_mother">>
+		<<set _bodyWritingOptions.Pregnancy["请让我受精"] to "inseminate_me">>
+		<<set _bodyWritingOptions.Pregnancy["请让我怀孕"] to "impregnate_me">>
+		<<set _bodyWritingOptions.Pregnancy["怀孕荡妇"] to "pregnancy_slut">>
+		<<set _bodyWritingOptions.Pregnancy["育种苗场"] to "breeding_ground">>
+	<</if>>
+
+	<<set _bodyWritingOptions["Love Interests"] to {}>>
+	<<if $robinromance is 1>>
+		<<set _bodyWritingOptions["Love Interests"]["罗宾的守护者"] to "robins_protector">>
+		<<set _bodyWritingOptions["Love Interests"]["罗宾和&我<3"] to "robin_and_i">>
+		<<set _bodyWritingOptions["Love Interests"]["孤儿情圣"] to "the_orphan_lover">>
+		<<if ($player.gender is "m" or $player.gender is "h" or $player.gender_appearance is "m" or $backgroundTraits.includes("crossdresser"))>>
+			<<set _bodyWritingOptions["Love Interests"]["罗宾的男友"] to "robins_boyfriend">>
+		<</if>>
+		<<if ($player.gender is "f" or $player.gender is "h" or $player.gender_appearance is "f" or $backgroundTraits.includes("crossdresser"))>>
+			<<set _bodyWritingOptions["Love Interests"]["罗宾的女友"] to "robins_girlfriend">>
+		<</if>>
+	<</if>>
+	<<if $whitneyromance is 1>>
+		<<set _bodyWritingOptions["Love Interests"]["惠特尼的宠物"] to "whitneys_pet">>
+		<<set _bodyWritingOptions["Love Interests"]["惠特尼的财产"] to "property_of_whitney">>
+		<<set _bodyWritingOptions["Love Interests"]["惠特尼的玩具"] to "whitneys_toy">>
+		<<if ($player.gender is "m" or $player.gender is "h" or $player.gender_appearance is "m" or $backgroundTraits.includes("crossdresser"))>>
+			<<set _bodyWritingOptions["Love Interests"]["惠特尼的男妓"] to "whitneys_boyslut">>
+		<</if>>
+		<<if ($player.gender is "f" or $player.gender is "h" or $player.gender_appearance is "f" or $backgroundTraits.includes("crossdresser"))>>
+			<<set _bodyWritingOptions["Love Interests"]["惠特尼的荡妇"] to "whitneys_slut">>
+		<</if>>
+	<</if>>
+	<<if $kylarenglish gte 1 and $NPCName[$NPCNameList.indexOf("Kylar")].state isnot "prison">>
+		<<set _bodyWritingOptions["Love Interests"]["凯拉尔的迷恋对象"] to "kylars_obsession">>
+		<<set _bodyWritingOptions["Love Interests"]["永远爱凯拉尔"] to "love_kylar_forever">>
+		<<set _bodyWritingOptions["Love Interests"]["为凯拉尔而留"] to "reserved_for_kylar">>
+		<<set _bodyWritingOptions["Love Interests"]["唯凯拉尔"] to "just_kylar">>
+	<</if>>
+	<<if $syndromeeden is 1>>
+		<<set _bodyWritingOptions["Love Interests"]["伊甸的同伴"] to "edens_companion">>
+		<<set _bodyWritingOptions["Love Interests"]["猎人与猎物"] to "hunter_and_prey">>
+		<<set _bodyWritingOptions["Love Interests"]["森林里是孤寂的"] to "its_lonely_in_the_woods">>
+		<<set _bodyWritingOptions["Love Interests"]["你是猎物"] to "something_is_hunting_you">>
+	<</if>>
+	<<if $dateCount.Avery gte 3 and $NPCName[$NPCNameList.indexOf("Avery")].state isnot "dismissed">>
+		<<set _bodyWritingOptions["Love Interests"]["艾弗里的战利品"] to "averys_trophy">>
+		<<set _bodyWritingOptions["Love Interests"]["迷人"] to "endearing">>
+		<<if ($player.gender is "m" or $player.gender is "h" or $player.gender_appearance is "m" or $backgroundTraits.includes("crossdresser"))>>
+			<<set _bodyWritingOptions["Love Interests"]["城市男孩"] to "uptown_boy">>
+		<</if>>
+		<<if ($player.gender is "f" or $player.gender is "h" or $player.gender_appearance is "f" or $backgroundTraits.includes("crossdresser"))>>
+			<<set _bodyWritingOptions["Love Interests"]["城市女孩"] to "uptown_girl">>
+		<</if>>
+		<<set _bodyWritingOptions["Love Interests"]["由艾弗里独占"] to "averys_monopoly">>
+	<</if>>
+	<<if $farm_stage gte 7 and $alex_countdown is undefined>>
+		<<set _bodyWritingOptions["Love Interests"]["艾力克思的搭档"] to "alexs_partner">>
+		<<set _bodyWritingOptions["Love Interests"]["从早到晚"] to "sunrise_to_sunset">>
+		<<set _bodyWritingOptions["Love Interests"]["杂草打捆机"] to "hay_baler">>
+		<<if ($player.gender is "m" or $player.gender is "h" or $player.gender_appearance is "m" or $backgroundTraits.includes("crossdresser"))>>
+			<<set _bodyWritingOptions["Love Interests"]["牛仔"] to "cowboy">>
+		<</if>>
+		<<if ($player.gender is "f" or $player.gender is "h" or $player.gender_appearance is "f" or $backgroundTraits.includes("crossdresser"))>>
+			<<set _bodyWritingOptions["Love Interests"]["牛仔女孩"] to "cowgirl">>
+		<</if>>
+	<</if>>
+	<<if $sydneyromance is 1>>
+		<<set _bodyWritingOptions["Love Interests"]["悉尼的救世主"] to "sydneys_savior">>
+		<<set _bodyWritingOptions["Love Interests"]["为悉尼而生"] to "bound_to_sydney">>
+		<<set _bodyWritingOptions["Love Interests"]["悉尼造就了我 :)"] to "sydney_makes_me_smile">>
+		<<if $NPCName[$NPCNameList.indexOf("Sydney")].purity gt 1>>
+			<<set _bodyWritingOptions["Love Interests"]["纯爱"] to "purest_love">>
+		<<else>>
+			<<set _bodyWritingOptions["Love Interests"]["淫荡的罪人"] to "lusty_sinners">>
+		<</if>>
+	<</if>>
+	<<if $syndromewolves is 1 and $deviancy gte 35>>
+		<<set _bodyWritingOptions["Love Interests"]["黑狼的母狗"] to "black_wolfs_bitch">>
+		<<set _bodyWritingOptions["Love Interests"]["一切为了我的主人"] to "all_for_my_alpha">>
+		<<if $wolfpackleader is 1>>
+			<<set _bodyWritingOptions["Love Interests"]["狼群领袖"] to "leader_of_the_pack">>
+		<</if>>
+		<<set _bodyWritingOptions["Love Interests"]["与狼共舞"] to "runs_with_wolves">>
+	<</if>>
+	<<if $syndromebird is 1>>
+		<<set _bodyWritingOptions["Love Interests"]["巨鹰的配偶"] to "great_hawks_spouse">>
+		<<set _bodyWritingOptions["Love Interests"]["与爱共翔"] to "soaring_with_love">>
+		<<set _bodyWritingOptions["Love Interests"]["恐怖伙伴"] to "terrors_mate">>
+		<<set _bodyWritingOptions["Love Interests"]["自由鸟"] to "free_bird">>
+	<</if>>
+	<<if $debug is 1>>
+		<<set _bodyWritingOptions["Debug"] to setup.bodywriting>>
+		<<set _debugBodywritingOptionsKeys to Object.keys(setup.bodywriting)>>
+		<<link [[清洗自身|$passage]]>>
+			<<set $mirrorMenu to "skin">>
+			<<wash>>
+		<</link>>
+		<<link [[捆住手|$passage]]>>
+			<<set $mirrorMenu to "skin">>
+			<<bind>>
+		<</link>>
+		<br/>
+		<<print Object.values(setup.bodywriting).length>>个已知的身体涂鸦选项。
+	<</if>>
+
+	/*Needs to be last*/
+	<div id="bodywritingMenuLinks">
+	<<set _keys to Object.keys(_bodyWritingOptions)>>
+	<<if $bodywritingSet is undefined>>
+		<<set $bodywritingSet to "General">>
+	<</if>>
+	<<for _i to 0; _i lt _keys.length; _i++>>
+		<<capture _i _keys>>
+			<span @id="'link-'+_keys[_i].replace(/ /g,'-')" @class="(_keys[_i] is $bodywritingSet ? 'selected' : '')">
+			<<link _keys[_i].replace("Debug","测试").replace(/Love\sInterests/,"爱人").replace("Pregnancy","怀孕").replace("Submission","顺从").replace("Masochism","受虐").replace("Deviancy","异种").replace("Exhibitionism","露出").replace("Prostitution","卖淫").replace("Promiscuity","淫乱").replace("General","通常")>>
+				<<removeclass `'#link-'+$bodywritingSet.replace(/ /g,'-')` "selected">>
+				<<set $bodywritingSet to clone(_keys[_i])>>
+				<<addclass `'#link-'+$bodywritingSet.replace(/ /g,'-')` "selected">>
+				<<replace "#bodywritingMenu">><<bodywritingMenu>><</replace>>
+			<</link>> |
+			</span>
+		<</capture>>
+	<</for>>
+	</div>
+	<br>
+	<div id="bodywritingMenu" class="no-numberify">
+		<<bodywritingMenu>>
+	</div>
+	<br><br>
+<</widget>>
+
+<<widget "bodywritingMenu">>
+	<<if Object.keys(_bodyWritingOptions[$bodywritingSet]).length gt 0>>
+		<<set _bodyPartOptions to {}>>
+		<<set _bodyPartOptionsSkip to ["back", "left_bottom", "right_bottom"]>>
+		<<for _label, _value range $skin>>
+			<<if _bodyPartOptionsSkip.includes(_label)>>
+				<<continue>>
+			<<elseif Object.keys(_value).length is 0>>
+				<<silently>><<bodypart _label>><</silently>>
+				<<set _bodyPartOptions[_text_output.toUpperFirst()] to _label>>
+			<</if>>
+		<</for>>
+		<<if $debug is 1>>
+			把
+			<<listbox "_bodyWritingDebugSelected">>
+				<<optionsfrom _bodyWritingOptions[$bodywritingSet]>>
+			<</listbox>>
+			在任何地方
+			<<link [[确认|$passage]]>>
+				<<set $mirrorMenu to "skin">>
+				<<for _part, _value range $skin>>
+					<<add_bodywriting _part _bodyWritingDebugSelected "pen">>
+				<</for>>
+			<</link>>
+			<br />
+			把
+			<<listbox "_bodyWritingDebugSelected">>
+				<<optionsfrom _bodyWritingOptions[$bodywritingSet]>>
+			<</listbox>>
+			在自定义人物角色上的任何地方
+
+
+			<<link [[确认|$passage]]>>
+				<<set $mirrorMenu to "skin">>
+				<<for _part, _value range $skin>>
+					<<if _bodyWritingDebugSelected.sprites.includes(_part)>>
+						<<add_bodywriting _part _bodyWritingDebugSelected "pen">>
+					<</if>>
+				<</for>>
+			<</link>>
+			<br />
+			<br />
+		<</if>>
+
+		<<if Object.keys(_bodyPartOptions).length gt 0>>
+			把
+			<<listbox "_bodyWritingSelected">>
+				<<optionsfrom _bodyWritingOptions[$bodywritingSet]>>
+			<</listbox>>
+			写在你的
+			<<listbox "_bodyPartSelected">>
+				<<optionsfrom _bodyPartOptions>>
+			<</listbox>>
+
+			<<link [[确认|$passage]]>>
+				<<set $mirrorMenu to "skin">>
+				<<set $bodyWritingSelected to Object.keys(_bodyWritingOptions[$bodywritingSet])[Object.values(_bodyWritingOptions[$bodywritingSet]).indexOf(_bodyWritingSelected)]>>
+				<<set $bodyPartSelected to _bodyPartSelected>>
+				<<add_bodywriting _bodyPartSelected _bodyWritingSelected "pen">>
+			<</link>>
+		<<else>>
+			你不确定哪里还有空位可以写。
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "hairDescription">>
+	你对着镜子检查自己的头发:
+	<<if $hairtype is "default" and $fringetype is "default">>
+	你当前未设置任何造型。
+		<div class="no-numberify">
+			<<link [[随机你的发型|$passage]]>>
+				<<set _hairType to Object.values(_hairTypeByName)>>
+				<<set $hairtype to _hairType[random(0,_hairType.length - 1)]>>
+				<<set _fringeType to Object.values(_fringeTypeByName)>>
+				<<set $fringetype to _fringeType[random(0,_fringeType.length - 1)]>>
+				<<set $hairposition to ["front","back"][random(0,1)]>>
+			<</link>> |
+			<<switch $hairposition>>
+				<<case "front">>
+					<<link "将两侧的头发放在身体后面">>
+						<<run State.setVar("$hairposition", "back")>>
+						<<run Engine.show()>>
+					<</link>>
+				<<case "back">>
+					<<link "将两侧的头发放在身体前面">>
+						<<run State.setVar("$hairposition", "front")>>
+						<<run Engine.show()>>
+					<</link>>
+				<<default>>
+					<<link "将两侧的头发放在身体前面">>
+						<<run State.setVar("$hairposition", "front")>>
+						<<run Engine.show()>>
+					<</link>>
+			<</switch>>
+			<br><br>
+		</div>
+	<<else>>
+		<<if $hairtype is "default">>
+			<<run setup.hairstyles.fringe.forEach(style => {if (V.fringetype == style.name) V.fringetypeCN = style.name_cap;})>>目前，你的刘海是<span class="gold">$fringetypeCN</span>，侧发<span class="gold">自然下垂</span>，松松地搭在<<if $hairposition is "front">>你的身前<<else>>你的身后<</if>>。
+		<<elseif $fringetype is "default">>
+			<<run setup.hairstyles.sides.forEach(style => {if (V.hairtype == style.name) V.hairtypeCN = style.name_cap;})>>目前，你的刘海<span class="gold">自然下垂</span>，侧发则是<span class="gold">$hairtypeCN</span>，搭在了你的<<if $hairposition is "front">>身前<<else>>身后<</if>>。
+		<<else>>
+			<<run setup.hairstyles.fringe.forEach(style => {if (V.fringetype == style.name) V.fringetypeCN = style.name_cap;})>><<run setup.hairstyles.sides.forEach(style => {if (V.hairtype == style.name) V.hairtypeCN = style.name_cap;})>>目前，你的刘海是<span class="gold">$fringetypeCN</span>，侧发则是<span class="gold">$hairtypeCN</span>，搭在了你的<<if $hairposition is "front">>身前<<else>>身后<</if>>。
+		<</if>>
+			你
+			<<if $hairgelBottles is undefined>><<set $hairgelBottles to 0>><</if>>
+			<<if $ruffledisable is "t">>
+				<mouse class = "gold tooltip-small" style="border-bottom-color:white">
+					已经使用了发胶。
+					<span class="black">你的发型已经被定型。<br> <i class="red">改变发型会覆盖此效果，需再次使用发胶固定。<<print ($hairgelBottles is 0 ? "发胶可以在商店中买到。" : "发胶已经耗尽了。")>></i></span>
+				</mouse>
+			<<else>>
+				<mouse class = "gold tooltip-small" style="border-bottom-color:white">
+					还未使用发胶。
+					<span class="black">某些情况可能会使你的头发变得乱糟糟的，<br><i class="teal">你可以使用发胶以防止头发变乱。<<print ($hairgelBottles is 0 ? "发胶可在商店中买到。" : "")>></i></span>
+				</mouse>
+			<</if>>
+		<div class="no-numberify">
+			<<link [[随机你的发型|$passage]]>>
+				<<set _hairType to Object.values(_hairTypeByName)>>
+				<<set $hairtype to _hairType[random(0,_hairType.length - 1)]>>
+				<<set _fringeType to Object.values(_fringeTypeByName)>>
+				<<set $fringetype to _fringeType[random(0,_fringeType.length - 1)]>>
+				<<set $hairposition to ["front","back"][random(0,1)]>>
+			<</link>> |
+			<<switch $hairposition>>
+				<<case "front">>
+					<<link "将两侧的头发放在身体后面">>
+						<<run State.setVar("$hairposition", "back")>>
+						<<run Engine.show()>>
+					<</link>>
+				<<case "back">>
+					<<link "将两侧的头发放在身体前面">>
+						<<run State.setVar("$hairposition", "front")>>
+						<<run Engine.show()>>
+					<</link>>
+				<<default>>
+					<<link "将两侧的头发放在身体前面">>
+						<<run State.setVar("$hairposition", "front")>>
+						<<run Engine.show()>>
+					<</link>>
+			<</switch>>
+		<br><br>
+		</div>
+	<</if>>
+<</widget>>
+
+<<widget "mirrorHair">>
+	<<link "返回">><<replace #mirror>><<mirrorMenu>><</replace>><<numberify "#passages > .passage">><<unset $mirrorMenu>><</link>>
+	<<shopClothingFilterSettingsDefault>> /* Due to reusing the traits filtering */
+	<br><br>
+	<div id="hairDescription">
+	<<hairDescription>>
+	</div>
+
+	<div id="hairgelLinks">
+		<<hairgelLinks>>
+	</div>
+
+	<br>
+
+	<<set _hairTypeByName to {}>>
+	<<run setup.hairstyles.sides.forEach(style => {
+		if (!V.shopClothingFilter.active || !V.shopClothingFilter.traits.length || style.type.find(type => V.shopClothingFilter.traits.includes(type))) T.hairTypeByName[style.name_cap] = style.variable;
+	})>>
+
+	<<set _fringeTypeByName to {}>>
+	<<run setup.hairstyles.fringe.forEach(style => {
+		if (!V.shopClothingFilter.active || !V.shopClothingFilter.traits.length || style.type.find(type => V.shopClothingFilter.traits.includes(type))) T.fringeTypeByName[style.name_cap] = style.variable;
+	})>>
+
+	<div id="hairContainer">
+		<div id="hairContainerHeader" class="no-numberify">
+			<<mirrorhairdisplayLinks "hair">>
+		</div>
+		<<mirrorhairdisplay "$hairtype" "sides">>
+	</div>
+	<br><br>
+<</widget>>
+
+<<widget "hairgelLinks">>
+	<div class="no-numberify">
+	<<link [[($showMannequins ? "隐藏" : "显示") + "人体模型"|$passage]]>><<set $showMannequins to 1 - ($showMannequins or 0)>><</link>>
+	<mouse class="tooltip-small linkBlue">(?)<span>禁用发型的预览图像。<i class="red">启用人体模型可能会导致某些设备出现性能问题。</i></span></mouse>
+	<<if $hairgelBottles isnot undefined and $hairgelBottles gte 1>>
+		| <<hairgelicon>>
+		<<if $ruffledisable is "f">>
+			<<link "使用发胶">><<replace #hairDescription>><<hairgelApply>><</replace>><<replace #hairgelDesc>><<hairgelDesc>><</replace>><<replace#hairgelLinks>><<hairgelLinks>><</replace>><</link>>
+		|
+		<</if>>
+		<div id="hairgelDesc" style="display:inline"><<hairgelDesc>></div>
+	<</if>>
+	</div>
+<</widget>>
+
+<<widget "hairgelApply">>
+	<<if $leftarm isnot "bound" and $rightarm isnot "bound">>
+		<<set $ruffledisable to "t">>
+		<<set $hairgelBottles += -1>>
+	<</if>>
+	<<hairDescription>>
+	<<if $leftarm is "bound" and $rightarm is "bound">>
+		<span class="red">你的双臂都被绑住了</span>, 你做不了发型。
+		<br>
+	<<else>>
+		你把大量的发胶倒在了手上，在头发中细细地涂抹了起来。当你完成时，你的发型已经固定完好，之后不再会被弄乱了。<span class="pink">如果你要改变发型，你需要<<print ($hairgelBottles is 0) ? "购买" : "使用">>更多发胶。</span>
+		<hr>
+	<</if>>
+<</widget>>
+
+<<widget "hairgelDesc">>
+	你还有<span class="gold">$hairgelBottles</span><<print ($hairgelBottles is 1) ? "瓶" : "瓶">>发胶。
+<</widget>>
+
+<<widget "mirrormodel">>
+	<<set _modeloptions.skin_type = $skinColor.natural || "light">>
+	<<set _modeloptions.freckles = $player.freckles == true and $makeup.concealer != 1>>
+	<<set _modeloptions.left_eye = $makeup.eyelenses.left != 0 ? $makeup.eyelenses.left : $leftEyeColour>>
+	<<set _modeloptions.right_eye = $makeup.eyelenses.right != 0 ? $makeup.eyelenses.right : $rightEyeColour>>
+	<<set _modeloptions.mouth to 'neutral'>>
+	<<set _modeloptions.hair_colour = $haircolour>>
+	<<set _modeloptions.hair_fringe_colour = $hairfringecolour>>
+	<<set _modeloptions.hair_fringe_colour_gradient = $hairFringeColourGradient>>
+	<<set _modeloptions.hair_fringe_colour_style = $hairFringeColourStyle>>
+	<<set _modeloptions.hair_colour_gradient = $hairColourGradient>>
+	<<set _modeloptions.hair_colour_style = $hairColourStyle>>
+	<<set _modeloptions.hair_sides_length to $hairlengthstage>>
+	<<set _modeloptions.hair_sides_position to $hairposition>>
+	<<set _modeloptions.hair_fringe_length to $fringelengthstage>>
+<</widget>>
+
+<<widget "mirrorhairdisplay">>
+	<<if _hairCategory isnot _args[0]>>
+		<<set _perPage to $showMannequins ? 14 : 100>>
+		<<set _page to 0>>
+	<</if>>
+	<<set _hairCategory to _args[0]>>
+	<<mirrorhairOptions _args[1]>>
+
+	<div id="hairContainerElements">
+		<<mirrorhairdisplayElements _hairOptions>>
+	</div>
+	<div id="hairContainerPages" class="no-numberify">
+		<<mirrorhairControls _args[1]>>
+	</div>
+<</widget>>
+
+<<widget "mirrorhairControls">>
+	<<set _pagereal to _page + 1>>
+	<<set _pagemaxreal to _pageMax + 1>>
+	<<if $showMannequins>>
+		<div id="hairContainerFooter">
+			<div class="tab">
+			<<if _page gt 0>>
+				<<button '<span class="fa-icon fa-left"></span> 上一页'>>
+					<<if _page gt 0>><<set _page-->><</if>>
+					<<mirrorhairOptions _args[0]>>
+					<<replace "#hairContainerElements">><<mirrorhairdisplayElements _hairOptions>><</replace>>
+					<<replace "#hairContainerPages">><<mirrorhairControls _args[0]>><</replace>>
+				<</button>>
+			<</if>>
+			</div>
+			<div class="tab">
+			<<if _page lt _pageMax>>
+				<<button '下一页 <span class="fa-icon fa-right"></span>'>>
+					<<if _page lt _pageMax>><<set _page++>><</if>>
+					<<mirrorhairOptions _args[0]>>
+					<<replace "#hairContainerElements">><<mirrorhairdisplayElements _hairOptions>><</replace>>
+					<<replace "#hairContainerPages">><<mirrorhairControls _args[0]>><</replace>>
+				<</button>>
+			<</if>>
+			</div>
+			<div class="tab">
+				<div id="buttonpage">
+					<<button '_pagereal/_pagemaxreal'>>
+					<</button>>
+				</div>
+			</div>
+		</div>
+	<</if>>
+<</widget>>
+
+<<widget "mirrorhairTraits">>
+	<div id="hairContainerFilter">
+		<div class="tab">
+				<<button "<span class='fa-icon fa-check'></span>应用">>
+					<<set $shopClothingFilter.active = true>>
+					<<run updateMoment()>>
+				<</button>>
+				<<button "<span class='fa-icon fa-reset'></span>重置筛选">>
+					<<shopClothingFilterReset>>
+					<<replace "#hairContainerTraits">><<mirrorHairTraitList>><</replace>>
+					<<run updateMoment()>>
+				<</button>>
+				<<button "<span class='fa-icon fa-selected'></span>选择/反选全部">>
+					<<run toggleAllHairTraitsFilter()>>
+				<</button>>
+		</div>
+    </div>
+<</widget>>
+
+<<widget "mirrorhairOptions">>
+	<<set _hairOptions to {}>>
+	<<run setup.hairstyles[_args[0]].forEach(style => {
+		if (!V.shopClothingFilter.active || !V.shopClothingFilter.traits.length || style.type.find(type => V.shopClothingFilter.traits.includes(type))) T.hairOptions[style.name_cap] = style.variable;
+	})>>
+	<<set _pageMax to Math.floor(Object.keys(_hairOptions).length / (_perPage + 1))>>
+
+	<<run Object.keys(clone(_hairOptions)).forEach((key, index) => {
+        if (!between(index, T.perPage * T.page, (T.perPage * (T.page + 1)) - 1)) {
+            delete T.hairOptions[key];
+        }
+    })>>
+<</widget>>
+
+<<widget "mirrorhairdisplayLinks">>
+	<div class="tab">
+		<span @class="_args[0] is 'hair' ? 'tab-selected' : 'tab'">
+			<<button "侧发">>
+				<<replace "#hairContainer">>
+					<div id="hairContainerHeader" class="no-numberify">
+						<<mirrorhairdisplayLinks "hair">>
+					</div>
+					<<mirrorhairdisplay "$hairtype" "sides">>
+				<</replace>>
+			<</button>>
+		</span>
+	</div>
+	<div class="tab">
+		<span @class="_args[0] is 'fringe' ? 'tab-selected' : ''">
+			<<button "刘海">>
+				<<replace "#hairContainer">>
+					<div id="hairContainerHeader" class="no-numberify">
+						<<mirrorhairdisplayLinks "fringe">>
+					</div>
+					<<mirrorhairdisplay "$fringetype" "fringe">>
+				<</replace>>
+			<</button>>
+		</span>
+	</div>
+	<div class="tab">
+		<span @class="_args[0] is 'style' ? 'tab-selected' : ''">
+			<<button "存档/读档">>
+				<<replace "#hairContainer">>
+					<div id="hairContainerHeader" class="no-numberify">
+						<<mirrorhairdisplayLinks "style">>
+					</div>
+					<<mirrorhairdisplaySave>>
+				<</replace>>
+			<</button>>
+			<div id="hairContainerSave" class="no-numberify">
+			</div>
+		</span>
+	</div>
+	<div class="tab">
+		<span @class="_args[0] is 'filter' ? 'tab-selected' : ''">
+			<<button "过滤">>
+				<<replace "#hairContainer">>
+					<div id="hairContainerHeader" class="no-numberify">
+						<<mirrorhairdisplayLinks "filter">>
+					</div>
+					<<mirrorhairdisplayFilter>>
+				<</replace>>
+			<</button>>
+		</span>
+	</div>
+<</widget>>
+
+<<widget "mirrorhairdisplayElements">>
+	<div id="hairGridSides" class="no-numberify hairGrid">
+		<<for _label, _hairName range _args[0]>>
+			<<capture _hairCategory, _hairName>>
+				<div @id="'hairGrid-' + _hairCategory.replace('$','') + '-' + _hairName.replace(/ /g,'')" @class="'gridItem' + (_hairName is V[_hairCategory.replace('$','')] ? ' selectedHair' : '')" @onclick="`wikifier('mirrorhairdisplayClick', '${T.hairCategory.replace('$','')}', '${T.hairName.replace(/ /g,'_')}');`">
+					<<if $options.images is 1 and $sidebarRenderer isnot "img" and $showMannequins is 1>>
+						<<selectmodel "main">>
+						<<mirrormodel>>
+						<<if _hairCategory is "$hairtype">>
+							<<set _modeloptions.hair_sides_type to _hairName>>
+							<<set _modeloptions.hair_fringe_type to $fringetype>>
+						<<else>>
+							<<set _modeloptions.hair_fringe_type to _hairName>>
+							<<set _modeloptions.hair_sides_type to $hairtype>>
+						<</if>>
+						<<rendermodel "hairstyleMannequin">>
+						<br>
+					<</if>>
+					<<print _label>>
+				</div>
+			<</capture>>
+		<</for>>
+	</div>
+<</widget>>
+
+<<widget "mirrorhairdisplayClick">>
+	<<if _args[0] and _args[1]>>
+		<<if Object.values(_hairOptions).includes(V[_args[0]])>>
+			<<set _id to "#hairGrid-" + _args[0] + "-" + V[_args[0]].replace(/ /g,"")>>
+			<<removeclass _id "selectedHair">>
+		<</if>>
+		<<set V[_args[0]] to _args[1].replace(/_/g," ")>>
+		<<set _id2 to "#hairGrid-" + _args[0] + "-" + _args[1].replace(/_/g,"")>>
+		<<set $ruffledisable to "f">>
+		<<addclass _id2 "selectedHair">>
+		<<updatesidebarimg>>
+		<<replace #hairDescription>><<hairDescription>><</replace>>
+		<<replace #hairgelLinks>><<hairgelLinks>><</replace>>
+	<</if>>
+<</widget>>
+
+<<widget "mirrorhairdisplaySave">>
+	<div id="hairContainerHairstyle">
+		<<mirrorHairSaveOptions>>
+	</div>
+	<div id="hairContainerSave" class="no-numberify">
+		<<mirrorHairSave>>
+	</div>
+<</widget>>
+
+<<widget "mirrorHairSaveOptions">>
+		<<if !$savedHairStyles>>
+			<<set $savedHairStyles to {
+				Default: { hairtype:$hairtype, fringetype:$fringetype, hairposition:$hairposition }
+			}>>
+		<</if>>
+		<div class="no-numberify saveHair">
+		<span class="bold">选择发型: </span>
+			<hr style="border:none;margin:.25em 0">
+			<<set _savedHairStylesKeys to Object.keys($savedHairStyles)>>
+			<<if _savedHairStylesKeys.length gt 0>>
+				<<listbox '_selectedSavedHairStyle'>>
+					<<optionsfrom _savedHairStylesKeys>>
+				<</listbox>>
+			<</if>>
+			<br>
+		</div>
+		<div class="no-numberify saveHair">
+			<span class="bold" style="margin:.25em 0">创建新发型: </span>
+			<hr style="border:none;margin:.25em 0">
+			<label>命名: <<textbox "_hairStyleName" "">></label>
+			<mouse class="tooltip linkBlue"> (?)<span>保存您当前的发型，方便以后一键应用。重复的名字将覆盖现有的样式。</span></mouse>
+			<span id="textbox-error"></span>
+		</div>
+<</widget>>
+
+
+<<widget "mirrorhairdisplayFilter">>
+	<div id="hairContainerTraits" class="no-numberify">
+		<<mirrorHairTraitList>>
+	</div>
+	<div id="hairContainerFilter">
+		<<mirrorhairTraits>>
+	</div>
+<</widget>>
+
+<<widget "mirrorHairTraitList">>
+	<<set _shopLocation to "mirrorhair">>
+	<div class="hairGridTraits">
+		<div class="traitCategory">
+			<<set _textureTraits to ["curly", "sleek", "wavy"]>>
+			<span class="gold" style="padding-left:5px">卷曲程度:</span>
+				<<for _trait range _textureTraits.sort()>>
+					<<silently>><< _trait>><</silently>>
+					<div class="filters-trait-row">
+						<label>
+							<<set _checked = $shopClothingFilter.traits.includes(_trait) ? 'checked="checked"' : ''>>
+							<<clothingtrait _trait 'display_normal'>>
+							<<print '<input type="checkbox" @id="_trait" @value="_trait" ' + _checked + ' onclick="window.shopClothingFilterToggleTrait(this.value)">'>>
+							<<if $noTraitDescription>>
+								<<print _clothesTrait>>
+							<<else>>
+								<mouse class = "tooltip-small">
+									<<print _clothesTrait>>
+									<span class="black"><<print _clothesDesc>></span>
+								</mouse>
+							<</if>>
+						</label>
+					</div>
+				<</for>>
+		</div>
+		<div class="traitCategory">
+			<span class="gold" style="padding-left:5px">发型:</span>
+			<<set _styleTraits to ["braids", "buns", "pigtails", "ponytail"]>>
+				<<for _trait range _styleTraits.sort()>>
+					<<silently>><< _trait>><</silently>>
+					<div class="filters-trait-row">
+						<label>
+							<<set _checked = $shopClothingFilter.traits.includes(_trait) ? 'checked="checked"' : ''>>
+							<<clothingtrait _trait 'display_normal'>>
+							<<print '<input type="checkbox" @id="_trait" @value="_trait" ' + _checked + ' onclick="window.shopClothingFilterToggleTrait(this.value)">'>>
+							<<if $noTraitDescription>>
+								<<print _clothesTrait>>
+							<<else>>
+								<mouse class = "tooltip-small">
+									<<print _clothesTrait>>
+									<span class="black"><<print _clothesDesc>></span>
+								</mouse>
+							<</if>>
+						</label>
+					</div>
+				<</for>>
+		</div>
+		<div class="traitCategory">
+			<span class="gold" style="padding-left:5px">其他</span>
+			<<set _otherTraits to ["loose","short"]>>
+				<<for _trait range _otherTraits.sort()>>
+					<<silently>><< _trait>><</silently>>
+					<div class="filters-trait-row">
+						<label>
+							<<set _checked = $shopClothingFilter.traits.includes(_trait) ? 'checked="checked"' : ''>>
+							<<clothingtrait _trait 'display_normal'>>
+							<<print '<input type="checkbox" @id="_trait" @value="_trait" ' + _checked + ' onclick="window.shopClothingFilterToggleTrait(this.value)">'>>
+							<<if $noTraitDescription>>
+								<<print _clothesTrait>>
+							<<else>>
+								<mouse class = "tooltip-small">
+									<<print _clothesTrait>>
+									<span class="black"><<print _clothesDesc>></span>
+								</mouse>
+							<</if>>
+						</label>
+					</div>
+				<</for>>
+		</div>
+	</div>
+<</widget>>
+
+<<widget "mirrorHairSave">>
+	<div class="hairContainerSave">
+	<<if _savedHairStylesKeys.length gt 0>>
+	<div class="tab">
+		<<button '<span class="fa-icon fa-check"></span> 穿戴'>>
+			<<set $hairtype to $savedHairStyles[_selectedSavedHairStyle].hairtype>>
+			<<set $fringetype to $savedHairStyles[_selectedSavedHairStyle].fringetype>>
+			<<set $hairposition to $savedHairStyles[_selectedSavedHairStyle].hairposition>>
+			<<set $ruffledisable to "f">>
+			<<updatesidebarimg>>
+		<</button>>
+		<<button '<span class="fa-icon fa-overwrite"></span> 覆盖'>>
+			<<set $savedHairStyles[_selectedSavedHairStyle].hairtype to $hairtype>>
+			<<set $savedHairStyles[_selectedSavedHairStyle].fringetype to $fringetype>>
+			<<set $savedHairStyles[_selectedSavedHairStyle].hairposition to $hairposition>>
+			<<updatesidebarimg>>
+		<</button>>
+		<<button '<span class="fa-icon fa-delete"></span> 删除'>>
+			<<if _selectedSavedHairStyle isnot "Default">>
+				<<run $outfit.forEach((o) => {
+					if(o.hairStyle === T.selectedSavedHairStyle){
+						o.hairStyle = undefined;
+					}
+				})>>
+				<<run delete $savedHairStyles[_selectedSavedHairStyle]>>
+				<<updatesidebarimg>>
+				<<replace #hairContainerHairstyle>><<mirrorHairSaveOptions>><</replace>>
+			<</if>>
+		<</button>>
+		<<button '<span class="fa-icon fa-save"></span> 保存'>>
+			<<if _hairStyleName is "">>
+				<<replace "#textbox-error">><br> <span class="red">请输入名称</span><</replace>>
+			<<else>>
+				<<replace "#textbox-error">><</replace>>
+				<<set _hairStyleName to _hairStyleName.replace(/[^a-zA-Z\u4e00-\u9fa5\u4e00-\u9fa50-9_-]+/g,"").substring(0,30)>>
+				<<set $savedHairStyles[_hairStyleName] to { hairtype:$hairtype, fringetype:$fringetype, hairposition:$hairposition }>>
+				<<replace #hairContainerHairstyle>><<mirrorHairSaveOptions>><</replace>>
+			<</if>>
+		<</button>>
+	</div>
+	<<else>>
+	<div class="tab">
+		<<button '<span class="fa-icon fa-save"></span> 保存'>>
+			<<if _hairStyleName is "">>
+				<<replace "#textbox-error">><br> <span class="red">请输入名称</span><</replace>>
+			<<else>>
+				<<replace "#textbox-error">><</replace>>
+				<<set _hairStyleName to _hairStyleName.replace(/[^a-zA-Z\u4e00-\u9fa5\u4e00-\u9fa50-9_-]+/g,"").substring(0,30)>>
+				<<set $savedHairStyles[_hairStyleName] to { hairtype:$hairtype, fringetype:$fringetype, hairposition:$hairposition }>>
+				<<replace #hairContainerHairstyle>><<mirrorHairSaveOptions>><</replace>>
+			<</if>>
+		<</button>>
+	</div>
+	<</if>>
+	</div>
+<</widget>>
+
+
+<<widget "mirrorMakeupPart">>
+	<<set _itemType = _args[0]>>
+	<<set _singular = _args[1]>>
+	<<set _plural = _args[2]>>
+	<<set _cssClass = _args[3]>>
+
+	<<set _items = $makeup.owned[_itemType].filter(x => x.count > 0)>>
+	<<if $makeup.owned[_itemType].length == 0>>
+		你没有任何_plural。
+	<<elseif _items.length == 0>>
+		你的_plural用完了。
+		<br>
+	<</if>>
+	<<if _items.length != 0 or $makeup[_itemType] != 0>>
+		使用_singular: <br>
+		<<if $makeup[_itemType] != 0>>
+			<<capture _itemType>>
+			<span class="no-numberify">
+			<<link "移除">>
+
+			<<if _itemType is "eyelenses">>
+				<!-- A safety check for $makeup.eyelenses -->
+				<<set $makeup.eyelenses to { left: 0, right: 0 }>>
+			<<else>>
+				<<set $makeup[_itemType] to 0>>
+			<</if>>
+			<<if _itemType == 'mascara'>>
+				<<set $makeup.mascara_running = 0>>
+			<</if>>
+			<<run Engine.show()>>
+
+			<</link>></span>
+			<<print " | ">>
+			<</capture>>
+		<</if>>
+		<<for _i, _item range _items>>
+			<<capture _item, _itemType>>
+				<span class="capitalize no-numberify">
+				<<if $makeup[_itemType] == _item.colour>>
+					<<print setup.colourName(_item.colour)>>
+				<<else>>
+					<<link `setup.colourName(_item.colour)`>>
+						<<set $makeup[_itemType] = _item.colour>>
+						<<set _item.count -= 1>>
+						<<if _itemType == 'mascara'>>
+							<<set $makeup.mascara_running = 0>>
+						<</if>>
+						<<run Engine.show()>>
+					<</link>>
+				<</if>>
+				</span>
+				<span @class="_cssClass+'-'+_item.colour.replace(/ /g, '-')"><span class="colour-sample"></span></span>
+				<<print "×"+_item.count+" | ">>
+			<</capture>>
+		<</for>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "mirrorMakeup">>
+	<<link "返回">><<replace #mirror>><<mirrorMenu>><</replace>><<numberify "#passages > .passage">><<unset $mirrorMenu>><</link>>
+	<br><br>
+	__化妆__
+	<br>
+	<<set _makeupNames to ["lipstick","eyeshadow","mascara","browscolour","eyelenses"]>>
+	<<set _makeupData to ["lipstick","eyeshadow","mascara","hairdye","eyelenses"]>>
+	<<if $mirror_eyebrow_dye is true>>
+		<br>
+		<<unset $mirror_eyebrow_dye>>
+		你打开装有$browsDyeOption染料的盒子，准备好混合颜色。
+		<br>
+		用小刷子小心地把染眉剂涂在眉毛上。
+		<br>
+		你等待几分钟让染眉剂凝固……希望你没有搞砸。
+		<br><br><br>
+		<<set $makeup.owned.hairdye.find(x => x.colour == $browsDyeOption).count -= 1>>
+		<<pass 10>><<set $makeup.browscolour = $browsDyeOption>><<unset $browsDyeOption>>
+	<</if>>
+
+
+	<<link [[全部抺除|$passage]]>>
+		<<set $makeup.lipstick to 0>>
+		<<set $makeup.eyeshadow to 0>>
+		<<set $makeup.mascara to 0>>
+		<<set $makeup.eyelenses to { left: 0, right: 0 }>>
+		<<set $makeup.mascara_running to 0>>
+	<</link>> |
+	<<link [[随机|$passage]]>>
+		<<for _i to 0; _i lt _makeupNames.length; _i++>>
+			<<set _ownedMakeup to $makeup.owned[_makeupData[_i]]>>
+			<<if _makeupNames[_i] is "eyelenses">>
+				<<set _rng to random(0, _ownedMakeup.length)>>
+				<<set _lens to _rng is _ownedMakeup.length ? 0 : _ownedMakeup[_rng]>>
+				<<set $makeup.eyelenses to { left: _lens, right: _lens }>>
+			<<else>>
+				<<set _rngset to []>>
+				<<for _label, _value range _ownedMakeup>>
+					<<if _value.count gt 0>>
+						<<run _rngset.push(_label)>>
+					<</if>>
+				<</for>>
+				<<run _rngset.push(_ownedMakeup.length)>>
+				<<set _rng to _rngset[random(0, _rngset.length - 1)]>>
+				<<if _rng is _ownedMakeup.length and _makeupNames[_i] is "browscolour">>
+					/*Do Nothing*/
+				<<elseif _rng is _ownedMakeup.length>>
+					<<set $makeup[_makeupNames[_i]] to 0>>
+				<<elseif _ownedMakeup[_rng].count gt 0 and $makeup[_makeupNames[_i]] isnot _ownedMakeup[_rng].colour>>
+					<<set $makeup[_makeupNames[_i]] to _ownedMakeup[_rng].colour>>
+					<<set _ownedMakeup[_rng].count-->>
+				<</if>>
+			<</if>>
+		<</for>>
+	<</link>>
+	<br>
+	<<if $makeup.presets is undefined>>
+		<<set $makeup.presets to {}>>
+	<</if>>
+	<<if Object.keys($makeup.presets).length gt 0>>
+		预设:
+		<<for _label, _value range $makeup.presets>>
+			<<capture _label>>
+				<<link _label>>
+					<<replace "#makeupPresets">>
+						<<makeupPresets _label>>
+					<</replace>>
+				<</link>> |
+			<</capture>>
+		<</for>>
+		<div id="makeupPresets"></div>
+	<</if>>
+	<br>
+	<<mirrorMakeupPart "lipstick" "lipstick" "lipsticks" "lipstick">><br>
+	<<mirrorMakeupPart "eyeshadow" "eyeshadow" "eyeshadows" "eyeshadow">><br>
+	<<mirrorMakeupPart "mascara" "mascara" "mascaras" "mascara">><br>
+
+	<<if !$simpleMirror>>
+		/* CONTACT LENSES */
+		<<if $makeup.owned.eyelenses.length == 0 and $makeup.owned.custom_eyelenses.length == 0>>
+			你没有任何隐形眼镜。
+			<br>
+		<<else>>
+			<<set _contact_eye_selected to "Both">>
+			佩戴隐形眼镜:<br> /*非定制隐形眼镜*/
+			选择眼睛: <<listbox "_contact_eye_selected" autoselect>>
+				<<option "两只眼睛" "Both">>
+				<<option "左眼" "Left eye">>
+				<<option "右眼" "Right eye">>
+			<</listbox>><br>
+			<<if $makeup.eyelenses.left != 0 || $makeup.eyelenses.right != 0>>
+				<span class="no-numberify">
+				<<link "没有">>
+				<<set $makeup.eyelenses = { left:0, right:0 }>>
+				<<run Engine.show()>>
+				<</link>></span>
+				<<print " | ">>
+			<</if>>
+			<<for _i, _colour range $makeup.owned.eyelenses>>
+				<<capture _colour>>
+					<span class="capitalize no-numberify">
+					<<link _colour>>
+						<<if _contact_eye_selected == "Both">>
+							<<set $makeup.eyelenses = { left:_colour, right:_colour }>>
+						<<elseif _contact_eye_selected == "Left eye">>
+							<<set $makeup.eyelenses.left = _colour>>
+						<<elseif _contact_eye_selected == "Right eye">>
+							<<set $makeup.eyelenses.right = _colour>>
+						<</if>>
+						<<run Engine.show()>>
+					<</link>></span>
+						<span @class="'eye-'+_colour.replace(/ /g, '-')"><span class="colour-sample bgcolour-eyes left-iris"></span></span>
+					<<print " | ">>
+				<</capture>>
+			<</for>>
+			<br>
+					定制的隐形眼镜:<br> /* CUSTOMISED ONES */
+			<<set _custom_eye_selected to "Both">>
+			选择眼睛: <<listbox "_custom_eye_selected" autoselect>>
+				<<option "两只眼睛" "Both">>
+				<<option "左眼" "Left eye">>
+				<<option "右眼" "Right eye">>
+			<</listbox>><br>
+			<<if $makeup.eyelenses.left != 0 || $makeup.eyelenses.right != 0>>
+				<span class="no-numberify">
+				<<link "没有">>
+				<<set $makeup.eyelenses = { left:0, right:0 }>>
+				<<run Engine.show()>>
+				<</link>></span>
+				<<print " | ">>
+			<</if>>
+			<<for _i = 0; _i < $makeup.owned.custom_eyelenses.length; _i++>>
+				<<run _colour = $makeup.owned.custom_eyelenses[_i]>>
+				<<for _e = 0; _e < $custom_eyecolours.length; _e++>>
+					<<if $custom_eyecolours[_e].variable == $makeup.owned.custom_eyelenses[_i]>>
+						<<set _background_colour to clone($custom_eyecolours[_e].canvasfilter.blend)>>
+					<</if>>
+				<</for>>
+				<<capture _colour _background_colour>>
+					<span class="capitalize no-numberify">
+					<<set _colour_name_with_space = window.colorNameTranslate(_colour, "spaced name")>>
+					<<link _colour_name_with_space>>
+						<<if _custom_eye_selected == "Both">>
+							<<set $makeup.eyelenses = { left:_colour, right:_colour }>>
+						<<elseif _custom_eye_selected == "Left eye">>
+							<<set $makeup.eyelenses.left = _colour>>
+						<<elseif _custom_eye_selected == "Right eye">>
+							<<set $makeup.eyelenses.right = _colour>>
+						<</if>>
+						<<run Engine.show()>>
+					<</link>></span>
+					<span class="eye-custom"><span @style="'background:'+_background_colour" class="colour-sample"></span></span>
+					<<print " | ">>
+				<</capture>>
+			<</for>>
+			<br><br>
+		<</if>>
+
+		/* DYEING EYEBROWS */
+		<<browsDyeReset>>
+		染眉: <br>
+		<<set _dyes = $makeup.owned.hairdye.filter(x => x.count > 0)>>
+		<<if _dyes.length == 0>>
+			你没有染色。
+		<<else>>
+			<<set _browsDyeOptions to {"不染眉":"noChange"}>>
+			<<for _i to 0; _i lt _dyes.length; _i++>>
+				<<if $makeup.browscolour is _dyes[_i].colour or $naturalhaircolour is _dyes[_i].colour>>
+					<<continue>>
+				<</if>>
+				<<set _displayName = _dyes[_i].colour.charAt(0).toUpperCase() + _dyes[_i].colour.slice(1) + " ×" + _dyes[_i].count + "">>
+				<<set _browsDyeOptions[_displayName] to _dyes[_i].colour>>
+			<</for>>
+			<<listbox "$browsDyeOption" autoselect>>
+				<<optionsfrom _browsDyeOptions>>
+			<</listbox>>
+			<<browsColourPreview>>
+		<</if>>
+		<<if $makeup.browscolour != 0>>
+			<br>
+			你可以去理发店恢复原本的眉毛颜色。
+		<</if>>
+		<br><br>
+	<</if>>
+
+	/* CONCEALER */
+	<<if $player.freckles == true>>
+		<<if $makeup.concealer == 0>>
+			<span class="capitalize no-numberify">
+			<<link "用遮瑕膏遮盖雀斑">>
+			<<set $makeup.concealer = 1>>
+			<<run Engine.show()>>
+			<</link>>
+			</span>
+		<<else>>
+			<span class="capitalize no-numberify">
+			<<link "抹除遮瑕膏">>
+			<<set $makeup.concealer = 0>>
+			<<run Engine.show()>>
+			<</link>>
+			</span>
+		<</if>>
+		<br><br>
+	<</if>>
+
+	__新预设妆容__ - 保存你当前的妆容
+	<br>
+	<<textbox "_newPresetName" "">>
+	<<link [[保存预设|$passage]]>>
+		<<set _newPresetName to _newPresetName.replace(/[^a-zA-Z\u4e00-\u9fa5\u4e00-\u9fa5 0-9]+/g,"")>>
+		<<set $makeup.presets[_newPresetName] to {
+			lipstick:clone($makeup.lipstick),
+			eyeshadow:clone($makeup.eyeshadow),
+			mascara:clone($makeup.mascara),
+			browscolour:clone($makeup.browscolour),
+			eyelenses:clone($makeup.eyelenses),
+		}>>
+	<</link>>
+<</widget>>
+
+<<widget "makeupPresets">>
+	<<set _presetChosen to $makeup.presets[_args[0]]>>
+	预设: <<print _args[0]>>
+	<br>
+	<<for $_label, $_value range _presetChosen>>
+		<<switch $_label>>
+			<<case "browscolour">>
+				染眉: <<makeupPresetsItem "hairdye" $_value>>
+			<<case "lipstick">>
+				口红: <<makeupPresetsItem $_label $_value>>
+			<<case "eyeshadow">>
+				眼影: <<makeupPresetsItem $_label $_value>>
+			<<case "mascara">>
+				睫毛膏: <<makeupPresetsItem $_label $_value>>
+			<<case "eyelenses">>
+				隐形眼镜: <<makeupPresetsItem $_label $_value>>
+		<</switch>>
+		<br>
+	<</for>>
+	<br>
+	<<link [[使用预设妆容|$passage]]>>
+		<<for $_makeupName range _makeupNames>>
+			<<set _preset to _presetChosen[$_makeupName]>>
+			<<if $_makeupName is "eyelenses">>
+				<<if _preset.left is 0 and _preset.right is 0>>
+					<<set $makeup.eyelenses to { left:0, right:0 }>>
+				<<elseif $makeup.owned.eyelenses.includes(_preset.left) and $makeup.owned.eyelenses.includes(_preset.right)>>
+					<<set $makeup.eyelenses to _preset>>
+				<<elseif $makeup.owned.custom_eyelenses.includes(_preset.left) and $makeup.owned.custom_eyelenses.includes(_preset.right)>>
+					<<set $makeup.eyelenses to _preset>>
+				<</if>>
+			<<elseif _preset is 0 and $_makeupName is "hairdye">>
+				/*Do Nothing*/
+			<<elseif _preset is 0>>
+				<<set $makeup[$_makeupName] to 0>>
+			<<else>>
+				<<set $_makeupName2 to ($_makeupName is "browscolour" ? "hairdye" : $_makeupName)>>
+				<<set $_target to $makeup.owned[$_makeupName2].find(invMakeup => invMakeup.colour is _preset and invMakeup.colour isnot $makeup[$_makeupName] and invMakeup.count gt 0)>>
+				<<if $_target>>
+					<<set $makeup[$_makeupName] to clone($_target.colour)>>
+					<<set $_target.count-->>
+				<</if>>
+			<</if>>
+		<</for>>
+	<</link>> |
+	<<link [[删除预设|$passage]]>>
+		<<run delete $makeup.presets[_args[0]]>>
+	<</link>>
+<</widget>>
+
+<<widget "makeupPresetsItem">>
+	<<if _args[0] isnot undefined and _args[1] isnot undefined>>
+		<<if _args[1] is 0 and _args[0] is "hairdye">>
+			<span class="red">无法移除。</span>
+		<<elseif _args[1] is 0>>
+			<span class="green">移除。</span>
+		<<else>>
+			<<if _args[0] is "eyelenses">>
+				<<if _args[1].left == 0 && _args[1].right == 0>>
+					<span class="green">移除</span>
+				<<elseif _args[1].left == _args[1].right>>
+					<span class="green"><<print _args[1].left>>(已拥有)。</span>
+				<<else>>
+					<span class="green"><<print _args[1].left + ", " + _args[1].right>>(已拥有)。</span>
+				<</if>>
+			<<else>>
+				<<for $_i to 0; $_i lt $makeup.owned[_args[0]].length; $_i++>>
+					<<if $makeup.owned[_args[0]][$_i].colour is _args[1]>>
+						<<if $makeup.owned[_args[0]][$_i].count gt 0>>
+							<span class="green"><<print _args[1]>> (<<print $makeup.owned[_args[0]][$_i].count>>).</span>
+						<<else>>
+							<span class="red"><<print _args[1]>> (0).</span>
+						<</if>>
+						<<break>>
+					<</if>>
+				<</for>>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "browsColourPreview">>
+	<span id="browsColourPreview">
+	<<if $browsDyeOption isnot "noChange">>
+		<span @class="'hair-' + $browsDyeOption.replace(/ /g, '-')">
+			<span class="colour-sample bgcolour-hair colour-hair"></span>
+		</span>
+		<br><<link [[给眉毛染色 (0:15)|$passage]]>><<set $mirror_eyebrow_dye to true>><<pass 15>><</link>>
+	<</if>>
+	</span>
+<</widget>>
+
+<<widget "mirrorTransformation">>
+	<<link "返回">><<replace #mirror>><<mirrorMenu>><</replace>><<numberify "#passages > .passage">><<unset $mirrorMenu>><</link>>
+	<br><br>
+	随着时间的推移，隐藏你的自我会慢慢地增加你的创伤 (不包括狼化的阴毛和腋毛）。
+	如果你的创伤太高，你将无法隐藏。
+	<br><br>
+
+	<<set _angel to $transformationParts.angel>>
+	<<set _fallen to $transformationParts.fallenAngel>>
+	<<set _demon to $transformationParts.demon>>
+	<<set _cat to $transformationParts.cat>>
+	<<set _cow to $transformationParts.cow>>
+	<<set _wolf to $transformationParts.wolf>>
+	<<set _bird to $transformationParts.bird>>
+	<<set _fox to $transformationParts.fox>>
+	<<set _traits to $transformationParts.traits>>
+
+	<div id='transformations-menu' class='grid col-2'>
+		<div id='transformations-list' class='list'>
+			<div class='tf-angel'>
+				<<if $angel gt 1>>
+					__天使__
+					<br>
+					<<if _angel.halo isnot "disabled">>
+						<div class='tf-part-item'>
+							光环:
+							<<listbox "_angel.halo" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+								<<option "传统的" "traditional">>
+							<</listbox>>
+						</div>
+						<br>
+					<</if>>
+					<<if _angel.wings isnot "disabled">>
+						<div class='tf-part-item'>
+							翅膀:
+							<<listbox "_angel.wings" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+							<</listbox>>
+						</div>
+						<br>
+					<</if>>
+					<br>
+				<</if>>
+			</div>
+			<div class='tf-fallen'>
+				<<if $fallenangel gt 1>>
+					__堕天使__
+					<br>
+					<<if _fallen.halo isnot "disabled">>
+						<div class='tf-part-item'>
+							光环:
+							<<listbox "_fallen.halo" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+								<<option "传统的" "traditional">>
+							<</listbox>>
+						</div>
+						<br>
+					<</if>>
+					<<if _fallen.wings isnot "disabled">>
+						<div class='tf-part-item'>
+							翅膀:
+							<<if $fallenangel gte 4>>
+								<<listbox "_fallen.wings" autoselect>>
+									<<option "隐藏" "hidden">>
+									<<option "默认" "default">>
+									<<option "长有羽毛的" "fallenplus">>
+								<</listbox>>
+							<<else>>
+								<<listbox "_fallen.wings" autoselect>>
+									<<option "隐藏" "hidden">>
+									<<option "默认" "default">>
+								<</listbox>>
+							<</if>>
+						</div>
+					<</if>>
+					<br>
+				<</if>>
+			</div>
+			<div class='tf-demon'>
+				<<if $demon gt 1>>
+					__恶魔__
+					<br>
+					<<if _demon.horns isnot "disabled">>
+						<div class='tf-part-item'>
+							犄角:
+							<<listbox "_demon.horns" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+								<<option "经典" "classic">>
+								<<option "魅魔" "succubus">>
+							<</listbox>>
+							<<gencolourselector "_demon.horns_colour">>
+						</div>
+					<</if>>
+					<<if _demon.wings isnot "disabled">>
+						<div class='tf-part-item'>
+							翅膀:
+							<<listbox "_demon.wings" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+								<<option "魅魔" "succubus">>
+							<</listbox>>
+							<<gencolourselector "_demon.wings_colour">>
+						</div>
+					<</if>>
+					<<if _demon.tail isnot "disabled">>
+						<div class='tf-part-item'>
+							尾巴:
+							<<listbox "_demon.tail" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+								<<option "经典" "classic">>
+								<<option "魅魔" "succubus">>
+							<</listbox>>
+							<<gencolourselector "_demon.tail_colour">>
+						</div>
+					<</if>>
+					<<if $demon gte 4>>
+						<div class='tf-part-item'>
+							<<if $exhibitionism gte 95>>
+								当裸露时,炫耀着：
+								<<listbox "_traits.flaunting" autoselect>>
+									<<option "隐藏" "hidden">>
+									<<option "默认" "default">>
+								<</listbox>>
+								<<ind>>
+							<<else>>
+								<span class="black">炫耀（需要更高的露出癖）：</span>
+								<<listbox "_traits.flaunting" autoselect>>
+									<<option "隐藏" "hidden">>
+								<</listbox>>
+								<<ind>>
+							<</if>>
+						</div>
+					<</if>>
+					<br>
+				<</if>>
+			</div>
+			<div class='tf-cat'>
+				<<if $cat gt 1>>
+					__猫化__
+					<br>
+					<<if _cat.ears isnot "disabled">>
+						<div class='tf-part-item'>
+							耳朵:
+							<<listbox "_cat.ears" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<<if _cat.tail isnot "disabled">>
+						<div class='tf-part-item'>
+							尾巴:
+							<<listbox "_cat.tail" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<<if _cat.heterochromia isnot "disabled">>
+						<div class='tf-part-item'>
+							异色瞳:
+							<<listbox "_cat.heterochromia" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<br>
+				<</if>>
+			</div>
+			<div class='tf-cow'>
+				<<if $cow gt 1>>
+					__牛化__
+					<br>
+					<<if _cow.horns isnot "disabled">>
+						<div class='tf-part-item'>
+							犄角:
+							<<listbox "_cow.horns" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<<if _cow.ears isnot "disabled">>
+						<div class='tf-part-item'>
+							耳朵:
+							<<listbox "_cow.ears" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+								<<option "黑色斑点" "spotted black">>
+								<<option "棕色斑点" "spotted brown">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<<if _cow.tail isnot "disabled">>
+						<div class='tf-part-item'>
+							尾巴:
+							<<listbox "_cow.tail" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+								<<option "黑色" "black">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<br>
+				<</if>>
+			</div>
+			<div class='tf-wolf'>
+				<<if $wolfgirl gt 1>>
+					__狼化__
+					<br>
+					<<if _wolf.ears isnot "disabled">>
+						<div class='tf-part-item'>
+							耳朵:
+							<<listbox "_wolf.ears" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+								<<option "野性的" "feral">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<<if _wolf.tail isnot "disabled">>
+						<div class='tf-part-item'>
+							尾巴:
+							<<listbox "_wolf.tail" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+								<<option "野性的" "feral">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<br>
+					<<if _wolf.cheeks isnot "disabled">>
+						<div class='tf-part-item'>
+							脸颊:
+							<<listbox "_wolf.cheeks" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "野性的" "feral">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<<if _wolf.pubes isnot "disabled" and $pbdisable is "f">>
+						<div class='tf-part-item'>
+							阴毛:
+							<<listbox "_wolf.pubes" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<br>
+					<<if _wolf.pits isnot "disabled" and $pbdisable is "f">>
+						<div class='tf-part-item'>
+							腋毛:
+							<<listbox "_wolf.pits" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<br>
+				<</if>>
+			</div>
+			<div class='tf-bird'>
+				<<if $harpy gt 1>>
+					__鸟化__
+					<br>
+					<<if _bird.eyes isnot "disabled">>
+						<div class='tf-part-item'>
+							眼睛:
+							<<listbox "_bird.eyes" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<<if _bird.malar isnot "disabled">>
+						<div class='tf-part-item'>
+							面部花纹：
+							<<listbox "_bird.malar" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<<if _bird.plumage isnot "disabled">>
+						<div class='tf-part-item'>
+							羽毛:
+							<<listbox "_bird.plumage" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<<if _bird.tail isnot "disabled">>
+						<div class='tf-part-item'>
+							尾巴:
+							<<listbox "_bird.tail" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<<if _bird.wings isnot "disabled">>
+						<div class='tf-part-item'>
+							翅膀:
+							<<listbox "_bird.wings" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+							<</listbox>>
+						</div>
+						<br>
+					<</if>>
+					<<if _bird.pubes isnot "disabled" and $pbdisable is "f">>
+						<div class='tf-part-item'>
+							阴毛:
+							<<listbox "_bird.pubes" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<br>
+				<</if>>
+			</div>
+			<div class='tf-fox'>
+				<<if $fox gt 1>>
+					__狐化__
+					<br>
+					<<if _fox.ears isnot "disabled">>
+						<div class='tf-part-item'>
+							耳朵:
+							<<listbox "_fox.ears" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<<if _fox.tail isnot "disabled">>
+						<div class='tf-part-item'>
+							尾巴:
+							<<listbox "_fox.tail" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<<if _fox.cheeks isnot "disabled">>
+						<div class='tf-part-item'>
+							脸颊:
+							<<listbox "_fox.cheeks" autoselect>>
+								<<option "隐藏" "hidden">>
+								<<option "默认" "default">>
+							<</listbox>>
+						</div>
+					<</if>>
+					<br>
+				<</if>>
+			</div>
+			<<set $_chimeraOptions to {
+				"demoncat_tail" : !["disabled", "hidden"].includesAny(_demon.tail, _cat.tail),
+				"demonharpy_wings" : !["disabled", "hidden"].includesAny(_demon.wings, _bird.wings)
+			}>>
+			<<set $_chimeraEnabled to Object.values($_chimeraOptions).some(o => o) ? "" : " hide">>
+			<div @class="'chimera' + $_chimeraEnabled">
+				__嵌合__
+				<<if $_chimeraOptions.demoncat_tail>>
+					/* Using demon cat chimera tail. */
+					<div class='tf-part-item'>
+						恶魔猫尾巴:
+						<<listbox "$chimera.demoncat.tail" autoselect>>
+							<<option "显示" true>>
+							<<option "隐藏" false>>
+						<</listbox>>
+					</div>
+				<</if>>
+				<<if $_chimeraOptions.demonharpy_wings>>
+					/* Using demon harpy chimera wings. */
+					<div class='tf-part-item'>
+						魔鹰之翼:
+						<<listbox "$chimera.demonharpy.wings" autoselect>>
+							<<option "显示" true>>
+							<<option "隐藏" false>>
+						<</listbox>>
+					</div>
+				<</if>>
+			</div>
+		</div>
+		<<if _isMenuEnabled>>
+			<div id="transformations-colour-selector" class='list sticky centre'>
+				<<set _options to ['ffffff', 'ff0000', '00ff00', '0000ff', '590099', '000000']>>
+				<<gencoloursquares _options>>
+				<<gencolourpicker>>
+			</div>
+		<</if>>
+	</div>
+	<<link [[确认|$passage]]>>
+		<<set $mirrorMenu to "transformation">>
+		<<if $transformationParts.cat.heterochromia is "hidden">>
+			<<catHeterochromiaTF "hide">>
+		<<elseif $cat gte 7 and $cat lte 10>>
+			<<catHeterochromiaTF `$cat - 7`>>
+		<</if>>
+	<</link>>
+	<!-- Attach an event to every listbox item to update the PC on the sidebar. -->
+	<<script>>
+	jQuery('.passage').on('change', 'select.macro-listbox', function (e) {
+		Wikifier.wikifyEval('<<updatesidebarimg>>');
+	});
+	<</script>>
+<</widget>>
+
+<<widget "mirrorDebug">>
+	<<link "返回">><<replace #mirror>><<mirrorMenu>><</replace>><<numberify "#passages > .passage">><<unset $mirrorMenu>><</link>>
+	<br><br>
+	<br>
+	<<link "<<<">><<set $hairlength -= 1000>><<clamp>><<replace "#statshairlength">><<print Math.trunc($hairlength)>><</replace>><</link>> |
+	<<link "<<">><<set $hairlength -= 100>><<clamp>><<replace "#statshairlength">><<print Math.trunc($hairlength)>><</replace>><</link>> |
+	<<link "<">><<set $hairlength -= 10>><<clamp>><<replace "#statshairlength">><<print Math.trunc($hairlength)>><</replace>><</link>> |
+	头发长度: <span id="statshairlength"><<print Math.trunc($hairlength)>></span>
+	| <<link ">">><<set $hairlength += 10>><<clamp>><<replace "#statshairlength">><<print Math.trunc($hairlength)>><</replace>><</link>>
+	| <<link ">>">><<set $hairlength += 100>><<clamp>><<replace "#statshairlength">><<print Math.trunc($hairlength)>><</replace>><</link>>
+	| <<link ">>>">><<set $hairlength += 1000>><<clamp>><<replace "#statshairlength">><<print Math.trunc($hairlength)>><</replace>><</link>>
+	<br>
+	<<link "<<<">><<set $fringelength -= 1000>><<clamp>><<replace "#statsfringelength">><<print Math.trunc($fringelength)>><</replace>><</link>> |
+	<<link "<<">><<set $fringelength -= 100>><<clamp>><<replace "#statsfringelength">><<print Math.trunc($fringelength)>><</replace>><</link>> |
+	<<link "<">><<set $fringelength -= 10>><<clamp>><<replace "#statsfringelength">><<print Math.trunc($fringelength)>><</replace>><</link>> |
+	刘海长度: <span id="statsfringelength"><<print Math.trunc($fringelength)>></span>
+	| <<link ">">><<set $fringelength += 10>><<clamp>><<replace "#statsfringelength">><<print Math.trunc($fringelength)>><</replace>><</link>>
+	| <<link ">>">><<set $fringelength += 100>><<clamp>><<replace "#statsfringelength">><<print Math.trunc($fringelength)>><</replace>><</link>>
+	| <<link ">>>">><<set $fringelength += 1000>><<clamp>><<replace "#statsfringelength">><<print Math.trunc($fringelength)>><</replace>><</link>>
+	<br>
+	头发颜色 (<<print $haircolour>>):
+	<<link "黑色">><<set $haircolour to "black">><<goto "Wardrobe">><</link>> |
+	<<link "棕色">><<set $haircolour to "brown">><<goto "Wardrobe">><</link>> |
+	<<link "红色">><<set $haircolour to "red">><<goto "Wardrobe">><</link>> |
+	<<link "姜黄色">><<set $haircolour to "ginger">><<goto "Wardrobe">><</link>> |
+	<<link "金色">><<set $haircolour to "blond">><<goto "Wardrobe">><</link>> |
+	<<link "绿色">><<set $haircolour to "green">><<goto "Wardrobe">><</link>> |
+	<<link "蓝色">><<set $haircolour to "blue">><<goto "Wardrobe">><</link>> |
+	<<link "紫色">><<set $haircolour to "purple">><<goto "Wardrobe">><</link>>
+
+	<br><br>
+
+	<<link "跳过这一天">><<pass 23 hours>><<effects>><<goto "Mirror">><</link>>
+	<br>
+<</widget>>

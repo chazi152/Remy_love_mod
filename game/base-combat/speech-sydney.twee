@@ -1,0 +1,938 @@
+:: Widgets speech-SYDNEY [widget]
+<<widget "speech-sydney">>
+	<<set _sydney to statusCheck("Sydney")>><<rng>>
+	<<if !$sydneyComments>>
+		<<set $sydneyComments to {}>>
+		<<set $sydneyComments.penetrated to 0>>
+		<<set $sydneyComments.mouth to 0>>
+		<<set $sydneyComments.trib to 0>>
+		<<set $sydneyComments.imminent to 0>>
+		<<set $sydneyComments.chastity to 0>>
+		<<set $sydneyComments.touch to 0>>
+		<<set $sydneyComments.fondle to 0>>
+		<<set $sydneyComments.flaunt to 0>>
+		<<set $sydneyUniqueComments to []>>
+	<</if>>
+	<<if $speechNPCPenisVirgin is 1 or $speechNPCVaginaVirgin is 1>>
+		<<if $speechpenisvirgin is 1 or $speechvaginavirgin is 1 or $speechanusvirgin is 1>>
+			<<if _sydneyStatus.includes("corrupt")>>
+				<<if $sydneySeen.includes("corruptroom")>>
+					<<set _sydneyText to `<<He>>发出一阵欣喜的呻吟，一脸陶醉地看向你: "每一次堕落都让我愈加无法离开你。我的全部已经归属于你…直到永远！"<<He>>紧紧地抱住了你。<<set $corruptionEvent to 1>><<npcincr Sydney purity -5>><<llspurity>>`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>发出一阵欣喜的呻吟声，一脸陶醉地看向你："你做到了，你终于亵渎了我…我们现在永远属于彼此！"<<He>>紧紧地抱住你。<<set $corruptionEvent to 1>><<npcincr Sydney purity -20>><<lllspurity>>`>>
+				<</if>>
+			<<else>>
+				<<if $templePromised is "Sydney">>
+					<<set _sydneyText to `<<He>>的嘴里尚喘着粗气，但看向你的眼里仍铺满了陶醉："我们……我们做到了……我太开心了……"<<He>>紧紧地抱住你，"这意味着我们永在一起了，无论余生还是往后……对吗？"<<npcincr Sydney purity -5>><<llspurity>>`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>的嘴里尚喘着粗气，但看向你的眼里仍铺满了陶醉："这是…罪恶…但我为什么会如此快乐呢…？”<<He>>紧紧地抱住你："这意味着我们永远在一起了，无论余生还是往后…对吗？”<<set $corruptionEvent to 1>><<npcincr Sydney purity -20>><<lllspurity>>`>>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<if _sydneyStatus.includes("corrupt")>>
+				<<if $sydneySeen.includes("corruptroom")>>
+					<<set _sydneyText to `<<He>>发出一阵欣喜的呻吟声，一脸陶醉地看向你: "每一次堕落都让我愈加无法离开你。我的全部已经归属于你…直到永远。"<<He>>紧紧地抱住你。<<set $corruptionEvent to 1>><<npcincr Sydney purity -5>><<llspurity>>`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>发出一阵欣喜的呻吟声，一脸陶醉地看向你："你做到了，你终于亵渎了我…我们现在永远属于彼此！"<<He>>紧紧地抱住你。<<set $corruptionEvent to 1>><<npcincr Sydney purity -20>><<lllspurity>>`>>
+				<</if>>
+			<<else>>
+				<<if $templePromised is "Sydney">>
+					<<set _sydneyText to `<<He>>的嘴里尚喘着气，但看向你的眼里仍铺满了陶醉：“我们…我们做到了…我太开心了…”<<He>>紧紧地抱住你："即使我不是你的第一个…这也意味着我们要永远在一起…对吗？”<<npcincr Sydney purity -5>><<llspurity>>`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>的嘴里尚喘着粗气，但看向你的眼里仍铺满了陶醉：“这是…罪恶……但我为什么会如此快乐呢……？”<<He>>紧紧地抱住你，"即使我不是你的第一个，但只要我是你的最后一个，那就没关系！”<<set $corruptionEvent to 1>><<npcincr Sydney purity -20>><<lllspurity>>`>>
+				<</if>>
+			<</if>>
+		<</if>>
+	<<elseif $speechNPCAnusVirgin is 1>>
+		<<if $speechpenisvirgin is 1>>
+			<<if _sydneyStatus.includes("corrupt")>>
+				<<set _sydneyText to `<<He>>呻吟着。"你也是第一次吗？请别放慢速度，拜托了！”<<He>>把双腿缠绕在你身上。`>>
+			<<else>>
+				<<set _sydneyText to `<<He>>喘着气。"你…你确定我们还是纯洁的吗？这也......感觉太赞了......”<<He>>紧紧地抱住你。`>>
+			<</if>>
+		<<else>>
+			<<if _sydneyStatus.includes("corrupt")>>
+				<<set _sydneyText to `<<He>>呻吟着。"啊啊，我从没想到会感觉那么好......请继续。"<<He>>把双腿缠绕在你身上。`>>
+			<<else>>
+				<<set _sydneyText to `<<He>>喘着气。"你…你确定我还是纯洁的吗？这也......感觉太赞了......”<<He>>紧紧地抱住你。`>>
+			<</if>>
+		<</if>>
+	<<elseif $speechmouthvirgin is 1>>
+		<<if _sydneyStatus.includes("corrupt")>>
+			<<set _sydneyText to `<<He>>呻吟着，轻轻揉着你的头。"这是你第一次吗？啊啊也太棒了。"`>>
+		<<else>>
+			<<set _sydneyText to `<<He>>喘着气。"这是你第一次吗？”<<he>>试图继续说下去，但随即用手捂住了嘴，压制住了更多淫荡的声音。`>>
+		<</if>>
+	<<elseif $speechNPCKissVirgin is 1>>
+		<<set _sydneyText to `<<He>>深情地注视着你。"这是我的初吻......”<<He>>笑了。`>>
+	<<elseif $speechhermaroused is 1>>
+		<<if _sydneyStatus.includes("corrupt")>>
+			<<if _sydney.gender is "h">>
+				<<set _sydneyText to `<<He>>喘着气，"哇嗷！<<sydneyMum>>总是说我很特别，但你也是呢！"`>>
+			<<else>>
+				<<set _sydneyText to `<<He>>喘着气。"哇！<<sydneyMum>>从没告诉我居然存在！"`>>
+			<</if>>
+		<<else>>
+			<<if _sydney.gender is "h">>
+				<<set _sydneyText to `<<He>>喘着气。"你......也有两个？我以为只有我一个人！"`>>
+			<<else>>
+				<<set _sydneyText to `<<He>>喘着气。"两......两个？我不知道还有这可能性！"`>>
+			<</if>>
+		<</if>>
+	<<elseif $speechcrossdressaroused is 1>>
+		<<if _sydneyStatus.includes("corrupt")>>
+			<<set _sydneyText to `<<He>>喘着气。"这么长时间，你是个<<gender>>？好吧，这并不影响我对你的感觉。"`>>
+		<<else>>
+			<<set _sydneyText to `<<He>>喘着气。"你是......<<gender>>？那-那没关系！我不在乎！"`>>
+		<</if>>
+	<<elseif $speechnamedrop is 1 and $sydneyromance is 1>>
+		<<set $speechnamedrop to 0>>
+		<<switch _loveInterest>>
+			<<case "Black Wolf" "Great Hawk">>
+				<<set _sydneyText to `<<He>>吃了一惊。"动......动物？什么？"`>>
+			<<case "Whitney">>
+				<<set _sydneyText to `<<He>>吃了一惊。"惠...惠特尼？！"`>>
+			<<case "Robin" "Kylar">>
+				<<set _sydneyText to `<<He>>僵住了。"我......我以为你们只是朋友……你的意思是......？"`>>
+			<<default>>
+				<<set _sydneyText to `<<He>>僵住了。"谁……谁？那是谁？！"`>>
+		<</switch>>
+		<<npcincr Sydney love -10>><<llllove>>
+	<<elseif $speechsextoy is 1>>
+		<<set $speechsextoy to 0>>
+		<<set _sexToy to ($rightarm is "heldSexToy" and $leftarm is "heldSexToy" ? "性玩具" : "性玩具")>>
+		<<if _sydneyStatus.includes("corrupt")>>
+			<<set _sydneyText to `<<He>>看着你的<<print _sexToy>>，咧嘴一笑。"<<print either("啊~看来我们这下不只是测试产品了~","有给你打折吗？嗯？")>>"`>>
+		<<elseif _sydneyStatus.includes("pure")>>
+			<<set _sydneyText to `<<He>>看着你的<<print _sexToy>>，脸红了。“<<print either("啊，那是从<<sydneymum>>的店里买的！","......你准备怎么用？")>>"`>>
+		<<else>>
+			<<set _sydneyText to `<<He>>看着你的<<print _sexToy>>，脸红了。"感觉有些不对劲，但是请不要停下来！"`>>
+		<</if>>
+	<<elseif $speechcum is 1>>
+		<<if $speechspank is 1>>
+			<<switch _sydneyStatus>>
+				<<case "pure" "pureLust">>
+					<<set _sydneyText to `<<He>>困惑地看着你。"这看起来很痛，这......这是什么？”<<npcincr Sydney purity -2>><<lspurity>>`>>
+				<<case "corrupt" "corruptLust">>
+					<<set _sydneyText to `看着你在<<he>>怀里的样子，悉尼咯咯地笑了起来。"看到你挣扎和扭动，只会让我更加兴奋。"<<npcincr Sydney purity -2>><<lspurity>>`>>
+				<<default>>
+					<<set _sydneyText to `<<He>>看着你，既惊慌又迷惑，只因你达到了高潮。<<npcincr Sydney purity -2>><<lspurity>>`>>
+			<</switch>>
+		<<else>>
+			<<switch _sydneyStatus>>
+				<<case "pure" "pureLust">>
+					<<if $sydneySeen.includes("player climax")>>
+						<<set _sydneyText to `<<He>>露出了微笑。"我...我做到了! 我让你......”<<he>>咯咯地笑了起来。<<npcincr Sydney purity -2>><<lspurity>>`>>
+					<<else>>
+						<<set _sydneyText to `<<His>>的眼睛睁大。"你-你还好吗？你在发抖！"你设法点头回应，<<he>>平静下来了。<<npcincr Sydney purity -5>><<llspurity>>`>>
+					<</if>>
+				<<case "corrupt" "corruptLust">>
+					<<set _sydneyText to `<<He>>看着你，咯咯笑了起来。"轮到我了，现在。"<<npcincr Sydney purity -2>><<lspurity>>`>>
+				<<default>>
+					<<set _sydneyText to `<<He>>在你颤抖时深情地抱住了你。<<npcincr Sydney purity -2>><<lspurity>>`>>
+			<</switch>>
+		<</if>>
+		<<set $sydneySeen.pushUnique("player climax")>>
+	<<elseif $speechgenitals is 1 and $worn.genitals.type.includesAll("chastity", "hidden") and !$sydneySeen.includes("chastity")>>
+		<<set _sydneyText to `当<<he>>看到你的<<printChastity>>时，<<he>>惊讶地扬起了眉毛<<npcincr Sydney purity 2>><<gspurity>>`>>
+		<<set $sydneySeen.pushUnique("chastity")>>
+		<<set $sydneyUniqueComments.pushUnique("chastity")>>
+	<<elseif $speechpenispenetrated is 1 and $sydneyComments.penetrated is 0>>
+		<<set $sydneyComments.penetrated to 2>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>几乎说不出话来。"如...如果你...我要..."`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>狂躁地笑了起来。"神殿会因为这个惩罚我...但我不在乎！"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>喘息着。"你...你真的在里面..."`>>
+				<</if>>
+			<<case "corrupt" "corruptLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<if $rng gte 80 and $pregnancyspeechdisable is "f">>
+						<<set _sydneyText to `<<He>>托住你的头，把你的脸拉近<<hers>>。"我想怀上你的孩子。现在。"`>>
+					<<else>>
+						<<set _sydneyText to `<<He>>呻吟着。"用力一点，再用力点！啊~我快要到了！"`>>
+					<</if>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>狂躁地笑了起来。"这值得神殿所给予我的任何惩罚。"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>笑了起来。"我喜欢你在我里面的感觉。"`>>
+				<</if>>
+			<<default>>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>支支吾吾地呻吟着。"我想我...快要到了...！"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>笑了起来。"现在我们都成了罪人，不是吗？嗯？"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>笑了起来。"我觉得我已经开始习惯了。"`>>
+				<</if>>
+		<</switch>>
+	<<elseif $speechotheranuspenetrated is 1 and $sydneyComments.penetrated is 0>>
+		<<set $sydneyComments.penetrated to 2>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>几乎说不出话来。"如...如果你...我要..."`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>喘息着。"这...这太罪恶了...但是..."`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>喘息着。"你...你真的在里面..."`>>
+				<</if>>
+			<<case "corrupt" "corruptLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>呻吟着。"用力一点，再用力点！啊~我快要到了！"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>伏在你的耳边压低了声音。"我简直不敢相信我从没尝试过这个……你真的开了我的眼界。"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>笑了起来。"我喜欢你在我里面的感觉。"`>>
+				<</if>>
+			<<default>>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>支支吾吾地呻吟着。"我想我...快要到了...！"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>笑了起来。"我们还是纯洁的，对吧？这不算数吧？"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>笑了起来。"我觉得我已经开始习惯了。"`>>
+				<</if>>
+		<</switch>>
+	<<elseif $speechvaginapenetrated is 1 and $sydneyComments.penetrated is 0>>
+		<<set $sydneyComments.penetrated to 2>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>开始支支吾吾。"我...我应该...退出来吗？"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>狂躁地笑了起来。"神殿会因为这个惩罚我...但我不在乎！"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>脸红了。"我...我真的在里面..."`>>
+				<</if>>
+			<<case "corrupt" "corruptLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<if $rng gte 80 and $pregnancyspeechdisable is "f">>
+						<<set _sydneyText to `<<He>>托住你的头，把你的脸猛地拉近。"我想让你怀上我的孩子。"`>>
+					<<else>>
+						<<set _sydneyText to `<<He>>呻吟着。"我快要到了！你准备好了吗？"`>>
+					<</if>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>狂躁地笑了起来。"这值得神殿所给予我的任何惩罚。"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>伏在你的耳边压低了声音。"我喜欢在你里面的感觉。"`>>
+				<</if>>
+			<<default>>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>支支吾吾地呻吟着。"我想我...快要到了...！"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>笑了起来。"现在我们都成了罪人，不是吗？嗯？"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>笑了起来。"我开始适应这种感觉了。"`>>
+				<</if>>
+		<</switch>>
+	<<elseif $speechanuspenetrated is 1 and $sydneyComments.penetrated is 0>>
+		<<set $sydneyComments.penetrated to 2>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>几乎说不出话来。"如...如果你...我要..."`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>喘息着。"这...这太罪恶了...但是..."`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>喘息着。"我...我真的在里面..."`>>
+				<</if>>
+			<<case "corrupt" "corruptLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>呻吟着。"我快要到了！你准备好了吗？"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>不确定的看着你。"你真的不觉得难受吗？"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>笑了。"我喜欢在你里面的感觉。"`>>
+				<</if>>
+			<<default>>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>支支吾吾地呻吟着。"我想我...快要到了...！"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>笑了起来。"我们还是纯洁的，对吧？这不算数吧？"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>笑了起来。"我开始适应这种感觉了。"`>>
+				<</if>>
+		<</switch>>
+	<<elseif $speechmouthpenetrated is 1 and $sydneyComments.penetrated is 0>>
+		<<set $sydneyComments.penetrated to 2>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>断断续续地呻吟着。"啊...快要去了..."`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>笑了起来。"感觉有些奇怪..."`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>咯咯地笑了起来。"这很痒！"`>>
+				<</if>>
+			<<case "corrupt" "corruptLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>呻吟着，托住你的后脑勺。"我快要到了！你准备好了吗？"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>压低了声音。"我希望你不要浪费任何东西。"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>轻轻地笑了起来。"你在我下面的样子看起来真可爱。"`>>
+				<</if>>
+			<<default>>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>支支吾吾地呻吟着。"我想我...快要到了...！"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>担心地看着你。"你吃得消吗？我没有伤害到你吧？"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>咯咯地笑了起来。"你的嘴好温暖啊。"`>>
+				<</if>>
+		<</switch>>
+	<<elseif ($speechvaginamouth + $speechanallick + $speechanalkiss + $speechmouthotheranus + $speechthroat + $speechfacesit) gte 1 and $sydneyComments.mouth is 0>>
+		<<set $sydneyComments.mouth to 3>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>断断续续地呻吟着。"啊...快要去了..."`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>笑了起来。"感觉有些奇怪..."`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>咯咯地笑了起来。"这很痒！"`>>
+				<</if>>
+			<<case "corrupt" "corruptLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>呻吟着，托住你的后脑勺。"我快要到了！你准备好了吗？"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>喘息着笑了起来。"舔得更用力一些。"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>轻轻地笑了起来。"你在我下面的样子看起来真可爱。"`>>
+				<</if>>
+			<<default>>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>支支吾吾地呻吟着。"我想我...快要到了...！"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>担心地看着你。"你吃得消吗？我没有伤害到你吧？"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>笑了起来。"你的舌头好温暖啊。"`>>
+				<</if>>
+		<</switch>>
+	<<elseif ($speechvaginavagina + $speechtribentrance) gte 1 and $sydneyComments.trib is 0>>
+		<<set $sydneyComments.trib to 3>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>几乎说不出话来。"如...如果你...我要..."`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>喘息着。"这...这太罪恶了...但是..."`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>喘息着。"我们...那里如此贴近..."`>>
+				<</if>>
+			<<case "corrupt" "corruptLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>呻吟着。"我快要到了！你准备好了吗？"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>不确定的看着你。"你真的不觉得难受吗？"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>笑了起来。"我喜欢紧紧地贴着你。"`>>
+				<</if>>
+			<<default>>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>支支吾吾地呻吟着。"我想我...快要到了...！"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>笑了起来。"我们还是纯洁的，对吧？这不算数吧？"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>笑了起来。"我开始适应这种感觉了。"`>>
+				<</if>>
+		<</switch>>
+	<<elseif ($speechvaginaimminent + $speechpenisimminent + $speechvaginaentrance + $speechpenisentrance) gte 1 and !_sydneyChastity and $sydneyComments.imminent is 0>>
+		<<set $sydneyComments.imminent to 3>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust" "neutral" "neutralLust">>
+				<<if _sydneyVirgin>>
+					<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+						<<set _sydneyText to `<<He>>呻吟着恳求着你。"不...不要...插进去..."`>>
+					<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+						<<set _sydneyText to `<<He>>脸红了。"只...只有顶端，好吗？"`>>
+					<<else>>
+						<<set _sydneyText to `<<He>>紧张地笑了起来。"这很危险..."`>>
+					<</if>>
+				<<else>>
+					<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+						<<set _sydneyText to `<<He>>喘息着试图抑制住呻吟。"快...快点插进去吧。我已经受不了了！"`>>
+					<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+						<<set _sydneyText to `<<He>>带着恳求的眼神望着你，把双腿张开。"你-你还在等什么...？ "`>>
+					<<else>>
+						<<set _sydneyText to `<<He>>咯咯笑了起来。"继……继续，但请温柔一点，拜托了。"`>>
+					<</if>>
+				<</if>>
+			<<case "corrupt" "corruptLust">>
+				<<if _sydneyVirgin>>
+					<<set _sydneyText to `<<He>>呻吟着。"做啊，蹂躏我，让我属于你！"`>>
+				<<else>>
+					<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+						<<set _sydneyText to `<<He>>呻吟着。"不要再挑逗我了！"`>>
+					<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+						<<if $speechvaginaimminent is 1>>
+							<<set _sydneyText to `<<He>>伏在你的耳边压低了声音。"我想要进入你的体内。"`>>
+						<<else>>
+							<<set _sydneyText to `<<He>>伏在你的耳边，压低了声音。"我想要你进入我的身体。"`>>
+						<</if>>
+					<<else>>
+						<<set _sydneyText to `<<He>>轻轻地笑了起来。"我想要把它放在你的体内。"`>>
+					<</if>>
+				<</if>>
+		<</switch>>
+	<<elseif ($speechotheranusimminent + $speechotheranusentrance) gte 1 and !_sydney.chastity.anus.includes("shield") and $sydneyComments.imminent is 0>>
+		<<set $sydneyComments.imminent to 2>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust" "neutral" "neutralLust">>
+				<<if _sydney.virginity.anal is true>>
+					<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+						<<set _sydneyText to `<<He>>断断续续地呻吟着。"我...想我已经准备好了..."`>>
+					<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+						<<set _sydneyText to `<<He>>l脸红了。"请温柔一点..."`>>
+					<<else>>
+						<<set _sydneyText to `<<He>>紧张地笑了起来。"我从来没有想过以这种方式做..."`>>
+					<</if>>
+				<<else>>
+					<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+						<<set _sydneyText to `<<He>>喘息着试图抑制住呻吟。"快...快点插进去吧。我已经受不了了！"`>>
+					<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+						<<set _sydneyText to `<<He>>带着恳求的眼神望着你，把双腿张开。"你-你还在等什么...？ "`>>
+					<<else>>
+						<<set _sydneyText to `<<He>>咯咯笑了起来。"至少这样还算是纯洁的。"`>>
+					<</if>>
+				<</if>>
+			<<case "corrupt" "corruptLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>呻吟着。"不要再挑逗我了！"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>伏在你的耳边，压低了声音。"我想要你进入我的身体。"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>轻轻地笑了起来。"我想要把它放在你的体内。"`>>
+				<</if>>
+		<</switch>>
+	<<elseif ($speechanusimminent + $speechanusentrance) gte 1 and $sydneyComments.imminent is 0>>
+		<<set $sydneyComments.imminent to 2>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust" "neutral" "neutralLust">>
+				<<if _sydneyVirgin>>
+					<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+						<<set _sydneyText to `<<He>>呻吟着恳求着你。"不...不要...插进去..."`>>
+					<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+						<<set _sydneyText to `<<He>>脸红了。"只...只有顶端，好吗？"`>>
+					<<else>>
+						<<set _sydneyText to `<<He>>紧张地笑了起来。"这很危险..."`>>
+					<</if>>
+				<<else>>
+					<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+						<<set _sydneyText to `<<He>>喘息着试图抑制住呻吟。"快...快点让我放进去吧！我已经受不了了！"`>>
+					<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+						<<set _sydneyText to `<<He>>笑了笑，眼神充满了渴求。"你还在等什么呢...？"`>>
+					<<else>>
+						<<set _sydneyText to `<<He>>咯咯笑了起来。"继……继续，但请温柔一点，拜托了。"`>>
+					<</if>>
+				<</if>>
+			<<case "corrupt" "corruptLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>呻吟着。"不要再挑逗我了！"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>伏在你的耳边压低了声音。"我想要进入你的体内。"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>轻轻地笑了起来。"我想要把它放在你的体内。"`>>
+				<</if>>
+		<</switch>>
+	<<elseif $speechspank is 1>>
+		<<if $speechmoan is 1>>
+			<<switch _sydneyStatus>>
+				<<case "pure" "pureLust">>
+					<<set _sydneyText to (
+						`<<He>>脸红了。"这-这本应该是一种惩罚！"`,
+						`<<He>>脸红了。"我不明白，是我惩罚得你不够严厉吗？"`,
+						`<<He>>脸红了。"你...喜欢吗？"<<npcincr Sydney purity -1>><<lspurity>>`
+					)>>
+				<<case "corrupt" "corruptLust">>
+					<<set _sydneyText to (
+						`<<He>>得意地笑了起来。"我就知道你喜欢这个。"<<npcincr Sydney purity -1>><<lspurity>>`,
+						`<<He>>得意地笑了起来。"不听话的孩子会被惩罚，而我就喜欢你这放荡的样子。"<<npcincr Sydney purity -1>><<lspurity>>`,
+						`<<He>>得意地笑了起来。"我想要听到你更多的娇喘，嗯~看来我还得再多打打你的屁股。"<<npcincr Sydney purity -1>><<lspurity>>`
+					)>>
+				<<default>>
+					<<set _sydneyText to (
+						`<<He>>撇了撇嘴。"这...这本应该是惩罚，你知道的。"`,
+						`<<He>>脸红了。"你……想进来吗？"<<npcincr Sydney purity -1>><<lspurity>>`,
+						`<<He>>脸红了。"这可是惩罚！不要叫的那么愉♂悦啊！"<<npcincr Sydney purity -1>><<lspurity>>`
+					)>>
+			<</switch>>
+		<<else>>
+			<<switch _sydneyStatus>>
+				<<case "pure" "pureLust">>
+					<<if $sydneySeen.includes("spank") and $rng lte 10 and $location is "school">>
+						<<set _sydneyText to `<<He>>叹了口气。"要么是我去做，要么是<<nnpc_title "Leighton">>去做，所以请你合作！"`>>
+					<<elseif $rng lte 10 and $location is "temple">>
+						<<set _sydneyText to `<<He>>难以置信地看着你。"你怎么敢玷污这个神圣之地的？！"`>>
+					<<elseif $rng lte 35>>
+						<<set _sydneyText to `<<He>>严肃地看着你。"没有人能逃避纪律的制裁！"`>>
+					<<elseif $rng lte 70>>
+						<<set _sydneyText to `<<He>>严肃的看着你。"请不要乱动！你需要学会教训！"`>>
+					<<else>>
+						<<set _sydneyText to `<<He>>叹了口气。"痛苦会让你铭记罪恶，请接受惩罚！"`>>
+					<</if>>
+				<<case "corrupt" "corruptLust">>
+					<<if $sydneySeen.includes("spank") and $rng lte 10 and $location is "school">>
+						<<set _sydneyText to `<<He>>笑了笑。"比起<<nnpc_title "Leighton">>来，还是我好一些，对吧？"`>>
+					<<elseif $rng lte 10 and $location is "temple">>
+						<<set _sydneyText to `<<He>>笑了起来。"你玷污了神圣之地，或许我应该以牙还牙，玷污你的身体。"`>>
+					<<elseif $rng lte 35>>
+						<<set _sydneyText to `<<He>>笑了起来，"你其实很享受嘛。"`>>
+					<<elseif $rng lte 70>>
+						<<set _sydneyText to `<<He>>慌张地笑了起来。"你生气了？没关系，你也可以同样的对我。"`>>
+					<<else>>
+						<<set _sydneyText to `<<He>>轻轻地笑了起来，用头抵住你的前额。"我不会停下来的，直到你开始享受这种痛苦。"`>>
+					<</if>>
+				<<default>>
+					<<if $sydneySeen.includes("spank") and $rng lte 10 and $location is "school">>
+						<<set _sydneyText to `<<He>>叹了口气。"要么是我去做，要么是<<nnpc_title "Leighton">>去做，所以请你合作！"`>>
+					<<elseif $rng lte 10 and $location is "temple">>
+						<<set _sydneyText to `<<He>>难以置信地看着你。"你怎么敢玷污这个神圣之地的？！"`>>
+					<<elseif $rng lte 35>>
+						<<set _sydneyText to `<<He>>直直地看着你。"不要误解，这完全是为了惩罚而做的。"`>>
+					<<elseif $rng lte 70>>
+						<<set _sydneyText to `<<He>>叹了一口气。"我希望你能好好表现，那我就不必这样做了。我不喜欢伤害你。"`>>
+					<<else>>
+						<<set _sydneyText to `<<He>>摇了摇头。"约旦教会了我一些关于纪律的事情，现在是你学习的时候了。"`>>
+					<</if>>
+			<</switch>>
+		<</if>>
+	<<elseif $speechapologise is 1>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust" "neutral" "neutralLust">>
+				<<set _sydneyText to `<<He>>看起来很困惑。"你为什么要道歉？没关系的，我保证。"`>>
+			<<case "corrupt" "corruptLust">>
+				<<set _sydneyText to `<<He>>伏在你的耳边压低了声音。"我想知道你该如何补偿我。"`>>
+		<</switch>>
+	<<elseif $speechapologiseno is 1>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust" "neutral" "neutralLust">>
+				<<set _sydneyText to `<<He>>看起来很困惑。"你为什么要一直道歉？你还好么？只要你想，我们可以停下来的。"`>>
+			<<case "corrupt" "corruptLust">>
+				<<set _sydneyText to `<<He>>狂躁地笑了起来，"对，继续恳求我吧，我喜欢你无助的样子，这太让人愉悦了！！"`>>
+		<</switch>>
+	<<elseif ($speechvaginawithhold + $speechanuswithhold + $speechpeniswithhold + $speechotheranuswithhold) gte 1 and !$sydneyUniqueComments.includes("withhold")>>
+		<<set $sydneyUniqueComments.pushUnique("withhold")>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust" "neutral" "neutralLust">>
+				<<set _sydneyText to `<<He>>开心地笑了起来。"毕竟我们都需要保持纯洁，在这一切之后。"<<npcincr Sydney purity 2>><<gspurity>>`>>
+			<<case "corrupt" "corruptLust">>
+				<<set _sydneyText to `<<He>>夸张地叹了口气，但是笑了起来。"你有时候真他妈的性感！”<<npcincr Sydney purity 2>><<gspurity>>`>>
+		<</switch>>
+	<<elseif $speechNPCChastity is 1 and $sydneyComments.chastity is 0>>
+		<<set $sydneyComments.chastity to 3>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust" "neutral" "neutralLust">>
+				<<set _sydneyText to (
+					`<<he>>脸红了。"关于那个带子我很抱歉，但我需要保持安全……"`,
+					`<<he>>担忧地看着你。"请不要试图用力拆掉我的带子，这会伤到你自己的。"`,
+					`<<he>>脸红了。"那……那个带子也阻止不了你对我的爱，对吧？"`
+				)>>
+			<<case "corrupt" "corruptLust">>
+				<<set _sydneyText to (
+					`<<he>>叹了一口气，"虽然我想把带子拆掉，但我知道这东西对我有好处。"`,
+					`<<he>>担忧地看着你。"不要试图用力拆掉皮带，那会弄伤你的手指。"`,
+					`<<He>>笑了起来，"我希望这个带子不会太破坏我们的感情。"`
+				)>>
+		<</switch>>
+	<<elseif $speechchastity is 1 and !$sydneyUniqueComments.includes("chastity")>>
+		<<set $sydneyUniqueComments.pushUnique("chastity")>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust" "neutral" "neutralLust">>
+				<<if _sydneyChastity>>
+					<<set _sydneyText to (
+						`<<He>>盯着你的<<printChastity>>。"我们还真是配呢！"`,
+						`<<He>>压低了声音。"如果我们都戴着这些东西，那我们两个还算是纯洁的，对吧？"`,
+						`<<He>>盯着你的<<printChastity>>。"至少我们不用担心，因为我们都有保护措施。"`
+					)>>
+				<<else>>
+					<<set _sydneyText to (
+						`<<He>>盯着你的<<printChastity>>。"你让我摘下我的，而现在你却戴着一个？"`,
+						`<<He>>盯着你的<<printChastity>>。"原来就是这感觉。"`,
+						`<<He>>盯着你的<<printChastity>>。"呃。"`
+					)>>
+				<</if>>
+			<<case "corrupt" "corruptLust">>
+				<<if _sydneyChastity>>
+					<<set _sydneyText to (
+						`<<He>>压低了声音。"听我说，如果我们把贞操用具狠狠地撞在一起……"`,
+						`<<He>>叹了口气。"我们需要尽快找到那玩意儿的钥匙。"`,
+						`<<He>>盯着你的<<printChastity>>。"我们都是欲望的囚徒，深陷其中无法自拔。"`
+					)>>
+				<<else>>
+					<<set _sydneyText to (
+						`<<He>>盯着你的<<printChastity>>。"你是在逗我？"`,
+						`<<He>>盯着你的<<printChastity>>。"这很好玩吗？"`,
+						`<<He>>盯着你的<<printChastity>>。"啊你他妈的尽诱惑着我，你让我摘下自己的贞操装置只是为了——"`
+					)>>
+				<</if>>
+		<</switch>>
+	<<elseif $speechhit is 1>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>皱眉。"再……再用力一点……"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>皱眉。"好痛……"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>皱眉。"嗷！这总是这么疼吗？"`>>
+				<</if>>
+			<<case "corrupt" "corruptLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>有些不爽地看着你。"我知道你还没有使出全力。"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>狂躁地放声大笑，"我喜欢你拳打脚踢，奋力挣扎的样子！"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>皱了皱眉。"啊！你倒是用力啊？"`>>
+				<</if>>
+			<<default>>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>皱眉。"再打我一次！我超爱的！"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>笑。"如果你喜欢粗暴点，那我想我也得试着享受一下？"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>皱眉。"嗷！那一下真的很疼！"`>>
+				<</if>>
+		<</switch>>
+	<<elseif ($speechcoverface + $speechcoverpenis + $speechcovervagina) gte 1 and !$sydneyUniqueComments.includes("hide")>>
+		<<set $sydneyUniqueComments.pushUnique("hide")>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust">>
+				<<set _sydneyText to `<<He>>注意到你试图遮盖自己。"你-你在紧张吗？没关系，我也是。"`>>
+			<<case "corrupt" "corruptLust">>
+				<<set _sydneyText to `<<He>>注意到你试图遮盖自己，笑了起来。"还记得之前是我紧张得要命吗？现在怎么换人了。"`>>
+			<<default>>
+				<<set _sydneyText to `<<He>>注意到你试图遮盖自己。"没关系，我不会介意的。我们都可以相互信任，是吧？"`>>
+		<</switch>>
+	<<elseif $speechhair is 1 and !$sydneyUniqueComments.includes("hair")>>
+		<<set $sydneyUniqueComments.pushUnique("hair")>>
+		<<if _sydney.hairColour isnot "strawberryblond">>
+			<<set _sydneyText to `<<He>>笑了起来。"我一直都很喜欢你的头发，所以我毫不犹豫地接受了你对我外表的提议。"`>>
+		<<else>>
+			<<set _sydneyText to `<<He>>笑了起来。"我一直都很喜欢你的头发。"`>>
+		<</if>>
+	<<elseif ($speechhandjobpenis + $speechhandjobvagina + $speechcheeks + $speechthigh + $speechfeet + $speechchestrub + $speechbreastrub) gte 1 and $sydneyComments.touch is 0>>
+		<<set $sydneyComments.touch to 3>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>压抑着呻吟。"我……我感觉……有什么要来了……"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>喘着气。"这……这就是所谓的前戏，对吧？"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>咯咯地笑了起来。"我想……这不算是罪恶。"`>>
+				<</if>>
+			<<case "corrupt" "corruptLust">>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>喘息着试图压抑住呻吟。"再进去一点！"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>笑了起来。"不错嘛。"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>故意打了个哈欠。"前戏就让我感到无聊了。"`>>
+				<</if>>
+			<<default>>
+				<<if $enemyarousal gte ($enemyarousalmax / 5) * 4>>
+					<<set _sydneyText to `<<He>>喘息着试图压抑住呻吟。"我快要去了……"`>>
+				<<elseif $enemyarousal gte ($enemyarousalmax / 5) * 2>>
+					<<set _sydneyText to `<<He>>喘息着。"我觉得我还能承受得住。"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>咯咯地笑了起来。"我不喜欢其他人这样子碰我。"`>>
+				<</if>>
+		<</switch>>
+
+	<<elseif $sydneyComments.fondle is 0 and ($speechfutapenis + $speechvagina + $speechclit + $speechpenis + $speechglans + $speechanus + $speechbottom) gte 1>>
+		<<if $speechfutapenis is 1>>
+			<<set $sydneyComments.fondle to 3>>
+			<<if _sydney.gender is "h">>
+				<<switch _sydneyStatus>>
+					<<case "pure" "pureLust">>
+						<<set _sydneyText to either(
+							`<<He>>害羞地笑了笑。"这……这样子做吗？"`,
+							`<<He>>呻吟着。"我已经快不行了！而且……湿透了。"`,
+							`<<He>>紧张地看着你。"我……我没有弄疼你吧？"`
+						)>>
+					<<case "corrupt" "corruptLust">>
+						<<set _sydneyText to either(
+							`<<He>>笑了笑。"我喜欢你也有两种性器官，你是如此的完美。"`,
+							`<<He>>轻轻地笑着。"我会在这之后把手指放进你的嘴里，这样你就可以尝到自己的味道了。"`,
+							`<<He>>笑了起来，"如果我把你的精液直接射到你自己的阴道里，那也太没意思了，这不就直接生了个克隆人么。"`,
+							`<<He>>伏在你的耳边压低了声音，"那么，你更喜欢哪一个呢？"`
+						)>>
+					<<default>>
+						<<set _sydneyText to either(
+							`<<He>>笑了起来。"啊~如果不是你，我永远都不会体验到这些~"`,
+							`<<He>>笑了起来。"我觉得我渐渐掌握了技巧！"`,
+							`<<He>>笑了笑。"我这样子弄你会舒服吗？"`
+						)>>
+				<</switch>>
+			<<else>> <!-- sydney is not a herm -->
+				<<switch _sydneyStatus>>
+					<<case "pure" "pureLust">>
+						<<set _sydneyText to (
+							`<<He>>害羞地笑了笑。"这……这样子做吗？"`,
+							`<<He>>呻吟着。"我已经快不行了！而且……湿透了。"`,
+							`<<He>>紧张地看着你。"我……我没有弄疼你吧？"`
+						)>>
+					<<case "corrupt" "corruptLust">>
+						<<set _sydneyText to (
+							`<<He>>笑了起来。"我喜欢你有两种性器官，你是如此的完美。"`,
+							`<<He>>笑了起来，"如果我把你的精液直接射到你自己的阴道里，那也太没意思了，这不就直接生了个克隆人么。"`,
+							`<<He>>伏在你的耳边压低了声音，"那么，哪一个更有快感呢？"`
+						)>>
+					<<default>>
+						<<set _sydneyText to (
+							`<<He>>笑了起来。"你真的很特别。在科学课上我从来没有学过这些。"`,
+							`<<He>>笑了起来。"我觉得我逐渐能够驾驭这两个性器官了。"`,
+							`<<He>>笑了笑。"我几乎开始嫉妒你了，我也想知道拥有两个性器官的感觉。"`
+						)>>
+				<</switch>>
+			<</if>>
+		<<elseif $speechvagina is 1 or $speechclit is 1>>
+			<<set $sydneyComments.fondle to 3>>
+			<<switch _sydneyStatus>>
+				<<case "pure" "pureLust">>
+					<<set _sydneyText to (
+						`<<He>>害羞地笑了笑。"这……这样子做吗？"`,
+						`<<He>>咯咯笑了起来。"你里面越来越湿了！"`,
+						`<<He>>紧张地看着你。"我……我没有弄疼你吧？"`
+					)>>
+				<<case "corrupt" "corruptLust">>
+					<<set _sydneyText to (
+						`<<He>>轻轻地笑着。"我会在这之后把手指放进你的嘴里，这样你就可以尝到自己的味道了。"`,
+						`<<He>>笑了起来。"放轻松宝贝，我会让你更爽的。"`,
+						`<<He>>咯咯笑了起来。"嘘—安静点！"`
+					)>>
+				<<default>>
+					<<set _sydneyText to (
+						`<<He>>笑了起来。"啊~如果不是你，我永远都不会体验到这些~"`,
+						`<<He>>笑了起来。"我觉得我渐渐掌握了技巧！"`,
+						`<<He>>伏在你的耳边，压低了声音。"我应该深入到哪里？嗯？"`
+					)>>
+			<</switch>>
+		<<elseif $speechpenis is 1 or $speechglans is 1>>
+			<<set $sydneyComments.fondle to 3>>
+			<<if playerHasStrapon()>>
+				<<switch _sydneyStatus>>
+					<<case "pure" "pureLust">>
+						<<set _sydneyText to `<<He>>有些紧张。"是……是这样做的吗？"`>>
+					<<case "corrupt" "corruptLust">>
+						<<set _sydneyText to `<<He>>咯咯地笑了起来。"这个玩具真是刺激呢~我希望它能一直留在我里面。"`>>
+					<<default>>
+						<<set _sydneyText to either(
+							`<<He>>笑了起来。"啊~如果不是你，我永远都不会体验到这些~"`,
+							`<<He>>咯咯笑了起来。"我觉得我渐渐掌握了技巧！"`
+						)>>
+				<</switch>>
+			<<else>>
+				<<switch _sydneyStatus>>
+					<<case "pure" "pureLust">>
+						<<set _sydneyText to (
+							`<<He>>害羞地笑了笑。"这……这样子做吗？"`,
+							`<<He>>咯咯笑笑了起来。"它越来越大了！"`,
+							`<<He>>紧张地看着你。"我……我没有弄疼你吧？"`
+						)>>
+					<<case "corrupt" "corruptLust">>
+						<<set _sydneyText to (
+							`<<He>>在你的耳边喘息着。"我会把你榨干。"`,
+							`<<He>>笑了起来。"放轻松宝贝，我会让你更爽的。"`,
+							`<<He>>咯咯笑了起来。"嘘—安静点！"`
+						)>>
+					<<default>>
+						<<set _sydneyText to (
+							`<<He>>笑了起来。"啊~如果不是你，我永远都不会体验到这些~"`,
+							`<<He>>笑了起来。"我觉得我渐渐掌握了技巧！"`,
+							`<<He>>笑了笑。"我这样子弄你会舒服吗？"`
+						)>>
+				<</switch>>
+			<</if>>
+		<<elseif $speechanus is 1 or $speechbottom is 1>>
+			<<set $sydneyComments.fondle to 3>>
+			<<switch _sydneyStatus>>
+				<<case "pure" "pureLust">>
+					<<set _sydneyText to (
+						`<<He>>害羞地笑了笑。"这……这样子做吗？"`,
+						`<<He>>咯咯笑了起来。"我不知道这里能有那么爽！"`,
+						`<<He>>紧张地看着你。"我……我没有弄疼你吧？"`
+					)>>
+				<<case "corrupt" "corruptLust">>
+					<<set _sydneyText to (
+						`<<He>>笑了起来。"也许我们应该把更大的东西插进去。"`,
+						`<<He>>笑了起来。"放轻松宝贝，我会让你更爽的。"`,
+						`<<He>>咯咯笑了起来。"嘘—安静点！"`
+					)>>
+				<<default>>
+					<<set _sydneyText to (
+						`<<He>>笑了起来。"啊~如果不是你，我永远都不会体验到这些~"`,
+						`<<He>>笑了起来。"我觉得我渐渐掌握了技巧！"`,
+						`<<He>>伏在你的耳边，压低了声音。"我应该深入到哪里？嗯？"`
+					)>>
+			<</switch>>
+		<</if>>
+	<<elseif $speechvaginaflaunt is 1 and $sydneyComments.flaunt is 0>>
+		<<set $sydneyComments.flaunt to 2>>
+		<<switch _sydneyStatus>>
+			<<case "pure" "pureLust">>
+				<<set _sydneyText to (
+					`<<He>>脸红了起来。"别-别盯着它看……"`,
+					`<<He>>咯咯笑了起来。"你看着我的感觉有点奇怪……"`,
+					`<<He>>小声说道。"没-没有人像你这样看过我……"`
+				)>>
+			<<case "corrupt" "corruptLust">>
+				<<set _sydneyText to (
+					`<<He>>用两根手指撑开<<his>>的阴唇。"里面景色怎么样~？"`,
+					`<<He>>笑了起来。"是啊，我知道，看起来很完美，不是吗？"`,
+					`<<He>>咯咯笑了起来。"都是你的了。"`
+				)>>
+			<<default>>
+				<<set _sydneyText to (
+					`<<He>>笑了。"你一直在盯着我看，至少让我也看看你的……"`,
+					`<<He>>喘息着。"你准备做什么？"`,
+					`<<He>>有些不知所措。"怎…怎么了？别只站在那里……"`
+				)>>
+		<</switch>>
+	<<else>>
+		<<if $rng gte 95 and !$sydneyUniqueComments.includes("clothes")>>
+			<<set $sydneyUniqueComments.pushUnique("clothes")>>
+			<<if $worn.upper.name is "nun's habit" or $worn.upper.name is "monk's habit">>
+				<<if _sydneyStatus.includes("corrupt")>>
+					<<set _sydneyText to `<<He>>用手轻抚你的`+$worn.upper.cn_name_cap+ `。<<He>>似乎有些怀旧。<<npcincr Sydney purity 2>><<gspurity>>`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>打量着你的` +$worn.upper.cn_name_cap+ `。"穿着那个做……就没问题了吗？"<<npcincr Sydney purity 2>><<gspurity>>`>>
+				<</if>>
+			<<elseif $worn.neck.name is "holy pendant" or $worn.neck.name is "stone pendant">>
+				<<set $sydneySeen.pushUnique("holy pendant")>>
+				<<if _sydneyStatus.includes("corrupt")>>
+					<<set _sydneyText to `<<He>>盯着你的` +$worn.neck.cn_name_cap+ `，似乎有些怀旧。<<npcincr Sydney purity 2>><<gspurity>>`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>打量着你的` +$worn.upper.cn_name_cap+ `。"穿着那个做……就没问题了吗？<<npcincr Sydney purity 2>><<gspurity>>`>>
+				<</if>>
+			<<elseif $worn.neck.name is "dark pendant">>
+				<<set $sydneySeen.pushUnique("dark pendant")>>
+				<<if _sydneyStatus.includes("corrupt")>>
+					<<set _sydneyText to `<<He>>盯着你的` +$worn.neck.cn_name_cap+ `，似乎有点怅然若失。<<npcincr Sydney purity -2>><<lspurity>>`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>打量着你的`+$worn.neck.cn_name_cap+`："它…很漂亮，但也有点令人不安…”<<npcincr Sydney purity -2>><<lspurity>>`>>
+				<</if>>
+			<<elseif $location is "school" and $exposed lte 0 and (!$worn.upper.type.includes("school") and !$worn.lower.type.includes("school"))>>
+				<<if _sydneyStatus.includes("corrupt")>>
+					<<set _sydneyText to `<<He>>打量着你的衣着，然后咯咯笑了起来。"那不是正式的校服——别担心，我可以帮你脱下来~"<<set $combatgoal to "strip">>`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>打量着你的衣着，然后摇了摇头。"你应该严格遵守校纪，免得惹上不必要的麻烦……"`>>
+				<</if>>
+			<<elseif $worn.lower.name is "naked" and playerHasStrapon()>>
+				<<if _sydneyStatus.includes("corrupt")>>
+					<<set _sydneyText to `<<He>>打量着你的<<penisSimple>>，然后咯咯笑了起来。"这些玩具真有趣。"`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>打量着你的<<penisSimple>>，脸瞬间变红。"<<sydneyMum>>总是谈论这些东西。"`>>
+				<</if>>
+			<<elseif $exposed gte 1>>
+				<<if _sydneyStatus.includes("corrupt")>>
+					<<set _sydneyText to `<<He>>审视着你的身体，然后咯咯笑了起来。"你这样赤身裸体的在我下面，比以往更加迷人~"<<npcincr Sydney lust 1>><<glust>>`>>
+				<<else>>
+					<<set _sydneyText to `<<He>>腼腆地看着你暴露的身体。"你-你看起来……呃……”<<He>>看了一会儿，又移开了视线。"你看起来很可爱。"<<npcincr Sydney lust 1>><<npcincr Sydney purity -2>><<gslust>><<lspurity>>`>>
+				<</if>>
+			<<else>>
+				/* Say Nothing */
+				<<set _sydneyText to ``>>
+			<</if>>
+		<<elseif $rng gte 90>>
+			<<switch _sydneyStatus>>
+				<<case "pure" "pureLust">>
+					<<set _sydneyText to `<<He>>喃喃自语着。"对不起，我其实不太清楚我在做什么……"`>>
+				<<case "corrupt" "corruptLust">>
+					<<set _sydneyText to `<<He>>笑了起来。"我们当然知道怎样找乐子~"`>>
+				<<default>>
+					<<set _sydneyText to `"我曾经对这种事情感到非常紧张……"`>>
+			<</switch>>
+		<<elseif $rng gte 85>>
+			<<switch _sydneyStatus>>
+				<<case "pure" "pureLust">>
+					<<set _sydneyText to `<<He>>脸红着摇了摇头。"这……太罪恶了……"`>>
+				<<case "corrupt" "corruptLust">>
+					<<set _sydneyText to `<<He>>狂躁地笑了起来。"你让我看到了新的世界，做一个罪人真是太有意思了！"`>>
+				<<default>>
+					<<set _sydneyText to `<<He>>脸红着摇了摇头。"我一直被教导说这是罪恶的，但是……"`>>
+			<</switch>>
+		<<elseif $rng gte 80>>
+			<<switch _sydneyStatus>>
+				<<case "pure" "pureLust">>
+					<<set _sydneyText to `<<He>>小声嘀咕着。"不……不要太粗暴，拜托……"`>>
+				<<case "corrupt" "corruptLust">>
+					<<set _sydneyText to `<<He>>狂躁地笑了起来。"我能承受你给我的一切。来吧，让我看看你有什么本事！"`>>
+				<<default>>
+					<<set _sydneyText to `<<He>>脸红了起来。"我……如果你想的话，可以粗暴点……"`>>
+			<</switch>>
+		<<elseif $rng gte 75>>
+			<<switch _sydneyStatus>>
+				<<case "pure" "pureLust">>
+					<<set _sydneyText to `<<He>>深吸一口气。"我……我可以的。"`>>
+				<<case "corrupt" "corruptLust">>
+					<<set _sydneyText to `<<He>>轻轻地笑了起来。"你觉得你跟得上吗？"`>>
+				<<default>>
+					<<set _sydneyText to `<<He>>轻轻地笑了起来。"我现在觉得能跟得上你的节奏了。"`>>
+			<</switch>>
+		<<elseif $rng gte 70>>
+			<<switch _sydneyStatus>>
+				<<case "pure" "pureLust">>
+					<<set _sydneyText to `<<He>>深吸一口气。"我们……需要保持安静……"`>>
+				<<case "corrupt" "corruptLust">>
+					<<set _sydneyText to `<<He>>咯咯地笑了起来。"嘘！"`>>
+				<<default>>
+					<<set _sydneyText to `<<He>>笑了起来。"我们尽量不要被发现……"`>>
+			<</switch>>
+		<<elseif $rng gte 65>>
+			<<switch _sydneyStatus>>
+				<<case "pure" "pureLust">>
+					<<set _sydneyText to `<<He>>移开了视线。"请原谅我……"`>>
+				<<case "corrupt" "corruptLust">>
+					<<set _sydneyText to `<<He>>咯咯地笑了起来。"看来我需要受到一些惩罚……嗯~也许你可以惩罚我？"`>>
+				<<default>>
+					<<set _sydneyText to `<<He>>咯咯笑地笑了起来。"我犯了罪……这是我的惩罚吗？"`>>
+			<</switch>>
+		<<elseif $rng gte 60>>
+			<<if $location is "temple">>
+				<<switch _sydneyStatus>>
+					<<case "pure" "pureLust">>
+						<<set _sydneyText to `<<He>>移开了视线。"这……这太罪恶了，竟然在这么神圣的地方做这种事情……"`>>
+					<<case "corrupt" "corruptLust">>
+						<<set _sydneyText to `<<He>>咯咯地笑了起来。"让我们玷污这个地方吧。"`>>
+					<<default>>
+						<<set _sydneyText to `<<He>>咯咯地笑了起来。"我……我们正在神殿里做，什么也阻挡不了我们……"`>>
+				<</switch>>
+			<<elseif $location is "school">>
+				<<switch _sydneyStatus>>
+					<<case "pure" "pureLust">>
+						<<set _sydneyText to `<<He>>紧张地四处张望。"如果……如果有人发现了我们……"`>>
+					<<case "corrupt" "corruptLust">>
+						<<set _sydneyText to `<<He>>咯咯地笑了起来。"我真希望其他学生能听到我们的声音。"`>>
+					<<default>>
+						<<set _sydneyText to `<<He>>四处张望。"我希望没有人在排队等着过来……"`>>
+				<</switch>>
+			<<else>>
+				<<switch _sydneyStatus>>
+					<<case "pure" "pureLust">>
+						<<set _sydneyText to `<<He>>紧张地四处张望。"在这里，竟然做这种事情……"`>>
+					<<case "corrupt" "corruptLust">>
+						<<set _sydneyText to `<<He>>咯咯地笑了起来。"你觉得会有人发现我们吗？"`>>
+					<<default>>
+						<<set _sydneyText to `<<He>>四处张望。"我觉得我们应该是安全的。"`>>
+				<</switch>>
+			<</if>>
+		<<else>>
+			/* Say Nothing */
+			<<set _sydneyText to ``>>
+		<</if>>
+	<</if>>
+	<<if $sydneyComments>>
+		<<set _keys to Object.keys($sydneyComments)>>
+		<<for $_i to 0; $_i lt _keys.length; $_i++>>
+			<<if $sydneyComments[_keys[$_i]] gt 0>>
+				<<set $sydneyComments[_keys[$_i]]-->>
+			<</if>>
+		<</for>>
+	<</if>>
+<</widget>>

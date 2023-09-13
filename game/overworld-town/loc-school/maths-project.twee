@@ -1,0 +1,2025 @@
+:: Maths Project
+
+<<effects>>
+<<if $mathschance is 0>>
+	数学竞赛的册子就在你面前的桌子上。你面对的这项任务是艰巨的。你有<span class="red"><<print $mathschance>>%</span>的机会来赢得比赛。
+<<elseif $mathschance lte 20>>
+	数学竞赛的册子就在你面前的桌子上，而你面对的这项任务已经取得了一点点的进步。你有<span class="pink"><<print $mathschance>>%</span>的机会来赢得比赛。
+<<elseif $mathschance lte 40>>
+	你的数学竞赛基础方案就在你面前的桌子上。你有<span class="purple"><<print $mathschance>>%</span>的机会来赢得比赛。
+<<elseif $mathschance lte 60>>
+	你的数学竞赛方案就在你面前的桌子上。还有很大的改进空间。你有<span class="blue"><<print $mathschance>>%</span>的机会来赢得比赛。
+<<elseif $mathschance lte 80>>
+	你的数学竞赛方案就在你面前的桌子上。它还不完整，但它代表着令人印象深刻的努力。你有<span class="lblue"><<print $mathschance>>%</span>的机会来赢得比赛。
+<<elseif $mathschance lte 99>>
+	你的数学竞赛方案就在你面前的桌子上。你知道它是错的，但它同样能令人感到钦佩。你有<span class="teal"><<print $mathschance>>%</span>的机会来赢得比赛。
+<<else>>
+	你的数学竞赛方案就在你面前的桌子上。你本不该能解开它的，但你很自信你做到了。你有<span class="green"><<print $mathschance>>%</span>的机会来赢得比赛。
+<</if>>
+
+<br><br>
+你有<span class="gold">$mathsinfo</span>的理解.
+<br>
+<<if $stimdealerknown is 1>>
+	你有<span class="gold">$mathsstim</span>支兴奋剂。
+	<br>
+<</if>>
+<br>
+<<set _chair to Furniture.get('chair')>>
+<<link [[制定解法(2:00)|Maths Project Work]]>><<if $location is "home" and _chair.type.includes("comfy")>><<set $mathschance += 5>><<else>><<set $mathschance += 1>><</if>><<mathsskill 2>><<pass 120>><<stress 12>><</link>><<gstress>><<gmaths>>
+<br>
+<<if $mathsstim gte 1>>
+	<<link [[使用兴奋剂(2:00)|Maths Project Stim]]>><<if $location is "home" and _chair.type.includes("comfy")>><<set $mathschance += 20>><<else>><<set $mathschance += 16>><</if>><<set $mathsstim -= 1>><<set $mathsstimused += 1>><<mathsskill 40>><<pass 120>><</link>><<gggmaths>>
+	<br>
+<</if>>
+<<if $mathsinfo gte 1>>
+	<<link [[运用一条数学见解 (2:00)|Maths Project Work]]>><<set $mathsinfo -= 1>><<if $location is "home" and _chair.type.includes("comfy")>><<set $mathschance += 12>><<else>><<set $mathschance += 8>><</if>><<mathsskill 40>><<pass 120>><</link>><<ggmaths>>
+	<br>
+<</if>>
+<br>
+<<if $location is "home">>
+	<<link [[停止|Bedroom]]>><</link>>
+	<br>
+<<else>>
+	<<link [[停止|School Library]]>><</link>>
+	<br>
+<</if>>
+
+:: Maths Project Work
+
+<<effects>>
+你坐下来开始工作。
+<<set _chair to Furniture.get('chair')>>
+<<if $location is "home" and _chair.type.includes("comfy")>>
+	你那<span class="green">舒适的</span>椅子让你更容易专注于项目。
+<<else>>
+	你那<span class="red">不舒适的</span>椅子让人很难集中精力，但你还是决定得过且过。
+<</if>>
+<<if $mathschance lte 9>>
+	你几乎不知道从哪里开始——数学符号是一种全新的语言。<span class="gold">一定有办法让事情更简单。</span>
+<<elseif $mathschance lte 24>>
+	你对需要做的事情有了基本的理解度，但剩余的工作量令人望而生畏。
+<<elseif $mathschance lte 44>>
+	你可能已经做了足够多的工作来获得机会，但无论如何项目还没有完成。
+<<elseif $mathschance lte 69>>
+	在这一点上，这个项目肯定是可以通过的，你很难想象有其他任何学生在这方面如此努力。
+<<else>>
+	这是一项艰苦的工作，但你要仔细检查项目，找出任何可能被认为是错误的地方。
+<</if>>
+<<if $location is "home">>
+	<<if Time.hour lte 3>>
+		你工作的时候，孤儿院一片死寂。
+		<br><br>
+	<<elseif Time.hour lte 5>>
+		当你工作时，天空慢慢变亮，太阳从地平线上升起。
+		<br><br>
+	<<elseif Time.hour lte 7 and Time.schoolDay>>
+		你尽量无视贝利的敲门声，选择继续工作，而其他住户都去上学了。
+		<br><br>
+	<<elseif Time.hour lte 7>>
+		你尽量无视其他孤儿院居民出门的声音。
+		<br><br>
+	<<elseif Time.hour lte 12 and Time.schoolDay>>
+		你可能会逃课，但是你在工作的时候并没有得到太多的乐趣。
+		<br><br>
+	<<elseif Time.hour lte 12>>
+		你一边工作一边听着外面熙熙攘攘的城镇的声音。
+		<br><br>
+	<<elseif Time.hour lte 14 and Time.schoolDay>>
+		你在工作，尽管你的注意力经常被孤儿院其他居民放学回家的声音打断。
+		<br><br>
+	<<elseif Time.hour lte 14>>
+		孤儿院的居民们一回家，孤儿院就吵起来了。
+		<br><br>
+	<<elseif Time.hour lte 16>>
+		随着下午逐渐进入傍晚，孤儿院里充满了尖叫声和脚步声。
+		<br><br>
+	<<elseif Time.hour lte 18>>
+		随着居民们入夜，孤儿院变得安静起来。
+		<br><br>
+	<<elseif Time.hour lte 20>>
+		当你工作时，天空变黑了。太阳落到地平线以下。
+		<br><br>
+	<<elseif Time.hour lte 21>>
+		这个时候孤儿院很安静，但你仍然会被门口偶尔传来的脚步声吓得从工作中分神。
+		<br><br>
+	<<elseif Time.hour lte 23>>
+		你工作的时候，孤儿院一片死寂。
+		<br><br>
+	<<else>>
+		你一边工作一边看时钟，一直工作到午夜直到第二天。
+		<br><br>
+	<</if>>
+<<else>>
+	<<if Time.schoolDay>>
+		<<if Time.hour lte 6>>
+			你整夜工作，偶尔会躲到桌子下面躲避夜间检查。
+		<<elseif Time.hour lte 7>>
+			当你工作时，晨光透过图书馆的窗户洒进来。
+		<<elseif Time.hour lte 8>>
+			其他学生在你工作时到达。有些人正在进行自己的项目。
+		<<elseif Time.hour lte 11>>
+			你可能会翘课，但你在工作中没有太多乐趣。
+		<<elseif Time.hour lte 12>>
+			你工作的时候，图书馆里挤满了来寻求自己解决方案的学生。
+		<<elseif Time.hour lte 14>>
+			你可能会翘课，但你在工作中没有太多乐趣。
+		<<elseif Time.hour lte 16>>
+			你工作的时候，图书馆里挤满了待到很晚来寻找自己解决方案的学生。
+		<<elseif Time.hour lte 18>>
+			你一边工作一边听着外面熙熙攘攘的城镇的声音。
+		<<elseif Time.hour lte 21>>
+			当你工作时，剩下的日光变暗了。
+		<<else>>
+			你整夜工作，偶尔会躲到桌子下面躲避夜间检查。
+		<</if>>
+	<<else>>
+		<<if Time.hour lte 6>>
+			你整夜工作，偶尔会躲到桌子下面躲避夜间检查。
+			<br><br>
+		<<elseif Time.hour lte 7>>
+			当你工作时，晨光透过图书馆的窗户洒进来。
+			<br><br>
+		<<elseif Time.hour lte 8>>
+			当你工作时，晨光透过图书馆的窗户洒进来。
+			<br><br>
+		<<elseif Time.hour lte 11>>
+			你一边工作一边听着外面熙熙攘攘的城镇的声音。
+			<br><br>
+		<<elseif Time.hour lte 12>>
+			你一边工作一边听着外面熙熙攘攘的城镇的声音。
+			<br><br>
+		<<elseif Time.hour lte 14>>
+			你一边工作一边听着外面熙熙攘攘的城镇的声音。
+			<br><br>
+		<<elseif Time.hour lte 16>>
+			你一边工作一边听着外面熙熙攘攘的城镇的声音。
+			<br><br>
+		<<elseif Time.hour lte 18>>
+			你一边工作一边听着外面熙熙攘攘的城镇的声音。
+			<br><br>
+		<<elseif Time.hour lte 21>>
+			当你工作时，剩下的日光变暗了。
+			<br><br>
+		<<else>>
+			你整夜工作，偶尔会躲到桌子下面躲避夜间检查。
+			<br><br>
+		<</if>>
+	<</if>>
+<</if>>
+<<if $mathsproject is "ongoing">>
+	<<link [[继续|Maths Project]]>><</link>>
+	<br>
+<<else>>
+	你看了看时间，突然意识到<span class="red">数学竞赛已经结束了。</span>
+	<br><br>
+	在这个时候继续钻研下去的话是很愚蠢的，你将这个已经过时的项目扔进了垃圾桶，并对浪费的精力和时间感到烦躁。
+	<br><br>
+
+	<<if $location is "home">>
+		<<link [[继续|Bedroom]]>><</link>>
+	<<else>>
+		<<link [[继续|School Library]]>><</link>>
+	<</if>>
+	<br>
+<</if>>
+
+:: Maths Project Stim
+
+<<effects>>
+你服用了兴奋剂后，坐了下来，然后开始工作。
+<<set _chair to Furniture.get('chair')>>
+<<if $location is "home" and _chair.type.includes("comfy")>>
+	有了药物和<span class="green">舒适的</span>椅子，你比以往任何时候都更容易集中精力完成项目。
+<<else>>
+	你的注意力高度集中，但<span class="red">不舒服的</span>椅子带来的轻微酸痛使兴奋剂的效果大打折扣。
+<</if>>
+<<if $mathschance lte 9>>
+	数学对你来说是全新的领域，但在兴奋剂的刺激下，你的头脑变得更加敏锐，你可以弄懂基本的数学知识。
+<<elseif $mathschance lte 24>>
+	在兴奋剂的帮助下，你可以看到完成项目所需的所有步骤。
+<<elseif $mathschance lte 44>>
+	项目的基础工作已经完成，现在你准备完成其余的部分。
+<<elseif $mathschance lte 69>>
+	虽然你的项目大体上令人满意，但在你看来还有很多地方需要改进。
+<<else>>
+	此时，剩下的就是打磨那些小瑕疵，直到项目完美。
+<</if>>
+<<if $location is "home">>
+	<<if Time.hour lte 2>>
+		时间飞逝，当你反应过来，才发现午夜已经过去，新的一天已经开始。
+	<<elseif Time.hour lte 3>>
+		孤儿院静悄悄的。
+	<<elseif Time.hour lte 5>>
+		你是如此专注于你的工作，以至于当太阳从地平线上升起时，你才惊讶的反应过来。
+	<<elseif Time.hour lte 7 and Time.schoolDay>>
+		你对工作的专注是坚不可摧的，即使贝利敲门叫醒你去上学。
+	<<elseif Time.hour lte 7>>
+		你可以听到孤儿院的其他居民起床和离开的声音，你可以很容易就忽略这些声音。
+	<<elseif Time.hour lte 12 and Time.schoolDay>>
+		你可能会逃课，但是你在工作中学到很多东西。
+	<<elseif Time.hour lte 12>>
+		一天的时间在你工作的时候飞逝而过。
+	<<elseif Time.hour lte 14 and Time.schoolDay>>
+		你听到孤儿院的其他孩子放学回家的声音，但这并没有打断你的注意力。
+	<<elseif Time.hour lte 14>>
+		你知道孤儿院的其他住户晚上都要回家了，但你还是继续工作。
+	<<elseif Time.hour lte 16>>
+		当下午渐渐进入傍晚时，你可以毫不费力地屏蔽孤儿院的活动声音。
+	<<elseif Time.hour lte 18>>
+		孤儿院里的声音渐渐安静下来，因为其他住户都已入睡，但你仍然像之前一样快速工作。
+	<<elseif Time.hour lte 20>>
+		你是如此专注于你的工作，以至于当太阳从地平线上落下时，你才惊讶的反应过来。
+	<<else>>
+		这个时候孤儿院很安静。你专注于工作。
+	<</if>>
+<<else>>
+	<<if Time.schoolDay>>
+		<<if Time.hour lte 6>>
+			你通宵达旦地工作。偶尔需要躲在桌子下面以避开巡查，但这并不会影响你的注意力。
+		<<elseif Time.hour lte 7>>
+			在你工作的时候，你几乎没有注意到晨光从图书馆的窗户爬进来。
+		<<elseif Time.hour lte 8>>
+			其他学生在你工作时到达。你忽略了他们的存在。
+		<<elseif Time.hour lte 11>>
+			你可能会逃课，但是你在工作中学到很多东西。
+		<<elseif Time.hour lte 12>>
+			在你工作的时候，图书馆里挤满了来寻求自己解决方案的学生。你发现忽略他们是一件很容易的事情。
+		<<elseif Time.hour lte 14>>
+			你可能会逃课，但是你在工作中学到很多东西。
+		<<elseif Time.hour lte 16>>
+			你不会因为其他学生熬夜追求自己的解决方案而分心。
+		<<elseif Time.hour lte 18>>
+			一天的时间在你工作的时候飞逝而过。
+		<<elseif Time.hour lte 21>>
+			当你工作时，你几乎没有注意到天空变暗。
+		<<else>>
+			你通宵达旦地工作。偶尔需要躲在桌子下面以避开巡查，但这并不会影响你的注意力。
+		<</if>>
+	<<else>>
+		<<if Time.hour lte 6>>
+			你通宵达旦地工作。偶尔需要躲在桌子下面以避开巡查，但这并不会影响你的注意力。
+		<<elseif Time.hour lte 7>>
+			在你工作的时候，你几乎没有注意到晨光从图书馆的窗户爬进来。
+		<<elseif Time.hour lte 8>>
+			在你工作的时候，你几乎没有注意到晨光从图书馆的窗户爬进来。
+		<<elseif Time.hour lte 11>>
+			一天的时间在你工作的时候飞逝而过。
+		<<elseif Time.hour lte 12>>
+			一天的时间在你工作的时候飞逝而过。
+		<<elseif Time.hour lte 14>>
+			一天的时间在你工作的时候飞逝而过。
+		<<elseif Time.hour lte 16>>
+			一天的时间在你工作的时候飞逝而过。
+		<<elseif Time.hour lte 18>>
+			一天的时间在你工作的时候飞逝而过。
+		<<elseif Time.hour lte 21>>
+			当你工作时，你几乎注意不到图书馆窗外渐暗的灯光。
+		<<else>>
+			你通宵达旦地工作。偶尔需要躲在桌子下面以避开巡查，但这并不会影响你的注意力。
+		<</if>>
+	<</if>>
+<</if>>
+<br><br>
+<<if $mathsstimused is 2 or $mathsstimused gte 4 and $rng gte 75>>
+	你坐下来欣赏你的工作。你会感到皮肤下面有一种奇怪的热度。它生长并扩散到你的全身，集中在你的腰部。淫荡的幻想强行进入你的脑海。不一会儿，你的脸颊就会泛红，你会发现自己因为渴望而坐立不安。那剂量肯定是被浓缩的春药污染了。
+	<<gggarousal>><<arousal 10000>><<drugs 500>>
+	<br><br>
+	你的双手在两腿之间游走，本能地试图满足你强烈的欲望。但触摸自己的刺激太强烈了，让人无法承受。这种快感在你体内喷射，强烈得令人痛苦。你的手退缩了，你的整个身体抽搐，你的眼前一片空白。余震让你颤抖。看来用你的手来安慰自己是不可行的。
+	<br><br>
+	你考虑着是否要离开你的房间去呼吸一些新鲜空气。但你被欲望冲昏了头脑。你可以想象当别人发现你毫无防备时会发生什么。而另一种选择，呆在这里，试着忍受这种性奋直到它消失，虽然你感觉可能会更糟。
+	<br><br>
+	<<if $location is "home">>
+		<<link [[忍耐 (4:00)|Maths Project Endure Home]]>><<pass 240>><<stress 24>><</link>><<ggstress>>
+		<br>
+		<<link [[出门|Maths Project Outside Home]]>><</link>>
+		<br>
+	<<else>>
+		<<link [[忍耐 (4:00)|Maths Project Endure Library]]>><<pass 240>><<stress 24>><</link>>
+		<br>
+		<<link [[出去|Maths Project Outside Library]]>><</link>>
+		<br>
+	<</if>>
+<<elseif $mathsstimused is 3 or $mathsstimused gte 4 and $rng gte 50>>
+	你坐下来欣赏你的工作，但有些地方出了问题。<<if $location is "home">>你的房间<<else>>图书馆<</if>>里的物体开始扭曲变形，变得覆盖在奇怪的模式。你失去了平衡感，发现自己在摇晃。你差点摔倒。那剂量肯定被浓缩的迷幻混合了。你的认知并没有使这一经历变得不真实。
+	<<hallucinogen 500>>
+	<br><br>
+	<<if $location is "home">>你想躺下，但在你上床之前<<else>>你决定去散散步，清醒一下头脑，但当你从椅子上站起来的那一刻，<</if>>你的周围变得扭曲而陌生。你跌跌撞撞地向前寻找熟悉的存在时，黑暗的、充满威胁的形状在你周围移动。那些长着巨大眼睛和无数蠕动舌头的怪异生物远远地注视着你，叽里咕噜的声音在周围回荡。地板开始液化，你挣扎着在地板上移动，你的脚踝开始下陷，然后是膝盖，接着是腰部。最后，地板一下子松动了，你发现自己掉了下去，在一片漆黑的虚空中翻滚着。
+	<br><br>
+	<<if $location is "home">>
+		<<set $bus to "residential">>
+	<<else>>
+		<<set $bus to "industrial">>
+	<</if>>
+	<<link [[继续|Maths Project Void]]>><</link>>
+	<br>
+<<elseif $mathsstimrobin isnot 1 and Time.schoolDay and Time.dayState isnot "night" and $robinmissing is 0 and $NPCName[$NPCNameList.indexOf("Robin")].init is 1 and $location is "home">>
+	<<set $mathsstimrobin to 1>>
+	<<npc Robin>><<person1>>
+	你坐下来欣赏你的作品。你感到皮肤下有一股奇怪的热量。你的视线变得模糊，一切都变成了黑色。
+	<<ggarousal>><<arousal 1800>><<drugs 120>><<hallucinogen 120>>
+	<br><br>
+	你醒来时发现有人在摇你的胳膊。你躺在床上，罗宾皱着眉头坐在你身旁。
+	<br><br>
+	"你躺在外面的地板上，"<<he>>说道。<<He>>声音中包含着担忧，"你还好吗？"
+	<br><br>
+	<<if $robinromance is 1>>
+		那种奇怪的热度还没有离开你的身体。罗宾就贴在你身边。
+		<br><br>
+		<<link [[你把罗宾拉到身上|Maths Project Robin Sex]]>><<set $sexstart to 1>><</link>><<promiscuous1>>
+		<br>
+	<</if>>
+	<<link [[说你没事|Maths Project Robin]]>><</link>>
+	<br>
+<<else>>
+	你坐下来，欣赏你的成果。你感受到皮肤下有一种奇怪的热量。
+	<<ggarousal>><<arousal 1800>><<drugs 120>><<hallucinogen 120>>
+	<br><br>
+	<<if $mathsproject is "ongoing">>
+		<<link [[继续|Maths Project]]>><</link>>
+		<br>
+	<<else>>
+		你看了看时间，突然意识到<span class="red">数学竞赛已经结束了。</span>
+		<br><br>
+		在这个时候继续钻研下去的话是很愚蠢的，你将这个已经过时的项目扔进了垃圾桶，并对浪费的精力和时间感到烦躁。
+		<br><br>
+
+		<<if $location is "home">>
+			<<link [[继续|Bedroom]]>><</link>>
+		<<else>>
+			<<link [[继续|School Library]]>><</link>>
+		<</if>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Maths Project Robin
+
+<<effects>>
+你告诉罗宾你很好，并感谢<<him>>把你带到你的床上。<<He>>看起来很担心，但还是点点头，<<he>>站了起来。当<<He>>走到门口时，<<he>>转身说道："如果你觉得不舒服，一定要去看医生，如果你想的话，我可以和你一起去。"
+<br><br>
+<<link [[继续|Bedroom]]>><<endevent>><</link>>
+<br>
+
+:: Maths Project Robin Sex
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 500>>
+	<<set $enemyarousalmax to 600>>
+<</if>>
+
+<<set $enemyanger to 0>>
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Maths Project Robin Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Maths Project Robin Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Maths Project Robin Sex Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>><<npcincr Robin lust -20>>
+	罗宾紧贴着你，微笑着。
+	<br><br>
+<<elseif $enemyhealth lte 0>>
+	"哇噢！”罗宾说。<<Hes>>仍然在笑。
+	<br><br>
+<<elseif $finish is 1>>
+	罗宾紧贴着你，微笑着。
+	<br><br>
+<</if>>
+"谢谢你照顾我，”你说。你亲吻<<his>>的额头，<<he>>用鼻子蹭了蹭你的脖子。你们在一起躺了一会儿，直到<<he>>爬起来。
+<br><br>
+<<He>>转身，<<he>>到达门口。"我很高兴你没事，但如果你感觉不舒服一定要去看医生，"<<he>>说，"如果你愿意，我和你一起去。"
+<br><br>
+<<clotheson>>
+<<endcombat>>
+<<link [[继续|Bedroom]]>><</link>>
+<br>
+
+:: Maths Project Void
+
+<<effects>>
+<<generate1>><<person1>>
+当你落在一堵冰冷的砖墙上时，坠落的过程突然结束。你认出了天空和周围的建筑，尽管它们看起来还是不太对劲。你莫名其妙地来到了外面<<if $exposed gte 1>>--而且没有穿好衣服！<<else>>.<</if>>
+<br><br>
+你尝试着保持平衡，但是失败了，一个<<person>>绕过拐角处，发现了你窘迫的困境。
+<br><br>
+"可怜的小家伙。来，让我扶你走回家。"
+<br><br>
+<<he>>抓住你的肩膀，把你带到附近的一条小巷，你不知道该说些什么来抗议。城市的喧嚣逐渐远离，你到达了一个僻静的死胡同。当<<person>>把你推到墙上，然后压在你身上时，你的神志恢复了。
+<br><br>
+<<link [[继续|Maths Project Void Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Maths Project Void Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Maths Project Void Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Maths Project Void Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Maths Project Void Rape Finish
+
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>把你扔在地板上，环顾四周，然后一言不发地离开。
+	<br><br>
+	<<tearful>>你试图摇摇晃晃地站起来，但还是滑倒在了地面上。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<generate1>><<person1>>一个<<person>>穿着一件白色外套蹲在你面前。你没有注意到<<him>>的靠近。<<He>>一只手里拿着棉签，另一只手抓住你的脸并用力掰开你的嘴。<<He>>把棉签伸进你的嘴，在口腔内侧摩擦。之后<<He>>把棉签扔进一个小袋子中，并把它密封上。最后<<He>>一言不发地离开了。
+	<br><br>
+	<<endevent>>
+	你又一次摇摇晃晃地站了起来。你站在原地。等待意识正在恢复正常。
+	<br><br>
+	<<destinationeventend>>
+<<else>>
+	你设法把<<him>>推到小巷的墙上，摇摇晃晃地走到开阔的地方。
+	<br><br>
+	<<tearful>>你靠在路灯上，但是一不小心失去了平衡，跌倒在地。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<generate1>><<person1>>一个<<person>>穿着一件白色外套蹲在你面前。你没有注意到<<him>>的靠近。<<He>>一只手里拿着棉签，另一只手抓住你的脸并用力掰开你的嘴。<<He>>把棉签伸进你的嘴，在口腔内侧摩擦。之后<<He>>把棉签扔进一个小袋子中，并把它密封上。最后<<He>>一言不发地离开了。
+	<br><br>
+	<<endevent>>
+	你又一次摇摇晃晃地站了起来。你站在原地。等待意识正在恢复正常。
+	<br><br>
+	<<destinationeventend>>
+<</if>>
+
+:: Maths Project Endure Home
+
+<<effects>>
+
+你躺在床上，希望你能忍受这种痛苦。现在做任何有意义的事情都是不可能的。你甚至连思考都很困难，但你尽力通过数东西来分散自己的注意力。这一切都很顺利，直到你看了一眼时钟，才意识到只过了两分钟。
+<br><br>
+
+当疼痛消失时，你的肌肉会因为紧张而疼痛。你意识到你的牙齿咬得紧紧的，仍然感到兴奋和沮，但至少你又能清醒地思考了。
+<br><br>
+
+<<link [[继续|Bedroom]]>><</link>>
+<br>
+
+:: Maths Project Endure Library
+<<effects>>
+
+你向后靠在椅子上，希望自己能挺过这段时间。现在什么事情都做不了，连思考都很困难，但你尽量会通过数东西来分散自己的注意力。一切都很顺利，直到你看了一眼时钟，意识到只过去了几分钟。
+<br><br>
+
+当药物的效果开始消退时，你的肌肉会因为紧张而疼痛。你紧紧得咬着你的牙齿，仍然感到兴奋和沮丧，但至少你可以清醒着思考了。
+<br><br>
+
+<<link [[继续|School Library]]>><</link>>
+<br>
+
+:: Maths Project Outside Home
+
+<<effects>><<set $bus to "residential">>
+<<generate1>><<person1>>
+你跌跌撞撞跑出去，身体靠在墙上寻求支撑。<<if $exposed gte 1>>寒冷的空气刺激着你的皮肤。你太过匆忙，连衣服都没穿，不过你已经不在乎这些了。如果不穿衣服能让人更快注意到你，那就更好了。<<else>>你的衣服摩擦着你的<<genitals_are 1>>。这种刺激让你难以忍受，迫使你不断地因快感而抽搐着，每走几步就不得不停下来。<</if>>起初，没有人注意到你，直到一个走在街道同一侧的<<person>>发现了你，对你的身体上下打量了一番。你试着和<<him>>说话。
+<br><br>
+"请-请..."
+<br><br>
+<<He>>不由你分说。环顾左右确认四下无人后，<<he>>抓住你的手把你拉进了小巷。你本能地想要尖叫，却只发出了淫乱的呻吟。
+<br><br>
+<<His>>手在你的双腿之间探索，快感再一次淹没了你。但是这一次的痉挛没有让刺激停下来。你只能无助地随着<<his>>手指动作而抽搐。
+<br><br>
+"你真是个调皮的孩子，不是吗？"<<he>>说道。"别担心，我知道你需要什么"
+<br><br>
+<<link [[继续|Maths Project Outside Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Maths Project Outside Library
+
+<<effects>><<set $bus to "industrial">>
+<<generate1>><<person1>>
+你跌跌撞撞地穿过图书馆，好不容易才穿过走廊到了外面。<<if Time.schoolDay and Time.hour gte 8 and Time.hour lte 17>>你从学校前门离开，靠在墙上勉强保持站立。<<else>>你翻过围栏，靠在墙上勉强保持站立。<</if>><<if $exposed gte 1>>阵阵寒风吹过你的皮肤。你的<<lewdness>>裸露在外，但你已经不在乎了。如果这样能让人尽快注意到你，那就更好了。<<else>>衣物摩擦着你的<<genitals_are 1>>，这刺激让你难以忍受，迫使你因快感而抽搐着，每走几步就不得不停下来。<</if>>起初，并没有人注意到你，直到街上有一个走在同方向的<<person>>发现了你，对你的身体上下打量了一番。你试着和<<him>>说话。
+<br><br>
+
+"请-请..."
+<br><br>
+
+<<He>>不由你分说。环顾左右确认四下无人后，<<he>>抓住你把你拉进了小巷。你本能地想要尖叫，却只发出了淫乱的呻吟。
+<br><br>
+
+<<His>>手在你的双腿之间探索，快感再一次淹没了你。但是这一次的痉挛没有让刺激停下来。你只能无助地随着<<his>>手指动作而抽搐。
+<br><br>
+
+"你真是个调皮的孩子，不是吗？"<<he>>说道。"别担心，我知道你需要什么"
+<br><br>
+
+<<link [[继续|Maths Project Outside Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Maths Project Outside Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Maths Project Outside Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Maths Project Outside Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Maths Project Outside Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+<<ejaculation>>
+
+<<He>>把你扔在地板上，环顾四周，然后一言不发地离开。
+<br><br>
+
+<<tearful>>你摇摇晃晃地站了起来。你仍旧感到敏感而沮丧，但你的思维已经稍微清醒了一点。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<destinationeventend>>
+
+<<else>>
+
+你设法把<<him>>推到小巷的墙上，摇摇晃晃地走到开阔的地方。
+<br><br>
+
+<<tearful>>你倚靠在路灯旁。你仍旧感到敏感而沮丧，但你的思维已经稍微清醒了一点。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<destinationeventend>>
+
+<</if>>
+
+:: Stim Dealer
+<<effects>>
+
+<<generate1>><<person1>>你走近潜伏在阴影中的身影。你在逐渐靠近后，看见一个穿着厚重外套的<<person>>。
+<br><br>
+
+<<link [[求购兴奋剂|Stim Dealer Buy]]>><</link>>
+<br>
+<<if $mathsstimstolen is 0>>
+<<set $skulduggerydifficulty to 600>>
+<<elseif $mathsstimstolen is 1>>
+<<set $skulduggerydifficulty to 800>>
+<<elseif $mathsstimstolen is 2>>
+<<set $skulduggerydifficulty to 1000>>
+<<else>>
+<<set $skulduggerydifficulty to 1200>>
+<</if>>
+<<link [[盗取兴奋剂|Stim Dealer Steal]]>><</link>><<skulduggerydifficulty>>
+<br>
+	<<if $hallucinations gte 1>>
+	<<link [[故意偷窃被抓|Stim Dealer Steal]]>><<set $skulduggerydifficulty to 10000>><<trauma -60>><</link>><<dangerousText>><<llltrauma>>
+	<br>
+	<</if>>
+<<link [[走开|Oxford Street]]>><<endevent>><</link>>
+<br>
+
+:: Stim Dealer Buy
+<<effects>>
+
+<<person>>在看见你之后嘴角疯狂上扬。
+<br><br>
+
+<<if $mathsstimbought is 0>>
+"你是来为学习寻求帮助的？"<<he>>问道。"£500一剂。它会管用的，相信我。"
+<br><br>
+
+	<<if $money gte 50000>>
+	<<link [[购买|Stim Dealer Buy 2]]>><<set $mathsstimbought += 1>><<set $mathsstim += 1>><<set $money -= 50000>><</link>>
+	<br>
+	<</if>>
+<<elseif $mathsstimbought is 1>>
+"供应恐怕不足,"<<he>>说道，"£2000一剂。"
+<br><br>
+
+	<<if $money gte 200000>>
+	<<link [[购买|Stim Dealer Buy 2]]>><<set $mathsstimbought += 1>><<set $mathsstim += 1>><<set $money -= 200000>><</link>>
+	<br>
+	<</if>>
+<<else>>
+"供应短缺，"<<he>>说道，"非常短缺，£5000一剂。不用试图讨价还价，多得是想给爸爸妈妈留下深刻印象的有钱小鬼。"
+<br><br>
+
+	<<if $money gte 500000>>
+	<<link [[购买|Stim Dealer Buy 2]]>><<set $mathsstimbought += 1>><<set $mathsstim += 1>><<set $money -= 500000>><</link>>
+	<br>
+	<</if>>
+<</if>>
+
+<<link [[走开|Oxford Street]]>><<endevent>><</link>>
+<br>
+
+:: Stim Dealer Buy 2
+<<effects>>
+
+你用钱换取来一小包鲜艳的药片。"一剂，"<<person>>说道。<<He>>转身走向小巷深处，接着消失在一个拐角处。
+<br><br>
+
+<<link [[继续|Oxford Street]]>><<endevent>><</link>>
+<br>
+
+:: Stim Dealer Steal
+<<effects>>
+
+<<if $mathsstimcaught isnot 1>>
+	你等待一群学生接近毒贩，然后混进他们中间，以便接近目标。其他学生困惑地瞥了你几眼，但毒贩的注意力被分散了，没有注意到你不是他们中的一员。趁着他们进行交易时，你偷偷把手伸进毒贩的外套里。
+	<br><br>
+
+	<<skulduggerycheck>>
+	<<if $skulduggerysuccess is 1>><<set $mathsstim += 1>><<set $mathsstimstolen += 1>>
+		你抓紧手中的一包药片，屏住呼吸，包装随着指尖的轻微摩擦发出声响。毒贩仍浑然不觉。你在附近逗留了足够久的时间以避免过早离开引起任何的怀疑，然后溜进了另一群行人中，偷来的药片被你安全地藏了起来。
+		<br><br>
+
+		<<skulduggeryuse>>
+
+		<<endevent>>
+		<<link [[继续|Oxford Street]]>><</link>>
+		<br>
+	<<else>>
+		<<set $mathsstimcaught to 1>>
+		毒贩瞥了你一眼，然后把你用力推开。其他学生都不明所以，但毒贩眯缝着的双目仍锁定在你的身上，露出了一个恶意的冷笑。
+		<br><br>
+
+		"你犯了一个大错。"<<he>>说道。<<He>>望向其他学生，"你们其他人都听好了，第一个让<<phim>>发出尖叫的人免单。赶紧的，趁我还没改变主意。"
+		<br><br>
+
+		其他学生转头看向你，权衡着他们的选择。趁着他们犹豫的时间，你突然跑起来逃了出去，但你确信事情还没有结束。从现在起，这里的毒贩会一直关注你。
+		<br><br>
+
+		<<skulduggeryuse>>
+
+		<<endevent>>
+		<<link [[继续|Oxford Street]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	毒贩们正在找你，所以你必须更加小心。你等待一个学生接近毒贩，保持着距离远远观察。毒贩离开时，你跟在后面。在毒贩下一次拐进一个小巷时，你追了上去准备行动。
+	<br><br>
+
+	<<skulduggerycheck>>
+	<<if $skulduggerysuccess is 1>><<set $mathsstim += 1>><<set $mathsstimstolen += 1>>
+		你把手伸进毒贩外套，抓起一包药片就跑。你没时间去确认是否有人注意到你，任何迟疑都是灾难性的。
+		<br><br>
+
+		<<skulduggeryuse>>
+
+		<<endevent>>
+		<<link [[继续|Oxford Street]]>><</link>>
+		<br>
+	<<else>>
+		<<set $mathsstimcaught to 1>><<generate2>><<generate3>>
+		但是你刚转过一个拐角就不得不停下来。毒贩就站在那，面朝着你，浑身肌肉发达。你转身逃跑，但回来的路被更多长相粗糙的人挡住了。
+		<br><br>
+
+		"我们听说了你的一切，"毒贩冷笑道。"是时候给你上一课了。"
+		<br><br>
+
+		毒贩手下的暴徒们向你逼近
+		<br><br>
+
+		<<skulduggeryuse>>
+
+		<<link [[悄悄溜走|Maths Abduction]]>><<set $phase to 0>><</link>>
+		<br>
+		<<link [[尖叫|Maths Abduction]]>><<set $phase to 1>><</link>>
+		<br>
+		<<if $submissive gte 1500>>
+			<<link [[求饶|Maths Beg]]>><<sub 1>><</link>><<submissivetext>>
+			<br>
+		<</if>>
+	<</if>>
+<</if>>
+
+:: Maths Beg
+<<effects>>
+
+<<if $mathsstimbeg isnot 1>><<set $mathsstimbeg to 1>>
+	你跪下直到前额贴地。"别打我，求你了"，你啜泣道，"我买不起，可我真的很需要它"
+	<br><br>
+
+	暴徒们令人不安地移动着。"<<pShes>>只是个小毛头，"其中一个人说道，"<<pShe>>值得这么大费周章吗？"
+	<br><br>
+
+	"别让我们再逮到你，"毒贩说道，"否则下次你再怎么求饶都不管用了。" 他们把你一个人丢在巷子里离开了。
+	<br><br>
+
+	<<link [[继续|Oxford Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	你跪下直到前额贴地。"别打我，求你了"，你啜泣道，"我买不起，可我真的很需要它"
+	<br><br>
+
+	毒贩放声大笑，"我们不会被你混过去的。"<<he>>向<<his>>暴徒们点了点头。你被从后面一把抓住。你的<<bind>>手臂被绑住了，接着你被推进小巷，来到一辆后备箱打开的黑色轿车前。他们把你推进后备箱，然后从你身后把它合上。
+	<br><br>
+
+	<<link [[继续|Maths Boot]]>><</link>>
+	<br>
+<</if>>
+
+:: Maths Abduction
+<<effects>>
+<<bind>>
+<<if $phase is 0>>
+	你的手臂被绑住了，接着你被推进小巷，来到一辆后备箱打开的黑色轿车前。他们把你推进后备箱，然后从你身后把它合上。
+	<br><br>
+<<else>>
+	你尖叫。其中一个暴徒走上前，用<<his>>手堵住了你的嘴。另外两个人抓住你的胳膊，把它们绑在背后。你被推进小巷，来到一辆后备箱打开的黑色轿车前。他们把你推进后备箱，然后从你身后把它合上。
+	<br><br>
+<</if>>
+
+<<link [[继续|Maths Boot]]>><</link>>
+<br>
+
+:: Maths Boot
+<<effects>><<set $outside to 0>>
+
+你被绑在黑暗中。发动机轰鸣，你感觉到汽车在动。
+<br><br>
+
+<<link [[等待 (0:30)|Maths Boot Wait]]>><<pass 30>><<stress 6>><<trauma 6>><</link>><<gtrauma>><<gstress>>
+<br>
+<<link [[挣扎 (0:30)|Maths Boot Struggle]]>><<pass 30>><<tiredness 6>><<stress 18>><<trauma 6>><</link>><<gtrauma>><<ggstress>><<gtiredness>>
+<br>
+
+:: Maths Boot Wait
+<<effects>><<set $location to "moor">>
+
+小镇上的声音逐渐消失，但汽车仍在行驶。你在黑暗中不知道过去了多久。终于，汽车停了下来，发动机变得安静，你听到了许多声音。<<person>>把后备箱打开。<<Hes>>周围还要很多人，一伙<<people>>站在<<him>>身旁，看着你。
+<br><br>
+
+"不错."
+<br>
+"<<pShe>>想从你身上偷东西？<<pshe>>看着真甜。"
+<br>
+"你是个走运的<<girl>>。"
+<br><br>
+
+<<person>>把你从后备箱里拖出来。你在<<people>>靠近前环顾周围。
+
+<<if Time.dayState is "night">>
+	在附近建筑物的灯光下，你能看到野花和长长的野草。这里太黑了，你看不清更多东西，但你能确认你在小镇外的某个地方。
+	<br><br>
+<<else>>
+	你在一座山的顶上，边上是一栋老建筑。一片布满野花野草的岩石原野向四面八方延伸。你离小镇很远。
+	<br><br>
+<</if>>
+
+暴徒把你朝建筑物方向推，你被推过门口。
+<br><br>
+
+<<if $leftarm isnot "bound" or $rightarm isnot "bound">>
+	他们没注意到你的手臂已经恢复自由。
+	<br><br>
+<</if>>
+
+<<link [[继续|Maths Abduction 2]]>><</link>>
+<br>
+
+:: Maths Boot Struggle
+<<effects>><<set $location to "moor">>
+
+你挣扎着想挣脱手臂的束缚。在你坚持不懈的努力下，有什么东西松动了。你奋力挣扎直到双臂恢复自由。
+<br><br>
+
+<<unbind>>你能感觉到汽车的后备箱，但是无法打开它。
+<br><br>
+
+<<link [[等待|Maths Boot Wait]]>><</link>>
+<br>
+
+:: Maths Abduction 2
+<<effects>><<set $location to "moor">>
+
+里面是一张桌子，上面放着苹果酒罐和扑克牌。看起来牌局打到一半被中断了。他们把你推过桌子，推到一张挨着一堆木箱的床上。
+<br><br>
+
+"一次三个人，"<<person>>说道，"我们每个人都会有足够的<<girl>>。第一轮。"<<He>>蹲下来，从床底下拿出一副脚铐，咔哒一声铐在你的脚上。脚铐之间被一根短链子连着。<<shackle_feet>>
+<br><br>
+
+<<He>>扯动链条以确保它们牢固，然后爬到你的身上。
+<br><br>
+
+<<link [[继续|Maths Abduction Rape]]>><<set $molestationstart to 1>><<set $mathsab to 0>><</link>>
+<br>
+
+:: Maths Abduction Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+
+	<<if $pain gt 90>>
+		"<<pShes>>要晕过去了，"你听见一个人说，"给<<phim>>来一片。"一只手抓住你的头发把你的脑袋往后扯，另一只手将一片粉红色的药丸塞进了你的嘴你。
+		<<garousal>><<lpain>><<drugs 60>><<set $pain to 90>>
+		<br><br>
+	<</if>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate "<span class='red'>没有人会来救你。</span>">>
+<<man>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Maths Abduction Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Maths Abduction Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Maths Abduction Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	<<tearful>>你准备着迎接更多的虐待。
+	<br><br>
+
+	<<if $mathsab is 0>>
+		"我有一个主意"<<person1>><<person>>说道。
+	<</if>>
+<<else>>
+	<<if $worn.feet.name is "ankle cuffs">>
+		你把他们推开，但是你的腿被绑上了，而<<group>>人数众多，你无法逃脱。
+		<br><br>
+	<<else>>
+		你把他们推开，但是<<group>>人数众多，你无法逃脱。
+		<br><br>
+	<</if>>
+	<<tearful>>你准备着迎接更多的虐待。
+	<br><br>
+
+	<<if $mathsab is 0>>
+		"<<pShe>>可真有精神，"<<person1>><<person>>说道。"我等不及想看<<phim>>被玩坏了。"
+	<</if>>
+<</if>>
+
+<<if $mathsab is 0>><<set $mathsab += 1>>
+	<<if $leftarm is "bound" or $rightarm is "bound">>
+		<<He>>拿出一把刀，将束缚你手臂的材料划开。
+	<</if>>
+
+	"所有人把手机准备好！"<<he>>站在你身后说道。<<He>>抓住你的胳膊，"笑一个，<<girl>>。如果你识相的话。"
+	<br><br>
+
+	<<endcombat>>
+
+	<<link [[微笑，手指比出耶的手势|Maths Abduction Smile]]>><<fameexhibitionism 50 "pic">><<trauma 6>><<stress -6>><</link>><<gtrauma>><<lstress>>
+	<br>
+	<<link [[皱眉，比中指|Maths Abduction Frown]]>><<fameexhibitionism 50 "pic">><<trauma -6>><<stress 6>><</link>><<gstress>><<ltrauma>>
+	<br>
+	<<link [[遮住你的脸|Maths Abduction Cover]]>><<trauma 6>><<stress 6>><<pain 6>><</link>><<gtrauma>><<gstress>><<gpain>>
+	<br>
+<<elseif $mathsab is 1>><<set $mathsab += 1>>
+	"有人往其中一张照片上贴了广告。"<<person>>说道，"<<phim>>身上说不定有利可图。"
+	<br><br>
+
+	<<endcombat>>
+
+	<<generate1>><<generate2>><<generate3>>
+	又来了三个<<people>>爬上了床，迫不及待地属于开始他们的回合。
+	<br><br>
+
+	<<link [[继续|Maths Abduction Rape]]>><<set $molestationstart to 1>><</link>>
+<<elseif $mathsab is 2>><<set $mathsab += 1>>
+	<<person1>><<person>>翻看<<his>>手机。"已经有人感兴趣了，"<<he>>说道。"让我们榨干<<phim>>的价值吧！"
+	<br><br>
+
+	<<endcombat>>
+
+	<<generate1>><<generate2>><<generate3>>
+	又来了三个<<people>>爬上了床，迫不及待地属于开始他们的回合。
+	<br><br>
+
+	<<link [[继续|Maths Abduction Rape]]>><<set $molestationstart to 1>><</link>>
+<<elseif $mathsab is 3>><<set $mathsab += 1>>
+	"我们一定要卖掉<<phim>>吗？"<<person1>><<person>>问道。"我们可以就把<<phim>>绑在这儿，不会有人发现的。"
+	<br><br>
+
+	"最多一周你就会觉得<<phim>>腻了的。"<<person>>一边翻着<<his>>手机，一边回答道。"买家已经在路上了，看起来是一伙恶棍。"
+	<br><br>
+
+	<<endcombat>>
+
+	<<generate1>><<generate2>><<generate3>>
+	又来了三个<<people>>爬上了床，迫不及待地属于开始他们的回合。
+	<br><br>
+
+	<<link [[继续|Maths Abduction Rape]]>><<set $molestationstart to 1>><</link>>
+<<else>>
+	"你再给我们摆个pose怎么样？”<<person>>说。“来点能让我们印象深刻的。"
+	<br><br>
+
+	<<endcombat>>
+
+	<<link [[微笑，手指比出耶的手势|Maths Abduction Smile 2]]>><<famerape 50 "pic">><<trauma 6>><<stress -6>><</link>><<gtrauma>><<lstress>>
+	<br>
+	<<link [[皱眉，比中指|Maths Abduction Frown 2]]>><<famerape 50 "pic">><<trauma -6>><<stress 6>><</link>><<gstress>><<ltrauma>>
+	<br>
+	<<link [[遮住你的脸|Maths Abduction Cover 2]]>><<trauma 6>><<stress 6>><<pain 6>><</link>><<gtrauma>><<gstress>><<gpain>>
+	<br>
+<</if>>
+
+:: Maths Abduction Smile
+<<effects>><<set $location to "moor">>
+
+<<if $pain gte 40>>
+	<<set $mathsab1 to "tearsmile">>
+	你含着泪水的脸上露出笑容，双手举起，掌心朝向观众，食指和中指比出一个V字手势。所有人都在对着你拍照。
+	<br><br>
+
+	"真是个小骚货."
+	<br>
+	"噢哦哦，<<pshes>>已经哭起来了。"
+	<br>
+	"我很好奇<<pshe>>能坚持多久。"
+	<br>
+<<else>>
+	<<set $mathsab1 to "smile">>
+	你微笑着，双手举起，掌心朝向观众，食指和中指比出一个V字手势。所有人都在对着你拍照。
+	<br><br>
+
+	"真是个小骚货."
+	<br>
+	"<<pshe>>可看不出一点是在被强奸的样子。"
+	<br>
+	"我很好奇这张笑脸能摆多久。"
+	<br>
+<</if>>
+<br>
+
+<<generate1>><<generate2>><<generate3>>
+"够了，" 一个<<person1>><<person>>说道。"该轮到我了！"<<He>>把你推回床上。
+<br><br>
+
+<<link [[继续|Maths Abduction Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Maths Abduction Frown
+<<effects>><<set $location to "moor">>
+
+<<if $pain gte 40>>
+	<<set $mathsab1 to "tearfrown">>
+	尽管控制不住自己的眼泪，你仍试图让自己表现得愤怒。你把掌心朝向观众，食指和中指比出一个V字手势。所有人都在对着你拍照。
+	<br><br>
+
+	"<<pShe>>的反抗不会持续太久。"
+	<br>
+	"噢哦哦，<<pshes>>在试图强硬起来呢。"
+	<br>
+	"对<<pher>>这种处境而言还真是顽强呢。"
+	<br>
+<<else>>
+	<<set $mathsab1 to "frown">>
+	你试图让自己表现得愤怒。你把掌心朝向观众，食指和中指比出一个V字手势。所有人都在对着你拍照。
+	<br><br>
+
+	"<<pShe>>的反抗不会持续太久。"
+	<br>
+	"就让我们把<<phim>>操到恶堕吧。"
+	<br>
+	"还真顽强啊。"
+	<br>
+<</if>>
+<br>
+
+<<generate1>><<generate2>><<generate3>>
+"够了，" 一个<<person1>><<person>>说道。"该轮到我了！"<<He>>把你推回床上。
+<br><br>
+
+<<link [[继续|Maths Abduction Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Maths Abduction Cover
+<<effects>><<set $location to "moor">>
+
+<<if $pain gte 40>>
+	<<set $mathsab1 to "tearcover">>
+	你用手遮住你梨花带雨的脸颊。有人给你脑袋来了一巴掌，但所有人都在不管不顾地对你拍照。
+	<br><br>
+
+	"噢哦哦，<<pshes>>害羞了。"
+	<br>
+	"<<pShes>>想躲起来。"
+	<br>
+	"也许<<pshe>>不想让<<pher>>学校里的朋友看见<<phim>>哭。"
+	<br>
+<<else>>
+	<<set $mathsab1 to "cover">>
+	你用手遮住你的脸颊。有人给你脑袋来了一巴掌，但所有人都在不管不顾地对你拍照。
+	<br><br>
+
+	"噢哦哦，<<pshes>>害羞了。"
+	<br>
+	"<<pShes>>想躲起来。"
+	<br>
+	"也许<<pshe>>觉得<<pher>>学校里的朋友回看到这些照片。"
+	<br>
+<</if>>
+<br>
+
+<<generate1>><<generate2>><<generate3>>
+"够了，" 一个<<person1>><<person>>说道。"该轮到我了！"<<He>>把你推回床上。
+<br><br>
+
+<<link [[继续|Maths Abduction Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Maths Abduction Smile 2
+<<effects>><<set $location to "moor">>
+
+<<if $pain gte 40>>
+	<<set $mathsab2 to "tearsmile">>
+	你含着泪水的脸上露出笑容，双手举起，掌心朝向观众，食指和中指比出一个V字手势。所有人都在对着你拍照。
+	<br><br>
+
+	"<<pShes>>一个士兵。"
+	<br>
+	"依然露出一副勇敢的表情。"
+	<br>
+	"看起来<<pshes>>训练有素。"
+	<br>
+<<else>>
+	<<set $mathsab2 to "smile">>
+	你微笑着，双手举起，掌心朝向观众，食指和中指比出一个V字手势。所有人都在对着你拍照。
+	<br><br>
+
+	"<<pShes>>一个士兵。"
+	<br>
+	"依然露出一副勇敢的表情。"
+	<br>
+	"<<pShes>>会成为一个很棒的性奴。"
+	<br>
+<</if>>
+<br>
+
+<<mathsphone>>
+
+<<generate1>><<person1>>一个<<person>>把你的脚铐在床上。他们戏谑着看了你一会，但随后就失去了兴趣。看来他们暂时不打算对你做什么了。
+<br><br>
+<<endevent>>
+<<link [[继续|Maths Abduction 3]]>><</link>>
+<br>
+
+:: Maths Abduction Frown 2
+<<effects>><<set $location to "moor">>
+
+<<if $pain gte 40>><<set $mathsab2 to "tearfrown">>
+	尽管控制不住自己的眼泪，你仍试图让自己表现得愤怒。你把掌心朝向观众，食指和中指比出一个V字手势。所有人都在对着你拍照。
+	<br><br>
+
+	"不得不佩服<<phim>>，<<pshes>>真是坚强。"
+	<br>
+	"希望买家明白他们即将面对什么。"
+	<br>
+	"我玩坏过很多像<<phim>>一样的骚货。"
+	<br>
+<<else>>
+<<set $mathsab2 to "frown">>
+	你试图让自己表现得愤怒。你把掌心朝向观众，食指和中指比出一个V字手势。所有人都在对着你拍照。
+	<br><br>
+
+	"不得不佩服<<phim>>，<<pshes>>真是坚强。"
+	<br>
+	"希望买家明白他们即将面对什么。"
+	<br>
+	"我玩坏过很多像<<phim>>一样的骚货。"
+	<br>
+<</if>>
+<br>
+
+<<mathsphone>>
+
+<<generate1>><<person1>>一个<<person>>把你的脚铐在床上。他们戏谑着看了你一会，但随后就失去了兴趣。看来他们暂时不打算对你做什么了。
+<br><br>
+<<endevent>>
+<<link [[继续|Maths Abduction 3]]>><</link>>
+<br>
+
+:: Maths Abduction Cover 2
+<<effects>><<set $location to "moor">>
+
+<<if $pain gte 40>><<set $mathsab2 to "tearcover">>
+	你用手遮住你梨花带雨的脸颊。有人给你脑袋来了一巴掌，但所有人都在不管不顾地对你拍照。
+	<br><br>
+
+	"试图挽回面子。"
+	<br>
+	"<<pShes>>试图强硬起来。"
+	<br>
+	"我们拍了这么多照片，希望<<pshe>>不要幻想没人认出<<phim>>来了。"
+	<br>
+<<else>>
+	<<set $mathsab2 to "cover">>
+	你用手遮住你的脸颊。有人给你脑袋来了一巴掌，但所有人都在不管不顾地对你拍照。
+	<br><br>
+
+	"试图挽回面子。"
+	<br>
+	"<<pShes>>试图强硬起来。"
+	<br>
+	"我们拍了这么多照片，希望<<pshe>>不要幻想没人认出<<phim>>来了。"
+	<br>
+<</if>>
+<br>
+
+<<mathsphone>>
+
+<<generate1>><<person1>>一个<<person>>把你的脚铐在床上。他们戏谑着看了你一会，但随后就失去了兴趣。看来他们暂时不打算对你做什么了。
+<br><br>
+<<endevent>>
+<<link [[继续|Maths Abduction 3]]>><</link>>
+<br>
+
+:: Maths Abduction 3
+<<effects>><<set $location to "moor">>
+<<generate1>><<generate2>><<person1>>
+你蜷缩在床上，大多数暴徒回到桌旁玩纸牌游戏。其他人则在边上喝酒聊天。期间，有一辆货车停在外面，你可以透过窗户看到高高的车顶。然而，它不是来接你的。几个暴徒从货车搬了一些箱子下来，和其他箱子堆在一起。
+<br><br>
+
+"我们得做得更过火一点。"一个<<person>>评论道。"否则还是物色一个新‘货物’吧。"
+<br><br>
+<<person2>>
+"我不喜欢这样。"一个<<person>>回应道， "你不觉得我们搬东西的时候好像被人盯着一样吗？"
+<br><br>
+<<person1>>
+"被谁盯着？"<<person>>嘲笑道。"警察要是发现咱们早把咱们按倒在地上了，他们可不会干看着。"
+<br><br>
+<<person2>>
+"不是他们，"<<person>>说道。"这才是问题所在。"
+<br><br>
+<<endevent>>
+
+没人注意到有几个袋子从其中一个箱子中洒出来了。<span class="gold">你获得了三份兴奋剂。</span>
+<<set $mathsstim += 3>>
+<br><br>
+
+<<link [[继续 (0:30)|Maths Abduction 4]]>><<pass 30>><</link>>
+<br>
+
+:: Maths Abduction 4
+<<effects>><<set $location to "moor">>
+<<unset $mathsab>><<unset $mathsab1>><<unset $mathsab2>>
+
+<<npc Bailey>><<generate2>><<generate3>><<generate4>><<generate5>>
+
+你听见一辆车停在外面，接着是四扇车门的开关声。<<person2>>："应该是买家到了。"一个<<person>>说。他们放下手中的牌走出大楼。
+<br><br>
+
+"你来得真快，"你听见<<him>>说。"我们还没来得及洗……"
+<br><br>
+
+"给我看看那个<<girl>>，"一个熟悉的声音打断道。<span class="purple">是贝利的声音。</span>
+<br><br>
+
+<<person2>>贝利跟着<<person>>走进了大楼。<<person1>>三个壮汉跟在<<him>>后面。
+<br><br>
+
+<<link [[继续|Maths Abduction 5]]>><</link>>
+<br>
+
+:: Maths Abduction 5
+<<effects>><<set $location to "moor">>
+
+贝利瞥了你一眼，然后回头对<<person2>><<person>>说道："五千英镑。"
+<br><br>
+
+"成交！"<<person>>一边回复一边伸出<<his>>手。 贝利手下的一个<<person3>><<person>>朝你走了过来，解开把你绑在床上的锁链，把你拉起来。<<if $worn.feet.name is "ankle cuffs">><<remove_shackle>><</if>>
+<br><br>
+
+"你理解错了，"贝利说。在侧面包围住你的几个打手——<<person1>><<him>>、<<person4>><<person>>和<<person5>><<person>>, 从他们的外套里掏出手枪。"你既然用了我的东西，就要付出代价。"
+<br><br>
+
+<<person2>><<person>>瞪大了眼睛。"你这个无畏的笨蛋"，<<he>>啐了一口说道。<<Hes>>看起来愤怒极了，不过待<<he>>环顾四周发现<<His>>的同僚都双手高举得远远站在后面时。<<He>>叹了口气，然后指了指桌子上的位置。
+<br><br>
+
+<<person1>>贝利掀开一块腐烂的地毯，然后打开藏在下面的活板门，从里面取出一个装有成捆钞票的背包。<<He>>简单点了点，把其中一半塞进了<<his>>的口袋里，随后又把袋子放回了原处。
+<br><br>
+
+"五千"。<<He>>重复道，"很高兴和你做生意。"
+<br><br>
+
+<<link [[继续 (0:30)|Maths Abduction 6]]>><</link>>
+<br>
+
+:: Maths Abduction 6
+<<effects>><<set $location to "moor">>
+<<clothesontowel>><<earnFeat "Sour Dealing">>
+从乡村回家的这段路途平平淡淡。 你坐在中间的座位上，夹在<<person4>><<person>>和<<person5>><<person>>之间。 他们都没有看你。贝利开着车，而那个<<person3>><<person>>坐在<<person1>><<him>>旁边。
+<br><br>
+
+<<link [[感谢你的救援|Maths Abduction Thank]]>><</link>>
+<br>
+<<link [[为你被称为财产而生气|Maths Abduction Insist]]>><</link>>
+<br>
+<<if $promiscuity gte 35>>
+	<<link [[挑逗那些打手们|Maths Abduction Tease]]>><</link>><<promiscuous3>>
+	<br>
+<</if>>
+<<link [[一言不发|Maths Abduction Silent]]>><</link>>
+<br>
+
+:: Maths Abduction Thank
+<<effects>><<set $location to "town">>
+
+"谢谢你救了我，"你说。那个<<person5>><<person>>对你笑了笑。其他人都没有反应。
+<br><br>
+
+<<link [[问贝利是否生你的气|Maths Abduction Ask]]>><</link>>
+<br>
+<<link [[一言不发|Maths Abduction Silent]]>><</link>>
+<br>
+
+:: Maths Abduction Ask
+<<effects>><<set $location to "town">>
+<<person1>>
+"你生我的气了吗?"你从后视镜里看着贝利问道。
+<br><br>
+
+"不会，"<<he>>说。"但如果你还不赶紧闭嘴，情况恐怕就不一样了。"
+<br><br>
+
+贝利就这样开着车载着你回到孤儿院，一路无言。
+<br><br>
+
+<<link [[继续|Domus Street]]>><<endevent>><<set $eventskip to 1>><<set $stress -= 200>><</link>>
+<br>
+
+:: Maths Abduction Insist
+<<effects>><<set $location to "town">>
+<<person1>>
+"我不是你的财产，"你从后视镜里瞪着贝利说道。
+<br><br>
+
+"你是，除非你把你的欠的付了，"<<he>>回答道,，眼睛继续看着路前方。"除此之外没人在乎其他东西。"
+<br><br>
+
+贝利就这样开着车载着你回到孤儿院，一路无言。
+<br><br>
+
+<<link [[继续|Domus Street]]>><<endevent>><<set $eventskip to 1>><<set $stress -= 200>><</link>>
+<br>
+
+:: Maths Abduction Tease
+<<effects>><<set $location to "town">>
+
+你把你的手放在<<person4>><<person>>和<<person5>><<persons>>的大腿上, 并且将一根手指头伸进了腹股沟. 你开始爱抚.
+<<promiscuity3>>
+
+那个<<person4>><<person>>脸红了, 但是并没有做什么. 而<<person5>><<person>>把<<his>>自己的手放在了你的大腿上, 开始模仿你的动作.
+<br><br>
+
+"你付钱了?" 贝利说. <<person1>><<His>>的眼睛依旧看着道路. 那个<<person5>><<person>>抓住你的胳膊把它从<<his>>的下腹拿开. <<He>>看着窗外，装作无事发生.
+<br><br>
+
+贝利就这样开着车载着你回到孤儿院，一路无言。
+<br><br>
+
+<<link [[继续|Domus Street]]>><<endevent>><<set $eventskip to 1>><<set $stress -= 200>><</link>>
+<br>
+
+:: Maths Abduction Silent
+<<effects>><<set $location to "town">>
+
+贝利载着你回镇子的路上你保持沉默，直到回到孤儿院。
+<br><br>
+
+<<link [[继续|Domus Street]]>><<endevent>><<set $eventskip to 1>><<set $stress -= 200>><</link>>
+<br>
+
+:: Maths Library Student
+<<effects>>
+
+<<generatey1>><<person1>>你接近了一个学生，一个<<person>>，真正努力求<<Hes>>的解。<<Hes>>是如此专注以至于没注意到你。如果你能靠的更近一些说不定能学到什么。
+<br><br>
+
+<<link [[用身体分散注意力|Maths Library Student Seduce]]>><<set $mathslibrarystudent to 1>><</link>><<exhibitionist1>>
+<br>
+<<link [[离开|School Library]]>><<endevent>><</link>>
+<br>
+
+:: Maths Library Student Seduce
+<<effects>>
+
+你漫步到<<person>>边上，斜靠在<<his>>的桌边。<<if $worn.upper.type.includes("naked")>><<His>>的目光被你裸露的乳房牢牢吸引<<else>><<He>>把你那故意弄乱的$worn.upper.cn_name_cap看了个够<</if>>。你<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt>>掀起<<else>>褪下<</if>>你$worn.lower.cn_name_cap的一角，刚好足以<<if $worn.under_lower.type.includes("naked")>>暗示你下面未着一物<<else>>让人一瞥你的$worn.under_lower.cn_name_cap<</if>>。
+<<exhibitionism1>>
+
+<<if $speech_attitude is "meek">>
+	"你想一直看着我吗?"你问道。"我不介意。"
+<<elseif $speech_attitude is "bratty">>
+	"你可以盯着看," 你说. "仅限这次。"
+<<else>>
+	"这个地方好热," 你说。
+<</if>>
+<br><br>
+
+<<set $seductiondifficulty to 8000>>
+<<seductioncheck>>
+<br><br>
+<<if $seductionskill lt 1000>><span class="gold">你对自己的诱惑力更有信心了。</span><</if>><<seductionskilluse>>
+<br><br>
+
+<<if $seductionrating gte $seductionrequired>><<set $mathslibraryknown to 1>><<set $mathsinfo += 1>>
+	<<He>>点点头看着你的表演. 你通读了一遍<<his>>的工作, 即使当你开始摇晃你的<<bottom>>时你也没有从上面移开视线. 你是靠的如此之近以至于几乎要碰到<<him>>.
+	<br><br>
+
+	那个<<person>>探出身子来抓住你，但你从<<his>>的手臂中滑出来。你已经记住了所有你需要的东西，你顽皮地挥手离开了。<<note "+ 数学见解" "green">>
+	<br><br>
+
+	<<else>>
+
+	<<He>>脸红了, 抓起<<his>>的本子去了别的座位。
+	<br><br>
+<</if>>
+
+<<link [[继续|School Library]]>><<endevent>><</link>>
+<br>
+
+:: Maths Drugged Help
+<<effects>>
+
+你冲到职工室开始敲门. 多伦开了门. "怎么了吗,<<lass>>?"
+<br><br>
+
+"有个学生躺在大厅里，”你说。“我觉得他们正在做些什么。"
+<br><br>
+
+你指给多伦看那个学生. "做的不错," 教师说道. "我会把<<him>>带到护士那边. 感谢你照顾你的同学们。"
+<br><br>
+
+多伦捡起笔和纸，轻轻地举起<<person>>然后扛着<<him>>离开了。
+<br><br>
+
+<<endevent>>
+
+<<link [[继续|Hallways]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Maths Drugged Copy
+<<effects>>
+
+你阅读<<persons>>的本子，发现了一些有用的计算公式。你刚好在一个图书管理员转到附近之前抄完了笔记。<<generate2>><<person2>><<He>>冲到<<person1>><<persons>>边上。
+<br><br>
+
+<<person2>><<He>>狐疑地看着你离开了,但什么都没说道。
+<br><br>
+<<endevent>>
+
+<<link [[继续|Hallways]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Maths Drugged Rob
+<<effects>>
+
+你翻遍了<<person1>><<persons>>的口袋。<<He>>喃喃地说着关于触手的事情，试图蠕动着离开，但<<hes>>没有能力阻止你。你找到了一袋颜色鲜艳的药丸，这时一个图书管理员正从拐角处走过。<<generate2>><<person2>><<He>>冲到<<person1>><<persons>>的身边。
+<br><br>
+
+<<person2>><<He>>狐疑地看着你离开了,但什么都没说道。
+<br><br>
+
+<<endevent>>
+
+<<link [[继续|Hallways]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Maths Competition
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+你进入市政厅。一排排的椅子正对着你对面的舞台。放映机已经准备好了。你认出了你班上的其他人，他们紧紧抱着自己的解决方案。礼顿和瑞沃站在舞台旁边，在与两个穿西装的人交谈。你不认识他们。
+<br><br>
+
+你可以提出你的解决方案，或者只是旁观。无论你是否获胜，参加比赛都会让老师对你有更好的印象。
+<br><br>
+<<set $mathschance = Math.clamp($mathschance, 0, 100)>>
+<<link [[参加竞赛 (3:00)|Maths Competition Enter]]>><<pass 3 hours>><</link>><<note "<<print $mathschance>>%的获胜机率。" "gold">>
+<br>
+<<link [[旁观竞赛 (3:00)|Maths Competition Watch]]>><<set $mathschancestart to $mathschance>><<pass 3 hour>><</link>>
+<br>
+<<link [[离开 (0:05)|Cliff Street]]>><<pass 5>><<endevent>><</link>>
+<br>
+
+:: Maths Competition Watch
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+你坐了下来。更多的学生来到这里，有些人拿着文件，有些人是来观看的。礼顿要求参赛者坐到前排。
+<br><br>
+<<npc Leighton>><<person1>>
+<<nnpc_title "Leighton">>吃力地爬上舞台，轻敲着话筒。瑞沃站在<<him>>身边。"谢谢你们，男孩和女孩们，女士和先生们，感谢你们的到来，"<<he>>说。"我长话短说。我、瑞沃和两位来自镇外的嘉宾将担任评委。每个参赛者将在舞台上展示他们的解决方案。"
+<br><br>
+
+前排开始有人沮丧地哀嚎，瑞沃皱了皱眉头。"我难道没跟你们说过吗？"
+<br><br>
+<<generatey2>><<person2>>
+每个学生轮流提出他们的解决方案。有些人在众人面前说话时比其他人更紧张。有一个<<person>>，试图逃离房间。<<His>>的朋友阻止了<<him>>，并说服<<him>>坚持下去。
+<br><br>
+
+最后一名学生从台上下来。礼顿、瑞沃和两位嘉宾商议了一会儿。他们向获奖者颁奖，获奖者在领奖时似乎和他们展示作品时一样紧张。
+<br><br>
+
+礼顿把你和其他学生从大厅里赶了出来。你也许学到了一些东西。
+<<gmaths>><<mathsskill 6>>
+<br><br>
+
+<<set $mathsproject to "done">>
+<<mathsprojectfinish>>
+
+<<link [[继续|Cliff Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Maths Competition Enter
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<if $leftarm is "bound" or $rightarm is "bound" or $feetuse is "bound">><<unbind>>
+	你的绑带松了。"你不能这样参加比赛，"瑞沃从后面说，然后急忙去帮助别人。
+	<br><br>
+<</if>>
+
+礼顿指示你和其他参赛者坐在前排。
+
+<<if C.npc.Whitney.state is "active" and C.npc.Whitney.init is 1>>
+	<<set $mathsprojectwhitney to 1>>
+	<<npc Whitney>><<person1>>然而，在你坐下之前，你感到有人的手放在你的<<bottom>>上。你向右转身面对罪魁祸首，但一只手绕过你的左肩，从你手中抢走了你的解决方案。那是惠特尼。
+	<br><br>
+
+	你想把它拿回去，但<<he>>把你推开了。"所以这就是你一直在做的事情，"<<he>>看着那张纸说。"真是浪费时间。也许我应该把它撕了。"
+	<<gstress>><<stress 6>>
+	<br><br>
+
+	<<link [[生气|Maths Competition Angry]]>><<npcincr Whitney dom -1>><</link>><<ldom>>
+	<br>
+	<<link [[乞求|Maths Competition Beg]]>><<npcincr Whitney dom 1>><<sub 1>><</link>><<gdom>>
+	<br>
+	<<link [[请求帮助|Maths Competition Help]]>><<npcincr Whitney love -1>><</link>><<llove>>
+	<br>
+
+<<else>>
+	你找了个位置坐下来，等着其他位置坐满。
+	<br><br>
+
+	<<link [[继续|Maths Competition Intro]]>><</link>>
+	<br>
+<</if>>
+
+:: Maths Competition Angry
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<if $speech_attitude is "meek">>
+	"这不公平，"你说。 "我为此做了很多努力。"
+<<elseif $speech_attitude is "bratty">>
+	"别这样，"你说。"否则的话。"
+<<else>>
+	"把它还给我，”你说。 “不然你会后悔的。"
+<</if>>
+<br><br>
+惠特尼笑了。"那张嘴会给你惹麻烦的"，<<he>>说道。<<He>>若有所思地看着纸，然后递给你。"总有一天你会偿还的。"
+<br><br>
+
+你走到最前一排，找到一个空座位坐下。你担心惠特尼跟着你,于是环顾四周，发现<<him>>和<<his>>的朋友们一起坐在大厅另一边的第二排。
+<br><br>
+<<endevent>>
+<<link [[继续|Maths Competition Intro]]>><</link>>
+<br>
+
+:: Maths Competition Beg
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<if $speech_attitude is "meek">>
+	"拜--拜托了，不，”你说。 “我为此付出了非常多。"
+<<elseif $speech_attitude is "bratty">>
+	"你敢吗，"你说。 "我为此做了很多努力。"
+<<else>>
+	"请不要这么做，"你恳求道。"我真的为此付出了很多努力。"
+<</if>>
+<br><br>
+
+惠特尼笑了。"你真可怜，"<<he>>说。<<He>>若有所思地看着那张纸，然后把它递给你。"你以后会补偿我的。"
+<br><br>
+
+你走到最前一排，找到一个空座位坐下。你担心惠特尼跟着你,于是环顾四周，发现<<him>>和<<his>>的朋友们一起坐在大厅另一边的第二排。
+<br><br>
+<<endevent>>
+<<link [[继续|Maths Competition Intro]]>><</link>>
+<br>
+
+:: Maths Competition Help
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+你呼唤瑞沃，<<nnpc_his "River">>用那双蓝眼睛死盯着惠特尼。
+<br><br>
+
+"我只是在开玩笑，"惠特尼嘲笑道，<<he>>用你的方案做了一个纸飞机，并把它扔向你。"你以后要补偿我。"
+<br><br>
+
+你走到最前一排，找到一个空座位坐下。你担心惠特尼跟着你,于是环顾四周，发现<<him>>和<<his>>的朋友们一起坐在大厅另一边的第二排。
+<br><br>
+<<endevent>>
+<<link [[继续|Maths Competition Intro]]>><</link>>
+<br>
+
+:: Maths Competition Intro
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+更多的学生来到这里，有些人拿着文件，有些人是来观看的。礼顿要求其他参赛者坐到前排。
+<br><br>
+<<npc Leighton>><<person1>>
+<<nnpc_title "Leighton">>吃力地爬上舞台，轻敲着话筒。瑞沃站在<<him>>身边。"谢谢你们，男孩和女孩们，女士和先生们，感谢你们的到来，"<<he>>说。"观众比我们预期的要多。我长话短说。我、瑞沃和两位来自镇外的嘉宾将担任评委。每位参赛者将在台上介绍他们的解决方案，并使用投影仪展示他们的作品。"
+
+<<if $anxiety gte 2>>
+	你觉得有点恶心。
+	<<ggstress>><<stress 18>>
+<<elseif $anxiety gte 1>>
+	你感到很焦虑.
+	<<gstress>><<stress 6>>
+<</if>>
+<br><br>
+前排开始有人沮丧地哀嚎，瑞沃皱了皱眉头。"我难道没跟你们说过吗？"
+<br><br>
+<<generatey2>><<person2>>
+第一个被叫起来的学生，一个<<person>>，试图逃出房间。<<Hes>>被<<his>>的朋友们拦住，并被说服去做这件事。<<He>>说错话，文件掉了两次，但最后<<hes>>还是笑了。
+<br><br>
+
+下一个学生更有信心。礼顿把参赛者一个个叫起来，顺着排位走。你将是最后一个。没有一个学生的解决方案与其他学生的解决方案相同。
+<br><br>
+<<endevent>>
+
+礼顿指着你。<<if $anxiety gte 1>>你强忍着紧张上了台。<<else>>你上了台。<</if>>
+<br><br>
+
+<<link [[继续|Maths Competition Stage]]>><</link>>
+<br>
+
+:: Maths Competition Stage
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+你站在投影仪旁边，看着观众。有学生也有年长的陌生人。
+
+<<if $mathsprojectwhitney is 1>>
+	<<npc Whitney>><<person1>>
+	惠特尼坐到了一边。<<His>>的表情很茫然，但<<his>>的朋友们却在偷笑。
+<<else>>
+
+<</if>>
+<br><br>
+
+<<endevent>>
+<<npc Leighton>><<person1>>
+"别耽搁了，"礼顿说。"我们的时间很紧。" 一位摄影师在附近架起了他们的设备，准备为获胜者拍照。
+<br><br>
+<<endevent>>
+<<link [[继续|Maths Competition Proceed]]>><</link>>
+<br>
+<<if $exhibitionism gte 35>>
+	<<link [[挑逗|Maths Competition Flirt]]>><<set $mathschance += 10>><</link>><<exhibitionist3>><<note "+ 获胜机率" "gold">>
+	<br>
+<</if>>
+
+:: Maths Competition Flirt
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+你把你的纸摔在地板上。它顺势滑落，停在了礼顿的面前。"哎呀，"你说。你大步走到舞台的边缘，转身弯下腰，你装作很艰难地把纸捡起来，并在你的 "尝试 "中向观众扭动你的<<bottom>>。
+<<exhibitionism3>>
+你听到人群中的咯咯笑声。你看了看你的两腿之间。瑞沃和那两个嘉宾转移了视线。瑞沃脸色苍白。礼顿俯身向前，凝视着。
+<br><br>
+你拿起纸，回到麦克风前。
+<br><br>
+<<link [[继续|Maths Competition Proceed]]>><</link>>
+<br>
+
+:: Maths Competition Proceed
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+<<npc River>><<person1>>
+<<if $mathschancestart is 0>>
+	你尽力让自己听起来很聪明，用你在小册子上记得的一点东西。你的方案不过是一堆涂鸦，但你还是在投影仪上展示了它。评委们似乎没有留下什么印象。
+<<elseif $mathschancestart lte 20>>
+	你提出了你的解决方案。这更像是一个想法的集合，而不是什么扎实的东西，但人们已经提出了更糟的东西。
+<<elseif $mathschancestart lte 40>>
+	你提出你的解决方案。评委们大部分都显得很无聊，但其中一位西装革履的嘉宾扬起了眉毛。你希望这是件好事。
+<<elseif $mathschancestart lte 60>>
+	你的数学竞赛方案就在你面前的桌子上。还有很大的改进空间。
+<<elseif $mathschancestart lte 80>>
+	你的数学竞赛方案就在你面前的桌子上。它还不完整，但它代表了令人印象深刻的努力。
+<<elseif $mathschancestart lte 99>>
+	你提出你的解决方案。西装革履的嘉宾们不断地互相看了看对方。他们看起来很印象深刻。瑞沃看起来有点骄傲。
+<<else>>
+	你提出你的解决方案。西装革履的嘉宾们不断地互相看了看对方。他们看起来很印象深刻。瑞沃看起来有点骄傲。当你继续说下去的时候，西装革履的嘉宾们陷入了安静的讨论。瑞沃看起来很吃惊。礼顿似乎在盯着你腰部以下的东西看。
+	<br><br>
+	瑞沃摇了摇头。"你最后去是件好事，"<<he>>说。
+<</if>>
+<br><br>
+<<endevent>>
+<<if $mathsprojectwhitney is 1 and $worn.lower.name isnot "naked">>
+	<<if $worn.lower.set is $worn.upper.set and setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt isnot 1>>
+		你在从台上下来的路上经过评委。你坐在座位上，等待他们的决定。
+		<br><br>
+		<<link [[继续|Maths Competition End]]>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Maths Competition Exposure]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	你在从台上下来的路上经过评委。你坐在座位上，等待他们的决定。
+	<br><br>
+	<<link [[继续|Maths Competition End]]>><</link>>
+	<br>
+<</if>>
+
+:: Maths Competition Exposure
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+	你感觉到你的$worn.lower.cn_name_cap被拉了一下。你低头一看，正好看到它被某种无形的力量拉起。你快速地推下下摆的前端，以防止你的<<undies>>被露出来，但你感觉到你的<<bottom>>上有股凉气。
+	<br><br>
+	你听到观众的咯咯笑声和窃窃私语。<<npc River>><<person1>>瑞沃用手遮住眼睛。其中一位西装革履的客人举起一只手放在嘴边。另一个看向一边，脸红了。礼顿微笑着。
+	<br><br>
+	你意识到你设法压下的东西多么微乎其微。足够隐藏你的私处，但每个人都能看到你下面穿的东西。你感到血液涌上了你的脸。
+	<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+	<br><br>
+	<<endevent>>
+	<<npc Whitney>><<person1>>
+	<<if $worn.under_lower.name is "naked">>
+		"不穿内衣，"惠特尼说："完美。"<<Hes>>拽着空气，好像在抓着什么。
+		<br><br>
+	<<else>>
+		"不错的内衣，"惠特尼说："而且你这么急切地展示它。"<<Hes>>扯动着空气，似乎在拿着什么东西。
+		<br><br>
+	<</if>>
+	你用另一只手摸索着找到了它。一根线系在你的裙子上。它一定是挂在房梁上的什么地方。后方和旁边同时传来的拉扯感表明并不止有一根线。
+	<br><br>
+	惠特尼的朋友们在<<him>>后面排成一排，他们伸出手，正在准备用力拉。
+	<br><br>
+	<<link [[保护你的尊严|Maths Competition Protect Skirt]]>><<stress 6>><</link>><<gstress>>
+	<br>
+	<<link [[结束报告|Maths Competition Finish Skirt]]>><<stress 12>><<trauma 6>><<set $mathschance += 10>><</link>><<gtrauma>><<ggstress>><<note "+ 获胜机率" "gold">>
+	<br>
+<<else>>
+	你感觉到你的$worn.lower.cn_name_cap被拉了一下，你向下看，正好看到它被某种无形的力量往下拉。你快速抓住衣服防止<<undies>>暴露，但你能感觉到<<bottom>>上吹来的凉爽的空气。
+	<br><br>
+	你听到观众的咯咯笑声和窃窃私语。<<npc River>><<person1>>瑞沃用手遮住眼睛。其中一位西装革履的客人举起一只手放在嘴边。另一个看向一边，脸红了。礼顿微笑着。
+	<br><br>
+	你意识到你设法维持的东西多么微乎其微。足够隐藏你的私处，但每个人都能看到你下面穿的东西。你感到血液涌上了你的脸。
+	<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+	<br><br>
+	<<endevent>>
+	<<npc Whitney>><<person1>>
+	<<if $worn.under_lower.name is "naked">>
+		"不穿内衣，"惠特尼说："完美。"<<Hes>>拽着空气，好像在抓着什么。
+		<br><br>
+	<<else>>
+		"不错的内衣，"惠特尼说："而且你这么急切地展示它。"<<Hes>>扯动着空气，似乎在拿着什么东西。
+		<br><br>
+	<</if>>
+	你用另一只手摸索着找到了它。一根线系在你的裤子上。它一定是挂在房梁上的什么东西上。后面和两边的拉扯表明不止一个。
+	<br><br>
+	惠特尼的朋友们在<<him>>后面排成一排，他们伸出手，正在准备用力拉。
+	<br><br>
+	<<link [[保卫你的尊严|Maths Competition Protect Shorts]]>><<stress 6>><</link>><<gstress>>
+	<br>
+	<<link [[结束报告|Maths Competition Finish Shorts]]>><<stress 12>><<trauma 6>><<set $mathschance += 10>><</link>><<gtrauma>><<ggstress>><<note "+ 获胜机率" "gold">>
+	<br>
+<</if>>
+
+:: Maths Competition Protect Skirt
+
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<set $mathsexposed to "safe">>
+
+你在惠特尼和<<his>>的朋友们拽你衣服时双手紧抓着你$worn.lower.cn_name_cap的边缘。你设法阻止了他们把你的<span class="pink"><<undies>></span>暴露在观众面前，但你身上的布料变得更紧了。
+<br><br>
+
+观众们都兴奋不已。有些人转过头去，但大多数人惊讶地盯着，或从口袋里掏出手机。礼顿坐在<<endevent>><<npc Leighton>><<person1>><<his>>座位的边缘。<<endevent>><<npc River>><<person1>>瑞沃仍然完全静止，双手捂住<<his>>眼睛。
+<br><br>
+
+摄影师正在舞台前飞奔，从各个角度拍摄你们打斗的画面。也许是在等着你在大家面前被脱光的那一刻。
+<br><br>
+<<endevent>><<npc Whitney>><<person1>>
+惠特尼和朋友们暂时停止了拉扯，结果却只是在过道上重整姿势，以便于全力拉扯。拉力几乎把你从地上举起来。
+<br><br>
+
+当其中一根金属丝断裂时，你感到一阵松弛，很快其他金属丝也跟着断裂。惠特尼和<<his>>朋友们向后倒下。你自己也差点摔倒。你的裙摆回了原本的地方。你花了一些时间去除钩子。
+<br><br>
+
+<<endevent>><<npc Leighton>><<person1>>"这就够了，"礼顿说道。"该收尾了。"
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"但-但我还没有完成，"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"我还没有完成"，你说道。
+<<else>>
+	"但我仍然需要——"你开始抗议。礼顿打断了你。
+<br><br>
+<</if>>
+
+"我说够了！"<<he>>说道。 "我得去别的地方了。"
+<br><br>
+
+你在从台上下来的路上经过评委。你坐在座位上，等待他们的决定。
+<br><br>
+
+<<link [[继续|Maths Competition End]]>><</link>>
+<br>
+
+:: Maths Competition Protect Shorts
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<set $mathsexposed to "safe">>
+
+你在惠特尼和<<his>>的朋友们拽你衣服时双手紧抓着你$worn.lower.cn_name_cap的边缘。你阻止了他们把你的<span class="pink"><<undies>></span>暴露在观众面前，但你身上的布料变得更紧了。
+<br><br>
+
+观众们都兴奋不已。有些人转过头去，但大多数人惊讶地盯着，或从口袋里掏出手机。礼顿坐在<<endevent>><<npc Leighton>><<person1>><<his>>座位的边缘。<<endevent>><<npc River>><<person1>>瑞沃仍然完全静止，双手捂住<<his>>眼睛。
+<br><br>
+
+摄影师正在舞台前飞奔，从各个角度拍摄你们打斗的画面。也许是在等着你在大家面前被脱光的那一刻。
+<br><br>
+<<endevent>><<npc Whitney>><<person1>>
+惠特尼和朋友们暂时停止了拉扯，结果却只是在过道上重整姿势，以便于全力拉扯。拉力几乎把你逼到了地上。
+<br><br>
+
+当其中一根电线断裂时，你感到一阵松懈，很快其他电线也跟着断裂。惠特尼和<<his>>朋友们向后倒下。你自己也差点摔倒。你把你的$worn.lower.cn_name_cap拉回到它所属的地方。你花了一些时间来移除钩子。
+<br><br>
+
+<<endevent>><<npc Leighton>><<person1>>"这就够了，"礼顿说道。"该收尾了。"
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"但-但我还没有完成，"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"我还没有完成"，你说道。
+<<else>>
+	"但我仍然需要——"你开始抗议。礼顿打断了你。
+<</if>>
+<br><br>
+"我说够了！"<<he>>说道。 "我得去别的地方了。"
+<br><br>
+
+你在从台上下来的路上经过评委。你坐在座位上，等待他们的决定。
+<br><br>
+
+<<link [[继续|Maths Competition End]]>><</link>>
+<br>
+
+:: Maths Competition Finish Skirt
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<if $worn.under_lower.type.includes("naked")>>
+	<<fameexhibitionism 60 "pic">><<set $mathsexposed to "genitals">>
+<<else>>
+	<<fameexhibitionism 30 "pic">><<set $mathsexposed to "undies">>
+<</if>>
+
+你用一只手按住裙子，继续进行介绍。惠特尼的朋友们也加入了拉扯的行列。你的$worn.lower.cn_name_cap变得更紧，直到只有一指的布料能保护你的<<genitals>>不被观众看到。
+<br><br>
+
+礼顿和大多数人都挪到了他们椅子的边沿。<<endevent>><<npc River>><<person1>>瑞沃遮上了<<his>>的眼睛，但客人们带着惊骇看着你。随着最后一拉，你的$worn.lower.cn_name_cap<<lowerplural>>从你手中被撕下，<span class="pink">把你的身体暴露在人群面前。</span>
+<br><br>
+
+喘息声和笑声充满了整个大厅。有些人转过头去，但大多数人惊讶地盯着，或从口袋里掏出手机。瑞沃可能已经晕倒了。
+<br><br>
+
+<<if $player.gender is "h" and !playerChastity("hidden")>>
+	"<<pShe>>有人喊道："两者都有！"。
+	<br>
+	"我简直不敢相信。"
+	<br>
+	"等等，从哪开始算小穴，然后到哪里为止算肉棒？"
+	<br>
+	"快，拍张照片！否则没有人会相信！"
+	<br>
+	"你觉得<<pshe>>能上<<pherself>>吗？"
+	<br>
+	<<if playerBellyVisible()>>
+		"那个肚子......<<pshe>>真的让<<pherself>>怀孕了吗？"
+		<br>
+		<<famepregnancy 1>>
+	<</if>>
+	<<schoolrep herm 1>>
+<<elseif $player.gender isnot $player.gender_appearance and !playerChastity("hidden")>>
+	<<if $player.gender is "m">>
+		"他是个男孩！"有人喊道。
+		<br>
+		"他是某种变态吗？"
+		<br>
+		"我敢说他是故意这么做的。"
+		<br>
+	<<else>>
+		"她是一个女孩!”有人喊道。
+		<br>
+		"她是个骚货吗?"
+		<br>
+		"我敢说她是故意这么做的。"
+		<br>
+	<</if>>
+<br><<schoolrep crossdress 1>>
+<</if>>
+
+你用颤抖的声音试图讲出你的解决方案，好像没有什么不妥。<<if $worn.under_lower.type.includes("naked")>>仿佛你的<<genitals>>没有引起房间里所有人的注意。<</if>>摄影师在舞台前飞奔，从各个角度为你拍照。
+<br><br>
+
+你的演讲结束了。观众欢呼鼓掌。你摸着周围的钩子，一个一个地把它们取下来。你的裙子落回原位，遮住你的<<undies>>。惠特尼得意地笑着向后靠在椅背上。
+<br><br>
+<<endevent>><<npc Leighton>><<person1>>
+"很好，"礼顿说。<<He>>摇醒了瑞沃。
+<br><br>
+
+心还在怦怦直跳，你走下了舞台。你坐到自己的座位上，等待评委的决定。
+<br><br>
+
+<<endevent>>
+<<link [[继续|Maths Competition End]]>><</link>>
+<br>
+
+:: Maths Competition Finish Shorts
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<if $worn.under_lower.type.includes("naked")>>
+	<<fameexhibitionism 60 "pic">><<set $mathsexposed to "genitals">>
+<<else>>
+	<<fameexhibitionism 30 "pic">><<set $mathsexposed to "undies">>
+<</if>>
+
+你用一只手抓着衣服继续演讲。惠特尼的朋友们一起拽了起来，你的$worn.lower.cn_name_cap变得更紧了，直到只有一根手指大小的衣料挡在你的<<genitals>>和观众之间。
+<br><br>
+
+礼顿和大多数人都挪到了他们椅子的边沿。<<endevent>><<npc River>><<person1>>瑞沃遮上了<<his>>的眼睛，但客人们带着惊骇看着你。随着最后一拉，你的$worn.lower.cn_name_cap<<lowerplural>>从你手中被撕下，<span class="pink">把你的身体暴露在人群面前。</span>
+<br><br>
+
+喘息声和笑声充满了整个大厅。有些人转过头去，但大多数人惊讶地盯着，或从口袋里掏出手机。瑞沃可能已经晕倒了。
+<br><br>
+
+<<if $player.gender is "h" and !playerChastity("hidden")>>
+	"<<pShe>>有人喊道："两者都有！"。
+	<br>
+	"我简直不敢相信。"
+	<br>
+	"等等，从哪开始算小穴，然后到哪里为止算肉棒？"
+	<br>
+	"快，拍张照片！否则没有人会相信！"
+	<br>
+	"你觉得<<pshe>>能上<<pherself>>吗？"
+	<br>
+	<<if playerBellyVisible()>>
+		"那个肚子......<<pshe>>真的让<<pherself>>怀孕了吗？"
+		<br>
+		<<famepregnancy 1>>
+	<</if>>
+	<<schoolrep herm 1>>
+<<elseif $player.gender isnot $player.gender_appearance and !playerChastity("hidden")>>
+	<<if $player.gender is "m">>
+		"他是个男孩！"有人喊道。
+		<br>
+		"他是某种变态吗？"
+		<br>
+		"我敢说他是故意这么做的。"
+		<br>
+	<<else>>
+		"她是一个女孩!”有人喊道。
+		<br>
+		"她是个骚货吗?"
+		<br>
+		"我敢说她是故意这么做的。"
+		<br>
+	<</if>>
+	<br><<schoolrep crossdress 1>>
+<</if>>
+
+你用颤抖的声音试图讲出你的解决方案，好像没有什么不妥。<<if $worn.under_lower.type.includes("naked")>>好像你的<<if $player.penisExist>><<penis>><<else>><<pussy>><</if>>没有引起房间里所有人的注意。<</if>>摄影师在舞台前飞奔，从各个角度给你拍照。
+<br><br>
+
+你的演讲到了尾声。观众欢呼和鼓掌。你蹲下身子摸索着钩子，并把它们一个一个地取下来。你把你的$worn.lower.cn_name_cap拉到原位，遮住你的<<undies>>。惠特尼向后靠了靠，笑了笑。
+<br><br>
+<<endevent>><<npc Leighton>><<person1>>
+"很好，"礼顿说。<<He>>摇醒了瑞沃。
+<br><br>
+
+心还在怦怦直跳，你走下了舞台。你坐到自己的座位上，等待评委的决定。
+<br><br>
+
+<<endevent>>
+<<link [[继续|Maths Competition End]]>><</link>>
+<br>
+
+:: Maths Competition End
+<<set $outside to 0>><<set $location to "town">><<effects>>
+<<endevent>>
+<<npc Leighton>><<person1>>
+礼顿、瑞沃和两位客人在台上商议了一会儿。
+<<if $mathschance gte 1 and $mathschancestart is 0>>
+	礼顿似乎在和其他人争论。
+	<<if $mathschance gte $rng>>
+		瑞沃在礼顿上台在麦克风前清起嗓子时愤怒地举起双手。
+	<<else>>
+		<<He>>摇了摇头，接着上台在麦克风前清了清嗓子。
+		<br><br>
+	<</if>>
+<</if>>
+
+"我们已经做了一个决定，"<<he>>说。
+
+<<if $mathschance gte $rng>>
+	<span class="green">"获胜者是那个<<haircolourtext>>头发的学生。"<<He>>指着你说，</span>"上来吧。"
+	<br><br>
+
+	你登上台与礼顿握手，<<he>>对着旁边等待已久的摄影师露出了一个微笑。<<He>>把奖杯递到你手中。里面有<<moneyGain 2000>>。
+	观众们欢呼雀跃，不住鼓掌。
+	<<npcincr River love 5>><<llltrauma>><<trauma -120>><<famebusiness 100 "pic">>
+	<br><br>
+
+	<<if $mathsexposed isnot undefined>>
+		<<endevent>><<npc River>><<person1>>"我希望你从现在开始每次考试都能得到A*。"瑞沃勉强与你对视说道，"你已经证明自己有这个能力了。"<<He>>和礼顿把你和其他学生请出大门，在路上一些人试图对你动手动脚。
+		<<lldelinquency>><<detention -54>>
+		<br><br>
+	<<else>>
+		<<endevent>><<npc River>><<person1>>"我希望你从现在开始每次考试都能得到A*。"瑞沃面带笑容地说道，"你已经证明自己有这个能力了。"<<He>>和礼顿把你和其他学生请出大门。
+		<<lldelinquency>><<detention -54>>
+		<br><br>
+	<</if>>
+
+	<<set $mathsproject to "won">><<set $mathsprojectwon to 1>><<earnFeat "Maths Competition Winner">>
+	<<mathsprojectfinish>>
+
+	<<link [[继续|Cliff Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	<<generate2>>
+	<span class="red"><<He>>宣布<<person2>><<person>>是获胜者。</span><<He>>激动地冲上去收下了<<his>>的奖杯。
+	<br><br>
+
+	<<if $mathsexposed isnot undefined>>
+		礼顿把你和其他学生赶出大厅。"我感谢你的努力，"瑞沃在离开时对你说道。<<nnpc_He "River">>挣扎着看着你的眼睛。
+		<<ldelinquency>><<detention -18>>
+		<br><br>
+		在出去的路上，有几个人试图揩你油。
+		<br><br>
+	<<else>>
+		礼顿把你和其他学生赶出大厅。"我很欣赏你的努力，"瑞沃在离开时对你说，然后被一位西装革履的客人拉走。
+		<<ldelinquency>><<detention -18>>
+		<br><br>
+	<</if>>
+
+	<<set $mathsproject to "done">>
+	<<mathsprojectfinish>>
+
+	<<link [[继续|Cliff Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>

@@ -1,0 +1,537 @@
+:: Chalets Work Wet Run
+<<effects>>
+
+你尽可能快地转身逃跑，在小木屋之间穿梭，直到你确定你没有被追赶。
+<br><br>
+<<link [[继续|Chalets]]>><<endevent>><</link>>
+<br>
+
+:: Chalets Work Wet Ask
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+    "我是来打扫的,”你说，“能先给我几条毛巾擦干吗?"
+<<elseif $speech_attitude is "bratty">>
+    "眼睛往上看,”你说，“我是来打扫的，但我得先把自己弄干。"
+<<else>>
+    "我是来打扫的,”你说，“能给我几条毛巾擦干吗?"
+<</if>>
+<br><br>
+
+<<if random(1, 2) is 2>>
+    一个<<person>>摸摸<<his>>的下巴，然后点点头，走到一边。你在浴室的架子上发现了一些毛巾，很快你的衣服就干了。或者至少是不透明的。
+    <<dryfull>>
+    <br><br>
+
+    现在正常了，你打扫小木屋。如果没有那些<<persons>>的冷笑，这将是平淡无奇的工作。
+    <br><br>
+
+    <<link [[继续|Chalets]]>><</link>>
+    <br>
+<<else>>
+    这个<<person>>摸了下<<his>>下巴。 "要不这样。"<<he>>说。 "要不这样吧，你把衣服脱了给我，在外面裸着等我帮你烘干。反正你现在穿着湿衣服和全裸没什么差别，就等个几分钟而已。"
+    <br><br>
+
+    <<link [[同意|Chalets Work Wet Naked]]>><</link>>
+    <br>
+    <<link [[拒绝|Chalets Work Wet Refuse]]>><</link>>
+    <br>
+<</if>>
+
+:: Chalets Work Wet Naked
+<<effects>>
+
+你脱掉衣服，小心保护好自己。那个<<person>>从你的手中夺走了他们，然后消失在里面。
+<br><br>
+你等着，看看周围的小木屋。没有人从他们中的任何一个出现，尽管有人可能从一个黑暗的窗口偷看你所知道的一切。
+<br><br>
+<<if random(1, 2) is 2>>
+    时间一分一秒的过去，你变得越来越焦虑，直到门被打开，一个<<person>>出现了。"你的衣服在里面。"<<he>>说道："你还会继续打扫的，对吧?"
+    <br><br>
+
+    你在小木屋尽头的架子上找到了你的衣服。现在好了，你打扫干净。如果没有<<persons>>的冷眼和假笑，这将是一项平淡无奇的工作。
+    <br><br>
+
+    <<link [[继续|Chalets]]>><<pass 60>><<set $chalets_bags += 1>><</link>>
+    <br>
+<<else>>
+    你等着。一分钟过去了，一分钟过去了，一分钟过去了。你越来越焦虑，直到你敲门，没人回应。<span class="pink">你的衣服拿不回来了。</span>
+    <br><br>
+    <<clothesruined>>
+
+    <<link [[继续|Chalets]]>><</link>>
+    <br>
+<</if>>
+
+:: Chalets Work Wet Refuse
+<<effects>>
+
+"随便你,”一个<<person>>说，然后关上门，让你暴露在小屋之间。
+<br><br>
+
+<<link [[继续|Chalets]]>><<endevent>><</link>>
+<br>
+
+:: Chalets Work Wet Exhibitionism
+<<effects>>
+<<clothesstrip>>
+"哎呀,”你说，移动你的手臂给<<him>>一个“意外”的暗示。“他们让我来打扫，但我太笨手笨脚了”你的手指顺着<<his>>的胸膛往下滑。“也许你该让我在里面晾干。"
+<<exhibitionism4>>
+
+<<He>>舔了舔<<his>>的嘴唇，走到一边，让你走进小木屋。
+<br><br>
+
+在把湿衣服放进滚筒烘干机之前，你需要花时间把它们脱下来。<<He>>的色欲越来越强烈。
+<br><br>
+
+<<if $promiscuity gte 35>>
+    <<link [[征求|Chalets Work Wet Solicit]]>><</link>><<promiscuous3>>
+    <br>
+<</if>>
+<<link [[等你的衣服烘干|Chalets Work Wet Dried]]>><</link>>
+<br>
+
+
+:: Chalets Work Wet Solicit
+<<effects>>
+
+"你喜欢你所看到的吗?”你咕咕地说，“我正在出售，你知道。 £50."
+<<promiscuity3>>
+
+<<He>>急忙跑到厨房的抽屉里，拿起现金，然后把你推到沙发上，你获得了 <<moneyGain 50>>.
+<br><br>
+
+<<link [[继续|Chalets Work Wet Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+
+
+:: Chalets Work Wet Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 30>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[继续|Chalets Work Wet Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Chalets Work Wet Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Chalets Work Wet Sex Finish
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<person>>从沙发爬起来，伸手去拿<<he>>的烟
+	<br><br>
+	<<tearful>>你检查一下滚筒烘干机。
+	<br><br>
+	<<endcombat>>
+    <<link [[继续|Chalets Work Wet Dried]]>><<clotheson>><</link>>
+    <br>
+<<elseif $enemyhealth lte 0>>
+	那<<person>>从你旁边离开。<<tearful>>你从那个滚筒式烘干机里取出了你的还是湿的衣服，跑到外面。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Chalets]]>><</link>>
+    <br>
+<<else>>
+	这个<<person>>直接把你赶出了小屋后关上了在你身后的门， <span class="pink">让你没穿衣服就出去了。</span>
+	<br><br>
+	<<tearful>>你敲门，没人应门。
+	<br><br>
+	<<clotheson>>
+    <<clothesruined>>
+	<<endcombat>>
+	<<link [[继续|Chalets]]>><</link>>
+    <br>
+<</if>>
+
+:: Chalets Work Wet Dried
+<<effects>>
+
+<<dry_full>>
+在你拿回了烘干的衣服穿上后，能继续正常的打扫小木屋了。不过要是没有那些<<persons>>的冷眼与假笑，你可以工作的更加顺利。
+<br><br>
+
+<<link [[继续|Chalets]]>><<pass 60>><<set $chalets_bags += 1>><<endevent>><</link>>
+<br>
+
+:: Chalets Work Cash Count
+<<effects>>
+
+在清点现金之前，你偷瞄了房间一眼。这里一共有 <span class="gold">£1000元</span>。
+<br><br>
+
+<<link [[我全都要！|Chalets Work Cash All]]>><<crimeup 1000>><<moneyGain 1000>><</link>><<crime>>
+<br>
+<<link [[偷拿一半|Chalets Work Cash Half]]>><<crimeup 500>><<moneyGain 500>><</link>><<crime>>
+<br>
+<<link [[就偷个100吧|Chalets Work Cash Skim]]>><<crimeup 100>><<moneyGain 100>><</link>><<crime>>
+<br>
+
+:: Chalets Work Cash All
+<<effects>>
+
+你把钱藏在托盘里，在小木屋里吃完，然后走出去。
+<br><br>
+
+<<link [[继续|Chalets]]>><</link>>
+<br>
+
+:: Chalets Work Cash Half
+<<effects>>
+
+你数出一半，藏在托盘里。这是双人床。也许主人们会互相指责。
+<br><br>
+你在小木屋里吃完，然后走出去。
+<br><br>
+
+<<link [[继续|Chalets]]>><</link>>
+<br>
+
+:: Chalets Work Cash Skim
+<<effects>>
+
+你数出 £00，然后把它藏在托盘里，也许不会有人发现。
+<br><br>
+你在小木屋里吃完，然后走出去。
+<br><br>
+
+<<link [[继续|Chalets]]>><</link>>
+<br>
+
+:: Chalets Work Cash Ignore
+<<effects>>
+
+你无视那一叠钞票，把它放在枕头底下的可怜地方。
+<br><br>
+你在小木屋里吃完，然后走出去。
+<br><br>
+
+<<link [[继续|Chalets]]>><</link>>
+<br>
+
+:: Chalets Work Plates Note
+<<effects>>
+
+你在靠近水槽的一小张纸上写下下面的话:
+<br>
+<<if $speech_attitude is "meek">>
+    <i>对不起，我没有资格清理工业废料。"</i>
+<<elseif $speech_attitude is "bratty">>
+    <i>"对不起，我必须在午夜之前回家。"</i>
+<<else>>
+    <i>"对不起，标准的洗涤液瓶不够用！"</i>
+<</if>>
+ <i>- 房间服务</i>。
+<br><br>
+
+任务完成，你结束，离开小木屋。
+<br><br>
+
+<<link [[继续|Chalets]]>><</link>>
+<br>
+
+:: Chalets Work Plates Clean
+<<effects>>
+
+这需要费点力气，但你还是设法把盘子、玻璃杯和餐具都洗干净了。任务完成，你结束，离开小木屋。
+<br><br>
+
+<<link [[继续|Chalets]]>><</link>>
+<br>
+
+:: Chalets Work One Endure
+<<effects>>
+
+<<if $arousal gte $arousalmax>>
+
+    你试图忍受<<persons>>的摸索和挤压，但是你感到内心在升温，太难承受了。
+    <<orgasm>>
+
+    "你准备好了么？" 那个<<person>>一边喃喃自语着，一边抓住你的衣领，在你痉挛消退前把你拉到椅子上。
+    <br><br>
+
+    <<link [[继续|Chalets Work One Rape]]>><<set $molestationstart to 1>><</link>>
+    <br>
+
+<<else>>
+
+    你忍耐着<<persons>>给予的摸索和挤压，直到<<he>>放开了你。你成功地避开了<<he>>的吻别，离开了木屋。
+    <br><br>
+
+    <<link [[继续|Chalets]]>><</link>>
+    <br>
+
+<</if>>
+
+:: Chalets Work One Smack
+<<effects>>
+
+<<if $panicattacks gte 1 and $controlled is 0>>
+    你尝试把双手举起推开<<his>>，<span class="pink">但一种可怕的恐惧环绕住了你，</span> 让你呆在原地。
+    <br><br>
+
+    "看样子你已经准备好了？”那个<<person>>喃喃自语着，把没有出现的反抗当默认后，<<He>>把你拉到了椅子上。
+    <br><br>
+
+    <<link [[继续|Chalets Work One Rape]]>><<set $molestationstart to 1>><</link>>
+    <br>
+<<else>>
+    你把<<persons>>的手推开，然后愤怒地给了<<his>>一个大嘴巴子。
+    <<if random(1, 3) is 3>>
+        然后<<he>>把你拉到了椅子上。
+        <br><br>
+
+        <<link [[继续|Chalets Work One Rape]]>><<set $molestationstart to 1>><</link>>
+        <br>
+    <<else>>
+        但<<he>>没报复回去。
+        <br><br>
+        你离开小木屋。
+        <br><br>
+        <<link [[继续|Chalets]]>><</link>>
+        <br>
+    <</if>>
+<</if>>
+
+
+:: Chalets Work One Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Chalets Work One Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Chalets Work One Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Chalets Work One Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>躺在椅子上，就像<<hes>>忘了你一样。
+	<br><br>
+	<<tearful>>你离开的小木屋。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+<<elseif $enemyhealth lte 0>>
+	椅子连带着<<person>>向后倒在了地上。<<He>>摔在地上挣扎着，护着<<his>>的膝盖。
+	<br><br>
+	<<tearful>>你离开的小木屋。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+<</if>>
+
+<<link [[继续|Chalets]]>><</link>>
+<br>
+
+:: Chalets Work Feet Allow
+<<effects>>
+
+你继续工作。<<person2>><<person>>也把<<his>>的脚放在你的背上歇息。对方并没有再做什么坏事，但由于增加了重量，使得工作就更难继续了。
+<br><br>
+
+当你完成后，他们会抱怨，但是你还有一个小木屋要打扫，一旦打扫完，你就起身离开大楼。
+<br><br>
+
+<<link [[继续|Chalets]]>><<endevent>><</link>>
+<br>
+
+:: Chalets Work Feet Charge
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+    "你可以拿我当脚凳,”你说，“但我也真的需要钱。"
+<<elseif $speech_attitude is "bratty">>
+    "你买得起吗?”你若有所思。
+<<else>>
+    "这项服务是额外的,”你说。
+<</if>>
+<br><br>
+<<person1>><<person>>在你面前丢下一些现金。<<moneyGain 40>>.
+<br>
+"我钱花的很值，"<<he>>说，用<<his>>的脚踝捶打你的<<bottom>>。
+<br><br>
+
+<<person2>><<person>>也歇着<<his>>的脚。对方并没有再做什么坏事，但由于增加了重量，使得工作就更难继续了。
+<br><br>
+
+当你完成后，他们会抱怨，但是你还有一个小木屋要打扫，一旦打扫完，你就起身离开大楼。
+<br><br>
+
+<<link [[继续|Chalets]]>><<endevent>><</link>>
+<br>
+
+:: Chalets Work Feet Refuse
+<<effects>>
+
+你站起来，把<<persons>>的脚从你的背后逼开，然后把<<bottom>>朝向远离<<him>>的方向。<<He>>抱怨着，但你还要继续打扫小屋。完成后，你起身离开了建筑。
+<br><br>
+
+<<link [[继续|Chalets]]>><<endevent>><</link>>
+<br>
+
+:: Chalets Work Collar
+<<effects>>
+<<neckwear 26>>
+当<<person>>把项圈套在你的脖子上，把你拽到地毯上时，你一动不动。<<He>>把你带到<<his>>的朋友那里。
+<<exhibitionism1>>
+
+"坐下”<<he>>命令道。
+<br><br>
+
+<<link [[坐|Chalets Work Collar Sit]]>><</link>>
+<br>
+<<link [[拒绝|Chalets Work Collar Refuse 2]]>><</link>>
+<br>
+
+:: Chalets Work Collar Sit
+<<effects>>
+
+你像狗狗一样坐着。"好<<girl>>，"<<person1>><<person>>说说道。<<He>>抓住你的项圈，让链条垂着，把你拉近<<person2>><<person>>。
+<br><br>
+
+"亲吻。"
+<br><br>
+
+<<link [["亲吻" + $NPCList[1].pronouns.his + "的脸颊"|Chalets Work Collar Cheek]]>><</link>>
+<br>
+<<link [["亲吻" + $NPCList[1].pronouns.his + "的嘴唇"|Chalets Work Collar Kiss]]>><</link>><<kissvirginitywarning>>
+<br>
+<<link [[拒绝|Chalets Work Collar Refuse 2]]>><</link>>
+<br>
+
+:: Chalets Work Collar Cheek
+<<effects>>
+
+你亲了<<person>>的脸颊一下。
+<br><br>
+<<person1>><<person>>直接往你<<bottom>>扇了一巴掌。"正确的来。亲<<his>>的嘴。"<<gstress>><<gpain>><<stress 6>><<pain 4>>
+<br><br>
+
+<<link [["亲吻" + $NPCList[1].pronouns.his + "的嘴唇"|Chalets Work Collar Kiss]]>><</link>><<kissvirginitywarning>>
+<br>
+<<link [[拒绝|Chalets Work Collar Refuse 2]]>><</link>>
+<br>
+
+:: Chalets Work Collar Kiss
+<<effects>>
+
+你亲向<<person2>><<person>>的嘴唇。<<He>>抓住你的后脑勺，在你挣脱之前将你抱住。<<gstress>><<stress 6>>
+<<takeKissVirginity $NPCList[1]>>
+<br><br>
+
+<<He>>松开你的头，一丝唾液将你们连在一起。"这样就足够了，<<girl>>，"<<person1>><<person>>说，解开了你的项圈。"给你。" 你获得了<<moneyGain 30>>。
+<br><br>
+
+你离开小木屋。
+<br><br>
+<<neckruined>>
+
+<<link [[继续|Chalets]]>><<endevent>><</link>>
+<br>
+
+:: Chalets Work Collar Refuse 2
+<<effects>>
+
+<<if random(1, 2) is 2>>
+    <<neckruined>>
+    你站起来，解开项圈。<<person2>><<person>>呻吟着，但你没有理会<<him>>，而是离开了木屋。
+    <br><br>
+
+    <<link [[继续|Chalets]]>><</link>>
+    <br>
+<<else>>
+    你站起来，试图解开项圈，<span class="red">但<<person>>把你拽到地毯上，</span>并掐住你的脖子。"别急着走啊，<<bitch>>。"
+    <br><br>
+
+    <<link [[继续|Chalets Work Collar Rape]]>><<set $molestationstart to 1>><</link>>
+    <br>
+<</if>>
+
+:: Chalets Work Collar Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Chalets Work Collar Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Chalets Work Collar Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Chalets Work Collar Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+    <<person1>><<person>>抓住你的项圈，把你拉到前门处，然后一脚把你踢了出去。
+	<br><br>
+	<<tearful>>你挣扎着站起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<else>>
+    你绊倒了<<person1>><<person>>，并趁隙逃脱。
+	<br><br>
+	<<tearful>>你逃离了小木屋。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+
+<<link [[继续|Chalets]]>><</link>>
+<br>
+
+:: Chalets Work Collar Refuse
+<<effects>>
+
+你拒绝了那个<<persons>>的提议，离开了小木屋。
+<br><br>
+
+<<link [[继续|Chalets]]>><<endevent>><</link>>
+<br>

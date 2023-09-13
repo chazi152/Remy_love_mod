@@ -1,0 +1,52 @@
+:: Character lighting widgets [widget]
+<<widget "charLight">>
+	<<if $options.characterLightEnabled and $options.images is 1>>
+		/* Position glow and spotlight */
+		<<set _offsetX = _args[0]>>
+		<<set _offsetY = _args[1]>>
+
+		/* If _class == "limited" then only show spotlight and glow */
+		<<set _class = _args[2] || "">>
+
+		<<set _angelDemonBalance = ($angel / 6 - $demon / 6) * $options.lightTFColor>>
+		<<set _sliderMult = 0.5>>
+
+		<div @class="'char-light ' + _class" @style="
+			'--offset-x: ' + _offsetX +
+			'; --offset-y: ' + _offsetY +
+			'; --spotlight: ' + ($options.lightSpotlight * _sliderMult) +
+			'; --gradient: ' + ($options.lightGradient * _sliderMult) +
+			'; --glow: ' + ($options.lightGlow * _sliderMult) +
+			'; --flat: ' + ($options.lightFlat * _sliderMult)
+			">
+			<div class="angel" @style="'opacity: ' + _angelDemonBalance"></div>
+			<div class="demon" @style="'opacity: ' + -_angelDemonBalance"></div>
+		</div>
+	<</if>>
+<</widget>>
+
+<<widget "charLightCombat">>
+	<<if $options.characterLightEnabled and $options.images is 1 and $options.combatImages is 1>>
+		<<set _position = _args[0] || "">>
+		<<set _props = _args[1] || []>>
+		<<if _position == "doggy">>
+			<<if _props.includes("haybale") or _props.includes("milk")>>
+				<<set _heightOffset = "225px">>
+			<<elseif _props.includes("bench")>>
+				<<set _heightOffset = "240px">>
+			<<elseif _props.includes("table")>>
+				<<set _heightOffset = "277px">>
+			<</if>>
+		<<elseif _position == "missionary">>
+			<<if _props.includes("haybale") or _props.includes("milk")>>
+				<<set _heightOffset = "225px">>
+			<<elseif _props.includes("bench")>>
+				<<set _heightOffset = "228px">>
+			<<elseif _props.includes("table")>>
+				<<set _heightOffset = "265px">>
+			<</if>>
+		<</if>>
+
+		<div @class="'char-light-combat ' + _position" @style="'--light-intensity: ' + $options.lightCombat + (_heightOffset ? '; --height-offset: ' + _heightOffset : '')"></div>
+	<</if>>
+<</widget>>

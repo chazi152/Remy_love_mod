@@ -1,0 +1,2556 @@
+:: Cheats [widget]
+<<widget "cheats">>
+	<h3>作弊</h3>
+	<br>
+	<<link [[确认|$passage]]>><</link>>
+	<br>
+	若在事件中或在NPC周围确定，可能会导致问题。
+	<br><br>
+
+	<div id="cheatsShown"><<cheats-characterStats>></div>
+	<br>
+
+	<<link "回到页面顶部">>
+		<<script>>
+			$("#customOverlayContent").scrollTop(0);
+		<</script>>
+	<</link>>
+	<br><br>
+<</widget>>
+
+<<widget "cheatVirginityToggle">>
+	<<set _type to _args[0]>>
+	<<set _id to `stats${_type}virginity`>>
+	<<capture _type _id>>
+		<span @id="_id"><<print ($player.virginity[_type] is true ? "尚存" : "被其夺走" + ($player.virginity[_type] is false ? "不知名" : $player.virginity[_type]))>></span> |
+		<span @id="_id + 'link'"><<link `($player.virginity[_type] is true ? "夺取" : "恢复")`>>
+			<<if $player.virginity[_type] is true>>
+				<<set $player.virginity[_type] to (_virginity[_type] is true ? false : _virginity[_type])>><<set $player.virginity.temple to false>>
+			<<else>>
+				<<set $player.virginity[_type] to true>>
+			<</if>>
+			<<run $(`#${_id}link .link-internal`).html($player.virginity[_type] is true ? "夺取" : "恢复")>>
+			<<run $(`#${_id}`).html($player.virginity[_type] is true ? "尚存" : "被夺走 - " + ($player.virginity[_type] is false ? "不知名" : $player.virginity[_type]))>>
+		<</link>></span>
+	<</capture>>
+<</widget>>
+
+<<widget "cheatParasiteToggle">>
+	<<set _bodypart to _args[0]>>
+	<<set _id to `stats${_bodypart}parasite`>>
+	<<capture _bodypart _id>>
+		<<set $_currentType to $parasite[_bodypart].name or "none">>
+		<<print _bodypart.replace("nipples", "乳头").replace("bottom", "屁股").replace("penis", "阴茎").replace("balls", "蛋蛋").replace("clit", "阴蒂").replace("anus", "菊穴").replace("vagina", "小穴").replace("labia", "阴唇").replace("left_thigh", "左腿").replace("right_thigh", "右腿").replace("left_foot", "左脚").replace("right_foot", "右脚").replace("left_arm", "左臂").replace("right_arm", "右臂").replace("left_hand", "左手").replace("right_hand", "右手").replace("tummy", "肚子").replace("back", "后背").replace("face", "脸").replace("mouth", "嘴").replace("left_ear", "左耳").replace("right_ear", "右耳").replace("hair", "头发")>> 寄生虫: <span @id="_id" class="gold"><<print $_currentType.replace("urchin", "海胆").replace("slime", "史莱姆").replace("maggot", "蛆虫").replace("none", "无")>></span> |
+
+		<<set T["parasiteType"+_bodypart] to $_currentType>>
+		<<set _optionName to "_parasiteType"+_bodypart>>
+		<<for _parasiteOption range setup.parasiteTypesPerBodypart[_bodypart]>>
+			<label>_parasiteOption.replace("urchin", "海胆").replace("slime", "史莱姆").replace("maggot", "蛆虫").replace("none", "无") <<radiobutton `_optionName` _parasiteOption autocheck>></label> |
+		<</for>>
+		<<link "设置">>
+			<<removeparasite _bodypart>>
+
+			<<set _parasiteTypeActual to T["parasiteType"+_bodypart]>>
+			<<if _parasiteTypeActual isnot "none">>
+				<<parasite _bodypart _parasiteTypeActual>>
+			<</if>>
+			<<run $(`#${_id}`).html($parasite[_bodypart].name or "none")>>
+			<<updatesidebarimg>>
+		<</link>>
+	<</capture>>
+<</widget>>
+
+<<widget "cheatBodyliquidOnPart">>
+	<<set _part to _args[0]>>
+	<<set _label to _args[1]>>
+	<<set _type to _args[2]>>
+	<<capture _type _label _part>>
+		<<set _id to `stats${_part}${_type}`>>
+		<<link "<">><<bodyliquid _part _type -1>><<run $(`#stats${_part}${_type}`).html(Math.trunc($player.bodyliquid[_part][_type]))>><<updatesidebarimg>><</link>>
+		_label: <span @id="_id"><<print Math.trunc($player.bodyliquid[_part][_type])>></span>
+		<<link ">">><<bodyliquid _part _type 1>><<run $(`#stats${_part}${_type}`).html(Math.trunc($player.bodyliquid[_part][_type]))>><<updatesidebarimg>><</link>>
+		|
+	<</capture>>
+<</widget>>
+
+<<widget "cheats-characterStats">>
+	<span class="gold">杂项</span>
+	<br>
+
+	<<link "<<<">><<set $money -= 100000>><<clamp>><<replace "#statsmoney">><<print Math.trunc($money)>><</replace>><</link>> |
+	<<link "<<">><<set $money -= 10000>><<clamp>><<replace "#statsmoney">><<print Math.trunc($money)>><</replace>><</link>> |
+	<<link "<">><<set $money -= 1000>><<clamp>><<replace "#statsmoney">><<print Math.trunc($money)>><</replace>><</link>> |
+	资金: <span id="statsmoney"><<print Math.trunc($money)>></span>
+	| <<link ">">><<set $money += 1000>><<clamp>><<replace "#statsmoney">><<print Math.trunc($money)>><</replace>><</link>>
+	| <<link ">>">><<set $money += 10000>><<clamp>><<replace "#statsmoney">><<print Math.trunc($money)>><</replace>><</link>>
+	| <<link ">>>">><<set $money += 100000>><<clamp>><<replace "#statsmoney">><<print Math.trunc($money)>><</replace>><</link>>
+	<br>
+
+	<<if $location is "prison">>
+		<<link "<<<">><<set $prison.teeth -= 100>><<set $prison.teeth = Math.clamp($prison.teeth, 0, 1000000)>><<replace "#statsteeth">><<print Math.trunc($prison.teeth)>><</replace>><</link>> |
+		<<link "<<">><<set $prison.teeth -= 10>><<set $prison.teeth = Math.clamp($prison.teeth, 0, 1000000)>><<replace "#statsteeth">><<print Math.trunc($prison.teeth)>><</replace>><</link>> |
+		<<link "<">><<set $prison.teeth -= 1>><<set $prison.teeth = Math.clamp($prison.teeth, 0, 1000000)>><<replace "#statsteeth">><<print Math.trunc($prison.teeth)>><</replace>><</link>> |
+		牙齿: <span id="statsteeth"><<print Math.trunc($prison.teeth)>></span>
+		| <<link ">">><<set $prison.teeth += 1>><<set $prison.teeth = Math.clamp($prison.teeth, 0, 1000000)>><<replace "#statsteeth">><<print Math.trunc($prison.teeth)>><</replace>><</link>>
+		| <<link ">>">><<set $prison.teeth += 10>><<set $prison.teeth = Math.clamp($prison.teeth, 0, 1000000)>><<replace "#statsteeth">><<print Math.trunc($prison.teeth)>><</replace>><</link>>
+		| <<link ">>>">><<set $prison.teeth += 100>><<set $prison.teeth = Math.clamp($prison.teeth, 0, 1000000)>><<replace "#statsteeth">><<print Math.trunc($prison.teeth)>><</replace>><</link>>
+		<br>
+	<</if>>
+
+	无限防狼喷雾: <span id="statsinfinitespray"><<print ($infinitespray ? "启用" : "禁用")>></span> |
+	<<link "更改">>
+		<<if $infinitespray is 1>>
+			<<set $infinitespray to 0>>
+		<<else>>
+			<<spray 5>>
+			<<set $infinitespray to 1>>
+		<</if>>
+		<<replace "#statsinfinitespray">><<print ($infinitespray ? "打开" : "关闭")>><</replace>>
+	<</link>>
+	<br>
+
+	<<if $debug is 1>>
+		费洛蒙: <span id="statsalluretest">$alluretest</span> |
+		<<link "更改">>
+			<<if $alluretest is 1>>
+				<<set $alluretest to 0>>
+			<<else>>
+				<<set $alluretest to 1>>
+			<</if>>
+			<<replace "#statsalluretest">><<print $alluretest>><</replace>>
+		<</link>>
+		<br>
+	<</if>>
+	<br>
+
+	<span class="gold">玩家身体</span>
+	<br>
+	<<if ["Wardrobe","Changing Room","Eden Wardrobe","Asylum Wardrobe","Strip Club Dressing Room","Brothel Dressing Room","School Boy Wardrobe","School Girl Wardrobe"].includes($passage)>>
+		/*passage change is intentional to allow the players to quickly see the visual differences*/
+		当前性别: <<gender>>
+		<br>
+		<<if $sexStats.vagina.menstruation.currentState is "normal">>
+			更改为:
+			<<link [[变成男孩|$passage]]>>
+				<<set $vaginause to "none">>
+				<<set $vaginastate to "none">>
+				<<set $penisuse to 0>>
+				<<set $penisstate to 0>>
+				<<set $player.gender to "m">>
+				<<set $player.sex to "m">>
+				<<set $player.ballsExist to true>>
+				<<set $player.penisExist to true>>
+				<<set $player.vaginaExist to false>>
+				<<set $sexStats.vagina.menstruation.running = false>>
+			<</link>> |
+			<<if $player.gender isnot "f">>
+				<<link [[变成女孩|$passage]]>>
+					<<set $vaginause to 0>>
+					<<set $vaginastate to 0>>
+					<<set $penisuse to "none">>
+					<<set $penisstate to "none">>
+					<<set $player.gender to "f">>
+					<<set $player.sex to "f">>
+					<<set $player.ballsExist to false>>
+					<<set $player.penisExist to false>>
+					<<set $player.vaginaExist to true>>
+					<<set $sexStats.vagina.menstruation.running = true>>
+				<</link>> |
+			<</if>>
+			<<if $player.gender isnot "h">>
+				<<link [[变成扶她|$passage]]>>
+					<<set $vaginause to 0>>
+					<<set $vaginastate to 0>>
+					<<set $penisuse to 0>>
+					<<set $penisstate to 0>>
+					<<set $player.gender to "h">>
+					<<set $player.sex to "h">>
+					<<set $player.penisExist to true>>
+					<<set $player.vaginaExist to true>>
+					<<set $sexStats.vagina.menstruation.running = true>>
+				<</link>> |
+			<</if>>
+		<<else>>
+			只有在未怀孕的情况下才能更改性别，以避免潜在的问题。
+		<</if>>
+		<<if $player.gender is "h">>
+			<br><br>
+			扶她睾丸: <span id="statsBallsExist"><<print $player.ballsExist>></span> |
+			<<link [[更改|$passage]]>>
+				<<set $player.ballsExist to clone(!$player.ballsExist)>>
+				<<replace #statsBallsExist>><<print $player.ballsExist>><</replace>>
+			<</link>> |
+		<</if>>
+	<<else>>
+		为防止潜在问题，只能在查看衣柜时改变性别。
+	<</if>>
+	<br><br>
+	性状:
+	<span id="statsNaturalFeatures">
+		<<switch $player.gender_body>>
+			<<case "m">>男性化
+			<<case "f">>女性化
+			<<case "a">>双性化
+		<</switch>>
+	</span>
+	<br>
+	<<link "男性化">>
+		<<set $player.gender_body to "m">>
+		<<replace "#statsNaturalFeatures">>
+			<<switch $player.gender_body>>
+				<<case "m">>男性化
+				<<case "f">>女性化
+				<<case "a">>双性化
+			<</switch>>
+		<</replace>>
+	<</link>> |
+	<<link "女性化">>
+		<<set $player.gender_body to "f">>
+		<<replace "#statsNaturalFeatures">>
+			<<switch $player.gender_body>>
+				<<case "m">>男性化
+				<<case "f">>女性化
+				<<case "a">>双性化
+			<</switch>>
+		<</replace>>
+	<</link>> |
+	<<link "双性化">>
+		<<set $player.gender_body to "a">>
+		<<replace "#statsNaturalFeatures">>
+			<<switch $player.gender_body>>
+				<<case "m">>男性化
+				<<case "f">>女性化
+				<<case "a">>双性化
+			<</switch>>
+		<</replace>>
+	<</link>> |
+	<br><br>
+	体型：
+	<span id="statsBodySize">
+		<<switch $bodysize>>
+			<<case 0>>娇小
+			<<case 1>>小巧
+			<<case 2>>普通
+			<<case 3>>高大
+		<</switch>>
+	</span>
+	<br>
+	<<link "娇小">>
+		<<set $bodysize to 0>>
+		<<set _physique_max_old to $physiquesize>>
+		<<set $physiquesize to 6000>>
+		<<set $physique *= $physiquesize / _physique_max_old>>
+		<<replace "#statsBodySize">>
+			<<switch $bodysize>>
+				<<case 0>>娇小
+				<<case 1>>小巧
+				<<case 2>>普通
+				<<case 3>>高大
+			<</switch>>
+		<</replace>>
+	<</link>> |
+	<<link "小巧">>
+		<<set $bodysize to 1>>
+		<<set _physique_max_old to $physiquesize>>
+		<<set $physiquesize to 10000>>
+		<<set $physique *= $physiquesize / _physique_max_old>>
+		<<replace "#statsBodySize">>
+			<<switch $bodysize>>
+				<<case 0>>娇小
+				<<case 1>>小巧
+				<<case 2>>普通
+				<<case 3>>高大
+			<</switch>>
+		<</replace>>
+	<</link>> |
+	<<link "普通">>
+		<<set $bodysize to 2>>
+		<<set _physique_max_old to $physiquesize>>
+		<<set $physiquesize to 12000>>
+		<<set $physique *= $physiquesize / _physique_max_old>>
+		<<replace "#statsBodySize">>
+			<<switch $bodysize>>
+				<<case 0>>娇小
+				<<case 1>>小巧
+				<<case 2>>普通
+				<<case 3>>高大
+			<</switch>>
+		<</replace>>
+	<</link>> |
+	<<link "高大">>
+		<<set $bodysize to 3>>
+		<<set _physique_max_old to $physiquesize>>
+		<<set $physiquesize to 16000>>
+		<<set $physique *= $physiquesize / _physique_max_old>>
+		<<replace "#statsBodySize">>
+			<<switch $bodysize>>
+				<<case 0>>娇小
+				<<case 1>>小巧
+				<<case 2>>普通
+				<<case 3>>高大
+			<</switch>>
+		<</replace>>
+	<</link>> |
+	<br><br>
+
+	<<set _virginity to clone($player.virginity)>>
+	<<if $player.vaginaExist>>
+		阴道童贞: <<cheatVirginityToggle "vaginal">>
+		<br>
+	<</if>>
+	<<if $player.penisExist>>
+		阴茎童贞: <<cheatVirginityToggle "penile">>
+		<br>
+	<</if>>
+	后穴童贞: <<cheatVirginityToggle "anal">>
+	<br>
+	口交童贞: <<cheatVirginityToggle "oral">>
+	<br>
+	牵手童贞: <<cheatVirginityToggle "handholding">>
+	<br>
+	初吻: <<cheatVirginityToggle "kiss">>
+	<br><br>
+
+	<span class="gold">状态</span>
+	<br>
+	<<link "正常化">><<set $pain = 0>><<clamp>><<replace "#statspain">><<print Math.trunc($pain)>><</replace>>
+	<<set $arousal = 0>><<clamp>><<replace "#statsarousal">><<print Math.trunc($arousal)>><</replace>>
+	<<set $tiredness = 0>><<clamp>><<replace "#statstiredness">><<print Math.trunc($tiredness)>><</replace>>
+	<<set $stress = 0>><<clamp>><<replace "#statsstress">><<print Math.trunc($stress)>><</replace>>
+	<<set $trauma = 0>><<clamp>><<replace "#statstrauma">><<print Math.trunc($trauma)>><</replace>>
+	<<set $control = 1000>><<clamp>><<replace "#statscontrol">><<print Math.trunc($control)>><</replace>>
+	<<set $drunk = 0>><<clamp>><<replace "#statsdrunk">><<print Math.trunc($drunk)>><</replace>>
+	<<set $drugged = 0>><<clamp>><<replace "#statsdrugged">><<print Math.trunc($drugged)>><</replace>>
+	<<set $hallucinogen = 0>><<clamp>><<replace "#statshallucinogen">><<print Math.trunc($hallucinogen)>><</replace>>
+	<<updatesidebarimg>><</link>> |
+
+	<<link "反向化">><<set $pain = 200>><<clamp>><<replace "#statspain">><<print Math.trunc($pain)>><</replace>>
+	<<set $arousal = 10000>><<clamp>><<replace "#statsarousal">><<print Math.trunc($arousal)>><</replace>>
+	<<set $tiredness = 2000>><<clamp>><<replace "#statstiredness">><<print Math.trunc($tiredness)>><</replace>>
+	<<set $stress = 10000>><<clamp>><<replace "#statsstress">><<print Math.trunc($stress)>><</replace>>
+	<<set $trauma = 5000>><<clamp>><<replace "#statstrauma">><<print Math.trunc($trauma)>><</replace>>
+	<<set $control = 0>><<clamp>><<replace "#statscontrol">><<print Math.trunc($control)>><</replace>>
+	<<set $drunk = 1000>><<clamp>><<replace "#statsdrunk">><<print Math.trunc($drunk)>><</replace>>
+	<<set $drugged = 1000>><<clamp>><<replace "#statsdrugged">><<print Math.trunc($drugged)>><</replace>>
+	<<set $hallucinogen = 1000>><<clamp>><<replace "#statshallucinogen">><<print Math.trunc($hallucinogen)>><</replace>>
+	<<updatesidebarimg>><</link>>
+	<br><br>
+	<<link "<<<">><<set $pain -= 100>><<clamp>><<replace "#statspain">><<print Math.trunc($pain)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $pain -= 10>><<clamp>><<replace "#statspain">><<print Math.trunc($pain)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $pain -= 1>><<clamp>><<replace "#statspain">><<print Math.trunc($pain)>><</replace>> <<updatesidebarimg>><</link>> |
+	疼痛: <span id="statspain"><<print Math.trunc($pain)>></span>
+	| <<link ">">><<set $pain += 1>><<clamp>><<replace "#statspain">><<print Math.trunc($pain)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $pain += 10>><<clamp>><<replace "#statspain">><<print Math.trunc($pain)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $pain += 100>><<clamp>><<replace "#statspain">><<print Math.trunc($pain)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<arousal -1000>><<clamp>><<replace "#statsarousal">><<print Math.trunc($arousal)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<arousal -100>><<clamp>><<replace "#statsarousal">><<print Math.trunc($arousal)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<arousal -10>><<clamp>><<replace "#statsarousal">><<print Math.trunc($arousal)>><</replace>> <<updatesidebarimg>><</link>> |
+	性奋: <span id="statsarousal"><<print Math.trunc($arousal)>></span>
+	| <<link ">">><<arousal 10>><<clamp>><<replace "#statsarousal">><<print Math.trunc($arousal)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<arousal 100>><<clamp>><<replace "#statsarousal">><<print Math.trunc($arousal)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<arousal 1000>><<clamp>><<replace "#statsarousal">><<print Math.trunc($arousal)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $tiredness -= 1000>><<clamp>><<replace "#statstiredness">><<print Math.trunc($tiredness)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $tiredness -= 100>><<clamp>><<replace "#statstiredness">><<print Math.trunc($tiredness)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $tiredness -= 10>><<clamp>><<replace "#statstiredness">><<print Math.trunc($tiredness)>><</replace>> <<updatesidebarimg>><</link>> |
+	疲劳: <span id="statstiredness"><<print Math.trunc($tiredness)>></span>
+	| <<link ">">><<set $tiredness += 10>><<clamp>><<replace "#statstiredness">><<print Math.trunc($tiredness)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $tiredness += 100>><<clamp>><<replace "#statstiredness">><<print Math.trunc($tiredness)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $tiredness += 1000>><<clamp>><<replace "#statstiredness">><<print Math.trunc($tiredness)>><</replace>> <<updatesidebarimg>><</link>> (满状态条值为 <<print C.tiredness.max>>)
+	<br>
+
+	<<link "<<<">><<set $stress -= 1000>><<clamp>><<replace "#statsstress">><<print Math.trunc($stress)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $stress -= 100>><<clamp>><<replace "#statsstress">><<print Math.trunc($stress)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $stress -= 10>><<clamp>><<replace "#statsstress">><<print Math.trunc($stress)>><</replace>> <<updatesidebarimg>><</link>> |
+	压力: <span id="statsstress"><<print Math.trunc($stress)>></span>
+	| <<link ">">><<set $stress += 10>><<clamp>><<replace "#statsstress">><<print Math.trunc($stress)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $stress += 100>><<clamp>><<replace "#statsstress">><<print Math.trunc($stress)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $stress += 1000>><<clamp>><<replace "#statsstress">><<print Math.trunc($stress)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $trauma -= 1000>><<clamp>><<replace "#statstrauma">><<print Math.trunc($trauma)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $trauma -= 100>><<clamp>><<replace "#statstrauma">><<print Math.trunc($trauma)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $trauma -= 10>><<clamp>><<replace "#statstrauma">><<print Math.trunc($trauma)>><</replace>> <<updatesidebarimg>><</link>> |
+	创伤: <span id="statstrauma"><<print Math.trunc($trauma)>></span>
+	| <<link ">">><<set $trauma += 10>><<clamp>><<replace "#statstrauma">><<print Math.trunc($trauma)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $trauma += 100>><<clamp>><<replace "#statstrauma">><<print Math.trunc($trauma)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $trauma += 1000>><<clamp>><<replace "#statstrauma">><<print Math.trunc($trauma)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $control -= 1000>><<clamp>><<replace "#statscontrol">><<print Math.trunc($control)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $control -= 100>><<clamp>><<replace "#statscontrol">><<print Math.trunc($control)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $control -= 10>><<clamp>><<replace "#statscontrol">><<print Math.trunc($control)>><</replace>> <<updatesidebarimg>><</link>> |
+	自控: <span id="statscontrol"><<print Math.trunc($control)>></span>
+	| <<link ">">><<set $control += 10>><<clamp>><<replace "#statscontrol">><<print Math.trunc($control)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $control += 100>><<clamp>><<replace "#statscontrol">><<print Math.trunc($control)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $control += 1000>><<clamp>><<replace "#statscontrol">><<print Math.trunc($control)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $drunk -= 1000>><<clamp>><<replace "#statsdrunk">><<print Math.trunc($drunk)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $drunk -= 100>><<clamp>><<replace "#statsdrunk">><<print Math.trunc($drunk)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $drunk -= 10>><<clamp>><<replace "#statsdrunk">><<print Math.trunc($drunk)>><</replace>> <<updatesidebarimg>><</link>> |
+	醉酒: <span id="statsdrunk"><<print Math.trunc($drunk)>></span>
+	| <<link ">">><<set $drunk += 10>><<clamp>><<replace "#statsdrunk">><<print Math.trunc($drunk)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $drunk += 100>><<clamp>><<replace "#statsdrunk">><<print Math.trunc($drunk)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $drunk += 1000>><<clamp>><<replace "#statsdrunk">><<print Math.trunc($drunk)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $drugged -= 1000>><<clamp>><<replace "#statsdrugged">><<print Math.trunc($drugged)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $drugged -= 100>><<clamp>><<replace "#statsdrugged">><<print Math.trunc($drugged)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $drugged -= 10>><<clamp>><<replace "#statsdrugged">><<print Math.trunc($drugged)>><</replace>> <<updatesidebarimg>><</link>> |
+	春药: <span id="statsdrugged"><<print Math.trunc($drugged)>></span>
+	| <<link ">">><<set $drugged += 10>><<clamp>><<replace "#statsdrugged">><<print Math.trunc($drugged)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $drugged += 100>><<clamp>><<replace "#statsdrugged">><<print Math.trunc($drugged)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $drugged += 1000>><<clamp>><<replace "#statsdrugged">><<print Math.trunc($drugged)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $hallucinogen -= 1000>><<clamp>><<replace "#statshallucinogen">><<print Math.trunc($hallucinogen)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $hallucinogen -= 100>><<clamp>><<replace "#statshallucinogen">><<print Math.trunc($hallucinogen)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $hallucinogen -= 10>><<clamp>><<replace "#statshallucinogen">><<print Math.trunc($hallucinogen)>><</replace>> <<updatesidebarimg>><</link>> |
+	致幻: <span id="statshallucinogen"><<print Math.trunc($hallucinogen)>></span>
+	| <<link ">">><<set $hallucinogen += 10>><<clamp>><<replace "#statshallucinogen">><<print Math.trunc($hallucinogen)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $hallucinogen += 100>><<clamp>><<replace "#statshallucinogen">><<print Math.trunc($hallucinogen)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $hallucinogen += 1000>><<clamp>><<replace "#statshallucinogen">><<print Math.trunc($hallucinogen)>><</replace>> <<updatesidebarimg>><</link>>
+	<br><br>
+
+	<span class="gold">人物属性</span>
+	<br>
+	<<link "<<<">><<set $purity -= 1000>><<clamp>><<replace "#statspurity">><<print Math.trunc($purity)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $purity -= 100>><<clamp>><<replace "#statspurity">><<print Math.trunc($purity)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $purity -= 10>><<clamp>><<replace "#statspurity">><<print Math.trunc($purity)>><</replace>> <<updatesidebarimg>><</link>> |
+	纯洁: <span id="statspurity"><<print Math.trunc($purity)>></span>
+	| <<link ">">><<set $purity += 10>><<clamp>><<replace "#statspurity">><<print Math.trunc($purity)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $purity += 100>><<clamp>><<replace "#statspurity">><<print Math.trunc($purity)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $purity += 1000>><<clamp>><<replace "#statspurity">><<print Math.trunc($purity)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $beauty -= 5000>><<clamp>><<replace "#statsbeauty">><<print Math.trunc($beauty)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $beauty -= 500>><<clamp>><<replace "#statsbeauty">><<print Math.trunc($beauty)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $beauty -= 50>><<clamp>><<replace "#statsbeauty">><<print Math.trunc($beauty)>><</replace>> <<updatesidebarimg>><</link>> |
+	容貌: <span id="statsbeauty"><<print Math.trunc($beauty)>></span>
+	| <<link ">">><<set $beauty += 50>><<clamp>><<replace "#statsbeauty">><<print Math.trunc($beauty)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $beauty += 500>><<clamp>><<replace "#statsbeauty">><<print Math.trunc($beauty)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $beauty += 5000>><<clamp>><<replace "#statsbeauty">><<print Math.trunc($beauty)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $physique -= 5000>><<clamp>><<replace "#statsphysique">><<print Math.trunc($physique)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $physique -= 500>><<clamp>><<replace "#statsphysique">><<print Math.trunc($physique)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $physique -= 50>><<clamp>><<replace "#statsphysique">><<print Math.trunc($physique)>><</replace>> <<updatesidebarimg>><</link>> |
+	体能: <span id="statsphysique"><<print Math.trunc($physique)>></span>
+	| <<link ">">><<set $physique += 50>><<clamp>><<replace "#statsphysique">><<print Math.trunc($physique)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $physique += 500>><<clamp>><<replace "#statsphysique">><<print Math.trunc($physique)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $physique += 5000>><<clamp>><<replace "#statsphysique">><<print Math.trunc($physique)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $willpower -= 1000>><<clamp>><<replace "#statswillpower">><<print Math.trunc($willpower)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $willpower -= 100>><<clamp>><<replace "#statswillpower">><<print Math.trunc($willpower)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $willpower -= 10>><<clamp>><<replace "#statswillpower">><<print Math.trunc($willpower)>><</replace>> <<updatesidebarimg>><</link>> |
+	意志: <span id="statswillpower"><<print Math.trunc($willpower)>></span>
+	| <<link ">">><<set $willpower += 10>><<clamp>><<replace "#statswillpower">><<print Math.trunc($willpower)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $willpower += 100>><<clamp>><<replace "#statswillpower">><<print Math.trunc($willpower)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $willpower += 1000>><<clamp>><<replace "#statswillpower">><<print Math.trunc($willpower)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $awareness -= 1000>><<clamp>><<replace "#statsawareness">><<print Math.trunc($awareness)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $awareness -= 100>><<clamp>><<replace "#statsawareness">><<print Math.trunc($awareness)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $awareness -= 10>><<clamp>><<replace "#statsawareness">><<print Math.trunc($awareness)>><</replace>> <<updatesidebarimg>><</link>> |
+	意识: <span id="statsawareness"><<print Math.trunc($awareness)>></span>
+	| <<link ">">><<set $awareness += 10>><<clamp>><<replace "#statsawareness">><<print Math.trunc($awareness)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $awareness += 100>><<clamp>><<replace "#statsawareness">><<print Math.trunc($awareness)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $awareness += 1000>><<clamp>><<replace "#statsawareness">><<print Math.trunc($awareness)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $promiscuity -= 100>><<clamp>><<replace "#statspromiscuity">><<print Math.trunc($promiscuity)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $promiscuity -= 10>><<clamp>><<replace "#statspromiscuity">><<print Math.trunc($promiscuity)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $promiscuity -= 1>><<clamp>><<replace "#statspromiscuity">><<print Math.trunc($promiscuity)>><</replace>> <<updatesidebarimg>><</link>> |
+	淫乱: <span id="statspromiscuity"><<print Math.trunc($promiscuity)>></span>
+	| <<link ">">><<set $promiscuity += 1>><<clamp>><<replace "#statspromiscuity">><<print Math.trunc($promiscuity)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $promiscuity += 10>><<clamp>><<replace "#statspromiscuity">><<print Math.trunc($promiscuity)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $promiscuity += 100>><<clamp>><<replace "#statspromiscuity">><<print Math.trunc($promiscuity)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $exhibitionism -= 100>><<clamp>><<replace "#statsexhibitionism">><<print Math.trunc($exhibitionism)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $exhibitionism -= 10>><<clamp>><<replace "#statsexhibitionism">><<print Math.trunc($exhibitionism)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $exhibitionism -= 1>><<clamp>><<replace "#statsexhibitionism">><<print Math.trunc($exhibitionism)>><</replace>> <<updatesidebarimg>><</link>> |
+	露出癖: <span id="statsexhibitionism"><<print Math.trunc($exhibitionism)>></span>
+	| <<link ">">><<set $exhibitionism += 1>><<clamp>><<replace "#statsexhibitionism">><<print Math.trunc($exhibitionism)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $exhibitionism += 10>><<clamp>><<replace "#statsexhibitionism">><<print Math.trunc($exhibitionism)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $exhibitionism += 100>><<clamp>><<replace "#statsexhibitionism">><<print Math.trunc($exhibitionism)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $deviancy -= 100>><<clamp>><<replace "#statsdeviancy">><<print Math.trunc($deviancy)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $deviancy -= 10>><<clamp>><<replace "#statsdeviancy">><<print Math.trunc($deviancy)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $deviancy -= 1>><<clamp>><<replace "#statsdeviancy">><<print Math.trunc($deviancy)>><</replace>> <<updatesidebarimg>><</link>> |
+	异种癖: <span id="statsdeviancy"><<print Math.trunc($deviancy)>></span>
+	| <<link ">">><<set $deviancy += 1>><<clamp>><<replace "#statsdeviancy">><<print Math.trunc($deviancy)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $deviancy += 10>><<clamp>><<replace "#statsdeviancy">><<print Math.trunc($deviancy)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $deviancy += 100>><<clamp>><<replace "#statsdeviancy">><<print Math.trunc($deviancy)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<if $parasite.left_ear.name is "slime" or $parasite.right_ear.name is "slime">>
+
+	<<link "<<<">><<set $corruption_slime -= 100>><<clamp>><<replace "#statscorruption_slime">><<print Math.trunc($corruption_slime)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $corruption_slime -= 10>><<clamp>><<replace "#statscorruption_slime">><<print Math.trunc($corruption_slime)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $corruption_slime -= 1>><<clamp>><<replace "#statscorruption_slime">><<print Math.trunc($corruption_slime)>><</replace>> <<updatesidebarimg>><</link>> |
+	堕落: <span id="statscorruption_slime"><<print Math.trunc($corruption_slime)>></span>
+	| <<link ">">><<set $corruption_slime += 1>><<clamp>><<replace "#statscorruption_slime">><<print Math.trunc($corruption_slime)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $corruption_slime += 10>><<clamp>><<replace "#statscorruption_slime">><<print Math.trunc($corruption_slime)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $corruption_slime += 100>><<clamp>><<replace "#statscorruption_slime">><<print Math.trunc($corruption_slime)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<</if>>
+
+	<<if $temple_rank is "initiate" or $temple_rank is "monk" or $temple_rank is "priest">>
+
+	<<link "<<<">><<set $grace -= 100>><<set $grace = Math.clamp($grace, -100, 100)>><<replace "#statsgrace">><<print Math.trunc($grace)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $grace -= 10>><<set $grace = Math.clamp($grace, -100, 100)>><<replace "#statsgrace">><<print Math.trunc($grace)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $grace -= 1>><<set $grace = Math.clamp($grace, -100, 100)>><<replace "#statsgrace">><<print Math.trunc($grace)>><</replace>> <<updatesidebarimg>><</link>> |
+	恩典: <span id="statsgrace"><<print Math.trunc($grace)>></span>
+	| <<link ">">><<set $grace += 1>><<set $grace = Math.clamp($grace, -100, 100)>><<replace "#statsgrace">><<print Math.trunc($grace)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $grace += 10>><<set $grace = Math.clamp($grace, -100, 100)>><<replace "#statsgrace">><<print Math.trunc($grace)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $grace += 100>><<set $grace = Math.clamp($grace, -100, 100)>><<replace "#statsgrace">><<print Math.trunc($grace)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<</if>>
+
+	<<link "<<<">><<set $submissive -= 1000>><<clamp>><<sub_check>><<replace "#statssubmissive">><<print Math.trunc($submissive)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $submissive -= 100>><<clamp>><<sub_check>><<replace "#statssubmissive">><<print Math.trunc($submissive)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $submissive -= 10>><<clamp>><<sub_check>><<replace "#statssubmissive">><<print Math.trunc($submissive)>><</replace>> <<updatesidebarimg>><</link>> |
+	顺从: <span id="statssubmissive"><<print Math.trunc($submissive)>></span>
+	| <<link ">">><<set $submissive += 10>><<clamp>><<sub_check>><<replace "#statssubmissive">><<print Math.trunc($submissive)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $submissive += 100>><<clamp>><<sub_check>><<replace "#statssubmissive">><<print Math.trunc($submissive)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $submissive += 1000>><<clamp>><<sub_check>><<replace "#statssubmissive">><<print Math.trunc($submissive)>><</replace>> <<updatesidebarimg>><</link>> (默认为 1000)
+	<br>
+
+	<<link "<<<">><<set $masochism -= 1000>><<clamp>><<replace "#statsmasochism">><<print Math.trunc($masochism)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $masochism -= 100>><<clamp>><<replace "#statsmasochism">><<print Math.trunc($masochism)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $masochism -= 10>><<clamp>><<replace "#statsmasochism">><<print Math.trunc($masochism)>><</replace>> <<updatesidebarimg>><</link>> |
+	受虐癖: <span id="statsmasochism"><<print Math.trunc($masochism)>></span>
+	| <<link ">">><<set $masochism += 10>><<clamp>><<replace "#statsmasochism">><<print Math.trunc($masochism)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $masochism += 100>><<clamp>><<replace "#statsmasochism">><<print Math.trunc($masochism)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $masochism += 1000>><<clamp>><<replace "#statsmasochism">><<print Math.trunc($masochism)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $sadism -= 1000>><<clamp>><<replace "#statssadism">><<print Math.trunc($sadism)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $sadism -= 100>><<clamp>><<replace "#statssadism">><<print Math.trunc($sadism)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $sadism -= 10>><<clamp>><<replace "#statssadism">><<print Math.trunc($sadism)>><</replace>> <<updatesidebarimg>><</link>> |
+	虐待癖: <span id="statssadism"><<print Math.trunc($sadism)>></span>
+	| <<link ">">><<set $sadism += 10>><<clamp>><<replace "#statssadism">><<print Math.trunc($sadism)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $sadism += 100>><<clamp>><<replace "#statssadism">><<print Math.trunc($sadism)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $sadism += 1000>><<clamp>><<replace "#statssadism">><<print Math.trunc($sadism)>><</replace>> <<updatesidebarimg>><</link>>
+	<br><br>
+
+	泌乳: <span id="statslactatingspray">$lactating</span> |
+	<<link "切换">><<if $lactating is 1>><<set $lactating to 0>><<set $lactation_pressure to 0>><<else>><<set $lactating to 1>><<set $lactation_pressure to 100>><</if>><<replace "#statslactatingspray">><<print $lactating>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "补充液体">><<set $semen_amount to $semen_volume>><<set $milk_amount to $milk_volume>><</link>>
+	<br>
+	<<link "排空液体">><<set $semen_amount to 0>><<set $milk_amount to 0>><</link>>
+	<br>
+	<<if $player.penisExist>>
+		<<link "<<<">><<set $semen_volume -= 1000>><<clamp>><<replace "#statssemen_volume">><<print Math.trunc($semen_volume)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<<">><<set $semen_volume -= 100>><<clamp>><<replace "#statssemen_volume">><<print Math.trunc($semen_volume)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<">><<set $semen_volume -= 10>><<clamp>><<replace "#statssemen_volume">><<print Math.trunc($semen_volume)>><</replace>> <<updatesidebarimg>><</link>> |
+		储精量: <span id="statssemen_volume"><<print Math.trunc($semen_volume)>></span>
+		| <<link ">">><<set $semen_volume += 10>><<clamp>><<replace "#statssemen_volume">><<print Math.trunc($semen_volume)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>">><<set $semen_volume += 100>><<clamp>><<replace "#statssemen_volume">><<print Math.trunc($semen_volume)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>>">><<set $semen_volume += 1000>><<clamp>><<replace "#statssemen_volume">><<print Math.trunc($semen_volume)>><</replace>> <<updatesidebarimg>><</link>>
+		<br>
+	<</if>>
+
+	<<link "<<<">><<set $milk_volume -= 1000>><<clamp>><<replace "#statsmilk_volume">><<print Math.trunc($milk_volume)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $milk_volume -= 100>><<clamp>><<replace "#statsmilk_volume">><<print Math.trunc($milk_volume)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $milk_volume -= 10>><<clamp>><<replace "#statsmilk_volume">><<print Math.trunc($milk_volume)>><</replace>> <<updatesidebarimg>><</link>> |
+	乳汁容量: <span id="statsmilk_volume"><<print Math.trunc($milk_volume)>></span>
+	| <<link ">">><<set $milk_volume += 10>><<clamp>><<replace "#statsmilk_volume">><<print Math.trunc($milk_volume)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $milk_volume += 100>><<clamp>><<replace "#statsmilk_volume">><<print Math.trunc($milk_volume)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $milk_volume += 1000>><<clamp>><<replace "#statsmilk_volume">><<print Math.trunc($milk_volume)>><</replace>> <<updatesidebarimg>><</link>>
+	<br><br>
+
+	<span class="gold">衣服</span>
+	<br>
+	<span class="description">如果衣服的健康值设置为0或更低，它就会坏掉。离开 "作弊"界面会将它毁坏，且无法恢复。</span>
+	<br>
+	<<if $worn.over_upper.integrity gte 1>>
+		<<link "<<<">><<set $worn.over_upper.integrity -= 100>><<clamp>><<replace "#statsoverupperintegrity">><<print Math.trunc($worn.over_upper.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<<">><<set $worn.over_upper.integrity -= 10>><<clamp>><<replace "#statsoverupperintegrity">><<print Math.trunc($worn.over_upper.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<">><<set $worn.over_upper.integrity -= 1>><<clamp>><<replace "#statsoverupperintegrity">><<print Math.trunc($worn.over_upper.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		上衣耐久: <span id="statsoverupperintegrity"><<print Math.trunc($worn.over_upper.integrity)>></span>
+		| <<link ">">><<set $worn.over_upper.integrity += 1>><<clamp>><<replace "#statsoverupperintegrity">><<print Math.trunc($worn.over_upper.integrity)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>">><<set $worn.over_upper.integrity += 10>><<clamp>><<replace "#statsoverupperintegrity">><<print Math.trunc($worn.over_upper.integrity)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>>">><<set $worn.over_upper.integrity += 100>><<clamp>><<replace "#statsoverupperintegrity">><<print Math.trunc($worn.over_upper.integrity)>><</replace>> <<updatesidebarimg>><</link>> (默认最大值为<<print clothingData('over_upper',$worn.over_upper,'integrity_max')>>)
+		<br>
+	<<else>>
+		<i>你的上半身没穿外衣。</i>
+		<br>
+	<</if>>
+	<<if $worn.over_lower.integrity gte 1>>
+		<<link "<<<">><<set $worn.over_lower.integrity -= 100>><<clamp>><<replace "#statsoverlowerintegrity">><<print Math.trunc($worn.over_lower.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<<">><<set $worn.over_lower.integrity -= 10>><<clamp>><<replace "#statsoverlowerintegrity">><<print Math.trunc($worn.over_lower.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<">><<set $worn.over_lower.integrity -= 1>><<clamp>><<replace "#statsoverlowerintegrity">><<print Math.trunc($worn.over_lower.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		下装耐久: <span id="statsoverlowerintegrity"><<print Math.trunc($worn.over_lower.integrity)>></span>
+		| <<link ">">><<set $worn.over_lower.integrity += 1>><<clamp>><<replace "#statsoverlowerintegrity">><<print Math.trunc($worn.over_lower.integrity)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>">><<set $worn.over_lower.integrity += 10>><<clamp>><<replace "#statsoverlowerintegrity">><<print Math.trunc($worn.over_lower.integrity)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>>">><<set $worn.over_lower.integrity += 100>><<clamp>><<replace "#statsoverlowerintegrity">><<print Math.trunc($worn.over_lower.integrity)>><</replace>> <<updatesidebarimg>><</link>> (默认最大值为<<print clothingData('over_lower',$worn.over_lower,'integrity_max')>> )
+		<br>
+	<<else>>
+		<i>你的下半身没穿外衣。</i>
+		<br>
+	<</if>>
+	<<if $worn.upper.integrity gte 1>>
+		<<link "<<<">><<set $upperwet -= 100>><<clamp>><<replace "#statsupperwet">><<print Math.trunc($upperwet)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<<">><<set $upperwet -= 10>><<clamp>><<replace "#statsupperwet">><<print Math.trunc($upperwet)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<">><<set $upperwet -= 1>><<clamp>><<replace "#statsupperwet">><<print Math.trunc($upperwet)>><</replace>> <<updatesidebarimg>><</link>> |
+		上半身湿度：<span id="statsupperwet"><<print Math.trunc($upperwet)>></span>
+		| <<link ">">><<set $upperwet += 1>><<clamp>><<replace "#statsupperwet">><<print Math.trunc($upperwet)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>">><<set $upperwet += 10>><<clamp>><<replace "#statsupperwet">><<print Math.trunc($upperwet)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>>">><<set $upperwet += 100>><<clamp>><<replace "#statsupperwet">><<print Math.trunc($upperwet)>><</replace>> <<updatesidebarimg>><</link>>
+		<br>
+
+		<<link "<<<">><<set $worn.upper.integrity -= 100>><<clamp>><<replace "#statsupperintegrity">><<print Math.trunc($worn.upper.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<<">><<set $worn.upper.integrity -= 10>><<clamp>><<replace "#statsupperintegrity">><<print Math.trunc($worn.upper.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<">><<set $worn.upper.integrity -= 1>><<clamp>><<replace "#statsupperintegrity">><<print Math.trunc($worn.upper.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		上半身完整度: <span id="statsupperintegrity"><<print Math.trunc($worn.upper.integrity)>></span>
+		| <<link ">">><<set $worn.upper.integrity += 1>><<clamp>><<replace "#statsupperintegrity">><<print Math.trunc($worn.upper.integrity)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>">><<set $worn.upper.integrity += 10>><<clamp>><<replace "#statsupperintegrity">><<print Math.trunc($worn.upper.integrity)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>>">><<set $worn.upper.integrity += 100>><<clamp>><<replace "#statsupperintegrity">><<print Math.trunc($worn.upper.integrity)>><</replace>> <<updatesidebarimg>><</link>> (默认最大值为<<print clothingData('upper',$worn.upper,'integrity_max')>>)
+		<br>
+	<<else>>
+		<i>你上半身没穿衣服。</i>
+		<br>
+	<</if>>
+
+	<<if $worn.lower.integrity gte 1>>
+		<<link "<<<">><<set $lowerwet -= 100>><<clamp>><<replace "#statslowerwet">><<print Math.trunc($lowerwet)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<<">><<set $lowerwet -= 10>><<clamp>><<replace "#statslowerwet">><<print Math.trunc($lowerwet)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<">><<set $lowerwet -= 1>><<clamp>><<replace "#statslowerwet">><<print Math.trunc($lowerwet)>><</replace>> <<updatesidebarimg>><</link>> |
+		下半身湿度: <span id="statslowerwet"><<print Math.trunc($lowerwet)>></span>
+		| <<link ">">><<set $lowerwet += 1>><<clamp>><<replace "#statslowerwet">><<print Math.trunc($lowerwet)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>">><<set $lowerwet += 10>><<clamp>><<replace "#statslowerwet">><<print Math.trunc($lowerwet)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>>">><<set $lowerwet += 100>><<clamp>><<replace "#statslowerwet">><<print Math.trunc($lowerwet)>><</replace>> <<updatesidebarimg>><</link>>
+		<br>
+
+		<<link "<<<">><<set $worn.lower.integrity -= 100>><<clamp>><<replace "#statslowerintegrity">><<print Math.trunc($worn.lower.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<<">><<set $worn.lower.integrity -= 10>><<clamp>><<replace "#statslowerintegrity">><<print Math.trunc($worn.lower.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<">><<set $worn.lower.integrity -= 1>><<clamp>><<replace "#statslowerintegrity">><<print Math.trunc($worn.lower.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		下半身完整度: <span id="statslowerintegrity"><<print Math.trunc($worn.lower.integrity)>></span>
+		| <<link ">">><<set $worn.lower.integrity += 1>><<clamp>><<replace "#statslowerintegrity">><<print Math.trunc($worn.lower.integrity)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>">><<set $worn.lower.integrity += 10>><<clamp>><<replace "#statslowerintegrity">><<print Math.trunc($worn.lower.integrity)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>>">><<set $worn.lower.integrity += 100>><<clamp>><<replace "#statslowerintegrity">><<print Math.trunc($worn.lower.integrity)>><</replace>> <<updatesidebarimg>><</link>> (默认最大值为<<print clothingData('lower',$worn.lower,'integrity_max')>>)
+		<br>
+	<<else>>
+		<i>你下半身没穿衣服。</i>
+		<br>
+	<</if>>
+
+	<<if $worn.under_lower.integrity gte 1>>
+		<<link "<<<">><<set $underlowerwet -= 100>><<clamp>><<replace "#statsunderwet">><<print Math.trunc($underlowerwet)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<<">><<set $underlowerwet -= 10>><<clamp>><<replace "#statsunderwet">><<print Math.trunc($underlowerwet)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<">><<set $underlowerwet -= 1>><<clamp>><<replace "#statsunderwet">><<print Math.trunc($underlowerwet)>><</replace>> <<updatesidebarimg>><</link>> |
+		内裤湿度: <span id="statsunderwet"><<print Math.trunc($underlowerwet)>></span>
+		| <<link ">">><<set $underlowerwet += 1>><<clamp>><<replace "#statsunderwet">><<print Math.trunc($underlowerwet)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>">><<set $underlowerwet += 10>><<clamp>><<replace "#statsunderwet">><<print Math.trunc($underlowerwet)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>>">><<set $underlowerwet += 100>><<clamp>><<replace "#statsunderwet">><<print Math.trunc($underlowerwet)>><</replace>> <<updatesidebarimg>><</link>>
+		<br>
+
+		<<link "<<<">><<set $worn.under_lower.integrity -= 100>><<clamp>><<replace "#statsunderlowerintegrity">><<print Math.trunc($worn.under_lower.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<<">><<set $worn.under_lower.integrity -= 10>><<clamp>><<replace "#statsunderlowerintegrity">><<print Math.trunc($worn.under_lower.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<">><<set $worn.under_lower.integrity -= 1>><<clamp>><<replace "#statsunderlowerintegrity">><<print Math.trunc($worn.under_lower.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		内裤完整度: <span id="statsunderlowerintegrity"><<print Math.trunc($worn.under_lower.integrity)>></span>
+		| <<link ">">><<set $worn.under_lower.integrity += 1>><<clamp>><<replace "#statsunderlowerintegrity">><<print Math.trunc($worn.under_lower.integrity)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>">><<set $worn.under_lower.integrity += 10>><<clamp>><<replace "#statsunderlowerintegrity">><<print Math.trunc($worn.under_lower.integrity)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>>">><<set $worn.under_lower.integrity += 100>><<clamp>><<replace "#statsunderlowerintegrity">><<print Math.trunc($worn.under_lower.integrity)>><</replace>> <<updatesidebarimg>><</link>> (默认最大值为<<print clothingData('under_lower',$worn.under_lower,'integrity_max')>>)
+		<br>
+	<<else>>
+		<i>你下半身没有穿内裤。</i>
+		<br>
+	<</if>>
+
+	<<if $worn.under_upper.integrity gte 1>>
+		<<link "<<<">><<set $underupperwet -= 100>><<clamp>><<replace "#statsundertopwet">><<print Math.trunc($underupperwet)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<<">><<set $underupperwet -= 10>><<clamp>><<replace "#statsundertopwet">><<print Math.trunc($underupperwet)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<">><<set $underupperwet -= 1>><<clamp>><<replace "#statsundertopwet">><<print Math.trunc($underupperwet)>><</replace>> <<updatesidebarimg>><</link>> |
+		内衣湿度: <span id="statsundertopwet"><<print Math.trunc($underupperwet)>></span>
+		| <<link ">">><<set $underupperwet += 1>><<clamp>><<replace "#statsundertopwet">><<print Math.trunc($underupperwet)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>">><<set $underupperwet += 10>><<clamp>><<replace "#statsundertopwet">><<print Math.trunc($underupperwet)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>>">><<set $underupperwet += 100>><<clamp>><<replace "#statsundertopwet">><<print Math.trunc($underupperwet)>><</replace>> <<updatesidebarimg>><</link>>
+		<br>
+
+		<<link "<<<">><<set $worn.under_upper.integrity -= 100>><<clamp>><<replace "#statsunderupperintegrity">><<print Math.trunc($worn.under_upper.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<<">><<set $worn.under_upper.integrity -= 10>><<clamp>><<replace "#statsunderupperintegrity">><<print Math.trunc($worn.under_upper.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<">><<set $worn.under_upper.integrity -= 1>><<clamp>><<replace "#statsunderupperintegrity">><<print Math.trunc($worn.under_upper.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		内衣完整度: <span id="statsunderupperintegrity"><<print Math.trunc($worn.under_upper.integrity)>></span>
+		| <<link ">">><<set $worn.under_upper.integrity += 1>><<clamp>><<replace "#statsunderupperintegrity">><<print Math.trunc($worn.under_upper.integrity)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>">><<set $worn.under_upper.integrity += 10>><<clamp>><<replace "#statsunderupperintegrity">><<print Math.trunc($worn.under_upper.integrity)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>>">><<set $worn.under_upper.integrity += 100>><<clamp>><<replace "#statsunderupperintegrity">><<print Math.trunc($worn.under_upper.integrity)>><</replace>> <<updatesidebarimg>><</link>> (默认最大值为<<print clothingData('under_upper',$worn.under_upper,'integrity_max')>>)
+		<br>
+	<<else>>
+		<i>你上半身没穿内衣。</i>
+		<br>
+	<</if>>
+
+	<<if $worn.genitals.integrity gte 1>>
+		<<link "<<<">><<set $worn.genitals.integrity -= 100>><<clamp>><<replace "#statsgenitalsintegrity">><<print Math.trunc($worn.genitals.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<<">><<set $worn.genitals.integrity -= 10>><<clamp>><<replace "#statsgenitalsintegrity">><<print Math.trunc($worn.genitals.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<">><<set $worn.genitals.integrity -= 1>><<clamp>><<replace "#statsgenitalsintegrity">><<print Math.trunc($worn.genitals.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		贞操度: <span id="statsgenitalsintegrity"><<print Math.trunc($worn.genitals.integrity)>></span>
+		| <<link ">">><<set $worn.genitals.integrity += 1>><<clamp>><<replace "#statsgenitalsintegrity">><<print Math.trunc($worn.genitals.integrity)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>">><<set $worn.genitals.integrity += 10>><<clamp>><<replace "#statsgenitalsintegrity">><<print Math.trunc($worn.genitals.integrity)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>>">><<set $worn.genitals.integrity += 100>><<clamp>><<replace "#statsgenitalsintegrity">><<print Math.trunc($worn.genitals.integrity)>><</replace>> <<updatesidebarimg>><</link>> (默认最大值为<<print clothingData('genitals',$worn.genitals,'integrity_max')>>)
+		<br>
+	<<else>>
+		<i>你没穿贞操带。</i>
+		<br>
+	<</if>>
+
+	<<if $worn.face.type.includesAny("covered", "gag", "mask")>>
+		<<link "<<<">><<set $worn.face.integrity -= 100>><<clamp>><<replace "#statsfaceintegrity">><<print Math.trunc($worn.face.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<<">><<set $worn.face.integrity -= 10>><<clamp>><<replace "#statsfaceintegrity">><<print Math.trunc($worn.face.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		<<link "<">><<set $worn.face.integrity -= 1>><<clamp>><<replace "#statsfaceintegrity">><<print Math.trunc($worn.face.integrity)>><</replace>> <<updatesidebarimg>><</link>> |
+		面部遮挡/脸部露出: <span id="statsfaceintegrity"><<print Math.trunc($worn.face.integrity)>></span>
+		| <<link ">">><<set $worn.face.integrity += 1>><<clamp>><<replace "#statsfaceintegrity">><<print Math.trunc($worn.face.integrity)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>">><<set $worn.face.integrity += 10>><<clamp>><<replace "#statsfaceintegrity">><<print Math.trunc($worn.face.integrity)>><</replace>> <<updatesidebarimg>><</link>>
+		| <<link ">>>">><<set $worn.face.integrity += 100>><<clamp>><<replace "#statsfaceintegrity">><<print Math.trunc($worn.face.integrity)>><</replace>> <<updatesidebarimg>><</link>> (默认最大值为<<print clothingData('face',$worn.face,'integrity_max')>>)
+		<br>
+	<<else>>
+		<i>你的脸上没有口罩或呕吐物。</i>
+		<br>
+	<</if>>
+	<br>
+
+	<span class="gold">技能</span>
+	<br>
+	<<link "<<<">><<set $skulduggery -= 1000>><<set $skulduggeryday to $skulduggery>><<clamp>><<replace "#statsskulduggery">><<print Math.trunc($skulduggery)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $skulduggery -= 100>><<set $skulduggeryday to $skulduggery>><<clamp>><<replace "#statsskulduggery">><<print Math.trunc($skulduggery)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $skulduggery -= 10>><<set $skulduggeryday to $skulduggery>><<clamp>><<replace "#statsskulduggery">><<print Math.trunc($skulduggery)>><</replace>> <<updatesidebarimg>><</link>> |
+	诡术: <span id="statsskulduggery"><<print Math.trunc($skulduggery)>></span>
+	| <<link ">">><<set $skulduggery += 10>><<set $skulduggeryday to $skulduggery>><<clamp>><<replace "#statsskulduggery">><<print Math.trunc($skulduggery)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $skulduggery += 100>><<set $skulduggeryday to $skulduggery>><<clamp>><<replace "#statsskulduggery">><<print Math.trunc($skulduggery)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $skulduggery += 1000>><<set $skulduggeryday to $skulduggery>><<clamp>><<replace "#statsskulduggery">><<print Math.trunc($skulduggery)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $danceskill -= 1000>><<set $danceskill to Math.clamp($danceskill, 0, 1000)>><<replace "#statsdanceskill">><<print Math.trunc($danceskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $danceskill -= 100>><<set $danceskill to Math.clamp($danceskill, 0, 1000)>><<replace "#statsdanceskill">><<print Math.trunc($danceskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $danceskill -= 10>><<set $danceskill to Math.clamp($danceskill, 0, 1000)>><<replace "#statsdanceskill">><<print Math.trunc($danceskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	舞蹈: <span id="statsdanceskill"><<print Math.trunc($danceskill)>></span>
+	| <<link ">">><<set $danceskill += 10>><<set $danceskill to Math.clamp($danceskill, 0, 1000)>><<replace "#statsdanceskill">><<print Math.trunc($danceskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $danceskill += 100>><<set $danceskill to Math.clamp($danceskill, 0, 1000)>><<replace "#statsdanceskill">><<print Math.trunc($danceskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $danceskill += 1000>><<set $danceskill to Math.clamp($danceskill, 0, 1000)>><<replace "#statsdanceskill">><<print Math.trunc($danceskill)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $swimmingskill -= 1000>><<clamp>><<replace "#statsswimmingskill">><<print Math.trunc($swimmingskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $swimmingskill -= 100>><<clamp>><<replace "#statsswimmingskill">><<print Math.trunc($swimmingskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $swimmingskill -= 10>><<clamp>><<replace "#statsswimmingskill">><<print Math.trunc($swimmingskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	游泳: <span id="statsswimmingskill"><<print Math.trunc($swimmingskill)>></span>
+	| <<link ">">><<set $swimmingskill += 10>><<clamp>><<replace "#statsswimmingskill">><<print Math.trunc($swimmingskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $swimmingskill += 100>><<clamp>><<replace "#statsswimmingskill">><<print Math.trunc($swimmingskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $swimmingskill += 1000>><<clamp>><<replace "#statsswimmingskill">><<print Math.trunc($swimmingskill)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $athletics -= 1000>><<clamp>><<replace "#statsathletics">><<print Math.trunc($athletics)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $athletics -= 100>><<clamp>><<replace "#statsathletics">><<print Math.trunc($athletics)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $athletics -= 10>><<clamp>><<replace "#statsathletics">><<print Math.trunc($athletics)>><</replace>> <<updatesidebarimg>><</link>> |
+	运动: <span id="statsathletics"><<print Math.trunc($athletics)>></span>
+	| <<link ">">><<set $athletics += 10>><<clamp>><<replace "#statsathletics">><<print Math.trunc($athletics)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $athletics += 100>><<clamp>><<replace "#statsathletics">><<print Math.trunc($athletics)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $athletics += 1000>><<clamp>><<replace "#statsathletics">><<print Math.trunc($athletics)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $tending -= 1000>><<clamp>><<replace "#statstending">><<print Math.trunc($tending)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $tending -= 100>><<clamp>><<replace "#statstending">><<print Math.trunc($tending)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $tending -= 10>><<clamp>><<replace "#statstending">><<print Math.trunc($tending)>><</replace>> <<updatesidebarimg>><</link>> |
+	护理: <span id="statstending"><<print Math.trunc($tending)>></span>
+	| <<link ">">><<set $tending += 10>><<clamp>><<replace "#statstending">><<print Math.trunc($tending)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $tending += 100>><<clamp>><<replace "#statstending">><<print Math.trunc($tending)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $tending += 1000>><<clamp>><<replace "#statstending">><<print Math.trunc($tending)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $housekeeping -= 1000>><<clamp>><<replace "#statshousekeeping">><<print Math.trunc($housekeeping)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $housekeeping -= 100>><<clamp>><<replace "#statshousekeeping">><<print Math.trunc($housekeeping)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $housekeeping -= 10>><<clamp>><<replace "#statshousekeeping">><<print Math.trunc($housekeeping)>><</replace>> <<updatesidebarimg>><</link>> |
+	家务: <span id="statshousekeeping"><<print Math.trunc($housekeeping)>></span>
+	 | <<link ">">><<set $housekeeping += 10>><<clamp>><<replace "#statshousekeeping">><<print Math.trunc($housekeeping)>><</replace>> <<updatesidebarimg>><</link>>
+	 | <<link ">>">><<set $housekeeping += 100>><<clamp>><<replace "#statshousekeeping">><<print Math.trunc($housekeeping)>><</replace>> <<updatesidebarimg>><</link>>
+	 | <<link ">>>">><<set $housekeeping += 1000>><<clamp>><<replace "#statshousekeeping">><<print Math.trunc($housekeeping)>><</replace>> <<updatesidebarimg>><</link>>
+	<br><br>
+
+	<span class="gold">性技能</span>
+	<br>
+	<<link "<<<">><<set $seductionskill -= 1000>><<clamp>><<replace "#statsseductionskill">><<print Math.trunc($seductionskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $seductionskill -= 100>><<clamp>><<replace "#statsseductionskill">><<print Math.trunc($seductionskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $seductionskill -= 10>><<clamp>><<replace "#statsseductionskill">><<print Math.trunc($seductionskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	魅惑: <span id="statsseductionskill"><<print Math.trunc($seductionskill)>></span>
+	| <<link ">">><<set $seductionskill += 10>><<clamp>><<replace "#statsseductionskill">><<print Math.trunc($seductionskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $seductionskill += 100>><<clamp>><<replace "#statsseductionskill">><<print Math.trunc($seductionskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $seductionskill += 1000>><<clamp>><<replace "#statsseductionskill">><<print Math.trunc($seductionskill)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $oralskill -= 1000>><<clamp>><<replace "#statsoralskill">><<print Math.trunc($oralskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $oralskill -= 100>><<clamp>><<replace "#statsoralskill">><<print Math.trunc($oralskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $oralskill -= 10>><<clamp>><<replace "#statsoralskill">><<print Math.trunc($oralskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	口技: <span id="statsoralskill"><<print Math.trunc($oralskill)>></span>
+	| <<link ">">><<set $oralskill += 10>><<clamp>><<replace "#statsoralskill">><<print Math.trunc($oralskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $oralskill += 100>><<clamp>><<replace "#statsoralskill">><<print Math.trunc($oralskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $oralskill += 1000>><<clamp>><<replace "#statsoralskill">><<print Math.trunc($oralskill)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $vaginalskill -= 1000>><<clamp>><<replace "#statsvaginalskill">><<print Math.trunc($vaginalskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $vaginalskill -= 100>><<clamp>><<replace "#statsvaginalskill">><<print Math.trunc($vaginalskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $vaginalskill -= 10>><<clamp>><<replace "#statsvaginalskill">><<print Math.trunc($vaginalskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	阴道: <span id="statsvaginalskill"><<print Math.trunc($vaginalskill)>></span>
+	| <<link ">">><<set $vaginalskill += 10>><<clamp>><<replace "#statsvaginalskill">><<print Math.trunc($vaginalskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $vaginalskill += 100>><<clamp>><<replace "#statsvaginalskill">><<print Math.trunc($vaginalskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $vaginalskill += 1000>><<clamp>><<replace "#statsvaginalskill">><<print Math.trunc($vaginalskill)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $penileskill -= 1000>><<clamp>><<replace "#statspenileskill">><<print Math.trunc($penileskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $penileskill -= 100>><<clamp>><<replace "#statspenileskill">><<print Math.trunc($penileskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $penileskill -= 10>><<clamp>><<replace "#statspenileskill">><<print Math.trunc($penileskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	阴茎: <span id="statspenileskill"><<print Math.trunc($penileskill)>></span>
+	| <<link ">">><<set $penileskill += 10>><<clamp>><<replace "#statspenileskill">><<print Math.trunc($penileskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $penileskill += 100>><<clamp>><<replace "#statspenileskill">><<print Math.trunc($penileskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $penileskill += 1000>><<clamp>><<replace "#statspenileskill">><<print Math.trunc($penileskill)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $analskill -= 1000>><<clamp>><<replace "#statsanalskill">><<print Math.trunc($analskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $analskill -= 100>><<clamp>><<replace "#statsanalskill">><<print Math.trunc($analskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $analskill -= 10>><<clamp>><<replace "#statsanalskill">><<print Math.trunc($analskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	后庭: <span id="statsanalskill"><<print Math.trunc($analskill)>></span>
+	| <<link ">">><<set $analskill += 10>><<clamp>><<replace "#statsanalskill">><<print Math.trunc($analskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $analskill += 100>><<clamp>><<replace "#statsanalskill">><<print Math.trunc($analskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $analskill += 1000>><<clamp>><<replace "#statsanalskill">><<print Math.trunc($analskill)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $handskill -= 1000>><<clamp>><<replace "#statshandskill">><<print Math.trunc($handskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $handskill -= 100>><<clamp>><<replace "#statshandskill">><<print Math.trunc($handskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $handskill -= 10>><<clamp>><<replace "#statshandskill">><<print Math.trunc($handskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	手技: <span id="statshandskill"><<print Math.trunc($handskill)>></span>
+	| <<link ">">><<set $handskill += 10>><<clamp>><<replace "#statshandskill">><<print Math.trunc($handskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $handskill += 100>><<clamp>><<replace "#statshandskill">><<print Math.trunc($handskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $handskill += 1000>><<clamp>><<replace "#statshandskill">><<print Math.trunc($handskill)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $feetskill -= 1000>><<clamp>><<replace "#statsfeetskill">><<print Math.trunc($feetskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $feetskill -= 100>><<clamp>><<replace "#statsfeetskill">><<print Math.trunc($feetskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $feetskill -= 10>><<clamp>><<replace "#statsfeetskill">><<print Math.trunc($feetskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	足技: <span id="statsfeetskill"><<print Math.trunc($feetskill)>></span>
+	| <<link ">">><<set $feetskill += 10>><<clamp>><<replace "#statsfeetskill">><<print Math.trunc($feetskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $feetskill += 100>><<clamp>><<replace "#statsfeetskill">><<print Math.trunc($feetskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $feetskill += 1000>><<clamp>><<replace "#statsfeetskill">><<print Math.trunc($feetskill)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $bottomskill -= 1000>><<clamp>><<replace "#statsbottomskill">><<print Math.trunc($bottomskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $bottomskill -= 100>><<clamp>><<replace "#statsbottomskill">><<print Math.trunc($bottomskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $bottomskill -= 10>><<clamp>><<replace "#statsbottomskill">><<print Math.trunc($bottomskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	臀部: <span id="statsbottomskill"><<print Math.trunc($bottomskill)>></span>
+	| <<link ">">><<set $bottomskill += 10>><<clamp>><<replace "#statsbottomskill">><<print Math.trunc($bottomskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $bottomskill += 100>><<clamp>><<replace "#statsbottomskill">><<print Math.trunc($bottomskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $bottomskill += 1000>><<clamp>><<replace "#statsbottomskill">><<print Math.trunc($bottomskill)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $thighskill -= 1000>><<clamp>><<replace "#statsthighskill">><<print Math.trunc($thighskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $thighskill -= 100>><<clamp>><<replace "#statsthighskill">><<print Math.trunc($thighskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $thighskill -= 10>><<clamp>><<replace "#statsthighskill">><<print Math.trunc($thighskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	腿部: <span id="statsthighskill"><<print Math.trunc($thighskill)>></span>
+	| <<link ">">><<set $thighskill += 10>><<clamp>><<replace "#statsthighskill">><<print Math.trunc($thighskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $thighskill += 100>><<clamp>><<replace "#statsthighskill">><<print Math.trunc($thighskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $thighskill += 1000>><<clamp>><<replace "#statsthighskill">><<print Math.trunc($thighskill)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $chestskill -= 1000>><<clamp>><<replace "#statschestskill">><<print Math.trunc($chestskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $chestskill -= 100>><<clamp>><<replace "#statschestskill">><<print Math.trunc($chestskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $chestskill -= 10>><<clamp>><<replace "#statschestskill">><<print Math.trunc($chestskill)>><</replace>> <<updatesidebarimg>><</link>> |
+	胸部: <span id="statschestskill"><<print Math.trunc($chestskill)>></span>
+	| <<link ">">><<set $chestskill += 10>><<clamp>><<replace "#statschestskill">><<print Math.trunc($chestskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $chestskill += 100>><<clamp>><<replace "#statschestskill">><<print Math.trunc($chestskill)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $chestskill += 1000>><<clamp>><<replace "#statschestskill">><<print Math.trunc($chestskill)>><</replace>> <<updatesidebarimg>><</link>>
+	<br><br>
+
+	<span class="gold">学校</span>
+	<br>
+	<<link "<<<">><<set $science -= 1000>><<set $school -= 4000>><<adjust_school_traits>><<clamp>><<replace "#statsscience">><<print Math.trunc($science)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $science -= 100>><<set $school -= 400>><<adjust_school_traits>><<clamp>><<replace "#statsscience">><<print Math.trunc($science)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $science -= 10>><<set $school -= 40>><<adjust_school_traits>><<clamp>><<replace "#statsscience">><<print Math.trunc($science)>><</replace>> <<updatesidebarimg>><</link>> |
+	科学: <span id="statsscience"><<print Math.trunc($science)>></span>
+	| <<link ">">><<set $science += 10>><<set $school += 40>><<adjust_school_traits>><<clamp>><<replace "#statsscience">><<print Math.trunc($science)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $science += 100>><<set $school += 400>><<adjust_school_traits>><<clamp>><<replace "#statsscience">><<print Math.trunc($science)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $science += 1000>><<set $school += 4000>><<adjust_school_traits>><<clamp>><<replace "#statsscience">><<print Math.trunc($science)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $maths -= 1000>><<set $school -= 4000>><<adjust_school_traits>><<clamp>><<replace "#statsmaths">><<print Math.trunc($maths)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $maths -= 100>><<set $school -= 400>><<adjust_school_traits>><<clamp>><<replace "#statsmaths">><<print Math.trunc($maths)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $maths -= 10>><<set $school -= 40>><<adjust_school_traits>><<clamp>><<replace "#statsmaths">><<print Math.trunc($maths)>><</replace>> <<updatesidebarimg>><</link>> |
+	数学: <span id="statsmaths"><<print Math.trunc($maths)>></span>
+	| <<link ">">><<set $maths += 10>><<set $school += 40>><<adjust_school_traits>><<clamp>><<replace "#statsmaths">><<print Math.trunc($maths)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $maths += 100>><<set $school += 400>><<adjust_school_traits>><<clamp>><<replace "#statsmaths">><<print Math.trunc($maths)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $maths += 1000>><<set $school += 4000>><<adjust_school_traits>><<clamp>><<replace "#statsmaths">><<print Math.trunc($maths)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $english -= 1000>><<set $school -= 4000>><<adjust_school_traits>><<clamp>><<replace "#statsenglish">><<print Math.trunc($english)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $english -= 100>><<set $school -= 400>><<adjust_school_traits>><<clamp>><<replace "#statsenglish">><<print Math.trunc($english)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $english -= 10>><<set $school -= 40>><<adjust_school_traits>><<clamp>><<replace "#statsenglish">><<print Math.trunc($english)>><</replace>> <<updatesidebarimg>><</link>> |
+	英语: <span id="statsenglish"><<print Math.trunc($english)>></span>
+	| <<link ">">><<set $english += 10>><<set $school += 40>><<adjust_school_traits>><<clamp>><<replace "#statsenglish">><<print Math.trunc($english)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $english += 100>><<set $school += 400>><<adjust_school_traits>><<clamp>><<replace "#statsenglish">><<print Math.trunc($english)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $english += 1000>><<set $school += 4000>><<adjust_school_traits>><<clamp>><<replace "#statsenglish">><<print Math.trunc($english)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $history -= 1000>><<set $school -= 4000>><<adjust_school_traits>><<clamp>><<replace "#statshistory">><<print Math.trunc($history)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $history -= 100>><<set $school -= 400>><<adjust_school_traits>><<clamp>><<replace "#statshistory">><<print Math.trunc($history)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $history -= 10>><<set $school -= 40>><<adjust_school_traits>><<clamp>><<replace "#statshistory">><<print Math.trunc($history)>><</replace>> <<updatesidebarimg>><</link>> |
+	历史: <span id="statshistory"><<print Math.trunc($history)>></span>
+	| <<link ">">><<set $history += 10>><<set $school += 40>><<adjust_school_traits>><<clamp>><<replace "#statshistory">><<print Math.trunc($history)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $history += 100>><<set $school += 400>><<adjust_school_traits>><<clamp>><<replace "#statshistory">><<print Math.trunc($history)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $history += 1000>><<set $school += 4000>><<adjust_school_traits>><<clamp>><<replace "#statshistory">><<print Math.trunc($history)>><</replace>> <<updatesidebarimg>><</link>>
+	<br><br>
+
+	<span class="gold">特质</span>
+	<br>
+	<span class="description">0 = 关闭, 1 = 启用, -1 = 不可用</span>
+	<br>
+	高潮上瘾： <span id="statsorgasmtrait">$orgasmtrait</span> |
+	<<link "更改">>
+	<<set $orgasmtrait += 1>>
+	<<if $orgasmtrait gte 2>>
+	<<set $orgasmtrait to -1>>
+	<</if>>
+	<<replace "#statsorgasmtrait">><<print $orgasmtrait>><</replace>>
+	<</link>>
+	<br>
+
+	储精罐：<span id="statsejactrait">$ejactrait</span> |
+	<<link "更改">>
+	<<set $ejactrait += 1>>
+	<<if $ejactrait gte 2>>
+	<<set $ejactrait to -1>>
+	<</if>>
+	<<replace "#statsejactrait">><<print $ejactrait>><</replace>>
+	<</link>>
+	<br>
+
+	玩物: <span id="statsmolesttrait">$molesttrait</span> |
+	<<link "更改">>
+	<<set $molesttrait += 1>>
+	<<if $molesttrait gte 2>>
+	<<set $molesttrait to -1>>
+	<</if>>
+	<<replace "#statsmolesttrait">><<print $molesttrait>><</replace>>
+	<</link>>
+	<br>
+
+	性爱玩具: <span id="statsrapetrait">$rapetrait</span> |
+	<<link "更改">>
+	<<set $rapetrait += 1>>
+	<<if $rapetrait gte 2>>
+	<<set $rapetrait to -1>>
+	<</if>>
+	<<replace "#statsrapetrait">><<print $rapetrait>><</replace>>
+	<</link>>
+	<br>
+
+	婊子: <span id="statsbestialitytrait">$bestialitytrait</span> |
+	<<link "更改">>
+	<<set $bestialitytrait += 1>>
+	<<if $bestialitytrait gte 2>>
+	<<set $bestialitytrait to -1>>
+	<</if>>
+	<<replace "#statsbestialitytrait">><<print $bestialitytrait>><</replace>>
+	<</link>>
+	<br>
+
+	猎物: <span id="statstentacletrait">$tentacletrait</span> |
+	<<link "更改">>
+	<<set $tentacletrait += 1>>
+	<<if $tentacletrait gte 2>>
+	<<set $tentacletrait to -1>>
+	<</if>>
+	<<replace "#statstentacletrait">><<print $tentacletrait>><</replace>>
+	<</link>>
+	<br>
+
+	美味可口: <span id="statsvoretrait">$voretrait</span> |
+	<<link "更改">>
+	<<set $voretrait += 1>>
+	<<if $voretrait gte 2>>
+	<<set $voretrait to -1>>
+	<</if>>
+	<<replace "#statsvoretrait">><<print $voretrait>><</replace>>
+	<</link>>
+	<br>
+
+	牛奶上瘾: <span id="statsmilkdranktrait">$milkdranktrait</span> |
+	<<link "更改">>
+	<<set $milkdranktrait += 1>>
+	<<if $milkdranktrait gte 2>>
+	<<set $milkdranktrait to -1>>
+	<</if>>
+	<<replace "#statsmilkdranktrait">><<print $milkdranktrait>><</replace>>
+	<</link>>
+	<br>
+
+	好色: <span id="statslustful"><<print $backgroundTraits.includes("lustful")>></span> |
+	<<link "更改">>
+		<<if !$backgroundTraits.includes("lustful")>>
+			<<set $backgroundTraits.pushUnique("lustful")>><<set $specialClothesEffects.bimboTotal to 1200>>
+		<<else>>
+			<<set $backgroundTraits.delete("lustful")>><<if $specialClothesEffects.bimboTotal gt 1000>><<set $specialClothesEffects.bimboTotal to 1000>><</if>>
+		<</if>>
+		<<replace "#statslustful">><<print $backgroundTraits.includes("lustful")>><</replace>>
+	<</link>>
+	<br>
+
+	异装癖: <span id="statscrossdresser"><<print $backgroundTraits.includes("crossdresser")>></span> |
+	<<link "更改">>
+		<<if !$backgroundTraits.includes("crossdresser")>>
+			<<set $backgroundTraits.pushUnique("crossdresser")>><<set $crossdressingTrait to 100>>
+		<<else>>
+			<<set $backgroundTraits.delete("crossdresser")>><<if $crossdressingTrait gt 80>><<set $crossdressingTrait to 80>><</if>>
+		<</if>>
+		<<replace "#statscrossdresser">><<print $backgroundTraits.includes("crossdresser")>><</replace>>
+	<</link>>
+	<br>
+
+	园艺大师: <span id="statsgreenthumb"><<print $backgroundTraits.includes("greenthumb")>></span> |
+	<<link "更改">>
+		<<if !$backgroundTraits.includes("greenthumb")>>
+			<<set $backgroundTraits.pushUnique("greenthumb")>>
+		<<else>>
+			<<set $backgroundTraits.delete("greenthumb")>>
+		<</if>>
+		<<replace "#statsgreenthumb">><<print $backgroundTraits.includes("greenthumb")>><</replace>>
+	<</link>>
+	<br>
+
+	窒息性血友病: <span id="statschoke">$choketrait</span> |
+	<<link "更改">>
+	<<set $choketrait += 1>>
+	<<if $choketrait gte 2>>
+	<<set $choketrait to 0>>
+	<</if>>
+	<<replace "#statschoke">><<print $choketrait>><</replace>>
+	<</link>>
+	<br>
+
+	植物恋人: <span id="statsplantlover"><<print $backgroundTraits.includes("plantlover")>></span> |
+	<<link "更改">>
+		<<if !$backgroundTraits.includes("plantlover")>>
+			<<set $backgroundTraits.pushUnique("plantlover")>>
+			<<set $nectar_addiction to 200>>
+			<<set $nectar_timer to 21>>
+		<<else>>
+			<<set $backgroundTraits.delete("plantlover")>>
+			<<set $nectar_addiction to 0>>
+			<<set $nectar_timer to 0>>
+		<</if>>
+		<<replace "#statsplantlover">><<print $backgroundTraits.includes("plantlover")>><</replace>>
+	<</link>>
+	<br>
+<</widget>>
+
+<<widget "cheats-characterVisual">>
+	<span class="gold">角色发型</span>
+	<br>
+
+	<<link "<<<">><<set $hairlength -= 1000>><<clamp>><<replace "#statshairlength">><<print Math.trunc($hairlength)>><</replace>><<calchairlengthstage>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $hairlength -= 100>><<clamp>><<replace "#statshairlength">><<print Math.trunc($hairlength)>><</replace>><<calchairlengthstage>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $hairlength -= 10>><<clamp>><<replace "#statshairlength">><<print Math.trunc($hairlength)>><</replace>><<calchairlengthstage>> <<updatesidebarimg>><</link>> |
+	头发长度: <span id="statshairlength"><<print Math.trunc($hairlength)>></span>
+	| <<link ">">><<set $hairlength += 10>><<clamp>><<replace "#statshairlength">><<print Math.trunc($hairlength)>><</replace>><<calchairlengthstage>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $hairlength += 100>><<clamp>><<replace "#statshairlength">><<print Math.trunc($hairlength)>><</replace>><<calchairlengthstage>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $hairlength += 1000>><<clamp>><<replace "#statshairlength">><<print Math.trunc($hairlength)>><</replace>><<calchairlengthstage>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<<<">><<set $fringelength -= 1000>><<clamp>><<replace "#statsfringelength">><<print Math.trunc($fringelength)>><</replace>><<calchairlengthstage>> <<updatesidebarimg>><</link>> |
+	<<link "<<">><<set $fringelength -= 100>><<clamp>><<replace "#statsfringelength">><<print Math.trunc($fringelength)>><</replace>><<calchairlengthstage>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $fringelength -= 10>><<clamp>><<replace "#statsfringelength">><<print Math.trunc($fringelength)>><</replace>><<calchairlengthstage>> <<updatesidebarimg>><</link>> |
+	刘海长度: <span id="statsfringelength"><<print Math.trunc($fringelength)>></span>
+	| <<link ">">><<set $fringelength += 10>><<clamp>><<replace "#statsfringelength">><<print Math.trunc($fringelength)>><</replace>><<calchairlengthstage>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $fringelength += 100>><<clamp>><<replace "#statsfringelength">><<print Math.trunc($fringelength)>><</replace>><<calchairlengthstage>> <<updatesidebarimg>><</link>>
+	| <<link ">>>">><<set $fringelength += 1000>><<clamp>><<replace "#statsfringelength">><<print Math.trunc($fringelength)>><</replace>><<calchairlengthstage>> <<updatesidebarimg>><</link>>
+	<br><br>
+
+	<<if $hairtest is 1 or $debug>>
+		自然的发色
+		<br>
+		<<set _bar to false>>
+		<<for _i = 0; _i < setup.colours.hair.length; _i++>>
+			<<if setup.colours.hair[_i].natural>>
+				<<if _bar>>|<</if>>
+				<label><span @class="setup.colours.hair[_i].csstext"><<print setup.colours.hair[_i].name_cap>></span> <<radiovar "$naturalhaircolour" setup.colours.hair[_i].variable>> <<updatesidebarimg>><</radiovar>></label>
+				<<set _bar to true>>
+			<</if>>
+		<</for>>
+		<br>
+		<br>
+	<</if>>
+
+	染发
+	<br>
+	<label>无 <<radiovar "$haircolour" $naturalhaircolour>> <<updatesidebarimg>><</radiovar>></label>
+	<<for _i = 0; _i < setup.colours.hair.length; _i++>>
+		<<if setup.colours.hair[_i].dye>>
+			| <label><span @class="setup.colours.hair[_i].csstext"><<print setup.colours.hair[_i].name_cap>></span> <<radiovar "$haircolour" setup.colours.hair[_i].variable>> <<updatesidebarimg>><</radiovar>></label>
+		<</if>>
+	<</for>>
+	<br>
+	双色:
+	<label>启用<<radiovar "$hairColourStyle" "gradient">> <<updatesidebarimg>><</radiovar>></label>
+	<label>不启用<<radiovar "$hairColourStyle" "simple">> <<updatesidebarimg>><</radiovar>></label>
+	<br>
+	双色样式: <<listbox "$hairColourGradient.style" autoselect>>
+				<<option "低渐变" "low-ombre">>
+				<<option "高渐变" "high-ombre">>
+				<<option "分色" "split">>
+				<<option "面部高光" "face-frame">>
+			<</listbox>>
+	<br><br>
+
+	刘海染色
+	<br>
+	<label>无<<radiovar "$hairfringecolour" $naturalhaircolour>> <<updatesidebarimg>><</radiovar>></label>
+	<<for _i = 0; _i < setup.colours.hair.length; _i++>>
+		<<if setup.colours.hair[_i].dye>>
+			| <label><span @class="setup.colours.hair[_i].csstext"><<print setup.colours.hair[_i].name_cap>></span> <<radiovar "$hairfringecolour" setup.colours.hair[_i].variable>> <<updatesidebarimg>><</radiovar>></label>
+		<</if>>
+	<</for>>
+	<br>
+	双色:
+	<label>启用<<radiovar "$hairFringeColourStyle" "gradient">> <<updatesidebarimg>><</radiovar>></label>
+	<label>不启用<<radiovar "$hairFringeColourStyle" "simple">> <<updatesidebarimg>><</radiovar>></label>
+	<br>
+	双色样式: <<listbox "$hairFringeColourGradient.style" autoselect>>
+				<<option "低渐变" "low-ombre">>
+				<<option "高渐变" "high-ombre">>
+				<<option "分色" "split">>
+				<<option "面部高光" "face-frame">>
+			<</listbox>>
+	<br><br>
+
+	<span class="gold">眼睛颜色</span>
+	<br>
+	瞳色<br>
+	<<set _bar to false>>
+	<<for _i = 0; _i < setup.colours.eyes.length; _i++>>
+		<<if setup.colours.eyes[_i].natural>>
+			<<if _bar>>|<</if>>
+			<label><span @class="setup.colours.eyes[_i].csstext">
+				<<print setup.colours.eyes[_i].name_cap>></span>
+				<<radiovar "$eyeselected" setup.colours.eyes[_i].variable>>
+					<<cheatMenuEyesSelected>>
+				<</radiovar>></label>
+			<<set _bar to true>>
+		<</if>>
+	<</for>>
+	<br><br>
+
+	<span class="gold">雀斑</span>
+		<br>
+		<<if $player.freckles>>
+			<label>启用 <<radiobutton "$player.freckles" true checked>></label>
+			| <label> 禁用 <<radiobutton "$player.freckles" false>></label>
+		<<else>>
+			<label> 启用 <<radiobutton "$player.freckles" true>></label>
+			| <label>禁用 <<radiobutton "$player.freckles" false checked>></label>
+		<</if>>
+	<br><br>
+
+	<span class="gold">身体部位大小以及敏感度</span>
+	<br>
+	<<link "<<">><<set $player.breastsize -= 3>><<clamp>><<replace "#statsbreastsize">><<print Math.trunc($player.breastsize)>><</replace>><<replace "#statsbreasts">><<breasts>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $player.breastsize -= 1>><<clamp>><<replace "#statsbreastsize">><<print Math.trunc($player.breastsize)>><</replace>><<replace "#statsbreasts">><<breasts>><</replace>> <<updatesidebarimg>><</link>> |
+	胸部大小: <span id="statsbreastsize"><<print Math.trunc($player.breastsize)>></span>
+	| <<link ">">><<set $player.breastsize += 1>><<clamp>><<replace "#statsbreastsize">><<print Math.trunc($player.breastsize)>><</replace>><<replace "#statsbreasts">><<breasts>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $player.breastsize += 3>><<clamp>><<replace "#statsbreastsize">><<print Math.trunc($player.breastsize)>><</replace>><<replace "#statsbreasts">><<breasts>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<link "<">><<set $player.bottomsize -= 1>><<clamp>><<replace "#statsbottomsize">><<print Math.trunc($player.bottomsize)>><</replace>> <<updatesidebarimg>><</link>> |
+	屁股大小: <span id="statsbottomsize"><<print Math.trunc($player.bottomsize)>></span>
+	| <<link ">">><<set $player.bottomsize += 1>><<clamp>><<replace "#statsbottomsize">><<print Math.trunc($player.bottomsize)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+
+	<<if $player.penisExist>>
+	<<link "<">><<set $player.penissize -= 1>><<clamp>><<replace "#statspenissize">><<print Math.trunc($player.penissize)>><</replace>><<replace "#statsgenitals">><<genitals>><</replace>> <<updatesidebarimg>><</link>> |
+	阴茎大小: <span id="statspenissize"><<print Math.trunc($player.penissize)>></span>
+	| <<link ">">><<set $player.penissize += 1>><<clamp>><<replace "#statspenissize">><<print Math.trunc($player.penissize)>><</replace>><<replace "#statsgenitals">><<genitals>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+	<</if>>
+
+	<<if $debug is 1>>
+	<<link "<">><<set $ballssize -= 1>><<clamp>><<replace "#statsballssize">><<print Math.trunc($ballssize)>><</replace>> <<updatesidebarimg>><</link>> |
+	蛋蛋大小: <span id="statsballssize"><<print Math.trunc($ballssize)>></span>
+	| <<link ">">><<set $ballssize += 1>><<clamp>><<replace "#statsballssize">><<print Math.trunc($ballssize)>><</replace>> <<updatesidebarimg>><</link>>
+
+	<br>
+	<</if>>
+
+	<<link "<<">><<set $mouthsensitivity -= 1>><<clamp>><<replace "#statsmouthsensitivity">><<print $mouthsensitivity>><</replace>><<replace "#statsmouth">><<mouth>><</replace>> <</link>> |
+	<<link "<">><<set $mouthsensitivity -= 0.25>><<clamp>><<replace "#statsmouthsensitivity">><<print $mouthsensitivity>><</replace>><<replace "#statsmouth">><<mouth>><</replace>> <</link>> |
+	口腔敏感度: <span id="statsmouthsensitivity"><<print $mouthsensitivity>></span>
+	| <<link ">">><<set $mouthsensitivity += 0.25>><<clamp>><<replace "#statsmouthsensitivity">><<print $mouthsensitivity>><</replace>><<replace "#statsmouth">><<mouth>><</replace>> <</link>>
+	| <<link ">>">><<set $mouthsensitivity += 1>><<clamp>><<replace "#statsmouthsensitivity">><<print $mouthsensitivity>><</replace>><<replace "#statsmouth">><<mouth>><</replace>> <</link>>
+	<br>
+	<<link "<<">><<set $breastsensitivity -= 1>><<clamp>><<replace "#statsbreastsensitivity">><<print $breastsensitivity>><</replace>><<replace "#statsbreasts">><<breasts>><</replace>> <</link>> |
+	<<link "<">><<set $breastsensitivity -= 0.25>><<clamp>><<replace "#statsbreastsensitivity">><<print $breastsensitivity>><</replace>><<replace "#statsbreasts">><<breasts>><</replace>> <</link>> |
+	胸部敏感度: <span id="statsbreastsensitivity"><<print $breastsensitivity>></span>
+	| <<link ">">><<set $breastsensitivity += 0.25>><<clamp>><<replace "#statsbreastsensitivity">><<print $breastsensitivity>><</replace>><<replace "#statsbreasts">><<breasts>><</replace>> <</link>>
+	| <<link ">>">><<set $breastsensitivity += 1>><<clamp>><<replace "#statsbreastsensitivity">><<print $breastsensitivity>><</replace>><<replace "#statsbreasts">><<breasts>><</replace>> <</link>>
+	<br>
+	<<link "<<">><<set $genitalsensitivity -= 1>><<clamp>><<replace "#statsgenitalsensitivity">><<print $genitalsensitivity>><</replace>><<replace "#statsgenitals">><<genitals>><</replace>> <</link>> |
+	<<link "<">><<set $genitalsensitivity -= 0.25>><<clamp>><<replace "#statsgenitalsensitivity">><<print $genitalsensitivity>><</replace>><<replace "#statsgenitals">><<genitals>><</replace>> <</link>> |
+	生殖器敏感度: <span id="statsgenitalsensitivity"><<print $genitalsensitivity>></span>
+	| <<link ">">><<set $genitalsensitivity += 0.25>><<clamp>><<replace "#statsgenitalsensitivity">><<print $genitalsensitivity>><</replace>><<replace "#statsgenitals">><<genitals>><</replace>> <</link>>
+	| <<link ">>">><<set $genitalsensitivity += 1>><<clamp>><<replace "#statsgenitalsensitivity">><<print $genitalsensitivity>><</replace>><<replace "#statsgenitals">><<genitals>><</replace>> <</link>>
+	<br>
+	<<link "<<">><<set $bottomsensitivity -= 1>><<clamp>><<replace "#statsbottomsensitivity">><<print $bottomsensitivity>><</replace>><<replace "#statsbottom">><<bottom>><</replace>> <</link>> |
+	<<link "<">><<set $bottomsensitivity -= 0.25>><<clamp>><<replace "#statsbottomsensitivity">><<print $bottomsensitivity>><</replace>><<replace "#statsbottom">><<bottom>><</replace>> <</link>> |
+	屁股敏感度: <span id="statsbottomsensitivity"><<print $bottomsensitivity>></span>
+	| <<link ">">><<set $bottomsensitivity += 0.25>><<clamp>><<replace "#statsbottomsensitivity">><<print $bottomsensitivity>><</replace>><<replace "#statsbottom">><<bottom>><</replace>> <</link>>
+	| <<link ">>">><<set $bottomsensitivity += 1>><<clamp>><<replace "#statsbottomsensitivity">><<print $bottomsensitivity>><</replace>><<replace "#statsbottom">><<bottom>><</replace>> <</link>>
+	<br>
+
+	你脸上是: <span id="statsmouth"><<mouth>></span>
+	<br>
+	你胸口是: <span id="statsbreasts"><<breasts>></span>
+	<br>
+	你腿间是: <span id="statsgenitals"><<genitals>></span>
+	<br>
+	你身后是: <span id="statsbottom"><<bottom>></span>
+	<br>
+	<br>
+
+	<<if $parasitedisable is "f">>
+		<span class="gold">寄生虫</span>
+		<br>
+		<<cheatParasiteToggle "nipples">>
+		<br>
+		<<if $player.penisExist>>
+			<<cheatParasiteToggle "penis">>
+			<br>
+		<<else>>
+			<<cheatParasiteToggle "clit">>
+			<br>
+		<</if>>
+		<<cheatParasiteToggle "bottom">>
+		<br>
+		<<cheatParasiteToggle "left_thigh">>
+		<br>
+		<<cheatParasiteToggle "right_thigh">>
+		<br>
+		<<cheatParasiteToggle "left_arm">>
+		<br>
+		<<cheatParasiteToggle "right_arm">>
+		<br>
+		<<cheatParasiteToggle "tummy">>
+		<br>
+		<<cheatParasiteToggle "left_ear">>
+		<br>
+		<<cheatParasiteToggle "right_ear">>
+		<br><br>
+	<</if>>
+
+	<span class="gold">精液</span>
+	<br>
+	<<link "涂满全身">>
+		<<for _type range ["neck","rightarm","leftarm","thigh","bottom","tummy","chest","face","hair","feet","vaginaoutside","vagina","penis","anus","mouth"]>>
+			<<bodyliquid _type "semen" 5>><<run $(`#stats${_type}semen`).html(Math.trunc($player.bodyliquid[_type].semen))>>
+		<</for>>
+		<<updatesidebarimg>>
+	<</link>> |
+
+	<<link "清除全身">>
+		<<for _type range ["neck","rightarm","leftarm","thigh","bottom","tummy","chest","face","hair","feet","vaginaoutside","vagina","penis","anus","mouth"]>>
+			<<bodyliquid _type "semen" -5>><<run $(`#stats${_type}semen`).html(Math.trunc($player.bodyliquid[_type].semen))>>
+		<</for>>
+		<<updatesidebarimg>>
+	<</link>> |
+
+	<br>
+
+	<<cheatBodyliquidOnPart "neck" "脖子" "semen">>
+	<<cheatBodyliquidOnPart "rightarm" "右臂" "semen">>
+	<<cheatBodyliquidOnPart "leftarm" "左臂" "semen">>
+	<<cheatBodyliquidOnPart "thigh" "腿部" "semen">>
+	<<cheatBodyliquidOnPart "bottom" "臀部" "semen">>
+	<<cheatBodyliquidOnPart "tummy" "腹部" "semen">>
+	<<cheatBodyliquidOnPart "chest" "胸部" "semen">>
+	<<cheatBodyliquidOnPart "face" "面部" "semen">>
+	<<cheatBodyliquidOnPart "hair" "头发" "semen">>
+	<<cheatBodyliquidOnPart "feet" "足部" "semen">>
+	<<cheatBodyliquidOnPart "vaginaoutside" "阴唇" "semen">>
+	<<cheatBodyliquidOnPart "vagina" "阴道" "semen">>
+	<<cheatBodyliquidOnPart "penis" "阴茎" "semen">>
+	<<cheatBodyliquidOnPart "anus" "后庭" "semen">>
+	<<cheatBodyliquidOnPart "mouth" "口腔" "semen">>
+	<br><br>
+
+	<span class="gold">史莱姆</span>
+	<br>
+	<<link "吸满全身">>
+		<<for _type range ["neck","rightarm","leftarm","thigh","bottom","tummy","chest","face","hair","feet","vaginaoutside","vagina","penis","anus","mouth"]>>
+			<<bodyliquid _type "goo" 5>><<run $(`#stats${_type}goo`).html(Math.trunc($player.bodyliquid[_type].goo))>>
+		<</for>>
+		<<updatesidebarimg>>
+	<</link>> |
+
+	<<link "清除全身">>
+		<<for _type range ["neck","rightarm","leftarm","thigh","bottom","tummy","chest","face","hair","feet","vaginaoutside","vagina","penis","anus","mouth"]>>
+			<<bodyliquid _type "goo" -5>><<run $(`#stats${_type}goo`).html(Math.trunc($player.bodyliquid[_type].goo))>>
+		<</for>>
+		<<updatesidebarimg>>
+	<</link>> |
+
+	<br>
+
+	<<cheatBodyliquidOnPart "neck" "脖子" "goo">>
+	<<cheatBodyliquidOnPart "rightarm" "右臂" "goo">>
+	<<cheatBodyliquidOnPart "leftarm" "左臂" "goo">>
+	<<cheatBodyliquidOnPart "thigh" "腿部" "goo">>
+	<<cheatBodyliquidOnPart "bottom" "臀部" "goo">>
+	<<cheatBodyliquidOnPart "tummy" "腹部" "goo">>
+	<<cheatBodyliquidOnPart "chest" "胸部" "goo">>
+	<<cheatBodyliquidOnPart "face" "面部" "goo">>
+	<<cheatBodyliquidOnPart "hair" "头发" "goo">>
+	<<cheatBodyliquidOnPart "feet" "足部" "goo">>
+	<<cheatBodyliquidOnPart "vaginaoutside" "阴唇" "goo">>
+	<<cheatBodyliquidOnPart "vagina" "阴道" "goo">>
+	<<cheatBodyliquidOnPart "penis" "阴茎" "goo">>
+	<<cheatBodyliquidOnPart "anus" "后庭" "goo">>
+	<<cheatBodyliquidOnPart "mouth" "口腔" "goo">>
+	<br><br>
+
+	<span class="gold">花蜜</span>
+	<br>
+	<<link "沾满全身">>
+		<<for _type range ["neck","rightarm","leftarm","thigh","bottom","tummy","chest","face","hair","feet","vaginaoutside","vagina","penis","anus","mouth"]>>
+			<<bodyliquid _type "nectar" 5>><<run $(`#stats${_type}nectar`).html(Math.trunc($player.bodyliquid[_type].nectar))>>
+		<</for>>
+		<<updatesidebarimg>>
+	<</link>> |
+
+	<<link "清除全身">>
+		<<for _type range ["neck","rightarm","leftarm","thigh","bottom","tummy","chest","face","hair","feet","vaginaoutside","vagina","penis","anus","mouth"]>>
+			<<bodyliquid _type "nectar" -5>><<run $(`#stats${_type}nectar`).html(Math.trunc($player.bodyliquid[_type].nectar))>>
+		<</for>>
+		<<updatesidebarimg>>
+	<</link>> |
+
+	<br>
+
+	<<cheatBodyliquidOnPart "neck" "脖子" "nectar">>
+	<<cheatBodyliquidOnPart "rightarm" "右臂" "nectar">>
+	<<cheatBodyliquidOnPart "leftarm" "左臂" "nectar">>
+	<<cheatBodyliquidOnPart "thigh" "腿部" "nectar">>
+	<<cheatBodyliquidOnPart "bottom" "臀部" "nectar">>
+	<<cheatBodyliquidOnPart "tummy" "腹部" "nectar">>
+	<<cheatBodyliquidOnPart "chest" "胸部" "nectar">>
+	<<cheatBodyliquidOnPart "face" "面部" "nectar">>
+	<<cheatBodyliquidOnPart "hair" "头发" "nectar">>
+	<<cheatBodyliquidOnPart "feet" "足部" "nectar">>
+	<<cheatBodyliquidOnPart "vaginaoutside" "阴唇" "nectar">>
+	<<cheatBodyliquidOnPart "vagina" "阴道" "nectar">>
+	<<cheatBodyliquidOnPart "penis" "阴茎" "nectar">>
+	<<cheatBodyliquidOnPart "anus" "后庭" "nectar">>
+	<<cheatBodyliquidOnPart "mouth" "口腔" "nectar">>
+	<br><br>
+
+	<span class="gold">转化</span>
+	<br>
+	<span class="description">你同一时间只能拥有一个动物转化与神圣转化。</span>
+	<br>
+	天使转化: <<link "应用">><<angelTransform>><<updatesidebarimg>><</link>> / <<link "清除">><<angelTransform 99>><<updatesidebarimg>><</link>><br>
+	恶魔转化: <<link "应用">><<demonTransform>><<updatesidebarimg>><</link>> / <<link "清除">><<demonTransform 99>><<updatesidebarimg>><</link>><br>
+	狼转化: <<link "应用">><<wolfTransform>><<updatesidebarimg>><</link>> / <<link "清除">><<wolfTransform 99>><<updatesidebarimg>><</link>><br>
+	猫转化: <<link "应用">><<catTransform>><<updatesidebarimg>><</link>> / <<link "清除">><<catTransform 99>><<updatesidebarimg>><</link>><br>
+	奶牛转化: <<link "应用">><<cowTransform>><<updatesidebarimg>><</link>> / <<link "清除">><<cowTransform 99>><<updatesidebarimg>><</link>><br>
+	鸟转化: <<link "应用">><<harpyTransform>><<updatesidebarimg>><</link>> / <<link "清除">><<harpyTransform 99>><<updatesidebarimg>><</link>><br>
+	狐狸转化: <<link "应用">><<foxTransform>><<updatesidebarimg>><</link>> / <<link "清除">><<foxTransform 99>><<updatesidebarimg>><</link>><br>
+	<br>
+
+	狼化 (完全转化需要数值达到30):
+	<<link "<<">><<set $wolfbuild -= 50>><<transformationAlteration>><<clamp>><<replace "#statswolfbuild">><<print Math.trunc($wolfbuild)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $wolfbuild -= 5>><<transformationAlteration>><<clamp>><<replace "#statswolfbuild">><<print Math.trunc($wolfbuild)>><</replace>> <<updatesidebarimg>><</link>> |
+	<span id="statswolfbuild"><<print Math.trunc($wolfbuild)>></span>
+	| <<link ">">><<set $wolfbuild += 5>><<transformationAlteration>><<clamp>><<replace "#statswolfbuild">><<print Math.trunc($wolfbuild)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $wolfbuild += 50>><<transformationAlteration>><<clamp>><<replace "#statswolfbuild">><<print Math.trunc($wolfbuild)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+	天使化 (完全转化需要数值达到50):
+	<<link "<<">><<set $angelbuild -= 50>><<transformationAlteration>><<clamp>><<replace "#statsangelbuild">><<print Math.trunc($angelbuild)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $angelbuild -= 5>><<transformationAlteration>><<clamp>><<replace "#statsangelbuild">><<print Math.trunc($angelbuild)>><</replace>> <<updatesidebarimg>><</link>> |
+	<span id="statsangelbuild"><<print Math.trunc($angelbuild)>></span>
+	| <<link ">">><<set $angelbuild += 5>><<transformationAlteration>><<clamp>><<replace "#statsangelbuild">><<print Math.trunc($angelbuild)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $angelbuild += 50>><<transformationAlteration>><<clamp>><<replace "#statsangelbuild">><<print Math.trunc($angelbuild)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+	堕天使化 (完全宽恕需要30点):
+	<<link "<<">><<set $fallenbuild -= 50>><<transformationAlteration>><<clamp>><<replace "#statsfallenbuild">><<print Math.trunc($fallenbuild)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $fallenbuild -= 5>><<transformationAlteration>><<clamp>><<replace "#statsfallenbuild">><<print Math.trunc($fallenbuild)>><</replace>> <<updatesidebarimg>><</link>> |
+	<span id="statsfallenbuild"><<print Math.trunc($fallenbuild)>></span>
+	| <<link ">">><<set $fallenbuild += 5>><<transformationAlteration>><<clamp>><<replace "#statsfallenbuild">><<print Math.trunc($fallenbuild)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $fallenbuild += 50>><<transformationAlteration>><<clamp>><<replace "#statsfallenbuild">><<print Math.trunc($fallenbuild)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+	恶魔化 (完全转化需要数值达到30):
+	<<link "<<">><<set $demonbuild -= 50>><<transformationAlteration>><<clamp>><<replace "#statsdemonbuild">><<print Math.trunc($demonbuild)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $demonbuild -= 5>><<transformationAlteration>><<clamp>><<replace "#statsdemonbuild">><<print Math.trunc($demonbuild)>><</replace>> <<updatesidebarimg>><</link>> |
+	<span id="statsdemonbuild"><<print Math.trunc($demonbuild)>></span>
+	| <<link ">">><<set $demonbuild += 5>><<transformationAlteration>><<clamp>><<replace "#statsdemonbuild">><<print Math.trunc($demonbuild)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $demonbuild += 50>><<transformationAlteration>><<clamp>><<replace "#statsdemonbuild">><<print Math.trunc($demonbuild)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+	猫化 (完全转化需要数值达到50):
+	<<link "<<">><<set $catbuild -= 50>><<transformationAlteration>><<clamp>><<replace "#statscatbuild">><<print Math.trunc($catbuild)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $catbuild -= 5>><<transformationAlteration>><<clamp>><<replace "#statscatbuild">><<print Math.trunc($catbuild)>><</replace>> <<updatesidebarimg>><</link>> |
+	<span id="statscatbuild"><<print Math.trunc($catbuild)>></span>
+	| <<link ">">><<set $catbuild += 5>><<transformationAlteration>><<clamp>><<replace "#statscatbuild">><<print Math.trunc($catbuild)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $catbuild += 50>><<transformationAlteration>><<clamp>><<replace "#statscatbuild">><<print Math.trunc($catbuild)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+	奶牛化 (完全转化需要数值达到30):
+	<<link "<<">><<set $cowbuild -= 50>><<transformationAlteration>><<clamp>><<replace "#statscowbuild">><<print Math.trunc($cowbuild)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $cowbuild -= 5>><<transformationAlteration>><<clamp>><<replace "#statscowbuild">><<print Math.trunc($cowbuild)>><</replace>> <<updatesidebarimg>><</link>> |
+	<span id="statscowbuild"><<print Math.trunc($cowbuild)>></span>
+	| <<link ">">><<set $cowbuild += 5>><<transformationAlteration>><<clamp>><<replace "#statscowbuild">><<print Math.trunc($cowbuild)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $cowbuild += 50>><<transformationAlteration>><<clamp>><<replace "#statscowbuild">><<print Math.trunc($cowbuild)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+	鸟化 (完全转化需要数值达到30):
+	<<link "<<">><<set $birdbuild -= 50>><<transformationAlteration>><<clamp>><<replace "#statsbirdbuild">><<print Math.trunc($birdbuild)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $birdbuild -= 5>><<transformationAlteration>><<clamp>><<replace "#statsbirdbuild">><<print Math.trunc($birdbuild)>><</replace>> <<updatesidebarimg>><</link>> |
+	<span id="statsbirdbuild"><<print Math.trunc($birdbuild)>></span>
+	| <<link ">">><<set $birdbuild += 5>><<transformationAlteration>><<clamp>><<replace "#statsbirdbuild">><<print Math.trunc($birdbuild)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $birdbuild += 50>><<transformationAlteration>><<clamp>><<replace "#statsbirdbuild">><<print Math.trunc($birdbuild)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+	狐化 (完全转化需要数值达到30):
+	<<link "<<">><<set $foxbuild -= 50>><<transformationAlteration>><<clamp>><<replace "#statsfoxbuild">><<print Math.trunc($foxbuild)>><</replace>> <<updatesidebarimg>><</link>> |
+	<<link "<">><<set $foxbuild -= 5>><<transformationAlteration>><<clamp>><<replace "#statsfoxbuild">><<print Math.trunc($foxbuild)>><</replace>> <<updatesidebarimg>><</link>> |
+	<span id="statsfoxbuild"><<print Math.trunc($foxbuild)>></span>
+	| <<link ">">><<set $foxbuild += 5>><<transformationAlteration>><<clamp>><<replace "#statsfoxbuild">><<print Math.trunc($foxbuild)>><</replace>> <<updatesidebarimg>><</link>>
+	| <<link ">>">><<set $foxbuild += 50>><<transformationAlteration>><<clamp>><<replace "#statsfoxbuild">><<print Math.trunc($foxbuild)>><</replace>> <<updatesidebarimg>><</link>>
+	<br>
+<</widget>>
+
+<<widget "cheatMenuEyesSelected">>
+	<<set $leftEyeColour to $eyeselected>>
+	<<set $rightEyeColour to $eyeselected>>
+	<<updatesidebarimg>>
+<</widget>>
+
+<<widget "cheats-npcs">>
+	<span class="gold">童贞</span>
+	<br>
+	将以下NPC的童贞状态重置为初始值：
+	<br>
+	<<listbox "_npcId" autoselect>>
+		<<optionsfrom $NPCNameList>>
+	<</listbox>>
+	<br>
+	<<link "确认">>
+		<<initNNPCVirginity $NPCNameList.indexOf(_npcId)>>
+		<<if $npc.includes(_npcId)>>
+			<<set $NPCList[$npcrow[$npc.indexOf(_npcId)]].virginity to $NPCName[$NPCNameList.indexOf(_npcId)].virginity>>
+		<</if>>
+		<<for _virginType, _virginList range $virginTaken>>
+			<<run _virginList.delete(_npcId)>>
+		<</for>>
+	<</link>>
+	<br><br>
+
+	<span class="gold">声誉</span>
+	<br>
+	<span class="description">在遇见对应NPC前，数值可能不可见。</span>
+	<br>
+	<<link "<<<">><<npcincr Robin love -100>><<clamp>><<replace "#statsrobinlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].love)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Robin love -10>><<clamp>><<replace "#statsrobinlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].love)>><</replace>><</link>> |
+	<<link "<">><<npcincr Robin love -1>><<clamp>><<replace "#statsrobinlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].love)>><</replace>><</link>> |
+	罗宾好感: <span id="statsrobinlove"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].love)>></span>
+	| <<link ">">><<npcincr Robin love 1>><<clamp>><<replace "#statsrobinlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].love)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Robin love 10>><<clamp>><<replace "#statsrobinlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].love)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Robin love 100>><<clamp>><<replace "#statsrobinlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].love)>><</replace>><</link>> (满值100)
+	<br>
+
+	<<link "<<<">><<npcincr Robin lust -100>><<clamp>><<replace "#statsrobinlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].lust)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Robin lust -10>><<clamp>><<replace "#statsrobinlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].lust)>><</replace>><</link>> |
+	<<link "<">><<npcincr Robin lust -1>><<clamp>><<replace "#statsrobinlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].lust)>><</replace>><</link>> |
+	罗宾性欲: <span id="statsrobinlust"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].lust)>></span>
+	| <<link ">">><<npcincr Robin lust 1>><<clamp>><<replace "#statsrobinlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].lust)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Robin lust 10>><<clamp>><<replace "#statsrobinlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].lust)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Robin lust 100>><<clamp>><<replace "#statsrobinlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].lust)>><</replace>><</link>> (满值100)
+	<br>
+
+	<<link "<<<">><<npcincr Robin dom -100>><<clamp>><<replace "#statsrobindom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].dom)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Robin dom -10>><<clamp>><<replace "#statsrobindom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].dom)>><</replace>><</link>> |
+	<<link "<">><<npcincr Robin dom -1>><<clamp>><<replace "#statsrobindom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].dom)>><</replace>><</link>> |
+	罗宾信赖: <span id="statsrobindom"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].dom)>></span>
+	| <<link ">">><<npcincr Robin dom 1>><<clamp>><<replace "#statsrobindom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].dom)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Robin dom 10>><<clamp>><<replace "#statsrobindom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].dom)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Robin dom 100>><<clamp>><<replace "#statsrobindom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].dom)>><</replace>><</link>> (满值100)
+	<br>
+
+	<<link "<<<">><<npcincr Robin trauma -100>><<clamp>><<replace "#statsrobintrauma">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].trauma)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Robin trauma -10>><<clamp>><<replace "#statsrobintrauma">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].trauma)>><</replace>><</link>> |
+	<<link "<">><<npcincr Robin trauma -1>><<clamp>><<replace "#statsrobintrauma">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].trauma)>><</replace>><</link>> |
+	罗宾创伤: <span id="statsrobintrauma"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].trauma)>></span>
+	| <<link ">">><<npcincr Robin trauma 1>><<clamp>><<replace "#statsrobintrauma">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].trauma)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Robin trauma 10>><<clamp>><<replace "#statsrobintrauma">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].trauma)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Robin trauma 100>><<clamp>><<replace "#statsrobintrauma">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Robin")].trauma)>><</replace>><</link>> (满值100)
+	<br><br>
+
+	<<link "<<<">><<npcincr Whitney love -10>><<clamp>><<replace "#statswhitneylove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].love)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Whitney love -3>><<clamp>><<replace "#statswhitneylove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].love)>><</replace>><</link>> |
+	<<link "<">><<npcincr Whitney love -1>><<clamp>><<replace "#statswhitneylove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].love)>><</replace>><</link>> |
+	惠特尼好感: <span id="statswhitneylove"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].love)>></span>
+	| <<link ">">><<npcincr Whitney love 1>><<clamp>><<replace "#statswhitneylove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].love)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Whitney love 3>><<clamp>><<replace "#statswhitneylove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].love)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Whitney love 10>><<clamp>><<replace "#statswhitneylove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].love)>><</replace>><</link>> (满值30)
+	<br>
+
+	<<link "<<<">><<npcincr Whitney dom -10>><<clamp>><<replace "#statswhitneydom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].dom)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Whitney dom -5>><<clamp>><<replace "#statswhitneydom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].dom)>><</replace>><</link>> |
+	<<link "<">><<npcincr Whitney dom -1>><<clamp>><<replace "#statswhitneydom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].dom)>><</replace>><</link>> |
+	惠特尼支配: <span id="statswhitneydom"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].dom)>></span>
+	| <<link ">">><<npcincr Whitney dom 1>><<clamp>><<replace "#statswhitneydom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].dom)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Whitney dom 5>><<clamp>><<replace "#statswhitneydom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].dom)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Whitney dom 10>><<clamp>><<replace "#statswhitneydom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].dom)>><</replace>><</link>> (满值20)
+	<br>
+
+	<<link "<<<">><<npcincr Whitney lust -100>><<clamp>><<replace "#statswhitneylust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].lust)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Whitney lust -10>><<clamp>><<replace "#statswhitneylust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].lust)>><</replace>><</link>> |
+	<<link "<">><<npcincr Whitney lust -1>><<clamp>><<replace "#statswhitneylust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].lust)>><</replace>><</link>> |
+	惠特尼性欲: <span id="statswhitneylust"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].lust)>></span>
+	| <<link ">">><<npcincr Whitney lust 1>><<clamp>><<replace "#statswhitneylust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].lust)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Whitney lust 10>><<clamp>><<replace "#statswhitneylust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].lust)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Whitney lust 100>><<clamp>><<replace "#statswhitneylust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Whitney")].lust)>><</replace>><</link>> (满值100)
+	<br><br>
+
+	<<link "<<<">><<npcincr Eden love -100>><<clamp>><<replace "#statsedenlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].love)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Eden love -10>><<clamp>><<replace "#statsedenlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].love)>><</replace>><</link>> |
+	<<link "<">><<npcincr Eden love -1>><<clamp>><<replace "#statsedenlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].love)>><</replace>><</link>> |
+	伊甸好感: <span id="statsedenlove"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].love)>></span>
+	| <<link ">">><<npcincr Eden love 1>><<clamp>><<replace "#statsedenlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].love)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Eden love 10>><<clamp>><<replace "#statsedenlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].love)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Eden love 100>><<clamp>><<replace "#statsedenlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].love)>><</replace>><</link>> (满值200)
+	<br>
+
+	<<link "<<<">><<npcincr Eden dom -100>><<clamp>><<replace "#statsedendom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].dom)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Eden dom -10>><<clamp>><<replace "#statsedendom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].dom)>><</replace>><</link>> |
+	<<link "<">><<npcincr Eden dom -1>><<clamp>><<replace "#statsedendom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].dom)>><</replace>><</link>> |
+	伊甸支配: <span id="statsedendom"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].dom)>></span>
+	| <<link ">">><<npcincr Eden dom 1>><<clamp>><<replace "#statsedendom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].dom)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Eden dom 10>><<clamp>><<replace "#statsedendom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].dom)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Eden dom 100>><<clamp>><<replace "#statsedendom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].dom)>><</replace>><</link>> (满值150)
+	<br>
+
+	<<link "<<<">><<npcincr Eden lust -100>><<clamp>><<replace "#statsedenlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].lust)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Eden lust -10>><<clamp>><<replace "#statsedenlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].lust)>><</replace>><</link>> |
+	<<link "<">><<npcincr Eden lust -1>><<clamp>><<replace "#statsedenlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].lust)>><</replace>><</link>> |
+	伊甸性欲: <span id="statsedenlust"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].lust)>></span>
+	| <<link ">">><<npcincr Eden lust 1>><<clamp>><<replace "#statsedenlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].lust)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Eden lust 10>><<clamp>><<replace "#statsedenlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].lust)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Eden lust 100>><<clamp>><<replace "#statsedenlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Eden")].lust)>><</replace>><</link>> (满值100)
+	<br><br>
+
+	<<link "<<<">><<npcincr Kylar love -100>><<clamp>><<replace "#statskylarlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].love)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Kylar love -10>><<clamp>><<replace "#statskylarlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].love)>><</replace>><</link>> |
+	<<link "<">><<npcincr Kylar love -1>><<clamp>><<replace "#statskylarlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].love)>><</replace>><</link>> |
+	凯拉尔好感: <span id="statskylarlove"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].love)>></span>
+	| <<link ">">><<npcincr Kylar love 1>><<clamp>><<replace "#statskylarlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].love)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Kylar love 10>><<clamp>><<replace "#statskylarlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].love)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Kylar love 100>><<clamp>><<replace "#statskylarlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].love)>><</replace>><</link>> (满值100)
+	<br>
+
+	<<link "<<<">><<npcincr Kylar lust -100>><<clamp>><<replace "#statskylarlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].lust)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Kylar lust -10>><<clamp>><<replace "#statskylarlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].lust)>><</replace>><</link>> |
+	<<link "<">><<npcincr Kylar lust -1>><<clamp>><<replace "#statskylarlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].lust)>><</replace>><</link>> |
+	凯拉尔性欲: <span id="statskylarlust"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].lust)>></span>
+	| <<link ">">><<npcincr Kylar lust 1>><<clamp>><<replace "#statskylarlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].lust)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Kylar lust 10>><<clamp>><<replace "#statskylarlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].lust)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Kylar lust 100>><<clamp>><<replace "#statskylarlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].lust)>><</replace>><</link>> (满值100)
+	<br>
+
+	<<link "<<<">><<npcincr Kylar rage -100>><<clamp>><<replace "#statskylarsus">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].rage)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Kylar rage -10>><<clamp>><<replace "#statskylarsus">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].rage)>><</replace>><</link>> |
+	<<link "<">><<npcincr Kylar rage -1>><<clamp>><<replace "#statskylarsus">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].rage)>><</replace>><</link>> |
+	凯拉尔嫉妒: <span id="statskylarsus"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].rage)>></span>
+	| <<link ">">><<npcincr Kylar rage 1>><<clamp>><<replace "#statskylarsus">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].rage)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Kylar rage 10>><<clamp>><<replace "#statskylarsus">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].rage)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Kylar rage 100>><<clamp>><<replace "#statskylarsus">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Kylar")].rage)>><</replace>><</link>> (满值100)
+	<br><br>
+
+	<<link "<<<">><<npcincr Avery love -100>><<clamp>><<replace "#statsaverylove">><<print Math.trunc($NPCName[0].love)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Avery love -10>><<clamp>><<replace "#statsaverylove">><<print Math.trunc($NPCName[0].love)>><</replace>><</link>> |
+	<<link "<">><<npcincr Avery love -1>><<clamp>><<replace "#statsaverylove">><<print Math.trunc($NPCName[0].love)>><</replace>><</link>> |
+	艾弗里好感: <span id="statsaverylove"><<print Math.trunc($NPCName[0].love)>></span>
+	| <<link ">">><<npcincr Avery love 1>><<clamp>><<replace "#statsaverylove">><<print Math.trunc($NPCName[0].love)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Avery love 10>><<clamp>><<replace "#statsaverylove">><<print Math.trunc($NPCName[0].love)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Avery love 100>><<clamp>><<replace "#statsaverylove">><<print Math.trunc($NPCName[0].love)>><</replace>><</link>> (满值100)
+	<br>
+
+	<<link "<<<">><<npcincr Avery rage -100>><<clamp>><<replace "#statsaveryrage">><<print Math.trunc($NPCName[0].rage)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Avery rage -10>><<clamp>><<replace "#statsaveryrage">><<print Math.trunc($NPCName[0].rage)>><</replace>><</link>> |
+	<<link "<">><<npcincr Avery rage -1>><<clamp>><<replace "#statsaveryrage">><<print Math.trunc($NPCName[0].rage)>><</replace>><</link>> |
+	艾弗里的愤怒: <span id="statsaveryrage"><<print Math.trunc($NPCName[0].rage)>></span>
+	| <<link ">">><<npcincr Avery rage 1>><<clamp>><<replace "#statsaveryrage">><<print Math.trunc($NPCName[0].rage)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Avery rage 10>><<clamp>><<replace "#statsaveryrage">><<print Math.trunc($NPCName[0].rage)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Avery rage 100>><<clamp>><<replace "#statsaveryrage">><<print Math.trunc($NPCName[0].rage)>><</replace>><</link>> (满值100)
+	<br><br>
+
+	<<link "<<<">><<npcincr Sydney love -100>><<clamp>><<replace "#statssydneylove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].love)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Sydney love -10>><<clamp>><<replace "#statssydneylove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].love)>><</replace>><</link>> |
+	<<link "<">><<npcincr Sydney love -1>><<clamp>><<replace "#statssydneylove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].love)>><</replace>><</link>> |
+	悉尼好感: <span id="statssydneylove"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].love)>></span>
+	| <<link ">">><<npcincr Sydney love 1>><<clamp>><<replace "#statssydneylove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].love)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Sydney love 10>><<clamp>><<replace "#statssydneylove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].love)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Sydney love 100>><<clamp>><<replace "#statssydneylove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].love)>><</replace>><</link>> (满值150)
+	<br>
+
+	<<link "<<<">><<npcincr Sydney lust -100>><<clamp>><<replace "#statssydneylust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].lust)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Sydney lust -10>><<clamp>><<replace "#statssydneylust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].lust)>><</replace>><</link>> |
+	<<link "<">><<npcincr Sydney lust -1>><<clamp>><<replace "#statssydneylust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].lust)>><</replace>><</link>> |
+	悉尼性欲: <span id="statssydneylust"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].lust)>></span>
+	| <<link ">">><<npcincr Sydney lust 1 true>><<clamp>><<replace "#statssydneylust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].lust)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Sydney lust 10 true>><<clamp>><<replace "#statssydneylust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].lust)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Sydney lust 100 true>><<clamp>><<replace "#statssydneylust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].lust)>><</replace>><</link>> (满值100)
+	<br>
+
+	<<link "<<<">><<set $purityEvent to 1>><<set $corruptionEvent to 1>><<npcincr Sydney purity -100>><<clamp>><<replace "#statssydneypure">><<if $NPCName[$NPCNameList.indexOf("Sydney")].purity gt 0>><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].purity)>><<else>><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].corruption)>><</if>><</replace>><<replace "#sydneypuretext">><<if $NPCName[$NPCNameList.indexOf("Sydney")].purity gt 0>><<print "纯洁:">><<else>><<print "堕落:">><</if>><</replace>><</link>> |
+	<<link "<<">><<set $purityEvent to 1>><<set $corruptionEvent to 1>><<npcincr Sydney purity -10>><<clamp>><<replace "#statssydneypure">><<if $NPCName[$NPCNameList.indexOf("Sydney")].purity gt 0>><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].purity)>><<else>><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].corruption)>><</if>><</replace>><<replace "#sydneypuretext">><<if $NPCName[$NPCNameList.indexOf("Sydney")].purity gt 0>><<print "纯洁:">><<else>><<print "堕落:">><</if>><</replace>><</link>> |
+	<<link "<">><<set $purityEvent to 1>><<set $corruptionEvent to 1>><<npcincr Sydney purity -1>><<clamp>><<replace "#statssydneypure">><<if $NPCName[$NPCNameList.indexOf("Sydney")].purity gt 0>><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].purity)>><<else>><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].corruption)>><</if>><</replace>><<replace "#sydneypuretext">><<if $NPCName[$NPCNameList.indexOf("Sydney")].purity gt 0>><<print "纯洁:">><<else>><<print "堕落:">><</if>><</replace>><</link>> |
+	悉尼 <span id="sydneypuretext"><<if $NPCName[$NPCNameList.indexOf("Sydney")].purity gt 0>><<print "纯洁:">><<else>><<print "堕落:">><</if>></span> <span id="statssydneypure"><<if $NPCName[$NPCNameList.indexOf("Sydney")].purity gt 0>><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].purity)>><<else>><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].corruption)>><</if>></span>
+	| <<link ">">><<set $purityEvent to 1>><<set $corruptionEvent to 1>><<npcincr Sydney purity 1>><<clamp>><<replace "#statssydneypure">><<if $NPCName[$NPCNameList.indexOf("Sydney")].purity gt 0>><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].purity)>><<else>><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].corruption)>><</if>><</replace>><<replace "#sydneypuretext">><<if $NPCName[$NPCNameList.indexOf("Sydney")].purity gt 0>><<print "纯洁:">><<else>><<print "堕落:">><</if>><</replace>><</link>>
+	| <<link ">>">><<set $purityEvent to 1>><<set $corruptionEvent to 1>><<npcincr Sydney purity 10>><<clamp>><<replace "#statssydneypure">><<if $NPCName[$NPCNameList.indexOf("Sydney")].purity gt 0>><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].purity)>><<else>><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].corruption)>><</if>><</replace>><<replace "#sydneypuretext">><<if $NPCName[$NPCNameList.indexOf("Sydney")].purity gt 0>><<print "纯洁:">><<else>><<print "堕落:">><</if>><</replace>><</link>>
+	| <<link ">>>">><<set $purityEvent to 1>><<set $corruptionEvent to 1>><<npcincr Sydney purity 100>><<clamp>><<replace "#statssydneypure">><<if $NPCName[$NPCNameList.indexOf("Sydney")].purity gt 0>><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].purity)>><<else>><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sydney")].corruption)>><</if>><</replace>><<replace "#sydneypuretext">><<if $NPCName[$NPCNameList.indexOf("Sydney")].purity gt 0>><<print "纯洁:">><<else>><<print "堕落:">><</if>><</replace>><</link>> (满值100，低于0将切换为堕落。)
+	<br><br>
+
+	<<link "<<<">><<npcincr Mason love -100>><<clamp>><<replace "#statsmasonlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Mason")].love)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Mason love -10>><<clamp>><<replace "#statsmasonlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Mason")].love)>><</replace>><</link>> |
+	<<link "<">><<npcincr Mason love -1>><<clamp>><<replace "#statsmasonlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Mason")].love)>><</replace>><</link>> |
+	梅森好感: <span id="statsmasonlove"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Mason")].love)>></span>
+	| <<link ">">><<npcincr Mason love 1>><<clamp>><<replace "#statsmasonlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Mason")].love)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Mason love 10>><<clamp>><<replace "#statsmasonlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Mason")].love)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Mason love 100>><<clamp>><<replace "#statsmasonlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Mason")].love)>><</replace>><</link>> (满值50)
+	<br>
+
+	<<link "<<<">><<npcincr Mason lust -100>><<clamp>><<replace "#statsmasonlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Mason")].lust)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Mason lust -10>><<clamp>><<replace "#statsmasonlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Mason")].lust)>><</replace>><</link>> |
+	<<link "<">><<npcincr Mason lust -1>><<clamp>><<replace "#statsmasonlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Mason")].lust)>><</replace>><</link>> |
+	梅森性欲: <span id="statsmasonlust"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Mason")].lust)>></span>
+	| <<link ">">><<npcincr Mason lust 1>><<clamp>><<replace "#statsmasonlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Mason")].lust)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Mason lust 10>><<clamp>><<replace "#statsmasonlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Mason")].lust)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Mason lust 100>><<clamp>><<replace "#statsmasonlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Mason")].lust)>><</replace>><</link>> (满值50)
+	<br><br>
+
+	<<link "<<<">><<npcincr Alex love -100>><<clamp>><<replace "#statsalexlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].love)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Alex love -10>><<clamp>><<replace "#statsalexlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].love)>><</replace>><</link>> |
+	<<link "<">><<npcincr Alex love -1>><<clamp>><<replace "#statsalexlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].love)>><</replace>><</link>> |
+	艾利克斯好感: <span id="statsalexlove"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].love)>></span>
+	| <<link ">">><<npcincr Alex love 1>><<clamp>><<replace "#statsalexlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].love)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Alex love 10>><<clamp>><<replace "#statsalexlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].love)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Alex love 100>><<clamp>><<replace "#statsalexlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].love)>><</replace>><</link>> (满值100)
+	<br>
+
+	<<link "<<<">><<npcincr Alex dom -100>><<clamp>><<replace "#statsalexdom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].dom)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Alex dom -10>><<clamp>><<replace "#statsalexdom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].dom)>><</replace>><</link>> |
+	<<link "<">><<npcincr Alex dom -1>><<clamp>><<replace "#statsalexdom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].dom)>><</replace>><</link>> |
+	艾利克斯支配: <span id="statsalexdom"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].dom)>></span>
+	| <<link ">">><<npcincr Alex dom 1>><<clamp>><<replace "#statsalexdom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].dom)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Alex dom 10>><<clamp>><<replace "#statsalexdom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].dom)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Alex dom 100>><<clamp>><<replace "#statsalexdom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].dom)>><</replace>><</link>> (满值100)
+	<br>
+
+	<<link "<<<">><<npcincr Alex lust -100>><<clamp>><<replace "#statsalexlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].lust)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Alex lust -10>><<clamp>><<replace "#statsalexlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].lust)>><</replace>><</link>> |
+	<<link "<">><<npcincr Alex lust -1>><<clamp>><<replace "#statsalexlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].lust)>><</replace>><</link>> |
+	艾利克斯性欲: <span id="statsalexlust"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].lust)>></span>
+	| <<link ">">><<npcincr Alex lust 1>><<clamp>><<replace "#statsalexlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].lust)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Alex lust 10>><<clamp>><<replace "#statsalexlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].lust)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Alex lust 100>><<clamp>><<replace "#statsalexlust">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Alex")].lust)>><</replace>><</link>> (满值100)
+	<br><br>
+
+
+	<<link "<<<">><<npcincr Darryl love -100>><<clamp>><<replace "#statsdarryllove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Darryl")].love)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Darryl love -10>><<clamp>><<replace "#statsdarryllove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Darryl")].love)>><</replace>><</link>> |
+	<<link "<">><<npcincr Darryl love -1>><<clamp>><<replace "#statsdarryllove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Darryl")].love)>><</replace>><</link>> |
+	达里尔好感: <span id="statsdarryllove"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Darryl")].love)>></span>
+	| <<link ">">><<npcincr Darryl love 1>><<clamp>><<replace "#statsdarryllove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Darryl")].love)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Darryl love 10>><<clamp>><<replace "#statsdarryllove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Darryl")].love)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Darryl love 100>><<clamp>><<replace "#statsdarryllove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Darryl")].love)>><</replace>><</link>> (满值50)
+	<br>
+
+	<<link "<<<">><<npcincr River love -100>><<clamp>><<replace "#statsriverlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("River")].love)>><</replace>><</link>> |
+	<<link "<<">><<npcincr River love -10>><<clamp>><<replace "#statsriverlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("River")].love)>><</replace>><</link>> |
+	<<link "<">><<npcincr River love -1>><<clamp>><<replace "#statsriverlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("River")].love)>><</replace>><</link>> |
+	瑞沃好感: <span id="statsriverlove"><<print Math.trunc($NPCName[$NPCNameList.indexOf("River")].love)>></span>
+	| <<link ">">><<npcincr River love 1>><<clamp>><<replace "#statsriverlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("River")].love)>><</replace>><</link>>
+	| <<link ">>">><<npcincr River love 10>><<clamp>><<replace "#statsriverlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("River")].love)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr River love 100>><<clamp>><<replace "#statsriverlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("River")].love)>><</replace>><</link>> (满值50)
+	<br>
+
+	<<link "<<<">><<npcincr Sam love -100>><<clamp>><<replace "#statssamlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sam")].love)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Sam love -10>><<clamp>><<replace "#statssamlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sam")].love)>><</replace>><</link>> |
+	<<link "<">><<npcincr Sam love -1>><<clamp>><<replace "#statssamlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sam")].love)>><</replace>><</link>> |
+	萨姆好感: <span id="statssamlove"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sam")].love)>></span>
+	| <<link ">">><<npcincr Sam love 1>><<clamp>><<replace "#statssamlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sam")].love)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Sam love 10>><<clamp>><<replace "#statssamlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sam")].love)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Sam love 100>><<clamp>><<replace "#statssamlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Sam")].love)>><</replace>><</link>> (满值50)
+	<br>
+
+	<<link "<<<">><<npcincr Wren love -100>><<clamp>><<replace "#statswrenlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Wren")].love)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Wren love -10>><<clamp>><<replace "#statswrenlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Wren")].love)>><</replace>><</link>> |
+	<<link "<">><<npcincr Wren love -1>><<clamp>><<replace "#statswrenlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Wren")].love)>><</replace>><</link>> |
+	伦恩好感: <span id="statswrenlove"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Wren")].love)>></span>
+	| <<link ">">><<npcincr Wren love 1>><<clamp>><<replace "#statswrenlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Wren")].love)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Wren love 10>><<clamp>><<replace "#statswrenlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Wren")].love)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Wren love 100>><<clamp>><<replace "#statswrenlove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Wren")].love)>><</replace>><</link>> (满值50)
+	<br>
+
+	<<link "<<<">><<npcincr Charlie love -100>><<clamp>><<replace "#statscharlielove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Charlie")].love)>><</replace>><</link>> |
+	<<link "<<">><<npcincr Charlie love -10>><<clamp>><<replace "#statscharlielove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Charlie")].love)>><</replace>><</link>> |
+	<<link "<">><<npcincr Charlie love -1>><<clamp>><<replace "#statscharlielove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Charlie")].love)>><</replace>><</link>> |
+	查里好感: <span id="statscharlielove"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Charlie")].love)>></span>
+	| <<link ">">><<npcincr Charlie love 1>><<clamp>><<replace "#statscharlielove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Charlie")].love)>><</replace>><</link>>
+	| <<link ">>">><<npcincr Charlie love 10>><<clamp>><<replace "#statscharlielove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Charlie")].love)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr Charlie love 100>><<clamp>><<replace "#statscharlielove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Charlie")].love)>><</replace>><</link>> (满值50)
+	<br>
+
+	<br>
+
+	<<link "<<<">><<npcincr "Great Hawk" love -100>><<clamp>><<replace "#statsgreathawklove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Great Hawk")].love)>><</replace>><</link>> |
+	<<link "<<">><<npcincr "Great Hawk" love -10>><<clamp>><<replace "#statsgreathawklove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Great Hawk")].love)>><</replace>><</link>> |
+	<<link "<">><<npcincr "Great Hawk" love -1>><<clamp>><<replace "#statsgreathawklove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Great Hawk")].love)>><</replace>><</link>> |
+	巨鹰好感: <span id="statsgreathawklove"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Great Hawk")].love)>></span>
+	| <<link ">">><<npcincr "Great Hawk" love 1>><<clamp>><<replace "#statsgreathawklove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Great Hawk")].love)>><</replace>><</link>>
+	| <<link ">>">><<npcincr "Great Hawk" love 10>><<clamp>><<replace "#statsgreathawklove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Great Hawk")].love)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr "Great Hawk" love 100>><<clamp>><<replace "#statsgreathawklove">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Great Hawk")].love)>><</replace>><</link>> (满值100)
+	<br>
+
+	<<link "<<<">><<npcincr "Great Hawk" dom -100>><<clamp>><<replace "#statsgreathawkdom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Great Hawk")].dom)>><</replace>><</link>> |
+	<<link "<<">><<npcincr "Great Hawk" dom -10>><<clamp>><<replace "#statsgreathawkdom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Great Hawk")].dom)>><</replace>><</link>> |
+	<<link "<">><<npcincr "Great Hawk" dom -1>><<clamp>><<replace "#statsgreathawkdom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Great Hawk")].dom)>><</replace>><</link>> |
+	巨鹰支配度: <span id="statsgreathawkdom"><<print Math.trunc($NPCName[$NPCNameList.indexOf("Great Hawk")].dom)>></span>
+	| <<link ">">><<npcincr "Great Hawk" dom 1>><<clamp>><<replace "#statsgreathawkdom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Great Hawk")].dom)>><</replace>><</link>>
+	| <<link ">>">><<npcincr "Great Hawk" dom 10>><<clamp>><<replace "#statsgreathawkdom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Great Hawk")].dom)>><</replace>><</link>>
+	| <<link ">>>">><<npcincr "Great Hawk" dom 100>><<clamp>><<replace "#statsgreathawkdom">><<print Math.trunc($NPCName[$NPCNameList.indexOf("Great Hawk")].dom)>><</replace>><</link>> (满值100)
+	<br><br>
+
+	<br>
+
+	<<link "<<<">><<set $wolfpacktrust -= 10>><<set $wolfpacktrust = Math.clamp($wolfpacktrust, 0, 30)>><<replace "#statstrust">><<print Math.trunc($wolfpacktrust)>><</replace>><</link>> |
+	<<link "<<">><<set $wolfpacktrust -= 5>><<set $wolfpacktrust = Math.clamp($wolfpacktrust, 0, 30)>><<replace "#statstrust">><<print Math.trunc($wolfpacktrust)>><</replace>><</link>> |
+	<<link "<">><<set $wolfpacktrust -= 1>><<set $wolfpacktrust = Math.clamp($wolfpacktrust, 0, 30)>><<replace "#statstrust">><<print Math.trunc($wolfpacktrust)>><</replace>><</link>> |
+	狼群信赖: <span id="statstrust"><<print Math.trunc($wolfpacktrust)>></span>
+	| <<link ">">><<set $wolfpacktrust += 1>><<set $wolfpacktrust = Math.clamp($wolfpacktrust, 0, 30)>><<replace "#statstrust">><<print Math.trunc($wolfpacktrust)>><</replace>><</link>>
+	| <<link ">>">><<set $wolfpacktrust += 5>><<set $wolfpacktrust = Math.clamp($wolfpacktrust, 0, 30)>><<replace "#statstrust">><<print Math.trunc($wolfpacktrust)>><</replace>><</link>>
+	| <<link ">>>">><<set $wolfpacktrust += 10>><<set $wolfpacktrust = Math.clamp($wolfpacktrust, 0, 30)>><<replace "#statstrust">><<print Math.trunc($wolfpacktrust)>><</replace>><</link>> (满值30)
+	<br>
+
+	<<link "<<<">><<set $wolfpackfear -= 10>><<set $wolfpackfear = Math.clamp($wolfpackfear, 0, 30)>><<replace "#statsfear">><<print Math.trunc($wolfpackfear)>><</replace>><</link>> |
+	<<link "<<">><<set $wolfpackfear -= 5>><<set $wolfpackfear = Math.clamp($wolfpackfear, 0, 30)>><<replace "#statsfear">><<print Math.trunc($wolfpackfear)>><</replace>><</link>> |
+	<<link "<">><<set $wolfpackfear -= 1>><<set $wolfpackfear = Math.clamp($wolfpackfear, 0, 30)>><<replace "#statsfear">><<print Math.trunc($wolfpackfear)>><</replace>><</link>> |
+	狼群畏惧: <span id="statsfear"><<print Math.trunc($wolfpackfear)>></span>
+	| <<link ">">><<set $wolfpackfear += 1>><<set $wolfpackfear = Math.clamp($wolfpackfear, 0, 30)>><<replace "#statsfear">><<print Math.trunc($wolfpackfear)>><</replace>><</link>>
+	| <<link ">>">><<set $wolfpackfear += 5>><<set $wolfpackfear = Math.clamp($wolfpackfear, 0, 30)>><<replace "#statsfear">><<print Math.trunc($wolfpackfear)>><</replace>><</link>>
+	| <<link ">>>">><<set $wolfpackfear += 10>><<set $wolfpackfear = Math.clamp($wolfpackfear, 0, 30)>><<replace "#statsfear">><<print Math.trunc($wolfpackfear)>><</replace>><</link>> (满值30)
+	<br>
+
+	<<if $syndromewolves is 1>>
+
+	<<link "<<<">><<set $wolfpackharmony -= 10>><<set $wolfpackharmony = Math.clamp($wolfpackharmony, 0, 20)>><<replace "#statsharmony">><<print Math.trunc($wolfpackharmony)>><</replace>><</link>> |
+	<<link "<<">><<set $wolfpackharmony -= 5>><<set $wolfpackharmony = Math.clamp($wolfpackharmony, 0, 20)>><<replace "#statsharmony">><<print Math.trunc($wolfpackharmony)>><</replace>><</link>> |
+	<<link "<">><<set $wolfpackharmony -= 1>><<set $wolfpackharmony = Math.clamp($wolfpackharmony, 0, 20)>><<replace "#statsharmony">><<print Math.trunc($wolfpackharmony)>><</replace>><</link>> |
+	狼群和谐: <span id="statsharmony"><<print Math.trunc($wolfpackharmony)>></span>
+	| <<link ">">><<set $wolfpackharmony += 1>><<set $wolfpackharmony = Math.clamp($wolfpackharmony, 0, 20)>><<replace "#statsharmony">><<print Math.trunc($wolfpackharmony)>><</replace>><</link>>
+	| <<link ">>">><<set $wolfpackharmony += 5>><<set $wolfpackharmony = Math.clamp($wolfpackharmony, 0, 20)>><<replace "#statsharmony">><<print Math.trunc($wolfpackharmony)>><</replace>><</link>>
+	| <<link ">>>">><<set $wolfpackharmony += 10>><<set $wolfpackharmony = Math.clamp($wolfpackharmony, 0, 20)>><<replace "#statsharmony">><<print Math.trunc($wolfpackharmony)>><</replace>><</link>> (满值20)
+	<br>
+
+	<<link "<<<">><<set $wolfpackferocity -= 10>><<set $wolfpackferocity = Math.clamp($wolfpackferocity, 0, 20)>><<replace "#statsferocity">><<print Math.trunc($wolfpackferocity)>><</replace>><</link>> |
+	<<link "<<">><<set $wolfpackferocity -= 5>><<set $wolfpackferocity = Math.clamp($wolfpackferocity, 0, 20)>><<replace "#statsferocity">><<print Math.trunc($wolfpackferocity)>><</replace>><</link>> |
+	<<link "<">><<set $wolfpackferocity -= 1>><<set $wolfpackferocity = Math.clamp($wolfpackferocity, 0, 20)>><<replace "#statsferocity">><<print Math.trunc($wolfpackferocity)>><</replace>><</link>> |
+	狼群凶残度: <span id="statsferocity"><<print Math.trunc($wolfpackferocity)>></span>
+	| <<link ">">><<set $wolfpackferocity += 1>><<set $wolfpackferocity = Math.clamp($wolfpackferocity, 0, 20)>><<replace "#statsferocity">><<print Math.trunc($wolfpackferocity)>><</replace>><</link>>
+	| <<link ">>">><<set $wolfpackferocity += 5>><<set $wolfpackferocity = Math.clamp($wolfpackferocity, 0, 20)>><<replace "#statsferocity">><<print Math.trunc($wolfpackferocity)>><</replace>><</link>>
+	| <<link ">>>">><<set $wolfpackferocity += 10>><<set $wolfpackferocity = Math.clamp($wolfpackferocity, 0, 20)>><<replace "#statsferocity">><<print Math.trunc($wolfpackferocity)>><</replace>><</link>> (满值20)
+	<br>
+	<</if>>
+	<br>
+
+	<<link "<<<">><<set $cool -= 1000>><<clamp>><<replace "#statsstatus">><<print Math.trunc($cool)>><</replace>><</link>> |
+	<<link "<<">><<set $cool -= 100>><<clamp>><<replace "#statsstatus">><<print Math.trunc($cool)>><</replace>><</link>> |
+	<<link "<">><<set $cool -= 10>><<clamp>><<replace "#statsstatus">><<print Math.trunc($cool)>><</replace>><</link>> |
+	学校地位: <span id="statsstatus"><<print Math.trunc($cool)>></span>
+	| <<link ">">><<set $cool += 10>><<clamp>><<replace "#statsstatus">><<print Math.trunc($cool)>><</replace>><</link>>
+	| <<link ">>">><<set $cool += 100>><<clamp>><<replace "#statsstatus">><<print Math.trunc($cool)>><</replace>><</link>>
+	| <<link ">>>">><<set $cool += 1000>><<clamp>><<replace "#statsstatus">><<print Math.trunc($cool)>><</replace>><</link>>
+	<br>
+	<<link "<<<">><<set $delinquency -= 1000>><<clamp>><<replace "#statsdelinquency">><<print Math.trunc($delinquency)>><</replace>><</link>> |
+	<<link "<<">><<set $delinquency -= 100>><<clamp>><<replace "#statsdelinquency">><<print Math.trunc($delinquency)>><</replace>><</link>> |
+	<<link "<">><<set $delinquency -= 10>><<clamp>><<replace "#statsdelinquency">><<print Math.trunc($delinquency)>><</replace>><</link>> |
+	违规行为: <span id="statsdelinquency"><<print Math.trunc($delinquency)>></span>
+	| <<link ">">><<set $delinquency += 10>><<clamp>><<replace "#statsdelinquency">><<print Math.trunc($delinquency)>><</replace>><</link>>
+	| <<link ">>">><<set $delinquency += 100>><<clamp>><<replace "#statsdelinquency">><<print Math.trunc($delinquency)>><</replace>><</link>>
+	| <<link ">>>">><<set $delinquency += 1000>><<clamp>><<replace "#statsdelinquency">><<print Math.trunc($delinquency)>><</replace>><</link>>
+	<br>
+	<<if $player.gender is "h">>
+		<<link "<">><<set $schoolrep.herm -= 1>><<set $schoolrep.herm = Math.clamp($schoolrep.herm, 0, 5)>><<replace "#statsschoolrepherm">><<print Math.trunc($schoolrep.herm)>><</replace>><</link>> |
+		学校扶她名声: <span id="statsschoolrepherm"><<print Math.trunc($schoolrep.herm)>></span>
+		| <<link ">">><<set $schoolrep.herm += 1>><<set $schoolrep.herm = Math.clamp($schoolrep.herm, 0, 5)>><<replace "#statsschoolrepherm">><<print Math.trunc($schoolrep.herm)>><</replace>><</link>>
+	<<else>>
+		<<link "<">><<set $schoolrep.crossdress -= 1>><<set $schoolrep.crossdress = Math.clamp($schoolrep.crossdress, 0, 5)>><<replace "#statsschoolrepcrossdress">><<print Math.trunc($schoolrep.crossdress)>><</replace>><</link>> |
+		学校异装癖名声: <span id="statsschoolrepcrossdress"><<print Math.trunc($schoolrep.crossdress)>></span>
+		| <<link ">">><<set $schoolrep.crossdress += 1>><<set $schoolrep.crossdress = Math.clamp($schoolrep.crossdress, 0, 5)>><<replace "#statsschoolrepcrossdress">><<print Math.trunc($schoolrep.crossdress)>><</replace>><</link>>
+	<</if>>
+	<br><br>
+	<<link "<<<">><<set $crime -= 1000>><<set $crime = Math.clamp($crime, C.crime.min, C.crime.max)>><<replace "#statscrime">><<print Math.trunc($crime)>><</replace>><</link>> |
+	<<link "<<">><<set $crime -= 100>><<set $crime = Math.clamp($crime, C.crime.min, C.crime.max)>><<replace "#statscrime">><<print Math.trunc($crime)>><</replace>><</link>> |
+	<<link "<">><<set $crime -= 10>><<set $crime = Math.clamp($crime, C.crime.min, C.crime.max)>><<replace "#statscrime">><<print Math.trunc($crime)>><</replace>><</link>> |
+	犯罪: <span id="statscrime"><<print Math.trunc($crime)>></span>
+	| <<link ">">><<set $crime += 10>><<set $crime = Math.clamp($crime, C.crime.min, C.crime.max)>><<replace "#statscrime">><<print Math.trunc($crime)>><</replace>><</link>>
+	| <<link ">>">><<set $crime += 100>><<set $crime = Math.clamp($crime, C.crime.min, C.crime.max)>><<replace "#statscrime">><<print Math.trunc($crime)>><</replace>><</link>>
+	| <<link ">>>">><<set $crime += 1000>><<set $crime = Math.clamp($crime, C.crime.min, C.crime.max)>><<replace "#statscrime">><<print Math.trunc($crime)>><</replace>><</link>>
+	<br><br>
+
+	<<if $location is "asylum">>
+
+	<<link "<<<">><<set $asylumstatus -= 100>><<set $asylumstatus = Math.clamp($asylumstatus, 0, 100)>><<replace "#statasylumstatus">><<print Math.trunc($asylumstatus)>><</replace>><</link>> |
+	<<link "<<">><<set $asylumstatus -= 10>><<set $asylumstatus = Math.clamp($asylumstatus, 0, 100)>><<replace "#statasylumstatus">><<print Math.trunc($asylumstatus)>><</replace>><</link>> |
+	<<link "<">><<set $asylumstatus -= 1>><<set $asylumstatus = Math.clamp($asylumstatus, 0, 100)>><<replace "#statasylumstatus">><<print Math.trunc($asylumstatus)>><</replace>><</link>> |
+	精神病院地位: <span id="statasylumstatus"><<print Math.trunc($asylumstatus)>></span>
+	| <<link ">">><<set $asylumstatus += 1>><<set $asylumstatus = Math.clamp($asylumstatus, 0, 100)>><<replace "#statasylumstatus">><<print Math.trunc($asylumstatus)>><</replace>><</link>>
+	| <<link ">>">><<set $asylumstatus += 10>><<set $asylumstatus = Math.clamp($asylumstatus, 0, 100)>><<replace "#statasylumstatus">><<print Math.trunc($asylumstatus)>><</replace>><</link>>
+	| <<link ">>>">><<set $asylumstatus += 100>><<set $asylumstatus = Math.clamp($asylumstatus, 0, 100)>><<replace "#statasylumstatus">><<print Math.trunc($asylumstatus)>><</replace>><</link>>
+	<br>
+	<<link "<<<">><<set $suspicion -= 100>><<set $suspicion = Math.clamp($suspicion, 0, 100)>><<replace "#statssuspicion">><<print Math.trunc($suspicion)>><</replace>><</link>> |
+	<<link "<<">><<set $suspicion -= 10>><<set $suspicion = Math.clamp($suspicion, 0, 100)>><<replace "#statssuspicion">><<print Math.trunc($suspicion)>><</replace>><</link>> |
+	<<link "<">><<set $suspicion -= 1>><<set $suspicion = Math.clamp($suspicion, 0, 100)>><<replace "#statssuspicion">><<print Math.trunc($suspicion)>><</replace>><</link>> |
+	精神病院怀疑: <span id="statssuspicion"><<print Math.trunc($suspicion)>></span>
+	| <<link ">">><<set $suspicion += 1>><<set $suspicion = Math.clamp($suspicion, 0, 100)>><<replace "#statssuspicion">><<print Math.trunc($suspicion)>><</replace>><</link>>
+	| <<link ">>">><<set $suspicion += 10>><<set $suspicion = Math.clamp($suspicion, 0, 100)>><<replace "#statssuspicion">><<print Math.trunc($suspicion)>><</replace>><</link>>
+	| <<link ">>>">><<set $suspicion += 100>><<set $suspicion = Math.clamp($suspicion, 0, 100)>><<replace "#statssuspicion">><<print Math.trunc($suspicion)>><</replace>><</link>>
+	<br><br>
+	<</if>>
+
+	<<link "<<<">><<set $orphan_hope -= 100>><<clamp>><<replace "#statorphan_hope">><<print Math.trunc($orphan_hope)>><</replace>><</link>> |
+	<<link "<<">><<set $orphan_hope -= 10>><<clamp>><<replace "#statorphan_hope">><<print Math.trunc($orphan_hope)>><</replace>><</link>> |
+	<<link "<">><<set $orphan_hope -= 1>><<clamp>><<replace "#statorphan_hope">><<print Math.trunc($orphan_hope)>><</replace>><</link>> |
+	孤儿院希望: <span id="statorphan_hope"><<print Math.trunc($orphan_hope)>></span>
+	| <<link ">">><<set $orphan_hope += 1>><<clamp>><<replace "#statorphan_hope">><<print Math.trunc($orphan_hope)>><</replace>><</link>>
+	| <<link ">>">><<set $orphan_hope += 10>><<clamp>><<replace "#statorphan_hope">><<print Math.trunc($orphan_hope)>><</replace>><</link>>
+	| <<link ">>>">><<set $orphan_hope += 100>><<clamp>><<replace "#statorphan_hope">><<print Math.trunc($orphan_hope)>><</replace>><</link>>
+	<br>
+	<<link "<<<">><<set $orphan_reb -= 100>><<clamp>><<replace "#statsorphan_reb">><<print Math.trunc($orphan_reb)>><</replace>><</link>> |
+	<<link "<<">><<set $orphan_reb -= 10>><<clamp>><<replace "#statsorphan_reb">><<print Math.trunc($orphan_reb)>><</replace>><</link>> |
+	<<link "<">><<set $orphan_reb -= 1>><<clamp>><<replace "#statsorphan_reb">><<print Math.trunc($orphan_reb)>><</replace>><</link>> |
+	孤儿院叛逆: <span id="statsorphan_reb"><<print Math.trunc($orphan_reb)>></span>
+	| <<link ">">><<set $orphan_reb += 1>><<clamp>><<replace "#statsorphan_reb">><<print Math.trunc($orphan_reb)>><</replace>><</link>>
+	| <<link ">>">><<set $orphan_reb += 10>><<clamp>><<replace "#statsorphan_reb">><<print Math.trunc($orphan_reb)>><</replace>><</link>>
+	| <<link ">>>">><<set $orphan_reb += 100>><<clamp>><<replace "#statsorphan_reb">><<print Math.trunc($orphan_reb)>><</replace>><</link>>
+	<br><br>
+
+
+
+	<<if $farm_stage gte 2>>
+		<<link "<<<">><<set $farm.beasts.horses -= 20>><<set $farm.beasts.horses = Math.clamp($farm.beasts.horses, -30, 30)>><<replace "#horse_respect">><<print Math.trunc($farm.beasts.horses)>><</replace>><</link>> |
+		<<link "<<">><<set $farm.beasts.horses -= 5>><<set $farm.beasts.horses = Math.clamp($farm.beasts.horses, -30, 30)>><<replace "#horse_respect">><<print Math.trunc($farm.beasts.horses)>><</replace>><</link>> |
+		<<link "<">><<set $farm.beasts.horses -= 1>><<set $farm.beasts.horses = Math.clamp($farm.beasts.horses, -30, 30)>><<replace "#horse_respect">><<print Math.trunc($farm.beasts.horses)>><</replace>><</link>> |
+		马群的尊敬: <span id="horse_respect"><<print Math.trunc($farm.beasts.horses)>></span>
+		| <<link ">">><<set $farm.beasts.horses += 1>><<set $farm.beasts.horses = Math.clamp($farm.beasts.horses, -30, 30)>><<replace "#horse_respect">><<print Math.trunc($farm.beasts.horses)>><</replace>><</link>>
+		| <<link ">>">><<set $farm.beasts.horses += 5>><<set $farm.beasts.horses = Math.clamp($farm.beasts.horses, -30, 30)>><<replace "#horse_respect">><<print Math.trunc($farm.beasts.horses)>><</replace>><</link>>
+		| <<link ">>>">><<set $farm.beasts.horses += 20>><<set $farm.beasts.horses = Math.clamp($farm.beasts.horses, -30, 30)>><<replace "#horse_respect">><<print Math.trunc($farm.beasts.horses)>><</replace>><</link>>
+		<br>
+		<<link "<<<">><<set $farm.beasts.pigs -= 20>><<set $farm.beasts.pigs = Math.clamp($farm.beasts.pigs, -30, 30)>><<replace "#pig_respect">><<print Math.trunc($farm.beasts.pigs)>><</replace>><</link>> |
+		<<link "<<">><<set $farm.beasts.pigs -= 5>><<set $farm.beasts.pigs = Math.clamp($farm.beasts.pigs, -30, 30)>><<replace "#pig_respect">><<print Math.trunc($farm.beasts.pigs)>><</replace>><</link>> |
+		<<link "<">><<set $farm.beasts.pigs -= 1>><<set $farm.beasts.pigs = Math.clamp($farm.beasts.pigs, -30, 30)>><<replace "#pig_respect">><<print Math.trunc($farm.beasts.pigs)>><</replace>><</link>> |
+		猪群的尊敬: <span id="pig_respect"><<print Math.trunc($farm.beasts.pigs)>></span>
+		| <<link ">">><<set $farm.beasts.pigs += 1>><<set $farm.beasts.pigs = Math.clamp($farm.beasts.pigs, -30, 30)>><<replace "#pig_respect">><<print Math.trunc($farm.beasts.pigs)>><</replace>><</link>>
+		| <<link ">>">><<set $farm.beasts.pigs += 5>><<set $farm.beasts.pigs = Math.clamp($farm.beasts.pigs, -30, 30)>><<replace "#pig_respect">><<print Math.trunc($farm.beasts.pigs)>><</replace>><</link>>
+		| <<link ">>>">><<set $farm.beasts.pigs += 20>><<set $farm.beasts.pigs = Math.clamp($farm.beasts.pigs, -30, 30)>><<replace "#pig_respect">><<print Math.trunc($farm.beasts.pigs)>><</replace>><</link>>
+		<br>
+		<<link "<<<">><<set $farm.beasts.cattle -= 20>><<set $farm.beasts.cattle = Math.clamp($farm.beasts.cattle, -30, 30)>><<replace "#cattle_respect">><<print Math.trunc($farm.beasts.cattle)>><</replace>><</link>> |
+		<<link "<<">><<set $farm.beasts.cattle -= 5>><<set $farm.beasts.cattle = Math.clamp($farm.beasts.cattle, -30, 30)>><<replace "#cattle_respect">><<print Math.trunc($farm.beasts.cattle)>><</replace>><</link>> |
+		<<link "<">><<set $farm.beasts.cattle -= 1>><<set $farm.beasts.cattle = Math.clamp($farm.beasts.cattle, -30, 30)>><<replace "#cattle_respect">><<print Math.trunc($farm.beasts.cattle)>><</replace>><</link>> |
+		牛的尊敬: <span id="cattle_respect"><<print Math.trunc($farm.beasts.cattle)>></span>
+		| <<link ">">><<set $farm.beasts.cattle += 1>><<set $farm.beasts.cattle = Math.clamp($farm.beasts.cattle, -30, 30)>><<replace "#cattle_respect">><<print Math.trunc($farm.beasts.cattle)>><</replace>><</link>>
+		| <<link ">>">><<set $farm.beasts.cattle += 5>><<set $farm.beasts.cattle = Math.clamp($farm.beasts.cattle, -30, 30)>><<replace "#cattle_respect">><<print Math.trunc($farm.beasts.cattle)>><</replace>><</link>>
+		| <<link ">>>">><<set $farm.beasts.cattle += 20>><<set $farm.beasts.cattle = Math.clamp($farm.beasts.cattle, -30, 30)>><<replace "#cattle_respect">><<print Math.trunc($farm.beasts.cattle)>><</replace>><</link>>
+		<br>
+		<<link "<<<">><<set $farm.beasts.dogs -= 20>><<set $farm.beasts.dogs = Math.clamp($farm.beasts.dogs, -30, 30)>><<replace "#dog_respect">><<print Math.trunc($farm.beasts.dogs)>><</replace>><</link>> |
+		<<link "<<">><<set $farm.beasts.dogs -= 5>><<set $farm.beasts.dogs = Math.clamp($farm.beasts.dogs, -30, 30)>><<replace "#dog_respect">><<print Math.trunc($farm.beasts.dogs)>><</replace>><</link>> |
+		<<link "<">><<set $farm.beasts.dogs -= 1>><<set $farm.beasts.dogs = Math.clamp($farm.beasts.dogs, -30, 30)>><<replace "#dog_respect">><<print Math.trunc($farm.beasts.dogs)>><</replace>><</link>> |
+		狗群的尊敬: <span id="dog_respect"><<print Math.trunc($farm.beasts.dogs)>></span>
+		| <<link ">">><<set $farm.beasts.dogs += 1>><<set $farm.beasts.dogs = Math.clamp($farm.beasts.dogs, -30, 30)>><<replace "#dog_respect">><<print Math.trunc($farm.beasts.dogs)>><</replace>><</link>>
+		| <<link ">>">><<set $farm.beasts.dogs += 5>><<set $farm.beasts.dogs = Math.clamp($farm.beasts.dogs, -30, 30)>><<replace "#dog_respect">><<print Math.trunc($farm.beasts.dogs)>><</replace>><</link>>
+		| <<link ">>>">><<set $farm.beasts.dogs += 20>><<set $farm.beasts.dogs = Math.clamp($farm.beasts.dogs, -30, 30)>><<replace "#dog_respect">><<print Math.trunc($farm.beasts.dogs)>><</replace>><</link>>
+		<br><br>
+	<</if>>
+
+
+
+
+
+	<<if $dockwork is 2>>
+
+	<<link "<<<">><<set $dockstatus -= 100>><<set $dockstatus = Math.clamp($dockstatus, 0, 100)>><<replace "#statdockstatus">><<print Math.trunc($dockstatus)>><</replace>><</link>> |
+	<<link "<<">><<set $dockstatus -= 10>><<set $dockstatus = Math.clamp($dockstatus, 0, 100)>><<replace "#statdockstatus">><<print Math.trunc($dockstatus)>><</replace>><</link>> |
+	<<link "<">><<set $dockstatus -= 1>><<set $dockstatus = Math.clamp($dockstatus, 0, 100)>><<replace "#statdockstatus">><<print Math.trunc($dockstatus)>><</replace>><</link>> |
+	码头声望: <span id="statdockstatus"><<print Math.trunc($dockstatus)>></span>
+	| <<link ">">><<set $dockstatus += 1>><<set $dockstatus = Math.clamp($dockstatus, 0, 100)>><<replace "#statdockstatus">><<print Math.trunc($dockstatus)>><</replace>><</link>>
+	| <<link ">>">><<set $dockstatus += 10>><<set $dockstatus = Math.clamp($dockstatus, 0, 100)>><<replace "#statdockstatus">><<print Math.trunc($dockstatus)>><</replace>><</link>>
+	| <<link ">>>">><<set $dockstatus += 100>><<set $dockstatus = Math.clamp($dockstatus, 0, 100)>><<replace "#statdockstatus">><<print Math.trunc($dockstatus)>><</replace>><</link>>
+	<br><br>
+	<</if>>
+
+	<<if $pound>>
+		<<link "<<<">><<set $pound.status -= 100>><<set $pound.status = Math.clamp($pound.status, 0, 100)>><<replace "#statpoundstatus">><<print Math.trunc($pound.status)>><</replace>><</link>> |
+		<<link "<<">><<set $pound.status -= 10>><<set $pound.status = Math.clamp($pound.status, 0, 100)>><<replace "#statpoundstatus">><<print Math.trunc($pound.status)>><</replace>><</link>> |
+		<<link "<">><<set $pound.status -= 1>><<set $pound.status = Math.clamp($pound.status, 0, 100)>><<replace "#statpoundstatus">><<print Math.trunc($pound.status)>><</replace>><</link>> |
+		犬舍声望: <span id="statpoundstatus"><<print Math.trunc($pound.status)>></span>
+		| <<link ">">><<set $pound.status += 1>><<set $pound.status = Math.clamp($pound.status, 0, 100)>><<replace "#statpoundstatus">><<print Math.trunc($pound.status)>><</replace>><</link>>
+		| <<link ">>">><<set $pound.status += 10>><<set $pound.status = Math.clamp($pound.status, 0, 100)>><<replace "#statpoundstatus">><<print Math.trunc($pound.status)>><</replace>><</link>>
+		| <<link ">>>">><<set $pound.status += 100>><<set $pound.status = Math.clamp($pound.status, 0, 100)>><<replace "#statpoundstatus">><<print Math.trunc($pound.status)>><</replace>><</link>>
+		<br><br>
+	<</if>>
+
+	<span class="gold">知名度</span>
+	<br>
+	<<link "<<<">><<famesex -1000 "none" true>><<fameclamp>><<replace "#statsfamesex">><<print Math.trunc($fame.sex)>><</replace>><</link>> |
+	<<link "<<">><<famesex -100 "none" true>><<fameclamp>><<replace "#statsfamesex">><<print Math.trunc($fame.sex)>><</replace>><</link>> |
+	<<link "<">><<famesex -10 "none" true>><<fameclamp>><<replace "#statsfamesex">><<print Math.trunc($fame.sex)>><</replace>><</link>> |
+	淫乱: <span id="statsfamesex"><<print Math.trunc($fame.sex)>></span>
+	| <<link ">">><<famesex 10 "none" true>><<fameclamp>><<replace "#statsfamesex">><<print Math.trunc($fame.sex)>><</replace>><</link>>
+	| <<link ">>">><<famesex 100 "none" true>><<fameclamp>><<replace "#statsfamesex">><<print Math.trunc($fame.sex)>><</replace>><</link>>
+	| <<link ">>>">><<famesex 1000 "none" true>><<fameclamp>><<replace "#statsfamesex">><<print Math.trunc($fame.sex)>><</replace>><</link>>
+	<br>
+
+	<<link "<<<">><<fameprostitution -1000 "none" true>><<fameclamp>><<replace "#statsfameprostitution">><<print Math.trunc($fame.prostitution)>><</replace>><</link>> |
+	<<link "<<">><<fameprostitution -100 "none" true>><<fameclamp>><<replace "#statsfameprostitution">><<print Math.trunc($fame.prostitution)>><</replace>><</link>> |
+	<<link "<">><<fameprostitution -10 "none" true>><<fameclamp>><<replace "#statsfameprostitution">><<print Math.trunc($fame.prostitution)>><</replace>><</link>> |
+	卖淫: <span id="statsfameprostitution"><<print Math.trunc($fame.prostitution)>></span>
+	| <<link ">">><<fameprostitution 10 "none" true>><<fameclamp>><<replace "#statsfameprostitution">><<print Math.trunc($fame.prostitution)>><</replace>><</link>>
+	| <<link ">>">><<fameprostitution 100 "none" true>><<fameclamp>><<replace "#statsfameprostitution">><<print Math.trunc($fame.prostitution)>><</replace>><</link>>
+	| <<link ">>>">><<fameprostitution 1000 "none" true>><<fameclamp>><<replace "#statsfameprostitution">><<print Math.trunc($fame.prostitution)>><</replace>><</link>>
+	<br>
+
+	<<link "<<<">><<famerape -1000 "none" true>><<fameclamp>><<replace "#statsfamerape">><<print Math.trunc($fame.rape)>><</replace>><</link>> |
+	<<link "<<">><<famerape -100 "none" true>><<fameclamp>><<replace "#statsfamerape">><<print Math.trunc($fame.rape)>><</replace>><</link>> |
+	<<link "<">><<famerape -10 "none" true>><<fameclamp>><<replace "#statsfamerape">><<print Math.trunc($fame.rape)>><</replace>><</link>> |
+	强暴: <span id="statsfamerape"><<print Math.trunc($fame.rape)>></span>
+	| <<link ">">><<famerape 10 "none" true>><<fameclamp>><<replace "#statsfamerape">><<print Math.trunc($fame.rape)>><</replace>><</link>>
+	| <<link ">>">><<famerape 100 "none" true>><<fameclamp>><<replace "#statsfamerape">><<print Math.trunc($fame.rape)>><</replace>><</link>>
+	| <<link ">>>">><<famerape 1000 "none" true>><<fameclamp>><<replace "#statsfamerape">><<print Math.trunc($fame.rape)>><</replace>><</link>>
+	<br>
+
+	<<link "<<<">><<famebestiality -1000 "none" true>><<fameclamp>><<replace "#statsfamebestiality">><<print Math.trunc($fame.bestiality)>><</replace>><</link>> |
+	<<link "<<">><<famebestiality -100 "none" true>><<fameclamp>><<replace "#statsfamebestiality">><<print Math.trunc($fame.bestiality)>><</replace>><</link>> |
+	<<link "<">><<famebestiality -10 "none" true>><<fameclamp>><<replace "#statsfamebestiality">><<print Math.trunc($fame.bestiality)>><</replace>><</link>> |
+	兽交: <span id="statsfamebestiality"><<print Math.trunc($fame.bestiality)>></span>
+	| <<link ">">><<famebestiality 10 "none" true>><<fameclamp>><<replace "#statsfamebestiality">><<print Math.trunc($fame.bestiality)>><</replace>><</link>>
+	| <<link ">>">><<famebestiality 100 "none" true>><<fameclamp>><<replace "#statsfamebestiality">><<print Math.trunc($fame.bestiality)>><</replace>><</link>>
+	| <<link ">>>">><<famebestiality 1000 "none" true>><<fameclamp>><<replace "#statsfamebestiality">><<print Math.trunc($fame.bestiality)>><</replace>><</link>>
+	<br>
+	<<link "<<<">><<famepregnancy -1000 "none" true>><<fameclamp>><<replace "#statsfamepregnancy">><<print Math.trunc($fame.pregnancy)>><</replace>><</link>> |
+	<<link "<<">><<famepregnancy -100 "none" true>><<fameclamp>><<replace "#statsfamepregnancy">><<print Math.trunc($fame.pregnancy)>><</replace>><</link>> |
+	<<link "<">><<famepregnancy -10 "none" true>><<fameclamp>><<replace "#statsfamepregnancy">><<print Math.trunc($fame.pregnancy)>><</replace>><</link>> |
+	怀孕: <span id="statsfamepregnancy"><<print Math.trunc($fame.pregnancy)>></span>
+	| <<link ">">><<famepregnancy 10 "none" true>><<fameclamp>><<replace "#statsfamepregnancy">><<print Math.trunc($fame.pregnancy)>><</replace>><</link>>
+	| <<link ">>">><<famepregnancy 100 "none" true>><<fameclamp>><<replace "#statsfamepregnancy">><<print Math.trunc($fame.pregnancy)>><</replace>><</link>>
+	| <<link ">>>">><<famepregnancy 1000 "none" true>><<fameclamp>><<replace "#statsfamepregnancy">><<print Math.trunc($fame.pregnancy)>><</replace>><</link>>
+	<br>
+	<<link "<<<">><<fameimpreg -1000 "none" true>><<fameclamp>><<replace "#statsfameimpreg">><<print Math.trunc($fame.impreg)>><</replace>><</link>> |
+	<<link "<<">><<fameimpreg -100 "none" true>><<fameclamp>><<replace "#statsfameimpreg">><<print Math.trunc($fame.impreg)>><</replace>><</link>> |
+	<<link "<">><<fameimpreg -10 "none" true>><<fameclamp>><<replace "#statsfameimpreg">><<print Math.trunc($fame.impreg)>><</replace>><</link>> |
+	播种: <span id="statsfameimpreg"><<print Math.trunc($fame.impreg)>></span>
+	| <<link ">">><<fameimpreg 10 "none" true>><<fameclamp>><<replace "#statsfameimpreg">><<print Math.trunc($fame.impreg)>><</replace>><</link>>
+	| <<link ">>">><<fameimpreg 100 "none" true>><<fameclamp>><<replace "#statsfameimpreg">><<print Math.trunc($fame.impreg)>><</replace>><</link>>
+	| <<link ">>>">><<fameimpreg 1000 "none" true>><<fameclamp>><<replace "#statsfameimpreg">><<print Math.trunc($fame.impreg)>><</replace>><</link>>
+	<br>
+
+	<<link "<<<">><<fameexhibitionism -1000 "none" true>><<fameclamp>><<replace "#statsfameexhibitionism">><<print Math.trunc($fame.exhibitionism)>><</replace>><</link>> |
+	<<link "<<">><<fameexhibitionism -100 "none" true>><<fameclamp>><<replace "#statsfameexhibitionism">><<print Math.trunc($fame.exhibitionism)>><</replace>><</link>> |
+	<<link "<">><<fameexhibitionism -10 "none" true>><<fameclamp>><<replace "#statsfameexhibitionism">><<print Math.trunc($fame.exhibitionism)>><</replace>><</link>> |
+	露出: <span id="statsfameexhibitionism"><<print Math.trunc($fame.exhibitionism)>></span>
+	| <<link ">">><<fameexhibitionism 10 "none" true>><<fameclamp>><<replace "#statsfameexhibitionism">><<print Math.trunc($fame.exhibitionism)>><</replace>><</link>>
+	| <<link ">>">><<fameexhibitionism 100 "none" true>><<fameclamp>><<replace "#statsfameexhibitionism">><<print Math.trunc($fame.exhibitionism)>><</replace>><</link>>
+	| <<link ">>>">><<fameexhibitionism 1000 "none" true>><<fameclamp>><<replace "#statsfameexhibitionism">><<print Math.trunc($fame.exhibitionism)>><</replace>><</link>>
+	<br>
+
+	<<link "<<<">><<famescrap -1000 "none" true>><<fameclamp>><<replace "#statsfamescrap">><<print Math.trunc($fame.scrap)>><</replace>><</link>> |
+	<<link "<<">><<famescrap -100 "none" true>><<fameclamp>><<replace "#statsfamescrap">><<print Math.trunc($fame.scrap)>><</replace>><</link>> |
+	<<link "<">><<famescrap -10 "none" true>><<fameclamp>><<replace "#statsfamescrap">><<print Math.trunc($fame.scrap)>><</replace>><</link>> |
+	战斗: <span id="statsfamescrap"><<print Math.trunc($fame.scrap)>></span>
+	| <<link ">">><<famescrap 10 "none" true>><<fameclamp>><<replace "#statsfamescrap">><<print Math.trunc($fame.scrap)>><</replace>><</link>>
+	| <<link ">>">><<famescrap 100 "none" true>><<fameclamp>><<replace "#statsfamescrap">><<print Math.trunc($fame.scrap)>><</replace>><</link>>
+	| <<link ">>>">><<famescrap 1000 "none" true>><<fameclamp>><<replace "#statsfamescrap">><<print Math.trunc($fame.scrap)>><</replace>><</link>>
+	<br>
+
+	<<link "<<<">><<famegood -1000 "none" true>><<fameclamp>><<replace "#statsfamegood">><<print Math.trunc($fame.good)>><</replace>><</link>> |
+	<<link "<<">><<famegood -100 "none" true>><<fameclamp>><<replace "#statsfamegood">><<print Math.trunc($fame.good)>><</replace>><</link>> |
+	<<link "<">><<famegood -10 "none" true>><<fameclamp>><<replace "#statsfamegood">><<print Math.trunc($fame.good)>><</replace>><</link>> |
+	善良: <span id="statsfamegood"><<print Math.trunc($fame.good)>></span>
+	| <<link ">">><<famegood 10 "none" true>><<fameclamp>><<replace "#statsfamegood">><<print Math.trunc($fame.good)>><</replace>><</link>>
+	| <<link ">>">><<famegood 100 "none" true>><<fameclamp>><<replace "#statsfamegood">><<print Math.trunc($fame.good)>><</replace>><</link>>
+	| <<link ">>>">><<famegood 1000 "none" true>><<fameclamp>><<replace "#statsfamegood">><<print Math.trunc($fame.good)>><</replace>><</link>>
+	<br>
+
+	<<link "<<<">><<famebusiness -1000 "none" true>><<fameclamp>><<replace "#statsfamebusiness">><<print Math.trunc($fame.business)>><</replace>><</link>> |
+	<<link "<<">><<famebusiness -100 "none" true>><<fameclamp>><<replace "#statsfamebusiness">><<print Math.trunc($fame.business)>><</replace>><</link>> |
+	<<link "<">><<famebusiness -10 "none" true>><<fameclamp>><<replace "#statsfamebusiness">><<print Math.trunc($fame.business)>><</replace>><</link>> |
+	商业: <span id="statsfamebusiness"><<print Math.trunc($fame.business)>></span>
+	| <<link ">">><<famebusiness 10 "none" true>><<fameclamp>><<replace "#statsfamebusiness">><<print Math.trunc($fame.business)>><</replace>><</link>>
+	| <<link ">>">><<famebusiness 100 "none" true>><<fameclamp>><<replace "#statsfamebusiness">><<print Math.trunc($fame.business)>><</replace>><</link>>
+	| <<link ">>>">><<famebusiness 1000 "none" true>><<fameclamp>><<replace "#statsfamebusiness">><<print Math.trunc($fame.business)>><</replace>><</link>>
+	<br>
+
+	<<link "<<<">><<famesocial -1000 "none" true>><<fameclamp>><<replace "#statsfamesocial">><<print Math.trunc($fame.social)>><</replace>><</link>> |
+	<<link "<<">><<famesocial -100 "none" true>><<fameclamp>><<replace "#statsfamesocial">><<print Math.trunc($fame.social)>><</replace>><</link>> |
+	<<link "<">><<famesocial -10 "none" true>><<fameclamp>><<replace "#statsfamesocial">><<print Math.trunc($fame.social)>><</replace>><</link>> |
+	社交: <span id="statsfamesocial"><<print Math.trunc($fame.social)>></span>
+	| <<link ">">><<famesocial 10 "none" true>><<fameclamp>><<replace "#statsfamesocial">><<print Math.trunc($fame.social)>><</replace>><</link>>
+	| <<link ">>">><<famesocial 100 "none" true>><<fameclamp>><<replace "#statsfamesocial">><<print Math.trunc($fame.social)>><</replace>><</link>>
+	| <<link ">>>">><<famesocial 1000 "none" true>><<fameclamp>><<replace "#statsfamesocial">><<print Math.trunc($fame.social)>><</replace>><</link>>
+	<br>
+
+	<<link "<<<">><<famemodel -1000 "none" true>><<fameclamp>><<replace "#statsfamemodel">><<print Math.trunc($fame.model)>><</replace>><</link>> |
+	<<link "<<">><<famemodel -100 "none" true>><<fameclamp>><<replace "#statsfamemodel">><<print Math.trunc($fame.model)>><</replace>><</link>> |
+	<<link "<">><<famemodel -10 "none" true>><<fameclamp>><<replace "#statsfamemodel">><<print Math.trunc($fame.model)>><</replace>><</link>> |
+	走秀: <span id="statsfamemodel"><<print Math.trunc($fame.model)>></span>
+	| <<link ">">><<famemodel 10 "none" true>><<fameclamp>><<replace "#statsfamemodel">><<print Math.trunc($fame.model)>><</replace>><</link>>
+	| <<link ">>">><<famemodel 100 "none" true>><<fameclamp>><<replace "#statsfamemodel">><<print Math.trunc($fame.model)>><</replace>><</link>>
+	| <<link ">>>">><<famemodel 1000 "none" true>><<fameclamp>><<replace "#statsfamemodel">><<print Math.trunc($fame.model)>><</replace>><</link>>
+	<br>
+<</widget>>
+
+<<widget "cheats-teleport">>
+	<<if ["Clothing Shop", "Forest Shop", "School Library Shop", "Adult Shop Store"].includes($passage)>>
+		<span class="red">在服装店传送可能会破坏你的衣柜。</span>请在传送前离开服装店。
+	<<elseif setup.majorAreas.includes($passage) and $event is undefined>>
+		<b>从超出世界范围外的任何地方进行远程传送，都可能会导致Bug。</b>
+		<br><br>
+
+		<span class="gold">镇内</span>
+		<br>
+		<<domusicon>>[[宅邸街|Domus Street]]
+		<br>
+		<<domushouseicon>>[[孤儿院|Orphanage]]
+		<br>
+		<<barbicon>>[[倒钩街|Barb Street]]
+		<br>
+		<<if $dorenintro gte 1 and $exposed lte 0>>
+			<<dorenflaticon>><<link [[多伦的公寓|Doren Entrance]]>><</link>>
+			<br>
+		<</if>>
+		<<dancestudioicon>>[[舞蹈室|Dance Studio]]
+		<br>
+		<<policeicon>>[[警察局|Police Station]]
+		<br>
+		<<policeicon>>[[警察局办公室|Police Back Office]]
+		<br>
+		<<danubeicon>>[[多瑙河街|Danube Street]]
+		<br>
+		<<spaicon>>[[多瑙河水疗中心|Spa]]
+		<br>
+		<<wolficon>>[[狼街|Wolf Street]]
+		<br>
+		<<wolficon>>[[神殿|Temple]]
+		<br>
+		<<soupkitchenicon>>[[布施汤厨房|Soup Kitchen]]
+		<br>
+		<<connudatusicon>>[[康努达塔斯街|Connudatus Street]]
+		<br>
+		<<stripclubicon>>[[脱衣舞俱乐部|Strip Club]]
+		<br>
+		<<nightingaleicon>>[[南丁格尔街|Nightingale Street]]
+		<br>
+		<<hospitalicon>><<link [[医院|Hospital front]]>><</link>>
+		<br>
+		<<highicon>>[[商业街|High Street]]
+		<br>
+		<<shoppingcentreicon>>[[购物中心|Shopping Centre]]
+		<br>
+		<<elkicon>>[[麋鹿街|Elk Street]]
+		<br>
+		<<if $trash_unlocked is 1>>
+			<<landfillicon>><<link [[麋鹿街垃圾填埋场|Trash Gate Enter]]>><</link>>
+			<br>
+		<</if>>
+		<<if $compoundcard or $farm_stage gte 9>>
+			<<landfillicon>>[[麋鹿街复合加工厂|Elk Compound]]
+			<br>
+		<</if>>
+		<<oxfordicon>>[[牛津街|Oxford Street]]
+		<br>
+		<<museumicon>>[[博物馆|Museum]]
+		<br>
+		<<oxfordicon>>[[学校前庭|School Front Courtyard]]
+		<br>
+		<<harvesticon>>[[丰收街|Harvest Street]]
+		<br>
+		<<brothelicon>>[[妓院|Brothel]]
+		<br>
+		<<pubicon>>[[酒吧|Pub]]
+		<br>
+		<<busstationicon>>[[车站|Bus Station]]
+		<br>
+		<<mericon>>[[梅尔街|Mer Street]]
+		<br>
+		<<docksicon>>[[码头|Docks]]
+		<br>
+		<<starfishicon>>[[海星街|Starfish Street]]
+		<br>
+		<<beachicon>>[[沙滩|Beach]]
+		<br>
+		<<clifficon>>[[峭壁街|Cliff Street]]
+		<br>
+		<<cafeicon>>[[海风咖啡馆|Ocean Breeze]]
+		<br>
+		<<alleyicon>>[[商业区小巷|Commercial alleyways]]
+		<br>
+		<<alleyicon>>[[工业区小巷|Industrial alleyways]]
+		<br>
+		<<alleyicon>>[[住宅区小巷|Residential alleyways]]
+		<br><br>
+
+		<span class="gold">镇外</span>
+		<br>
+		<<foresticon>>[[森林|Forest]]
+		<br>
+		<<roadicon>>[[农场|Farm Road 1]]
+		<br><br>
+
+		<span class="gold">地下</span>
+		<br>
+		<<sewericon>>[[工业区排水系统|Industrial Drain]]
+		<br>
+		<<sewericon>>[[商业区排水系统|Commercial Drain]]
+		<br>
+		<<sewericon>>[[住宅区排水系统|Residential Drain]]
+		<br>
+		<<sewericon>><<link [[排水系统出海口|Drain Exit]]>><</link>>
+		<br>
+		<<sewericon>>[[住宅区旧下水道|Sewers Residential]]
+		<br>
+		<<sewericon>>[[商业区旧下水道|Sewers Commercial]]
+		<br>
+		<<sewericon>>[[工业区旧下水道|Sewers Industrial]]
+		<br>
+	<<else>>
+		<span class="red">在你目前所处的区域中传送可能会破坏你的存档，或者你当前正在进行一项活动。</span>在传送之前，请先返回到世界范围内。
+	<</if>>
+<</widget>>
+
+<<widget "cheats-other">>
+	<span class="gold">时间</span>
+	<br>
+	<<link [[推进 15 分钟|$passage]]>><<pass 15>><</link>>
+	<br>
+	<<link [[推进 30 分钟|$passage]]>><<pass 30>><</link>>
+	<br>
+	<<link [[推进 1 小时|$passage]]>><<pass 1 hour>><</link>>
+	<br>
+	<<link [[推进 2 小时|$passage]]>><<pass 2 hour>><</link>>
+	<br>
+	<<link [[推进 3 小时|$passage]]>><<pass 3 hour>><</link>>
+	<br>
+	<<link [[推进 6 小时|$passage]]>><<pass 6 hour>><</link>>
+	<br>
+	<<link [[推进 8 小时|$passage]]>><<pass 8 hour>><</link>>
+	<br>
+	<<link [[推进 12 小时|$passage]]>><<pass 12 hour>><</link>>
+	<br>
+	<<link [[推进 16 小时|$passage]]>><<pass 16 hour>><</link>>
+	<br>
+	<<link [[推进 24 小时|$passage]]>><<pass 24 hour>><</link>>
+	<br><br>
+
+	<span class="gold">天气</span>
+	<br>
+	当前天气: <<print $weather.replace("clear","晴天").replace("overcast","阴天").replace("rain","雨").replace("snow","雪")>>
+	<br>
+	更改为:
+	<<link [[晴天|$passage]]>><<set $weather to "clear">><</link>> |
+	<<link [[阴天|$passage]]>><<set $weather to "overcast">><</link>> |
+	<<link [[雨天|$passage]]>><<set $weather to "rain">><</link>>
+	<br><br>
+
+	<<if $maxDefaultActionSets isnot undefined>>
+		<span class="gold">默认行动设置</span>
+		<br>
+		<span class="description">过多的行动设置将会降低战斗性能，作弊菜单外的最大值为7</span>
+		<br>
+		<<link "<<<">><<set $maxDefaultActionSets to Math.clamp($maxDefaultActionSets -= 10, 1, 10)>><<replace "#statsDefaultSets">><<print $maxDefaultActionSets>><</replace>><</link>> |
+		<<link "<<">><<set $maxDefaultActionSets to Math.clamp($maxDefaultActionSets -= 5, 1, 10)>><<replace "#statsDefaultSets">><<print $maxDefaultActionSets>><</replace>><</link>> |
+		<<link "<">><<set $maxDefaultActionSets to Math.clamp($maxDefaultActionSets -= 1, 1, 10)>><<replace "#statsDefaultSets">><<print $maxDefaultActionSets>><</replace>><</link>> |
+		设置: <span id="statsDefaultSets"><<print $maxDefaultActionSets>></span>
+		| <<link ">">><<set $maxDefaultActionSets to Math.clamp($maxDefaultActionSets += 1, 1, 10)>><<replace "#statsDefaultSets">><<print $maxDefaultActionSets>><</replace>><</link>>
+		| <<link ">>">><<set $maxDefaultActionSets to Math.clamp($maxDefaultActionSets += 5, 1, 10)>><<replace "#statsDefaultSets">><<print $maxDefaultActionSets>><</replace>><</link>>
+		| <<link ">>>">><<set $maxDefaultActionSets to Math.clamp($maxDefaultActionSets += 10, 1, 10)>><<replace "#statsDefaultSets">><<print $maxDefaultActionSets>><</replace>><</link>>
+		<br><br>
+	<</if>>
+
+	<<if $parasitepregdisable is "f" && ($sexStats.anus.pregnancy.type is "parasite" or $sexStats.anus.pregnancy.type is null)>>
+		<div id="cheatsImpregOptions-anus"><<cheatsImpregOptions "anus">></div>
+	<<elseif !($sexStats.anus.pregnancy.type is "parasite" or $sexStats.anus.pregnancy.type is null)>>
+		你目前怀有"<<print $sexStats.anus.pregnancy.type>>"的孩子，无法访问这些设置。
+		<br>
+	<<else>>
+		您需要在设置中启用肛门妊娠才能访问这些设置。
+		<br>
+	<</if>>
+	<br>
+	<<if $parasitepregdisable is "f" && ($sexStats.vagina.pregnancy.type is "parasite" or $sexStats.vagina.pregnancy.type is null)>>
+		<div id="cheatsImpregOptions-vagina"><<cheatsImpregOptions "vagina">></div>
+	<<elseif !($sexStats.vagina.pregnancy.type is "parasite" or $sexStats.vagina.pregnancy.type is null)>>
+		你目前怀有"<<print $sexStats.vagina.pregnancy.type>>"的孩子，无法访问这些设置。
+		<br>
+	<<else>>
+		您需要在设置中启用肛门妊娠才能访问这些设置。
+		<br>
+	<</if>>
+	<br>
+
+	<<if ($playerPregnancyBeastDisable is "f" or $playerPregnancyHumanDisable is "f")>>
+		<span class="gold">怀孕作弊</span>
+		<div id="cheatsPregnancyOptions"><<cheatsPregnancyOptions>></div>
+	<</if>>
+<</widget>>
+
+<<widget "cheatsImpregOptions">>
+	<<capture _args>>
+		<<set $_pregnancy to $sexStats[_args[0]].pregnancy>>
+		<span class="gold"><<print (_args[0] is "anus" ? "肛门" : "阴道")>> 寄生虫怀孕</span>
+		<br>
+		<<if $_pregnancy.fetus.length lt maxParasites(_args[0])>>
+			你正孕育一只 |
+			<<link "鳗鱼">><<impregnateParasite "eels" true _args[0]>><<cheatsImpreg _args[0]>><</link>> |
+			<<link "史莱姆">><<impregnateParasite "slimes" true _args[0]>><<cheatsImpreg _args[0]>><</link>> |
+			<<link "鱼">><<impregnateParasite "fish" true _args[0]>><<cheatsImpreg _args[0]>><</link>> |
+			<<link "蛇">><<impregnateParasite "snake" true _args[0]>><<cheatsImpreg _args[0]>><</link>> |
+			<<link "蠕虫">><<impregnateParasite "worms" true _args[0]>><<cheatsImpreg _args[0]>><</link>> |
+			<<link "触手">><<impregnateParasite "tentacle" true _args[0]>><<cheatsImpreg _args[0]>><</link>> |
+			<<link "潜伏者">><<impregnateParasite "lurker" true _args[0]>><<cheatsImpreg _args[0]>><</link>> |
+			<<link "黄蜂">><<impregnateParasite "wasp" true _args[0]>><<cheatsImpreg _args[0]>><</link>> |
+			<<link "乌贼">><<impregnateParasite "squid" true _args[0]>><<cheatsImpreg _args[0]>><</link>> |
+			<<link "植物">><<impregnateParasite "vine" true _args[0]>><<cheatsImpreg _args[0]>><</link>> |
+			<br>
+			<<if $_pregnancy.motherStatus lt 2>>
+				你正孕育一只雌雄同体的 |
+				<<link "鳗鱼">><<impregnateParasite "eels" true _args[0]>><<cheatsImpreg _args[0] true>><</link>> |
+				<<link "史莱姆">><<impregnateParasite "slimes" true _args[0]>><<cheatsImpreg _args[0] true>><</link>> |
+				<<link "鱼">><<impregnateParasite "fish" true _args[0]>><<cheatsImpreg _args[0] true>><</link>> |
+				<<link "蛇">><<impregnateParasite "snake" true _args[0]>><<cheatsImpreg _args[0] true>><</link>> |
+				<<link "蠕虫">><<impregnateParasite "worms" true _args[0]>><<cheatsImpreg _args[0] true>><</link>> |
+				<<link "触手">><<impregnateParasite "tentacle" true _args[0]>><<cheatsImpreg _args[0] true>><</link>> |
+				<<link "潜伏者">><<impregnateParasite "lurker" true _args[0]>><<cheatsImpreg _args[0] true>><</link>> |
+				<<link "黄蜂">><<impregnateParasite "wasp" true _args[0]>><<cheatsImpreg _args[0] true>><</link>> |
+				<<link "乌贼">><<impregnateParasite "squid" true _args[0]>><<cheatsImpreg _args[0] true>><</link>> |
+				<<link "植物">><<impregnateParasite "vine" true _args[0]>><<cheatsImpreg _args[0] true>><</link>> |
+			<<else>>
+				一次只能有一个雌雄同体。
+			<</if>>
+		<<else>>
+			你已抵达<<print (_args[0] is "anus" ? "肛门" : "阴道")>>一处怀孕的最大上限。
+		<</if>>
+		<br>
+		<<set $_linkName to "Clear Current " + (_args[0] is "anus" ? "Anal" : "Vaginal") + " Pregnancies">>
+		<<link $_linkName>>
+			<<if $sexStats[_args[0]].pregnancy.type is "parasite">>
+				<<set $sexStats[_args[0]].pregnancy.fetus to []>>
+				<<set $sexStats[_args[0]].pregnancy.type to null>>
+				<<if $sexStats[_args[0]].pregnancy.motherStatus is 2>>
+					<<set $sexStats[_args[0]].pregnancy.motherStatus to 1>>
+				<</if>>
+			<</if>>
+			<<replace `"#cheatsImpregOptions-" + _args[0]`>><<cheatsImpregOptions _args[0]>><</replace>>
+		<</link>>
+		<br>
+	<</capture>>
+<</widget>>
+
+<<widget "cheatsImpreg">>
+	<<set $_pregnancy to $sexStats[_args[0]].pregnancy>>
+	<<if $pregnancyStats.parasiteDoctorEvents lt 2>>
+		<<set $pregnancyStats.parasiteDoctorEvents to 2>>
+	<</if>>
+	<<if _args[1]>>
+		<<set $_pregnancy.motherStatus to 2>>
+		<<set $_pregnancy.fetus.last().stats.gender to "Hermaphrodite">>
+		<<set $_pregnancy.fetus.last().stats.lastEgg to Math.floor($_pregnancy.fetus.last().stats.growth / 3)>>
+	<<else>>
+		<<if $_pregnancy.motherStatus is 0>>
+			<<set $_pregnancy.motherStatus to 1>>
+		<</if>>
+	<</if>>
+	<<fertiliseParasites _args[0]>>
+	<<replace `"#cheatsImpregOptions-" + _args[0]`>><<cheatsImpregOptions _args[0]>><</replace>>
+<</widget>>
+
+<<widget "cheatsPregnancyOptions">>
+	<<set _womb to ($player.vaginaExist ? "vagina" : "anus")>>
+	<<set _elegible to ["Avery", "Eden", "Harper", "Kylar", "Morgan", "Robin", "Whitney", "Black Wolf", "Alex", "Wren", "Sydney"]>>
+	<<set _impregnatableNPC to []>>
+	<<set _impregnatorNPC to []>>
+	<<set _pregnantNPC to []>>
+	<<for _pregEnabled range $NPCName.filter(npc => npc.pregnancy and npc.pregnancy.enabled isnot undefined)>>
+		<<if playerPregnancyPossibleWith(_pregEnabled)>>
+			<<set _impregnatorNPC.push($NPCName.indexOf(_pregEnabled))>>
+		<</if>>
+		<<if NPCPregnancyPossibleWithPlayer(_pregEnabled.nam)>>
+			<<set _impregnatableNPC.push($NPCName.indexOf(_pregEnabled))>>
+		<</if>>
+	<</for>>
+	<<if $player.vaginaExist or canBeMPregnant()>>
+		<<set _menstruation to $sexStats.vagina.menstruation>>
+		<<set $_pregnancy to getPregnancyObject()>>
+		<<if !playerIsPregnant() and $cycledisable == "f">>
+			你尚未怀孕:
+			<br>
+			<<link "<<">><<set _menstruation.currentDay to Math.clamp(_menstruation.currentDay - 5, 0, _menstruation.currentDaysMax)>><<replace "#cheatMenstruationDay">><<print Math.trunc(_menstruation.currentDay)>><</replace>><</link>> |
+			<<link "<">><<set _menstruation.currentDay to Math.clamp(_menstruation.currentDay - 1, 0, _menstruation.currentDaysMax)>><<replace "#cheatMenstruationDay">><<print Math.trunc(_menstruation.currentDay)>><</replace>><</link>> |
+			经期: <span id="cheatMenstruationDay"><<print Math.trunc(_menstruation.currentDay)>></span> of _menstruation.currentDaysMax
+			| <<link "排卵">><<set _menstruation.currentDay to _menstruation.stages[2]>><<replace "#cheatMenstruationDay">><<print Math.trunc(_menstruation.currentDay)>><</replace>><</link>>
+			| <<link ">">><<set _menstruation.currentDay to Math.clamp(_menstruation.currentDay + 1, 0, _menstruation.currentDaysMax)>><<replace "#cheatMenstruationDay">><<print Math.trunc(_menstruation.currentDay)>><</replace>><</link>>
+			| <<link ">>">><<set _menstruation.currentDay to Math.clamp(_menstruation.currentDay + 5, 0, _menstruation.currentDaysMax)>><<replace "#cheatMenstruationDay">><<print Math.trunc(_menstruation.currentDay)>><</replace>><</link>>
+			<br><br>
+		<</if>>
+		<<if playerIsPregnant()>>
+			你怀孕了:
+			<br>
+			<<link "<<">>
+				<<set _pregnancyTimer to getPregnancyObject()>>
+				<<set _pregnancyTimer.timer to Math.clamp(_pregnancyTimer.timer - _pregnancyTimer.timerEnd * 0.05, 0, _pregnancyTimer.timerEnd)>>
+				<<replace "#cheatPregnancyProgress">><<print Math.round(Math.clamp(_pregnancyTimer.timer / _pregnancyTimer.timerEnd * 100, 0, 100))>>%<</replace>>
+			<</link>> |
+			<<link "<">>
+				<<set _pregnancyTimer to getPregnancyObject()>>
+				<<set _pregnancyTimer.timer to Math.clamp(_pregnancyTimer.timer - _pregnancyTimer.timerEnd * 0.01, 0, _pregnancyTimer.timerEnd)>>
+				<<replace "#cheatPregnancyProgress">><<print Math.round(Math.clamp(_pregnancyTimer.timer / _pregnancyTimer.timerEnd * 100, 0, 100))>>%<</replace>>
+			<</link>> |
+			怀孕进程: <span id="cheatPregnancyProgress"><<print Math.round(Math.clamp($_pregnancy.timer / $_pregnancy.timerEnd * 100, 0, 100))>>%</span>
+			| <<link ">">>
+				<<set _pregnancyTimer to getPregnancyObject()>>
+				<<set _pregnancyTimer.timer to Math.clamp(_pregnancyTimer.timer + _pregnancyTimer.timerEnd * 0.01, 0, _pregnancyTimer.timerEnd * .99)>>
+				<<replace "#cheatPregnancyProgress">><<print Math.round(Math.clamp(_pregnancyTimer.timer / _pregnancyTimer.timerEnd * 100, 0, 100))>>%<</replace>>
+			<</link>>
+			| <<link ">>">>
+				<<set _pregnancyTimer to getPregnancyObject()>>
+				<<set _pregnancyTimer.timer to Math.clamp(_pregnancyTimer.timer + _pregnancyTimer.timerEnd * 0.05, 0, _pregnancyTimer.timerEnd * .99)>>
+				<<replace "#cheatPregnancyProgress">><<print Math.round(Math.clamp(_pregnancyTimer.timer / _pregnancyTimer.timerEnd * 100, 0, 100))>>%<</replace>>
+			<</link>>
+			<br><br>
+			<<link [[清除目前怀孕|$passage]]>>
+				<<set _pregnancyClear to getPregnancyObject()>>
+				<<set _pregnancyClear.type to null>>
+				<<set _pregnancyClear.fetus to []>>
+				<<set _pregnancyClear.waterBreaking to false>>
+				<<set _pregnancyClear.waterBreakingTimer to null>>
+				<<set _pregnancyClear.timer to null>>
+				<<set _pregnancyClear.timerEnd to null>>
+				<<set _pregnancyClear.awareOf to null>>
+				<<set _pregnancyClear.awareOfMultiple to null>>
+				<<set _pregnancyClear.awareOfDetails to null>>
+				<<set _pregnancyClear.potentialFathers to []>>
+				<<set $sexStats[($player.vaginaExist ? "vagina" : "anus")].sperm to []>>
+				<<restartMenstruationCycle>>
+				<<set _menstruation.currentState to "normal">>
+				<<set _menstruation.recoveryTime to null>>
+				<<set _menstruation.recoveryTimeStart to null>>
+				<<set _menstruation.recoveryStage to null>>
+			<</link>>
+			<span class="description">这只是一项作弊功能，不是堕胎。</span>
+			<br><br>
+		<<else>>
+			<<if ($playerPregnancyHumanDisable == "f" or $playerPregnancyBeastDisable == "f") and !playerIsPregnant()>>
+				怀上的孩子是: 
+				<<if $pregnancytype is "realistic">>
+					<span class="description">即时（恋物癖）怀孕</span>
+				<</if>>
+				<br>
+				<<if $playerPregnancyHumanDisable == "f">>
+					<<link [[随机一名人类|$passage]]>> /* checks if males or females have penises, if there is no people with penises a foreigner impregnates PC */
+					<<set _impregnator to "作弊者-">>
+					<<if $dgchance gt 0 and $cbchance lt 100>>
+						<<set _impregnator += either("男人", "男孩", "女人", "女孩")>>
+					<<elseif $dgchance gt 0 and $cbchance gt 99>>
+						<<set _impregnator += either("女人", "女孩")>>
+					<<elseif $dgchance lt 1 and $cbchance lt 100>>
+						<<set _impregnator += either("男人", "男孩")>>
+					<<else>>
+						<<set _impregnator += "外来者">>
+					<</if>>
+					<<playerPregnancy _impregnator "human" true _womb undefined true>>
+					<</link>>
+				<</if>>
+				<<if $playerPregnancyBeastDisable == "f">>
+					<<if $playerPregnancyHumanDisable == "f">>
+						| 
+					<</if>>
+					<<link [[一匹狼|$passage]]>>
+					<<if beastMaleChance() gt 0>> /* checks if there are male wolves, if not a foreigner wolf impregnates PC */
+						<<set _impregnator to "作弊者-狼">>
+					<<else>>
+						<<set _impregnator to "作弊者-外来的狼">>
+					<</if>>
+					<<playerPregnancy _impregnator "wolf" true _womb undefined true>>
+					<</link>>
+				<</if>>
+				<<for _pregEnabled range _impregnatorNPC>>
+					<<set _actor to $NPCName[_pregEnabled]>>
+					<<if !_elegible.includes(_actor.nam)>>
+						<<continue>>
+					<</if>>
+					<<set _spermType to (_actor.nam == "Black Wolf" ? "wolf" : "human")>>
+					<<capture _actor, _spermType, _womb>>
+					| <<link [[_actor.nam|$passage]]>> 
+						<<playerPregnancy _actor.nam _spermType true _womb undefined true>>
+					<</link>>
+					<</capture>>
+				<</for>>
+				<<if $player.penisExist>>
+					| <<link [[你自己|$passage]]>>
+					<<playerPregnancy "pc" "human" true _womb undefined true>>
+					<</link>>
+				<</if>>
+				<br><br>
+				<<if $pregnancytype is "realistic">>
+					添加精子: <span id="cheatSpermSources" class="description">(你目前拥有 $sexStats[_womb].sperm.length 种精子来源)</span>
+					<<if $playerPregnancyHumanDisable == "f">>
+						<<link "无名的捐献者">> /* The sperm owner is always the same, anonymous donor, so it helps pregnancy from only one sorce */
+							<<recordSperm `{target: "pc", spermOwner: "无名的捐献者", spermType: "human", genital: _womb}`>>
+							<<replace "#cheatSpermSources">>(you have $sexStats[_womb].sperm.length sources of sperm)<</replace>>
+						<</link>>
+						| <<link "随机一名人类">> /* checks if males or females have penises, if there is no people with penises a foreigner inseminates PC */
+							<<set _impregnator to either("随性的", "散漫的", "路过的", "随性的", "漂泊的", "闲逛的", "偶遇的", "花心的", "马虎的", "不负责的", "粗心的", "疏忽的") + "作弊者-">>
+							<<if $dgchance gt 0 and $cbchance lt 100>>
+								<<set _impregnator += either("男人", "男孩", "女人", "女孩")>>
+							<<elseif $dgchance gt 0 and $cbchance gt 99>>
+								<<set _impregnator += either("女人", "女孩")>>
+							<<elseif $dgchance lt 1 and $cbchance lt 100>>
+								<<set _impregnator += either("男人", "男孩")>>
+							<<else>>
+								<<set _impregnator += "外来者">>
+							<</if>>
+							<<recordSperm `{target: "pc", spermOwner: _impregnator, spermType: "human", genital: _womb}`>>
+							<<replace "#cheatSpermSources">>(you have $sexStats[_womb].sperm.length sources of sperm)<</replace>>
+						<</link>>
+					<</if>>
+					<<if $playerPregnancyBeastDisable == "f">>
+						<<if $playerPregnancyHumanDisable == "f">>
+							| 
+						<</if>>
+						<<link "一匹狼">>
+							<<if beastMaleChance() gt 0>> /* checks if there are male wolves, if not a foreigner wolf inseminates PC */
+								<<set _impregnator to "作弊者-狼">>
+							<<else>>
+								<<set _impregnator to "作弊者-外来的狼">>
+							<</if>>
+							<<recordSperm `{target: "pc", spermOwner: _impregnator, spermType: "wolf", genital: _womb}`>>
+							<<replace "#cheatSpermSources">>(you have $sexStats[_womb].sperm.length sources of sperm)<</replace>>
+						<</link>>
+					<</if>>
+					<<for _pregEnabled range _impregnatorNPC>>
+						<<set _actor to $NPCName[_pregEnabled]>>
+						<<if !_elegible.includes(_actor.nam)>>
+							<<continue>>
+						<</if>>
+						<<set _spermType to (_actor.nam === "Black Wolf" ? "wolf" : "human")>>
+						<<capture _actor, _spermType, _womb>>
+						| <<link _actor.nam.replace("Avery","艾弗里").replace("Bailey","贝利").replace("Briar","布莱尔").replace("Charlie","查里").replace("Darryl","达里尔").replace("Doren","多伦").replace("Eden","伊甸").replace("Gwylan","格威岚").replace("Harper","哈珀").replace("Jordan","约旦").replace("Kylar","凯拉尔").replace("Landry","兰德里").replace("Leighton","礼顿").replace("Mason","梅森").replace("Morgan","摩根").replace("River","瑞沃").replace("Robin","罗宾").replace("Sam","萨姆").replace("Sirris","西里斯").replace("Whitney","惠特尼").replace("Winter","温特").replace("Niki","尼奇").replace("Quinn","奎因").replace("Remy","雷米").replace("Alex","艾利克斯").replace("Wren","伦恩").replace("Sydney","悉尼").replace("Taylor","泰勒").replace("Casey","凯西").replace("Ivory Wraith","象牙幽灵").replace("Black Wolf","黑狼").replace("Great Hawk","巨鹰")>> 
+							<<recordSperm `{target: "pc", spermOwner: _actor.nam, spermType: "human", genital: _womb}`>>
+							<<replace "#cheatSpermSources">>(you have $sexStats[_womb].sperm.length sources of sperm)<</replace>>
+						<</link>>
+						<</capture>>
+					<</for>>
+					<<if $player.penisExist>>
+						| <<link "你自己">>
+							<<recordSperm `{target: "pc", spermOwner: "pc", spermType: "human", genital: _womb}`>>
+							<<replace "#cheatSpermSources">>(you have $sexStats[_womb].sperm.length sources of sperm)<</replace>>
+						<</link>>
+					<</if>>
+					<br><br>
+				<</if>>
+			<</if>>
+		<</if>>
+	<<else>>
+		你不能使用作弊怀孕。
+		<br><br>
+	<</if>>
+	<<if $player.penisExist and _impregnatableNPC.length>>
+		怀上NPC的孩子:
+		<br>
+		<<set _fertileNPC to 0>>
+		<<for _pregEnabled range _impregnatableNPC>>
+			<<set _actor to $NPCName[_pregEnabled]>>
+			<<if !_elegible.includes(_actor.nam) or _actor.pregnancy.fetus.length>>
+				<<continue>>
+			<</if>>
+			<<set _fertileNPC += 1>>
+			<<print _actor.nam>>:
+			<<capture _actor>>
+			<<set _linkText to "使受孕" + _actor.pronouns.him>>
+			<<link [[_linkText|$passage]]>> 
+				<<namedNpcPregnancy _actor.nam "pc" "human" true undefined true>>
+			<</link>>
+			<<if $pregnancytype is "realistic">> 
+				<<set _linkText to "人工授精" + _actor.pronouns.him>>
+				- <<link _linkText>>
+					<<recordSperm `{target: _actor.nam, spermOwner: "pc", spermType: "human", genital: "vagina"}`>>
+					<<replace `"#cheatSpermSources" + _actor.nam`>>(<<print _actor.pregnancy.sperm.length>> doses)<</replace>>
+				<</link>>
+				<span @id="'cheatSpermSources' + _actor.nam" class="description">(<<print _actor.pregnancy.sperm.length>> doses)</span>
+			<</if>>
+			<<if $cycledisable == "f">>
+				- <<link [[受孕期|$passage]]>>
+					<<set _actor.pregnancy.cycleDay to _actor.pregnancy.cycleDangerousDay - 1>>
+				<</link>>
+			<</if>>
+			<</capture>>
+			<br>
+		<</for>>
+		<<if !_fertileNPC is 0>>
+			你不能跟任何NPC产生生育关系。
+		<</if>>
+	<<else>>
+		你不能使任何NPC怀孕<<if !$player.penisExist>>，在你没有阴茎的情况下<</if>>。
+	<</if>>
+	<br>
+	<<for _pregEnabled range $NPCName>> /* Checks for any pregnant named NPC. Only elegible can be impregated by cheats, but maybe other NNPC are impregnated in game */
+		<<if npcIsPregnant(_pregEnabled.nam) and _pregEnabled.pregnancy.type != "parasite">>
+			<<set _pregnantNPC.push($NPCName.indexOf(_pregEnabled))>>
+		<</if>>
+	<</for>>
+	<<if _pregnantNPC.length>>
+		使NPC怀孕:
+		<br>
+		<<for _actress range _pregnantNPC>>
+			<<set _pregnancyNPC to $NPCName[_actress].pregnancy>>
+			<<print $NPCName[_actress].nam>>: 
+			<<capture _actress _pregnancyNPC>>
+			<<link [[妊娠1期|$passage]]>>
+				<<set _pregnancyNPC.timer to _pregnancyNPC.timerEnd * .05>>
+			<</link>> -
+			<<link [[妊娠2期|$passage]]>>
+				<<set _pregnancyNPC.timer to _pregnancyNPC.timerEnd * .35>>
+			<</link>> -
+			<<link [[妊娠3期|$passage]]>>
+				<<set _pregnancyNPC.timer to _pregnancyNPC.timerEnd * .7>>
+			<</link>> -
+			<<link [[妊娠末期|$passage]]>>
+				<<set _pregnancyNPC.timer to _pregnancyNPC.timerEnd * .99>>
+			<</link>> -
+			<<link [[清除怀孕|$passage]]>>
+				<<set _pregnancyNPC.type to null>>
+				<<set _pregnancyNPC.fetus to []>>
+				<<set _pregnancyNPC.waterBreaking to false>>
+				<<set _pregnancyNPC.timer to null>>
+				<<set _pregnancyNPC.timerEnd to null>>
+				<<set _pregnancyNPC.npcAwareOf to null>>
+				<<set _pregnancyNPC.pcAwareOf to null>>
+				<<set _pregnancyNPC.potentialFathers to []>>
+				<<set _pregnancyNPC.sperm to []>>
+				<<set _pregnancyNPC.cicleDay to 1>>
+			<</link>>
+			<</capture>>
+			<br>
+		<</for>>
+	<</if>>
+	<br>
+	<br>
+<</widget>>

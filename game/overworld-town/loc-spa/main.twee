@@ -1,0 +1,903 @@
+:: Spa
+<<set $outside to 0>><<set $location to "spa">><<effects>>
+
+<<if !$daily.spaEvent>>
+	<<spa_event_select>>
+<</if>>
+
+你待在多瑙河街上的水疗中心。巨大的玻璃幕墙通道通向天然温泉，侧面的走廊通向其他设施。
+一块标牌上写着："日晒床开放中。每小时
+<<if Time.season is "summer">>
+	£10
+<<elseif Time.season is "winter">>
+	£60
+<<else>>
+	£25
+<</if>>
+。价格随季节变化。"
+<br><br>
+<<if $openinghours is 1>>
+	<<if $daily.spaEvent is "party">>
+		<span class="purple">喷泉水池里挤满了人，吵闹的音乐从里面传来。</span>看来有人包下了场地正在举行派对。
+	<<else>>
+		顾客们正在各自的池子里放松。
+	<</if>>
+<<else>>
+	设施内十分安静，你只能听到泉水静静流动的声音。
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+
+	<<passoutshop>>
+<<else>>
+	<<if $arousal gte $arousalmax>>
+		<<orgasmLocation "spa">>
+	<</if>>
+	<<if Time.hour is $closinghour>>
+		现在是关门时间，接待员正在清场。<<if $exposed gte 1>>一想到自己这副样子可能会被人看到，你心里就不由得一紧。<</if>>
+		<br>
+	<<elseif $openinghours is 0>>
+		你只身一人站在黑暗中。
+		<br><br>
+	<<elseif $exposed gte 1>>
+		<<if $uncomfortable.nude is false>>
+		你藏在一个衣柜里。可能被人抓个现行的想法让你寒毛竖立，但你还是决定待着不动。
+		<<else>>
+		你藏在衣柜里以维护自尊。
+		<</if>>
+		<br><br>
+	<</if>>
+	<<if $openinghours is 1 and $exposed lt 1>>
+		<<generate1>><<person1>>
+		<<if $spa_job gte 1>>
+			<<link [[担任按摩师 (0:50)|Spa Work Start]]>><<endevent>><<set $money += 1000>><</link>>
+			<br>
+		<<else>>
+			接待员，一名<<person>>从桌子上抬起头，皱了皱眉。"有事快说，"<<he>>说，"这可不是街头的流浪小鬼该来的地方。"
+			<br><br>
+			<<link [[找工作|Spa Work Ask]]>><</link>>
+			<br>
+		<</if>>
+		<<if Time.season is "spring" or Time.season is "autumn">>
+			<<if $money gte 2500>>
+				<<link [[日晒沙龙 (£25 1:00)|Spa Tan]]>><<set $money -= 2500>><</link>><<lstress>><<gggtanned>>
+				<br>
+			<</if>>
+		<<elseif Time.season is "winter">>
+			<<if $money gte 6000>>
+				<<link [[日晒沙龙 (£60 1:00)|Spa Tan]]>><<set $money -= 6000>><</link>><<lstress>><<gggtanned>>
+				<br>
+			<</if>>
+		<<else>>
+			<<if $money gte 1000>>
+				<<link [[日晒沙龙 (£10 1:00)|Spa Tan]]>><<set $money -= 1000>><</link>><<lstress>><<gggtanned>>
+				<br>
+			<</if>>
+		<</if>>
+	<</if>>
+	<<if $openinghours is 0 and Time.hour isnot $closinghour and !$weekly.theft.spa>>
+		<<link [[检查收银台|Spa Register]]>><</link>>
+		<br>
+	<</if>>
+	<br>
+<</if>>
+<<link [[离开|Danube Street]]>><<endevent>><</link>>
+<br>
+
+:: Spa Tan
+<<effects>>
+
+<<person1>><<person>>轻蔑地哼了一声，但还是收下了你的钱，没有再多说什么。
+<<endevent>>
+<br><br>
+你进入一个被日晒床占去大半空间的小房间。墙上有一扇巨大的落地窗，但已经被窗帘遮住了。
+<br><br>
+
+<<if $worn.under_lower.name isnot "naked">>
+	<<link [[只穿内衣晒日光浴 (1:00)|Spa Tan Underwear]]>><<stress -6>><<pass 60>><</link>>
+	<br>
+<</if>>
+<<link [[全裸晒日光浴 (1:00)|Spa Tan Naked]]>><<stress -6>><<pass 60>><</link>><<exhibitionist1>>
+<br>
+<<if $exhibitionism gte 75>>
+	<<link [[全裸晒日光浴，并把窗帘拉开 (1:00)|Spa Tan Curtains]]>><<stress -6>><<pass 60>><</link>><<exhibitionist5>>
+	<br>
+<</if>>
+
+
+:: Spa Tan Underwear
+<<effects>>
+
+<<upperstrip>>
+<<lowerstrip>>
+<<tanned 120 "tanLines">>
+
+你把衣服叠好，整齐地放在一边，然后爬进了日晒床，关上了它。
+<br><br>
+
+在蓝色光芒的包围下，你闭上双眼，感受着热量渗入肌肤的感觉。
+<br><br>
+
+<<if $rng gte 91>>
+	<<spa_tan_events>>
+<<elseif $rng gte 81>>
+	当你醒来时，时间已经到了，灯光逐渐褪去。你伸了个懒腰。<<ltiredness>><<tiredness -6>>
+	<br><br>
+
+
+
+	<<link [[继续|Spa]]>><<clotheson>><</link>>
+	<br>
+<<else>>
+	你放松下来，直到时间结束，灯光逐渐褪去。
+	<br><br>
+
+
+
+	<<link [[继续|Spa]]>><<clotheson>><</link>>
+	<br>
+<</if>>
+
+
+:: Spa Tan Naked
+<<effects>>
+
+<<clothesstrip>>
+<<tanned 120>>
+你脱得一件不剩，把衣服叠好放在了一边。
+<<exhibitionism1>>
+
+卸下包袱后，你爬进日晒床，关上了它。
+<br><br>
+
+在蓝色光芒的包围下，你闭上双眼，感受着热量渗入肌肤的感觉。
+<br><br>
+
+<<if $rng gte 91>>
+	<<spa_tan_events>>
+<<elseif $rng gte 81>>
+	当你醒来时，时间已经到了，灯光逐渐褪去。你伸了个懒腰。<<ltiredness>><<tiredness -6>>
+	<br><br>
+
+
+
+	<<link [[继续|Spa]]>><<clotheson>><</link>>
+	<br>
+<<else>>
+	你放松下来，直到时间结束，灯光逐渐褪去。
+	<br><br>
+
+
+
+	<<link [[继续|Spa]]>><<clotheson>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Spa Tan Curtains
+<<effects>>
+
+<<generate1>><<person1>>
+<<clothesstrip>>
+<<tanned 120>>
+<<if $daily.spaEvent is "party">>
+	你拉开窗帘，外面就是聚会的现场。聚会者们忙着喝酒和跳舞，没有注意到你—至少目前是这样的。
+	<br><br>
+
+	<<flaunting>>你缓缓脱下了衣服，将自己展示给任何有心观察的人。你听到一声激动的叫声，一个穿着泳装，<<person>>指向了你，你很快就成了众人的焦点。你爬进日晒床，关上了它。
+<<else>>
+	你拉开窗帘，有几十位顾客正在外面的温泉里懒洋洋地躺着。一个<<person>>瞥了过来，这是你获得的所有关注—至少目前是这样的。
+	<br><br>
+
+	<<flaunting>>你缓缓脱下了衣服，将自己展示给任何有心观察的人。你感到一道视线在你身上游走，直到你爬进并关上了日晒床。
+<</if>>
+<<exhibitionism5>>
+
+在蓝色光芒的包围下，你感受着热量渗入肌肤，心脏砰砰直跳。
+<br><br>
+<<endevent>>
+<<if $rng gte 81>>
+	<<spa_tan_events>>
+<<elseif $rng gte 71>>
+	当你醒来时，时间已经到了，灯光逐渐褪去。你伸了个懒腰。<<ltiredness>><<tiredness -6>>
+	<br><br>
+
+
+
+	<<link [[继续|Spa]]>><<clotheson>><</link>>
+	<br>
+<<else>>
+	你放松下来，直到时间结束，灯光逐渐褪去。
+	<br><br>
+
+
+
+	<<link [[继续|Spa]]>><<clotheson>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Spa Lock
+
+<<set $outside to 0>><<effects>><<set $lock to 200>>
+<<openinghours>>
+<<if currentSkillValue('skulduggery') gte $lock>>
+	<span class="green">锁看起来很容易撬开。</span>
+	<br><br>
+	<<link [[撬开它 (0:10)|Spa]]>><<pass 10>><<crimeup 1>><</link>><<crime>>
+	<br>
+<<else>>
+	<span class="red">这把锁超出了你的能力范围。</span><<skulduggeryrequired>>
+	<br><br>
+<</if>>
+<<link [[离开|Danube Street]]>><</link>>
+<br>
+
+
+:: Spa Work Ask
+<<effects>>
+
+<<person>>轻蔑地哼了一声。"我再说一遍，"<<he>>推了推眼镜，
+<<if $beauty gte ($beautymax / 7) * 6>>
+	<<spa_job_init>>
+	"这里不是-"
+	<br><br>
+	<<He>>看向了你，咽下了后面的话，<span class="green">似乎惊讶于你的容貌。</span>"好吧，"<<he>>继续说，"对于......特别有天赋的人，可以例外。这里有份可能适合你的工作。"
+	<br><br>
+
+	<<He>>清了清嗓子。"很简单，顾客说什么，你就照着做就行了。每节是50分钟，最长到一个小时。报酬是一小时<span class="gold">£10</span>，外加所有小费。你随时都可以开始工作。明白了吗？"
+	<br><br>
+
+	<<link [[询问水疗的工作建议|Spa Work Advice]]>><</link>>
+	<br>
+	<<link [[拒绝|Spa Work No]]>><</link>>
+	<br>
+<<else>>
+	"我们的顾客期望有一种，"<<he>>顿了一下，"标准。<span class="red">你没有满足条件。</span>再见。"
+	<br><br>
+
+	<i>如果你非常漂亮，<<He>>的态度可能会有所转变。</i>
+	<br><br>
+
+
+	<<link [[说你手技娴熟|Spa Work Hands]]>><</link>>
+	<br>
+	<<link [[离开|Danube Street]]>><<endevent>><</link>>
+	<br>
+
+<</if>>
+
+
+
+:: Spa Work Advice
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你-你能给我点建议吗，关于按摩师工作方面的？"你问道。
+<<elseif $speech_attitude is "bratty">>
+	"我不用做任何培训吗？"你问，"你甚至没问我的工作经验。"
+<<else>>
+	"有什么给我的建议吗？"你问道。
+<</if>>
+<br><br>
+<<person>>笑了："没有。我说了，顾客怎么说，你怎么做就行了。你随时都能开始工作。"<<He>>转身回到了桌子上。
+<br><br>
+
+<<link [[继续|Spa]]>><<endevent>><</link>>
+<br>
+
+
+:: Spa Work No
+<<effects>>
+
+你摇了摇头。"好吧，"<<person>>说，"如果你想的话，随时都可以来工作。"<<He>>转身回到了桌子上。
+<br><br>
+
+<<link [[继续|Spa]]>><<endevent>><</link>>
+<br>
+
+
+:: Spa Work Hands
+<<effects>>
+
+"手技娴熟？"<<person>>反问，"我来看看。"<<He>>把上半身探出桌子，抓住了你的手，仔细端详起来。
+
+<<if $handskill gte 400>>
+	<<spa_job_init>>
+	<<He>>蹙了蹙眉。"不可思议。<span class="green">这里有份可能适合你的工作。</span>"<<He>>放开了你。
+	<br><br>
+
+	<<He>>清了清嗓子。"很简单，顾客说什么，你就照着做就行了。每节是50分钟，最长到一个小时。报酬是一小时<span class="gold">£10</span>，外加所有小费。你随时都可以开始工作。明白了吗？"
+	<br><br>
+
+	<<link [[询问水疗的工作建议|Spa Work Advice]]>><</link>>
+	<br>
+	<<link [[拒绝|Spa Work No]]>><</link>>
+	<br>
+<<else>>
+	<<He>>轻蔑地冷笑了一声，松开了手。"你不符合要求，再见。"<<He>>转身回到了桌子上。
+	<br><br>
+
+	<i>需要<span class="blue">C</span>或以上的手部技巧。</i>
+	<br><br>
+
+	<<link [[继续|Spa]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+:: Spa Tan Chase
+<<effects>>
+
+<<generate1>><<person1>>
+你绕过拐角，发现了罪魁祸首：一个<<person>>。你冲向<<him>>，
+
+<<if $athleticsSuccess>>
+	<span class="green">并成功追上了<<his>>。</span>你从后面冲刺并抱上了<<his>>的腰，把<<him>>拖倒在地上。
+	<br><br>
+
+	<<he>>看着你，似乎觉得现在的情景十分有趣。
+	<br><br>
+
+	<<if $leftarm isnot "bound" or $rightarm isnot "bound">>
+		<<link [[扇耳光|Spa Tan Slap]]>><<def 1>><<trauma -6>><</link>><<ltrauma>>
+		<br>
+	<</if>>
+	<<link [[忍气吞声|Spa Tan Turn]]>><</link>>
+	<br>
+<<else>>
+	<span class="red">但<<he>>已经领先太多。</span><<He>>冲过一道通向外面的门，翻出了外墙。
+	<br><br>
+
+	你在门边停了下来。这里处于温泉的死角，所以你不认为有人会看到你。水疗中心的地势较高，一旦追出去就不可能再翻回来了。墙的另一侧是森林。
+	<br><br>
+
+	<<link [[追上去|Spa Tan Follow]]>><</link>>
+	<br>
+	<<link [[寻求帮助|Spa Tan Help]]>><<endevent>><</link>>
+	<br>
+	<<set $skulduggerydifficulty to 500>>
+	<<link [[寻找毛巾|Spa Tan Sneak]]>><<endevent>><</link>><<skulduggerydifficulty>>
+	<br>
+<</if>>
+
+:: Spa Tan Follow
+<<effects>>
+
+<<covered>>你左右扫视，附近没有任何人。你飞奔到外面，翻过外墙。你落在草地上，周围都是树。
+<br><br>
+
+你听到正前方传来树枝的断裂声，你循声而去。树木越来越茂密。你几乎没法跑动，但你的猎物也是一样。
+<br><br>
+
+<span class="red">你听到一声尖叫从前方传来。</span>
+<br><br>
+
+<<if $awarelevel gte 2>>
+	一片空地突然出现在眼前，你看见<<person>>软绵绵地悬挂在空中，一个绿色的藤曼缠住了<<his>>的腿。<<him>>的背后是一个巨大、畸形、不断向外渗出粘液的诡异植株，几乎与周围的树同高。其他触手开始从周围的树丛中升起。你的衣服被丢弃在地上。
+	<<if $awareness lt 400>>
+		<<gawareness>><<awareness 1>>
+	<</if>>
+	<<gstress>><<stress 6>>
+	<br><br>
+
+	<<link [[抓起衣服逃跑|Spa Tan Grab]]>><</link>><<athleticsdifficulty 1 400>>
+	<br>
+	<<link [[直接逃跑|Spa Tan Leave]]>><</link>>
+	<br>
+	<<link [[营救小偷|Spa Tan Rescue]]>><</link>><<athleticsdifficulty 300 1500>>
+	<br>
+<<else>>
+	一片空地突然出现在眼前，你看见<<person>>躺在地上不省人事，可能是被绊倒了。
+	<br><br>
+
+	<<link [[搜刮|Spa Tan Rob]]>><</link>><<crime>>
+	<br>
+	<<link [[只拿走你的衣服|Spa Tan Clothes]]>><</link>>
+	<br>
+<</if>>
+
+:: Spa Tan Grab
+<<effects>>
+<<athleticsdifficulty 1 400 true>>
+<<if $athleticsSuccess>>
+	你一把抓住衣服，<span class="green">并在怪物对你做出反应之前逃进了森林。</span>
+	<br><br>
+
+	<<clotheson>>
+	你一口气跑到了水疗中心。墙太高了，无法从这边爬过去。你顺着建筑物行走，树木逐渐稀疏，你到达了多瑙河街。
+	<br><br>
+
+	<<endevent>>
+
+	<<link [[继续|Danube Street]]>><<set $eventskip to 1>><</link>>
+	<br>
+
+<<else>>
+	你试着取回你的衣服，<span class="red">但一条隐藏的触手从草丛里伸出，把你绊倒在地。</span>在你爬起来之前，它就卷住了你的大腿，把你吊到了空中。<<gtrauma>><<gstress>><<gpain>><<trauma 6>><<stress 6>><<pain 4>>
+	<br><br>
+
+	怪物把你和<<person>>举近。它的侧面撕开了一张大口，准备将你整个吞下。<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+	<br><br>
+
+	<<link [[继续|Spa Tan Monks]]>><</link>>
+	<br>
+<</if>>
+
+:: Spa Tan Leave
+<<effects>>
+
+<<set $stealtextskip to 1>>
+<<stealclothes>>
+
+你转身就跑。你不停奔跑，直到看见水疗中心的围墙。
+<br><br>
+墙太高了，无法从这边爬过去。你顺着建筑物行走，树木逐渐稀疏，你到达了多瑙河街。
+<br><br>
+
+<<endevent>>
+
+<<link [[继续|Danube Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Spa Tan Rescue
+<<effects>>
+
+<<athleticsdifficulty 1 1500 true>>
+<<if $athleticsSuccess>>
+	你朝<<person>>跑去，然后跳了起来。<span class="green">你成功抓住了<<his>>软绵的手臂，恰好在触手把<<his>>拉开之前。</span>怪物把你和小偷举得更近，更高，直到你们位于它的正上方。
+	<br><br>
+
+	你用你的腿和另一只胳膊来平衡自己，同时试图把<<person>>拉出来。触手的抓力很强，但并非不可战胜。你听到什么东西裂开的声音。一张大嘴在下面撕开。这只怪物想吃掉你。
+	<br><br>
+
+	<<link [[继续|Spa Tan Monks Success]]>><</link>>
+	<br>
+<<else>>
+	你朝<<person>>跑去，然后跳了起来。<span class="red">但怪物把瘫软的身体拉到了远处。</span>你只勉强擦到了<<his>>的手指，然后就掉了下来。<<gtrauma>><<gstress>><<gpain>><<trauma 6>><<stress 6>><<pain 4>>
+	<br><br>
+
+	此时另一根触手潜藏在草丛中等待着。你刚一落地，都没来得及调整姿势，就被它卷住脚踝，直接举起到半空中。
+
+	怪物把你和<<person>>举近。它的侧面撕开了一张大口，准备将你整个吞下。<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+	<br><br>
+
+	<<link [[继续|Spa Tan Monks]]>><</link>>
+	<br>
+<</if>>
+
+:: Spa Tan Monks
+<<effects>>
+
+<<generate2>><<generate3>><<generate4>><<generate5>><<generate6>>
+<span class="green">你听到一声尖锐的呼啸声。</span>另一下紧随其后。细长的黑色鞭状物缠住了怪物的触手。森林中冒出几个身着<<monks_and_nuns>>的人影，他们手持长鞭，正紧张地对抗着这个生物的触肢。
+<br><br>
+
+不速之客的袭击迫使怪物把你和<<person>>放了下来。一个<<person2>><<monk>>冲了过来，用一根法杖敲击触手。它松开了你的脚踝，你摔到了地上。<<lstress>><<stress -6>>
+<br><br>
+
+怪物以可怕的速度蠕动了起来，消失在树木之间。<<monks_and_nuns>>都追了上去，只剩下一个人跪在你的身边。
+<br><br>
+<<person2>>
+<<if $temple_rank is "monk" or $temple_rank is "priest">>
+	"你应该知道不该一个人对付那种野兽。"<<he>>说。<<He>>瞥了一眼<<person1>><<person>>："我去看看<<him>>，穿好衣服，回到镇上去。"你这才意识到自己暴露的着装。<<covered>>
+	<br><br>
+<<elseif $temple_rank is "initiate">>
+	"见证这个对你来说还太早了，"<<he>>说，"不要将这里的事告诉别人。"<<He>>瞥了一眼<<person1>><<person>>："我去看看<<him>>，穿好衣服，回到镇上去。"你这才意识到自己暴露的着装。<<covered>>
+	<br><br>
+<<else>>
+	"如果你愿意对这里发生的事情保密，就再好不过了。"<<he>>说。<<He>>瞥了一眼<<person1>><<person>>："我去看看<<him>>，穿好衣服，回到镇上去。"你这才意识到自己暴露的着装。<<covered>>
+	<br><br>
+<</if>>
+
+<<clotheson>>
+
+你回到了水疗中心。墙太高了，无法从这边爬过去。你顺着建筑物行走，树木逐渐稀疏，你到达了多瑙河街。
+<br><br>
+
+<<endevent>>
+
+<<link [[继续|Danube Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Spa Tan Monks Success
+<<effects>>
+
+<<generate2>><<generate3>><<generate4>><<generate5>><<generate6>>
+<span class="green">你听到一声尖锐的呼啸声。</span>另一下紧随其后。细长的黑色鞭状物缠住了怪物的触手。森林中冒出几个身着<<monks_and_nuns>>的人影，他们手持长鞭，正紧张地对抗着这个生物的触肢。
+<br><br>
+
+抓着<<person>>的触手松动了，你把<<him>>拉了出来。一个<<person2>><<monk>>冲了过来接住了<<person1>><<him>>，而你则巧妙地落在了草地上。<<gcontrol>><<control 10>><<lstress>><<stress -6>>
+<br><br>
+
+另一个<<person2>><<monk>>冲了过来，双手持杖，击打着怪物的主体。它以可怕的速度蠕动了起来，消失在树木之间。<<monks_and_nuns>>都追了上去，只剩下抱着<<person1>><<person>>.的<<monk>>站在一旁。
+<br><br>
+
+<<if $temple_rank is "monk" or $temple_rank is "priest">>
+	"你可真够胆大的，"<<person2>><<monk>>说，"但你不应该试图单独对付这样的野兽。我去看看那个平民。你穿好衣服，回镇上去吧。"你这才意识到自己暴露的着装。<<covered>>
+	<br><br>
+<<elseif $temple_rank is "initiate">>
+	"你还没有准备好去看到这些，"<<person2>><<monk>>说，"但你做得很好，可能很快就够格了。不过，最好不要向任何人提起这里的事。"<<He>>把<<person1>><<person>>放在草地上："我会照顾好这个人，穿好衣服，回到镇上去吧。"你这才意识到自己暴露的着装。<<covered>>
+	<br><br>
+<<else>>
+	"你不该看到这些的，"<<person2>><<monk>>说，"但你做得很好，有考虑过加入神殿吗？我们需要像你这样的人。无论如何，请对这里发生的事保密。"<<He>>把<<person2>><<person>>放在草地上："我会照顾好这个人，穿好衣服，回到镇上去吧。"你这才意识到自己暴露的着装。<<covered>>
+	<br><br>
+<</if>>
+
+<<clotheson>>
+
+你回到了水疗中心。墙太高了，无法从这边爬过去。你顺着建筑物行走，树木逐渐稀疏，你到达了多瑙河街。
+<br><br>
+
+<<endevent>>
+
+<<link [[继续|Danube Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Spa Tan Rob
+<<effects>>
+
+<<clotheson>>
+
+你穿好了衣服，然后开始搜刮<<persons>>的口袋。
+
+<<if $rng gte 99>>
+	里面都是空的，但<<his>>的手表看起来很值钱，如果你能找到买家的话。<<crimeup 1000>><<set $blackmoney += 1000>>
+<<elseif $rng gte 81>>
+	你找到了<<moneyGain 100 true true>>现金。
+<<elseif $rng gte 61>>
+	你找到了<<moneyGain 50 true true>>现金。
+<<elseif $rng gte 41>>
+	你找到了<<moneyGain 20 true true>>现金。
+<<elseif $rng gte 21>>
+	你找到了<<moneyGain 10 true true>>现金。
+<<else>>
+	你找到了<<moneyGain 5 true true>>现金。
+<</if>>
+<br><br>
+你回到了水疗中心。墙太高了，无法从这边爬过去。你顺着建筑物行走，树木逐渐稀疏，你到达了多瑙河街。
+<br><br>
+
+<<endevent>>
+
+<<link [[继续|Danube Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Spa Tan Clothes
+<<effects>>
+
+<<clotheson>>
+你穿好衣服，回到了水疗中心。墙太高了，无法从这边爬过去。你顺着建筑物行走，树木逐渐稀疏，你到达了多瑙河街。
+<br><br>
+
+<<endevent>>
+
+<<link [[继续|Danube Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Spa Tan Slap
+<<effects>>
+
+你用一记响亮的耳光擦去了<<persons>>脸上的笑容，然后回到了你的房间，另一只手遮着你的<<bottom>>。
+<br><br>
+
+<<clotheson>>
+<<endevent>>
+
+<<link [[继续|Spa]]>><</link>>
+<br>
+
+:: Spa Tan Turn
+<<effects>>
+
+你把傻笑的<<person>>留在原地，回到了你的房间，另一只手遮着你的<<bottom>>。
+<br><br>
+
+<<clotheson>>
+<<endevent>>
+
+<<link [[继续|Spa]]>><</link>>
+<br>
+
+
+:: Spa Tan Help
+<<effects>>
+
+<<set $stealtextskip to 1>>
+<<stealclothes>>
+
+<<covered>>你蜷缩在墙角处，向外窥视。附近没有人。<<tearful>>你蹑手蹑脚地溜进大厅。你听到前面传来了声音。
+<<generate1>><<generate2>>
+两名服务员，一个<<fullGroup>>，正在员工室里聊天。
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"那-那个，"你结结巴巴地说，打断了他们的对话，"有人拿走了我的衣服，请问你们能帮帮我吗？"
+<<elseif $speech_attitude is "bratty">>
+	"嘿，"你打断了他们的对话，"有个贼抢走了我的衣服，你们这有什么遮身子的东西吗？"
+<<else>>
+	"你好？"你打断了他们的对话，"有人偷走了我的衣服，你们这有什么遮身子的东西吗？"
+<</if>>
+<br><br>
+
+<<if $rng gte 51>>
+	他俩停顿了一下，然后大笑了起来。"稍等。"<<person>>说。<<He>>从你身边走过，毫不掩饰地欣赏着你暴露在外的躯体。过了一会，<<hes>>带着一些毛巾回到了房间："只找到了这些，抱歉，我们没有多余的员工制服。"
+	<br><br>
+
+	你溜回日晒室，把毛巾裹在了身上。
+	<br><br>
+
+	<<towelup>>
+
+	<<link [[继续|Spa]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	他俩停顿了一下，然后对视了一眼。"当然，"<<person>>说，"我这就去给你找点衣服。"<<He>>把视线从你身上移开，朝门的方向走去。当<<he>>经过你时，<span class="red"><<he>>猛地抓住了你，捂住了你的嘴。</span>
+	<br><br>
+	<<link [[继续|Spa Tan Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Spa Tan Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<enable_rescue>><<set $leftarm to "grappled">><<set $rightarm to "grappled">><<hand_gag 0 left>><<set $NPCList[0].righthand to "arms">>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Spa Tan Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Spa Tan Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Spa Tan Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	你被推到了地上。过了一会儿，一条毛巾被扔到了你的身上。员工室的门咔哒一声关上了。
+	<br><br>
+	<<tearful>>你把它毛巾裹在身上。
+	<br><br>
+	<<clothesontowel>>
+	<<endcombat>>
+	<<link [[继续|Spa]]>><</link>>
+
+<<elseif $enemyhealth lte 0>>
+	<<person1>><<person>>踉踉跄跄地后退，摔在了一个玻璃桌上，把它砸了个粉碎。声响引起了其他人的注意<<generate3>>。一个<<person3>><<person>>冲了过来，<<his>>看了看地上的<<person1>><<personsimple>>，又把目光移向你的<<nudity>>。
+	<br><br>
+	<<person3>><<He>>看起来有点不知所措。
+	<br><br>
+
+	<<link [[说你被袭击了|Spa Tan Rape Attacked]]>><<stress 6>><<trauma -6>><</link>><<gstress>><<ltrauma>>
+	<br>
+	<<link [[说他们在帮你拿毛巾，但是被绊倒了|Spa Tan Rape Tripped]]>><<sub 1>><</link>>
+	<br>
+<<else>>
+	<<set $rescued += 1>>
+	你的哭喊引起了其他人的注意<<generate3>>。一个<<person3>><<person>>冲了过来，<<his>>看了看<<group>>，又把目光移向你的<<nudity>>。
+	<br><br>
+	<<person3>><<He>>看起来有点不知所措。
+	<br><br>
+
+	<<link [[说你被袭击了|Spa Tan Rape Attacked]]>><<stress 6>><<trauma -6>><</link>><<gstress>><<ltrauma>>
+	<br>
+	<<link [[说他们在帮你拿毛巾，但是被绊倒了|Spa Tan Rape Tripped]]>><<sub 1>><</link>>
+	<br>
+<</if>>
+
+:: Spa Tan Rape Attacked
+<<effects>>
+
+你把事情的经过告诉了<<person3>><<person>>，结果发现<<hes>>居然是这两个人的上司。两人否认有任何不当行为，但<<person>>并不相信。显然，这种事已经不是第一次了。
+<br><br>
+
+你带着一套新衣服，一份退款，和为此事保密的请求离开了这里。
+<br><br>
+
+<<if $worn.upper.name is "naked">>
+	<<if $player.gender_appearance is "m">>
+		<<upperwear 4>>
+	<<else>>
+		<<upperwear 1>>
+	<</if>>
+<</if>>
+<<if $worn.lower.name is "naked">>
+	<<if $player.gender_appearance is "m">>
+		<<lowerwear 5>>
+	<<else>>
+
+	<</if>>
+<</if>>
+<<if $worn.under_upper.name is "naked">>
+	<<if $player.gender_appearance is "m">>
+
+	<<else>>
+		<<underupperwear 12>>
+	<</if>>
+<</if>>
+<<if $worn.under_lower.name is "naked">>
+	<<if $player.gender_appearance is "m">>
+		<<underlowerwear 4>>
+	<<else>>
+		<<underlowerwear 1>>
+	<</if>>
+<</if>>
+
+<<if Time.season is "summer">>
+	<<set $money += 1000>>
+<<elseif Time.season is "winter">>
+	<<set $money += 6000>>
+<<else>>
+	<<set $money += 2500>>
+<</if>>
+
+<<endcombat>>
+
+<<link [[继续|Spa]]>><</link>>
+<br>
+
+:: Spa Tan Rape Tripped
+<<effects>>
+
+<<person3>><<person>>似乎如释重负，尽管还有一些怀疑。<<He>>他对你丢失衣服的事表示歉意，并提供了一些备用的衣服。
+<br><br>
+
+<<if $worn.upper.name is "naked">>
+	<<if $player.gender_appearance is "m">>
+		<<upperwear 4>>
+	<<else>>
+		<<upperwear 1>>
+	<</if>>
+<</if>>
+<<if $worn.lower.name is "naked">>
+	<<if $player.gender_appearance is "m">>
+		<<lowerwear 5>>
+	<<else>>
+
+	<</if>>
+<</if>>
+<<if $worn.under_upper.name is "naked">>
+	<<if $player.gender_appearance is "m">>
+
+	<<else>>
+		<<underupperwear 12>>
+	<</if>>
+<</if>>
+<<if $worn.under_lower.name is "naked">>
+	<<if $player.gender_appearance is "m">>
+		<<underlowerwear 4>>
+	<<else>>
+		<<underlowerwear 1>>
+	<</if>>
+<</if>>
+
+<<endcombat>>
+
+<<link [[继续|Spa]]>><</link>>
+<br>
+
+:: Spa Tan Sneak
+<<effects>>
+
+
+<<set $stealtextskip to 1>>
+<<stealclothes>>
+
+你蹲下身子，从门外向内窥视。周围没有人。你偷偷穿过走廊。大部分房门都紧闭着，但有一个房间虚掩着门。你溜了进去，日晒床上有一道身影，旁边的架子上挂着一条毛巾。
+<br><br>
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+
+	你把毛巾从架子上取下，<span class="green">偷偷溜出了房间。</span>
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	<<link [[继续|Spa]]>><<towelup>><</link>>
+	<br>
+
+<<else>>
+	<<generate1>><<person1>>当你取下毛巾时，<span class="red">一只手从床上伸过来，捂住了你的嘴。</span>"想从我这儿偷东西？"<<person>>从床上赤条条地爬了起来，"我得好好给你上一课。"
+	<br><br>
+
+	<<He>>强迫你跪了下去。
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	<<link [[继续|Spa Tan Spank]]>><<set $molestationstart to 1>><</link>>
+	<br>
+
+<</if>>
+
+:: Spa Tan Spank
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<enable_rescue>>
+	<<npcspankgag>>
+	<<npcexpose>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Spa Tan Spank Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Spa Tan Spank]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Spa Tan Spank Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<person>>精疲力竭地躺回了床上。你一把抢过毛巾。<<tearful>>你跑了出去。
+	<br><br>
+	<<clothesontowel>>
+	<<endcombat>>
+	<<link [[继续|Spa]]>><</link>>
+
+<<elseif $enemyhealth lte 0>>
+	你把<<person>>推回到<<his>>的床上。你一把抢过毛巾。<<tearful>>你跑了出去。
+	<br><br>
+	<<clothesontowel>>
+	<<endcombat>>
+	<<link [[继续|Spa]]>><</link>>
+
+<<elseif $pain gte 100 and $willpowerpain is 0>>
+	"这将成为你的一个教训"，那个<<person>>说，最后拍了一下你的<<bottom>>，然后抓住你的胳膊，把你推到门口。
+	<br><br>
+	<<He>>继续前行，把暴露着身体的你拖进大厅。你伤得太厉害了，无力反抗。
+	<br><br>
+
+	<<He>>把你推向另一扇门，这扇门看起来似乎通向外面。附近没人，但泳池就在拐角处。然而<<He>>并没有带你走那条路。相反，<<he>>抓住你的大腿，把你拽上了外墙。
+	<br><br>
+
+	你落在草地上，抬眼望去周围全都是树。你过回头去看了看，这面墙非常高，你恐怕无力从这边再爬上去了。"祝你回家好运"，那个<<person1>><<person>>笑道。<<gpain>><<pain 4>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Forest]]>><<set $forest to 0>><<set $eventskip to 1>><</link>>
+<<else>>
+	<<set $rescued += 1>>
+	你的哭声引起了人们的注意。<<generate2>>一个<<person2>><<person>>来到现场，<<he>>注意到了<<person1>><<person>>，也看到了不住呻吟的你。
+	<br><br>
+	<<person2>><<He>>似乎被眼前的场景惊呆了，一时竟说不出话来。那个<<person1>><<person>>松开了你，并试图结结巴巴地解释。<<He>>并没有阻止你用毛巾盖住自己的举动，也没有阻止你离开房间。
+	<br><br>
+
+	<<clothesontowel>>
+	<<endcombat>>
+
+	<<link [[继续|Spa]]>><</link>>
+<</if>>

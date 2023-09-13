@@ -1,0 +1,1435 @@
+:: Wraith Underwater Rape
+<<effects>>
+<<if $struggle_start is 1>>
+	<<set $combat to 1>>
+	<<controlloss>>
+	<<violence 1>>
+	<<molested>>
+	<<if $player.penisExist>>
+		<<set $struggle.penis.creature to "pale slime">><<set $penisuse to "struggle">><<set $penisstate to "struggle">><<set $struggle.enemy[0].location to "penis">>
+	<<else>>
+		<<set $struggle.vagina.creature to "pale slime">><<set $vaginause to "struggle">><<set $vaginastate to "struggle">><<set $struggle.enemy[0].location to "vagina">>
+	<</if>>
+	<<unset $struggle_start>>
+<<elseif $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<set $enemytype to $wraith.type>>
+<</if>>
+
+<<underwater>><<effectsWraith>>
+
+<<switch $wraith.type>>
+	<<case "man">>
+		<<if _combatend>>
+			<span id="next"><<link [[继续|Wraith Underwater Rape Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Wraith Underwater Rape]]>><</link>></span><<nexttext>>
+		<</if>>
+	<<case "tentacles">>
+		<<if $tentacles.active lte ($tentacles.max / 2)>>
+			<span id="next"><<link [[继续|Wraith Underwater Rape Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Wraith Underwater Rape]]>><</link>></span><<nexttext>>
+		<</if>>
+	<<case "slime">>
+		<<if $struggle.done gte $struggle.number>>
+			<span id="next"><<link [[继续|Wraith Underwater Rape Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Wraith Underwater Rape]]>><</link>></span><<nexttext>>
+		<</if>>
+<</switch>>
+
+:: Wraith Underwater Rape Finish
+<<underwater>><<effects>>
+
+<<if $enemyhealth lte 0 and $wraith.type is "man">>
+	当<<he>>踉踉跄跄地后退时，那个人震惊地低头看着你。
+	<<if $wraith.gen is "abomination">>
+		触须毫无生气地落回黑暗中，升华成粉红色的薄雾。
+	<<elseif $wraith.gen is "arms">>
+		<<His>>额外的触手折回来。
+	<</if>>
+	<<His>>骤然别过头去，然后消散在虚无之中，只在你脑中留下一声简短刺耳的啸叫。湖水涌流回填，封堵了水下的空间，你在湍流中挣扎着。你的耳边嗡嗡作响，似有哂笑回荡。"<span class="wraith">你无处可逃，<<pcpetname "Wraith">>。</span>"
+	<br><br>
+	<<tearful>>你努力整肃以待。
+	<<set $wraith.defeated++>>
+<<else>>
+	<<ejacW>>
+	随着一阵炫目的闪光，<<he>>消失了。你感到水中仍充盈着淫猥的能量，<<his>>笑声在你的耳边回荡着。"<span class="wraith">毋须担忧，你我即将再会。</span>
+	<br><br>
+	<<tearful>>你努力整肃以待。
+<</if>>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Lake Ruin]]>><<endWraith>><</link>>
+<br>
+
+:: Asylum Machine Wraith
+<<effects>>
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<set $enemytype to $wraith.type>>
+	<<set $timer to 15>>
+<</if>>
+
+<<effectsWraith>>
+
+<<if _combatend or $timer lte 0>>
+	<span id="next"><<link [[继续|Asylum Machine Wraith Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Asylum Machine Wraith]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Asylum Machine Wraith Finish
+<<effects>>
+
+<<if $enemyhealth lte 0>>
+	两只脚都用上了，尽可能的用力踢。机器的盖子一下子打开了。
+	<<set $wraith.defeated++>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejacW>>
+	当盖子终于被撬开时，光线涌入机器，笑声在你的双耳之间回荡。"<span class="wraith">待会儿见。</span>"
+	<br><br>
+<<else>>
+	<<person>>抚摸你的脸。"<span class="wraith">时间很快就会过去，就像沙子从指缝中滑过一样。待会儿见。</span>"<<kissWraith>>
+	<br><br>
+	当盖子最终被撬开时，光线涌进了机器。
+<</if>>
+你感到自己被拉了出来，听到很多声音。你抬头看到几个戴着防毒面具的护理员。没有任何<<person>>的迹象。
+<br><br>
+有人向你冲过来。是哈珀，也戴着防毒面具。"谢天谢地。机器开始发生故障，我们打不开它。请接受我最真诚的道歉。"<<suspicion -10>><<lllsuspicion>>
+<<tearful>>他们看着你，把你扶起来。
+<<clotheson>>
+
+"你今天做得很好，" 医生说道。 "希望你没有太不舒服。保重。"
+<<if C.npc["Ivory Wraith"].lust gte 16>>
+	<<He>>看起来很苍白。你希望只是光线的问题。
+	<<stress 6>><<gstress>>
+<</if>>
+<br><br>
+你离开了房间，仍然在发抖。
+<br><br>
+<<endcombat>>
+
+<<link [[继续|Asylum]]>><<endWraith>><</link>>
+<br>
+
+:: Pub Wraith Mimic Hallucinogen
+<<location "forest">><<effects>>
+你吞下药丸。一阵眩晕袭来，一股反常的暖意在你的肚子里滋长。所有的旋转。你尝到奇怪的味道，你觉得你刚刚吞下的根本不是药片。
+<br><br>
+你转向<<him>>。<<His>>的皮肤已经变成了赤裸裸的白色。
+<<if $wraith.seen gte 3>>
+	你马上就能认出那是一直跟着你的苍白生物。
+<<elseif $wraith.seen gte 1>>
+	<<His>>苍白的脸看起来很眼熟，你觉得你好像应该恐慌，但不管你刚刚吃了什么都不会让你恐慌。
+<</if>>
+<<He>>笑了，"<span class="wraith">我能感觉到你急促的心跳，放弃吧。</span>"
+<<endevent>><<generateWraith 1 true>>
+<<initWraith>><<rainWraith true>>
+<br><br>
+
+<<switch $wraith.gen>>
+	<<case "man">>
+		<<He>>朝天举起<<his>>的手，然后一股看不见的力量把你推到地上。
+	<<case "tentacles" "abomination" "slimetentacles">>
+		你觉得有东西顺着你的腿往上滑。你低头一看，一团苍白的触手包围着你!
+	<<case "slime">>
+		<<He>>朝天举起了<<his>>的手，然后一团闪闪发光的紫色物出现在你的上方。一群苍白起伏的泥状物跳了出来!
+	<<case "arms">>
+		狂躁的笑容掠过<<his>>的脸庞，另外几对手臂从<<his>>的背后伸出，每一对手臂都以奇怪的方式做着手势。
+<</switch>>
+<br><br>
+
+<<if isBloodmoon()>>
+	<<link [[继续|Wraith Caught]]>><<set $wraith.exit to "forest">><</link>>
+<<else>>
+	<<link [[继续|Pub Wraith Mimic Attack]]>><</link>>
+<</if>>
+<br>
+
+:: Pub Wraith Mimic Refuse
+<<location "forest">><<effects>>
+你摇头后退。<<He>>以一种诡异的姿势僵住了，<<He>>咧嘴一笑。你的心跳加快了。<<His>>的皮肤越来越苍白。
+<br><br>
+<<if isBloodmoon()>>
+	"<span class="wraith"><<pcPetname "Wraith">>。你从来没有选择。</span>"
+	<<if $wraith.seen gte 3>>
+		你马上就能认出那是一直跟着你的苍白生物。
+	<<elseif $wraith.seen gte 1>>
+		<<His>>苍白的脸看起来很眼熟。
+	<</if>>
+	<<He>>笑了，"<span class="wraith">我能感觉到你急促的心跳，放弃吧。</span>"
+	<<endevent>><<generateWraith 1 true>>
+	<<initWraith>><<rainWraith true>>
+	<br><br>
+
+	<<switch $wraith.gen>>
+		<<case "man">>
+			<<He>>朝天举起<<his>>的手，然后一股看不见的力量把你推到地上。
+		<<case "tentacles" "abomination" "slimetentacles">>
+			你觉得有东西顺着你的腿往上滑。你低头一看，一团苍白的触手包围着你!
+		<<case "slime">>
+			<<He>>朝天举起了<<his>>的手，然后一团闪闪发光的紫色物出现在你的上方。一群苍白起伏的泥状物跳了出来!
+		<<case "arms">>
+			狂躁的笑容掠过<<his>>的脸庞，另外几对手臂从<<his>>的背后伸出，每一对手臂都以奇怪的方式做着手势。
+	<</switch>>
+	<br><br>
+
+	<<link [[继续|Wraith Caught]]>><<set $wraith.exit to "forest">><</link>>
+	<br>
+<<else>>
+	"<span class="wraith">聪明。</span>" 声音好像是从你周围传来的。你的视野有短暂的模糊，当它清晰的时候，<<hes>>消失了。你惊慌地环顾四周。<<stress 6>><<gstress>><<trauma 12>><<ggtrauma>>
+	<br><br>
+	你害怕的跳了起来。你的呼吸变得沉重。你快速奔跑，把空地远远抛在后面。
+	<br><br>
+	<<link [[继续|Forest]]>><<set $forest to 0>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Pub Wraith Mimic Attack
+<<effects>>
+<<if $struggle_start is 1>>
+	<<set $combat to 1>>
+	<<controlloss>>
+	<<violence 1>>
+	<<molested>>
+	<<unset $struggle_start>>
+<<elseif $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<set $enemytype to $wraith.type>>
+<</if>>
+<<set $rescue to 0>>
+
+<<effectsWraith>>
+
+<<switch $wraith.type>>
+	<<case "man">>
+		<<if _combatend>>
+			<span id="next"><<link [[继续|Pub Wraith Mimic Attack Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Pub Wraith Mimic Attack]]>><</link>></span><<nexttext>>
+		<</if>>
+	<<case "tentacles">>
+		<<if $tentacles.active lte ($tentacles.max / 2)>>
+			<span id="next"><<link [[继续|Pub Wraith Mimic Attack Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Pub Wraith Mimic Attack]]>><</link>></span><<nexttext>>
+		<</if>>
+	<<case "slime">>
+		<<if $struggle.done gte $struggle.number>>
+			<span id="next"><<link [[继续|Pub Wraith Mimic Attack Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Pub Wraith Mimic Attack]]>><</link>></span><<nexttext>>
+		<</if>>
+<</switch>>
+<br>
+
+:: Pub Wraith Mimic Attack Finish
+<<set $outside to 0>><<effects>>
+
+<<if $enemyhealth lte 0 and $wraith.type is "man">>
+	<<person>>边后退边震惊地低头看着你。
+	<<if $wraith.gen is "abomination">>
+		触手毫无生气地落在地上，消散了，变成了粉红色的薄雾。
+	<<elseif $wraith.gen is "arms">>
+		<<His>>额外的触手折回来。
+	<</if>>
+	<<His>>的脑袋猛地一缩，随着你脑海中回荡的一声短暂的尖叫<<he>>消散在虚无之中。你的大脑嗡嗡作响，你听到了诡异的笑声。"<span class="wraith">我无处不在.你永远逃不出我的手心.</span>"
+	<br><br>
+	<<tearful>>你从空地上跑走，不敢回头。
+	<<set $wraith.defeated++>>
+<<else>>
+	<<ejacW>>
+	<<kissWraith>>
+	<br><br>
+	当<<He>>消失在水流中时，<<he>>停下来向你行了一个贵族式的鞠躬礼，<<his>>的笑声回荡在你的耳际。"<span class="wraith">我能是任何人，任何人也能是我，以后再见.</span>"
+	<br><br>
+	<<tearful>>你环顾四周，试图确定<<hes>>是不是真的离开了。
+<</if>>
+<<endRainWraith true>>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Forest]]>><<set $forest to 0>><<endWraith>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Wraith Moor Ring
+<<effects>>
+<<if $struggle_start is 1>>
+	<<set $combat to 1>>
+	<<controlloss>>
+	<<violence 1>>
+	<<molested>>
+	<<unset $struggle_start>>
+<<elseif $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<set $enemytype to $wraith.type>>
+<</if>>
+<<set $rescue to 0>>
+
+<<effectsWraith>>
+
+<<switch $wraith.type>>
+	<<case "man">>
+		<<if _combatend>>
+			<span id="next"><<link [[继续|Wraith Moor Ring Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Wraith Moor Ring]]>><</link>></span><<nexttext>>
+		<</if>>
+	<<case "tentacles">>
+		<<if $tentacles.active lte ($tentacles.max / 2)>>
+			<span id="next"><<link [[继续|Wraith Moor Ring Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Wraith Moor Ring]]>><</link>></span><<nexttext>>
+		<</if>>
+	<<case "slime">>
+		<<if $struggle.done gte $struggle.number>>
+			<span id="next"><<link [[继续|Wraith Moor Ring Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Wraith Moor Ring]]>><</link>></span><<nexttext>>
+		<</if>>
+<</switch>>
+<br>
+
+:: Wraith Moor Ring Finish
+<<set $outside to 0>><<effects>>
+
+<<if $enemyhealth lte 0 and $wraith.type is "man">>
+	<<person>>边后退边震惊地低头看着你。
+	<<if $wraith.gen is "abomination">>
+		触手毫无生气地落在地上，消散了，变成了粉红色的薄雾。
+	<<elseif $wraith.gen is "arms">>
+		<<His>>额外的触手折回来。
+	<</if>>
+	<<His>>的脑袋猛地一缩，随着你脑海中回荡的一声短暂的尖叫<<he>>消散在虚无之中。你的大脑嗡嗡作响，你听到了诡异的笑声。"<span class="wraith">我无处不在.你永远逃不出我的手心.</span>"
+	<br><br>
+	<<tearful>>你在发光的海岸上奔跑，不敢回头。
+	<<set $wraith.defeated++>>
+<<else>>
+	<<ejacW>>
+	<<kissWraith>>
+	<br><br>
+	当<<He>>消失在水流中时，<<he>>停下来向你行了一个贵族式的鞠躬礼，<<his>>的笑声回荡在你的耳际。"<span class="wraith">让死者安息吧，小偷。</span>"
+	<br><br>
+	<<tearful>>你环顾四周，试图确定<<hes>>是不是真的离开了。
+<</if>>
+<<endRainWraith true>>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Moor]]>><<endWraith>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Wraith Mimic Kylar
+<<effects>>
+<<set $wraith.exit to "town">>
+<<if $speech_attitude is "meek">>
+	你把目光从凯拉尔身上移开。"对-对不起"你说道。"今天不行。"
+<<elseif $speech_attitude is "bratty">>
+	你把手放在屁股上。"在一条令人毛骨悚然的小巷里，"你说，"真的吗?才不要。"
+<<else>>
+	你摇摇头。
+<</if>>
+<br><br>
+凯拉尔盯着地面点了点头。<<He>>转过身，假装准备离开，然后突然扑向了你，用<<his>>的手把你推到墙上。
+<br><br>
+但那不是一只手。许多长长的半透明的肢体把你钉在墙上。
+<br><br>
+你看到<<his>>的皮肤出现波纹不断变化，就像是融化的蜡油滴落在水面上。<<His>>的手臂也呈现出一种不自然的象牙色苍白。<<endevent>><<generateWraith 1 true>><<initWraith "abomination">>
+<br><br>
+不是凯拉尔。<<trauma 12>><<ggtrauma>><<set $wraith.revealed to true>>
+<br><br>
+<<if $wraith.offspring is "dead">>
+	"<span class="wraith">这样救不了他们，</span>"<<he>>嘶嘶地说道。"<span class="wraith">是你害死了他们。</span>"半透明的肢体汇聚在你身上。
+<<elseif $wraith.offspring is "sold">>
+	"<span class="wraith">这个人无法拯救他们，</span>"<<he>>嘶声低语着说："<span class="wraith">你把他们丢掉了。</span>"半透明的手臂向你聚拢过来。
+<<elseif $wraith.state is "despair">>
+	"<span class="wraith">在哪里？你看到了吗？我的项链…</span>"<<he>>恳求地说.半透明的手臂向你聚拢过来。
+<<else>>
+	"<span class="wraith">你从我这里偷走了它，</span>"<<he>>嘶嘶地说道。"<span class="wraith">还给我。</span>"半透明的四肢在你身上汇聚。
+<</if>>
+<br><br>
+<<if isBloodmoon()>>
+	<<link [[继续|Wraith Caught]]>><</link>>
+<<else>>
+	<<link [[继续|Wraith Mimic Fight]]>><</link>>
+<</if>>
+<br>
+
+:: Wraith Mimic Robin Dominant
+<<effects>>
+
+你拥抱着罗宾，但是<<his>>的手却继续游移和触摸。<<He>>拉着你靠近。
+<br><br>
+
+<<link [[坚持拥抱|Wraith Mimic Robin Bed]]>><<trauma -6>><<stress -12>><</link>><<llove>><<ldom>><<ltrauma>><<lstress>>
+<br>
+<<link [[放手|Wraith Mimic Fight]]>><<set $sexstart to 1>><</link>><<gdom>>
+<br>
+
+:: Wraith Mimic Robin Bed
+<<effects>><<set $sleepWraith to true>>
+<<wearoutfit>>
+你和罗宾一起蜷缩在被子里。
+<br><br>
+
+<<if $sleeptrouble is 1 and $controlled is 0>>
+	<<link [[睡10个小时|Sleep]]>><<set $sleephour to 10>><<incrementautosave>><</link>> (<<timeAfterXHours 10>>)<<ltiredness>>
+	<br>
+	<<link [[睡9个小时|Sleep]]>><<set $sleephour to 9>><<incrementautosave>><</link>> (<<timeAfterXHours 9>>)<<ltiredness>>
+	<br>
+<</if>>
+
+<<link [[睡8个小时|Sleep]]>><<set $sleephour to 8>><<incrementautosave>><</link>> (<<timeAfterXHours 8>>)<<ltiredness>>
+<br>
+<<link [[睡7个小时|Sleep]]>><<set $sleephour to 7>><<incrementautosave>><</link>> (<<timeAfterXHours 7>>)<<ltiredness>>
+<br>
+<<link [[睡6个小时|Sleep]]>><<set $sleephour to 6>><<incrementautosave>><</link>> (<<timeAfterXHours 6>>)<<ltiredness>>
+<br>
+<<link [[睡5个小时|Sleep]]>><<set $sleephour to 5>><<incrementautosave>><</link>> (<<timeAfterXHours 5>>)<<ltiredness>>
+<br>
+<<link [[睡4个小时|Sleep]]>><<set $sleephour to 4>><<incrementautosave>><</link>> (<<timeAfterXHours 4>>)<<ltiredness>>
+<br>
+<<link [[睡3个小时|Sleep]]>><<set $sleephour to 3>><<incrementautosave>><</link>> (<<timeAfterXHours 3>>)<<ltiredness>>
+<br>
+<<link [[睡2个小时|Sleep]]>><<set $sleephour to 2>><<incrementautosave>><</link>> (<<timeAfterXHours 2>>)<<ltiredness>>
+<br>
+<<link [[睡1个小时|Sleep]]>><<set $sleephour to 1>><<incrementautosave>><</link>> (<<timeAfterXHours 1>>)<<ltiredness>>
+<br>
+<<link [[睡觉|Sleep]]>><<set $sleephour to -1>><<incrementautosave>><</link>> (??:??)<<ltiredness>>
+<br><br>
+
+<<link [[爬下床|Wraith Mimic Robin Refuse]]>><<storeon "bed">><<set $wardrobe_location to "wardrobe">><<loadTempHairStyle>><<unset $sleepWraith>><</link>>
+
+:: Wraith Mimic Robin Refuse
+<<effects>><<unset $robinbed>>
+
+你试图从床上爬起来，但是一只手抓住了你。罗宾用一只手将你拉回床上，另一只手按住你。<<He>>用第三只手抚摸着你的脸颊。
+<br><br>
+
+然而那并不是一只手。许多长而半透明的手臂将你按在床上。
+<br><br>
+
+你看到<<his>>的皮肤出现波纹不断变化，就像是融化的蜡油滴落在水面上。<<His>>的手臂也呈现出一种不自然的象牙色苍白。<<endevent>><<generateWraith 1 true>><<initWraith "abomination">>
+<br><br>
+
+这不是罗宾。<<trauma 12>><<ggtrauma>><<set $wraith.revealed to true>>
+<br><br>
+
+"<span class="wraith">你自己造了自己的牢笼，现在就躺在里面吧，</span>"<<he>>嘶嘶地说道。"<span class="wraith">躺着直到你忘记真相。</span>"半透明的手臂向你聚拢过来。
+<br><br>
+
+<<link [[继续|Wraith Mimic Fight]]>><</link>>
+<br>
+
+:: Wraith Mimic Fight
+<<effects>>
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+
+	<<maninit>>
+	<<set $wraith.type to "man">><<set $wraith.gen to "man">>
+	<<switch $wraith.mimic>>
+		<<case "Kylar">>
+			<<He>>把你拉进小巷，然后转到另一个角落，远离窥探的目光。这里不知道什么时候放了一张床垫。凯拉尔倒在上面，把你拉到<<him>>身上。
+		<<case "Robin">>
+			<<npckiss>><<unset $robinbed>>
+		<</switch>>
+	<<set $speechdisable to 1>>
+<<elseif $struggle_start is 1>>
+	<<set $combat to 1>>
+	<<controlloss>>
+	<<violence 1>>
+	<<molested>>
+	<<if $player.penisExist>>
+		<<set $struggle.penis.creature to "pale slime">><<set $penisuse to "struggle">><<set $penisstate to "struggle">><<set $struggle.enemy[0].location to "penis">>
+	<<else>>
+		<<set $struggle.vagina.creature to "pale slime">><<set $vaginause to "struggle">><<set $vaginastate to "struggle">><<set $struggle.enemy[0].location to "vagina">>
+	<</if>>
+	<<unset $struggle_start>>
+<<elseif $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<if $wraith.revealed>>
+		<<set $enemytype to $wraith.type>>
+	<<else>>
+		<<set $wraith.type to "man">><<set $wraith.gen to "man">>
+		<<maninit>><<set $enemyhealth to 600>><<set $enemyhealthmax to 600>>
+	<</if>>
+	<<set $speechdisable to 1>>
+<</if>>
+
+<<effectsWraith>>
+
+<<if $wraith.revealed>>
+
+	<<switch $wraith.type>>
+		<<case "man">>
+			<<if _combatend>>
+				<span id="next"><<link [[继续|Wraith Mimic Fight Finish]]>><</link>></span><<nexttext>>
+			<<else>>
+				<span id="next"><<link [[继续|Wraith Mimic Fight]]>><</link>></span><<nexttext>>
+			<</if>>
+		<<case "tentacles">>
+			<<if $tentacles.active lte ($tentacles.max / 2)>>
+				<span id="next"><<link [[继续|Wraith Mimic Fight Finish]]>><</link>></span><<nexttext>>
+			<<else>>
+				<span id="next"><<link [[继续|Wraith Mimic Fight]]>><</link>></span><<nexttext>>
+			<</if>>
+		<<case "slime">>
+			<<if $struggle.done gte $struggle.number>>
+				<span id="next"><<link [[继续|Wraith Mimic Fight Finish]]>><</link>></span><<nexttext>>
+			<<else>>
+				<span id="next"><<link [[继续|Wraith Mimic Fight]]>><</link>></span><<nexttext>>
+			<</if>>
+	<</switch>>
+
+<<else>>
+
+	<<if $enemyhealth lte ($enemyhealthmax / 2)>>
+		<span id="next"><<link [[继续|Wraith Mimic Fight Revealed]]>><<set $phase to 1>><</link>></span><<nexttext>>
+	<<elseif $enemyarousal gte $enemyarousalmax>>
+		<span id="next"><<link [[继续|Wraith Mimic Fight Revealed]]>><<set $phase to 2>><</link>></span><<nexttext>>
+	<<else>>
+		<span id="next"><<link [[继续|Wraith Mimic Fight]]>><</link>></span><<nexttext>>
+	<</if>>
+	<br>
+<</if>>
+
+:: Wraith Mimic Fight Revealed
+<<effects>>
+<<if $phase is 1>>
+	<<His>>的头以一个不自然的角度反弹。你退缩。<<His>>的手臂垂下，软弱无力。
+	<br><br>
+	当你盯着<<he>>看时，<<His>>的皮肤突然变得越来越苍白。慢慢地，<<him>>突然伸长脖子狂笑着看着你。
+<<else>>
+	当你认为<<hes>>即将达到高潮时，<<hes>>笑起来的声音突然变得非常奇怪。
+	<<if $wraith.seen gte 3>>
+		这声音让你充满恐惧，你本能地拉开距离。
+	<<else>>
+		你感到惊恐。
+	<</if>>
+	<br><br>
+	<<His>>的皮肤开始变白。<<His>>的眼睛闪烁着明亮的<<wraithEyes>>，一道邪恶的白光包围着<<him>>。<<rainWraith true>>
+<</if>>
+<br><br>
+这不是<<print $wraith.mimic.replace("Robin","罗宾").replace("Kylar","凯拉尔").replace("Eden","伊甸").replace("Whitney","惠特尼").replace("Avery","艾弗里").replace("Leighton","礼顿").replace("Alex","艾利克斯").replace("Great Hawk","巨鹰").replace("Wren","伦恩").replace("Black Wolf","黑狼").replace("Harper","哈珀").replace("Morgan","摩根")>>。<<trauma 24>><<gggtrauma>><<set $wraith.revealed to true>>
+<br><br>
+<<silently>><<endcombat>><</silently>>
+<<generateWraith 1 true>><<initWraith "abomination">>
+<<if $phase is 1>>
+	<<set $enemyhealth -= 200>>
+<<else>>
+	<<set $enemyarousal += 200>>
+<</if>>
+<<if $wraith.state is "haunt">>
+	<<if $wraith.mimic is "Eden">>
+		"<span class="wraith">秃鹫.</span>"
+	<<elseif $wraith.mimic is "Robin">>
+		"<span class="wraith">我们都有需要保护的东西。</span>"
+	<<else>>
+		"<span class="wraith">还给我.</span>"
+	<</if>>
+<<elseif $wraith.state is "despair">>
+	<<if C.npc["Ivory Wraith"].lust gte 12>>
+		"<span class="wraith"><<pcPetname "Wraith">>，没有它真的很冷......请让我暖和一下。</span>"
+	<<else>>
+		"<span class="wraith">在哪里？你看到了吗？我的项链…</span>"
+	<</if>>
+<<elseif $wraith.offspring is "dead" and $tentacledisable is "f">>
+	"<span class="wraith">是你害死了他们，而且这不会是结束.</span>"
+<<elseif $wraith.offspring is "sold" and $tentacledisable is "f">>
+	"<span class="wraith">你把他们丢掉了。我们可以再造更多。</span>"
+<<else>>
+	"<span class="wraith">肉欲，激情，美丽，<<pcPetname "Wraith">>。</span>"
+<</if>>
+<br><br>
+<<startWraith>>
+<br><br>
+<<if isBloodmoon()>>
+	<<link [[继续|Wraith Caught]]>><</link>>
+<<else>>
+	<<link [[继续|Wraith Mimic Fight]]>><</link>>
+<</if>>
+<br>
+
+:: Wraith Mimic Fight Finish
+<<effects>>
+<<if $wraith.type is "man" and $enemyhealth lte 0>>
+	<<person>>边后退边震惊地低头看着你。
+	<<if $wraith.gen is "abomination">>
+		触手毫无生气地落在地上，消散了，变成了粉红色的薄雾。
+	<<elseif $wraith.gen is "arms">>
+		<<His>>额外的触手折回来。
+	<</if>>
+	<<His>>的脑袋猛地一缩，随着你脑海中回荡的一声短暂的尖叫<<he>>消散在虚无之中。你的大脑嗡嗡作响，你听到了诡异的笑声。"<span class="wraith">我可以是任何人，你永远别想摆脱我，<<pcpetname "Wraith">>。</span>"
+	<br><br>
+	<<tearful>>你环顾四周，试图确定<<hes>>是不是真的离开了。
+	<<set $wraith.defeated++>>
+<<else>>
+	<<ejacW>>
+	<<kissWraith>>
+	<br><br>
+	当<<He>>消失在水流中时，<<he>>停下来向你行了一个贵族式的鞠躬礼，<<his>>的笑声回荡在你的耳际。"<span class="wraith">如此深不见底的欲望，也许我会去拜访<<nnpc_him $wraith.mimic>>.</span>"
+	<br><br>
+	<<tearful>>你环顾四周，试图确定<<hes>>是不是真的离开了。
+<</if>>
+
+<<clotheson>>
+<<endcombat>>
+<<exitWraith>>
+
+:: Wraith Run
+<<effects>>
+毫不犹豫的，你<<if $phase is 1>>跳出来，<</if>>开始奔跑。你听到身后传来可怕的尖叫声，而且距离你越来越近。
+<br><br>
+你听到一声刺耳的鞭打声。一条苍白的触手从排水格栅中伸出来，鞭打着你的双腿。
+<<if $athleticsSuccess>>
+	<span class="green">你在即将被打到的时候躲了过去，继续奔跑.</span>尖叫声越来越远了。
+	<br><br>
+	你转过一个角落后开始大口喘气，祂很可能不会那么容易放弃。
+	<br><br>
+	<<set $wraith.hunt -= 2>>
+	<<exitWraith>>
+<<else>>
+	你试图跳过去，<span class="red">但是失败了，祂抓住了你。</span>你被缠住吊了起来，因为被倒吊的姿势，你的胃非常难受。
+	<br><br>
+	一张苍白的脸出现在你面前。
+	<<generateWraith>><<initWraith "abomination">>
+	<<startWraith>>
+	<br><br>
+	<<link [[继续|Wraith Caught]]>><<set $wraith.exit to "town">><</link>>
+	<br>
+<</if>>
+
+:: Wraith Hide
+<<effects>>
+祂还没看到你，你疯狂地寻找藏身处。最终你的目光落在了<<if $location is "park">>一片大灌木丛<<else>>一个空垃圾箱<</if>>上。
+<br><br>
+你尽可能安静地藏进去。<<print $weather.replace("rain","雨").replace("snow","雪")>>开始越下越大了。你坐着等着，每隔几分钟就向外偷看一眼。
+<br><br>
+你的耳朵开始嗡嗡作响。透过那小小的缝隙，你看到一件长长的白袍拖在地上。
+<br><br>
+<<if $rng gte 51 or $slimedisable is "t">>
+	<<if $parasite.left_ear.name is "slime" or $parasite.right_ear.name is "slime">>
+		<span class="red">你感觉到脑子里的黏液发出了奇怪的声音，好像在呼唤什么东西.</span>
+		<br><br>
+	<</if>>
+	<<link [[屏住呼吸保持冷静|Wraith Hide Hold]]>><</link>><<willpowerdifficulty 1 $willpowermax>>
+	<br>
+<<else>>
+	你感到有东西在戳你的屁股。你慢慢地回头看，尽量保持安静。一小块苍白史莱姆开始爬到你身上。
+	<br><br>
+	<<link [[保持安静|Wraith Hide Struggle]]>><<set $struggle_start to 1>><</link>>
+	<br>
+<</if>>
+<<link [[跳出来跑|Wraith Run]]>><<set $phase to 1>><</link>><<athleticsdifficulty 800 1500>>
+<br>
+
+:: Wraith Hide Hold
+<<effects>>
+你慢慢地吸一口气，憋住。你希望祂听不到你的声音。
+<<if $willpowerSuccess>>
+	白布经过<<if $location is "park">>灌木丛<<else>>垃圾箱<</if>>的时候没有发出声音，也没有减速。
+	<br><br>
+	很长一段时间你都不敢动。你在等，但你不知道等多久。最后，你冒险看了一眼。
+	<br><br>
+	<<if $rng lte 15>>
+		<span class="red">你只看到一对发光的<<wraithEyes>>眼睛直直地盯着你，在只有几英寸远的地方。</span>
+		你被猛烈地拉出来，摔在地上。<<pain 4>><<gpain>>
+		<br><br>
+		<<generateWraith 1 true>><<initWraith "abomination">>
+		<<startWraith>>
+		<br><br>
+		<<link [[继续|Wraith Caught]]>><</link>>
+		<br>
+	<<else>>
+		<span class="green">你没看到任何人。</span>你溜了出去，四处看了最后一眼。你很安全，哪怕只有这宝贵的一刻。<<stress -3>><<lstress>>
+		<<set $wraith.hunt -= 2>>
+		<br><br>
+		<<exitWraith>>
+	<</if>>
+<<else>>
+	你试着不去想祂可能找到你的其他方式。
+	<span class="red">像是<<if $parasite.left_ear.name is "slime" or $parasite.right_ear.name is "slime">>微笑<<else>>幻像<</if>>的东西浮现在你的脑中.</span>
+	你的呼吸越来越重。你开始恐慌。<<stress 6>><<gstress>>
+	<br><br>
+	你的视力开始变得模糊。你泪流满面，强忍住啜泣。你的呼吸声充斥着你的耳朵，但这只会让你更加恐慌。<<stress 12>><<ggstress>>
+	<br><br>
+	就算你用手捂着嘴，声音还是那么大。你用力吸气，保持住。
+	<br><br>
+	你仍然能听到沉重的呼吸声。声音很低，听起来几乎像咯咯的笑声。就在你旁边。
+	<br><br>
+	你的全身因恐惧而麻木。你勉强转过头来，面对着一个苍白的面孔。你没有机会尖叫。
+	<br><br>
+	你被粗暴地扔出去。祂跟着你飘出去。
+	<<generateWraith 1 true>><<initWraith "abomination">>
+	<<startWraith>>
+	<br><br>
+	<<link [[继续|Wraith Caught]]>><</link>>
+	<br>
+<</if>>
+
+:: Wraith Hide Struggle
+<<effects>>
+<<if $struggle_start is 1>>
+	<<struggle_init>>
+	<<set $struggle.creature to "pale slime">>
+	<<struggle_creatures 1 2>>
+	<<set $combat to 1>>
+	<<controlloss>>
+	<<violence 1>>
+	<<molested>>
+	<<if $analdisable is "f">>
+		<<set $struggle.anus.creature to "pale slime">><<set $anususe to "struggle">><<set $anusstate to "struggle">><<set $struggle.enemy[0].location to "anus">>
+	<</if>>
+	<<unset $struggle_start>>
+<</if>>
+
+<<struggle>>
+
+<<if $struggle.done gte $struggle.number>>
+	<span id="next"><<link [[继续|Wraith Hide Struggle End]]>><</link>></span>
+	<br>
+<<else>>
+	<span id="next"><<link [[继续|Wraith Hide Struggle]]>><</link>></span>
+	<br>
+<</if>>
+
+:: Wraith Hide Struggle End
+<<effects>>
+
+史莱姆无声无息地溜走了。<<tearful>>你向外张望。
+<br><br>
+你没有看到任何人。你很安全，哪怕只有这一瞬间。<<stress -3>><<lstress>>
+<<set $wraith.hunt -= 2>>
+<br><br>
+<<clotheson>>
+<<endcombat>>
+<<exitWraith>>
+
+:: Wraith Tentacle Grab
+<<effects>>
+<<physiquedifficulty 5000 16000 true>>
+你抓住触手试着让它平静下来。<<deviancy1>>
+<<if $physiqueSuccess>>
+	它冲向你，<span class="green">速度不快，</span>在你意识到它在做什么之前，它把史莱姆喷到了你的手上。
+	<<bodyliquid "leftarm" "goo">><<bodyliquid "rightarm" "goo">>
+	<br><br>
+	<<if $location is "sewers">>
+		<<water>>
+		当那苍白的触须疲惫不堪时，它缩了回去，这时又有几只触须从水渠里钻出来，缠住你的四肢和腰部，把你拉入水中。它们很容易承受你的重量。
+	<<else>>
+		筋疲力尽的苍白触须缩回去，同时又有几只触须从沙井里钻出来，缠绕着你的四肢和腰部，把你拖到地下。它们很容易承受你的重量。
+	<</if>>
+	<br><br>
+	<<link [[继续|Wraith Tentacle Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	你失败了，<span class="red">它钻到了你的腿下，把你绊倒了。</span>
+	<<gpain>><<pain 5>><<gtrauma>><<gstress>><<stress 6>><<trauma 6>>
+	<br><br>
+	你感到恐惧的感觉越来越强烈，无法摆脱这样的想法:无论什么东西在追捕你，祂都知道你现在在哪里。
+	<<set $wraith.hunt++>>
+	<<exitWraith>>
+<</if>>
+
+:: Wraith Tentacle Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $combat to 1>>
+	<<set $enemytype to "tentacles">>
+	<<controlloss>>
+	<<molested>>
+	<<tentaclestart 8 20 "tentacle" "pale">>
+<</if>>
+
+<<statetentacles>>
+
+<<effects>>
+<<effectstentacles>>
+<<tentacles>>
+<<actionstentacles>>
+<<if $tentacles.active lte ($tentacles.max / 2)>>
+	<span id="next"><<link [[继续|Wraith Tentacle Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Wraith Tentacle Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Wraith Tentacle Sex Finish
+<<effects>>
+<<if $location is "sewers">>
+	苍白的触须从你身边退缩，消失在运河里。<<tearful>>你爬出水面。
+<<else>>
+	苍白的触须从你身边退缩，消失在下水道里。
+<</if>>
+你不知道为什么，但你觉得追捕你的东西似乎失去了一些进展。
+<<set $wraith.hunt -= 2>>
+<<clotheson>>
+<<endcombat>>
+<<exitWraith>>
+
+:: Wraith Tentacle Run
+<<effects>>
+你从苍白的触手处抽离，希望能甩掉它。<span class="red">没有用。</span>
+<br><br>
+你脑海中那个苍白的身影越来越强烈，你感到一种温暖在积聚。触须喷出粘液，溅满你的腿，然后迅速后退。黏液闻起来很奇怪。<<ghallucinogens>>
+<br><br>
+恐惧不断加深，你无法摆脱这样的观念:无论什么东西在追杀你，祂都知道你现在在哪里。
+<<set $wraith.hunt++>>
+<br><br>
+
+<<exitWraith>>
+
+:: Wraith Sewers Struggle
+<<effects>>
+<<if $struggle_start is 1>>
+	<<struggle_init>>
+	<<set $struggle.creature to "pale slime">>
+	<<struggle_creatures 1 2>>
+	<<set $combat to 1>>
+	<<controlloss>>
+	<<violence 1>>
+	<<molested>>
+	<<unset $struggle_start>>
+	<<set $timer to 7>>
+<</if>>
+
+<<if $timer is 1>>
+	<<struggle_add 2 1>>
+	<span class="pink">又有两个史莱姆从天花板上掉了下来!</span>
+	<br><br>
+<</if>>
+
+<<struggle>>
+
+<<if $struggle.done gte $struggle.number>>
+	<span id="next"><<link [[继续|Wraith Sewers Struggle End]]>><</link>></span>
+	<br>
+<<else>>
+	<span id="next"><<link [[继续|Wraith Sewers Struggle]]>><</link>></span>
+	<br>
+<</if>>
+
+:: Wraith Sewers Struggle End
+<<effects>>
+
+史莱姆无声无息地溜走了。<<tearful>>你四处张望。
+<br><br>
+你没有看到任何人。你很安全，哪怕只有这一瞬间。<<stress -3>><<lstress>>
+<<set $wraith.hunt -= 2>>
+<br><br>
+<<clotheson>>
+<<endcombat>>
+<<exitWraith>>
+
+:: Wraith Caught Obey
+<<effects>>
+祂以诡异的动作移动，在空中留下虚影。一股温暖的力量在你的头脑中积聚。你毫无抵抗地跪倒在地。
+<br><br>
+<<generateWraith 1 true>>
+<<initWraith "arms" "abomination">>
+<<if $wraith.state is "haunt" or $wraith.offspring is "dead">>
+	一双苍白的手抓住你的头。
+	<<if $wraith.gen is "arms">>
+		接着是更多的手。你抬起头，看到<<his>>的背后出现了好几条手臂。
+	<<else>>
+		有东西在你的腿和胳膊上滑来滑去。
+	<</if>>
+	"<span class="wraith">和我一起溺死吧。</span>"
+<<else>>
+	一只苍白的手抬起你的下巴。当你看着<<his>>的双眼时，你的大脑一片空白。
+	<<if $wraith.gen is "arms">>
+		许多支手臂从<<his>>的背后伸出。
+	<<else>>
+		有东西在你的腿和胳膊上滑来滑去。
+	<</if>>
+	"<span class="wraith">就像一个提线木偶。</span>"
+<</if>>
+<br><br>
+<<if $wraith.state is "haunt" or $wraith.offspring is "dead">>
+	<<set $enemyanger -= 20>>
+	<<link [[继续|Wraith Caught]]>><</link>>
+<<else>>
+	人影从下往上开始迅速消散为白雾。你的嘴惊讶的张着。你什么都感觉不到。
+	<br><br>
+	雾流进你的嘴里，你的整个身体都感到非常的寒冷和僵硬。人影消失了。
+	<<if $location is "lake_ruin">>
+		你沉进水里，你感觉不到自己的手臂。
+	<<else>>
+		你站了起来，但感觉不到你的腿。
+	<</if>>
+	<br><br>
+	<<link [[继续|Wraith Snatched Intro]]>><<endcombat>><<endWraith>><<wraithPossess>><</link>>
+<</if>>
+<br>
+
+:: Wraith Caught Resist
+<<effects>>
+<<if $willpowerSuccess is 1>>
+	你试着把目光从苍白的身影上移开，费了很大的力气你转过身去。<span class="green">铃声停止了，你的双腿恢复了感觉。</span>即使背对着祂，你仍然能感觉到祂就在你身后。
+	<br><br>
+	当你再回头的时候祂不见了。笑声在你的耳边回响。
+	<<switch $location>>
+		<<case "town" "park" "alley">>
+			街上仍然空无一人，昏沉的红灯照射在你身上，你还没有完全清醒过来。
+			<br><br>
+		<<case "forest" "lake">>
+			森林变得安静。你可以清楚的看到树木的影子，红色的月亮把一切都覆盖在一片红光中。你还没有完全清醒过来。
+		<<case "sewers">>
+			下水道还是空的，空气冷得让人不舒服。你还没有清醒过来。
+	<</switch>>
+	<br><br>
+	<<set $wraith.hunt to 6>>
+	<<set $wraith.evaded++>>
+	<<exitWraith>>
+<<else>>
+	即使你闭着眼睛，<span class="red">你也还是可以看到祂。</span>祂的手臂以诡异的动作移动，在空中留下残影。你的整个身体都麻木了。<<willpower 3>><<gwillpower>>
+	<br><br>
+	<<generateWraith 1 true>>
+	<<initWraith "abomination">>
+	<<if $wraith.state is "haunt" or $wraith.offspring is "dead">>
+		一双苍白的手抓住你的头。
+		<<if $wraith.gen is "arms">>
+			接着是更多的手。你抬起头，看到<<his>>的背后出现了好几条手臂。
+		<<else>>
+			有东西在你的腿和胳膊上滑来滑去。
+		<</if>>
+		"<span class="wraith">这样扭动下去，你只会淹死得更快。</span>"
+		<br><br>
+		<<link [[继续|Wraith Caught]]>><</link>>
+		<br>
+	<<else>>
+		一只苍白的手抬起你的下巴。当你看着<<his>>的双眼时，你的大脑一片空白。
+		<<if $wraith.gen is "arms">>
+			许多支手臂从<<his>>的背后伸出。
+		<<else>>
+			有东西在你的腿和胳膊上滑来滑去。苍白的触手已经完全包围了你。
+		<</if>>
+		"<span class="wraith">你会学会的。</span>"
+		<br><br>
+		<<link [[继续|Wraith Caught]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Wraith Intro Pray
+<<effects>>
+你闭上眼睛低声祈祷。<span class="red">即使闭着眼睛，祂的样子依旧清晰的浮现在你的脑海中。</span>
+<br><br>
+祂皱眉，"<span class="wraith">没有人会回应你，只有沉默。</span>"
+<br><br>
+你的眼睛突然睁开。那个身影消失了，但你能听到笑声在你的脑海里回响。
+<<switch $location>>
+	<<case "town" "park" "alley">>
+		街上仍然空无一人，昏沉的红灯照射在你身上，你还没有完全清醒过来。
+	<<case "forest" "lake">>
+		森林变得安静。你可以清楚的看到树木的影子，红色的月亮把一切都覆盖在一片红光中。你还没有完全清醒过来。
+	<<case "sewers">>
+		下水道还是空的，空气冷得让人不舒服。你还没有清醒过来。
+<</switch>>
+<br><br>
+<<set $wraith.hunt to 8>>
+<<set $wraith.evaded++>>
+<<exitWraith>>
+
+:: Wraith Caught
+<<effects>>
+<<if $struggle_start is 1>>
+	<<set $combat to 1>>
+	<<controlloss>>
+	<<violence 1>>
+	<<molested>>
+	<<if $player.penisExist>>
+		<<set $struggle.penis.creature to "pale slime">><<set $penisuse to "struggle">><<set $penisstate to "struggle">><<set $struggle.enemy[0].location to "penis">>
+	<<else>>
+		<<set $struggle.vagina.creature to "pale slime">><<set $vaginause to "struggle">><<set $vaginastate to "struggle">><<set $struggle.enemy[0].location to "vagina">>
+	<</if>>
+	<<unset $struggle_start>>
+<<elseif $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<set $enemytype to $wraith.type>>
+<</if>>
+<<set $rescue to 0>>
+<<if $location is "lake_ruin">>
+	<<underwater>>
+<</if>>
+<<effectsWraith>>
+
+<<switch $wraith.type>>
+	<<case "man">>
+		<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+			<span id="next"><<link [[继续|Wraith Caught Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Wraith Caught]]>><</link>></span><<nexttext>>
+		<</if>>
+	<<case "tentacles">>
+		<<if $tentacles.active lte ($tentacles.max / 2)>>
+			<span id="next"><<link [[继续|Wraith Caught Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Wraith Caught]]>><</link>></span><<nexttext>>
+		<</if>>
+	<<case "slime">>
+		<<if $struggle.done gte $struggle.number>>
+			<span id="next"><<link [[继续|Wraith Caught Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Wraith Caught]]>><</link>></span><<nexttext>>
+		<</if>>
+<</switch>>
+<br>
+
+:: Wraith Caught Finish
+<<effects>>
+<<if !$wraithCount>>
+	<<if C.npc["Ivory Wraith"].lust lte 10>>
+		<<set $wraithCount to 1>><<set $wraithMax to 1>>
+	<<else>>
+		<<set $wraithCount to 0>>
+		<<set $wraithMax to 3>>
+		<<if $wraith.offspring is "dead">>
+			<<set $wraithMax++>>
+		<</if>>
+		<<if $tentacledisable is "t">>
+			<<set $wraithMax -->>
+		<</if>>
+	<</if>>
+<</if>>
+<<if $wraith.type is "man" and $enemyhealth lte 0>>
+	<<if $location is "lake_ruin">>
+		当<<he>>踉踉跄跄地后退时，那个人震惊地低头看着你。
+		<<if $wraith.gen is "abomination">>
+			触手毫无生气地掉进黑暗的水中。
+		<<elseif $wraith.gen is "arms">>
+			<<His>>额外的触手折回来。
+		<</if>>
+		<<His>>骤然别过头去，然后消散在虚无之中，只在你脑中留下一声简短刺耳的啸叫。湖水涌流回填，封堵了水下的空间，你在湍流中挣扎着。你的耳边嗡嗡作响，似有哂笑回荡。<span class="wraith">最后的呼吸了.</span>"
+		<br><br>
+		<<tearful>>你努力整肃以待。
+	<<else>>
+		<<person>>边后退边震惊地低头看着你。
+		<<if $wraith.gen is "abomination">>
+			触手毫无生气地落在地上，消散了，变成了粉红色的薄雾。
+		<<elseif $wraith.gen is "arms">>
+			<<His>>额外的触手折回来。
+		<</if>>
+		<<His>>的脑袋猛地一缩，随着你脑海中回荡的一声短暂的尖叫<<he>>消散在虚无之中。你的大脑嗡嗡作响，你听到了诡异的笑声。"<span class="wraith">我无处不在.你永远逃不出我的手心.</span>"
+		<br><br>
+		<<tearful>>你环顾四周，试图确定<<hes>>是不是真的离开了。
+	<</if>>
+	<<set $wraith.defeated++>>
+	<<set $wraith.timer to -30>>
+	<<set $wraith.hunt to 0>>
+	<<clotheson>>
+	<<endcombat>>
+	<<exitWraith>>
+<<elseif $enemyarousal gte $enemyarousalmax or $pain gte 100 and $willpowerpain is 0 or ($wraith.type is "tentacles" and $tentacles.active lte ($tentacles.max / 2)) or ($wraith.type is "slime" and $struggle.done gte $struggle.number)>>
+	<<set $wraithCount++>>
+	<<ejacW>>
+	<<if $wraithCount gte $wraithMax>>
+		<<kissWraith "stress">>
+		<br><br>
+		<<if $moonstate is "morning" and Time.hour gte 6>>
+			<<He>>从你身边飘走，冷笑着看着太阳升起的天空。"<span class="wraith">唉，时间真是短暂。别担心，<<pcpetname "Wraith">>，我们很快就会再见面。</span>"
+			<br><br>
+			<<His>>四散的光辉渐渐地暗淡，最后融化在了奔涌不息的水流里。
+			恐惧慢慢地过去了。<span class="blue"><i>你安全了——至少在下一个血月之前。</i></span>
+			<br><br>
+			<<tearful>>你站起身，希望是真的结束了。
+			<<set $wraith.hunt to 0>>
+			<<clotheson>>
+			<<endcombat>>
+			<<exitWraith>>
+			<<clearWraith>>
+		<<elseif $pain gte 100 or $stress gte $stressmax>>
+			<<set $wraith.hunt to 0>>
+			<<if $pain gte 100>>
+				<span class="red">你伤痕累累无法反抗.</span>
+			<<else>>
+				一切太过沉重，你的精神再也无法承受。
+			<</if>>
+			人影从下往上开始迅速消散为白雾。你的嘴惊讶的张着。你什么都感觉不到。
+			<br><br>
+			雾流进你的嘴里，你的整个身体都感到非常的寒冷和僵硬。人影消失了。
+			<<if $location is "lake_ruin">>
+				你沉进水里，你感觉不到自己的手臂。
+			<<else>>
+				你站了起来，但感觉不到你的腿。
+			<</if>>
+			<br><br>
+			<<link [[继续|Wraith Snatched Intro]]>><<endWraith>><<clotheson>><<endcombat>><<wraithPossess>><</link>>
+			<br>
+		<<elseif $wraith.state is "haunt" or $wraith.offspring is "dead">>
+			"<span class="wraith">你的意志力很强大，但你早晚会向我屈服，或者迎来崩溃。</span>"
+			<br><br>
+			<<if $location is "lake_ruin">>
+				随着一阵炫目的闪光，<<he>>消失了。你感到水中仍充盈着淫猥的能量，<<his>>笑声在你的耳边回荡。
+				<br><br>
+				<<tearful>>你努力整肃以待。
+			<<else>>
+				当<<He>>消失在水流中时，<<he>>停下来向你行了一个贵族式的鞠躬礼，<<his>>的笑声回荡在你的耳际。
+				<br><br>
+				<<tearful>>你环顾四周，试图确定<<hes>>是不是真的离开了。
+			<</if>>
+			<<set $wraith.timer -= 20>>
+			<<set $wraith.hunt to 0>>
+			<<clotheson>>
+			<<endcombat>>
+			<<exitWraith>>
+		<<else>>
+			<<if $location is "lake_ruin">>
+				随着一阵炫目的闪光，<<he>>消失了。你感到水中仍充盈着淫猥的能量，<<his>>笑声在你的耳边回荡. "<span class="wraith">如此深不见底的欲望，我很喜欢你.</span>"
+				<br><br>
+				<<tearful>>你努力整肃以待。
+			<<else>>
+				当<<He>>消失在水流中时，<<he>>停下来向你行了一个贵族式的鞠躬礼，<<his>>的笑声回荡在你的耳际。"<span class="wraith">如此深不见底的欲望，我很喜欢你.</span>"
+				<br><br>
+				<<tearful>>你环顾四周，试图确定<<hes>>是不是真的离开了。
+			<</if>>
+			<<set $wraith.timer -= 20>>
+			<<set $wraith.hunt to 0>>
+			<<clotheson>>
+			<<endcombat>>
+			<<exitWraith>>
+		<</if>>
+	<<else>>
+		<<continueWraith>>
+		<br><br>
+		<<link [[继续|Wraith Caught]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Christmas Mirror
+<<set $outside to 0>><<set $location to "home">><<effects>>
+你走到镜子前，凝视着它的深处。它不再映照，而是发出一种奇异的光。它是明亮的白色，像雪一样白。
+<br><br>
+光线不断变化，一只苍白的手从另一边轻轻地按在镜面上。一个苍白的身影微笑着凝视着你，祂的<<wraithEyes>>眼睛注视着你。
+<<if $wraith.seen gte 3 or $wraithPrison>>
+	<span class="blue">你意识到了。</span>你本来应该害怕的，但你却没有。
+<<else>>
+	你觉得你应该害怕，但你没有。
+<</if>>
+<br><br>
+<<link [[伸出手|Christmas Mirror Reach]]>><</link>><<handholdingvirginitywarning>>
+<br>
+<<link [[观察|Christmas Mirror Watch]]>><</link>>
+<br>
+<<link [[离开|Christmas Mirror Leave]]>><</link>>
+<br>
+
+:: Christmas Mirror Leave
+你远离镜子。再眨眼的时候它就恢复正常了。
+<br><br>
+<<link [[继续|Bedroom]]>><<endevent>><</link>>
+<br>
+
+:: Christmas Mirror Watch
+你的眼睛一直盯着祂的手，祂的手指慢慢地爬过表面，露出粗糙的爪子，小心翼翼地抓住镜框。
+<br><br>
+祂后面的形状闪烁。爪子消失了，取而代之的是柔软的皮肤。你抬起头，看到那个身影还在热情地对你微笑。祂沉默的向你伸出另一只手。
+<br><br>
+<<link [[握住手|Christmas Mirror Reach]]>><</link>><<handholdingvirginitywarning>>
+<br>
+<<link [[离开|Christmas Mirror Leave]]>><</link>>
+<br>
+
+:: Christmas Mirror Reach
+<<effects>>
+<<generateWraith 1 true>><<rainWraith>><<set $pronoun to C.npc["Ivory Wraith"].gender>>
+你向前伸出手，握住了祂。<<takeHandholdingVirginity "Ivory Wraith" "consensual">>
+<br><br>
+皮肤像融化的蜡一般，在可怕的苍白和正常的色调之间不断变化。
+<br><br>
+<span class="teal"><<He>>哼着熟悉的曲调。</span>
+<br><br>
+<<Hes>>披着白袍，站在红月下。<<He>>向你伸出手表示欢迎。当你向前跨出一步时，你感到了深深的平静。
+<br><br>
+<<link [[进去(0:05)|Christmas Mirror 2]]>><<pass 5>><<set $christmas_wraith to true>><</link>>
+<br>
+
+:: Christmas Mirror 2
+<<effects>><<set $location to "temple">><<set $outside to 0>>
+你四周都是树，它们都被雪覆盖着。你往下看，看到脚下有一层煤。红色的月亮消失了。你的双脚燃烧着。你向前倒下，投入到<<his>>的怀抱里。
+<<He>>拥抱你。<<Hes>>笑着祝贺你。你哭了。
+<br><br>
+"你做到了！我就知道你可以！"<<He>>说着你从未了解过的语言，但你不知道为什么能够听懂。还在你思考的时候，下一句话在你耳旁响起。
+<br><br>
+"<span class="wraith">我们都不知道明天会不会更糟糕，我们只能满怀希望。</span>"
+<br><br>
+苍白的身影紧紧地搂着你。
+<<if ["haunt", "despair"].includes($wraith.state)>>
+	<<His>>的眼睛闪过短暂的红光，然后又恢复成了平静的蓝色。
+<<else>>
+	<<His>>深蓝色的眼睛让你的内心平静了下来。
+<</if>>
+"<span class="wraith">没有人应该死在笼子里。</span>"
+<br><br>
+你周围的世界开始改变。
+<br><br>
+<<link [[继续|Christmas Mirror 3]]>><<pass 5>><</link>>
+<br>
+
+:: Christmas Mirror 3
+<<effects>>
+你在一座大教堂的中央。桌子已经装点好了，看起来即将举行一场盛大的宴会。
+所有人都围绕在你身边，面对着你，
+<<if $wraithPrison and $wraithPrison.vision is true>>
+	模糊不清
+<<else>>
+	不
+<</if>>
+但是他们都微笑着，欢声笑语。
+他们都被苍白的光包围着。你看得越久，它们的身影就越透明。
+<br><br>
+"<span class="wraith">但现在，我们又完整了。好好享受吧，即使只有这一瞬间。</span>"
+<br><br>
+你发现自己回到了拥抱。你不想放手。温暖开始消退，周围的面孔变得面目全非。它们开始扭曲成不自然的形状。你心中充满了恐慌。苍白的身影向后退，你够不着祂。
+<br><br>
+墙上的挂毯消失了，这些人倒在地上，他们蜷缩着身子，表情痛苦的用手捂着耳朵，双眼却是空洞的。钟声敲响了。
+<br><br>
+<<His>>的皮肤再次变成大理石般的白色，<<he>>开始褪色。<<his>>的眼中微弱的<<wraithEyes>>的光在迅速扩大的黑暗中闪烁。
+<br><br>
+"<span class="wraith">要记得我们，<<pcpetname "Wraith" "nice">>，不是我们现在的样子，而是我们的过去。</span>"
+<br><br>
+当光线渐远时，你开始坠落。你不断的往下坠，没有风，但是你知道你在下坠。雪花和玻璃碎片经过你的身边，迅速的混合溶解。
+<br><br>
+<<link [[伸出手|Christmas Mirror 4]]>><</link>>
+<br>
+<<link [[下坠|Christmas Mirror Fall]]>><</link>>
+
+:: Christmas Mirror 4
+<<effects>>
+你伸出手。你不知道你是想要寻找些什么，但你能感受到一股吸引力。祂没有主动召唤你，但也不会把你推开。
+<br><br>
+
+<<if $wraithPrison and $wraithPrison.vision is true>>
+	<<link [[道歉|Christmas Mirror 5]]>><<set $phase to 1>><</link>>
+<<else>>
+	<<link [[询问|Christmas Mirror 5]]>><</link>>
+<</if>>
+<br>
+<<link [[下坠|Christmas Mirror Fall]]>><<set $phase to 1>><</link>>
+<br>
+
+:: Christmas Mirror 5
+<<effects>>
+你张开嘴。
+<<if $phase is 1>>
+	你想要道歉。为祂所经历的一切，为祂还活着时的遭遇，为祂承受过的所有痛苦。为你所做的一切。
+<<else>>
+	你想问为什么。为什么祂要跟着你，为什么祂要折磨你。为什么祂只针对你一个人，为什么把你带到这里。
+<</if>>
+<br><br>
+你的话语断断续续的，但还是有了回应。
+<br><br>
+"<span class="wraith">我无法回答,</span>"<<he>>喃喃道，<<He>>沉默了许久。 "<span class="wraith">是我的错。</span>"<<lobsession 2>>
+<br><br>
+<<link [[下坠|Christmas Mirror Fall]]>><<set $phase to 1>><</link>>
+<br>
+
+:: Christmas Mirror Fall
+<<effects>>
+<<if $phase is 1>>
+	你的手臂垂了下来。
+<</if>>
+你一次又一次的跌倒，就算到未来你的磨难也依旧不会消失。你不确定自己还会跌倒几次。你也不知道终点在何处。
+<br><br>
+不过你每次站起来的样子都很美。
+<br><br>
+
+<<link [[醒来|Christmas Mirror End]]>><</link>>
+<br>
+
+:: Christmas Mirror End
+<<set $location to "home">><<set $outside to 0>><<effects>>
+你趴倒在床上开始放声大哭，在哭了一会后，你开始转为小声的抽噎，你注意到你的身体早已被汗水所淋透。
+<br><br>
+你擦去眼中的倦意，瞥了一眼镜子里脸色苍白的自己。<<trauma 4>><<gtrauma>>
+<br><br>
+<<link [[继续|Bedroom]]>><<endevent>><<endWraith>><</link>>
+<br>
+
+:: Wraith Stalk
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<violence 1>>
+	<<neutral 1>>
+
+	<<maninit>>
+	<<stalk_init>>
+	<<set $combatgoal to "confront">>
+<</if>>
+
+<<effects>>
+
+<<effectsman>><<man>>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if $stalk_end>>
+	<span id="next"><<link [[继续|Wraith Stalk Finish]]>><<if $feetaction is "confront">><<set $phase to 1>><<else>><<set $phase to 0>><</if>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Wraith Stalk]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Wraith Stalk Finish
+<<effects>>
+
+<<if $stalk_end is "escaped">>
+	你放慢了脚步。你听到周围有微弱的笑声，但是附近没有人。<<tearful>>随后你继续你的旅程。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<destinationeventend>>
+
+<<elseif $stalk_end is "passed">>
+	薄雾慢慢消失在视野中。<<tearful>>你继续你的旅程。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<destinationeventend>>
+
+<<elseif $stalk_end is "hide">>
+	薄雾慢慢消失在视野中。<<covered>><<tearful>>你离开藏身之处并继续自己的行程。
+	<br><br>
+
+	<<set $stealtextskip to 1>>
+	<<stealclothes>>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<destinationeventend>>
+	<br>
+<<elseif $stalk_end is "confront">>
+	<<silently>><<endcombat>><</silently>>
+	<<generateWraith 1 true>><<person1>>
+	<<initWraith>><<set $wraith.exit to "town">>
+
+	苍白的身影发出嘲笑声，身体以不自然的角度向前倾斜。<<rainWraith true>>
+	<<switch $wraith.gen>>
+		<<case "man">>
+			<<He>>朝天举起<<his>>的手，然后一股看不见的力量把你推到地上。
+		<<case "tentacles" "abomination" "slimetentacles">>
+			你觉得有东西顺着你的腿往上滑。你低头一看，一团苍白的触手包围着你!
+		<<case "slime">>
+			<<He>>朝天举起了<<his>>的手，然后一团闪闪发光的紫色物出现在你的上方。一群苍白起伏的泥状物跳了出来!
+		<<case "arms">>
+			狂躁的笑容掠过<<his>>的脸庞，另外几对手臂从<<his>>的背后伸出，每一对手臂都以奇怪的方式做着手势。
+	<</switch>>
+	<br><br>
+
+	<<if isBloodmoon()>>
+		<<link [[继续|Wraith Caught]]>><</link>>
+	<<else>>
+		<<link [[继续|Wraith Stalk Attack]]>><</link>>
+	<</if>>
+	<br>
+<</if>>
+
+:: Wraith Stalk Attack
+<<effects>>
+<<if $struggle_start is 1>>
+	<<set $combat to 1>>
+	<<controlloss>>
+	<<violence 1>>
+	<<molested>>
+	<<unset $struggle_start>>
+<<elseif $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<set $enemytype to $wraith.type>>
+<</if>>
+<<set $rescue to 0>>
+
+<<effectsWraith>>
+
+<<switch $wraith.type>>
+	<<case "man">>
+		<<if _combatend>>
+			<span id="next"><<link [[继续|Wraith Stalk Attack Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Wraith Stalk Attack]]>><</link>></span><<nexttext>>
+		<</if>>
+	<<case "tentacles">>
+		<<if $tentacles.active lte ($tentacles.max / 2)>>
+			<span id="next"><<link [[继续|Wraith Stalk Attack Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Wraith Stalk Attack]]>><</link>></span><<nexttext>>
+		<</if>>
+	<<case "slime">>
+		<<if $struggle.done gte $struggle.number>>
+			<span id="next"><<link [[继续|Wraith Stalk Attack Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续|Wraith Stalk Attack]]>><</link>></span><<nexttext>>
+		<</if>>
+<</switch>>
+<br>
+
+:: Wraith Stalk Attack Finish
+<<set $outside to 0>><<effects>>
+
+<<if $enemyhealth lte 0 and $wraith.type is "man">>
+	<<person>>边后退边震惊地低头看着你。
+	<<if $wraith.gen is "abomination">>
+		触手毫无生气地落在地上，消散了，变成了粉红色的薄雾。
+	<<elseif $wraith.gen is "arms">>
+		<<His>>额外的触手折回来。
+	<</if>>
+	<<His>>的头向后倾斜，发出一声尖叫，然后消失得无影无踪。你的耳朵嗡嗡作响，你觉得你听到了笑声。"<span class="wraith">你很快就会见到我，我也会更快地见到你。</span>"<<he>>的声音在你的脑海中回荡着。
+	<br><br>
+	<<tearful>>你快速奔跑，不敢回头。
+	<<set $wraith.defeated++>>
+<<else>>
+	<<ejacW>>
+	<<kissWraith>>
+	<br><br>
+	当<<He>>消失在水流中时，<<he>>停下来向你行了一个贵族式的鞠躬礼，<<his>>的笑声回荡在你的耳际。 "<span class="wraith">我们会再见的。我们会再见的。我们会再见。</span>"
+	<br><br>
+	<<tearful>>你环顾四周，试图确定<<hes>>是不是真的离开了。
+<</if>>
+<<endRainWraith true>>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Forest]]>><<set $forest to 0>><<endWraith>><<set $eventskip to 1>><</link>>
+<br>

@@ -1,0 +1,461 @@
+:: Forest Wolf Cave Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<if $phase is 1>>
+		<<beastTrainGenerate>>
+		<<set $enemyanger += 30>>
+	<<else>>
+		<<beastTrainGenerate>>
+	<</if>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Forest Wolf Cave Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Forest Wolf Cave Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Forest Wolf Cave Rape Finish
+
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+	<<if $combatTrain.length gt 0>>
+		心满意足的<<beasttype>>离开了你，然后紧随其后的另一只取代了它。
+		<<combatTrainAdvance>>
+		<<wolfpacktrust>><<gstockholm>>
+		<br><br>
+		<<link [[继续|Forest Wolf Cave Rape]]>><</link>>
+	<<else>>
+		心满意足的野兽们离开了你。
+		<<combatTrainAdvance>>
+		<<wolfpacktrust>><<gstockholm>>
+		<br><br>
+		<<link [[继续|Forest Wolf Cave Rape End]]>><</link>>
+	<</if>>
+<<elseif $enemyhealth lte 0>>
+	<<beastwound>>
+	<<if $combatTrain.length gt 0>>
+		<<beasttype>>在痛苦和恐惧中退缩，但另一个取代了它。
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[继续|Forest Wolf Cave Rape]]>><</link>>
+	<<else>>
+		这只野兽在恐惧和痛苦中退缩。
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[继续|Forest Wolf Cave Rape End]]>><</link>>
+	<</if>>
+<</if>>
+
+:: Forest Wolf Cave Rape End
+
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+
+<<if $enemywounded gte 2 and $enemyejaculated is 0>>
+	你显示出力量，抵挡住了狼群。<<tearful>>你逃脱了洞穴。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Forest]]>><<set $stress -= 1000>><<set $eventskip to 1>><<set $eventskip to 1>><</link>>
+
+<<elseif $enemywounded is 0 and $enemyejaculated gte 2>>
+	在完事之后，<<beastsplural>>离开了你。然而，剩下的家伙们依旧挡在你和洞口之间，可以轻松扼杀你逃脱的企图。<<tearful>>你只好在原处待着。
+	<br><br>
+
+	<<if $phase is 1>>
+	另一个<<wolf_cave_plural>>不久后就从狩猎中回归。
+	<</if>>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Forest Wolf Cave]]>><<set $eventskip to 1>><</link>>
+
+<<elseif $enemywounded gte 1 and $enemyejaculated gte 1>>
+	在完事之后，<<beastsplural>>离开了你。然而，剩下的家伙们依旧挡在你和洞口之间，可以轻松扼杀你逃脱的企图。<<tearful>>你只好在原处待着。
+	<br><br>
+
+	<<if $phase is 1>>
+	另一个<<wolf_cave_plural>>不久后就从狩猎中回归。
+	<</if>>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Forest Wolf Cave]]>><<set $eventskip to 1>><</link>>
+<</if>>
+
+:: Forest Wolf Cave
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+
+<<if $eventskip is 0>>
+	<<eventwolfcave>>
+<<else>>
+	<<wolf_cave_plural>>封锁着你离开洞穴的去路。你的身后吹过一阵气流。
+	<br><br>
+	<<link [[休息(2:00)|Forest Wolf Cave Wait]]>><<set $tiredness -= 480>><<pass 2 hours>><</link>>
+	<br>
+
+	<<link [[尝试逃跑|Forest Wolf Cave Escape]]>><</link>>
+	<br>
+	<<if $wolfcavedig gte 13>>
+		<<link [[钻进洞里|Forest Wolf Cave Hole]]>><</link>>
+		<br>
+	<<elseif $wolfcavedig gte 12 and $physiquesize lte 12000>>
+		<<link [[钻进洞里|Forest Wolf Cave Hole]]>><</link>><<small_text>>
+		<br>
+	<<elseif $wolfcavedig gte 11 and $physiquesize lte 10000>>
+		<<link [[钻进洞里|Forest Wolf Cave Hole]]>><</link>><<small_text>>
+		<br>
+	<<elseif $wolfcavedig gte 10 and $physiquesize lte 6000>>
+		<<link [[钻进洞里|Forest Wolf Cave Hole]]>><</link>><<small_text>>
+		<br>
+	<<elseif $wolfcavedig gte 1>>
+		<<link [[在洞的后面挖(1:00)|Forest Wolf Cave Dig]]>><<pass 1 hour>><<set $wolfcavedig += 1>><</link>>
+		<br>
+		<<else>>
+	<<link [[检查洞穴的后面|Forest Wolf Cave Examine]]>><<set $wolfcavedig to 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+<<set $eventskip to 0>>
+
+:: Forest Wolf Cave Wait
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+
+你蜷缩在洞穴的后面，狼群一时间不理会你。
+<br><br>
+<<link [[继续|Forest Wolf Cave]]>><</link>>
+<br>
+
+:: Forest Wolf Cave Escape
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+
+<<if $wolfpacktrust gte 12>>
+	当你试图离开时，狼群看着你，但没有采取任何行动来阻止你。看来他们足够信任你，让你走。
+	<<lstress>>
+
+	<br><br>
+	<<link [[继续|Forest]]>><<set $stress -= 1000>><<set $eventskip to 1>><<set $forest to 80>><<set $eventskip to 1>><</link>>
+	<br>
+<<elseif $wolfpackfear gte 12>>
+	当你试图离开时，狼群向你咆哮，但没有采取任何行动来阻止你。看来它们太害怕你了，不敢试图阻止你。
+	<<lstress>>
+
+	<br><br>
+	<<link [[继续|Forest]]>><<set $stress -= 1000>><<set $eventskip to 1>><<set $forest to 80>><<set $eventskip to 1>><</link>>
+	<br>
+
+<<else>>
+	当你试图离开时狼群立刻炸了锅。它们挡住了你的去路。狼群盯着你，并咆哮着警告。
+	<<stress 6>><<gstress>>
+	<br><br>
+	<<link [[无论如何尝试逃跑|Forest Wolf Cave Rape]]>><<beastNEWinit 6 wolf>><<set $molestationstart to 1>><</link>>
+	<br>
+	<<link [[让步|Forest Wolf Cave]]>><</link>>
+	<br>
+<</if>>
+
+:: Forest Wolf Cave Pair
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+
+当你试图离开的时候，狼群立即骚动起来，它们挡住了你的去路。它们盯着你，咆哮着发出警告。
+<<stress 3>><<gstress>>
+<br><br>
+<<link [[无论如何尝试逃跑|Forest Wolf Cave Rape]]>><<beastNEWinit 2 wolf>><<set $molestationstart to 1>><<set $phase to 1>><</link>>
+<br>
+<<link [[让步(0:30)|Forest Wolf Cave Hunt]]>><<pass 30>><</link>>
+<br>
+
+:: Forest Wolf Cave Hunt
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+
+你决定不冒这个险。你在洞穴后面等着。狼群很快就捕猎回来了。<<wolfpacktrust>>
+<br><br>
+<<link [[继续|Forest Wolf Cave]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Forest Wolf Cave Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Forest Wolf Cave Molestation Finish]]>><</link>></span><<nexttext>>
+
+<<else>>
+	<span id="next"><<link [[继续|Forest Wolf Cave Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Forest Wolf Cave Molestation Finish
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+
+	这只<<beasttype>>满意地哼了一声，然后回到了狼群当中。
+	<<wolfpacktrust>>
+	<br><br>
+
+	<<tearful>>你让自己安定了下来.
+	<<gstockholm>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Forest Wolf Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	这只<<beasttype>>痛苦地呜咽着，然后回到狼群当中。
+	<<wolfpackfear>>
+	<br><br>
+
+	<<tearful>>你让自己安定了下来.
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Forest Wolf Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Forest Wolf Cave Dig
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+
+<<if $wolfcavedig gte 13>>
+	你把挡道的石头移开，直到剩下的石头坍塌，露出地面上的一个洞。你听到了水流的声音。
+<<elseif $wolfcavedig gte 12 and $physiquesize lte 12000>>
+	你把挡道的石头移开，直到剩下的石头坍塌，露出地面上的一个洞。你听到了水流的声音。
+<<elseif $wolfcavedig gte 11 and $physiquesize lte 10000>>
+	你把挡道的石头移开，直到剩下的石头坍塌，露出地面上的一个洞。你听到了水流的声音。
+<<elseif $wolfcavedig gte 10 and $physiquesize lte 6000>>
+	你把挡道的石头移开，直到剩下的石头坍塌，露出地面上的一个洞。你听到了水流的声音。
+<<elseif $wolfcavedig gte 9>>
+	当你把石头移开时，你觉得你听到了水流的声音。距离不远了。
+<<elseif $wolfcavedig gte 6>>
+	你把挡道的石头挪开。气流变得更强了。
+<<elseif $wolfcavedig gte 4>>
+	你把挡道的石头挪开。你觉得气流变得更强了。
+<<else>>
+	你移走了路上的一些石头，但还有很多事情要做。
+<</if>>
+<br><br>
+
+<<if $wolfcavedig gte 13>>
+	<<link [[往下走|Forest Wolf Cave Hole]]>><</link>>
+	<br>
+	<<if $syndromewolves gte 1>>
+		<<link [[暂时搁置|Wolf Cave]]>><</link>>
+		<br>
+	<<else>>
+		<<link [[暂时搁置|Forest Wolf Cave]]>><</link>>
+		<br>
+	<</if>>
+<<elseif $wolfcavedig gte 12 and $physiquesize lte 12000>>
+	<<link [[往下走|Forest Wolf Cave Hole]]>><</link>><<small_text>>
+	<br>
+	<<if $syndromewolves gte 1>>
+		<<link [[暂时搁置|Wolf Cave]]>><</link>>
+		<br>
+	<<else>>
+		<<link [[暂时搁置|Forest Wolf Cave]]>><</link>>
+		<br>
+	<</if>>
+<<elseif $wolfcavedig gte 11 and $physiquesize lte 10000>>
+	<<link [[往下走|Forest Wolf Cave Hole]]>><</link>><<small_text>>
+	<br>
+	<<if $syndromewolves gte 1>>
+		<<link [[暂时搁置|Wolf Cave]]>><</link>>
+		<br>
+	<<else>>
+		<<link [[暂时搁置|Forest Wolf Cave]]>><</link>>
+		<br>
+	<</if>>
+<<elseif $wolfcavedig gte 10 and $physiquesize lte 6000>>
+	<<link [[往下走|Forest Wolf Cave Hole]]>><</link>><<small_text>>
+	<br>
+	<<if $syndromewolves gte 1>>
+		<<link [[暂时搁置|Wolf Cave]]>><</link>>
+		<br>
+	<<else>>
+		<<link [[暂时搁置|Forest Wolf Cave]]>><</link>>
+		<br>
+	<</if>>
+<<elseif $syndromewolves gte 1>>
+	<<link [[继续|Wolf Cave]]>><</link>>
+	<br>
+<<else>>
+	<<link [[继续|Forest Wolf Cave]]>><</link>>
+	<br>
+<</if>>
+
+:: Forest Wolf Cave Examine
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+
+它们在洞穴后面的黑暗中摸索，寻找气流的来源。空气感觉像是从一堆松散的岩石后面吹来的。
+<br><br>
+
+<<if $syndromewolves gte 1>>
+	<<link [[继续|Wolf Cave]]>><</link>>
+	<br>
+<<else>>
+	<<link [[继续|Forest Wolf Cave]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Forest Wolf Cave Hole
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+
+你朝洞穴后面的洞里看了看，但什么也看不出来。你听到了水流的声音。你不认为你能以原来的方式回来。
+<br><br>
+
+<<link [[下去|Wolf Cave Descent]]>><</link>>
+<br>
+
+<<if $syndromewolves gte 1>>
+	<<link [[离开|Wolf Cave]]>><</link>>
+	<br>
+<<else>>
+	<<link [[离开|Forest Wolf Cave]]>><</link>>
+	<br>
+<</if>>
+
+:: Wolf Cave Hand
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<beastCombatInit>>
+	<<blackwolfhand>>
+	<<deviancy1>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Wolf Cave Hand Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Wolf Cave Hand]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Wolf Cave Hand Refuse
+
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+你拖着脚步离开黑狼，准备再次进攻。但是没有人来。<<bHe>>转身走开了。<<if $monster is 1>>"没关系。你会学到的。<</if>>
+<br><br>
+<<set $syndromewolves to 1>>
+<<set $wolfevent to 0>>
+<<set $wolfstate to "cave">>
+<<set $wolfpackferocity to 10>>
+<<set $wolfpackharmony to 10>>
+<<if $bestialitydisable is "f">>
+	<span class="red"><i>这不是它们的错。它们只是可爱的动物。</i>你获得了"斯德哥尔摩综合症:狼群"特质。</span>
+<<else>>
+	<span class="red"><i>这不是它们的错。它们只是可爱的怪物。</i>你获得了"斯德哥尔摩综合症:狼人"特质。</span>
+<</if>>
+<br><br>
+<<npc "Black Wolf">>/*<<beastNNPCinit>>*/
+<<if $loveInterest.primary is "None" and $deviancy gte 35>>
+	<<set $loveInterest.primary to "Black Wolf">>
+	<span class="gold">黑狼现在是你的爱人了!<<bHe>>似乎很高兴找到了伴侣。</span>
+<<elseif $deviancy gte 35>>
+	<span class="gold">黑狼现在可以成为你的爱人了!<<bHe>>似乎很高兴找到了伴侣。
+	<br>
+	你可以在"态度"菜单中改变你的爱慕对象。</span>
+<<else>>
+	<span class="blue">你不确定一个<<beasttype>>是否会成为一个好的爱情对象…</span>
+<</if>>
+<br><br>
+<<link [[继续|Wolf Cave]]>><<endevent>><</link>>
+<br>
+
+:: Wolf Cave Hand Finish
+
+<<set $outside to 1>><<set $location to "wolf_cave">><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+	<<tearful>>你看着黑狼打呵欠躺下。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<elseif $enemyhealth lte 0>>
+	<<tearful>>你看着黑狼打呵欠躺下。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<else>>
+	<<tearful>>你看着黑狼打呵欠躺下。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+<<if $monster is 1>>
+	"困了。做得很好…<<ppackbrother>>。"
+<</if>>
+<<set $syndromewolves to 1>>
+<<set $wolfevent to 0>>
+<<set $wolfstate to "cave">>
+<<set $wolfpackferocity to 10>>
+<<set $wolfpackharmony to 10>>
+<<if $bestialitydisable is "f">>
+	<span class="red"><i>这不是它们的错。它们只是可爱的动物。</i>你获得了"斯德哥尔摩综合症:狼群"特质。</span>
+<<else>>
+	<span class="red"><i>这不是它们的错。它们只是可爱的怪物。</i>你获得了"斯德哥尔摩综合症:狼人"特质。</span>
+<</if>>
+<br><br>
+<<npc "Black Wolf">>/*<<beastNNPCinit>>*/
+<<if $loveInterest.primary is "None" and $deviancy gte 35>>
+	<<set $loveInterest.primary to "Black Wolf">>
+	<span class="gold">黑狼现在是你的爱人了!<<bHe>>似乎很高兴找到了伴侣。</span>
+<<elseif $deviancy gte 35>>
+	<span class="gold">黑狼现在可以成为你的爱人了!<<bHe>>似乎很高兴找到了伴侣。
+	<br>
+	你可以在"态度"菜单中改变你的爱慕对象。</span>
+<<else>>
+	<span class="blue">你不确定一个<<beasttype>>是否会成为一个好的爱情对象…</span>
+<</if>>
+<br><br>
+<<link [[继续|Wolf Cave]]>><<endevent>><</link>>
+<br>

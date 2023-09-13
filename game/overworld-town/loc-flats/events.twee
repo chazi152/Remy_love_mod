@@ -1,0 +1,530 @@
+:: Flats Events Knees
+<<effects>>
+
+那个<<person1>><<person>>一只手抓住你的头发，然后用另一只手解开<<his>>的<<print setup.npcClothesSets.find(item => item.name === $NPCList[0].clothes.set).clothes.lower.desc>>，以此来露出<<his>>的
+<<if $NPCList[0].penis isnot "none">>
+    <<print $NPCList[0].penisdesc>>.
+<<else>>
+    小穴.
+<</if>>
+<<person2>><<person>>和另一个<<person3>><<person>>也跟着在离你脸只有几英寸的位置自慰了起来。
+<br><br>
+
+"别动，<<bitch>>，"<<person1>><<person>>说道："你正站在我们的地盘上，所以你也是我们的。"<<He>>在接近高潮的时候加大了手上的力道，以此来确保你无法逃脱。
+<br><br>
+
+<<if $NPCList[0].penis isnot "none">>
+    精液从<<person1>><<person>>的<<print $NPCList[0].penisdesc>>中射出，<<random_semen_head>>
+<<else>>
+    <<person1>><<person>>的阴部抽搐，射出了股爱液。<<random_goo_head>>
+<</if>>
+<br>
+<<if $NPCList[1].penis isnot "none">>
+    精液从<<person2>><<person>>的<<print $NPCList[1].penisdesc>>中射出，<<random_semen_head>>
+<<else>>
+    <<person2>><<person>>的阴部抽搐，射出了股爱液。<<random_goo_head>>
+<</if>>
+<br>
+<<if $NPCList[2].penis isnot "none">>
+    精液从<<person3>><<person>>的<<print $NPCList[2].penisdesc>>中射出，<<random_semen_head>>
+<<else>>
+    <<person3>><<person>>的阴部抽搐，射出了股爱液。<<random_goo_head>>
+<</if>>
+<br><br>
+
+"应该可以了，"<<person1>><<person>>说。<<He>>松开你的头发，三人走开了。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Flats]]>><<set $eventskip to 1>><</link>>
+<br>
+
+
+:: Flats Events Scream
+<<effects>>
+
+你尖叫着求救，但是那个<<person>>把你推到了墙边。"在等警察吗？"<<he>>问道。
+<br><br>
+
+<<if Time.dayState isnot "night">>
+    <<generate4>><<person4>>
+    "没人……"
+    <br><br>
+    <span class="teal">走廊的门打开了，</span>一个<<person>>探出<<his>>的头。"又是你们这些该死的孩子，"<<he>>说。"快滚，不然我叫警察了。"
+    <br><br>
+    <<person1>><<person>>轻蔑地看了你一眼，然后离开了。
+    <br><br>
+
+    <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+    <br>
+<<else>>
+    "没人会帮你的。"
+    <br><br>
+
+    <i>人们很少愿意在晚上调查尖叫声。</i>
+    <br><br>
+
+    <<link [[下跪|Flats Events Knees]]>><<sub 1>><</link>>
+    <br>
+    <<link [[反抗|Flats Events Fight]]>><<def 1>><<set $fightstart to 1>><</link>>
+    <br>
+<</if>>
+
+:: Flats Events Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+    <<if Time.dayState is "night">>
+        <<enable_rescue>>
+    <</if>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0) or $rescue is 1 and $alarm is 1>>
+	<span id="next"><<link [[继续|Flats Events Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Events Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Events Fight Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	他们已经筋疲力尽，无法阻止你逃跑。
+	<br><br>
+	<<tearful>>你跑上楼梯，随便找了个角落躲起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+    <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+    <br>
+
+<<elseif $enemyhealth lte 0>>
+	三人离开了你。"神经不正常的<<bitch>>,<<person1>><<person>>吐了口唾沫。他们走开了。
+    <<famescrap 3>>
+	<br><br>
+	<<tearful>>你振作了起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+    <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+    <br>
+<<elseif $rescue is 1>>
+    <<generate4>><<person4>>
+    <span class="teal">走廊的门打开了，</span>一个<<person>>探出<<his>>的头。"又是你们这些该死的孩子，"<<he>>说。"快滚，不然我叫警察了。"
+    <br><br>
+    <<person1>><<person>>给你一个嘲讽的眼神，三人离开了你。
+    <br><br>
+    <<clotheson>>
+    <<endcombat>>
+
+    <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+    <br>
+<<else>>
+	<<tearful>>你摔倒在地，因为受伤了失去了战斗能力。
+	<br><br>
+    <<person1>><<person>>抓住你的头发，把你拽到膝盖上。
+    <br><br>
+    <<link [[继续|Flats Events Knees]]>><</link>>
+    <br>
+<</if>>
+
+:: Flats Events Slap
+<<effects>>
+
+<<if $physiqueSuccess>>
+    你打了那个<<person>>的脸。<span class="green"><<He>>被击得后退，</span>从楼梯上摔了下去。<<ltrauma>><<trauma>>
+    <br><br>
+
+    <<He>>摇摇晃晃地站起来，一瘸一拐地走了。
+    <br><br>
+
+    <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+    <br>
+<<else>>
+    你想扇那个<<person>>耳光，<span class="red">但是<<he>>抓住了你的手腕，</span>利用冲力把你压在栏杆上。
+    <br><br>
+    <<link [[继续|Flats Events Rape]]>><<set $molestationstart to 1>><</link>>
+    <br>
+<</if>>
+
+
+:: Flats Events Stomp
+<<effects>>
+
+<<if $physiqueSuccess>>
+    你踩了<<person>>的脚。<span class="green"><<He>>大叫一声把你放开，</span>从楼梯上摔了下去。<<ltrauma>><<trauma>>
+    <br><br>
+
+    <<He>>摇摇晃晃地站起来，一瘸一拐地走了。
+    <br><br>
+
+    <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+    <br>
+<<else>>
+    你踩了<<person>>的脚。<<He>>冲你做了个鬼脸，<span class="red">然后更用力地抓住了你。</span> "好样的。"<<He>>把你压到栏杆上。
+    <br><br>
+
+    <<link [[继续|Flats Events Rape]]>><<set $molestationstart to 1>><</link>>
+    <br>
+<</if>>
+
+:: Flats Events Endure
+<<effects>>
+
+<<He>><<if $worn.face.type.includes("mask")>>把你脸上戴的东西拉到一边，然后<</if>>把<<his>>的嘴唇压到你的嘴唇上，把舌头伸了进去，它灵活的像虫子一样钻进了你的嘴里。<<takeKissVirginity $NPCList[0] rape>>
+<br><br>
+<<He>>和你拉开距离，留下一条连接的唾液线，
+<<if random(1, 2) is 2>>
+    <span class="green">然后释放了你。</span><<He>>没再看一眼就走开了。
+    <br><br>
+
+    <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+    <br>
+<<else>>
+    <span class="red">把你压到栏杆上。</span>
+    <br><br>
+
+    <<link [[继续|Flats Events Rape]]>><<set $molestationstart to 1>><</link>>
+    <br>
+<</if>>
+
+
+:: Flats Events Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+    <<if Time.dayState isnot "night">>
+	    <<enable_rescue>>
+    <</if>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Flats Events Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Events Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Events Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>头也不回地走了。
+	<br><br>
+	<<tearful>>你振作了起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+<<elseif $enemyhealth lte 0>>
+    <<He>>绊倒了，从楼梯上摔了下去。
+    <br><br>
+
+    <<He>>摇摇晃晃地站起来，一瘸一拐地走了。
+	<br><br>
+
+	<<tearful>>你振作了起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+<<else>>
+	<<set $rescued += 1>>
+	"下面到底发生了什么?"上面一个声音喊道。那个<<person>>放开了你，焦虑地朝楼上瞥了一眼，然后匆匆的朝着相反的方向跑去。
+	<br><br>
+	<<tearful>>你振作了起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+<</if>>
+
+<<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Flats Events Solicit
+<<effects>>
+
+<<if $phase is 1>>
+    <<set $seductiondifficulty to 6000>>
+<<elseif $phase is 2>>
+    <<set $seductiondifficulty to 8000>>
+<<else>>
+    <<set $seductiondifficulty to 10000>>
+<</if>>
+<<seductioncheck>>
+<br><br>
+<<if $seductionskill lt 1000>>
+	<span class="gold">你对自己的诱惑力更有信心了。</span>
+	<br><br>
+<</if>>
+<<seductionskilluse>>
+
+"亲爱的，想和我睡觉你得拿出"诚意"来，懂了吗？"你说着晃了晃你的<<bottom>>。
+<<promiscuity3>>
+
+<<if $seductionrating gte $seductionrequired>>
+
+	<<person>>的眼中闪过一道亮光。这时<<His>>的电话突然响了，<span class="green"><<he>>没有理会而是对你说道。</span>"我的公寓在那边。"
+	<br><br>
+    <<He>>带你穿过大厅，并为你打开门，让你先进去。
+
+    <<if $rng gte 81>>
+        房间里光线昏暗，你的眼睛需要一段时间才能适应，然后你注意到墙上挂满了BDSM用具。
+        <br><br>
+        <<person>>从后面抓住你，然后把你抱到了<<his>>的腿上。"别担心，"<<he>>说。"我只是想来点尔轻松的东西。"
+        <br><br>
+
+        <<link [[继续|Flats Events Solicit Spank]]>><<set $sexstart to 1>><</link>>
+        <br>
+    <<else>>
+        这是一个普通的公寓，里面有点儿脏。<<He>>关上门后直接就猴急的对你动手动脚。
+        <br><br>
+
+        <<link [[继续|Flats Events Solicit Sex]]>><<set $sexstart to 1>><</link>>
+        <br>
+    <</if>>
+
+<<else>>
+
+    <<person>>的眼中闪过一道亮光。这时<<His>>的电话突然响了。<<He>>遗憾的叹了口气，然后接通了电话。"是的,亲爱的。我马上就到。"<<He>>放下电话，然后不好意思地看了你一眼，<span class="red"><<He>>丢下你一个人离开了。</span>
+	<br><br>
+    <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+    <br>
+<</if>>
+
+:: Flats Events Solicit Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[继续|Flats Events Solicit Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Events Solicit Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Events Solicit Sex Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<person1>><<person>>躺在<<his>>的沙发上，在<<his>>的口袋里摸钱。"给你，"<<he>>说。"给自己买点好东西。"
+	<br><br>
+    <<if $phase is 1>>
+        你获得了<<moneyGain 50>>.
+    <<elseif $phase is 2>>
+        你获得了<<moneyGain 100>>.
+    <<else>>
+        你获得了<<moneyGain 150>>.
+    <</if>>
+    <br><br>
+	<<tearful>>你离开了公寓。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<else>>
+	<<person1>><<person>>倒在<<his>>的沙发上检查自己的伤口。
+	<br><br>
+	<<tearful>>你跑出了公寓。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+<br><br>
+
+<<link [[继续|Flats]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Flats Events Solicit Spank
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+    <<npcspank>>
+	<<set $enemyanger += 150>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend or $enemyanger lte 20>>
+	<span id="next"><<link [[继续|Flats Events Solicit Spank Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Events Solicit Spank]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Events Solicit Spank Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<person1>><<person>>躺在沙发上，你的手从你的<<bottom>>上放开。"差不多够了，"<<he>>说。<<He>>把手伸进<<his>>的口袋里，然后给了你一叠钞票。
+	<br><br>
+	<<if $phase is 1>>
+        你获得了<<moneyGain 50>>.
+    <<elseif $phase is 2>>
+        你获得了<<moneyGain 100>>.
+    <<else>>
+        你获得了<<moneyGain 150>>.
+    <</if>>
+    <br><br>
+	<<tearful>>你离开了公寓。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<elseif $enemyhealth lte 0>>
+	<<person1>><<person>>后退，你挣脱了<<his>>的掌控。<<He>>伸手去拿挂在墙上的马鞭，但是距离太远，<<him>>没够到鞭子就摔倒了。
+	<br><br>
+	<<tearful>>你离开了公寓。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<else>>
+	<<person1>><<person>>停止了<<his>>对你的侵犯。"差不多够了，"<<he>>说。<<He>>把手伸进<<his>>的口袋里，然后给了你一叠钞票。"你自己出去吧。"
+	<br><br>
+	<<if $phase is 1>>
+        你获得了<<moneyGain 50>>.
+    <<elseif $phase is 2>>
+        你获得了<<moneyGain 100>>.
+    <<else>>
+        你获得了<<moneyGain 150>>.
+    <</if>>
+    <br><br>
+	<<tearful>>你离开了公寓。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+
+<<link [[继续|Flats]]>><<set $eventskip to 1>><<endevent>><</link>>
+<br>
+
+
+:: Flats Events Ignore
+<<effects>>
+
+<<if $rng gte 11>>
+    你试图忽略身后的脚步声。<span class="green"><<He>>在其中一间公寓前停了下来，走了进去。</span>看来是你搞错了，不是跟踪狂。
+    <br><br>
+
+    <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+    <br>
+<<else>>
+    你试图忽略身后的脚步声，但他们似乎正在加速，而且还越来越近。你回头瞥了一眼，刚好看到了那个<<person>>经过你的身影。<<He>>抓住你的腰，把你压在墙上。
+    <br><br>
+
+    <<link [[继续|Flats Events Rape 2]]>><<set $molestationstart to 1>><</link>>
+    <br>
+<</if>>
+
+:: Flats Events Run
+<<effects>>
+
+当你开始奔跑时，你感到一阵焦虑，担心<<person1>><<person>>会追赶你。你想太多了，<<He>>没有，但你的心跳需要一段时间才能慢下来。
+<br><br>
+
+<<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Flats Events Rape 2
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+    <<if Time.dayState is "night">>
+	    <<enable_rescue>>
+    <</if>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Flats Events Rape 2 Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Events Rape 2]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Events Rape 2 Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>让你瘫倒在墙上，然后走开了。
+	<br><br>
+	<<tearful>>你站了起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<elseif $enemyhealth lte 0>>
+	你把<<person>>推到墙上。<<He>>砰的一声撞在上面，然后倒在了地上。
+	<br><br>
+	<<tearful>>你逃走了。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<else>>
+	<<set $rescued += 1>>
+    <<generate2>><<person2>>
+    一声沉重的撞击声从附近的一间公寓传来。"他妈的给我闭嘴，"一个<<personsimple>>的声音喊道。"不然我就叫警察了。"
+    <br><br>
+    <<person1>><<person>>犹豫了一下，然后走开了。
+    <br><br>
+    <<tearful>>你挣扎着站了起来。
+    <br><br>
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+
+<<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>

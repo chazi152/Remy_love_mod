@@ -1,0 +1,123 @@
+:: Brothel Basement
+
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+<<if $brothel_basement_intro is undefined>>
+	<<set $brothel_basement_intro to 1>>
+	<<generate1>><<person1>>
+	一个<<person>>从附近的门里走了出来。<<He>>戴了一张黑色的面具，遮住了<<his>>上半张脸。
+	<br><br>
+	"你看起来迷路了，"<<he>>笑着说。"这些房间是给员工的。"<<He>>指向了楼梯附近的一个标志。它上面写着<<printmoney $brothel_basement_price>>。
+	<<if $brothel_basement_price gte 2000>>
+		"今天价格贵一些.
+	<<else>>
+		"差不多就这个价钱。
+	<</if>>
+	虽然并不能挣多少钱，但是不会有人认识你。
+	<br><br>
+	<<link [[继续|Brothel Basement]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	你在妓院的地下室。一侧有一排小房间，每个房间里都有一个<<if $awareness gte 200>>鸟洞<<else>>洞<</if>>.
+	<br><br>
+	楼梯旁的一块牌子上写着：<<printmoney $brothel_basement_price>>。
+	<br><br>
+	<<if $promiscuity gte 55>>
+		<<link [[占用一个房间 (0:10)|Brothel Gloryhole]]>><<pass 10>><<set $phase to 1>><</link>><<promiscuous4>>
+		<br>
+	<<else>>
+		你不够淫乱，不能在鸟洞工作。
+		<br>
+	<</if>>
+	<<link [[离开|Brothel]]>><</link>>
+	<br>
+<</if>>
+
+:: Brothel Gloryhole
+
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+
+<<generate1>><<person1>>
+<<if $phase is 1>><<set $phase to 0>>
+
+你进入其中一个房间，关上身后的门。一盏绿灯在屋里闪烁。
+
+<<else>>
+<</if>>
+
+你等了几分钟，灯变红了。一个
+<<if $NPCList[0].penis isnot "none">>
+一根 $NPCList[0].penisdesc从洞里伸了过来。
+<<else>>
+洞口处出现了一个小穴。
+<</if>>
+<br><br>
+<<link [[参与|Brothel Basement Sex]]>><<set $sexstart to 1>><<tiredness 3>><</link>><<gtiredness>>
+<br>
+<<link [[离开|Brothel Basement]]>><<endevent>><<unset $desperateaction>><</link>>
+<br>
+
+:: Brothel Basement Sex
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<npcgloryhole>>
+<</if>>
+
+<<set $enemyarousal += 10>>
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Brothel Basement Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Brothel Basement Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Brothel Basement Sex Finish
+
+<<set $outside to 0>><<effects>>
+<<set $punishmentposition to 0>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>><<set $gloryholestat += 1>><<set $prostitutionstat += 1>>
+	<<tearful>>你数了数<<he>>从洞里递进来的钱。你获得了<<printmoney $brothel_basement_price>>。
+	<<set $money += $brothel_basement_price>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+<<elseif $enemyhealth lte 0>>
+	你听到墙后传来一阵痛苦的叫喊，然后
+	<<if $NPCList[0].penis isnot "none">>
+	$NPCList[0].penisdesc抽了回去。
+	<<else>>
+	小穴从洞口消失了。
+	<</if>>
+	<br><br>
+	<<tearful>>你站起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+<<else>>
+	你听到墙另一边的<<person>>抱怨。
+	<br><br>
+	<<tearful>>你站起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+<</if>>
+
+<<link [[等待其他顾客 (0:10)|Brothel Gloryhole]]>><<pass 10>><</link>>
+<br>
+<<link [[离开|Brothel Basement]]>><</link>>
+<br>

@@ -1,0 +1,122 @@
+:: Office Coffee Start
+<<location "office_building">><<effects>>
+你进入<<checkfloor>>并与一位<<generate1>><<person1>><<person>>交谈，<<He>>递给你一份酒水订单。
+<br>
+"我们急需这些，请快点儿。”<<he>>说，你带着清单返回电梯。
+<br><br>
+<<set $danger to random(1,10000)>>
+<<if $danger gte 8000 - (300 * $officeFloor)>>
+	<<link [[继续|Office Coffee Pond]]>><</link>>
+<<else>>
+	<<link [[继续|Office Coffee Shop]]>><</link>>
+<</if>>
+
+:: Office Coffee Shop
+<<effects>>
+你下到大厅，跑向大楼入口处的咖啡馆提交订单。几分钟后，咖啡师叫你过去。
+<br><br>
+你拿着清单返回电梯。
+<br><br>
+<<link [[继续|Office Coffee End]]>><</link>>
+
+:: Office Coffee Pond
+<<effects>>
+电梯几乎在<<checkfloor>>和大厅之间的每层都停了下来，这浪费了不少时间。
+<br>
+当电梯终于到达时，你冲向大厅另一端的咖啡馆，但不小心撞到了一名雇员，愤怒的雇员把你推入锦鲤池。
+<br>
+这场骚乱已经吸引了一小群围观者，但没有人过来帮助你。
+<br><br>
+<<endevent>>
+<<if $swarmdisable is "t">>
+	当你爬出池子时，整个大厅都安静了下来，你的衣服被充满鱼腥味的水浸湿了。
+	<<effectswater>>
+	<br><br>
+	<<link [[继续|Office Lobby]]>><</link>>
+<<else>>
+	还没来得及起身，池里的鱼便朝你蜂拥而来。
+	<br><br>
+	<<link [[继续|Office Coffee Swarm]]>><<effectswater>><<set $molestationstart to 1>><</link>>
+<</if>>
+
+:: Office Coffee Swarm
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<molested>>
+	<<controlloss>>
+	<<set $combat to 1>>
+	<<audience>>
+	<<set $enemytype to "swarm">>
+	<<swarminit "fish" "鱼群" "向你移动" "包围着你" "击退" 1 7>>
+	<<set $swimdistance to 8>>
+	<<set $water to 1>>
+<</if>>
+
+<<if $swimdistance gte 8>>
+	你被鱼群包围了。
+<<elseif $swimdistance gte 2>>
+	你正在逃离鱼群。
+<<else>>
+	你即将逃脱。
+<</if>>
+<<water>><<effects>><<swarmeffects>>
+<<swarm>>
+<<swarmactions>>
+<<if $stress gte $stressmax>>
+	<span id="next"><<link [[继续|Office Coffee Swarm Finish]]>><</link>></span><<nexttext>>
+<<elseif $swimdistance lte 0>>
+	<span id="next"><<link [[继续|Office Coffee Swarm Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Office Coffee Swarm]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Office Coffee Swarm Finish
+
+<<effects>>
+<<if $stress gte $stressmax>>
+	这对于你来说太过了，你陷入了昏厥。
+	<br><br>
+	<<upperruined>>
+	<<lowerruined>>
+	<<underlowerruined>>
+	<<underupperruined>>
+	<<feetruined>>
+	<<endcombat>>
+	<<passout>>
+	<<if $officecomplaints gte 10>>
+		<<link [[周围陷入了一片黑暗……|Office Security Max Passout]]>><</link>>
+	<<else>>
+		<<link [[周围陷入了一片黑暗……|Office Coffee Swarm Passout]]>><</link>>
+	<</if>>
+<<else>>
+	<<tearful>>你逃离了鱼群，爬出了池塘。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Office Lobby]]>><</link>>
+	<br>
+<</if>>
+
+:: Office Coffee Swarm Passout
+<<effects>>
+<<pass 20>>
+<<towelup>>
+你在大厅后面的安保室醒来，所有衣服都不见了，取而代之的是一条毛巾。
+<br><br>
+"你终于醒了，"这里的保安开口道，是一个<<generate1>><<person1>><<person>>，"我们把你捞起来的时候你什么都没穿，真不知道你的衣服发生了什么。"
+<br>
+"你不知为何杀了几条鱼，上级不太高兴，幸运的是我们只会给你个警告，下次不要在鱼池里游泳了。"<<ggsecurity>><<officeupdatecomplaints 2>>
+<br><br>
+<<He>>帮助你起身，护着你进入大厅。
+<<endevent>>
+<br><br>
+<<link [[继续|Office Lobby]]>><</link>>
+
+
+:: Office Coffee End
+<<effects>>
+你回到让你拿咖啡的人身边。当你分好所有饮料后，<<person1>><<person>>递给你小费。<<assignmenttip 5>>
+<br>
+"再次感谢你，这是对你遇到麻烦的一点小补偿。"
+<<completeassignment>>

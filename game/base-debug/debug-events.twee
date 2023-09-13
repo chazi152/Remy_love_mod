@@ -1,0 +1,153 @@
+:: Widgets Debug Event [widget]
+
+<!-- Any widget with the goal to bug-purge events goes here.
+	Since I didn't find an appropriate file to put this in, I decided to make my own.
+	Feel free to delete this comment at leisure. -->
+<<widget "checkEventNPC">>
+	<<if (EventSystem.isSlotTaken(_args[0]) and !EventSystem.Disable) or $enemynomax gte 6 or $enemyno gte 6>>
+		<<set $endeventerror to $lastgenerated>>
+		<<clearsinglenpc _args[0]>>
+		<!-- <<endevent phaseless>> -->
+	<</if>>
+	<<set $lastgenerated to $passage>>
+<</widget>>
+
+<<widget "eventExtraInfo">>
+	<!-- Setup useful variables -->
+	<<set $_passages = V.event is undefined
+		? []
+		: V.event.buffer.reduce((prev, cur) => {
+			prev.pushUnique(cur.area[0]);
+			return prev;
+		}, [])
+	>>
+
+	<h3>Area information</h3>
+
+	<br>
+	Passage: $_passages
+	<br>
+
+	<<if _eventAlertMajorArea is true>>
+		<span class="red">You are in a major area, which means an NPC escaped!</span>
+		<<if $cheatdisable is "f">>
+			Ignore this message if you've just used a cheat. Otherwise, <span class="red">please report this!</span>
+		<<else>>
+			<span class="red">Please report this!</span>
+		<</if>>
+		<<set _eventreason to true>>
+	<<elseif !_eventAlertMajorArea>>
+		<span class="green">This NPC was defined in this passage</span>
+		<<set _eventreason to true>>
+	<<else>>
+		<<if $passage.includes("Street Stalk")>>
+			<span class="green">You are being stalked. Usually this means everything is in order.</span>
+			<<set _eventreason to true>>
+		<</if>>
+		<<if $event isnot undefined>>
+			<<if $_passages.includes($passage)>>
+				<span class="green">You are in a passage where NPCs were generated.</span>
+				<<set _eventreason to true>>
+			<<elseif $passage.includes($_passages)>>
+				<span class="green">You are in a subpassage from where NPCs were generated. Usually this means they are still in use.</span>
+				<<set _eventreason to true>>
+			<</if>>
+		<<else>>
+			<span class="yellow">You are not in an event.</span>
+		<</if>>
+	<</if>>
+	<<if !_eventreason>>
+		<span class="yellow">NPCs were generated at some point and may not be cleared. They could still be in use. If you feel like they shouldn't be active, please report this. If you're unsure whether or not to report this, go to a major area (i.e a street/alleyway/outside) and check this again.</span>
+	<</if>>
+	<br><br>
+	<h3>NPC information</h3>
+	<br>
+	$enemyno NPC<<if $enemyno gt 1>>s are<<else>> is<</if>> currently active. Max: $enemynomax. Them being:<br><br>
+
+	<div class="debug-event-container">
+	<<for $_i to 0; $_i lt $NPCList.length; $_i++>>
+		<<set $_npc to $NPCList[$_i]>>
+		<<set $_eventNPC to EventSystem.get($_i)>>
+		<<if $_npc.type isnot undefined and $_eventNPC isnot undefined>>
+			<<set $_time to new DateTime($_eventNPC.time)>>
+			<div class="debug-event-item debug-event-success">
+				ID: $_i | $_npc.fullDescription<br>
+				Sex: $_npc.gender | Gender: $_npc.pronouns.man<br>
+				Description: $_npc.description<<if $_npc.role>> | Role: $_npc.role<</if>><br>
+				Source: <<print $_eventNPC.area[0]>>, at: <<ampm $_time.getHours() $_time.getMinutes()>>.<br>
+			</div>
+		<<else>>
+			<div class="debug-event-item debug-event-empty">
+				NPC #: $_i
+			</div>
+		<</if>>
+	<</for>>
+	</div>
+
+	<<if $event isnot undefined>>
+		<br>Extra debugging:<br>
+		<<for $_i to 0; $_i lt $event.buffer.length; $_i++>>
+			<<set $_eventNPC to $event.buffer[$_i]>>
+			<<set $_time to new DateTime($_eventNPC.time)>>
+			<<print ($NPCList[$_eventNPC.slot] || {}).fullDescription || "No description.">><br>
+			Defined in passage <<print $_eventNPC.area[0]>>, at <<ampm $_time.getHours() $_time.getMinutes()>>.<br>
+			<<if $_eventNPC.area.length gt 1>>
+				Widget Stack:
+				<<set $_widgetStack to $_eventNPC.area.slice(1)>>
+				<<for $_iStack = 0; $_iStack lt $_widgetStack.length; $_iStack++>>
+					<<print "<<$_widgetStack[$_iStack]>>">><<if $_iStack isnot $_widgetStack.length - 1>>, <</if>>
+				<</for>>
+				<br>
+			<</if>>
+			<!-- Check other event NPCs for linked passages -->
+			<<for $_j to 0; $_j lt $event.buffer.length; $_j++>>
+				<<set $_eventNPC2 to $event.buffer[$_j]>>
+				<<if $_i isnot $_j and $_eventNPC.area[0] is $_eventNPC2.area[0]>>
+					<<if _eventnumberinpassage is undefined>>
+						<<set _eventnumberinpassage to 0>>
+					<</if>>
+					<<set _eventnumberinpassage += 1>>
+				<</if>>
+			<</for>>
+			<!-- Check other event NPCs for linked passages -->
+			<<if _eventnumberinpassage isnot undefined>>
+				<<print _eventnumberinpassage>> other NPC<<if _eventnumberinpassage isnot 1>>s<</if>> have also been defined in passage <<print $_eventNPC.area[0]>>.<br>
+				<<unset _eventnumberinpassage>>
+			<</if>>
+			Set in slot <<print $_eventNPC.slot>> of $$NPCList.<br>
+			<<for $_j to 0; $_j lt $event.buffer.length; $_j++>>
+				<<if $_i isnot $_j and $_eventNPC.slot is $_eventNPC.slot[$_j]>>
+					<span class="red">This NPC has been overwritten or overwrote another one in slot <<print $event.slot[$_eventNPC.slot]>>!</span><br>
+					<<break>>
+				<</if>>
+			<</for>>
+			<br>
+		<</for>>
+		Phase: $phase
+	<</if>>
+<</widget>>
+
+<!-- <<widget "eventAlert">>
+ <<if $event[0] is $passage>>
+	<span class="green" style="text-align: center">Event Active</span>
+	<<if $debug is 1>>
+		<<set _eventAlertMajorArea to false>>
+		<span class="rainbow"><<button "More Event Info">>
+			<<overlayReplace "eventExtraInfo">>
+		<</button>></span>
+	<</if>>
+<<elseif ["Orphanage", "Bedroom", "Barb Street", "Cliff Street", "Connudatus Street", "Danube Street", "Domus Street", "Elk Street", "Harvest Street", "High Street", "Mer Street", "Nightingale Street", "Oxford Street", "Starfish Street", "Wolf Street", "Residential alleyways", "Commercial alleyways", "Industrial alleyways", "Park", "Hallways", "Brothel", "Strip Club", "Beach", "Ocean Breeze", "Docks Work", "Residential Drain", "Commercial Drain", "Industrial Drain", "Forest", "Farmland", "Livestock Field", "Forest Wolf Cave", "Wolf Cave", "Wolf Cave Clearing", "Asylum", "Asylum Cell", "Underground Cell"].includes($passage)>>
+	<span class="red" style="text-align: center">Event Active</span>
+	<<set _eventAlertMajorArea to true>>
+	<span class="rainbow"><<button "More Event Info">>
+		<<overlayReplace "eventExtraInfo">>
+	<</button>></span>
+<<elseif ["Forest Cabin", "Eden Cabin", "Eden Clearing"].includes($event[0]) and $event.length is 1>>
+	<span class="green" style="text-align: center">Eden Active</span>
+<<else>>
+	<span class="yellow" style="text-align: center">Event Active</span>
+	<span class="rainbow"><<button "More Event Info">>
+		<<overlayReplace "eventExtraInfo">>
+	<</button>></span>
+<</if>>
+<</widget>> -->

@@ -1,0 +1,373 @@
+:: Widgets Sleep [widget]
+
+<<widget "sleep">>
+	<<sleephour>>
+	<<ruffleHairFromSleep>>
+<</widget>>
+
+<<widget "sleephour">>
+	<<if random(1, 2500) is 1>>
+		<<set _toast to 1>>
+	<</if>>
+	<<set $sleepHoursTotal to 0>>
+	<<set $_bonusFatigueLoss to 10>>
+	<!-- wearing sleep clothes -->
+	<<if $worn.upper.type.includes("sleep") or $worn.lower.type.includes("sleep")>>
+		<<set $_bonusFatigueLoss += 5>>
+	<</if>>
+	<!-- sleeping with others -->
+	<<if $bedGuest or $wolfbed is 1>>
+		<<set $_bonusFatigueLoss += 5>>
+	<</if>>
+	<!-- bonus for sleeping with Love Interests with the Mate For Life trait -->
+	<<if $bedGuest and $transformationParts.traits.mateForLife isnot "disabled" and isLoveInterest($bedGuest) and !$sleepWraith>>
+		<<set $_bonusFatigueLoss += 3>><<set $stress -= 10>><<set $trauma -= 1>><<set $arousal += 10>>
+	<</if>>
+	<!-- wearing any non-sleep clothing disables the sleep bonus (except under_upper and under_upper and anything else not listed here) -->
+	<<if !["over_upper", "over_lower", "upper", "lower", "over_head", "head", "face", "neck", "hands", "legs", "feet"].every(slot => $worn[slot].type.includes("naked") || $worn[slot].type.includes("sleep") || $worn[slot].type.includes("eerie"))>>
+		<<set $_bonusFatigueLoss to 0>>
+	<</if>>
+	<!-- sleeping in a poor/regular/comfy bed at home provides a -10/0/+10 bonus regardless of clothing -->
+	<<if $location is "home">>
+		<<set $_bed to Furniture.get('bed')>>
+		<<if $_bed.type.includes('comfy')>>
+			<<set $_bonusFatigueLoss += 10>>
+		<<elseif $_bed.type.includes('starter')>>
+			<<set $_bonusFatigueLoss -= 10>>
+		<</if>>
+	<</if>>
+	<!-- note: every hour of sleep gives a standard 250 fatigue reduction, so this bonus may not be all that much. -->
+
+	<!-- sleephour repeats this until you have slept for the selected number of hours -->
+	<!-- if you select "just sleep", then you wake up when tiredness hits 0, or after 10 hours. -->
+	<<for $sleephour gte 1 or $sleephour lte -1>>
+		<<set $sleephour -= 1>>
+
+		<<switch $location>>
+			<<case "home">>
+				<<set _robin to statusCheck("Robin")>>
+				<<set _kylar to statusCheck("Kylar")>>
+				<<if $sleepWraith>>
+					<!-- Do nothing. Wraith mimicking Robin guarantees an uninterrupted sleep -->
+
+				<<elseif $kylarenglish is 1 and _kylarStatus.includes("Love") and _kylarStatus.includes("Lust") and Time.dayState is "night" and $kylarbed is undefined and $robinbed is undefined and $rng gte 96 and $NPCName[$NPCNameList.indexOf("Kylar")].state is "active">>
+					<<set _sleepinterrupt to 1>>
+					<<set _kylarWake to 1>>
+					<<set $kylarSleepEvent to 1>>
+
+				<<elseif ($kylarenglish isnot 1 or $syndromekylar isnot 1) and !playerIsPregnant() and C.npc.Kylar.love lte 49 and C.npc.Kylar.rage gte 70 and Time.dayState is "night" and $kylarbed is undefined and $robinbed is undefined and $rng gte 96 and $weekly.kylarCreep isnot 1 and $NPCName[$NPCNameList.indexOf("Kylar")].state is "active">>
+					<<set $weekly.kylarCreep to 1>>
+					<<set _sleepinterrupt to 1>>
+					<<set _kylarWake to 2>>
+
+				<<elseif (($robinromance is 1 and _robin.lust gte 20) or (_robin.trauma gte 50 and $rng gte 51)) and !$robinbed and $robinwakeday isnot 1 and $kylarbed isnot 1 and $robinmissing is 0 /*and !$robin_kicked_out*/>>
+					<!-- Robin climbs into bed with you -->
+					<<if Time.hour gte 18 or Time.hour lte 6>>
+						<<set _sleepinterrupt to 1>>
+						<<set _robin.lovewake to 1>>
+						<<set $robinwakeday to 1>>
+					<</if>>
+				<<elseif _robin.love gte 100 and $robinbed is undefined and $robindebtknown isnot 1 and $kylarbed isnot 1 and $robinmissing is 0>>
+					<<if Time.hour gte 18 or Time.hour lte 6>>
+						<<set _sleepinterrupt to 1>>
+						<<set $robindebtwake to 1>>
+					<</if>>
+				<<elseif wraithSleepEventCheck()>>
+					<<wraithEvent>>
+
+				<<elseif $baileydefeatedchain gte 1 and ($rng * 100) gte (9900 - ($allure / 5))>>
+					<<set _sleepinterrupt to 1>>
+					<<set $baileyrapewake to 1>>
+				<<elseif $christmas is 1 and Time.monthDay is 25 and Time.hour lte 6 and $christmas_kylar is undefined and $NPCName[$NPCNameList.indexOf("Kylar")].state is "active">>
+					<<set _sleepinterrupt to 1>>
+					<<set $christmas_kylar to 1>>
+				<<elseif Time.schoolDay and Time.hour is 7 and !$daily.baileyWake>>
+					<<set _sleepinterrupt to 1>>
+					<<set $daily.baileyWake to true>>
+				<<elseif $corruption_slime gte (currentSkillValue('willpower') / 20) and random(0,100) lt 3 and Time.dayState is "night" and $slimeSleepEvent is 0 and $kylarbed isnot 1>>
+					<<set $slimeWake to 1>>
+					<<break>>
+				<</if>>
+
+
+			<<case "asylum">>
+				<<asylumeffects>>
+				<<if Time.hour is 6 or ($asylumstate is "firsttreatment" and $daily.asylumTreatment1 isnot 1) or ($asylumstate is "secondtreatment" and $daily.asylumTreatment2 isnot 1) or ($asylumstate is "assessment" and $daily.asylumAssessment isnot 1)>>
+					<<set _sleepinterrupt to 1>>
+				<<elseif Time.hour is 6 and $location is "asylum" or $asylumstate is "firsttreatment" and $daily.asylumTreatment1 isnot 1 and $location is "asylum" or $asylumstate is "secondtreatment" and $daily.asylumTreatment2 isnot 1 and $location is "asylum" or $asylumstate is "assessment" and $daily.asylumAssessment isnot 1 and $location is "asylum">>
+					<<set _sleepinterrupt to 1>>
+				<<elseif $suspicion gte 80 and random(1, 10) gte 10>>
+					<<set _sleepinterrupt to 1>>
+					<<set $rapewake to 1>>
+				<</if>>
+			<<case "prison">>
+				<<if Time.hour is 6>>
+					<<set _sleepinterrupt to 1>>
+					<<set $daily.prison.wake to true>>
+				<</if>>
+			<<case "alex_cottage">>
+				<<if wraithSleepEventCheck()>>
+					<<wraithEvent>>
+				<<elseif (Time.hour gte 21 or Time.hour lte 5) and $NPCName[$NPCNameList.indexOf("Alex")].lust gte 10 and $alexwake isnot 1>>
+					<<set $alexwake to 1>>
+					<<set _sleepinterrupt to 1>>
+				<<elseif $farm_attack_timer is 0 and Time.hour gte 21>>
+					<<set $remywake to 1>>
+					<<set _sleepinterrupt to 1>>
+				<</if>>
+			<<case "cabin">>
+				<<if wraithSleepEventCheck()>>
+					<<wraithEvent>>
+				<<elseif Time.hour lte 6 and $NPCName[$NPCNameList.indexOf("Eden")].lust gte 26 and $edenwake isnot 1>>
+					<<set $edenwake to 1>>
+					<<set _sleepinterrupt to 1>>
+				<</if>>
+			<<case "forest">>
+				<<if $location is "forest" and $wolfpackferocity gte 10 and $wolfwake isnot 1>>
+					<<set _sleepinterrupt to 1>>
+					<<set $wolfwake to 1>>
+				<</if>>
+			<<case "tower">>
+				<<if wraithSleepEventCheck() and $bird and $bird.mirror is 1>>
+					<<wraithEvent>>
+				<<elseif $bird.state is "hunting" and $bird.timer lte 0>>
+					<<set _sleepinterrupt to 1>>
+				<<elseif $bird.state is "home" and !$bird.satisfied and random(1, 10) is 10>>
+					<<set _sleepinterrupt to 1>>
+				<</if>>
+			<<case "wolf_cave">>
+				<<if wraithSleepEventCheck()>>
+					<<wraithEvent>>
+				<</if>>
+			<<case "pound">>
+				<<if Time.hour is 6 or Time.hour is 12 or Time.hour is 18>>
+					<<set _sleepinterrupt to 1>>
+				<</if>>
+		<</switch>>
+
+		<!-- this will stop sleep from happening, meaning no fatigue reduction or time passing -->
+		<<if _sleepinterrupt>>
+			<<break>>
+		<</if>>
+
+		<<if _wraithinterrupt is 1>>
+			<<set _sleepinterrupt to 1>>
+			<<break>>
+		<</if>>
+
+		<!-- Keep events above this comment -->
+		<<set $sleepHoursTotal += 1>><<set $sleepStat++>>
+
+		<!-- for "just sleep" option, if sleep is no longer required OR the player has slept for 10 hours, interrupt it. -->
+		<<if $sleephour lte -1 and ($tiredness lte 0 or $sleephour lte -11)>>
+			<<break>>
+		<</if>>
+
+		<!-- fatigue is lowered by 200 for every hour slept, and another 50 more if the player has no trauma. -->
+		<<set $tiredness -= 200>>
+		<<if !($sleeptrouble is 1 and $controlled is 0)>>
+			<<set $tiredness -= 50>>
+		<</if>>
+		<<set $tiredness -= $_bonusFatigueLoss>>
+
+		<<if $location is "tower">>
+			<<bird_pass 60>>
+		<<else>>
+			<<pass 1 hours>>
+		<</if>>
+
+		<<if $nightmares gte 1 and $controlled is 0>>
+			<<stress 6>>
+		<</if>>
+
+		<<sleep_clamp>>/*Prevents bugged out values affecting events in anyway, -2000 fatigue and -360 stress arnt helpful*/
+	<</for>>
+<</widget>>
+
+<<widget "sleepeffects">>
+	<<if $stress gte $stressmax>>
+		<<set $stress -= 2000>>
+		<<trauma 10>>
+		<span class="red">你的压力水平在你睡觉的时候达到了顶峰，此后有所缓解，但代价是你的心理健康。</span>
+		<<lstress>><<gtrauma>>
+		<<ruffleHair>>
+		<<saveTempHairStyle>>
+		<br><br>
+	<</if>>
+	<<if !$sleepWraith and $bedGuest and $transformationParts.traits.mateForLife isnot "disabled" and isLoveInterest($bedGuest)>>
+		<span class="green">与你选择的伴侣上床，让你满足了一种本能的欲望。</span> <<lstress>><<ltrauma>><<garousal>>
+		<br><br>
+	<</if>>
+	<<if $scienceproject is "ongoing" and $sciencephallusknown isnot 1 and $promiscuity gte 35>>
+		<<set $sciencephallusknown to 1>>
+		当你醒来时，一个淫乱的想法出现在你的脑海: <span class="gold">你构想了"本地性器调查"科学项目。</span>查看你的日记以了解详细信息。
+		<br><br>
+	<</if>>
+	<<unset $bedGuest>>
+<</widget>>
+
+<<widget "bedclotheson">>
+	<<switch _args[0]>>
+		<<case "bed" "Bed">>
+			<<set $_storeLocation to "bed">>
+			<<set $wardrobe_location to "wardrobe">>
+		<<case "Farm Bed">>
+			<<set $_storeLocation to "Farm Bed">>
+			<<set $wardrobe_location to "alexFarm">>
+		<<case "prison bed">>
+			<<set $_storeLocation to "prison bed">>
+			<<set $wardrobe_location to "prison">>
+		<<default>>
+			"bedclotheson" widget 出了问题，请报告此bug
+			<<run console.log('Something went wrong with the "bedclotheson" widget, please report')>>
+	<</switch>>
+	<<wardrobeSelection true>>
+	<<updateWornClothingLocation $wardrobe_location>>
+	<<if $wear_outfit is "clotheson">>
+		/*Was causing some wierdness when getting out of bed*/
+		/*<<undress $wardrobe_location>>*/
+		<<loadTempHairStyle>>
+		<<storeon $_storeLocation>>
+	<<elseif $wear_outfit isnot "none">>
+		<<storeon $_storeLocation>>
+		<<undress $wardrobe_location>>
+		<<wearoutfit>>
+	<</if>>
+	<<updateWornClothingLocation $wardrobe_location>>
+	<<set $wear_outfit to "none">>
+<</widget>>
+
+<<widget "slimeNoSleep">>
+	<<if $corruption_slime gte 80>>
+		<<set _eventsList to ["have sex with someone or something", "only sleep naked from now on"]>>
+
+		<<if $alwaysSleepNaked is true>>
+			<<set _eventsList.delete("only sleep naked from now on")>>
+		<</if>>
+	<<else>>
+		<<set _eventsList to ["have sex with someone", "go running or swimming for an hour"]>>
+	<</if>>
+	<<if currentSkillValue('skulduggery') gt 200>>
+		<<set _eventsList.push("steal something")>>
+	<</if>>
+	<<if $exhibitionism gt 35>>
+		<<set _eventsList.push("go running or swimming naked for an hour")>>
+	<</if>>
+
+	<<set _maxEvents to _eventsList.length - 1>>
+	<<set $slimeEvent to _eventsList[random(0,_maxEvents)]>>
+
+	<span class="lewd">你感觉脑袋里的史莱姆在你睡觉前发出了命令: <<print $slimeEvent>>。</span> 它承诺，如果你遵守会获得奖励，否则要承担后果。
+	<br><br>
+	<<link [[服从|SleepSlimeEventObey]]>><<corruption 1>><<pain -4>><<stress -6>><<trauma -12>><<sub 1>><</link>><<gcorruption>><<lpain>><<lltrauma>><<lstress>>
+	<br>
+	<<link [[违抗|SleepSlimeEventDefy]]>><<corruption -1>><<pain 8>><<stress 6>><<trauma 6>><<sub 1>><</link>><<lcorruption>><<ggpain>><<ggtrauma>><<ggstress>>
+	<br>
+<</widget>>
+
+<<widget "slimeEventResult">>
+	<<if $slimeEvent is "go running or swimming naked for an hour" or "go running or swimming for an hour">>
+		<<set $slimeEventLength to 2>>
+	<</if>>
+	<<if $slimeEvent is "only sleep naked from now on">>
+		<<strip>>
+		<<set $alwaysSleepNaked to true>>
+		<<unset $slimeEvent>>
+		你在上床前脱掉衣物。
+		<br><br>
+		<<link [[继续|Bed]]>><</link>>
+	<<else>>
+		你走下床去完成交给你的任务。
+		<br><br>
+		<<link [[继续|Bedroom]]>><</link>>
+	<</if>>
+<</widget>>
+
+<<widget "slimeEventEnd">>
+	<<switch $slimeEvent>>
+		<<case "go running or swimming naked for an hour">>
+			<<if $slimeEventLength is 1 and $exposed is 2>>
+				<<unset $slimeEvent>>
+				<<unset $slimeEventLength>>
+			<<elseif $exposed is 2>>
+				<<set $slimeEventLength -= 1>>
+			<</if>>
+		<<case "go running or swimming for an hour">>
+			<<if $slimeEventLength is 1>>
+				<<unset $slimeEvent>>
+				<<unset $slimeEventLength>>
+			<<else>>
+				<<set $slimeEventLength -= 1>>
+			<</if>>
+		<<default>>
+			<<unset $slimeEvent>>
+	<</switch>>
+<</widget>>
+
+<<widget "wraithEvent">>
+	<!-- this is because this event wakes the player up AFTER they have slept for an hour. -->
+	<<unset _sleepinterrupt>>
+
+	<<set _wraithinterrupt to 1>>
+	<<set $wraith.nightmare to 2>>
+	<<set $wraith.hunt to 0>>
+	<<set $foresthunt to 0>>
+<</widget>>
+
+<<widget "ruffleHairFromSleep">>
+	<!-- Roll a chance to wake up with ruffled hair -->
+	<!-- Chance is based on number of hours slept, with Trauma and Stress adding "calculated" hours -->
+	<!-- Trauma adds max 4.5, Stress 2 -->
+	<!-- Chances are ~5% at 8 hours, ~13% at 10 hours, 99% at 16.5 calculated hours -->
+
+	<!-- Math below uses rng of 1000, and calculates 75 instead of 750, for more granular probability -->
+
+	<!-- Use the below graph to calculate and demo -->
+	<!-- New Graph: https://www.desmos.com/calculator/xd73rdkx1v -->
+	<<if $ruffledisable is "f">>
+		<<set $_calcTrauma to ($trauma - $traumamax / 10) / 1000>>
+		<<if $_calcTrauma gte 0>>
+			<<set $_calcStress to $stress / 5000>>
+			<<set $_calcTotal to $_calcTrauma + $_calcStress + $sleepHoursTotal>>
+			<<set $_chance to $_calcTotal ** 4 / 75>>
+			<<rng 1000>>
+			<<if $_chance gt $rng>>
+				<span class="yellow">你的头发乱糟糟的。</span>
+				<<ruffleHair>>
+				<<saveTempHairStyle>>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "ruffleHair">>
+	<!-- Find a style group of current hair (loose, braid, etc.) and pick a random one from a list of corresponding 'ruffled' styles. If none found then keep current hair -->
+	<<if $ruffledisable is "f">>
+		<<set $_hair to setup.hair.hairtype.find(x => x.list.includes($hairtype))>>
+		<<set $_fringe to setup.hair.fringetype.find(x => x.list.includes($fringetype))>>
+		<<if $_hair>>
+			<<set $_rndhair to $_hair.devolve.random()>>
+		<</if>>
+		<<if $_fringe>>
+			<<set $_rndfringe to $_fringe.devolve.random()>>
+		<</if>>
+		<<set $hairtype to $_rndhair || $hairtype>>
+		<<set $fringetype to $_rndfringe || $fringetype>>
+	<</if>>
+<</widget>>
+
+:: SleepSlimeEventObey
+	你遵从了史莱姆的要求。
+	<<slimeEventResult>>
+
+:: SleepSlimeEventDefy
+<<if $corruption_slime gte (currentSkillValue('willpower') / 10)>>
+	史莱姆会强迫你服从它的要求。
+	<<slimeEventResult>>
+
+<<else>>
+	你可以无视史莱姆的要求，不听它的话上床睡觉。
+	<<unset $slimeEvent>>
+	<br><br>
+	<<link [[继续|Bed]]>><</link>>
+<</if>>

@@ -1,0 +1,127 @@
+:: Widgets Audience Swarm [widget]
+<<widget "audiencecameraswarm">>
+	<<if _audienceswarminitcount is undefined or _audienceswarminitcount gte $audienceselector>>
+		<<set _audienceswarminitcount to $audienceselector>>
+		<<set _audienceswarmcarry to {"drya":{}}>>
+	<<else>>
+		<<set _audienceswarminitcount to $audienceselector>>
+	<</if>>
+
+	<<set _tmpcam to "none">>
+	<<set _tmpsmoving to "creeping">>
+	<<set _tmppspot to "">>
+	<<set _tmpproof to "t">>
+
+	<<if $swarm.type is "slimes" or $swarm.type is "pale slimes">>
+		<<set _tmpsmoving to "slurping">>
+	<<elseif $swarm.type is "worms">>
+		<<set _tmpsmoving to "wiggling">>
+	<<elseif $swarm.type is "snakes" or $swarm.type is "eels">>
+		<<set _tmpsmoving to "slithering">>
+	<</if>>
+
+	<<rng>>
+	<<if $rng gte 81 and $facepic isnot 1>>
+		<<set $facepic to 1>>
+		那个$audiencedesc $audiencecamera把<<ahis>>的相机对准了你的脸，当<<ahe>>拍照时，闪光灯一闪。
+		<br>
+		<<set _tmpcam to "face">>
+	<<elseif $rng gte 41 and $bottompic isnot 1>>
+		<<set $bottompic to 1>>
+		那个$audiencedesc $audiencecamera把<<ahis>>的相机对准了你的<<bottom>>，闪光灯亮起，<<ahe>>拍了张照。
+		<br>
+		<<set _tmpcam to "bottom">>
+	<<elseif $rng gte 21 and $genitalpic isnot 1>>
+		<<set $genitalpic to 1>>
+		那个$audiencedesc $audiencecamera把<<ahis>>的相机对准了你的<<genitals>>，闪光灯亮起，<<ahe>>拍了张照。
+		<br>
+		<<set _tmpcam to "front">>
+	<<elseif $bodypic isnot 1>>
+		<<set $bodypic to 1>>
+		那个 $audiencedesc $audiencecamera 向后仰来保证<<ahis>>相机能够把这个场景尽收眼底，当<<ahe>>拍照时，闪光灯一闪。
+		<br>
+		<<set _tmpcam to "full">>
+	<</if>>
+
+	<<if $swarm.amount.genital[1] gt 0 and _tmpcam is "front">>
+		<<set _tmppspot to "gi">>
+	<<elseif $swarm.amount.genital[0] gt 0 and _tmpcam is "front">>
+		<<set _tmppspot to "g">>
+	<<elseif $swarm.amount.butt[1] gt 0 and _tmpcam is "bottom">>
+		<<set _tmppspot to "bi">>
+	<<elseif $swarm.amount.butt[0] gt 0 and _tmpcam is "bottom">>
+		<<set _tmppspot to "b">>
+	<<elseif $swarm.amount.genital[1] gt 0 or $swarm.amount.butt[1] gt 0>>
+		<<set _tmppspot to "i">>
+	<<else>>
+		<<set _tmppspot to "o">>
+	<</if>>
+
+	<<if _audienceswarmcarry.drya[_tmppspot] is undefined>>
+		<<set _audienceswarmcarry.drya[_tmppspot] to "t">>
+		<<set _tmpmark to "!">>
+		<<set _tmporgasm to "">>
+		<<if $orgasmdown gte 1>>
+			<<if $orgasmcount gt 3>>
+				<<aHe>>再次大喊："你真是个<<print either("荡妇","肮脏的荡妇","母狗","妓女","毫无价值的荡妇","极端变态")>>，又一次因为<<print $swarm.type.replace("eels","鳗鱼").replace("worms","蠕虫").replace("pale slimes","苍白史莱姆").replace("slimes","史莱姆").replace("snakes","蛇").replace("fish","鱼").replace("spiders","蜘蛛").replace("maggots","蛆虫")>>而高潮了
+				<<set _tmporgasm to "<span class=\"pink\">用力射精</span> ">>
+				<<set _tmpmark to "?">>
+			<<else>>
+				突然，<<ahe>>对你喊道："你个<<print either("骚货", "妓女", "变态")>>，靠<<print $swarm.type.replace("eels","鳗鱼").replace("worms","蠕虫").replace("pale slimes","苍白史莱姆").replace("slimes","史莱姆").replace("snakes","蛇").replace("fish","鱼").replace("spiders","蜘蛛").replace("maggots","蛆虫")>>就能高潮
+				<<set _tmporgasm to "<span class=\"pink\"> 射精</span> ">>
+			<</if>>
+		<<else>>
+			<<if _tmpcam is "none">>
+				那个$audiencedesc $audiencecamera惊叫了一声。"我喜欢
+			<<else>>
+				<<aHe>>说道，"我喜欢
+			<</if>>
+			<<if $swarm.amount.active[0] lte 4>>
+				那些扭动的<<print $swarm.type.replace("eels","鳗鱼").replace("worms","蠕虫").replace("pale slimes","苍白史莱姆").replace("slimes","史莱姆").replace("snakes","蛇").replace("fish","鱼").replace("spiders","蜘蛛").replace("maggots","蛆虫")>>
+			<<elseif $swarm.amount.active[0] lte 8>>
+				那些成群的<<print $swarm.type.replace("eels","鳗鱼").replace("worms","蠕虫").replace("pale slimes","苍白史莱姆").replace("slimes","史莱姆").replace("snakes","蛇").replace("fish","鱼").replace("spiders","蜘蛛").replace("maggots","蛆虫")>>
+			<<else>>
+				那些纷纷攘攘的<<print $swarm.type.replace("eels","鳗鱼").replace("worms","蠕虫").replace("pale slimes","苍白史莱姆").replace("slimes","史莱姆").replace("snakes","蛇").replace("fish","鱼").replace("spiders","蜘蛛").replace("maggots","蛆虫")>>
+			<</if>>
+		<</if>>
+		<<print _tmpsmoving>>
+		<<if _tmppspot is "g">>
+			在你的<<genitals>>上面<<print _tmpmark>>"
+		<<elseif _tmppspot is "gi">>
+			在你的<<genitals>>上面<<print _tmpmark>>"
+		<<elseif _tmppspot is "b">>
+			在你的<<bottom>>上面<<print _tmpmark>>"
+		<<elseif _tmppspot is "bi">>
+			<span class="red">在你的<<bottom>>里面</span><<print _tmpmark>>"
+		<<elseif _tmppspot is "i">>
+			<span class="red">在你身体里面<<print _tmpmark>></span>"
+			<<set _tmpproof to "f">>
+		<<else>>
+			在你上面<<print _tmpmark>>"
+			<<set _tmpproof to "f">>
+		<</if>>
+
+		<<if _tmpcam is "face">>
+			<<ahe>>自豪地看向<<ahis>>的手机说："我给<<pher>>的脸拍了张<<print _tmporgasm>><<if _tmpproof is "t">>留证据的<<else>><</if>>照。"
+		<<elseif _tmpcam is "bottom">>
+			<<ahe>>自豪地看向<<ahis>>的手机说："我给<<pher>>的<<bottom>>拍了张<<print _tmporgasm>><<if _tmpproof is "t">>留证据的<<else>><</if>>照！"
+		<<elseif _tmpcam is "front">>
+			<<ahe>>自豪地看向<<ahis>>的手机说："我给<<pher>>的<<genitals>>拍了张<<print _tmporgasm>><<if _tmpproof is "t">>留证据的<<else>><</if>>照！"
+		<<elseif _tmpcam is "full">>
+			<<ahe>>自豪地看向<<ahis>>的手机说："我给这个骚货拍了张照来证明它。"
+			<<set _tmpproof to "f">>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "aHe">>
+	<<if $audiencecamera is "man">>
+		他
+	<<elseif $audiencecamera is "boy">>
+		他
+	<<elseif $audiencecamera is "woman">>
+		她
+	<<elseif $audiencecamera is "girl">>
+		她
+	<</if>>
+<</widget>>

@@ -1,0 +1,776 @@
+:: Eden Hunting
+<<set $outside to 1>><<set $location to "cabin">><<effects>>
+
+<<if $phase is 0 and $exposed gte 1 and !$daily.eden.exposed>>
+	<<His>>目光停留在你的<<lewdness>>上。"我不想让你独自一人这样。"
+	<br><br>
+
+	<<link [[走进去|Eden Cabin]]>><<endevent>><</link>>
+	<br>
+	<<link [[待在外面|Eden Clearing]]>><<endevent>><<set $daily.eden.exposed to 1>><</link>>
+<<elseif $phase is 0>>
+	<<He>>消失在树林之间。
+	<br><br>
+
+	<<link [[继续|Eden Clearing]]>><<endevent>><</link>>
+	<br>
+<<elseif $phase is 1 and $exposed gte 1 and !$daily.eden.exposed>>
+	<<He>>点了点头，但是<<his>>的目光停留在你的<<lewdness>>上。“我不想让你一个人呆在那里。"
+	<br><br>
+
+	<<link [[走进去|Eden Cabin]]>><<endevent>><</link>>
+	<br>
+	<<link [[待在外面|Eden Clearing]]>><<endevent>><<set $daily.eden.exposed to 1>><</link>>
+<<elseif $phase is 1>>
+	<<He>>对你点了点头，然后消失在树林之间。
+	<br><br>
+
+	<<link [[继续|Eden Clearing]]>><<endevent>><</link>>
+	<br>
+<<elseif $phase is 2>>
+	"别傻了，"<<he>>说道。"掠食者已经学会远离小屋了。你在这里会很安全的。"
+	<br><br>
+
+	<<if $speech_attitude is "meek">>
+		你说:"只有和你在一起我才有安全感。"
+	<<elseif $speech_attitude is "bratty">>
+		"也许如果你把枪留在这里，我就会觉得安全，"你说道。
+	<<else>>
+		"你确定我在这里独处是安全的吗？"你问道。
+	<</if>>
+	<br><br>
+
+	<<if $NPCName[$NPCNameList.indexOf("Eden")].love gte 50>>
+		"好吧。"<<he>>说道。"但是要安静，靠近我。带个篮子，你可以留意一下有没有浆果。"
+		<br><br>
+
+		<<if $exposed gte 1>>
+			当你走过去加入<<him>>时，伊甸扫视着你的身体，凝视着你的裸露，然后说："下次你应该穿上衣服。"<<he>>拉着你靠近。
+			<br><br>
+		<</if>>
+	<<link [[继续|Eden Hunt]]>><</link>>
+	<<else>>
+		"我不能同时狩猎和照顾你，"<<he>>说道。 "这是最后的决定。"
+		<br><br>
+
+		<i>如果<<he>>更喜欢你，<<he>>可能会更愿意接受你的请求。</i>
+		<br><br>
+
+		<<link [[继续|Eden Hunting]]>><<set $phase to 0>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Eden Hunt
+<<location "forest">><<effects>>
+
+你跟在伊甸身后，走进森林。
+
+<<if $worn.neck.collared is 1>>
+	<<He>>握住你的绳子，拉着你走。
+	<<if $speech_attitude is "meek">>
+		"你勒着我的脖子，"你轻声说道。"我保证乖乖的。"
+	<<elseif $speech_attitude is "bratty">>
+		"如果你这样拉着我，我就找不到浆果了，"你轻声说道。
+	<<else>>
+		"你可以放掉我的绳子。我保证会离你很近，"你轻声说道。
+	<</if>>
+	<<He>>看着你想了一会儿，然后放开了绳子。
+<</if>>
+<br><br>
+
+<<He>>似乎知道自己往哪里走，但你很快就迷失了方向。
+<<pass 1 hour>>
+<<He>>停下来检查小型陷阱。大多数都是空的，但其中一个装着一只死兔子，<<he>>把它绑在了<<his>>的腰带上。
+<br><br>
+
+<<pass 1 hour>>更多的时间过去了，直到<<he>>突然停下来。"我找到你了，"<<he>>低声说道，<<his>>的步伐变慢了。<<He>>瞥了你一眼。"在这里等着，别乱走。"<<He>>消失在树林中。你四处张望，但没有看到任何让<<him>>兴奋的东西。然而，你看到了一丛满是成熟浆果的灌木。伊甸没有注意到它们。
+<br><br>
+
+<<link [[拿取浆果|Eden Hunt 2]]>><<set $phase to 0>><<endevent>><</link>>
+<br>
+<<link [[靠近伊甸|Eden Hunt 2]]>><<set $phase to 1>><</link>>
+<br>
+
+:: Eden Hunt 2
+<<location "forest">><<effects>>
+
+<<if $phase is 0>>
+
+	你悄悄地走到灌木丛旁，小心翼翼地不打扰一根树枝。一旦到达那里，你就采摘水果并把篮子装满。满意之后，你开始悄悄地回到伊甸身边。
+	<br><br>
+
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - ($allure))>>
+		<<set $daily.eden.huntCaught to 1>>
+
+		<<if $rng gte 81 and $bestialitydisable is "f" and $voredisable is "f">>
+			你绕过一棵树，来到了一对紧贴着你脸庞的眼睛面前。你的肌肉失去了力量，你倒在了地上。蛇在森林地面上蠕动着。
+			<<set $trance to 1>>
+			<br><br>
+
+			<<link [[继续|Eden Hunt Snake]]>><<set $molestationstart to 1>><</link>>
+			<br>
+			<!-- Modified for monster people -->
+		<<elseif $rng gte 41>>
+			<<beastNEWinit 1 wolf>>
+			<<if $monster is 1 or $bestialitydisable is "f">>
+				一只<<beasttype>>从树林中走了出来，露出了它的利齿。
+				<<if $monster is 1>>
+					<<bHis>>的目光与你相遇。 "嘶嘶，猎物。猎人不会救你。"
+				<</if>>
+				伊甸会从这里听到你的尖叫声，但不会对你感到高兴。
+				<br><br>
+
+				<<link [[继续|Eden Hunt Wolf]]>><<set $molestationstart to 1>><</link>>
+				<br>
+			<<else>>
+				<<endevent>>
+				<<generate1>><<generate2>>有东西顶在你的背后。"看我发现了什么？"<<person1>><<person>>说着，<<Hes>>的枪口顶在你的背上。
+				<br><br>
+
+				<<person2>><<person>>在你的肩膀上轻轻拍了一下，"转过身来，<<girl>>。现在，像你这样一个小家伙独自一人在森林里做什么？"
+				<br><br>
+
+				<<person1>>"这里很危险，"<<person>>插话道，"但没关系，我们可以保护你。"<<He>>抓住了你的<<bottom>>，将你拉得更近了。
+				<br><br>
+
+				伊甸会从这里听到你的尖叫声，但不会对你感到高兴。
+				<br><br>
+
+				<<link [[继续|Eden Hunt Molestation]]>><<set $molestationstart to 1>><</link>>
+				<br>
+			<</if>>
+		<<else>>
+			<<generate1>><<generate2>>有东西顶在你的背后。"看我发现了什么？"<<person1>><<person>>说着，<<Hes>>的枪口顶在你的背上。
+			<br><br>
+
+			<<person2>><<person>>在你的肩膀上轻轻拍了一下，"转过身来，<<girl>>。现在，像你这样一个小家伙独自一人在森林里做什么？"
+			<br><br>
+
+			<<person1>>"这里很危险，"<<person>>插话道，"但没关系，我们可以保护你。"<<He>>抓住了你的<<bottom>>，将你拉得更近了。
+			<br><br>
+
+			伊甸会从这里听到你的尖叫声，但不会对你感到高兴。
+			<br><br>
+
+			<<link [[继续|Eden Hunt Molestation]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		<<npc Eden>><<person1>>
+		<<link [[继续|Eden Hunt 3]]>><<set $phase to 0>><</link>>
+		<br>
+	<</if>>
+
+<<elseif $phase is 1>>
+	你被告知要保持静止，所以你就这样待着。几分钟后，一声枪响穿过森林。
+	<br><br>
+
+	<<link [[继续|Eden Hunt 3]]>><<set $phase to 2>><</link>>
+	<br>
+<</if>>
+
+:: Eden Hunt Snake
+<<location "forest">><<effects>>
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $combat to 1>>
+	<<molested>>
+	<<controlloss>>
+
+	<<set $enemytype to "vore">>
+	<<set $vorestage to 1>>
+	<<set $vorecreature to "snake">>
+	<<set $vorestrength to 1>><<set $position to "doggy">>
+	<<set $timer to 15>>
+	<<resetLastOptions>>
+	<<getCombatDefaultsType>>
+<</if>>
+
+<<if $timer is 12>>
+	<<set $trance to 0>>
+	你从眩晕状态中挣脱出来，意识到蛇正在试图吞噬你！
+<</if>>
+
+<<voreeffects>>
+<<vore>>
+<<voreactions>>
+
+<<if $timer lte 0 or $vorestomach gte 5>>
+	<span id="next"><<link [[继续|Eden Hunt Snake Finish]]>><</link>></span><<nexttext>>
+<<elseif $vorestage lte 0>>
+	<span id="next"><<link [[继续|Eden Hunt Snake Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Eden Hunt Snake]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Eden Hunt Snake Finish
+
+<<effects>>
+<<set $trance to 0>>
+<<if $timer lte 0 or $vorestomach gte 5>>
+	<<if $vorestage gte 5>>
+		蛇的内壁被撕裂开了。伊甸站在那里，手中拿着刀，切开巨兽，直到你被释放。
+	<<else>>
+		蛇发出嘶嘶声，把你吐了出来。它在丛林中逃跑，留下一路鲜血。
+	<</if>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<npc Eden>><<person1>>伊甸把刀插在地上，抓住你的胳膊。
+
+	<<if $NPCName[$NPCNameList.indexOf("Eden")].love gte 80>>
+		<<He>>把你按在树上。"该死的蛇触碰了我的东西。"
+	<<else>>
+		<<He>>把你摁在<<his>>的膝盖上。"我差点就要抓住那只鹿了，"<<he>>说，"你他妈毁了这次狩猎。"<<llove>><<npcincr Eden love -1>>
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Eden Hunt Punishment]]>><<set $molestationstart to 1>><</link>>
+<<else>>
+	<<tearful>>你从<<print $vorecreature.replace("frog","青蛙").replace("whale","鲸鱼").replace("snake","蛇").replace("giant lurker","巨大潜伏者").replace("slug","蛞蝓")>>的嘴里爬了出来。它认为你不适合作为它的一顿午餐，整条蛇很快消失在了丛林中。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<npc Eden>><<person1>>
+	<<link [[继续|Eden Hunt 3]]>><<set $phase to 0>><</link>>
+	<br>
+<</if>>
+
+:: Eden Hunt Punishment
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>><<npcspank>><<set $enemyhealth to 600>><<set $enemyhealthmax to 600>><<set $enemyanger += 200>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or $enemyanger lte 0>>
+	<span id="next"><<link [[继续|Eden Hunt Punishment Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Eden Hunt Punishment]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Eden Hunt 3
+<<location "forest">><<effects>>
+
+<<if $phase is 0>>
+	<<if $rng gte 91>>
+		你发现伊甸背上扛着一只鹿。<<his>>看到你手里的水果篮并笑了笑。"今天我们表现得很好，也许你是好运。"<<gglove>>
+	<<else>>
+		你发现伊甸蹲在那里皱眉。"我让它逃走了，"<<he>>说道。<<He>>看到你手里的水果篮并笑了笑。"至少我们有点收获。"<<gglove>>
+	<</if>>
+	<<npcincr Eden love 5>>
+<<elseif $phase is 1>>
+	你拿起水果篮。"至少我们有点收获，"伊甸说道。
+<<elseif $phase is 2>>
+	<<if $rng gte 91>>
+		伊甸出现在树林之间，背上扛着一只鹿。"我就知道我能抓到它。也许你是我的好运符。"
+		<br><br>
+		<<if $speech_attitude is "meek">>
+			"我找到了一些浆果，但现在已经看不到了，"你说道："我很抱歉。"
+		<<elseif $speech_attitude is "bratty">>
+			"这附近有棵灌木，长满了浆果，"你说道。
+		<<else>>
+			"我之前看见了一丛灌木，上面满是浆果，"你说道:"但我现在看不到它了。"
+		<</if>>
+		<br><br>
+		<<He>>耸了耸肩。"我并不擅长寻找水果。况且，我们今天的收获也不少。"
+	<<else>>
+		伊甸出现在树林之间，眉头紧锁。"我把它放跑了，"<<he>>悻悻地说道。
+		<br><br>
+		<<if $speech_attitude is "meek">>
+			"我找到了一些浆果，但现在已经看不到了，"你说道："我很抱歉。"
+		<<elseif $speech_attitude is "bratty">>
+			"这附近有棵灌木，长满了浆果，"你说道。
+		<<else>>
+			"我之前看见了一丛灌木，上面满是浆果，"你说道:"但我现在看不到它了。"
+		<</if>>
+		<br><br>
+		<<He>>耸了耸肩。"我并不擅长寻找水果。而且我们今天也算有点收获。"<<He>>拍了拍挂在皮带上的兔子。
+	<</if>>
+<</if>>
+<br><br>
+
+<<pass 2 hours>>你跟着伊甸穿过森林，回到了<<his>>安全的小屋。
+<br><br>
+
+<<link [[继续|Eden Clearing]]>><<endevent>><</link>>
+<br>
+
+:: Eden Hunt Punishment Finish
+<<location "forest">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<ejaculation>><<npcincr Eden lust -20>>
+	<<He>>因为劳累而喘息着。"我希望你已经学到了教训。"
+	<br><br>
+
+	<<tearful>>你避开<<his>>的目光。
+<<elseif $enemyhealth lte 0>>
+	"你这个忘恩负义的贱人，"<<he>>说道。"我就该把你赶出去，把你丢到狼群里！"<<He>>抽了抽鼻子，抱着自己的身体。"我得做点什么才行。"
+	<br><br>
+
+	<<tearful>>你振作起来。
+<<else>>
+	<<He>>看起来感到满意，松开了你。 "我希望你已经学到了教训。"
+	<br><br>
+
+	<<tearful>>你避开<<his>>的目光。
+<</if>>
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<npc Eden>><<person1>>
+<<link [[继续|Eden Hunt 3]]>><<set $phase to 1>><</link>>
+
+:: Eden Hunt Wolf
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $enemytrust -= 40>>
+	<<enable_rescue>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<beast $enemyno>>
+<br><br>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Eden Hunt Wolf Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Eden Hunt Wolf]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Eden Hunt Wolf Finish
+<<location "forest">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+
+	<<beasttype>>满意地咕哝着，让你躺在树林中。
+	<br><br>
+
+	<<tearful>>你继续回到伊甸那里。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<npc Eden>><<person1>>
+	<<link [[继续|Eden Hunt 3]]>><<set $phase to 0>><</link>>
+<<elseif $enemyhealth lte 0>>
+	那只<<beasttype>>尖叫着逃进了森林里。
+	<br><br>
+
+	<<tearful>>你继续回到伊甸那里。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<npc Eden>><<person1>>
+	<<link [[继续|Eden Hunt 3]]>><<set $phase to 0>><</link>>
+<<else>>
+	枪声响起，吓得<<beasttype>>逃走了。伊甸走向你。
+
+	<<clotheson>>
+	<<endcombat>>
+	<<npc Eden>><<person1>>
+
+	<<if $NPCName[$NPCNameList.indexOf("Eden")].love gte 80>>
+		<<He>>抓住你的手臂，把你按在一棵树上。"该死的动物居然把爪子伸向了我的东西。"
+	<<else>>
+		<<He>>抓住你的手臂，把你弯曲在<<his>>的膝盖上。"愚蠢的<<bitch>>，我离抓住那只鹿就差一步之遥了。"
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Eden Hunt Punishment]]>><<set $molestationstart to 1>><</link>>
+<</if>>
+
+:: Eden Hunt Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<enable_rescue>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Eden Hunt Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Eden Hunt Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Eden Hunt Molestation Finish
+<<location "forest">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	完成了他们的事情，他们把你推倒在地上。"再见了，荡妇。"
+	<br><br>
+
+	<<tearful>>你挣扎着站起来，继续回到伊甸那里。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<npc Eden>><<person1>>
+	<<link [[继续|Eden Hunt 3]]>><<set $phase to 0>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	"这个<<bitch>>疯了。"<<person1>><<person>>抱着<<his>>的胳膊说道。"我觉得我需要看看这个伤口。"
+	<br><br>
+
+	另一个人点头表示同意，"<<pShe>>不值得这么做。" 他们支吾着走进了森林。
+	<br><br>
+
+	<<tearful>>你继续回到伊甸那里。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<npc Eden>><<person1>>
+	<<link [[继续|Eden Hunt 3]]>><<set $phase to 0>><</link>>
+	<br>
+<<else>>
+	一声枪响，一颗子弹撞击在附近的一棵树上，吓得他们赶紧拔出自己的枪。他们凝视着树林。"谁在那里？"<<person1>><<person>>喊道。<<Hes>>听到了另一声枪响，这次子弹更接近地面了。他们的眼睛四处扫视，但是找不到开枪的人。又是一声枪响，这次子弹直接击中了<<person2>><<persons>>的脚边。"该死！他妈的，"<<he>>说着退后了几步，表情扭曲。"我们赶紧离开这里，这<<girl>>不值得我们冒这个险。"
+	<br><br>
+
+	当伊甸走出来的时候，他们消失在树林中，伊甸走向你。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+	<<npc Eden>><<person1>>
+
+	<<if $NPCName[$NPCNameList.indexOf("Eden")].love gte 80>>
+		<<He>>抓住你的手臂，把你按在一棵树上。"该死的白痴居然把手伸向了我的东西。"
+	<<else>>
+		<<He>>抓住你的手臂，把你弯曲在<<his>>的膝盖上。"愚蠢的<<bitch>>，我离抓住那只鹿就差一步之遥了。"
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Eden Hunt Punishment]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Eden Prey Yes
+<<set $outside to 1>><<set $location to "cabin">><<effects>>
+
+<<if $edenPrey is undefined>>
+	你点头表示赞同，尽管你一脸懵逼。
+	<br><br>
+<</if>>
+
+"很好，"<<he>>说道，在<<if $phase is 0>>把你推出门去<<else>>引导着你前进<</if>>。
+<<if $edenPrey gte 1>>
+	<<He>>带着你走到空地的边缘。
+	<br><br>
+
+	"你知道规矩，"
+<<else>>
+	你回头看到伊甸正在伸手拿枪。恐惧充斥着你的身体，让你抵制着<<his>>的推搡。
+	<br>
+	"放轻松，"伊甸安慰你道。"我不会伤害你。"你警惕地允许<<him>>带领你走到空地的边缘。
+	<br><br>
+
+	"你是猎物,"
+<</if>>
+
+<<he>>开始说道。"当我开枪的时候，我希望你像生命取决于此一样逃跑。如果你被抓住了……"<<He>>停了一下，笑着说道。"我就会和你玩得开心。"你回头看着<<him>>，<<Hes>>藏着什么东西在<<his>>的背后。
+<br>
+"转过身来，"<<he>>命令道。
+<br><br>
+
+你按照指示转过身去。一声巨响在你身后响起，打破了森林的宁静，提示你开始奔跑。
+<br><br>
+
+<<if !$edenPrey>><<set $edenPrey to 1>><</if>>
+<<link [[跑！|Eden Prey Chase]]>><<set $phase to 0>><</link>><<athleticsdifficulty 200 1200>>
+<br>
+<<link [[故意被抓|Eden Prey Chase]]>><<set $phase to 1>><<control 25>><<npcincr Eden lust 1>><<npcincr Eden dom 5>><</link>><<ggcontrol>><<glust>><<ggdom>>
+<br>
+
+:: Eden Prey No
+<<set $outside to 1>><<set $location to "cabin">><<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我……我不知道……"你喃喃自语，避开了伊甸的目光。"也许以后再说吧？"
+<<elseif $speech_attitude is "bratty">>
+	"绝对不行。"你告诉<<him>>，双臂交叉在胸前。"我可不是一个性玩具。"
+<<else>>
+	"我现在不想这样做，"你说道.
+<</if>>
+<br><br>
+
+<<if ($NPCName[$NPCNameList.indexOf("Eden")].lust + $NPCName[$NPCNameList.indexOf("Eden")].dom) gte random(70, 170)>>
+	<<set $edenPreyForced to true>>
+	伊甸握紧拳头，摇了摇头。"胡说，你会喜欢的。"<<his>>用手推着你<<if $phase is 0>>走出门<<else>>离开小屋<</if>>，<<his>>的手放在你的背上，强迫你前进。你回头看到伊甸正在伸手拿枪。恐惧充斥着你的身体，你试图挣脱开伊甸的手。
+	<br>
+	伊甸沮丧地叹了口气，用<<his>>的靴子踩在你的<<bottom>>上，猛地一脚把你踢得摇摇晃晃<<if $phase is 0>>走出门<<else>>跪在地上<</if>>。"走，"<<he>>命令道，枪口顶在你的背上。你按照<<his>>的命令行动，走到了空地的边缘停下来。
+	<br><br>
+
+	"<<if !$edenPrey>>你是猎物<<else>>你知道规矩<</if>>，"<<he>>开始说道。"当我开枪的时候，我希望你像生命取决于此一样逃跑。如果你被抓住了……"<<He>>停了一下，笑着说道。"我就会和你玩得开心。"你回头看着<<him>>，<<Hes>>藏着什么东西在<<his>>的背后。
+	<br>
+	"转过身来，"<<he>>命令道。
+	<br><br>
+
+	你按照指示转过身去。一声巨响在你身后响起，打破了森林的宁静，提示你开始奔跑。
+	<br><br>
+
+	<<if !$edenPrey>><<set $edenPrey to 1>><</if>>
+	<<link [[跑！|Eden Prey Chase]]>><<set $phase to 0>><</link>><<athleticsdifficulty 200 1200>>
+	<br>
+	<<link [[故意被抓|Eden Prey Chase]]>><<set $phase to 1>><<control 25>><<npcincr Eden lust 1>><<npcincr Eden dom 5>><</link>><<ggcontrol>><<glust>><<ggdom>>
+	<br>
+<<else>>
+	伊甸握紧了拳头，但还是妥协了。"好吧，"<<he>>说道。"我会<<if $player.virginity.penile is true and $player.virginity.vaginal is true>>占有我的东西<<else>>利用你<</if>>，不管怎样。记住是谁在这里照顾你的。"
+	<br>
+	<<He>>离开了你，<<if $phase is 1>>生气地狠狠踩着脚步走进森林里<<else>>冲出屋子，狠狠地关上门<<him>>的身后<</if>>。
+	<br><br>
+
+	<<if $phase is 0>>
+		<<link [[继续|Eden Cabin]]>><<endevent>><</link>>
+	<<else>>
+		<<link [[继续|Eden Clearing]]>><<endevent>><</link>>
+	<</if>>
+	<br>
+<</if>>
+
+:: Eden Prey Chase
+<<set $outside to 1>><<set $location to "forest">><<effects>>
+
+<<if $phase is 1>>
+	当伊甸开始追赶你时，你迅疾的跑入灌木丛中并躲了起来。脚步声就徘徊在不远的地方，你用叶子遮掩着自己，开始思考起怎样结束这场闹剧。你四处张望着，前方有一个巨大的树根。你灵机一动，故意将脚卡入其中的缝隙，挨着树根栽倒在了地上。伊甸立刻发现了你的动静，匆匆赶了过来。
+	<br><br>
+
+	你感觉到自己的手腕被绳子反绑在背部。你的眼睛四处乱看，<span class="meek">直到一个闪闪发光的红色球形口塞被塞进你的嘴里。</span>你发出一声<<if $speech_attitude is "meek">>呜咽<<elseif $speech_attitude is "bratty">>咆哮<<else>>喘息<</if>>作为回应。一块布缠住了你的眼睛，绑在你的头上，遮蔽了你的视野。伊甸把你按在地上，你只能无助地扭动着身体。
+	<<bind>><<facewear 6>>
+	<br><br>
+
+	"嗯，嗯，看来我找到了一个无助的猎物，"伊甸嘲弄着你。"把你留在这里是不够的。"<<He>>把你扛起来，背在了<<his>>肩上。
+	<br>
+	被捆绑起来，丧失了感官的你只能等待和预测伊甸对你会做些什么。
+	<br><br>
+
+	<<link [[继续|Eden Prey Caught]]>><</link>>
+	<br>
+<<else>>
+	<<if $athleticsSuccess>>
+		在伊甸追逐你的时候，你疾步进入了灌木丛中。森林中的曲折转弯让你有自由去躲避<<him>>。尽管<<nnpc_title "Eden">>拥有惊人的追踪技巧，<span class="green">但你敏捷的脚步和坚持不懈的精神保持着<<his>>的紧张。</span>你可以感觉到伊甸试图伸手触摸你，但<<his>>的手指只是轻轻擦过你的皮肤。<<stress 2>><<gstress>>
+		<br><br>
+
+		经过漫长的时间，你终于甩掉了<<him>>。你的肌肉因为努力而燃烧起来。<<physique 2>><<tiredness 12>><<npcincr Eden dom -5>><<gtiredness>><<lldom>>
+		<br><br>
+
+		<<set $forest to random(50, 100)>>
+		<<set $edenPreyEscaped to true>>
+		<<unset $edenPreyForced>>
+		<<link [[继续|Forest]]>><<endevent>><</link>>
+	<<else>>
+		当伊甸追逐你时，你疾步进入了灌木丛中。森林中的曲折转弯让你有自由去躲避<<him>>。然而，<span class="red">你无法摆脱<<nnpc_title "Eden">>的追击。</span>尽管你尽力逃跑，但你听到<<his>>沉重的呼吸声就在你身后。当你的最后一丝力气耗尽时，你被扑倒在地。<<pain 1>><<tiredness 12>><<npcincr Eden dom 5>><<gpain>><<gtiredness>><<ggdom>>
+		<br><br>
+
+		你感觉到自己的手腕被绳子反绑在背部。你的眼睛四处乱看，<span class="meek">直到一个闪闪发光的红色球形口塞被塞进你的嘴里。</span>你发出一声<<if $speech_attitude is "meek">>呜咽<<elseif $speech_attitude is "bratty">>咆哮<<else>>喘息<</if>>作为回应。一块布缠住了你的眼睛，绑在你的头上，遮蔽了你的视野。伊甸把你按在地上，你只能无助地扭动着身体。
+		<<bind>><<facewear 6>>
+		<br><br>
+
+		"嗯，嗯，看来我找到了一些无助的猎物，"伊甸嘲弄着你。"把你留在这里是不够的。"<<He>>把你扛起来，背在了<<his>>肩上。
+		<br>
+		被捆绑起来，丧失了感官的你只能等待和预测伊甸对你会做些什么。
+		<br><br>
+
+		<<link [[继续|Eden Prey Caught]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Eden Prey Caught
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+<<pass 10>>
+
+你被伊甸急速地带着穿过森林，无法在<<his>>的掌控下移动。很快，你听到门被打开的声音。你猜想是那个小屋。
+<br>
+突然间，你被扔在了床上。强有力的手臂将你压住，防止你的移动。你感觉到伊甸的热气在你的脸颊上喷出。
+<br><br>
+
+"抓到你了，"<<he>>用迷人的语气低声说道。一只手轻抚着你的头发，另一只手滑向你的<<breasts>>，在你的胸口上拍打着<<his>>的手指。"那么，一个<<nnpc_title "Eden">>应该如何处理<<his>>无助的猎物呢……？"
+<br><br>
+
+<<His>>的手向下滑动，到达了你的<<genitals>>。
+<br><br>
+
+<<link [[继续|Eden Prey Sex]]>><<if $edenPreyForced>><<set $molestationstart to 1>><<else>><<set $sexstart to 1>><</if>><</link>>
+
+:: Eden Prey Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>><<set $enemyhealth to 600>><<set $enemyhealthmax to 600>>
+<<elseif $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>><<set $enemyhealth to 600>><<set $enemyhealthmax to 600>><<set $enemyanger += 50>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Eden Prey Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Eden Prey Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Eden Prey Sex Finish
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>><<npcincr Eden lust -20>>
+
+	<<if ($player.penisExist and $player.virginity.penile is true and ($NPCList[0].vagina isnot "none" or $analdisable is "f")) and ($player.vaginaExist and $player.virginity.vaginal is true and $NPCList[0].penis isnot "none")>>
+		你感觉到一记轻轻的耳光扇在了你的脸上。
+		<br>
+		"下一次我们做这件事，我们要好好地做爱，"伊甸说着，<<if $NPCName[$NPCNameList.indexOf("Eden")].lust gte 70>>舔<<else>>吻<</if>>着你的脸颊。
+		<br><br>
+	<</if>>
+
+	<<if $orgasmcurrent is 0>>
+		你喘着气，感到<<genitals>>中一种沮丧的渴望。然而，伊甸似乎对你感到怜悯，你很快就感觉到<<his>>的手滑向你的裆部。
+		<br><br>
+
+		<<if $player.gender is "h">>
+			<<He>>细心地用手指沿着你的<<penis>>轻轻地摩擦，而<<his>>的拇指则轻轻揉搓着你的<<pussy>>。"现在，我该玩哪一个呢？"
+			<<set _edenHermChoice to random(0, 1)>>
+			<br>
+		<</if>>
+		<<if _edenHermChoice is 1 or !$player.vaginaExist>>
+			<<His>>粗糙的手轻轻地握住你的阴茎，开始上下推动。你的龟头被刺激，导致你的臀部抽搐。同时，伊甸将你按住，防止你的动作。
+			<br>
+			"保持不动，"<<he>>低声说道。"很快就会结束了。"
+			<br>
+			令人难以置信的感觉让你达到了高潮。你对着口球尖叫。
+			<<set $arousal to 10000>>
+			<<if $arousal gte $arousalmax>><<orgasm>><</if>>
+		<<else>>
+			<<His>>粗糙的手在你外面的墙壁上游走，直到伊甸突然将<<his>>的手指插进了你的<<pussy>>。你的呼吸变得更加沉重。受到你兴奋的迹象的鼓舞，<<he>>开始揉搓你的阴蒂。这种感觉导致你的腿抽搐。你忍不住开始挣扎。伊甸将你按住，防止你的动作。
+			<br>
+			"保持不动，"<<he>>低声说道。"很快就会结束了。"
+			<br>
+			令人难以置信的感觉让你达到了高潮。你对着口球尖叫。
+			<<set $arousal to 10000>>
+			<<if $arousal gte $arousalmax>><<orgasm>><</if>>
+		<</if>>
+		当你的高潮消退时，你听到一声满意的笑声.
+		<br><br>
+	<</if>>
+
+	伊甸吻了吻你的额头，用手抚过你的面颊。床吱嘎作响着，<<he>>翻身起来，留你一人束缚在床上。
+	<br><br>
+
+	<<link [[继续|Eden Prey End]]>><<set $phase to 0>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	<<npcincr Eden love -1>><<npcincr Eden dom -1>>
+	尽管你处于无助的状态，但你踢开了伊甸。你听到<<him>>从床上摔下来的声音。
+	<br>
+	"混蛋！"伊甸喊道。"这不会留瘀伤吧。"<<llove>><<ldom>>
+	<br><br>
+
+	在愤怒的冲动下，<<he>>离开了。你独自一人，被束缚、蒙眼和口袋。
+	<br><br>
+
+	<<link [[继续|Eden Prey End]]>><<set $phase to 1>><</link>>
+	<br>
+<</if>>
+
+:: Eden Prey End
+<<set $outside to 0>><<set $location to "cabin">><<effects>>
+
+你感到筋疲力尽，很难移动。但你没有被留在那里太久。伊甸让你坐起来，解开了你的口袋。一个杯子被递到你的嘴边。
+<br>
+"是水，"伊甸说道。<<He>>把杯子靠近你嘴边。"喝吧。"
+<br><br>
+
+你毫不犹豫地喝下几口，感到非常舒适。伊甸让你喘口气，然后再次把杯子递到你的嘴边。
+<br>
+<<He>>把杯子拿走，然后把你的身体转过来。你的眼罩被取下，然后你的绑缚也被解开了。
+<<set $worn.face.type.push("broken")>>
+<<faceruined>>
+<<unbind>>
+<br><br>
+
+<<if $phase is 0>>
+	"你表现得非常好，<<girl>>，"伊甸再次吻了你的额头。"好好休息一下。"
+<<else>>
+	"今天好像很有斗志，是吗？"伊甸笑了笑。<<He>>似乎已经冷静下来了。"好好休息一下。"
+<</if>>
+<br><br>
+
+<<He>>让你躺在床上。<<tearful>>你站起来，
+<<if $edenPreyForced>><<unset $edenPreyForced>>
+	对于刚刚发生的事情，你感到不安。
+<<else>>
+	仍然感到有点气喘吁吁.
+<</if>>
+<br><br>
+
+<<endcombat>>
+<<clotheson>>
+
+<<link [[继续|Eden Cabin]]>><</link>>
+<br>

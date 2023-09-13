@@ -1,0 +1,125 @@
+:: Chalets Intro
+<<set $location to "chalets">><<set $outside to 1>><<effects>>
+
+<<if $chaletsintro is undefined>>
+    <<generate1>><<person1>>
+    <<saveNPC 0 "chalets_manager">>
+    你走向木屋，这座木屋坐落在一处与陆地相隔不远的小岛上，由于潮水很少涨到这里，所以这中间有很大一片沙滩可以直接走过去,这大概需要五分钟的时间。
+    <br><br>
+
+    在通往沙滩的路旁有一栋建筑，那栋建筑的门有些五颜六色的，一群海鸥正在门口争抢着一张沾满油腻土豆泥的包装纸，直到门突然被推开.
+    <br><br>
+    "快滚！!" 一个<<person1>><<person>>挥舞着扫把冲了出来. 那些海鸥四散而逃，那个<<person>>一边叹气一边扫着被海鸥撕碎的包装纸.
+    <br><br>
+
+    <<link [[继续|Chalets Intro 2]]>><<set $chaletsintro to 1>><</link>>
+    <br>
+<<elseif $chaletsintro is 1>>
+    <<loadNPC 0 "chalets_manager">><<person1>>
+    你走向木屋，然后走进那栋管理楼.这里的管理者从办公桌后面抬起头来看向你.
+    <br><br>
+    "啊，"<<he>>说道."你改变主意了？想来工作了么？"
+    <br><br>
+
+    <<link [[点头|Chalets Intro Yes]]>><<set $chaletsintro to 2>><</link>>
+    <br>
+    <<link [[摇头|Chalets Intro No]]>><</link>>
+    <br>
+<</if>>
+
+:: Chalets Intro 2
+<<set $outside to 0>><<effects>>
+
+那个<<person>>抬起头问道:"你是本地人么?"<<he>>在你回答之前继续问道:"想找份工作么?"<<he>>说着的同时指了指对面的木屋.
+<br><br>
+"这里是一个自然保护区，但那些游客们和那些该死的海鸥总是会将垃圾丢在这里。我们需要有人勇敢地把这这些都收拾干净。在工作日，你每收拾出来一袋垃圾就可以得到<span class="gold">£10</span>。而在周末，你可以得到<span class="gold">£15</span>每袋。"
+<br><br>
+"装满一袋大概需要一个小时"<<he>>继续说道:"你可以得到一把小屋的钥匙,这让你可以随意进出. 只要说你是来打扫卫生的就行了，你有兴趣么?"
+<br><br>
+
+<<link [[点头|Chalets Intro Yes]]>><<set $chaletsintro to 2>><</link>>
+<br>
+<<link [[摇头|Chalets Intro No]]>><</link>>
+<br>
+
+:: Chalets Intro Yes
+<<effects>>
+
+"很好，你想什么时候开始都行"。<<He>>转身回到楼里。
+<br><br>
+"哦，"<<he>>在您离开时叫道。"还有一件事，就是那些游客可能会有点咸猪手，请尽量不要让那些家伙对这里心生不满，好吗？毕竟上级对这种事也只是睁一只眼闭一只眼"。
+<br><br>
+
+<<link [[继续|Starfish Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Chalets Intro No
+<<effects>>
+
+"很遗憾听到这个消息，"<<he>>说着的同时走进大楼。"如果你改变主意的话，我会在这里等你的."
+<br><br>
+
+<<link [[继续|Starfish Street]]>><<endevent>><</link>>
+
+:: Chalets Work
+<<set $location to "chalets">><<set $outside to 1>><<effects>>
+
+你可以沿道路走到小镇和木屋之间的沙地上。
+
+<<if Time.weekDay is 1 or Time.weekDay is 7>>
+    <<if $chaletsintro is 2>>
+        <<loadNPC 0 "chalets_manager">><<person1>>
+        <<set $chaletsintro to 3>>
+        管理员将头从<<his>>的办公室探了出来。"只是提醒一下，在这里和小屋之间的沙滩上有一个摄制组，那些人会在周末过来拍照，那些家伙可能有马，所以在经过沙滩的时候多注意一点，毕竟谁也不知道那些家伙还有什么。"
+        <br><br>
+        <<endevent>>
+    <</if>>
+    你看到不远处有一群人和车辆，看起来像是摄制组。
+    <br><br>
+<<else>>
+    <br><br>
+<</if>>
+
+在这样泥泞的地面上行走很是困难。
+<<if ($weather is "rain" or $weather is "snow") and random(1, 200) is 200>>
+    当你走到一半时，你注意到海浪的声音越来越大.然后，<span class="red">一个比你还要高出许多倍的巨浪</span>向沙滩袭来.
+    <br><br>
+    你根本无法逃脱，而它也裹挟着你冲进大海.
+    <br><br>
+
+    <<link [[继续|Sea Rocks]]>><<chalets_end>><</link>>
+    <br>
+<<else>>
+    当你靠近岛屿时，一条木板路就会从地面冒出来为你提供一条固定的路径。只要你沿着木板路爬上一个斜坡，就可以到达被沙丘环绕的小木屋处.
+    <br><br>
+    <<link [[继续|Chalets]]>><</link>>
+    <br>
+<</if>>
+
+:: Chalets
+<<set $location to "chalets">><<set $outside to 0>><<effects>>
+
+你正位于靠近沙滩的小岛上的木屋处。
+<<if $weather is "rain">>
+    雨水从海面上吹来。
+<<else>>
+    海风吹来，它仿佛有生命般越过沙丘，径直向你脸上吹来。
+<</if>>
+<br><br>
+<<chalets_bags>>
+<br><br>
+<<if $openinghours is 1>>
+    <<chalets_links>>
+    <br>
+<<elseif Time.hour is $closinghour>>
+	<span class="blue">游客陆续返回他们的度假小屋过夜.</span>
+	<br>
+<</if>>
+<<link [[离开|Chalets Work End]]>><</link>>
+<br>
+
+:: Chalets Knock
+<<set $outside to 0>><<effects>>
+
+你走向其中一间小屋并敲响房门。
+<<eventschalets>>

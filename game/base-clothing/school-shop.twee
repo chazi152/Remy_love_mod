@@ -1,0 +1,121 @@
+:: School Library Shop [exitCheckBypass]
+
+<div id="clothingShop-div" class="main-shop-div">
+	<<schoolShop-main>>
+</div>
+
+:: School Library Shop Widgets [widget]
+
+<<widget "schoolShop-main">>
+	<<set $outside to 0>><<set $location to "school">><<effects>>
+	<<set $shopName = "school">>
+	<<if $tryOn.autoReset isnot false>><<tryOnReset>><</if>>
+	<<if $school_shop_intro isnot 1>>
+		<<set $school_shop_intro to 1>>
+		悉尼点了点头，把你领到了柜台的另一边。衬衫，裤子，裙子琳琅满目，叠好的泳装也在架子上排列着。
+		<br><br>
+		"你在这里一定能找到令你满意的符合着装要求的衣服,"<<he>>说着，指了指后面的墙。"这还有个小更衣室，就往这边走就能看到。没-没人会偷看的，别担心。"<<His>>的脸红了。
+		<br><br>
+		<<link [[继续|School Library Shop]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		租赁柜台的拐角处有一个学校的服装暂存处。衬衫，裤子，裙子琳琅满目，叠好的泳装也在架子上排列着。
+		<br><br>
+		<<if $schoolShopAction is undefined>>
+			<<set $schoolShopAction to []>>
+		<</if>>
+		<<run statusCheck("Sydney")>>
+		<<if $schoolShopAction.includes("wear") or $schoolShopAction.includes("try") or $schoolShopAction.includes("under")>>
+			<<if random(1,10) is 1>>
+				你听到悉尼在外面说。"啊，不好意思！更衣室里面有人。"
+			<<elseif !$daily.sydney.peek and random(1,10) is 2 and (_sydneyStatus.includes("corrupt") or _sydneyStatus.includes("Lust"))>>
+				<<set $daily.sydney.peek to true>><<set $sydneySeen.pushUnique("changing room")>>
+				你听到了身后帘子传来的声音，快速转过头去，你听到一阵喘息声。<span class="lewd">悉尼的脸消失在帘子后面。</span><<stress 3>><<gstress>><<npcincr Sydney lust 1>><<glust>><<arousal 50>><<garousal>>
+			<<else>>
+				悉尼在更衣间外耐心的等着你。
+			<</if>>
+		<<else>>
+			悉尼耐心的等着你
+		<</if>>
+		<br><br>
+		<div id="tryonstats-div"><<tryOnStats>></div>
+		<<unset $shopListStartCount>>
+		<<unset $clothes_choice>>
+		<<set $shopPage = 0>>
+
+		<span>保暖度:</span>
+		<<warmthscale>>
+		<div id="warmth-description">
+			<<warmth_description>>
+		</div>
+		<br><br>
+
+		<<clothingcategoryicon "all">>
+		<<link "浏览全部">><<replace "#clothingShop-div">><<AllShop>><</replace>><</link>>
+		<br><br>
+		<<if $debug is 1>>
+			<<clothingcategoryicon "overoutfit">>
+			<<link "浏览外套">><<replace "#clothingShop-div">><<OverOutfitShop>><</replace>><</link>>
+			<br><br>
+		<</if>>
+		/*
+		*<<clothingcategoryicon "outfit">>
+		*<<link "View outfits">><<replace "#clothingShop-div">><<OutfitShop>><</replace>><</link>>
+		*<br>
+		*/
+		<<clothingcategoryicon "upper">>
+		<<link "查看上装">><<replace "#clothingShop-div">><<TopShop>><</replace>><</link>>
+		<br>
+		<<clothingcategoryicon "lower">>
+		<<link "查看下装">><<replace "#clothingShop-div">><<BottomShop>><</replace>><</link>>
+		<br><br>
+		<<clothingcategoryicon "underoutfit">>
+		<<link "查看内衣（套装）">><<replace "#clothingShop-div">><<UnderOutfitShop>><</replace>><</link>>
+		<br>
+		<<clothingcategoryicon "underupper">>
+		<<link "查看内衣（上衣）">><<replace "#clothingShop-div">><<UnderTopShop>><</replace>><</link>>
+		<br>
+		<<clothingcategoryicon "underlower">>
+		<<link "查看内衣（下衣）">><<replace "#clothingShop-div">><<UnderBottomShop>><</replace>><</link>>
+		<br><br>
+		<<clothingcategoryicon "head">>
+		<<link "查看头饰">><<replace "#clothingShop-div">><<HeadShop>><</replace>><</link>>
+		<br>
+		<<clothingcategoryicon "face">>
+		<<link "查看面饰">><<replace "#clothingShop-div">><<FaceShop>><</replace>><</link>>
+		<br>
+		/*
+		*<<clothingcategoryicon "neck">>
+		*<<link "View Neck Accessories">><<replace "#clothingShop-div">><<NeckShop>><</replace>><</link>>
+		*<br>
+		*/
+		<<clothingcategoryicon "hand">>
+		<<link "查看手饰">><<replace "#clothingShop-div">><<HandsShop>><</replace>><</link>>
+		<br>
+		<<clothingcategoryicon "legs">>
+		<<link "查看袜子">><<replace "#clothingShop-div">><<LegsShop>><</replace>><</link>>
+		<br>
+		<<clothingcategoryicon "feet">>
+		<<link "查看鞋类">><<replace "#clothingShop-div">><<FeetShop>><</replace>><</link>>
+		<br><br>
+		<<run linkifyDivs('.button-back-to-shop')>>
+
+		<<if $tryOn.value gt 0 and $tryOn.value lt $money>>
+			<<sendItemsToDropdown>>
+			<<link "买下衣服并送到衣柜中">>
+				<<buyTryOnClothes "wardrobe">>
+				<<updatesidebarmoney>>
+				<<updatesidebarimg>>
+				<<updatesidebardescription>>
+				<<updateallure>>
+				<<updatewarmthscale>>
+				<<updatewarmthdescription>>
+				<<updateclothingshop>>
+			<</link>>
+			<br>
+		<<elseif $tryOn.value is 0>>
+			<<link [[离开|Library Rental Counter]]>><<shopClothingFilterReset>><<ShowUnderEquip "normal">><<endnpc>><<unset $clothes_choice>><<set $tryOn.autoReset to true>><<set $eventskip to 1>><<unset $tempDisable>><<endevent>><</link>>
+			<br><br>
+		<</if>>
+	<</if>>
+<</widget>>

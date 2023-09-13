@@ -1,0 +1,72 @@
+:: Office Assignment Start
+<<effects>>
+<<set $officeFloor to random(4,15)>>
+<<rng>>
+
+<<if $rng gte 81>>
+	你得到了一项任务，为<<checkfloor>>的工人们送咖啡。
+	<<acceptassignment "Office Coffee Start">>
+<<elseif $rng gte 61>>
+	你得到了一项任务，为<<checkfloor>>做会议纪要。
+	<<acceptassignment "Office Meeting Start">>
+<<elseif $rng gte 41>>
+	你得到了一项任务，前往<<checkfloor>>销毁一些文件。
+	<<acceptassignment "Office Shredder Start">>
+<<elseif $rng gte 21>>
+	你得到了一项任务，前往<<checkfloor>>协助一位主管。
+	<<acceptassignment "Office Executive Start">>
+<<else>>
+	你得到了一项任务，前往<<checkfloor>>接替一位秘书的工作。
+	<<acceptassignment "Office Secretary Start">>
+<</if>>
+
+
+
+:: Widgets Office Assignment [widget]
+<<widget "acceptassignment">>
+	<<set _assignment to _args[0]>>
+	<br><br>
+	你是否愿意接受这项任务？
+	<br><br>
+	<<link [[接受|_assignment]]>><</link>>
+	<br>
+	<<link [[等待下一个任务 (0:10)|Office Assignment Start]]>><<pass 10>><</link>>
+	<br>
+	<<link [[返回大厅 (0:01)|Office Lobby]]>><<pass 1>><</link>>
+<</widget>>
+
+<<widget "completeassignment">>
+	<<if _args[0] is undefined>>
+		<<set $assignmentTime to 60>>
+	<<else>>
+		<<set $assignmentTime to _args[0]>>
+	<</if>>
+	<br>
+	<<set _assignmentPay to (625 * ($assignmentTime / 60))>>
+	<<if _assignmentPay gt 0>>
+		<<managerLove 1>>
+		你回到临时工的休息室，并领取你这次的薪酬，总计是<span class="gold"><<printmoney _assignmentPay>></span>。<<set $money += _assignmentPay>>
+		<<if $managerLove gte random(50,100)>>
+			<<set _managerTip to $managerLove * 20>><!-- £20 at 100 love-->
+			<span class="green"><<office_manager>>给了你<<printmoney _managerTip>>当做奖金。</span><<set $money += _managerTip>>
+		<</if>>
+		<br><br>
+	<</if>>
+	<<endevent>>
+	<<set $officeFloor to 0>>
+	<<link [[继续|Office Agency]]>><<pass $assignmentTime>><</link>>
+<</widget>>
+
+
+<<widget "assignmenttip">>
+	<<set $baseTip to _args[0]*100>>
+	<<set $tipMod to (1 + $officeFloor * .075)>>
+	<<set $tip to ($baseTip * $tipMod)>>
+	<<if $mathstrait gte 1>>
+		<<set $tip *= (1 + ($mathstrait / 4))>>
+	<</if>>
+	<<if $tip lte 0>>
+		<<set $tip to 0>>
+	<</if>>
+	<<tipreceive>>
+<</widget>>

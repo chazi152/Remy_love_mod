@@ -1,0 +1,2499 @@
+:: Danube House Knock
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+你走到其中一栋豪宅前，敲了敲门。
+<br><br>
+<<if $rng lte 30>> /* Default case*/
+
+	没有回应。
+	<br><br>
+
+	<<link [[闯入|Danube House Lock]]>><</link>>
+	<br>
+	<<link [[去另一户 (0:02)|Danube House Knock]]>><<pass 2>><</link>>
+	<br>
+	<<link [[停止|Danube Street]]>><</link>>
+	<br>
+<<elseif $danube_housekeeping is undefined>>
+	<<generate1>><<person1>>一个<<person>>打开了门。“……你不是我在等的客人，”<<he>>说。“算了，有什么事吗?"
+	<br><br>
+	<<link [[请求一份工作|Danube House Intro]]>><</link>>
+	<br>
+	<<link [[说你敲错门了，然后离开|Danube Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<cleareventpool>>
+
+	<<set $phase to 0>>
+	<<addinlineevent "Danube Party Pre-Intro">>
+		<<generate1>><<generate2>><<person2>>一个<<person>>来应门。"你不是我们想找的人"，<<he>>说道。
+		<<set $phase to 1>>
+	<</addinlineevent>>
+	<<addinlineevent "Danube Attic Pre-Intro">>
+		<<generate1>><<person1>>一个<<person>>来应门。 "我不喜欢被打搅，"<<he>>说道。
+		<<set $phase to 2>>
+	<</addinlineevent>>
+	<<addinlineevent "Danube Tea Pre-Intro">>
+		<<generate1>><<person1>>一个<<person>>来应门。<<He>>一开门，就把你从头到脚审视了一遍，"你可真是个尤物，"<<he>>调戏道，"我能为你做些什么吗？"
+		<<set $phase to 3>>
+	<</addinlineevent>>
+	<<addinlineevent "Danube Garden Pre-Intro">>
+		<<generate1>><<generate2>><<person1>>一个<<person>>来应门。 "我<<person2>><<master>>不喜欢被打搅，"<<he>>说道。 "请离开吧。"
+		<<set $phase to 4>>
+	<</addinlineevent>>
+	<<addinlineevent "Danube Doll Pre-Intro">>
+		<<generatey1>><<person1>>一个<<person>> 来应门。<<He>>轻轻地打开门，从缝隙里看着你，什么话也没有说。
+		<<set $phase to 5>>
+	<</addinlineevent>>
+	<<addinlineevent "Danube Tutor Pre-Intro">>
+		<<generatey1>><<generate2>><<person2>>一个<<person>>来应门。 "需要我帮忙么?"<<he>>问道。
+		<<set $phase to 6>>
+	<</addinlineevent>>
+	<<if $breastfeedingdisable is "f" and maleChance() lt 100>>
+		<<addinlineevent "Danube Breast Pre-Intro">>
+			<<generatef1>><<person1>>一个<<person>>来应门。<<Hes>>除了衬衫和内裤什么都没穿。"需要我帮忙吗?"<<he>>问道。
+			<<set $phase to 7>>
+		<</addinlineevent>>
+	<</if>>
+	<<addinlineevent "Danube Catperson Pre-Intro">>
+		<<generate1>><<person1>>一个<<person>>前来应门。
+		<<if $fame.bestiality gte 400>>
+			当<<he>>看到你时，<<His>>眼睛闪起了光。"哦，我知道你。你在照顾动物方面很有心得，不是吗？"
+		<<else>>
+			"噢，你好。我能为你做些什么吗？"<<he>>问道。
+		<</if>>
+		<<set $phase to 8>>
+	<</addinlineevent>>
+
+	<<runeventpool>>
+
+	<br><br>
+	<<if $phase is 0>>
+		<<errorp "Eventpool selection failed! Please export your save on this screen and report this bug.">>
+	<<elseif $phase is 8>>
+		<<link [[询求一份工作|Danube Catperson Intro]]>><</link>>
+	<<else>>
+		<<link [[询求一份工作|Danube House Work]]>><</link>>
+	<</if>>
+	<br>
+	<<link [[说你敲错门了，然后离开|Danube Street]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Danube House Work
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+<<if $phase is 1>>
+	<<if $rng gte 1>>
+
+		<<He>>停顿了一下，又考虑了一会儿。"我们的帮手还没有到，但你看起来…似乎…也挺适合"<<he>>犹豫道。
+		"我要办一个聚会，需要有人分发点心。你工作两小时可以得到<<printmoney 6000>>。"
+		<<He>>在<<his>>左侧翻找东西，然后从你视线之外拿出一条小围裙。"<<printmoney 15000>>，如果你穿这个。"
+		<br><br>
+
+		你更仔细地看向围裙。这件围裙非常的小，它几乎不能阻止露出，只能勉强盖住你的胯部。
+		<br><br>
+
+		"反正它也盖不住其他衣物，你不妨就什么也不穿吧。"<<He>>微笑道，"我会因此而付给你额外的报酬，你觉得怎么样?"
+		<br><br>
+
+		<<if $exhibitionism gte 55>>
+			<<link [[同意穿着围裙工作|Danube Apron]]>><<housekeeping 1 400>><</link>><<exhibitionist4>><<ghousekeeping 400>>
+			<br>
+		<<else>>
+			你还没下流到接受<<his>>那可耻的提议。
+			<br><br>
+		<</if>>
+		<<link [[同意穿着常服工作|Danube Party]]>><<housekeeping 1 400>><</link>><<ghousekeeping 400>>
+		<br>
+		<<link [[拒绝|Danube Street]]>><<endevent>><</link>>
+		<br>
+
+	<<else>>
+
+		"没有，<<he>>摇头道，"如果你不介意的话，我得回去参加聚会了。"<<he>>关上了门。
+		<br><br>
+
+		<<link [[去找另一户|Danube House Knock]]>><<endevent>><</link>>
+		<br>
+		<<link [[停止|Danube Street]]>><<endevent>><</link>>
+		<br>
+
+	<</if>>
+<<elseif $phase is 2>>
+	<<if $rng gte 1>>
+
+		"你是个粗鲁的小家伙，"<<he>>抱怨道。
+		"碰巧了，我确实需要些东西。我需要取回我阁楼里的一件传家宝。
+		我自己做不来，上面灰尘太多了。这需要一个小时，如果你能找到它，我给你<<printmoney 2500>>。"
+		<br><br>
+
+		<<link [[接受|Danube Attic]]>><<housekeeping 1 400>><</link>><<ghousekeeping 400>>
+		<br>
+		<<link [[拒绝|Danube Street]]>><<endevent>><</link>>
+		<br>
+
+	<<else>>
+
+		"没教养的兔崽子，"<<he>>啐道， "快走。"
+		<br><br>
+
+		<<link [[换栋房子|Danube House Knock]]>><<housekeeping 1 400>><<endevent>><</link>><<ghousekeeping 400>>
+		<br>
+		<<link [[停止|Danube Street]]>><<endevent>><</link>>
+		<br>
+
+	<</if>>
+<<elseif $phase is 3>>
+	<<if $rng gte 1>>
+
+		那个<<person>>笑了。"我没有什么需要，"<<he>>说道。"但我给你<<printmoney 2500>>，让你和我一起喝茶。大约需要一个小时。"
+		<br><br>
+
+		<<link [[接受|Danube Tea]]>><<housekeeping 1 400>><</link>><<ghousekeeping 400>>
+		<br>
+		<<link [[拒绝|Danube Street]]>><<endevent>><</link>>
+		<br>
+
+	<<else>>
+
+		"我没有什么需要的，"<<he>>安抚道，"但亲爱的，你可不要害怕再打电话来。"
+		<br><br>
+
+		<<link [[换栋房子|Danube House Knock]]>><<housekeeping 1 400>><<endevent>><</link>><<ghousekeeping 400>>
+		<br>
+		<<link [[停止|Danube Street]]>><<endevent>><</link>>
+		<br>
+
+	<</if>>
+<<elseif $phase is 4>>
+	<<if $rng gte 1>>
+
+		<<person1>><<He>>趾高气昂地盯着你。
+		<<he>>说，"我们有杂草在生长和扼杀我们的其他植物的问题。工作4小时，我们给你<<printmoney 12000>>。"
+		<br><br>
+
+		<<link [[进入|Danube Garden]]>><<tending 1>><</link>><<gtending>>
+		<br>
+		<<link [[拒绝|Danube Street]]>><<endevent>><</link>>
+		<br>
+
+	<<else>>
+
+		"没有，"<<he>>砰地关上了门。
+		<br><br>
+
+		<<link [[去找另一户|Danube House Knock]]>><<endevent>><</link>>
+		<br>
+		<<link [[停止|Danube Street]]>><<endevent>><</link>>
+		<br>
+
+	<</if>>
+<<elseif $phase is 5>>
+	<<if $rng gte 1>>
+
+		<<His>>的神情发生了变化。"我正在举办一个茶会，还有一个空位，"<<he>>热情地说道。
+		"如果你填补缺失的客人的空缺，我给你<<printmoney 2500>>。这将需要40分钟。"
+		<br><br>
+
+		<<link [[接受 (0:40)|Danube Doll]]>><<housekeeping 1 400>><</link>><<ghousekeeping 400>>
+		<br>
+		<<link [[拒绝|Danube Street]]>><<endevent>><</link>>
+		<br>
+
+	<<else>>
+
+		<<He>>一言不发地关上了门。
+		<br><br>
+
+		<<link [[去找另一户|Danube House Knock]]>><<endevent>><</link>>
+		<br>
+		<<link [[停止|Danube Street]]>><<endevent>><</link>>
+		<br>
+
+	<</if>>
+<<elseif $phase is 6>>
+	<<if $rng gte 1>>
+		<<schooleffects>>
+		<<if !["first","second","third","lunch","fourth","fifth"].includes($schoolstate)>>
+			<<set $rng1 to random(3)>>
+			<<He>>饶有兴趣地看着你。"我们的<<person1>><<daughter>>正准备参加
+			<<switch $rng1>>
+				<<case 0>>一门科学
+				<<case 1>>一门数学
+				<<case 2>>一门英语
+				<<case 3>>一门历史
+			<</switch>>
+			考试。也许你可以为<<him>>辅导一个小时功课？我们将支付<<printmoney 1000>>至<<printmoney 15000>>。这要看你的能力如何。"
+			<br><br>
+
+			<<link [[接受 (1:00)|Danube Tutor]]>><<housekeeping 1 400>><</link>><<ghousekeeping 400>>
+			<br>
+			<<link [[拒绝|Danube Street]]>><<endevent>><</link>>
+			<br>
+		<<else>>
+			"我对家教服务很感兴趣，但是我<<person1>><<daughter>>现在正在学校念书。"<<person2>><<He>>突然想到了什么，"话说这个时间点，你不也应该在学校上课吗?"<<gstress>><<stress 2>>
+			<br><br>
+
+			<<link [[去找另一户|Danube House Knock]]>><<endevent>><</link>>
+			<br>
+			<<link [[停止|Danube Street]]>><<endevent>><</link>>
+			<br>
+		<</if>>
+
+	<<else>>
+
+		<<He>>摇了摇头。"我们什么都不需要，谢谢。"
+		<br><br>
+
+		<<link [[去找另一户|Danube House Knock]]>><<endevent>><</link>>
+		<br>
+		<<link [[停止|Danube Street]]>><<endevent>><</link>>
+		<br>
+
+	<</if>>
+<<else>>
+
+	<<He>>微笑到，"你看起来刚好有些渴不是么"，<<he>>说道，"而且刚好我的胸部有些沉重。"<<He>>把<<his>>的 $NPCList[0].breastdesc 抵在杯子上。"帮我的胸部减减负好么，我给你<<printmoney 500>>。"
+	<br><br>
+
+	<<if $awareness gte 200>>
+		<span class="blue"><<He>>要你喝下<<his>>的乳汁</span>。
+		<br><br>
+	<<else>>
+		你不理解<<he>>到底想表达什么意思。<<He>>似乎看出了你的困惑。"我想让你吸我的奶 "，<<he>>补充道。
+		<br><br>
+	<</if>>
+
+	<<if $promiscuity gte 35>>
+		<<link [[接受(0:15)|Danube Breast]]>><<pass 15>><<breastfed>><</link>><<promiscuous3>><<lpurity>>
+		<br>
+	<<else>>
+		你还没有淫乱到可以接受<<his>>的提议。
+		<br><br>
+	<</if>>
+
+	<<link [[拒绝|Danube Street]]>><<endevent>><</link>>
+	<br>
+
+<</if>>
+
+:: Danube House Intro
+<<effects>>
+
+"平时的助手今天生病了，"<<he>>说道。"我有客人要来了，他们等着吃饭，但我忙不过来了。我付给你<<printmoney 4000>>来布置桌子，而我在厨房里烹饪。他们将在15分钟内到达。"
+<br><br>
+<<He>>眯起了<<he>>的眼睛。"然而，我的客人有一定的期望，"<<he>>继续说道。"期望值很高，所以我希望你懂得如何布置餐桌。"
+<br><br>
+
+<<link [[接受 (0:15)|Danube House Intro 2]]>><<pass 15>><</link>>
+<br>
+<<link [[拒绝|Danube Street]]>><<endevent>><</link>>
+<br>
+
+:: Danube House Intro 2
+<<effects>>
+
+这个<<person>>带你进入一个有品位的餐厅。你闻到了大蒜的味道。蒸汽从隔壁的房间飘进房间。"所有东西都在那里的橱柜里，"<<he>>说道。"这是个普通的
+<<if Time.hour gte 18>>
+	晚餐。
+<<elseif Time.hour gte 15>>
+	茶。
+<<elseif Time.hour gte 12>>
+	午宴。
+<<elseif Time.hour gte 10>>
+	早午餐。
+<<else>>
+	早餐。
+<</if>>
+没有什么花哨的。我在厨房里，你完成后告诉我。"
+<br><br>
+你打开橱柜，发现里面有一系列堆放的盘子和餐具。
+<<if $housekeeping gte 300>>
+	你把盘子、餐具和餐巾铺好，还余下了不少时间。你进入热气腾腾的厨房，发现<<person>>因为锅里沸腾的水和烤箱里冒出的烟而急急忙忙地跑来跑去。
+	<br><br>
+	<<set $danube_housekeeping to 1>>
+	<<link [[继续|Danube House Intro Success]]>><</link>>
+	<br>
+<<else>>
+	<<person>>没有说明预计有多少客人，所以你在每个座位前放一个盘子和一份餐具。
+	<br><br>
+
+	<<link [[继续|Danube House Intro Fail]]>><</link>>
+	<br>
+
+<</if>>
+
+:: Danube House Intro Success
+<<effects>>
+
+你在厨房里协助了<<person>>。你的效率之高让<<he>>有空闲走到一旁，从窗户里看着<<he>>的客人们。"客人们来了，"<<he>>说道。"我们将将赶上。你出现在这可真是个福音，"<<he>>给了你<<moneyGain 40>>。"我一定会让我的朋友知道你是多么能干。我的人脉很广，消息会传得很快。"
+<br><br>
+
+<<He>>领着你从侧门进入，这样就不会被其他人发现。
+<br><br>
+
+<span class="gold">你现在可以在多瑙河街上敲门来寻求工作。</span>
+<br><br>
+
+<<link [[继续|Danube Street]]>><<set $eventskip to 1>><<endevent>><</link>>
+<br>
+
+:: Danube House Intro Fail
+<<effects>>
+
+<span class="red">"不，不，不！"</span><<person>>来检查你的工作成果说道："餐具放反了，有些盘子不见了。那些是——"<<he>>整个人瘫椅子上。"还有一个<i>汤勺</i>？你居然放在这儿？真是一塌糊涂！你给我出去，马上！"
+<br><br>
+
+你灰溜溜地出来，一分钱也没拿到，只能让那个<<person>>按照<<he>>喜欢的方法来摆餐具。
+<br><br>
+
+<i><span class="red">你现在无法在多瑙河街接到任何工作，除非你至少拥有</span><span class="purple">D+</span><span class="red">的家政技能。</span></i>
+<br><br>
+
+<<link [[继续|Danube Street]]>><<endevent>><</link>>
+<br>
+
+:: Danube Breast
+<<effects>>
+你脸红了，但点点头。
+
+女士退后一步，你进入<<his>>的房子。就多瑙河街而言，它虽然很小，但仍然宽敞整洁。
+<br><br>
+那个<<person>>在一个装满软垫的沙发上坐下来。<<He>>毫不犹豫地拉下<<his>>的衬衫，露出了<<his>>$NPCList[0].breastsdesc.
+<<He>>现在只穿了那条内裤。<<He>>向你招手。
+<br><br>
+你在<<him>>身边坐下，当她轻轻地把你的头引向她的胸口时，你的脸更红了。
+你移动以更好地接近她的胸部，并在她的乳头上移动你的嘴唇。当你的舌头接触到<<his>>的花蕾时，甜腻的牛奶就会流出来。
+你吮吸着。它尝起来又甜又暖，平静感笼罩着你。<<His>>空闲的手爬上了你的大腿。
+<<promiscuity3>>
+一段时间后，乳汁不再流出，你抬头看。
+<br><br>
+"只要你想，你也可以继续吸另一个，"<<he>>说道。"但不做也可以。我还是会给你钱的。"
+<br><br>
+
+<<link [[停止|Danube Breast Stop]]>><</link>>
+<br>
+<<link [[继续(0:15)|Danube Breast Continue]]>><<pass 15>><<breastfed>><</link>><<ggarousal>><<lpurity>>
+<br>
+
+:: Danube Breast Stop
+<<effects>>
+你摇摇头。<<person>>把承诺好的报酬交给了你，而你回到了多瑙河街。
+<br><br>
+你赚了<<moneyGain 5>>。
+<br><br>
+<<endevent>>
+
+<<link [[继续|Danube Street]]>><</link>>
+
+:: Danube Breast Continue
+<<effects>>
+
+你靠向<<his>>的另一侧乳房，吸吮起来。<<He>>笑着说，并把<<his>>的手伸到你的大腿上。<<He>>抚摸起你的<<groin>>来。
+<br><br>
+
+<<if $player.gender_appearance is "m" and !$player.penisExist>>
+	"哦，我的天，"<<he>>说道。"你在下面藏着东西。别担心。我可以保守秘密。"<<He>>进一步探索。
+<<elseif $player.gender_appearance is "f" and $player.penisExist>>
+	"哦，我的天，"<<he>>说道。"你在下面藏着东西。别担心。我可以保守秘密。"<<He>>进一步探索。
+<<else>>
+<</if>>
+
+<<if playerChastity("hidden")>>
+	"试图保持纯洁？"<<he>>提问，同时收回<<his>>的手。
+<<elseif $player.penisExist>>
+	<<if playerChastity("cage")>>
+		"你真可爱，"<<he>>说道。<<He>>一边让你吸吮着，一边<<if $player.ballsExist>>揉搓着你的蛋蛋<<else>>收回了<<his>>的手<</if>>.
+	<<elseif $player.penissize gte 4>>
+		"啊！"<<He>>收回<<his>>的手，盯着你的下面。<<He>>看起来很惊愕。
+		"你怎么这么大？！"<<He>>抽回<<his>>的手，"抱歉，我失态了，刚才的失言无意冒犯。"<<He>>在你吸吮的时候继续抚摸。
+	<<elseif $player.penissize gte 3>>
+		"你这里可真够大。"<<he>>赞叹道。<<He>>在你吸吮的时候抚摸你的肉棒。
+	<<elseif $player.penissize gte 2>>
+		<<He>>在你吸吮的时候抚摸你的肉棒。
+	<<elseif $player.penissize gte 1>>
+		"真是可爱"，<<he>>说道。<<He>>在你吸吮的时候抚摸你的肉棒。
+	<<else>>
+		<<He>>笑了。"这可真是袖珍。哦，抱歉，我没有冒犯的意思。"<<He>>在你吸吮的时候抚摸你的肉棒。
+	<</if>>
+	<<if $player.vaginaExist>>
+		当<<his>>的手指碰到你的<<pussy>>时，<<He>>轻轻皱了一下眉。"我想我明白了"，<<he>>问道。"看来你有不少秘密。"
+	<</if>>
+<<else>>
+	<<He>>在你吸吮的时候抚摸你的阴蒂。
+<</if>>
+<<arousal 1200 "genitals">><<ggarousal>>
+/* Note: Add some dialog describing the player orgasming from this if it puts them at max arousal? */
+<br><br>
+
+这个过程持续了几分钟，直到漏液缓作涓涓细流。
+<<He>>把衬衫穿上，然后把你带到了门口，还额外给了你一笔钱。
+<br><br>
+
+你赚到了<<moneyGain 10>>。
+<br><br>
+<<endevent>>
+
+<<link [[继续|Danube Street]]>><</link>>
+
+:: Danube Apron
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+<<undress "danubeparty">>
+
+<<set $lowertemp to "init">><<lowerwear 4>>
+<<set $worn.lower.colour to either("black", "blue", "brown", "green", "pink", "purple", "red", "tangerine", "teal", "white", "yellow")>>
+
+<<exposure>>
+
+你进入大厦。你听到远处的说话声和碰杯声。
+<<if $rightarm is "bound" or $leftarm is "bound" or $feetuse is "bound">>
+	注意到你被捆绑的<<boundBodyParts>>，<<he>>给了你一个奇怪的微笑。
+	"这不是那种聚会！至少这次不是。<<if _boundparts.includes("arm")>>你至少要用上你的手。<</if>>"
+	<br>
+	<<He>>走到你身后，片刻之后<span class="green">你的四肢终于自由了</span>
+	<<unbind>>
+	<br><br>
+<</if>>
+<<He>>把围裙递给你，然后指向你左边的门。
+"你可以在储藏室里换衣服，"<<he>>说。
+"当你准备好后，穿过对面的门你可以找到一些盘子。依次拿起每个盘子，把它们献给客人。
+如果你不介意的话，我得回去做个优秀的<<print ($pronoun is "m" ? "男主人" : "女主人")>>了。"
+<br><br>
+
+你按照指示进入了房间。
+这房间非常小，在这里面换衣服显得十分困难，但你还是<<nervously>>脱掉衣服，把围裙系在腰间。
+感觉就像你什么都没穿似的。你突然希望面前有一面镜子能拿来审视自己。
+<br><br>
+
+你穿戴整齐，一只手托着一盘香槟，走进正在举行派对的大厅。
+<<person1>><<person>>喘着粗气，扔掉了自己的杯子，杯子破碎的声音吸引了更多的注意。
+很快，房间里的每个人都在看着你，窃窃私语。
+你举起托盘，准备向那<<person>>提供另一杯饮品。当<<he>>从托盘中拿取的时侯，全程都没有将目光从你的<<lewdness>>上移开。
+<<exhibitionism4>><<fameexhibitionism 30>>
+
+<<link [[继续|Danube Apron2]]>><</link>>
+<br>
+
+:: Danube Party
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+你进入大厦。你听到远处的说话声和碰杯声。
+"厨房里有一些盘子。"<<he>>指了指你右边的门。
+<<if $rightarm is "bound" or $leftarm is "bound" or $feetuse is "bound">>
+	"把它们依次拿过来，献给客人们。"
+	<br><br>
+	注意到你被捆绑的<<boundBodyParts>>，<<he>>给了你一个奇怪的微笑。
+	"这不是那种聚会！至少这次不是。<<if _boundparts.includes("arm")>>你至少要用上你的手。<</if>>"
+	<br>
+	<<He>>走到你身后，片刻之后<span class="green">你的四肢终于自由了</span>
+	<<unbind>>
+	<br><br>
+	"如果你不介意的话，"<<he>>继续说道。"我要去做一个好<<print ($pronoun is "m" ? "男主人" : "女主人")>>了。"
+<<else>>
+	"把它们依次拿给客人。如果你不介意的话，我要做个好<<print ($pronoun is "m" ? "男主人" : "女主人")>>。"
+<</if>>
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure)>>
+
+	你按照指示开始工作。
+	大多数客人都不怎么注意你，甚至很少有人会看你。他们从端上来的盘子里取走食物，或者礼貌地拒绝你的提议。
+	然而，工作开始一小时后，一个<<person1>><<person>>对你很感兴趣。你注意到<<him>>正穿过房间看着你。
+	<br><br>
+	<<pass 1 hour>>
+	你给<<him>>拿了一杯香槟。
+	"不了，亲爱的，谢谢你。"
+	当你转身离开时，<<he>>用一只手搂住你的腰，用<<his>>的手抓住你的<<bottom>>。
+	<br><br>
+
+	<<link [[默默忍受|Danube Party Endure]]>><<stress 6>><<trauma 6>><<sub 1>><</link>><<gtrauma>><<gstress>>
+	<br>
+	<<link [[试图把手拿开|Danube Party Struggle]]>><<stress -12>><<trauma -6>><<def 1>><</link>><<ltrauma>><<lstress>>
+	<br>
+
+<<else>>
+	你按照指示开始工作。
+	没有人注意到你，甚至很少有人会在他们从盘子里拿东西或礼貌地拒绝你的邀请时看你一眼。
+	两个小时后，派对接近尾声。这个<<person>>向你走来。"谢谢你的帮助，给，这是你的工资。"<<He>>递给了你<<moneyGain 60>>.
+	<br><br>
+
+	<<pass 2 hours>>
+
+	<<link [[继续|Danube Street]]>><<endevent>><</link>>
+	<br>
+
+<</if>>
+
+:: Danube Party Endure
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+你咬紧牙关，忍住了。那个<<person>>把你拉近，抚摸你的<<bottom>>一会儿。
+其他客人转身看着这一幕，不太清楚该如何理解。你听到紧张的笑声。
+<br><br>
+
+"够了，让这个可怜的<<girl>>走吧。"<<person2>><<person>>说。<<person1>><<person>>放了你，但在临别时<<he>>给打了你的屁股一下。
+<br><br>
+
+又过了一个小时，聚会似乎要结束了，<<person2>><<person>>走近你。
+"感谢你的帮助。我再额外给你点小费，就当是那麻烦事的补偿。"<<He>>交给你<<moneyGain 90>>.
+<br><br>
+
+<<pass 1 hour>>
+<<endevent>>
+
+<<link [[继续|Danube Street]]>><</link>>
+<br>
+
+:: Danube Party Struggle
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+你狠狠地踩在那个<<persons>>的脚上，<<he>>大声叫着，向后跌倒在地上，<<he>>痛苦地打滚。
+聚集在一起的客人中爆发出笑声。
+<br><br>
+
+"这是对那个变态的惩罚。"
+<br><br>
+
+那个<<person2>><<person>>抓着你的胳膊，带你走出房间。"你毁了我的聚会，"<<he>>说。"出去吧。你一分钱都别想拿到。嘁！"
+<br><br>
+
+<<endevent>>
+<<link [[继续|Danube Street]]>><</link>>
+<br>
+
+:: Danube Apron2
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+<<if maleChance() is 0>>
+	<<set _elite to "女人们">>
+<<elseif maleChance() is 100>>
+	<<set _elite to "男人们">>
+<<else>>
+	<<set _elite to "精英们">>
+<</if>>
+
+你继续你的工作，人们最终又回到了交际圈，尽管你仍然能感觉到一直有人在盯着你。
+有一次，你看到自己的倒影，一个几乎全裸的<<girl>>被衣着华贵的_elite包围。
+
+<<if $liquidcount gte 30>>你穿得太少，身上的淫液清晰可见。
+<<elseif $player.bodyliquid.anus.semen + $player.bodyliquid.vagina.semen gte 3>>围裙掩盖不了从你两腿间流下来的精液。
+<<elseif $semencount gte 10>>穿得这么少，身上的精液是显而易见的。
+<<elseif $goocount gte 10>>淫秽的触手粘液在你的皮肤上闪闪发光，这使得所有人都能明显看到它。
+<<elseif $nectarcount gte 10>>香甜的花蜜粘在你的皮肤上，所有人都能明显看见。
+<<elseif $liquidcount gte 10>>你穿得太少，身上的淫液清晰可见。
+<<elseif $wolfgirl gte 6>>你察觉到客人们都在观察你的狼尾巴。
+<<elseif $wolfgirl gte 4 and (!["hidden", "disabled"].includes($transformationParts.wolf.pubes) or !["hidden", "disabled"].includes($transformationParts.wolf.pits))>>你穿得不够多，身上的狼毛一目了然。
+<<elseif $physique gte ($physiquesize * 5/7)>>穿这么少能凸显你的<<bellyDescription "pc">>和结实有力的体格。
+<<elseif $beauty gte ($beautymax * 4/7)>>穿这么少的衣服能彰显你与生俱来的丽质与魅力。
+<</if>><<garousal>><<arousal 600>>
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure) and $eventskip is 0>>
+
+	你递给那<<person1>><<person>>一杯饮料，但是当<<he>>伸手去拿时<<he>>拍了拍餐盘,
+	把杯子扔到空中，里面的东西溅了你一身。
+	"呀，我手滑了！”<<he>>说。液体从你的皮肤上滴下来，渗入你的围裙。
+	<br><br>
+
+	人们用比平常更加饥渴的眼神盯着你。
+	你低头一看，发现大量液体已经把你的围裙浸得几乎透明。面对这种羞耻，你觉得自己的脸上不停发热。
+	你突然感到自己是多么暴露和脆弱。<<covered>>
+	<br><br>
+
+	<<person>>继续。"我真的很抱歉。让我帮你把湿衣服脱下来……"
+	<br><br>
+	<<pass 1 hour>>
+	<<link [[继续|Danube Apron Molestation]]>><<set $molestationstart to 1>><</link>>
+	<br>
+
+<<else>>
+
+	<<pass 2 hours>>
+	几个小时后，聚会似乎要结束了。
+	这个<<person2>><<person>>走向你。"谢谢你，这会让他们印象深刻的。给，你的钱。"<<He>>交给你<<moneyGain 150>>.
+	<br><br>
+
+	<<endevent>>
+
+	你回到储藏室，重新穿上衣服。
+	<br><br>
+
+	<<link [[继续|Danube Street]]>><<storeon "danubeparty">><</link>>
+	<br>
+
+<</if>>
+
+:: Danube Apron Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<set $enemyno to 1>><<set $enemynomax to 1>><<maninit>>
+	<<set $NPCList[1].penis to "none">>
+	<<set $NPCList[1].lefthand to "none">>
+	<<set $NPCList[1].righthand to "none">>
+	<<set $NPCList[1].mouth to "none">>
+	<<set $NPCList[1].vagina to "none">>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Danube Apron Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Danube Apron Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Danube Apron Molestation Finish
+<<if $enemyhealth lte 0>>
+
+	那个<<person>>痛苦地抽泣着。"<<he>>说<<pShe>>是个好斗的人"。
+	<br><br>
+
+	<<person2>>"够了，"<<person>>说。<<He>>抓住你的手臂，把你拖出房间。
+	"就这样吧，"<<he>>在你们独处的时候说道。"我不想看到这样的场景。拿好你的钱，走吧。"<<He>>交给你<<moneyGain 150>>.
+	<br><br>
+
+	<<tearful>>你回到储藏室，重新穿上衣服。
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><<storeon "danubeparty">><</link>>
+	<br>
+
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>><<famerape 30>>
+
+	<<He>>转向<<person2>><<person>>"一个这个多少钱？"<<person1>><<he>>说。
+	<br><br>
+
+	"我只租了<<phim>>。"
+	<br><br>
+
+	"真可惜。"
+	<br><br>
+
+	<<person2>><<person>>抓住你的胳膊，把你拖出房间。
+	"就这样吧，"<<he>>在你们独处时说道。"谢谢你的雅量，没惹出什么麻烦。再给你些小费。"<<He>>他交给你<<moneyGain 300>>.
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<endevent>>
+
+	<<tearful>>你回到储藏室，重新穿上衣服。
+	<br><br>
+	<<pass 1 hour>>
+	<<link [[继续|Danube Street]]>><<storeon "danubeparty">><</link>>
+	<br>
+
+<</if>>
+
+:: Danube Attic
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+那个<<person>>带着你上了一段楼梯，拉动天花板上的活板门。在一阵灰尘中打开，一架梯子掉了出来。
+"古物是一幅祖先的画。我看起来很像他们，所以当你找到它时，你应该知道。"
+<<He>>让你独自登上嘎吱作响的梯子。
+<br><br>
+
+当你到达顶部时，你咳嗽了一声，透过阴暗的地方看了看。这里有很多旧家具，但你没有看到任何绘画。
+它可能在房间里堆着的盒子里。角落里有个巨大的蜘蛛网，大概有你的两倍大。你希望制造它的东西不在身边。
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure)>>
+
+	<<if $swarmdisable is "f" and $spiderdisable is "f" and $rng gte 1>>
+
+		<<pass 30>>
+		经过半小时的搜寻，你终于在房间角的落蜘蛛网后面发现了它。
+		你想办法绕过去，但房间的那一部分完全被挡住了，蛛网上方的黑暗中似乎有什么东西在移动。
+		你一抬头，就看到几个巨大的蛋囊正在抽动，它们每个都有你的头那么大。
+		<br><br>
+
+		<<link [[放弃你的任务|Danube Abandon]]>><</link>>
+		<br>
+		<<link [[破坏蛛网|Danube Spiders]]>><<set $molestationstart to 1>><</link>>
+		<br>
+
+	<<else>>
+
+		<<pass 1 hour>>
+		你花了一个小时去搜索阁楼的每一寸地方，但还是没有找到这幅画的任何踪迹。
+		<br><br>
+
+		<<link [[放弃你的任务|Danube Abandon]]>><</link>>
+		<br>
+
+	<</if>>
+
+<<else>>
+
+	你花了一个小时才发现画原来藏在其中一个盒子里。它比看起来要重上不少，你设法把它从阁楼上搬了下来。
+	那<<person>>应该是听到了你下楼的动静，所以很快就走了过来。
+	"可以了，谢谢你，"<<he>>拿起画向你道谢，交给你<<moneyGain 25>>.
+	<<his>>的笑容消失了，当<<he>>注意到你满是灰尘的衣服时。"请离开，免得弄脏我的地毯。"
+	<br><br>
+
+	<<pass 1 hour>>
+	<<endevent>>
+
+	<<link [[继续|Danube Street]]>><</link>>
+	<br>
+
+<</if>>
+
+:: Danube Abandon
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+你爬下梯子时发现<<person>>已经在等你了，"看来你没有找到我的传家宝。太可惜了，快滚，别把我的地毯弄脏。"
+<br><br>
+
+<<if $rng gte 81>>
+	<<link [[找他要钱|Danube Attic Molestation]]>><<set $molestationstart to 1>><</link>>
+<<else>>
+	<<link [[找他要钱|Danube Payment]]>><</link>>
+<</if>>
+<br>
+<<link [[悄悄离开|Danube Street]]>><<endevent>><</link>>
+<br>
+
+:: Danube Spiders
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<molested>>
+	<<controlloss>>
+
+	你试图把蛛网拉开，但你的手被卡住了。
+	你设法把它们拿出来，但你身体的姿势在这个过程中变化扭动，让你悬浮在了空中。
+	你的挣扎导致一个卵巢从木头上掉下来了。
+	它在木地板上裂开，里面爬出了成千上万只活着的小蜘蛛，它们开始爬向困住你的网。
+	<br><br>
+
+	<<set $combat to 1>>
+	<<set $enemytype to "swarm">>
+	<<swarminit "spiders" "蜘囊" "爬行着" "破开" "稳定" 1 9>>
+	<<set $timer to 30>>
+<</if>>
+
+<<if $timer gte 25>>
+	网上面的旧木料吱吱作响。如果再这样下去，会塌的。
+<<elseif $timer gte 20>>
+	碎片从天花板上脱落。
+<<elseif $timer gte 10>>
+	木头继续断裂。
+<<elseif $timer gte 1>>
+	木制天花板发出令人害怕的咯吱声。
+<<else>>
+	一根木梁从天花板上折断，蛛网翻滚着落在了地上。
+<</if>>
+<br><br>
+
+<<swarmeffects>>
+<<swarm>>
+<<swarmactions>>
+
+<<if $timer lte 0>>
+	<span id="next"><<link [[继续|Danube Spiders Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Danube Spiders]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Danube Attic Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>><<npcspank>><<npcidlegenitals>>
+	"你怎么敢，”<<he>>愤怒地说。“像你这种坏孩子，我想你需要被上一堂礼仪课。”<<He>> 抓住你的胳膊把你扯过栏杆。
+	<br><br>
+	<<set $enemyanger += 100>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or $enemyanger lte 0>>
+	<span id="next"><<link [[继续|Danube Attic Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Danube Attic Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Danube Payment
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+"你这态度是从哪学的？"<<he>>问道。"拿上钱，滚吧。"<<He>>扔给你<<moneyGain 25>>.
+<br><br>
+
+<<endevent>>
+
+<<link [[继续|Danube Street]]>><</link>>
+<br>
+
+:: Danube Attic Molestation Finish
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<ejaculation>>
+	"我希望这能让你学会在上司面前要守规矩。现在滚出去。"<<tearful>>你离开了这栋楼。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><</link>>
+	<br>
+
+<<elseif $enemyhealth lte 0>>
+
+	<<He>>在疼痛中后退，你从<<his>>的紧握中挣脱开。<<tearful>>你从大楼里跑了出去。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><</link>>
+	<br>
+
+<<elseif $enemyanger lte 0>>
+
+	"我希望这能让你学会在上司面前要守规矩。现在滚出去。"<<tearful>>你离开了这栋楼。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><</link>>
+	<br>
+<</if>>
+
+:: Danube Spiders Finish
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+蜘蛛被倒塌吓到，逃去了房间里黑暗的地方。<<tearful>>你挣扎着站起来，把剩下的蜘蛛网从身体上撕下来。没有什么能阻止你取回那幅画。
+<br><br>
+
+<<clothesontowel>>
+
+<<person1>>这要比它看起来沉得多，但你还是成功把它从梯子上搬了下来。这个<<person>>肯定听到声音了，<<he>>很快就赶到了你身边。"这样就可以了。谢谢你，"<<he>>拿起画，交给你<<moneyGain 25>>。但当<<he>>注意到你那满是灰尘的衣服时，<<His>>的笑容一下子转成了嫌恶的表情。"请快点离开，别把地毯给弄脏了。"
+<br><br>
+
+<<pass 1 hour>>
+<<endcombat>>
+
+<<link [[继续|Danube Street]]>><</link>>
+<br>
+
+:: Danube Tea
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+那<<person>>带你去了<<his>>的花园，
+<<switch $weather>>
+	<<case "rain">>餐桌已经摆好，用一把白色的阳伞遮雨。
+	<<case "snow">>餐桌已经摆好，用白色的阳伞挡雪。
+	<<default>>餐桌已经布置好了。
+<</switch>>
+桌上放着茶壶和几个杯子，还有一盘饼干，一碗草莓和奶油。
+那<<person>>坐了下来，然后示意你也随意坐。
+<br><br>
+
+<<if $rightarm is "bound" or $leftarm is "bound">>
+	"请自便"，<<he>>朝食物和饮料伸手。发现你没有去拿任何东西时，<<he>>看起来很困惑。"你......等等，为什么......？！你不能被绑着胳膊喝茶，是吗，亲爱的？"
+	<br><br>
+	<<his>>的脸上浮现出了愤怒的神情。<<He>>站起身走到了你的身后。<span class="green">你的四肢自由了。</span>
+	<br>
+	<<unbind>>
+	"这是你的小情趣吗？"<<he>>带着困惑的微笑问道。"我想我已经太久没有关注，已经搞不懂你们年轻人现在玩的游戏了。"
+	<br><br>
+<</if>>
+
+你礼貌地点点头，偶尔吃点东西，喝口茶，<<He>>就热情地唠叨一阵子。你很难不陷入瞌睡状态。
+<br><br>
+
+<<if $player.bodyliquid.mouth.semen + $player.bodyliquid.face.semen + $player.bodyliquid.hair.semen gte 4>>
+	有一次，<<he>>递给你一张餐巾纸。"你有一些，啊...奶油...
+	<<if $player.bodyliquid.mouth.semen gte 2>>
+		流到你下巴那儿了,"<<he>>礼貌地说.
+		<<bodyliquid "mouth" "semen" -1>>
+	<<elseif $player.bodyliquid.face.semen gte 2>>
+		"不知怎么的，你把它弄到你的脸颊上了!"<<he>>说。
+		<<bodyliquid "face" "semen" -1>>
+	<<else>>
+		"你怎么把它弄到你的头发上了，你这个笨拙的<<girl>>，"<<he>>惊叹道。
+		<<bodyliquid "hair" "semen" -1>>
+	<</if>>
+	<<gstress>>
+	<br><br>
+	你红着脸用餐巾把脸擦的干净一点。从<<hes>>还在侃侃而谈的样子来看，你不认为<<he>>有发现这是奶油以外的东西。
+	<br><br>
+	<<stress 1>>
+<<elseif $deviancy gte 35 and $rng % 3 is 0>>
+	在<<he>>说话时，<<his>>的宠物走近你。它看起来很紧张，你弯下腰用下流的方式摸了摸它。它快乐地跳上来坐在了你的腿上。
+	"看来你很受动物亲近，”<<he>>笑着说。“Mittens通常不喜欢陌生人。"
+	<br><br>
+	你感觉更放松了。
+	<<lstress>><<stress -1>>
+<<elseif fameTotal() gte 2000 and $rng % 2>>
+	<<He>>突然停下来。
+	"你看起来很面熟，”<<he>>说。"我在哪里见过你吗？"
+	<br><br>
+	你有些紧张。半个镇子的人都认识你，你假装无辜的耸耸肩。
+	<<gstress>><<stress 2>>
+	<br><br>
+	"哦，别在意，"<<he>>说，接着又回到了<<his>>自己的故事。
+	<br><br>
+<</if>>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure)>>
+
+	<<pass 30>>30分钟后<<he>>将<<his>>的椅子移近你的椅子。
+	"自从我的<<spouse>>去世后，我就一直很孤独，"<<he>>说，现在你们两人离得很近。
+	"我都快忘了这是什么感觉了。"<<He>>突然伸手摸你的<<breasts>>。
+	<br><br>
+
+	<<if $promiscuity gte 15>>
+		<<link [[允许|Danube Tea Sex]]>><<set $sexstart to 1>><</link>><<promiscuous2>>
+		<br>
+		<<link [[为钱出卖自己|Danube Tea Offer]]>><</link>><<promiscuous2>>
+		<br>
+	<</if>>
+
+	<<link [[推开|Danube Tea Push]]>><</link>>
+	<br>
+
+<<else>>
+
+	<<pass 1 hour>>这个<<person>>看看<<his>>的表。"已经过了一个小时了？"<<he>>说道。"谢谢你能陪着我，给你。"<<He>>递给你<<moneyGain 25>>.
+	<br><br>
+
+	<<link [[继续|Danube Street]]>><<endevent>><</link>>
+	<br>
+
+<</if>>
+
+:: Danube Tea Push
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+<<if $rng gte 81>>
+
+	"不行，"<<he>>说。“我为了让你来这里可是付了很大一笔钱的，你必须对我表示尊敬！” <<He>>用更大的力量抓住你。
+	<br><br>
+
+	<<link [[继续|Danube Tea Sex]]>><<set $molestationstart to 1>><</link>>
+	<br>
+
+<<else>>
+
+	<<He>> 向后退缩，好像被蛰了一样。“我很抱歉，”<<he>>说。“我不知道我是怎么了。"
+	<<He>>递给你<<moneyGain 25>>."如果你不介意的话，我现在想一个人静静。"
+	<br><br>
+
+	<<link [[继续|Danube Street]]>><<endevent>><</link>>
+	<br>
+
+<</if>>
+
+:: Danube Tea Sex
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $enemyanger += 40>>
+<<elseif $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 40>>
+	<<promiscuity2>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Danube Tea Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Danube Tea Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Danube Tea Sex Finish
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<ejaculation>>
+	"感谢配合。这是你的报酬。"<<tearful>>你拿着<<moneyGain 25>>离开了。
+	<br><br>
+
+	<<if $phase is 1>>
+		<<tipreceive>><<set $prostitutionstat += 1>>
+		<<fameprostitution 1>>
+	<</if>>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+
+	<<He>>吃痛退开，这给了你需要的机会。<<tearful>>你跑过大楼，回到街上。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><</link>>
+	<br>
+
+<<elseif $finish is 1>>
+
+	"太遗憾了。拿好你的钱，走吧。"<<tearful>>你拿着<<moneyGain 25>>离开了.
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><</link>>
+	<br>
+
+<</if>>
+
+:: Danube Tea Offer
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+<<set $seductiondifficulty to 4000>>
+<<seductioncheck>>
+<br><br>
+<<if $seductionskill lt 1000>><span class="gold">你对自己的诱惑力更有信心了。</span><</if>><<seductionskilluse>>
+<br><br>
+
+<<if $seductionrating gte $seductionrequired>>
+
+	<<set $tipmod to 2>><<tipset>>
+
+	手指颤抖着，<<he>>看了看<<his>><<wallet>>。"我会给你<<printmoney $tip>>，"<<he>>说道。"拜托了，我需要这个。"
+	<br><br>
+
+	<<link [[接受|Danube Tea Sex]]>><<set $sexstart to 1>><<set $phase to 1>><</link>>
+	<br>
+	<<link [[拒绝|Danube Tea Refuse]]>><</link>>
+	<br>
+
+<<else>>
+	<<rng>>
+	<<if $rng gte 81>>
+
+		"我们已经同意了你的价格，"<<he>>说着，用更大的力气抓住了你。
+		<br><br>
+
+		<<link [[继续|Danube Tea Sex]]>><<set $molestationstart to 1>><</link>>
+		<br>
+
+	<<else>>
+
+		"对不起，"<<he>>说道。"但是我想你应该拿着你的钱走人，我没有意识到我让一个娼妓进来了"
+		<<He>>给你<<moneyGain 25>>并示意你离开。
+		<br><br>
+
+		<<link [[继续|Danube Street]]>><<endevent>><</link>>
+		<br>
+
+	<</if>>
+<</if>>
+
+:: Danube Tea Refuse
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+<<if $rng gte 81>>
+
+	"你说得对，我们说好了£15，"<<he>>说，然后用力抓住你。
+	<br><br>
+
+	<<link [[继续|Danube Tea Sex]]>><<set $molestationstart to 1>><</link>>
+	<br>
+
+<<else>>
+
+	"对不起，"<<he>>说道。"但是我认为你应该拿着你的钱离开。我没有意识到我让这样一个妓女进来了。"<<He>>递给你<<moneyGain 25>>并示意你离开。
+	<br><br>
+
+	<<link [[继续|Danube Street]]>><<endevent>><</link>>
+	<br>
+
+<</if>>
+
+:: Danube Garden
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+你被带到广阔的后花园，花园的边界被几道简陋的树篱掩盖。
+"做你能做的。但不要偷懒，"<<He>>指着一个被骨头包围的狗窝。
+<<if $rightarm is "bound" or $leftarm is "bound" or $feetuse is "bound">>
+	"布鲁特斯……等等。什么？你的<<if $leftarm is "bound" or $rightarm is "bound">>胳膊<</if>><<if ($leftarm is "bound" or $rightarm is "bound") and $feetuse is "bound">>和<</if>><<if $feetuse is "bound">>腿<</if>>是怎么回事?是被绑起来了吗?"
+	<br><br>
+	<<He>><<if $rightarm is "bound" or $leftarm is "bound">>把你转了一圈，看着你被束缚的手臂<<elseif $feetuse is "bound">>弯腰看你被束缚的腿<</if>>，然后
+
+	<<set $NPCList[1] to clone($NPCList[0])>>
+	<<clearsinglenpc 0>>
+	<<generate3>>
+	<<beastNEWinit 1 dog>>
+	<<if $rng gte 25 and ($monster is 1 or $bestialitydisable is "f")>> <!-- Modified for Beast People -->
+		恼怒地吼道。"这对你来说是个笑话吗?浪费我的时间?这样你能做什么工作呢?"
+		<br><br>
+
+		<<person2>><<He>>抓住你的肩膀，带你走向出口。当<<person3>><<person>>到达侧门时，<<He>>停了下来。<<He>>招呼<<person2>><<person>>过来，他们低声交谈了几句。<<He>>让你回到花园
+		<br><br>
+
+		"因为你的工作是有报酬的，所以<<if $NPCList[2].pronoun is "m">>主人<<else>>夫人<</if>>想到了一个你完全可以胜任的工作。"
+		<br>
+		在狗窝旁边，<<he>>突然把你推倒在地。"布鲁特斯!"<<He>>呼唤道。你听到一阵沉重的跳跃声。有鼻子嗅起了你的屁股。"嘿,布鲁特斯!我们给你带来了一位新朋友!"
+		<br><br>
+
+		<<link [[继续|Danube Garden Bitch]]>><<set $molestationstart to 1>><<pass 10>><</link>>
+		<br>
+	<<else>>
+		恼怒地叹息。"你这样是做不成任何工作的，对吧?"
+		<br><br>
+		<span class="green">你的四肢自由了。</span>
+		<br>
+		<<unbind>>
+		"我不知道现在的年轻人怎么了，就像我刚才说的……"
+		<br><br>
+		<<link [[继续|Danube Garden]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	"布鲁特斯在看。"
+	<br><br>
+
+	你跪在其中一个树篱前开始除草。
+
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure)>>
+		<<rng>>
+		<<if $rng gte 81 and $tentacledisable is "f" and ($hallucinations gte 2 or $backgroundTraits.includes("plantlover"))>>
+			<<pass 2 hours>>
+			你工作了两个小时，但似乎没有什么进展。就好像你一拔除杂草，杂草就会很快长出来。你伸手想把一棵大灌木的根部拔下来，但你的手被卡住了。你试着用另一只手松开它，但那只手也卡住了。绿色的触手在某种力量的作用下冒了出来。
+			<br><br>
+
+			<<link [[反抗|Danube Tentacles]]>><<set $molestationstart to 1>><</link>>
+			<br>
+			<<link [[安抚|Danube Garden Soothe]]>><</link>><<tendingdifficulty 1 1200>>
+			<br>
+
+		<<elseif $rng gte 61>> <!-- Modified for BEast People -->
+			<<pass 2 hours>>
+			<<if $monster is 1 or $bestialitydisable is "f">>
+				<!-- Jimmy: Using per NPC instead of cloning, to ensure orderness of event history. -->
+				<<saveNPC 0 "danube_garden_0">>
+				<<endevent>>
+				<<loadNPC 1 "danube_garden_0">>
+				<<clearNPC "danube_garden_0">>
+				<<beastNEWinit 1 dog>>
+				你工作了两个小时，但似乎没有什么进展。就好像你一拔除杂草，杂草就会很快长出来。当你伸手去拔掉一棵大灌木的根部时，有东西戳了戳你的<<bottom>>。你回头看，但<<bhe>>已经骑上了你。
+				<br><br>
+
+				<<link [[继续|Danube Dog]]>><<set $molestationstart to 1>><</link>>
+				<br>
+			<<else>>
+				<<pass 2 hours>>
+				你工作了两个小时，但似乎没有什么进展。就好像你一拔除杂草，杂草就会很快长出来。你注意到旁边有影子在移动，看到一个<<person2>><<person>>在窗口看着你。这很令人毛骨悚然。
+				<<gstress>><<stress 6>>
+				<br><br>
+
+				<<pass 2 hours>>
+				在接下来的两个小时里，你似乎没什么进展。就好像你一拔除杂草，杂草就会很快长出来。不管怎样，<<person1>><<person>>似乎很满意，递给了你<<moneyGain 100>>。
+				<<physique 6>>
+				<br><br>
+
+				<<link [[继续|Danube Street]]>><<endevent>><</link>>
+				<br>
+			<</if>>
+
+		<<else>>
+
+			<<pass 2 hours>>
+			你工作了两个小时，但似乎没有什么进展。就好像你一拔除杂草，杂草就会很快长出来。你注意到旁边有影子在移动，看到一个<<person2>><<person>>在窗口看着你。这很令人毛骨悚然。
+			<<gstress>><<stress 6>>
+			<br><br>
+
+			<<pass 2 hours>>
+			在接下来的两个小时里，你似乎没什么进展。就好像你一拔除杂草，杂草就会很快长出来。不管怎样，<<person1>><<person>>似乎很满意，递给了你<<moneyGain 100>>。
+			<<physique 6>>
+			<br><br>
+
+			<<link [[继续|Danube Street]]>><<endevent>><</link>>
+			<br>
+
+		<</if>>
+
+	<<else>>
+
+		<<pass 4 hours>>
+		你工作了四个小时，但似乎没有什么进展。就好像你一拔除杂草，杂草就会很快长出来。不管怎样，<<person>>似乎很满意，递给了你<<moneyGain 100>>。
+		<<physique 6>>
+		<br><br>
+
+		<<link [[继续|Danube Street]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Danube Garden Soothe
+<<effects>>
+
+你哼着温柔的曲子。
+<<if $tendingSuccess>>
+
+	<<pass 2 hours>>
+
+	<span class="green">触手松开了，</span>你挣脱了。
+	<br><br>
+
+	你继续你的工作。现在你要小心了，远离茂密的树叶。又过了两个小时，那个<<person>>似乎很满意，递给了你<<moneyGain 100>>。
+	<<physique 6>>
+	<br><br>
+	<<link [[继续|Danube Street]]>><<endevent>><</link>>
+	<br>
+
+<<else>>
+	<<endevent>>
+	<span class="red">没有用。</span>触手还是紧紧抓着你。
+	<br><br>
+
+	<<link [[继续|Danube Tentacles]]>><<set $molestationstart to 1>><</link>>
+	<br>
+
+<</if>>
+
+:: Danube Tentacles
+<<set $outside to 1>><<set $location to "town">>
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $combat to 1>>
+	<<set $enemytype to "tentacles">>
+	<<molested>>
+	<<controlloss>>
+
+	<<tentaclestart 6 15 "root" "vine" true>>
+	<<set $tentacles[0].shaft to "leftarm">><<set $leftarm to "tentgrappled">><<set $lefttarget to "tentacles">>
+	<<set $tentacles[1].shaft to "rightarm">><<set $rightarm to "tentgrappled">><<set $righttarget to "tentacles">>
+
+<</if>>
+
+<<statetentacles>>
+
+
+<<effects>>
+<<effectstentacles>>
+<<tentacles>>
+<<actionstentacles>>
+
+<<if $tentacles.active lte ($tentacles.max / 2)>>
+	<span id="next"><<link [[继续|Danube Tentacles Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Danube Tentacles]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Danube Tentacles Finish
+<<effects>>
+
+触根对你失去了兴趣，然后消失在了土壤之中。<<tearful>>你从周围的植物和藤蔓中解脱出来。
+
+<<clothesontowel>>
+
+<<pass 2 hours>>
+
+你继续你的工作。现在你要小心了，远离茂密的树叶。又过了两个小时，那个<<person>>似乎很满意，递给了你<<moneyGain 100>>。
+
+<br><br>
+<<endcombat>>
+
+<<physique 6>>
+<br><br>
+
+<<link [[继续|Danube Street]]>><</link>>
+<br>
+
+:: Danube Dog
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $NPCList[0].stance to "top">>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Danube Dog Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Danube Dog]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Danube Dog Finish
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<beastejaculation>>
+
+	满足后，<<beasttype>>返回了狗窝。
+
+	<br><br>
+
+	<<clothesontowel>>
+	<<pass 2 hours>>
+
+	<<tearful>>你继续工作。现在要小心了，你要时刻把狗窝放在你的视野里。又过了两个小时，<<person2>><<person>>似乎满意了，递给了你<<moneyGain 100>>。
+
+	<br><br>
+
+	<<endcombat>>
+	<<physique 6>>
+	<br><br>
+
+	<<link [[继续|Danube Street]]>><</link>>
+	<br>
+
+<<else>>
+
+	<<beasttype>>逃回了狗窝。
+
+	<br><br>
+
+	<<clothesontowel>>
+	<<pass 2 hours>>
+
+	<<tearful>>你继续工作。现在要小心了，你要时刻把狗窝放在你的视野里。又过了两个小时，<<person2>><<person>>似乎满意了，递给了你<<moneyGain 100>>。
+
+	<br><br>
+
+	<<endcombat>>
+	<<physique 6>>
+	<br><br>
+
+	<<link [[继续|Danube Street]]>><</link>>
+	<br>
+
+<</if>>
+
+:: Danube Garden Bitch
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $phase to 3>>
+<</if>>
+
+<<effects>>
+<<if $phase lt 0>>
+	<<person2>><<person>>和<<person3>><<person>>站在你的上方，俯视着这个奇景。
+	<<set $phase += 1>> /* in all other cases, $phase decreases by one. Adding 1 here cancels out the following -1. */
+<<elseif $orgasmdown gte 1>>
+	<<if $phase % 2>>
+		<<if $NPCList[0].gender is "m" and $vaginastate is "penetrated">>“继续，布鲁特斯，”<<person2>><<person>>说，“她在尖叫着要你的精液呢!"
+		<<elseif $NPCList[0].gender is "m" and ($vaginastate is "imminent" or $vaginastate is "entrance")>>"现在，布鲁特斯!"<<person2>><<person>>说，"操她!狠狠操那个荡妇!"
+		<<elseif $penisstate is "penetrated">>"好女孩，布鲁特斯，"<<person2>><<person>>说，"你还挤了那头母牛的奶!"
+		<<elseif $NPCList[0].gender is "m" and $penisstate is "otheranus">>"坏孩子，布鲁特斯，"<<person2>><<person>>说，"你应该是头种马!"
+		<<elseif $penisstate is "othermouth" or $penisstate is "othermouthimminent" or $penisstate is "othermouthentrance">>"布鲁特斯!"<<person3>><<person>>说，"别舔了!那不是食物!"
+		<<else>>"好<<if $NPCList[0].gender is "m">>男孩<<else>>女孩<</if>>，布鲁特斯，"<<person3>><<person>>说，"你让你的母狗尖叫了!"
+		<</if>>
+	<<else>>
+		"你是对的，<<person3>><<Master>>。看，这个<<bitch>>正在玩它呢!"
+		<br>
+		<<if $fame.bestiality gte 400>>
+			"的确，"<<he>>说道。"我认出了<<phim>>。<<pShes>>是个有名的‘动物爱好者’。"
+		<<else>>
+			"连我也没想到<<phim>>会这么喜欢。"
+		<</if>>
+	<</if>>
+	<br>
+	你觉得很丢脸。
+	<<combattrauma 3>><<famebestiality 10>>
+<<elseif ($vaginastate is "imminent" or $anusstate is "imminent")>>
+	<<if $phase % 2>>“对，布鲁特斯”，<<person2>><<person>>说，“把它放进去。”<<else>>“继续，布鲁特斯。用力推。“<</if>>
+<<elseif ($penisstate is "othermouthentrance" or $penisstate is "othermouthimminent")>>
+	<<if $phase % 2>>
+		"别担心，孩子，"<<person3>><<person>>说道。"布鲁特斯不咬人!"
+		<br>
+		"但是<<if $pronoun is "m">>m'Lord',<<else>>m'Lady<</if>>，那和......的那次呢？"
+		<br>
+		"嘘! !"
+	<<else>>
+		"这很勇敢，"<<person2>><<person>>说道。"把它放在那里。长着那么多牙齿。"
+	<</if>>
+<<elseif ($vaginastate is "penetrated" or $anusstate is "penetrated")>>
+	<<if $phase % 2>>“没错，布鲁图斯，”<<person2>><<person>>说，"快和你的小婊子<<if $pregnancyspeechdisable is "f">>交配<<else>>做爱<</if>>."<<else>>"再用力一点儿，布鲁图斯! 让<<phim>>大声尖叫吧！"<</if>>
+<<elseif $penisstate is "penetrated">>
+	<<if $phase % 2>>“没错，布鲁图斯，”<<person2>><<person>>说，"快骑你的母狗！"<<else>>"好女孩！让<<phim>>尖叫吧！"<</if>>
+<<elseif $penisstate is "otheranus">>
+	<<if $NPCList[0].gender is "m">>
+		<<if $phase % 2 is 0>>
+			"好吧，那……和我想的不太一样。"
+		<<else>>
+			"小子！那是虐待动物！"
+			<br>
+			"没关系，"<<person3>><<person>>说道。"布鲁特斯似乎很喜欢。"
+		<</if>>
+	<<else>>
+		<<if $phase % 2>>
+			"看看布鲁特斯的脸!我不认为她会想到那个洞!"
+		<<else>>
+			"打错洞了，小子。"
+			<br>
+			"没关系，"<<person3>><<person>>耸耸肩。"看起来……布鲁特斯似乎很喜欢。"
+		<</if>>
+	<</if>>
+<<elseif $penisstate is "othermouth">>
+	<<if $phase % 2>>
+		"有些东西不是每天都能看到的。"
+	<<else>>
+		"太好了，"<<person2>><<person>>说道。"他在给狗喂骨头!"
+		<br>
+		<<person3>><<person>>翻了个白眼。
+	<</if>>
+<<elseif $mouthstate is "othervagina">>
+	<<if $phase % 2>>
+		"不，布鲁特斯，"<<person2>><<person>>说道。"停下，这样太——"
+		<br>
+		"离开它！"<<person3>><<person>>呵斥道。"我们在给<<phim>>钱，不是吗？我想看看这个。"
+	<<else>>
+		"狗的小穴尝起来如何啊？"<<person2>><<person>>嘲讽道。"还想自作聪明地浪费我的时间吗？哈？"
+		<br>
+		<<person3>><<person>>翻着<<his>>的眼睛。"<<pShe>>现在还不能完全回答。"
+	<</if>>
+<<elseif $mouthstate is "penetrated">>
+	<<if $phase % 2>>
+		"不，布鲁特斯，"<<person2>><<person>>说道。"停下，这样太——"
+		<br>
+		"离开它！"<<person3>><<person>>呵斥道。"我们在给<<phim>>钱，不是吗？我想看看这个。"
+	<<else>>
+		"含着那一满嘴<<beasttype>>的肉棒时，还觉得自己很机智吗"那个<<person2>><<person>>嘲笑道.
+		<br>
+		这<<person3>><<person>>嘻笑道。"听着！我认为<<pshes>>正在尽力回答。"
+	<</if>>
+<<else>>
+	<<person2>><<person>>和<<person3>><<person>>站在你的上方，俯视着这个奇景。
+	<<set $phase += 1>> /* in all other cases, $phase decreases by one. Adding 1 here cancels out the following -1. */
+<</if>>
+<<set $phase -= 1>>
+
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Danube Garden Bitch Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Danube Garden Bitch]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Danube Garden Bitch Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<beastejaculation>>
+
+	满意了，<<beasttype>>打了个哈欠，回到了它的狗窝里。
+	<br><br>
+
+	这<<person2>><<person>>帮你站了起来而且<span class="green">你感觉你的四肢获得了自由。</span>
+	<<unbind>>
+	<br>
+
+	<<clotheson>>
+
+	一个<<moneyGain 240>>被压在你的手中。
+	<br>
+	"布鲁特斯需要那个。<<moneyGainDisplay 50>>是一个婊子的价格，现在我们扯平了。给我滚出去。"
+	<br><br>
+
+	你被推到街上，门在后面砰的一声关上。<<tearful>>你收拾好自己。
+	<br><br>
+
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><<pass 10>><<set $eventskip to 1>><</link>>
+
+<<else>>
+
+	这只<<beasttype>>呜咽着逃回它的狗窝。
+	<br><br>
+
+	<<clotheson>>
+
+	<<person2>><<person>>把你拖到你的脚下。"看来你根本就没有任何好处。离开这里吧。你造成的麻烦一分钱也拿不到。"
+	<br><br>
+
+	你被推到街上，仍然被绑着。<<tearful>>你振作起来。
+	<br><br>
+
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><<set $eventskip to 1>><<pass 10>><</link>>
+<</if>>
+
+:: Danube Doll
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+<<He>>带领你上楼到<<his>>的卧室，那里有一张桌子在等你。
+各种各样的娃娃和泰迪熊环抱着桌子，坐着，好像在参加活动，上面放着一个玩具茶具。<<He>>坐下来，示意你也坐下来。
+<br><br>
+
+你坐在<<him>>的对面，在一个缺少一只眼睛的娃娃和一只灰熊之间。
+"女士们，先生们，"<<he>>说，向聚集在一起的玩具们讲话。"让我来介绍一下我的国外朋友。"
+<<He>>指着你。"请让<<phim>>感到受欢迎。"<<He>>拿起空茶壶，开始模拟将茶水倒入茶杯。
+<br><br>
+
+这种情况持续了一段时间。
+那个<<person>>讲述了一些关于冒险和阴谋的幻想故事，并偶尔对<<his>>的某个玩具做出回应，就跟它们聊天似地。
+你没有说太多，但<<he>>似乎很满足。
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure)>>
+
+	<<pass 20>>后<<he>>给了你一个狡猾的眼神。
+	"我有没有说过，在我朋友的家乡，他们穿着内裤喝茶？" 你不喜欢这种情况。
+	"<<pShe>>很有礼貌，但<<pshe>>穿得少会更舒服。你应该脱掉衣服。"
+	<br><br>
+
+	<<if $worn.under_lower.type.includes("naked") and !playerChastity()>>
+		<<if $exhibitionism gte 75>>
+			你对自己没有穿内衣感到很自责。暴露自己的想法让你兴奋。
+			<br><br>
+
+			<<link [[脱光衣服|Danube Doll Strip]]>><<set $phase to 1>><</link>><<exhibitionist5>>
+			<br>
+		<<else>>
+			你对自己没有穿内衣感到很自责。你不可能脱光衣服。
+			<br><br>
+		<</if>>
+
+	<<elseif $worn.under_lower.type.includes("naked") and playerChastity()>>
+		<<if $exhibitionism gte 75>>
+			你能清楚的感知到正在穿戴着的$worn.genitals.cn_name_cap，所以你一想到要脱光衣服，就感到十分兴奋。
+			<br><br>
+
+			<<link [[脱光衣服|Danube Doll Strip]]>><<set $phase to 2>><</link>><<exhibitionist5>>
+			<br>
+		<<else>>
+			你对你的$worn.genitals.cn_name_cap有自我意识。你不可能脱到这个程度。
+			<br><br>
+		<</if>>
+
+	<<elseif $player.gender_appearance is "f">>
+		<<if $exhibitionism gte 55>>
+			你对你的<<breasts>>有着自知之明。一想到自己被看光了你就兴奋不已。
+			<br><br>
+
+			<<link [[脱|Danube Doll Strip]]>><<set $phase to 3>><</link>><<exhibitionist4>>
+			<br>
+		<<else>>
+			你对你的<<breasts>>有着自知之明。绝不能展露自己的身体。
+			<br><br>
+		<</if>>
+
+	<<elseif $player.breastsize gte 3>>
+		<<if $exhibitionism gte 55>>
+			你对你的<<breasts>>有着自知之明。一想到自己被看光了你就兴奋不已。
+			<br><br>
+
+			<<link [[脱|Danube Doll Strip]]>><<set $phase to 4>><</link>><<exhibitionist4>>
+			<br>
+		<<else>>
+			你对你的<<breasts>>有着自知之明。绝不能展露自己的身体。
+			<br><br>
+		<</if>>
+	<<else>>
+		<<if $exhibitionism gte 15>>
+			剥离的想法让你兴奋不已，而你仍然会有你的$worn.under_lower.cn_name_cap。
+			<br><br>
+
+			<<link [[脱|Danube Doll Strip]]>><<set $phase to 5>><</link>><<exhibitionist2>>
+			<br>
+		<<else>>
+			你不可能做得出如此羞耻的事。
+			<br><br>
+		<</if>>
+	<</if>>
+
+	<<link [[拒绝|Danube Doll Refuse]]>><</link>>
+	<br>
+
+<<else>>
+
+	<<pass 40>>40分钟后，<<he>>站起身。"不好意思，我的朋友在别处等我有事。"
+	你跟着<<him>>回到了前门，<<he>>给了你<<moneyGain 25>>之后便向你告别。
+	<br><br>
+
+	<<link [[继续|Danube Street]]>><<endevent>><</link>>
+	<br>
+
+<</if>>
+
+:: Danube Doll Refuse
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+<<if $rng gte 81>>
+
+	"我坚持，"<<he>>说，猛地跨过桌子，抓住你的<<outfit>>。
+	<br><br>
+
+	<<link [[继续|Danube Doll Molestation]]>><<set $molestationstart to 1>><</link>>
+	<br>
+
+<<else>>
+
+	"正如我所说，<<pshe>>永远是那么有礼貌，"<<he>>说，但似乎对你的拒绝有点不高兴。
+	<br><br>
+
+	<<pass 20>>20分钟后，<<he>>站起身。"不好意思，我的朋友还有其他事要做。"
+	你跟着<<him>>回到了前门，<<he>>给了你<<moneyGain 25>>之后便向你告别。
+	<br><br>
+
+	<<link [[继续|Danube Street]]>><<endevent>><</link>>
+	<br>
+
+<</if>>
+
+:: Danube Doll Strip
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+<<fameexhibitionism 1>>
+
+<<if $phase is 1>>
+
+	<<flaunting>>你<<nervously>>脱下你的<<outfit>>。
+	当您的<<genitals_are>>暴露出来时，那<<person>>倒吸了一口冷气。
+	一旦脱光衣服，你就坐回桌子旁。你的裸体影响了<<his>>的行为，<<he>>无法将<<his>>的目光从你身上移开。
+	<<He>>找借口穿过房间，以便<<he>>能从其他角度看你，并偷偷地看你的<<undies>>。
+	<<exhibitionism5>>
+
+<<elseif $phase is 2>>
+
+	<<flaunting>>你<<nervously>>脱下你的<<outfit>>。
+	当你的$worn.genitals.cn_name_cap暴露出来时，那个<<person>>倒吸了一口凉气。 "好奇葩的内衣！"<<he>>几乎是惊呼出来。
+	一旦脱光衣服，你就坐回桌子旁。你的裸体影响了<<his>>的行为，<<he>>无法将<<his>>的目光从你身上移开。
+	<<He>>找借口穿过房间，以便<<he>>能从其他角度看你，并偷偷地看你的<<undies>>。
+	<<exhibitionism5>>
+
+<<elseif $phase is 3>>
+
+	<<if $player.gender is "m">>
+		你<<nervously>>脱下你的<<outfit>>，你的女性化外表使你异常自觉。
+		一脱掉你的$worn.under_lower.cn_name_cap，你就立即坐回了桌子旁。
+		你的暴露影响了<<his>>的行为，<<he>>变得无法从你身上移开视线。
+		<<He>>找借口穿过房间，以便<<he>>能从其他角度看你，并偷偷地看你的<<undies>>。
+		<<exhibitionism4>>
+	<<else>>
+		你<<nervously>>脱下你的<<outfit>>。
+		一脱掉你的$worn.under_lower.cn_name_cap，你就立即坐回了桌子旁。
+		你的暴露影响了<<his>>的行为，<<he>>变得无法从你身上移开视线。
+		<<He>>找借口穿过房间，以便<<he>>能从其他角度看你，并偷偷地看你的<<undies>>。
+		<<exhibitionism4>>
+	<</if>>
+
+<<elseif $phase is 4>>
+
+	你<<nervously>>脱下你的<<outfit>>。
+	当你的<<breasts>><<if $player.breastsize gte 2>>猛然蹦出<<else>>暴露出来<</if>>，那个<<person>>倒吸了一口凉气。
+	"你是个女孩！，<<he>>感叹道。你觉得你的脸变红了。
+	一脱掉你的$worn.under_lower.cn_name_cap，你就立即坐回了桌子旁。
+	你的暴露影响了<<his>>的行为，<<he>>变得无法从你身上移开视线。
+	<<He>>找借口穿过房间，以便<<he>>能从其他角度看你，并偷偷地看你的<<undies>>。
+	<<exhibitionism4>>
+
+<<elseif $phase is 5>>
+
+	你<<nervously>>脱下你的<<outfit>>。
+	一脱掉你的$worn.under_lower.cn_name_cap，你就立即坐回了桌子旁。
+	你的暴露影响了<<his>>的行为，<<he>>变得无法从你身上移开视线。
+	<<He>>找借口穿过房间，以便<<he>>能从其他角度看你，并偷偷地看你的<<undies>>。
+	<<exhibitionism2>>
+
+<</if>>
+
+<<pass 20>>20分钟后，<<he>>站起身。"不好意思，我的朋友还有其他事要做。"
+你跟着<<him>>回到了前门，<<he>>给了你<<moneyGain 50>>之后便向你告别。
+<br><br>
+
+<<clotheson>>
+
+<<link [[继续|Danube Street]]>><<endevent>><</link>>
+<br>
+
+:: Danube Doll Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>><<npcstrip>><<npcidlegenitals>><<set $enemyanger += 40>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($worn.upper.type.includes("naked") and $worn.lower.type.includes("naked"))>>
+	<span id="next"><<link [[继续|Danube Doll Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Danube Doll Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Danube Doll Molestation Finish
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<if $worn.lower.type.includes("naked") and $worn.upper.type.includes("naked")>>
+
+	那个<<person>>站在后面窥视着你。<<covered>>"这样更好了，"<<he>>一边说着一边坐回原位。你无法就这样离开，只好乖乖照做。
+	<br><br>
+
+	你的暴露影响了<<his>>的行为，<<he>>变得无法从你身上移开视线。<<his>>找借口穿过房间，以便<<He>>能从其他角度看你，<<he>>并偷偷地看你的<<undies>>。
+	<br><br>
+
+	<<pass 20>>20分钟后，<<he>>站了起来。"不好意思，我的朋友还有其他事要做。"你跟着<<him>>回到前门，<<he>>给了你<<moneyGain 25>>，然后向你道别。
+	<br><br>
+
+	<<clothesontowel>>
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><</link>>
+	<br>
+
+<<elseif $enemyarousal gte $enemyarousalmax>>
+
+	<<ejaculation>>
+	<<He>>满脸愁容。"对不起，"<<he>>说道。"我是一个如此粗鲁的主人。给你。"<<He>>递给你<<moneyGain 25>>。<<tearful>>你离开了大楼。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><</link>>
+	<br>
+
+<<elseif $enemyhealth lte 0>>
+
+	<<He>>在痛苦中倒下，开始尖叫求救。<<tearful>>你从大楼里跑了出来。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><</link>>
+	<br>
+
+<</if>>
+
+:: Danube Tutor
+
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+<<set _subject to ["science", "maths", "English", "history"][$rng1]>>
+你进入休息室。<<person2>><<person>>简短地在<<print _subject.replace("science","科学").replace("maths","数学").replace("English","英语").replace("history","历史")>>上询问了你几个问题。
+<<switch $rng1>>
+	<<case 0>>
+		<<if $sciencetrait lte 0>>
+			你不明白这些问题。你微笑着看着<<he>>把那些听起来不像是英语的词都说出来。你无法回答<<he>>问的任何问题。
+			<br><br>
+			<<He>>摇了摇头。"还不够..."<<he>>说道。"这是修订版，可以帮助<<person1>><<him>>集中注意力。
+			<<He>>光是向你解释事情就可能学到一些东西。"
+			<br><br>
+			<<person2>><<He>>交给你<<moneyGain 20>>。
+			<<set $phase to 0>>
+		<<elseif $sciencetrait lte 1>>
+			<<His>>的问题很棘手，你很难回答许多问题。
+			在一两分钟内，<<he>>开始教你有关的真相。
+			<<print either(
+				"政府的化学污染","水中的氟化物",顺势疗法",
+				"范艾伦带和登月骗局","疫苗有多么的'安全'","水中的化学物质"
+			)>>
+			你饶有兴趣地听着。
+			<br><br>
+			"当然，你的学校永远不会告诉你这些东西，"<<he>>说，递给你<<moneyGain 50>>。"继续吧。通过。"
+			<<set $phase to 1>>
+		<<elseif $sciencetrait lte 2>>
+			你能够回答所有<<his>>的问题，尽管有些问题很棘手。
+			<<He>>热情地向你介绍了一些<<his>>钟爱的理论。它们大多听起来像伪科学。
+			<br><br>
+			"好吧，"<<he>>说，递给你<<moneyGain 120>>。"你知道你在说什么。"
+			<<set $phase to 2>>
+		<<else>>
+			<<His>>的问题是微不足道的，你轻松地回答了他们。
+			在接下来的一两分钟里，你毫不费力地拆穿了几个<<his>>的伪科学 "理论 "和错误观念。
+			<br><br>
+			"哇，"<<he>>说，递给你全额<<moneyGain 150>>的钱。"你真是与众不同。"
+			<<set $phase to 3>>
+		<</if>>
+	<<case 1>>
+		<<if $mathstrait lte 0>>
+			你几乎不理解问题，也不知道如何计算答案。
+			<br><br>
+			<<He>>摇了摇头。"还不够..."<<he>>说道。
+			"我想和你这样的人一起工作会给<<person1>><<him>>带来信心。<<He>>可以在向你解释事情时学到一些东西。"
+			<br><br>
+			<<person2>><<He>>交给你<<moneyGain 20>>。
+			<<set $phase to 0>>
+		<<elseif $mathstrait lte 1>>
+			有几个<<his>>的问题是直截了当的，但<<he>>在统计学和代数方面让你输了。
+			<br><br>
+			"你可以帮助解决基本问题，"<<he>>说，递给你<<moneyGain 50>>。"那就去吧。通过那里。"
+			<<set $phase to 1>>
+		<<elseif $mathstrait lte 2>>
+			你能够回答<<his>>的大部分问题，尽管有几个问题你需要纸张。
+			<br><br>
+			"好吧，"<<he>>说，递给你<<moneyGain 120>>。"你知道你在说什么。"
+			<<set $phase to 2>>
+		<<else>>
+			<<His>>的问题是微不足道的，你轻松地回答了他们。在接下来的一两分钟里，你毫不费力地解释了几个数学概念。
+			<br><br>
+			"哇哦"，<<he>>说道，递给你整整<<moneyGain 150>>，"继续像那样教我的<<person1>><<daughter>>."
+			<<set $phase to 3>>
+		<</if>>
+	<<case 2>>
+		<<if $englishtrait lte 0>>
+			首先<<he>>问你那些用不押韵的诗歌写成的旧剧。
+			当你解释说你对旧书了解不多，<<he>>问起你的 "祖母"。你开始向<<him>>讲述你的祖母。
+			<br><br>
+			<<He>>当着你的面笑。<<if $rapestat gte 5>>很粗鲁，但至少<<he>>没有试图强奸你。<<else>>太粗鲁了。<</if>>
+			<br><br>
+			<<He>>摇了摇头。"向你解释基础知识将是很好的英语练习。"
+			<br><br>
+			<<person2>><<He>>交给你<<moneyGain 20>>。
+			<<set $phase to 0>>
+		<<elseif $englishtrait lte 1>>
+			<<his>>前面的几个问题还可以应对，但<<he>>很快就用中世纪文学和高级语法把你甩开了。
+			<br><br>
+			"你可以帮助解决基本问题，"<<he>>说，递给你<<moneyGain 50>>。"那就去吧。通过那里。"
+			<<set $phase to 1>>
+		<<elseif $englishtrait lte 2>>
+			你能够回答<<his>>的大部分问题，尽管很明显<<he>>比你了解更多的现代文学。
+			<br><br>
+			"不错，"<<he>>说道，递给你<<moneyGain 120>>。"你说的条理清晰。去做家教吧。"
+			<<set $phase to 2>>
+		<<else>>
+			<<His>>的问题是微不足道的，你轻松地回答了他们。
+			在接下来的一两分钟里、
+			关于语法如何随时间变化的讨论变成了关于语法应该是现代和流动的还是固定和传统的简短辩论。
+			<br><br>
+			"非常有趣，"<<he>>说道，递给你满满的<<moneyGain 150>>。"也很有说服力。请教给我<<person1>><<daughter>>一些这种口才。"
+			<<set $phase to 3>>
+		<</if>>
+	<<case 3>>
+		<<if $historytrait lte 0>>
+			你微笑着看着<<he>>列举各种日期、事件和历史上的 "重要 "事件。其中一些听起来很熟悉，但你无法回答任何问题。
+			<br><br>
+			<<He>>摇了摇头。"你都几乎不知道上周发生过什么。"<<He>>耸耸肩。
+			"复述并订正有助于<<person1>><<him>>集中注意力。光是向你解释基础知识就足够<<He>>学到东西了。"
+			<br><br>
+			<<person2>><<He>>交给你<<moneyGain 20>>。
+			<<set $phase to 0>>
+		<<elseif $historytrait lte 1>>
+			<<His>>的问题相当棘手，你很难回答许多问题。
+			<br><br>
+			"你可以帮助解决基本问题，"<<he>>说，递给你<<moneyGain 50>>。"那就去吧。通过那里。"
+			<<set $phase to 1>>
+		<<elseif $historytrait lte 2>>
+			你能够回答<<his>>的所有问题，尽管很明显，<<he>>对某些时间段的了解更为详细。
+			<br><br>
+			"不错，"<<he>>说道，递给你<<moneyGain 120>>。"你说的条理清晰。去做家教吧。"
+			<<set $phase to 2>>
+		<<else>>
+			<<His>>的问题小菜一碟，你轻松地回答了它们。你继续告诉了<<him>>一些<<he>>从不知道的关于<<his>>自己街道的历史事实。
+			<br><br>
+			"了不起，"<<he>>说道，递给你满满的<<moneyGain 150>>。"你是个很好的学者。请继续吧。"
+			<<set $phase to 3>>
+		<</if>>
+<</switch>>
+<br><br>
+你花了一个小时的时间向这<<person1>><<person>>传授<<print _subject.replace("science", "科学").replace("maths", "数学").replace("English", "英语").replace("history", "历史")>>知识。
+<<if $phase is 0>>
+	尽你所能。<<He>>比你高级得多，他花了大部分时间解释基础知识。
+	这<<person>>看起来有些恼火，因为<<his>>的时间被浪费在这上面了。然而当你离开时，这<<person2>><<person>>还是感谢了你。
+<<elseif $phase is 1>>
+	尽力而为。这主要是作为小组学习，因为<<person>>的水平和你差不多。
+	<br><br>
+	当你离开时，<<person2>><<person>>像你表示感谢。
+<<elseif $phase is 2>>
+	你竭尽全力，那个<<person>>在这个领域上差你非常多，有时你得不得不全力为他解释那些他完全无法理解的问题。
+	<br><br>
+	在你离开时，这<<person2>><<person>>微笑着感谢你。
+<<elseif $phase is 3>>
+	详细的。你用简洁的术语来解释这个议题，让<<he>>想通了一些困扰<<he>>很久的问题。
+	<br><br>
+	在你离开时，这<<person2>><<person>>微笑着感谢你。"干得好！欢迎随时再来。"
+<</if>>
+<br><br>
+<<link [[离开 (1:00)|Danube Street]]>><<pass 60>><<endevent>><</link>>
+<br>
+
+:: Danube Catperson Intro
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+那<<person>>微笑道： "你来的真巧！请进。"<<He>>示意你进屋。里面一片狼藉，一股很奇怪的味道从里面传来。
+<br><br>
+
+<<He>>吹口哨，
+
+<<saveNPC 0 "danube_cat_owner">>
+<<endevent>>
+<<beastNEWinit 3 cat>>
+<<saveNPC 0 "danube_cat_0">><<saveNPC 1 "danube_cat_1">><<saveNPC 2 "danube_cat_2">>
+
+促使着三只<<beastsplural>>的到来。
+
+<<endevent>>
+<<loadNPC 0 "danube_cat_owner">>
+
+"这些都是我的宝贝，"<<person1>><<he>>呼噜道。"我需要去给它们拿一些东西。我会给出<<printmoney 3500>>，在我出去的时候，帮我照看一下这些小家伙。"<<He>>用鼻子拱了拱一个。"或许更多，如果它们喜欢你的话！"
+<br><br>
+
+<<link [[接受 (1:30)|Danube Catperson Accept]]>><</link>>
+<br>
+<<link [[拒绝|Danube Catperson Refuse]]>><</link>>
+<br>
+
+:: Danube Catperson Refuse
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+你拒绝了这<<persons>>的提议，让<<him>>去安慰<<his>>宠物。
+<br><br>
+
+<<clearNPC "danube_cat_owner">>
+<<clearNPC "danube_cat_0">>
+<<clearNPC "danube_cat_1">>
+<<clearNPC "danube_cat_2">>
+
+<<link [[继续|Danube Street]]>><<endevent>><</link>>
+<br>
+
+:: Danube Catperson Accept
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+"好极了！我会尽可能快的。"<<He>>过门的时候顿了一下。"不要担心如何喂养它们。它们确实需要喂养，但它们才刚享用了它们的<<if Time.dayState is "dawn">>早餐<<elseif Time.dayState is "day">>午餐<<else>>晚餐<</if>>。"
+<br><br>
+
+带着这些话，<<hes>>走了。
+<br><br>
+
+<<endevent>>
+<<loadNPC 0 "danube_cat_0">><<loadNPC 1 "danube_cat_1">><<person1>>
+
+<<if $monster is 1 or $bestialitydisable is "f">>
+	<<link [[继续|Danube Catperson Accept 2]]>><<set $danubecathappiness to 0>><</link>>
+	<br>
+<<else>>
+	<<link [[继续|Danube Catperson Safe]]>><</link>>
+	<br>
+<</if>>
+
+:: Danube Catperson Safe
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+这项工作很不顺利。这些<<beastsplural>>很胆小，整个一个半小时都在躲着你。
+
+<<endevent>>
+<<loadNPC 0 "danube_cat_owner">><<person1>>
+
+当<<person>>回来时，你松了一口气，如果只是为了结束你的无聊。
+<br><br>
+
+"你在哪里，我的宝贝们？"<<he>>叫道。没有回应。"奇怪了。他们通常都很善于交际。"
+<br><br>
+
+<<He>>把<<moneyGain 35>>放在一边，然后再去寻找<<his>>宠物。 你带着钱离开了。
+
+<<clearNPC "danube_cat_owner">>
+<<clearNPC "danube_cat_0">>
+<<clearNPC "danube_cat_1">>
+<<clearNPC "danube_cat_2">>
+
+<<link [[继续|Danube Street]]>><<endevent>><<pass 60>><</link>>
+<br>
+
+:: Danube Catperson Accept 2
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+工作开始得很慢。有你在身边，他们很胆怯，但你满足于让他们呆着。
+<br><br>
+
+大约半小时后，你听到厨房里传来一阵尖锐的哭声。
+你冲进去发现<<print ($NPCList[0].pronoun isnot $NPCList[1].pronoun and $monster ? "一只" : "两只")>><<beastsplural>>在储藏室里捣鼓。
+<br><br>
+
+<<if $monster is 1>>
+	"你，<<girl>>，"较大的<<beasttype 0>>咆哮道。<<bHe 0>>拿出一袋食物。"打开它。"
+<<else>>
+	较大的<<beasttype 0>>用爪子抓着一袋食物，咆哮着。
+<</if>>
+<br><br>
+
+你被告知不要喂它们，但它们看起来很饿。
+<br><br>
+
+<<if $deviancy gte 35>>
+	<<link [[满足另一种欲望|Danube Catperson Feed]]>><<set $phase to 3>><</link>><<deviant3>>
+	<br>
+<</if>>
+<<link [[告诉它们不可以|Danube Catperson Feed]]>><<set $phase to 2>><</link>><<difficulty 65>>
+<br>
+<<link [[给它们喂食|Danube Catperson Feed]]>><<set $phase to 1>><</link>><<dancedifficulty 1 300>>
+<br>
+
+:: Danube Catperson Feed
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+<<switch $phase>>
+	<<case 1>>
+		<<if $speech_attitude is "meek">>
+			"那好吧，"你说道。"如果这是你想要的。"
+		<<elseif $speech_attitude is "bratty">>
+			"只要能让你闭嘴就行，"你嘟哝道。
+		<<else>>
+			"好吧，"你说道。"我们给你们弄点吃的吧。"
+		<</if>>
+		你撕开袋子。你还没来得及倒，不耐烦的<<beasttype>>就扑过来了!
+		<br><br>
+
+		你看到它的到来,
+		<<if $danceSuccess>>
+			<span class="green">然后闪开。</span><<bHe>>错过了你，撞上了另一个<<person2>><<beasttype>>。你趁机把碗装满。<<stress -6>><<lstress>>
+			<br><br>
+
+			食物掉落的声音打断了<<beastsplural>>之间的战斗。它们奔向食物，虽然不是没有发出一两声嘶嘶声。
+			<br><br>
+
+			吃完饭，<<beastsplural>>又回去闲逛了。你也一样。
+		<<else>>
+			<span class="red">但是<<bhes>>太快了。</span><<bHe>>撞上了你。袋子从你手中滑落，食物洒得到处都是。<<pain 15>><<stress 5>><<ggpain>><<gstress>>
+			<br><br>
+
+			<<beastsplural>>帮助自己解决了这些麻烦。
+			<<if $speech_attitude is "meek">>
+				"对不起，我来慢了，"你咕哝着说道。
+			<<elseif $speech_attitude is "bratty">>
+				"混蛋，"你抱怨道，向<<bhis>>竖起中指。
+			<<else>>
+				"没有耐心的小东西，"你抱怨道。
+			<</if>>
+			<br><br>
+
+			你尽你所能地清理，而那些<<beastsplural>>狼吞虎咽。你希望老板不会生气。
+		<</if>>
+		<br><br>
+
+		<<link [[继续|Danube Catperson Sofa]]>><<endevent>><<pass 60>><</link>>
+		<br>
+	<<case 2>>
+		你对那两个人说不。他们凝视了几秒钟，
+		<<if random(1, 100) gte 36>>
+			<span class="green">在溜出食品储藏室之前。</span>
+			<<if $monster is 1>>
+				"主人应该有，"<<person2>><<beasttype>>在<<bhe>>经过时喃喃自语。
+			<</if>>
+			<br><br>
+
+			安抚了<<beastsplural>>后，你回到沙发上。
+			<br><br>
+
+			<<link [[继续|Danube Catperson Sofa]]>><<endevent>><<pass 60>><</link>>
+			<br>
+		<<else>>
+			<span class="red">然后发出嘶嘶声。</span>
+			<<if $monster is 1>>
+				"你不要告诉我们不行，"<<beasttype>>说道。
+			<</if>>
+			<<bHe>>扑向你，把你撞倒在地。
+			<br><br>
+
+			<<link [[继续|Danube Catperson Feed Sex]]>><<set $molestationstart to 1>><</link>>
+		<</if>>
+	<<case 3>>
+		你倒在地上，摆出一个暗示性的姿势。
+		<br><br>
+
+		"我不应该喂你，"你低声说道。"但是款待一下也无妨。"
+		<<deviancy3>>
+
+		<<beastsplural>>慢慢靠近，发出呼噜声。
+		<br><br>
+
+		<<link [[继续|Danube Catperson Feed Sex]]>><<set $sexstart to 1>><</link>>
+	<<default>>
+		你看着这两个家伙，不知道该怎么做，就回到你之前做的事情。它们没有停止吟唱，但你坚持你的冷漠，最后它们停了下来，和平回归。
+		<br><br>
+
+		<<link [[继续|Danube Catperson Sofa]]>><<endevent>><<pass 60>><</link>>
+		<br>
+<</switch>>
+<br>
+
+:: Danube Catperson Sofa
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+<<loadNPC 0 "danube_cat_2">>
+
+你扑通一声倒在沙发上。一个小时过去了。当你等待主人回来时，一个<<beasttype>>潜入你的周边。
+<br><br>
+
+你对<<bhim>>毫不在意，直到<<bhe>>慢慢靠近。伴随着嘶嘶声，<<bhe>>松开了<<bhis>>的爪子。<<stress 5>><<gstress>>
+<br><br>
+
+<<if $deviancy gte 15>>
+	<<link [[诱惑|Danube Catperson Claws Sex]]>><<set $sexstart to 1>><</link>><<deviant2>>
+	<br>
+<</if>>
+<<link [[安抚|Danube Catperson Claws]]>><<set $phase to 2>><</link>><<tendingdifficulty 1 300>>
+<br>
+<<link [[避开|Danube Catperson Claws]]>><<set $phase to 1>><</link>><<dancedifficulty 1 300>>
+<br>
+
+:: Danube Catperson Claws
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+<<if $phase is 1>>
+	你跳起来，
+	<<if $danceSuccess>>
+		<span class="green">快速避开了<<beasttype>>.</span><<stress -6>><<lstress>>
+		<br><br>
+
+		<<bHe>>蜷缩起来，坐在沙发上的空位上，对<<bhis>>的失败的攻击无动于衷。你找了另一个座位。
+	<<else>>
+		<span class="red">但是你不够快。</span><<bHis>>的爪子扎进你的皮肤。<<pain 3>><<stress 6>><<gpain>><<gstress>>
+		<br><br>
+
+		<<beasttype>>似乎很骄傲，<<bhimself>>
+		<<if $monster is 1>>
+			笑着走出房间。
+		<<else>>
+			匆匆离去。
+		<</if>>
+		你靠在座位上，护理着自己的伤口。
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Danube Catperson Payment]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	你向<<beasttype>>伸出手。你在接触之前突然停下来。
+	<<bHe>>小心地嗅了嗅你的手指，然后
+	<<if $tendingSuccess>>
+		<span class="green">舔了舔.</span><<stress -6>><<lstress>>
+	<<else>>
+		<span class="red">咬了你.</span><<pain 15>><<stress 6>><<ggpain>><<gstress>>
+	<</if>>
+	<br><br>
+
+	满意后，<<beasttype>>大步走开了。
+	<br><br>
+
+	<<link [[继续|Danube Catperson Payment]]>><<endevent>><</link>>
+<</if>>
+
+:: Danube Catperson Feed Sex
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<beastTrainGenerate>>
+<<elseif $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<beastCombatInit>>
+	<<beastTrainGenerate>>
+	<<if $NPCList[0].penis isnot "none">>
+		当<<beasttype 0>>骑上你时，你一直跪在地上。
+		<<set $position to "doggy">><<set $NPCList[0].stance to "top">>
+	<<else>>
+		<<beasttype 0>>将你翻转到背部朝上，并骑在你身上。
+		<<set $position to "missionary">><<set $NPCList[0].stance to "top">>
+	<</if>>
+<</if>>
+
+<br>
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Danube Catperson Feed Sex End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Danube Catperson Feed Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Danube Catperson Feed Sex End
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+<<if $enemyhealth lte 0>>
+	<<beastwound>>
+	<<if $combatTrain.length gt 0>>
+		<<beasttype>>吃痛退开，但另一个家伙正跃跃欲试。
+		<<combatTrainAdvance>>
+		<<set $danubecathappiness -= 1>>
+		<br><br>
+		<<link [[继续|Danube Catperson Feed Sex]]>><</link>>
+		<br>
+	<<else>>
+		<<beasttype>>吃痛退开，畏惧着。
+		<<combatTrainAdvance>>
+		<<set $danubecathappiness -= 1>>
+		<br><br>
+
+		<<link [[继续|Danube Catperson Feed Sex End]]>><<set $finish to 1>><</link>>
+		<br>
+	<</if>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+	<<if $combatTrain.length gt 0>>
+		心满意足后，<<beasttype>>离开了
+		<<combatTrainAdvance>>
+		而另一个人则轮到了<<bhis>>。
+		<<set $danubecathappiness += 1>>
+		<br><br>
+
+		<<link [[继续|Danube Catperson Feed Sex]]>><</link>>
+		<br>
+	<<else>>
+		心满意足之后，那只<<beasttype>>离开了你。
+		<<combatTrainAdvance>>
+		<<set $danubecathappiness += 1>>
+		<br><br>
+
+		<<link [[继续|Danube Catperson Feed Sex End]]>><<set $finish to 1>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<set _consensual to $consensual>>
+
+	<<if $enemywounded is 0 and $enemyejaculated gte 2>>
+		当他们爬出厨房时，这<<beasttype>>朝你踢出<<bhis>>的<<if $monster isnot 1>>后<</if>>腿。你被独自留在瓷砖上发抖。
+		<br><br>
+
+		<<tearful>>你挣扎着站了起来。
+	<<elseif $enemywounded is 1 and $enemyejaculated is 1>>
+		这<<beasttype>>在另一只身后做着掩护。<<bHe>>发出嘶嘶声，这对野兽撤退了，留下你一个人。
+		<br><br>
+
+		<<tearful>>你挣扎着站了起来。
+	<<elseif $enemywounded gte 2 and $enemyejaculated is 0>>
+		<<beastsplural>>发出嘶嘶声撤退，争先恐后地逃跑。
+		<br><br>
+
+		<<tearful>>你匆匆走出厨房。
+	<<else>>
+		<<beasttype>>看起来很生气。<<bHe>>向你徘徊，但被另一个人打了一巴掌。一场打斗爆发了。
+		<br><br>
+
+		<<tearful>>你趁他们分心的时候溜出厨房。
+	<</if>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<if _consensual is 1>>
+		<<link [[继续|Danube Catperson Sofa]]>><<pass 60>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Danube Catperson Flee]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Danube Catperson Claws Sex
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<beastCombatInit>>
+
+	你的手在胸前上下移动。<<beasttypes>>的爪子缩回。觉察到你的意图，<<bhe>>跳上沙发，骑上你。
+	<<deviancy2>>
+	<<if $NPCList[0].penis isnot "none">>
+		<<set $position to "doggy">><<set $NPCList[0].stance to "top">>
+	<<else>>
+		<<set $position to "missionary">><<set $NPCList[0].stance to "top">>
+	<</if>>
+<</if>>
+
+<br>
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Danube Catperson Claws Sex End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Danube Catperson Claws Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Danube Catperson Claws Sex End
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+
+	满意后，<<beasttype>>在你的腿边团了起来。
+	<<set $danubecathappiness += 1>>
+	<br><br>
+
+	<<tearful>>你坐回座位。
+<<elseif $enemyhealth lte 0>>
+	<<beasttype>>发出嘶嘶声后退。
+	<br><br>
+
+	<<tearful>>你瘫倒在沙发上。
+	<<set $danubecathappiness -= 1>>
+<<else>>
+	<<beasttype>>咆哮，但蜷缩在沙发上没有打架。
+	<br><br>
+
+	<<tearful>>你给自己找个座位。
+<</if>>
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Danube Catperson Payment]]>><</link>>
+<br>
+
+:: Danube Catperson Flee
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+你跑向门，但你的手指还没碰到门把手就停住了。你需要钱。
+<br><br>
+
+<<link [[待着(1:00)|Danube Catperson Sofa]]>><<pass 60>><</link>>
+<br>
+<<link [[离开|Danube Catperson Flee 2]]>><</link>>
+<br>
+
+:: Danube Catperson Flee 2
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+<<loadNPC 0 "danube_cat_owner">><<person1>>
+
+那<<person>>可以<<himself>>处理这个烂摊子。你把门打开，冲到外面。
+<br><br>
+
+<<clearNPC "danube_cat_owner">>
+<<clearNPC "danube_cat_0">>
+<<clearNPC "danube_cat_1">>
+<<clearNPC "danube_cat_2">>
+
+<<link [[离开|Danube Street]]>><<unset $danubecathappiness>><<endevent>><</link>>
+<br>
+
+:: Danube Catperson Payment
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+<<loadNPC 0 "danube_cat_owner">><<person1>>
+
+<<if $danubecathappiness isnot 0>>
+	<<set _catPay to (35 + ($danubecathappiness * 15))>>
+<</if>>
+
+你听到门外有声音。"我回来了!"这是<<person>>。<<His>>的宠物围着<<him>>，
+<<if $danubecathappiness gte 1>>
+	高兴地咕噜着。
+	<br><br>
+
+	"你交新朋友了吗?"<<he>>喃喃道。"你觉得<<pshe>>应该得到一点奖励，是吗?"
+	<br><br>
+
+	<<He>>递给你<<moneyGain _catPay>>。"额外一点，"当<<he>>领你出去时，<<he>>说道。"什么时候一定要回来。他们太喜欢你了!"
+<<elseif $danubecathappiness lte -1>>
+	嚎叫并嘶鸣着。
+	<br><br>
+
+	那<<person>>瞪着你。你还没来得及进来就被扔到外面了。
+	<br><br>
+
+	<<He>>将<<moneyGain _catPay>>扔到你的脚下，然后砰的一声关上了门。你门边听到了低沉的哭泣声。你拿了钱赶紧离开。
+<<else>>
+	不耐烦地叫嚷着。
+	<br><br>
+
+	"安静点，亲爱的。<<Mummy>>在家，"<<he>>喃喃着，跪下来照料这群小动物。
+	<br><br>
+
+	<<He>>把<<moneyGain 35>>放在一边，看都不看你一眼。你拿了钱就走。
+<</if>>
+<br><br>
+
+<<clearNPC "danube_cat_owner">>
+<<clearNPC "danube_cat_0">>
+<<clearNPC "danube_cat_1">>
+<<clearNPC "danube_cat_2">>
+
+<<link [[离开|Danube Street]]>><<unset $danubecathappiness>><<endevent>><</link>>
+<br>

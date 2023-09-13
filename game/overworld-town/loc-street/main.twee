@@ -1,0 +1,41 @@
+:: Passout street
+
+你把自己逼得太紧了。
+<br><br>
+<<if $worn.face.type.includes("blindfold") or $worn.face.type.includes("gag")>>
+	<<set $worn.face.type.push("broken")>>
+	<<faceruined>>
+<</if>>
+<<passout>>
+<<set $safestreet to 0>>
+<<set $dangerstreet to 0>>
+<<set $danger to random(1, 10000)>>
+<<if $danger gte (9900 - $allure)>><<set $dangerstreet to random(1, 100)>><</if>>
+<<if $danger lt (9900 - $allure)>><<set $safestreet to random(1, 100)>><</if>>
+<<if $NPCName[$NPCNameList.indexOf("Whitney")].state is "active" and $NPCName[$NPCNameList.indexOf("Whitney")].dom lte 1 and $whitneyromance isnot 1 and !$whitneyRescueGrateful and $dangerstreet gte 1 and $NPCName[$NPCNameList.indexOf("Whitney")].init is 1>>
+	<<link [[苏醒|Whitney Abduction]]>><</link>>
+<<elseif $dangerstreet gte 1 and $wolfgirl gte 6 and random(1, 2) is 2>>
+	<<link [[苏醒|Pound Abduction]]>><</link>>
+	<br>
+<<elseif isLoveInterest("Eden") and $edenfreedom gte 2 and random(1,3) is 1>>
+	<<set $dangerstreet to 0>>
+	<<set $safestreet to 0>>
+	<<link [[苏醒|Eden Passout Rescue]]>><</link>>
+<<elseif $dangerstreet gte 91>>
+	<<link [[苏醒|Abduction]]>><<set $molestationstart to 1>><</link>>
+<<elseif $dangerstreet gte 65>>
+	<<link [[苏醒|Street Wake]]>><</link>>
+<<elseif $dangerstreet gte 45>>
+	<<link [[苏醒|Molestation alley]]>><<set $molestationstart to 1>><</link>>
+<<elseif $dangerstreet gte 25>>
+	<<link [[苏醒|Street Wake Shackle]]>><</link>>
+<<elseif $dangerstreet gte 1>>
+	<<link [[苏醒|Street Wake Blindfold]]>><</link>>
+<</if>>
+<<if $safestreet gte 86>>
+	<<ambulance>>
+<<elseif $safestreet gte 1>>
+	<<ambulance>>
+<</if>>
+<<pass 1 hour>>
+<<trauma 6>><<set $stress -= 2000>>

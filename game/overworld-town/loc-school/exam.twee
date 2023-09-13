@@ -1,0 +1,435 @@
+:: Widgets Exams [widget]
+<<widget "exam">>
+	<<switch _args[0]>>
+		<<case "science">>
+			<<set $exam_chance to $science_exam>><<set $_teacher_name to "Sirris">>
+		<<case "maths">>
+			<<set $exam_chance to $maths_exam>><<set $_teacher_name to "River">>
+		<<case "english">>
+			<<set $exam_chance to $english_exam>><<set $_teacher_name to "Doren">>
+		<<case "history">>
+			<<set $exam_chance to $history_exam>><<set $_teacher_name to "Winter">>
+		<<default>>
+			<<run throw new Error("Invalid argument passed to 'exam' widget: ", _args[0])>>
+	<</switch>>
+	理解度：<span class="black"><<print Math.trunc($exam_chance)>>%</span>
+	<br>
+	<<if $NPCName[$NPCNameList.indexOf($_teacher_name)].love gte 10>>
+		<<set $exam_chance += 5>>
+		<span class="green">$_teacher_name's 喜爱:</span> <span class="black">+5%</span>
+		<br>
+	<</if>>
+	<<if _args[0] is "maths">>
+		<<if $whitneymaths is "active">>
+			<<set $exam_chance -= 5>>
+			<span class="pink">惠特尼的捣乱：</span><span class="black">-5%</span>
+			<br>
+		<<elseif $whitneymaths is "seat">>
+			<<set $exam_chance -= 10>>
+			<span class="red">惠特尼的捣乱: </span> <span class="black">-10%</span>
+			<br>
+		<</if>>
+	<</if>>
+	<<if $anxiety gte 2>>
+		<<set $exam_chance -= 20>>
+		<span class="red">极度焦虑：</span><span class="black">-20%</span>
+		<br>
+	<<elseif $anxiety gte 1>>
+		<<set $exam_chance -= 10>>
+		<span class="red">焦虑：</span><span class="black">-10%</span>
+		<br>
+	<</if>>
+
+	通过率：<<print Math.trunc($exam_chance)>>%
+<</widget>>
+
+<<widget "exam_result">>
+	<<set $_subject to _args[0]>>
+	<<if $exam_chance gte V[$_subject + '_exam_difficulty']>>
+		<<if V[$_subject + 'trait'] gte 4>>
+			<<school_skill_up $_subject>>
+			<<school_mark $_subject>>被印在卷首，圈了起来，旁边还用绿笔写着<span class="green">"优秀"</span>二字。<<ggcontrol>><<control 25>>
+			<<distinction_stat>>
+		<<else>>
+			<<school_skill_up $_subject>>
+			<<school_mark $_subject>>被印在卷首，圈了起来。<span class="green">你提升了你的等级！</span>
+			<br>
+			<<school_skill_up_text $_subject>>
+		<</if>>
+	<<else>>
+		<<school_mark $_subject>>被印在卷首，圈了起来。意料中的分数。
+	<</if>>
+	<<unset $exam_chance>>
+<</widget>>
+
+<<widget "exam_difficulty">>
+	<<set $science_exam_difficulty to random(1, 100)>>
+	<<set $maths_exam_difficulty to random(1, 100)>>
+	<<set $english_exam_difficulty to random(1, 100)>>
+	<<set $history_exam_difficulty to random(1, 100)>>
+<</widget>>
+
+<<widget "school_mark">>
+	<<set $_trait to V[_args[0] + 'trait']>>
+	<<switch Math.clamp($_trait,-1,4)>>
+		<<case 4>><span class="green">A*</span>
+		<<case 3>><span class="teal">A</span>
+		<<case 2>><span class="lblue">B</span>
+		<<case 1>><span class="blue">C</span>
+		<<case 0>><span class="purple">D</span>
+		<<default>><span class="red">F</span>
+	<</switch>>
+<</widget>>
+
+<<widget "school_skill_up">>
+	<<school_skill_change _args[0] 1>>
+<</widget>>
+
+<<widget "school_skill_down">>
+	<<school_skill_change _args[0] -1>>
+<</widget>>
+
+<<widget "school_skill_change">>
+	<!-- args[0] is the school subject, while args[1] is the change in value (1 or -1) -->
+	<<set $_skill to _args[0]>>
+	<<set $_change to _args[1]>>
+	<<set $_trait to  $_skill + "trait">>
+
+	<<set V[$_trait] to Math.clamp(V[$_trait] + $_change, -1, 4)>>
+	<<set V[$_skill] to [0,100,200,400,700,1000][V[$_trait] + 1]>>
+	<<set V[$_skill + '_exam'] to 0>>
+<</widget>>
+
+<<widget "exam_cheat">>
+	<<set $_trait to V[_args[0] + 'trait']>>
+	<<set $skulduggerydifficulty to [100,200,400,700,1100,1100][Math.clamp($_trait + 1, 0, 5)]>>
+<</widget>>
+
+
+<<widget "science_skill_up_text">>
+	<<school_skill_up_text "science">>
+<</widget>>
+
+<<widget "maths_skill_up_text">>
+	<<school_skill_up_text "maths">>
+<</widget>>
+
+<<widget "english_skill_up_text">>
+	<<school_skill_up_text "english">>
+<</widget>>
+
+<<widget "history_skill_up_text">>
+	<<school_skill_up_text "history">>
+<</widget>>
+
+<<widget "school_skill_up_text">>
+	<<set $_subject to _args[0].toUpperFirst()>>
+	<<set $_trait to V[_args[0] + 'trait']>>
+	<<if $_trait lt 1>>
+		只要坚持下去，你就一定会受益。
+	<<else>>
+		<<set $_colour to ["","blue", "lblue", "teal", "green"][$_trait]>>
+		<<set $_traitname to ["", "Passable", "Decent", "Good", "Excellent"][$_trait] + " " + $_subject>>
+		<span class="gold">
+			你获得了<span @class="$_colour"><<print $_traitname.replace("Passable","及格的").replace("Decent","尚可的").replace("Good","良好的").replace("Excellent","优秀的").replace("science","科学成绩").replace("maths","数学成绩").replace("english","英语成绩").replace("history","历史成绩").replace(" ","")>></span>特质，
+		</span>
+		<<switch _args[0]>>
+			<<case "science">>
+				<<switch $_trait>>
+					<<case 4>> 能应对超量的疼痛。<!-- Excellent Science -->
+					<<case 3>> 能应对大量的疼痛。<!-- Good Science -->
+					<<case 2>> 能应对适量的疼痛。<!-- Decent Science -->
+					<<case 1>> 能应对微量的疼痛。<!-- Passable Science -->
+				<</switch>>
+			<<case "maths">>
+				<<switch $_trait>>
+					<<case 4>>让您从小费和谈判报酬中多赚100%。<!-- Excellent Maths -->
+					<<case 3>> 让您从小费和谈判报酬中多赚75%。<!-- Good Maths -->
+					<<case 2>> 让您从小费和谈判报酬中多赚50%。<!-- Decent Maths -->
+					<<case 1>> 让您从小费和谈判报酬中多赚25%。<!-- Passable Maths -->
+				<</switch>>
+			<<case "english">>
+				<<switch $_trait>>
+					<<case 4>>言语行动的效果是原来的五倍<!-- Excellent English -->
+					<<case 3>>语言行动的效果是原来的四倍<!-- Good English -->
+					<<case 2>>语言行动的效果是原来的三倍<!-- Decent English -->
+					<<case 1>> 言语行动（恳求、呻吟、要求、道歉、嘲笑、挑逗、请求）的效果是原来的两倍。<!-- Passable English -->
+				<</switch>>
+			<<case "history">>
+				<<switch $_trait>>
+					<<case 4>> 你知道镇上绝大多数的秘密小路。<!-- Excellent History -->
+					<<case 3>>你知道镇上大部分的秘密小路。<!-- Good History -->
+					<<case 2>>你知道镇上部分的秘密小路。<!-- Decent History -->
+					<<case 1>>你知道镇上小部分的秘密小路。<!-- Passable History -->
+				<</switch>>
+		<</switch>>
+	<</if>>
+	<<if $_trait lt 4>>
+		然而，下一级的测验将会更加困难。
+	<</if>>
+<</widget>>
+
+
+:: Science Exam
+<<schooleffects>><<effects>>
+
+<<set _time_temp to (59 - Time.minute)>>
+<<pass _time_temp>>
+
+<<npc Sirris>><<person1>>
+
+<<switch $phase>>
+	<<case 0>>
+		你专注于考试，尽你所能地不去理会其他学生的书写和抱怨声。
+	<<case 1>>
+		你深吸一口气，试着不让压力影响你。
+	<<case 2>>
+		<<skulduggerycheck>>
+		你望向西里斯，此时的<<Hes>>不看向教室，反倒专心欣赏起了窗外风光。看来你可以借鉴一下你的同桌
+
+		<<if $skulduggerysuccess is 1>>
+			前提是要足够谨慎。<span class="green">借此你设法得到了一些高难题的答案。</span>
+			<<set $exam_chance += 10>><<passPercent 10>>
+		<<else>>
+			前提是-
+			<br><br>
+			<span class="red">"诶，专心答题，"</span>西里斯望向你答道。看来<<he>>可不像看起来那么懒散。
+			<<gstress>><<stress 6>><<set $exam_chance -= 10>><<passPercent -10>><<gdelinquency>><<detention 5>>
+		<</if>>
+		<br><br>
+
+		<<skulduggeryuse true>>
+<</switch>>
+<br><br>
+
+西里斯时而看向<<his>>手表。“时间到，”<<he>>说。“我希望那不会太差。” 一些学生还在涂写，但西里斯在教室里穿行，匆匆地收回卷子。
+<br><br>
+
+西里斯改卷的时候大家终于可以讲话了，越来越高的嘈杂声填补了之前的寂静……尽管有些人太过焦虑而不说话。
+<br><br>
+
+铃响了。西里斯站在门旁，微笑着，把卷子递回经过的学生。<<He>>递出了你的卷子。
+<<exam_result "science">>
+<br><br>
+
+你融入走廊中的一群学生之间。
+<br><br>
+
+<<link [[继续|Hallways]]>><<endevent>><</link>>
+<br>
+
+
+:: Maths Exam
+<<schooleffects>><<effects>>
+
+<<set _time_temp to (59 - Time.minute)>>
+<<pass _time_temp>>
+
+<<npc River 1>><<person1>>
+<<generatey2>> <!-- student who doesn't stop writing when the exam is over -->
+
+<<switch $phase>>
+	<<case 0>>
+		<<if $whitneymaths is "active">>
+			你试图专心答题，但惠特尼频繁的骚扰让你集中不了注意力。
+		<<elseif $whitneymaths is "seat">>
+			你试着专注于考试，但惠特尼偶尔的摸索让你难以专心。<<garousal>><<arousal 300 "genitals">><<arousal 300 "bottom">>
+		<<else>>
+			你专注于考试，尽你所能地不去理会其他学生的书写和抱怨声。
+		<</if>>
+	<<case 1>>
+		<<if $whitneymaths is "active">>
+			你深吸一口气，试着不让惠特尼频繁的干扰影响你。
+		<<elseif $whitneymaths is "seat">>
+			你深吸一口气，试着不让惠特尼偶尔的摸索影响你。<<garousal>><<arousal 150 "genitals">><<arousal 150 "bottom">>
+		<<else>>
+			你深吸一口气，试着不让压力影响你。
+		<</if>>
+	<<case 2>>
+		<<skulduggerycheck>>
+		<<generatey3>><<person3>>
+		你撇了一眼身侧。你边上的<<person>>看起来很自信。你用无害的动作掩盖了你的目光。
+
+		<<if $skulduggerysuccess is 1>>
+			希望躲避瑞沃的目光。<span class="green">你设法收集到了几道难题的答案。</span>
+			<<set $exam_chance += 10>><<passPercent 10>>
+		<<else>>
+			希望能如此-
+			<br><br>
+			<span class="red">"别往他处看，"</span>瑞沃说，用<<person1>><<his>>锐利的眼神刺穿你。<<He>>没有再多说一个字，但你知道你的试卷将会受到彻底的检查。
+			<<gstress>><<stress 6>><<set $exam_chance -= 10>><<passPercent -10>><<gdelinquency>><<detention 5>>
+		<</if>>
+		<br><br>
+
+		<<skulduggeryuse true>>
+	<<case 3>>
+		<<npc Whitney 3>>
+		<<if $danceSuccess>>
+			当惠特尼抛出的时候，你瞥了一眼你身后的情况，<span class="green">并设法接住飞过来的橡皮。</span>
+			被夺走了<<person3>><<his>>投掷物，惠特尼能做的只有怒视。
+			<<set $exam_chance += 5>><<passPercent 5>>
+		<<else>>
+			惠特尼投掷时，你瞥了一眼身后，希望能从空中接到橡皮。
+			<br><br>
+
+			<span class="red">"别往他处看，"</span>瑞沃说，用<<person1>><<his>>锐利的眼神刺穿你。<<He>>没有再多说一个字，但你知道你的试卷将会受到彻底的检查。
+			<<gstress>><<stress 6>><<passPercent -10>><<set $exam_chance -= 10>>
+			<br><br>
+
+			惠特尼没再骚扰你，但你知道<<person3>><<hes>>在得意地笑。
+		<</if>>
+	<<default>>
+		<<if $phase is 4 or $phase is 5>>
+			<<npc Whitney 3>><<person3>>
+			你<<npcUndressText $NPCName[$NPCNameList.indexOf("Whitney")] "lower">>，
+			<<if $phase is 4>>
+				然后用你的手指包裹住<<his>><<print $NPCName[$NPCNameList.indexOf("Whitney")].penisdesc>>。
+			<<else>>
+				然后把你的手指按向<<his>>阴蒂。
+			<</if>>
+			你<<handtext>>抚摸着<<him>>。
+			<br><br>
+			<<if $handskill gte random(1, 1000)>>
+				你得赶快让<<him>>完事，在瑞沃注意到之前。
+				<<if $phase is 4>>
+					<<He>>尽可能控制自己不发出声音，只是颤抖着在<span class="green">你的手中高潮了。</span><<bodyliquid "leftarm" "semen">>
+				<<else>>
+					<<He>>有意识地不发出声音，但颤抖着<span class="green">高潮了。</span>
+				<</if>>
+				<<passPercent 5>><<set $exam_chance += 5>>
+				<br><br>
+
+				<<He>>靠向后方，十分满意，允许你继续完成卷子。
+			<<else>>
+				你知道你得尽快让<<him>>完事，在瑞沃注意到之前，但在受限的动作下显得很困难。
+				<br><br>
+
+				<span class="red">"别动来动去，"</span>瑞沃说，用<<person1>><<his>>凝视穿透了你。你抽走了你的手，忍受着惠特尼偶尔的摸索。<<garousal>><<arousal 300 "genitals">><<arousal 300 "bottom">>
+			<</if>>
+		<</if>>
+<</switch>>
+<br><br>
+
+瑞沃观察着全场，偶尔向墙上的钟投去一瞥。“放下你们的笔，”<<person1>><<he>>说。一个<<person2>><<person>>仍然在书写，直到瑞沃对<<him>>抛出一道锐利的视线。
+<br><br>
+
+当<<person1>><<he>>正在批卷时，瑞沃让全班同学解决书本后面的一些"有趣的"谜题。他只花了几分钟时间。
+<br><br>
+
+批改过的卷子落在你的桌上。
+<<exam_result "maths">>
+<br><br>
+
+<!-- Add text for interacting with Whitney here, if they are present? -->
+铃响了，你和其他学生一起拖着脚步加入走廊中的人群。
+<br><br>
+
+<<link [[继续|Hallways]]>><<if $whitneymaths>><<set $whitneymaths to "absent">><</if>><<endevent>><</link>>
+<br>
+
+
+:: English Exam
+<<schooleffects>><<effects>>
+
+<<set _time_temp to (59 - Time.minute)>>
+<<pass _time_temp>>
+
+<<npc Doren>><<person1>>
+
+<<switch $phase>>
+	<<case 0>>
+		你专注于考试，尽你所能地不去理会其他学生的书写和抱怨声。
+	<<case 1>>
+		你深吸一口气，试着不让压力影响你。
+	<<case 2>>
+		<<skulduggerycheck>>
+		多伦经常背对你，但<<his>>路径无法预测。
+
+		<<if $skulduggerysuccess is 1>>
+			<<He>>随时都可能转过来，<span class="green">但你大胆地设法瞥到了你邻桌的卷子。</span>
+			<<set $exam_chance += 10>><<passPercent 10>>
+		<<else>>
+			你等到<<he>>走过，然后偷瞄了一眼你的邻桌。多伦猛地转过身来，<span class="red">然后用<<his>>手猛拍你的桌子。</span>
+			<br><br>
+
+			"这儿有只苍蝇。”<<he>>说。这让你从作弊被捉的尴尬中解脱了出来，但你的试卷会被严加检查。<<gstress>><<stress 6>><<set $exam_chance -= 10>><<passPercent -10>><<gdelinquency>><<detention 5>>
+		<</if>>
+		<br><br>
+
+		<<skulduggeryuse true>>
+	<<case 3>>
+		<<npc Kylar 2>><<person2>>
+		你瞥了一眼凯拉尔的卷子。<<He>>注意到了，急切向你献殷勤，<<he>>在书写时避免<<his>>手臂遮挡你的视线。<<He>>对难题似乎有着新颖的解法。
+<</switch>>
+<br><br>
+
+多伦巡视完一圈，拿起文件盒放在了<<person1>><<his>>的桌上。<<He>>在教室里走动，把小册子收上来。
+<br><br>
+
+"不会太久的，"<<he>>说，拿出红笔开始批改第一张试卷。<<Hes>>对教室里发出的窃窃私语不以为然。<<Hes>>很快就改完了。
+<br><br>
+
+写着你名字的试卷在你面前翻过。
+<<exam_result "english">>
+<br><br>
+
+<!-- Add text for interacting with Kylar here, if they are present? -->
+铃响了，你和其他学生一起拖着脚步加入走廊中的人群。
+<br><br>
+
+<<link [[继续|Hallways]]>><<endevent>><</link>>
+<br>
+
+
+:: History Exam
+<<schooleffects>><<effects>>
+
+<<set _time_temp to (59 - Time.minute)>>
+<<pass _time_temp>>
+
+<<npc Winter>><<person1>>
+
+<<switch $phase>>
+	<<case 0>>
+		你专注于考试，尽你所能地不去理会其他学生的书写和抱怨声。
+	<<case 1>>
+		你深吸一口气，试着不让压力影响你。
+	<<case 2>>
+		<<skulduggerycheck>>
+		温特把<<himself>>一头扎进一本书中，看起来似乎并没有多么在意讲台下面。
+
+
+		<<if $skulduggerysuccess is 1>>
+			你知道那是假象，当老师的注意力被这儿那儿的事吸引的时候，你瞥了一眼你的同桌，<span class="green">并设法获得了一些难题的答案。</span>
+			<<set $exam_chance += 10>><<passPercent 10>>
+		<<else>>
+			你抓住这个机会，看了一眼你同桌的试卷。
+			<br><br>
+			<<if $robinhistory is "seat">>
+				<span class="red">罗宾用手肘推了你一下。</span>"你不该作弊的！"
+				<br><br>
+
+				温特抬头看了一眼，"别说话。" 你现在不会再有机会转移老师的注意力了。<<gstress>><<stress 6>><<set $exam_chance -= 10>><<passPercent -10>>
+			<<else>>
+				<span class="red">"不要作弊！"</span>温特说，没有抬头。虽然<<he>>没有具体表示，但你知道<<he>>说的是你。<<gstress>><<stress 6>><<set $exam_chance -= 10>><<passPercent -10>><<gdelinquency>><<detention 5>>
+			<</if>>
+		<</if>>
+		<br><br>
+
+		<<skulduggeryuse true>>
+<</switch>>
+<br><br>
+
+当学生们奋笔疾书做题时，温特用拇指翻阅着<<person1>><<his>>的书。温特把书合上。"考试结束。"<<he>>宣布。
+<br><br>
+
+你们排成另一个有序的队列。温特把<<he>>收上来的试卷挨个做了标记。<<his>>红笔在上面不断划过，你的也不例外。<<He>>把试卷还给了你。
+<<exam_result "history">>
+<br><br>
+
+<!-- Add text for interacting with Robin here, if they are present? -->
+上课铃响了，你加入了走廊上的学生群体。
+<br><br>
+
+<<link [[继续|Hallways]]>><<endevent>><</link>>
+<br>

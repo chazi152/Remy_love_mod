@@ -1,0 +1,402 @@
+:: English Classroom
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<if $schoolstate is "third">>
+	<<if $worn.upper.type.includes("naked") and $worn.lower.type.includes("naked")>>
+		<<outfitChecks>>
+		/*Check for when the pc is only wearing an overcoat*/
+		<<if $worn.over_upper.name isnot "naked" and $worn.over_lower.name isnot "naked" and $worn.under_upper.name is "naked" and $worn.under_lower.name is "naked">>
+			当你挂起你的<<if _middleOutfit>>$worn.over_upper.cn_name_cap<<else>>$worn.over_upper.cn_name_cap和$worn.over_lower.cn_name_cap<</if>>时, 你想起你下面什么都没穿。
+		<<elseif $worn.over_upper.name isnot "naked" and $worn.over_lower.name isnot "naked" and ($worn.under_upper.type.includes("swim") or $worn.under_lower.type.includes("swim"))>>
+			当你挂起你的<<if _middleOutfit>>$worn.over_upper.cn_name_cap<<else>>$worn.over_upper.cn_name_cap和$worn.over_lower.cn_name_cap<</if>>,你想起来你下面只穿了泳衣。
+		<<elseif $worn.over_upper.name isnot "naked" and $worn.over_lower.name isnot "naked" and $worn.under_upper.name isnot "naked" and $worn.under_lower.name isnot "naked">>
+			当你要去挂你的<<if _middleOutfit>>$worn.over_upper.cn_name_cap<<else>>$worn.over_upper.cn_name_cap和$worn.over_lower.cn_name_cap<</if>>，你想起来你下面只穿了内衣。
+		<</if>>
+		<br><br>
+		<<npc Doren>><<person1>>
+		多伦笑道“：“有哪里不对吗？没有制服的话你不能上我的课。这不是我规定的。礼顿那可能有些备用的。"
+		<br><br>
+		<!--<<link [[Hang up coat|]]>><<endevent>><</link>>
+		<br><br> good starting point for when you can go to class naked-->
+		<<link [[继续|Hallways]]>><<endevent>><</link>>
+		<br><br>
+	<<elseif $worn.upper.type.includes("school") and $worn.lower.type.includes("school") and $rightarm isnot "bound">>
+		<<if $daily.school.attended.english>>
+			你重新加入了英语课，
+			<<if $worn.over_upper.name isnot "naked" or $worn.over_lower.name isnot "naked" or $worn.over_head.name isnot "naked">>
+				把你的外套挂在教室后面
+				<<undressOverClothes "englishClassroom">>
+			<</if>>
+			坐到了你的位置上。
+			<br><br>
+			<<englishstart>>
+		<<elseif Time.minute lte 5>>
+			你走进英语教室，
+			<<npc Doren>><<person1>>
+			当座位坐满时，多伦正在房间的前面做准备。
+			<<if $worn.over_upper.name isnot "naked" or $worn.over_lower.name isnot "naked" or $worn.over_head.name isnot "naked">>
+				<<undressOverClothes "englishClassroom">>
+				你把外套挂在教室后面，然后就座。
+			<</if>>
+			<br><br>
+			<<englishstart>>
+		<<else>>
+			你
+			<<if $worn.over_upper.name isnot "naked" or $worn.over_lower.name isnot "naked" or $worn.over_head.name isnot "naked">>
+				把你的外套挂在教室后面然后
+				<<undressOverClothes "englishClassroom">>
+			<</if>>
+			走进了英语教室。
+			<<npc Doren>><<person1>>
+			多伦打断了授课，朝你微笑。
+			<<if $daily.school.englishExcused>>
+				<<run delete $daily.school.englishExcused>>
+				"别担心，<<lass>>。你没有犯什么事。"
+			<<else>>
+				"迟做总比不来好！坐下吧，你要把你损失的课时补上。"
+				<<gdelinquency>>
+				<<detention 1>>
+			<</if>>
+			<br><br>
+			你找了个位置坐下，多伦也继续上课。
+			<br><br>
+
+			<<englishstart>>
+		<</if>>
+
+	<<elseif $rightarm is "bound" or $leftarm is "bound" or $feetuse is "bound">>
+		多伦看起来担心。"<<if $player.gender_appearance is "m">>小伙子<<else>>小姑娘<</if>>，谁把你绑成这样?你还好吗?礼顿应该有东西能帮你解脱。你可以去问问。"
+		<br><br>
+
+		<<link [[继续|Hallways]]>><<endevent>><</link>>
+		<br><br>
+	<<else>>
+		<<npc Doren>><<person1>>
+		多伦笑道"："没有制服的话你不能上我的课。这不是我规定的。礼顿那可能有些备用的。"
+		<br><br>
+
+		<<link [[继续|Hallways]]>><<endevent>><</link>>
+		<br><br>
+	<</if>>
+
+<<elseif $schoollesson is 1>>
+	<<if $daily.school.englishInterrupted is 1>>
+		<<npc Doren>><<person1>>你进入英语教室。多伦突然停止讲课，朝你这边看了看。"哈!我很高兴你如此渴望在我的课上学习，但你不是还有另外一节课要上吗?我得记你留校教育，不然礼顿又要找我谈话了。"<<He>>把你赶出了门。
+		<<gdelinquency>>
+		<br><br>
+		<<detention 1>>
+
+		<<link [[继续|Hallways]]>><<endevent>><</link>>
+	<<else>>
+		<<npc Doren>><<person1>>你进入英语教室。多伦突然停止讲课，朝你这边看了看。"我能为你做点什么，<<lass>>?"看来你打断了课程。
+		<br><br>
+		<<set $daily.school.englishInterrupted to 1>>
+
+		<<link [[道歉|English Classroom Apology]]>><<trauma 1>><<stress 1>><</link>><<gstress>><<gtrauma>>
+		<br>
+		<<if $trauma gte 1>>
+			<<link [[嘲弄|English Classroom Mock]]>><<status 1>><<stress -12>><</link>><<lstress>><<gcool>><<gdelinquency>>
+			<br>
+		<</if>>
+	<</if>>
+<<elseif $schoolstate is "afternoon" and $englishPlay is "ongoing">>
+	英语教室里全是在排练各种舞台剧的学生。
+	<br><br>
+
+	<<if $englishPlayLate>>
+		<<link [[报名参加演出|English Play Late Signup]]>><</link>>
+		<br><br>
+	<</if>>
+	你看到了悉尼在一群学生那边。
+	<<if !$englishPlayLate>>
+		<<if $englishPlayReadiness gte 56 and $englishPlayRoles.SydneyKnown and $englishPlayRoles.Kylar isnot "none" and $englishPlayRoles.KylarKnown and !$englishPlayDoubleRehearsal>>
+			<span class="blue">凯拉尔 跟<<nnpc_him "Sydney">>在一起。</span>
+			<br>
+			<<link [[跟悉尼和凯拉尔一起排练 (2:00)|English Play Rehearse Both]]>><<pass 30>><<englishskill 18>><</link>><<gggenglish>><<gggreadiness>>
+		<<elseif $englishPlayRoles.SydneyKnown and $englishPlayRoles.Player isnot "none">>
+			<br>
+			<<link [[跟悉尼一起排练 (2:00)|English Play Rehearse Sydney]]>><<pass 2 hours>><<englishskill 18>><<npcincr Sydney love 5>><</link>><<gggenglish>><<ggreadiness>><<gglove>>
+		<<elseif $englishPlayRoles.SydneyKnown>>
+			<br>
+			<<link [[帮悉尼排练 (2:00)|English Play Rehearse Sydney No Role]]>><<pass 2 hours>><<englishskill 12>><<npcincr Sydney love 5>><</link>><<ggenglish>><<gglove>>
+		<<elseif $englishPlayRoles.Player isnot "none">>
+			<br>
+			<<link [[接近悉尼|English Play Intro Sydney]]>><</link>>
+		<</if>>
+		<br>
+		<<if $englishPlayRoles.Kylar isnot "none" and !$englishPlayRoles.KylarKnown>>
+			凯拉尔自己一个站在角落里。其他人似乎在躲着<<nnpc_him "Kylar">>。
+			<br>
+			<<link [[靠近凯拉尔|English Play Intro Kylar]]>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+	<br>
+	<<link [[帮助其他学生排练 (2:00)|English Play Rehearse Others]]>><<pass 2 hours>><<englishskill 6>><<status 8>><<trauma -12>><</link>><<genglish>><<ggcool>><<lltrauma>>
+	<br>
+	<<link [[离开房间 (0:01)|Hallways]]>><<pass 1>><</link>>
+	<br>
+<<else>>
+	你在英语教室里。书架排列在墙上。
+	<br><br>
+	<<if $arousal gte $arousalmax>>
+		<<orgasmLocation "emptyClassroom">>
+	<</if>>
+	<<storeon "englishClassroom" "check">>
+	<<if _store_check is 1>>
+		<<storeon "englishClassroom">>
+		你把外套拿到教室后面去。
+		<br><br>
+	<</if>>
+	<<exhibitionclassroom>>
+
+	<<emptyClassroomMasturbationIntro>>
+
+	<<link [[离开房间 (0:01)|Hallways]]>><<pass 1>><</link>>
+	<br>
+<</if>>
+
+:: English Lesson
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<set $daily.school.attended.english to true>>
+
+
+<<if Time.weekDay is 6 and Time.minute gte 37>>
+	<<npc Doren>><<person1>>
+	"又到了每周的这个时候了，"多伦宣布道，从<<his>>桌子下面拿起一个装满小册子的托盘。<<He>>在教室里走动着，把试卷分发到每个学生面前。"别担心。我相信你们都会拿到好成绩的。"<<gstress>><<stress 6>>
+	<br><br>
+	<<if $arousal gte $arousalmax>>
+		<<set _teacher to "Doren">>
+		<<orgasmLocation "classroom">>
+	<</if>>
+
+	<<exam english>>
+	<br><br>
+
+	学生们打开第一页时，看到有厚厚一堆题目。多伦在过道里徘徊。
+	<br><br>
+	<<endevent>>
+	<<exam_cheat english>>
+	<<link [[专注|English Exam]]>><<stress 6>><<set $phase to 0>><<set $exam_chance += 5>><</link>><<gstress>><<passPercent 5>>
+	<br>
+	<<link [[试图放松|English Exam]]>><<set $phase to 1>><</link>>
+	<br>
+	<<link [[作弊|English Exam]]>><<set $phase to 2>><</link>><<skulduggerydifficulty>>
+	<br>
+	<<if $kylarenglishstate is "active">>
+		<<link [[抄袭凯拉尔|English Exam]]>><<set $phase to 3>><<npcincr Kylar lust 3>><<set $exam_chance += 5>><</link>><<glust>><<passPercent 5>>
+		<br>
+	<</if>>
+<<elseif $kylarenglishstate is "active">>
+
+	<<if Time.minute lte 5>>
+		英语课开始了，你想如何表现自己?
+		<br><br>
+	<<else>>
+		英语课继续，你想如何表现自己?
+		<br><br>
+	<</if>>
+	<<if $arousal gte $arousalmax>>
+		<<set _teacher to "Doren">>
+		<<orgasmLocation "classroom">>
+	<</if>>
+
+	<<link [[认真听讲|English Lesson Focus]]>><</link>><<gstress>><<genglish>>
+	<br>
+	<<link [[与同学搞好关系|English Lesson Socialise]]>><</link>><<ltrauma>><<lstress>><<gharass>>
+	<br>
+	<<link [[发呆|English Lesson Daydream]]>><</link>><<lstress>> <<lharass>>
+	<br>
+	<<if $exhibitionism gte 75>>
+		<<link [[自慰|English Lesson Masturbate]]>><<set $masturbationstart to 1>><<npcincr Kylar lust 5>><</link>><<exhibitionist5>><<glust>>
+		<br>
+	<</if>>
+<<else>>
+
+	<<if Time.minute lte 5>>
+		英语课开始了，你想如何表现自己?
+		<br><br>
+		<<classgrades>>
+	<<else>>
+		英语课继续，你想如何表现自己?
+		<br><br>
+	<</if>>
+	<<if $arousal gte $arousalmax>>
+		<<set _teacher to "Doren">>
+		<<orgasmLocation "classroom">>
+	<</if>>
+
+	<<link [[认真听讲|English Lesson Focus]]>><</link>><<gstress>><<genglish>>
+	<br>
+	<<link [[和同学搞好关系|English Lesson Socialise]]>><</link>><<gcool>><<ltrauma>><<lstress>><<gharass>>
+	<br>
+	<<link [[发呆|English Lesson Daydream]]>><</link>><<lstress>> <<lharass>>
+	<br>
+	<<if $exhibitionism gte 55>>
+		<<link [[自慰|English Lesson Masturbate]]>><<set $masturbationstart to 1>><</link>><<exhibitionist4>>
+		<br>
+	<</if>>
+<</if>>
+
+:: English Classroom Apology
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+你感到很尴尬，道歉之后离开了。
+<br><br>
+
+<<link [[继续|Hallways]]>><<endevent>><</link>>
+
+:: English Classroom Mock
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+你嘲笑老师。"抱歉打扰了<<sir>>，请不要吃我!"坐在座位上的学生们爆发出一阵笑声。
+<br><br>
+
+多伦也笑了起来，"去上你的课，不如我就揍你了！"<<He>>帮你开了门。
+<<gdelinquency>>
+<br><br>
+<<detention 1>>
+<<link [[继续|Hallways]]>><<endevent>><</link>>
+
+:: English Lesson Focus
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<if $kylarenglishstate is "active">>
+	你专注于听老师讲课和学习课本。虽然凯拉尔让你分心了，不过你感觉你还是有所收获。
+	<br><br>
+<<else>>
+	你专注于听老师讲课和学习知识。想要理解这些内容让你感到吃力，但你认为自己正在进步。
+	<br><br>
+<</if>>
+
+<<towelup>>
+
+<<advancelesson>>
+<<englishskill _lesson_progress>>
+<<stress _lesson_progress>>
+
+<<if $phase is 1>>
+	<<set $phase to 0>>
+	铃响了，这表示下课了。你
+	<<storeon "englishClassroom" "check">>
+	<<if _store_check is 1>>
+		<<storeon "englishClassroom">>
+		拿上你的外套然后
+	<</if>>
+	离开了教室。
+	<br><br>
+
+	<<link [[继续|Hallways]]>><</link>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (8900 - $allure)>>
+		<<eventsenglish>>
+	<<else>>
+		<<eventsenglishsafe>>
+	<</if>>
+<</if>>
+
+:: English Lesson Socialise
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<towelup>>
+
+<<if $kylarenglishstate is "active">>
+	你只做了最低限度的学习，然后专注于努力让自己更受同学的欢迎。凯拉尔的存在让这一切变得困难。
+<<elseif $cool gte ($coolmax / 5 * 2)>>
+	你只做了最低限度的学习，专注于努力让自己更受同学的喜爱。你很快就会成为大家关注的焦点。
+<<elseif $cool gte ($coolmax / 5)>>
+	你只做了最低限度的学习，专注于努力让自己更受同学的喜爱。
+<<else>>
+	你只做了最少的课业，专注于努力让自己更受同学的喜爱。大多数人都避免和你交流。
+<</if>>
+<br><br>
+
+<<if $kylarenglishstate is "active">>
+<<else>>
+	<<status 1>>
+<</if>>
+
+<<advancelesson>>
+<<set _stress to _lesson_progress * -1>>
+<<stress _stress>>
+<<set _trauma to _lesson_progress * -0.5>>
+<<trauma _trauma>>
+
+<<if $phase is 1>>
+	<<set $phase to 0>>
+	铃响了，这表示下课了。你
+	<<storeon "englishClassroom" "check">>
+	<<if _store_check is 1>>
+		<<storeon "englishClassroom">>
+		拿上你的外套然后
+	<</if>>
+	离开了教室。
+	<br><br>
+
+	<<link [[继续|Hallways]]>><</link>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (8900 - ($allure * 2))>>
+		<<eventsenglish>>
+	<<else>>
+		<<eventsenglishsafe>>
+	<</if>>
+<</if>>
+
+:: English Lesson Daydream
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<towelup>>
+
+<<if $kylarenglishstate is "active">>
+	你盯着窗外做白日梦。凯拉尔在<<nnpc_his "Kylar">>速写本中画你的样子。
+<<elseif $trauma gte (($traumamax / 10) * 7)>>
+	你保持沉默，害怕一个错误的举动会导致整个班级的嘲笑你。
+<<elseif $trauma gte (($traumamax / 10) * 2)>>
+	你专注于自己的想法，试图将悄然而来的焦虑拒之门外。
+<<else>>
+	你并没有真的把注意力放到课堂上，而是懒洋洋地盯着窗外，想着放学后要做什么。
+<</if>>
+<br><br>
+
+<<advancelesson>>
+<<set _stress to _lesson_progress * -1>>
+<<stress _stress>>
+
+<<if $phase is 1>>
+	<<set $phase to 0>>
+	铃响了，这表示下课了。你
+	<<storeon "englishClassroom" "check">>
+	<<if _store_check is 1>>
+		<<storeon "englishClassroom">>
+		拿上你的外套然后
+	<</if>>
+	离开了教室。
+	<br><br>
+
+	<<link [[继续|Hallways]]>><</link>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (8900 - ($allure / 2))>>
+		<<eventsenglish>>
+	<<else>>
+		<<eventsenglishsafe>>
+	<</if>>
+<</if>>
+
+:: English Kylar Move
+
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<if $NPCName[$NPCNameList.indexOf("Kylar")].love gte 90>>
+	你要拿起你的东西去另一个座位。凯拉尔把一只手放在你的大腿上。<<His>>手里握着一把刀。“你、你要去哪儿，亲爱的?”<<he>>说。“我们坐在这不挺好的吗？"
+	<br><br>
+	<<link [[继续|English Lesson]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<set $kylarenglishstate to "watching">>
+	你拿起你的东西，走到另一个座位上。凯拉尔没有跟上，但开始用一支笔刺<<his>>的手。
+	<br><br>
+	<<link [[继续|English Lesson]]>><<endevent>><</link>>
+	<br>
+<</if>>

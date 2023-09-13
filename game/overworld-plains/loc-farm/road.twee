@@ -1,0 +1,2292 @@
+:: Farm Road 1
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "farmroad1">>
+
+<<if $phase is 1>>
+	<<set $phase to 0>>
+	你走到了城郊的深处，建筑物变得更加稀疏，尽管附近山丘上仍有一些住宅。<<physique 3>>
+<<elseif $phase is 2>>
+	<<set $phase to 0>>
+	你向镇上走去，住宅开始变得多了起来，成排的房屋矗立在附近的山上。<<physique 3>>
+<<else>>
+	你在连接城镇和周围农田的道路上，附近山上点缀着各式各样的房屋。
+<</if>>
+<br><br>
+
+<<if $farm>>
+	<<if $farm.steed>>
+		你$farm.steed的骏马正在空旷的田野上吃草。
+		<br><br>
+	<</if>>
+<</if>>
+
+<<set $danger to random(1, 10000)>>
+<<if $stress gte $stressmax>>
+	<<passoutfarmroad>>
+<<elseif $danger gte (9900 - $allure) and $eventskip is 0>>
+	<<if $rng gte 51>>
+		你听到身后传来一阵刺耳的车轮声，一辆汽车正在快速驶来，而且在它和你身后的灌木丛之间没有多少可以躲避的余地了。
+		<br><br>
+
+		<<link [[跳入灌木丛中|Farm Road Jump]]>><<pain 6>><</link>><<gpain>>
+		<br>
+		<<if $submissive lte 500>>
+			<<link [[原地不动|Farm Road Stand]]>><<def 1>><</link>><<defianttext>>
+			<br>
+		<</if>>
+	<<else>>
+		<<hitchhike>>
+	<</if>>
+<<else>>
+	<<if $arousal gte $arousalmax>>
+		<<orgasmLocation "countryside">>
+	<</if>>
+	<<if $exposed lte 1>>
+		<<hitchhikeicon>><<link [[搭顺风车 (0:15)|Farm Hitchhike]]>><<pass 15>><</link>>
+		<br>
+	<<else>>
+		<span class="blue">你太暴露了，不能搭便车！</span>
+		<br>
+	<</if>>
+	<<roadicon>><<link [[走进乡村 (0:30)|Farm Road 2]]>><<pass 30>><<set $phase to 1>><<tiredness 3>><</link>><<gtiredness>>
+	<br>
+	<<if $farm>>
+		<<if $farm.steed>>
+			<<if $farm.stable gte 1>>
+				<<ind>><<link [[骑去农场 (0:15)|Farm Ride Farm]]>><<tiredness 2>><<loadNPC 0 "saddled_steed">><<pass 15>><</link>><<gtiredness>>
+				<br>
+			<<else>>
+				<<ind>><<link [[骑去农场 (0:30)|Farm Ride Farm]]>><<tiredness 2>><<loadNPC 0 "saddled_steed">><<pass 30>><</link>><<gtiredness>>
+				<br>
+			<</if>>
+		<</if>>
+	<</if>>
+	<<ind>><<link [[进小镇 (0:05)|Harvest Street]]>><<pass 5>><</link>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Farm Road 2
+<<set $outside to 1>><<set $location to "moor">><<effects>><<set $bus to "farmroad2">>
+
+<<if $phase is 1>>
+	<<set $phase to 0>>
+	你走进更深的乡村。除了偶尔的庄园外，这里几乎没有建筑物。<<physique 3>>
+<<elseif $phase is 2>>
+	<<set $phase to 0>>
+	你朝城里走去，偶尔会看到一座建筑，雄伟的庄园掩映在群山和树林之间.<<physique 3>>
+<<else>>
+	你在连接城镇和周围农田的道路上。几座庄园点缀在你周围的山丘上。
+<</if>>
+<br><br>
+
+<<set $danger to random(1, 10000)>>
+<<if $stress gte $stressmax>>
+	<<passoutfarmroad>>
+<<elseif $danger gte (9900 - $allure) and $eventskip is 0>>
+	<<if $rng gte 51>>
+		一只狗从华丽的大门后面朝你吠叫.<<gstress>><<stress 6>>
+		<br><br>
+
+		<<destinationfarmroad>>
+	<<else>>
+		<<hitchhike>>
+	<</if>>
+<<else>>
+	<<if $arousal gte $arousalmax>>
+		<<orgasmLocation "countryside">>
+	<</if>>
+	<<if $exposed lte 1>>
+		<<hitchhikeicon>><<link [[搭顺风车 (0:15)|Farm Hitchhike]]>><<pass 15>><</link>>
+		<br>
+	<<else>>
+		<span class="blue">你太暴露了，不能搭便车！</span>
+		<br>
+	<</if>>
+	<<roadicon>><<link [[走进乡村 (0:30)|Farm Road 3]]>><<pass 30>><<set $phase to 1>><<tiredness 3>><</link>><<gtiredness>>
+	<br>
+	<<ind>><<link [[朝小镇走 (0:30)|Farm Road 1]]>><<pass 30>><<set $phase to 2>><<tiredness 3>><</link>><<gtiredness>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Farm Road 3
+<<location "farmroad3">><<effects>>
+
+<<if $phase is 1>>
+	<<set $phase to 0>>
+	你走进更深的乡村。树木变得茂密，直到道路被包围.<<physique 3>>
+<<elseif $phase is 2>>
+	<<set $phase to 0>>
+	你往城里走。这条路变成了一片灌木丛，两边都有树木环绕着你.<<physique 3>>
+<<else>>
+	你在连接城镇和周围农田的道路上。这条路被树包围着。
+<</if>>
+<br><br>
+
+<<set $danger to random(1, 10000)>>
+<<if $stress gte $stressmax>>
+	<<passoutfarmroad>>
+<<elseif $danger gte (9900 - $allure) and $eventskip is 0>>
+	<<if $rng gte 51>>
+		微风吹过树林，摇曳着树枝，抚摸着你的脸.<<lstress>><<stress 6>>
+		<br><br>
+
+		<<destinationfarmroad>>
+	<<else>>
+		<<hitchhike>>
+	<</if>>
+<<else>>
+	<<if $arousal gte $arousalmax>>
+		<<orgasmLocation "countryside">>
+	<</if>>
+	<<if $exposed lte 1>>
+		<<hitchhikeicon>><<link [[搭顺风车 (0:15)|Farm Hitchhike]]>><<pass 15>><</link>>
+		<br>
+	<<else>>
+		<span class="blue">你太暴露了，不能搭便车！</span>
+		<br>
+	<</if>>
+	<<roadicon>><<link [[走进乡村 (0:30)|Farm Road 4]]>><<pass 30>><<set $phase to 1>><<tiredness 3>><</link>><<gtiredness>>
+	<br>
+	<<ind>><<link [[朝小镇走 (0:30)|Farm Road 2]]>><<pass 30>><<set $phase to 2>><<tiredness 3>><</link>><<gtiredness>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Farm Road 4
+<<set $outside to 1>><<set $location to "moor">><<effects>><<set $bus to "farmroad4">>
+
+<<if $phase is 1>>
+	<<set $phase to 0>>
+	你走进更深的乡村。这条路向上弯，顶着一座小山，从树林里出来。大海在地平线上向你问候.<<physique 3>>
+<<elseif $phase is 2>>
+	<<set $phase to 0>>
+	你往城里走。周围的乡村变得不那么荒凉，但更多的是丘陵。你为一座小山加冕，海在地平线上向你问候.<<physique 3>>
+<<else>>
+	你在连接城镇和周围农田的公路上。你在一座小山上，可以看到地平线上的大海。
+<</if>>
+<br><br>
+
+<<set $danger to random(1, 10000)>>
+<<if $stress gte $stressmax>>
+	<<passoutfarmroad>>
+<<elseif $danger gte (9900 - $allure) and $eventskip is 0>>
+	<<if $rng gte 51>>
+		一股强风掠过山顶，差点把你吹倒。
+
+		<<if $worn.head.name isnot "naked" and (!$worn.head.outfitSecondary or !$worn.head.outfitSecondary.includes("upper"))>>
+			它从你的头上抢走了$worn.head.cn_name_cap!<<headstrip>>
+			<br><br>
+
+			<<link [[追逐|Farm Road Chase]]>><</link>>
+			<br>
+			<<link [[离开它|Farm Road Leave]]>><</link>>
+			<br>
+		<<else>>
+			<br><br>
+
+			<<destinationfarmroad>>
+		<</if>>
+	<<else>>
+		<<hitchhike>>
+	<</if>>
+<<else>>
+	<<if $arousal gte $arousalmax>>
+		<<orgasmLocation "countryside">>
+	<</if>>
+	<<if $exposed lte 1>>
+		<<hitchhikeicon>><<link [[搭顺风车 (0:15)|Farm Hitchhike]]>><<pass 15>><</link>>
+		<br>
+	<<else>>
+		<span class="blue">你太暴露了，不能搭便车！</span>
+		<br>
+	<</if>>
+	<<roadicon>><<link [[走进乡村 (0:30)|Farm Road 5]]>><<pass 30>><<set $phase to 1>><<tiredness 3>><</link>><<gtiredness>>
+	<br>
+	<<ind>><<link [[朝小镇走 (0:30)|Farm Road 3]]>><<pass 30>><<set $phase to 2>><<tiredness 3>><</link>><<gtiredness>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Farm Road 5
+<<set $outside to 1>><<set $location to "moor">><<effects>><<set $bus to "farmroad5">>
+
+<<if $phase is 1>>
+	<<set $phase to 0>>
+	你向乡村深处走去。山变得更平坦，地面变得更贫瘠。棕色的灌木丛挣扎着穿过泥土。奇怪的、多刺的植物缠绕着树木。<<physique 3>>
+<<elseif $phase is 2>>
+	<<set $phase to 0>>
+	你朝镇上走去。田地逐渐变得稀少，取而代之的是贫瘠的平原。棕色的灌木丛挣扎着穿过泥土。奇怪的、带刺的生长缠绕着树木。<<physique 3>>
+<<else>>
+	你走在连接城镇和周围农田的路上。这条路四周是贫瘠的平原。棕色的灌木丛挣扎着穿过泥土。奇怪的、多刺的植物缠绕着树木。
+<</if>>
+<br><br>
+
+<<set $danger to random(1, 10000)>>
+<<if $stress gte $stressmax>>
+	<<passoutfarmroad>>
+<<elseif $danger gte (9900 - $allure) and $eventskip is 0>>
+	<<if $rng gte 51>>
+		你听到一声可怕的尖叫声。<<if $syndromebird isnot 1>><<gstress>><<stress 6>><</if>>
+		<br><br>
+
+		<<destinationfarmroad>>
+	<<else>>
+		<<hitchhike>>
+	<</if>>
+<<else>>
+	<<if $arousal gte $arousalmax>>
+		<<orgasmLocation "countryside">>
+	<</if>>
+	<<if $exposed lte 1>>
+		<<hitchhikeicon>><<link [[搭顺风车 (0:15)|Farm Hitchhike]]>><<pass 15>><</link>>
+		<br>
+	<<else>>
+		<span class="blue">你太暴露了，不能搭便车！</span>
+		<br>
+	<</if>>
+	<<roadicon>><<link [[走进乡村 (0:30)|Farm Road 6]]>><<pass 30>><<set $phase to 1>><<tiredness 3>><</link>><<gtiredness>>
+	<br>
+	<<ind>><<link [[朝小镇走 (0:30)|Farm Road 4]]>><<pass 30>><<set $phase to 2>><<tiredness 3>><</link>><<gtiredness>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Farm Road 6
+
+<<set $outside to 1>><<set $location to "farm">><<effects>><<set $bus to "farmroad6">>
+<<if $phase is 1>>
+	<<set $phase to 0>>
+	你向乡村深处走去。土地变得更绿，更有组织，被树篱分割成独立的田地。<<physique 3>>
+<<elseif $phase is 2>>
+	<<set $phase to 0>>
+	你朝镇上走去。道路两侧仍有田地。<<physique 3>>
+<<else>>
+	你走在连接城镇和周围农田的路上。道路两侧都是田地。
+<</if>>
+<br><br>
+<<set $danger to random(1, 10000)>>
+<<if $stress gte $stressmax>>
+	<<passoutfarmroad>>
+<<elseif $danger gte (9900 - $allure) and $eventskip is 0>>
+	<<if $rng gte 51>>
+		<<beastNEWinit 1 cow>><<person1>>
+		<!-- Modified for monster people -->
+		<<if $monster is 1>>
+			一个裸体的长着牛耳朵、牛角和尾巴的<<print ($pronoun is "f" ? "女孩" : "男孩")>>停止吃草，走到田地周围的栅栏前。<<bHe>>对你哞哞叫。
+			<br><br>
+		<<else>>
+			一个<<beasttype>>停止吃草，走到它田地周围的栅栏前。它对你哞哞叫。
+			<br><br>
+		<</if>>
+		<<link [[爱抚|Farm Road Pet]]>><<stress -6>><</link>><<lstress>>
+		<br>
+		<<link [[无视|Farm Road 6]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<hitchhike>>
+	<</if>>
+<<else>>
+	<<if $arousal gte $arousalmax>>
+		<<orgasmLocation "countryside">>
+	<</if>>
+	<<if $exposed lte 1>>
+		<<hitchhikeicon>><<link [[搭顺风车 (0:15)|Farm Hitchhike]]>><<pass 15>><</link>>
+		<br>
+	<<else>>
+		<span class="blue">你太暴露了，不能搭便车！</span>
+		<br>
+	<</if>>
+	<<roadicon>><<link [[进入农田(0:05)|Farmland]]>><<pass 5>><</link>>
+	<br>
+	<<ind>><<link [[朝小镇走 (0:30)|Farm Road 5]]>><<pass 30>><<set $phase to 2>><<tiredness 3>><</link>><<gtiredness>>
+	<br>
+<</if>>
+<<set $eventskip to 0>>
+
+:: Farm Hitchhike
+
+<<effects>>
+<<if Time.dayState is "night" and random(1, 5) lte 4>>
+	你站在路边，等着一辆车通过。没有人开车经过。很少有人在夜间到农村去旅行。
+	<br><br>
+
+	<<destinationfarmroad>>
+	<br>
+<<else>>
+	你站在路边，伸出大拇指。
+	<br><br>
+	<<hitchhike>>
+<</if>>
+
+:: Farm Hitchhike Undies
+<<effects>>
+
+<<if Time.dayState is "night" and random(1, 5) lte 4>>
+	你站在路边，等着一辆车通过。没有人开车经过。很少有人在夜间到农村去旅行。
+	<br><br>
+
+	<<destinationfarmroad>>
+	<br>
+<<else>>
+	你站在路边，伸出大拇指。
+	<br><br>
+	<<hitchhike>>
+<</if>>
+
+:: Farm Hitchhike Run
+<<effects>>
+
+<<if $athleticsSuccess>>
+	你躲开了<<persons>>的抓握，跑出了马路。它们追着你，<span class="green">但你设法在野外甩掉它们</span>。
+	<br><br>
+
+	<<pass 10>>
+	你躲在灌木丛中，直到他们放弃搜索，然后你听到他们开车离开。
+	<br><br>
+
+	<<endevent>>
+	<<destinationfarmroad>>
+<<else>>
+	你躲开了<<persons>>的抓握，跑出了马路。他们追着你，<span class="red">把你扑倒在地。</span>
+	<br><br>
+
+	<<link [[继续|Farm Hitchhike Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Farm Hitchhike Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Farm Hitchhike Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Farm Hitchhike Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Farm Hitchhike Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	他们让你躺在路边，然后开车离开。
+	<br><br>
+	<<tearful>>你踉跄着站起身来.
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<destinationfarmroad>>
+<<else>>
+	你把<<person1>><<person>>推到沟里，跳过<<him>>，消失在灌木丛中。
+	<br><br>
+	<<tearful>>你躲在一片树林里。你一直等到他们放弃搜索，之后听到了他们开车离开的声音<<pass 5>>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<destinationfarmroad>>
+<</if>>
+
+:: Farm Hitchhike Pair
+<<effects>>
+
+你爬过<<person1>><<person>>，坐在变速箱上方。这不是一个舒适的姿势，每当<<his>>换档时，<<he>>的手都会靠近你的<<genitals>>。
+<br><br>
+
+尽管处境尴尬，但旅程还是顺利的。<<person2>><<person>>一路都在叽叽喳喳，<<person1>><<person>>点头附和，偶尔会给出一个单词的回应。
+<br><br>
+
+<<link [[继续赶路|Farm Hitchhike Pair Journey]]>><</link>>
+<br>
+<<if $promiscuity gte 35>>
+	<<link [[用你的手奖励他们|Farm Hitchhike Pair Handjob]]>><</link>><<promiscuous3>>
+<</if>>
+<br>
+
+:: Farm Hitchhike Pair Handjob
+<<effects>>
+
+<<person1>>
+<<if $pronoun is "f">>
+	<<if $NPCList[0].penis isnot "none">>
+		你把手放在<<persons>>的大腿上。<<He>>看着你，你的手慢慢靠近<<his>>的胯部。你撩起<<his>>的裙子，露出<<his>>的阴茎。
+		<br><br>
+
+		"我喜欢这个发展，"<<person2>><<person>>在你左边说道。轮到<<He>>了。现在你把注意力集中在<<person1>><<person>>身上，手指沿着<<his>>的柱身移动。<<Hes>>很快就勃起了。
+		<br><br>
+	<<else>>
+		你把手放在<<persons>>的大腿上。<<He>>看着你，你的手慢慢靠近<<his>>的胯部。你撩起<<his>>的裙子，露出<<his>>的阴部。
+		<br><br>
+
+		"我喜欢这个走向，"<<person2>><<person>>在你左边说道。轮到<<He>>了。现在你把注意力集中在<<person1>><<person>>身上，用你的手指上下摩擦<<his>>的阴唇。<<He>>轻声呻吟。
+		<br><br>
+	<</if>>
+<<else>>
+	<<if $NPCList[0].penis isnot "none">>
+		你把手放在<<persons>>的大腿上。<<He>>看着你，你的手慢慢靠近<<his>>的胯部。你拉下<<his>>的裤子拉链，露出<<his>>的阴茎。
+		<br><br>
+
+		"我喜欢这个发展，"<<person2>><<person>>在你左边说道。轮到<<He>>了。现在你把注意力集中在<<person1>><<person>>身上，手指沿着<<his>>的柱身移动。<<Hes>>很快就勃起了。
+		<br><br>
+	<<else>>
+		你把手放在<<persons>>的大腿上。<<He>>看着你，你的手慢慢靠近<<his>>的胯部。你拉下<<his>>的裤子拉链，露出<<his>>的阴部。
+		<br><br>
+
+		"我喜欢这个走向，"<<person2>><<person>>在你左边说道。轮到<<He>>了。现在你把注意力集中在<<person1>><<person>>身上，用你的手指上下摩擦<<his>>的阴唇。<<He>>轻声呻吟。
+		<br><br>
+	<</if>>
+<</if>>
+
+<<person2>>
+你将另一只手放在<<person2>><<persons>>的大腿上。<<He>>期待地<<npcUndressText $NPCList[1] "lower" "self">>，露出了<<his>>的
+<<if $NPCList[1].penis isnot "none">>
+	$NPCList[1].penisdesc。 你没有让<<his>>失望，把<<his>>的肉棒握在手里。
+<<else>>
+	小穴。你没有让<<his>>失望，把手指按在<<his>>的阴蒂上。
+<</if>>
+
+<<promiscuity3>>
+
+当<<person1>><<persons>>的高潮接近时，<<he>>对方向盘的控制变得不稳定。
+<br><br>
+
+<<link [[做到最后|Farm Hitchhike Pair Finish]]>><</link>>
+<br>
+<<if $analdisable is "f" and !playerChastity("anus") and $promiscuity gte 55>>
+	<<link [[用你的屁股摩擦变速杆|Farm Hitchhike Pair Gear]]>><</link>><<promiscuous4>>
+	<br>
+<</if>>
+
+:: Farm Hitchhike Pair Gear
+<<effects>>
+<<earnFeat "Rear Passenger">>
+你把你的<<bottom>>撞在变速杆上，同时你抚弄着两人。你弹得有点用力过猛，变速杆往下移。
+<<promiscuity4>>
+
+发动机轰鸣，汽车加速行驶。害怕的<<fullGroup>>摸索着变速杆，但他们粗暴的抚摸却摸到了你的<<genitals>>。<<ggarousal>><<arousal 2000 "genitals">>
+<br><br>
+<<if $arousal gte $arousalmax>>
+	<<orgasm>>当你身体前倾时，两人缩回他们的手，抓住他们的大腿来支撑。你的移动再次移动变速杆，汽车回到一个更合理的速度。
+<<else>>
+	你从他们笨拙的探查中抽身而出，把起落架移回合适的位置，正好赶上<<person1>><<person>>避免突然转向掉进沟里。
+<</if>>
+<br><br>
+
+<<link [[继续|Farm Hitchhike Pair Finish]]>><</link>>
+<br>
+
+:: Farm Hitchhike Pair Finish
+<<effects>>
+
+你继续侵犯，挑逗，直到他们颤抖着达到高潮。<<person2>><<person>>紧紧抓着<<his>>的座位。<<person1>><<person>>差点从路上开下去。
+
+<<if $NPCList[0].penis isnot "none">>
+	<<bodyliquid "rightarm" "semen">>
+<</if>>
+
+<<if $NPCList[1].penis isnot "none">>
+	<<bodyliquid "leftarm" "semen">>
+<</if>>
+他们似乎很满意。<<person2>><<person>>在接下来的旅程中安静地发呆。
+<br><br>
+<<pass 15>>
+<<if $phase is 1>>
+	你开车进城。当你向他们告别时，你向他们狡猾地眨了眨眼。
+	<br><br>
+
+	<<link [[继续|Harvest Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	你到达了农田。当你向他们告别时，你向他们狡猾地眨了眨眼。
+	<br><br>
+
+	<<link [[继续|Farmland]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Farm Hitchhike Pair Journey
+<<effects>>
+
+<<pass 15>>
+<<if $phase is 1>>
+	你驱车进城，向这两人告别。
+	<br><br>
+
+	<<link [[继续|Harvest Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	你来到农场，向这两人告别。
+	<br><br>
+
+	<<link [[继续|Farmland]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Farm Hitchhike Pair Refuse
+<<effects>>
+
+你离车远点。"随你便，"<<person>>说道。窗户关上了，他们开车走了。
+<br><br>
+
+<<endevent>>
+<<destinationfarmroad>>
+
+:: Farm Hitchhike Pair Refuse 2
+<<effects>>
+
+你离车远点。<<person1>><<person>>笑了。"你以为你要去哪儿?"<<he>>说道。"我们不咬人。"，<<he>>和<<person2>><<person>>一起下了车。
+<br><br>
+
+<<link [[继续|Farm Hitchhike Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Farm Hitchhike Exposed
+<<effects>>
+
+"我可以带你去那儿，"那个<<person>>说道。"但是首先，
+<<if $worn.upper.set is $worn.lower.set>>
+	<<if $worn.upper.gender is "f">>
+		把你的裙子给我。别担心，我会还给你的。"
+	<<else>>
+		把衣服给我。别担心，我会还给你的。"
+	<</if>>
+	<br><br>
+
+	<<Hes>>很严肃，
+
+	<<if $worn.under_upper.exposed lte 0>>
+		<<if $worn.under_lower.exposed lte 0>>
+			但至少你在里面穿了件东西。
+			<br><br>
+
+			<<if $exhibitionism gte 15>>
+				<<link [[放弃你的衣服 (0:15)|Farm Hitchhike Exposed Full]]>><</link>><<exhibitionist2>>
+				<br>
+			<</if>>
+			<<link [[拒绝|Farm Hitchhike Exposed Refuse]]>><</link>>
+			<br>
+		<<else>>
+			你里面也没穿内裤。
+			<br><br>
+
+			<<if $exhibitionism gte 35>>
+				<<link [[放弃你的衣服 (0:15)|Farm Hitchhike Exposed Full]]>><</link>><<exhibitionist3>>
+				<br>
+			<</if>>
+			<<link [[拒绝|Farm Hitchhike Exposed Refuse]]>><</link>>
+			<br>
+		<</if>>
+	<<elseif $player.gender is "f" or $player.gender_appearance is "f" or $player.gender is "h">>
+		<<if $worn.under_lower.exposed lte 0>>
+			你没穿胸罩，里面什么都没穿。
+			<br><br>
+
+			<<if $exhibitionism gte 15>>
+				<<link [[放弃你的衣服 (0:15)|Farm Hitchhike Exposed Full]]>><</link>><<exhibitionist2>>
+				<br>
+			<</if>>
+			<<link [[拒绝|Farm Hitchhike Exposed Refuse]]>><</link>>
+			<br>
+		<<else>>
+			你里面什么都没穿。
+			<br><br>
+
+			<<if $exhibitionism gte 35>>
+				<<link [[放弃你的衣服 (0:15)|Farm Hitchhike Exposed Full]]>><</link>><<exhibitionist3>>
+				<br>
+			<</if>>
+			<<link [[拒绝|Farm Hitchhike Exposed Refuse]]>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		<<if $worn.under_lower.exposed lte 0>>
+			你里面没穿上衣。
+			<br><br>
+
+			<<if $exhibitionism gte 15>>
+				<<link [[放弃你的衣服 (0:15)|Farm Hitchhike Exposed Full]]>><</link>><<exhibitionist2>>
+				<br>
+			<</if>>
+			<<link [[拒绝|Farm Hitchhike Exposed Refuse]]>><</link>>
+			<br>
+		<<else>>
+		你里面什么都没穿。
+		<br><br>
+
+			<<if $exhibitionism gte 35>>
+				<<link [[放弃你的衣服 (0:15)|Farm Hitchhike Exposed Full]]>><</link>><<exhibitionist3>>
+				<br>
+			<</if>>
+			<<link [[拒绝|Farm Hitchhike Exposed Refuse]]>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+
+<<elseif !$worn.upper.type.includes("naked")>>
+	把你的衬衫给我。别担心，我会还给你的。"
+	<br><br>
+
+	<<Hes>>很严肃，
+
+	<<if $worn.under_upper.exposed lte 0>>
+		但至少你在里面穿了东西。
+		<br><br>
+
+		<<link [[放弃你的上衣 (0:15)|Farm Hitchhike Exposed Top]]>><</link>>
+		<br>
+		<<link [[拒绝|Farm Hitchhike Exposed Refuse]]>><</link>>
+		<br>
+	<<elseif $player.gender is "f" or $player.gender_appearance is "f" or $player.gender is "h">>
+		你里面什么都没穿。
+		<br><br>
+
+		<<if $exhibitionism gte 15>>
+			<<link [[放弃你的上衣 (0:15)|Farm Hitchhike Exposed Top]]>><</link>><<exhibitionist2>>
+			<br>
+		<</if>>
+			<<link [[拒绝|Farm Hitchhike Exposed Refuse]]>><</link>>
+			<br>
+	<<else>>
+		但是<<he>>确实说了<<he>>会归还。
+		<br><br>
+
+		<<link [[放弃你的上衣 (0:15)|Farm Hitchhike Exposed Top]]>><</link>>
+		<br>
+		<<link [[拒绝|Farm Hitchhike Exposed Refuse]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	把你下半身的衣物给我。别担心，我会还给你的。"
+	<br><br>
+
+	<<Hes>>很严肃，
+
+	<<if $worn.under_lower.exposed lte 0>>
+		但至少你在里面穿了东西。
+		<br><br>
+
+		<<if $exhibitionism gte 15>>
+			<<link [[放弃你的底裤 (0:15)|Farm Hitchhike Exposed Bottom]]>><</link>><<exhibitionist2>>
+			<br>
+		<</if>>
+		<<link [[拒绝|Farm Hitchhike Exposed Refuse]]>><</link>>
+		<br>
+	<<else>>
+		你里面什么都没穿。
+		<br><br>
+
+		<<if $exhibitionism gte 35>>
+			<<link [[放弃你的底裤 (0:15)|Farm Hitchhike Exposed Bottom]]>><</link>><<exhibitionist3>>
+			<br>
+		<</if>>
+		<<link [[拒绝|Farm Hitchhike Exposed Refuse]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Farm Hitchhike Exposed Undies
+<<effects>>
+
+"我可以带你去那儿，"那个<<person>>说道。"但首先，把你的衣服给我。别担心，下车前我会让你穿好衣服的。"<<Hes>>严肃地说道。
+<br><br>
+
+<<if $exhibitionism gte 35>>
+	<<link [[放弃你的衣服 (0:15)|Farm Hitchhike Exposed Undies 2]]>><</link>><<exhibitionist3>>
+	<br>
+<</if>>
+<<link [[拒绝|Farm Hitchhike Exposed Refuse]]>><</link>>
+<br>
+
+:: Farm Hitchhike Exposed Undies 2
+<<effects>>
+
+你脱下衣服，赤身裸体地站在<<person>>面前。
+<<exhibitionism3>>
+<<clothesstrip>>
+
+<<if $rng gte 81>>
+	"谢谢，"<<he>>说道。"拜拜咯。"<<He>>开车走了，手里还拿着你的衣服。
+	<br><br>
+	你追着<<him>>跑，但<<he>>没有停下来。<<if $leftarm is "bound" and $rightarm is "bound">><<else>>你用手遮住你的<<undies>>。<</if>><<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+	<br><br>
+	<<endevent>><<upperruined>><<lowerruined>>
+	<<destinationfarmroad>>
+	<br>
+<<else>>
+	"谢谢，"<<he>>说道。"拜拜咯。"<<He>>开车走了，手里还拿着你的衣服。
+	<br><br>
+	你追着<<him>>跑，直到<<he>>减速停下了车。你听到<<him>>在笑。"上来吧，"<<he>>说着，打开了<<him>>身旁副驾驶的门。<<gstress>><<stress 6>>
+	<br><br>
+
+	<<link [[继续|Farm Hitchhike Exposed Journey]]>><</link>>
+	<br>
+<</if>>
+
+:: Farm Hitchhike Exposed Refuse
+<<effects>>
+
+你离开那个<<person>>。"随你便，"<<he>>在开车离开之前说道。
+<br><br>
+
+<<endevent>>
+<<destinationfarmroad>>
+
+:: Farm Hitchhike Exposed Full
+<<effects>>
+
+<<if $worn.under_upper.exposed lte 0>>
+	<<if $worn.under_lower.exposed lte 0>>
+		你脱下$worn.upper.cn_name_cap，露出了你的$worn.under_upper.cn_name_cap和$worn.under_lower.cn_name_cap。那个<<person>>向你抛媚眼，从你手中抢走衣服。
+		<<exhibitionism2>>
+
+	<<else>>
+		你脱下$worn.upper.cn_name_cap，露出了你的$worn.under_upper.cn_name_cap和<<genitals>>。那个<<person>>向你抛媚眼，从你手中抢走衣服。
+		<<exhibitionism3>>
+	<</if>>
+<<elseif $player.gender is "f" or $player.gender_appearance is "f" or $player.gender is "h">>
+	<<if $worn.under_lower.exposed lte 0>>
+		你脱下$worn.upper.cn_name_cap，露出了你的<<breasts>>和$worn.under_lower.cn_name_cap。那个<<person>>向你抛媚眼，从你手中抢走衣服。
+		<<exhibitionism2>>
+	<<else>>
+		你脱下$worn.upper.cn_name_cap，露出了你的<<breasts>>和<<genitals>>。那个<<person>>向你抛媚眼，从你手中抢走衣服。
+		<<exhibitionism3>>
+	<</if>>
+<<else>>
+	<<if $worn.under_lower.exposed lte 0>>
+		你脱下$worn.upper.cn_name_cap，露出了你的<<breasts>>和$worn.under_lower.cn_name_cap。那个<<person>>向你抛媚眼，从你手中抢走衣服。
+		<<exhibitionism2>>
+	<<else>>
+		你脱下$worn.upper.cn_name_cap，露出了你的<<breasts>>和<<genitals>>。那个<<person>>向你抛媚眼，从你手中抢走衣服。
+		<<exhibitionism2>>
+	<</if>>
+<</if>>
+<<upperstrip>>
+
+<<if $rng gte 81>>
+	"谢谢，"<<he>>说道。"拜拜咯。"<<He>>开车走了，手里还拿着你的衣服。
+	<br><br>
+	你追着<<him>>跑，但<<he>>没有停下来。<<if $leftarm is "bound" and $rightarm is "bound">><<else>>你用手遮住你的<<undies>>。<</if>><<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+	<br><br>
+	<<endevent>><<upperruined>><<lowerruined>>
+	<<destinationfarmroad>>
+	<br>
+<<else>>
+	"谢谢，"<<he>>说道。"拜拜咯。"<<He>>开车走了，手里还拿着你的衣服。
+	<br><br>
+	你追着<<him>>跑，直到<<he>>减速停下了车。你听到<<him>>在笑。"上来吧，"<<he>>说着，打开了<<him>>身旁副驾驶的门。<<gstress>><<stress 6>>
+	<br><br>
+
+	<<link [[继续|Farm Hitchhike Exposed Journey]]>><</link>>
+	<br>
+<</if>>
+
+:: Farm Hitchhike Exposed Bottom
+<<effects>>
+
+<<if $worn.under_lower.exposed lte 0>>
+	你扯掉$worn.lower.cn_name_cap，露出你的$worn.under_lower.cn_name_cap。那个<<person>>向你抛媚眼，然后从你手中抢走下衣。
+	<<exhibitionism2>>
+<<else>>
+	你扯掉$worn.lower.cn_name_cap，露出你的$worn.under_lower.cn_name_cap。那个<<person>>向你抛媚眼，然后从你手中抢走下衣。
+	<<exhibitionism3>>
+<</if>>
+<<lowerstrip>>
+
+<<if $rng gte 81>>
+	"谢谢，"<<he>>说道。"拜拜咯。"<<He>>开车走了，手里还拿着你的下衣。你追着<<him>>跑，但<<he>>没有停车。<<if $leftarm is "bound" and $rightarm is "bound">><<else>>你用双手遮住你的<<undies>>。<</if>><<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+	<br><br>
+	<<endevent>><<lowerruined>>
+	<<destinationfarmroad>>
+	<br>
+<<else>>
+	"谢谢，"<<he>>说道。"拜拜咯。"<<He>>开车走了，手里还拿着你的下衣。你追着<<him>>跑，直到<<he>>减速停下了车。你听到<<him>>在笑。"上来吧，"<<he>>说着，打开了<<him>>身旁副驾驶的门。<<gstress>><<stress 6>>
+	<br><br>
+
+	<<link [[继续|Farm Hitchhike Exposed Journey]]>><</link>>
+	<br>
+<</if>>
+
+:: Farm Hitchhike Exposed Top
+<<effects>>
+
+<<if $worn.under_upper.exposed lte 0>>
+	你扯掉$worn.upper.cn_name_cap，露出你的$worn.under_upper.cn_name_cap。那个<<person>>向你抛媚眼，然后从你手中抢走上衣。
+	<br><br>
+
+<<elseif $player.gender is "f" or $player.gender_appearance is "f" or $player.gender is "h">>
+	你扯掉$worn.upper.cn_name_cap，露出你的<<breasts>>。那个<<person>>向你抛媚眼，然后从你手中抢走上衣。<<covered>><<exhibitionism2>>
+
+<<else>>
+	你扯掉$worn.upper.cn_name_cap，露出你的<<breasts>>。那个<<person>>向你抛媚眼，然后从你手中抢走上衣。
+	<br><br>
+
+<</if>>
+<<upperstrip>>
+
+<<if $rng gte 81>>
+	"谢谢，"<<he>>说道。"再见。"<<He>>开车走了，仍然握着你的上衣。你追着<<him>>跑，但<<he>>没有停下来。<<if $leftarm is "bound" and $rightarm is "bound">><<else>>你用手遮住你的胸部。<</if>><<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+	<br><br>
+	<<endevent>><<upperruined>>
+	<<destinationfarmroad>>
+	<br>
+<<else>>
+	"谢谢，"<<he>>说道。"拜拜咯。"<<He>>开车走了，手里还拿着你的上衣。你追着<<him>>跑，直到<<he>>减速停下了车。你听到<<him>>在笑。"上来吧，"<<he>>说着，打开了<<him>>身旁副驾驶的门。<<gstress>><<stress 6>>
+	<br><br>
+
+	<<link [[继续|Farm Hitchhike Exposed Journey]]>><</link>>
+	<br>
+<</if>>
+
+:: Farm Hitchhike Exposed Journey
+<<effects>>
+
+当<<person>>开车时，你坐在<<he>>旁边，尽管<<he>>看你的<<lewdness>>的时间几乎和看路的时间一样多。
+<br><br>
+
+<<He>>停下来，然后转向你。
+
+<<if $worn.lower.exposed lte 1>>
+	"我还需要你再多给我一点，"<<he>>边说边抚摸着你的$worn.lower.cn_name_cap，同时俯身越过你，打开了你那侧的车门。"要么脱掉，要么下去。"
+	<br><br>
+
+	<<if $worn.under_lower.exposed lte 0>>
+		<<link [[放弃你的下装|Farm Hitchhike Exposed Bottom 2]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+		<br>
+	<<else>>
+		你下面什么都没穿。
+		<br><br>
+
+		<<link [[放弃你的下装|Farm Hitchhike Exposed Bottom 2]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+		<br>
+	<</if>>
+	<<link [[拒绝|Farm Hitchhike Exposed Refuse 2]]>><</link>>
+	<br>
+
+<<elseif $worn.under_upper.exposed is 0>>
+	"我需要你再多给我一点，"<<he>>一边抚摸着你的$worn.under_upper.cn_name_cap一边说，一边俯身去帮你打开门。"要么脱，要么滚。"
+	<br><br>
+
+	<<if $worn.under_upper.set is $worn.under_lower.set>>
+		<<link [[放弃你的内裤|Farm Hitchhike Exposed Full 2]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+		<br>
+	<<elseif $player.gender is "f" or $player.gender_appearance is "f" or $player.gender is "h">>
+		<<link [[放弃你的上衣|Farm Hitchhike Exposed Top 2]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+		<br>
+	<<else>>
+		<<link [[放弃你的上衣|Farm Hitchhike Exposed Top 2]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+		<br>
+	<</if>>
+	<<link [[拒绝|Farm Hitchhike Exposed Refuse 2]]>><</link>>
+	<br>
+
+<<elseif $worn.under_lower.exposed is 0>>
+	"我需要你再多给我一点，"<<he>>一边抚摸着你的$worn.under_lower.cn_name_cap一边说，一边俯身去帮你开门。"要么脱，要么滚。"
+	<br><br>
+
+	<<link [[放弃你的下半身衣物|Farm Hitchhike Exposed Under Bottom]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+	<br>
+	<<link [[拒绝|Farm Hitchhike Exposed Refuse 2]]>><</link>><<physiquedifficulty 1 $physiquemax>>
+	<br>
+<<else>>
+	"这是一段漫长的旅程，"<<he>>俯身在你旁边开门时说，"请出去一会儿。"
+	<br><br>
+
+	<<link [[出去|Farm Hitchhike Exposed Step]]>><</link>>
+	<br>
+
+<</if>>
+
+:: Farm Hitchhike Exposed Full 2
+<<effects>>
+
+你脱下$worn.under_upper.cn_name_cap，并将其交给<<person>>。
+<br><br>
+<<underupperstrip>>
+<<He>>把它举到<<his>>的脸上嗅了嗅。"好吧，"<<he>>说道。"现在下车去吧。就一会儿。我不会开车走的。"
+<br><br>
+
+<<link [[离开|Farm Hitchhike Exposed Step]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+<br>
+<<link [[拒绝|Farm Hitchhike Exposed Refuse 2]]>><</link>><<physiquedifficulty 1 $physiquemax>>
+<br>
+
+:: Farm Hitchhike Exposed Top 2
+<<effects>>
+
+你脱下$worn.under_upper.cn_name_cap，并将其交给<<person>>。
+<br><br>
+<<underupperstrip>>
+<<He>>把它举到<<his>>的脸上嗅了嗅。"好吧，"<<he>>说道。"现在下车去吧。就一会儿。我不会开车走的。"
+<br><br>
+
+<<link [[离开|Farm Hitchhike Exposed Step]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+<br>
+<<link [[拒绝|Farm Hitchhike Exposed Refuse 2]]>><</link>><<physiquedifficulty 1 $physiquemax>>
+<br>
+
+:: Farm Hitchhike Exposed Bottom 2
+<<effects>>
+
+你脱下$worn.lower.cn_name_cap，并将其交给<<person>>。
+<br><br>
+<<lowerstrip>>
+<<He>>把它举到<<his>>的脸上嗅了嗅。"好吧，"<<he>>说道。"现在下车去吧。就一会儿。我不会开车走的。"
+<br><br>
+
+<<link [[离开|Farm Hitchhike Exposed Step]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+<br>
+<<link [[拒绝|Farm Hitchhike Exposed Refuse 2]]>><</link>><<physiquedifficulty 1 $physiquemax>>
+<br>
+
+:: Farm Hitchhike Exposed Under Bottom
+<<effects>>
+
+你脱下$worn.under_lower.cn_name_cap，并将其交给<<person>>。
+<br><br>
+<<underlowerstrip>>
+<<He>>把它举到<<his>>的脸上嗅了嗅。"好吧，"<<he>>说道。"现在下车去吧。就一会儿。我不会开车走的。"
+<br><br>
+
+<<link [[离开|Farm Hitchhike Exposed Step]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+<br>
+<<link [[拒绝|Farm Hitchhike Exposed Refuse 2]]>><</link>><<physiquedifficulty 1 $physiquemax>>
+<br>
+
+:: Farm Hitchhike Exposed Step
+<<effects>>
+
+你从车里爬出来。"关门。"你照做了，把自己留在外面。<<covered>>
+<br><br>
+
+<<person>>观察了你一会儿。<<He>>用<<his>>的指尖敲打着方向盘，好像在考虑就这么把你光溜溜地留在这里。"好吧，"<<he>>终于说道。"你可以回来了。"
+<br><br>
+
+<<hitchhike_journey_nude>>
+
+:: Farm Hitchhike Exposed Refuse 2
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你骗我，"你说道。"带我去我想去的地方。把我的衣服还给我!"
+<<elseif $speech_attitude is "bratty">>
+	"去你的，"你说道。"你答应过我，带我去我想去的地方。把我的衣服还给我。"
+<<else>>
+	"我不玩你的游戏，"你说道。"带我去我想去的地方，还有，把我的衣服还给我。"
+<</if>>
+
+<br><br>
+
+"你要照我说的去做，"那个<<person>>冷笑着抓住你的脖子。
+
+<<if $physiqueSuccess>>
+	<<He>>试图把你从车里推下去，<span class="green">但你拼尽全力反抗。</span>你推开<<his>>的手臂，踢向<<his>>的脸。你感觉有什么松开了。
+	<br><br>
+
+	<<He>>一手抱紧<<his>>的脸，同时举起另一只手投降。"很-很好，"<<he>>说道。"你这个暴力的疯子。"
+	<br><br>
+	<<clotheson>>
+	<<He>>在你穿衣服的时候擦去血迹。
+	<br><br>
+
+	<<link [[继续|Farm Hitchhike Defiant]]>><</link>>
+	<br>
+<<else>>
+	<span class="red"><<He>>把你从车上推下来，</span>你滚到尘土飞扬的路上。<<He>>砰的一声关上车门，开走了。<<stealclothes>>
+	<br><br>
+
+	<<endevent>>
+	<<destinationfarmroad>>
+<</if>>
+
+:: Farm Hitchhike Defiant
+<<effects>>
+
+<<hitchhike_journey>>
+
+:: Farm Hitchhike Exposed Journey 2
+<<effects>>
+
+<<if $phase is 1>>
+
+	<<He>>在开车进城的时候让你穿衣服。在你从<<his>>的车离开前你一直都在调整你的衣服。<<He>>开车走了。
+	<br><br>
+
+	<<link [[继续|Harvest Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+
+<<else>>
+
+	<<He>>在开车进农田的时候让你穿衣服。在你从<<his>>的车离开前你一直都在调整你的衣服。<<He>>开车走了。
+	<br><br>
+
+	<<link [[继续|Farmland]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+
+<</if>>
+
+:: Farm Hitchhike Kneel Refuse
+<<effects>>
+
+"随你便，"<<person>>说道。<<He>>关上车门开走了。
+<br><br>
+
+<<endevent>>
+<<destinationfarmroad>>
+
+:: Farm Hitchhike Kneel Refuse 2
+<<effects>>
+
+<<person>>瞥了你一眼，然后从车里走出来："穿成那样到处闲逛。"<<he>>说着抓住你的手臂，试图把你按倒在地。
+<br><br>
+
+<<link [[继续|Farm Hitchhike Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Farm Hitchhike Kneel
+<<effects>>
+
+你跪在<<person>>面前。<<He>>用一只手抓住你的头发，另一只手<<if $pronoun is "m">>解开拉链<<else>>掀开<<his>>的裙子<</if>>。<<He>>把你的脸推到<<his>><<if $NPCList[0].penis isnot "none">>勃起的<<print $NPCList[0].penisdesc>><<else>>小穴<</if>>前.<<promiscuity4>>
+
+<<link [[继续|Farm Hitchhike Oral]]>><<set $sexstart to 1>><</link>>
+<br>
+
+:: Farm Hitchhike Oral
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>><<npcoral>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Farm Hitchhike Oral Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Farm Hitchhike Oral]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Farm Hitchhike Oral Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"好<<girl>>，"<<he>>靠在<<his>>的座位上。"进去。"
+	<br><br>
+	<<tearful>>你爬到后面。
+	<br><br>
+	<<clotheson>>
+
+	"你到底要去哪儿?"
+	<br><br>
+
+	<<link [[城镇|Farm Hitchhike Oral End]]>><<set $phase to 1>><</link>>
+	<br>
+	<<link [[农田|Farm Hitchhike Oral End]]>><<set $phase to 2>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	你把那个<<person>>推回到<<his>>的车里，然后跑。你躲在路边的灌木丛里，直到你听到<<him>>开车离开。
+	<br><br>
+	<<tearful>>你回到路上.
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<destinationfarmroad>>
+<<else>>
+	"很好，"<<person>>说道。"但我帮不了你。"<<He>>砰的一声关上车门开走了。
+	<br><br>
+	<<tearful>>你走到路边。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<destinationfarmroad>>
+<</if>>
+
+:: Farm Hitchhike Oral End
+<<effects>>
+
+<<hitchhike_journey>>
+
+:: Farm Hitchhike Ask
+<<effects>>
+
+<<if $rng gte 51>>
+	<<if $phase is 1>>
+		"反正我要去镇上，"那个<<person>>说道。"上车吧。"
+	<<else>>
+		"无论如何我都要去那里，"那个<<person>>说道。"上车吧。"
+	<</if>>
+	<br><br>
+	<<He>>向后靠，打开了车门。
+	<<rng>>
+	<<if $rng gte 81>>
+		后座上堆满了空披萨盒。"把它们推到地板上，"<<he>>不好意思地补充道。
+	<<elseif $rng gte 61>>
+		内部很干净，没什么特别之处。
+	<<elseif $rng gte 41>>
+		车厢内部被紫色的灯光照亮，座椅看起来是用一种奇异的兽皮制成的。
+	<<elseif $rng gte 21>>
+		内部干净整洁。
+	<<else>>
+		车内闻起来像落水的狗。
+	<</if>>
+	<br><br>
+
+	<<link [[进入 (0:15)|Farm Hitchhike Journey]]>><</link>>
+	<br>
+	<<link [[拒绝|Farm Hitchhike Refuse]]>><</link>>
+	<br>
+<<else>>
+	"我要往相反的方向走，"那个<<person>>说道。"对不起。"<<He>>关上了<<his>>的车窗。
+	<br><br>
+
+	<<link [[走开|Farm Hitchhike Step]]>><</link>>
+	<br>
+	<<if $submissive gte 1500>>
+		<<link [[乞求(0:15)|Farm Hitchhike Beg]]>><<sub 1>><</link>><<submissivetext>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Farm Hitchhike Beg
+<<effects>>
+
+你冲上前去<<if $pain gte 40>>，眼泪顺着你的脸颊流了下来，<<else>>用手敲窗户<</if>>。"请不要把我留在这里!"你说道。"外面有可怕的人，我一个人，而且……"
+<br><br>
+
+那个<<person>>犹豫了一下，然后向后靠去，打开其中一扇后门。"上车吧。"
+<br><br>
+
+你感谢那个<<person>>，然后爬到后面。
+<br><br>
+
+<<if $phase is 1>>
+
+	当<<person>>开车时，你凝视着窗外，看着群山滚滚而过。<<He>>走了一条特殊的小路，但仍然出现在丰收街。你从车里爬出来，然后<<he>>开走了。
+	<br><br>
+
+	<<link [[继续|Harvest Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	当<<person>>开车时，你凝视着窗外，看着群山滚滚而过。<<He>>沿着一条小路走了一条奇怪的路线，但还是出现在了农田里。你从车里爬出来，然后<<he>>开车走了。
+	<br><br>
+
+	<<link [[继续|Farmland]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Farm Hitchhike Step
+<<effects>>
+
+你离开了车，那个<<person>>开走了。
+<br><br>
+
+<<endevent>>
+<<destinationfarmroad>>
+
+:: Farm Hitchhike Refuse
+<<effects>>
+
+你离车远点。<<person>>耸耸肩，开车离开了。
+<br><br>
+
+<<endevent>>
+<<destinationfarmroad>>
+
+:: Farm Hitchhike Journey
+<<effects>>
+
+你爬进去。门一关上，<<person>>就启动了车子。
+<br><br>
+
+<<hitchhike_journey>>
+
+:: Farm Road Passout
+<<effects>>
+
+<<generate1>><<generate2>><<generate3>><<generate4>><<person1>>
+
+你被隆隆声惊醒。你在货车的后座上。你挣扎着站起来，环顾四周，但找不到明显的出路。货车停了下来，一个<<person>>打开了车门。
+<br><br>
+
+你可以看到谷仓的内部。这个<<person>>并不孤单。另外三个人和<<him>>站在一起，检查你。
+<br><br>
+
+<<person2>>"你没有撒谎。"，<<person>>说:"是个好货物。<<if $pregnancyspeechdisable is "f">>会成为一个很好的繁殖器。<</if>>"
+<br><br>
+
+<<person3>><<if $pregnancyspeechdisable is "f">>"种畜？"<<else>>"就我个人而言，"<</if>><<person>>插嘴。"我对农产品更感兴趣。这才是暴利行当。"<<He>>向你走来，手里拿着金属链和项圈。
+<br><br>
+
+<<link [[抗议|Street Van Protest]]>><<def 1>><<stress 6>><<trauma -6>><</link>><<gstress>><<ltrauma>>
+<br>
+<<link [[战斗|Street Van Fight]]>><<def 1>><<set $fightstart to 1>><</link>>
+<br>
+<<link [[顺从|Street Van Submit]]>><<sub 1>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+<br>
+
+:: Farm Road Jump
+<<effects>>
+
+你跳到一边，避开超速行驶的车辆。
+<br><br>
+
+<<if $worn.upper.name isnot "naked" or $worn.lower.name isnot "naked" or $worn.under_upper.name isnot "naked" or $worn.under_lower.name isnot "naked">>
+	你解脱了出来。你的衣服被荆棘钩住了。
+<</if>>
+
+<<set $worn.over_upper.integrity -= 10>><<set $worn.over_lower.integrity -= 10>><<set $worn.upper.integrity -= 10>><<set $worn.lower.integrity -= 10>><<set $worn.under_upper.integrity -= 10>><<set $worn.under_lower.integrity -= 10>>
+<<integritycheck>><<exposure>>
+<br><br>
+
+<<destinationfarmroad>>
+
+:: Farm Road Stand
+<<effects>>
+
+你转身面对迎面而来的车辆。它闪烁着车灯。你举起中指，强迫它绕着你转。
+<br><br>
+
+<<destinationfarmroad>>
+
+:: Farm Road Chase
+<<effects>>
+
+你追着你的头饰，离开了马路，跑下了山脊。它停在树枝上。
+
+<<if $physiquesize gte 16000>>
+	你一跃而起，就快够到它了。<<large_text>>
+<<else>>
+	它太高了，够不着，所以你拿起附近的一根棍子来帮忙。你设法钩住了它的末端。
+<</if>>
+<br><br>
+<<clotheson>>
+
+<<if $rng gte 61>>
+	你听到嗡嗡声。一群蜜蜂被移动的树枝搅动着从蜂巢里出来。你惊慌失措地跑回路上。<<gtrauma>><<gstress>><<gstress>><<stress 6>>
+	<br><br>
+
+	<<destinationfarmroad>>
+<<else>>
+	你回到路上，把你的$worn.head.cn_name_cap放回原处。
+	<br><br>
+
+	<<destinationfarmroad>>
+<</if>>
+
+:: Farm Road Leave
+<<effects>>
+
+你决定不去追赶，不戴头饰继续前进。
+<br><br>
+<<headruined>>
+
+<<destinationfarmroad>>
+
+:: Farm Road Pet
+<<effects>>
+
+你抚摸<<beasttypes>>的头。<<bHe>>叫了一声，舔了舔你的手指。
+
+
+<br><br>
+<<endevent>>
+<<destinationfarmroad>>
+
+
+:: Farm Saddle
+<<effects>>
+
+<<loadNPC 0 "saddled_steed">>
+
+你给你的$farm.steed<<beasttype>>装鞍，然后爬上了马。
+<br><br>
+
+<<if $farm.stable gte 1>>
+	<<link [[进城(0:15)|Farm Ride Town]]>><<tiredness 2>><<pass 15>><</link>><<gtiredness>>
+	<br>
+<<else>>
+	<<link [[进城(0:30)|Farm Ride Town]]>><<tiredness 3>><<pass 30>><</link>><<gtiredness>>
+	<br>
+<</if>>
+<<link [[换一匹马(0:10)|Farm Steed]]>><<pass 10>><<endevent>><</link>>
+<br>
+<<link [[下马|Farm Work]]>><<endevent>><</link>>
+<br>
+
+:: Farm Saddle New
+<<effects>>
+
+<<if $farm.steed>>
+	<<clearNPC "saddled_steed">>
+	<<set $farm.steed to 0>>
+<</if>>
+
+你给<<beasttype>>上鞍。
+<<if $farm.beasts.horses gte 20>>
+	<<if $monster is 1>>
+		"我很感激你的信任，"<<bhe>>低下<<bhis>>的头。"能伸伸腿真好。"
+	<<else>>
+		<<bHe>>舔你的肩膀。
+	<</if>>
+<<elseif $farm.beasts.horses gte 5>>
+	<<if $monster is 1>>
+		"如你所愿，"<<bhe>>说道。"别指望我能进入人类居住的蜂巢。气味太难闻了。"
+	<<else>>
+		<<bHe>>在你工作时保持被动。
+	<</if>>
+<<else>>
+	<<if $monster is 1>>
+		"小心，<<girl>>，"<<bhe>>说道。"不然我就骑你了。"
+	<<else>>
+		<<bHe>>咬你一口，但让你把话说完。
+	<</if>>
+<</if>>
+
+<br><br>
+
+<<if $thighskill gte 200>>
+	<<saveNPC 0 "saddled_steed">>
+	<<set $farm.steed to clone($NPCList[0].hair)>>
+	你爬到<<bhis>>的背上，鞭动<<bhim>>小跑。这股力量出乎你的意料，<span class="green">但你设法坚持住了。</span>当你绕着院子转时，风吹着你的头发。
+	<br><br>
+
+	<<if $farm.stable gte 1>>
+		<<link [[进城(0:15)|Farm Ride Town]]>><<tiredness 2>><<pass 15>><</link>><<gtiredness>>
+		<br>
+	<<else>>
+		<<link [[进城(0:30)|Farm Ride Town]]>><<tiredness 3>><<pass 30>><</link>><<gtiredness>>
+		<br>
+	<</if>>
+	<<link [[下马|Farm Work]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	你爬到<<bhis>>的背上，鞭动<<bhim>>小跑。<span class="red">这股力量把你从马鞍上震了起来。</span>
+
+	<<if $monster gte 1>>
+		半人马笑了。
+	<<else>>
+		马在嘶鸣。
+	<</if>>
+	<<gpain>><<pain 4>>
+	<br><br>
+	<i><span class="purple">D</span>大腿技能或更高要求。附近有一所骑术学校。</i>
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Farm Steed
+<<effects>>
+
+<<if $farm_work.horses_out is 1>>
+	你进入场地观察<<farm_text_many horse>>.
+	<br><br>
+<<else>>
+	你走近马厩观察<<farm_text_many horse>>.
+<</if>>
+
+ 也许你可以骑一匹马去镇上。
+ <br><br>
+
+<<beastNEWinit 1 horse>>
+ 你的目光特别落在一个<<beasttype>>身上。<<bHe>>回头看了看，摇了摇<<bhis>>的<<print $NPCList[0].hair>>鬃毛。
+<br><br>
+
+<<link [[选择另一个(0:10)|Farm Steed Choose]]>><<endevent>><<pass 10>><</link>>
+<br>
+<<link [[上马鞍(0:10)|Farm Saddle New]]>><<pass 10>><</link>>
+<br>
+<<link [[离开|Farm Work]]>><<endevent>><</link>>
+<br>
+
+:: Farm Steed Choose
+<<effects>>
+
+<<beastNEWinit 1 horse>>
+你查看另一匹马，<<beasttype>>有着<<print $NPCList[0].hair>>鬃毛。
+<br><br>
+
+<<link [[选择另一个(0:10)|Farm Steed Choose]]>><<endevent>><<pass 10>><</link>>
+<br>
+<<link [[上马鞍(0:10)|Farm Saddle New]]>><<pass 10>><</link>>
+<br>
+<<link [[离开|Farm Work]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Ride Town
+<<set $location to "moor">><<set $bus to "town">><<effects>>
+<<if $slimeFarmNakedStored is true>>
+	你穿上衣服。
+	<<storeon "farmHidingSpot">>
+	<<unset $slimeFarmNakedStored>>
+<</if>>
+
+你鞭策你的骏马疾驰而去，让风吹拂你的头发。<<physique 2>>
+<br><br>
+
+<<farm_ride_events>>
+
+
+:: Farm Ride Farm
+<<set $location to "moor">><<set $bus to "farm">><<effects>>
+
+你鞭策你的骏马小跑，骑进了乡间。
+<br><br>
+
+<<farm_ride_events>>
+
+
+:: Farm Ride Soothe
+<<effects>>
+
+
+
+<<if $tendingSuccess>>
+	你轻拍<<beasttype>>的头。"没关系，"你说道。"它只是一辆车。"
+
+	<<if $monster is 1>>
+		<br><br>
+		<span class="green">"对不起,"</span><<bhe>>回答。"我表现得像个小马驹。谢谢你。"
+	<<else>>
+		<span class="green"><<bHe>>看起来没那么激动了。</span>
+	<</if>>
+	<<ggrespect>><<farm_horses 3>>
+	<br><br>
+
+<<else>>
+	你轻拍<<beasttype>>的头，希望能让它平静下来，<span class="red">但是你的触摸使它更加受惊。</span><<llrespect>><<farm_horses -3>>
+
+	<<if $monster is 1>>
+		"就..就让我独自呆着吧，"<<bhe>>说道。
+	<</if>>
+	<br><br>
+
+<</if>>
+
+<<destination_farm_ride>>
+
+:: Farm Ride Charge
+<<effects>>
+
+<<if $thighskill gte random(1, 1200)>>
+	你用膝盖引导马离开沟渠，<span class="green">，你的保证使<<bhim>>平静下来。</span>
+	<<if $monster is 1>>
+		"对不起，"<<bhe>>说道。"我表现得像个小马驹。谢谢你。"
+	<</if>>
+	<<ggrespect>><<farm_horses 3>>
+	<br><br>
+<<else>>
+	你拉住缰绳，试图把它从沟里引开。<span class="red"><<bHe>>不喜欢你的干涉。</span>
+	<<if $monster is 1>>
+		"不要考验我的耐心，"<<bhe>>说道。"别以为我不会把你扔下去。"
+		<br><br>
+	<<else>>
+		<<bHe>>在继续赶路之前，后腿一蹬，威胁要把你甩下去。<<llrespect>><<farm_horses -3>>
+		<br><br>
+	<</if>>
+<</if>>
+
+<<destination_farm_ride>>
+
+
+:: Farm Ride Ignore
+<<effects>>
+
+你忽略了你的<<beasttype>>的躁动。<<bHe>>平静了下来，但仍然很紧张。
+<br><br>
+<<destination_farm_ride>>
+
+
+:: Farm Ride Break
+<<effects>>
+
+你让<<beasttype>>在路边啃一些草，直到<<bhe>>准备继续。
+<br><br>
+
+<<destination_farm_ride>>
+
+:: Farm Ride Push
+<<effects>>
+
+
+<<if $thighskill gte random(1, 1000)>>
+	你刺激你的<<beasttype>>保持速度。<<bHe>>成功了，<span class="green">恢复元气。</span>
+	<br><br>
+<<else>>
+	你刺激你的<<beasttype>>保持速度。<<bHe>>控制住了，
+	<<if $monster is 1>>
+		<span class="green">却发出了抱怨。</span>
+	<<else>>
+		<span class="red">却发出了抱怨。</span>
+	<</if>><<llrespect>><<farm_horses -3>>
+	<br><br>
+<</if>>
+
+<<destination_farm_ride>>
+
+:: Farm Ride Hand
+<<effects>>
+
+你下了<<beasttype>>，跪在<<bhim>>下面。
+
+<<if $NPCList[0].penis isnot "none">>
+	<<bHis>>的<<print $NPCList[0].penisdesc>>已经勃起了，看起来蓄势待发。你把其中一个睾丸包裹起来，然后在抓住它之前用手指沿着<<bhis>>的根部移动。
+	<<deviancy3>>
+	<<if $monster is 1>>
+		"就是这样，"<<beasttype>>叹息道。"不会花很长时间的。我已经闷了一整天了。"
+	<<else>>
+		<<beasttype>>嘶叫着表达<<bhis>>的愉快。
+	<</if>>
+<<else>>
+	<<bHis>>的阴部在期待中闪闪发光。你把一根手指塞进褶子里，然后是另一根。
+	<<if $monster is 1>>
+		"就是这样，"<<beasttype>>叹息道。"不会花很长时间的。我已经闷了一整天了。"
+	<<else>>
+		<<beasttype>>嘶叫着表达<<bhis>>的愉快。
+	<</if>>
+<</if>>
+<br><br>
+
+<<if random(1, 3) is 3>>
+	<<beasttype>>的身体痉挛，即将迎来高潮。<span class="pink">你听到了引擎声。</span>一辆车开过来了，随时都会到。
+	<br><br>
+	<<if $monster is 1>>
+		"别停，"<<beasttype>>说道。"我快到了。"
+		<br><br>
+	<</if>>
+	<<link [[继续|Farm Ride Hand 2]]>><<farm_horses 1>><</link>><<skill_difficulty "$handskill" "手部技巧" 1 1000>><<grespect>>
+	<br>
+	<<link [[停止|Farm Ride Hand Stop]]>><<farm_horses -3>><</link>><<llrespect>>
+	<br>
+<<else>>
+	<<beasttype>>的身体痉挛，并达到了高潮。
+	<<if $NPCList[0].penis isnot "none">>
+		大量的精液从<<bhis>>的龟头射出，溅在地板上，然后在地上汇集。任务完成，你重新获得了对<<bhis>>的控制力。
+		<br><br>
+	<<else>>
+		你的手指滑滑的，你爬回马鞍，策马小跑起来。
+		<br><br>
+	<</if>>
+
+	<<destination_farm_ride>>
+<</if>>
+
+
+
+:: Farm Ride Hand 2
+<<effects>>
+
+你的手指尽可能快地操弄着，
+<<if $handskill gte random(1, 1000)>>
+	<<if $NPCList[0].penis isnot "none">>
+		<span class="green">在汽车抵达前，你成功榨出了<<print $NPCList[0].penisdesc>>的精液。</span>
+	<<else>>
+		<span class="green">，你设法在车来之前让<<beasttype>>在高潮中颤抖</span>。
+	<</if>>
+	你爬回马鞍，鞭笞<<bhim>>小跑起来。
+	<br><br>
+<<else>>
+	<<if $NPCList[0].penis isnot "none">>
+		<span class="red">在汽车抵达时，你还没有榨出<<print $NPCList[0].penisdesc>>的精液。</span>
+	<<else>>
+		<span class="red">，在车来的时候你让<<beasttype>>在高潮中颤抖</span>。
+	<</if>>
+	你希望他们没看见，但那嘲弄的叫声表明他们看见了.<<ggtrauma>><<gstress>><<famebestiality 3>><<trauma 12>><<stress 6>>
+	<br><br>
+<</if>>
+
+<<destination_farm_ride>>
+
+:: Farm Ride Hand Stop
+<<effects>>
+
+你站起来。
+
+<<if $monster is 1>>
+	"去你的，"<<beasttype>>在颠簸中说道。
+<<else>>
+	<<beasttype>>嘶叫着<<bhis>>的沮丧。
+<</if>>
+<<if $NPCList[0].penis isnot "none">>
+	从<<bhis>>的<<print $NPCList[0].penisdesc>>中喷出少量精液，不多。
+<<else>>
+	<<bHis>>的身体在你认为是高潮时颤抖，但不是很剧烈。
+<</if>>
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"对不起，"你说道。"但我不想让别人看到你这么没尊严。"
+<<elseif $speech_attitude is "bratty">>
+	"别这么没尊严，"你说道。
+<<else>>
+	"你想让别人看到你这个样子吗?"
+<</if>>
+<br><br>
+
+<<bHe>>在汽车出现之前冷静下来，但摇了摇<<bhis>>的鬃毛。你爬回马鞍，鞭笞<<bhim>>小跑起来。
+<br><br>
+
+<<destination_farm_ride>>
+
+
+
+:: Farm Ride Force
+<<effects>>
+
+<<if $thighskill gte random(1, 1400)>>
+	你鞭笞和斥责<<beasttype>>。
+	<<if $monster is 1>>
+		<span class="green">"很好，"</span><<bhe>>说道："这不能怪我的努力。"
+	<<else>>
+		随着一声嘶鸣，<span class="green"><<bhe>>再次向前小跑。</span>
+	<</if>>
+<<else>>
+	你鞭笞和斥责<<beasttype>>。
+	<<if $monster is 1>>
+		<span class="red"><<bHe>>愤怒地瞥了你一眼。</span>"我会继续走,"<<bhe>>说道。"但你以后会为此付出代价的。"
+	<<else>>
+		<span class="red"><<bHe>>用<<bhis>>的后腿站立，</span>差点把你摔下来，然后突然小跑起来。
+	<</if>>
+	<<llrespect>><<farm_horses -3>>
+<</if>>
+<br><br>
+
+<<destination_farm_ride>>
+
+
+:: Farm Ride Foot
+<<effects>>
+
+你下马。如果<<beasttype>>那么顽固，那就顺其自然吧。当你走开时，<<bHe>>生气了。
+<br><br>
+
+
+<<if $bus is "east">>
+	<<link [[继续|Farm Road 4]]>><<endevent>><</link>>
+<<else>>
+	<<link [[继续|Farm Road 3]]>><<endevent>><</link>>
+<</if>>
+
+
+:: Farm Ride Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $NPCList[0].stance to "top">>
+	<<if $NPCList[0].penis isnot "none">>
+		<<set $position to "doggy">>
+	<<else>>
+		<<set $position to "missionary">>
+	<</if>>
+	<<farm_trust horses>>
+	<<prop haybale>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Farm Ride Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Farm Ride Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Farm Ride Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<beastejaculation>>
+
+	<<if $monster is 1>>
+		"不错的肉便器，"<<bhe>>说道。
+	<</if>>
+
+	<<tearful>>你爬回马鞍。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<destination_farm_ride>>
+<<else>>
+	你拍了拍<<beasttype>>的鼻子，<<bhe>>转身逃跑了。
+	<br><br>
+
+	<<tearful>>你回到路上.
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<if $bus is "east">>
+		<<link [[继续|Farm Road 4]]>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Farm Road 3]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Farm Ride Faster
+<<effects>>
+
+你鞭策你的<<beasttype>>狂奔。雷米的打手试图跟上，马蹄在后面隆隆作响。
+<<if $thighskill gte random(1, 1000)>>
+	<span class="green">没跟上。</span>你把他们远远抛在后面。<<lstress>><<stress -6>>
+	<br><br>
+
+	<<destination_farm_ride>>
+<<else>>
+	<span class="red">你的马晃动着，</span>骑手追上你。一个骑在前面，他们把你围在树篱上，迫使你停下来。他们转过身来面对你。<<gstress>><<stress 6>>
+	<br><br>
+
+	"雷米派我们来的，"左边的<<person2>><<person>>说道。"为了确保你没事。一个<<girl>>独自骑马很危险。"<<gstress>><<stress 6>>
+	<br><br>
+
+	"我们会护送你走完剩下的路。"，右边的<<person3>><<person>>补充道:"当然是收费业务，给我们<<printmoney 5000>>。"
+	<br><br>
+
+	<<if $money gte 5000>>
+		<<link [[付钱(£50)|Farm Ride Pay]]>><<set $money -= 5000>><</link>>
+		<br>
+	<</if>>
+	<<link [[礼貌地拒绝|Farm Ride Polite]]>><<farm_aggro 1>><</link>><<gaggro>>
+	<br>
+	<<link [[生气地拒绝|Farm Ride Angry]]>><<farm_aggro 1>><</link>><<gaggro>>
+	<br>
+<</if>>
+
+
+:: Farm Ride Confront
+<<effects>>
+
+你勒紧<<beasttype>>的缰绳，转过身来面对接近的骑手。他们在一段距离外停了下来。
+<br><br>
+
+"雷米派我们来的，"左边的<<person2>><<person>>说道。"为了确保你没事。一个<<girl>>独自骑马很危险。"<<gstress>><<stress 6>>
+<br><br>
+
+"我们会护送你走完剩下的路。"，右边的<<person3>><<person>>补充道:"当然是收费业务，给我们<<printmoney 5000>>。"
+<br><br>
+
+<<if $money gte 5000>>
+	<<link [[付钱(£50)|Farm Ride Pay]]>><<set $money -= 5000>><</link>>
+	<br>
+<</if>>
+<<link [[礼貌地拒绝|Farm Ride Polite]]>><<farm_aggro 1>><</link>><<gaggro>>
+<br>
+<<link [[生气地拒绝|Farm Ride Angry]]>><<farm_aggro 1>><</link>><<gaggro>>
+<br>
+
+
+
+:: Farm Ride Pay
+<<effects>>
+
+你付钱给他们。"明智，"<<person2>><<person>>说道。"继续，带路吧。"
+<br><br>
+
+在剩下的旅程中，他们一直跟在后面。
+<<person1>>
+
+<<destination_farm_ride>>
+
+:: Farm Ride Polite
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"对不起，"你说道。"但我一个人就可以了。"
+<<elseif $speech_attitude is "bratty">>
+	"谢谢你的帮助，"你说道。"但我自己可以处理。"
+<<else>>
+	"谢谢，"你说道。"但我一个人也没问题。
+<</if>>
+<br><br>
+
+"随你便，"<<person2>><<person>>嘲笑道。"我们就在附近。"他们疾驰小跑，从你身边骑过。
+<br><br>
+
+<<person1>>
+<<destination_farm_ride>>
+
+:: Farm Ride Angry
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我不会付你钱的，"你说道。"走开。"
+<<elseif $speech_attitude is "bratty">>
+	"去你的，"你说道。"去他妈的雷米。"
+<<else>>
+	"告诉雷米我不会被勒索，"你说道。"走吧。"
+<</if>>
+<br><br>
+
+<<person2>><<person>>笑了。"随你便，<<girl>>。我们就在附近。"他们疾驰小跑，从你身边骑过。
+<br><br>
+
+<<person1>>
+<<destination_farm_ride>>
+
+
+:: Farm Ride Aggro Faster
+<<effects>>
+
+你鞭策你的<<beasttype>>狂奔。雷米的打手试图跟上，马蹄在后面隆隆作响。
+<<if $thighskill gte random(400, 1400)>>
+	<span class="green">没跟上。</span>你把他们远远抛在后面。<<lstress>><<stress -6>>
+	<br><br>
+
+	<<destination_farm_ride>>
+<<else>>
+	<span class="red">你的马晃动着，</span>骑手追上你。其中一个，<<person2>><<person>>， <span class="red">向你的<<beasttype>>脖子上扔了一个套索</span>。<<He>>没套中，但又把绳子收了回去。<<gstress>><<stress 6>>
+	<br><br>
+
+	<<His>>的同事，一个<<person3>><<person>>，骑在你旁边，<span class="red">试图把你从马鞍上推下去。</span>
+	<br><br>
+
+	<span class="red">你的马快慌了。</span>它在马路上前后转弯。要想一直骑在马鞍上是很难的。
+	<br><br>
+
+	<<link [[击打离你最近的骑手|Farm Ride Punch]]>><</link>><<physiquedifficulty 1 16000>>
+	<br>
+	<<link [[抓住套索|Farm Ride Grab]]>><</link>><<skill_difficulty "$handskill" "手部技巧" 1 1000>>
+	<br>
+	<<link [[让你的马放心|Farm Ride Reassure]]>><</link>><<tendingdifficulty 1 1000>>
+	<br>
+<</if>>
+
+:: Farm Ride Aggro Confront
+<<effects>>
+
+你勒紧缰绳，转过身来面对接近的骑手。它们不会慢下来。其中一个，<<person2>><<person>>， <span class="red">向你的<<beasttype>>脖子上扔了一个套索</span>。<<He>>没抓住，但又把绳子卷了回去。<<gstress>><<stress 6>>
+<br><br>
+
+<<His>>的同事，一个<<person3>><<person>>，骑在你旁边，<span class="red">试图把你从马鞍上推下去。</span>
+<br><br>
+
+<span class="red">你的马快慌了。</span>它会自动旋转和疾驰，在马路上前后转弯。要想一直骑在马鞍上是很难的。
+<br><br>
+
+<<link [[击打离你最近的骑手|Farm Ride Punch]]>><</link>><<physiquedifficulty 1 16000>>
+<br>
+<<link [[抓住套索|Farm Ride Grab]]>><</link>><<skill_difficulty "$handskill" "手部技巧" 1 1000>>
+<br>
+<<link [[让你的马放心|Farm Ride Reassure]]>><</link>><<tendingdifficulty 1 1000>>
+<br>
+
+:: Farm Ride Punch
+<<effects>>
+
+<<if $physiqueSuccess>>
+	你一拳打在<<person3>><<person>>的脸上，<span class="green">把<<him>>从马鞍上撞下来。</span><<His>>的同事笑了，准备好套索再试一次。
+	<br><br>
+
+	<<link [[抓住套索|Farm Ride Grab 2]]>><</link>><<skill_difficulty "$handskill" "手部技巧" 1 1000>>
+	<br>
+	<<link [[让你的马放心|Farm Ride Reassure 2]]>><</link>><<tendingdifficulty 1 1000>>
+	<br>
+<<else>>
+	<span class="red"><<person>>抓住你的拳头，</span>把你从马鞍上拉下来。你倒在地上。<<ggpain>><<pain 8>>
+	<br><br>
+
+	你的马独自疾驰而去。这两个人追着它跑，把你扔在泥土里。<<llrespect>><<farm_horses -3>>
+	<br><br>
+
+	<<tearful>>你站了起来。
+	<br><br>
+
+
+	<<if $bus is "east">>
+		<<link [[继续|Farm Road 4]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Farm Road 3]]>><<endevent>><</link>>
+	<</if>>
+<</if>>
+
+
+:: Farm Ride Grab
+<<effects>>
+
+<<if $handskill gte random(1, 1000)>>
+	<<person2>><<person>>再次向你的<<beasttype>>投掷套索，<span class="green">但你抓住了它，</span>并将<<person2>><<person>>从<<his>>的座位上拉了下来。<<He>>摔倒在地。
+	<br><br>
+
+	<<His>>的同事笑了，又推了你一把。
+	<br><br>
+
+	<<link [[用拳猛击|Farm Ride Punch 2]]>><</link>><<physiquedifficulty 1 16000>>
+	<br>
+	<<link [[让你的马放心|Farm Ride Reassure 2]]>><</link>><<tendingdifficulty 1 1000>>
+	<br>
+<<else>>
+	<<person2>><<person>>再次向你的<<beasttype>>投掷套索。你想抓住它，但它绕在你的手腕上。<span class="red">骑手把你从马鞍上拉下来.</span><<ggpain>><<gstress>><<pain 8>><<stress 6>>
+	<br><br>
+	你的马独自疾驰而去。这两个人追着它跑，把你扔在泥土里。<<llrespect>><<farm_horses -3>>
+	<br><br>
+
+	<<tearful>>你站了起来。
+	<br><br>
+
+
+	<<if $bus is "east">>
+		<<link [[继续|Farm Road 4]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Farm Road 3]]>><<endevent>><</link>>
+	<</if>>
+<</if>>
+
+:: Farm Ride Reassure
+<<effects>>
+
+<<if $tendingSuccess>>
+	<<person1>>
+	你对着你的<<beasttype>>耳语了几句。<span class="green"><<bHe>>不再在马路上来回转弯，</span>更有把握地疾驰。
+	<br><br>
+
+	<<person2>><<person>>准备好套索准备再扔一次，而<<person3>><<person>>则试图再一次把你从马鞍上推下来。
+	<br><br>
+
+	<<link [[击打离你最近的骑手|Farm Ride Punch 2]]>><</link>><<physiquedifficulty 1 16000>>
+	<br>
+	<<link [[抓住套索|Farm Ride Grab 2]]>><</link>><<skill_difficulty "$handskill" "手部技巧" 1 1000>>
+	<br>
+<<else>>
+	<<person1>>
+	你对着你的<<beasttype>>的耳朵低声说了几句话，<span class="red">但是你的声音在颤抖。</span><<bHe>>用后腿站立，把你从马鞍上摔下来。<<ggpain>><<gstress>><<pain 8>><<stress 6>>
+	<br><br>
+	你的马独自疾驰而去。这两个人追着它跑，把你扔在泥土里。<<llrespect>><<farm_horses -3>>
+	<br><br>
+
+	<<tearful>>你站了起来。
+	<br><br>
+
+	<<if $bus is "east">>
+		<<link [[继续|Farm Road 4]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Farm Road 3]]>><<endevent>><</link>>
+	<</if>>
+<</if>>
+
+:: Farm Ride Punch 2
+<<effects>>
+
+<<if $physiqueSuccess>>
+	<<earnFeat "Into the Sunset">>
+	你一拳打在<<person3>><<person>>的脸上，<span class="green">把<<him>>从马鞍上撞下来。</span>
+	<br><br>
+
+	<span class="green">你已经控制了局面。</span>你策马向前，把雷米的打手远远甩在后面.<<lstress>><<stress -6>>
+	<br><br>
+	<<person1>>
+	<<destination_farm_ride>>
+<<else>>
+	<span class="red"><<person>>抓住你的拳头，</span>把你从马鞍上拉下来。你倒在地上。<<ggpain>><<pain 8>>
+	<br><br>
+
+	你的马独自疾驰而去。这两个人追着它跑，把你扔在泥土里。<<llrespect>><<farm_horses -3>>
+	<br><br>
+
+	<<tearful>>你站了起来。
+	<br><br>
+
+
+	<<if $bus is "east">>
+		<<link [[继续|Farm Road 4]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Farm Road 3]]>><<endevent>><</link>>
+	<</if>>
+<</if>>
+
+:: Farm Ride Grab 2
+<<effects>>
+
+<<if $handskill gte random(1, 1000)>>
+	<<earnFeat "Into the Sunset">>
+	<<person2>><<person>>再次向你的<<beasttype>>投掷套索，<span class="green">但你抓住了它，</span>并将<<person2>><<person>>从<<his>>的座位上拉了下来。<<He>>摔倒在地。
+	<br><br>
+	<span class="green">你已经控制了局面。</span>你策马向前，把雷米的打手远远甩在后面.<<lstress>><<stress -6>>
+	<br><br>
+	<<person1>>
+	<<destination_farm_ride>>
+<<else>>
+	<<person2>><<person>>再次向你的<<beasttype>>投掷套索。你想抓住它，但它绕在你的手腕上。<span class="red">骑手把你从马鞍上拉下来.</span><<ggpain>><<gstress>><<pain 8>><<stress 6>>
+	<br><br>
+	你的马独自疾驰而去。这两个人追着它跑，把你扔在泥土里。<<llrespect>><<farm_horses -3>>
+	<br><br>
+
+	<<tearful>>你站了起来。
+	<br><br>
+
+	<<if $bus is "east">>
+		<<link [[继续|Farm Road 4]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Farm Road 3]]>><<endevent>><</link>>
+	<</if>>
+<</if>>
+
+:: Farm Ride Reassure 2
+<<effects>>
+<<if $tendingSuccess>>
+	<<earnFeat "Into the Sunset">>
+	你对着你的<<beasttype>>耳语了几句。<span class="green"><<bHe>>不再在马路上来回转弯，</span>更有把握地疾驰。
+	<br><br>
+	<span class="green">你已经控制了局面。</span>你策马向前，把雷米的打手远远甩在后面.<<lstress>><<stress -6>>
+	<br><br>
+	<<person1>>
+	<<destination_farm_ride>>
+<<else>>
+	<<person1>>
+	你对着你的<<beasttype>>的耳朵低声说了几句话，<span class="red">但是你的声音在颤抖。</span><<bHe>>用后腿站立，把你从马鞍上摔下来。<<ggpain>><<gstress>><<pain 8>><<stress 6>>
+	<br><br>
+	你的马独自疾驰而去。这两个人追着它跑，把你扔在泥土里。<<llrespect>><<farm_horses -3>>
+	<br><br>
+	<<tearful>>你站了起来。
+	<br><br>
+	<<if $bus is "east">>
+		<<link [[继续|Farm Road 4]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Farm Road 3]]>><<endevent>><</link>>
+	<</if>>
+<</if>>
+
+:: Farm Hitchhike Accept
+<<effects>>
+
+你对<<person1>><<person>>微笑并接受<<his>>的提议。"很好，我不想让你困在这里。"<<He>>做手势让你坐在<<him>>旁边的乘客座位上。你打开门，告诉<<him>>你要去哪里，然后爬进去。
+<br><br>
+<<if random(1, 4) gte 4>>
+	你们两个进行着随意的对话。<<He>>问了你几个问题，关于你从哪里来又或者你今天有什么计划，但避开了任何过于私人的问题。整个旅程的大部分时间都是你盯着窗外，欣赏风景。你庆幸自己不用步行走这么远的路。
+	<br><br>
+	"我们到了。"<<He>>边说边把车停了下来，打断了你的思绪。这趟旅程比你所预料的要快得多。
+	<br><br>
+	你对<<him>>捎你一程表示感谢。当<<him>>开车离开时，你挥着手告别。
+	<br><br>
+	<<if $phase is 1>>
+		<<link [[继续|Harvest Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<<else>>
+		<<link [[继续|Farmland]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<</if>>
+<<else>>
+	<<generate2>>
+	你打开车门坐在<<person1>><<person>>旁边。刚一进去，你就听到身后有声音。你转过身却对上了<<person2>><<person>>的视线。立刻有双手从后面捂住了你的嘴。
+	<br><br>
+	当<<person1>><<persons>>解开<<his>>的安全带时，一个假笑在<<person1>><<persons>>脸上蔓延开来。"我希望你不介意我带了一个朋友来。"<<He>>紧紧地抓住了你，把你用力推进后座。
+	<br><br>
+	当<<person1>><<person>>扑向你时，<<person2>><<person>>把你固定住。"我们在这趟旅程中感到很无聊。让我们看看你能不能招待我们。"
+	<br><br>
+	<<link [[继续|Farm Hitchike Double Rape]]>><<set $molestationstart to 1>><</link>>
+<</if>>
+
+:: Farm Hitchhike Decline
+<<effects>>
+你摇摇头，向后退了几步。<<person1>><<person>>在摇回车窗之前恼怒地喘着气。
+"别浪费我的时间。"你可以听到<<he>>在再次开车离开之前喃喃自语。
+<br><br>
+<<destinationfarmroad>>
+
+:: Farm Hitchike Double Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Farm Hitchike Double Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Farm Hitchike Double Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Farm Hitchike Double Rape Finish
+<<effects>>
+<<pass 5>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	他们都结束了，把你留在车后面的空座位上。<<person1>><<person>>笑了。"真遗憾，我们只一起坐了这么短的车。"
+	<<person2>><<person>>在<<his>>这边打开门，抓住你的头发。<<He>>说道。"像你这样的荡妇正是我们要找的人。谢谢你给我们带来这么愉快的时光。"
+	休克会使你失去肺部所有的空气。你还没反应过来，<<he>>就把你推出了车。
+	<br><br>
+	你降落在地面上。接下来你听到的是车轮转动的声音。<<gpain>>
+	<br><br>
+	你需要一些时间来恢复精力并站起来。
+<<else>>
+	你把他们都击退了。抓住这个机会，你打开车门，下了车。
+	你的脚能跑多快就跑多快。不减速地回头看，你在检查那两个人是否在跟着你。
+	让你松一口气的是，这辆车正朝相反的方向行驶。<<trauma -1>><<ltrauma>>
+<</if>>
+<br><br>
+<<clotheson>>
+<<endcombat "phaseless">>
+<<if $phase is 1>>
+	<<link [[继续|Harvest Street]]>><<endevent>><<pass 1>><<set $eventskip to 1>><</link>>
+<<else>>
+	<<link [[继续|Farmland]]>><<endevent>><<pass 1>><<set $eventskip to 1>><</link>>
+<</if>>
+
+:: Farm Hitchhike Cost Accept
+<<effects>>
+
+你告诉那个<<person>>你要去哪里。<<He>>回答道。"就当是你的幸运日吧。那正是我要去的地方。上车吧，门没锁。"
+<br><br>
+你上了<<persons>>车，在关上门之前坐在副驾驶座位上。你们俩聊了一会儿，<<he>>飞快地瞥了你几眼，但<<his>>的眼睛大部分时间都在路上。你半靠在门上，等着两个人到达目的地。
+<br><br>
+过了一会儿，你通知<<he>>现在可以送你下车了。
+<br><br>
+"当然。"<<He>>把车停下来，"车费<<moneyGainDisplay 500>>。"
+<br><br>
+你困惑的看向<<him>>，而<<He>>则对你扬起眉毛，随后皱起<<his>>的眉头。"什么?你以为这趟车是免费的?"<<He>>按下一个按钮，你可以听到门锁的声音。"我不想重复我说过的话。付钱吧。"<<His>>握紧了方向盘。
+<br><br>
+<<if $money lt 50000>>
+	<<link [[说你负担不起|Farm Hitchhike Cost Robbed]]>><</link>>
+<<else>>
+	<<link [[支付|Farm Hitchhike Cost Pay]]>><<set $money -= 50000>><</link>>
+<</if>>
+<br>
+<<link [[拒绝|Farm Hitchhike Cost Molest]]>><<set $molestationstart to 1>><</link>>
+
+:: Farm Hitchhike Cost Robbed
+<<effects>>
+<<He>>盯着你。"把你的东西都给我，我们就算扯平了"，<<he>>说道。"还有你的衣服。我不会再说第二遍。"
+<br><br>
+<<link [[接受提议|Farm Hitchhike Cost Robbed 2]]>><<set $money to 0>><</link>>
+<br>
+<<link [[拒绝|Farm Hitchhike Cost Molest]]>><<set $molestationstart to 1>><</link>>
+
+:: Farm Hitchhike Cost Robbed 2
+<<effects>>
+<<tearful>>你接受了.<br>
+<<clothesstrip>>
+<<stealclothes>>
+<br>
+在满足之后，<<he>>打开门让你出去。
+<br><br>
+<<if $phase is 1>>
+	<<link [[继续|Harvest Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<<else>>
+	<<link [[继续|Farmland]]>><<endevent>><<set $eventskip to 1>><</link>>
+<</if>>
+
+:: Farm Hitchhike Cost Pay
+<<effects>>
+
+咬紧牙关，你把<<him>>要的钱付给<<he>>。<<He>>从你手中抢过钱，数了数。在满意之后，<<he>>打开了车门。 
+你毫不掩饰你的恼火，把门拉开，又在身后格外使劲地把它关上。<<stress 2>><<gstress>>
+<br><br>
+<<if $phase is 1>>
+	<<link [[继续|Harvest Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<<else>>
+	<<link [[继续|Farmland]]>><<endevent>><<set $eventskip to 1>><</link>>
+<</if>>
+
+:: Farm Hitchhike Cost Decline
+<<effects>>
+你摇摇头，告诉<<person>>你不感兴趣。
+<<He>>困惑地翘起眉毛。"你确定吗？这是一个很长的距离。但如果你想走路，就走吧。"<br>
+<<person>>在<<him>>将车窗摇回并开车离开时，不会放过你另一个眼神。
+<br><br>
+<<destinationfarmroad>>
+
+:: Farm Hitchhike Cost Molest
+<<if $molestationstart is 1>>
+	你告诉<<him>>你不付车费。
+	<<His>>的表情阴沉了下去，<<he>>随之从<<his>>的座位上向你冲来."你会付出代价的，我能想到一个代替付钱的办法。"
+
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Farm Hitchhike Cost Molest Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Farm Hitchhike Cost Molest]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Farm Hitchhike Cost Molest Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<person>>把你推开并咧嘴一笑。"如果你不愿意提供回报，就不要搭陌生人的车。"
+	<<He>>打开门，用力把你推出去。你几乎喘不过气来，绊了一跤，很快试图恢复平衡。
+<<else>>
+	最后一推，你把<<person>>甩开。
+	你抓住机会，急忙打开车门，以最快的速度冲出车外。
+	你甚至懒得关上身后的门，一直跑到车再也看不见了.<<trauma -1>><<ltrauma>>
+<</if>>
+<br><br>
+<<clotheson>>
+<<endcombat "phaseless">>
+<<if $phase is 1>>
+	<<link [[继续|Harvest Street]]>><<set $eventskip to 1>><</link>>
+<<else>>
+	<<link [[继续|Farmland]]>><<set $eventskip to 1>><</link>>
+<</if>>

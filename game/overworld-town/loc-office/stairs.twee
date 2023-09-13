@@ -1,0 +1,146 @@
+:: Office Stairwell
+<<location "office_building">><<effects>><<exposure>>
+你在<<checkfloor>>的楼梯间里。除了空调风扇的吹风声，楼梯间什么声音也没有。
+<br><br>
+由于楼梯间的门是从里面锁上的，唯一的出口在大厅，<<number $officeFloor>>下面的楼层。
+
+<<if $stress gte $stressmax>>
+	<<if isPlayerNonparasitePregnancyEnding()>>
+		<<pregnancyWatersBrokenPassout "office">>
+	<<else>>
+		<<officepassout>>
+	<</if>>
+<<else>>
+	<br><br>
+	<<link [[休息(0:05)|Office Stairwell Rest]]>><<pass 5>><<tiredness -2>><</link>><<ltiredness>>
+	<br>
+	<<if $officeFloor gt 10>>
+		<<link [[下降10层楼(0:08)|Office Stairwell Descend]]>><<pass 8>><<tiredness 10>><<set $stairSpeed to 10>><</link>><<ggtiredness>>
+		<br>
+	<</if>>
+	<<if $officeFloor gt 5>>
+		<<link [[下降5层楼(0:05)|Office Stairwell Descend]]>><<pass 5>><<tiredness 5>><<set $stairSpeed to 5>><</link>><<gtiredness>>
+		<br>
+	<</if>>
+	<<if $officeFloor lte 5>>
+		<<link [[下降到大厅(0:05)|Office Lobby]]>><<pass 5>><<tiredness 5>><</link>><<gtiredness>>
+		<br>
+	<</if>>
+<</if>>
+
+
+:: Office Stairwell Descend
+<<effects>>
+<<if $stairSpeed is 20>>
+	你开始走下令人筋疲力尽的楼梯井。你保持着轻快的步伐，但过了一会儿，你的腿和脚开始感到疲劳。你停下来歇口气。
+	<br><br>
+<<elseif $stairSpeed is 10>>
+	你走下楼梯。你保持着不错的步伐，但你的腿很快就开始疼痛。你停下来歇口气。
+<<else>>
+	你走下楼梯。你保持稳定的步伐，但在你的腿太累之前停下来喘口气。
+<</if>>
+<br><br>
+<<set $officeFloor -= $stairSpeed>><<unset $stairSpeed>>
+<<link [[继续|Office Stairwell]]>><</link>>
+
+:: Office Stairwell Rest
+<<effects>>
+你决定在继续下降前休息一下。
+<br>
+<<if $rng gte 90 - $officeFloor>>
+	当你喘口气的时候，你听到有人走近楼梯间的门。
+	<br>
+	"是啊，老板说台阶上有个裸奔者。我现在要去检查一下，"你听到一个保安在收音机里对某人说。
+	<br><br>
+	<span class="red">如果警卫看到你，你会有麻烦的!</span>
+	<br><br>
+	<<if $officeFloor lt 5>>
+		<<link [[直接跑到大厅(0:05)|Office Lobby]]>><<pass 5>><<tiredness 5>><</link>><<gtiredness>>
+		<br>
+	<<else>>
+		<<link [[跑下楼|Office Stairwell Run Down]]>><<tiredness 5>><</link>><<gtiredness>>
+		<br>
+	<</if>>
+	<<if $officeFloor lt 10>>
+		<<link [[跑上楼|Office Stairwell Run Up]]>><<tiredness 8>><</link>><<ggtiredness>>
+		<br>
+	<</if>>
+	<<link [[躲在门后|Office Stairwell Hide]]>><</link>>
+	<br>
+<<else>>
+	休息了几分钟后，你决定在别人进入楼梯井之前继续。
+	<br><br>
+	<<link [[继续|Office Stairwell]]>><</link>>
+<</if>>
+
+:: Office Stairwell Run Up
+<<effects>>
+你觉得往楼上跑更安全，于是你鼓起勇气开始往上爬。
+<br>
+"我要去楼上看看，"卫兵说着朝楼上走去。
+<br><br>
+<<set _ascendCount to random(1,3)>>
+"你走在前面，远离警卫的视线，他们最终在<span class="blue">_ascendCount</span>楼层数后放弃了。
+<br>
+"返回，这里没人，”警卫在使用通行证离开楼下的楼梯间前报告道。
+<<set $officeFloor += _ascendCount>>
+<br><br>
+<<link [[继续|Office Stairwell]]>><</link>>
+
+:: Office Stairwell Run Down
+<<effects>>
+你认为跑下楼更安全，所以你迅速开始下楼。
+<br>
+"嘿,你!站住!"卫兵从上面喊道。
+<br><br>
+<<if $officeFloor lt 7>>
+	<<link [[直接跑到大厅|Office Stairwell Escape]]>><</link>> <<ggsecurity>><<gggtiredness>>
+<<else>>
+	<span class="purple">如果大厅没有那么多楼层的话，你可能就能躲过安检了。</span>
+<</if>>
+<br><br>
+
+<<link [[静静地走|Office Security Escort]]>><</link>>
+
+:: Office Stairwell Escape
+<<effects>>
+你无视守卫，继续奔跑，但你担心这可能会在以后伤害你。<<ggsecurity>><<set $officecomplaints += 2>>
+<br><br>
+<<link [[大厅|Office Lobby]]>><<tiredness 10>><</link>>
+
+:: Office Stairwell Hide
+<<effects>>
+你决定躲在门后。门向外打开，警卫进入楼梯间。卫兵开始上楼，不知道你的存在。
+<br><br>
+你等了一会儿，确保你是安全的，然后从门口走开。
+<<if $rng gte 50>>
+	<<if $worn.upper.name isnot "naked">>
+		你感到腰部受到限制。你$worn.upper.cn_name_cap的一部分卡在门的合页上了!
+		<br><br>
+		你用尽全力去解放你的$worn.upper.cn_name_cap，但你得到的只有撕裂和眼泪。
+		<<tearful>><span class="lewd">你从衣服里走出来，把衣服挂在门口。</span>
+		<<upperruined>><<clothesruinstat>><<set $upperoff to 0>>
+	<<elseif $worn.lower.name isnot "naked">>
+		你感到腰部受到限制。你$worn.under_lower.cn_name_cap的一部分卡在门的合页上了!
+		<br><br>
+		你感到腰部受到限制。你$worn.lower.cn_name_cap的一部分卡在门的合页上了!
+		<<tearful>><span class="lewd">你从衣服里走出来，把衣服挂在门口。</span>
+		<<lowerruined>><<clothesruinstat>><<set $loweroff to 0>>
+	<<elseif $worn.under_upper.name isnot "naked">>
+		你感到你的<<breasts>>受到限制。$worn.under_upper.cn_name_cap的一部分卡在门的铰链上了!
+		<br><br>
+		你感到腰部受到限制。你$worn.under_upper.cn_name_cap的一部分卡在门的合页上了!
+		<<tearful>><span class="lewd">你从衣服里走出来，把衣服挂在门口。</span>
+		<<underupperruined>><<clothesruinstat>><<set $underupperoff to 0>>
+	<<elseif $worn.under_lower.name isnot "naked">>
+		你感到你的<<bottom>>受到限制。$worn.under_lower.cn_name_cap的一部分卡在门的铰链上了!
+		<br><br>
+		你用尽你所有的力量去解放你的$worn.under_lower.cn_name_cap，但是除了撕裂和眼泪，你什么都没有得到。
+		<<tearful>><span class="lewd">你从衣服里走出来，把衣服挂在门口。</span>
+		<<underlowerruined>><<clothesruinstat>><<set $underloweroff to 0>>
+	<</if>>
+<<else>>
+	你检查一下是否安全。
+<</if>>
+<br><br>
+<<link [[继续|Office Stairwell]]>><</link>>

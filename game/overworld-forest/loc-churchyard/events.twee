@@ -1,0 +1,551 @@
+:: Catacombs Squeeze
+<<effects>>
+
+你把手臂伸进缺口，四处摸索，直到找到可以抓住的东西，然后把自己拉进去。
+<br><br>
+<<if $physiquesize lte random(6000, 16000)>>
+	这需要一点扭动，<span class="green">但你设法把自己拉出来，</span>从瓦砾的另一边爬下来。<<small_text>>
+<<else>>
+	<span class="red">差距没有你想象的那么大。</span>你会到达另一边，
+	<<if $worn.upper.name isnot "naked">>
+		<<set $worn.upper.integrity -= 20>>
+		<<set _clothes_torn to true>>
+	<</if>>
+	<<if $worn.lower.name isnot "naked">>
+		<<set $worn.lower.integrity -= 20>>
+		<<set _clothes_torn to true>>
+	<</if>>
+	<<if $worn.under_upper.name isnot "naked">>
+		<<set $worn.under_upper.integrity -= 20>>
+		<<set _clothes_torn to true>>
+	<</if>>
+	<<if $worn.under_lower.name isnot "naked">>
+		<<set $worn.under_lower.integrity -= 20>>
+		<<set _clothes_torn to true>>
+	<</if>>
+	<<if _clothes_torn is true>>
+		你听见了衣服撕裂的声音。
+		<<integritycheck>>
+		<<exposure>>
+	<<else>>
+		但受了几处擦伤。<<gpain>><<pain 6>><<gstress>><<stress 6>>
+	<</if>>
+<</if>>
+<br><br>
+
+<<destination_catacombs skip>>
+
+:: Catacombs Detour
+<<effects>>
+
+你从来时的路走回去，试着走一条岔路。隧道蜿蜒曲折，直到你出现在瓦砾堆的另一边。
+<br><br>
+
+<<destination_catacombs skip>>
+
+:: Catacombs Tear
+<<effects>>
+
+<<if $physiqueSuccess>>
+	<span class="green">你把蜘蛛网从你身上扯下来。</span>有几根会粘在你身上，但不会有问题。
+<<else>>
+	你试图把蜘蛛网从你身上扯下来，但你越挣扎，<span class="red">它就越粘得紧，</span>直到你的手臂完全不能动。你不能在这里把它取出来。至少你的腿是自由的。
+	<<bind>>
+<</if>>
+<br><br>
+
+<<destination_catacombs skip>>
+
+:: Catacombs Save
+<<effects>>
+
+你稳住你的呼吸。你不可能从这里把网取下来，但你不会马上有危险。
+<br><br>
+
+<<bind>>
+
+<<destination_catacombs skip>>
+
+:: Catacombs Normal Plunder
+<<effects>>
+
+你在地下墓穴里寻找战利品，在角落和缝隙里寻找，踢开保险箱，在尘土飞扬的内部翻找。
+
+<<if $rng gte 81>>
+	你运气不好，虽然你找到了一些破布碎片。
+	<<if $worn.face.type.includes("blindfold")>>
+		它们可以用来给火炬加油，<span class="pink">但是你看不见。</span>
+	<<else>>
+		你加进了你的火炬.<<gtorch>><<catacombs_torch 10>>
+	<</if>>
+<<elseif $rng gte 61>>
+	你没有运气，直到你遇到一个保险箱，它的锁仍然完好无损。你把原始的设计做得很快。里面是一把失去光泽的银刃。不管它的刀柄是什么，它早就腐烂了。它也许值点钱。
+	<<set $antiquemoney += 60>><<museumAntiqueStatus "antiquesilverblade" "found">><<crimeup 60>>
+<<else>>
+	你发现了一枚铜币，它的表面受到腐蚀，上面的文字已经无法辨认。即便如此，博物馆馆长仍可能会买下它。
+	<<set $antiquemoney += 10>><<museumAntiqueStatus "antiquecoppercoin" "found">><<crimeup 10>>
+<</if>>
+<br><br>
+
+<<if $skulduggery lte 600>>
+	<<skulduggeryskilluse>>
+<</if>>
+
+<<destination_catacombs>>
+
+:: Catacombs Barrow Plunder
+<<effects>>
+
+你在废墟中寻找任何有价值的东西，跪着在破碎的保险箱留下的碎片中翻找。
+
+<<if $rng gte 81>>
+	你运气不好，虽然你找到了一些破布碎片。
+	<<if $worn.face.type.includes("blindfold")>>
+		它们可以用来给火炬加油，<span class="pink">但是你看不见。</span>
+	<<else>>
+		你加进了你的火炬.<<gtorch>><<catacombs_torch 10>>
+	<</if>>
+<<elseif $rng gte 61>>
+	你的手指摸到一些又冷又硬的东西。你把它从土里拽出来。腐蚀的银制高脚杯表面布满了线条，这是一幅复杂的雕刻作品。对于一个收藏家来说，它可能是有价值的。
+	<<set $antiquemoney += 60>><<museumAntiqueStatus "antiquesilvergoblet" "found">><<crimeup 60>>
+<<else>>
+	你感觉到一种橡胶般的质地，接着便从泥里拔出了一尊奇怪的偶像。非人的手臂从一具衰朽的骨架上垂落下来。即便如此，对博物馆馆长而言它仍然有着它的价值。
+	<<set $antiquemoney += 15>><<museumAntiqueStatus "antiquestrangefetish" "found">><<crimeup 15>>
+<</if>>
+<br><br>
+
+<<if $skulduggery lte 600>>
+	<<skulduggeryskilluse>>
+<</if>>
+
+<<destination_catacombs>>
+
+:: Catacombs Compound Plunder
+<<effects>>
+
+你打开旧的保险箱，避开由此产生的尘埃云。
+
+<<if $rng gte 81>>
+	<<if $worn.face.type.includes("blindfold")>>
+		它们可以用来给火炬加油，<span class="pink">但是你看不见。</span>
+	<<else>>
+		然而，你运气不好，尽管你确实找到了一些旧破布。你喂你的火炬.<<gtorch>><<catacombs_torch 10>>
+	<</if>>
+<<elseif $rng gte 61>>
+	保险箱一个个的全都空无一物，直到你瞥见一道的黄色金属的闪光。那是一枚金币，虽然被时间腐蚀了，但毫无疑问仍然贵重。一位久逝君主的脸庞正凝视着你。
+	<<set $antiquemoney += 100>><<museumAntiqueStatus "antiquegoldcoin" "found">><<crimeup 100>>
+<<else>>
+	你发现一枚银币，埋在被毁坏的碎片下面。
+	<<set $antiquemoney += 20>><<museumAntiqueStatus "antiquesilvercoin" "found">><<crimeup 20>>
+<</if>>
+<br><br>
+
+<<if $skulduggery lte 600>>
+	<<skulduggeryskilluse>>
+<</if>>
+
+<<destination_catacombs>>
+
+:: Catacombs Whispers Investigate
+<<effects>>
+
+你在黑暗中巡视，你的火把照亮道路，并没有发现什么危险。这都是你的幻觉，但你的脉搏并没有减慢。
+<br><br>
+
+<<destination_catacombs skip>>
+
+:: Catacombs Whispers Ignore
+<<effects>>
+
+你无视不断上升的恐惧，继续前行，提醒自己这一切都是想象出来的。这些声音不是真的。
+<br><br>
+
+<<if $willpowerSuccess>>
+	<span class="green">你的焦虑减轻了，</span>你松了一口气。
+<<else>>
+	你听到啪的一声，就在你身后，<span class="red">发现你的腿在全速奔跑。</span>你感觉到有什么东西，一个可怕的东西，就在你身后，和你的步伐一致。
+	<br><br>
+
+	你在黑暗中绊了一跤，跌倒在地上。在本能的驱使下，你尽可能地蜷缩起来。但是什么也没发生。追你的东西不见了。<<gpain>><<gtrauma>><<gstress>><<ltorch>><<pain 4>><<trauma 6>><<stress 6>><<catacombs_torch -5>>
+<</if>>
+<br><br>
+
+<<destination_catacombs skip>>
+
+:: Catacombs Sarcophagus Close
+<<effects>>
+
+你闭上眼睛，在隧道里蹒跚而行，直到你撞上一堵墙，差点摔倒在地，石棺至少离你很远。
+<br><br>
+
+<<destination_catacombs skip>>
+
+:: Catacombs Sarcophagus Find
+<<effects>>
+
+你折回去，找一条更长的路，不要有可怕的石棺。
+<<if $catacombs_torch gte 1>>
+	你的火炬在闪烁。
+<<else>>
+	黑暗向你袭来。
+<</if>>
+<br><br>
+
+<<destination_catacombs skip>>
+
+:: Catacombs Struggle
+<<effects>>
+
+<<if $struggle_start is 1>>
+	<<struggle_init>>
+	<<set $struggle.creature to "lurker">>
+	<<struggle_creatures 3 2>>
+	<<set $combat to 1>>
+	<<controlloss>>
+	<<violence 1>>
+	<<molested>>
+
+	<<unset $struggle_start>>
+<</if>>
+
+<<struggle>>
+
+<<if $struggle.done gte $struggle.number>>
+	<span id="next"><<link [[继续|Catacombs Struggle End]]>><</link>></span>
+<<else>>
+	<span id="next"><<link [[继续|Catacombs Struggle]]>><</link>></span>
+<</if>>
+
+:: Catacombs Struggle End
+<<effects>>
+
+生物们逃进了黑暗的深处。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<destination_catacombs skip>>
+
+:: Catacombs Goop Find
+<<effects>>
+
+你从来时的路转回去，寻找另一条路。你最终会找到一个。阴影在逼近。
+<br><br>
+
+<<destination_catacombs skip>>
+
+:: Catacombs Goop Wade
+<<effects>>
+
+你把一只脚伸进白色的泥里。它不透明、厚重、粘稠，比周围的空气更温暖。地面下沉得很深，你往下走，一直到你的腰部。
+<br><br>
+
+你趟过池塘，在对岸浮出水面。黏糊糊的丝线粘在你身上，你会在身后留下痕迹。
+<<waist_goo>>
+<br><br>
+
+<<destination_catacombs skip>>
+
+:: Catacombs Caught Run
+<<effects>>
+
+<<if $athleticsSuccess>>
+	你跑进黑暗中，左转，再右转，再右转。<span class="green">你很快就会在黑暗的隧道中失去他们。</span>
+	<br><br>
+	<<endevent>>
+	<<destination_catacombs skip>>
+<<else>>
+	你跑进黑暗中，先向左转，再向右转，然后又向右转，<span class="red">结果撞进了那个<<persons>>的怀里。</span>
+	<br><br>
+
+	"我还以为你会把我们甩掉呢?"<<he>>啧啧。"现在最好乖乖的。"
+	<br><br>
+
+	<<link [[战斗|Catacombs Caught Fight]]>><<set $fightstart to 1>><</link>>
+	<br>
+	<<link [[保持不动|Catacombs Caught Still]]>><</link>>
+<</if>>
+
+:: Catacombs Caught Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Catacombs Caught Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Catacombs Caught Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Catacombs Caught Fight Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	这两个人躺在地上，因高潮而筋疲力尽。你抓住了机会。<<tearful>>你逃进黑暗。在这个阴暗的迷宫里，他们是无法追踪到你的。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<destination_catacombs skip>>
+
+<<elseif $enemyhealth lte 0>>
+	两人倒在地上，护理受伤。你抓住了机会。<<tearful>>你逃进黑暗。在这个阴暗的迷宫里，他们是无法追踪到你的。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<destination_catacombs skip>>
+
+<<else>>
+	<<tearful>>你倒在地上。你伤得太重了，不能继续了。
+	<br><br>
+	<<link [[继续|Catacombs Caught Still]]>><</link>>
+<</if>>
+
+:: Catacombs Caught Still
+<<effects>>
+
+<<if $worn.face.type.includes("blindfold")>>
+	"戴着眼罩到处跑，"<<person2>><<person>>喃喃自语。"不是最锋利的工具，是吗?"
+	<br><br>
+
+	"我们可以把<<phim>>变成-"
+	<br><br>
+
+	"不。你能想象那些文书工作吗?"
+	<br><br>
+
+	这是你听到的最后一句话。你感到一块破布压在你的脸上，一切都变黑了。
+	<br><br>
+
+	<<endevent>>
+	<<passoutcatacombs>>
+	<br>
+<<else>>
+	"别动<<phim>>，"那个<<person>>说着，从口袋里抽出一段布料。<<He>>把它绑在你的头上，挡住了你的视线。
+	<br><br>
+
+	"现在不会有太大威胁了，"<<person1>><<person>>笑着说。"怎么了?"一双手臂把你转了几个圈，然后把你向前推。你差点晕头转向。
+	<br><br>
+
+	你不顾方向地走着，它们的笑声紧随着你。
+	<br><br>
+
+	<<facewear 5>>
+	<<clotheson>><<endcombat>>
+	<<destination_catacombs skip>>
+<</if>>
+
+:: Catacombs Tentacles
+<<effects>>
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $combat to 1>>
+	<<set $enemytype to "tentacles">>
+	<<molested>>
+	<<controlloss>>
+
+	<<tentaclestart 5 12 "tendril" "metal">>
+
+<</if>>
+
+<<statetentacles>>
+
+<<effects>>
+<<effectstentacles>>
+<<tentacles>>
+<<actionstentacles>>
+
+<<if $tentacles.active lte ($tentacles.max / 2)>>
+	<span id="next"><<link [[继续|Catacombs Tentacles Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Catacombs Tentacles]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Catacombs Tentacles Finish
+<<effects>>
+
+金属卷须失去活力，红灯闪烁。
+<br><br>
+
+<<tearful>>你继续穿过迷宫。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<destination_catacombs skip>>
+
+:: Catacombs Passout
+<<effects>>
+
+<<beastNEWinit 1 spider>>
+<<if $spiderdisable is "f">>
+	你醒来时头朝下，被一根粗丝线吊在天花板上。你扭动着，挣扎着。
+	<<if $monster is 1 or $bestialitydisable is "f">>
+		<<if $monster is 1>>
+			"好吧，好吧，"一个声音从黑暗中低吟而出。<span class="red">一只<<beasttype>>跳入眼帘，用饥渴的眼睛审视着你的身体。</span>
+			<br><br>
+
+			"我没有多少访客。"<<bhe>>说,<<bHe>>咯咯地笑着跟在后面。"我好饿。"<<bHe>>熟练地爬上蜘蛛网，直到<<bHe>>停在你上面。<<bHe>>向前倾，用<<bhis>>的舌头在你的脸颊上留下痕迹.<<ggstress>><<stress 12>>
+			<br><br>
+
+			"别那么害怕,"<<bhe>>说。"我想做另一顿饭。但首先，让我们确保你不会挣扎。"
+		<<else>>
+			<span class="red">你听到黑暗中传来的啾啾声，看到了八只眼睛。</span>一只巨大的蜘蛛爬过石头，爬上墙，轻轻地爬到网上.<<ggstress>><<stress 12>>
+		<</if>>
+		<br><br>
+
+		<<link [[继续|Catacombs Passout 2]]>><</link>>
+		<br>
+	<<else>>
+		<<bind>>
+		<<upperwear 104>>
+		<<facewear 5>>
+		<span class="red">你听到黑暗中有窃窃私语。</span>
+		<br><br>
+
+		<<endevent>>
+		你在疯狂的恐慌中连枷。蜘蛛网一圈又一圈地旋转，直到把你从头到脚都包裹起来，最后绳子断了。你逃进了黑暗中。<<beastescape>>
+		<br><br>
+
+		<<link [[继续|Catacombs Ridge]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<bind>>
+	<<upperwear 104>>
+	<<facewear 5>>
+	你醒来时头朝下，脚踝被一根粗绳子吊在天花板上。你扭动着，挣扎着，把网弄松了，直到最后落下.<<pass 20>><<beastescape>>
+	<br><br>
+
+	<<endevent>>
+	<<destination_catacombs skip>>
+<</if>>
+
+:: Catacombs Passout 2
+<<effects>>
+<<bind>>
+<<upperwear 104>>
+<<facewear 5>>
+<<beasttype>>让你转了一圈又一圈，给你的腿涂上了一层网。<<bHe>>作用于你的身体，使丝绸从你的骨盆、腰部一直到你的肩膀。它会让你头晕。
+<br><br>
+
+<<if $monster is 1>>
+	"还有一件事，"<<bhe>>说，最后一根丝线喷到你的眼睛上。"你应该保持。但首先——"<<bHe>>撕破一张网，露出你的<<genitals>>。
+	<br><br>
+
+	<<if playerChastity()>>
+		<<set $worn.genitals.integrity -= 100>>
+		<<if $worn.genitals.integrity lte 0>>
+			<<bHe>>抓住金属，扭曲它，<span class="pink">然后撕开它。</span>"现在是盛宴时间,"<<bhe>>舔<<bhis>>的嘴唇。
+			<<genitalsruined>>
+			<br><br>
+
+			<<link [[继续|Catacombs Passout 3]]>><</link>>
+			<br>
+		<<else>>
+			<<bHe>>用爪子抓金属。"太强硬了，"<<bhe>>承认。"现在。"
+			<br><br>
+
+			<<link [[继续|Catacombs Passout End]]>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		<<link [[继续|Catacombs Passout 3]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<bHe>>在你的眼睛上喷出最后一缕丝线。
+	<br><br>
+
+	<<link [[继续|Catacombs Passout End]]>><</link>>
+	<br>
+<</if>>
+<br><br>
+
+:: Catacombs Passout 3
+<<effects>>
+
+你能感觉到那个<<beasttype>>的呼吸在你的<<genitals>>上，然后是长长的、温暖的舌头。
+<<if $player.penisExist>>
+	它环绕着你的长度，轻轻抽吸，而尖端轻弹你的龟头。
+<<else>>
+	它环绕着你的阴蒂，轻轻地压迫它，而尖端在你的嘴唇之间放松。
+<</if>>
+<br><br>
+
+当<<bhe>>折磨你时，<<bHis>>的呼吸变得更加急促，<<bhe>>在期待中听起来几乎喘不过气来。这种感觉让你的头发竖起来，直到它变得难以忍受。
+<br><br>
+
+<<orgasm>>
+
+"美味"。<<bHe>>笑了。回声在你周围回响。"我把主菜留到以后再吃。"
+<br><br>
+
+<<link [[继续|Catacombs Passout End]]>><</link>>
+<br>
+
+:: Catacombs Passout End
+<<effects>>
+
+你听到<<bhim>>匆匆离去，然后一片寂静。
+<br><br>
+
+你用你的重量拉下悬挂在你身上的绳子，绳子被<<beasttype>>的编织松了。它稍微动一下，然后啪的一声，把你摔在地板上。
+<br><br>
+
+<<link [[继续|Catacombs Ridge]]>><<endevent>><</link>>
+<br>
+
+:: Catacombs Struggle Web
+<<effects>>
+
+<<if $rng gte 71>>
+	你在网里扭来扭去，<span class="green">设法把自己拉出来，</span>摔倒在地上，堆成一堆。绳子仍然粘在你身上，但你可以把自己从地板上拉起来。
+	<br><br>
+	<<destination_catacombs skip>>
+<<else>>
+	<<if $stress gte $stressmax>>
+		<<passoutcatacombs>>
+	<<else>>
+		你在网上扭来扭去，<span class="red">但没用。</span>黑暗降临了。
+		<br><br>
+		<<link [[斗争|Catacombs Struggle Web]]>><<pass 5>><<tiredness 1>><<stress 20>><<catacombs_torch -5>><</link>><<difficulty 30>><<gtiredness>><<gggstress>><<ltorch>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Catacombs Spider Look
+<<effects>>
+
+<<if $willpowerSuccess>>
+	你转过身来，看到一只大蜘蛛坐在你的肩膀上。它大约和你的拳头一样大。<span class="green">保持冷静，</span>你用拇指和食指抓住它，把它扔了。
+<<else>>
+	<span class="red">你的身体在恐慌中痉挛</span>在你有意识地意识到那个八条腿的生物坐在那里之前。你在空中跳起来，抖了抖肩膀，差点摔倒。<<lcontrol>><<control -10>><<ggstress>><<stress 12>>
+	<br><br>
+
+	当你再敢看的时候，那生物已经不见了。
+<</if>>
+<br><br>
+
+<<destination_catacombs skip>>
+
+:: Catacombs Spider Brush
+<<effects>>
+
+你拍了拍肩膀，感觉到一种令人作呕的重量。它重重地掉在了离你有些距离的地面上。你听到了它自己的腿发出的噼里啪啦的声音，它在继续爬行。
+<br><br>
+<<destination_catacombs skip>>

@@ -1,0 +1,355 @@
+:: Widgets Cabin [widget]
+<<widget "cabinothers">>
+	<<if $nextPassageCheck is "Eden Clearing">>
+		<span class="nextLink"><<link [[出去|Eden Clearing]]>><</link>></span>
+	<<elseif ($exposed gte 1 and !$daily.eden.exposed and Time.hour is 7) or ($exposed gte 1 and !$daily.eden.exposed and Time.hour is 8)>>
+		<<link [[出去|Eden Exposed]]>><<endevent>><</link>>
+	<<elseif $exposed gte 1 and !$daily.eden.exposed and Time.hour gte 17>>
+		<<link [[出去|Eden Exposed]]>><<endevent>><</link>>
+	<<else>>
+		<<link [[出去|Eden Clearing]]>><<endevent>><</link>>
+	<</if>>
+	<br><br>
+	<<link [[设置|Cabin Settings]]>><<endevent>><</link>>
+	<br>
+	<<attitudesControlCheck>>
+	<<if $attitudesControl.showGoldLink is true>>
+		<span class="goldLink"><<link [[态度|Attitudes]]>><<endevent>><<set $attitudesExitPassage to $passage>><</link>></span><span class="red">!!</span>
+	<<else>>
+		<<link [[态度|Attitudes]]>><<endevent>><<set $attitudesExitPassage to $passage>><</link>>
+	<</if>>
+	<br>
+<</widget>>
+
+<<widget "edenlust">>
+	<<if $exposed gte 1>>
+		<span class="lewd">伊甸一直在偷偷看你。</span><<glust>>
+		<<npcincr Eden lust 1>>
+		<br><br>
+	<</if>>
+<</widget>>
+
+<<widget "clearingactions">>
+	<<link [[进入小屋|Eden Cabin]]>><<endevent>><</link>>
+	<br><br>
+
+	<<link [[在门廊下休息 (0:15)|Eden Porch]]>><<stress -2>><<pass 15>><</link>><<lstress>>
+	<br><br>
+
+	<<if $edengarden is 0>>
+		<span class="purple">伊甸的庄稼被杂草扼杀了。</span>
+		<br>
+
+		<<link [[除草 (3:00)|Clearing Weeding]]>><<tending 1>><<pass 3 hours>><<tiredness 12>><<npcincr Eden love 1>><</link>><<gtiredness>><<glove>><<gtending>>
+		<br><br>
+	<<elseif $edengarden is 1>>
+		<span class="blue">伊甸的庄稼被杂草缠住了。</span>
+		<br>
+
+		<<link [[除草 (3:00)|Clearing Weeding]]>><<tending 1>><<pass 3 hours>><<tiredness 12>><<npcincr Eden love 1>><</link>><<gtiredness>><<glove>><<gtending>>
+		<br><br>
+	<<elseif $edengarden is 2>>
+		<span class="lblue">伊甸的杂草和蔬菜一样多。</span>
+		<br>
+
+		<<link [[除草 (3:00)|Clearing Weeding]]>><<tending 1>><<pass 3 hours>><<tiredness 12>><<npcincr Eden love 1>><</link>><<gtiredness>><<glove>><<gtending>>
+		<br><br>
+	<<elseif $edengarden is 3>>
+		<span class="teal">伊甸的庄稼田里几乎没有杂草，但还能变得更好一些。</span>
+		<br>
+
+		<<link [[除草 (3:00)|Clearing Weeding]]>><<tending 1>><<pass 3 hours>><<tiredness 12>><<npcincr Eden love 1>><</link>><<gtiredness>><<glove>><<gtending>>
+		<br><br>
+	<<elseif $edengarden is 4>>
+		<span class="green">伊甸的庄稼没有杂草。</span>
+		<br><br>
+	<</if>>
+
+	还有一些没有被伊甸利用的光秃秃的土地。
+	<br>
+	<<link [[观察|Eden Plots]]>><</link>>
+	<br><br>
+
+	<<if $edenshrooms is 0>>
+		<span class="purple">伊甸的蘑菇桶几乎空了。</span>
+		<br>
+
+		<<link [[寻找蘑菇 (1:00)|Clearing Mushrooms]]>><<pass 1 hour>><<npcincr Eden love 1>><</link>><<glove>>
+		<br><br>
+	<<elseif $edenshrooms is 1>>
+		<span class="blue">伊甸的蘑菇桶几乎空了。</span>
+		<br>
+
+		<<link [[寻找蘑菇 (1:00)|Clearing Mushrooms]]>><<pass 1 hour>><<npcincr Eden love 1>><</link>><<glove>>
+		<br><br>
+	<<elseif $edenshrooms is 2>>
+		<span class="lblue">伊甸的蘑菇桶半满了。</span>
+		<br>
+
+		<<link [[寻找蘑菇 (1:00)|Clearing Mushrooms]]>><<pass 1 hour>><<npcincr Eden love 1>><</link>><<glove>>
+		<br><br>
+	<<elseif $edenshrooms is 3>>
+		<span class="teal">伊甸的蘑菇桶快满了。</span>
+		<br>
+
+		<<link [[寻找蘑菇 (1:00)|Clearing Mushrooms]]>><<pass 1 hour>><<npcincr Eden love 1>><</link>><<glove>>
+		<br><br>
+	<<elseif $edenshrooms is 4>>
+		<span class="green">伊甸的蘑菇桶里装满了真菌。</span>
+		<br><br>
+	<</if>>
+
+	<<if $edenspring is 0>>
+		<span class="purple">泉水里满是断枝和浮木。</span>
+		<br>
+
+		<<link [[清理杂物 (0:30)|Clearing Debris]]>><<pass 30>><<tiredness 6>><<npcincr Eden love 1>><</link>><<gtiredness>><<glove>>
+		<br><br>
+	<<elseif $edenspring is 1>>
+		<span class="blue">泉底还是有一些沉底的枝条。</span>
+		<br>
+
+		<<link [[清理杂物 (0:30)|Clearing Debris]]>><<pass 30>><<tiredness 6>><<npcincr Eden love 1>><</link>><<gtiredness>><<glove>>
+		<br><br>
+	<<elseif $edenspring is 2>>
+		<span class="lblue">透过水面浮着的枝条你已经可以看到泉底了。</span>
+		<br>
+
+		<<link [[清理杂物 (0:30)|Clearing Debris]]>><<pass 30>><<tiredness 6>><<npcincr Eden love 1>><</link>><<gtiredness>><<glove>>
+		<br><br>
+	<<elseif $edenspring is 3>>
+		<span class="teal">小树枝浮在泉水表面</span>
+		<br>
+
+		<<link [[清理杂物 (0:30)|Clearing Debris]]>><<pass 30>><<tiredness 6>><<npcincr Eden love 1>><</link>><<gtiredness>><<glove>>
+		<br><br>
+	<<elseif $edenspring is 4>>
+		<span class="green">春光明媚。</span>
+		<br>
+
+		<<if !$edenspringintro and ((Time.hour gte 9 and Time.hour lte 10) or (Time.hour is 15) or (Time.hour is 16))>>
+			<<link [[在泉水中放松身心 (0:30)|Eden Spring Intro]]>><</link>><<lstress>>
+		<<else>>
+			<<link [[在泉水中放松身心 (0:30)|Clearing Spring]]>><<unset $edenpush>><<endevent>><<pass 30>><<stress -6>><</link>><<lstress>>
+		<</if>>
+		<br>
+		<<if $daily.eden.wash is undefined>>
+			<<link [["在泉水中洗伊甸的衣服(0:30)"|Wash Spring]]>><<pass 30>><<npcincr Eden love 1>><<npcincr Eden dom 1>><<set $daily.eden.wash to 1>><</link>>
+			<br>
+		<</if>>
+		<br>
+	<</if>>
+
+	<<if $edenfreedom gte 1>>
+		<<foresticon>><<link [[进入森林 (0:10)|Forest]]>><<endevent>><<pass 10>><<set $forest to 60>><</link>>
+		<br>
+	<<else>>
+		<<link [[逃脱|Eden Cabin Escape]]>><<set $forest to 80>><</link>>
+		<br>
+	<</if>>
+	<br>
+<</widget>>
+
+<<widget "clearingedenactions">>
+	伊甸瞥了你一眼。
+	<br><br>
+
+	<<if !$edenfurniture>>
+		<<link [[问伊甸能否买毯子和枕头|Eden Pillows]]>><</link>>
+		<br>
+	<<elseif $edenfurniture is 1 and $edenpillow is 2>>
+		<<link [[询问是否能取得窗帘和衣帽架|Eden Curtains]]>><</link>>
+		<br>
+	<<elseif $edenfurniture gte 2 and !$edencoat and $edencurtains is 2>>
+		<<link [[要求把大衣立起来(3:00)|Eden Coat Stand]]>><<set $edencoat to 1>><<pass 3 hours>><</link>>
+		<br>
+	<<elseif $edenfurniture is 2 and $edencurtains is 2 and $edencoat>>
+		<<link [[要一张双人沙发|Eden Loveseat]]>><</link>>
+		<br>
+	<<elseif $edenfurniture is 3 and $edenloveseat lt 7>>
+		<<link [[为双人沙发付出努力(3:00)|Eden Loveseat Work]]>><<pass 3 hours>><</link>>
+		<br>
+	<</if>>
+
+	<<if $worn.neck.collared isnot 1 and $NPCName[$NPCNameList.indexOf("Eden")].dom gte 100>>
+		<<link [[向伊甸要一个项圈|Eden Collar]]>><<npcincr Eden love 5>><<npcincr Eden lust 5>><<npcincr Eden dom 5>><</link>><<gglove>><<gglust>><<ggdom>>
+		<br>
+	<</if>>
+	<<if $edenspringintro is 1 and $daily.eden.springJoin isnot 1 and $edenspring is 4>>
+		<<link [[让伊甸加入你一起泡泉水|Eden Spring]]>><<set $daily.eden.springJoin to 1>><<stress -6>><<npcincr Eden love 1>><</link>><<lstress>><<glove>>
+		<br>
+	<</if>>
+	<<if $daily.eden.walk isnot 1>>
+		<<link [[请伊甸陪你到湖边|Eden Lake]]>><</link>>
+		<br>
+	<</if>>
+	<<if !$daily.eden.search or $daily.eden.search lt C.npc.Eden.love / 40>>
+		<<link [[让伊甸帮忙搜索森林(0:30)|Eden Search]]>><<set $daily.eden.search to ($daily.eden.search || 0) + 1>><</link>>
+		<br>
+	<</if>>
+	<br>
+
+	<<if Time.monthDay is 31 and $halloween_eden is 1 and $halloween_eden_bought is 1 and !$halloween_eden_candy_given>>
+		<<link [[给伊甸一个篮子|Eden Halloween]]>><<npcincr Eden love 5>><<npcincr Eden dom 1>><<set $halloween_eden_candy_given to 1>><</link>>
+		<br>
+	<</if>>
+
+	<<if Time.monthDay is 25 and $christmas_gift_eden is 1 and $christmas_gift_eden_given isnot 1>>
+		<<link [[给伊甸狩猎外套|Eden Jacket]]>><<npcincr Eden love 5>><<npcincr Eden dom 1>><<set $christmas_gift_eden_given to 1>><<set $edencoatjacket to 1>><</link>>
+		<br><br>
+	<</if>>
+
+	<<if $leftarm is "bound" or $rightarm is "bound" or $feetuse is "bound">>
+		<<link [[请伊甸解开你的束缚 (0:01)|Eden Bindings]]>><<pass 1>><<unbind>><</link>>
+		<br><br>
+	<</if>>
+
+	<<if $edenfreedom is undefined>>
+		<<link [[请求返回城镇的自由|Eden Freedom]]>><</link>>
+		<br>
+	<</if>>
+	<<if $edenfreedom is 1>>
+		<<link [[请求留在城镇的自由|Eden Freedom 3]]>><</link>>
+		<br>
+	<</if>>
+	<<if $edenshopping is 1>>
+		<<link [[给伊甸补给|Eden Supplied]]>><</link>>
+		<br>
+	<</if>>
+	<<if $edenradiointro is 1>>
+		<<link [[把收音机给伊甸|Eden Radio Intro]]>><</link>>
+		<br>
+	<</if>>
+	<<link [[离开|Eden Clearing]]>><<endevent>><</link>>
+	<br><br>
+<</widget>>
+
+<<widget "edenpreystart">>
+	<<if $weekly.edenPrey or random(1, 3) gte 2>>
+	/* do nothing */
+	<<else>>
+		/* Checks to see if the player has one of the main virginities intact, and if Eden can take it */
+		<<if ($player.penisExist and $player.virginity.penile is true and ($NPCList[0].vagina isnot "none" or $analdisable is "f")) or ($player.vaginaExist and $player.virginity.vaginal is true and $NPCList[0].penis isnot "none")>>
+			<<set _virginityPresent to true>>
+		<</if>>
+
+		/* Lowers amount of love and lust required if player is not a virgin or hasnt seen the event before */
+		<<if $edenPrey gte 1 and _virginityPresent>>
+			<<set _edenPreyPhase to 3>>
+		<<elseif $edenPrey gte 1>>
+			<<set _edenPreyPhase to 2>>
+		<<elseif _virginityPresent>>
+			<<set _edenPreyPhase to 1>>
+		<<else>>
+			<<set _edenPreyPhase to 0>>
+		<</if>>
+
+		<<switch _edenPreyPhase>>
+			<<case 0>>
+				/* no virginity, first time */
+				<<if $NPCName[$NPCNameList.indexOf("Eden")].love gte 85 and $NPCName[$NPCNameList.indexOf("Eden")].lust gte 50>>
+					<<set _edenPreyEvent to true>>
+				<</if>>
+			<<case 1>>
+				/* virginity intact, first time */
+				<<if $NPCName[$NPCNameList.indexOf("Eden")].love gte 75 and $NPCName[$NPCNameList.indexOf("Eden")].lust gte 40>>
+					<<set _edenPreyEvent to true>>
+				<</if>>
+			<<case 2>>
+				/* non-virgin, repeat event */
+				<<if $NPCName[$NPCNameList.indexOf("Eden")].love gte 125 and $NPCName[$NPCNameList.indexOf("Eden")].lust gte 70>>
+					<<set _edenPreyEvent to true>>
+				<</if>>
+			<<case 3>>
+				/* virgin, repeat event */
+				<<if $NPCName[$NPCNameList.indexOf("Eden")].love gte 100 and $NPCName[$NPCNameList.indexOf("Eden")].lust gte 60>>
+					<<set _edenPreyEvent to true>>
+				<</if>>
+		<</switch>>
+
+		<<if _edenPreyEvent>>
+			<<set $weekly.edenPrey to true>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "edenCagedSave">>
+	<<npc Eden>><<person1>>
+	在你有机会回忆之前，你感觉到一只手搭在你的肩膀上。你转过身来，与伊甸面对面，<<his>>的眼睛充满了愤怒。
+	<br><br>
+
+	"你胆子真大，"<<he>>咆哮道。"抛弃我，像个小屁孩一样，还指望我来救你这无助的小屁孩"
+	<br><br>
+
+	<<He>>紧紧抓住你的手腕，开始把你带进树林。"来吧。你早该受到惩罚了。"
+	<br><br>
+
+	<<link [[反抗|Forest Eden Rage]]>><<set $phase to 0>><<def 1>><<npcincr Eden dom -1>><</link>><<physiquedifficulty 2000 18000>><<ldom>>
+	<br>
+	<<link [[顺从 (0:30)|Forest Eden Rage]]>><<set $phase to 1>><<pass 30>><<sub 1>><<npcincr Eden dom 1>><</link>><<gdom>>
+	<br>
+<</widget>>
+
+<<widget "edenCagedCoopSave">>
+	<<npc Eden>><<person1>>
+
+	<<if $forest_shop_intro isnot 1 and $gwylan_rescue isnot 1>>
+		灰褐色的<<nnpc_gendery "Gwylan">>
+	<<else>>
+		格威岚
+	<</if>>
+	从树林里冲出来，跑到你身边。"嘿！你还好……"
+	<br><br>
+
+	<<if $gwylan_eden_coop gte 4>>
+		当有人抓住<<nnpc_He "Gwylan">>的手臂并将<<nnpc_him "Gwylan">>拉到一边时，<<nnpc_him "Gwylan">>被打断了。<span class="red">是伊甸。</span><<He>>看起来不太高兴见到你。
+		<br>
+		"你胆子真大，"伊甸咆哮道。"抛弃我，像个小屁孩一样，还指望我来救你这无助的小屁孩"
+		<br><br>
+
+		格威岚紧张地咽了一口唾沫，一只手搭在伊甸的肩膀上。"嘿，别紧张。让我们——"
+		<br><br>
+
+		伊甸转身一拳打在格威岚的下巴上。<<nnpc_He "Gwylan">>痛苦地大叫，摇摇晃晃地倒在泥土里.<<trauma 12>><<ggtrauma>>
+		<br>
+		"别碰我，"伊甸吐唾沫说道。"我不需要你的帮助。<<pshe>>也没有。"<<He>>怒视着你。"所有<<pshe>>需要的是学习<<pher>>的位置。"
+		<br><br>
+
+		<<He>>抓住你的手腕，开始把你拖进树林，留下格威岚。
+	<<elseif $gwylan_eden_coop gte 1>>
+		<<nnpc_He "Gwylan">>被伊甸推到一边，眼睛里充满了愤怒。<<nnpc_him "Gwylan">>大叫着，格威岚倒在地上。
+		<br>
+		"你胆子真大，"伊甸咆哮道。"抛弃我，像个小屁孩一样，还指望我来救你这无助的小屁孩"
+		<br><br>
+
+		格威岚看着，张着嘴。伊甸怒视着<<nnpc_him "Gwylan">>。"去。这是我和<<phim>>之间的事。"
+		<br>
+		格威岚看了你们俩一眼，表情混杂着担心和恐惧，然后慌忙站起来，匆匆走开了.<<trauma 6>><<gtrauma>>
+		<br><br>
+
+		伊甸转向你。"我告诉过你我会再找到你的，"<<he>>吐唾沫。"没有人能挡我的路。"<<He>>开始把你拖进树林。
+	<<else>>
+		<<nnpc_He "Gwylan">>被一只手抓住了，并把<<nnpc_him "Gwylan">>扔进了附近的灌木丛中。
+		<br><br>
+
+		<span class="red">是伊甸。</span>"我告诉过你我会再找到你的。"<<he>>咆哮着说，"没有人能挡我的路。"
+		<br><br>
+
+		<<He>>开始把你拖进树林，让你晕头转向
+		<<if $forest_shop_intro isnot 1 and $gwylan_rescue isnot 1>>
+			<<nnpc_gendery "Gwylan">>
+		<<else>>
+			店主
+		<</if>>
+		在你身后呻吟。
+	<</if>>
+	<<set $gwylan_aborted to 1>>
+	<br><br>
+
+	<<link [[反抗|Eden Caged Caught Resist]]>><<set $fightstart to 1>><<def 1>><</link>>
+	<br>
+	<<link [[试着拉开距离|Eden Caged Caught Pull]]>><<def 1>><<npcincr Eden dom -1>><</link>><<physiquedifficulty 2000 18000>><<ldom>>
+	<br>
+	<<link [[顺从 (0:30)|Eden Caged Caught]]>><<set $phase to 1>><<pass 30>><<sub 1>><<npcincr Eden dom 1>><</link>><<gdom>>
+	<br>
+<</widget>>

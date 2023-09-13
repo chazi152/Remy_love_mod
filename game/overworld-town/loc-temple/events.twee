@@ -1,0 +1,389 @@
+:: Temple Blessing
+
+<<temple_effects>><<effects>>
+你不知道如何准确地给予祝福，你在<<persons>>的头上挥动你的手. 这似乎让<<him>>感到满意.
+"谢谢你，孩子，"<<he>>说道，"主会保佑你的。"
+<br><br>
+"我也可以得到祝福吗？"在你身后的一个<<person2>><<person>>说道。
+<br><br>
+"还有我！"<<person3>><<person>>抢着说道，"我也想要你的天使魔法。"
+<br><br>
+你花了几分钟来祝福每一个请求你的人。
+<br><br>
+<<endevent>>
+<<link [[继续|Temple]]>><</link>>
+<br>
+
+:: Temple Blessing Refuse
+
+<<temple_effects>><<effects>>
+<<person1>><<person>>转身离开，失望但不失礼貌。
+<br><br>
+<<endevent>>
+<<link [[继续|Temple]]>><<endevent>><</link>>
+<br>
+
+:: Temple Garden Join
+
+<<temple_effects>><<effects>>
+你坐在其他信徒旁边的草地上。
+<<if $temple_rank is "initiate">>
+	他们很乐意你坐在旁边。你认出了一些学校的学生。
+<<else>>
+	由于你在神殿的名声，他们最初很警戒你，但你很快就说服了他们你没有恶意。
+<</if>>
+<br><br>
+<<if $weather is "rain">>
+	你和他们聊了一会儿，在一棵树的树枝底下避雨。
+<<elseif $weather is "snow">>
+	你和他们聊了一会儿，在一棵树的树枝底下避雪。
+<<elseif $weather is "clear">>
+	你和他们聊了一会儿，享受着温暖的阳光。
+<<else>>
+	你和他们聊了一会儿，享受着吹进附近森林的凉爽的风。
+<</if>>
+<br><br>
+<<link [[继续|Temple]]>><</link>>
+<br>
+
+:: Temple Garden Join Sydney
+
+<<temple_effects>><<effects>><<run statusCheck("Sydney")>>
+你坐在悉尼旁边的草地上。<<sydneyGreeting>><<if $sydneyromance is 1>><<He>>挨近了你，将<<his>>头枕在你的肩膀上。<<else>><<He>>微笑着看着你。<</if>>
+<<if $temple_rank is "initiate">>
+	他们很乐意你坐在旁边。你认出了一些学校的学生。
+<<elseif $temple_rank is undefined or $temple_rank is "prospective">>
+	因为你是个外人，他们最初很警戒你，但悉尼向他们保证你值得信任。<<if $sydneyromance is 1>>他们悄声谈论着你们的关系，但似乎对你很热情的样子。<</if>>
+<<else>>
+	由于你在神殿的名声，他们最初很警戒你，但悉尼向他们保证你没有恶意。
+<</if>>
+<br><br>
+<<if $weather is "rain">>
+	你和他们聊了一会儿，在一棵树的树枝底下避雨。
+<<elseif $weather is "snow">>
+	你和他们聊了一会儿，在一棵树的树枝底下避雪。
+<<elseif $weather is "clear">>
+	你和他们聊了一会儿，享受着温暖的阳光。
+<<else>>
+	你和他们聊了一会儿，享受着吹进附近森林的凉爽的风。
+<</if>>
+<br><br>
+他们开始离开，西尼也和他们一起。<<if $sydneyromance is 1>><<He>>在离开前在你脸颊上亲了一下。<</if>>"回去工作了，还远不到休息的时间<<if _sydneyStatus.includes("corrupt")>>，对坏蛋来说<<else>>，对虔诚的人来说<</if>>。"
+<br><br>
+<<link [[继续|Temple]]>><<endevent>><</link>>
+<br>
+
+:: Temple Garden Encourage
+
+<<temple_effects>><<effects>>
+<<set $temple_garden += 10>>
+你鼓励信徒们来帮忙整理花园。他们似乎没什么动力。你们开始干活，清理杂草和修剪树篱。很有成效，你们很快就能让花园变得更好看。
+<br><br>
+<<link [[继续|Temple]]>><<endevent>><</link>>
+<br>
+
+:: Temple Garden Encourage Sydney
+
+<<temple_effects>><<effects>>
+<<set $temple_garden += 15>>
+你鼓励信徒们来帮忙整理花园。他们似乎没什么动力，直到悉尼加入了你们。你们很快就能让花园变得更好看。
+<br><br>
+<<link [[继续|Temple]]>><<endevent>><</link>>
+<br>
+
+:: Temple Stairs Join
+
+<<temple_effects>><<effects>>
+你躲到楼梯下，坐在信徒们的旁边。
+<<if $temple_rank is "initiate">>
+	他们很高兴兄弟姐妹的加入。
+<<else>>
+	由于你在神殿的名声，他们最初很警戒你，但他们很快就变得热情起来。
+<</if>>
+<br><br>
+你们聊了一会。每当<<generate1>><<person1>><<monk>>走过时，你们就躲起来，很好玩。
+<br><br>
+<<endevent>>
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $danger gte (9900 - $allure)>>
+	你从楼梯下面出来。过了一会你听到身后传来脚步声。是其中一位信徒，一个<<generateyTemple 1>><<person1>><<person>>，追上了你。"你很可爱，" <<he>>说。<<He>>轻轻地握住了你的前臂。"我知道一个清静的地方，我们可以独处。"
+	<br><br>
+	<<link [[同意|Temple Stairs Sex Accept]]>><<grace -1>><</link>><<promiscuous2>><<lgrace>>
+	<br>
+	<<link [[拒绝|Temple Stairs Sex Refuse]]>><<grace 3>><</link>><<ggrace>>
+	<br>
+<<else>>
+	<<link [[继续|Temple]]>><</link>>
+	<br>
+<</if>>
+
+:: Temple Stairs Encourage
+
+<<temple_effects>><<effects>>
+<<set $temple_quarters += 10>>
+你鼓励信徒们来帮忙整理寝室。他们似乎没什么动力。你们开始干活，打扫灰尘，整理衣服。这很有成效，你们很快就能让寝室变得更漂亮。
+<br><br>
+<<link [[继续|Temple]]>><</link>>
+<br>
+
+:: Temple Stairs Sex Accept
+
+<<temple_effects>><<effects>>
+<<if $speech_attitude is "meek">>
+	"好，好吧，" 你说。"但是温柔点。"
+<<elseif $speech_attitude is "bratty">>
+	"我还以为你不会问了，" 你说。
+<<else>>
+	"只要你保持谨慎，" 你说。
+<</if>>
+<br><br>
+这个<<person>>握的更加用力了。<<he>>急切地拉着你沿着走廊走下一段楼梯。在左边有一扇敞开的门。里面有个大垫子。<<He>>把你推倒在上面。幸运的是，垫子很柔软。<<person>>压在你身上。
+<br><br>
+<<link [[继续|Temple Stairs Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+
+:: Temple Stairs Sex
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>><<promiscuity5>>
+	<<enable_rescue>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Temple Stairs Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Temple Stairs Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Temple Stairs Sex Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<person>>气喘吁吁地倒在你身上。"我打赌那些<<monks>>也会想干你的，"<<he>>说道。"多谢了，宝贝。"
+	<br><br>
+	<<person>>心满意足地离开了房间。为了以防万一，<<He>>先从拐角探出<<his>>脑袋来看看有没有人经过。<<tearful>>你跟上。
+	<br><br>
+<<elseif $enemyhealth lte 0>>
+	你把<<person>>推到另外一个大垫子上。他痛呼一声，看起来这个垫子里面填充的材料更硬。<<tearful>>你冲出房间，逃到楼梯上。
+	<br><br>
+<<elseif $rescue is 1 and $alarm is 1>>
+	你听到外面的楼梯传来雷鸣般的脚步声。这个人<<person>>尝试逃跑，但<<his>>脚被大垫子绊倒了。<<He>>摔倒在地。
+	<br><br>
+	<<generate2>><<person2>>一位<<monk>>冲进了房间，看了一眼现场，然后抓住了<<person1>><<persons>>的胳膊。"该守守规矩了，"<<person2>><<he>>愤怒地喊着。<<He>>瞪着你。"别以为你能逍遥法外，我已经盯上你了。"<<He>>把<<person1>><<person>>拖出房间。
+	<<lgrace>><<grace -1>>
+	<br><br>
+	<<tearful>>你爬上楼梯。
+	<br><br>
+<<else>>
+	<<person>>垂头丧气地退开你，离开了房间。为了以防万一，<<He>>先从拐角探出<<his>>脑袋来看看有没有人经过。<<tearful>>你跟上。
+	<br><br>
+<</if>>
+<<clotheson>>
+<<endcombat>>
+<<link [[继续|Temple]]>><</link>>
+
+:: Temple Stairs Sex Refuse
+
+<<temple_effects>><<effects>>
+<<if $speech_attitude is "meek">>
+	"但那是被禁止的！" 你说。这话比你预想中更有效果。<<person>>匆匆离开了。
+<<elseif $speech_attitude is "bratty">>
+	"你不该惹上麻烦，" 你说。 <<person>>离开了，看起来有点沮丧。
+<<else>>
+	"你也很可爱，" 你说。 "但我要努力遵守规矩。抱歉。" <<person>> 看起来很沮丧，但还是点了点头。
+<</if>>
+<br><br>
+<<endevent>>
+<<link [[继续|Temple]]>><</link>>
+<br>
+
+:: Temple Help
+
+<<temple_effects>><<effects>>
+你蹲下腰开始捡在地上的卷轴。你的行为鼓舞了旁边的信徒，<<he>>打起精神，也开始帮忙。有些卷轴滚了好长一段，还有很多需要从椅子下面够出来。尽管如此，你们还是设法把他们都捡起来了。
+<br><br>
+"谢谢你，" 这位信徒微笑地说。"我笨手笨脚的。" <<He>>停顿了片刻，然后，突然大胆地俯下身，在你脸上亲了一口。<<He>>在你反应过来前匆匆逃走了。
+<br><br>
+<<endevent>>
+<<link [[继续|Temple]]>><</link>>
+<br>
+
+:: Temple Donations
+
+<<set $outside to 1>><<set $location to "town">><<temple_effects>><<effects>>
+你加入队伍，排在一位<<person2>><<person>>后面。
+<br><br>
+<<person1>><<monk>>领你到多瑙河街，一间豪宅的门口。<<He>>按了门铃，然后<<person4>><<person>>回应了。
+<<if $rng gte 51>>
+	"救恩也太他妈贵了吧，"<<he>>嘟囔着，把<<his>>卡塞进了<<monk>>拿着的机器里。<<He>>输入<<his>>密码，取下了卡，二话不说地关上了门。
+	<br><br>
+	"<<Hes>>总是那样，"<<person1>><<monk>>一边说一边领着你和其他人回到街上。
+<<else>>
+	<<He>>门口的队伍，然后关上了门。
+	<br><br>
+	"有些人就是这样，"<<person1>><<monk>>嘟囔着，然后<<he>>领着你和其他人回到街上。
+<</if>>
+<br><br>
+<<pass 30>>
+之后去各家的流程基本上一样。有些人家比其他人家礼貌些。
+<<if currentSkillValue('skulduggery') gte 400>>
+	<span class="purple">你注意到<<monk>>在<<he>>靠近敲门时，会在每个门框上描个圣徽。</span>
+	<<gawareness>><<awareness 1>>
+<</if>>
+<br><br>
+<<link [[继续|Temple Donations 2]]>><</link>>
+<br>
+
+:: Temple Donations 2
+
+<<set $outside to 1>><<set $location to "town">><<temple_effects>><<effects>>
+<<pass 60>>
+你来到另一家门前。一位<<person5>><<person>>回应了敲门。<<person1>><<monk>>请求这家人捐款，还谈到了维护本地神殿的重要性。<<person5>><<person>>几乎没怎么听，但却一直盯着<<person2>><<person>>。
+<br><br>
+<<if $promiscuity gte 35>>
+	<<link [[拉起信徒的衬衫|Temple Donations Pull]]>><<famesex 5>><</link>><<promiscuous3>>
+	<br>
+<</if>>
+<<link [[等待|Temple Donations Still]]>><</link>>
+<br>
+
+:: Temple Donations Pull
+
+<<set $outside to 1>><<set $location to "town">><<temple_effects>><<effects>>
+
+你抓起这名信徒的长袍下摆，然后<span class="lewd">把它拉到<<his>>腰上面。</span><<Hes>>下面没穿<<if $pronoun is "m">>内衣<<else>>内裤<</if>>。
+<<promiscuity3>>
+
+这信徒尖声大叫，努力盖住自己的身体。其他的信徒要不避开了他们的眼，要不惊讶地盯着。<<person1>><<monk>>过来阻止你。
+<br><br>
+
+"等等！"<<person5>><<person>>说，从<<his>>口袋里拿出来一张卡。<<person1>><<monk>>犹豫了。
+<br><br>
+
+<<link [[更进一步|Temple Donations Take]]>><<famesex 5>><</link>><<promiscuous3>>
+<br>
+<<link [[放开这信徒|Temple Donations Release]]>><</link>>
+<br>
+
+:: Temple Donations Take
+<<set $outside to 1>><<set $location to "town">><<temple_effects>><<effects>>
+
+你用一只手扯起裙摆，然后用另一只手轻轻抚摸起<<person2>><<persons>>的<<if $NPCList[1].penis isnot "none" and !npcHasStrapon(1)>>$NPCList[1].penisdesc<<else>>小穴<</if>>。<<He>>只能被迫放弃把<<his>>袍子拉回去，转而试图用另外一条腿来遮住自己露出的部位——这显然不是什么好方法。
+<<promiscuity3>>
+
+<<if $NPCList[1].penis isnot "none" and !npcHasStrapon(1)>>
+	尽管<<his>>表示反对，但你感觉<<him>>还是在你的注视下变硬了。 看来你给那<<person5>><<person>>留下了深刻的印象。
+<<else>>
+	你分开<<persons>>的阴唇，让<<person5>><<person>>将里面看得更彻底。
+<</if>>
+这名初学者再次尖叫起来，并更加卖力地扭动身体. 那个<<person1>><<monk>>从<<his>>的昏迷中醒来.<<He>>把初学者从你身边拉开.
+<br><br>
+
+"不错，"<<person5>><<person>>笑着说："我想，这确实值得一捐。"
+<br><br>
+
+在回神殿的路上没有人说什么，但新成员却一路脸红。
+<br><br>
+
+<<endevent>>
+<<link [[继续|Temple]]>><</link>>
+<br>
+
+:: Temple Donations Release
+<<set $outside to 1>><<set $location to "town">><<temple_effects>><<effects>>
+
+你决定还是不要太残忍，你放开了那名新成员。<<person2>><<He>>慌忙地穿好衣服。<<person5>><<person>>失望地叹了口气，把<<his>>的卡收了起来。
+<br><br>
+
+在回神殿的路上没有人说什么，但新成员却一路脸红。
+<br><br>
+
+<<endevent>>
+<<link [[继续|Temple]]>><</link>>
+<br>
+
+:: Temple Donations Still
+<<set $outside to 1>><<set $location to "town">><<temple_effects>><<effects>>
+
+你等着<<person1>><<monk>>来做<<his>>的宣传。<<person5>><<person>>不是很感兴趣。<<person2>><<person>>盯着<<his>>的脚。
+<br><br>
+
+队伍回到了神殿。你不认为自己做了什么，但<<person1>><<monk>>似乎很高兴。
+<br><br>
+
+<<endevent>>
+<<link [[继续|Temple]]>><</link>>
+<br>
+
+:: Temple March Clink
+<<effects>>
+
+一个<<personsimple>>在经过时对你微笑<<he>>说. "我们的圣物很笨重,"<<he>>说. "谢谢你的关心，孩子."
+<<if $skulduggery gte 400>>
+	<span class="green">你能感觉到这是一个准备好的说辞。</span><<Hes>>在藏着什么。
+<</if>>
+<br><br>
+
+他们沿着一条通道行进，进入神殿的深处。
+<br><br>
+
+<<link [[继续|Temple]]>><<endevent>><</link>>
+<br>
+
+:: Temple March Encourage
+<<effects>>
+
+"谢谢你," 一个<<monk>>.<<He>>瞥了一眼周围. "我们顺利完成了我们的任务，我们现在该去祈祷."
+<br><br>
+
+他们消失在通往武器库的通道尽头。他们会在那里待上一段时间，清理鞭子上的污物。
+<br><br>
+
+<<link [[继续|Temple]]>><<endevent>><</link>>
+<br>
+
+:: Temple March Help
+<<effects>>
+
+你跟着<<monks>>走在武器库的通道中，帮助他们清洗鞭子上的战斗痕迹。
+<br><br>
+<<if $rng gte 81>>
+	"真是个巨大的怪物," 一个人说. "当然."
+	<br>
+	"那甚至不是一种常见的怪胎!" 另一个回答说. "那是一个婴儿!"
+<<elseif $rng gte 61>>
+	"他们差点抓到我了”，其中一人笑着说。
+	<br>
+	"如果不是因为我, 就会有." 这引起了一个争论.
+<<elseif $rng gte 41>>
+	"我装了六个，"一个人说。
+	<br>
+	"不，是七个！"另一个人回答道。
+<<elseif $rng gte 21>>
+	"比我刚来的时候还糟糕，"一个人说，"而且是糟糕多了。"
+	<br>
+	"过去的草地可比现在有生机"，另一位回答。
+<<else>>
+	"你认为枪支会更有效么？"一个人喃喃自语。
+	<br>
+	"我们已经够显眼的了，"另一个人回答道。
+<</if>>
+<br><br>
+"不要再谈论这种不合适的话题了"，一位年长的<<monk>>打断了他的话，"保持专注。" 他们一直保持沉默，直到武器被擦拭干净。
+<br><br>
+
+<<link [[继续|Temple]]>><<endevent>><</link>>

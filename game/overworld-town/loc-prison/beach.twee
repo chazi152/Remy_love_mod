@@ -1,0 +1,625 @@
+:: Prison Beach
+<<location "beach">><<set $outside to 1>><<effects>><<effects_prison>>
+
+你在监狱外的秘密海滩上，海浪十分汹涌。
+<<if $prison.watchers_friend is 2>>
+
+<<elseif $prison.schedule is "revolt">>
+	你听到了正在进行中的叛乱反抗。<<prison_attention 10>>
+<<else>>
+	来势汹汹的影子在头顶上盘旋。
+<</if>>
+<br><br>
+
+
+<<if (Time.hour is 12 or Time.hour is 14) and !$prison_wren_intro and $prison_wren_boat_intro is 1 and Time.weekDay is 6>>
+	<<npc "Wren">><<person1>>
+	一艘船停在岸边，伦恩从甲板下走出来。<<He>>跃过水面并跳到附近的一块岩石上， 然后弯下身子准备去捡一个箱子，但当<<He>>看到你时，<<he>>停下了手上的动作。
+	<br><br>
+	"你是个聪明的<<girl>>，"<<he>>盯着你，"我不应该感到惊讶，所以让我们把这个海滩作为我们两个人之间的秘密。"<<He>>提起了箱子，回到<<his>>的船上。
+	<br><br>
+
+	<<link [[继续|Prison Beach]]>><<endevent>><<unset $prison_wren_boat_intro>><</link>>
+	<br>
+<<else>>
+	<<if (Time.hour is 12 or Time.hour is 14) and !$prison_wren_intro and Time.weekDay is 6>>
+		<<npc "Wren">><<person1>>
+		伦恩在船上忙活着。
+		<br><br>
+		<<endevent>>
+	<<elseif Time.hour is 13 and !$prison_wren_intro and Time.weekDay is 6>>
+		伦恩的船在海滩附近停泊。
+		<br><br>
+	<<else>>
+
+	<</if>>
+
+	<<if Time.hour is 5>>
+		很快就要点名了。<span class="pink">如果你不尽快回到你的牢房，就会有麻烦。</span>
+		<br><br>
+	<</if>>
+
+	<<if $prison.schedule is "hunt">>
+		<<beastNEWinit 1 hawk>><<person1>>
+		一个<<beasttype>>向你飞来，<span class="red">伸出了它的爪子。</span>你惊慌失措地逃跑，企图避免<<bhis>>追捕。
+		<br><br>
+		<<bHe>>追着你进了隧道，潜入了院子之中。
+		<br><br>
+
+		<<link [[继续|Prison Yard]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		小鱼从浅而平静的泻湖中跃出。
+		<br>
+		<<if (Time.hour is 12 or Time.hour is 14) and !$prison_wren_intro and Time.weekDay is 6>>
+			<br>
+			<<link [[与伦恩交谈|Prison Beach Wren]]>><</link>>
+			<br>
+		<</if>>
+		<<if $leftarm is "bound" and $rightarm is "bound">>
+			<<if $worn.feet.type.includes("shackle")>>
+				<br>
+				<span class="blue">你不能在手臂被捆绑，腿被铐住的情况下游泳。</span>
+			<br><br>
+			<<else>>
+				<br>
+				<span class="blue">你不能在手臂被捆绑的情况下游泳。</span>
+			<br><br>
+			<</if>>
+		<<elseif $worn.feet.type.includes("shackle")>>
+			<br>
+			<span class="blue">你不能带着脚镣游泳。</span>
+			<br><br>
+		<<else>>
+			<<link [[练习游泳 (1:00)|Prison Beach Swim]]>><<pass 60>><<stress -6>><<tiredness 6>><</link>><<gtiredness>><<gswimming>><<lstress>>
+			<br><br>
+
+			<<link [[游离岛屿 (0:05)|Prison Beach Escape]]>><<pass 5>><</link>>
+			<br><br>
+		<</if>>
+		<<if $prison.yard_door is 1>>
+			<<link [[从隧道前往庭院 (0:01)|Prison Yard]]>><<pass 1>><<set $location to "prison">><</link>>
+			<br>
+		<<else>>
+			一条倾斜的隧道通向岛屿，<span class="blue">但里面有一扇锁着的门。</span>
+			<br>
+		<</if>>
+
+		<<if $prison.tunnel gte 120>>
+			<<link [[从隧道回牢房 (0:05)|Prison Tunnel Edge]]>><<pass 5>><<set $phase to 1>><<set $location to "prison">><</link>>
+			<br>
+		<</if>>
+		<<prison_map beach>>
+	<</if>>
+<</if>>
+
+:: Prison Beach Wren
+<<effects>>
+<<npc Wren>><<person1>>
+伦恩把一条腿搁在船舷上。"有什么我可以帮助你的吗？"<<he>>问道。
+<br><br>
+
+<<if $prison.wren_names is 2>>
+	<<link [[请求通行|Prison Beach Wren Lift]]>><</link>>
+	<br>
+<<elseif $prison.wren_names is 1>>
+	<<if $per_npc.scarred_inmate.name_known is 1 and $prison_wren_scarred isnot 1>>
+		<<link [[给出那位有疤痕的囚犯的名字|Prison Beach Wren Scarred]]>><<set $prison_wren_scarred to 1>><</link>>
+		<br>
+	<<elseif $prison_wren_scarred isnot 1>>
+		<span class="blue">伦恩想知道那个有疤痕的囚犯的名字。</span>
+		<br>
+	<</if>>
+	<<if $per_npc.relaxed_guard.name_known is 1 and $prison_wren_relaxed isnot 1>>
+		<<link [[给出那位松懈的守卫的名字|Prison Beach Wren Relaxed]]>><<set $prison_wren_relaxed to 1>><</link>>
+		<br>
+	<<elseif $prison_wren_relaxed isnot 1>>
+		<span class="blue">伦恩想知道那个松懈的守卫的名字。</span>
+		<br>
+	<</if>>
+	<<if $per_npc.veteran_guard.name_known is 1 and $prison_wren_veteran isnot 1>>
+		<<link [[给出那位老练的守卫的名字|Prison Beach Wren Veteran]]>><<set $prison_wren_veteran to 1>><</link>>
+		<br>
+	<<elseif $prison_wren_veteran isnot 1>>
+		<span class="blue">伦恩想知道那个老练的守卫的名字。</span>
+		<br>
+	<</if>>
+	<<if $per_npc.methodical_guard.name_known is 1 and $prison_wren_methodical isnot 1>>
+		<<link [[给出那位守纪的守卫的名字|Prison Beach Wren Methodical]]>><<set $prison_wren_methodical to 1>><</link>>
+		<br>
+	<<elseif $prison_wren_methodical isnot 1>>
+		<span class="blue">伦恩想要知道那位守纪的守卫的名字。</span>
+		<br>
+	<</if>>
+	<<if $prison_wren_relaxed is 1 and $prison_wren_scarred is 1 and $prison_wren_veteran is 1 and $prison_wren_methodical is 1>>
+		<<link [[告诉伦恩所有的名字|Prison Beach Wren Names]]>><<set $prison.wren_names to 2>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<link [[请求通过|Prison Beach Wren Ask]]>><<set $prison.wren_names to 1>><</link>>
+	<br>
+<</if>>
+<<link [[离开|Prison Beach]]>><<endevent>><</link>>
+<br>
+
+:: Prison Beach Wren Lift
+<<effects>>
+
+<<if $prison.watchers_friend is 2 or $prison.schedule is "revolt">>
+	伦恩抬起了头，"天气真好，"<<he>>看着天空，"我可以带你一程，带你带陆地上。不过这将是一次单程旅行，毕竟那些家伙警惕得很。"
+	<br><br>
+
+	<<if $prison.kylar is "solitary">>
+		你可以带上凯拉尔，但你需要等到<<nnpc_hes "Kylar">>从禁闭中出来才行。
+		<br><br>
+	<</if>>
+
+	<<if $prison.kylar is "active">>
+		<<link [[独自逃生 (0:30)|Prison Wren Escape]]>><<prison_end>><<prisoncrimeup>><<pass 30>><<prison_guards -40>><</link>><<crime>><<gggsuspicion>>
+		<br>
+		<<link [[与凯拉尔一起逃亡 (0:40)|Prison Kylar Escape]]>><<prison_end>><<prisoncrimeup>><<pass 40>><<prison_guards -40>><<npcincr Kylar rage -60>><<npcincr Kylar love 20>><</link>><<crime>><<gggsuspicion>><<ggglove>><<lllksuspicion>>
+		<br>
+	<<else>>
+		<<link [[逃跑 (0:30)|Prison Wren Escape]]>><<prison_end>><<prisoncrimeup>><<pass 30>><<prison_guards -40>><</link>><<crime>><<gggsuspicion>>
+		<br>
+	<</if>>
+
+<<else>>
+	伦恩指了指天空，<span class="blue">"我不能在这些鸟的眼皮子底下带你走。"</span><<he>>耸了耸肩，"躲在甲板后面也是不行的，与这些家伙搞好关系，或者分散他们的注意力，我们就可以逃走了。"
+	<br><br>
+	<<if $prison.kylar is "solitary">>
+		你可以带着凯拉尔，但你需要等到<<nnpc_hes "Kylar">>从禁闭室里释放出来。
+		<br><br>
+	<</if>>
+<</if>>
+
+<<link [[离开|Prison Beach]]>><<endevent>><</link>>
+<br>
+
+:: Prison Kylar Escape
+<<effects>>
+<<npc Kylar 2>><<person2>>
+你冲回监狱。
+<<if $prison.schedule is "revolt">>
+	你发现凯拉尔试图趁着骚乱闯入员工室。
+	<br><br>
+	<<if $worn.face.type.includes("gag")>>
+		"唔#&￥%*#！"你的嘴被塞着根本说不了话，只得着急地挥动着四肢。凯拉尔则在一旁微笑着看着你。
+		<br><br>
+		你放弃了，稍稍思索了一会儿，然后向<<him>>做了几个手势。
+		<<if $leftarm is "bound" and $rightarm is "bound">>
+			你在原地慢跑，然后对着凯拉尔歪头。<<he>>皱了皱眉头，困惑的喘着气。
+		<<else>>
+			你模仿开门的动作，用手指在手上走动。凯拉尔喘息道:
+		<</if>>
+		"你-你找到了逃跑的方法了？"<<he>>猛地跳了起来，"稍等，让我拿一下我的东西。"
+	<<else>>
+		<<if $speech_attitude is "meek">>
+			"我已经找到了逃出去的路，"你兴奋地抓住了<<he>>，"请-请跟我走。"
+		<<elseif $speech_attitude is "bratty">>
+			"我要离开这个鬼地方"，你耸了耸肩，"要不要来？"
+		<<else>>
+			"我已经找到了离开的方法，"你伸出了手，"你愿意跟我一起走吗？"
+		<</if>>
+		<br><br>
+		"和你一起走？当-当然，"凯拉尔一时间有些恍惚，"让我收拾一下。"
+	<</if>>
+	<br><br>
+
+	你在凯拉尔的牢房旁等候着。<<he>>钻入<<his>>的床下，然后从里面拿出一个帆布袋。"就这样吧，我们一起逃吧。"
+<<else>>
+	你发现凯拉尔正躺在<<his>>的床铺上。
+
+	<<if $worn.face.type.includes("gag")>>
+		"唔#&￥%*#！"你的嘴被塞着根本说不了话，只得着急地挥动着四肢。凯拉尔则在一旁微笑着看着你。
+		<br><br>
+		你放弃了，稍稍思索了一会儿，然后向<<him>>做了几个手势。
+		<<if $leftarm is "bound" and $rightarm is "bound">>
+			你在原地慢跑，然后对着凯拉尔歪头。<<he>>皱了皱眉头，困惑的喘着气。
+		<<else>>
+			你模仿开门的动作，用手指在手上走动。凯拉尔喘息道:
+		<</if>>
+		"你-你找到了逃跑的方法了？"<<he>>猛地跳了起来，"稍等，让我拿一下我的东西。"
+	<<else>>
+		<<if $speech_attitude is "meek">>
+			"我已经找到了逃出去的路，"你兴奋地抓住了<<he>>，"请-请跟我走。"
+		<<elseif $speech_attitude is "bratty">>
+			"我要离开这个鬼地方"，你耸了耸肩，"要不要来？"
+		<<else>>
+			"我已经找到了离开的方法，"你伸出了手，"你愿意跟我一起走吗？"
+		<</if>>
+		<br><br>
+		凯拉尔一下子站了起来。"和你一起？当-当然，让我去拿一下我的东西。"
+	<</if>>
+	<br><br>
+
+	<<He>>钻入<<his>>的床下，然后从里面拿出一个帆布袋。"就这样吧，让我们一起逃离这个地方吧。"
+<</if>>
+<br><br>
+
+<<link [[继续|Prison Kylar Escape 2]]>><</link>>
+<br>
+
+
+:: Prison Kylar Escape 2
+<<effects>>
+<<earnFeat "Not Meant to be Caged">>
+<<set $prison.kylar to 0>>
+<<npcset Kylar state "active">>
+伦恩在船上掌舵等候着，<<person1>><<He>>好奇地看向凯拉尔，"你不是-"
+<br>
+"闭嘴，"当你爬上船的时候，凯拉尔向伦恩啐了一口。"带我们离开。"
+<br>
+伦恩耸耸肩，将船驶向水面深处的浓雾。
+<br><br>
+<<prison_bondage_removal>>
+<<if _punishments_removed is true>>
+	<<He>>暂时松开了舵，然后在船舱下面翻找了一会儿后带着一箱工具出现。"别动，"<<he>>按住了你，"不把你这个拿下来，我就不会走。如果你掉进海里，我是绝不会原谅我自己的。"<<He>>很快就把你的捆绑工具拆了下来。
+	<br><br>
+<</if>>
+
+迷雾笼罩着船身，也笼罩着你们。凯拉尔紧紧地握住了你的手。
+<br><br>
+
+<<link [[亲吻|Prison Kylar Escape 3]]>><<set $phase to 2>><<npcincr Kylar love 15>><</link>><<kissvirginitywarning>><<ggglove>>
+<br>
+<<link [[拥抱|Prison Kylar Escape 3]]>><<set $phase to 1>><<npcincr Kylar love 5>><</link>><<gglove>>
+<br>
+<<link [[保持不动|Prison Kylar Escape 3]]>><<set $phase to 0>><</link>>
+<br>
+
+
+:: Prison Kylar Escape 3
+<<effects>>
+
+<<if $phase is 2>>
+	你抓住凯拉尔的另一只胳膊，然后深情吻住了<<person2>><<him>>。<<He>>沉醉于你的怀抱之中。<<takeKissVirginity "Kylar" `($kylarenglish gte 1?"loveInterest":"romantic")`>>
+	<br><br>
+<<elseif $phase is 1>>
+	你拥抱住了凯拉尔。雾气中的一些东西让<<person2>><<him>>有些紧张。
+<<else>>
+
+<</if>>
+
+<<if $transformationParts.traits.sharpEyes isnot "disabled">>
+	透过迷雾，隐约有岩石的顶尖漂浮在水面。伦恩似乎并不在意，轻松地绕过每一个阻碍。
+<<else>>
+	伦恩绕过看不见的岩石尖顶，就像刻入了记忆一般。你可以瞥见它们在两边，高耸入云。
+<</if>>
+<br><br>
+
+最后，这艘船抵达了对岸。
+
+<<if Time.dayState is "night">>
+	<<if $weather is "clear">>
+		你看见地平线上小镇的灯光，如同星星般在夜空中闪烁。
+	<<else>>
+		在那更远的远方，一片灰暗。
+	<</if>>
+<<else>>
+	你看到了地平线上的小镇。
+<</if>>
+<br><br>
+<<person1>>
+"还记得我说的吗？" 海浪拍打着船身，水花溅到了你们的脸上。"这已经是连续第三个安全路线了。"
+<br><br>
+
+<<link [[继续|Prison Kylar Escape 4]]>><</link>>
+<br>
+
+
+:: Prison Kylar Escape 4
+<<location "docks">><<effects>>
+
+船开的很快，海岸离你们越来越近。伦恩将船驶向码头。
+<br><br>
+
+"希望这对你们来说是个好的登陆点，"<<he>>把船靠在了码头，"我还有别的地方要去。"<<He>>笑着目送着你和凯拉尔一起上岸。
+<br><br>
+
+"希望很快见到你。"<<He>>最后看了你几眼，驶向后方的开阔水域，消失在了雾里。
+<br><br>
+
+<<person2>>"我有人要见，"<<he>>低着头，"谢...谢谢你。"
+<br><br>
+
+<<link [["询问" + $NPCList[1].pronouns.he + "是否会被警察发现"|Prison Kylar Escape Ask]]>><</link>>
+<br>
+<<link [[点头|Prison Kylar Escape Nod]]>><</link>>
+<br>
+
+:: Prison Kylar Escape Ask
+<<effects>>
+
+"我会没事的，"凯拉尔的声音很冷静，"他们上次给了我一个惊喜。"<<He>>盯着你看了一会儿，然后突然转身跑进了码头。
+<br><br>
+
+<<link [[继续|Docks]]>><<endevent>><</link>>
+<br>
+
+:: Prison Kylar Escape Nod
+<<effects>>
+
+你点点头。凯拉尔盯着你看了一会儿后突然转身跑进了码头。
+<br><br>
+
+<<link [[继续|Docks]]>><<endevent>><</link>>
+<br>
+
+:: Prison Wren Escape
+<<effects>>
+
+当你爬上船时，伦恩把锚拉起，打开了引擎。船只驶离岛屿，向着迷雾前进。
+<br><br>
+
+<<prison_bondage_removal>>
+<<if _punishments_removed is true>>
+	<<He>>暂时松开了舵，然后在船舱下面翻找了一会儿后带着一箱工具出现。"别动，"<<he>>按住了你，"不把你这个拿下来，我就不会走。如果你掉进海里，我是绝不会原谅我自己的。"<<He>>很快就把你的捆绑工具拆了下来。
+	<br><br>
+<</if>>
+
+"靠近点，"<<he>>看着海面，"我已经有一段时间没有撞到东西了，但我不想让你掉到海里。"<<He>>一只手掌舵，另一只则搭在你的肩上。
+<br><br>
+
+<<link [["靠在" + $NPCList[0].pronouns.him+ "身上"|Prison Wren Escape 2]]>><<set $phase to 0>><<npcincr Wren love 1>><</link>><<glove>>
+<br>
+<<link [[拉开距离|Prison Wren Escape 2]]>><<set $phase to 1>><</link>>
+<br>
+<<link [[保持不动|Prison Wren Escape 2]]>><<set $phase to 2>><</link>>
+<br>
+
+:: Prison Wren Escape 2
+<<effects>>
+<<earnFeat "Not Meant to be Caged">>
+<<if $phase is 0>>
+	你靠在伦恩身上。<<He>>把你紧紧地抱在怀里，然后笑了起来。"不要那么的轻易……"<<he>>向远方看去，"我更去喜欢追逐。"波涛翻涌，一阵浪花激来，雾气笼罩着这艘船。
+<<elseif $phase is 1>>
+	你拉开了距离，<<He>>笑了。"只要你能坚持住就好。"波涛翻涌，一阵浪花激来，雾气笼罩着这艘船。
+<<elseif $phase is 2>>
+	雾气笼罩着船身，你尽量不去动作。
+<</if>>
+<br><br>
+<<if $transformationParts.traits.sharpEyes isnot "disabled">>
+	透过迷雾，隐约有岩石的顶尖漂浮在水面。伦恩似乎并不在意，轻松地绕过每一个阻碍。
+<<else>>
+	伦恩绕过看不见的岩石尖顶，就像刻入了记忆一般。你可以瞥见它们在两边，高耸入云。
+<</if>>
+<br><br>
+
+最后，这艘船抵达了对岸。
+
+<<if Time.dayState is "night">>
+	<<if $weather is "clear">>
+		你看见地平线上小镇的灯光，如同星星般在夜空中闪烁。
+	<<else>>
+		在那更远的远方，一片灰暗。
+	<</if>>
+<<else>>
+	你看到了地平线上的小镇。
+<</if>>
+<br><br>
+
+"还记得我说的吗？" 海浪拍打着船身，水花溅到了你们的脸上。"这已经是连续第三个安全路线了。"
+<br><br>
+
+<<link [[继续|Prison Wren Escape 3]]>><</link>>
+<br>
+
+
+:: Prison Wren Escape 3
+<<location "docks">><<effects>>
+
+船开的很快，海岸离你们越来越近。伦恩将船驶向码头。
+<br><br>
+
+"我希望这对你来说是个好的登陆点，"<<he>>在码头停了下来。"我还有别的地方要去。"<<He>>笑了笑，目送着你上岸。
+<br><br>
+
+"希望很快见到你。"<<He>>最后看了你几眼，驶向后方的开阔水域，消失在了雾里。
+<br><br>
+
+<<link [[继续|Docks]]>><<endevent>><</link>>
+<br>
+
+
+:: Prison Beach Wren Ask
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	<<gagged_speech "你-你能带我一起走吗？">>你低下了头，<<gagged_speech "坐-坐你的船。">>
+<<elseif $speech_attitude is "bratty">>
+	<<gagged_speech "我想打个便车，">>你看着海面，<<gagged_speech "我要怎么做？">>
+<<else>>
+	<<gagged_speech "你能带我一起走吗？">>你看向了海面，<<gagged_speech "我会证明我有价值。">>
+<</if>>
+<<if $worn.face.type.includes("gag")>>
+	<<He>>笑了笑，似乎明白你想说什么。
+<</if>>
+<br><br>
+
+伦恩揉着下巴。"我需要一些东西，"<<he>>思考了一会，<span class="gold">"守卫的名字，</span>和一个囚犯的名字。<span class="gold">伤痕累累的那个，</span>名字在这里有价值。"
+<br><br>
+<<generate_anxious_guard 1>>
+<span class="lblue">"我已经有了焦虑的守卫的名字。"</span><<he>>咧嘴一笑。"所以不用考虑这个了，我打牌赢了那家伙，<<person2>><<He>>没有什么有价值的信息。"
+<br><br>
+
+<<link [[继续|Prison Beach]]>><<endevent>><</link>>
+<br>
+
+
+:: Prison Beach Wren Names
+<<effects>>
+
+
+<<unset $prison_wren_relaxed>>
+<<unset $prison_wren_scarred>>
+<<unset $prison_wren_veteran>>
+<<unset $prison_wren_methodical>>
+
+"很好，"伦恩拍了拍手。"你帮了大忙。"
+
+
+<<if $prison.watchers_friend is 2>>
+	<span class="green">"那些鸟似乎也没有因为你在这里而过于防备，"</span><<He>>看向天空，"你准备好了就告诉我"。
+<<elseif $prison.schedule is "revolt">>
+	<span class="green">"那些鸟没空管咱们，"</span><<He>>看向天空，"现在是时候了。"
+<<else>>
+	<<He>>指向了天空。 "<span class="blue">还有需要解决的东西，</span>就是那些鸟，躲在甲板后面是不行的——我试过一次。你必须让它们信任你，或者干脆分散它们注意。"
+<</if>>
+<br><br>
+
+<<link [[继续|Prison Beach]]>><<endevent>><</link>>
+<br>
+
+
+:: Prison Beach Wren Scarred
+<<effects>>
+
+<<generate_scarred_inmate 1>>
+伦恩点点头。"所以，那个有疤痕的人是<<scarred_inmate 1>>,"<<he>>揉着下巴，"我很想知道<<person2>><<he>>是如何得到这些伤疤的，但我不会去问。"
+<br><br>
+
+<<link [[继续|Prison Beach Wren]]>><<endevent>><</link>>
+<br>
+
+:: Prison Beach Wren Relaxed
+<<effects>>
+
+<<generate_relaxed_guard 1>>
+伦恩点点头："所以<<person2>><<his>>的名字是<<relaxed_guard 1>>，"<<he>>在思索着什么，"我本以为<<he>>会亲自告诉我，但<<hes>>并不像<<he>>看起来那样毫不在乎。"
+<br><br>
+
+<<link [[继续|Prison Beach Wren]]>><<endevent>><</link>>
+<br>
+
+
+:: Prison Beach Wren Veteran
+<<effects>>
+
+<<generate_veteran_guard 1>>
+伦恩点点头。"原来是<<veteran_guard 1>>，"<<he>>耸了耸肩，"我从未与<<person2>><<him>>交谈过。<<He>>似乎脾气很大。"
+<br><br>
+
+<<link [[继续|Prison Beach Wren]]>><<endevent>><</link>>
+<br>
+
+:: Prison Beach Wren Methodical
+<<effects>>
+
+
+<<generate_methodical_guard 1>>
+伦恩点点头。"所以戴眼镜的那个人叫<<methodical_guard 1>>，"<<he>>摇了摇头，<<person2>>"<<He>>表现得像个守规矩的人，但<<he>>很乐意做交易。" 伦恩皱着眉头思考。
+<br><br>
+
+<<link [[继续|Prison Beach Wren]]>><<endevent>><</link>>
+<br>
+
+
+:: Prison Beach Escape
+<<effects>>
+
+你涉水而出，直到一阵海浪将你掀起。起初，水是温和的,
+<<if currentSkillValue('swimmingskill') gte 1000>>
+	但你很快不得不挣扎着保持平衡。<span class="green">你与海浪争斗，直到水面再次平静。</span>
+	<br><br>
+	<<if $prison.schedule is "revolt">>
+		在你游泳的时候，一切顺利。<span class="green">观察者们被其他囚犯分散了注意力。</span>
+		<br><br>
+
+		<<link [[继续|Prison Beach Escape 2]]>><</link>>
+		<br>
+	<<elseif $prison.watchers_friend is 2>>
+		你听到翅膀拍打的声音。<<beastNEWinit 2 hawk>>两个<<beastsplural>>盘旋在你的上空，<span class="green">但随后便飞向了尖顶。</span>他们不会再干扰你了。
+		<br><br>
+
+		<<link [[继续|Prison Beach Escape 2]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		你听到翅膀的拍打声，<<beastNEWinit 2 hawk>><span class="red">一个<<beasttype>>俯冲向你。</span>你慌忙地躲在了水面之下，但<<bhis>>还是发现了你。爪子把你举到高空，扔回到了海滩上。<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+		<br><br>
+
+		<<link [[继续|Prison Beach]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<span class="red">你还没喘过气就被拖到了水面之下。</span>你踢打着作出可怜的挣扎，但无济于事。
+	<br><br>
+
+	路程很短，但足够让你胆战心惊。你被冲到了最初的地方。<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+	<br><br>
+
+	<<link [[继续|Prison Beach]]>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Prison Beach Escape 2
+<<set $location to "sea">><<effects>>
+<br><br>
+
+你继续游着，直到你到达环绕岛屿的雾环。这是一条不归路。
+<br><br>
+
+<<link [[逃跑 (0:30)|Prison Escape]]>><<prison_end>><<prisoncrimeup>><<pass 30>><<prison_guards -40>><</link>><<crime>><<gggsuspicion>>
+<br>
+<<link [[游回监狱 (0:05)|Prison Beach]]>><<pass 5>><</link>>
+<br>
+
+:: Prison Escape
+<<effects>>
+
+<<earnFeat "Not Meant to be Caged">>
+你孤注一掷游了出去，把这个该死的岛和它的监狱抛在身后。礁石在雾中隐约可见，虽然那对船只来说是危险的，但对你来说不是。
+
+
+<<prison_bondage_removal>>
+<<if _punishments_removed is true>>
+	你甚至能够用锯齿状的边缘来切割监狱的捆绑工具。
+<</if>>
+<br><br>
+
+尽管没有地标，但你相信你的感觉——自由就在前方。你一直游到最后，直到雾气散去。
+<<if Time.dayState is "night">>
+	<<if $weather is "clear">>
+		小镇出现在地平线上，在黑夜中闪烁着。
+	<<else>>
+		更远的远方一片灰暗。
+	<</if>>
+<<else>>
+	小镇出现在地平线上。
+<</if>>
+<br><br>
+
+<<link [[继续|Sea]]>><<set $sea to 100>><</link>>
+<br>
+
+
+:: Prison Beach Swim
+<<effects>>
+
+<<if $exposed lt 2>>
+	你脱掉衣服，在湖里游泳。
+<<else>>
+	你在湖的周围游泳。
+<</if>>
+<<strip>>
+<<water>>
+
+<<if $rng gte 81>>
+	小鱼们与你保持着距离。
+<<elseif $rng gte 61>>
+	小鱼从你身上跃过。
+<<elseif $rng gte 41>>
+	海藻的抚摸着你的肚子。
+<<elseif $rng gte 21>>
+	几块鹅卵石从周围的岩石上滚落下来，激起一阵水花。
+<<else>>
+	巨浪打破了湖内的宁静。
+<</if>>
+
+<<swimmingskilluse>>
+<br><br>
+
+<<link [[继续|Prison Beach]]>><<clotheson>><</link>>
+<br>

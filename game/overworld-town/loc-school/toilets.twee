@@ -1,0 +1,597 @@
+:: School Toilets
+
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<unset $changingRoomGender>>
+
+你待在学校前厅里，身旁是厕所。
+<br><br>
+<<if $stress gte $stressmax>>
+	<<link [[你眼前一黑…|School Passout]]>><</link>>
+<<else>>
+	<<maleicon>><<link [[男厕|School Boy's Toilets]]>><</link>>
+	<br>
+	<<femaleicon>><<link [[女厕|School Girl's Toilets]]>><</link>>
+	<br><br>
+	<<if $historytrait gte 2 and $schooldrainintro isnot 1>>
+		<<link [[直通下水道的秘密隧道（0:02）|School Drain]]>><<pass 2>><</link>>
+		<br><br>
+	<<elseif $historytrait gte 2>>
+		<<link [[直通下水道的秘密隧道 (0:02)|Commercial Drain]]>><<pass 2>><</link>>
+		<br><br>
+	<</if>>
+	<<if $brothel_basement_intro is 1>>
+		<<if $promiscuity gte 55>>
+			<<link [[在靠前的隔间设置寻欢洞|School Gloryhole Start]]>><</link>><<promiscuous4>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<link [[离开厕所(0:01)|Hallways]]>><<pass 1>><</link>>
+	<br>
+<</if>>
+
+:: School Toilets Hiss
+
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+你对着<<beasttype>>发出嘶嘶声。而<<bHe>>在背对着你的同时将<<bhis>>的耳朵向后倾着。你盯着<<bhim>>，发出深沉的喵喵声。<<bHe>>用咆哮着回应你，但<<bhis>>脸上的表情已经放松了下来。<<bHe>>跳到窗台上，跑到窗台另一边后就消失了。
+<br><br>
+<<if $changingRoomGender is "boys">>
+	<<link [[继续|School Boy's Toilets]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	<<link [[继续|School Girl's Toilets]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: School Toilets Cat
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $enemytrust -= 40>>
+	<<set $NPCList[0].stance to "top">><<set $head to "grappled">>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|School Toilets Cat Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|School Toilets Cat]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: School Toilets Cat Finish
+
+<<set $outside to 0>><<set $location to "school">><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+	<<beasttype>>发出满意地咕哝声，随后跳出窗户，让你一个人躺在地板上。
+	<br><br>
+	<<tearful>>你站了起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<if $changingRoomGender is "boys">>
+		<<link [[继续|School Boy's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|School Girl's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<<elseif $enemyhealth lte 0>>
+	<<beasttype>>尖叫着从窗户逃走。
+	<br><br>
+	<<tearful>>你站了起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<if $changingRoomGender is "boys">>
+		<<link [[继续|School Boy's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|School Girl's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: School Toilets Encounter
+
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<if $phase is 1>>
+	你告诉他们你进错房间了，然后在你遇到麻烦之前一边道歉一边退出房间。
+	<br><br>
+	<<endevent>>
+	<<link [[继续|School Toilets]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<elseif $phase is 2>>
+	"哦，我走错房间了？"你走向<<person1>><<person>>，尽可能靠近的同时而不触碰到<<him>>。 "幸亏你在这里。我应该在有人利用我的愚蠢之前离开。"
+	<br><br>
+	"不、不，没关系，"<<person>>在说着的同时将视线挪开了，同时你注意到<<his>>脸红了。 "我们会避开你的。"在说完后他们离开了房间，尽管<<person2>><<person>>是被<<his>>拽着手腕拉走的。
+	<<promiscuity1>>
+
+	<<endevent>>
+	<<link [[继续|School Toilets]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: School Toilets Sex
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>>
+	你径直走到<<person>>跟前，把手放在<<his>>腹股沟上。"我真傻，我想我应该受到惩罚，不是吗？"
+	<<promiscuity2>>
+	<<enableSchoolRescue "Whitney">>
+<</if>>
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $consensual to 0>>
+	<<controlloss>>
+	<<neutral 1>>
+	<<maninit>>
+	<<molested>>
+	隔间的门打开了，<<person1>><<person>>将你拖到了<<his>>的朋友等待着的地方。
+	<br><br>
+	<<enableSchoolRescue "Whitney">>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|School Toilets Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|School Toilets Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: School Toilets Sex Finish
+
+<<effects>>
+<<if $finish is 1>>
+	<<person3>><<person>>看起来很不高兴，因为另外两个人把<<him>>从你身边拉开。<<tearful>>你向他们挥手告别。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<if $changingRoomGender is "boys">>
+		<<link [[继续|School Boy's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|School Girl's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<if $consensual is 1>>
+		三人在整理衣服时，都在避免接触对方的目光。<<tearful>>你向他们挥手告别。
+		<br><br>
+	<<else>>
+		<<person1>><<person>>将你推倒在地，他们三个笑着离开，只留你一个人躺在地上。<<tearful>>你挣扎着站起来。
+		<br><br>
+	<</if>>
+	<<clotheson>>
+	<<endcombat>>
+	<<if $changingRoomGender is "boys">>
+		<<link [[继续|School Boy's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|School Girl's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<<elseif $enemyhealth lte 0>>
+	三人因为吃痛而后退，这给了你逃跑的机会。<<tearful>>你逃离了房间。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|School Toilets]]>><<set $eventskip to 1>><</link>>
+<<else>>
+	<<set $rescued += 1>>
+	当有人冲进房间时，<<group>>抬起了头。是惠特尼。
+	<<if ($changingRoomGender is "boys" and $NPCName[$NPCNameList.indexOf("Whitney")].pronoun isnot "m") or ($changingRoomGender is "girls" and $NPCName[$NPCNameList.indexOf("Whitney")].pronoun isnot "f")>>
+		当<<print $changingRoomGender is "boys" ? "他们" : "她们">>在<<print $changingRoomGender is "boys" ? "男" : "女">>厕所里看到<<nnpc_gendery "Whitney">>时吓了一跳，但<<nnpc_he "Whitney">>无视了<<print $changingRoomGender is "boys" ? "他们" : "她们">>。随后<<nnpc_He "Whitney">>把你抓住并拖到了外面。
+	<<else>>
+		<<nnpc_He "Whitney">>在其他人作出反应之前抓住你并将你拖到外面。
+	<</if>>
+	<br><br>
+
+	<<silently>>
+	<<if $changingRoomGender is "boys">>
+		<<storeactions "schoolboys">>
+		<<if _temp_clothes_present is 1>>
+			<<storeon "schoolboys" "delete">>
+		<</if>>
+	<<else>>
+		<<storeactions "schoolgirls">>
+		<<if _temp_clothes_present is 1>>
+			<<storeon "schoolgirls" "delete">>
+		<</if>>
+	<</if>>
+	<</silently>>
+	<<if _temp_clothes_present is 1>>
+		在出去的途中你无法找回你的衣服。
+		<br><br>
+	<</if>>
+
+	<<clotheson>>
+	<<endcombat>>
+	<<npc Whitney>><<person1>>
+
+	<<link [[继续|Whitney Rescue 2]]>><<set $whitneyRescueExit to "hallways">><</link>>
+	<br>
+<</if>>
+
+:: School Toilets Clothes
+
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<if $phase is 1>>
+	<<if $changingRoomGender is "boys">>
+		<<storeon "schoolboys" "delete">>
+	<<else>>
+		<<storeon "schoolgirls" "delete">>
+	<</if>>
+	你听见有人带着你的衣服离开了房间。
+	<br><br>
+	<<endevent>>
+	<<if $changingRoomGender is "boys">>
+		<<link [[继续|School Boy's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|School Girl's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<<elseif $phase is 2>>
+	你喊了出来。"等等！那些衣服是我的！"你听见脚步声停下了。
+	<br><br>
+	<<if $player.gender_appearance is "f" and $changingRoomGender is "boys">>
+		<<person1>><<person>>说道："这里是不允许女孩子进来的，把门打开吧。"
+		<br><br>
+		<<link [[开门|School Toilets Sex]]>><<set $molestationstart to 1>><</link>>
+		<br>
+		<<if $speech_attitude is "bratty">>
+			<<link [[让那个家伙丢过来|School Toilets Clothes]]>><<set $phase to 4>><</link>>
+			<br>
+		<<else>>
+			<<link [[恳求丢过来|School Toilets Clothes]]>><<set $phase to 5>><</link>>
+			<br>
+		<</if>>
+	<<elseif $player.gender_appearance is "m" and $changingRoomGender is "girls">>
+		<<person1>><<person>>说道："这里是不允许男孩子进来的，把门打开吧。"
+		<br><br>
+		<<link [[开门|School Toilets Sex]]>><<set $molestationstart to 1>><</link>>
+		<br>
+		<<if $speech_attitude is "bratty">>
+			<<link [[让那个家伙丢过来|School Toilets Clothes]]>><<set $phase to 4>><</link>>
+			<br>
+		<<else>>
+			<<link [[恳求丢过来|School Toilets Clothes]]>><<set $phase to 5>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		<<person1>><<person>>说道："哦？如果我把它们还给你的话，你会为此做什么？"
+		<br><br>
+		<<if $promiscuity gte 15>>
+			<<link [[用你的身体做报酬|School Toilets Sex]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<</if>>
+		<<if $money gte 1500>>
+			<<link [[为此付钱 (£15)|School Toilets Clothes]]>><<set $money -= 1500>><<set $phase to 3>><</link>>
+			<br>
+		<</if>>
+		<<if $speech_attitude is "bratty">>
+			<<link [[让那个家伙丢过来|School Toilets Clothes]]>><<set $phase to 4>><</link>>
+			<br>
+		<<else>>
+			<<link [[恳求丢过来|School Toilets Clothes]]>><<set $phase to 5>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<<elseif $phase is 3>>
+	你从门缝底下塞了点钱过去，在等了一会后，<<person>>继续说道。 "很好。我像我会把它们留在找到它们的地方，走吧。"你听到他离开了房间。
+	<br><br>
+	当那个人走后，你打开隔间门往外看。果然，你的衣服就在之前的地方。
+	<br><br>
+	<<endevent>>
+	<<if $changingRoomGender is "boys">>
+		<<link [[继续|School Boy's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|School Girl's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<<elseif $phase is 4>>
+	"听着，"你说道，"你尽可以拿走我的东西，但我会找到你，然后把一根铁钉塞进你那没用的屁眼里。"
+	<br><br>
+	你语气中的某些东西确实影响到了他们。"冷静点，你这个该死的疯子。我们只是在和你开玩笑。"当他们走后，你往隔间门外看，你的衣服依旧安全地躺在你放置的地方。
+	<br><br>
+	<<endevent>>
+	<<if $changingRoomGender is "boys">>
+		<<link [[继续|School Boy's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|School Girl's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<<elseif $phase is 5>>
+	你试图恳求他们，但很显然这没什么用。"如果你不打算合作的话，<<person1>><<person>>说着。"那我为什么要这样做？"他大笑着离开这里。当你从隔间向外窥视时，看见你放衣服的地方已经空空如也。
+	<<if $changingRoomGender is "boys">>
+		<<storeon "schoolboys" "delete">>
+	<<else>>
+		<<storeon "schoolgirls" "delete">>
+	<</if>>
+	<br><br>
+	<<endevent>>
+	<<if $changingRoomGender is "boys">>
+		<<link [[继续|School Boy's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|School Girl's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: School Boy's Toilets
+
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<set $changingRoomGender to "boys">>
+你正待在男厕所里。
+<br><br>
+<<if $stress gte $stressmax>>
+	<<link [[你眼前一黑…|School Passout]]>><</link>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1>>
+		<<eventsschooltoilets>>
+	<<else>>
+		<<storeactions "schoolboys">>
+		<<ind>><<link [[看向镜子 (0:02)|Simple Mirror]]>><<pass 2>><<set $previousPassage = $passage>><</link>>
+		<br>
+		<<ind>><<link [[自慰|School Boy's Toilets Masturbation]]>><<set $masturbationstart to 1>><</link>>
+		<br>
+		<<if setup.bodyliquid.combined("face") gte 1 or $skin.left_cheek.pen is "pen" or $skin.right_cheek.pen is "pen" or $skin.forehead.pen is "pen" or $skin.left_cheek.pen is "mud" or $skin.right_cheek.pen is "mud" or $skin.forehead.pen is "mud" or $skin.left_cheek.pen is "lipstick" or $skin.right_cheek.pen is "lipstick" or $skin.forehead.pen is "lipstick">>
+			<<ind>><<link [[洗脸 (0:05)|School Boy's Wash]]>><<pass 5>><</link>>
+			<br>
+		<</if>>
+		<<if setup.bodyliquid.combined("mouth") gte 1>>
+			<<ind>><<link [[漱口 (0:05)|School Boy's Rinse]]>><<pass 5>><</link>>
+			<br>
+		<</if>>
+		<<pregnancyTest "School Boy's Toilets">>
+		<<if $condomLvl gte 1>>
+			<<ind>><<schoolVendingMachine>>
+		<</if>>
+		<<storeon "schoolboys" "check">>
+		<<if _store_check isnot 1>>
+			<<link [[离开|Hallways]]>><</link>>
+		<<elseif $exposed gte 2 and $exhibitionism gte 55>>
+			<<link [[溜出去|Hallways Sneak]]>><<set $phase to 2>><</link>><<exhibitionist4>>
+		<<elseif $exposed is 1 and $exhibitionism gte 35>>
+			<<link [[溜出去|Hallways Sneak]]>><<set $phase to 1>><</link>><<exhibitionist3>>
+		<<elseif $exposed lte 0>>
+			<<link [[离开|Hallways]]>><</link>>
+		<</if>>
+	<</if>>
+<</if>>
+<<set $eventskip to 0>>
+<<storecleanup>>
+
+:: School Girl's Toilets
+
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<set $changingRoomGender to "girls">>
+你正待在女厕所里.
+<br><br>
+<<if $stress gte $stressmax>>
+	<<link [[你眼前一黑…|School Passout]]>><</link>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip isnot 1>>
+		<<eventsschooltoilets>>
+	<<else>>
+		<<storeactions "schoolgirls">>
+		<<ind>><<link [[看向镜子 (0:02)|Simple Mirror]]>><<pass 2>><<set $previousPassage = $passage>><</link>>
+		<br>
+		<<ind>><<link [[自慰|School Girl's Toilets Masturbation]]>><<set $masturbationstart to 1>><</link>>
+		<br>
+		<<if setup.bodyliquid.combined("face") gte 1 or $skin.left_cheek.pen is "pen" or $skin.right_cheek.pen is "pen" or $skin.forehead.pen is "pen" or $skin.left_cheek.pen is "mud" or $skin.right_cheek.pen is "mud" or $skin.forehead.pen is "mud" or $skin.left_cheek.pen is "lipstick" or $skin.right_cheek.pen is "lipstick" or $skin.forehead.pen is "lipstick">>
+			<<ind>><<link [[洗脸 (0:05)|School Girl's Wash]]>><<pass 5>><</link>>
+			<br>
+		<</if>>
+		<<if setup.bodyliquid.combined("mouth") gte 1>>
+			<<ind>><<link [[漱口 (0:05)|School Girl's Rinse]]>><<pass 5>><</link>>
+			<br>
+		<</if>>
+		<<pregnancyTest "School Girl's Toilets">>
+		<<if $condomLvl gte 1>>
+			<<ind>><<schoolVendingMachine>>
+		<</if>>
+		<<storeon "schoolgirls" "check">>
+		<<if _store_check isnot 1>>
+			<<link [[离开|Hallways]]>><</link>>
+		<<elseif $exposed gte 2 and $exhibitionism gte 55>>
+			<<link [[溜出去|Hallways Sneak]]>><<set $phase to 2>><</link>><<exhibitionist4>>
+		<<elseif $exposed is 1 and $exhibitionism gte 35>>
+			<<link [[溜出去|Hallways Sneak]]>><<set $phase to 1>><</link>><<exhibitionist3>>
+		<<elseif $exposed lte 0>>
+			<<link [[离开|Hallways]]>><</link>>
+		<</if>>
+	<</if>>
+<</if>>
+<<set $eventskip to 0>>
+<<storecleanup>>
+
+:: School Boy's Wash
+
+<<effects>>
+<<if setup.bodyliquid.combined("face") gte 1>>
+	<<if $skin.left_cheek.pen is "pen" or $skin.right_cheek.pen is "pen" or $skin.forehead.pen is "pen">>
+		弯下腰，洗掉了脸上的淫秽液体和墨水。
+	<<elseif $skin.left_cheek.pen is "lipstick" or $skin.right_cheek.pen is "lipstick" or $skin.forehead.pen is "lipstick">>
+		弯下腰，洗掉了脸上的淫秽液体和口红。
+	<<elseif $skin.left_cheek.pen is "mud" or $skin.right_cheek.pen is "mud" or $skin.forehead.pen is "mud">>
+		弯下腰，洗掉了脸上的淫秽液体和泥浆。
+	<<else>>
+		弯下腰，洗掉了脸上的淫秽液体。
+	<</if>>
+<<elseif $skin.left_cheek.pen is "lipstick" or $skin.right_cheek.pen is "lipstick" or $skin.forehead.pen is "lipstick">>
+	弯下腰，洗掉了脸上的口红。
+<<elseif $skin.left_cheek.pen is "mud" or $skin.right_cheek.pen is "mud" or $skin.forehead.pen is "mud">>
+	弯下腰，洗掉了脸上的泥巴。
+<<else>>
+	你弯下腰，洗掉了脸上的墨水。
+<</if>>
+<<wash_face>>
+<br><br>
+<<link [[继续|School Boy's Toilets]]>><</link>>
+<br>
+
+:: School Girl's Wash
+
+<<effects>>
+<<if setup.bodyliquid.combined("face") gte 1>>
+	<<if $skin.left_cheek.pen is "pen" or $skin.right_cheek.pen is "pen" or $skin.forehead.pen is "pen">>
+		弯下腰，洗掉了脸上的淫秽液体和墨水。
+	<<elseif $skin.left_cheek.pen is "lipstick" or $skin.right_cheek.pen is "lipstick" or $skin.forehead.pen is "lipstick">>
+		弯下腰，洗掉了脸上的淫秽液体和口红。
+	<<elseif $skin.left_cheek.pen is "mud" or $skin.right_cheek.pen is "mud" or $skin.forehead.pen is "mud">>
+		弯下腰，洗掉了脸上的淫秽液体和泥浆。
+	<<else>>
+		弯下腰，洗掉了脸上的淫秽液体。
+	<</if>>
+<<elseif $skin.left_cheek.pen is "lipstick" or $skin.right_cheek.pen is "lipstick" or $skin.forehead.pen is "lipstick">>
+	弯下腰，洗掉了脸上的口红。
+<<elseif $skin.left_cheek.pen is "mud" or $skin.right_cheek.pen is "mud" or $skin.forehead.pen is "mud">>
+	弯下腰，洗掉了脸上的泥巴。
+<<else>>
+	你弯下腰，洗掉了脸上的墨水。
+<</if>>
+<<wash_face>>
+<br><br>
+<<link [[继续|School Girl's Toilets]]>><</link>>
+<br>
+
+:: School Boy's Rinse
+<<effects>>
+
+你弯下腰，将嘴对准水龙头开始漱口。
+
+<<wash_mouth>>
+<br><br>
+
+<<link [[继续|School Boy's Toilets]]>><</link>>
+<br>
+
+:: School Girl's Rinse
+<<effects>>
+
+你弯下腰，将嘴对准水龙头开始漱口。
+
+<<wash_mouth>>
+<br><br>
+
+<<link [[继续|School Girl's Toilets]]>><</link>>
+<br>
+
+:: Vending Machine Buy
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+你把钱放进了售卖机，一盒两袋装避孕套从出货口滑出来。
+<<if Time.schoolTime>>
+	<<if $changingRoomGender is "boys">>
+		<<generatesm1>>
+	<<else>>
+		<<generatesf1>>
+	<</if>>
+	<<if $promiscuity gte 50>>
+		<br><br>
+		一个<<person1>><<person>>进了厕所，<<He>>盯着你，你将避孕套放进口袋里，并对<<him>>微笑。
+	<<else>>
+		<br><br>
+		<<person1>><<person>>走进浴室，朝你的方向看了看。你一直等到<<he>>背对着你，开始洗手。你迅速拿起包裹，偷偷放进口袋。
+	<</if>>
+<<else>>
+	你拿走了它们。
+<</if>>
+<<set $money -= 2000>>
+<<gcondoms 2>>
+<br><br>
+<<set $daily.vendingMachine[$changingRoomGender] to true>>
+<<link [[返回|$currentToiletReturn]]>><<endevent>><</link>>
+
+:: Vending Machine Rob
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<set $lock to 400>>
+你检查了自动贩卖机。
+<br><br>
+<<if currentSkillValue('skulduggery') gte $lock>>
+	<span class="green">这把锁看起来很容易被撬开。</span>
+	<br><br>
+	<<link [[撬开它 (0:10)|Vending Machine Sneak]]>><<pass 10>><<crimeup 1>><</link>><<crime>>
+	<br>
+<<else>>
+	<span class="red">这把锁看上去超出了你的能力范围。</span><<skulduggeryrequired>>
+	<br>
+<</if>>
+<<link [[砸开它 (0:10)|Vending Machine Smash]]>><<pass 10>><<crimeup 2>><</link>><<physiquedifficulty>> <<crime>>
+<br>
+<<link [[返回|$currentToiletReturn]]>><</link>>
+
+:: Vending Machine Sneak
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<set $weekly.theft.vendingMachine[$changingRoomGender] to true>>
+<<set $tip to random(1, 3) * 2000>>
+<<set _condomsStolen to $daily.vendingMachine[$changingRoomGender] ? 0 : either(0, 0, 0, 0, 2, 2, 2, 4)>>
+你灵巧地打开自动售货机，数着里面的钱。里面有<<printmoney $tip>>。
+<<if _condomsStolen>>这里还有 _condomsStolen 个避孕套。<</if>>
+<br><br>
+<<if $skulduggery lt 500>>
+	<<skulduggeryskilluse>>
+<<else>>
+	<span class="blue">从这么简单的锁中，你再也学不到什么了。</span>
+<</if>>
+<br><br>
+<<link [[拿走它们|$currentToiletReturn]]>><<set $money += $tip>><<gcondoms _condomsStolen>><<crimeup `$tip / 100 + _condomsStolen * 10`>><</link>><<crime>>
+<br>
+<<link [[留下它们|$currentToiletReturn]]>><</link>>
+
+:: Vending Machine Smash
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<<set $weekly.theft.vendingMachine[$changingRoomGender] to true>>
+<<set $tip to random(0, 3) * 2000>>
+<<set _condomsStolen to $daily.vendingMachine[$changingRoomGender] ? 0 : either(0, 0, 0, 0, 2, 2, 2, 4)>>
+<<if $physiqueSuccess>>
+	<<if $tip is 0>>
+		<<if _condomsStolen is 0>>
+			你一直踢着机器，直到咔嚓一声传来。锁坏了，门也开了。你在里面搜索了一番，才发现里面是空的。
+		<<else>>
+			你一直踢着机器，直到咔嚓一声传来。锁坏了，门也开了。你看向里面。里面没有钱，但你找到了 _condomsStolen 个避孕套。
+			<br><br>
+			<<link [[拿上并离开|$currentToiletReturn]]>><<gcondoms _condomsStolen>><<crimeup `$tip / 100 + _condomsStolen * 10`>><</link>><<crime>>
+		<</if>>
+	<<else>>
+		你一直踢着机器，直到咔嚓一声传来。锁坏了，门也开了。你往里面一看，发现了<<printmoney $tip>><<if _condomsStolen>>，还有 _condomsStolen 个避孕套<</if>>。
+		<br><br>
+		<<link [[拿上并离开|$currentToiletReturn]]>><<set $money += $tip>><<gcondoms _condomsStolen>><<crimeup `$tip / 100 + _condomsStolen * 10`>><</link>><<crime>>
+	<</if>>
+<<else>>
+	你一直踢着机器，直到咔嚓一声传来。你试着开门，但锁卡住了。最终，你还是放弃了，决定改天再试。
+<</if>>
+<br>
+<<link [[离开|$currentToiletReturn]]>><</link>>

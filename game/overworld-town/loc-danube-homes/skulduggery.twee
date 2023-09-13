@@ -1,0 +1,887 @@
+:: Danube House Lock
+
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "danube">><<set $lock to 300>>
+这扇门正紧锁着.
+<br><br>
+<<if currentSkillValue('skulduggery') gte $lock>>
+	<span class="green">这把锁看起来很容易被撬开。</span>
+	<br><br>
+	<<link [[闯入 (0:05)|Danube House Sneak]]>><<pass 5>><<crimeup 1>><</link>><<crime>>
+	<br>
+<<else>>
+	<span class="red">这把锁看起来超出了你的能力范围。</span>
+	<<skulduggeryrequired>>
+	<br><br>
+<</if>>
+<<link [[离开|Danube Street]]>><</link>>
+<br>
+
+:: Danube House Sneak
+
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+你成功地撬开锁并进入住所。
+<<if $skulduggery lt 400>>
+	<<skulduggeryskilluse>>
+<<else>>
+	<span class="blue">从这么简单的锁具中，你没有什么可以学到的了。</span>
+<</if>>
+<br><br>
+你偷摸地在宅院内寻找着任何有价值的东西.
+<<if $rng gte 91>>
+	你没有发现什么可以轻易地被带走的值钱玩意，但在搜索地下室时，你发现了一扇被锁着的看起来很古老的门。
+	<br><br>
+	<<set $skulduggerydifficulty to 700>>
+	<<link [[试着打开它|Danube House Wine Cellar]]>><</link>><<skulduggerydifficulty>>
+	<br>
+	<<link [[离开|Danube Street]]>><</link>>
+	<br>
+<<elseif $rng gte 81>>
+	<!-- Modified for Monster People -->
+		<<beastNEWinit 1 cat>>
+		一双黄色的眼睛穿透了黑暗，一个大大的<<beasttype>>出现了,它摆出了进攻的姿态.
+		<<if $monster is 1>>
+			"闯入者！主人会不高兴的。"<<bHe>>摇晃着尾巴说道。
+		<</if>>
+		<br><br>
+		<<if $monster is 1 or $bestialitydisable is "f">>
+			<<if $cat gte 6>>
+				<<link [[猫猫叫|Danube House Meow]]>><</link>><<cat>>
+				<br>
+			<</if>>
+			<<if $deviancy gte 15>>
+				<<link [[试着让它冷静下来|Danube House Cat]]>><<set $sexstart to 1>><<generate2>><</link>><<deviant2>>
+				<br>
+			<</if>>
+			<<link [[战斗|Danube House Cat]]>><<set $molestationstart to 1>><<generate2>><<set $phase to 0>><</link>>
+			<br>
+			<<link [[跑|Danube House Run]]>><</link>><<athleticsdifficulty>>
+			<br><br>
+		<<else>>
+			<<link [[跑|Danube House Run]]>><<set $athleticsSuccess to true>><</link>>
+			<br><br>
+		<</if>>
+		<!-- A pair of yellow eyes pierce the darkness, and a large cat emerges. It prepares to pounce.
+		<br><br>
+		You flee out the house, the cat following. It doesn't chase you beyond the front door, content to watch you from the door.<<beastescape>>
+		<br><br>
+		<<link [[继续|Danube Street]]>><</link>>
+		<br> -->
+<<elseif $rng gte 71>>
+	<<generate1>><<person1>>你发现一个<<person>>在大沙发上打瞌睡。<<He>><<if $rng % 2>>戴着昂贵的珠宝。<<else>>抱着平板电脑睡着了。<</if>>
+	<br><br>
+	<<set $skulduggerydifficulty to 400>>
+	<<link [[盗窃财物|Danube House Rob]]>><</link>><<skulduggerydifficulty>><<crime>>
+	<br>
+	<<link [[离开|Danube Street]]>><<endevent>><</link>>
+	<br>
+<<elseif $rng gte 61>>
+	你找到了一个带密码锁的保险箱。
+	<br><br>
+	<<link [[试着打开它|Danube House Safe]]>><</link>>
+	<br>
+	<<link [[离开|Danube Street]]>><</link>>
+	<br>
+<<elseif $rng gte 51>>
+	<<if Time.dayState is "night">>
+		<<if Time.hour gte 21>> /* at midnight hour wraps to zero, so after midnight should no longer be true*/
+			<<generate1>><<person1>>
+			花园里传来巨大的噪音。当你蹑手蹑脚地向花园走去时，你听到了喊叫声、笑声和响亮的音乐声。一个家庭聚会。
+			<br><br>
+			一扇门被砸开，一个<<person>>踉踉跄跄地走了进来，在水槽里呕吐了起来。
+			<br><br>
+			<<exposure>>
+			<<if $exposed gte 1>>
+				在你找机会隐藏身型之前，那个<<person>>转过身来看着你，在借助柜台稳住身形后，<<he>>看着你笑了出来.
+				<br>
+				"他妈的，你是个脱衣舞娘！"<<He>>淫笑道："我不认为我们...谁叫你来的？嗯，他妈的，你确实在这里，对吗？"
+				<br>
+				你微笑着。
+				<br>
+				<<if $beauty gte ($beautymax / 7) * 4>>
+					"你的屁股真不错。"<<He>>眨着眼睛，用手擦拭着<<his>>的嘴时说道，但<<He>>马上就苦恼了起来，"我不在我的最佳状态，等一会好么？不要评判我，我...我喝得有点多了。"
+				<<else>>
+					"你还不错，"<<he>>笑道。<<if $player.perceived_breastsize lte 3>>"虽然我本来想选一个普乳的，<<else>>"我本想要一个巨乳的，<</if>>但是时间已经不多了."
+				<</if>>
+				<br>
+				你点头，微笑致意
+				<br>
+				"好的，"<<he>>说道："那么，我们的寿星<<if $player.gender_appearance is "m">>女孩<<else>>男孩<</if>>就在那里。"<<He>>停顿了一下，在倚靠着站稳之后，接着说道："如果你想给那些家伙一个惊喜的话，你应该从那个方向出去。"<<He>>指向你身后的一扇门，没等你回应，其接着说道："等一下，你已经拿到钱了吗？"
+				<br><br>
+				<<link [[还没有（拿£80并离开）|Danube Street]]>><<set $money += 8000>><<crimeup 80>><<endevent>><</link>><<crime>>
+				<br>
+				<<link [[是的，我已经拿上了(什么都没拿上直接离开)|Danube Street]]>><<endevent>><</link>>
+				<br>
+			<<else>>
+				在你找机会隐藏身型之前，那个<<person>>转过身来看着你，在借助柜台稳住身形后，<<he>>看了看你身旁堆积如山的披萨盒，又看了看你，笑着说道:
+				<br>
+				"送披萨的？怎么又来了？你已经是第四个了吧？"<<He>>看了看水槽，笑着说道:"嗯，当然，我现在又饿了。"
+				<br>
+				<<He>>在<<his>>的口袋里翻了翻，拿出几张二十元钱。"好了，这应该够了。还有小费呢？现在已经很晚了。"
+				<br><br>
+				<<link [[拿钱走人（£60）|Danube Street]]>><<set $money += 6000>><<crimeup 60>><<endevent>><</link>><<crime>>
+				<br>
+				<<link [["他们是免费的"（离开）|Danube Street]]>><<endevent>><</link>>
+				<br>
+			<</if>>
+		<<else>>
+			<<generate1>><<person1>>
+			你撞见了一个混乱的家庭聚会，啤酒罐、披萨盒，衣衫不整且伶仃大醉的家伙们胡乱的躺在地板、桌子和沙发上。空气中弥漫着刺鼻的烟雾，虽然还有几个人保持着神志清醒，但也只是相对于那几个醉倒的家伙而言.
+			你听到在楼上的某个地方传来像是轮奸的声音，<<if $awareness gte 300>>但在你所看到这一切之后，你只希望那是自愿的.<</if>>在这混乱嘈杂的房间内中，唯独有一张桌子很是整洁，你仔细看了看，原来是上面摆满了飞"叶子"的工具.
+			<br><br>
+			你仔细看了看，发现大多数的塑料袋和铝箔包装都是空的，但有几个里面依旧包裹着"叶子"。
+			<br>
+			"把它卷起来，荡妇。"附近的某个家伙含糊不清的骂道，<<He>>看起来瘦骨嶙峋的，你能想象到这家伙到底经历了什么.
+			<br><br>
+			剩下的"叶子"肯定很值钱了，况且这里既没人能认出你，也没人会去报案说"叶子"被偷了。
+			<br><br>
+			<<link [[带走它|Danube Street]]>><<endevent>><<set $blackmoney += 50>><</link>>
+			<br>
+			<<link [[离开|Danube Street]]>><<endevent>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		你来到一个刚刚经历过聚会的地方，虽然那些参加聚会的人已经离开了，但啤酒罐、披萨盒还有烟灰到处都是，空气中还弥漫着刺鼻的烟味。
+		<br><br>
+		在这混乱的房间中，唯有一张桌子整理的整整齐齐，看起来有人收集了剩余的"叶子"，并把它们都堆放在了这里.
+		这些"叶子"肯定很值钱了，况且也没人会去报案说"叶子"被偷了。
+		<br><br>
+		<<link [[拿走它|Danube Street]]>><<endevent>><<set $blackmoney += 25>><</link>>
+		<br>
+		<<link [[离开|Danube Street]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<<elseif $rng gte 41>>
+	<<generate1>><<person1>>你搜查了大厅中央的一个华丽喷泉，你窥视着水面，试图寻找里面的贵重物品，但在喷泉底部有一个很大的排水口，会把任何的小物品吸走，当你正准备继续前进时，你突然听见有脚步声正由远及近的传来，没有多少时间可以躲藏了。
+	<br><br>
+	<<set $skulduggerydifficulty to 600>>
+	<<link [[躲在喷泉里|Danube House Fountain]]>><</link>><<swimmingdifficulty 1 800>>
+	<br>
+	<<link [[试图虚张声势|Danube House Bluff]]>><</link>><<skulduggerydifficulty>>
+	<br>
+<<elseif $rng gte 31>>
+	<<generate1>><<person1>>
+	大宅内寂静无声，似乎并没有人在家。其中许多门都被锁上了，但有一扇门正向外敞着光亮，你小心翼翼地走近并查看，你发现那是一间卧室。
+	在房间的中央有一张床。床上躺着一个<<person>>，全身赤裸，在床上被绑成一个"大"字，并且被假阳具塞住了嘴。
+	<br><br>
+	似乎是注意到了你在门口，<<he>>突然看向你的位置
+	<<if $awareness gte 300>>
+		虽然你不太确定，但你觉得你在其眼中首先看到的是兴奋，然后现在你看到的是…忧虑?恐惧?还是愤怒?
+		<br><br>
+		<<link [[取出口球|Danube House S&M]]>><<set $phase to 0>><</link>>
+		<br>
+		<<link [[不取出口球|Danube House S&M]]>><<set $phase to 1>><</link>>
+		<br>
+		<<link [[离开|Danube Street]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		你突然很想哭，在这个小镇生活已经很艰难了，毕竟你已经深刻领会这一点了，但面对一个无助的被绑架或被贩卖的受害者，以及这种新的性虐方式，依旧使你感到莫名的恐惧。
+		<<gstress>><<stress 2>>
+		<br><br>
+		<<link [[帮助这个可怜的受害者|Danube House S&M]]>><<set $phase to 2>><</link>>
+		<br>
+		<<link [[离开|Danube Street]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<rng>>
+	<<if $rng gte 91>>
+		你没有发现什么，只有一些价值<<moneyGainDisplay 2 true true>>的零钱。
+		<br><br>
+		<<link [[拿走它|Danube Street]]>><<set $money += _money_gain>><<crimeup `_money_gain / 100`>><</link>><<crime>>
+		<br>
+		<<link [[离开|Danube Street]]>><</link>>
+		<br>
+	<<elseif $rng gte 81>>
+		你没有发现什么，只有一些价值<<moneyGainDisplay 4 true true>>的零钱。
+		<br><br>
+		<<link [[拿走它|Danube Street]]>><<set $money += _money_gain>><<crimeup `_money_gain / 100`>><</link>><<crime>>
+		<br>
+		<<link [[离开|Danube Street]]>><</link>>
+		<br>
+	<<elseif $rng gte 71>>
+		你发现<<moneyGainDisplay 10 true true>>藏在一个抽屉里。
+		<br><br>
+		<<link [[拿走它|Danube Street]]>><<set $money += _money_gain>><<crimeup `_money_gain / 100`>><</link>><<crime>>
+		<br>
+		<<link [[离开|Danube Street]]>><</link>>
+		<br>
+	<<elseif $rng gte 61>>
+		你在抽屉里找到一枚漂亮的饰针。
+		<br><br>
+		<<link [[拿走它|Danube Street]]>><<set $blackmoney += 10>><<crimeup 10>><</link>><<crime>>
+		<br>
+		<<link [[离开|Danube Street]]>><</link>>
+		<br>
+	<<elseif $rng gte 51>>
+		你在一个垫子下面发现<<moneyGainDisplay 20 true true>>。
+		<br><br>
+		<<link [[拿走它|Danube Street]]>><<set $money += _money_gain>><<crimeup `_money_gain / 100`>><</link>><<crime>>
+		<br>
+		<<link [[离开|Danube Street]]>><</link>>
+		<br>
+	<<elseif $rng gte 41>>
+		你在衣帽架旁边的凳子上发现了一条项链。
+		<br><br>
+		<<link [[拿走它|Danube Street]]>><<set $blackmoney += 20>><<crimeup 20>><</link>><<crime>>
+		<br>
+		<<link [[离开|Danube Street]]>><</link>>
+		<br>
+	<<elseif $rng gte 31>>
+		你发现<<moneyGainDisplay 30 true true>>正躺在厨房的台面上。
+		<br><br>
+		<<link [[拿走它|Danube Street]]>><<set $money += _money_gain>><<crimeup `_money_gain / 100`>><</link>><<crime>>
+		<br>
+		<<link [[离开|Danube Street]]>><</link>>
+		<br>
+	<<elseif $rng gte 21>>
+		你找到一套银质餐具。
+		<br>
+		<<link [[拿走它|Danube Street]]>><<set $blackmoney += 30>><<crimeup 30>><</link>><<crime>>
+		<br>
+		<<link [[离开|Danube Street]]>><</link>>
+		<br>
+	<<elseif $rng gte 11>>
+		你在大衣口袋里发现了一对金袖扣。
+		<br><br>
+		<<link [[带走它们|Danube Street]]>><<set $blackmoney += 40>><<crimeup 40>><</link>><<crime>>
+		<br>
+		<<link [[离开|Danube Street]]>><</link>>
+		<br>
+	<<else>>
+		你在前门旁边的一个罐子里发现了<<moneyGainDisplay 60 true true>>。
+		<br><br>
+		<<link [[拿走它|Danube Street]]>><<set $money += _money_gain>><<crimeup `_money_gain / 100`>><</link>><<crime>>
+		<br>
+		<<link [[离开|Danube Street]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Danube House Wine Cellar
+
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+你试图撬开这古老的机械锁系统。
+<br><br>
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+
+	<<skulduggeryuse>>
+
+	除了坚固的硬木门外，这个锁是一个非常简单的三杠杆摇臂式锁，只要施加扭力，然后稍微拨动一下，再默数三秒钟,1、2、3，然后就可以打开它了，最难的部分则是在你将门打开的时候要尽量把噪音压低。
+	<br><br>
+	你在里面发现了一个储备充足的酒窖，你无法携带太多东西，所以你做了一个快速估价，虽然你对葡萄酒知之甚少，但<<if $pubintro is 1>>兰德里告诉过你要寻找的年份和标签，另外，<</if>>酒的储藏位置也给了你一些关于其价值的线索，半响，你便找出了几个看起来最贵的酒瓶。
+	<br><br>
+
+	<<link [[拿酒|Danube House Wine Steal]]>><<crimeup 150>><</link>><<crime>>
+	<br>
+	<<link [[离开|Danube Street]]>><</link>>
+	<br>
+
+<<else>>
+
+	你从来没有了解过这些老锁，所以你在那里什么也做不了，你敲了敲门，发现这扇门完全是实心的，根本就不可能推动，你随后在周围四处寻找钥匙，但什么也没有找到。
+	<br><br>
+	你只能空手而归.
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	<<link [[继续|Danube Street]]>><</link>>
+	<br>
+
+<</if>>
+
+:: Danube House Wine Steal
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+你拿走了看起来最昂贵的酒瓶，并没有搜刮其他东西，你在关上身后沉重的门后，再次将其轻松的锁上。
+<br>
+如果运气好的话，那些家伙要过很长一段时间才会注意到你去过那里。
+
+<<set $blackmoney += 200>>
+<br><br>
+
+<<link [[离开|Danube Street]]>><</link>>
+<br>
+
+:: Danube House Cat
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $enemyno to 1>>
+	<<set $enemynomax to 1>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+
+	<<set $enemytrust -= 40>>
+
+	<<if $phase is 0>>
+		猫扑向了你。
+		<br><br>
+	<<elseif $phase is 3>>
+		<<set $phase to 0>>
+	<</if>>
+	<<set $NPCList[0].stance to "top">>
+
+	<<enable_rescue>>
+
+<<elseif $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<set $enemyno to 1>>
+	<<set $enemynomax to 1>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<beastCombatInit>>
+
+	<<set $enemytrust -= 40>>
+	你躺倒在地，并摆出交配的姿势，那只<<beasttype 0>>抬起头并盯着你，随后<<bhis 0>>开始踱步走近。
+	<<if $monster is 1>>
+		"我想……我们能找点乐子，主人并不需要知道。"
+	<</if>>
+	<<deviancy2>>
+
+	<<set $phase to 0>>
+	<<enable_rescue>>
+
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<if $phase is 1 and $orgasmdown gte 2>>
+	<<set $phase to 2>>
+		<<if $NPCList[0].penis isnot "none">>
+			<<person2>><<person>>笑着鼓掌。“<<bHis 0>>阴茎的形状是为了促进交配对象排卵，”<<he>>说。“我很高兴它也能满足人类荡妇。”你觉得很丢脸。<<famebestiality 1>>
+			<br><br>
+		<</if>>
+	<<elseif $phase gte 1>>
+	<<person2>><<person>>斜靠在沙发上，看着你。
+	<br><br>
+<</if>>
+
+<<beast $enemyno>>
+<br><br>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if $phase is 0>>
+	<<if _combatend>>
+		<span id="next"><<link [[继续|Danube House Cat Finish]]>><</link>></span><<nexttext>>
+	<<else>>
+		<span id="next"><<link [[继续|Danube House Cat]]>><</link>></span><<nexttext>>
+	<</if>>
+<<else>>
+	<<if _combatend>>
+<span id="next"><<link [[继续|Danube House Cat Finish 2]]>><</link>></span><<nexttext>>
+	<<else>>
+<span id="next"><<link [[继续|Danube House Cat]]>><</link>></span><<nexttext>>
+	<</if>>
+<</if>>
+
+:: Danube House Run
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+<<if $athleticsSuccess>>
+
+你转身就跑。那只<<beasttype 0>>扑了过来，但你<span class="green">成功</span>地躲开了<<bhim 0>>。你跑回了大街上。
+<<gstress>><<stress 6>>
+<br><br>
+
+<<link [[继续|Danube Street]]>><<endevent>><</link>>
+
+<<else>>
+
+你转身就跑，那只<<beasttype 0>>扑了过来，你试图躲开<<bhim 0>>，但<span class="red">失败</span>了，<<bHis 0>>在成功将你扑倒在地后，利用自身的体重优势将你死死压在身下.
+<br><br>
+
+<<link [[继续|Danube House Cat]]>><<set $molestationstart to 1>><<generate2>><<set $phase to 3>><</link>>
+<br>
+
+<</if>>
+
+:: Danube House Meow
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+你四肢着地，并对着<<beasttype 0>>喵喵叫了起来，<<bHe 0>>在短暂的惊讶过后，便放下了威胁姿态.
+<<if $monster is 1>>
+"你......和我很像，哼哼...主人说过，我是独一无二的。"<<bHe 0>>躺下并继续说道："笨蛋主人，我以后一定要为这个打碎一些东西。"
+<<else>>
+<<bHe>>又咆哮了一声，但声音更柔和了，然后躺了下来。
+<</if>>
+<br><br>
+
+你注意到<<beasttype 0>>的脖子处正在闪闪发光，你走近一看，发现是一条镶满了珠宝的项圈。
+<br><br>
+
+<<link [[拿走它|Danube House Collar]]>><<crimeup 100>><</link>><<crime>>
+<br>
+<<link [[离开|Danube Street]]>><<endevent>><</link>>
+<br>
+
+:: Danube House Cat Finish
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<beastejaculation>>
+
+	<<beasttype 0>>在满意地打了个呵欠后，走到了窗前.
+
+	<<tearful>>你站了起来。
+	<br><br>
+
+	<<clotheson>>
+
+	你注意到<<beasttype 0>>的脖子处正在闪闪发光，你走近一看，发现是一条镶满了珠宝的项圈。
+	<br><br>
+	<<saveNPC 0 danube_cat>>
+	<<endcombat>>
+	<<loadNPC 0 danube_cat>>
+	<<clearNPC danube_cat>>
+	<br><br>
+
+	<<link [[拿走它|Danube House Collar]]>><<crimeup 100>><</link>><<crime>>
+	<br>
+	<<link [[离开|Danube Street]]>><<endevent>><</link>>
+	<br>
+
+<<elseif $enemyhealth lte 0>>
+
+	这只<<beasttype>>畏缩不前，随后便翻身投降.
+
+	<<tearful>>你站了起来。
+	<br><br>
+
+	<<clotheson>>
+
+	<<beasttype>>平静下来，你注意到<<bhis>>的项圈闪烁着光芒。你走近一看，发现上面镶满了珠宝。
+	<br><br>
+	<<saveNPC 0 danube_cat>>
+	<<endcombat>>
+	<<loadNPC 0 danube_cat>>
+	<<clearNPC danube_cat>>
+	<br><br>
+
+	<<link [[拿走它|Danube House Collar]]>><<crimeup 100>><</link>><<crime>>
+	<br>
+	<<link [[离开|Danube Street]]>><<endevent>><</link>>
+	<br>
+
+<<elseif $alarm is 1>>
+
+	<<if $NPCList[0].stance is "top">>
+
+	<<person2>>"现在是什么情况？"一个<<person>>提问道。
+	当<<He>>看到你时，<<he>>笑了。"一位入侵者？"<<He>>坐了下来，"真是太棒了。"
+	<br><br>
+	<<if $monster is 1>>
+		"我抓住了入侵者！"<<beasttype 0>>骄傲地大叫。
+	<</if>>
+	<<set $alarm to 0>><<set $rescue to 0>>
+	<<link [[继续|Danube House Cat]]>><<set $phase to 1>><</link>>
+
+	<<else>>
+
+	<<person2>>"现在是什么情况？"一个<<person>>提问道。
+
+	当<<He>>看到你时，<<he>>笑了。"这就是你非法侵入的后果。"<<He>>吹了声口哨，<<beasttype 0>>停止了<<bhis>>的攻击。在你能站起来之前，<<he>>就用<<his>>的脚按住了你的<<genitals>>。
+	<<famebestiality 1>>
+	<<saveNPC 1 danube_cat_owner>>
+	<<endcombat>>
+	<<loadNPC 0 danube_cat_owner>>
+	<<clearNPC danube_cat_owner>>
+	<<person1>>
+
+	<br><br>
+
+	<<link [[继续|Danube House Sneak Molestation]]>><<set $molestationstart to 1>><</link>>
+	<br>
+
+	<</if>>
+
+<<else>>
+
+	<<beasttype 0>>从你身边退下了,<<bhe 0>>依然站着盯着你.<<tearful>>你看了看周围，没看到什么值钱的东西。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+<<link [[离开|Danube Street]]>><</link>>
+<br>
+
+<</if>>
+
+:: Danube House Cat Finish 2
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<beastejaculation>>
+
+	<<person2>>那个<<beasttype 0>>发出满意的声音，走到窗前，在那里<<bhe 0>>躺倒。"在那之后，它会像木头一样睡觉，"那个<<person>>说道。<<He>>在你能恢复之前，他向你走过来，抓住你的脖子。<<He>>把你拖到前门，把你抬到外面。"这次我可以原谅你的非法入侵。" 门被关上了。
+
+	<<tearful>>你站了起来。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><<endevent>><</link>>
+	<br>
+
+<<else>>
+
+	<<person2>>那个<<beasttype 0>>畏缩不前，随后便翻身投降。
+
+	<<tearful>>你在<<person>>反应过来之前逃离了房间。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Danube Street]]>><<endevent>><</link>>
+	<br>
+
+<</if>>
+
+:: Danube House Collar
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+那个<<beasttype 0>>没有任何动作，当你取下<<bhis 0>>项圈时，你带着你的奖品离开了这里。
+<br><br>
+
+<<set $blackmoney += 100>>
+<br><br>
+
+<<link [[离开|Danube Street]]>><<endevent>><</link>>
+<br>
+
+:: Danube House Sneak Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+
+	<<if $footdisable is "f">>
+		"我最好用脚，"<<he>>说："你多半会很脏。"
+		<br><br>
+		<<if $NPCList[0].vagina isnot "none">>
+			<<set $NPCList[0].vagina to "footjob">>
+		<<elseif $NPCList[0].penis isnot "none">>
+			<<set $NPCList[0].penis to "footjob">>
+		<</if>>
+		<<if $player.penisExist and (!$player.vaginaExist or random(1, 2) is 2)>>
+			<<set $penisuse to "feet">><<set $speechpenisfoot to 1>>
+		<<else>>
+			<<set $vaginause to "feet">><<set $speechvaginafoot to 1>>
+		<</if>>
+	<</if>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Danube House Sneak Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Danube House Sneak Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Danube House Sneak Molestation Finish
+<<if $enemyhealth lte 0>>
+
+你把那个<<person>>绊倒了，<<tearful>>你逃到了外面
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Danube Street]]>><</link>>
+
+<<elseif $enemyarousal gte $enemyarousalmax>>
+<<ejaculation>>
+
+"好<<girl>>,"<<he>>说，并且抓住了你的脖子。 "我不不认为让警察介入是好的，但你不能再次闯入。"<<He>>把你拖到前门，把你推了出去，在你身后把门关上。<<tearful>>你站了起来。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Danube Street]]>><</link>>
+
+<</if>>
+
+:: Danube House Rob
+
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+<<skulduggerycheck>>
+<br><br>
+你尽可能悄悄地溜到<<person>>身边。一旦足够接近，你就伸手去拿战利品，并且
+<<if $skulduggerysuccess is 1>>
+	迅速将其解救出来。就像从一个婴儿身上拿糖。一个打鼾的、滴水不漏的婴儿，钱多于理智。
+	<<crimeup 80>>
+	<br><br>
+	<<set $blackmoney += 80>>
+	<<skulduggeryuse>>
+	<<link [[离开|Danube Street]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	试着把它放出来。不幸的是，<<he>>就在那一刻翻了个身。当你试图调整你的握力时，你听到一声鼻息，低头发现<<him>>茫然地抬头看你。
+	<br>
+	<<His>>他的脸变得愤怒，你在<<he>>能抓住你之前向后一跃
+	<br><br>
+	你没有选择，只能空手而归。
+	<<crimeup 80>>
+	<br><br>
+	<<skulduggeryuse>>
+	<<link [[跑|Danube Street]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Danube House Safe
+
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">><<set $lock to 600>>
+保险箱看起来很贵，好像里面可能有重要的东西。
+<br><br>
+<<if currentSkillValue('skulduggery') gte $lock>>
+	<span class="green">这把锁看起来很容易被撬开。</span>
+	<br><br>
+	<<link [[闯入(0:05)|Danube House Safe Open]]>><<pass 5>><<crimeup 1>><</link>><<crime>>
+	<br>
+<<else>>
+	<span class="red">该锁看起来超出了你的能力范围。</span><<skulduggeryrequired>>
+	<br><br>
+<</if>>
+<<link [[离开|Danube Street]]>><</link>>
+<br>
+
+:: Danube House Safe Open
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+<<if $skulduggery lt 700>>
+	<<skulduggeryskilluse>>
+<<else>>
+	<span class="blue">从这么简单的锁具中，你没有什么可以学到的了。</span>
+<</if>>
+<br><br>
+<<if $rng gte 10>>
+	你成功地打开了保险箱，发现里面有<<moneyGainDisplay 60 true true>>。
+	<br><br>
+	<<link [[拿走它|Danube Street]]>><<set $money += _money_gain>><<crimeup `_money_gain / 100`>><</link>><<crime>>
+	<br>
+	<<link [[离开|Danube Street]]>><</link>>
+	<br>
+<<else>>
+	你成功地打开了保险箱，发现里面有一件看起来很昂贵的珠宝。
+	<br><br>
+	<<link [[拿走它|Danube Street]]>><<set $blackmoney += 200>><<crimeup 200>><</link>><<crime>>
+	<br>
+	<<link [[离开|Danube Street]]>><</link>>
+	<br>
+<</if>>
+
+:: Danube House Sneak 2
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+你从水中冲出，大口喘气。那个<<person>>边跑边叫。"救命啊! 谁来叫警察！" 你把这当做你必须要离开的提示了。
+<<crime>><<crimeup 50>>
+<br><br>
+
+<<link [[继续|Danube Street]]>><<endevent>><</link>>
+<br>
+
+:: Danube House Fountain
+<<set $outside to 0>><<set $location to "town">><<water>><<effects>><<set $bus to "danube">>
+
+你溜进喷泉，躲在水面下。一个<<person>>出现在你的上方，坐在边缘上。<<He>>没有往下看，但你希望<<he>>并不打算在这里待很久。你不知道你能屏住呼吸多长时间。
+<<pass 3>>
+<br><br>
+
+<<if $swimmingSuccess>>
+
+你<span class="green">成功地</span>屏住了呼吸，几分钟之后<<he>>离开了。你浮出水面并且大口地喘气。<<He>>在喷泉边上留下了一个未开封的酒瓶。它看起来很花哨。
+<br><br>
+
+<<link [[拿走它|Danube Street]]>><<set $blackmoney += 30>><<crimeup 30>><<endevent>><</link>><<crime>>
+<br>
+<<link [[离开|Danube Street]]>><<endevent>><</link>>
+<br>
+
+<<else>>
+
+几分钟过去后<<he>>没有移动的迹象。你<span class="red">没能</span>屏住呼吸。你知道你无法再继续坚持多久了
+<br><br>
+
+<<link [[潜入下水道|Danube House Dive]]>><<endevent>><</link>>
+<br>
+<<link [[上来呼吸新鲜空气|Danube House Sneak 2]]>><</link>>
+<br>
+
+<</if>>
+
+:: Danube House Bluff
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 0>>
+<<pass 2>>
+
+你站在你的位置上。一个<<person>>走了进来，一看到你就呆住了。
+
+	<<if $speech_attitude is "meek">>
+	"我……我是喷泉的仙女。我是来实现你的愿望的。"你说，尽管这听起来没有你头脑中的那么聪明。
+	<<elseif $speech_attitude is "bratty">>
+	"我是喷泉的灵魂，是来惩罚你的罪过的。"你说，尽管这听起来没有你脑子里那么聪明。
+	<<else>>
+	"我似乎走错了路，迷路了，"你说，虽然听起来没有你脑子里那么聪明。
+	<</if>>
+
+<br><br>
+
+"你以为我是昨天刚出生的吗?"<<he>>说，<<his>>从最初的震惊中清醒过来。"待在这里，我要打电话给警察。"你把这句话当作你逃离现场的提示
+<<crimeup 50>><<crime>>
+<br><br>
+
+<<if $skulduggery lte 999>>
+	<<skulduggeryskilluse>>
+<<else>>
+	<span class="blue">那太容易了。你没有学到任何东西。</span>
+	<br><br>
+<</if>>
+
+<<link [[继续|Danube Street]]>><<endevent>><</link>>
+<br>
+
+<<else>>
+<<pass 10>>
+
+你把自己浸泡在喷泉里，把自己淋湿，然后坐在边缘上。一个<<person>>走了进来，看到你后愣在了原地。你看着<<him>>，给人以困惑和无望的形象。"我之前掉进了一个下水道，"你说。"当时又黑又吓人。我刚刚游了上来，我想问一下我是在哪里？"
+<br><br>
+
+<<person>>跑过来并且将<<his>>衣服包裹在你身上。 "哦，你这个可怜的小家伙，"<<he>>说道。"已经有动物变成这样了，我从来没有想过……"当<<he>>继续向你道歉并且照料你的时候，你一直低着头以掩饰你的傻笑。
+<br><br>
+
+"你确定你没事吗？"<<he>>在前门说了一次。
+<br><br>
+
+"谢谢您，我没事的。"你回答。<<He>>让你留着这件长袍。它看起来很有价值。
+<br><br>
+
+<<set $blackmoney += 60>>
+
+<<skulduggeryuse>>
+
+<<link [[继续|Danube Street]]>><<endevent>><</link>>
+<br>
+
+<</if>>
+
+:: Danube House Dive
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">>
+
+你游到了喷泉的底部。当你接近排水口时，拉力变得更强，直到你被拉着走。你被吸进黑暗中，穿过一条通道，然后在地下的某个地方出现，空气中充满了陈旧的气息。
+<br><br>
+
+<<link [[继续|Drain Water]]>><<set $bus to "residentialdrain">><</link>>
+<br>
+
+:: Danube House S&M
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">><<person1>>
+<<if $phase is 0>>
+	你心里没底，但出于对这个<<person>>可能被绑架或遭到虐待的担忧，你走近并轻柔地拔出了堵在<<He>>嘴里的东西。<br><<He>>干呕了几下然后咳了起来。
+	<br>
+	"你在我家做什么?!"<<His>>声音很尖。"出去!滚出去!"
+	<br>
+	噪音太多了。你开始将堵嘴物塞回去。<<He>>挣扎着，即使颈部仍然受缚，也尝试把<<his>>的头转开。
+	<br>
+	"不！"<<He>>试图尖叫，但你设法将 "塞口 "推回原位。这里有一个夹子可以固定住它。把<<him>>拴在床上，安静的环境对你的邪恶意图很有帮助
+	<br><br>
+<<elseif $phase is 1>>
+	这看起来像是S&M游戏。<<His>>伙伴把<<him>>绑起来，在这种屈辱的状态下抛弃了<<him>>一个小时左右。为什么要打断他们的游戏？不管怎样，让<<him>>方便地被锁在原地并保持安静，很好地满足了你的淫秽需求。
+	<br><br>
+<<elseif $phase is 2>>
+	你冲过去帮助可怜的受害者，迅速从<<his>>喉咙里取出残忍的假阳具。
+	<br>
+	"你在我家做什么?!"<<his>>声音很尖。"出去!滚出去!"
+	<br>
+	你震惊地盯着<<him>>。
+	<br>
+	"不要再看我了! 滚出我的房子？你是... ？快滚开！就现在！"
+	<br>
+	看着打开的柜子，你看到鞭子和性玩具。人们被捆绑和打屁股的照片。你听说过人们做这种事，但当你面对这种事时，你感到很震惊。
+	<<gawareness>><<awareness 3>>
+	<br>
+	但如果这是人们喜欢的...
+	<br><br>
+	你试图把假阳具推回<<his>>嘴里，但是<<he>>非常抗拒，并且对你大吼大叫
+	<br>
+<</if>>
+环顾房间，你可以看到许多贵重物品，包括BDSM装备和皮革、色情艺术品、珠宝、电子产品和一些非常高端的性爱玩具。
+<br><br>
+
+<<link [[抢劫|Danube House S&M Steal]]>><<crimeup 120>><</link>><<crime>>
+<br>
+<<link [[离开|Danube Street]]>><<endevent>><</link>>
+<br>
+
+:: Danube House S&M Steal
+<<set $outside to 0>><<set $location to "town">><<effects>><<set $bus to "danube">><<person1>>
+
+你在房间里寻找，选择你能轻易藏匿和携带的最有价值的东西。
+<<if $phase lte 1>>
+	在你工作的时候，那个<<person>>在无能为力的愤怒中扭动身体，反抗<<his>>束缚。<<His>><<if $pronoun is "m">>阴茎甩来甩去<<else>>乳房摆动着<</if>>和一些有趣的 "玩具 "在床上蹦蹦跳跳。<<he>>挣扎，带给了你一些不好的想法
+	<<garousal>><<arousal 100>><<set $blackmoney += 120>>
+	<br><br>
+	最后，在选择了你的战利品后，你离开了那个<<person>>，他满脸通红，大汗淋漓，彻底被激怒了。
+	<br><br>
+<<else>>
+	当你试图工作时，这个<<person>>大喊大叫，口出秽语，同时叫嚣对你进行各种形式的暴力性攻击。<<He>>扭曲和紧张的挣扎<<his>>束缚。这使你难以集中注意力。
+	<<set $blackmoney += 80>><<gstress>>
+	<br><br>
+	最后，当你准备带着你的战利品离开时，那个<<person>>满头大汗，满脸通红地看着你。<<He>>吞吞吐吐，开始说话。
+
+	"听着。做个好<<girl>>. 在你走之前，你能不能…… 你能不能把那个塞子放回去。那个塞子，那……那个
+	<<if $rng % 2>>
+		否则，主人会惩罚我的。"
+		<br><br>
+		你对<<him>>微笑。"我试过了。你没让我这样做。"
+		<br><br>
+		"我，我以为我没有…不。不，求你，先别走，求你！把他放回去，你…"
+		<br><br>
+		出门时，你在门口甜美地挥手。"再见！"
+		<br><br>
+		"你不懂，呵呵...他会..."
+	<<else>>
+		否则，女主人会惩罚我的。"
+		<br><br>
+		你对<<him>>微笑。"我试过了。你没让我这样做。"
+		<br><br>
+		"我，我以为我没有…不。不，求你，先别走，求你！把他放回去，你…"
+		<br><br>
+		出门时，你在门口甜美地挥手。"再见！"
+		<br><br>
+		"你不懂，她-她，她会…"
+	<</if>>
+	<br><br>
+	当前门咔嚓一声关上时，你仍然可以听到<<his>>的哀求。
+	<br><br>
+	你发现自己在笑。
+	<<lstress>><<stress -1>>
+	<br><br>
+<</if>>
+<<link [[离开|Danube Street]]>><<endevent>><</link>>
+<br>

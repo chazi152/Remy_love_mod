@@ -1,0 +1,307 @@
+:: Widgets Livestock [widget]
+<<widget "livestock_sleep">>
+	<<set _autosavehere to true>>
+	<<if Time.hour is 21>>
+		<<set _livestock_sleep to 9>>
+	<<elseif Time.hour is 22>>
+		<<set _livestock_sleep to 8>>
+	<<elseif Time.hour is 23>>
+		<<set _livestock_sleep to 7>>
+	<<else>>
+		<<set _livestock_sleep to (6 - Time.hour)>>
+	<</if>>
+	<<for _l to 0; _l lt _livestock_sleep; _l++>>
+		<<pass 60>>
+		<<set $sleepStat++>>
+		<<if $sleeptrouble is 1 and $controlled is 0>>
+			<<set $tiredness -= 200>>
+		<<else>>
+			<<set $tiredness -= 250>>
+		<</if>>
+	<</for>>
+<</widget>>
+
+<<widget "livestock_init">>
+	<<set $livestock_river to 1>>
+	<<set $livestock_fence to 1>>
+	<<set $livestock_grass to 1>>
+<</widget>>
+
+<<widget "livestock_end">>
+	<<unset $livestock_muzzle>>
+	<<unset $livestock_dig>>
+<</widget>>
+
+<!-- Modified for Monster People -->
+<<widget "livestock_cows">>
+	<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+		<<if maleChance() is 0>>
+			<<set _text_output to "母牛女孩">>
+		<<elseif maleChance() is 100>>
+			<<set _text_output to "公牛男孩">>
+		<<else>>
+			<<set _text_output to "牛男孩女孩们">>
+		<</if>>
+	<<else>>
+		<<set _text_output to "牛们">>
+	<</if>>
+
+	<<if _args[0] is "cap">>
+		<<set _text_output to _text_output.toUpperFirst()>>
+	<</if>>
+
+	<<print _text_output>>
+<</widget>>
+
+<<widget "livestock_horse">>
+	<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f") or ($bestialitydisable is "t")>>
+		<<set _text_output to "半人马">>
+	<<else>>
+		<<if beastMaleChance() gte random(1, 100)>>
+			<<set _text_output to "公马">>
+		<<else>>
+			<<set _text_output to "母马">>
+		<</if>>
+	<</if>>
+	<<print _text_output>>
+<</widget>>
+
+<<widget "livestock_obey_description">>
+	<<if $livestock_obey gte 100>>
+		<span class="green">农场工人不会再多看你一眼，对这些家伙而言，你和牛群中的其他牛没有什么差别。</span>
+	<<elseif $livestock_obey gte 80>>
+		<span class="teal">农场工人不怎么关注你，毕竟这些家伙并不希望有麻烦。</span>
+	<<elseif $livestock_obey gte 60>>
+		<span class="lblue">农场工人们时不时地会瞥你一眼，但似乎并不关心你的行为。</span>
+	<<elseif $livestock_obey gte 40>>
+		<span class="blue">农场工人一直谨慎地盯着你。</span>
+	<<elseif $livestock_obey gte 20>>
+		<span class="purple">农场工人们在栅栏后警惕地看着你。</span>
+	<<elseif $livestock_obey gte 1>>
+		<span class="pink">农场工人正在像在看一个麻烦精一样看着你。</span>
+	<<else>>
+		<span class="red">农场工人们死死的盯着你，仿佛你随时都会逃跑一样。</span>
+	<</if>>
+<</widget>>
+
+<<widget "livestock_overhear">>
+	<<generate1>><<generate2>><<person1>>
+	你无意中听见两个农场工人在栅栏后面的对话。
+	<<cleareventpool>>
+	<<addinlineevent "livestock_overhear 1">>
+		"雷米是如何控制那群野兽的？"一个<<person>>问道。
+		<br>
+		"不知道，"一个<<person2>><<person>>回答道:"这些家伙不会回应任何人。"
+		<br>
+		"你有见过这些家伙全速奔跑么?"
+		<br>
+		"当然，有一次奶牛逃跑了，雷米直接追了上去，真是太可怕了。"
+		<br><br>
+		那两个家伙走开了。
+		<br><br>
+	<</addinlineevent>>
+
+	<<addinlineevent "livestock_overhear 2">>
+		"雷米就是个吝啬的混蛋," 那个<<person>>看了看<<his>>的后面，然后说道。
+		<br>
+		"是啊，"一个<<person2>><<person>>回答道:"尤其是对那些动物而言，那家伙把苹果当成金子一样。"
+		<br>
+		"我曾在那些马的面前吃了一个苹果.，那些马看向我的眼神我至今都难以忘记。"
+		<br><br>
+		那两个家伙走开了。
+		<br><br>
+	<</addinlineevent>>
+
+	<<addinlineevent "livestock_overhear 3">>
+		一个<<person>>问道："你认为那些牛奶最终到哪里去了？"
+		<br>
+		"你觉得呢？"一个<<person2>><<person>>回答道："除了在超市里，还能在哪里？"
+		<br>
+		"不,我的意思是,"<<person1>><<he>>看了看<<his>>的身后，继续说道： "这些特殊的牛奶，该不会和我们的下午茶混在了一起吧?"
+		<br>
+		"我知道有些会在其他地方处理掉，更多的我就不清楚了."
+		<br><br>
+		那两个家伙走开了。
+		<br><br>
+	<</addinlineevent>>
+
+	<<addinlineevent "livestock_overhear 4">>
+		"我昨晚听到了更多奇怪的声音," 一个<<person>>说道:"好像是从南边传来的."
+		<br>
+		"只是一些动物罢了,"一个<<person2>><<person>>回应道: "顶破天也就可能是一只狼，怎么，你害怕了?"
+		<br>
+		"你是没听过. 我告诉你，拿回宿舍一声非常刺耳的尖叫. 我要去和雷米申请调换一下工作时间."
+		<br><br>
+		那两个家伙走开了。
+		<br><br>
+	<</addinlineevent>>
+
+	<<addinlineevent "livestock_overhear 5">>
+		"没有办法，"其中一个<<person>>说道："某个老师会介入的。"
+		<br>
+		"但那些家伙不知道。"一个<<person2>><<person>>回应道；"也许他们不知道，但如果你不相信我的话，就自己去看看吧。"
+		<br>
+		"你知道我不喜欢城里的那个地方，闻起来就像大便一样。"
+		<br>
+		"那里闻起来就像我所知道的任何大便一样。"
+		<br><br>
+		那两个家伙走开了。
+		<br><br>
+	<</addinlineevent>>
+
+	<<addinlineevent "livestock_overhear 6">>
+		"那个医生给我一种很不舒服的感觉，"一个<<person>>说道。
+		<br>
+		"那孩子？"一个<<person2>><<person>>笑道："别傻了。"
+		<br>
+		"<<nnpc_Hes "Harper">>对于这样的一个地方简直宛如天使， 这也太反常了."
+		<br>
+		"我觉得你只是害怕医生罢了。"
+		<br><br>
+		那两个家伙走开了。
+		<br><br>
+	<</addinlineevent>>
+
+	<<addinlineevent "livestock_overhear 7">>
+		一个<<person>>问道："那些家伙从哪里搞来的新<<girls>>？""是从大街上拐来的？"
+		<br>
+		"雷米认识几个卖家," 其中一个<<person2>><<person>>说道: "我也不清楚那些家伙是怎么搞到手的，我只知道有些时候那些警察会向我们扔垃圾."
+		<br>
+		"那些警察坐在警车里解释说以为那些家伙在敲诈我们."
+		<br>
+		"也许真的在敲诈呢."
+		<br><br>
+		那两个家伙走开了。
+		<br><br>
+	<</addinlineevent>>
+
+	<<addinlineevent "livestock_overhear 8">>
+		"那个新来的<<girl>>很可爱，"其中一个<<person>>说道。
+		<br>
+		"你是说那个新来的<<if $player.gender_appearance is "m">>公牛<<else>>母牛<</if>>?"另一个<<person2>><<person>>回应道。
+		<br>
+		"没错，那家伙看起来很不错。"
+		<br>
+		"别想太多了，雷米不喜欢我们去干涉这些动物。"
+		<br><br>
+		那两个家伙走开了。
+		<br><br>
+	<</addinlineevent>>
+
+	<<addinlineevent "livestock_overhear 9">>
+		"真希望那个家伙能让我们看看那些照片，"一个<<person>>说道。
+		<br>
+		"是的，"另一个<<person2>><<person>>回应道，"我向那个摄影师要求想看一看，但<<nnpc_He "Niki">>没有理会我。"
+		<br>
+		"那家伙一定是把那些照片卖给了什么人。"
+		<br>
+		"我猜那些变态比我们更有钱。"
+		<br><br>
+		那两个家伙走开了。
+		<br><br>
+	<</addinlineevent>>
+
+	<<if playerBellyVisible() and $pregnancyspeechdisable is "f">>
+		<<addinlineevent "livestock_overhear 10">>
+			"那个怀孕的<<girl>>很可爱，"其中一个<<person>>说道。
+			<br>
+			"是的，"一个<<person2>><<person>>回答道："你觉得那些家伙又在做实验了吗?"
+			<br>
+			"谁知道呢?你说话小心一点，别吓着这些牛了。"
+			<br>
+			<<if $player.breastsize gte 12>>
+				"好吧，不管雷米在做什么，至少它对胸部的效果相当显著。"
+			<<elseif $player.breastsize gte 8>>
+				"好吧，不管雷米在做什么，那效果似乎相当好，你看<<pshe>>那对漂亮的乳房。"
+			<<elseif $player.breastsize gte 6>>
+				"好吧，不管雷米在做什么，它似乎有些起色了，<<pher>>的胸部似乎正在增大。"
+			<<elseif $player.breastsize gte 1>>
+				"好吧，不管雷米在做什么，它似乎毫无作用，<<pshes>>的胸部几乎没有变化。"
+			<<else>>
+				"好吧，不管雷米在做什么，它似乎毫无作用，<<pshes>>的胸部还是一马平川。"
+			<</if>>
+			<br><br>
+			那两个家伙走开了。
+			<br><br>
+		<</addinlineevent>>
+	<</if>>
+
+	<<runeventpool>>
+	<<endevent>>
+<</widget>>
+
+<<widget "passoutremy">>
+	<<if isPlayerNonparasitePregnancyEnding()>>
+		<<pregnancyWatersBrokenPassout "remy">>
+	<<else>>
+		<<passout>>
+		你把自己逼的太紧了，你昏了过去。
+		<br><br>
+		<<link [[继续|Livestock Passout]]>><<pass 60>><<set $stress -= 4000>><</link>>
+	<</if>>
+	<br>
+<</widget>>
+
+<<widget "livestock_bodywriting">>
+	<<if $skin[_bodypart].writing>>
+		<<bodywriting_clear _bodypart>>
+	<</if>>
+	<<rng 6>>
+	<<switch $rng>>
+		<<case 1>>
+			<<add_bodywriting _bodypart remys_cattle tattoo>>
+		<<case 2>>
+			<<if $player.gender_appearance is "m">>
+				<<add_bodywriting _bodypart remys_bull tattoo>>
+			<<else>>
+				<<add_bodywriting _bodypart remys_cow tattoo>>
+			<</if>>
+		<<case 3>>
+			<<if $player.gender_appearance is "m">>
+				<<add_bodywriting _bodypart remys_bull tattoo>>
+			<<else>>
+				<<add_bodywriting _bodypart dairy_cow tattoo>>
+			<</if>>
+		<<case 4>>
+			<<add_bodywriting _bodypart milk_me tattoo>>
+		<<case 5>>
+			<<add_bodywriting _bodypart animal tattoo>>
+		<<case 6>>
+			<<add_bodywriting _bodypart breedable tattoo>>
+	<</switch>>
+<</widget>>
+
+<<widget "milking_img">>
+	<<if $options.images is 1 and $options.combatImages is 1>>
+		<<machine_init>>
+		<<if $player.penisExist and $breastfeedingdisable is "f">>
+			<<if _args[0]>>
+				<<prop haybale milk penis_pump breast_pump _args[0]>>
+			<<else>>
+				<<prop haybale milk penis_pump breast_pump>>
+			<</if>>
+			<<timed 100ms>>
+				<<combatimg>>
+				<br><br>
+			<</timed>>
+		<<elseif $breastfeedingdisable is "f">>
+			<<if _args[0]>>
+				<<prop haybale milk breast_pump _args[0]>>
+			<<else>>
+				<<prop haybale milk breast_pump>>
+			<</if>>
+			<<timed 100ms>>
+				<<combatimg>>
+				<br><br>
+			<</timed>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "livestockescape">>
+	<<if $whitneyromance is 1>>
+		<<set $whitneyReunionScene to "farm">>
+	<</if>>
+
+	<<unset $baileySold>>
+<</widget>>

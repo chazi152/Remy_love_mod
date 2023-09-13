@@ -1,0 +1,95 @@
+:: Widgets Canvas Low-Level API [widget]
+<!--
+
+Low-level canvas renderer composition functions.
+
+Example usage:
+
+<<set _wetness to 0.9>>
+<<canvasstart 256 256>>
+<<run canvaslayer(10, 'img/shirt.png', {blend:'#ff0000',alpha:_wetness})>>
+<<run canvaslayer(11, 'img/shirt_acc.png', {alpha:_wetness})>>
+<<run canvaslayer( 8, 'img/skirt.png', {blend:'#ff0000',alpha:_wetness})>>
+<<canvasdraw>>
+
+will create a 256x256 canvas
+and render 3 images in it: skirt, shirt, and shirt_acc (order by z-index)
+shirt and skirt are multiplied by red (#ff0000) colour (blend option)
+the images are semi-transparent (alpha=_wetness=0.9, alpha option)
+actual <canvas> element will be placed where <<canvasdraw>> is called
+
+-->
+
+<<widget "canvasstart">>
+	<!--
+	Creates an off-screen <canvas> element.
+	Usage: <<canvasstart WIDTH HEIGHT FRAMES>>
+	-->
+	<<if _Canvas !== undefined>>
+	<<run throw "Duplicate 'canvasstart' call">>
+	<<elseif _args.length !== 3 or typeof _args[0] !== 'number' or typeof _args[1] !== 'number' or typeof _args[2] !== 'number'>>
+	<<run throw "Invalid 'canvasstart' call">>
+	<<else>>
+	<<set _Canvas = Renderer.createCanvas(_args[0]*_args[2], _args[1])>>
+	<<set _CanvasLayers = []>>
+	<<set _CanvasFrames = _args[2];>>
+	<</if>>
+<</widget>>
+
+<<widget "canvaslayer">>
+	<!--
+	Prepares a layer to be rendered
+	Usage: <<canvaslayer Z SOURCE [OPTIONS...]*>>
+	where:
+		Z: z-index of the layer (bigger above lower).
+		SOURCE: is URL to the image
+		OPTIONS: Extra CompositeLayerSpec option objects - they are merged, last has most priority
+	Example:
+		<<canvaslayer 20 'img/clothers/upper/schoolshirt/full.png' `{blend:'#00ff00', blendMode:'hard-light'}`>>
+	-->
+	<<twinescript>>
+	var opts = {z:_args[0],src:_args[1]};
+	for (var i = 2; i < _args.length; i ++) opts = jQuery.extend(opts, _args[i]);
+	_CanvasLayers.push(opts);
+	<</twinescript>>
+<</widget>>
+
+<<widget "canvasanimate">>
+	<!--
+	Insert HTML <canvas> element right here.
+	Render and animate previously prepared images into it.
+	Usage: <<canvasanimate [CSS_CLASSES]>>
+	-->
+	<<twinescript>>
+	if (!_Canvas) {
+		Errors.report("'canvasdraw' without 'canvasstart'");
+	} else {
+		Renderer.animateLayers(_Canvas, _CanvasLayers, Renderer.Animations, Renderer.defaultListener);
+		if (typeof _args[0] === 'string') {
+			_Canvas.canvas.className = _args[0];
+		}
+		output.appendChild(_Canvas.canvas);
+	}
+	<</twinescript>>
+	<<unset _Canvas,_CanvasLayers,_CanvasFrames>>
+<</widget>>
+
+<<widget "canvasdraw">>
+	<!--
+	Insert HTML <canvas> element right here.
+	Render previously prepared images into it.
+	Usage: <<canvasdraw [FRAMECOUNT] [CSS_CLASSES]>>
+	-->
+	<<twinescript>>
+	if (!_Canvas) {
+		Errors.report("'canvasdraw' without 'canvasstart'");
+	} else {
+		Renderer.composeLayers(_Canvas, _CanvasLayers, _args[0] || 1, Renderer.defaultListener);
+		if (typeof _args[1] === 'string') {
+			_Canvas.canvas.className = _args[1];
+		}
+		output.appendChild(_Canvas.canvas);
+	}
+	<</twinescript>>
+	<<unset _Canvas,_CanvasLayers,_CanvasFrames>>
+<</widget>>

@@ -1,0 +1,776 @@
+:: Widgets Farm Exhibitionism [widget]
+<<widget "events_farm_exhibitionism">>
+	<<rng 3>>
+	<<switch $rng>>
+		<<case 1>>
+			你躲在一捆干草后面保护你的尊严，同时你看着前面的路，确保道路畅通。
+			<br><br>
+
+			你看到一辆拖拉机隆隆驶来。
+
+			<<if random(1, 2) is 2>>
+				你躲得更低，听着它驶过，只有在听不到声音时才从藏身之处出来。
+				<br><br>
+
+				<<link [[继续|Farmland]]>><<set $eventskip to 1>><</link>>
+				<br>
+			<<else>>
+				<br><br>
+				拖拉机驶近时，你仍躲得很低，听着它越来越近。<span class="purple">它停在附近，</span>你屏住呼吸片刻，<span class="pink">干草堆开始颤动。</span>你抬头一看，拖拉机的起重机已经抓住了干草的顶部，它要把你的藏身之处拿走，让你暴露在外！
+
+
+				<<if $leftarm is "bound" and $rightarm is "bound">>
+					<span class="blue">由于你的手臂被绑着，你只能逃跑.</span>
+					<br><br>
+				<<else>>
+					你可以逃跑，但司机会看到你。
+					<br><br>
+					<<link [[紧紧抓住干草|Farmland Exposed Cling]]>><</link>>
+					<br>
+				<</if>>
+				<<link [[跑|Farmland Exposed Run]]>><<trauma 6>><<stress 6>><<fameexhibitionism 1>><</link>><<gtrauma>><<gstress>>
+				<br>
+			<</if>>
+		<<case 2>>
+			<<beastNEWinit 3 pig>><<generate4>><<person4>>
+			你听到前方传来脚步声。一群<<beastsplural>>绕过拐角，朝你走来。它们对你或你的裸露毫不关心，但你听到一个<<personsimple>>在它们后面喊叫。你将被发现。<<covered>>
+			<br><br>
+
+			<<link [[朝相反的方向冲刺|Farmland Exposed Sprint]]>><</link>><<athleticsdifficulty 200 1200>>
+			<br>
+			<<link [[躲在牛群里|Farmland Exposed Hide]]>><</link>>
+			<br>
+		<<case 3>>
+			你听到前方有汽车声。它越来越近。<<covered>>
+			<br><br>
+
+			道路两侧都是茂密的树篱。
+			<br><br>
+
+			<<link [[把自己逼到篱笆里|Farmland Exposed Hedge]]>><<pain 8>><</link>><<ggpain>>
+			<br>
+			<<link [[继续走|Farmland Exposed Walk]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+			<br>
+
+	<</switch>>
+<</widget>>
+
+:: Farmland Exposed Run
+<<effects>>
+
+你向拖拉机后面的道路猛冲，心脏跳动不已。司机按喇叭，你的心跳加快了。
+<br><br>
+
+你拐过拐角，继续奔跑，尽管你认为没有被跟踪。
+<br><br>
+
+<<link [[继续|Farmland]]>><<set $eventskip to 1>><</link>>
+<br>
+
+
+:: Farmland Exposed Cling
+<<effects>>
+
+你用双手紧紧抓住干草堆，随着它被吊到空中。干草仍然挡在你和司机之间，起重机将你放在拖车上，叠放在其他干草堆之上。
+<br><br>
+
+拖拉机再次隆隆作响。你小心翼翼地爬下拖车。车速不快，但如果你现在离开，司机可能会发现你。除非你很快。
+<br><br>
+
+<<link [[跑|Farmland Exposed Cling Run]]>><</link>><<athleticsdifficulty 1 1000>>
+<br>
+<<link [[等待机会|Farmland Exposed Cling Wait]]>><</link>><<difficulty 50>>
+<br>
+
+
+:: Farmland Exposed Cling Run
+<<effects>>
+
+道路转弯了。你不需要跑得太远就能藏起来。你从拖车上跳下来，绕过拐角跑开。
+<<if $athleticsSuccess>>
+	<span class="green">你认为没人看见你。</span>你继续奔跑，直到拖拉机发动机的声音在你身后消失。
+<<else>>
+	<span class="red">拖拉机鸣笛了。</span>你被发现了。你一直跑着，直到拖拉机的声音在你身后变得微弱。你的脸很热。<<fameexhibitionism 1>><<gtrauma>><<gstress>>
+	<<trauma 6>><<stress 6>>
+<</if>>
+<br><br>
+
+
+<<link [[继续|Farmland]]>><<set $eventskip to 1>><</link>>
+<br>
+
+
+
+
+:: Farmland Exposed Cling Wait
+<<effects>>
+
+你蹲在拖车的后面，窥视着干草，等待拖拉机经过另一捆干草或者任何可以躲藏的东西。
+<br><br>
+<<if random(1, 2) is 2>>
+	你看到前方有一条小路，路旁有一丛长满草的灌木丛，可以遮蔽你的身影。你等待合适的时机，然后从拖拉机上跳下，沿着小路逃离。<span class="green">你没有被发现。</span>
+	<br><br>
+<<else>>
+	你听到引擎的轰鸣声，<span class="red">一辆汽车在你身后的拐角处飞驰而过。</span>你暴露在明处，<span class="lewd">没有任何可以遮掩的东西。</span><<covered>>
+	<br><br>
+
+	<<generate1>><<generate2>><<person1>>一个<<person>>坐在驾驶座上，<<person1>><<him>>旁边是一个<<person2>><<person>>。他们在笑，但你听不到他们说什么。
+	<br><br>
+
+	你没有其他选择，只能跳下挂车并奔跑。拖拉机司机看到你后按喇叭。你脸发烫，不停地奔跑，直到两个引擎的声音在身后消失。<<gtrauma>><<gstress>><<trauma 6>><<stress 6>><<fameexhibitionism 1>>
+	<br><br>
+<</if>>
+
+<<link [[继续|Farmland]]>><<set $eventskip to 1>><<endevent>><</link>>
+<br>
+
+
+
+:: Farmland Exposed Sprint
+<<effects>>
+
+你转身沿着道路狂奔。你听到身后兴奋的"哼哼"声。你回头看了一眼，<span class="pink"><<beastsplural>>正在追逐你！</span>
+<br><br>
+<<if $athleticsSuccess>>
+	你尽全力奔跑，<span class="green">成功保持在<<beastsplural>>的前面一段时间。</span><<personsimple>>把它们控制住之前，你终于逃离了危险。
+	<br><br>
+
+	你在被发现之前沿着一条小路疾跑。
+	<br><br>
+
+	<<link [[继续|Farmland]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	你全力奔跑，<span class="red">但<<beastsplural>>跑得更快。</span> 它们从你的两侧奔跑，然后从你的前方奔跑，将你包围并迫使你停下。
+	<br><br>
+
+	"你这是怎么了？"<<personsimple>>从后面喊道。<<He>>很快就会找到你！
+	<br><br>
+
+	<<link [[躲在兽群中|Farmland Exposed Hide]]>><</link>>
+	<br>
+	<<link [[寻求帮助|Farmland Exposed Call]]>><<trauma 6>><<stress 6>><<fameexhibitionism 1>><</link>><<gtrauma>><<gstress>>
+	<br>
+<</if>>
+
+:: Farmland Exposed Hide
+<<effects>>
+
+当<<beastsplural>>围绕着你奔跑时，你跌倒在地。你被推着走。你希望你足够低，农民看不见你。
+<br><br>
+
+<<personsimple>>的声音再次响起，但并不是在指责你。你确信自己没有被发现，试图推开兽群，到达群边，希望找到逃脱的小路。
+<br><br>
+
+这不容易。<<beastsplural>>不愿为你让路，如果你落后太远，<<personsimple>>就会看到你。
+<br><br>
+
+<<link [[强行冲过去|Farmland Exposed Barge]]>><</link>><<physiquedifficulty 1 16000>>
+<br>
+<<link [[更为谨慎|Farmland Exposed Gentle]]>><</link>><<tendingdifficulty 1 1100>>
+<br>
+
+
+
+
+:: Farmland Exposed Barge
+<<effects>>
+
+<<if $physiqueSuccess>>
+	你推开人群，<span class="green">将<<beastsplural>>推开。</span>你到了边缘，前面有一条小路，通向远离公路的方向。
+	<br><br>
+
+	<<personsimple>>转过身来，阻止一只狂暴的<<beasttype>>。你沿着小路逃离，趁<<hes>>不注意的时候。
+	<br><br>
+
+	<<link [[继续|Farmland]]>><<set $eventskip to 1>><<endevent>><</link>>
+	<br>
+<<else>>
+	你试图穿过兽群，<span class="red">但<<beastsplural>>太重了，</span>而且太激动了。
+	<br><br>
+
+	你考虑另一个选项时，你听到前面传来沉重的响声。牛群正在被赶进几辆停放的卡车后面。你被迫进入其中，被困在<<beastsplural>>中间，车门在你身后砰地一声关上。
+	<br><br>
+
+	<<link [[继续|Farmland Pigs]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Farmland Exposed Gentle
+<<effects>>
+
+<<if $tendingSuccess>>
+	你对路上的<<beastsplural>>发出舒缓的声音，<span class="green">它们为你让出了空间。</span>你走到了边缘，前面有一条小路，通向远离公路的地方。
+	<br><br>
+
+	<<personsimple>>转过身来，阻止一只狂暴的<<beasttype>>。你沿着小路逃离，趁<<hes>>不注意的时候。
+	<br><br>
+
+	<<link [[继续|Farmland]]>><<set $eventskip to 1>><<endevent>><</link>>
+	<br>
+<<else>>
+	你对身边的<<beasttype>>发出安抚的声音，<span class="red">但在混乱中你不确定它们是否注意到你。</span>
+	<br><br>
+
+	你考虑另一个选项时，你听到前面传来沉重的响声。牛群正在被赶进几辆停放的卡车后面。你被迫进入其中，被困在<<beastsplural>>中间，车门在你身后砰地一声关上。
+	<br><br>
+
+	<<link [[继续|Farmland Pigs]]>><</link>>
+	<br>
+<</if>>
+
+:: Farmland Exposed Call
+<<effects>>
+
+你向<<personsimple>>呼喊，当<<he>>走到拐角处时，<<He>>看向你，
+
+<<if random(1, 2) is 2>>
+	向你走来，眼睛盯着你的<<nudity>>，<<he>>咧嘴笑着说："看起来你倒霉透了。"<<beastsplural>>在你周围转悠，你无处可逃，<<he>>抓住你的手臂，试图把你按倒在地。
+	<br><br>
+
+	<<saveNPC 3 farmland_exposed_1>>
+	<<endevent>>
+	<<loadNPC 0 farmland_exposed_1>>
+	<<clearNPC farmland_exposed_1>>
+
+	<<link [[继续|Farmland Exposed Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	接着<<he>>放开了你。"猪吃掉了你的衣服？"<<he>>问道。"它们，嗯……的确会做出这样的事。等我一下。"<<beastsplural>>在你身边慢悠悠的走着，<<He>>从一旁的背包里拿出了一些毛巾。"给你。"<<He>>一边说一边移开视线，绅士的把毛巾递给你。"穿上吧，至少能让你安全回家。"
+	<<towelup>>
+	<br><br>
+
+	<<link [[继续|Farmland]]>><<set $eventskip to 1>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+:: Farmland Exposed Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Farmland Exposed Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Farmland Exposed Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Farmland Exposed Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<person>>放开了你。"没办法，"<<he>>耸耸肩。"你这样裸着身子走来走去，实在是有伤风化。"<<He>>驱赶着<<his>>的兽群离开了。
+	<br><br>
+	<<tearful>>你在路上跌跌撞撞的走着。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Farmland]]>><<set $eventskip to 1>><</link>>
+	<br>
+
+<<else>>
+	你把<<person>>推进路边的沟里，绕过拐角跑开了。<<He>>没有追赶你。
+	<br><br>
+	<<tearful>>你躲在一个干草堆后面。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Farmland]]>><<set $eventskip to 1>><</link>>
+	<br>
+
+<</if>>
+
+
+:: Farmland Pigs
+<<effects>>
+
+你被困在卡车的后面。你试图站起来，但车子突然启动，你摇摇晃晃地站不稳。
+<br><br>
+/*$bestialitydisable*/
+<<beastNEWinit 2 pig>>
+一只<<beasttype>>抓住你的破绽，跳到了你身上。
+<br><br>
+
+<<link [[继续|Farmland Pigs Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+
+:: Farmland Pigs Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<beastTrainGenerate>>
+	<<set $timer to 90>>
+<</if>>
+<<effects>>
+
+<<if $timer gte 1>>
+	卡车在你周围隆隆作响。
+	<br><br>
+<<else>>
+	卡车停下来了>>
+	<br><br>
+<</if>>
+
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or $timer lte 0>>
+	<span id="next"><<link [[继续|Farmland Pigs Rape End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Farmland Pigs Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Farmland Pigs Rape End
+<<effects>>
+<<if $enemyhealth lte 0>>
+	<<beastwound>>
+	<<if $combatTrain.length gt 0>>
+		<<beasttype>>在痛苦和恐惧中退缩，但另一只仍渴望尝试。
+
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[继续|Farmland Pigs Rape]]>><</link>>
+	<<else>>
+		<<beasttype>>吃痛退开。
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[继续|Farmland Pigs Rape End]]>><<set $finish to 1>><</link>>
+	<</if>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+	<<if $combatTrain.length gt 0>>
+		在满足之后，<<beasttype>>离开了。但是另一个家伙想要试试。
+
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[继续|Farmland Pigs Rape]]>><</link>>
+	<<else>>
+		心满意足之后，那只<<beasttype>>离开了你。
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[继续|Farmland Pigs Rape End]]>><<set $finish to 1>><</link>>
+	<</if>>
+<<elseif $timer lte 0>>
+	车辆停止。后门打开，一群<<beastsplural>>涌了出来，迫使你和它们在一起。你出现在外面，周围是高楼大厦和车流的声音。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<generate1>><<generate2>>一个穿着制服的<<fullGroup>>把兽群赶进围栏，他们做事比普通的农夫要周到的多。<<person1>><<person>>指着你。<<covered>>
+	<br><br>
+	<<fameexhibitionism 2>>
+	<<link [[继续|Farmland Pigs Factory]]>><</link>>
+	<br>
+<<else>>
+	<<if $enemywounded is 1 and $enemyejaculated is 0>>
+		<<beasttype>>呜咽着逃走了。
+	<<elseif $enemywounded is 0 and $enemyejaculated is 1>>
+		心满意足的<<beasttype>>离开了。
+	<<elseif $enemywounded gte 2 and $enemyejaculated is 0>>
+		感觉自己不值得麻烦，兽类在旅途的剩余时间里放弃了对你的骚扰。
+	<<elseif $enemywounded is 0 and $enemyejaculated gte 2>>
+		满意了，兽类离开你，在旅途的剩余时间里不再打扰你。
+	<<elseif $enemywounded gte 1 and $enemyejaculated gte 1>>
+		满意了，兽类离开你，在旅途的剩余时间里不再打扰你。
+	<</if>>
+	<<tearful>>你走到后面。你试图打开门，但它们被锁住了。
+	<br><br>
+	你没有等待太久。车辆停了下来。后门打开了，一群<<beastsplural>>冲出来，强迫你跟随它们。你出现在外面，被高楼包围，听到交通声。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<generate1>><<generate2>>一个穿着制服的<<fullGroup>>把兽群赶进围栏，他们做事比普通的农夫要周到的多。<<person1>><<person>>指着你。<<covered>>
+	<br><br>
+	<<fameexhibitionism 2>>
+	<<link [[继续|Farmland Pigs Factory]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Farmland Pigs Factory
+<<effects>>
+
+你等待着最后一只猪跑过。<<covered>>有两个人走近了。
+<br><br>
+
+"这不是寻常的猪，"<<person2>><<person>>笑着在<<his>>的笔记本上记下了什么。"你不是想偷偷溜到我们不该去的地方吧？"
+<br><br>
+
+"如果我们搜查一下<<phim>>，<<pshe>>肯定不会抱怨，"<<person1>><<person>>说道。"确保<<pshes>>没有携带任何非法物品。"
+<br><br>
+
+<<link [[配合 (0:10)|Farmland Pigs Cooperate]]>><<pass 10>><<arousal 1200>><<stress 6>><<sub 1>><</link>><<gstress>><<garousal>>
+<br>
+<<link [[生气 (0:01)|Farmland Pigs Angry]]>><<pass 1>><<def 1>><<trauma -6>><<pain 4>><</link>><<gpain>><<ltrauma>>
+<br>
+<<if $submissive gte 1500>>
+	<<link [[崩溃(0:05)|Farmland Pigs Break]]>><<pass 5>><<sub 1>><<trauma -6>><</link>><<submissivetext>><<ltrauma>>
+	<br>
+<</if>>
+
+
+:: Farmland Pigs Cooperate
+<<effects>>
+
+当你在回答<<person2>><<persons>>的问题时，<<person1>><<person>>趁机玩弄起你的身体，开始抚摸你的<<breasts>>和<<bottom>>。
+<<if $player.penisExist and $player.vaginaExist>>
+	你的<<penis>>和<<pussy>>也不安全。
+<<elseif $player.penisExist>>
+	你的<<penis>>也不安全。
+<<else>>
+	你的<<pussy>>也不安全。
+<</if>>
+<<person2>><<person>>会问一些空洞的问题，你是怎么来的，你的目的是什么，你要去哪里。<<He>>在每个问题之间停顿，<<he>>在记事本上写字时咬着<<his>>的嘴唇，让<<his>>的朋友有更多的时间猥亵你。
+<br><br>
+
+<<if $arousal gte $arousalmax>>
+	你感觉自己的身体对无休止的探索做出了回应，并达到了无法逆转的地步。<<orgasm>>
+
+	两人笑了起来，<<person1>><<person>>放开了你，你晕倒在地。"<<person2>><<person>>说，"这个人只是一个荡妇。让<<phim>>走吧。"<<gstress>><<gtrauma>><<trauma 6>><<stress 6>>
+	<br><br>
+<<else>>
+	你感觉到身体对不断的探索做出反应。你脸红了，但是<<person1>><<person>>没有推得太远，最终放开了你。
+	<br><br>
+	"这个人不是流氓，"<<person2>><<person>>说道。"让<<phim>>走吧。"
+	<br><br>
+<</if>>
+
+他们把你推到卡车旁边的街道上，然后关上了大门。他们没有给你任何东西来遮盖身体。
+<br><br>
+
+<<link [[继续|Elk Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Farmland Pigs Angry
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我……我不会让你们欺负我，"你说道。
+<<elseif $speech_attitude is "bratty">>
+	"你只是想……"你喊道。
+<<else>>
+	"非法？"你说道。"我为什么会携带非法物品？"
+<</if>>
+<br><br>
+
+<<person1>><<person>>猛地揍了你的肚子，让你弯下腰。"这个人口齿不清，"<<person2>><<person>>笑道。"我本来会说<<pshe>>属于猪的，但<<pher>>的坏态度可能也会影响到它们。"
+<br><br>
+
+他们把你推到卡车旁边的街道上，然后关上了大门。他们没有给你任何东西来遮盖身体。
+<br><br>
+
+<<link [[继续|Elk Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Farmland Pigs Break
+<<effects>>
+
+你蹲下来大声哭泣。你把脸埋在膝盖之间，抽泣着。
+<br><br>
+
+<<person1>><<person>>举起双手四处张望。"我没有碰<<phim>>，"<<he>>说道。"我发誓！"
+<br><br>
+
+<<person2>>"快拿些毛巾，"<<person>>说道。"快！"
+<<towelup>>
+<br><br>
+
+刚穿好衣服，他们就把你推到卡车旁边的街道上，然后关上了大门。
+<br><br>
+
+<<link [[继续|Elk Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+
+:: Farmland Exposed Hedge
+<<effects>>
+
+你推开树枝，走了进去。它们在你身后合上，把你封闭在视野之外。你听到车子驶过。
+<br><br>
+
+<<if ($hallucinations gte 2 or $backgroundTraits.includes("plantlover")) and random(1, 2) is 2>>
+	你等了一会儿，然后向道路推进。<span class="red">你感到脚踝被夹住了。</span>然后是另一只。从树篱里，新枝条在你周围生长。
+	<br><br>
+
+	<<link [[安抚|Farmland Exposed Soothe]]>><</link>><<tendingdifficulty 1 1000>>
+	<br>
+	<<link [[忍耐|Farmland Exposed Tentacles]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	你等了一会儿，然后把自己推到外面。
+	<br><br>
+
+	<<link [[继续|Farmland]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Farmland Exposed Soothe
+<<effects>>
+
+<<if $tendingSuccess>>
+	你唱着歌，希望那被腐化的生命能够找到安宁。<span class="green">新枝条变松了。</span>你把它们哄回去睡觉。
+	<br><br>
+
+	你从树篱里挣脱出来，继续你的旅程。
+	<br><br>
+
+	<<link [[继续|Farmland]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	"乖……乖树篱，"你说道。<span class="red">它没有听从。</span>
+	<br><br>
+
+	<<link [[继续|Farmland Exposed Tentacles]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Farmland Exposed Tentacles
+<<effects>>
+
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $combat to 1>>
+	<<set $enemytype to "tentacles">>
+	<<molested>>
+	<<controlloss>>
+
+	<<set _randomtentacles to random(6, 10)>>
+	<<tentaclestart _randomtentacles 10 "shoot" "vine" true>>
+
+<</if>>
+
+<<statetentacles>>
+
+
+<<effects>>
+<<effectstentacles>>
+<<tentacles>>
+<<actionstentacles>>
+
+<<if $tentacles.active lte ($tentacles.max / 2)>>
+	<span id="next"><<link [[继续|Farmland Exposed Tentacles Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Farmland Exposed Tentacles]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Farmland Exposed Tentacles Finish
+<<effects>>
+
+嫩芽松了，你就可以从树篱中爬出来了。
+<br><br>
+
+<<tearful>>你继续前进。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Farmland]]>><<set $eventskip to 1>><</link>>
+<br>
+
+
+:: Farmland Exposed Walk
+<<effects>>
+
+<<if $leftarm is "bound" and $rightarm is "bound">>
+	你向前弯腰，希望至少能保留一些尊严，不被接近的司机看到。
+<<else>>
+	你用手臂遮住身体，希望至少能保留一些尊严，不被接近的司机看到。
+<</if>>
+<br><br>
+<<rng 5>>
+<<if $rng is 5>>
+	<<generate1>><<generate2>><<generate3>><<generate4>><<generate5>>
+	<<person1>>
+	<<fameexhibitionism 5>>
+	车子拐过弯角。司机座位上坐着<<person>>，旁边是一个<<person2>><<person>>。你看到车后面有动静。
+	<br><br>
+
+	车子减速，一名<<person3>><<person>>从后窗户探出身来，当他们经过时，你看到另外两个人也在车里面，他们伸长脖子想要更好地看清你。
+	<br><br>
+
+	车子加速，消失在你身后的拐角处。
+	<br><br>
+<<elseif $rng is 4>>
+	<<generate1>><<generate2>><<generate3>><<generate4>>
+	<<person1>>
+	<<fameexhibitionism 4>>
+	车子拐过弯角。司机座位上坐着一个<<person>>，旁边是一个<<person2>><<person>>。你看到车后面有动静。车里面有一个<<person3>><<person>>和另外一个<<person4>><<person>>坐在那里。
+	<br><br>
+
+	四人经过时都用色迷迷的眼神盯着你看。
+	<br><br>
+<<elseif $rng is 3>>
+	<<generate1>><<generate2>><<generatey3>>
+	<<person1>>
+	<<fameexhibitionism 3>>
+	车子拐过弯角。司机座位上坐着<<person>>，旁边是一个<<person2>><<person>>。你看到车后面有动静。
+	<br><br>
+
+	前面的两个人避开了你的目光，差点撞到对面的树篱。当他们经过时，你的心情沉重。后面坐着一名学校里的<<person3>><<person>>，<<his>>的脸贴在窗户上，直勾勾地盯着你。你认出了<<him>>。
+	<br><br>
+
+	车子在你身后的拐角处疾驰而过。
+	<br><br>
+
+<<elseif $rng is 2>>
+	<<generate1>><<generate2>>
+	<<person1>>
+	<<fameexhibitionism 2>>
+	车子拐过弯角。司机座位上坐着一个<<person>>，旁边是一个<<person2>><<person>>。经过你时，他们都呆呆地盯着你看。
+	<br><br>
+<<else>>
+	<<generate1>>
+	<<person1>>
+	<<fameexhibitionism 1>>
+	车子拐过弯角。司机座位上坐着一个<<person>>。<<He>>冷笑着看着你，当<<he>>经过时按了喇叭。
+	<br><br>
+<</if>>
+
+<<link [[继续|Farmland]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Farm Builders Exposed Cottage
+<<effects>>
+
+你猛冲向小屋，心脏在胸口狂跳着。声音越来越近，但你在被发现之前进入了小屋。你用颤抖的手握住门把手，
+
+<<if random(1, 3) is 3>>
+	<span class="red">但它被卡住了！</span>你可以用一些力气强行打开门，但时间不多了。<<gstress>><<stress 6>>
+	<br><br>
+
+	<<link [[强行开门|Farm Builders Exposed Cottage Force]]>><</link>><<physiquedifficulty 1 16000>>
+	<br>
+	<<link [[躲在小屋周围(0:15)|Farm Builders Exposed Cottage Hide]]>><<pass 15>><</link>>
+	<br>
+<<else>>
+	<span class="green">推开门，</span>逃到里面。<<lstress>><<stress 6>>
+	<br><br>
+	<<link [[继续|Farm Cottage]]>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Farm Builders Exposed Cottage Force
+<<effects>>
+
+<<if $physiqueSuccess>>
+	你用尽全力推门，<span class="green">门动了一下。</span> 你推开门，最后一刻逃到了安全地带。<<lstress>><<stress 6>>
+	<br><br>
+
+	<<link [[继续|Farm Cottage]]>><</link>>
+	<br>
+<<else>>
+	你用尽全力推门，<span class="red">但门没有动。</span><<gstress>><<stress 6>>
+	<br><br>
+	<<generate1>><<generate2>><<person1>>
+	<span class="red">一个<<personsimple>>的声音从</span>后面说道，"是主人之一吗？"
+	<br>
+	你跳了起来。<<covered>>
+	<br>
+	"肯定没错，"另一个声音回答说道。 "<<pShe>>一定是个变态，居然这样在外面走来走去。"
+	<br><br>
+	<<fameexhibitionism 2>>
+	你红着脸转身绕过小屋的侧面跑了起来。
+	<br><br>
+
+	你躲在后面，被一片厚厚的树篱遮住了视线。没有人跟着你。
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Farm Builders Exposed Cottage Hide
+<<effects>>
+
+你沿着小屋的侧面冲过去。你及时蹲下，一边被小屋挡住，一边被一片厚厚的树篱遮住，不被发现。
+<br><br>
+
+你不能从这里进入小屋。除非打破一扇窗户，发出很多噪音。你等待院子里的声音渐渐消失，然后从隐蔽处出来。
+<br><br>
+
+<<link [[继续|Farm Work]]>><</link>>
+<br>
+
+:: Farm Builders Exposed Shed
+<<effects>>
+
+你转身向小屋奔去，心脏在胸中狂跳。
+
+<<if $athleticsSuccess>>
+	你转过拐角，<span class="green">在声音到达院子前一刻成功逃脱了视线。</span>
+	<br><br>
+	你等待声音经过。
+	<br><br>
+<<else>>
+	你几乎成功了，<span class="red">但是脚崴了，</span>你向前倒下，手臂和膝盖着地。<<gstress>><<stress 6>><<gpain>><<pain 4>>
+	<br><br>
+	<<fameexhibitionism 2>>
+	<<generate1>><<generate2>>
+	<span class="red">一位<<personsimple>>的声音从</span>后面说道，"那是主人之一吗？"<<gstress>><<stress 6>>
+	<br>
+	你爬起来，继续逃跑。
+	<br>
+	"肯定没错，"另一个声音回答说道。 "<<pshe>>为什么这样穿着，还趴在地上？一定是变态吧？"
+	<br><br>
+
+	你成功绕过了小屋的拐角。他们没有跟着你。
+	<br><br>
+
+<</if>>
+
+
+<<link [[继续|Farm Work]]>><<endevent>><</link>>
+<br>
+
+
+:: Farm Builders Exposed Road
+<<effects>>
+
+你背对着声音，沿着公路向前奔跑，心脏在胸中狂跳。你回头看了一眼，能看到小屋，但看不到院子本身。你不认为他们看到了你。
+<br><br>
+
+你不想跑到公路上，所以蹲在农场的边缘，等待声音消失。
+
+<<if random(1, 2) is 2>>
+	<br><br>
+
+	<<link [[继续|Farm Work]]>><</link>>
+	<br>
+<<else>>
+	然而，<span class="pink">声音越来越近了。</span> 他们一定是要离开农场了。
+	<br><br>
+	你偷偷看向外面的路。周围没有人。你害怕暴露，但这是避免被人看到的唯一方法，而且这个机会不会持续太久。你没有多少时间去跑到拐角处了<<gstress>><<stress 6>>
+	<br><br>
+
+	<<link [[继续|Farmland]]>><</link>>
+	<br>
+<</if>>
+
+

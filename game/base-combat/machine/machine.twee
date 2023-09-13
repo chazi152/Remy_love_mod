@@ -1,0 +1,500 @@
+:: Widgets Machine [widget]
+<<widget "machine_init">>
+	<<combatinit>>
+	<<set $enemytype to "machine">>
+	<<set $machine to {}>>
+	<<set $machine.number to 0>>
+	<<set $machine.speed to 2>>
+	<<for _i = 0; _i < _args.length; _i++>>
+		<<set $machine[_args[_i]] to {}>>
+		<<set $machine[_args[_i]].health to $machine_health>>
+		<<set $machine[_args[_i]].ammo to $machine_ammo>>
+		<<set $machine[_args[_i]].hack to 0>>
+		<<set $machine[_args[_i]].state to "ready">>
+		<<set $machine[_args[_i]].use to "ready">>
+		<<if _args[_i] isnot "arm_chains" and _args[_i] isnot "leg_chains">>
+			<<set $machine.number += 1>>
+		<</if>>
+	<</for>>
+	<<set $leftactiondefault to "rest">>
+	<<set $rightactiondefault to "rest">>
+	<<set $feetactiondefault to "rest">>
+<</widget>>
+
+<<widget "machine_damage">>
+	<<if $machine[_args[0]].health gte $machine_health>>
+		<span class="red">坚固的</span>
+	<<elseif $machine[_args[0]].health gte ($machine_health * 0.8)>>
+		<span class="pink">陈旧的</span>
+	<<elseif $machine[_args[0]].health gte ($machine_health * 0.6)>>
+		<span class="purple">陈旧的</span>
+	<<elseif $machine[_args[0]].health gte ($machine_health * 0.4)>>
+		<span class="blue">锈迹斑斑的</span>
+	<<elseif $machine[_args[0]].health gte ($machine_health * 0.2)>>
+		<span class="lblue">有破损的</span>
+	<<elseif $machine[_args[0]].health gte ($machine_health * 0.1)>>
+		<span class="teal">有破损的</span>
+	<<else>>
+		<span class="green">快报废的</span>
+	<</if>>
+<</widget>>
+
+<<widget "machine_end">>
+	<<unset $machine>>
+	<<unset $machine_health>>
+	<<unset $machine_ammo>>
+	<<endcombat>>
+<</widget>>
+
+<<widget "machine_combat">>
+	<<if $machine.tattoo>>
+		<<switch $machine.tattoo.state>>
+		<<case "ready">>
+			<<if $position is "doggy">>
+				<<set _machine_selection to random(1, 5)>>
+				<<if _machine_selection is 1 and $machine.tattoo.back isnot 1>>
+					<<set _machine_choice to "back">>
+				<<elseif _machine_selection is 2 and $machine.tattoo.left_shoulder isnot 1>>
+					<<set _machine_choice to "left_shoulder">>
+				<<elseif _machine_selection is 3 and $machine.tattoo.left_cheek isnot 1>>
+					<<set _machine_choice to "left_cheek">>
+				<<elseif _machine_selection is 4 and $machine.tattoo.left_bottom isnot 1>>
+					<<set _machine_choice to "left_bottom">>
+				<<elseif $machine.tattoo.hack gte 3>>
+					<<set $machine.tattoo.use to "inert">>
+					<<set $machine.tattoo.state to "inert">>
+					<<set $machine.number -= 1>>
+					<<set $machine_stat += 1>>
+					纹身枪在你的身体上左右翻飞，<span class="green">然后落下。</span>
+				<<else>>
+					<<set _machine_choice to "hover">>
+					<<set $machine.tattoo.hack += 1>>
+					纹身枪依次指向你身体的各个部位，像是在做什么抉择。
+				<</if>>
+			<<else>>
+				<<set _machine_selection to random(1, 8)>>
+				<<if _machine_selection is 1 and $machine.tattoo.breasts isnot 1>>
+					<<set _machine_choice to "breasts">>
+				<<elseif _machine_selection is 2 and $machine.tattoo.forehead isnot 1>>
+					<<set _machine_choice to "forehead">>
+				<<elseif _machine_selection is 3 and $machine.tattoo.left_thigh isnot 1>>
+					<<set _machine_choice to "left_thigh">>
+				<<elseif _machine_selection is 4 and $machine.tattoo.pubic isnot 1>>
+					<<set _machine_choice to "pubic">>
+				<<elseif _machine_selection is 5 and $machine.tattoo.right_bottom isnot 1>>
+					<<set _machine_choice to "right_bottom">>
+				<<elseif _machine_selection is 6 and $machine.tattoo.right_cheek isnot 1>>
+					<<set _machine_choice to "right_cheek">>
+				<<elseif _machine_selection is 7 and $machine.tattoo.right_shoulder isnot 1>>
+					<<set _machine_choice to "right_shoulder">>
+				<<elseif _machine_selection is 8 and $machine.tattoo.right_thigh isnot 1>>
+					<<set _machine_choice to "right_thigh">>
+				<<else>>
+					<<set _machine_choice to "hover">>
+					<<set $machine.tattoo.hack += 1>>
+					<<machine_damage tattoo>>纹身枪依次指向你身体的各个部位，像是在做什么抉择。
+				<</if>>
+			<</if>>
+			<<if _machine_choice isnot "hover" and $machine.tattoo.use isnot "destroyed" and $machine.tattoo.use isnot "inert">>
+				伴随着呼啸的声音，<span class="purple"><<machine_damage tattoo>>纹身枪悬停在你的<<bodypart _machine_choice>>上方。</span>
+				<<set $machine.tattoo.use to _machine_choice>>
+				<<set $machine.tattoo.state to "entrance">>
+			<</if>>
+
+		<<case "destroyed">>
+			纹身枪抽动了一下，<span class="green">但仍然无法使用。</span>
+		<<case "inert">>
+			纹身枪<span class="green">纹丝不动。</span>
+		<<case "entrance">>
+			<<if !$skin[$machine.tattoo.use].pen>>
+				<<machine_damage tattoo>>纹身枪抵在你的<<bodypart $machine.tattoo.use>>上。<span class="pink">当它开始工作时，声音愈来愈大。</span><<gstress>><<stress 6>>
+				<<set $machine.tattoo.state to "imminent">>
+			<<elseif $machine.tattoo.armed is 1>>
+				<<machine_damage tattoo>>纹身枪头在发出嘟嘟声，一道红光在你的皮肤上扫过。<span class="purple">一个小罐从其底部张开。</span>
+				<<set $machine.tattoo.state to "foam">>
+			<<else>>
+				<<machine_damage tattoo>>纹身枪头压在你的<<bodypart $machine.tattoo.use>>上，<span class="lblue">但随后又挪开。</span>一道红光在你的皮肤上扫过，然后纹身枪被移开了。
+				<<set $machine.tattoo[$machine.tattoo.use] to 1>>
+				<<set $machine.tattoo.use to "ready">>
+				<<set $machine.tattoo.state to "ready">>
+				<<set $machine.tattoo.hack += 1>>
+			<</if>>
+		<<case "imminent">>
+			<span class="red"><<machine_damage tattoo>>纹身枪在你的<<bodypart $machine.tattoo.use>>上刻下了这样一段文字：<<bodywriting_machine $machine.tattoo.use>></span><<ggpain>><<ggtrauma>><<ggstress>><<trauma 18>><<stress 18>><<pain 8>>
+			<br><br>
+			<<set $machine.tattoo[$machine.tattoo.use] to 1>>
+			<<set $machine.tattoo.ammo -= 1>>
+			<<set $machine_tattoo_success to true>>/*Just controls NPC response following encounter in underground dungeon.*/
+			<<if $machine.tattoo.ammo gte 1>>
+				<<machine_damage tattoo>>纹身枪头移开了，但它仍然处于待机状态。
+				<<set $machine.tattoo.use to $machine.tattoo.use to "ready">>
+				<<set $machine.tattoo.state to "ready">>
+			<<else>>
+				<<machine_damage tattoo>>纹身枪移开了，<span class="green">后变得没有任何反应。</span>
+				<<set $machine.tattoo.use to "inert">>
+				<<set $machine.tattoo.state to "inert">>
+				<<set $machine.number -= 1>>
+				<<set $machine_stat += 1>>
+			<</if>>
+		<<case "foam">>
+			<span class="pink"><<machine_damage tattoo>>纹身枪在你的<<bodypart $machine.tattoo.use>>上喷出一股粉色泡沫。</span>你的<<tattoo $machine.tattoo.use>>的墨水随之流失，<span class="blue">你的皮肤变得清晰无瑕。</span>
+			<<bodywriting_clear $machine.tattoo.use>>
+			<br><br>
+			<<machine_damage tattoo>>纹身枪压在你的<<bodypart $machine.tattoo.use>>上。<span class="pink">它开始加速旋转，准备开始刻写。</span>
+			<<set $machine.tattoo.state to "imminent">>
+		<</switch>>
+		<br>
+	<</if>>
+	<<if $machine.vaginal>>
+		<<if $machine.vaginal.ammo lte 0 and $machine.vaginal.state isnot "inert" and $machine.vaginal.state isnot "destroyed">>
+			<<if $machine.vaginal.state is "penetrated">>
+				<<machine_damage vaginal>>电动阳具从你的<<pussy>>中"扑"一声退出，<span class="green">然后停止了震动。</span>
+			<<elseif $machine.vaginal.state is "imminent" or $machine.vaginal.state is "entrance">>
+				<<machine_damage vaginal>>电动阳具停止了对你的<<pussy>>的侵犯，<span class="green">然后停止了震动。</span>
+			<<else>>
+				<span class="green"><<machine_damage vaginal>>电动阳具停止了震动。</span>
+			<</if>>
+			<<set $machine.vaginal.use to "inert">>
+			<<set $machine.vaginal.state to "inert">>
+			<<set $machine.number -= 1>>
+			<<machine_vaginal_disable>>
+		<<else>>
+			<<switch $machine.vaginal.state>>
+			<<case "ready">>
+				<<machine_damage vaginal>>炮机<span class="purple">刺激你的<<pussy>>。</span>
+				<<neutral 5 "genitals">>
+				<<set $vaginause to "machine">><<set $vaginastate to "entrance">><<set $machine.vaginal.use to "vagina">><<set $machine.vaginal.state to "entrance">>
+			<<case "entrance">>
+				<<if $worn.over_lower.exposed lte 1>>
+					<<if $machine.vaginal.armed is 1>>
+						<<machine_damage vaginal>>炮机顶部的一个圆筒打开，将粉红色的泡沫喷洒在你的$worn.over_lower.cn_name_cap上，<span class="purple">溶解了它。</span>
+						<<set $worn.over_lower.integrity -= 100>>
+					<<else>>
+						<<machine_damage vaginal>>炮机试图穿过你的$worn.over_lower.cn_name_cap, 撕裂了布料.
+						<<set $worn.over_lower.integrity -= 20>>
+					<</if>>
+				<<elseif $worn.lower.exposed lte 1>>
+					<<if $machine.vaginal.armed is 1>>
+						<<machine_damage vaginal>>炮机顶部的一个圆筒打开，将粉红色的泡沫喷洒在你的$worn.lower.cn_name_cap，<span class="purple">将其溶解。</span>
+						<<set $worn.lower.integrity -= 100>>
+					<<else>>
+						<<machine_damage vaginal>>炮机试图穿过你的$worn.lower.cn_name_cap, 撕裂了布料.
+						<<set $worn.lower.integrity -= 20>>
+					<</if>>
+				<<elseif $worn.under_lower.exposed lte 0>>
+					<<if $machine.vaginal.armed is 1>>
+						<<machine_damage vaginal>>炮机顶部的一个圆筒打开，将粉红色的泡沫喷洒在你的$worn.under_lower.cn_name_cap，<span class="purple">溶解了它。</span>
+						<<set $worn.under_lower.integrity -= 100>>
+					<<else>>
+						<<machine_damage vaginal>>炮机试图穿过你的$worn.under_lower.cn_name_cap, 撕裂了布料.
+						<<set $worn.under_lower.integrity -= 20>>
+					<</if>>
+				<<elseif playerChastity()>>
+					<<if $machine.vaginal.armed is 1>>
+						<<machine_damage vaginal>>炮机顶部的一个圆筒打开，将粉红色的泡沫喷洒在你的$worn.genitals.cn_name_cap，<span class="purple">溶解了它。</span>
+						<<set $worn.genitals.integrity -= 100>>
+					<<else>>
+						<<machine_damage vaginal>>炮机试图穿过你的$worn.genitals.cn_name_cap, 撕裂了布料.
+						<<set $worn.genitals.integrity -= 20>>
+					<</if>>
+				<<else>>
+					<<machine_damage vaginal>>炮机抵住你的<<pussy>>，<span class="pink">即将插入.</span>
+					<<sex 5 "genitals">>
+					<<set $vaginastate to "imminent">><<set $machine.vaginal.state to "imminent">>
+				<</if>>
+			<<case "imminent">>
+				<<if $player.virginity.vaginal isnot true>>
+					<<sex 30 "genitals">>
+					<<violence 1>>
+					<<set $vaginastate to "penetrated">><<set $machine.vaginal.state to "penetrated">><<vaginalstat>><<bruise vagina>><<violence 1>><<raped>><<vaginaraped>>
+					<span class="pink"><<machine_damage vaginal>>炮机插入你的<<pussy>>.</span>
+				<<else>>
+					<<sex 100 "genitals">>
+					<<bruise vagina>><<vaginalstat>><<raped>><<vaginaraped>>
+					<<set $vaginastate to "penetrated">><<set $machine.vaginal.state to "penetrated">>
+					<span class="red"><<machine_damage vaginal>>炮机插入你的童贞阴道，
+						<<if $sexStats.vagina.pregnancy.totalBirthEvents gt 0>>
+							尽管你没有处女膜，但当你的贞操和纯洁被夺走时，你会感到内心的某些东西发生了变化.<<violence 10>>
+						<<else>>
+							捅破了你的处女膜，永远剥夺了你的纯洁。<<violence 25>>
+						<</if>>
+					</span>
+				<</if>>
+				<<takeVirginity "性爱机器" "vaginal">>
+			<<case "penetrated">>
+				<<if $machine.speed is 3>>
+					<<switch random(1,5)>>
+						<<case 1>>
+							<<machine_damage vaginal>>炮机以不规则的插入方式操弄你的<<pussy>>，让你措手不及。
+						<<case 2>>
+							<<machine_damage vaginal>>炮机似乎在你的<<pussy>>里面膨胀，把你撑大.
+						<<case 3>>
+							<<machine_damage vaginal>>炮机狠狠地操着你的<<pussy>>，每一次插入都足以把你顶起一段距离。
+						<<case 4>>
+							<<machine_damage vaginal>>炮机深深地进入你的<<pussy>>。
+						<<case 5>>
+							<<machine_damage vaginal>>炮机停顿片刻，然后<span class="purple">一阵猛烈的抽插袭击了你的<<pussy>>。</span>。
+							<<violence 10>><<gpain>>
+					<</switch>>
+					<<sex 20 "genitals">><<violence 10>>
+				<<elseif $machine.speed is 2>>
+					<<switch random(1,5)>>
+						<<case 1>>
+							<<machine_damage vaginal>>炮机以机械节奏操弄你的<<pussy>>。
+						<<case 2>>
+							<<machine_damage vaginal>>炮机在每一次插入你的<<pussy>>时都会发生变化。
+						<<case 3>>
+							<<machine_damage vaginal>>炮机以机械的节奏撞击着你的<<pussy>>。
+						<<case 4>>
+							<<machine_damage vaginal>>炮机比任何生物都更快地猛击你的<<pussy>>。
+						<<case 5>>
+							<<machine_damage vaginal>>炮机停顿片刻，然后<span class="purple">一阵猛烈的抽插袭击了你的<<pussy>>。</span>。
+							<<sex 30 "genitals">><<garousal>>
+					<</switch>>
+					<<sex 20 "genitals">>
+				<<else>>
+					<<switch random(1,5)>>
+						<<case 1>>
+							<<machine_damage vaginal>>炮机以轻柔的节奏操弄你的<<pussy>>。
+						<<case 2>>
+							<<machine_damage vaginal>>炮机摩擦你的<<pussy>>。
+						<<case 3>>
+							<<machine_damage vaginal>>炮机慢慢地插入你的<<pussy>>。
+						<<case 4>>
+							<<machine_damage vaginal>>炮机在你的<<pussy>>内停了一会儿，然后继续。
+						<<case 5>>
+							<<machine_damage vaginal>>炮机在你的<<pussy>>入口处振动
+					<</switch>>
+				<</if>>
+				<<sex 10 "genitals">><<bruise vagina>><<violence 1>>
+				<<set $machine.vaginal.ammo -= 1>>
+			<<case "destroyed">>
+				<<machine_damage vaginal>>炮机抽搐了一下，<span class="green">但仍然纹丝不动。</span>
+			<<case "inert">>
+				<<machine_damage vaginal>>炮机<span class="green">保持静止。</span>
+			<</switch>>
+		<</if>>
+		<br>
+	<</if>>
+	<<if $machine.anal>>
+		<<if $machine.anal.ammo lte 0 and $machine.anal.state isnot "inert" and $machine.anal.state isnot "destroyed">>
+			<<if $machine.anal.state is "penetrated">>
+				<<machine_damage anal>>小型炮机从你的<<bottom>>"噗 "的一声退出，<span class="green">颤抖着停了下来.</span>
+			<<elseif $machine.anal.state is "imminent" or $machine.anal.state is "entrance">>
+				<<machine_damage anal>>小型炮机停止了威胁你的<<bottom>>，<span class="green">颤抖着停了下来.</span>
+			<<else>>
+				<span class="green"><<machine_damage anal>>小型炮机颤抖着停了下来。</span>
+			<</if>>
+			<<set $machine.anal.use to "inert">>
+			<<set $machine.anal.state to "inert">>
+			<<set $machine.number -= 1>>
+			<<machine_anal_disable>>
+		<<else>>
+			<<switch $machine.anal.state>>
+			<<case "ready">>
+				<<machine_damage anal>>小型炮机<span class="purple">刺激你的<<bottom>>.</span>
+				<<neutral 5 "anus">>
+				<<set $anususe to "machine">><<set $anusstate to "entrance">><<set $machine.anal.use to "anus">><<set $machine.anal.state to "entrance">>
+			<<case "entrance">>
+				<<if $worn.over_lower.exposed lte 1>>
+					<<if $machine.anal.armed is 1>>
+						<<machine_damage anal>>小型炮机顶部的一个圆筒打开，将粉红色的泡沫喷洒在你的$worn.over_lower.cn_name_cap，<span class="purple">溶解了它。</span>
+						<<set $worn.over_lower.integrity -= 100>>
+					<<else>>
+						<<machine_damage anal>>小型炮机试图穿过你的$worn.over_lower.cn_name_cap, 撕裂了布料.
+						<<set $worn.over_lower.integrity -= 20>>
+					<</if>>
+				<<elseif $worn.lower.exposed lte 1>>
+					<<if $machine.anal.armed is 1>>
+						<<machine_damage anal>>小型炮机顶部的一个圆筒打开, 将粉红色的泡沫喷洒在你的$worn.lower.cn_name_cap<span class="purple">溶解了它.</span>
+						<<set $worn.lower.integrity -= 100>>
+					<<else>>
+						<<machine_damage anal>>小型炮机试图穿过你的$worn.lower.cn_name_cap撕裂了布料.
+						<<set $worn.lower.integrity -= 20>>
+					<</if>>
+				<<elseif $worn.under_lower.exposed lte 0>>
+					<<if $machine.anal.armed is 1>>
+						<<machine_damage anal>>小型炮机顶部的一个圆筒打开，将粉红色的泡沫喷洒在你的$worn.under_lower.cn_name_cap，<span class="purple">溶解了布料。</span>
+						<<set $worn.under_lower.integrity -= 100>>
+					<<else>>
+						<<machine_damage anal>>小型炮机试图穿过你的$worn.under_lower.cn_name_cap, 撕裂了布料.<<set $worn.under_lower.integrity -= 20>>
+					<</if>>
+				<<elseif playerChastity("anus")>>
+					<<if $machine.anal.armed is 1>>
+						<<machine_damage anal>>小型炮机顶部的一个圆筒打开，将粉红色的泡沫喷洒在你的$worn.genitals.cn_name_cap，<span class="purple">溶解了布料。</span>
+						<<set $worn.genitals.integrity -= 100>>
+					<<else>>
+						<<machine_damage anal>>小型炮机试图穿过你的$worn.genitals.cn_name_cap, 撕裂了布料.
+						<<set $worn.genitals.integrity -= 20>>
+					<</if>>
+				<<else>>
+					<<machine_damage anal>>小型炮机抵住你的<<bottom>>，<span class="pink">即将插入.</span>
+					<<sex 5 "anus">>
+					<<set $anusstate to "imminent">><<set $machine.anal.state to "imminent">>
+				<</if>>
+			<<case "imminent">>
+				<<if $player.virginity.anal isnot true>>
+					<<sex 30 "anus">>
+					<<violence 1>>
+					<<set $anusstate to "penetrated">><<set $machine.anal.state to "penetrated">><<analstat>><<bruise anus>><<violence 1>><<raped>><<anusraped>>
+					<span class="pink"><<machine_damage anal>>小型炮机插入你的<<bottom>>.</span>
+				<<else>>
+					<<sex 100 "anus">>
+					<<violence 25>>
+					<<takeVirginity "性爱机器" "anal">><<bruise anus>><<analstat>><<raped>><<anusraped>>
+					<<set $anusstate to "penetrated">><<set $machine.anal.state to "penetrated">>
+					<span class="red"><<machine_damage anal>>小型炮机插入你的处女肛门，以一种你意想不到的方式侵犯你.</span>
+				<</if>>
+			<<case "penetrated">>
+				<<if $machine.speed is 3>>
+					<<switch random(1,5)>>
+						<<case 1>>
+							<<machine_damage anal>>小型炮机以凶狠的速度干着你的<<bottom>>。
+						<<case 2>>
+							<<machine_damage anal>>小型炮机猛烈撞击你的<<bottom>>，每次都深深地撞着你疼痛难忍。
+						<<case 3>>
+							<<machine_damage anal>>当小型炮机以比任何生物都快的速度插入你的<<bottom>>时，它的身影快得令人看不清。
+						<<case 4>>
+							<<machine_damage anal>>炮机快速地操着你的<<bottom>>，把你推向前方.
+						<<case 5>>
+							<<machine_damage anal>>小型炮机将自己固定在您的<<bottom>>内，并且<span class="purple">开始旋转</span>，痛苦地钻入您的屁股内侧.
+							<<violence 10>><<gpain>>
+					<</switch>>
+					<<sex 20 "anus">><<violence 10>>
+				<<elseif $machine.speed is 2>>
+					<<switch random(1,5)>>
+						<<case 1>>
+							<<machine_damage anal>>小型炮机以机械节奏操弄你的<<bottom>>。
+						<<case 2>>
+							<<machine_damage anal>>小型炮机以机械的节奏撞击着你的<<bottom>>。
+						<<case 3>>
+							<<machine_damage anal>>当小型炮机以比任何生物都快的速度操弄你的<<bottom>>时，它的身影快得令人看不清。
+						<<case 4>>
+							<<machine_damage anal>>小型炮机干着你的<<bottom>>，每次插入时都会移动.
+						<<case 5>>
+							每次插入你的<<bottom>>结束时，<<machine_damage anal>>小型炮机都会在你的<<prostate>>上振动，<span class="purple">让你感到一阵刺痛.</span>
+							<<sex 30 "anus">><<garousal>>
+					<</switch>>
+					<<sex 20 "anus">>
+				<<else>>
+					<<switch random(1,5)>>
+						<<case 1>>
+							<<machine_damage anal>>小型炮机以轻柔的节奏操弄你的<<bottom>>。
+						<<case 2>>
+							<<machine_damage anal>>小型炮机停顿了一会儿。
+						<<case 3>>
+							<<machine_damage anal>>小型炮机慢慢地从你的<<bottom>>进出.
+						<<case 4>>
+							<<machine_damage anal>>小型炮机以柔软的触感操弄你的<<bottom>>。
+						<<case 5>>
+							<<machine_damage anal>>小型炮机停在你的<<bottom>>内，开始轻轻振动。
+					<</switch>>
+				<</if>>
+				<<sex 10 "anus">><<bruise anus>><<violence 1>>
+				<<set $machine.anal.ammo -= 1>>
+			<<case "destroyed">>
+				<<machine_damage anal>>小型炮机抽搐了一下，<span class="green">但仍然纹丝不动。</span>
+			<<case "inert">>
+				<<machine_damage anal>>炮机<span class="green">保持静止。</span>
+			<</switch>>
+		<</if>>
+		<br>
+	<</if>>
+	<<if $machine.arm_chains>>
+		<<if $machine.arm_chains.state is "ready">>
+			<<if _machine_arms is 1>>
+				<<machine_damage arm_chains>>将附着在你脚镣上的锁链收回，<span class="pink">举起你的手臂到空中，使其无法动弹.</span>
+				<<set $leftactiondefault to "chain_struggle">><<set $rightactiondefault to "chain_struggle">>
+				<<set $machine.arm_chains.use to "grapple">>
+				<<set $machine.arm_chains.state to "grapple">>
+				<<if $leftarm isnot "bound">>
+					<<set $leftarm to "mechgrappled">><<set $lefttarget to "machine">>
+				<</if>>
+				<<if $rightarm isnot "bound">>
+					<<set $rightarm to "mechgrappled">><<set $righttarget to "machine">>
+				<</if>>
+			<<else>>
+				<<machine_damage arm_chains>>锁住你双臂的锁链会阻止你的动作，<span class="lblue">但会保持松动.</span>
+			<</if>>
+		<<elseif $machine.arm_chains.state is "recovering">>
+			<<machine_damage arm_chains>>锁住你双臂的锁链抽动了一下，<span class="teal">但仍保持松动.</span>
+		<<elseif $machine.arm_chains.state is "destroyed">>
+			<span class="teal"><<machine_damage arm_chains>>锁住你双臂的锁链保持松动.</span>
+		<<elseif $machine.arm_chains.state is "inert">>
+			<span class="teal"><<machine_damage arm_chains>>锁住你双臂的锁链保持松动.</span>
+		<</if>>
+		<br>
+	<</if>>
+	<<if $machine.leg_chains>>
+		<<if $machine.leg_chains.state is "ready">>
+			<<if _machine_legs is 1>>
+				<<machine_damage leg_chains>>缩回你脚镣上的锁链，<span class="pink">拉住你的双腿，使其无法动弹.</span>
+				<<set $feetactiondefault to "chain_struggle">>
+				<<set $feetuse to "mechgrappled">><<set $feettarget to "machine">>
+				<<set $machine.leg_chains.use to "grapple">>
+				<<set $machine.leg_chains.state to "grapple">>
+				<<if $leftleg isnot "bound">>
+					<<set $leftleg to "mechgrappled">>
+				<</if>>
+				<<if $rightleg isnot "bound">>
+					<<set $rightleg to "mechgrappled">>
+				<</if>>
+			<<else>>
+				<<machine_damage leg_chains>>锁住你双腿的锁链会阻止你的移动，<span class="lblue">但仍保持松动.</span>
+			<</if>>
+		<<elseif $machine.leg_chains.state is "recovering">>
+			<<machine_damage leg_chains>>锁住你双腿的锁链抽动了一下，<span class="teal">但仍保持松动.</span>
+		<<elseif $machine.leg_chains.state is "destroyed">>
+			<span class="teal"><<machine_damage leg_chains>>锁住你双腿的锁链仍然松动.</span>
+		<<elseif $machine.leg_chains.state is "inert">>
+			<span class="teal"><<machine_damage leg_chains>>锁住你双腿的锁链仍然松动.</span>
+		<</if>>
+		<br>
+	<</if>>
+	<br>
+<</widget>>
+
+<<widget "machine_vaginal_disable">>
+	<<if $vaginause is "machine">>
+		<<set $vaginause to 0>>
+		<<set $vaginastate to 0>>
+	<</if>>
+<</widget>>
+
+<<widget "machine_anal_disable">>
+	<<if $anususe is "machine">>
+		<<set $anususe to 0>>
+		<<set $anusstate to 0>>
+	<</if>>
+<</widget>>
+
+<<widget "machine_arm_chains_disable">>
+	<<if $leftarm isnot "bound">>
+		<<set $leftarm to 0>>
+		<<set $leftactiondefault to "rest">>
+	<</if>>
+	<<if $rightarm isnot "bound">>
+		<<set $rightarm to 0>>
+		<<set $rightactiondefault to "rest">>
+	<</if>>
+<</widget>>
+
+<<widget "machine_leg_chains_disable">>
+	<<if $leftleg isnot "bound">>
+		<<set $leftleg to 0>>
+		<<set $feetuse to 0>>
+		<<set $feetactiondefault to "rest">>
+	<</if>>
+	<<if $rightleg isnot "bound">>
+		<<set $rightleg to 0>>
+		<<set $feetuse to 0>>
+		<<set $feetactiondefault to "rest">>
+	<</if>>
+<</widget>>
+
+<<widget "machine_speed">>
+	<<set $machine.speed to _args[0]>>
+	<<if $robinMachineSpeed>>
+		<<set $robinMachineSpeed to 4 - _args[0]>>
+	<</if>>
+<</widget>>

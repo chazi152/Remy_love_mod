@@ -1,0 +1,637 @@
+/*ToDo: Pregnancy Story Content: Lacking events, For events that can be picked when random events can be used during player action, say entering the wolf cave*/
+:: ChildrenEvents [widget]
+
+/*args[0] - location, args[1] - passageExit*/
+<<widget "childrenEvents">>
+	<<if _args[0]>>
+		<<getChildrenIds _args[0]>>
+		<<if _childrenIds.length gt 0>>
+			<<set _singleEvents to true>>
+		<</if>>
+		<<getSameBirthChildrenIds _args[0] 2>>
+		<<if Object.keys(_birthChildrenIds).length gt 0>>
+			<<set _multipleEvents to true>>
+		<</if>>
+		<<set _keys to Object.keys(_birthChildrenIds)>>
+		<<set $childPassageExit to _args[1]>>
+		<<switch _args[0]>>
+			<<case "test">>
+				/*Examples of how to add events*/
+				<<if _singleEvents is true and (_multipleEvents is false or random(0,100) gt 40)>>
+					<<addevent `"testSingles " + _childrenIds[random(0,_childrenIds.length - 1)]`>>
+				<<elseif _multipleEvents is true>>
+					<<set _args to _birthChildrenIds[_keys[random(0,_keys.length - 1)]]>>
+					<<addevent "testMultiple _args">>
+				<</if>>
+			<<case "wolf_cave">>
+				<<if _singleEvents is true and (_multipleEvents is false or random(0,100) gt 40)>>
+					<<addevent `"wolfCaveSingles " + _childrenIds[random(0,_childrenIds.length - 1)]`>>
+				<<elseif _multipleEvents is true>>
+					<<set _args to _birthChildrenIds[_keys[random(0,_keys.length - 1)]]>>
+					/*<<addevent "wolfCaveMultiple _args">>*/
+				<</if>>
+		<</switch>>
+	<</if>>
+<</widget>>
+
+<<widget "testSingles">>
+	<<if _args[0]>>
+		<<childSelect _args[0]>>
+		<<switch random(0,0)>>
+			<<case 0>>
+				你看见你的孩子<<childname>>正躺在那里看着你，在看见是你之后，<<childname>>便向你这边伸出了胳膊。
+				<br><br>
+				在把<<childhim>>抱起来之后，<<childhe>><<childgiggles>>，随后还试图伸手去抓你的脸。
+				<br><br>
+				<<if $lactating is 1 and $breastfeedingdisable is "f" and $milk_amount gte 1>>>
+					<<link [[母乳喂奶 (0:30)|childBreastFeed]]>><<pass 30>><</link>><<lstress>><<ltrauma>>
+					<br>
+				<</if>>
+				<<link [[抱抱 (0:30)|childCuddle]]>><<pass 30>><</link>><<lstress>><<ltrauma>>
+				<br>
+				<<link [[和孩子说话 (0:30)|childTalk]]>><<pass 30>><</link>><<lstress>><<ltrauma>>
+				<br>
+				<<link [[逗着玩 (0:30)|childPlay]]>><<pass 30>><</link>><<lstress>><<ltrauma>>
+				<br>
+				<<link [[洗澡 (0:30)|childBathe]]>><<pass 30>><</link>><<lstress>><<ltrauma>>
+		<</switch>>
+	<</if>>
+	<br>
+<</widget>>
+
+<<widget "testMultiple">>
+	<<if _args[0]>>
+		<<set $childrenIds to _args[0]>>
+		<<switch random(0,0)>>
+			<<case 0>>
+				你看见你的孩子<<childrenNames $childrenIds>>正一起安稳睡在小床上，每个孩子的睡相都是那么平稳，那么令人安心。
+				<br><br>
+				<<link [[观察一会 (0:30)|childCotWatch]]>><<pass 30>><<set $phase to 1>><</link>><<lstress>><<ltrauma>>
+				<br>
+				<<link [[小憩一下 (0:30)|childCotWatch]]>><<pass 30>><<set $phase to 2>><</link>><<lstress>><<ltiredness>>
+		<</switch>>
+	<</if>>
+	<br>
+<</widget>>
+
+<<widget "wolfCaveSingles">>
+	<<if _args[0]>>
+		<<childSelect _args[0]>>
+		<<switch random(0,0)>>
+			<<case 0>>
+				你看见你的<<childtype>><<childname>>正躺在<<wolf_cave_singular>>睡觉的地方，在看见你之后，那些孩子们将<<childhands>>朝你这边伸了过来。
+				<br><br>
+				在把<<childhim>>抱起来之后，<<childhe>><<childgiggles>>，随后还试图伸手去抓你的脸。
+				<br><br>
+				<<if $lactating is 1 and $breastfeedingdisable is "f" and $milk_amount gte 1>>
+					<<link [[母乳喂奶 (0:30)|childBreastFeed]]>><<pass 30>><</link>><<lstress>><<ltrauma>>
+					<br>
+				<</if>>
+				<<link [[抱抱 (0:30)|childCuddle]]>><<pass 30>><</link>><<lstress>><<ltrauma>>
+				<br>
+				<<link [[和孩子说话 (0:30)|childTalk]]>><<pass 30>><</link>><<lstress>><<ltrauma>>
+				<br>
+				<<link [[逗着玩 (0:30)|childPlay]]>><<pass 30>><</link>><<lstress>><<ltrauma>>
+		<</switch>>
+	<</if>>
+	<br>
+<</widget>>
+
+:: childBreastFeed
+
+<<set $pregnancyStats.childBreastfedInteractions++>>
+<<if $worn.over_upper.name isnot "naked" or $worn.upper.name isnot "naked" or $worn.upper.name isnot "naked">>
+	你调整了一下你的衣服，好让<<childhim>>能碰到你的<<breasts>>。
+<<else>>
+	你引导你的宝宝，好让其嘴唇能够碰到你的胸部。
+<</if>>
+<br><br>
+<<set _rng to random(1, 4)>>
+<<switch _rng>>
+	<<case 1>>
+		<<childHe>>似乎意识到了你的意图，开始闭着眼睛吮吸你的<<print ["左","右"].pluck()>>乳房。<<breastfeed 25>>
+	<<case 2>>
+		<<childhim>>在花了一些时间后才找到你的乳头，在接触到之后，<<childHe>>便立即吸吮了起来，你看着你的宝宝喝奶，并享受着这平静的时刻。<<lstress>><<stress -6>><<breastfeed 20>>
+	<<case 3>>
+		<<childHe>>紧紧咬住你的乳头，然后用惊人的吸力开始吮吸。<<childhis>>吸吮的力量很快使你感到不适，你很快就觉得乳头疼了起来.<<gpain>><<pain 4>><<breastfeed 30>>
+	<<default>>
+		<<childHe>>拒绝把你的乳头含进<<childhis>>的嘴里，然后<<childhis>>将头一撇，开始用更大的哭声来表达自己的情绪.<<gstress>><<stress 6>>
+<</switch>>
+<br><br>
+
+<<link [[继续|$childPassageExit]]>><<unset $childPassageExit>><<endevent>><</link>>
+
+:: childCuddle
+
+<<set _rng to random(1, 5)>>
+<br>
+<<switch _rng>>
+	<<case 1>>
+		<<childHe>>似乎察觉到了你的意图，便将<<childhis>>那<<childhands>>缠在了你的脖子上，随后将整个身子靠在了你的肩膀那里。
+	<<case 2>>
+		你哼着悠扬的摇篮曲，然后一边轻轻的拍着<<childname>>的背，一边随着曲调轻轻摇晃起来，你那熟悉的声音似乎能抚慰<<childhis>>的情绪，<<childHe>>对你发出咕噜咕噜的声音。<<ltrauma>><<lstress>><<trauma -6>><<stress -6>>
+	<<case 3>>
+		你在<<childhis>>的额头上轻轻一吻，并尽量地与<<childhim>>有更多的亲密接触，这个动作鼓励<<childhim>>抬起了<<childhis>>的头，并用咯咯笑作为回礼。<<ltrauma>><<lstress>><<trauma -6>><<stress -6>>
+	<<case 4>>
+		你在<<childname>>附近放了几个不同的小玩意，并解释周围事物的颜色、形状和文字。<<childHe>>伸出手去触摸，好奇地探索<<childhis>>所接触到的环境，而你要做的就是确保<<childhe>>不要试图去抓太重或太危险的东西。<<gstress>><<stress 6>>
+	<<default>>
+		<<childHe>>讨厌被人抱着，在你将<<childhis>>抱起来之后，<<childhis>>开始胡乱的蹬腿，你抱着<<childhim>>的时间越长，<<childhis>>的哭声就越强烈，同时<<childhis>>的踢腿幅度也随着越来越大。<<gpain>><<gstress>><<pain 4>><<stress 6>>
+<</switch>>
+<br><br>
+
+<<link [[继续|$childPassageExit]]>><<unset $childPassageExit>><<endevent>><</link>>
+
+:: childCotWatch
+<<if $phase is 1>>
+	你待在<<childname>>的边上，就这样静静地看着<<childhim>>睡觉。
+	<<set _rng to random(1, 4)>>
+	<<switch _rng>>
+		<<case 1>>
+			你的视线被<<childhis>>那随着轻柔的呼吸上下起伏的胸膛迷住了。
+		<<case 2>>
+			你回过神的时候发现你正在轻抚<<childhis>>的头顶。
+		<<case 3>>
+			<<childHe>>张开<<childhis>>的嘴打了一个大大的哈欠，随后随意的伸了个懒腰.<<lstress>><<stress -6>>
+		<<default>>
+			<<childHe>>突然皱起眉头，嘴唇也在一张一合，仿佛是做了个噩梦.<<gstress>><<stress 6>>
+	<</switch>>
+	<br><br>
+<<elseif $phase is 2>>
+	<<childSelect `$childrenIds[random(0,$childrenIds.length - 1)]`>>
+	你决定打一个盹，然后便躺在了你孩子旁边的床上。
+	<br><br>
+	当你醒来的时候，你感觉手指上貌似缠着什么东西。看来是当你还在睡觉的时候，<<childname>>用那<<childhand>>接触到你了。
+	<br><br>
+<</if>>
+
+
+<<link [[继续|$childPassageExit]]>><<unset $childPassageExit>><<endevent>><</link>>
+
+:: childTalk
+<<set _rng to random(1, 4)>>
+<br>
+<<switch _rng>>
+	<<case 1>>
+		你唱出了几首你小时候听过的童谣，当<<childHe>>听着你的声音时，<<childhe>>看起来像是在认真聆听，你唱出了几段不同的音调，等待<<childhis>>的反应。在观察了一会后，你觉得"<<childhe>>似乎能认出某些声音，并相应地做出不同的表情，又过了一会儿，<<childhe>>可能感觉到了无聊，便不再盯着你看，并开始去吮吸<<childhis>>的大拇指了。
+	<<case 2>>
+		你轻轻地捧起<<childname>>的右脚，并数起了<<childhis>>的脚趾，在数完之后，然后再转到<<childhis>>的另一只脚。<<childHe>>安静了下来，并当你的手指从一个脚趾移到另一个脚趾时，<<childHe>>睁大着眼睛看着你。
+	<<case 3>>
+		你与<<childname>>聊天，虽然只是你单方面的倾诉想法，但你还是在等待回应。不过<<childHe>>看起来并不在意你说的话。<<gstress>><<stress 6>>
+	<<default>>
+		你试图和你的孩子说话，但<<childhis>>的哭声掩盖过了你说的话，每当你花时间试图与<<childHis>>说话时，<<childhim>>的脸就会涨的更红。<<gstress>><<stress 6>>
+<</switch>>
+<br><br>
+
+<<link [[继续|$childPassageExit]]>><<unset $childPassageExit>><<endevent>><</link>>
+
+:: childPlay
+<<set _rng to random(1, 6)>>
+<br>
+<<switch _rng>>
+	<<case 1>>
+		你对<<childname>>微笑。并挥舞双手伸出舌头，做出几个不同的搞怪鬼脸，以此来试图吸引<<childhis>>的注意。<<childHe>>好奇地研究着你的表情，随后<<childHe>>看起来似乎正在模仿你的表情，但你不确定这是否只是一种本能反应。
+	<<case 2>>
+		你把<<childname>>的双手握在手里，然后开始轻揉它们，并偶尔用它们拍拍手。随后你便给<<childhis>>的身体做了一个轻揉地按摩，从<<childhis>>的脚趾到<<childhis>>的背部，然后一直到<<childhis>>的指尖，你在深情的抚摸中感受着与<<childhis>>的怀抱。而<<childHe>>也用笑容对你做出了回应。
+	<<case 3>>
+		你用双手捂住脸，在几秒钟后再移开手掌。<<childname>>抬头看着你，当你们的目光相遇时，<<childHe>>笑出了声。<<lstress>><<stress -6>>
+	<<case 4>>
+		你给<<childname>>挠痒痒，并贴在<<childhis>>的小肚子上吹气。<<childHe>>先是停止哭泣，随后便咯咯地笑了起来，然后兴奋的挥舞着<<childhis>>的四肢。<<lstress>><<stress -6>>
+	<<case 5>>
+		你给<<childname>>挠痒痒，并贴在<<childhis>>的小肚子上吹气。但<<childHis>>把头转向另一边，并开始挥舞着<<childhe>>的四肢，然后就像你所见到的那样，<<childhis>>哭的更大声了。似乎是在为自己所遭受的这种待遇而感到不满.<<gstress>><<stress 6>>
+	<<default>>
+		你将脸贴近<<childname>>，方便<<childhe>>可以研究你的脸和它的特征，<<childHe>>暂时停止了哭泣，并抓住你的头发开始拉扯了起来。<<gpain>><<pain 4>>
+<</switch>>
+<br><br>
+
+<<link [[继续|$childPassageExit]]>><<unset $childPassageExit>><<endevent>><</link>>
+
+:: childBathe
+
+你将一个小浴盆灌满温水，然后在准备好毛巾和新尿布后，你轻轻地把<<childname>>抱在怀里，然后把<<childhim>>抱到浴缸里，并确保<<childhim>>处在一个安全的位置。
+<<set _rng to random(1, 5)>>
+<<switch _rng>>
+	<<case 1>>
+		你用温水轻轻擦拭<<childname>>，在用一只手握住<<childhis>>的小身体后，你开始擦拭并确保清洁到了每一寸皮肤。在擦拭时，<<childhis>>那柔嫩的皮肤让你感到非常安心，<<childhis>>似乎被你的抚摸弄得很痒，于是在水中不停地踢动着<<childhis>>的腿，虽然这使一些水溅到你的衣服和脸上，但你还是因这种情景而感到由衷的开心。<<ltrauma>><<trauma -6>>
+	<<case 2>>
+		你把婴儿洗发水以转圈的方式轻轻擦拭着<<childname>>的头顶，草莓的甜美香气在周围散开，同时水里也开始出现气泡，<<childhis>>似乎很好奇，并时不时地用一根手指去碰触泡泡，来把它们弹开。<<childhe>>被浴缸里的泡泡分散了注意力，这让<<childHis>>的笑声洋溢在了房间内。<<ltrauma>><<lstress>><<trauma -6>><<stress -6>>
+	<<case 3>>
+		当你开始准备洗澡时，你试图给<<childHe>>的身体打上肥皂。但<<childhis>>似乎并不喜欢水在他皮肤上的感觉，更不用说让<<childhim>>享受你的清洁工作了。所以当你试图继续给<<childname>>洗澡时，<<childhim>>做出要哭的样子。但在经过你一番努力后，终于使<<childHe>>平静了下来，相应的，在清洗工作完成前，<<childHe>>一直撅着嘴不高兴，当你洗完之后，<<childhe>>似乎不想让你抱<<childhim>>，当你把<<childhim>>抱起来的时候，<<childhim>>发出不满意的呼呼声。<<gstress>><<stress 6>>
+	<<default>>
+		只要一碰到水，<<childname>>就会发出高亢且不间断的哭声。当你努力着要把<<childHe>>擦干净时，<<childhis>>把<<childhim>>的胳膊腿都伸进了水里，这反而让<<childhim>>开始试图挣脱，溅起的水花很快浸湿了你的衣服。<<childHe>>一直发脾气到洗澡结束，这实在让你有些头疼不已。<<gstress>><<stress 6>>
+<</switch>>
+<br><br>
+
+在给<<childHim>>洗完澡之后，你把<<childHim>>放在了毛巾上，然后用较为柔软的布料轻轻擦干了孩子的身体，在你小心翼翼的完成这一切之后，你又给<<childHim>>换好了尿布，最后把<<childHis>>放回了摇篮里。
+<br><br>
+
+<<link [[继续|$childPassageExit]]>><<unset $childPassageExit>><<endevent>><</link>>
+
+:: Childrens Home
+<<effects>>
+<<getChildrenIds $location>>
+<<switch $location>>
+	<<case "home">>
+		你在正待在孤儿院的托儿所里，周围散落的排放着一些摇篮和小床。
+	<<case "wolf_cave">>
+
+		<<switch Time.dayState>>
+			<<case "dawn">>
+				众多的幼崽们正在睡觉.
+			<<case "day">>
+				小狼的叫声、咆哮声和细微的嚎叫声在岩壁上回荡着。
+			<<case "dusk">>
+				大多数幼崽们已经安顿下来过夜了。
+			<<case "night">>
+				幼崽们都睡着了，现在的巢穴里一片寂静。
+		<</switch>>
+
+<</switch>>
+<br><br>
+<<childViewerDisplay _childrenIds>>
+<br><br>
+<<if $player.inventory.childrenToys>>
+	<<if !$storedChildrenToys[$location]>><<set $storedChildrenToys[$location] to []>><</if>>
+	<<link [[存放儿童玩具|Childrens Home Toys]]>><</link>>
+	<br>
+<<else>>
+	你没有为你的孩子买任何玩具，你应该去一趟玩具店。
+	<br>
+<</if>>
+<<if $location is "home">>
+	<<if V.plants['baby_bottle_of_breast_milk'] and V.plants['baby_bottle_of_breast_milk'].amount gt 0>>
+		<<link [[挤出奶水|Childrens Donate Milk]]>><</link>>
+		<<if $pregnancyStats.orphanageMilkBottles gt 0>>
+			(<span class="green"><<print $pregnancyStats.orphanageMilkBottles>></span>剩余瓶数)
+		<<else>>
+			(<span class="red"><<print $pregnancyStats.orphanageMilkBottles>></span>剩余瓶数)
+		<</if>>
+	<<else>>
+		你没有瓶装母乳可供捐赠。
+		<<if $pregnancyStats.orphanageMilkBottles gt 0>>
+			(<span class="green"><<print $pregnancyStats.orphanageMilkBottles>></span>剩余瓶数)
+		<<else>>
+			(<span class="red"><<print $pregnancyStats.orphanageMilkBottles>></span>剩余瓶数)
+		<</if>>
+	<</if>>
+	<br>
+<</if>>
+<<link [[返回|$exitPassage]]>><<unset $exitPassage>><</link>>
+
+:: Childrens Donate Milk
+<<effects>>
+
+<label>捐赠的奶瓶数量: <<numberslider "$donatedMilk" 1 1 `$plants["baby_bottle_of_breast_milk"].amount` 1>></label>
+
+<<link [[捐赠|Childrens Donate Milk 2]]>><</link>>
+<br>
+<<link [[返回|Childrens Home]]>><<unset $childActivityEvent>><<endevent>><</link>>
+
+:: Childrens Donate Milk 2
+<<effects>>
+
+<<set $pregnancyStats.orphanageMilkBottles += $donatedMilk>>
+<<set $pregnancyStats.orphanageMilkBottlesTotal += $donatedMilk>>
+<<set $plants["baby_bottle_of_breast_milk"].amount -= $donatedMilk>>
+
+你留下了$donatedMilk，并和贝利的一个打手一起给你的孩子喂奶。
+<br><br>
+
+<<link [[返回|Childrens Home]]>><<unset $donatedMilk>><<unset $childActivityEvent>><<endevent>><</link>>
+
+:: Childrens Home Toys
+<<effects>>
+
+<<set _selectedCurrentToy to 0>>
+<<set _selectedLocationToy to 0>>
+
+<div id="childrenToysUI">
+	<<childrenToysUI>>
+</div>
+
+<br>
+<<link [[返回|Childrens Home]]>><<unset $childActivityEvent>><<endevent>><</link>>
+
+:: Childrens Home Toys Widgets [widget]
+
+<<widget "childrenToysUI">>
+	<<if $player.inventory.childrenToys.length gt 0>>
+		<div class="toysUiElement">
+			<h4>你随身携带的玩具</h4>
+			<<for _i to 0; _i lt $player.inventory.childrenToys.length; _i++>>
+				<label>
+					<<radiobutton "_selectedCurrentToy" _i autocheck>>
+					<span @class="$player.inventory.childrenToys[_i].colour"><<print $player.inventory.childrenToys[_i].name>></span>
+				</label>
+				<br>
+			<</for>>
+			<br>
+			<<link "扔掉">>
+				<<run $player.inventory.childrenToys.deleteAt(_selectedCurrentToy)>>
+				<<set _selectedCurrentToy to 0>>
+				<<childrenToysUIReplace>>
+			<</link>>
+			<br>
+			<<if $storedChildrenToys[$location].length lt 10>>
+				<<link "递玩具">>
+					<<run $storedChildrenToys[$location].push($player.inventory.childrenToys[_selectedCurrentToy])>>
+					<<run $player.inventory.childrenToys.deleteAt(_selectedCurrentToy)>>
+					<<set _selectedCurrentToy to 0>>
+					<<childrenToysUIReplace>>
+				<</link>>
+			<<else>>
+				你每次不能留下超过10个玩具。
+			<</if>>
+		</div>
+	<<else>>
+		<div class="toysUiElement">你没有携带儿童玩具.</div>
+	<</if>>
+
+	<<if $storedChildrenToys[$location].length gt 0>>
+		<div class="toysUiElement">
+			<h4>你的孩子们可以玩的玩具</h4>
+			<<for _i to 0; _i lt $storedChildrenToys[$location].length; _i++>>
+				<label>
+					<<radiobutton "_selectedLocationToy" _i autocheck>>
+					<span @class="$storedChildrenToys[$location][_i].colour"><<print $storedChildrenToys[$location][_i].name>></span>
+				</label>
+				<br>
+			<</for>>
+			<br>
+			<<link "扔掉">>
+				<<run $storedChildrenToys[$location].deleteAt(_selectedLocationToy)>>
+				<<set _selectedLocationToy to 0>>
+				<<childrenToysUIReplace>>
+			<</link>>
+			<br>
+			<<if $player.inventory.childrenToys.length lt 5>>
+				<<link "拿回">>
+					<<run $player.inventory.childrenToys.push($storedChildrenToys[$location][_selectedLocationToy])>>
+					<<run $storedChildrenToys[$location].deleteAt(_selectedLocationToy)>>
+					<<set _selectedLocationToy to 0>>
+					<<childrenToysUIReplace>>
+				<</link>>
+			<<else>>
+				你每次携带的玩具不能超过5件。
+			<</if>>
+		</div>
+	<<else>>
+		<div class="toysUiElement">你没有在这里留下任何儿童玩具.</div>
+	<</if>>
+<</widget>>
+
+<<widget "childrenToysUIReplace">>
+	<<replace "#childrenToysUI">>
+		<<childrenToysUI>>
+	<</replace>>
+<</widget>>
+
+:: Children Activity Events
+<<effects>>
+<<childSelect $childActivityEvent.childid>>
+<<childAge $childActivityEvent.childid>>
+<<childInteratedWith>>
+<<set $children[$childActivityEvent.childid].localVariables.event to false>>
+<<switch $childActivityEvent.event>>
+	/*Human Specific*/
+	<<case "transfixed">>
+		你站在<<childname>>旁边看着<<childhim>>睡觉，你的视线被<<childhis>>那随着轻柔的呼吸上下起伏的胸膛迷住了。
+	<<case "stroke">>
+		你站在<<childname>>旁边看着<<childhim>>睡觉，当你回过神的时候发现你正在轻抚<<childhis>>的头顶。
+	<<case "yawn">>
+		你待在<<childname>>的边上，就这样静静地看着<<childhim>>睡觉，<<childHe>>突然张开嘴打了个哈欠，并伸了个懒腰。<<lstress>><<stress -6>>
+	<<case "murmur">>
+		你待在<<childname>>的边上，就这样静静地看着<<childhim>>睡觉，<<childHe>>突然皱起眉头，嘴唇也在一张一合，仿佛是做了个噩梦。<<gstress>><<stress 6>>
+	<<case "cotNap">>
+		你决定打一个盹，然后便躺在了<<childname>>旁边的床上。
+		<br><br>
+		当你醒来的时候，你感觉手指上貌似缠着什么东西。看来是当你还在睡觉的时候，<<childname>>用那<<childhand>>接触到你了。<<ltiredness>><<tiredness -3>>
+	<<case "shiverInCot">>
+		<<childname>>就睡在那里，<<childherself>>的每一次无意识呼吸都在颤抖，于是你用旁边的婴儿毯为<<childhim>>盖好，而<<childHe>>也很快地进入了甜美的梦乡.<<lstress>><<stress -6>>
+	<<case "restlessSleep">>
+		<<childname>>在睡梦中躁动不安，于是你躺在了<<childhim>>的身边并把<<childhim>>拉到你的胸前并紧紧的抱着<<childhim>>，直到<<childhe>>平静下来。当你要离开时，<<childhe>>用<<childhis>>的小手紧紧地抓住你的手指。你们又依偎了一会儿，然后你才松开<<childhis>>抱着你的手并重新站起来。<<ltiredness>><<tiredness -6>><<llstress>><<stress -10>>
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+	<<case "waveTongue">>
+		你对<<childname>>微笑。并挥舞双手伸出舌头，做出几个不同的搞怪鬼脸，以此来试图吸引<<childhis>>的注意。<<childHe>>好奇地研究着你的表情，随后<<childHe>>看起来似乎正在模仿你的表情，但你不确定这是否只是一种本能反应。
+	<<case "handsClap">>
+		你把<<childname>>的双手握在手里，然后开始轻揉它们，并偶尔用它们拍拍手。随后你便给<<childhis>>的身体做了一个轻揉地按摩，从<<childhis>>的脚趾到<<childhis>>的背部，然后一直到<<childhis>>的指尖，你在深情的抚摸中感受着与<<childhis>>的怀抱。而<<childHe>>也用笑容对你做出了回应。
+	<<case "peekaboo">>
+		你用双手捂住脸，在几秒钟后再移开手掌。<<childname>>抬头看着你，当你们的目光相遇时，<<childHe>>笑出了声。<<lstress>><<stress -6>>
+	<<case "blowRaspberriesHappy">>
+		你给<<childname>>挠痒痒，并贴在<<childhis>>的小肚子上吹气。<<childHe>>先是停止哭泣，随后便咯咯地笑了起来，然后兴奋的挥舞着<<childhis>>的四肢。<<lstress>><<stress -6>>
+	<<case "blowRaspberriesUpset">>
+		你给<<childname>>挠痒痒，并贴在<<childhis>>的小肚子上吹气。但<<childHis>>把头转向另一边，并开始挥舞着<<childhe>>的四肢，然后就像你所见到的那样，<<childhis>>哭的更大声了。似乎是在为自己所遭受的这种待遇而感到不满.<<gstress>><<stress 6>>
+	<<case "faceStudy">>
+		你将脸贴近<<childname>>，方便<<childhe>>可以研究你的脸和它的特征，<<childHe>>暂时停止了哭泣，并抓住你的头发开始拉扯了起来。<<gpain>><<pain 4>>
+	<<case "rockToSleep">>
+		你把<<childtype>>抱在怀里，一边走一边轻轻地把将<<childhim>>.左右摇晃着，并轻声哼唱起来。很快，<<childhe>>平静了下来，并在你的怀里很快就睡过去了，随后你小心翼翼地把<<childhim>>放在小床上休息。<<lstress>><<stress -5>>
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+	<<case "holdToShoulder">>
+		你抱起<<childtype>>,<<childHe>>似乎察觉到了你的意图，便抱住了你的脖子，随后将整个身子靠在了你的肩膀那里。你抱着<<childhim>>轻轻地左右摇晃着，直到<<childhe>>在你的怀中睡着为止。<<lstress>><<stress -5>>
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+	<<case "melodicLullaby">>
+		你哼着悠扬的摇篮曲将<<childtype>>抱起，然后一边轻轻的拍着<<childname>>的背，一边随着曲调轻轻摇晃起来，你那熟悉的声音似乎能抚慰<<childhis>>的情绪，<<childHe>>对你发出呼噜噜的声音。<<ltrauma>><<lstress>><<trauma -6>><<stress -6>>
+	<<case "foreheadKiss">>
+		你抱起<<childtype>>,然后在<<childhis>>的额头上轻轻一吻，并尽量地与<<childhim>>有更多的亲密接触，这个动作鼓励<<childhim>>抬起了<<childhis>>的头，并用咯咯笑作为回礼。<<ltrauma>><<lstress>><<trauma -6>><<stress -6>>
+	<<case "objectShow">>
+		你抱起<<childtype>>，然后在<<childname>>附近放了几个不同的小玩意，并解释周围事物的颜色、形状和文字。<<childHe>>伸出手去触摸，好奇地探索<<childhis>>所接触到的环境，而你要做的就是确保<<childhe>>不要试图去抓太重或太危险的东西。<<gstress>><<stress 6>>
+	<<case "carryRevolt">>
+		你抱起了<<childtype>>，但<<childHe>>看起来很讨厌被人抱住，所以在你将<<childhis>>抱起来之后，<<childhis>>开始胡乱的蹬腿并随之放声大哭起来，<<childhis>>的踢腿幅度也随着越来越大。<<gpain>><<gstress>><<pain 4>><<stress 6>>
+	<<case "nurseryRhymes">>
+		你唱出了几首你小时候听过的童谣，当<<childHe>>听着你的声音时，<<childhe>>看起来像是在认真聆听，你唱出了几段不同的音调，等待<<childhis>>的反应。在观察了一会后，你觉得"<<childhe>>似乎能认出某些声音，并相应地做出不同的表情，又过了一会儿，<<childhe>>可能感觉到了无聊，便不再盯着你看，并开始去吮吸<<childhis>>的大拇指了。
+	<<case "FeetCup">>
+		你轻轻地捧起<<childname>>的右脚，并数起了<<childhis>>的脚趾，在数完之后，然后再转到<<childhis>>的另一只脚。<<childHe>>安静了下来，并当你的手指从一个脚趾移到另一个脚趾时，<<childHe>>睁大着眼睛看着你。
+	<<case "shareThoughts">>
+		你与<<childname>>聊天，虽然只是你单方面的倾诉想法，但你还是在等待回应。不过<<childHe>>看起来并不在意你说的话。<<gstress>><<stress 6>>
+	<<case "speakCry">>
+		你试图和你的孩子说话，但<<childhis>>的哭声掩盖过了你说的话，每当你花时间试图与<<childHis>>说话时，<<childhim>>的脸就会涨的更红。<<gstress>><<stress 6>>
+	<<case "smilesAndLaughs">>
+		你把<<childname>>抱在怀里，然后把<<childhim>>举到你脑袋同齐的高度，起初，<<childtype>>因这种突然地变化而睁大了眼睛，但随后又笑了起来。你又重复了几次，这很快就使<<childhim>>笑个不停，以至于你自己都忍不住笑了起来。<<llstress>><<stress -12>>
+	<<case "talking">>
+		你站在<<childname>>的旁边并开始与<<childhim>>交谈。<<childHe>>看起来没有表示理解你的意思，但还是对你的出现表示高兴，其似乎对你的声音感到兴奋。不过没多久，<<childhe>>就被<<childhis>>的手指分散了注意力，在周围陷入了沉默之后，你重新站了起来。<<lstress>><<stress -6>>
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "thumbSucking">>
+		<<set $children[$childActivityEvent.childid].localVariables.talking++>>
+	<<case "talking2">>
+		你站在<<childname>>的旁边并开始与<<childhim>>交谈。<<childHe>>看起来没有表示理解你的意思，但还是对你的出现表示高兴，并开始模仿你的声音，但没多久，<<childHe>>就被<<childhis>>的手指分散了注意力，在周围陷入了沉默之后，你重新站了起来。<<llstress>><<stress -12>>
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "thumbSucking">>
+	<<case "batheGentle">>
+		你将一个小浴盆灌满温水，然后在准备好毛巾和新尿布后，你轻轻地把<<childname>>抱在怀里，然后把<<childhim>>抱到浴缸里，并确保<<childhim>>处在一个安全的位置。
+		<br><br>
+		接下来，你用温水轻轻擦拭<<childname>>，在用一只手握住<<childhis>>的小身体后，你开始擦拭并确保清洁到了每一寸皮肤。在擦拭时，<<childhis>>那柔嫩的皮肤让你感到非常安心，<<childhis>>似乎被你的抚摸弄得很痒，于是在水中不停地踢动着<<childhis>>的腿，虽然这使一些水溅到你的衣服和脸上，但你还是因这种情况而感到由衷的高兴。<<ltrauma>><<trauma -6>><<ltrauma>>
+		<br><br>
+		在给<<childhim>>洗完澡之后，你把<<childhim>>放在了毛巾上，然后另外找了一条更柔软的布料轻轻擦干了<<childhis>>的身体，再在擦干之后，你给<<childhis>>换好了尿布，最后再把<<childhis>>放回了摇篮里。
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+	<<case "batheShampoo">>
+		你将一个小浴盆灌满温水，然后在准备好毛巾和新尿布后，你轻轻地把<<childname>>抱在怀里，然后把<<childhim>>抱到浴缸里，并确保<<childhim>>处在一个安全的位置。
+		<br><br>
+		接下来，你把婴儿洗发水以转圈的方式轻轻擦拭着<<childname>>的头顶，草莓的甜美香气在周围散开，同时水里也开始出现气泡，<<childhis>>似乎很好奇，并时不时地用一根手指去碰触泡泡，来把它们弹开。<<childhe>>被浴缸里的泡泡分散了注意力，这让<<childHis>>的笑声洋溢在了房间内。<<ltrauma>><<lstress>><<trauma -6>><<stress -6>>
+		<br><br>
+		在给<<childhim>>洗完澡之后，你把<<childhim>>放在了毛巾上，然后另外找了一条更柔软的布料轻轻擦干了<<childhis>>的身体，再在擦干之后，你给<<childhis>>换好了尿布，最后再把<<childhis>>放回了摇篮里。
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+	<<case "BatheCalm">>
+		你将一个小浴盆灌满温水，然后在准备好毛巾和新尿布后，你轻轻地把<<childname>>抱在怀里，然后把<<childhim>>抱到浴缸里，并确保<<childhim>>处在一个安全的位置。
+		<br><br>
+		接下来，当你开始准备洗澡时，你试图给<<childHe>>的身体打上肥皂。但<<childhis>>似乎并不喜欢水在他皮肤上的感觉，更不用说让<<childhim>>享受你的清洁工作了。所以当你试图继续给<<childname>>洗澡时，<<childhim>>做出要哭的样子。但在经过你一番努力后，终于使<<childHe>>平静了下来，相应的，在清洗工作完成前，<<childHe>>一直撅着嘴不高兴，当你洗完之后，<<childhe>>似乎不想让你抱<<childhim>>，当你把<<childhim>>抱起来的时候，<<childhim>>发出不满意的呼呼声。<<gstress>><<stress 6>>
+		<br><br>
+		在给<<childhim>>洗完澡之后，你把<<childhim>>放在了毛巾上，然后另外找了一条更柔软的布料轻轻擦干了<<childhis>>的身体，再在擦干之后，你给<<childhis>>换好了尿布，最后再把<<childhis>>放回了摇篮里。
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+	<<case "batheTantrum">>
+		你将一个小浴盆灌满温水，然后在准备好毛巾和新尿布后，你轻轻地把<<childname>>抱在怀里，然后把<<childhim>>抱到浴缸里，并确保<<childhim>>处在一个安全的位置。
+		<br><br>
+		仅仅是碰到水，<<childname>>就会发出高亢且不间断的哭声。当你努力着要把<<childHe>>擦干净时，<<childhis>>把<<childhim>>的胳膊腿都伸进了水里，这反而让<<childhim>>开始试图挣脱，溅起的水花很快浸湿了你的衣服。<<childHe>>一直发脾气到洗澡结束，这实在让你有些头疼不已。<<gstress>><<stress 6>>
+		<br><br>
+		在给<<childhim>>洗完澡之后，你把<<childhim>>放在了毛巾上，然后另外找了一条更柔软的布料轻轻擦干了<<childhis>>的身体，再在擦干之后，你给<<childhis>>换好了尿布，最后再把<<childhis>>放回了摇篮里。
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+	<<case "nappyChange">>
+		<<childname>>看起来很不舒服，同时你也注意到有一股臭味，于是你取来尿布并让<<childhim>>平躺，随后先脱掉旧尿布，然后在仔细地清洁<<childtype>>的屁股后再给<<childhim>>换上新尿布。在换好干净的尿布后，<<childname>>抬起头看着你咯咯笑。<<gstress>><<stress 6>>
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+	<<case "crawlingAttempt">>
+		你走近<<childname>>，<<childHe>>正趴在那里试图移动<<childhis>>的身体，你蹲在<<childhim>>的旁边并握住<<childhim>>的手，在把它们按在地上后，你撑着<<childhe>>的身体以让其能够自己撑住自己。在你的帮助下，<<childhis>>设法让<<childHe>>爬了起来，<<childhis>>似乎对这种全新的移动方式感到新奇和好玩，又过了一会儿后，<<childhim>>已经掌握了技巧，于是你让<<childhis>>自己笨拙地练习爬行。<<lstress>><<stress -6>>
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+		<<set $children[$childActivityEvent.childid].localVariables.crawling++>>
+	<<case "crawlingAttempt2">>
+		你握住<<childtype>>的手，然后把<<childhim>>举了起来，只让<<childhis>>的脚立在地上。起初，<<childHe>>有些困惑，而且<<childhis>>的双腿也在打颤，直到<<childhe>>用脚立在地面，并开始试图向前走， 当然，在你的帮助下，<<childhis>>保持着直立行走，又过了一会儿，<<childhim>>看起来有些累了，于是你让<<childhim>>坐了下去。<<llstress>><<stress -10>>
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+	<<case "grumpyChild">>
+		<<childname>>独自坐在那里，<<childhis>>稚嫩的脸上带着愤愤的表情，你坐在<<childhim>>旁边，但<<childhe>>不想理您。看着孩子生气的表情，你忍不住笑了起来并开始给<<childhim>>挠痒痒。<<childHe>>虽然不怕痒，但依旧被你的手指和嬉戏地攻击<<childhis>>两侧时发出的愚蠢的声音逗乐了，<<childhe>>对你的不满消散了，<<childhe>>转而咯咯地笑起来，任务圆满完成。<<lstress>><<stress -6>>
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "thumbSucking">>
+	<<case "readingAttempt">>
+		你坐在 "<<childname>>旁边，把<<childhim>>和那本倒置的书都放到了你的腿上。你翻开书，开始给<<childhim>>读那些简单的文字，<<childHe>>也被你的声音和那些彩色的图片吸引着跟读了一会儿，直到孩子开始变得心不在焉，从你的腿上滑了下去。<<lstress>><<stress -6>>
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "readingCorrected">>
+	<<case "babyRattle">>
+		你坐在<<childname>>的旁边，<<childHe>>正低头看着一个<<childtoy $location $childActivityEvent.toyid "lowercase">>。你把它拿在手里摇晃了一下，这个玩具发出了一阵阵响声。<<childtype>>看起来有些困惑却又很感兴趣，并试图伸手去拿这个奇怪的东西。你抓着这个<<childtoy $location $childActivityEvent.toyid "lowercase">>最后摇晃了一次，然后把它交给<<childtype>>，让这孩子自己琢磨去了。
+		<<if _childTotalDays lte 40>>
+			<<childHe>>直接把它扔到了地上。
+		<<elseif _childTotalDays lte 95 + random(0,20)>>
+			<<childHe>>试图去把那个玩具放在嘴里,在失败之后，<<childhis>>气鼓鼓的把它丢在了地上。
+		<<else>>
+			<<childHe>>开始玩玩具，这玩具发出的声响把<<childHe>>自己逗笑了。
+		<</if>>
+		<<lstress>><<stress -5>><<ltrauma>><<trauma -2>>
+	<<case "teddyBear">>
+		你把<<childtoy $location $childActivityEvent.toyid "lowercase">>放进<<childname>>的怀里，<<childHe>>紧紧抓住它并靠在它身上，<<childHe>>很快又睡着了，你又花了一些时间安静地看着<<childhim>>的睡颜。<<ltrauma>><<trauma -6>><<lstress>><<stress -6>>
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "teddyBear2">>
+		<<set $children[$childActivityEvent.childid].localVariables.toy to clone(_toyName)>>
+	<<case "toyCar">>
+		你坐在<<childname>>身边，并从<<childhis>>挥舞的手中接过<<childtoy $location $childActivityEvent.toyid "lowercase">>，然后你把它放在了地板上，并来回拖动了起来。"嗡嗡！你模拟出这样的声音，在<<childname>>的注视下，你演示着这个玩具的玩法，然后你把玩具交给了<<childhim>>。
+		<br><br>
+		<<if _childTotalDays lte 120 + random(0,20)>>
+			<<childHe>>在回头看你之前把玩具掉在了地板上，然后又扭头去寻找玩具，看到这一幕，你忍不住笑了出来。
+		<<else>>
+			<<childHe>>好奇地看着它，然后开始模仿你的动作，并兴奋地试图模仿你的声音。当你再次起身时，你也忍不住地笑了。
+		<</if>>
+		<<lstress>><<stress -5>><<ltrauma>><<trauma -2>>
+	<<case "dummy">>
+		<<set _rng to random(0,100)>>
+		你跑到<<childname>>身边，看见<<childhis>>的<<childtoy $location $childActivityEvent.toyid "lowercase">>正躺在<<childhim>>旁边的地板上。
+		<br><br>
+		<<if $children[$childActivityEvent.childid].localVariables.acceptsDummy isnot false>>
+			你拿起玩具，然后在用你<<top>>的下摆把它清理干净后，你把<<childtype>>抱在怀里并试图安抚<<childhim>>的情绪。
+			<br><br>
+		<</if>>
+
+		<<if $childActivityEvent.childCry lt 4 and (_rng lt 75 or $children[$childActivityEvent.childid].localVariables.acceptsDummy is true)>>
+			<<childname>>花了一点时间来抓住<<childtoy $location $childActivityEvent.toyid "lowercase">>, 但<<childHe>>一旦这样做了，就一定会大声的去吮咬这玩意.在把<<childhe>>安抚下来后，你把<<childhim>>放回了地板上.<<lstress>><<stress -6>>
+			<<set $children[$childActivityEvent.childid].localVariables.activity to "dummySucking">>
+			<<set $children[$childActivityEvent.childid].localVariables.acceptsDummy to true>>
+		<<elseif $childActivityEvent.childCry is 4 and $children[$childActivityEvent.childid].localVariables.acceptsDummy isnot false>>
+			尽管你做了努力, 但<<childname>>依旧<<childcry $childActivityEvent.childCry>>哭着扭来扭去并且不愿意去玩那个<<childtoy $location $childActivityEvent.toyid "lowercase">>，你放弃了这一尝试，转而开始摇晃和安抚<<childtype>>，你用轻柔的动作和温柔的哼唱来安慰他。虽然这很累人，但<<childhe>>很快就平静下来，并偎依在了你的胸前，来自父母的温柔关怀和情绪上的感染让<<childhim>>平静下来，<<childhe>>很快就睡着了。<<gstress>><<stress 10>><<gtiredness>><<tiredness 5>>
+			<br><br>
+			你让<<childname>>躺下，看着<<childhis>>安然入睡。
+			<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+		<<elseif $childActivityEvent.childCry lt 4 and $children[$childActivityEvent.childid].localVariables.acceptsDummy isnot false>>
+			尽管你做了努力, 但<<childname>>依旧<<childcry $childActivityEvent.childCry>>拒绝玩那个<<childtoy $location $childActivityEvent.toyid "lowercase">>，你放弃了这一尝试，转而开始摇晃和安抚<<childtype>>，你用轻柔的动作和温柔的哼唱来安慰他。虽然这很累人，但<<childhe>>很快就平静下来，并偎依在了你的胸前，来自父母的温柔关怀和情绪上的感染让<<childhim>>平静下来，<<childhe>>很快就睡着了。<<gstress>><<stress 10>><<gtiredness>><<tiredness 5>>
+			<br><br>
+			你让<<childname>>躺下，看着<<childhis>>安然入睡。
+			<<set $children[$childActivityEvent.childid].localVariables.acceptsDummy to false>>
+			<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+		<<else>>
+			你知道<<childname>>会拒绝这个玩具，于是你开始摇晃玩具并用用轻柔的咕哝声安抚<<childtype>>。这很累人，但最终<<childhe>>平静了下来并依偎在你的胸前，来自父母的温柔关怀和情绪上的感染让<<childhim>>平静下来，<<childhe>>很快就睡着了。<<gtiredness>><<tiredness 5>>
+			<br><br>
+			你让<<childname>>躺下，看着<<childhis>>安然入睡。
+			<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+		<</if>>
+	<<case "clown">>
+		<<set _rng to random(0,2)>>
+		<<set _output to ["欢乐的","小小的","恐怖的"]>>
+		你坐在<<childname>>旁边，拿起那个<<childtoy $location $childActivityEvent.toyid "lowercase">>并向<<childhim>>展示，<<childHe>>盯着你手里的<<childtoy $location $childActivityEvent.toyid "lowercase">>，不确定该怎么做，你拉动了绳子，这个玩具发出了<<print _output[_rng]>>的笑声。
+		<br><br>
+		<<if _childTotalDays lte 105 + random(0,20)>>
+			<<childHe>>看了看玩具，然后回头看向你。你把它放在地板上后站起身来，让<<childtype>>自己去玩。<<lstress>><<stress -3>><<ltrauma>><<trauma -3>>
+		<<elseif random(0,100) lt 80>>
+			<<childtype>>突然大笑起来，伸手来拿这个<<childtoy $location $childActivityEvent.toyid "lowercase">>。你把它递过去，然后起身让<<childtype>>自己去玩。<<lstress>><<stress -3>><<ltrauma>><<trauma -3>>
+			<<set $children[$childActivityEvent.childid].localVariables.activity to "clownHappy">>
+		<<else>>
+			<<childtype>>突然哭了起来，并开始<<childcry 4>>，你知道你不能责怪<<childhim>>，毕竟这个玩具甚至都吓到你了。<<gstress>><<stress 6>><<gtrauma>><<trauma 3>>
+			<<set $children[$childActivityEvent.childid].localVariables.activity to "crying">>
+		<</if>>
+	<<case "Robin">>
+		<<npc "Robin">><<person1>>
+		你走向罗宾，<<childname>>正依偎在<<him>>身上，你听到了二人一起的笑声。
+		<<if $childSelected.mother is "pc">>
+			<<set _playerRole to "mummy">>		
+		<<elseif $childSelected.father is "pc">>
+			<<set _playerRole to "daddy">>
+		<<elseif $player.gender_appearance is "m">>
+			<<set _playerRole to "daddy">>
+		<<else>>
+			<<set _playerRole to "mummy">>
+		<</if>>
+		<<switch random(1, 5)>>
+			<<case 1>>
+				"我想有人想你了，"罗宾说着的同时把<<childtype>>递给了你。
+			<<case 2>>
+				"这孩子真的好可爱，"罗宾说着的同时把<<childtype>>递给了你。
+			<<case 3>>
+				"看啊,"罗宾说道： "是_playerRole."罗宾说完之后把<<childtype>>递给了你。
+			<<case 4>>
+				"你能说 '_playerRole'么？" 罗宾看着<<childtype>>问道，<<childHe>>则用一个不清楚的咕哝声来回应，罗宾把<<childHim>>递给了你。
+			<<default>>
+				"你能指出_playerRole么？" 罗宾对<<childtype>>说道，<<childHe>>虽然没有指出来，但确实在看向你，罗宾把<<childhim>>递给了你。
+		<</switch>>
+		<br><br>
+		你把<<childname>>抱在怀里，而罗宾则凑了过来。这个小家伙的眼神在你和罗宾之间交替着，随后咯咯笑了出来。
+		<br><br>
+
+	/*Wolf Specific*/
+	<<case "sleepingStroke">>
+		你坐在正在沉睡的<<childtype>>身边，抚摸着<<childhis>>的脑袋，<<childHe>>哼了一声，然后推了推你的手，你就这样静坐了一会儿，然后站起身来。<<lstress>><<stress -5>>
+	<<case "cuddleAndNap">>
+		当你躺在<<wolf_cave_singular>>旁边时，<<childname>>会看着你，这两只会调整一下位置，好为你腾出空间，你们很快就依偎在了一起。在站起身之前，你会享受这段一舒适的时间。<<ltiredness>><<tiredness -6>><<lstress>><<stress -5>>
+	<<case "cryingWolf">>
+		你坐在正在<<childcry>><<childtype>>的身边，你把<<childhim>>放在了你的腿上。并开始轻声安抚了起来，你一边哼着，一边轻轻的抚摸着<<childtype>>的皮肤，并试着偶尔抓挠一下<<childhis>>的耳朵。<<childname>>很快就平静了下来并在你温柔的触弄下打起了瞌睡。你小心翼翼地把睡着的<<childtype>>放了下去，然后重新站起身来。
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+	<<case "playing">>
+		你四肢着地，热情地加入到<<childname>>和那些正在玩耍的小狼当中，你鼓励你的<<childtype>>以及其他孩子们自由的活动与释放自己的精力，并努力保持着游戏的友好和安全性，疲惫不堪的幼崽们开始爬下休息，在爬起来之前，你亲吻了<<childname>>的额头。<<lstress>><<stress -6>>
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+	<<case "curiousGaze">>
+		你顺着<<childname>>的视线看向你的腿，然后你试着走了一圈。<<childHis>>的眼睛从未离开过你的脚。你很高兴找到了好玩的东西，于是你在山洞里快速地走了一圈，而<<childtype>>尽力的跟着你的脚步，看起来其是被你的动作吸引住了。但也没过多久，<<childname>>便感到无聊并选择躺下休息，不过<<childhis>>的好奇心得到了满足。<<llstress>><<stress -10>>
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+	<<case"longingGaze">>
+		你注意到<<childtype>>传来渴望的目光，于是你将手伸到<<childhis>>的耳朵之间，轻轻地挠了一下<<childhim>>，<<childname>>在被挠之后伸出了舌头，当你继续抓挠<<childhe>>的耳朵时，<<childhis>>高兴得一直蹬脚。但当你做完之后，<<childHe>>便委屈巴巴的看向你。
+	<<case"playFighting">>
+		你密切注视着这两个孩子的嬉戏打闹。慢慢地，他们对彼此感到厌倦，原本嬉戏的小声嘀咕变成了呵斥和吼叫，在事态进一步升级之前，你将<<childname>>与<<childhis>>的玩伴分开，确保各自有时间冷静一下，不一会，这两倒霉孩子又开始友好地玩耍起来了。
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "playing">>
+	<<case "fieldTrip">>
+		你看到<<childname>>正好奇地看着洞外，当你弯下腰把<<childHis>>抱起来时，<<childhim>>依旧死死的盯着洞外的环境。你走到外面，带着孩子快速地浏览了一下周围的环境，<<childtype>>的眼睛睁得大大的，并饶有兴趣地扫视着周围地所有东西。在<<childname>>的好奇心得到充分的满足后，你把<<childhim>>放回了洞内。<<llstress>><<stress -10>>
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+	<<case "grumpyWolf">>
+		<<childname>>在你靠近之后对你愤怒的咆哮，你无奈的将<<childtype>>翻了个面并开始按揉<<childhis>>的小肚肚。<<childtype>>刚开始有些抗拒，但很快就屈服并高兴的咯咯笑和胡乱扭动身体。你在离开<<childname>>的时候比<<childhim>>刚看见你的时候要高兴多。<<lstress>><<stress -6>>
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "playing">>
+	<<case "hungeryWolf">>
+		你走向<<childname>>，<<childHe>>正试图穿过其他幼崽，到达雌性<<wolf_cave_singular "f">>的乳头处进食。
+		<br><br>
+		你把<<childhim>>抱了起来，并轻轻抚摸<<childhim>>，好让<<childhis>>的注意力从饥饿中转移出来。很快，那几只幼崽吃完了并腾出了空间。<<childtype>>急不可耐的扑了过去，开始贪婪的进食。<<lstress>><<stress -6>>
+		<<set $children[$childActivityEvent.childid].localVariables.activity to "sleeping">>
+	<<case "gnawing">>
+		你坐在<<childname>>的旁边，然后伸手抓住那个$pupToy。随之当你轻轻拉扯这个玩具时，<<childhim>>咆哮着把它拽了回去，而你则十分有耐心的与<<childHe>>继续拉扯着这个$pupToy，直到最后，你让<<childhim>>赢得了这次小小拔河的胜利。当<<childname>>获得<<childhe>>的奖品并继续玩耍时，<<childhis>>欢快地叫着并兴奋地摇着尾巴。 
+		<br><br>
+		另一只小狼注意到了你们的游戏，它走向<<childname>>并试图抢夺这个$pupToy。你密切注视着它们两个，值得庆幸的是，<<childname>>的玩伴似乎对从<<childhim>>那里抢走玩具并不是真的感兴趣，你微笑着看着小狼们一起玩拔河游戏，然后站起身，让它们自己去玩了。
+        <<set $children[$childActivityEvent.childid].localVariables.activity to "playing">>
+	<<default>>
+		无法找到该事件。<br>
+		Event: $childActivityEvent.event
+		Child: $childActivityEvent.childid
+<</switch>>
+<br><br>
+
+<<link [[继续|Childrens Home]]>><<unset $childActivityEvent>><<endevent>><</link>>

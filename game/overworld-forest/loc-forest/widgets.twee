@@ -1,0 +1,1602 @@
+:: Widgets Forest [widget]
+<<widget "forestmove">>
+	<<if $possessed>>
+		你步履蹒跚地穿过森林。你知道你要去哪里。
+	<<elseif $forestmove is "quickly">>
+		在崎岖的林地间，你尽你所能地快速前进。细枝和掉落的枝桠在你脚下弯曲、折断。
+	<<elseif $forestmove is "normally">>
+		你走在树丛当中，温和的声音与气味使这次旅程更让人心生愉悦。
+	<<elseif $forestmove is "carefully">>
+		你小心翼翼地穿过灌木丛，尽可能地不发出任何声响。
+	<<elseif $forestmove is "hobble">>
+		你步履蹒跚地穿过丛林，并时刻小心注意着不被绊倒。
+	<<elseif $forestmove is "secretin">>
+		如果你不注意根本都看不到这条路。树木包围着你。你在森林的深处。
+	<<elseif $forestmove is "secretout">>
+		如果你不注意根本都看不到这条路。你很快就听到前方城镇的声音。你在森林的边缘。
+	<<elseif $forestmove is "quick_search">>
+		你尽可能快地在崎岖和树木繁茂的地形上搜索，扯掉地上掉落的树枝，观察下面的情况。
+	<<elseif $forestmove is "normal_search">>
+		你在寻找着隐藏在树木间的那些任何有价值的东西。
+	<<elseif $forestmove is "careful_search">>
+		<<if $forest gte 50>>
+			你小心翼翼地穿过灌木丛，在茂密的蕨类植物中寻找任何有价值的东西。
+		<<else>>
+			你小心翼翼地穿过灌木丛，并在其中寻着着有价值的东西。
+		<</if>>
+	<<elseif $forestmove is "road">>
+		你沿着平坦的道路行走，远离了荒野的危险。
+	<</if>>
+	<<if $weather is "rain">>
+		厚厚的雨点落在你的周围，被树冠聚集。
+	<</if>>
+	<<if $forestmove or $possessed>>
+		<br><br>
+	<</if>>
+<<set $forestmove to 0>>
+<</widget>>
+
+<<widget "forestdeeper">>
+	深入森林
+	<br>
+	<<if $worn.feet.type.includes("heels") and !$possessed>>
+		<<walkicon>><<link [[穿着高跟鞋慢慢走(0:30)|Forest]]>><<set $forestmod to 3>><<set $forest += 5>><<pass 30>><<set $forestmove to "hobble">><<if $foresthunt gte 1>><<set $foresthunt += 2>><</if>><</link>><<gharass>>
+		<<if $town_projects.road gte 4 and $forest lte 24>>
+			<br>
+			<<forestroaddeepicon>><<link [[沿路走(0:10)|Forest]]>><<set $forestmod to 1>><<set $forest += 5>><<set $forestmove to "road">><<pass 10>><<if $foresthunt gte 1>><<set $foresthunt += 1>><</if>><<set $eventskip to 1>><</link>><<noharass>>
+		<</if>>
+	<<else>>
+		<<if !$worn.feet.type.includes("shackle")>>
+			<<runicon>><<link [[快速前进 (0:05)|Forest]]>><<set $forestmod to 3>><<set $forest += 5>><<pass 5>><<set $forestmove to "quickly">><<if $foresthunt gte 1>><<set $foresthunt += 0.5>><</if>><</link>><<gharass>>
+			<br>
+		<</if>>
+		<<if $nextPassageCheck is "Forest Blood Deeper">>
+			<span class="nextLink"><<walkicon>><<link [[森林湖|Forest Blood Deeper]]>><<set $forestmod to 1.5>><<set $forest += 5>><<set $forestmove to "normally">><</link>></span>
+		<<else>>
+			<<walkicon>><<link [[正常前进 (0:10)|Forest]]>><<set $forestmod to 1.5>><<set $forest += 5>><<set $forestmove to "normally">><<pass 10>><<if $foresthunt gte 1>><<set $foresthunt += 1>><</if>><</link>>
+		<</if>>
+		<br>
+		<<sneakicon>><<link [[谨慎前进 (0:30)|Forest]]>><<set $forestmod to 1>><<set $forest += 5>><<pass 30>><<set $forestmove to "carefully">><<if $foresthunt gte 1>><<set $foresthunt += 2>><</if>><</link>><<lharass>>
+		<<if $town_projects.road gte 4 and $forest lte 24>>
+			<br>
+			<<forestroaddeepicon>><<link [[沿着路走 (0:05)|Forest]]>><<set $forestmod to 1>><<set $forest += 5>><<set $forestmove to "road">><<pass 5>><<if $foresthunt gte 1>><<set $foresthunt += 1>><</if>><<set $eventskip to 1>><</link>><<noharass>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "forestsearch">>
+	搜索这片区域<<gtreasure>>
+	<br>
+	<<if !$worn.feet.type.includes("shackle")>>
+		<<runicon>><<link [[快速搜索 (0:05)|Forest]]>><<set $forest_search to true>><<set $forestmod to 3>><<pass 5>><<set $forestmove to "quick_search">><<if $foresthunt gte 1>><<set $foresthunt += 0.5>><</if>><</link>><<gharass>>
+		<br>
+	<</if>>
+	<<walkicon>><<link [[常规搜索 (0:10)|Forest]]>><<set $forest_search to true>><<set $forestmod to 1.5>><<set $forestmove to "normal_search">><<pass 10>><<if $foresthunt gte 1>><<set $foresthunt += 1>><</if>><</link>>
+	<br>
+	<<sneakicon>><<link [[谨慎搜索 (0:30)|Forest]]>><<set $forest_search to true>><<set $forestmod to 1>><<pass 30>><<set $forestmove to "careful_search">><<if $foresthunt gte 1>><<set $foresthunt += 2>><</if>><</link>><<lharass>>
+<</widget>>
+
+<<widget "forestlessdeep">>
+	往城里走
+	<br>
+	<<if $worn.feet.type.includes("heels") and !$possessed>>
+		<<walkicon>><<link [[穿着高跟鞋慢慢走(0:30)|Forest]]>><<set $forestmod to 3>><<set $forest -= 5>><<pass 30>><<set $forestmove to "hobble">><<if $foresthunt gte 1>><<set $foresthunt += 2>><</if>><</link>><<gharass>>
+		<<if $town_projects.road gte 4 and $forest lte 25 and $forest gte 1>>
+			<br>
+			<<forestroadtownicon>><<link [[沿路走(0:10)|Forest]]>><<set $forestmod to 1>><<set $forest -= 5>><<set $forestmove to "road">><<pass 10>><<if $foresthunt gte 1>><<set $foresthunt += 1>><</if>><<set $eventskip to 1>><</link>><<noharass>>
+		<</if>>
+	<<else>>
+		<<if !$worn.feet.type.includes("shackle")>>
+			<<runicon>><<link [[快速前进 (0:05)|Forest]]>><<set $forestmod to 3>><<set $forest -= 5>><<pass 5>><<set $forestmove to "quickly">><<if $foresthunt gte 1>><<set $foresthunt += 0.5>><</if>><</link>><<gharass>>
+			<br>
+		<</if>>
+		<<if $nextPassageCheck is "Forest Blood Less Deep">>
+			<span class="nextLink"><<walkicon>><<link [[森林湖|Forest Blood Less Deep]]>><<set $forestmod to 1.5>><<set $forest -= 5>><<set $forestmove to "normally">><</link>></span>
+		<<else>>
+			<<walkicon>><<link [[正常前进 (0:10)|Forest]]>><<set $forestmod to 1.5>><<set $forest -= 5>><<set $forestmove to "normally">><<pass 10>><<if $foresthunt gte 1>><<set $foresthunt += 1>><</if>><</link>>
+		<</if>>
+		<br>
+		<<sneakicon>><<link [[谨慎前进 (0:30)|Forest]]>><<set $forestmod to 1>><<set $forest -= 5>><<pass 30>><<set $forestmove to "carefully">><<if $foresthunt gte 1>><<set $foresthunt += 2>><</if>><</link>><<lharass>>
+		<<if $town_projects.road gte 4 and $forest lte 25 and $forest gte 1>>
+			<br>
+			<<forestroadtownicon>><<link [[沿着路走 (0:05)|Forest]]>><<set $forestmod to 1>><<set $forest -= 5>><<set $forestmove to "road">><<pass 5>><<if $foresthunt gte 1>><<set $foresthunt += 1>><</if>><<set $eventskip to 1>><</link>><<noharass>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "eventforestoutskirts">>
+	<<cleareventpool>>
+	<<addinlineevent "forestoutskirts_hikers">>
+		<<if $parasite.left_ear.name is "slime" or $parasite.right_ear.name is "slime">>
+			在前面的必经之路上传来两个人的说话声.
+			<br><br>
+
+			<span class="lewd">你感觉到你脑袋里的史莱姆在命令你献身于那两个家伙。</span> 它承诺如果你遵守的话，就给予你奖励，如果你不遵守的话，就要承担相应的后果。
+			<br><br>
+
+			<<if $promiscuity gte 55 and $submissive gte 1900>>
+				<<link [[自愿服从|Forest Slime Pair Submit willingly]]>><<corruption 3>><<pain -8>><<stress -12>><<trauma -24>><<sub 2>><</link>><<promiscuous4>><<ggcorruption>><<llpain>><<llltrauma>><<llstress>>
+				<br>
+			<</if>>
+			<<link [[服从|Forest Slime Pair Obey]]>><<corruption 1>><<pain -4>><<stress -6>><<trauma -12>><<sub 2>><</link>><<gcorruption>><<lpain>><<lltrauma>><<lstress>>
+			<br>
+			<<link [[拒绝|Forest Slime Pair Defy]]>><<corruption -1>><<pain 8>><<stress 6>><<trauma 6>><<def 1>><</link>><<lcorruption>><<ggpain>><<ggtrauma>><<ggstress>>
+			<br>
+
+		<<else>>
+			<<if $exposed is 1>>
+				在前面的必经之路上传来两个人的说话声.
+
+				<<if $exhibitionism gte 35>>
+					你低头看着自己的<<lewdness>>，一种淫荡的快感涌上心头，即便那两个人看到了你，也许也没那么糟糕.
+					<br><br>
+
+					<<rng>>
+					<<if $rng gte 61>>
+						<<link [[坚持走小道|Forest Molestation]]>><<set $molestationstart to 1>><</link>><<exhibitionist3>>
+						<br>
+					<<else>>
+						<<link [[坚持走小道|Forest Avoid]]>><<set $phase to 2>><</link>><<exhibitionist3>>
+						<br>
+					<</if>>
+					<<link [[绕道而行 (0:20)|Forest Avoid]]>><<set $phase to 0>><<set $eventskip to 1>><<pass 20>><<if $foresthunt gte 1>><<set $foresthunt += 2>><</if>><</link>>
+				<<else>>
+					你低头看了看自己的<<lewdness>>，一股焦虑感涌上心头，你必须离开这条小路，否则就会被人看到的。
+					<br><br>
+
+					<<link [[绕道而行 (0:20)|Forest Avoid]]>><<set $phase to 0>><<set $eventskip to 1>><<pass 20>><<if $foresthunt gte 1>><<set $foresthunt += 2>><</if>><</link>>
+				<</if>>
+			<<elseif $exposed gte 2>>
+
+				在前面的必经之路上传来两个人的说话声.
+				<<rng>>
+				<<if $exhibitionism gte 75>>
+					你低头看着自己的<<lewdness>>，一种淫荡的快感涌上心头，即便那两个人看到了你，也许也没那么糟糕.
+					<br><br>
+
+					<<if $rng gte 41>>
+						<<link [[坚持走小道|Forest Molestation]]>><<set $molestationstart to 1>><</link>><<exhibitionist5>>
+						<br>
+					<<else>>
+						<<link [[坚持走小道|Forest Avoid]]>><<set $phase to 3>><</link>><<exhibitionist5>>
+						<br>
+					<</if>>
+					<<link [[绕道而行 (0:20)|Forest Avoid]]>><<set $phase to 0>><<set $eventskip to 1>><<pass 20>><<if $foresthunt gte 1>><<set $foresthunt += 2>><</if>><</link>>
+				<<else>>
+					你低头看了看自己的<<lewdness>>，一股焦虑感涌上心头，你必须离开这条小路，否则就会被人看到的。
+					<br><br>
+
+					<<link [[绕道而行 (0:20)|Forest Avoid]]>><<set $phase to 0>><<set $eventskip to 1>><<pass 20>><<if $foresthunt gte 1>><<set $foresthunt += 2>><</if>><</link>>
+				<</if>>
+			<<else>>
+				在前面的必经之路上传来两个人的说话声，这两人的一些行为让你感到紧张。
+				<br><br>
+
+				<<link [[绕道而行 (0:20)|Forest Avoid]]>><<set $phase to 0>><<pass 20>><<if $foresthunt gte 1>><<set $foresthunt += 2>><</if>><</link>>
+				<br>
+				<<rng>>
+				<<if $rng gte 81>>
+					<<link [[坚持走小道|Forest Molestation]]>><<set $molestationstart to 1>><</link>>
+					<br>
+				<<else>>
+					<<link [[坚持走小道|Forest Avoid]]>><<set $phase to 1>><</link>>
+					<br>
+				<</if>>
+			<</if>>
+		<</if>>
+	<</addinlineevent>>
+	<<addevent "forestwolfspy">>
+	<<addinlineevent "forest_wolf" 0.33>>
+		<<beastNEWinit 1 wolf>>
+
+		<!-- Modified for monster people -->
+		一只孤独的<<beasttype>>呲着牙从树林间钻了出来。
+		<<if $monster is 1>>
+			"找到你了，"<<bhe>>吼道："是我的."
+		<</if>>
+		<br><br>
+
+		<<if $monster is 1 or $bestialitydisable is "f">>
+			<<link [[继续|Forest Wolf]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<<else>>
+			它在树林中追赶着你。而你不停地跑着，直到再也不能听见身后有传来它的动静。你不确定究竟是你跑赢了它，还是它感到无聊了。
+			<<beastescape>><<gtiredness>><<tiredness 4>><<gathletics>><<athletics 2>><<physique 2>>
+			<br><br>
+
+			<<link [[继续(0:20)|Forest]]>><<pass 20>><<set $eventskip to 1>><<endevent>><</link>>
+		<</if>>
+	<</addinlineevent>>
+	<<addinlineevent "forestoutskirts_safeperson">>
+		<<if Time.dayState is "night">>
+			<<generate1>><<person1>>
+			你看到一个<<person>>穿过树林，然后靠在一棵树上抽起了烟。
+
+			<<if $exposed gte 1>>
+				你选择绕道而行，毕竟你也不想让人看到你的<<lewdness>>。
+				<<gstress>><<stress 6>>
+			<<else>>
+				<<He>>在你经过时瞥了你一眼，但什么都没有说道。
+			<</if>>
+			<br><br>
+
+			<<endevent>>
+			<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+		<<else>>
+			<<generate1>><<person1>>
+			你看到一个<<person>>穿过树林，然后用一只手在荆棘丛里翻找了起来，你这才注意到<<his>>的另一只手上正拿着一个装满浆果的竹篮。
+
+			<<if $exposed gte 1>>
+				你沿着一条更深的道路前进，毕竟你也不想让人看到你的<<lewdness>>。
+				<<gstress>><<stress 6>>
+			<<else>>
+				当<<He>>看到你时，<<he>>向你挥手致意，你也挥手回应。
+				<<ltrauma>><<trauma -6>>
+			<</if>>
+			<br><br>
+
+			<<endevent>>
+			<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<</if>>
+	<</addinlineevent>>
+	<<addevent "forestrock" 0.33>>
+	<<addinlineevent>>
+		你挤过一片灌木丛.
+		<<set $stripintegrity to 10>><<set $stripobject to "tree branch">><<stripobject>>
+		<br><br>
+
+		<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+	<</addinlineevent>>
+	<<runeventpool>>
+<</widget>>
+
+<<widget "eventforest">>
+	<<if $foresthunt lte 0 and wraithCanHunt() and $wraith.state and ($wraith.hunt or $wraith.timer gte random(0, 40))>>
+		<<wHunt "forest">>
+	<<else>>
+		<<cleareventpool>>
+		<<if $foresthunt lte 0>>
+			<<addinlineevent "forest_hunted" 0.5>>
+				一股寒意涌上你的脊背，这是来自某种原始本能的警告。<span class="red">有东西正在追你.</span>
+				<<npc "Black Wolf">>
+				<<set $rng2 to random(1, 2)>>
+				<<if $rng2 is 1 or ($bestialitydisable is "t" and $monster isnot 1)>>
+					<<set $edenforesthunt to 1>>
+					<<set $blackwolfhunt to 0>>
+				<<elseif $rng2 is 2>>
+					<<set $edenforesthunt to 0>>
+					<<set $blackwolfhunt to 1>>
+				<</if>>
+				<<set $foresthunt to 1>>
+				<<endevent>>
+				<br><br>
+
+				<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+			<</addinlineevent>>
+		<</if>>
+		<<addevent "forestwolfspy" 0.25>>
+		<<addevent "forestboar" 0.20>>
+		<<addevent "ForestBullies" 0.20>>
+		<<addinlineevent "forest_wolf" 0.33>>
+			<<beastNEWinit 1 wolf>>
+			<!-- Modified for monster people -->
+				一只孤独的<<beasttype>>呲着牙从树林间钻了出来。
+				<<if $monster is 1>>
+					"猎物， 不要做无谓的挣扎."
+				<</if>>
+				<br><br>
+
+			<<if $monster is 1 or $bestialitydisable is "f">>
+				<<link [[继续|Forest Wolf]]>><<set $molestationstart to 1>><</link>>
+				<br>
+			<<else>>
+				它在树林中追赶着你。而你不停地跑着，直到再也不能听见身后有传来它的动静。你不确定究竟是你跑赢了它，还是它感到无聊了。
+				<<beastescape>><<gtiredness>><<tiredness 4>><<gathletics>><<athletics 2>><<physique 2>>
+				<br><br>
+
+				<<link [[继续(0:20)|Forest]]>><<endevent>><<pass 20>><<set $eventskip to 1>><</link>>
+			<</if>>
+		<</addinlineevent>>
+		<<addevent "forestbear" 0.15>>
+		<<addevent "forestrock" 0.25>>
+		<<addinlineevent "forest_clothingdamage">>
+			你挤过一片灌木丛.
+			<<set $stripintegrity to 10>><<set $stripobject to "tree branch">><<stripobject>>
+			<br><br>
+
+			<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+		<</addinlineevent>>
+		<<addevent "forestcutter" 0.15>>
+		<<set _forestNestUnsafe to true>>
+		<<addevent "forest_nest" 0.15>>
+		<<if $fox_grudge>>
+			<<addevent "fox_grudge" 0.33>>
+		<</if>>
+		<<runeventpool>>
+	<</if>>
+<</widget>>
+
+<<widget "eventforestdeep">>
+	<<if $foresthunt lte 0 and wraithCanHunt() and $wraith.state and ($wraith.hunt or $wraith.timer gte random(0, 20))>>
+		<<wHunt "forest">>
+	<<else>>
+		<<cleareventpool>>
+		<<if $foresthunt lte 0>>
+			<<addinlineevent "deepforest_hunted">>
+				一股寒意涌上你的脊背，这是来自某种原始本能的警告。<span class="red">有东西正在追你.</span>
+				<<npc "Black Wolf">>
+				<<set $rng2 to random(1, 2)>>
+				<<if $rng2 is 1 or ($bestialitydisable is "t" and $monster isnot 1)>>
+					<<set $edenforesthunt to 1>>
+					<<set $blackwolfhunt to 0>>
+				<<elseif $rng2 is 2>>
+					<<set $edenforesthunt to 0>>
+					<<set $blackwolfhunt to 1>>
+				<</if>>
+				<<set $foresthunt to 1>>
+				<<endevent>>
+				<br><br>
+
+				<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+			<</addinlineevent>>
+		<</if>>
+		<<addevent "forestwolfspy2">>
+		<<addinlineevent "deepforest_wolf2">>
+			<<beastNEWinit 2 wolf>>
+			一对
+			<<if ($monster isnot 1) or ($NPCList[0].pronoun is "m" and $NPCList[1].pronoun is "m") or ($NPCList[0].pronoun is "f" and $NPCList[1].pronoun is "f")>>
+				<<beastsplural>>
+			<<else>>
+				狼人
+			<</if>>
+			呲着牙从树丛里走了出来。
+			<<if $monster is 1>>
+				"找到你了，"其中一只吼道："二对一，你现在是我们的了."
+			<</if>>
+			<br><br>
+
+			<!-- Modified for monster people -->
+			<<if $monster is 1 or $bestialitydisable is "f">>
+				<<link [[继续|Forest Wolf2]]>><<set $molestationstart to 1>><</link>>
+				<br>
+			<<else>>
+				它们在树林中追赶着你。而你不停地跑着，直到再也不能听见身后有传来它们的动静。你不确定究竟是你跑赢了它们，还是因为它们感到无聊了。
+				<<beastescape>><<gtiredness>><<tiredness 8>><<gathletics>><<athletics 4>><<physique 4>>
+				<br><br>
+
+				<<link [[继续(0:40)|Forest]]>><<pass 40>><<set $eventskip to 1>><</link>>
+			<</if>>
+		<</addinlineevent>>
+		<<if $voredisable is "f" and $bestialitydisable is "f">>
+			<<addevent "forestsnake" 0.33>>
+		<</if>>
+		<<addevent "forestbear">>
+		<<if $tentacledisable is "f" and $voredisable is "f" and ($hallucinations gte 2 or $backgroundTraits.includes("plantlover"))>>
+			<<addinlineevent "deepforest_slimecontrol">>
+				你走过一片茂密的树丛，空气中弥漫着花粉，但你没有看到任何花朵。刹那间，你开始感到头晕目眩，于是你靠在树干上稳住自己，你注意到空气中萦绕着白色的雾气。
+				<br><br>
+
+				<<if $parasite.left_ear.name is "slime" or $parasite.right_ear.name is "slime">>
+					<span class="lewd">你感觉到你脑袋里的史莱姆命令你往一个特定的方向前进。</span> 它承诺如果你遵守的话，就给予你奖励，如果你不遵守的话，就要承担相应的后果。
+					<br><br>
+
+					<<link [[服从|Forest Pitcher Slime Obey]]>><<corruption 1>><<pain -4>><<stress -6>><<trauma -12>><<sub 1>><<set $slimeObey to true>><</link>><<gcorruption>><<lpain>><<lltrauma>><<lstress>>
+					<br>
+					<<link [[拒绝|Forest Pitcher Slime Defy]]>><<corruption -1>><<pain 8>><<stress 6>><<trauma 6>><<def 1>><</link>><<lcorruption>><<ggpain>><<ggtrauma>><<ggstress>>
+					<br>
+				<<else>>
+					<<link [[稳住心神，直到这种感觉消退 (0:30)|Forest Pitcher Wait]]>><<pass 30>><<arousal 1200>><<drugs 30>><</link>><<ggarousal>>
+					<br>
+					<<link [[继续|Forest Pitcher Ignore]]>><</link>><<willpowerdifficulty 1 $willpowermax>>
+					<br>
+				<</if>>
+			<</addinlineevent>>
+		<</if>>
+		<<if $tentacledisable is "f" and ($hallucinations gte 2 or $backgroundTraits.includes("plantlover"))>>
+			<<addinlineevent>>
+				有东西抓住了你的脚踝并导致你绊倒，你回头一看，看到一条树根正缠绕在你腿上，还有几根在树丛中蜿蜒盘绕。
+				<br><br>
+
+				<<link [[挣扎|Forest Tentacles]]>><<set $molestationstart to 1>><</link>>
+				<br>
+				<<if $deviancy gte 75>>
+					<<link [[允许它们缠绕在你身上|Forest Tentacles]]>><<set $molestationstart to 2>><</link>><<deviant5>>
+				<</if>>
+			<</addinlineevent>>
+		<</if>>
+		<<addevent "forestrock">>
+		<<if $bestialitydisable is "f" and $waspdisable is "f">>
+			<<addevent "forestwasps">>
+		<</if>>
+		<<addinlineevent "deepforest_clothingdamage">>
+			你挤过一片灌木丛.
+			<<set $stripintegrity to 10>><<set $stripobject to "tree branch">><<stripobject>>
+			<br><br>
+
+			<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+		<</addinlineevent>>
+	<<if $plantdisable is "f" and $tentacledisable is "f" and ($hallucinations gte 2 or $backgroundTraits.includes("plantlover"))>>
+		<<addevent "forestplant_kiss">>
+		<<addevent "forestplant_snare">>
+	<</if>>
+	<<addevent "forestrock">>
+	<<if $bestialitydisable is "f" and $waspdisable is "f">>
+		<<addevent "forestwasps">>
+	<</if>>
+	<<addinlineevent "deepforest_clothingdamage">>
+		你挤过一片灌木丛.
+		<<set $stripintegrity to 10>><<set $stripobject to "tree branch">><<stripobject>>
+		<br><br>
+
+		<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+	<</addinlineevent>>
+	<<set _forestNestUnsafe to true>>
+	<<addevent "forest_nest">>
+	<<if $fox_grudge>>
+		<<addevent "fox_grudge" 0.33>>
+	<</if>>
+		<<runeventpool>>
+	<</if>>
+<</widget>>
+
+<<widget "eventforestsafe">>
+	<<cleareventpool>>
+	<<if playerRutMinArousal()>>
+		<<addinlineevent "safeforest_wolfhowl_rut">>
+			你听到远处传来狼的嚎叫。声音深沉而隆隆。
+			<<if $wolfgirl gte 3>>
+				它激发了你身体里原始的东西。你太想回应这个吼声了。
+				<<garousal>><<arousal 1000>>
+			<<elseif $sciencetrait gte 3 and $awareness gte 100>>
+				你还记得和西里斯一起学习当地物种的发情期和发情期。最好不要逗留。
+				<<gstress>><<stress 10>>
+			<<else>>
+				你不知道为什么今晚狼人的声音不一样。
+				<<gstress>><<stress 1>>
+			<</if>>
+			<br><br>
+
+			<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<</addinlineevent>>
+	<<else>>
+		<<addinlineevent "safeforest_wolfhowl">>
+			你听到了远处传来的狼嚎声。
+			<<if $wolfgirl gte 3>>
+				<<garousal>><<arousal 600>>
+			<<else>>
+				<<gstress>><<stress 1>>
+			<</if>>
+			<br><br>
+
+			<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<</addinlineevent>>
+	<</if>>
+	<<addinlineevent "safeforest_easytrail" 0.33>>
+		你找到了一条小路，这让你走得更轻松一些。
+		<<lstress>><<stress -2>>
+		<br><br>
+
+		<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</addinlineevent>>
+	<<addinlineevent "event_ambient">>
+		<<eventAmbient>>
+		<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</addinlineevent>>
+	<<if $forest lte 50>>
+		<<addevent "forestriver" 0.33>>
+	<<else>>
+		<<addinlineevent "safeforest_deer" 0.33>>
+			当你进入一片空地时，微风轻抚过你的面庞，在空地中间有一只鹿，当它注意到你时，它停止了进食，但并没有移动离开。
+			<br><br>
+
+			<<link [[接近|Forest Deer]]>><</link>>
+			<br>
+			<<link [[无视|Forest]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<</addinlineevent>>
+	<</if>>
+	<<if $halloween is 1 and Time.monthDay is 31 and !$halloween_lake>>
+		<<addevent "halloween_lake_invite" 1000>>
+	<</if>>
+	<<runeventpool>>
+<</widget>>
+
+<<widget "eventforestitem">>
+	<<cleareventpool>>
+	<<addevent "forestgather">>
+	<<addevent "mushroompick" 0.33>>
+	<<addevent "forest_nest" 0.25>>
+	<<if $forest lte 20>>
+		<<addevent "forestarrow" 0.5>>
+	<<elseif $forest lte 50>>
+		<<addevent "forestdagger" 0.5>>
+	<<else>>
+		<<addevent "forestgem" 0.5>>
+		<<if $beedisable is "f">>
+			<<addinlineevent>>
+				你听到前面传来轻微的嗡嗡声，在靠近之后，你看见一个大蜂巢挂在树上。公蜂们正飞进飞出着寻找花粉，蜂蜜是很有价值的商品。
+				<br><br>
+
+				<<if currentSkillValue('tending') gte 800>>
+					<<link [[收割蜂巢 (0:20)|Forest Honey Pick]]>><<pass 20>><</link>><<tendingdifficulty 800 1100>>
+					<br>
+				<<else>>
+					<span class="blue">你需要更高的护理技能才能收获野生蜂巢。</span>
+					<br>
+				<</if>>
+				<<link [[离开|Forest]]>><<set $eventskip to 1>><</link>>
+				<br>
+			<</addinlineevent>>
+		<</if>>
+	<</if>>
+	<<runeventpool>>
+<</widget>>
+
+<<widget "forestwolfspy">>
+	在蕨类植物下方的阴影里，一双眼睛正盯着外面看。
+	<<gstress>><<stress 6>>
+	<br><br>
+
+	<<beastNEWinit 1 wolf>>
+	<!-- Modified for monster people -->
+	<<if ($parasite.left_ear.name is "slime" or $parasite.right_ear.name is "slime") and ($bestialitydisable is "f" or $monster is 1)>>
+		<span class="lewd">你感觉到你脑袋里的史莱姆在命令你四肢着地。</span> 它承诺如果你遵守的话，就给予你奖励，如果你不遵守的话，就要承担相应的后果。
+		<br><br>
+
+		<<if $deviancy gte 55 and $submissive gte 1900>>
+			<<link [[自愿服从|Forest Slime Wolf Submit willingly]]>><<corruption 3>><<pain -8>><<stress -12>><<trauma -24>><<sub 2>><</link>><<deviant4>><<ggcorruption>><<llpain>><<llltrauma>><<llstress>>
+			<br>
+		<</if>>
+		<<link [[服从|Forest Slime Wolf Obey]]>><<corruption 1>><<pain -4>><<stress -6>><<trauma -12>><<sub 1>><</link>><<gcorruption>><<lpain>><<lltrauma>><<lstress>>
+		<br>
+		<<link [[拒绝|Forest Slime Wolf Defy]]>><<corruption -1>><<pain 8>><<stress 6>><<trauma 6>><<def 1>><</link>><<lcorruption>><<ggpain>><<ggtrauma>><<ggstress>>
+		<br>
+
+	<<else>>
+		<<if $deviancy gte 15 and ($bestialitydisable is "f" or $monster is 1)>>
+			<<link [[摆出交配的姿势|Forest Wolf Mate]]>><</link>><<deviant2>>
+			<br>
+		<</if>>
+		<<if $wolfgirl gte 6>>
+			<<link [[嗥叫|Forest Howl]]>><<endevent>><<stress -12>><<trauma -6>><<set $phase to 0>><</link>><<ltrauma>><<lstress>><<wolfgirl>>
+			<br>
+		<</if>>
+		<<link [[继续|Forest]]>><<endevent>><<if $foresthunt gte 1>><<set $foresthunt += 1>><</if>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "forestwolfspy2">>
+	在树木之间的阴影里，两双眼睛正盯着外面看。
+	<<gstress>><<stress 6>>
+	<br><br>
+
+	<<beastNEWinit 2 wolf>>
+	<<if $deviancy gte 35 and ($bestialitydisable is "f" or $monster is 1)>>
+		<<link [[摆出交配的姿势|Forest Wolf Mate2]]>><</link>><<deviant3>>
+		<br>
+	<</if>>
+	<<if $wolfgirl gte 6>>
+		<<link [[嗥叫|Forest Howl]]>><<endevent>><<stress -12>><<trauma -6>><<set $phase to 1>><</link>><<ltrauma>><<lstress>><<wolfgirl>>
+		<br>
+	<</if>>
+	<<link [[继续|Forest]]>><<endevent>><<if $foresthunt gte 1>><<set $foresthunt += 1>><</if>><<set $eventskip to 1>><</link>>
+	<br>
+<</widget>>
+
+<<widget "forestcutter">>
+	<<generate1>><<person1>>
+	你听到前面传来连续的咚咚声，你走进查看，是一个<<person>>正在砍树。
+	<<if $exposed gte 1>>
+		你蹲在了灌木丛的后面，以此来遮掩你的<<nudity>>。
+		<br><br>
+
+		<<if $exposed gte 2>>
+			<<if $exhibitionism gte 75>>
+				<<link [[暴露在那些家伙的视线里|Forest Cutter Exhibitionism]]>><<set $phase to 2>><</link>><<exhibitionist5>>
+				<br>
+			<</if>>
+		<<else>>
+			<<if $exhibitionism gte 35>>
+				<<link [[暴露在那些家伙的视线里|Forest Cutter Exhibitionism]]>><<set $phase to 1>><</link>><<exhibitionist3>>
+				<br>
+			<</if>>
+		<</if>>
+		<<link [[偷偷摸摸的离开|Forest]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<He>>向你挥手致意。
+		<br><br>
+
+		<<link [[接近|Forest Cutter]]>><</link>>
+		<br>
+		<<link [[挥手回应并继续前进|Forest]]>><<stress -12>><<set $eventskip to 1>><<endevent>><</link>><<lstress>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "forestsnake">>
+	你绕过一棵树，与一双眼睛撞了个脸对脸，虽然它离你的脸还有那么几英寸，但你还是因恐惧而力量全失摔倒在地，随后，蛇从树上滑落到地面上来。
+	<<set $trance to 1>>
+	<br><br>
+
+	<<link [[继续|Forest Snake]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</widget>>
+
+<<widget "ForestBullies">>
+	你看到一群同学躲在你前面的小路上，他们看起来不怀好意。
+	<br><br>
+	<<link [[绕过去(0:20)|Forest]]>><<pass 20>><<set $eventskip to 1>><</link>>
+	<br>
+	<<link [[从他们身边走过|Forest Bully Walk]]>><</link>>
+	<br>
+<</widget>>
+
+<<widget "forestboar">>
+	<<beastNEWinit 1 boar>><<person1>>
+	你听到树枝的嘎吱声，然后是树叶的沙沙声，然后是鼻息声。一个<<beasttype>>快速逼近。
+	<br><br>
+
+	<<if $monster is 1>>
+		<<bHe>>闯过一片蕨类植物，而且没有减速。"我的地盘，"<<bhe>>咕哝着，改变了轨道，加速前进。"侵入者!"<<bHe>>向你冲过来!
+	<<else>>
+		<<bHe>>闯过一片蕨类植物，而且没有减速。<<bHe>>改变轨迹并加速，向你冲过来!
+	<</if>>
+	<br><br>
+
+	<<if $bestialitydisable is "f" or $monster is 1>>
+		<<link [[抵挡|Forest Boar Brace]]>><</link>>
+		<br>
+		<<link [[躲闪|Forest Boar Dodge]]>><</link>><<dancedifficulty 1 600>>
+		<br>
+	<<else>>
+		你从怪物的路径上跳下来，躲开它，但落在了荆棘丛生的灌木丛中。这个生物冲进了森林，根本不关心你。<<beastescape>>
+		<br><br>
+
+		<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "forestbear">>
+	你在泥土上看到了新鲜的熊掌印。
+	<br><br>
+
+	<<beastNEWinit 1 bear>>
+	<<if $foresthunt gte 1>>
+		你感觉正在追捕你的东西在靠近你。
+		<br><br>
+	<</if>>
+
+	<<link [[绕道而行 (0:30)|Forest]]>><<endevent>><<pass 30>><<if $foresthunt gte 1>><<set $foresthunt += 2>><</if>><<set $eventskip to 1>><</link>>
+	<br>
+	<!-- Modified for Monster People -->
+	<<if random(1, 5) is 5 and ($bestialitydisable is "f" or $monster is 1)>>
+		<<link [[无视那些家伙|Forest Bear Molestation]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[无视那些家伙|Forest]]>><<endevent>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "forestspider">>
+	当你正走在一个山丘顶部的时候，你的脚下突然发生了塌方。你从斜坡上滚落了下去，这让你的胃剧痛无比。
+	<<if $rng gte 71 and $spiderdisable is "f">>
+		你突然停了下来。你需要花点时间来确定你的位置，因为你感觉自己好像悬在空中。你试着移动却失败了。你扫视着四周，意识到你现在<span class="red"> 被粘在了一张巨大的蛛网上。</span>
+		<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+		<br><br>
+
+		你感觉蛛网上的什么地方正在震动，你感应了一下，貌似是在你上面，你抬头看去，一只有许多眼睛的巨型蜘蛛正在悄悄靠近。
+		<br><br>
+	<<else>>
+		你在下面休息着，并没有受伤，如果过程不是那么吓人的话，那可能会很有趣。
+		<<gstress>>
+		<br><br>
+
+		<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "forestrock">>
+	<<if $worn.feet.type.includes("naked")>>
+		你裸足踩在了一块坚硬的锯齿状石头上。虽然你并没有感到有多疼，但你被它给绊了一跤，狼狈地摔倒在一片蕨类植物之中。
+		<<gstress>><<gpain>><<stress 6>><<pain 6>>
+		<br><br>
+
+		<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		这里的地面被坚硬且参差不齐的石头所覆盖着，很难在草丛中用肉眼去发现它们，幸而你的$worn.feet.cn_name_cap还能支撑住。
+		<br><br>
+
+		<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</widget>>
+
+<<widget "forestwasps">>
+	你听到周围的树木中发出嗡嗡的声音。
+	<<if $analdisable is "f">>
+		你身后的嗡嗡声是最大的，但在你转身查看之前，一个黑影从树冠上窜出，并落在了你的<<bottom>>上。
+	<<else>>
+		两个模糊的影子从树冠上落下并向你飞来。
+	<</if>>
+	<br><br>
+
+	<<if $deviancy gte 55 and $exposed lt 2>>
+		<<link [[脱掉衣服|Forest Wasps Strip]]>><</link>><<deviant4>>
+		<br>
+	<</if>>
+	<<link [[保持一动不动|Forest Wasps]]>><<set $struggle_start to 1>><</link>>
+	<br>
+<</widget>>
+
+<<widget "forestplant_kiss">>
+	<<generatePlant1>><<person1>>
+	"你好啊！"，从旁边突然传来一个声音，一个<<person "normal">>正赤身裸体的站在一丛纠缠在一起的藤蔓旁向你欢快地挥手，你注意到<<He>>的头发上散落着<<plant_details>>。
+	<<arousal 600>><<garousal>>
+	<br><br>
+
+	"像你这样的小可爱通常不会到这么远的森林深处，"<<he>>说道："这么深的地方是很危险的。
+	<<if $liquidoutsidecount gte 25>>
+		我本想问你过得好不好，可是……"<<He>>眼睛向上下流的液体覆盖你的身体。"是啊，你玩得很开心。"
+	<<else>>
+		希望你没有遇到任何麻烦。那太可怕了。"
+	<</if>>
+	<br><br>
+
+	那个<<person "normal">>想了一会儿，然后笑了。"嘿，在你走之前，吻一下怎么样？你知道的，为了好运。"<<He>>闭上<<his>>的眼睛，身体前倾，用手指轻轻点了点自己的嘴唇。
+	<br><br>
+
+	<<if $backgroundTraits.includes("plantlover") and $nectar_timer lte 14>>
+		<span class="pink">你知道<<hes>>一个<<personsimple>>. 你可以闻到<<his>>嘴唇上花蜜般的香气.</span>你心跳加速，几乎无法思考。你需要<<his>>的花蜜。你需要更多甜蜜、令人陶醉的花蜜。
+		<br><br>
+
+		<<link [["亲吻" + $NPCList[0].pronouns.him|Forest Plant Kiss]]>><</link>><<promiscuous1>><<kissvirginitywarning>>
+		<br>
+		<<link [[拒绝|Forest Plant Kiss Refuse]]>><<stress 12>><</link>><<ggstress>>
+	<<else>>
+		<<link [["亲吻" + $NPCList[0].pronouns.him|Forest Plant Kiss]]>><</link>><<promiscuous1>><<kissvirginitywarning>>
+		<br>
+		<<link [[拒绝|Forest Plant Kiss Refuse]]>><</link>>
+	<</if>>
+<</widget>>
+
+<<widget "forestplant_snare">>
+	<<generatePlant1>><<person1>>
+	<<if currentSkillValue('skulduggery') gte random(200,700)>>
+		你<span class="green">留意着视线角落里的东西</span>，然后往下看。一个用藤蔓做成的圈套藏在地下。一条藤蔓穿过地面，通向附近的灌木丛。
+		<br><br>
+
+		<<link [[跨过它|Forest Plant Snare]]>><<set $phase to 0>><</link>>
+		<br>
+		<<link [[故意踩上去|Forest Plant Snare]]>><<set $phase to 1>><<control 10>><</link>><<gcontrol>>
+	<<else>>
+		当<span class="red">一个圈套绑在你的腿上时，你正在穿过森林</span> 。它收紧并将你拉到地上，然后将你的双腿分开。它看起来像是用藤蔓做成的。
+		<br><br>
+
+		一个头上戴着<<plant_details>>的<<person "normal">>拖着<span class="purple">藤蔓</span>从灌木丛中冲了出来。"抓到了！"<<person>>笑了。"我只等了六个小时。我肯定是一个陷阱高手。"<<He>>舔着<<his>>的嘴唇，向你移动，猥亵地扭动着<<his>>的手指。
+		<br><br>
+
+		<<link [[继续|Forest Plant Sex]]>><<set $molestationstart to 1>><<set $leftleg to "bound">><<set $rightleg to "bound">><</link>>
+	<</if>>
+<</widget>>
+
+<<widget "forestdagger">>
+	你踩到了什么坚硬的东西。你在跪下之后将它从森林的碎石中拔了出来。这是一把古老的匕首，磨损到了无法再用的地步。博物馆馆长可能会为此买单。
+	<br><br>
+
+	<<set $antiquemoney += 40>><<museumAntiqueStatus "antiqueforestdagger" "found">>
+	<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</widget>>
+
+<<widget "forestgem">>
+	树桩底部有东西在闪闪发光。你把它拿走，这一刻不知道为什么你突然感觉很平静。
+	<<lstress>><<stress -3>>
+	<br><br>
+
+	这是一颗半透明的绿色宝石。博物馆馆长可能会为此买单。
+	<br><br>
+
+	<<set $antiquemoney += 100>><<museumAntiqueStatus "antiqueforestgem" "found">>
+	<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</widget>>
+
+<<widget "forestarrow">>
+	你在脚下的树皮中发现了一块腐烂的金属碎片。是一个箭头。博物馆馆长可能会为此买单。
+	<br><br>
+
+	<<set $antiquemoney += 20>><<museumAntiqueStatus "antiqueforestarrow" "found">>
+	<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</widget>>
+
+<<widget "foresthunt">>
+	<<set $foresthunt to 0>>
+	<<if $wraith.hunt>>
+		<<set $wraith.hunt to 0>>
+		<<if $location is "forest">>
+			<<set $wraith.exit to "forest">>
+		<<elseif $location is "lake_ruin">>
+			<<set $wraith.exit to "lake_ruin">>
+		<<else>>
+			<<set $wraith.exit to "lake">>
+		<</if>>
+		<<wraithCaught>>
+	<<elseif $blackwolfhunt is 1>>
+		<!-- Modified for monster people -->
+		<<npc "Black Wolf">>/*<<beastNNPCinit>>*/
+		<<if playerNormalPregnancyType() isnot "wolf" and isPlayerNonparasitePregnancyEnding()>>
+			黑狼向你奔来！<<bHe>>观察了你一会儿，
+			<<if $monster is 1>>
+				然后嚎叫。“这不是人类分娩的好地方，”<<bhe>>说，<<bhis>>的声音中带着恐惧。“来，抓着我的皮毛，我带你去。"
+			<<else>>
+				然后嗥叫。它转过身面对着森林，但<<bhis>>的眼睛一直注视着你。
+			<</if>>
+			<br><br>
+
+			<<link [[继续|Pregnancy Birth Black Wolf Hospital 1]]>><</link>>
+			<br>
+		<<elseif $syndromewolves is 1 and $CaveHumanPregnancyDiscovered is 1>>
+			<<if $wolfpackharmony gte 12>>
+				黑狼向你扑来！你被<<bhis>>扑倒。<<bhe>>跳到你身上，用舌头舔你的脸，然后转身走了几步路。<<bHe>>回头看着你。
+				<br><br>
+				<<if $monster is 1>>
+					"很高兴见到你，”<<bhe>>说。<<bHe>>看着你的肚子，“但是<<ppackbrother>>不能怀着人类幼崽在这里生活，”<<bhe>>失望地说。"我们会想你。"
+				<<else>>
+					<<bHe>>看着你的肚子呜咽着。你不能怀着人类幼崽回到洞穴。
+				<</if>>
+			<<else>>
+				黑狼向你扑来！
+				<<if $monster is 1>>
+					"<<pPackbrother>>还怀着人类幼崽！"<<bhe>>吠叫道：“马上离开！"
+				<<else>>
+					<<bHe>>对你咆哮。你认为<<bhe>>的意思是让你离开领地。
+				<</if>>
+			<</if>>
+			<<link [[继续|Forest]]>><<endevent>><<set $eventskip to 1>><</link>>
+
+		<<elseif $syndromewolves is 1 and $wolfpacktrust gte 24 and ($monster is 1 or $bestialitydisable is "f")>>
+			黑狼向你扑来！你被<<bhis>>扑倒。<<bhe>>跳到你身上，用舌头舔你的脸，然后转身走了几步路。<<bHe>>回头看着你。
+			<<if $monster is 1>>
+				"很高兴见到你，"<<bhe>>说道。"这里不安全。又冷又黑。回家吧。"
+			<</if>>
+			<br><br>
+
+			<<link [[返回狼穴 (0:30)|Wolf Cave Clearing]]>><<endevent>><<pass 30>><</link>>
+			<br>
+			<<link [[继续|Forest]]>><<endevent>><<set $eventskip to 1>><</link>>
+			<br>
+
+		<<elseif $syndromewolves is 1 and ($monster is 1 or $bestialitydisable is "f")>>
+			黑狼向你扑来！
+			<<if $monster is 1>>
+				"逃跑，没有好处，"<<bhe>>说道。
+			<</if>>
+			<br><br>
+
+			<<link [[继续|Forest Wolf Molestation]]>><<set $molestationstart to 1>><</link>>
+		<<elseif $monster is 1 or $bestialitydisable is "f">>
+			你听到附近有沙沙声。一双发光的黄色眼睛正在树上看着你。
+			<<if $monster is 1>>
+				浓密的黑色毛发从头到脚覆盖着的裸体高大身体，伴随着原始的咆哮，<<bhe>>向你扑来！
+			<<else>>
+				一头可怕的黑狼向你扑来！
+			<</if>>
+			<br><br>
+
+			<<link [[继续|Forest Wolf Molestation]]>><<set $molestationstart to 1>><</link>>
+		<<else>>
+			你听到附近有沙沙声。一双发光的黄色眼睛正在树上看着你。一头可怕的黑狼向你扑来！你在恐惧中吓得后退，并设法逃脱。<<beastescape>>
+			<br><br>
+
+			<<link [[继续|Forest]]>><<endevent>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		<<rngWraith 2 "night">>
+		<<if _wraithEvent and (["haunt", "despair"].includes($wraith.state) or $wraith.offspring is "dead") and $syndromeeden is 1>>
+			<<set $wraith.mimic to "Eden">><<npc Eden>><<person1>>有东西呼啸而过，撞到了你面前的一棵树上。你用手臂遮住脸，向后摇晃。有东西压在你的背上，你听到一个<<personsimple>>的声音。"我抓住你了，别反抗."
+			<br><br>
+
+			<<link [[继续|Wraith Mimic Fight]]>><<set $wraith.exit to "forest">><<set $molestationstart to 1>><</link>>
+			<br>
+		<<elseif $edenCagedEscape>>
+			<<npc Eden>><<person1>>
+			当你往森林里四处看时，一只手抓住你的脖子后颈。"我告诉过你我会再找到你的，不是吗？"是伊甸。
+			<br><br>
+
+			<<He>>把你压在一棵树上，愤怒的情绪在<<his>>的眼中一闪而过。
+			<br><br>
+
+			<<link [[战斗|Eden Caged Caught Resist]]>><<set $fightstart to 1>><</link>>
+			<br>
+			<<link [[试着拉开距离|Eden Caged Caught Pull]]>><<def 1>><<npcincr Eden dom -1>><</link>><<physiquedifficulty 2000 18000>><<ldom>>
+			<br>
+			<<link [[顺从 (0:30)|Eden Caged Caught]]>><<set $phase to 1>><<pass 30>><<npcincr Eden dom 1>><</link>><<gdom>>
+			<br>
+		<<elseif $syndromeeden is 1 and (($edenfreedom isnot 2 and $edendays gte 7) or ($edenfreedom gte 2 and $edendays gte 21))>>
+			<<npc Eden>><<person1>>
+			当你往森林里四处看时，一只手抓住你的脖子后颈。 "你他妈的去哪儿了？"一个<<personsimple>>. 是伊甸. "我一直很担心！"
+			<br><br>
+
+			在你说话之前，伊甸开始把你拖走。"我也不想听你的辩解。"<<He>>轻蔑地朝城镇方向瞥了一眼。"不管怎样，我都能知道你在干什么。我们回家后情况不会很好。"
+			<br><br>
+
+			<<link [[战斗|Eden Caged Caught Resist]]>><<set $fightstart to 1>><</link>>
+			<br>
+			<<link [[试着拉开距离|Eden Caged Caught Pull]]>><<def 1>><<npcincr Eden dom -1>><</link>><<physiquedifficulty 2000 18000>><<ldom>>
+			<br>
+			<<link [[顺从 (0:30)|Eden Caged Caught]]>><<set $phase to 1>><<pass 30>><<sub 1>><<npcincr Eden dom 1>><</link>><<gdom>>
+			<br>
+		<<elseif $edenfreedom gte 2 and $edendays gte 8>>
+			<<npc Eden>><<person1>>一只手臂从后面环绕着你的脖子，另一只手压在你的后脑勺上。你听到了一个<<personsimple>>的声音。"我一直在到处找你。"是伊甸。"来吧，我们回家吧。"
+			<br><br>
+
+			<<if $asphyxiaLvl gte 3>>
+				<<link [[反抗|Eden Recaptured Resist]]>><<set $fightstart to 1>><</link>>
+			<<else>>
+				<<link [[反抗|Eden Recaptured Resist Normal]]>><<set $molestationstart to 1>><</link>>
+			<</if>>
+			<br>
+			<<link [[去小屋 (0:30)|Eden Recaptured]]>><<pass 30>><</link>>
+			<br>
+
+		<<elseif $edenfreedom is 1 and $edendays gte 2>>
+			<<npc Eden>><<person1>>一只手臂从后面环绕着你的脖子，另一只手压在你的后脑勺上。你听到了一个<<personsimple>>的声音。"我一直在到处找你。"是伊甸。"来吧，我们回家吧。"
+			<br><br>
+
+			<<link [[反抗|Eden Recaptured Resist]]>><<set $fightstart to 1>><</link>>
+			<br>
+			<<link [[去小屋 (0:30)|Eden Recaptured]]>><<pass 30>><</link>>
+			<br>
+
+		<<elseif $edenfreedom gte 1>>
+			<<rng>>
+			<<if Time.dayState isnot "night">>
+				<<if $rng gte 51>>
+					<<if $feetskill gte 800>>
+						<<npc Eden>><<person1>>
+						你踩在树枝上。当一根绳子开始缠绕在你的腿上时，你几乎措手不及。<span class="green">你跳开了。</span>再过半秒，你就会被吊在树上。
+						<br><br>
+
+						"太近了，"一个声音喊道。是伊甸。"那些陷阱是用来捕动物的。你应该看路。"
+					<<else>>
+						<<npc Eden>><<person1>>
+						你踩在树枝上。你猝不及防，一根绳子缠住了你的右腿，把你吊到空中。它把你翻转过来，让你在附近的一棵树上晃来晃去.<<gstress>><<stress 6>>
+						<br><br>
+
+						你伸手想给自己松绑，却发现有人在看着你。是伊甸。
+						<br><br>
+
+						"那些陷阱是为动物准备的，"<<he>>说道。"你应该看路。"<<He>>把你的体重放在<<his>>的手臂上，同时<<he>>解开你，然后把你轻松地放在地上。
+					<</if>>
+				<<else>>
+					<<npc Eden>><<person1>>
+					你听到树叶沙沙作响。一只鹿从附近的灌木丛中跃起，伊甸紧随其后。当<<his>>发现你时，<<he>>站在原地不动了。
+					<br><br>
+
+					"我差点没看见你，"<<he>>说道。"你应该回小屋去。安全的地方。"
+				<</if>>
+			<<else>>
+				<<if $rng gte 51>>
+					<<npc Eden>><<person1>>
+					一道亮光射进你的眼睛，模糊了你的视线。你把胳膊举到面前。"这里什么都看不见，"一个声音说道。是伊甸。<<He>>把火炬对准你。"你这个时候在外面干什么?"
+				<<else>>
+					<<npc Eden>><<person1>>一只手臂从后面搂住你的脖子，一只手压在你的后脑勺上。你挣扎，行凶者释放了你。"对不起，"一个声音说道。是伊甸。"我只是想看看你怎么样。你为什么看起来很害怕?"
+				<</if>>
+			<</if>>
+			<br><br>
+
+			<<forestCabinReturnLinks>>
+		<<else>>
+			<<npc Eden>><<person1>>一颗子弹呼啸而过，击中了你面前的一棵树。你用胳膊挡住脸，摇摇晃晃地向后走。一个冰冷坚硬的物体压在你的背上，你听到一个<<personsimple>>的声音。"我现在抓住你了。不要抗拒。"
+			<br><br>
+
+			<<link [[继续|Forest Hunter Molestation]]>><<set $molestationstart to 1>><</link>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "eventwolfcave">>
+	<<if $wolfpacktrust gte 12>>
+	<<npc "Black Wolf">>/*<<beastNNPCinit>>*/
+	黑狼向你走来，然后它<<if $monster is 1>>跪了下来，<<else>>转身，<</if>>直到<<bhis>><<if $NPCName[$NPCNameList.indexOf("Black Wolf")].gender is "m">>勃起的阴茎<<else>>湿润的阴部<</if>>离你只有几英寸远。<<bHe>>待在原地。另一个<<wolf_cave_plural>>在旁边看着。
+	<<if $monster is 1>>
+		"接受，成为<<ppackbrother>>。"
+	<</if>>
+	<br><br>
+
+	<<link [[把它拿在手中|Wolf Cave Hand]]>><<set $sexstart to 1>><</link>><<deviant1>>
+	<br>
+	<<link [[拒绝|Wolf Cave Hand Refuse]]>><</link>>
+	<br>
+	<<else>>
+		<<if $rng gte 81>>
+			大部分狼群都去打猎了，只有一对留下来保护你。现在可能是你逃跑的机会。
+			<br><br>
+
+			<<link [[尝试逃跑|Forest Wolf Cave Pair]]>><</link>>
+			<br>
+			<<link [[留在原地 (0:30)|Forest Wolf Cave Hunt]]>><<pass 30>><</link>><<gstockholm>>
+			<br>
+		<<else>>
+			<<beastNEWinit 1 wolf>>
+			其中一个<<beastsplural>>走近你。
+			<br><br>
+			<<link [[继续|Forest Wolf Cave Molestation]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "cabintime">>
+	<<switch Time.hour>>
+		<<case 6>>
+			<<pass 1 hour>><<tiredness -12>>
+		<<case 5>>
+			<<pass 2 hours>><<tiredness -24>>
+		<<case 4>>
+			<<pass 3 hours>><<tiredness -36>>
+		<<case 3>>
+			<<pass 4 hours>><<tiredness -48>>
+		<<case 2>>
+			<<pass 5 hours>><<tiredness -60>>
+		<<case 1>>
+			<<pass 6 hours>><<tiredness -72>>
+		<<case 0>>
+			<<pass 7 hours>><<tiredness -84>>
+		<<case 23>>
+			<<pass 8 hours>><<tiredness -96>>
+	<</switch>>
+<</widget>>
+
+<<widget "passoutforest">>
+	<<if isPlayerNonparasitePregnancyEnding()>>
+		<<pregnancyWatersBrokenPassout "forest">>
+	<<else>>
+		你把自己逼得太紧了。
+		<br><br>
+
+		<<passout>>
+		<<set $danger to random(1, 10000)>>
+		<<if $danger gte (9900 - $allure)>>
+
+			<<if $rng gte 71 and $forest gte 21 and $plantdisable is "f" and $tentacledisable is "f" and ($hallucinations gte 2 or $backgroundTraits.includes("plantlover"))>>
+				<<link [[你眼前一黑…|Forest Plant Passout]]>><</link>>
+			<<else>>
+				<<foresthunt>>
+			<</if>>
+
+		<<else>>
+			<<set $foresthunt to 0>>
+			<<ambulance>>
+		<</if>>
+	<</if>>
+	<<pass 1 hour>>
+	<<trauma 6>><<set $stress -= 2000>>
+<</widget>>
+
+<<widget "forestriver">>
+	你来到一条湍急的河边。
+	<<if $foresthunt gte 1>>
+		你也许可以用它来打断你的踪迹，逃离你的追捕者，但它看起来很危险。
+	<</if>>
+	<br><br>
+
+	<<link [[游过|Forest Swim]]>><<set $foresthunt to 0>><</link>><<swimmingdifficulty 1 600>>
+	<br>
+	<<link [[忽略它|Forest]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</widget>>
+
+<<widget "mushroompick">>
+	<<if $forest lte 50>>
+		<<set _forest_shrooms to 1>>
+	<<else>>
+		<<set _forest_shrooms to 2>>
+	<</if>>
+
+	你发现在一棵<<if _forest_shrooms is 2>>腐烂的<</if>>树的底部生长着一簇可食用的蘑菇。
+	<br><br>
+
+	<<if _forest_shrooms is 2>>
+		<<if currentSkillValue('science') gte 200>>
+			你还记得在学校里，它们被称为<<icon "tending/wolfshroom.png">>狼菇，在古代是战士们的战利品。
+			<br><br>
+		<</if>>
+	<</if>>
+
+	<<if _forest_shrooms is 1>>
+		<<if $scienceshroomheart lt 5>>
+			<<link [[加入科学项目 (0:02)|Forest Science Shroom]]>><<pass 2>><<set $phase to 0>><</link>>
+			<br>
+		<</if>>
+		<<link [[搜索可销售的标本 (0:20)|Forest Mushrooms Pick]]>><<pass 20>><</link>><<tendingdifficulty 1 300>>
+		<br>
+		<<link [[吃一个(0:01)|Forest Mushrooms]]>><<stress 3>><<pass 1>><<tiredness -6>><</link>><<gstress>><<ltiredness>>
+	<<else>>
+		<<if $scienceshroomwolf lt 5>>
+			<<link [[加入科学项目(0:02)|Forest Science Shroom]]>><<pass 2>><<set $phase to 1>><</link>>
+			<br>
+		<</if>>
+		<<if currentSkillValue('tending') gte 300>>
+			<<link [[搜索可销售的标本 (0:20)|Forest Mushrooms2 Pick]]>><<pass 20>><</link>><<tendingdifficulty 300 600>>
+			<br>
+		<<else>>
+			<span class="blue">你需要更高的护理技能来采摘可销售的蘑菇。</span>
+			<br>
+		<</if>>
+		<<link [[吃一个 (0:01)|Forest Mushrooms2]]>><<pass 1>><<alcohol 60>><<arousal 3000>><<trauma -3>><<transform wolf 3>><</link>><<garousal>><<ltrauma>>
+		<br>
+	<</if>>
+	<br>
+	<<link [[最好不要动它们|Forest]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</widget>>
+
+<<widget "forest_nest">>
+	<<if !$forest_nest_intro>>
+		<<set $forest_nest_intro to true>>
+		<<set $forest_nest to {type: 2, fox: 3, eggs: 7}>>
+		<<beastNEWinit 1 fox>>
+		你听到前面的树上有沙沙声。<<if $anxiety gte 1>>你本能地躲在最近的树后面。<<else>>你小心翼翼地走近看一看。<</if>>
+		<br><br>
+
+		你看到一条毛茸茸的橙色尾巴从树冠上的一丛树枝中探出来。一个<<beasttype>>突然抬起头来。有一个鸡蛋在<<bhis>>的嘴里。
+		<br><br>
+
+		<<bHe>>简短地环顾四周，然后大声地咬下鸡蛋。一些蛋黄顺着<<bhis>>的下巴滴下来。<<bHe>>伸手到巢里想要更多，
+		<<if $monster is 1>>
+			抓了一把，然后灵巧地从树上跳下来。<<bHe>>把它们堆在地上。
+		<<else>>
+			在从树上跳下来之前，把一个放进<<bhis>>的嘴里。<<bHe>>开始把它们堆在地上。
+		<</if>>
+		<br><br>
+
+		<i><span class="blue">如果你能像那样突袭一个鸟巢，你可能就能卖掉你找到的任何未受精的<<icon "tending/bird_egg.png">>鸟蛋。</span></i>
+		<br><br>
+
+		<<link [[只是看着(0:05)|Forest Fox Nest Watch]]>><<pass 5>><<stress -3>><</link>><<lstress>>
+		<br>
+		<<if $harpy gte 6>>
+			<<link [[争夺|Forest Fox Nest Challenge]]>><</link>><<harpy>>
+			<br>
+		<<else>>
+			<<link [[争夺|Forest Fox Nest Challenge]]>><</link>><<physiquedifficulty 1 $physiquemax>>
+			<br>
+		<</if>>
+		<<set $skulduggerydifficulty to 300>>
+		<<link [[偷偷溜过去|Forest Fox Nest Sneak]]>><</link>><<skulduggerydifficulty>>
+		<br>
+		<<if $fox gte 6>>
+			<<link [[追赶！|Forest Fox Nest Chase]]>><<set $phase2 to 1>><<stress -6>><<transform fox 1>><</link>><<llstress>><<fox>> | <span class="red">没有蛋</span>
+			<br>
+		<<else>>
+			<<link [[追赶|Forest Fox Nest Chase]]>><<set $phase2 to 1>><<tiredness 6>><</link>><<gtiredness>><<athleticsdifficulty 1 300>> | <span class="red">没有蛋</span>
+			<br>
+		<</if>>
+	<<else>>
+		<<set $forest_nest to {type: 0, fox: 0, bird: 0, eggs: 0}>>
+		<!-- 1 = abandoned nest, 2 = active nest, 3 = fallen nest, 4 = snake nest -->
+		<<rng 4>><<set $forest_nest.type to ($forest lte 50 ? Math.clamp($rng, 1, 3) : Math.clamp($rng, 2, 4))>>
+		<!-- 1 = no fox, 2 = fox, 3 = player aware of fox -->
+		<<if _forestNestUnsafe>>
+			<<set $forest_nest.fox to 2>>
+		<<else>>
+			<<rng 2>><<set $forest_nest.fox to $rng>>
+		<</if>>
+		<<rng>>
+		<<switch $forest_nest.type>>
+			<<case 1>>
+				<<set $forest_nest.eggs to random(1, 3)>>
+				你在附近的一棵树上发现了一个<span class="purple">废弃的</span>鸟巢。
+			<<case 2>>
+				<<set $forest_nest.eggs to ($forest gte 50 ? random(7, 14) : random(5, 10))>>
+				<span class="teal">你在附近的一棵树上发现了一个维护良好的</span>鸟巢。<<if $forest gt 50>>它突出在腐朽的树枝上。<</if>>
+			<<case 3>>
+				<<set $forest_nest.eggs to random(3, 8)>>
+				你看到一大片<<if $forest gt 50>>泥土<<else>>树枝<</if>>和地上的树叶。它看起来像一个<span class="teal">坠落的鸟巢</span>。
+			<<case 4>>
+				<<set $forest_nest.eggs to 0>>
+				你看到一大片<<if $forest gt 50>>泥土<<else>>树枝<</if>>和地上的树叶。它看起来像一个<span class="teal">坠落的鸟巢</span>。
+				<<if currentSkillValue('tending') gte 800>>
+					<<set _snakeKnown to true>>
+					然而，由于你的照料技巧，你发现了附近的痕迹和地面上的洞。你意识到<span class="red">这是一个蛇窝</span>。
+				<</if>>
+		<</switch>>
+		<br>
+		<<if $forest_nest.fox is 2>>
+			<<beastNEWinit 1 fox>>
+			<<if $fox gte 6>>
+				<<set $forest_nest.fox to 3>>
+				<span class="orange">你闻到了附近<<beasttype>>的气味</span>。你可以告诉<<bhes>>
+				<<if $NPCList[0].traits.includes("cowardly")>><span class="teal">懦弱</span>.
+				<<elseif $NPCList[0].traits.includes("territorial")>><span class="red">领土</span>.
+				<<elseif $NPCList[0].traits.includes("clever")>><span class="purple">聪明</span>.
+				<<elseif $NPCList[0].traits.includes("friendly")>><span class="green">友好</span>.
+				<<elseif $NPCList[0].traits.includes("clumsy")>><span class="blue">笨手笨脚</span>.
+				<</if>>
+				<br>
+			<<elseif currentSkillValue('skulduggery') gte $NPCList[0].skills.security>>
+				<<set $forest_nest.fox to 3>>
+				<span class="blue">你听到附近有沙沙声。</span>别的东西也在觊觎着这个巢。
+				<br>
+			<</if>>
+		<</if>>
+		<br>
+
+		<<if $forest_nest.type lte 2>>
+			<<link [[爬到巢上去|Forest Nest Climb]]>><</link>><<athleticsdifficulty 0 800>>
+			<br>
+			<<link [[把巢拆掉|Forest Nest Throw]]>><<set $forest_nest.eggs -= 4>><<set $forest_nest.type to 3>><</link>><<note "蛋减少" "red">>
+			<br>
+		<<elseif $forest_nest.type is 3>>
+			<<link [[搜索巢穴|Forest Nest Search]]>><</link>>
+			<br>
+		<<elseif !_snakeKnown>>
+			<<link [[搜索巢穴|Forest Nest Snake]]>><</link>>
+			<br>
+		<<elseif _snakeKnown and $deviancy gte 55 and $voredisable is "f">>
+			<<link [[把自己当作食物|Forest Nest Snake Vore 1]]>><</link>><<deviant4>>
+			<br>
+		<</if>>
+		<<if $forest_nest.fox is 3>>
+			<<link [[藏起来等待 (0:05)|Forest Nest Hide]]>><<unset $athleticsSuccess>><<set $forest_nest.eggs -= 2>><<pass 5>><</link>><<note "蛋减少" "red">>
+			<br>
+		<</if>>
+	<</if>>
+	<<link [[离开|Forest]]>><<endevent>><<unset $forest_nest>><<set $eventskip to 1>><</link>>
+	<br>
+<</widget>>
+
+<<widget "fox_grudge">>
+	<<loadNPC 0 "fox_grudge">>
+	<<loadNPC 1 "fox_grudge">>
+	<<loadNPC 2 "fox_grudge">>
+	<<clearNPC "fox_grudge">>
+	<<unset $fox_grudge>>
+	一个<<beasttype>>从树间出现。另一个出现在你身后，最后一个更大的出现在你面前。<span class="red">你认识<<bhim>></span>。<<bHes>>就是被你从窝里吓跑的那个。
+	<<if $monster is 1>>
+		"别动，<<foxnickname>>。我们会很享受的。"
+	<</if>>
+	<br><br>
+
+	<<if $monster is 1 or $bestialitydisable is "f">>
+		<<link [[继续|Forest Fox Revenge]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<else>>
+		他们在树林里追你。你一直跑，直到再也听不见他们的声音。你不确定是你跑掉了，还是它厌倦了。
+		<<beastescape>><<gtiredness>><<tiredness 4>><<gathletics>><<athletics 2>><<physique 2>>
+		<br><br>
+
+		<<link [[继续(0:20)|Forest]]>><<endevent>><<pass 20>><<set $eventskip to 1>><</link>>
+	<</if>>
+<</widget>>
+
+<<widget "forestgather">>
+	<<set _forest_item to random(1, 2)>>
+	你来到一片空地。微风吹拂着你的脸，小而柔软的植物压在你的脚下。
+	<<if $forest lte 20>>
+		<<if _forest_item is 1>>
+			百合花生长在草丛中，在较高植物的阴影下。
+		<<else>>
+			成熟的苹果挂在树枝上。
+		<</if>>
+	<<elseif $forest lte 50>>
+		<<if _forest_item is 1>>
+			野生红玫瑰丛点缀着这一地区。
+		<<else>>
+			野梨从树上长出来。
+		<</if>>
+	<<else>>
+		<<if _forest_item is 1>>
+			你可以在古树的底部看到兰花。
+		<<else>>
+			<<if isBloodmoon()>>
+				<span class="red">红脉</span>柠檬生长在一簇小树上。
+			<<else>>
+				柠檬长在一簇小树上。
+			<</if>>
+		<</if>>
+	<</if>>
+	<<lstress>><<stress -2>>
+	<br><br>
+	<<if $worn.upper.exposed gte 2 and $worn.under_upper.exposed gte 1
+	or $worn.upper.exposed gte 2 and $underupperwetstage gte 3
+	or $upperwetstage gte 3 and $worn.under_upper.exposed gte 1
+	or $upperwetstage gte 3 and $underupperwetstage gte 3>>
+		<<link [[用枝叶做上衣 (0:20)|Forest Clearing]]>><<set $phase to 1>><<pass 20>><</link>>
+		<br>
+	<</if>>
+	<<if $worn.lower.exposed gte 2 and $worn.under_lower.exposed gte 1
+	or $worn.lower.exposed gte 2 and $underlowerwetstage gte 3
+	or $lowerwetstage gte 3 and $worn.under_lower.exposed gte 1
+	or $lowerwetstage gte 3 and $underlowerwetstage gte 3>>
+		<<link [[用枝叶做裙子 (0:20)|Forest Clearing]]>><<set $phase to 2>><<pass 20>><</link>>
+		<br>
+	<</if>>
+
+	<<if $forest lte 20>>
+		<<if _forest_item is 1>>
+			<<if !$plants_known.includes("lily")>>
+				<<if $sciencetrait gte 1>>
+					<<icon "tending/lily.png">> <<link [[寻找种子 (0:30)|Forest Lily]]>><<pass 30>><<tending 6>><<set $plants_known.push("lily")>><</link>><<gtending>>
+					<br>
+				<<else>>
+					<span class="blue">更高的科学技能可以让你收获百合种子。</span>
+					<br>
+				<</if>>
+			<</if>>
+			<<if currentSkillValue('tending') gte 100>>
+				<<icon "tending/lily.png">> <<link [[摘取百合 (0:20)|Forest Lily Pick]]>><<pass 20>><</link>><<tendingdifficulty 100 400>>
+				<br>
+			<<else>>
+				<span class="blue">你需要更高的护理技能来挑选可出售的标本。</span>
+				<br>
+			<</if>>
+		<<else>>
+			<<icon "tending/apple.png">> <<link [[摘取苹果 (0:20)|Forest Apple Pick]]>><<pass 20>><</link>><<tendingdifficulty 1 300>>
+			<br>
+		<</if>>
+	<<elseif $forest lte 50>>
+		<<if _forest_item is 1>>
+			<<if !$plants_known.includes("red_rose")>>
+				<<if $sciencetrait gte 2>>
+					<<icon "tending/red_rose.png">> <<link [[寻找种子 (0:30)|Forest Red Rose]]>><<pass 30>><<tending 6>><<set $plants_known.push("red_rose")>><<pain 6>><</link>><<gpain>><<gtending>>
+					<br>
+				<<else>>
+					<span class="blue">更高的科学技能可以让你收获红玫瑰种子。</span>
+					<br>
+				<</if>>
+			<</if>>
+			<<if currentSkillValue('tending') gte 200>>
+				<<icon "tending/red_rose.png">> <<link [[摘取红玫瑰 (0:20)|Forest Red Rose Pick]]>><<pass 20>><</link>><<tendingdifficulty 200 500>>
+				<br>
+			<<else>>
+				<span class="blue">你需要更高的护理技能来挑选可出售的标本。</span>
+				<br>
+			<</if>>
+			<br>
+		<<else>>
+			<<if currentSkillValue('tending') gte 100>>
+				<<icon "tending/pear.png">> <<link [[摘取梨子 (0:20)|Forest Pear Pick]]>><<pass 20>><</link>><<tendingdifficulty 100 400>>
+				<br>
+			<<else>>
+				<span class="blue">你需要更高的护理技能来挑选可出售的标本。</span>
+				<br>
+			<</if>>
+		<</if>>
+	<<else>>
+		<<if _forest_item is 1>>
+			<<if !$plants_known.includes("orchid")>>
+				<<if $sciencetrait gte 3>>
+					<<icon "tending/orchid.png">> <<link [[寻找种子 (0:30)|Forest Orchid]]>><<pass 30>><<tending 6>><<set $plants_known.push("orchid")>><</link>><<gtending>>
+					<br>
+				<<else>>
+					<span class="blue">更高的科学技能可以让你收获兰花种子。</span>
+					<br>
+				<</if>>
+			<</if>>
+			<<if currentSkillValue('tending') gte 300>>
+				<<icon "tending/orchid.png">> <<link [[摘取兰花 (0:20)|Forest Orchid Pick]]>><<pass 20>><</link>><<tendingdifficulty 300 600>>
+				<br>
+			<<else>>
+				<span class="blue">你需要更高的护理技能来挑选可出售的标本。</span>
+				<br>
+			<</if>>
+		<<else>>
+			<<if currentSkillValue('tending') gte 200>>
+				<<if isBloodmoon()>>
+					<<icon "tending/lemon.png">> <<link [[摘取柠檬 (0:20)|Forest Blood Lemon Pick]]>><<pass 20>><</link>><<tendingdifficulty 200 500>>
+					<br>
+				<<else>>
+					<<icon "tending/lemon.png">> <<link [[摘取柠檬 (0:20)|Forest Lemon Pick]]>><<pass 20>><</link>><<tendingdifficulty 200 500>>
+					<br>
+				<</if>>
+			<<else>>
+				<span class="blue">你需要更高的护理技能来挑选可出售的标本。</span>
+				<br>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</widget>>
+
+<<widget "gwylanitem">>
+	<<print either("奖杯","棒球","棒球棍","雪球","8号球","乒乓球拍","国际象棋","存钱罐","杯子","饼干罐","煎锅","后刮器","铅笔盒","午餐盒","熔岩灯","闪光灯","布谷鸟钟","魔方","地球仪","水枪","字典","手掌大小的镜子","有趣的相机","装满贝壳的袋子","微型折叠梯","用途不明的小摆设")>>
+<</widget>>
+
+<<widget "slimePunishmentForest">>
+	你感到一阵剧痛，因为史莱姆在惩罚你的反抗。
+	<<corruption -1>><<pain 8>><<stress 6>><<trauma 6>><<def 1>><<lcorruption>><<ggpain>><<ggtrauma>><<ggstress>>
+<</widget>>
+
+<<widget "forestRescueSetup">>
+	<<set $_eden_available to (isLoveInterest("Eden") and (random(1, 2) is 2 or $eden_rescue isnot 1))>>
+	<<if $_eden_available or $forest lte 20>>
+		<<if $_eden_available and $forest lte 20>>
+			<<set $rescue to 2>>
+		<<else>>
+			<<enable_rescue>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "forestRescueFail">>
+	<<if $gwylan_rescue is 1>>
+		<span class="red">你太深入森林了，格威岚听不到你的声音<<if _args[0] isnot "hunter" and isLoveInterest("Eden")>>，伊甸一定不在这个区域<</if>>。</span>
+	<<else>>
+		<span class="red">你离城镇太远了，不会有人听到你的声音<<if _args[0] isnot "hunter" and isLoveInterest("Eden")>>，而且伊甸不在这一带<</if>>。</span>
+	<</if>>
+<</widget>>
+
+<<widget "gwylanRescueFail">>
+	<!-- Note: This widget was initially designed to expect ONE argument which is ONLY either "wolf" or "hunter"; If you want to use it for other animals, you will need to edit this widget. -->
+	<<set $_gwylan_abort_value to (_args[0] is "wolf" ? 2 : 1)>>
+
+	<<if $forest lte 20 and $gwylan_aborted isnot $_gwylan_abort_value>>
+		<<set $gwylan_aborted to $_gwylan_abort_value>>
+		<<set $rescue to 0>>
+		<<set $_assailant to (_args[0] is "wolf" ? "wolf" : "assailant")>> <!-- If you want to use this widget for other animals, change this -->
+		你看到<<if $forest_shop_intro is 1 or $gwylan_rescue is 1>>格威岚<<else>>灰褐色头发的<<nnpc_gendery "Gwylan">><</if>>被你的喊叫惊动，冲出了树林。
+		<<nnpc_He "Gwylan">>看了一眼<<print $_assailant.replace("wolf","狼").replace("assailant","攻击者")>>，<span class="red">然后转身逃跑。</span>
+		<br><br>
+	<<elseif $forest gt 20>>
+		<<forestRescueFail _args[0]>>
+		<br><br>
+	<</if>>
+<</widget>>
+
+<<widget "gwylanRescueApology">>
+	<<if $gwylan_aborted is 3>>
+		<<nnpc_He "Gwylan">>关切地打量着你。"你感觉还好吗?你脸色有点苍白，那天晚上我好像听到你在尖叫……"
+	<<else>>
+		<<nnpc_He "Gwylan">>没办法和你对视。<<gwylanRescueApologySpeech>>
+	<</if>>
+<</widget>>
+
+<<widget "gwylanRescueApologyShop">>
+	<<if $gwylan_aborted is 3>>
+		<<if _args[0] is "Intro">>
+			<<nnpc_He "Gwylan">>关切地打量着你。
+		<<else>>
+			"嘿，"你走进来时，格威岚说道。<<nnpc_He "Gwylan">>看起来很担心。
+		<</if>>
+		"你感觉还好吗?你脸色有点苍白，那天晚上我好像听到你在尖叫……"
+	<<else>>
+		<<if _args[0] is "Robin">>
+			<<nnpc_He "Gwylan">>带着歉意的微笑转向你。<<gwylanRescueApologySpeech "btw">>
+		<<elseif _args[0] is "Intro">>
+			<<nnpc_He "Gwylan">>摩擦<<nnpc_his "Gwylan">>的后颈。<<gwylanRescueApologySpeech "btw">>
+		<<else>>
+			"嘿，"你走进来时，格威岚说道。<<gwylanRescueApologySpeech>>
+		<</if>>
+	<</if>>
+
+	<<if _args[0] is "Robin">>
+		罗宾眨了眨眼睛，但没有质疑。
+	<</if>>
+<</widget>>
+
+<<widget "gwylanRescueApologySpeech">>
+	<<if _args[0] is "btw">>
+		"顺便说一句，很抱歉之前没有救你，但我不想惹怒
+	<<else>>
+		"抱歉之前没能救你，但我不想惹怒
+	<</if>>
+	<<if $gwylan_aborted is 1 and $gwylan_eden_coop gte 1>>
+		伊甸。<<nnpc_He "Eden">>仍然让我害怕。
+	<<elseif $gwylan_aborted is 1>>
+		<<nnpc_title "Eden">>。<<nnpc_Hes "Eden">>是这个森林里最恐怖的存在。"
+	<<elseif $gwylan_aborted is 2>>
+		头狼。我可不想让整个狼群把我的门撞开。"
+	<</if>>
+<</widget>>
+
+<<widget "gwylanForestRescue">>
+	<<set _gwylanKnown to ($forest_shop_intro is 1 or $gwylan_rescue is 1)>>
+
+	<<switch _args[0]>>
+		<<case "beast">><<beasttype>>咆哮着，却被一个飞来的?gwylanItem击中了脸。<<bHe>>大叫着，惊恐地环顾四周。<<if $monster is 1>>“来自人类的攻击！人类在哪里？！"<</if>>
+		<<case "river">><<beasttype>>发出嘶嘶声，但被飞行的?gwylanItem击中脸部。<<bHe>>环顾四周，惊慌失措。
+		<<case "man">>那个<<person1>><<person>>正责备你，突然一个?gwylanItem飞到<<him>>的脸上打断了<<him>>的话。<<person2>><<person>>看过去，结果一个?gwylanItem也飞到了<<his>>的脸上。
+	<</switch>>
+	<br><br>
+
+	"嘿!"<<if _gwylanKnown>>格威岚<<else>>一个<<nnpc_gendery "Gwylan">><</if>>从树林那边大喊。
+	<<set $_theboy to (_gwylanKnown ? "格威岚" : "" + _text_output)>> <!-- This _text_output comes from the nnpc_gendery call one line above. Do not move this line without accounting for that. -->
+	<<switch _args[0]>>
+		<<case "beast">> "咻!"<<nnpc_He "Gwylan">>抛出一个?gwylanItem，击中侧面的<<beasttype>>。<<bHe>>匆匆走开，<<bhis>>的尾巴夹在<<bhis>>的两腿之间。
+		<<case "river">> "咻!"<<nnpc_He "Gwylan">>抛出一个?gwylanItem，击中侧面的<<beasttype>>。<<bHe>>跳入翻腾的水中。
+		<<case "man">> "离<<phim>>远点。我还有更多。"好像是为了证明，<<nnpc_he "Gwylan">>又抛出了一个?gwylanItem，再次击中了<<person1>><<person>>的脸。两人互相看了一眼，然后转身跑开了。
+	<</switch>>
+	<br><br>
+
+	<<set $pronoun to $NPCName[$NPCNameList.indexOf("Gwylan")].pronoun>>
+	<<switch _args[0]>>
+		<<case "beast">>"我发誓他们一天比一天更有攻击性，"$_theboy嘟囔道。
+		<<case "river">>"河流越来越危险了，"$_theboy喃喃自语。
+		<<case "man">>"我希望他们不是顾客，"$_theboy喃喃自语。"算了，反正我也不要他们的钱."
+	<</switch>>
+	<<He>>踏出树林，朝你走过来。"你还好吗？还好我当时在那里。"
+	<<if _args[0] is "river">><<He>>抓住你的手臂把你从水里拉出来。<</if>>
+
+	<<if !_gwylanKnown>>
+		<br><br>
+
+		<<He>>看起来和你差不多大，有着灰褐色的头发和雀斑。"我比我看起来老多了，"<<he>>说，好像读懂了你的心思。"我叫格威岚。很高兴见到你。"
+		<br><br>
+
+		"我在森林的边缘有一家商店，"<<he>>说道。"你不会错过的。我卖——"<<he>>停顿了一下。"我的祖<<print ($pronoun is "m" ? "父" : "母")>>卖——"又停顿了一下。"我在那儿卖小摆设。你在普通商店里找不到的东西。连我都不知道我有什么存货!"<<He>>听起来很骄傲。
+	<<elseif $gwylan_aborted gte 1>>
+		<<gwylanRescueApology>>
+	<</if>>
+	<br><br>
+
+	<<if $gwylan_eden_coop gte 1 and $gwylan_aborted is 0>>
+		<<He>>环顾四周，好像在等待什么。"奇怪，"<<he>>自言自语。"我以为<<nnpc_title "Eden">>会在这里。一定很忙吧。"
+		<br><br>
+	<</if>>
+
+	<<if $gwylan_rescue isnot 1>>
+		<<set $gwylan_rescue to 1>>
+		<<He>>准备走开，突然又转过身来。"顺便说一下，"<<he>>说道。"我之所以能救你，是因为你离我的店很近。<span class="gold">如果你走超过了湖头，我就听不到你了。</span>请记住这点。"
+		<br><br>
+	<</if>>
+
+	<<He>>收拾好<<his>>的物品，然后朝<<his>>商店的方向走去。
+	<br><br>
+
+	<<clotheson>><<set $gwylan_aborted to 0>>
+	<<endcombat>>
+
+	<<if _args[1] is "slime">>
+		<<slimePunishmentForest>>
+		<br><br>
+	<</if>>
+
+	<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+<</widget>>
+
+<<widget "forestCabinReturnLinks">>
+	<<link [[回小屋去 (0:30)|Forest Cabin Return]]>><<pass 30>><<endevent>><</link>>
+	<br>
+	<<link [[告别|Forest]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<</widget>>
+
+<!-- Argument one is minimum -->
+<<widget "tending_bird_eggs">>
+	<<if _args[0] gt 0>>
+		<<set $_min to _args[0]>>
+		<<if _args[1]>>
+			<<set $_max to _args[0]>>
+		<<else>>
+			<<if $forest_nest and $forest_nest.type>>
+				<<switch $forest_nest.type>>
+					<<case 1>><<set $_max to (_args[0] + 2)>>
+					<<case 2>><<set $_max to (_args[0] + 7)>>
+					<<case 3>><<set $_max to (_args[0] + 4)>>
+				<</switch>>
+			<<else>>
+				<<set $_max to (_args[0] + 4)>>
+			<</if>>
+		<</if>>
+		<span class="green"><<tending_pick bird_egg $_min $_max>></span>
+	<<else>>
+		<span class="red">没有完整的鸡蛋了。</span>
+	<</if>>
+<</widget>>

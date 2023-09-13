@@ -1,0 +1,1523 @@
+:: Passout park
+你将自己逼的太紧了。
+<br><br>
+<<passout>>
+<<set $bus to "park">>
+<<set $dangerpark to 0>>
+<<set $safepark to 0>>
+<<set $danger to random(1, 10000)>>
+
+<<if $danger gte (9900 - $allure)>>
+	<<set $dangerpark to random(1, 100)>>
+<<elseif $danger lt (9900 - $allure)>>
+	<<set $safepark to random(1, 100)>>
+<</if>>
+
+<<if $dangerpark gte 81>>
+	<<link [[醒来|Abduction]]>><<set $molestationstart to 1>><</link>>
+<<elseif $dangerpark gte 1>>
+	<<link [[醒来|Dog Park]]>><<set $molestationstart to 1>><</link>>
+	<!--
+		<<link [[醒来|Abduction]]>><<set $molestationstart to 1>><</link>>
+	-->
+<</if>>
+
+<<if $safepark gte 1>><<ambulance>><</if>>
+
+<<pass 1 hour>>
+
+<<trauma 6>><<set $stress -= 2000>>
+
+:: Dog Park
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastNEWinit 1 dog>>
+	<<beastCombatInit>>
+	当你醒来时，你发现自己正被一个奇怪的<<beasttype>>试着拖进灌木丛的后面。
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate 1>>
+<<beast $enemyno>>
+<br><br>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if $alarm is 1 and $rescue is 0>>
+	<<set $alarm to 0>>
+	<br><br>
+	<<if $enemyarousal gte $enemyarousalmax>>
+		<span id="next"><<link [[继续->Dog Park Ejaculation]]>><</link>></span><<nexttext>>
+	<<elseif $enemyhealth lte 0>>
+		<span id="next"><<link [[继续->Dog Park Escape]]>><</link>></span><<nexttext>>
+	<<else>>
+		<span id="next"><<link [[继续->Dog Park]]>><</link>></span><<nexttext>>
+	<</if>>
+
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<span id="next"><<link [[继续->Dog Park Ejaculation]]>><</link>></span><<nexttext>>
+<<elseif $enemyhealth lte 0>>
+	<span id="next"><<link [[继续->Dog Park Escape]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续->Dog Park]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Park Woman
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<strangewoman1init>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate 1>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if $alarm is 1 and $rescue is 0>>
+	<<set $alarm to 0>>
+	<br><br>
+	<<if $enemyarousal gte $enemyarousalmax>>
+		<span id="next"><<link [[继续->Park Woman Ejaculation]]>><</link>></span><<nexttext>>
+	<<elseif $enemyhealth lte 0>>
+		<span id="next"><<link [[继续->Park Woman Escape]]>><</link>></span><<nexttext>>
+	<<else>>
+		<span id="next"><<link [[继续->Park Woman]]>><</link>></span><<nexttext>>
+	<</if>>
+
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<span id="next"><<link [[继续->Park Woman Ejaculation]]>><</link>></span><<nexttext>>
+<<elseif $enemyhealth lte 0>>
+	<span id="next"><<link [[继续->Park Woman Escape]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续->Park Woman]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Park Woman Ejaculation
+<<effects>>
+
+<<He>>紧绷起来并把<<his>>的嘴抵在你的脖子上，以抑制<<his>>高潮的声音。
+<br><br>
+
+<<ejaculation>>
+
+<<if $enemyanger gte ($enemyangermax / 5) * 3>>
+	<<He>>狠狠咬了你一口，接着一言不发地离开了。<<violence 3>>
+	<br><br>
+<<elseif $enemyanger gte 1>>
+	没有说一句话，<<he>>就站起来，留你躺在草地上。
+	<br><br>
+<<else>>
+	<<he>>微笑着亲吻你的脸颊。"这是给你的。"<<He>>让你躺在草地上。
+	<br>
+	你获得了<<moneyGain 5>>。
+	<br><br>
+<</if>>
+
+<<tearful>>你挣扎着站起来。你知道你还没有脱离危险。
+<br><br>
+
+<<clotheson>>
+
+<<endcombat>>
+
+<<parkeventend>>
+
+:: Park Woman Escape
+<<effects>>
+
+<<He>>吃痛退开，给了你可乘之机。<<tearful>>你顾不上可能被视奸，跑了起来，最终瘫倒在一片花丛中。你安全了。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<parkeventend>>
+
+:: Dog Park Ejaculation
+<<beastejaculation>>
+
+<<if $enemyanger gte ($enemyangermax / 5) * 3>>
+	<<bHe>>在你大腿上咬了一口，留你躺在草地上。
+	<<violence 3>>
+	<br><br>
+<<elseif $enemyanger gte 1>>
+	<<bHe>>吼了一声，留你躺在草地上。
+	<br><br>
+<<else>>
+	<<bHe>>舔了舔你的<<genitals>>跑远了。
+	<<neutral 5 "genitals">>
+	<br><br>
+<</if>>
+
+<<tearful>>你站了起来。
+<br><br>
+
+<<clotheson>>
+
+<<endcombat>>
+<<set $stress -= 1000>><<set $eventskip to 1>>
+<<destination>>
+
+:: Dog Park Escape
+<<effects>>
+
+<<beasttype>>呜咽着逃入灌木丛。<<tearful>>你振作起来。
+<br><br>
+
+<<clotheson>>
+
+<<endcombat>>
+<<set $stress -= 1000>><<set $eventskip to 1>>
+<<destination>>
+
+:: Men's Toilets
+<<set $outside to 0>><<set $location to "park">><<effects>><<set $bus to "parkmens">>
+
+你在公园的男厕所里。
+<<storeon "parkmens" "check">>
+<<if _store_check is 1>>
+	你的衣服存放在水槽的下面。
+<</if>>
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutpark>>
+<<else>>
+
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $danger gte (9900 - $allure) and $player.gender_appearance is "f" and $eventskip is 0>>
+			<<eventstoilets>>
+		<<else>>
+			<<storeactions "parkmens">>
+			<<if $exhibitionism gte 75 and Time.dayState is "day" and $exposed gte 2 and !$daily.parkStreak>>
+				<span class="lewd">全裸站在洗手间，你有一种想裸奔穿过公园的淫荡冲动。肯定会有很多人看到你。</span>
+				<br><br>
+				<<link [[去裸奔|Park Streak]]>><<set $daily.parkStreak to true>><<pass 1>><<arousal 100>><</link>><<exhibitionist5>><<garousal>>
+				<br>
+			<<elseif $exhibitionism gte 55>>
+				<span class="lewd">一个淫荡的想法冲击着你。</span>你可以脱光衣服，在某个隔间上等待毫无戒心的路人看到你。
+				<<if Time.dayState is "dusk" or Time.dayState is "night">>
+					<br><br>
+					<<link [[脱光了在隔间上等着 (0:20)|Toilets Stall]]>><<pass 20>><</link>><<exhibitionist4>>
+					<br>
+				<<else>>
+					<span class="blue">然而，最好等到夜幕降临。</span>
+					<br><br>
+				<</if>>
+			<</if>>
+			<<link [[照镜子 (0:02)|Simple Mirror]]>><<pass 2>><<set $previousPassage = $passage>><</link>>
+			<br>
+			<<if $exhibitionism gte 35 or $arousal gte 9000>>
+				<<link [[手淫|Men's Toilets Masturbation]]>><<set $masturbationstart to 1>><</link>>
+				<br>
+			<</if>>
+			<<if setup.bodyliquid.combined("face") gte 1 or $skin.left_cheek.pen is "pen" or $skin.right_cheek.pen is "pen" or $skin.forehead.pen is "pen" or $skin.left_cheek.pen is "mud" or $skin.right_cheek.pen is "mud" or $skin.forehead.pen is "mud" or $skin.left_cheek.pen is "lipstick" or $skin.right_cheek.pen is "lipstick" or $skin.forehead.pen is "lipstick">>
+				<<link [[洗脸 (0:05)|Men's Toilets Wash]]>><<pass 5>><</link>>
+				<br>
+			<</if>>
+			<<if setup.bodyliquid.combined("mouth") gte 1>>
+				<<link [[漱口(0:05)|Men's Toilets Rinse]]>><<pass 5>><</link>>
+				<br>
+			<</if>>
+			<<pregnancyTest "Men's Toilets">>
+			<<if _store_check isnot 1>>
+				<<link [[离开|Park]]>><</link>>
+			<<elseif $exposed gte 2 and $exhibitionism gte 35>>
+				<<link [[偷偷溜出去|Park Toilets Sneak]]>><<set $phase to 2>><</link>><<exhibitionist3>>
+			<<elseif $exposed is 1>>
+				<<link [[偷偷溜出去|Park Toilets Sneak]]>><<set $phase to 1>><</link>><<exhibitionist1>>
+			<<elseif $exposed lte 0>>
+				<<link [[离开|Park]]>><</link>>
+			<</if>>
+		<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+<<storecleanup>>
+
+:: Men's Toilets Wash
+<<effects>>
+
+<<if setup.bodyliquid.combined("face") gte 1>>
+	<<if $skin.left_cheek.pen is "pen" or $skin.right_cheek.pen is "pen" or $skin.forehead.pen is "pen">>
+		你在水槽边弯下腰洗掉了脸上的淫液和墨汁。
+	<<elseif $skin.left_cheek.pen is "lipstick" or $skin.right_cheek.pen is "lipstick" or $skin.forehead.pen is "lipstick">>
+		你在水槽边弯下腰洗掉了脸上的淫液和口红印。
+	<<elseif $skin.left_cheek.pen is "mud" or $skin.right_cheek.pen is "mud" or $skin.forehead.pen is "mud">>
+		你在水槽边弯下腰洗去了脸上的淫液和泥巴。
+	<<else>>
+		你在水槽边弯下腰洗掉了脸上的淫液。
+	<</if>>
+<<elseif $skin.left_cheek.pen is "lipstick" or $skin.right_cheek.pen is "lipstick" or $skin.forehead.pen is "lipstick">>
+	你在水槽边弯下腰洗掉了脸上的口红印。
+<<elseif $skin.left_cheek.pen is "mud" or $skin.right_cheek.pen is "mud" or $skin.forehead.pen is "mud">>
+	你在水槽边弯下腰洗掉了脸上的泥巴。
+<<else>>
+	你在水槽边弯下腰洗掉了脸上的墨汁。
+<</if>>
+<<wash_face>>
+<br><br>
+
+<<link [[继续|Men's Toilets]]>><</link>>
+<br>
+
+:: Men's Toilets Rinse
+<<effects>>
+
+你在水槽边弯下腰来漱了漱口。
+<<wash_mouth>>
+<br><br>
+
+<<link [[继续|Men's Toilets]]>><</link>>
+<br>
+
+:: Women's Toilets
+<<set $outside to 0>><<set $location to "park">><<effects>><<set $bus to "parkwomens">>
+
+你在公园的女厕所里。
+
+<<storeon "parkwomens" "check">>
+<<if _store_check is 1>>
+	你的衣服存放在水槽的下面。
+<</if>>
+
+<br><br>
+
+<<if $stress gte $stressmax>>
+	<<passoutpark>>
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $danger gte (9900 - $allure) and $player.gender_appearance is "m" and $eventskip isnot 1>>
+			<<eventstoilets>>
+		<<else>>
+			<<storeactions "parkwomens">>
+			<<if $exhibitionism gte 75 and Time.dayState is "day" and $exposed gte 2 and !$daily.parkStreak>>
+				<span class="lewd">全裸站在洗手间，你有一种想裸奔穿过公园的淫荡冲动。肯定会有很多人看到你。</span>
+				<br><br>
+				<<link [[去裸奔|Park Streak]]>><<set $daily.parkStreak to true>><<pass 1>><<arousal 100>><</link>><<exhibitionist5>><<garousal>>
+				<br>
+			<<elseif $exhibitionism gte 55>>
+				<span class="lewd">一个淫荡的想法冲击着你。</span>你可以脱光衣服，在某个隔间上等待毫无戒心的路人看到你。
+				<<if Time.dayState is "dusk" or Time.dayState is "night">>
+					<br><br>
+					<<link [[脱光了在隔间上等着 (0:20)|Toilets Stall]]>><<pass 20>><</link>><<exhibitionist4>>
+					<br>
+				<<else>>
+					<span class="blue">然而，最好等到夜幕降临。</span>
+					<br><br>
+				<</if>>
+			<</if>>
+
+			<<link [[照镜子 (0:02)|Simple Mirror]]>><<pass 2>><<set $previousPassage = $passage>><</link>>
+			<br>
+			<<if $exhibitionism gte 35 or $arousal gte 9000>>
+				<<link [[自慰|Women's Toilets Masturbation]]>><<set $masturbationstart to 1>><</link>>
+				<br>
+			<</if>>
+			<<if setup.bodyliquid.combined("face") gte 1 or $skin.left_cheek.pen is "pen" or $skin.right_cheek.pen is "pen" or $skin.forehead.pen is "pen" or $skin.left_cheek.pen is "mud" or $skin.right_cheek.pen is "mud" or $skin.forehead.pen is "mud" or $skin.left_cheek.pen is "lipstick" or $skin.right_cheek.pen is "lipstick" or $skin.forehead.pen is "lipstick">>
+				<<link [[洗脸 (0:05)|Women's Toilets Wash]]>><<pass 5>><</link>>
+				<br>
+			<</if>>
+			<<if setup.bodyliquid.combined("mouth") gte 1>>
+				<<link [[漱口(0:05)|Women's Toilets Rinse]]>><<pass 5>><</link>>
+				<br>
+			<</if>>
+			<<pregnancyTest "Women's Toilets">>
+			<<if _store_check isnot 1>>
+				<<link [[离开|Park]]>><</link>>
+			<<elseif $exposed gte 2 and $exhibitionism gte 35>>
+				<<link [[偷偷溜出去|Park Toilets Sneak]]>><<set $phase to 2>><</link>><<exhibitionist3>>
+			<<elseif $exposed is 1>>
+				<<link [[偷偷溜出去|Park Toilets Sneak]]>><<set $phase to 1>><</link>><<exhibitionist1>>
+			<<elseif $exposed lte 0>>
+				<<link [[离开|Park]]>><</link>>
+			<</if>>
+		<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
+<<storecleanup>>
+
+:: Women's Toilets Wash
+<<effects>>
+
+<<if setup.bodyliquid.combined("face") gte 1>>
+	<<if $skin.left_cheek.pen is "pen" or $skin.right_cheek.pen is "pen" or $skin.forehead.pen is "pen">>
+		你在水槽边弯下腰洗掉了脸上的淫液和墨汁。
+	<<elseif $skin.left_cheek.pen is "lipstick" or $skin.right_cheek.pen is "lipstick" or $skin.forehead.pen is "lipstick">>
+		你在水槽边弯下腰洗掉了脸上的淫液和口红印。
+	<<elseif $skin.left_cheek.pen is "mud" or $skin.right_cheek.pen is "mud" or $skin.forehead.pen is "mud">>
+		你在水槽边弯下腰洗去了脸上的淫液和泥巴。
+	<<else>>
+		你在水槽边弯下腰洗掉了脸上的淫液。
+	<</if>>
+<<elseif $skin.left_cheek.pen is "lipstick" or $skin.right_cheek.pen is "lipstick" or $skin.forehead.pen is "lipstick">>
+	你在水槽边弯下腰洗掉了脸上的口红印。
+<<elseif $skin.left_cheek.pen is "mud" or $skin.right_cheek.pen is "mud" or $skin.forehead.pen is "mud">>
+	你在水槽边弯下腰洗掉了脸上的泥巴。
+<<else>>
+	你在水槽边弯下腰洗掉了脸上的墨汁。
+<</if>>
+<<wash_face>>
+<br><br>
+
+<<link [[继续|Women's Toilets]]>><</link>>
+<br>
+
+:: Women's Toilets Rinse
+<<effects>>
+
+你在水槽边弯下腰来漱了漱口。
+<<wash_mouth>>
+<br><br>
+
+<<link [[继续|Women's Toilets]]>><</link>>
+<br>
+
+:: Park Streak
+<<effects>>
+裸身藏于厕所门后面，你悄悄地探头向外面公园看去。
+<<switch $weather>>
+	<<case "clear">>
+		公园里都是来享受美好天气的人。有些在慢跑，有些在野餐、遛狗、买冰淇淋，有些则坐在长椅上。
+		<br>
+		你会被很多人看见。
+		<<fameexhibitionism 15>>
+	<<case "overcast">>
+		尽管天空灰蒙蒙的，但公园还是人头攒动。有些在慢跑，有些在长椅上读书，而有些则只是路过。
+		<br>
+		你会被特别多人看见。
+		<<fameexhibitionism 10>>
+	<<case "rain">>
+		虽然下着倾盆大雨，但公园里依然有人。有几个带着雨伞的人路过，有些在遛狗，甚至有个人在抽烟。
+		<br>
+		你会被几个人看见。
+		<<fameexhibitionism 5>>
+	<<case "snow">>
+		<<generate1>><<person1>>
+		公园里挤满了享受雪景的人们。你看到有人在打雪仗、堆雪人，有人在遛狗，甚至还有个<<person>>在慢跑。
+		<<endevent>>
+		<br>
+		你会被几个人看见。
+		<<fameexhibitionism 5>>
+<</switch>>
+<<if isInPark("kylar")>>
+	<br>
+	你看见凯拉尔坐在树下，在<<nnpc_his "Kylar">>素描簿上画画。
+<</if>>
+<<if isInPark("whitney")>>
+	<br>
+	你看见惠特尼站在伞下。
+<</if>>
+<<if isInPark("robin")>>
+	<br>
+	你看到了罗宾开的热可可摊子。
+<</if>>
+<br><br>
+<<link [[继续|Park Streak 2]]>><<pass 10>><</link>>
+
+:: Park Streak 2
+<<effects>>
+<<generate1>><<generate2>>
+你深吸了一口气。你一下子从厕所里冲出来并开始拼尽全力地跑。
+<br><br>
+<<switch $weather>>
+	<<case "clear" "overcast">>
+		<<if Time.season is "winter">>
+			这天气冷得快要把你冻僵了。雪在你脚下发出清脆的声音。
+		<<elseif $weather is "clear">>
+			尽管天气比较暖和，但当风吹过你赤裸的身体时，你还是忍不住打了个寒颤。露出的感觉让你起鸡皮疙瘩。
+		<<else>>
+			当你跑起来时，风变得更加猛烈，吹过你最隐私的部位。你感觉凉风吹遍了全身上下的每一处皮肤。
+		<</if>>
+		<br><br>
+		周围很快开始有所反应。你听到惊呼声，叫喊声，笑声和欢呼声混杂在一起。你没有做任何措施来遮挡你的裸体，所以众人可以清楚地看到一切。
+		<br><br>
+		你首先从冰淇淋摊旁边跑过，让排队的每一个人都能好好看到。你停下来做了一个快速的转身，让他们能从每一个角度看清楚你的身体。当你跑开的时候，你听到了喝彩跟厌恶的叫声。
+		<br><br>
+		你冲进厕所，用裸体V字手，给了一个正从厕所里出来的<<person1>><<person>>一个惊喜。
+		<br><br>
+		然后你跑过一片草地。三个正在野餐的人正对着你目瞪口呆，你在跑走前迅速地绕着他们的野餐布跑了一圈。
+		<br><br>
+		越来越多来公园的人都拿起了他们的手机，拍下你裸奔的视频。你在公园里越跑越性奋。在回到厕所前你想跑得越久越好。
+	<<case "rain">>
+		你在雨中奔跑着。你可以感觉到雨水顺着你的皮肤一路往下落，流过你完全暴露在外的性器。你一边跑一边颤抖着。
+		<br><br>
+		公园里几乎没人，不过你还是能找到一些人展示给他们看。你跑过一个撑着伞的<<person1>><<person>>。<<He>>在你跑过的时候一直在看着你。
+		<br><br>
+		你还是能在公园里找到一些惊讶的人。你在跑开前确保了他们都能好好看到。
+		<br><br>
+		你在草地的中央停下了。你伸展开双臂，让雨水流过你的身体。一分钟后，你放下手臂继续奔跑。你看见一个打着伞的<<person2>><<person>>正拿着手机对着你。当你意识到你刚才被拍到了多少的时候你脸红了。
+	<<default>>
+		<<generate3>>
+		这天气冷得快要把你冻僵了。雪在你脚下发出清脆的声音。
+		<br><br>
+		你很快就听见了欢呼跟叫喊声。你尽可能地靠近人群。积雪让你很难奔跑，所以你移动得很慢。所有人都有更多的时间来欣赏你毫无遮挡的身体。
+		<br><br>
+		一些人在打着雪仗。你躲避着雪球跑过他们中间。一些人欢呼着然后把你当成了下一个目标。大部分雪球都打偏了，不过还是有一团幸运地打在了你赤裸的屁股上。你惊叫了一声跳了起来，排掉你屁股上的雪。人群在你跑开时欢呼雀跃着。
+		<br><br>
+		有个<<person1>><<person>>和<<person2>><<person>>正造着雪人。你在他们身边跑了一圈。<<person1>><<person>>惊讶地把雪人的头打掉了。你停下来，在再次跑开前对他们晃动着你冰冷裸露的屁股。一个在长凳上的<<person3>><<person>>用手机拍摄着你的冬跑。
+<</switch>>
+<<endevent>>
+<<athletics 3>><<tiredness 3>><<physique 3>>
+<br><br>
+
+<<cleareventpool>>
+<<addevent "eventParkStreak1">>
+<<addevent "eventParkStreak2">>
+<<if ($weather is "rain" or $weather is "snow") and isInPark("whitney")>>
+	<<addevent "eventParkStreak3" 2>>
+<</if>>
+<<if isInPark("robin") && Time.season is "winter">>
+	<<addevent "eventParkStreak4" 2>>
+<</if>>
+<<if isInPark("kylar")>>
+	<<addevent "eventParkStreak5" 2>>
+<</if>>
+<<addinlineevent "eventParkStreak6" 4>>
+	你平安地跑回了厕所. 你深呼吸着平息自己的脉搏.<<ltrauma>><<lstress>><<trauma -5>><<stress -5>>
+	<br><br>
+	<<eventParkStreakEnd>>
+<</addinlineevent>>
+<<runeventpool>>
+
+:: Park Streak Police Run
+<<effects>>
+<<if $athleticsSuccess>>
+	你加快步伐，尽可能快地跑着。他们很难甩掉，但你还是设法找到了一丛可以藏住你的灌木。你尽可能保持安静地躲在了里面，直到他们离开。
+	<br><br>
+	当确认没有危险之后，你才走了出来，回到了卫生间。
+	<br><br>
+	<<eventParkStreakEnd>>
+<<else>>
+	你尽可能快地跑着，不过警察还是抓到了你。他们抓住你然后把你的手铐在了背后。
+	<br><br>
+	<<link [[继续|Park Streak Police Catch]]>><<crimeup 100>><<pass 2>><<pain 1>><</link>>
+<</if>>
+
+:: Park Streak Police Catch
+<<effects>>
+<<bind>>
+<<if $phase is 1>>
+	<<set $phase to 0>>
+	你停下来等那两个警察追上。在你说话之前，你的手臂就被他们铐在了背后。
+	<br><br>
+<</if>>
+"你因公开猥亵罪被捕了。"把你领走的警察说道。他们带着你朝警车走去。
+<br><br>
+双手被靠在背后，你完全没办法遮住你暴露的裸体。警察时候故意比他们需要的走得更慢。尽管你刚刚才在公园里裸奔完，但双手被拷在背后，慢慢地全裸游街还是感觉有些不同的。
+<br><br>
+<<switch $weather>>
+	<<case "clear" "overcast">>
+		很多公园游客看见你全裸被捕了，然后都靠过来近距离围观。很多人拿出了他们的手机，把你完全露出的裸体好好拍摄了一番。你脸红了。
+	<<case "rain">>
+		因为天气原因，没几个在公园里的人看见你全裸着被压上警车。
+	<<default>>
+		公园里到处都是享受着雪景的人，他们都穿得比你暖和多了。当警察把你押着穿过公园的时候，你颤抖着让每个人都能好好看到你的裸体。许多人开始拍摄你的游行，把你身体的每一个角落都好好地拍下来。
+<</switch>>
+<br><br>
+<<link [[虚张声势|Park Streak Police Bluff]]>><<pass 2>><</link>><<englishdifficulty 1 1000>>
+<br>
+<<link [[安静地向前走|Park Streak Police Car]]>><<set $phase to 1>><<pass 10>><</link>>
+
+:: Park Streak Police Bluff
+<<effects>>
+"等等!" 你说, "我的衣服被偷了. 一群暴徒扑向我偷走了我的衣服! 我只是想回家."
+<br><br>
+你让你的声音微微颤抖并做出让人怜惜的表情.
+<<if $englishSuccess>>
+	那两位警官看起来很买账. 他们走到警车前给你解开手铐并从车里拿出一条毛巾.
+	<br><br>
+	"幸好我们有这个," 其中一个人说. "我们以前就有过这些暴徒扑人的报告. 注意安全早点回家."
+	<br><br>
+	"我会的!" 你说, 出一副非常感激的表情. "谢谢你! 非常感谢你!"
+	<br><br>
+	这两个警察上车后开车离开. 你逃过一劫, 为没有被逮捕而高兴.
+	<br><br>
+	你平安地跑回了厕所. 你深呼吸着平息自己的脉搏.
+	<<ltrauma>><<lstress>><<trauma -3>><<stress -3>>
+	<br><br>
+	<<unbind>>
+	<<if $player.gender_appearance is "f">>
+		<<towelup>>
+	<<else>>
+		<<towelupm>>
+	<</if>>
+	<<eventParkStreakEnd>>
+<<else>>
+	<<crimeup 100>>
+	"不错的尝试," 其中一个警察说, "但我们看到你这变态样就明白了."
+	<br><br>
+	<<link [[继续|Park Streak Police Car]]>><<pass 10>><</link>>
+<</if>>
+
+:: Park Streak Police Car
+<<effects>>
+<<if $phase is 1>>
+	你悄悄地跟着警官回到他们的车上.
+<<else>>
+	他们终于把你带到了他们的车上.
+<</if>>
+<<fameexhibitionism 5>>
+当你看到他们停在商业街时你放下心了。人行道上有很多人在走，他们在做各种事情。当警察把你带到人行道上时你听到了喊声和口哨声。其中一个警察让你站在后门外的人行道上。
+<<gstress>><<stress 3>>
+<br><br>
+"在那里等着。"<<person1>><<he>>说，缺德的笑容在<<his>>的脸上浮现。
+<br><br>
+"你不打算把我放进去? 或者给我任何可以遮盖的东西?"
+<br><br>
+"有什么问题吗?"<<he>>说, "你几分钟前让大家看的时候都没有问题."
+<br><br>
+<<He>>靠在车上看着你而另一个警察则打开驾驶室的门出了他的收音机。警察让以双手被绑在身后的姿势你全裸地站在商业街。人群聚集起来了，许多人驻足或放慢脚步来仔细观察你。你不能做任何事情来掩盖你的完全暴露<<breasts>>，你的下半身也是暴露在空气中，你的屁股也是。你也无法阻止人群肆无忌惮地拍照。无线电里的警官花了一些时间才结束通话，而另一位警官只是看着。
+<br><br>
+终于, 另一位警官在结束了他们的通话后，把你推到警车的后座上.
+<br><br>
+<<link [[继续|Hospital Arrest Sit]]>><<pass 5>><</link>>
+
+:: Park Streak Police Fight
+<<if $fightstart is 1>>
+	你停下来做好准备, 准备与警察搏斗.
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+	<<crimeup 600>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate "<span class='red'>你尖叫出声，但没有人出面帮你对抗警察。</span>">>
+<<man>>
+<<stateman>>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Park Streak Police Fight Finish]]>><</link>></span>
+<<else>>
+	<span id="next"><<link [[继续|Park Streak Police Fight]]>><</link>></span>
+<</if>>
+
+:: Park Streak Police Fight Finish
+<<effects>>
+<<if $enemyhealth lte 0>>
+	你趁警官猝不及防. 把<<him>>推倒在地趁机逃跑.
+	<br><br>
+	你顺利地跑回了厕所. 你深呼吸试图减缓你的脉搏.
+	<br>
+	<<endcombat>>
+	<<eventParkStreakEnd>>
+<<else>>
+	<<if $enemyarousal gte $enemyarousalmax>>
+		<<ejaculation>>
+	<</if>>
+	你无能为力痛苦地扭动着身体. 当警察把你抓起来把你的手铐在背后时你什么也做不了.
+	<<bind>>
+	<<tearful>>你试图找到你平衡. 但他们把你带走了.
+	<br>
+	<<endcombat>>
+	<<link [[继续|Park Streak Police Car]]>><<pass 5>><</link>>
+<</if>>
+
+:: Park Streak Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 0>>
+	<<set $enemyanger += 0>>
+	<<npcidlegenitals>>
+	<<enable_rescue>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Park Streak Rape Finish]]>><</link>></span>
+<<else>>
+	<span id="next"><<link [[继续|Park Streak Rape]]>><</link>></span>
+<</if>>
+
+:: Park Streak Rape Finish
+<<effects>>
+<<if $enemyhealth lte 0>>
+	你让这两个人躺在地上，抓住机会逃跑. 你冲回了厕所, 结束了你的连胜纪录.
+<<elseif $alarm is 1 and $rescue is 1>>
+	在你的尖叫声中他们失去了勇气,把你丢在地上, 一边笑着一边走了. 你花了几分钟整理自己抖去尘土后匆匆返回厕所, 结束了你的连胜纪录.
+<<else>>
+	<<ejaculation>>
+	在你的尖叫声中他们失去了勇气把你丢在地上, 一边笑着一边离开. 你花了几分钟时间重新站起来拍拍身上的尘土后匆匆返回厕所, 结束了你的连胜纪录.
+<</if>>
+<br>
+<<endcombat>>
+<<eventParkStreakEnd>>
+
+:: Park Streak Whitney
+<<effects>>
+<<person1>>
+<<if $phase is 1>>
+	你决定也从惠特尼身边溜走. 你又加快了步伐开始向<<him>>跑去. 过了几秒惠特尼才看到你. 困惑<<his>>的神情在他脸上浮现然后渐渐认出了你.
+	<br><br>
+	<<if $speech_attitude is "meek">>
+		"嗨惠特尼," 你说着试图装作轻松自如.
+	<<elseif $speech_attitude is "bratty">>
+		"喜欢你看到的吗?" 你说着, 试图尽可能地炫耀.
+	<<else>>
+		"怎么了?" 你说, 试图掩饰你的尴尬.
+	<</if>>
+	<br><br>
+	<<if $whitneyromance is 1>>
+		"嘿骚货,"<<he>>回道. "这次又是什么新花样?"<<npcincr Whitney lust 1>><<glust>>
+		<br>
+		"没什么,只是... 炫耀炫耀."
+		<br>
+		"Hmm."<<He>>将<<his>>的手放在<<his>>的下巴上, 然后慢慢地看你, 试图看穿. "不要动."
+		<br>
+		<<if $bodywritingLvl gte 1 and !$skin.breasts.writing>>
+			<<add_bodywriting "breasts" "property_of_whitney" "marker">>
+			<<npcincr Whitney dom 5>><<ggdom>>
+			伸手到<<his>>的包里，<<he>>掏出一个记号笔迅速写下<i><span class="sub">惠特尼的财产</span></i>在你的暴露的胸部上。
+			<br>
+			"现在. 好多了. 我不希望任何人有任何白痴的想法."
+			<br>
+		<</if>>
+		<br>
+		<<He>>将你拉近，快速地吻了一下，接着让你转过身，扇了你光溜溜的屁股一巴掌。"好了，快走吧，我现在没心情干人。"<<arousal 100>><<garousal>>
+		<br><br>
+		你跳起来继续在公园里奔跑.
+	<<else>>
+		惠特尼看着远方并没有理会你, 对你的展示不感兴趣.
+		<br><br>
+		你在原地慢跑了一会儿，但你并没有引起<<his>>的兴趣。
+		<br><br>
+		但是, 他仍然没有看你,<<he>>吐出一团烟雾. "滚开, 骚货, 你让我很烦."
+		<<npcincr Whitney dom 1>><<gdom>>
+		<br><br>
+		你继续在公园里跑步.
+	<</if>>
+<<else>>
+	你决定避开<<him>>向相反的方向走去.
+<</if>>
+<br><br>
+你平安地跑回了厕所. 你深呼吸着平息自己的脉搏.<<ltrauma>><<lstress>><<trauma -3>><<stress -3>>
+<br><br>
+<<eventParkStreakEnd>>
+
+:: Park Streak Robin
+<<effects>>
+<<if $phase is 1>>
+	<<generate2>>
+	你跑到热可可摊子前。罗宾的顾客注意到了你。<<person2>><<person>>看到你的裸体后惊讶扔掉了<<his>>手中的杯子。随后罗宾也注意到了你，瞬间<<person1>><<his>>的脸变得通红。
+	<br><br>
+	<<if $robinromance is 1>>
+		当你跑到摊位前时罗宾注意到你裸露着身体, .随后你绕着热可可摊子转了一圈.罗宾的顾客们看着你的裸跑并拍下了你的镜头.
+		<br><br>
+		你在摊位前停下.
+		<br><br>
+		"你在做什么?" 罗宾关切地问道. "你为什么在这里还这样? 你不冷吗?来拿着, 我给你拿点热巧克力." 罗宾递给你一个还带着温度的杯子.
+		<br>你喝了一小口，马上感到一股暖意传遍全身，驱散了寒冷。
+		<br><br>
+		<<if $fame.exhibitionism gte 600>>
+			"我听说你喜欢裸奔, 但我以为那只是夸大其词."''''
+		<<else>>
+			"我不知道这是你喜欢做的事情."
+		<</if>>
+		<br><br>
+		罗宾听起来不像是<<hes>>在反对你.<<He>>仍然在盯着你的裸体. 你可以在<<his>>的脸上看到一些欲望. 你转过身来看到那些顾客还在那里. 他们一直在看着你, 并且看到了一切. 而且还有更多的逛公园的人想过来看清楚. 你把杯子举起来.
+		<<npcincr Robin love 1>><<glove>>
+		<br><br>
+		"来喝点热巧克力，你可以尽情地看啦!" 你叫卖道, "即使不穿衣服它也能让我浑身发热!"
+		<br><br>
+		接下来的几分钟罗宾因为被你吸引来的新客人而匆忙. 他们都在排队等候而你则摆pose让客人拍出许多照片. 你感觉很冷, 但有热巧克力在帮你驱寒. 当你赤身裸体地站在一小群人面前时你的心跳加快了.
+		<br><br>
+		最后, 在每个人都买了一杯之后,你一饮而尽最后一口热巧克力后跑开了.
+		<<fameexhibitionism 5>>
+		<<set $robinmoney += 20>>
+	<<else>>
+		<<person1>>
+		你绕着摊位跑一圈。罗宾垂眸，尽力避免看到你的裸体。<<His>>的顾客则直勾勾的看着你并用他们的手机记录你的跑步。你在罗宾旁边停下来转向<<his>>的顾客。
+		<br><br>
+		"快从罗宾那里买热巧克力吧," 你叫卖道, 你在人群没有试图隐藏你裸体的任何部分. "每年冬天, 就在公园里."
+		<br><br>
+		你转身去看罗宾.<<He>>看起来还是很害羞不敢抬头看你.<<He>>似乎不太赞成你的裸体代言.
+		<br><br>
+		你又跑到公园里去.
+		<<set $robinmoney += 5>>
+	<</if>>
+	<<npcincr Robin dom 1>><<gdom>>
+<<else>>
+	你决定不在他们身边裸奔转身朝相反的方向跑开.
+<</if>>
+<br><br>
+你平安地跑回了厕所。你深呼吸着平息自己的脉搏。<<ltrauma>><<lstress>><<trauma -5>><<stress -5>>
+<br><br>
+<<eventParkStreakEnd>>
+
+:: Park Streak Kylar
+<<effects>><<person1>>
+<<set _kylar to statusCheck("Kylar")>>
+<<if $phase is 1>>
+	<<if _kylar.love gte 50>>
+		<<npcincr Kylar lust 1>>
+		当你跑起来时凯拉尔注意到了你。过了几秒钟<<him>>才认出来是你，并看清你在做什么， 一丝惊慌和关切的表情在<<his>>的脸上闪过，<<He>>猛地站了起来，向你飞奔而来。
+		<br><br>
+		"发生了什么事? 是谁逼迫你做这个的?"<<he>>尖叫起来. 在你反应过来之前凯拉尔抓住了你的胳膊拉着你跑.<<He>>把你带到一些树木和灌木丛后面把你藏了起来.
+		<br><br>
+		"你为什么这样就出来?" 凯拉尔脸红得厉害. 你试图尽可能地解释,但<<he>>打断了你.
+		<br>
+		"你不能这样做! 你不能就这样给大家看你的身体, 你的身体只能给我看!"<<glust "凯拉尔">>
+		<br><br>
+		你还没来得及阻止<<him>>，凯拉尔就已经开始脱下<<his>>的衣服。<<He>>脱掉了身上的衬衫和短裤，现在<<if $kylarSeen.includes("commando")>>完全赤裸着身体<<else>>仅剩下<<his>>的贴身衣物<</if>>。<<Hes>>将脱下的衣服塞进你的怀里，一副快哭出来的模样，"快穿上，你需要保护自己！"
+		<br><br>
+		<<link [[穿好|Park Streak Kylar 2]]>><<pass 2>><<set $phase to 1>><</link>>
+		<br>
+		<<link [[拒绝穿上|Park Streak Kylar 2]]>><<pass 2>><<set $phase to 2>><</link>>
+	<<else>>
+		凯拉尔转过<<his>>的头抬头看着你. 过了几秒钟<<he>>才认出你来并看清你在做什么. 一丝惊慌和关切的表情在<<his>>的脸上闪过.
+		<br><br>
+		在你还没有到达<<him>>之前,<<he>>抓起<<his>>的素描本, 猛地站起身来, 从你身边跑开. 你看着<<him>>沿着小路向公园的出口跑去, 快一会儿就不见了踪影.<<npcincr Kylar lust 5>><<gglust "凯拉尔">>
+		<br><br>
+		你平安地跑回了厕所。你深呼吸着平息自己的脉搏。<<ltrauma>><<lstress>><<trauma -5>><<stress -5>>
+		<br><br>
+		<<eventParkStreakEnd>>
+	<</if>>
+<<else>>
+	你转身向相反的方向跑去, 在凯拉尔看到你之前离开.
+	<br><br>
+	你平安地跑回了厕所。你深呼吸着平息自己的脉搏。<<ltrauma>><<lstress>><<trauma -5>><<stress -5>>
+	<br><br>
+	<<eventParkStreakEnd>>
+<</if>>
+
+:: Park Streak Kylar 2
+<<effects>>
+<<person1>>
+<<if $phase is 0>>
+	<!-- this manual code is ugly as sin, but it'll do until a proper function for giving the PC an NPC's clothes is made -->
+	<<switch $NPCList[0].clothes.upper.name>>
+		<<case "school shirt">><<upperwear 5>>
+		<<case "t-shirt">><<upperwear 4>>
+		<<case "sundress top">><<upperwear 1>>
+		<<case "hoodie">><<upperwear 77>>
+	<</switch>>
+	<<switch $NPCList[0].clothes.lower.name>>
+		<<case "school shorts">><<lowerwear 6>>
+		<<case "school skirt">><<lowerwear 7>>
+		<<case "shorts">><<lowerwear 5>>
+		<<case "sweatpants">><<lowerwear 67>>
+	<</switch>>
+	你决定按<<he>>说的做. 缓慢地, 尽量不做大动作尽力避免刺激, 你穿上凯拉尔给你的衣服.
+	<br><br>
+	当你穿好衣服，凯拉尔的神态马上就变了。<<He>>擦了擦眼角的泪水，扔下了刀，然后把你拉进了怀抱里.
+	<br><br>
+	"你是我的，记住," 他边说边紧紧地抱着你, "你不能让任何人看到你这样. 你的全部的是我的."
+	<<npcincr Kylar love 5>><<gglove>>
+	<br><br>
+	随着最后一挤，<<he>>和你分开后跑着离开了。你看着他离开公园<<if $kylarSeen.includes("commando")>>全裸<<else>>只穿着<<his>>的内裤<</if>>。
+	<br><br>
+	<<eventParkStreakEnd>>
+<<elseif $phase is 1>>
+	<<switch $NPCList[0].clothes.upper.name>>
+		<<case "school shirt">><<upperwear 5>>
+		<<case "t-shirt">><<upperwear 4>>
+		<<case "sundress top">><<upperwear 1>>
+		<<case "hoodie">><<upperwear 77>>
+	<</switch>>
+	<<switch $NPCList[0].clothes.lower.name>>
+		<<case "school shorts">><<lowerwear 6>>
+		<<case "school skirt">><<lowerwear 7>>
+		<<case "shorts">><<lowerwear 5>>
+		<<case "sweatpants">><<lowerwear 67>>
+	<</switch>>
+	你默许了并把衣服穿好，将自己的身体掩盖起来。凯拉尔冷静下来，给了你一个充满侵略性的拥抱。
+	<br>
+	"你需要保护自己,"<<he>>说. "你的一切都属于我,我不允许别人和我一样能看到你的身体."
+	<br>
+	<<he>>接着转身跑开了，你看着<<him>><<if $kylarSeen.includes("commando")>>全身一丝不挂<<else>>只穿着贴身衣物<</if>>离开了公园。
+	<<npcincr Kylar love 5>><<gglove>>
+	<br><br>
+	<<eventParkStreakEnd>>
+<<elseif $phase is 2>>
+	你把衣服推回凯拉尔的怀里。“谢谢，"你说，"但我还没有做完。"
+	<br><br>
+	<<if C.npc.Kylar.rage gte 60>>
+		你的话让凯拉尔僵在原地.<<He>>突然退了一步低着头一动不动地站着.突然之间,<<he>>不知道从哪里掏出一把刀向你扑来, 将你按住.
+		<br><br>
+		"你-你说什么, 我的挚爱?"<<he>>问道。<<His>>的脸上阴晴不定看不出情绪。"我只是想给你最好的，你知道这一点的对吧? 所以我再说一遍。给，我，穿，好。"<<npcincr Kylar rage 3>><<gksuspicion>>
+		<br><br>
+		<<link [[乖乖穿上|Park Streak Kylar 2]]>><<pass 2>><<set $phase to 0>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<link [[反击|Park Streak Kylar Fight]]>><<set $molestationstart to 1>><<stress 3>><</link>><<gstress>>
+		<br>
+		<<if $promiscuity gte 15>>
+			<<link [[色诱|Park Streak Kylar Seduce]]>><</link>><<promiscuous2>>
+		<</if>>
+	<<else>>
+		凯拉尔看起来心烦意乱。在<<he>>继续和你肢体接触之前，你已经从灌木丛中一溜烟跑回了公园。你可以听到凯拉尔在你身后尖叫，但<<he>>并没有追你。
+		<<npcincr Kylar love -1>><<llove>><<npcincr Kylar rage 1>><<gksuspicion>>
+		<br><br>
+		你平安地跑回了厕所. 你深呼吸着平息自己的脉搏.<<ltrauma>><<lstress>><<trauma -5>><<stress -5>>
+		<br><br>
+		<<eventParkStreakEnd>>
+	<</if>>
+<</if>>
+
+:: Park Streak Kylar Fight
+<<run statusCheck("Kylar")>>
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $kylar.raped += 1>>
+	你挥舞着手臂，打掉了凯拉尔手中的刀。在你逃脱之前，<<person1>><<he>>向你扑来。
+	<<set $kylarClothes to $NPCList[0].clothes>>
+	<<npcstrip>>
+<</if>>
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Park Streak Kylar Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Park Streak Kylar Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Park Streak Kylar Fight Finish
+<<effects>>
+<<person1>>
+<<if $enemyhealth lte 0>>
+	凯拉尔躺在地上, 痛苦地呻吟着. 你趁凯拉尔恢复之前跑开.<<npcincr Kylar rage 1>><<gksuspicion>><<npcincr Kylar lust 1>><<npcincr Kylar love -1>><<llove>>
+	<br><br>
+	你平安地跑回了厕所. 你深呼吸着平息自己的脉搏.<<ltrauma>><<lstress>><<trauma -2>><<stress -2>>
+<<else>>
+	<<if $enemyarousal gte $enemyarousalmax>>
+		<<ejaculation>>
+	<</if>>
+	<<switch $kylarClothes.upper.name>>
+		<<case "school shirt">><<upperwear 5>>
+		<<case "t-shirt">><<upperwear 4>>
+		<<case "sundress top">><<upperwear 1>>
+		<<case "hoodie">><<upperwear 77>>
+	<</switch>>
+	<<switch $kylarClothes.lower.name>>
+		<<case "school shorts">><<lowerwear 6>>
+		<<case "school skirt">><<lowerwear 7>>
+		<<case "shorts">><<lowerwear 5>>
+		<<case "sweatpants">><<lowerwear 67>>
+	<</switch>>
+	你在地上痛苦地扭动着身体. 当凯拉尔取回了<<his>>的刀的时候你因为疼痛而无能为力, 抓起衣服, 并把它们扔在你身上.<<He>>在你旁边挥舞着刀胁性着你.
+	<br><br>
+	"把它们穿上, 马上!"<<he>>喊道.
+	<br><br>
+	慢慢地, 小心地, 你站起来穿上凯拉尔给你的衣服.<<He>>静静地看着你, 拿着刀, 直到你完全穿好.
+	<br><br>
+	当你穿好衣服<<he>>就完全平静下来了. 他放下刀子，把你拥入怀抱. 当<<he>>用力的抱紧使你非常痛苦.
+	<br><br>
+	"你是我的, 只属于我的,"<<he>>说, "不要让再我做这样的事情了, 你必须为我保护好自己, 为我保留你的一切."
+	<br><br>
+	最后一挤<<he>>和你分别后跑开了.你看着<<him>>只穿着<<his>>的内裤离开公园.<<glust>><<glove>>
+	<br><br>
+	<<tearful>>你跑回厕所.
+	<<npcincr Kylar lust 1>>
+	<<npcincr Kylar love 1>>
+<</if>>
+<br>
+<<endcombat>>
+<<unset $kylarClothes>>
+<<eventParkStreakEnd>>
+
+:: Park Streak Kylar Seduce
+<<effects>>
+
+<<set $seductiondifficulty to 6000>>
+<<seductioncheck>>
+<br><br>
+<<if $seductionskill lt 1000>>
+	<span class="gold">你对自己的诱惑力更有信心了。</span>
+	<br><br>
+<</if>>
+<<seductionskilluse>>
+<<person1>>
+凯拉尔看起来已经准备好使用这把刀了。你以最有诱惑力的方式展示自己。
+<br><br>
+难道你看不出来吗？"你说，"我这样出来是为了你。我想给你一份礼物。"
+<<promiscuity3>>
+
+<<if $seductionrating gte $seductionrequired>>
+	凯拉尔犹豫了一下. 当<<hes>>看起来犹豫不决时, 你轻轻地握住他拿刀的手把它推开. 你把<<him>>拉向你.
+	<br><br>
+	<<link [[继续|Park Streak Kylar Seduce Sex]]>><<set $sexstart to 1>><</link>>
+<<else>>
+	凯拉尔犹豫了，你朝小刀轻轻伸出手，但<span class="red"><<he>>向后缩了回去</span>。"快穿上，"<<he>>说。"快穿！"<<He>>将你推倒在地。
+	<br><br>
+	<<link [[继续|Park Streak Kylar Seduce Sex]]>><<set $molestationstart to 1>><</link>>
+<</if>>
+
+
+:: Park Streak Kylar Seduce Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 50>>
+	<<set $kylarClothes to $NPCList[0].clothes>>
+	<<npcstrip>>
+<<elseif $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $kylar.raped += 1>>
+	<<set $kylarClothes to $NPCList[0].clothes>>
+	<<npcstrip>>
+<</if>>
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if $enemyhealth lt $enemyhealthmax>>
+	<<set $consensual to 0>>
+	<<set $enemytrust -= 50>>
+	<<violence 1>>
+	<<npcincr Kylar love -1>><<npcincr Kylar rage 1>><<gksuspicion>>
+<</if>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Park Streak Kylar Seduce Sex Finish]]>><</link>></span>
+<<else>>
+	<span id="next"><<link [[继续|Park Streak Kylar Seduce Sex]]>><</link>></span>
+<</if>>
+
+:: Park Streak Kylar Seduce Sex Finish
+<<effects>>
+<<person1>>
+<<if ($enemyarousal gte $enemyarousalmax and $consensual is 1) or $enemyhealth lte 0>>
+	<<if $enemyarousal gte $enemyarousalmax>><<ejaculation>><</if>>
+	你把凯拉尔留在地上发呆. 在<<he>>从高潮中恢复过来之前, 你光着身子跑开了, 地上留下了凯拉尔提供的衣服.
+<<else>>
+	<<if $enemyarousal gte $enemyarousalmax>><<ejaculation>><</if>>
+	<<switch $kylarClothes.upper.name>>
+		<<case "school shirt">><<upperwear 5>>
+		<<case "t-shirt">><<upperwear 4>>
+		<<case "sundress top">><<upperwear 1>>
+		<<case "hoodie">><<upperwear 77>>
+	<</switch>>
+	<<switch $kylarClothes.lower.name>>
+		<<case "school shorts">><<lowerwear 6>>
+		<<case "school skirt">><<lowerwear 7>>
+		<<case "shorts">><<lowerwear 5>>
+		<<case "sweatpants">><<lowerwear 67>>
+	<</switch>>
+	凯拉尔将你钉在地上 当<<he>>完活时. 秒钟后s<<he>>抓起衣服，扔到你身上.
+	<br><br>
+	"把它们穿上, 马上!"<<he>>喊道.
+	<br><br>
+	你把凯拉尔给你的衣服穿上.<<He>>看起来松了一口气，你终于穿好了.
+	<br><br>
+	"你必须要小心l!"<<he>>说. "你不能让任何人看到你这样, 你只能是我的!"
+	<br><br>
+	说完，凯拉尔转身就走. 你看着<<him>>走出公园，只穿着<<his>>的内裤.
+<</if>>
+<br><br>
+你顺利地跑回了厕所. 你深呼吸试图减缓你的脉搏.<<ltrauma>><<lstress>><<trauma -5>><<stress -5>>
+<br>
+<<endcombat>>
+<<unset $kylarClothes>>
+<<eventParkStreakEnd>>
+
+:: Toilets Stall
+<<effects>><<set $danger to random(1, 10000)>><<set $phase to 0>>
+<<if $danger gte (8900 - ($allure / 3))>>
+	<<set $toiletsrape to 1>>
+<</if>>
+<<if $exposed gte 2>>
+	已经暴露了，你进入一个隔间，并保持门敞开着.
+<<else>>
+	<<set _redress to 1>>
+	<<overlowerstrip>><<overupperstrip>><<lowerstrip>><<upperstrip>><<underlowerstrip>><<underupperstrip>><<legsstrip>><<feetstrip>>
+	<<exposure>>
+	你进入隔间，保持门敞开着。你脱掉你的衣服，在地板上打了个包
+<</if>>
+你坐进厕所，等待着。
+<br><br>
+<<if ($bus is "parkmens" and maleChance() is 0) or ($bus is "parkwomens" and maleChance() gte 100)>>
+	过了好一阵子也没人进来，你决定起来。
+	<<if _redress is 1>><<clotheson>><</if>><<unset $toiletsrape>>
+	<br><br>
+	<<if $bus is "parkmens">>
+		<<link [[继续|Men's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Women's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<if $rng gte 65>>
+		<<set $phase2 to 1>>
+		<<fameexhibitionism 10>>
+		<<if $bus is "parkmens">>
+			<<generatem1>><<generatem2>>
+		<<else>>
+			<<generatef1>><<generatef2>>
+		<</if>>
+		你听到脚步声正在接近，随着笑声和打趣声一起。
+	<<else>>
+		<<set $phase2 to 2>>
+		<<fameexhibitionism 5>>
+		<<if $bus is "parkmens">>
+			<<generatem1>>
+		<<else>>
+			<<generatef1>>
+		<</if>>
+		你听到有脚步声在靠近。
+	<</if>>
+	一个<<person1>><<person>>映入眼帘，开始洗<<his>>的手, 直到<<he>>从镜子里看到了你。
+	<<He>>顿了顿，显然惊讶于能在这里看到一个裸体的<<girl>>。
+	<<exhibitionism4>>
+
+	<<if ($bus is "parkmens" and $player.gender_appearance is "f") or ($bus is "parkwomens" and $player.gender_appearance is "m")>>
+		<<if $toiletsrape is 1>>
+			<<unset $toiletsrape>>
+			<<if $player.gender_appearance isnot $player.gender>>
+				<<set $toiletsmistake to 1>>
+			<</if>>
+			"你进错厕所了, 你这个该死的变态."<<He>>走到你面前并抓住了你!
+			<<if $phase2 is 1>>
+				"来帮一起我惩罚这兔崽子,"<<he>>向别人喊道. 另一个<<person2>><<person>>迅速跑过来, 而且<<his>>眼睛变得很下流.
+			<<else>>
+				"我会让你知道你们这些的调皮<<girls>>会遇到什么。"
+			<</if>>
+			<br><br>
+			<<link [[继续|Toilets Molestation]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<<else>>
+			<<set $toiletswrong to 1>>
+			"这，呃......你走错洗手间了。"<<He>>试图转移<<his>>的视线, 但你可以看到<<his>>的眼睛像是粘在你的<<genitals>>上.
+			<<if $phase2 is 1>>
+				"嘿，怎么了......" 一位<<person2>><<person>>走了进来, 并对此做出了类似的反应.
+			<</if>>
+			<br><br>
+			<<link [[挑逗|Toilets Stall 2]]>><<set $phase to 1>><</link>>
+			<br>
+			<<link [[自慰|Toilets Stall 2]]>><<set $phase to 2>><</link>><<exhibitionist4>>
+			<br>
+			<<if $promiscuity gte 35>>
+				<<link [[提供口交|Toilets Stall 2]]>><<set $phase to 3>><</link>><<promiscuous3>>
+				<br>
+			<</if>>
+			<<if $phase2 is 1 and $promiscuity gte 75 and ($NPCList[0].penis isnot "none" and $NPCList[1].penis isnot "none") and ($player.gender isnot "m" or $analdisable is "f")>>
+				<<link [[提供口穴双插|Toilets Stall 2]]>><<set $phase to 4>><</link>><<promiscuous5>>
+				<br>
+			<<elseif $promiscuity gte 75>>
+				<<link [[提供全套服务|Toilets Stall 2]]>><<set $phase to 5>><</link>><<promiscuous5>>
+				<br>
+			<</if>>
+		<</if>>
+	<<else>>
+		"你在做什么?"<<he>>迅速回过神来问道。
+		<<if $phase2 is 1>>
+			"你在和谁说话？"<<person2>><<person>>走近看到你后迅速移开<<his>>的目光。
+		<</if>>
+		<br><br>
+		<<link [[挑逗|Toilets Stall 2]]>><<set $phase to 1>><</link>>
+		<br>
+		<<link [[自慰|Toilets Stall 2]]>><<set $phase to 2>><</link>><<exhibitionist4>>
+		<br>
+		<<if $promiscuity gte 35>>
+			<<link [[提供口交|Toilets Stall 2]]>><<set $phase to 3>><</link>><<promiscuous3>>
+			<br>
+		<</if>>
+		<<if $phase2 is 1 and $promiscuity gte 75 and ($NPCList[0].penis isnot "none" and $NPCList[1].penis isnot "none") and ($player.gender isnot "m" or $analdisable is "f")>>
+			<<link [[提供口穴双插|Toilets Stall 2]]>><<set $phase to 4>><</link>><<promiscuous5>>
+			<br>
+		<<elseif $promiscuity gte 75>>
+			<<link [[提供全套服务|Toilets Stall 2]]>><<set $phase to 5>><</link>><<promiscuous5>>
+			<br>
+		<</if>>
+	<</if>>
+<</if>>
+
+:: Toilets Stall 2
+<<effects>>
+<<switch $phase>>
+	<<case 1>>
+		<<if $toiletswrong is 1>>
+			<<if $speech_attitude is "meek">>
+				"哦, 对...对不起! 我一定是搞错了,"
+			<<elseif $speech_attitude is "bratty">>
+				"哎呀。对不起<<if $phase2 is 1>><<if $bus is "parkmens">>男孩<<else>>女孩<</if>>们<</if>>，我想我走错了。"
+			<<else>>
+				"Oh! 我走错了洗手间, 我真是个傻子,"
+			<</if>>
+		<<else>>
+			<<if $speech_attitude is "meek">>
+				"哦, 对...对不起! 我一定是打瞌睡了,"
+			<<elseif $speech_attitude is "bratty">>
+				"哎呀。对不起<<if $phase2 is 1>><<if $bus is "parkmens">>男孩<<else>>女孩<</if>>们<</if>>，只是想炫耀一下下。"
+			<<else>>
+				"无视我，我只是来享受一些个人时间的,"
+			<</if>>
+		<</if>>
+		你边说边站起来。在你离开隔间时，你故意蹭了蹭那个<<person1>><<person>>。
+		<br><br>
+	<<case 2>>
+		<<if $speech_attitude is "meek">>
+			"拜...拜托你... 我想让你看着我,"
+		<<elseif $speech_attitude is "bratty">>
+			"不要担心。只管享受表演吧,"
+		<<else>>
+			"我只是想要一个观众,"
+		<</if>>
+		你把你的手放在<<genitals>>上，对<<if $phase2 is 1>><<him>><<else>>他们<</if>>说道。
+		<<exhibitionism4>>
+	<<case 3>>
+		你把你的手移到你的嘴边，做出一个非常有暗示性的手势.
+		<<if $speech_attitude is "meek">>
+			"拜托，我需要有人用我的嘴,"
+		<<elseif $speech_attitude is "bratty">>
+			"需要有人让我的嘴闭上一会儿,"
+		<<else>>
+			"我们来找点乐子怎么样?"
+		<</if>>
+		你说着.
+		<<promiscuity3>>
+	<<case 4>>
+		你张开双腿，一手指着你的<<if $player.gender is "m">><<bottom>><<else>><<genitals>><</if>>另一只手指着嘴巴。
+		<<if $speech_attitude is "meek">>
+			"拜托了, 我需要你们俩都来用我,"
+		<<elseif $speech_attitude is "bratty">>
+			"需要两个人让我的嘴闭上一会儿,"
+		<<else>>
+			"我们大家一起玩玩如何?"
+		<</if>>
+		你说着.
+		<<promiscuity5>>
+	<<case 5>>
+		你张开你的腿.
+		<<if $speech_attitude is "meek">>
+			"拜托, 你可以做你任何想对我做的事,"
+		<<elseif $speech_attitude is "bratty">>
+			"需要有人来让我叫出声,"
+		<<else>>
+			"我们来找点乐子怎么样?"
+		<</if>>
+		你说着.
+		<<promiscuity5>>
+	<<default>>
+<</switch>>
+<<saveNPC 0 toilets_1>>
+<<if $phase2 is 1>>
+	<<saveNPC 1 toilets_2>>
+<</if>>
+<<if $toiletsrape is 1>>
+	<<unset $toiletsrape>>
+	<<if $phase is 2>>
+		<<person1>><<He>>微笑着<<if $phase2 is 1>>转向<<person2>><<person>><</if>>说道："对了，好像<<if $phase2 is 1>>我们<<else>>我<</if>>可以随便看看！"<<if $phase2 is 1>>他们扑<<else>><<He>>扑<</if>>向你。
+	<<else>>
+		<<person1>><<He>>突然看起来很生气。"你这个骚货，你认为这很有趣吗？我想<<if $phase2 is 1>>我们<<else>>我<</if>>要给你上一堂课。"<<if $phase2 is 1>>他们扑<<else>><<He>>扑<</if>>向你。
+	<</if>>
+	<br><br>
+	<<link [[继续|Toilets Molestation]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	<<if $phase is 1>>
+		<<flaunting>><<if $phase2 is 1>>他们的眼睛<<else>><<he>>的眼睛<</if>>密切关注你，因为你
+		<<storeon $bus "check">>
+		<<if _store_check is 1>>
+			<<storeon $bus>>
+			取回你的衣服，在<<if $phase2 is 1>>他们<<else>><<him>><</if>>面前慢慢穿好。
+		<<else>>
+			看着镜子里的自己, 对着<<if $phase2 is 1>>其中一个人<<else>><<him>><</if>>眨了眨眼，并
+		<</if>>在你这样做的时候, 你的<<bottom>> 会扭动一下. 他们不会对您有其他举动.
+		<<clotheson>>
+		<<link [[离开|Park]]>><<set $eventskip to 1>><<endevent>><</link>>
+		<br>
+	<<elseif $phase is 2>>
+		<<person1>><<He>>微笑着<<if $phase2 is 1>>转向<<person2>><<person>><</if>>："好吧.....如果你坚持的话。"
+		<br><br>
+		<<link [[继续|Toilets Watched Masturbation]]>><<set $masturbationstart to 1>><</link>>
+		<br>
+	<<else>>
+		<<person1>><<He>>微笑着<<if $phase2 is 1>>转向<<person2>><<person>><</if>>："嘿，<<if $phase2 is 1>>我们<<else>>我<</if>>不会对这样的提议说不。"<<if $phase2 is 1>>他们接近<<else>><<He>>接近<</if>>你。
+		<br><br>
+		<<link [[继续|Toilets Sex]]>><<set $sexstart to 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+<<unset $toiletswrong>>
+<br>
+
+:: Toilets Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>>
+	<<switch $phase>>
+		<<case 3>>
+			<<npcoral>>
+		<<case 4>>
+			<<npc_attempt_sex>>
+			<<set $NPCList[1].penis to "mouthentrance">><<submission 5>><<set $mouthstate to "entrance">><<set $mouthuse to "penis">><<set $mouthtarget to 1>>
+			当<<person2>><<person>>近你的脸时<<his>>将<<person1>><<person>>的阴茎压在你的嘴唇上。
+		<<case 5>>
+			<<npc_attempt_sex>>
+		<<default>>
+	<</switch>>
+<</if>>
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Toilets Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Toilets Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Toilets Sex Finish
+
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<if $enemyanger gte ($enemyangermax / 5) * 3>>
+		<<He>>给了你最后一个耳光，然后<<if $phase2 is 1>>他们离开了<<else>><<he>>离开了<</if>>留你躺在冰冷的地砖上。
+		<<violence 3>>
+		<br><br>
+	<<elseif $enemyanger gte 1>>
+		"谢谢你，骚货,"<<he>>说.<<if $phase2 is 1>>他们起身离开<<else>><<He>>起身离开<</if>>留你躺在冰冷的地砖上.
+		<br><br>
+	<<else>>
+		微笑着，<<person1>><<person>>在你的脸颊上亲了一下。"这是给你的，"<<if $phase2 is 1>><<person2>><<person>>说着<<else>><<he>>说着<</if>>，翻出了<<his>>的钱包。<<if $phase2 is 1>>他们站起来，各自伸出手来拉<<else>><<He>>站起来，伸出手来拉<</if>>你的手，帮助你站起来。
+		<br>
+		你获得了<<moneyGain 10>>。
+		<br><br>
+	<</if>>
+	<<clearNPC toilets_1>>
+	<<if $phase2 is 1>>
+		<<clearNPC toilets_2>>
+	<</if>>
+	<<clotheson>>
+	<<endcombat>>
+	<<if $bus is "parkmens">>
+		<<link [[继续|Men's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Women's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<<elseif $enemyhealth lte 0>>
+	<<He>>摔在洗手池上。给了你机会。<<tearful>>你逃离了现场。
+	<br><br>
+	<<storeon $bus "check">>
+	<<if _store_check is 1>>
+		<<storeon $bus>>
+		你的衣服在你身后被扔了出去.
+	<</if>>
+	<<clearNPC toilets_1>>
+	<<if $phase2 is 1>>
+		<<clearNPC toilets_2>>
+	<</if>>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+<<elseif $finish is 1>>
+	<<if $phase2 is 1>>
+		他们停止抚摸你，让你离开隔间。他们很快就离开了洗手间，彼此的眼神写满了尴尬.
+	<<else>>
+		<<He>>停止抚摸你，让你离开隔间。<<He>>不久后也离开了洗手间。
+	<</if>>
+	<br><br>
+	<<clearNPC toilets_1>>
+	<<if $phase2 is 1>>
+		<<clearNPC toilets_2>>
+	<</if>>
+	<<clotheson>>
+	<<endcombat>>
+	<<if $bus is "parkmens">>
+		<<link [[继续|Men's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[继续|Women's Toilets]]>><<set $eventskip to 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+
+
+:: Toilets Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+
+	<<maninit>><<set $enemyanger += 150>>
+<</if>>
+
+<<effects>>
+<<effectsman>><<man>>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if $alarm is 1>>
+	你的哭声在空荡荡瓷砖上回响，但没有人过来.
+	<br><br>
+<</if>>
+<<if _combatend>>
+	<span id="next"><<link [[继续|Toilets Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Toilets Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Toilets Molestation Finish
+<<effects>>
+
+<<if $enemyhealth lte 0>>
+
+	<<He>>摔在洗手池上。给了你机会。<<tearful>>你逃离了现场。
+
+<<elseif $enemyarousal gte $enemyarousalmax>>
+
+	<<ejaculation>>
+
+	<<if $player.gender is $player.gender_appearance and $toiletsmistake is 1>>
+		"这是你的错，因为你看起来像<<if $player.gender_appearance is "f">>个男孩<<else>>个女孩<</if>>."<<He>>把你推到门外.
+		<br><br>
+	<<else>>
+		"让这成为你的一个教训吧."<<He>>把你推到门外.
+		<br><br>
+	<</if>>
+
+	<<tearful>>你手脚并用挣扎着站起身来.
+
+<</if>>
+
+<br><br>
+<<if $phase2>>
+	<<storeon $bus "check">>
+	<<if _store_check is 1>>
+		<<storeon $bus>>
+		你的衣服在你身后被扔了出去.
+	<</if>>
+	<<clearNPC toilets_1>>
+	<<if $phase2 is 1>>
+		<<clearNPC toilets_2>>
+	<</if>>
+<</if>>
+
+<<clotheson>>
+<<endcombat>>
+<<unset $toiletsmistake>>
+<<parkeventend>>
+
+:: Park Toilets Sneak
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "park">>
+
+你<<nervously>>把头探到外面，周围没有人。你离开了安全的大楼，你的<<lewdness>>展现了出来。
+
+<<if $phase is 1>>
+	<<exhibitionism1>>
+<<elseif $phase is 2>>
+	<<exhibitionism3>>
+<</if>>
+<br><br>
+
+<<link [[继续|Park]]>><</link>>
+<br>
+
+<<set $eventskip to 1>>
+
+:: Park Lizard Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Park Lizard Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Park Lizard Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Park Lizard Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<set _itsgender to $NPCList[0].gender>>
+	<<beastejaculation>>
+
+	<<if _itsgender is "m">><<bHis>>种子存放，<<else>><<bHis>>需求满足，<</if>>那个<<beasttype>>失去对你的兴趣气哼哼地回到下水道。
+	<br><br>
+
+	<<tearful>>你振作起来。
+	<br><br>
+
+	<<endcombat>>
+	<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+<<else>>
+	<<bHe>>发出嘶嘶声，向下水道逃去.
+	<br><br>
+
+	<<tearful>>你振作起来。
+	<br><br>
+
+	<<endcombat>>
+	<<link [[继续|Park]]>><<set $eventskip to 1>><</link>>
+<</if>>

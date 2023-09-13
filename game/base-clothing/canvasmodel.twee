@@ -1,0 +1,113 @@
+:: Widgets Canvas Model [widget]
+<!--
+High-level canvas model widgets.
+
+Example #1:
+<<selectmodel "main">>
+
+/* set model parameters. see model source/docs on required options and filters */
+<<set _modeloptions.showEyes to true>>
+<<modelfilter eyes setup.colours.eyes["hazel"].canvasfilter>>
+
+/* show layers */
+<<showlayer "base" `{alpha:0.5}`>>
+<<showlayer "eyes">>
+
+/* ignite the sin machine */
+<<animatemodel>> /* Will insert <canvas> element here and animate it */
+/* <<rendermodel>> can be used for static (non-animated) model */
+-->
+
+<!--
+Example #2.
+Rerender model with new options.
+
+<<selectmodel "main">>
+	/* set options and filters */
+	<<set _modeloptions.size to 10>>
+<<animatemodel>>
+/* _modelclass is used to keep model; preserve it somewhere */
+<<set _testmodel to _modelclass>>
+
+<<button "Randomize me">>
+	<<set _testmodel.options.size to random(20)>>
+	<<run _testmodel.redraw()>>
+<</button>>
+
+-->
+
+<!--
+Select model and prepare for rendering
+<<selectmodel NAME [INSTANCE]>>
+Parameter INSTANCE is id for caching between passages.
+Do not render instance multiple times on same passage.
+-->
+<<widget "selectmodel">>
+	<<set _modelclass to Renderer.locateModel(_args[0], _args[1])>>
+	<<set _modeloptions to _modelclass.defaultOptions()>>
+	<<run _modelclass.reset()>>
+<</widget>>
+
+<!--
+Show layer and optionaly add filters
+<<showlayer LAYERNAME [...FILTERS]>>
+-->
+<<widget "showlayer">>
+	<<run _modelclass.showLayer(_args[0], _args.slice(1))>>
+<</widget>>
+
+<!--
+Hide layer
+<<hidelayer LAYERNAME>>
+-->
+<<widget "hidelayer">>
+	<<run _modelclass.hideLayer(_args[0])>>
+<</widget>>
+
+<!--
+Set model filter object.
+<<modelfilter FILTERNAME FILTER>>
+Will do a copy, so you can safely edit filter options
+-->
+<<widget "modelfilter">>
+	<<set _modeloptions.filters[_args[0]] to clone(_args[1])>>
+<</widget>>
+
+<!--
+Set model filter option
+<<modelfilterset FILTERNAME OPTIONNAME OPTIONVALUE>>
+-->
+<<widget "modelfilterset">>
+	<<twinescript>>
+		var filter = _modeloptions.filters[_args[0]];
+		if (!filter) filter = _modeloptions.filters[_args[0]] = {};
+		filter[_args[1]] = _args[2];
+	<</twinescript>>
+<</widget>>
+
+<!--
+<<animatemodel [CSSCLASS]>>
+Render model and JS-animate it
+-->
+<<widget "animatemodel">>
+	<<twinescript>>
+		var canvas = _modelclass.canvas || _modelclass.createCanvas();
+		_modelclass.animate(canvas, _modeloptions, Renderer.defaultListener);
+		canvas.canvas.className = typeof _args[0] is 'string' ? _args[0] : '';
+		output.append(canvas.canvas);
+	<</twinescript>>
+<</widget>>
+
+<!--
+<<rendermodel [CSSCLASS] [CSSANIM]>>
+Render model as a static image
+If CSSANIM is true (default false), render multiple frames for CSS animation
+-->
+<<widget "rendermodel">>
+	<<twinescript>>
+		var canvas = _modelclass.createCanvas(!!_args[1]);
+		_modelclass.render(canvas, _modeloptions, Renderer.defaultListener);
+		canvas.canvas.className = typeof _args[0] is 'string' ? _args[0] : '';
+		output.append(canvas.canvas);
+	<</twinescript>>
+<</widget>>

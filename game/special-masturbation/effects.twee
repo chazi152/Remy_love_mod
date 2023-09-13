@@ -1,0 +1,2729 @@
+:: Widgets Masturbation Effects [widget]
+
+<<widget "masturbationeffectsOld">>
+	/*For older saves in existing masturbation scene*/
+	<<if !$masturbation_oralSkill>><<set $masturbation_oralSkill to 0>><</if>>
+
+	<<set _playerToys to window.listUniqueCarriedSextoys().filter(toy => (V.player.penisExist && !playerChastity("penis") && toy.type.includesAny("stroker")) || toy.type.includesAny("dildo","breastpump"))>>
+	<<if $currentToyLeft isnot undefined and $currentToyLeft isnot "none">>
+		<<set $_lefttoy to _playerToys[$currentToyLeft].name>>
+	<</if>>
+	<<if $currentToyRight isnot undefined and $currentToyRight isnot "none">>
+		<<set $_righttoy to _playerToys[$currentToyRight].name>>
+	<</if>>
+
+	<<if $player.vaginaExist>>
+		<<set $_hymenIntact to $player.virginity.vaginal is true and $sexStats.vagina.pregnancy.totalBirthEvents is 0>>
+		<<vaginaWetnessCalculate>>
+	<</if>>
+
+	<<if $corruptionMasturbation>>
+		<<if $leftarm is "bound" and $rightarm is "bound">>
+			你耳朵里的黏液使你与手臂周围的束缚作斗争。如果你没有进步，<span class="blue">它就会放弃。</span>
+			<<arousal 600 "masturbation">><<stress 6>><<gstress>><<garousal>>
+			<br><br>
+			<<set $rightaction to "mrest">><<set $leftaction to "mrest">>
+			<<set $corruptionMasturbation to false>>
+			<<unset $corruptionMasturbationCount>>
+		<<elseif playerHeatMinArousal() + playerRutMinArousal() gte 3000>>
+			你耳朵里的黏液觉得在你目前的状态下不值得强迫你手淫，<span class="blue">它让你走了。</span>
+			<<set $corruptionMasturbation to false>>
+			<<unset $corruptionMasturbationCount>>
+		<<else>>
+			<<if $orgasmdown gte 2>>
+				<<if $corruptionMasturbationCount is undefined or $corruptionMasturbationCount is null>>
+					<<set $corruptionMasturbationCount to random(2,6)>>
+				<</if>>
+				<<set $corruptionMasturbationCount-->>
+				<<if $corruptionMasturbationCount is 0>>
+					<<set $corruptionMasturbation to false>>
+					<<unset $corruptionMasturbationCount>>
+					<<if $awareness lt 200>>
+						/*Prevents the PC from continuing actions that they normally are unable to do yet*/
+						<span class="green">随着你耳朵里的黏液失去控制，你
+							<<if $mouth is "mpenis">>
+								<<set $mouthactiondefault to "mrest">><<set $mouthaction to 0>><<set $mouth to 0>><<set $penisuse to 0>>
+								将<<penis>>从口中取出并移开。
+							<<elseif $mouth is "mpenisentrance">>
+								<<set $mouthactiondefault to "mrest">><<set $mouthaction to 0>><<set $mouth to 0>><<set $penisuse to 0>>
+								远离你的<<penis>>。
+							<<elseif $mouth is "mvaginaentrance">>
+								<<set $mouthactiondefault to "mrest">><<set $mouthaction to 0>><<set $mouth to 0>>
+								远离你的<<pussy>>。
+							<</if>>
+						</span>
+					<</if>>
+				<</if>>
+			<</if>>
+			<<if $corruptionMasturbation>>
+				<<masturbationSlimeControl>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "moverupper" or $rightaction is "moverupper">>
+		<<if $leftaction is "moverupper">>
+			<<set $leftaction to 0>><<set $leftactiondefault to "mrest">>
+		<</if>>
+		<<if $rightaction is "moverupper">>
+			<<set $rightaction to 0>><<set $rightactiondefault to "mrest">>
+		<</if>>
+		<<if $worn.over_upper.open is 1>>
+			<<set $worn.over_upper.exposed to 2>><<set $worn.over_upper.state_top to "midriff">>
+			<<if $player.breastsize gte 3>>
+				你拉下你的$worn.over_upper.cn_name_cap，<span class="lewd">露出你的<<breastsaside>>。</span>
+			<<else>>
+				你拉下你的$worn.over_upper.cn_name_cap，<span class="lewd">露出你的<<breastsaside>>。</span>
+			<</if>>
+		<<else>>
+			<<set $worn.over_upper.exposed to 2>><<set $worn.over_upper.state to "chest">>
+			<<if $player.breastsize gte 3>>
+				你拉起你的$worn.over_upper.cn_name_cap，<span class="lewd">露出你的<<breastsaside>>。</span>
+			<<else>>
+				你拉起你的$worn.over_upper.cn_name_cap，<span class="lewd">露出你的<<breastsaside>>。</span>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mupper" or $rightaction is "mupper">>
+		<<if $leftaction is "mupper">>
+			<<set $leftaction to 0>><<set $leftactiondefault to "mrest">>
+		<</if>>
+		<<if $rightaction is "mupper">>
+			<<set $rightaction to 0>><<set $rightactiondefault to "mrest">>
+		<</if>>
+		/* needs work; what if layer above is not exposed? */
+		<<if $worn.upper.open is 1>>
+			<<set $worn.upper.exposed to 2>><<set $worn.upper.state_top to "midriff">>
+			<<if $player.breastsize gte 3>>
+				你拉下你的$worn.upper.cn_name_cap，<span class="lewd">露出你的<<breastsaside>>。</span>
+			<<else>>
+				你拉下你的$worn.upper.cn_name_cap，<span class="lewd">露出你的<<breastsaside>>。</span>
+			<</if>>
+		<<else>>
+			<<set $worn.upper.exposed to 2>><<set $worn.upper.state to "chest">>
+			<<if $player.breastsize gte 3>>
+				你拉起你的$worn.upper.cn_name_cap，<span class="lewd">露出你的<<breastsaside>>。</span>
+			<<else>>
+				你拉起你的$worn.upper.cn_name_cap，<span class="lewd">露出你的<<breastsaside>>。</span>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "munder_upper" or $rightaction is "munder_upper">>
+		<<if $leftaction is "munder_upper">>
+			<<set $leftaction to 0>><<set $leftactiondefault to "mrest">>
+		<</if>>
+		<<if $rightaction is "munder_upper">>
+			<<set $rightaction to 0>><<set $rightactiondefault to "mrest">>
+		<</if>>
+		/* needs work; what if layer above is not exposed? */
+		<<if $worn.under_upper.open is 1>>
+			<<set $worn.under_upper.exposed to 2>><<set $worn.under_upper.state_top to "midriff">>
+			<<if $player.breastsize gte 3>>
+				你拉下你的$worn.under_upper.cn_name_cap，<span class="lewd">你的<<breasts>>扑腾了出来。</span>
+			<<else>>
+				你拉下你的$worn.under_upper.cn_name_cap，<span class="lewd">露出你的<<breasts>>。</span>
+			<</if>>
+		<<else>>
+			<<set $worn.under_upper.exposed to 2>><<set $worn.under_upper.state to "chest">>
+			<<if $player.breastsize gte 3>>
+				你拉起你的$worn.under_upper.cn_name_cap，<span class="lewd">你的<<breasts>>扑腾了出来。</span>
+			<<else>>
+				你拉起你的$worn.under_upper.cn_name_cap，<span class="lewd">露出你的<<breasts>>。</span>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "moverlower" or $rightaction is "moverlower">>
+		<<if $leftaction is "moverlower">>
+			<<set $leftaction to 0>><<set $leftactiondefault to "mrest">>
+		<</if>>
+		<<if $rightaction is "moverlower">>
+			<<set $rightaction to 0>><<set $rightactiondefault to "mrest">>
+		<</if>>
+		<<set $worn.over_lower.anus_exposed to 1>><<set $worn.over_lower.vagina_exposed to 1>><<set $worn.over_lower.exposed to 2>>
+		<<if setup.clothes.over_lower[clothesIndex('over_lower', $worn.over_lower)].skirt is 1>>
+			<<set $worn.over_lower.skirt_down to 0>>
+			你拉起你的$worn.over_lower.cn_name_cap, <span class="lewd">露出你的<<exposedlower>>。</span>
+		<<else>>
+			<<set $worn.over_lower.state to "thighs">>
+			你拉下你的$worn.over_lower.cn_name_cap，<span class="lewd">露出你的<<exposedlower>>。</span>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mlower" or $rightaction is "mlower">>
+		<<if $leftaction is "mlower">>
+			<<set $leftaction to 0>><<set $leftactiondefault to "mrest">>
+		<</if>>
+		<<if $rightaction is "mlower">>
+			<<set $rightaction to 0>><<set $rightactiondefault to "mrest">>
+		<</if>>
+		<<set $worn.lower.anus_exposed to 1>><<set $worn.lower.vagina_exposed to 1>><<set $worn.lower.exposed to 2>>
+		/* needs work; what if layer above is not exposed? */
+		<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+			<<set $worn.lower.skirt_down to 0>>
+			你拉起身上的$worn.lower.cn_name_cap，<span class="lewd">露出你的<<undies>>。</span>
+		<<else>>
+			<<set $worn.lower.state to "thighs">>
+			你拉下你的$worn.lower.cn_name_cap，<span class="lewd">露出你的<<undies>>。</span>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "munder" or $rightaction is "munder">>
+		<<if $leftaction is "munder">>
+			<<set $leftaction to 0>><<set $leftactiondefault to "mrest">>
+		<</if>>
+		<<if $rightaction is "munder">>
+			<<set $rightaction to 0>><<set $rightactiondefault to "mrest">>
+		<</if>>
+		<<set $worn.under_lower.anus_exposed to 1>><<set $worn.under_lower.vagina_exposed to 1>>
+		<<set $worn.under_lower.state to "thighs">><<set $worn.under_lower.exposed to 2>>
+		/* needs work; what if layer above is not exposed? */
+		你拉下你的$worn.under_lower.cn_name_cap，<span class="lewd">露出你的<<genitals>>。</span>
+	<</if>>
+
+	<<set $_genitals_exposed to $worn.over_lower.vagina_exposed gte 1 and $worn.lower.vagina_exposed gte 1 and $worn.under_lower.vagina_exposed gte 1>>
+	<<set $_breasts_exposed to $worn.over_upper.exposed gte 1 and $worn.upper.exposed gte 1 and $worn.under_upper.exposed gte 1>>
+
+	<<if $leftaction is "msemencover" and $rightaction is "msemencover">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftFingersSemen to 1>>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightFingersSemen to 1>>
+		你收集一些精液，在手指间摩擦。
+		<<arousal 200 "masturbation">>
+	<<elseif $leftaction is "msemencover">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftFingersSemen to 1>>
+		你收集一些精液，在手指间摩擦。
+		<<arousal 100 "masturbation">>
+	<<elseif $rightaction is "msemencover">>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightFingersSemen to 1>>
+		你收集一些精液，在手指间摩擦。
+		<<arousal 100 "masturbation">>
+	<</if>>
+
+	<<if $leftaction is "mchest" or $rightaction is "mchest">>
+		<<set _handsOnBreasts to 0>>
+		<<if $leftaction is "mchest">>
+			<<set _handsOnBreasts += 1>>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+			<<arousal 100 "masturbationBreasts">><<playWithBreasts 1>><<milkvolume 1>><<set _handsCount++>>
+		<</if>>
+		<<if $rightaction is "mchest">>
+			<<set _handsOnBreasts += 1>>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+			<<arousal 100 "masturbationBreasts">><<playWithBreasts 1>><<milkvolume 1>><<set _handsCount++>>
+		<</if>>
+
+		/* the text output currently does not care which hand is used or if both hands are used */
+		<<if $worn.over_upper.exposed gte 2 and $worn.upper.exposed gte 2 and $worn.under_upper.exposed gte 1>>
+			<<arousal `100 * _handsOnBreasts` "masturbationBreasts">>
+			<<if $player.breastsize lte 2>>
+				<<if $arousal gte ($arousalmax / 5) * 4>>
+					你能忍受的范围内尽可能地挑逗你那对敏感的乳头，手指的每一次擦过都带起一波快感冲刷着你。
+				<<elseif $arousal gte ($arousalmax / 5) * 3>>
+					你抚摸着你的<<breasts>>，同时用手指在乳晕上画圈，偶尔轻轻捏一下乳头。
+				<<else>>
+					你抚摸你的<<breasts>>，将乳头夹在手指间摩擦着，你感到一种淫荡的暖流不断壮大。
+				<</if>>
+			<<elseif $player.breastsize lte 5>>
+				<<if $arousal gte ($arousalmax / 5) * 4>>
+					你捧起你的<<breasts>>然后尽可能地挑逗你的乳头，手指的每一次触碰都会让你兴奋不已。
+				<<elseif $arousal gte ($arousalmax / 5) * 3>>
+					你抚摸着你的<<breasts>>，同时用手指在乳晕上画圈，偶尔轻轻捏一下乳头。
+				<<else>>
+					你抚摸你的<<breasts>>，将乳头夹在手指间摩擦着，你感到一种淫荡的暖流不断壮大。
+				<</if>>
+			<<else>>
+				<<if $arousal gte ($arousalmax / 5) * 4>>
+					你把<<breasts>>捧起来，尽可能挑逗你敏感的乳头，手指的每一次触碰都会让你兴奋不已。
+				<<elseif $arousal gte ($arousalmax / 5) * 3>>
+					你抚摸着你的<<breasts>>，同时用手指在乳晕上画圈，偶尔轻轻捏一下乳头。
+				<<else>>
+					你抚摸你的<<breasts>>，将乳头夹在手指间摩擦着，你感到一种淫荡的暖流不断壮大。
+				<</if>>
+			<</if>>
+		<<else>>
+			<<if $player.breastsize lte 2>>
+				<<if $arousal gte ($arousalmax / 5) * 4>>
+					你<<nipples>>挺立在<<top>>的布料下, 努力吸引着别人的注意力。
+					你尽可能多地在忍受的范围内揉捏和挑逗它们。
+				<<elseif $arousal gte ($arousalmax / 5) * 3>>
+					你抚弄你的<<breasts>>，同时隔着<<top>>揉捏你的乳头。
+				<<else>>
+					你抚摸你的<<breasts>>，用手指摩擦乳头。即使是隔着<<topaside>>，这依然感觉很棒。
+				<</if>>
+			<<elseif $player.breastsize lte 5>>
+				<<if $arousal gte ($arousalmax / 5) * 4>>
+					你的乳头挺立在<<top>>的布料下, 努力吸引着别人的注意力。
+					你捧起你的<<breasts>>，在你能忍受的极限内尽可能多地玩弄敏感的乳头。
+				<<elseif $arousal gte ($arousalmax / 5) * 3>>
+					你抚弄你的<<breasts>>，同时隔着<<top>>揉捏你的乳头。
+				<<else>>
+					你抚摸你的<<breasts>>，用手指摩擦乳头。即使是隔着<<topaside>>，这依然感觉很棒。
+				<</if>>
+			<<else>>
+				<<if $arousal gte ($arousalmax / 5) * 4>>
+					你的乳头挺立在<<top>>的布料下, 努力吸引着别人的注意力。
+					你捧起你的<<breasts>>，在你能忍受的极限内尽可能多地玩弄敏感的乳头。
+				<<elseif $arousal gte ($arousalmax / 5) * 3>>
+					你抚弄你的<<breasts>>，同时隔着<<top>>揉捏你的乳头。
+				<<else>>
+					你抚摸你的<<breasts>>，用手指摩擦乳头。即使是隔着<<topaside>>，这依然感觉很棒。
+				<</if>>
+			<</if>>
+		<</if>>
+		<<if $lactating is 1 and $breastfeedingdisable is "f" and _handsOnBreasts gte 0>>
+			<<if $milk_amount gte 1>>
+				<<if $worn.over_upper.exposed is 0 or $worn.upper.exposed is 0 or $worn.under_upper.exposed is 0>>
+					<span class="lewd">乳汁从你的乳头中流出，流到你的衣服上。</span>
+					<<if $masturbation_bowl is 1>><i>如果你想要继续获得快感，你应该脱掉上衣。</i><</if>>
+				<<else>>
+					<span class="lewd">乳汁从你的乳头中漏出。</span>
+				<</if>>
+				<<breastfeed _handsOnBreasts>>
+			<<else>>
+				没有乳汁从你的乳头中流出，你一定是被榨干了。
+			<</if>>
+		<</if>>
+	<</if>>
+
+
+	<<if $leftaction is "mchastity" or $rightaction is "mchastity">>
+		<<set _stress to 0>>
+		<<if $leftaction is "mchastity">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>><<set _stress++>>
+		<</if>>
+		<<if $rightaction is "mchastity">>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>><<set _stress++>>
+		<</if>>
+		你想要隔着$worn.genitals.cn_name_cap自慰，但这无济于事。
+		你的<<genitals 1>>因为触摸而疼痛，但你无能为力。
+		<<gstress>><<stress _stress>>
+	<</if>>
+
+	<<if $leftaction is "mpenisentrance" or $rightaction is "mpenisentrance">>
+		<<if $leftaction is "mpenisentrance">>
+			<<set $leftactiondefault to "mpenisglans">><<set $leftarm to "mpenisentrance">><<set $leftaction to 0>>
+			<<arousal 100 "masturbationGenital">>
+		<</if>>
+		<<if $rightaction is "mpenisentrance">>
+			<<set $rightactiondefault to "mpenisglans">><<set $rightarm to "mpenisentrance">><<set $rightaction to 0>>
+			<<arousal 100 "masturbationGenital">>
+		<</if>>
+
+		/* the text output currently does not care which hand is used or if both hands are used */
+		<<if $worn.under_lower.vagina_exposed is 1 and $worn.lower.vagina_exposed is 1>>
+			<span class="blue">你用手指抚摸你的<<penis>>，你在期待中颤抖。</span>
+		<<elseif $worn.under_lower.vagina_exposed is 1>>
+			<span class="blue">你用手指划过<<penis>>,感觉到它在$worn.lower.cn_name_cap</span>下的隆起。
+		<<elseif $worn.lower.vagina_exposed is 1>>
+			<span class="blue">你用手指划过<<penis>>，感觉到它在$worn.under_lower.cn_name_cap</span>下的隆起。
+		<</if>>
+	<</if>>
+
+	/* if your mouth is on your penis, your hands should not have access to your glans */
+	<<if $mouth is "mpenis" or $mouthaction is "mpenistakein" or $mouthaction is "mpenissuck">>
+		<<if $leftaction is "mpenisglans">>
+			<<set $leftaction to "mpenisshaft">>
+		<</if>>
+		<<if $rightaction is "mpenisglans">>
+			<<set $rightaction to "mpenisshaft">>
+		<</if>>
+	<</if>>
+
+	<<if $vaginaaction is "mpenisflowerpenetrate" or $vaginause is "mpenisflowerpenetrate">>
+		<<if $leftaction is "mvagina">>
+			<<if $player.penisExist>>
+				<<set $leftaction to "mvaginarub">>
+			<<else>>
+				<<set $leftaction to "mvaginaclit">>
+			<</if>>
+		<</if>>
+		<<if $rightaction is "mvagina">>
+			<<if $player.penisExist>>
+				<<set $rightaction to "mvaginarub">>
+			<<else>>
+				<<set $rightaction to "mvaginaclit">>
+			<</if>>
+		<</if>>
+
+		<<if $mouthaction is "mvaginaentrance">>
+			<<set $mouthactiondefault to "mrest">><<set $mouthaction to 0>>
+		<</if>>
+		<<if $mouth is "mvaginaentrance">>
+			<<set $mouthactiondefault to "mrest">><<set $mouthaction to 0>><<set $mouth to 0>>
+			你把嘴从你的阴户上移开。
+		<</if>>
+
+		<<if $leftaction is "mvaginatease" and $rightaction is "mvaginatease">>
+			<<set $leftactiondefault to "rest">><<set $leftaction to 0>><<set $rightactiondefault to "rest">><<set $rightaction to 0>><<set $leftarm to 0>><<set $rightarm to 0>>
+			你把手指从你的阴道中移开。
+		<<elseif $leftaction is "mvaginatease">>
+			<<set $leftactiondefault to "rest">><<set $leftaction to 0>><<set $leftarm to 0>>
+			你把手指从你的阴道中移开。
+		<<elseif $rightaction is "mvaginatease">>
+			<<set $rightactiondefault to "rest">><<set $rightaction to 0>><<set $rightarm to 0>>
+			你把手指从你的阴道中移开。
+		<</if>>
+	<</if>>
+
+	<<if $anusaction is "mpenisflowerpenetrate" or $anususe is "mpenisflowerpenetrate">>
+		<<if $leftaction is "manus">>
+			<<set $leftaction to "manusrub">>
+		<</if>>
+		<<if $rightaction is "manus">>
+			<<set $rightaction to "manusrub">>
+		<</if>>
+
+		<<if ($leftaction is "manustease" or $leftaction is "manusprostate") and ($rightaction is "manustease" or $rightaction is "manusprostate")>>
+			<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+			<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+			你把手指从你的菊穴中移开。
+		<<elseif $leftaction is "manustease" or $leftaction is "manusprostate">>
+			<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+			你把手指从你的菊穴中移开。
+		<<elseif $rightaction is "manustease" or $rightaction is "manusprostate">>
+			<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+			你把手指从你的菊穴中移开。
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mpenisglans" and $rightaction is "mpenisglans">>
+		<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<<arousal 400 "masturbationPenis">>
+		<<if $player.virginity.penile is true>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				你用越来越快的速度摩擦你的处女包皮，奇怪的感觉从指尖和身体中散发出来。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你用拇指和指尖玩弄你的童贞包皮。即使你不能将它翻开，它也很敏感。
+			<<else>>
+				你将童贞阴茎的龟头放在手掌中，用拇指轻轻摩擦包皮。
+			<</if>>
+		<<else>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				你缩回并放松包皮，一次次地在龟头上摩擦。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你用你的包皮摩擦龟头，挑逗你的阴茎系带。
+			<<else>>
+				你把你的<<penis>>放在手掌里，用包皮摩擦龟头。
+			<</if>>
+		<</if>>
+	<<elseif $leftaction is "mpenisglans" or $rightaction is "mpenisglans">>
+		<<if $leftaction is "mpenisglans">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<</if>>
+		<<if $rightaction is "mpenisglans">>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<</if>>
+		<<arousal 200 "masturbationPenis">>
+		<<if $player.virginity.penile is true>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				你用越来越快的速度摩擦你的处女包皮，奇怪的感觉从指尖和身体中散发出来。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你用拇指和指尖玩弄你的童贞包皮。即使你不能将它翻开，它也很敏感。
+			<<else>>
+				你将童贞阴茎的龟头放在手掌中，用拇指轻轻摩擦包皮。
+			<</if>>
+		<<else>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				你缩回并放松包皮，一次次地在龟头上摩擦。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你用你的包皮摩擦龟头，挑逗你的阴茎系带。
+			<<else>>
+				你把你的<<penis>>放在手掌里，用包皮摩擦龟头。
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mpenisshaft" and $rightaction is "mpenisshaft">>
+		<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<<arousal 400 "masturbationPenis">>
+		<<if $player.virginity.penile is true>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				你的手指在包皮允许的范围内上下摩擦你的童贞阴茎。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你用手指握住你的童贞阴茎上下移动。
+			<<else>>
+				你用手指抵住你<<penis>>的下面，享受这种感觉。
+			<</if>>
+		<<else>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				你用手上下抽动你的<<penis>>。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你用手指沿着在你的肉棒上下移动，微微搔动，产生一股淫秽的温暖。
+			<<else>>
+				你轻轻抚摸你的<<penis>>。
+			<</if>>
+		<</if>>
+	<<elseif $leftaction is "mpenisshaft" or $rightaction is "mpenisshaft">>
+		<<if $leftaction is "mpenisshaft">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+			<<arousal 200 "masturbationPenis">>
+		<</if>>
+		<<if $rightaction is "mpenisshaft">>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+			<<arousal 200 "masturbationPenis">>
+		<</if>>
+		<<if $player.virginity.penile is true>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				你的手指在包皮允许的范围内上下摩擦你的童贞阴茎。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你用手指握住你的童贞阴茎上下移动。
+			<<else>>
+				你用手指抵住你<<penis>>的下面，享受这种感觉。
+			<</if>>
+		<<else>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				你用手上下抽动你的<<penis>>。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你用手指沿着在你的肉棒上下移动，微微搔动，产生一股淫秽的温暖。
+			<<else>>
+				你轻轻抚摸你的<<penis>>。
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mpenisstop" and $rightaction is "mpenisstop">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="lblue">你将手从<<penis>>上移开。</span>
+	<<elseif $leftaction is "mpenisstop">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<span class="lblue">你将你的左手从<<penis>>上移开。</span>
+	<<elseif $rightaction is "mpenisstop">>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="lblue">你将你的右手从<<penis>>移开。</span>
+	<</if>>
+
+	/* tiny balls are too small for both hands */
+	<<if $ballssize lte 0 and (($leftarm is "mballs" and $rightarm is "mballs") or ($leftaction is "mballsentrance" and $rightaction is "mballsentrance"))>>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+	<</if>>
+
+	<<silently>>
+		/* describe the balls consistently if they are referred to multiple times */
+		<<ballsize>><<set $_balls to _text_output + " ">>
+		<<testicles>><<set $_balls += _text_output>>
+	<</silently>>
+
+	<<if $leftaction is "mballsstop" and $rightaction is "mballsstop">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="lblue">你将手从你的睾丸上移开。</span>
+	<<elseif $leftaction is "mballsstop">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<span class="lblue">你将左手从你的睾丸上移开。</span>
+	<<elseif $rightaction is "mballsstop">>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="lblue">你将右手从你的睾丸上移开。</span>
+	<</if>>
+
+	<<if $leftaction is "mballsfondle" and $rightaction is "mballsfondle">>
+		<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<<arousal 200 "masturbationPenis">>
+
+		<<if $arousal gte $arousalmax * (4/5)>>
+			你用双手抚摸着你的$_balls，享受它们紧紧挂在阴茎根部的感觉。
+		<<elseif $arousal gte $arousalmax * (3/5)>>
+			你用双手爱抚着你的$_balls，享受着痒痒的感觉。
+		<<elseif $arousal gte $arousalmax * (2/5)>>
+			你用双手晃动着你的$_balls，享受着它们沉甸甸的手感。
+		<<else>>
+			你将你的 $_balls 握在手中。
+		<</if>>
+	<<elseif $leftaction is "mballsfondle" or $rightaction is "mballsfondle">>
+		<<if $leftaction is "mballsfondle">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+			<<set $_hand to "left hand">>
+		<<else>>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+			<<set $_hand to "right hand">>
+		<</if>>
+		<<arousal 100 "masturbationPenis">>
+		/* if both hands are on their balls, say "the other" when referring to the second */
+		<<set $_oneofyourballs to ($ballssize lte 0 ? "both of your $_balls" : ($_oneofyourballs is undefined ? "one of your $_balls" : "the other"))>>
+
+		<<if $arousal gte $arousalmax * (4/5)>>
+			你用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>抚摸着你的$_oneofyourballs，享受它紧紧挂在阴茎根部的感觉。
+		<<elseif $arousal gte $arousalmax * (3/5)>>
+			你用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>爱抚着你的$_oneofyourballs，享受着痒痒的感觉。
+		<<elseif $arousal gte $arousalmax * (2/5)>>
+			你用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>晃动着你的$_oneofyourballs，享受着它们沉甸甸的手感。
+		<<else>>
+			你用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>抚摸你的 $_oneofyourballs 。
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mballssqueeze" and $rightaction is "mballssqueeze">>
+		<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<<arousal 400 "masturbationPenis">>
+		<<set $_gently to ($arousal gte $arousalmax * (4/5) ? "urgently" : ($arousal gte $arousalmax * (3/5) ? "" : "gently"))>>
+
+		<<switch $ballssize>>
+			<<case -2 -1 0>> <span class="red">这段文字应该无法触发。</span>
+			<<case 1 2>>你用双手捧起你的$_balls，然后$_gently挤压它们。
+			<<case 3>>你用双手捧起你的$_balls，然后$_gently挤压它们。
+			<<case 4>> 你用双手$_gently挤压你的$_balls。
+		<</switch>>
+
+		<<set _ballplayeffects to true>>
+
+	<<elseif $leftaction is "mballssqueeze" or $rightaction is "mballssqueeze">>
+		<<if $leftaction is "mballssqueeze">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+			<<set $_hand to "left hand">>
+		<<else>>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+			<<set $_hand to "right hand">>
+		<</if>>
+		<<arousal 200 "masturbationPenis">>
+		/* if both hands are on their balls, say "the other" when referring to the second */
+		<<set $_oneofyourballs to ($ballssize lte 0 ? "your $_balls" : ($_oneofyourballs is undefined ? "one of your $_balls" : "the other"))>>
+		<<set $_gently to ($arousal gte $arousalmax * (4/5) ? "urgently" : ($arousal gte $arousalmax * (3/5) ? "" : "gently"))>>
+
+		<<switch $ballssize>>
+			<<case -2 -1 0>>你用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>将你的 $_balls 捧起来然后 $_gently 挤压它们。
+			<<case 1 2>>你用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>将 $_oneofyourballs 捧起来然后 $_gently 挤压它。
+			<<case 3>> 你用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>将$_oneofyourballs捧起来然后$_gently挤压它。
+			<<case 4>> 你用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>$_gently挤压$_oneofyourballs。
+		<</switch>>
+
+		<<set _ballplayeffects to true>>
+
+	<</if>>
+
+	<<if $leftaction is "mballsentrance" and $rightaction is "mballsentrance">>
+		<<set $leftactiondefault to "mballsfondle">><<set $leftaction to 0>><<set $leftarm to "mballs">>
+		<<set $rightactiondefault to "mballsfondle">><<set $rightaction to 0>><<set $rightarm to "mballs">>
+		<<arousal 200 "masturbationPenis">>
+
+		<<switch $ballssize>>
+			<<case -2 -1 0>> <span class="red">这段文字应该无法触发。</span>
+			<<case 1 2>> <span class="blue">你一只手握着一个你的$_balls。</span>
+			<<case 3>> <span class="blue">你一只手握着一个你的$_balls。它们恰好填满了你的手掌。</span>
+			<<case 4>><span class="blue">你一只手握着一个你的$_ball ，你几乎无法把它们完全握在手里。</span>
+		<</switch>>
+
+		<<set _ballplayeffects to true>>
+
+	<<elseif $leftaction is "mballsentrance" or $rightaction is "mballsentrance">>
+		<<if $leftaction is "mballsentrance">>
+			<<set $leftactiondefault to "mballsfondle">><<set $leftaction to 0>><<set $leftarm to "mballs">>
+			<<set $_hand to "left hand">><<set $_otherHandOnBalls to $rightarm is "mballs">>
+		<<else>>
+			<<set $rightactiondefault to "mballsfondle">><<set $rightaction to 0>><<set $rightarm to "mballs">>
+			<<set $_hand to "right hand">><<set $_otherHandOnBalls to $leftarm is "mballs">>
+		<</if>>
+		<<arousal 100 "masturbationPenis">>
+		/* if both hands are on their balls, say "the other" when referring to the second */
+		<<set $_oneofyourballs to ($ballssize lte 0 ? "both of your $_balls" : ($_oneofyourballs is undefined ? "one of your $_balls" : "the other"))>>
+
+		<<switch $ballssize>>
+			<<case -2 -1 0>> <span class="blue">你轻松地用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>将你的$_balls一并握住。</span>
+			<<case 1 2>> <span class="blue">你将你的$_oneofyourballs拿在<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>中。</span>
+			<<case 3>> <span class="blue">你用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>握住$_oneofyourballs，它完美地充满了你的手掌。</span>
+			<<case 4>> <span class="blue">你用你的<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>握住$_oneofyourballs，你几乎无法将它完全握在手里。</span>
+		<</switch>>
+
+		<<set _ballplayeffects to true>>
+	<</if>>
+
+	<<if _ballplayeffects>>
+		<<if $worn.over_lower.vagina_exposed is 0>>
+			<<set _highestclothinglower to $worn.over_lower.name>>
+		<<elseif $worn.lower.vagina_exposed is 0>>
+			<<set _highestclothinglower to $worn.lower.name>>
+		<<elseif $worn.under_lower.vagina_exposed is 0>>
+			<<set _highestclothinglower to $worn.under_lower.name>>
+		<<else>>
+			<<set $_genitals_exposed to true>>
+		<</if>>
+		<<if $arousal gte $arousalmax * (4/5)>>
+			你的<<penis>>饥渴难耐，然后
+			<<if $_genitals_exposed>>
+				先走汁从你的龟头溢出。
+			<<else>>
+				先走汁渗进你的_highestclothinglower。
+			<</if>>
+		<<elseif $arousal gte $arousalmax * (3/5)>>
+			你的<<penis>>饥渴难耐，然后
+			<<if $_genitals_exposed>>
+				几滴先走汁从你的龟头漏出。
+			<<else>>
+				你的先走汁在你的_highestclothinglower上浸出一片水渍。
+			<</if>>
+		<<elseif $arousal gte $arousalmax * (2/5)>>
+			压力让你的<<penis>>怦怦直跳。
+		<<else>>
+			压力让你的<<penis>>颤抖。
+		<</if>>
+	<</if>>
+
+	<!-- Possessed actions -->
+	<<if $possessed>>
+		<<dynamicblock id=control-caption>>
+			<<controlcaption>>
+		<</dynamicblock>>
+
+		<<if $combatBegun is 1>>
+			<<set _mResist to 0>>
+			<<if ["mpenisstopW","mbreaststopW","mvaginastopW"].includes($leftaction)>>
+				<<set _mResist += 2>>
+			<</if>>
+			<<if ["mpenisstopW","mbreaststopW","mvaginastopW"].includes($rightaction)>>
+				<<set _mResist += 2>>
+			<</if>>
+			<<set $leftactiondefault to $leftaction>><<set $rightactiondefault to $rightaction>>
+
+			<<if _mResist is 0>>
+				<span class="pink">你让它控制着你。</span>
+				<<pain -2>><<stress -12>><<sub 2>><<lpain>><<llstress>><<set $wraith.will += 30>>
+			<<else>>
+				<<set _wraithWill to Math.floor(1 + $wraith.will)>>
+				<<willpowerdifficulty 1 _wraithWill true>>
+				<<if $willpowerSuccess>>
+					<<set _resistSuccess to 1>>
+					<span class="green">
+						你为控制权而战。
+						<<if _mResist is 4>>
+							你的手臂锁住了。
+						<<else>>
+							你的手臂卡住了。
+						<</if>>
+					</span>
+					<<pain _mResist>><<stress _mResist>><<trauma _mResist>><<def 2>><<gpain>><<gtrauma>><<gstress>><<if _mResist is 4>><<ggcontrol>><<else>><<gcontrol>><</if>><<set $wraith.will -= Math.floor(currentSkillValue('willpower') / 24)*_mResist>>
+					<<control `Math.floor(currentSkillValue('willpower') / 24)*_mResist / 10`>>
+				<<else>>
+					<span class="red">你的身体不受控制。</span>
+					<<switch $leftaction>>
+						<<case "mbreastW" "mbreaststopW">><<set $leftaction to "mbreastW">>
+						<<case "mvaginaW" "mvaginastopW">><<set $leftaction to "mvaginaW">>
+						<<case "mpenisW" "mpenisstopW">><<set $leftaction to "mpenisW">>
+						<<default>>
+					<</switch>>
+					<<switch $rightaction>>
+						<<case "mbreastW" "mbreaststopW">><<set $rightaction to "mbreastW">>
+						<<case "mvaginaW" "mvaginastopW">><<set $rightaction to "mvaginaW">>
+						<<case "mpenisW" "mpenisstopW">><<set $rightaction to "mpenisW">>
+						<<default>>
+					<</switch>>
+					<<stress 6>><<trauma 6>><<willpower 1>><<def 1>><<gtrauma>><<gstress>><<gwillpower>><<set $wraith.will -= Math.floor(currentSkillValue('willpower') / 40)*_mResist>>
+				<</if>>
+			<</if>>
+			<br><br>
+		<<else>>
+			<<set $combatBegun to 1>>
+		<</if>>
+
+		<<if $leftaction is "mpenisW" and $rightaction is "mpenisW">>
+			<<arousal 400 "masturbationPenis">><<set $leftaction to 0>><<set $rightaction to 0>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				你的手在你的<<penis>>上疯狂地上下抽动。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你双手的手指沿着在你的肉棒上下移动，微微搔动，产生一股淫秽的温暖。
+			<<else>>
+				你的手颤抖着抚摸你的<<penis>>。
+			<</if>>
+		<</if>>
+
+		<<if $leftaction is "mpenisW" or $rightaction is "mpenisW">>
+			<<arousal 200 "masturbationPenis">>
+			<<set $_hand to $leftaction is "mpenisW" ? "left" : "right">>
+			<<if $leftaction is "mpenisW">>
+				<<set $leftaction to 0>>
+			<<else>>
+				<<set $rightaction to 0>>
+			<</if>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				你的<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>手在你的<<penis>>上疯狂地上下抽动。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>手的手指在你的肉棒上来回移动，微微搔动，产生一股淫秽的温暖。
+			<<else>>
+				你的<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>颤抖着抚摸你的<<penis>>。
+			<</if>>
+		<</if>>
+
+		<<if $leftaction is "mbreastW" or $rightaction is "mbreastW">>
+			<<if $leftaction is "mbreastW" and $rightaction is "mbreastW">>
+				<<set $leftaction to 0>><<set $rightaction to 0>>
+				<<arousal 400 "masturbationBreasts">><<playWithBreasts 2>><<set _handsOnBreasts to 2>>
+
+				<<if $player.breastsize lte 2>>
+					<<if $arousal gte ($arousalmax / 5) * 4>>
+						你的双手用难以忍受的频率撩拨着你敏感的乳头，手指的每一次触碰都让你兴奋不已。
+					<<elseif $arousal gte ($arousalmax / 5) * 3>>
+						你用手抚摸你的<<breasts>>，同时用手指绕着乳晕画圈，时不时轻捏一下乳头。
+					<<else>>
+						用手抚摸你的<<breasts>>，将乳头夹在手指间摩擦着，你感到一种淫荡的暖流不断壮大。
+					<</if>>
+				<<elseif $player.breastsize lte 5>>
+					<<if $arousal gte ($arousalmax / 5) * 4>>
+						你用手捧着你的<<breasts>>，撩拨敏感的乳头，手指的每一次触碰都会让你兴奋不已。
+					<<elseif $arousal gte ($arousalmax / 5) * 3>>
+						你用手抚摸你的<<breasts>>，同时用手指绕着乳晕画圈，时不时轻捏一下乳头。
+					<<else>>
+						用手抚摸你的<<breasts>>，将乳头夹在手指间摩擦着，你感到一种淫荡的暖流不断壮大。
+					<</if>>
+				<<else>>
+					<<if $arousal gte ($arousalmax / 5) * 4>>
+						你的捧着你的<<breasts>>，挑逗你敏感的乳头，让你无法忍受。手指的每一次触碰都让你兴奋不已。
+					<<elseif $arousal gte ($arousalmax / 5) * 3>>
+						你用手抚摸你的<<breasts>>，同时用手指绕着乳晕画圈，时不时轻捏一下乳头。
+					<<else>>
+						你用手抚摸你的<<breasts>>，将乳头夹在手指间摩擦着，你感到一种淫荡的暖流不断壮大。
+					<</if>>
+				<</if>>
+			<<else>>
+				<<if $leftaction is "mbreastW">>
+					<<set $leftaction to 0>>
+					<<arousal 200 "masturbationBreasts">><<playWithBreasts 1>>
+					<<set $_hand to "left hand">>
+				<</if>>
+				<<if $rightaction is "mbreastW">>
+					<<set $rightaction to 0>>
+					<<arousal 200 "masturbationBreasts">><<playWithBreasts 1>>
+					<<set $_hand to "right hand">>
+				<</if>>
+				<<set _handsOnBreasts to 1>>
+
+				<<if $player.breastsize lte 2>>
+					<<if $arousal gte ($arousalmax / 5) * 4>>
+						你的<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>撩拨着你敏感的乳头，让你难以忍受，手指的每一次触碰都让你兴奋不已。
+					<<elseif $arousal gte ($arousalmax / 5) * 3>>
+						你用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>抚摸着你的<<breasts>>，同时用手指在乳晕上画圈，时不时轻轻捏一下乳头。
+					<<else>>
+						你用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>抚摸你的<<breasts>>，将乳头夹在手指间摩擦着，一种淫荡的温暖不断滋长。
+					<</if>>
+				<<elseif $player.breastsize lte 5>>
+					<<if $arousal gte ($arousalmax / 5) * 4>>
+						你的<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>将你的<<breasts>>捧起来，挑逗敏感的乳头让你难以忍受，手指的每一次触碰都传来阵阵快感。
+					<<elseif $arousal gte ($arousalmax / 5) * 3>>
+						你用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>抚摸着你的<<breasts>>，同时用手指在乳晕上画圈，时不时轻轻捏一下乳头。
+					<<else>>
+						你用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>抚摸你的<<breasts>>，将乳头夹在手指间摩擦着，一种淫荡的温暖不断滋长。
+					<</if>>
+				<<else>>
+					<<if $arousal gte ($arousalmax / 5) * 4>>
+						你的<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>将你的<<breasts>>捧起来，挑逗敏感的乳头使你难以忍受，手指的每一次触碰都传来阵阵快感。
+					<<elseif $arousal gte ($arousalmax / 5) * 3>>
+						你用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>抚摸着你的<<breasts>>，同时用手指在乳晕上画圈，时不时轻轻捏一下乳头。
+					<<else>>
+						你用<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>抚摸你的<<breasts>>，将乳头夹在手指间摩擦着，一种淫荡的温暖不断滋长。
+					<</if>>
+				<</if>>
+			<</if>>
+			<<if $milk_amount gte 1>>
+				<span class="lewd">乳汁从你的乳头中漏出。</span>
+				<<breastfeed _handsOnBreasts>>
+			<</if>>
+		<</if>>
+
+		<<if $leftaction is "mvaginaW" and $rightaction is "mvaginaW">>
+			<<arousal 400 "masturbationVagina">><<set $leftaction to 0>><<set $rightaction to 0>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				<<switch random(1, 3)>>
+					<<case 3>>你的手指在你的<<pussy>>中来回扭动，用突然的、尖锐的推力侵犯你。
+					<<case 2>>你的阴蒂在你的手指间焦急地摩擦着，不留一秒缓和的时间。
+					<<case 1>>你的手指在你的<<pussy>>内颤抖，用下流的振动刺激你的整个身体。
+				<</switch>>
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				<<switch random(1, 3)>>
+					<<case 3>>你的手探测你的<<pussy>>，相互抽搐推挤过去。
+					<<case 2>>你的手草草盖住<<pussy>>，另一只手在上面抽动着。
+					<<case 1>>你的手交替地戳你的阴蒂。
+				<</switch>>
+			<<else>>
+				<<switch random(1, 3)>>
+					<<case 3>>你用手指玩弄着你的<<pussy>>，每根手指接连在你的小穴上划过。
+					<<case 2>>你的${altText.hands.replace("both","").replace("your","你的").replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")}揉着阴唇，手指在入口处不断扭动。
+					<<case 1>>你的手抚摸着你的大腿，慢慢地把它们分开。
+				<</switch>>
+			<</if>>
+		<</if>>
+
+		<<if $leftaction is "mvaginaW" or $rightaction is "mvaginaW">>
+			<<arousal 200 "masturbationVagina">>
+			<<set $_hand to $leftaction is "mvaginaW" ? "left" : "right">>
+			<<if $leftaction is "mvaginaW">>
+				<<set $leftaction to 0>>
+			<<else>>
+				<<set $rightaction to 0>>
+			<</if>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				<<switch random(1, 3)>>
+					<<case 3>>你的<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>手在你的<<pussy>>中来回扭动，用突然的、尖锐的推力侵犯你。
+					<<case 2>>你的<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>手将自己撞向你的<<pussy>>，比你想象的更深。
+					<<case 1>>你的<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>手在你的<<pussy>>中颤抖，用下流的振动折磨你的整个身体。
+				<</switch>>
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				<<switch random(1, 3)>>
+					<<case 3>>你的<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>探测你的<<pussy>>，威胁要推过去。
+					<<case 2>>你的阴蒂在你的<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>手之间扭曲。
+					<<case 1>>你的<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>手将手掌研磨到你的<<pussy>>中。
+				<</switch>>
+			<<else>>
+				<<switch random(1, 3)>>
+					<<case 3>>你的<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>手在你的阴唇上摩擦，手指在你的入口上抽搐。
+					<<case 2>>你的<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>手把一根手指拖进你的狭缝，让你的脊椎发抖。
+					<<case 1>>你的<<print $_hand.replace("left","左").replace("right","右").replace("hands","双手").replace("hand","手").replace(" ","")>>手以急促的动作环绕你的阴蒂。
+				<</switch>>
+			<</if>>
+		<</if>>
+
+		<<if $leftaction is "mpenisstopW">>
+			<<set $leftaction to 0>>
+			你把左手从<<penis>>上移开，它颤抖着。
+		<</if>>
+		<<if $rightaction is "mpenisstopW">>
+			<<set $rightaction to 0>>
+			你把右手从<<penis>>上移开，它颤抖着。
+		<</if>>
+
+		<<if $leftaction is "mbreaststopW">>
+			<<set $leftaction to 0>>
+			你把左手从<<breasts>>上移开，它颤抖着。
+		<</if>>
+		<<if $rightaction is "mbreaststopW">>
+			<<set $rightaction to 0>>
+			你把右手从<<breasts>>上移开，它颤抖着。
+		<</if>>
+
+		<<if $leftaction is "mvaginastopW">>
+			<<set $leftaction to 0>>
+			你把你的左手从你的<<pussy>>上移开。它在颤抖。
+		<</if>>
+		<<if $rightaction is "mvaginastopW">>
+			<<set $rightaction to 0>>
+			你把你的右手从你的<<pussy>>上移开。它在颤抖。
+		<</if>>
+	<</if>>
+
+	<!-- Mouth actions -->
+
+	<<if $mouthaction is "mpenisentrance" and $penisuse is 0>>
+		<<set $mouthactiondefault to "mpenislick">><<set $mouthaction to 0>><<arousal 100 "masturbationGenital">><<set $mouth to "mpenisentrance">>
+		<<if $awareness lt 200 and $corruptionMasturbation>><span class="red">耳朵里的史莱姆强迫你弯下腰。你不确定你是否会喜欢即将到来的事情。</span><<awareness 1>><<gawareness>><</if>>
+		<<if $worn.under_lower.vagina_exposed is 1 and $worn.lower.vagina_exposed is 1>>
+			<span class="blue">你离你的<<penis>>足够近，然后伸出舌头舔了一下龟头。</span>
+			<<arousal 100 "masturbationGenital">>
+		<<elseif $worn.under_lower.vagina_exposed is 1>>
+			/* this shouldn't be reachable. i think the action is not available unless the player's penis is completely uncovered. */
+			<span class="blue">你的舌头在你的<<penis>>上游走, 感受着在$worn.lower.cn_name_cap下的隆起。</span>
+		<<elseif $worn.lower.vagina_exposed is 1>>
+			<span class="blue">你的舌头在你的<<penis>>上游走，感受着在$worn.under_lower.cn_name_cap下的隆起。</span>
+		<</if>>
+		<<set $penisuse to "mouth">>
+	<</if>>
+
+	<<if $mouthaction is "mpenislick">>
+		<<set $mouthactiondefault to "mpenislick">><<set $mouthaction to 0>><<arousal 100 "masturbationGenital">>
+		<<if $worn.under_lower.vagina_exposed is 1 and $worn.lower.vagina_exposed is 1>>
+			<<arousal 100 "masturbationGenital">>
+			<<if $arousal gte $arousalmax * (4/5)>>
+				你的每次舔舐都会让<<penis>>颤抖，但你不会停下来。
+			<<elseif $arousal gte $arousalmax * (3/5)>>
+				你的舌头在你的<<penis>>顶端游走，唾液和先走汁混到一起，散发出淫靡的气息。
+			<<else>>
+				你的舌头在你的<<penis>>顶部游走，专挑你的敏感区进攻。
+			<</if>>
+		<<elseif $worn.under_lower.vagina_exposed is 1>>
+			/* this shouldn't be reachable. i think the action is not available unless the player's penis is completely uncovered. */
+			你的舌头在你的<<penis>>上游走, 感受着在$worn.lower.cn_name_cap下的隆起。
+		<<elseif $worn.lower.vagina_exposed is 1>>
+			你的舌头在你的<<penis>>上游走, 感受着$worn.under_lower.cn_name_cap下的隆起。
+		<</if>>
+	<</if>>
+
+	<<if $mouthaction is "mpenistakein">>
+		<<set $selfsuckDepth to 0>>
+		<<set $_actiondefault to ($penisHeight is 0 ? "mpenissuck" : "mpenisdeepthroat")>>
+		<<set $mouthactiondefault to $_actiondefault>><<set $mouthaction to 0>><<set $mouth to "mpenis">>
+		<<arousal 200 "masturbationGenital">>
+		<<if $penisHeight is 0>>
+			<span class="blue">你把<<penis>>含进嘴里，一种淫荡的快感从脊柱散发扩散至全身。</span>
+		<<else>>
+			<span class="blue">你把<<penis>>的顶端塞进嘴里，一种淫荡的快感从脊柱散发扩散至全身。</span>
+		<</if>>
+		<<set $mouthstate to "penetrated">>
+	<</if>>
+
+	<<if $mouthaction is "mpenisdeepthroat">>
+		<<set $selfsuckDepth += 1>>
+		<<set $_actiondefault to ($selfsuckDepth lt $selfsuckLimit ? $mouthaction : "mpenissuck")>>
+		<<set $mouthactiondefault to $_actiondefault>><<set $mouthaction to 0>><<set $masturbation_oralSkill++>>
+		<<set $_arousalGain to 200 + 50*$selfsuckDepth>>
+		<<arousal $_arousalGain "masturbationGenital">>
+
+		你把<<penis>>推进口腔更深处。
+		/* dev note: add willpower to check if the player can get their penis down their throat? */
+
+		<<if $selfsuckDepth is $penisHeight>>
+			<<if $leftarm is "mpenisentrance" and $rightarm is "mpenisentrance">>
+				<<set $leftarm to 0>><<set $leftactiondefault to "mrest">>
+				<<set $rightarm to 0>><<set $rightactiondefault to "mrest">>
+				<span class="lblue">你松开你的阴茎，腾出手来。</span>
+			<<elseif $leftarm is "mpenisentrance">>
+				<<set $leftarm to 0>><<set $leftactiondefault to "mrest">>
+				<span class="lblue">你松开你的阴茎，腾出左手。</span>
+			<<elseif $rightarm is "mpenisentrance">>
+				<<set $rightarm to 0>><<set $rightactiondefault to "mrest">>
+				<span class="lblue">你松开你的阴茎，腾出右手。</span>
+			<</if>>
+		<</if>>
+		<<set _deepthroateffects to true>>
+	<</if>>
+
+	<<if $mouthaction is "mpenispullback">>
+		<<set $selfsuckDepth -= 1>>
+		<<set $_arousalGain to 200 + 50*$selfsuckDepth>>
+		<<arousal $_arousalGain "masturbationGenital">>
+
+		<<if $selfsuckDepth gte 2>>
+			<<set $mouthactiondefault to $mouthaction>><<set $mouthaction to 0>>
+			<span class="lblue">你含着<<penis>>用力将头拔出，榨了一点出来到你的喉咙里。</span>
+			<<set _deepthroateffects to true>>
+		<<elseif $selfsuckDepth is 1>>
+			<<set $mouthactiondefault to $mouthaction>><<set $mouthaction to 0>>
+			<span class="lblue">你含着<<penis>>将头向后移动，将它从你的喉咙里拔出来。</span>
+			<<set _deepthroateffects to true>>
+		<<else>>
+			<<set $mouthactiondefault to "mpenisstop">><<set $mouthaction to 0>>
+			<span class="lblue">你向后移动胯部，直到嘴里只剩下<<penis>>的顶部。</span>
+		<</if>>
+	<</if>>
+
+	<<if _deepthroateffects>>
+		<<switch $penisHeight>>
+		<<case 0>>
+			<span class="red">Error: 不可能的条件.</span>
+		<<case 1>>
+			<<switch $selfsuckDepth>>
+			<<case 1>>你的嘴唇碰到你的<<penis>>根部，龟头顶到了你的喉咙。
+			<<default>><span class="red">Error: 不可能的条件.</span>
+			<</switch>>
+		<<case 2>>
+			<<switch $selfsuckDepth>>
+			<<case 1>>你的龟头几乎要顶到你的喉咙。
+			<<case 2>>你的嘴唇碰到你的<<penis>>根部，龟头进入了你的喉咙。
+			<<default>><span class="red">Error: 不可能的条件.</span>
+			<</switch>>
+		<<case 3>>
+			<<switch $selfsuckDepth>>
+			<<case 1>>你的龟头几乎要顶到你的喉咙。
+			<<case 2>>你的<<penis>>正在扩张你的喉咙壁。
+			<<case 3>>你的嘴唇碰到了<<penis>>的根部，整个肉棒填满了你的喉咙。
+			<<default>><span class="red">Error: 不可能的条件.</span>
+			<</switch>>
+		<<default>>
+			<span class="red">Error: 不可能的条件.</span>
+		<</switch>>
+		<<if $selfsuckDepth is $penisHeight>>
+			你碰到了底部。
+		<<elseif $selfsuckDepth is $selfsuckLimit>>
+			你不够灵活，不能再往下了。
+		<</if>>
+	<</if>>
+
+	<<if $mouthaction is "mpenismouthoff">>
+		<<set $mouthactiondefault to "mrest">><<set $mouthaction to 0>><<set $mouth to "mpenisentrance">>
+		<span class="lblue">你将<<penis>>移出你的嘴巴。</span>
+		<<set $mouthstate to 0>>
+	<</if>>
+
+	<<if $mouthaction is "mpenissuck">>
+		<<set $mouthactiondefault to "mpenissuck">><<set $mouthaction to 0>><<set $masturbation_oralSkill++>>
+		<<arousal 200 "masturbationGenital">>
+
+		<<set $_eagerly to ($arousal gte $arousalmax * (2/5) ? "热切地" : "缓慢地")>>
+
+		<<if $arousal gte ($arousalmax / 5) * 4>>
+			<<if $selfsuckDepth lte 1>>
+				当你的头在你的<<penis>>上来回摩擦时，一些先走汁流进你的嘴里，你喝下了它们。
+			<<else>>
+				你把头放在<<penis>>上来回摩擦，溢出来的先走汁顺着你的喉咙滑了下去。
+			<</if>>
+		<<else>>
+			<<if $penisHeight is $selfsuckDepth>>
+				/* mouth is at base of penis */
+				<<if $selfsuckDepth gte 2>>
+					你舔舐<<penis>>的根部，同时喉咙按摩着阴茎。
+				<<else>>
+					你$_eagerly吮吸你的<<penis>>，同时舔舐阴茎底部。
+				<</if>>
+			<<elseif $selfsuckDepth gte 1>>
+				你$_eagerly吮吸你的<<penis>>，舌头在阴茎上来回舔舐。
+			<<else>>
+				你$_eagerly吮吸你的<<penis>>，舌头在龟头上来回舔舐。
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $mouthaction is "mpenisstop">>
+		<<set $mouthactiondefault to "mrest">><<set $mouthaction to 0>><<set $mouth to 0>><<set $penisuse to 0>>
+		<span class="lblue">你将嘴移开你的<<penis>>。</span>
+	<</if>>
+
+	<<if $mouthaction is "mvaginaentrance">>
+		<<set $mouthactiondefault to "mvaginalick">><<set $mouthaction to 0>><<arousal 100 "masturbationGenital">><<set $mouth to "mvaginaentrance">><<set $vaginause to "mouth">>
+		<<if $awareness lt 200 and $corruptionMasturbation>><span class="red">耳朵里的史莱姆强迫你弯下腰。你不确定你是否会喜欢即将到来的事情。</span><<awareness 1>><<gawareness>><</if>>
+		<<if $_genitals_exposed>>
+			<span class="blue">你把舌头放在裸露的阴蒂上，期待地颤抖。</span>
+			<<arousal 100 "masturbationGenital">>
+		<<elseif $worn.under_lower.vagina_exposed is 1>>
+			<span class="blue">你用舌头摩擦你的<<pussy>>，感觉到它在你的$worn.lower.cn_name_cap下面。</span>
+		<<elseif $worn.lower.vagina_exposed is 1>>
+			<span class="blue">你用舌头摩擦你的<<pussy>>，感觉到它在你$worn.under_lower.cn_name_cap下面隆起。</span>
+		<</if>>
+	<</if>>
+
+	<<if $mouthaction is "mvaginalick">>
+		<<set $mouthactiondefault to "mvaginalick">><<set $mouthaction to 0>><<arousal 100 "masturbationGenital">>
+		<<if $arousal gte ($arousalmax / 5) * 4>>
+			你舔舐从你的<<pussy>>流出的液体，你在期待中浑身颤抖。
+		<<elseif $arousal gte ($arousalmax / 5) * 3>>
+			你舔舐你的<<pussy>>，试图到达更深的区域。
+		<<else>>
+			你舔舐你的<<pussy>>。
+		<</if>>
+	<</if>>
+	<<if $mouthaction is "mvaginaclit">>
+		<<set $mouthactiondefault to "mvaginaclit">><<set $mouthaction to 0>><<arousal 200 "masturbationGenital">>
+		<<if $arousal gte ($arousalmax / 5) * 4>>
+			你吮吸并轻轻地用牙齿摩擦阴蒂，你因为期待而浑身颤抖。
+		<<elseif $arousal gte ($arousalmax / 5) * 3>>
+			你舔舐并吮吸你的阴蒂。
+		<<else>>
+			你舔你的阴蒂。
+		<</if>>
+	<</if>>
+	<<if $mouthaction is "mvaginastop">>
+		<<set $mouthactiondefault to "mrest">><<set $mouthaction to 0>><<set $mouth to 0>><<set $vaginause to 0>>
+		<span class="lblue">你把嘴移开你的<<pussy>>。</span>
+	<</if>>
+
+	<<if $player.penisExist>>
+		<<if $arousal gte $arousalmax * (3/5) and $mouth isnot "mpenis" and not _ballplayeffects>>
+			<<if $worn.over_lower.vagina_exposed is 0>>
+				<<set _highestclothinglower to $worn.over_lower.name>>
+			<<elseif $worn.lower.vagina_exposed is 0>>
+				<<set _highestclothinglower to $worn.lower.name>>
+			<<elseif $worn.under_lower.vagina_exposed is 0>>
+				<<set _highestclothinglower to $worn.under_lower.name>>
+			<<else>>
+				<<set $_genitals_exposed to true>>
+			<</if>>
+			<<if $arousal gte $arousalmax * (4/5)>>
+				你的<<penis "strap-on">>急切地颤抖，然后
+				<<if $_genitals_exposed>>
+					先走汁从你的龟头溢出。
+				<<else>>
+					先走汁渗进你的_highestclothinglower。
+				<</if>>
+			<<else>>
+				你的<<penis "strap-on">>急切地颤抖，然后
+				<<if $_genitals_exposed>>
+					几滴先走汁从你的龟头漏出。
+				<<else>>
+					你的先走汁在你的_highestclothinglower上浸出一片水渍。
+				<</if>>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $mouthaction is "mpenisflowerlick">>
+		<<set $mouthactiondefault to "mpenisflowerlick">><<set $mouthaction to 0>><<set $mouth to "mpenisflowerlick">><<arousal 200 "mouth">><<drugs 10>><<set $moorPhallusPlant to 2>><<set $masturbation_oralSkill++>>
+		<<print either(
+			"你就快要把触手植物送进嘴里，但突然感到担忧。",
+			"你舔舐触手植物的尖端，吞下甜甜的液体。",
+			"你舔触手植物的顶部。",
+		)>>
+		<<if $vaginaaction is "mpenisflowerrub">>
+			<<set $vaginaaction to 0>><<set $vaginaactiondefault to "mrest">>
+		<</if>>
+		<<if $anusaction is "mpenisflowerrub">>
+			<<set $anusaction to 0>><<set $anusactiondefault to "mrest">>
+		<</if>>
+	<</if>>
+
+	<<if $mouthaction is "mpenisflowertakein">>
+		<<set $mouthactiondefault to "mpenisflowersuck">><<set $mouthaction to 0>><<set $mouth to "mpenisflowersuck">><<arousal 300 "oral">><<drugs 10>>
+		<<if $player.virginity.oral is true>><<takeVirginity "阳具植物" "oral">><</if>>
+		你吮吸触手植物，它尝起来很甜，你感觉自己的身体里升起一股莫名的燥热。
+		<<set $mouthstate to "penetrated">>
+	<</if>>
+
+	<<if $mouthaction is "mpenisflowerstop">>
+		<<set $mouthactiondefault to "mrest">><<set $mouthaction to 0>><<set $mouth to 0>><<set $moorPhallusPlant to 1>>
+		<span class="lblue">你不再舔舐植物。</span>
+	<</if>>
+
+	<<if $mouthaction is "mpenisflowersuck">>
+		<<set $mouthactiondefault to "mpenisflowersuck">><<set $mouthaction to 0>><<arousal 500 "oral">><<drugs 10>><<set $masturbation_oralSkill++>>
+		<<if $arousal gte ($arousalmax / 5) * 4>>
+			你一边吮吸一边前后移动头部，颤抖着吞下植物产生的液体。
+		<<elseif $arousal gte ($arousalmax / 5) * 3>>
+			你一边舔舐着触手，一边吮吸它的液体。
+		<<else>>
+			你正在吮吸着触手植物。
+		<</if>>
+	<</if>>
+
+	<<if $mouthaction is "mpenisflowersuckstop">>
+		<<set $mouthactiondefault to "mpenisflowersuck">><<set $mouthaction to 0>><<arousal 300 "oral">><<drugs 10>>
+		<span class="red">你的头不停地上下摆动，吮吸着阳具植物。尽管你尽了最大的努力，你还是无法控制自己停下来。</span>
+	<</if>>
+
+	<<if $mouthaction is "maphropill">>
+		<<set $mouthactiondefault to "mrest">><<set $mouthaction to 0>><<set $mouth to 0>>
+		<<set $_pills to $player.inventory.sextoys["aphrodisiac pills"][0]>>
+		<<set $_pills.uses -= 1>>
+		<<if $_pills.uses lte 0>>
+			<<run V.player.inventory.sextoys["aphrodisiac pills"].splice(0,1)>>
+		<</if>>
+		<<if $drugged gt 0>>
+			<br>
+			你将媚药扔进嘴里并吞下。体内淫靡的暖流变得更猛烈了。
+			<br>
+		<<else>>
+			<br>
+			你将媚药扔进嘴里并吞下。淫靡的暖流从你的小腹不断蔓延。
+			<br>
+		<</if>>
+		<<drugs 300>>
+	<</if>>
+
+	<!-- Vagina actions -->
+
+	<<if $vaginaaction is "mpenisflowerrub">>
+		<<set $vaginaactiondefault to "mpenisflowerrub">><<set $vaginaaction to 0>><<set $vaginause to "mpenisflowerrub">><<set $moorPhallusPlant to 2>>
+		<<if !$_genitals_exposed>>
+			<<arousal 100 "vaginal">>
+			你的下体紧贴着植物，尽管你的衣服挡住了去路。
+		<<else>>
+			<<arousal 200 "vaginal">>
+			<<print either(
+				"当突然爆发的欲望袭击你时，你几乎要把植物穿透你自己。你在最后一刻停下来，轻轻地把植物绕在你的入口处。",
+				"你用植物的尖端摩擦着自己的<<if $player.penisExist>><<penis>><<else>>阴蒂<</if>>。",
+				"你用触手植物摩擦你的阴部。",
+			)>>
+		<</if>>
+		<<if $anusaction is "mpenisflowerrub">>
+			<<set $anusaction to 0>><<set $anusactiondefault to "mrest">>
+		<</if>>
+	<</if>>
+
+	<<if $vaginaaction is "mpenisflowerpenetrate">>
+		<<set $vaginaactiondefault to "mpenisflowerbounce">><<set $vaginaaction to 0>><<set $vaginause to "mpenisflowerpenetrate">>
+		<<arousal 1000 "vaginal">><<vaginalstat>>
+		你把自己放低，让植物插入你。
+		<<vaginaraped>>
+		<<if $player.virginity.vaginal is true>>
+			<<takeVirginity "一株阳具植物" "vaginal">>
+			当你的阴道努力适应植物时，你几乎要尖叫出来，但疼痛很快就消失了。
+		<<else>>
+			你从未有过这样的感觉。
+		<</if>>
+		<<set $vaginastate to "penetrated">>
+	<</if>>
+
+	<<if $vaginaaction is "mpenisflowerstop">>
+		<<set $vaginaactiondefault to "mrest">><<set $vaginaaction to 0>><<set $vaginause to 0>><<set $moorPhallusPlant to 1>>
+		<span class="lblue">你不再用触手植物摩擦你的小穴。</span>
+	<</if>>
+
+	<<if $vaginaaction is "mpenisflowerbounce">>
+		<<set $vaginaactiondefault to "mpenisflowerbounce">><<set $vaginaaction to 0>><<arousal 500 "vaginal">><<drugs 10>>
+		<<if $arousal gte ($arousalmax / 5) * 4>>
+			你如饥似渴地骑着植物，用你能做到的最快速度摩擦它。这种感觉可能会让你发疯。
+		<<elseif $arousal gte ($arousalmax / 5) * 3>>
+			你骑着触手植物上下移动，这种感觉可能会让你发疯。
+		<<else>>
+			你轻轻地骑着阴茎状植物上下移动，每插入一次都会在你的身体里释放出一波快感。
+		<</if>>
+	<</if>>
+
+	<<if $vaginaaction is "mpenisflowerpenetratestop">>
+		<<set $vaginaactiondefault to "mpenisflowerbounce">><<set $vaginaaction to 0>><<arousal 300 "vaginal">><<drugs 10>>
+		<span class="red">你的腿没能把你从植物上抬起来，就好像你的身体没有服从你一样。</span>
+	<</if>>
+
+	<!-- Anus actions -->
+
+	<<if $anusaction is "mpenisflowerrub">>
+		<<set $anusactiondefault to "mpenisflowerrub">><<set $anusaction to 0>><<set $anususe to "mpenisflowerrub">><<set $moorPhallusPlant to 2>>
+		<<if !$_genitals_exposed>>
+			<<arousal 100 "anal">>
+			你的屁股紧贴着植物，尽管你的衣服挡着路。
+		<<else>>
+			<<arousal 200 "anal">>
+			<<print either(
+				"你几乎让自己把整个植物带进菊穴，但在最后一刻停止了自己。你轻轻地把植物绕在入口周围。",
+				"你用<<bottom>>夹住触手植物，开始上下套弄。",
+				"你用菊穴摩擦阳具植物。",
+			)>>
+		<</if>>
+	<</if>>
+
+	<<if $anusaction is "mpenisflowerpenetrate">>
+		<<set $anusactiondefault to "mpenisflowerbounce">><<set $anusaction to 0>><<set $anususe to "mpenisflowerpenetrate">>
+		<<arousal 1000 "anal">><<analstat>>
+		你把自己放低，让植物插入你。
+		<<if $player.virginity.anal is true>>
+			<<takeVirginity ""一株阳具植物" "anal">>
+			当菊穴挣扎着适应植物时，<span class="red">你不再拥有纯洁的</span>菊穴了，你几乎尖叫出来，但疼痛很快就消失了。
+		<<else>>
+			你从未有过这样的感觉。
+		<</if>>
+	<</if>>
+
+	<<if $anusaction is "mpenisflowerstop">>
+		<<set $anusactiondefault to "mrest">><<set $anusaction to 0>><<set $anususe to 0>><<set $moorPhallusPlant to 1>>
+		<span class="lblue">停止用菊穴摩擦阳具植物。</span>
+	<</if>>
+
+	<<if $anusaction is "mpenisflowerbounce">>
+		<<set $anusactiondefault to "mpenisflowerbounce">><<set $anusaction to 0>><<arousal 500 "anal">><<drugs 10>>
+		<<if $arousal gte ($arousalmax / 5) * 4>>
+			你粗略地骑着植物，以最快的速度摩擦它。这和你以前的感觉都不一样。
+		<<elseif $arousal gte ($arousalmax / 5) * 3>>
+			你骑着植物<<if $player.penisExist>>，试图让它撞到你的前列腺<</if>>.这和你以前的感觉都不一样。
+		<<else>>
+			你温柔地骑在阴茎状植物上，它每一次的插入都给会你的身体带来一阵快乐的浪潮。
+		<</if>>
+	<</if>>
+
+	<<if $anusaction is "mpenisflowerpenetratestop">>
+		<<set $anusactiondefault to "mpenisflowerbounce">><<set $anusaction to 0>><<arousal 300 "anal">><<drugs 10>>
+		<span class="red">你的腿没能把你从植物上抬起来，就好像你的身体没有服从你一样。</span>
+	<</if>>
+
+	/* Sex toy pick up actions */
+	<<if $leftaction is "mpickupdildo" and $rightaction is "mpickupdildo" and $selectedToyLeft is $selectedToyRight>>
+		<<set $rightaction to 0>>
+	<</if>>
+
+	<<if $leftaction is "mpickupdildo" or $rightaction is "mpickupdildo">>
+		<<set $_actiondefault to ($player.vaginaExist ? "mvaginaentrancedildo" : "manusentrancedildo")>>
+		<<set $_actiondefaultstroker to "mpenisentrancestroker">>
+		<<set $_actiondefaultbreastpump to "mbreastpump">>
+
+		<<if $leftaction is "mpickupdildo" and $rightaction is "mpickupdildo">>
+			<<set $currentToyLeft to $selectedToyLeft>>
+			<<if _playerToys[$currentToyLeft].type.includes("stroker")>>
+				<<set $leftactiondefault to $_actiondefaultstroker>>
+			<<elseif _playerToys[$currentToyLeft].type.includes("breastpump")>>
+				<<set $leftactiondefault to $_actiondefaultbreastpump>>
+			<<else>>
+				<<set $leftactiondefault to $_actiondefault>>
+			<</if>>
+			<<set $leftaction to 0>><<set $leftarm to "mpickupdildo">>
+			<<arousal 200 "masturbation">>
+			你用左手拿起<<print ["黑色", "蓝色", "蓝绿色", "柠檬绿", "浅粉色", "紫色", "浅褐色", "褐色", "红色", "绿色", "粉色", "白色", "黄色"] [ ["black", "blue", "teal", "lime-green", "light-pink", "purple", "tan", "brown", "red", "green", "pink", "white", "yellow"].indexOf(_playerToys[$currentToyLeft].colour)] or "">>_playerToys[$currentToyLeft].namecap。
+
+			<<set $currentToyRight to $selectedToyRight>>
+			<<if _playerToys[$currentToyRight].type.includes("stroker")>>
+				<<set $rightactiondefault to $_actiondefaultstroker>>
+			<<elseif _playerToys[$currentToyRight].type.includes("breastpump")>>
+				<<set $rightactiondefault to $_actiondefaultbreastpump>>
+			<<else>>
+				<<set $rightactiondefault to $_actiondefault>>
+			<</if>>
+			<<set $rightaction to 0>><<set $rightarm to "mpickupdildo">>
+			<<arousal 200 "masturbation">>
+			你用右手拿起<<print ["黑色", "蓝色", "蓝绿色", "柠檬绿", "浅粉色", "紫色", "浅褐色", "褐色", "红色", "绿色", "粉色", "白色", "黄色"] [ ["black", "blue", "teal", "lime-green", "light-pink", "purple", "tan", "brown", "red", "green", "pink", "white", "yellow"].indexOf(_playerToys[$currentToyRight].colour)] or "">>_playerToys[$currentToyRight].namecap。
+
+		<<elseif $leftaction is "mpickupdildo">>
+			<<set $currentToyLeft to $selectedToyLeft>>
+			<<if _playerToys[$currentToyLeft].type.includes("stroker")>>
+				<<set $leftactiondefault to $_actiondefaultstroker>>
+			<<elseif _playerToys[$currentToyLeft].type.includes("breastpump")>>
+				<<set $leftactiondefault to $_actiondefaultbreastpump>>
+			<<else>>
+				<<set $leftactiondefault to $_actiondefault>>
+			<</if>>
+			<<set $leftaction to 0>><<set $leftarm to "mpickupdildo">>
+			<<arousal 200 "masturbation">>
+			你用左手拿起<<print ["黑色", "蓝色", "蓝绿色", "柠檬绿", "浅粉色", "紫色", "浅褐色", "褐色", "红色", "绿色", "粉色", "白色", "黄色"] [ ["black", "blue", "teal", "lime-green", "light-pink", "purple", "tan", "brown", "red", "green", "pink", "white", "yellow"].indexOf(_playerToys[$currentToyLeft].colour)] or "">>_playerToys[$currentToyLeft].namecap。
+
+		<<elseif $rightaction is "mpickupdildo">>
+			<<set $currentToyRight to $selectedToyRight>>
+			<<if _playerToys[$currentToyRight].type.includes("stroker")>>
+				<<set $rightactiondefault to $_actiondefaultstroker>>
+			<<elseif _playerToys[$currentToyRight].type.includes("breastpump")>>
+				<<set $rightactiondefault to $_actiondefaultbreastpump>>
+			<<else>>
+				<<set $rightactiondefault to $_actiondefault>>
+			<</if>>
+			<<set $rightaction to 0>><<set $rightarm to "mpickupdildo">>
+			<<arousal 200 "masturbation">>
+			你用右手拿起<<print ["黑色", "蓝色", "蓝绿色", "柠檬绿", "浅粉色", "紫色", "浅褐色", "褐色", "红色", "绿色", "粉色", "白色", "黄色"] [ ["black", "blue", "teal", "lime-green", "light-pink", "purple", "tan", "brown", "red", "green", "pink", "white", "yellow"].indexOf(_playerToys[$currentToyRight].colour)] or "">>_playerToys[$currentToyRight].namecap。
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mdildostop" and $rightaction is "mdildostop">>
+		<<set $fingersInVagina to 0>>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="lblue">你松开<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>。</span>
+		<span class="lblue">你松开<<toy $currentToyLeft>>和<<toy $currentToyRight>>。</span>
+		<<set $currentToyRight to "none">><<set $currentToyLeft to "none">>
+	<<elseif $leftaction is "mdildostop">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<span class="lblue">你松开左手中的<<toyName $currentToyLeft>>。</span>
+		<<set $currentToyLeft to "none">>
+	<<elseif $rightaction is "mdildostop">>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="lblue">你松开右手中的<<toyName $currentToyRight>>。</span>
+		<<set $currentToyRight to "none">>
+	<</if>>
+
+	/* Stroker actions*/
+
+	<<if $penisuse isnot 0 and $penisuse isnot "stroker">>
+	<<elseif $leftaction is "mpenisentrancestroker" and $rightaction is "mpenisentrancestroker">>
+		<<set $_actiondefault to "mpenisentrancestroker">>
+		<<set $leftactiondefault to $_actiondefault>><<set $leftaction to 0>><<set $leftarm to "mpenisentrancestroker">>
+		<<set $rightactiondefault to $_actiondefault>><<set $rightaction to 0>><<set $rightarm to "mpenisentrancestroker">>
+		<<arousal 50 "masturbationPenis">>
+		<<if $_genitals_exposed and $worn.genitals.vagina_exposed gte 1>>
+			<span class="blue">你移动你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>在你露出的<<penis>>上，然后在期待中颤抖。</span>
+		<<elseif $worn.genitals.vagina_exposed is 0>>
+			<span class="blue">你移动你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>在你的<<penis>>上，感受它在你$worn.genitals.cn_name_cap下的形状。</span>
+		<<elseif $worn.under_lower.vagina_exposed is 0>>
+			<span class="blue">你移动你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>在你的<<penis>>上，感受它在你$worn.lower.cn_name_cap下的形状。</span>
+		<<elseif $worn.lower.vagina_exposed is 0>>
+			<span class="blue">你移动你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>在你的<<penis>>上，感受它在你$worn.under_lower.cn_name_cap下的形状。</span>
+		<<else>>
+			<span class="blue">你移动你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>在你的<<penis>>上，感受它在你衣服下的形状。</span>
+		<</if>>
+		<<set $penisuse to "stroker">>
+	<<elseif $leftaction is "mpenisentrancestroker">>
+		<<set $_actiondefault to "mpenisentrancestroker">>
+		<<if $leftaction is "mpenisentrancestroker">>
+			<<set $leftactiondefault to $_actiondefault>><<set $leftaction to 0>><<set $leftarm to "mpenisentrancestroker">>
+		<</if>>
+		<<arousal 50 "masturbationPenis">>
+		<span class="blue">你拿起你的<<toyName $currentToyLeft>>在你的<<penis>>上摩擦，
+			<<if $_genitals_exposed>>
+				在期待中颤抖。
+			<<elseif $worn.lower.vagina_exposed is 0>>
+				在你的$worn.lower.cn_name_cap下感受它的形状。
+			<<elseif $worn.under_lower.vagina_exposed is 0>>
+				感受它在你$worn.under_lower.cn_name_cap下的形状。
+			<<else>>
+				在你的衣服下感受它的形状。
+			<</if>>
+		</span>
+		<<set $penisuse to "stroker">>
+	<<elseif $rightaction is "mpenisentrancestroker">>
+		<<set $_actiondefault to "mpenisentrancestroker">>
+		<<if $rightaction is "mpenisentrancestroker">>
+			<<set $rightactiondefault to $_actiondefault>><<set $rightaction to 0>><<set $rightarm to "mpenisentrancestroker">>
+		<</if>>
+		<<arousal 50 "masturbationPenis">>
+		<span class="blue">你拿起你的<<toyName $currentToyRight>>在你的<<penis>>上摩擦，
+			<<if $_genitals_exposed>>
+				在期待中颤抖。
+			<<elseif $worn.lower.vagina_exposed is 0>>
+				在你的$worn.lower.cn_name_cap下感受它的形状。
+			<<elseif $worn.under_lower.vagina_exposed is 0>>
+				感受它在你$worn.under_lower.cn_name_cap下的形状。
+			<<else>>
+				在你的衣服下感受它的形状。
+			<</if>>
+		</span>
+		<<set $penisuse to "stroker">>
+	<</if>>
+
+	<<if $leftaction is "mpenisstroker" or $rightaction is "mpenisstroker">>
+		<<if $leftaction is "mpenisstroker">>
+			<<set $_toy to getToyName($currentToyLeft)>>
+			<<set $leftactiondefault to "mpenisstroker">><<set $leftaction to 0>><<set $leftarm to "mpenisstroker">>
+		<</if>>
+		<<if $rightaction is "mpenisstroker">>
+			<<set $_toy to getToyName($currentToyRight)>>
+			<<set $rightactiondefault to "mpenisstroker">><<set $rightaction to 0>><<set $rightarm to "mpenisstroker">>
+		<</if>>
+		<<if $rightarm is "mpenisstroker" and $leftarm is "mpenisstroker">>
+			<<set $_toy to getToyName($currentToyLeft) + "和" + getToyName($currentToyRight)>>
+			<<arousal 50 "masturbationPenis">>
+		<</if>>
+		<<arousal 400 "masturbationPenis">>
+		<span class="purple">你用$_toy操弄你的<<penis>>。</span>
+		<<set $penisuse to "stroker">>
+	<</if>>
+
+	<<if $leftaction is "mpenisstopstroker" and $rightaction is "mpenisstopstroker">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>><<set $penisuse to 0>>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="purple">你把你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>从你的<<penis>>移开。</span>
+	<<elseif $leftaction is "mpenisstopstroker">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<<if !["mpenisentrancestroker","mpenisstroker"].includes($rightarm)>><<set $penisuse to 0>><</if>>
+		<span class="purple">把你的_playerToys[$currentToyLeft].namecap从你的<<penis>>移开。</span>
+	<<elseif $rightaction is "mpenisstopstroker">>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>><<set $penisuse to 0>>
+		<<if !["mpenisentrancestroker","mpenisstroker"].includes($leftarm)>><<set $penisuse to 0>><</if>>
+		<span class="purple">把你右手中的_playerToys[$currentToyRight].namecap从<<penis>>移开。</span>
+	<</if>>
+
+	/* Breast pump actions*/
+
+	<<if $leftaction is "mbreastpump" and $rightaction is "mbreastpump">>
+		<<set $_actiondefault to "mbreastpumppump">>
+		<<set $leftactiondefault to $_actiondefault>><<set $leftaction to 0>><<set $leftarm to "mbreastpump">>
+		<<set $rightactiondefault to $_actiondefault>><<set $rightaction to 0>><<set $rightarm to "mbreastpump">>
+		<span class="blue">你把<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>封在你的<<breasts>>上，准备挤奶。</span>
+	<<elseif $leftaction is "mbreastpump">>
+		<<set $_actiondefault to "mbreastpumppump">>
+		<<set $leftactiondefault to $_actiondefault>><<set $leftaction to 0>><<set $leftarm to "mbreastpump">>
+		<span class="blue">你把<<toyName $currentToyLeft>>封在你的<<breasts>>上，准备挤奶。</span>
+	<<elseif $rightaction is "mbreastpump">>
+		<<set $_actiondefault to "mbreastpumppump">>
+		<<set $rightactiondefault to $_actiondefault>><<set $rightaction to 0>><<set $rightarm to "mbreastpump">>
+		<span class="blue">你把<<toyName $currentToyRight>>封在你的<<breasts>>上，准备挤奶。</span>
+	<</if>>
+
+	<<set _pumpsOnBreasts to 0>>
+	<<if $leftaction is "mbreastpumppump">>
+		<<set $leftactiondefault to "mbreastpumppump">>
+		<<arousal 75 "masturbationNipples">><<playWithBreasts 3>>
+		<<set _pumpsOnBreasts++>>
+	<</if>>
+	<<if $rightaction is "mbreastpumppump">>
+		<<set $rightactiondefault to "mbreastpumppump">>
+		<<arousal 75 "masturbationNipples">><<playWithBreasts 3>>
+		<<set _pumpsOnBreasts++>>
+	<</if>>
+
+	<<if _pumpsOnBreasts>>
+		你尝试在你的<<breasts>>上使用你的<<if $_lefttoy>><<toyName $currentToyLeft>><</if>><<if $_lefttoy and $_righttoy>>和<</if>><<if $_righttoy>><<toyName $currentToyRight>><</if>>
+		<<if $lactating is 1 and $breastfeedingdisable is "f">>
+			<<if $milk_amount gte 1>>
+				<span class="lewd">乳汁从你的蓓蕾流进奶瓶。</span>
+				<<breastfeed `Math.floor(_pumpsOnBreasts * 3.5)`>>
+			<<else>>
+				但你的乳头却没有乳汁流出。你一定是被榨干了。
+			<</if>>
+		<<else>>
+			但你的蓓蕾却没有乳汁流出。你一定还没产奶。
+			<<if (!$daily.lactatingPressure or $daily.lactatingPressure lte 5) and random(0,100) gte 90>>
+				<<if !$daily.lactatingPressure>><<set $daily.lactatingPressure to 0>><</if>>
+				<<set $daily.lactatingPressure++>>
+				<<milkvolume _pumpsOnBreasts>>
+			<</if>>
+		<</if>>
+		<<if $leftaction is "mbreastpumppump">><<set $leftaction to 0>><</if>>
+		<<if $rightaction is "mbreastpumppump">><<set $rightaction to 0>><</if>>
+	<</if>>
+
+	<<if $leftaction is "mstopbreastpump" and $rightaction is "mstopbreastpump">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="purple">你把你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>从你的<<breasts>>移开。</span>
+	<<elseif $leftaction is "mstopbreastpump">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<span class="purple">把你左手的_playerToys[$currentToyLeft].namecap从<<breasts>>移开。</span>
+	<<elseif $rightaction is "mstopbreastpump">>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="purple">把你右手中的_playerToys[$currentToyRight].namecap从<<breasts>>移开。</span>
+	<</if>>
+
+	/* Bullet vibrator actions*/
+
+	<<if $leftaction is "mchestvibrate" or $rightaction is "mchestvibrate">>
+		<<set _toysOnBreasts to 0>>
+		<<if $leftaction is "mchestvibrate">>
+			<<set _toysOnBreasts += 1>>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+			<<arousal 200 "masturbationNipples">><<playWithBreasts 2>><<set _toysCount++>>
+			<<set _nippleToyName to _playerToys[$currentToyLeft].name>>
+			<<set _toyHand to '你的左手'>>
+		<</if>>
+		<<if $rightaction is "mchestvibrate">>
+			<<set _toysOnBreasts += 1>>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+			<<arousal 200 "masturbationNipples">><<playWithBreasts 2>><<set _toysCount++>>
+			<<if _nippleToyName>>
+				<<set _nippleToyName += " and  " + _playerToys[$currentToyRight].name>>
+				<<set _toyHand to '你的双手'>>
+			<<else>>
+				<<set _nippleToyName to _playerToys[$currentToyRight].name>>
+				<<set _toyHand to '你的右手'>>
+			<</if>>
+		<</if>>
+
+		<<if $worn.over_upper.exposed gte 2 and $worn.upper.exposed gte 2 and $worn.under_upper.exposed gte 1>>
+			<<arousal `200 * _toysOnBreasts` "masturbationNipples">>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				尽管_nippleToyName使劲地摩擦着你的乳头，但你的乳头还是挺直了，振动会给你带来一种持续的快感。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你用_toyHand的_nippleToyName摩擦着你正不断变硬的乳头。
+			<<else>>
+				你按下你的_nippleToyName对你的乳头与_toyHand，感觉淫荡的温暖增长，因为它继续振动。
+			<</if>>
+		<<else>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				你的乳头直立在你的<<topaside>>上，尽管_nippleToyName通过织物与它们摩擦。
+				你的乳头直立，尽管_nippleToyName在你的<<topaside>>下面被摩擦和振动。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你用_toyHand的_nippleToyName隔着<<topaside>>摩擦着你正不断变硬的乳头。
+			<<else>>
+				你用_toyHand把你的_nippleToyName压在你的乳头上。感觉很好，即使有你的<<topaside>>挡道。
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mpenisvibrate" or $rightaction is "mpenisvibrate" and $penisuse is 0>>
+		<<set _toysOnPenis to 0>>
+		<<if $leftaction is "mpenisvibrate">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+			<<arousal 200 "masturbationPenis">><<set _toysOnPenis++>>
+			<<set _penisToyName to _playerToys[$currentToyLeft].namecap>>
+		<</if>>
+		<<if $rightaction is "mpenisvibrate">>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+			<<arousal 200 "masturbationPenis">><<set _toysOnPenis++>>
+			<<if _penisToyName>>
+				<<set _penisToyName += "和" + _playerToys[$currentToyRight].namecap>>
+			<<else>>
+				<<set _penisToyName to _playerToys[$currentToyRight].namecap>>
+			<</if>>
+		<</if>>
+		<<if $worn.over_upper.exposed lte 1 and $worn.upper.exposed lte 1 and $worn.under_upper.exposed is 0>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				你把你的_penisToyName在你的<<penis>>上下摩擦你的<<bottomaside>>。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你把你的_penisToyName上下摩擦你的<<penis>>，它的振动迅速使你兴奋，即使隔着你的<<bottomaside>>。
+			<<else>>
+				你轻轻地把你的_penisToyName放在你的<<penis>>的底部，享受这种感觉，尽管你的<<bottomaside>>挡住了路。
+			<</if>>
+		<<elseif $player.virginity.penile is true>>
+			<<arousal `200 * _toysOnPenis` "masturbationPenis">>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				你在你的包皮允许的范围内上下摩擦你振动的_penisToyName。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你在你的童贞阴茎上下摩擦你的_penisToyName，它的振动很快让你兴奋起来。
+			<<else>>
+				你轻轻地把你的振动_penisToyName放在你的<<penis>>的底部，享受这种感觉。
+			<</if>>
+		<<else>>
+			<<arousal `200 * _toysOnPenis` "masturbationPenis">>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				你在你的<<penis>>上下摩擦你振动的_penisToyName。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你拿着你的振动的_penisToyName上下摩擦你的<<penis>>，它的振动产生一种快速增长的淫荡的温暖。
+			<<else>>
+				你拿着你的振动的_penisToyName对着你的<<penis>>底部，享受这种感觉。
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mvaginaclitvibrate" or $rightaction is "mvaginaclitvibrate">>
+		<<set _toysOnClit to 0>>
+		<<if $leftaction is "mvaginaclitvibrate">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+			<<arousal 200 "masturbationVagina">><<set _toysOnClit++>>
+			<<set _clitToyName to _playerToys[$currentToyLeft].name>>
+		<</if>>
+		<<if $rightaction is "mvaginaclitvibrate">>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+			<<arousal 200 "masturbationVagina">><<set _toysOnClit++>>
+			<<if _clitToyName>>
+				<<set _clitToyName += " and  " + _playerToys[$currentToyRight].name>>
+			<<else>>
+				<<set _clitToyName to _playerToys[$currentToyRight].name>>
+			<</if>>
+		<</if>>
+		<<if $_genitals_exposed and $bugsinside is 1>>
+			<<arousal `200 * _toysOnClit` "masturbationVagina">>
+			<span class="blue">你轻轻地把你的_clitToyNameagainst按在你的<<clit>>上，震动加上昆虫在你体内爬行的感觉使你的脚趾弯曲。</span>
+			<<addVaginalWetness 4>>
+		<<elseif $_genitals_exposed>>
+			<<arousal `200 * _toysOnClit` "masturbationVagina">>
+			<span class="blue">
+				你轻轻地把你的_clitToyName按在你的<<clit>>上，
+				<<if $mouth is "mdildomouth">>
+					快感引起的轻微呻吟从
+					<<if $worn.face.type.includes("gag")>>
+						<<print $worn.face.cn_name_cap>>
+					<<elseif $leftarm is "mdildomouth">>
+						<<print _playerToys[$currentToyLeft].namecap>>
+					<<else>>
+						<<print _playerToys[$currentToyRight].namecap>>
+					<</if>>
+					你被堵住的嘴里发出
+				<<else>>
+					对这种感觉轻声呻吟。
+				<</if>>
+			</span>
+			<<addVaginalWetness 4>>
+		<<elseif $worn.under_lower.vagina_exposed is 1>>
+			<span class="blue">你把你的_clitToyName按在你的<<clit>>上，隔着你的$worn.lower.cn_name_cap，享受它穿过织物的感觉。</span>
+			<<addVaginalWetness 2>>
+		<<elseif $worn.lower.vagina_exposed is 1>>
+			<span class="blue">你隔着$worn.under_lower.cn_name_cap把你的_clitToyName按在你的<<clit>>上，享受它穿过织物的感觉。</span>
+			<<addVaginalWetness 1>>
+		<<else>>
+			<span class="blue">你把你的_clitToyName紧紧地压在你的<<clit>>上，穿过你的衣服，享受它的感觉，尽管有几层织物挡在中间。</span>
+			<<addVaginalWetness 0>>
+		<</if>>
+	<</if>>
+
+	/* Small Dildo and dildo actions*/
+
+	<<if $leftaction is "mdildomouthentrance" and $mouth is 0 and ($rightaction isnot "mdildomouthentrance" or random(0,100) gte 50)>>
+		<<set $leftactiondefault to "mdildomouth">><<set $leftaction to 0>><<set $leftarm to "mdildomouthentrance">><<set $mouth to "mdildomouthentrance">>
+		<<set $mouthactiondefault to "mdildolick">>
+		<<arousal 100 "masturbationMouth">>
+		你把你的<<print _playerToys[$currentToyLeft].namecap>>放到嘴里，
+		<<if $oralskill lt 100>>
+			渴望练习。
+		<<else>>
+			享受它贴在嘴唇上的感觉。
+		<</if>>
+	<</if>>
+
+	<<if $rightaction is "mdildomouthentrance" and $mouth is 0>>
+		<<set $rightactiondefault to "mdildomouth">><<set $rightaction to 0>><<set $rightarm to "mdildomouthentrance">><<set $mouth to "mdildomouthentrance">>
+		<<set $mouthactiondefault to "mdildolick">>
+		<<arousal 100 "masturbationMouth">>
+		你把你的<<print _playerToys[$currentToyRight].namecap>>放到嘴里，
+		<<if $oralskill lt 100>>
+			渴望练习。
+		<<else>>
+			享受它贴在嘴唇上的感觉。
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mdildopiston" or $rightaction is "mdildopiston">>
+		<<if $leftaction is "mdildopiston">><<set $leftactiondefault to $leftaction>><<set $leftaction to 0>><<set $_mouthDildo to $currentToyLeft>><</if>>
+		<<if $rightaction is "mdildopiston">><<set $rightactiondefault to $rightaction>><<set $rightaction to 0>><<set $_mouthDildo to $currentToyRight>><</if>>
+		<<if _playerToys[$_mouthDildo].name.includes("small")>><<set $_smallDildo to true>><</if>>
+		<<arousal 100 "masturbationOral">><<set $masturbation_oralSkill++>>
+		<<if $oralskill lt 100>>
+			你小心地在嘴里前后移动<<print _playerToys[$_mouthDildo].namecap>>，
+			<<if $_smallDildo>>
+				它的大小适中，适合像你这样的初学者。
+			<<else>>
+				小心别推得太深。
+			<</if>>
+		<<elseif $oralskill lt 200>>
+			<<arousal 100 "masturbationOral">>
+			你的头在<<print _playerToys[$_mouthDildo].namecap>>上来回摆动，享受它摩擦你的嘴唇和舌头的感觉。
+		<<else>>
+			<<arousal 200 "masturbationOral">>
+			你熟练地舔舐和挑逗<<print _playerToys[$_mouthDildo].namecap>>，同时快速地前后摆动你的头，陶醉于它提供的淫荡的感觉。
+		<</if>>
+	<</if>>
+
+	<<if $mouthaction is "mdildolick">>
+		<<set $mouthactiondefault to $mouthaction>>
+		<<set $mouthaction to 0>>
+		<<if $leftarm is $mouth>><<set $_mouthDildo to $currentToyLeft>><</if>>
+		<<if $rightarm is $mouth>><<set $_mouthDildo to $currentToyRight>><</if>>
+		<<if _playerToys[$_mouthDildo].name.includes("small")>><<set $_smallDildo to true>><</if>>
+		<<arousal 100 "masturbationOral">><<set $masturbation_oralSkill++>>
+		<<if $mouth is "mdildomouthentrance">>
+			<<if $oralskill lt 100>>
+				你小心翼翼地舔着<<print _playerToys[$_mouthDildo].namecap>>的末端，尽力用舌头挑逗它。
+			<<elseif $oralskill lt 200>>
+				<<arousal 100 "masturbationOral">>
+				你急切地舔着<<print _playerToys[$_mouthDildo].namecap>>的末端，尽你最大的努力用舌头挑逗它。
+			<<else>>
+				<<arousal 200 "masturbationOral">>
+				你熟练地亲吻和舔<<print _playerToys[$_mouthDildo].namecap>>的尖端，用你的嘴唇和舌头把注意力集中在它上面。
+			<</if>>
+		<<else>>
+			<<if $oralskill lt 100>>
+				<<if $_smallDildo>>
+					你笨拙地在嘴里的<<print _playerToys[$_mouthDildo].namecap>>的底部摆动舌头。
+				<<else>>
+					你挣扎着沿着<<print _playerToys[$_mouthDildo].namecap>>舔，它的周长把你的舌头固定在你的口腔底部。
+				<</if>>
+			<<elseif $oralskill lt 200>>
+				<<arousal 100 "masturbationOral">>
+				你沿着嘴里的<<print _playerToys[$_mouthDildo].namecap>>扭动舌头，尽可能地舔弄玩具更多的部位。
+			<<else>>
+				<<arousal 200 "masturbationOral">>
+				你熟练地沿着嘴里的<<print _playerToys[$_mouthDildo].namecap>>扭动着你的舌头，偶尔调整舌头角度来将它的更多部位包裹住。
+			<</if>>
+		<</if>>
+	<<elseif $mouthaction is "mdildokiss">>
+		<<set $mouthactiondefault to $mouthaction>><<set $mouthaction to 0>>
+		<<if $leftarm is $mouth>><<set $_mouthDildo to $currentToyLeft>><</if>>
+		<<if $rightarm is $mouth>><<set $_mouthDildo to $currentToyRight>><</if>>
+		<<arousal 100 "masturbationMouth">><<set $masturbation_oralSkill++>>
+		<<if $oralskill lt 100>>
+			你沿着整根<<print _playerToys[$_mouthDildo].namecap>>笨拙地亲吻着。
+		<<elseif $oralskill lt 200>>
+			<<arousal 100 "masturbationMouth">>
+			你沿着整根<<print _playerToys[$_mouthDildo].namecap>>亲吻着，一股淫靡的暖流在你体内逐渐变强。
+		<<else>>
+			<<arousal 200 "masturbationMouth">>
+			你深情地在整根<<print _playerToys[$_mouthDildo].namecap>>上留下一连串的吻，
+			<<if $player.virginity.oral is true>>
+				希望你很快就能体验到真正的东西。
+			<<else>>
+				当你把它当成真实的东西时，一种淫荡的温暖在你内心滋长。
+			<</if>>
+		<</if>>
+	<<elseif $mouthaction is "mdildosuck">>
+		<<set $mouthactiondefault to $mouthaction>><<set $mouthaction to 0>>
+		<<if $leftarm is $mouth>><<set $_mouthDildo to $currentToyLeft>><</if>>
+		<<if $rightarm is $mouth>><<set $_mouthDildo to $currentToyRight>><</if>>
+		<<arousal 100 "masturbationOral">><<set $masturbation_oralSkill++>>
+		<<if $oralskill lt 100>>
+			你尽力吮吸<<print _playerToys[$_mouthDildo].namecap>>。
+		<<elseif $oralskill lt 200>>
+			<<arousal 100 "masturbationOral">>
+			你急切地吮吸着<<print _playerToys[$_mouthDildo].namecap>>。
+		<<else>>
+			<<arousal 200 "masturbationOral">>
+			你熟练地吮吸和挑逗<<print _playerToys[$_mouthDildo].namecap>>，
+			<<if $player.virginity.oral is true>>
+				想知道真阴茎的感觉会有什么不同。
+			<<elseif $ejactrait>>
+				有点失望，干完活你就拿不到奖励了。
+			<<else>>
+				假装这是真的。
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mdildomouth" or $rightaction is "mdildomouth">>
+		<<if $leftaction is "mdildomouth">><<set $leftactiondefault to "mdildopiston">><<set $leftaction to 0>><<set $leftarm to "mdildomouth">><<set $mouth to "mdildomouth">><<set $_mouthDildo to $currentToyLeft>><</if>>
+		<<if $rightaction is "mdildomouth">><<set $rightactiondefault to "mdildopiston">><<set $rightaction to 0>><<set $rightarm to "mdildomouth">><<set $mouth to "mdildomouth">><<set $_mouthDildo to $currentToyRight>><</if>>
+		<<if $mouthactiondefault is "mdildokiss">>
+			<<set $mouthactiondefault to "mdildosuck">>
+		<</if>>
+		<<arousal 200 "masturbationOral">>
+		你把<<print _playerToys[$_mouthDildo].namecap>>放进嘴里，在你把它塞进嘴唇之间的时候，舌头轻轻地滑过它。
+	<</if>>
+
+
+	/* Hand on Vagina Actions */
+
+	<<if $leftaction is "mvaginaentrance" and $rightaction is "mvaginaentrance">>
+		<<set $_actiondefault to ($player.penisExist ? "mvaginarub" : "mvaginaclit")>>
+		<<set $leftactiondefault to $_actiondefault>><<set $leftaction to 0>><<set $leftarm to "mvaginaentrance">>
+		<<set $rightactiondefault to $_actiondefault>><<set $rightaction to 0>><<set $rightarm to "mvaginaentrance">>
+		<<arousal 400 "masturbationVagina">>
+		<<if $_genitals_exposed and $bugsinside is 1>>
+			<span class="blue">你用手指抚摸你裸露的<<pussy>>，感觉有虫子在你周围跑。</span>
+			<<addVaginalWetness 2>>
+		<<elseif $_genitals_exposed>>
+			<span class="blue">你用手指抚摸着你裸露的<<pussy>>，在期待中颤抖。</span>
+			<<addVaginalWetness 2>>
+		<<elseif $worn.under_lower.vagina_exposed is 1>>
+			<span class="blue">你用手指抚摸着你的<<pussy>>，感受着它在你的$worn.lower.cn_name_cap下面的形状。</span>
+			<<addVaginalWetness 1>>
+		<<elseif $worn.lower.vagina_exposed is 1>>
+			<span class="blue">你用手指抚摸着你的<<pussy>>，感受着它在你的$worn.under_lower.cn_name_cap下面的形状。</span>
+			<<addVaginalWetness 1>>
+		<<else>>
+			<span class="blue">你用手指抚摸着你的<<pussy>>，感受着它在你衣服下的形状。</span>
+			<<addVaginalWetness 0>>
+		<</if>>
+	<<elseif $leftaction is "mvaginaentrance" or $rightaction is "mvaginaentrance">>
+		<<set $_actiondefault to ($player.penisExist ? "mvaginarub" : "mvaginaclit")>>
+		<<if $leftaction is "mvaginaentrance">>
+			<<set $leftactiondefault to $_actiondefault>><<set $leftaction to 0>><<set $leftarm to "mvaginaentrance">>
+		<</if>>
+		<<if $rightaction is "mvaginaentrance">>
+			<<set $rightactiondefault to $_actiondefault>><<set $rightaction to 0>><<set $rightarm to "mvaginaentrance">>
+		<</if>>
+		<<arousal 200 "masturbationVagina">>
+		<<if $_genitals_exposed and $bugsinside is 1>>
+			<span class="blue">你用手指抚摸你裸露的<<pussy>>，感觉有虫子在你周围跑。</span>
+			<<addVaginalWetness 2>>
+		<<elseif $_genitals_exposed>>
+			<span class="blue">你用手指抚摸着你裸露的<<pussy>>，在期待中颤抖。</span>
+			<<addVaginalWetness 2>>
+		<<elseif $worn.lower.vagina_exposed is 0>>
+			<span class="blue">你用手指抚摸着你的<<pussy>>，感受着它在你的$worn.lower.cn_name_cap下面的形状。</span>
+			<<addVaginalWetness 0>>
+		<<elseif $worn.under_lower.vagina_exposed is 0>>
+			<span class="blue">你用手指抚摸着你的<<pussy>>，感受着它在你的$worn.under_lower.cn_name_cap下面的形状。</span>
+			<<addVaginalWetness 1>>
+		<<else>>
+			<span class="blue">你用手指抚摸着你的<<pussy>>，感受着它在你衣服下的形状。</span>
+			<<addVaginalWetness 0>>
+		<</if>>
+	<</if>>
+
+	<<set $mVaginaFingerAdd to 1>>
+	<<if $leftaction is "mvaginafingerstarttwo" or $leftaction is "mvaginafingeraddtwo">>
+		<<set $leftaction to ($leftaction is "mvaginafingeraddtwo" ? "mvaginafingeradd" : "mvagina")>>
+		<<set $mVaginaFingerAdd to 2>>
+	<</if>>
+	<<if $rightaction is "mvaginafingerstarttwo" or $rightaction is "mvaginafingeraddtwo">>
+		<<set $rightaction to ($rightaction is "mvaginafingeraddtwo" ? "mvaginafingeradd" : "mvagina")>>
+		<<set $mVaginaFingerAdd to 2>>
+	<</if>>
+
+	/* the player can only finger themself with one hand */
+	<<if $leftaction is "mvagina" and $rightaction is "mvagina">>
+		<<set $rightaction to "mvaginarub">>
+	<</if>>
+
+	<<if $leftaction is "mvagina" or $rightaction is "mvagina">>
+		<<set $fingersInVagina += $mVaginaFingerAdd>>
+		<<if $leftaction is "mvagina">>
+			<<set $leftactiondefault to ($mVaginaFingerAdd is 2 and $fingersInVagina lt $vaginaFingerLimit-1 and $fingersInVagina lt 4 ? "mvaginafingeraddtwo" : "mvaginafingeradd")>>
+			<<set $leftaction to 0>><<set $leftarm to "mvagina">>
+			<<set $semenInVagina to ($leftFingersSemen gte 1)>>
+			<<set _lubricated to ($leftFingersSemen gte 1 ? "精液润滑的" : "")>>
+		<</if>>
+		<<if $rightaction is "mvagina">>
+			<<set $rightactiondefault to ($mVaginaFingerAdd is 2 and $fingersInVagina lt $vaginaFingerLimit-1 and $fingersInVagina lt 4 ? "mvaginafingeraddtwo" : "mvaginafingeradd")>>
+			<<set $rightaction to 0>><<set $rightarm to "mvagina">>
+			<<set $semenInVagina to ($rightFingersSemen gte 1)>>
+			<<set _lubricated to ($rightFingersSemen gte 1 ? "精液润滑的" : "")>>
+		<</if>>
+		<<set _afinger to ($mVaginaFingerAdd is 2 ? "两只_lubricated手指" : "一只_lubricated手指")>>
+		<<set $_arousal to ($mVaginaFingerAdd is 2 ? 250 : 200)>>
+		<<arousal $_arousal "masturbationVagina">>
+		<<if $_hymenIntact>>
+			<span class="purple">你把_afinger伸进你的<<pussy>>，直到戳到你无暇的处女膜。</span>
+		<<elseif $bugsinside is 1>>
+			<span class="purple">你把_afinger伸进你的<<pussy>>。你觉得虫子在里面爬。</span>
+		<<else>>
+			<span class="purple">你把_afinger按进你的<<pussy>>，那个允许它侵入的地方。</span>
+		<</if>>
+
+		<<addVaginalWetness 1>>
+		<<set _fingeringEffects to true>>
+	<</if>>
+
+	<<if $leftaction is "mvaginafingeradd" or $rightaction is "mvaginafingeradd">>
+		<<set $fingersInVagina += $mVaginaFingerAdd>>
+		<<if $leftaction is "mvaginafingeradd">>
+			<<set $leftactiondefault to ($fingersInVagina is $vaginaFingerLimit ? "mvaginatease" : $leftaction)>><<set $leftaction to 0>>
+			<<set $semenInVagina to ($leftFingersSemen gte 1)>>
+			<<set _lubricated to ($leftFingersSemen gte 1 ? "精液润滑的" : "")>>
+		<</if>>
+		<<if $rightaction is "mvaginafingeradd">>
+			<<set $rightactiondefault to ($fingersInVagina is $vaginaFingerLimit ? "mvaginatease" : $rightaction)>><<set $rightaction to 0>>
+			<<set $semenInVagina to ($rightFingersSemen gte 1)>>
+			<<set _lubricated to ($rightFingersSemen gte 1 ? "精液润滑的" : "")>>
+		<</if>>
+		<<set _anotherfinger to ($mVaginaFingerAdd is 2 ? "另两只_lubricated手指" : "另一只_lubricated手指")>>
+
+		<<set $_arousalGain to 200 + 50*$fingersInVagina>>
+		<<arousal $_arousalGain "masturbationVagina">>
+		<<if $bugsinside is 1>>
+			<<if $fingersInVagina is $vaginaFingerLimit>>
+				<span class="lblue">当你把最后一根 _lubricated的手指伸进自己的身体时，你倒吸了一口气。你觉得虫子在里面爬。</span>
+			<<else>>
+				<span class="lblue">当你把_anotherfinger伸进你的<<pussy>>时，你进一步伸展了自己。你觉得虫子在里面爬。</span>
+			<</if>>
+		<<else>>
+			<<if $fingersInVagina is $vaginaFingerLimit>>
+				<span class="lblue">当你把最后一根_lubricated的手指塞进自己体内时，你倒吸了一口气。</span>
+			<<else>>
+				<span class="lblue">当你把_anotherfinger伸进你的<<pussy>>时，你进一步伸展了自己。</span>
+			<</if>>
+		<</if>>
+
+		<<addVaginalWetness $fingersInVagina>>
+		<<set _fingeringEffects to true>>
+	<</if>>
+
+	<<if _fingeringEffects>>
+		<<if $fingersInVagina is $vaginaFingerLimit-1>>
+			<span class="purple">非常合身。</span>
+		<<elseif $fingersInVagina is $vaginaFingerLimit>>
+			<<if $_hymenIntact>>
+				<span class="pink">穿不下就会撕裂处女膜。</span>
+			<<else>>
+				<span class="pink">你已经达到极限了。</span>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mvaginafistadd" or $rightaction is "mvaginafistadd">>
+		<<set $fingersInVagina to 5>>
+		<<if $leftaction is "mvaginafistadd">>
+			<<set $leftactiondefault to "mvaginafist">><<set $leftaction to 0>><<set $leftarm to "mvaginafist">>
+			<<set $semenInVagina to ($leftFingersSemen gte 1)>>
+			<<set _lubricated to ($leftFingersSemen gte 1 ? "精液润滑的" : "")>>
+		<</if>>
+		<<if $rightaction is "mvaginafistadd">>
+			<<set $rightactiondefault to "mvaginafist">><<set $rightaction to 0>><<set $rightarm to "mvaginafist">>
+			<<set $semenInVagina to ($rightFingersSemen gte 1)>>
+			<<set _lubricated to ($rightFingersSemen gte 1 ? "精液润滑的" : "")>>
+		<</if>>
+		<<arousal 650 "masturbationVagina">>
+		<span class="lblue">最后一推，你就能把五个手指都塞进你的阴部了。</span>
+		你感觉到被侵犯的肌肉组织在你的手掌周围脉动着。
+		<<set $vaginastate to "penetrated">>
+	<</if>>
+
+	<<if $leftaction is "mvaginatease" or $rightaction is "mvaginatease">>
+		<<if $leftaction is "mvaginatease">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<</if>>
+		<<if $rightaction is "mvaginatease">>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<</if>>
+		<<set $_arousalGain to 300 + 50*$fingersInVagina>>
+		<<arousal $_arousalGain "masturbationVagina">>
+		<<set $_fingers to ($fingersInVagina is 1 ? "finger" : "fingers")>>
+		<<addVaginalWetness $fingersInVagina>>
+		<<if $bugsinside is 1>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				<<if $vaginaArousalWetness gte 60>>
+					<<vaginaFluidActive>>
+					你把<<number $fingersInVagina>>$_fingers抽进抽出你的<<pussy>>，排出下流的液体，还有一些虫子和昆虫。
+				<<else>>
+					你把<<number $fingersInVagina>>$_fingers抽进抽出你的<<pussy>>，还有一些虫子和昆虫。
+				<</if>>
+			<<elseif $arousal gte ($arousalmax / 5) * 2>>
+				你把<<number $fingersInVagina>>$_fingers抽进抽出你的<<pussy>>，感觉你体内的昆虫和虫子。
+			<<else>>
+				你轻轻地操你的<<pussy>>的入口与<<number $fingersInVagina>>$_fingers，推出了一些虫子。
+			<</if>>
+		<<else>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				<<if $vaginaArousalWetness gte 60>>
+					<<vaginaFluidActive>>
+					你把<<number $fingersInVagina>>$_fingers抽进抽出你的<<pussy>>，引诱出下流的液体。
+				<<else>>
+					你把<<number $fingersInVagina>>$_fingers抽进抽出你的<<pussy>>，尽你所能往深处推。
+				<</if>>
+			<<elseif $arousal gte ($arousalmax / 5) * 2>>
+				你把<<number $fingersInVagina>>$_fingers抽进抽出你的<<pussy>>，即使没有陷得太深也能感到兴奋。
+			<<else>>
+				你轻轻地操你的<<pussy>>的入口与<<number $fingersInVagina>>$_fingers。
+			<</if>>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mvaginafist" or $rightaction is "mvaginafist">>
+		<<if $leftaction is "mvaginafist">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<</if>>
+		<<if $rightaction is "mvaginafist">>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<</if>>
+		<<arousal 500 "masturbationVagina">>
+		<<addVaginalWetness 5>>
+		<<if $arousal gte ($arousalmax / 5) * 4>>
+			<<if $vaginaArousalWetness gte 60>>
+				<<vaginaFluidActive>>
+				你用整只手用力捶打你刺痛的阴部。你的液体顺着手腕滴下来。
+			<<else>>
+				你用整只手用力捶打你刺痛的阴部。
+			<</if>>
+		<<elseif $arousal gte ($arousalmax / 5) * 2>>
+			你把整只手都塞进了你的阴部。你的内壁在它周围抽搐。
+		<<else>>
+			你轻轻地把你的拳头伸进你的阴部，感觉你的肌肉在它周围反复伸展。
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mvaginaclit" and $rightaction is "mvaginaclit">>
+		<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<<arousal 400 "masturbationVagina">>
+		<<if $arousal gte ($arousalmax / 5) * 4>>
+			你用拇指按下阴蒂，做圆周运动摩擦它。
+			你用手指轻轻拂过顶端，但随着你变得更加敏感，这也变得困难起来。
+		<<elseif $arousal gte ($arousalmax / 5) * 3>>
+			你用手指挑逗你的阴蒂。
+		<<else>>
+			你用手指摩擦阴蒂，产生一种淫荡的感觉。
+		<</if>>
+		<<addVaginalWetness 3>>
+	<<elseif $leftaction is "mvaginaclit" or $rightaction is "mvaginaclit">>
+		<<if $leftaction is "mvaginaclit">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<</if>>
+		<<if $rightaction is "mvaginaclit">>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<</if>>
+		<<arousal 200 "masturbationVagina">>
+		<<if $arousal gte ($arousalmax / 5) * 4>>
+			你用拇指按下阴蒂，做圆周运动，感觉你的快感越来越强。
+		<<elseif $arousal gte ($arousalmax / 5) * 3>>
+			你用手指挑逗你的阴蒂。
+		<<else>>
+			你用手指摩擦阴蒂，产生一种淫荡的感觉。
+		<</if>>
+		<<addVaginalWetness 2>>
+	<</if>>
+
+	<<if $leftaction is "mvaginarub" and $rightaction is "mvaginarub">>
+		<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<<arousal 400 "masturbationVagina">>
+		<<if $_genitals_exposed and $bugsinside is 1>>
+			你用手指抚摸你裸露的<<pussy>>，感觉一些虫子在你周围跑来跑去。
+			<<addVaginalWetness 2>>
+		<<elseif $_genitals_exposed>>
+			你用手指抚摸着你裸露的<<pussy>>，在期待中颤抖。
+			<<addVaginalWetness 2>>
+		<<elseif $worn.under_lower.vagina_exposed is 1>>
+			你用手指抚摸着你的<<pussy>>，感受它在你$worn.lower.cn_name_cap下的形状.
+			<<addVaginalWetness 1>>
+		<<elseif $worn.lower.vagina_exposed is 1>>
+			你用手指抚摸着你的<<pussy>>，感受它在你$worn.under_lower.cn_name_cap下的形状。
+			<<addVaginalWetness 2>>
+		<<else>>
+			你用手指抚摸着你的<<pussy>>，在你的衣服下感受它的形状。
+			<<addVaginalWetness 0>>
+		<</if>>
+	<<elseif $leftaction is "mvaginarub" or $rightaction is "mvaginarub">>
+		<<if $leftaction is "mvaginarub">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<</if>>
+		<<if $rightaction is "mvaginarub">>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<</if>>
+		<<arousal 200 "masturbationVagina">>
+		<<if $_genitals_exposed and $bugsinside is 1>>
+			你用手指抚摸你裸露的<<pussy>>，感觉一些虫子在你周围跑来跑去。
+			<<addVaginalWetness 2>>
+		<<elseif $_genitals_exposed>>
+			你用手指抚摸着你裸露的<<pussy>>，在期待中颤抖。
+			<<addVaginalWetness 2>>
+		<<elseif $worn.under_lower.vagina_exposed is 1>>
+			你用手指抚摸着你的<<pussy>>，感受它在你$worn.lower.cn_name_cap下的形状.
+			<<addVaginalWetness 0>>
+		<<elseif $worn.lower.vagina_exposed is 1>>
+			你用手指抚摸着你的<<pussy>>，感受它在你$worn.under_lower.cn_name_cap下的形状。
+			<<addVaginalWetness 1>>
+		<<else>>
+			你用手指抚摸着你的<<pussy>>，在你的衣服下感受它的形状。
+			<<addVaginalWetness 0>>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mvaginastop" and $rightaction is "mvaginastop">>
+		<<set $fingersInVagina to 0>>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="lblue">你将的手从<<pussy>>上移开。</span>
+	<<elseif $leftaction is "mvaginastop">>
+		<<if $leftarm is "mvagina">> <<set $fingersInVagina to 0>> <</if>>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<span class="lblue">你将你的左手从<<pussy>>上移开。</span>
+	<<elseif $rightaction is "mvaginastop">>
+		<<if $rightarm is "mvagina">> <<set $fingersInVagina to 0>> <</if>>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="lblue">把你的右手从你的<<pussy>>上移开。</span>
+	<</if>>
+
+	<<if $leftaction is "mvaginafingerremove" or $rightaction is "mvaginafingerremove">>
+		<<set $fingersInVagina -= 1>>
+		<<if $fingersInVagina gte 1>>
+			<<if $leftaction is "mvaginafingerremove">>
+				<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+			<<else>>
+				<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+			<</if>>
+			<span class="lblue">你把一根手指从你的<<pussy>>移出。</span>
+		<<else>>
+			<<if $leftaction is "mvaginafingerremove">>
+				<<set $leftactiondefault to "mvaginarub">><<set $leftaction to 0>><<set $leftarm to "mvaginaentrance">>
+			<<else>>
+				<<set $rightactiondefault to "mvaginarub">><<set $rightaction to 0>><<set $rightarm to "mvaginaentrance">>
+			<</if>>
+			<span class="lblue">你把你的手指从你的<<pussy>>抽出。</span>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mvaginafistremove" or $rightaction is "mvaginafistremove">>
+		<<set $fingersInVagina to 0>>
+		<<if $leftaction is "mvaginafistremove">>
+			<<set $leftactiondefault to "mvaginarub">><<set $leftaction to 0>><<set $leftarm to "mvaginaentrance">>
+		<<else>>
+			<<set $rightactiondefault to "mvaginarub">><<set $rightaction to 0>><<set $rightarm to "mvaginaentrance">>
+		<</if>>
+		<<arousal 1000 "masturbationVagina">>
+		<<if $arousal gte ($arousalmax / 5) * 4>>
+			<span class="lblue">你把整只手从你的<<pussy>>滑出来。当液体流出时，你感到肌肉在抗议地抽搐。</span>
+		<<elseif $arousal gte ($arousalmax / 5) * 2>>
+			<span class="lblue">你把整只手从你的<<pussy>>滑出来，让你感到空虚。</span>
+		<<else>>
+			<span class="lblue">你把整只手从你的<<pussy>>滑出来。你感到你的肌肉放松了。</span>
+		<</if>>
+		<<set $vaginastate to 0>>
+	<</if>>
+
+	<<if $leftaction is "mvaginaentrancedildo" and $rightaction is "mvaginaentrancedildo">>
+		<<set $_actiondefault to "mvaginadildo">>
+		<<set $leftactiondefault to $_actiondefault>><<set $leftaction to 0>><<set $leftarm to "mvaginadildo">>
+		<<set $rightactiondefault to $_actiondefault>><<set $rightaction to 0>><<set $rightarm to "mvaginadildo">>
+		<<arousal 400 "masturbationVagina">>
+		<<if $_genitals_exposed and $worn.genitals.vagina_exposed gte 1>>
+			<span class="blue">你颤抖又期待的用你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>在你暴露的<<pussy>>摩擦。</span>
+			<<addVaginalWetness 2>>
+		<<elseif $worn.genitals.vagina_exposed is 0>>
+			<span class="blue">你移动你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>在你的<<pussy>>上，感受它在你$worn.genitals.cn_name_cap下的形状。</span>
+			<<addVaginalWetness 1>>
+		<<elseif $worn.under_lower.vagina_exposed is 0>>
+			<span class="blue">你移动你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>在你的<<pussy>>上，感受它在你$worn.lower.cn_name_cap下的形状。</span>
+			<<addVaginalWetness 1>>
+		<<elseif $worn.lower.vagina_exposed is 0>>
+			<span class="blue">你移动你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>在你的<<pussy>>上，感受它在你$worn.under_lower.cn_name_cap下的形状。</span>
+			<<addVaginalWetness 1>>
+		<<else>>
+			<span class="blue">你移动你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>在你的<<pussy>>上，感受它在你衣服下的形状。</span>
+			<<addVaginalWetness 0>>
+		<</if>>
+	<<elseif $leftaction is "mvaginaentrancedildo">>
+		<<set $_actiondefault to "mvaginadildo">>
+		<<set $leftactiondefault to $_actiondefault>><<set $leftaction to 0>><<set $leftarm to "mvaginaentrancedildo">>
+		<<arousal 200 "masturbationVagina">>
+		<span class="blue">你拿起你的<<toyName $currentToyLeft>>并在你暴露的<<pussy>>上摩擦，
+			<<if $_genitals_exposed>>
+				在期待中颤抖。
+				<<addVaginalWetness 2>>
+			<<elseif $worn.lower.vagina_exposed is 0>>
+				在你的$worn.lower.cn_name_cap下感受它的形状。
+				<<addVaginalWetness 0>>
+			<<elseif $worn.under_lower.vagina_exposed is 0>>
+				感受它在你$worn.under_lower.cn_name_cap下的形状。
+				<<addVaginalWetness 1>>
+			<<else>>
+				在你的衣服下感受它的形状。
+				<<addVaginalWetness 0>>
+			<</if>>
+		</span>
+	<<elseif $rightaction is "mvaginaentrancedildo">>
+		<<set $_actiondefault to "mvaginadildo">>
+		<<set $rightactiondefault to $_actiondefault>><<set $rightaction to 0>><<set $rightarm to "mvaginaentrancedildo">>
+		<<arousal 200 "masturbationVagina">>
+		<span class="blue">你拿起你的<<toyName $currentToyRight>>然后在你暴露的<<pussy>>上摩擦，
+			<<if $_genitals_exposed>>
+				在期待中颤抖。
+				<<addVaginalWetness 2>>
+			<<elseif $worn.lower.vagina_exposed is 0>>
+				在你的$worn.lower.cn_name_cap下感受它的形状。
+				<<addVaginalWetness 0>>
+			<<elseif $worn.under_lower.vagina_exposed is 0>>
+				感受它在你$worn.under_lower.cn_name_cap下的形状。
+				<<addVaginalWetness 1>>
+			<<else>>
+				在你的衣服下感受它的形状。
+				<<addVaginalWetness 0>>
+			<</if>>
+		</span>
+	<</if>>
+
+	<<if $leftaction is "mvaginadildo" or $rightaction is "mvaginadildo">>
+		<<if $leftaction is "mvaginadildo">>
+			<<set $_toy to getToyName($currentToyLeft)>>
+			<<set $leftactiondefault to "mvaginateasedildo">><<set $leftaction to 0>><<set $leftarm to "mvaginadildo">>
+			<<set $semenInVagina to ($leftFingersSemen gte 1)>>
+			<<set _lubricated to ($leftFingersSemen gte 1 ? "精液润滑的" : "")>>
+		<</if>>
+		<<if $rightaction is "mvaginadildo">>
+			<<set $_toy to getToyName($currentToyRight)>>
+			<<set $rightactiondefault to "mvaginateasedildo">><<set $rightaction to 0>><<set $rightarm to "mvaginadildo">>
+			<<set $semenInVagina to ($rightFingersSemen gte 1)>>
+			<<set _lubricated to ($rightFingersSemen gte 1 ? "精液润滑的" : "")>>
+		<</if>>
+		<<if $rightarm is "mvaginadildo" and $leftarm is "mvaginadildo">>
+			<<set $_toy to getToyName($currentToyLeft) + "和" + getToyName($currentToyRight)>>
+			<<arousal 50 "masturbationVagina">>
+		<</if>>
+		<<arousal 250 "masturbationVagina">>
+		<<if $_hymenIntact>>
+			<span class="purple">你把这个_lubricated的$_toy塞进你的<<pussy>>，直到你戳到你无暇的处女膜。</span>
+		<<elseif $bugsinside is 1>>
+			<span class="purple">你把这个_lubricated的$_toy塞进你的<<pussy>>。你觉得虫子在里面爬。</span>
+		<<else>>
+			<span class="purple">你把这个_lubricated的$_toy塞进你的<<pussy>>，那个允许它侵入的地方。</span>
+		<</if>>
+
+		<<addVaginalWetness 1>>
+	<</if>>
+
+	<<if $leftaction is "mvaginateasedildo" or $rightaction is "mvaginateasedildo">>
+		/* set toy or toys */
+		<<if $leftaction is "mvaginateasedildo" and $rightaction is "mvaginateasedildo">>
+			<<set $_toy to ($currentToyLeft is $currentToyRight ? _playerToys[$currentToyLeft].namecap+"们" : _playerToys[$currentToyLeft].namecap+ "和" + _playerToys[$currentToyRight].namecap)>>
+		<<elseif $rightaction is "mvaginateasedildo">>
+			<<set $_toy to _playerToys[$currentToyRight].namecap>>
+		<<elseif $leftaction is "mvaginateasedildo">>
+			<<set $_toy to _playerToys[$currentToyLeft].namecap>>
+		<</if>>
+		/* set actions */
+		<<if $leftaction is "mvaginateasedildo">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<</if>>
+		<<if $rightaction is "mvaginateasedildo">>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<</if>>
+		/* arousal gains */
+		<<set $_toypleasure to 2>>
+		<<if $leftaction is "mvaginateasedildo" and $rightaction isnot "mvaginateasedildo">>
+			<<if $currentToyLeft is "dildo">>
+				<<set $_toypleasure to 3>>
+			<<elseif $currentToyLeft.includes("vibe")>>
+				<<set $_toypleasure to 5>>
+			<</if>>
+		<<elseif $rightaction is "mvaginateasedildo" and $leftaction isnot "mvaginateasedildo">>
+			<<if $currentToyRight is "dildo">>
+				<<set $_toypleasure to 3>>
+			<<elseif $currentToyRight.includes("vibe")>>
+				<<set $_toypleasure to 5>>
+			<</if>>
+		<</if>>
+		<<set $_arousalGain to 300 + 50*$_toypleasure>>
+		<<arousal $_arousalGain "masturbationVagina">>
+		<<addVaginalWetness $_toypleasure>>
+		/* set vaginal wetness text */
+		<<set $_wet to "">>
+		<<if $vaginaArousalWetness gte 40>>
+			<<set $_wet to "湿润的">>
+		<<elseif $vaginaArousalWetness gte 20>>
+			<<set $_wet to "湿滑的">>
+		<</if>>
+		/* display action text */
+
+		<<if $arousal gte ($arousalmax / 5) * 4>>
+			<<if $vaginaArousalWetness gte 60>>
+				<<vaginaFluidActive>>
+				你把你的$_toy抽进抽出你的$_wet<<pussy>>，哄出下流的液体。
+			<<else>>
+				你把你的$_toy抽进抽出你的$_wet<<pussy>>，推得尽可能深。
+			<</if>>
+		<<elseif $arousal gte ($arousalmax / 5) * 2>>
+			你把你的$_toy推进和推出你的$_wet<<pussy>>，即使没有太深也会感到兴奋。
+		<<else>>
+			你用你的$_toy轻轻地操你的$_wet<<pussy>>的入口。
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "mvaginaclitdildo" and $rightaction is "mvaginaclitdildo">>
+		<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<<if $_lefttoy.includes("vibe") or $_righttoy.includes("vibe")>>
+			<<arousal 50 "masturbationVagina">>
+		<<elseif $_lefttoy.includes("vibe") and $_righttoy.includes("vibe")>>
+			<<arousal 100 "masturbationVagina">>
+		<</if>>
+		<<arousal 400 "masturbationVagina">>
+		<<set $_toys to getToyName($currentToyLeft) + "和" + getToyName($currentToyRight)>>
+		<<if $currentToyLeft is $currentToyRight>>
+			<!-- Get a function to standardise this -->
+			<<set $_toys to getToyName($currentToyLeft) + "">>
+		<</if>>
+		<<if $arousal gte ($arousalmax / 5) * 4>>
+			你用你的$_toys压下你的阴蒂，并以圆周运动摩擦它。
+			你可以用$_toys轻轻地摩擦尖端，但随着你变得更加敏感，这变得更加困难。
+		<<elseif $arousal gte ($arousalmax / 5) * 3>>
+			你用你的$_toys挑逗你的阴蒂。
+		<<else>>
+			你用你的$_toys摩擦你的阴蒂，产生一种淫荡的感觉。
+		<</if>>
+		<<addVaginalWetness 3>>
+	<<elseif $leftaction is "mvaginaclitdildo" or $rightaction is "mvaginaclitdildo">>
+		<<if $leftaction is "mvaginaclitdildo">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				你用你的<<toyName $currentToyLeft>>按下你的阴蒂，并以圆周运动摩擦它，感觉你的快感越来越强。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你用你的<<toyName $currentToyLeft>>按下你的阴蒂。
+			<<else>>
+				你用你的<<toyName $currentToyLeft>>按下你的阴蒂，感觉你的快感越来越强。
+			<</if>>
+		<</if>>
+		<<if $rightaction is "mvaginaclitdildo">>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+			<<if $arousal gte ($arousalmax / 5) * 4>>
+				你用你的<<toyName $currentToyRight>>按下你的阴蒂，并以圆周运动摩擦它，感觉你的快感越来越强。
+			<<elseif $arousal gte ($arousalmax / 5) * 3>>
+				你用你的<<toyName $currentToyRight>>按下你的阴蒂。
+			<<else>>
+				你用你的<<toyName $currentToyRight>>按下你的阴蒂，感觉你的快感越来越强。
+			<</if>>
+		<</if>>
+		<<if $_lefttoy isnot undefined and $_lefttoy.includes("vibe") or $_righttoy isnot undefined and $_righttoy.includes("vibe")>>
+			<<arousal 50 "masturbationVagina">>
+		<</if>>
+		<<arousal 200 "masturbationVagina">>
+		<<addVaginalWetness 2>>
+	<</if>>
+
+	<<if $leftaction is "mvaginastopdildo" and $rightaction is "mvaginastopdildo">>
+		<<set $fingersInVagina to 0>>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="lblue">你把<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>从你的<<pussy>>移开。</span>
+		<<set $currentToyRight to "none">><<set $currentToyLeft to "none">>
+	<<elseif $leftaction is "mvaginastopdildo">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<span class="lblue">你把手上的<<print ["黑色", "蓝色", "蓝绿色", "柠檬绿", "浅粉色", "紫色", "浅褐色", "褐色", "红色", "绿色", "粉色", "白色", "黄色"] [ ["black", "blue", "teal", "lime-green", "light-pink", "purple", "tan", "brown", "red", "green", "pink", "white", "yellow"].indexOf(_playerToys[$currentToyLeft].colour)] or "">>_playerToys[$currentToyLeft].namecap从你<<pussy>>那儿移开。</span>
+		<<set $currentToyLeft to "none">>
+	<<elseif $rightaction is "mvaginastopdildo">>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="lblue">你把手上的<<print ["黑色", "蓝色", "蓝绿色", "柠檬绿", "浅粉色", "紫色", "浅褐色", "褐色", "红色", "绿色", "粉色", "白色", "黄色"] [ ["black", "blue", "teal", "lime-green", "light-pink", "purple", "tan", "brown", "red", "green", "pink", "white", "yellow"].indexOf(_playerToys[$currentToyRight].colour)] or "">>_playerToys[$currentToyRight].namecap从你<<pussy>>那儿移开。</span>
+		<<set $currentToyRight to "none">>
+	<</if>>
+
+	<<if $player.vaginaExist>>
+		<<if $vaginaArousalWetness gte 60>>
+			<<if $worn.under_lower.vagina_exposed is 1 and $worn.lower.vagina_exposed is 1>>
+				<<vaginaFluidPassive>>
+				<<if _lube_released gt 0>>
+					<span class="pink">爱液从你的<<pussy>>流出。</span>
+				<</if>>
+			<<elseif $worn.under_lower.vagina_exposed is 0 and $underlowerwetstage lt 3>>
+				<span class="pink">爱液从你的<<pussy>>涌出来，弄湿了你的$worn.under_lower.cn_name_cap。</span>
+				<<underlowerwet 1>>
+			<<elseif $worn.lower.vagina_exposed is 0>>
+				<span class="pink">爱液从你的<<pussy>>漏出<<if $underlowerwet gte 60>>，浸透你的$worn.under_lower.cn_name_cap，<</if>>浸湿你的$worn.lower.cn_name_cap.</span>
+			<<else>>
+				<span class="pink">爱液从你的<<pussy>>漏出来，弄湿了你的衣服。</span>
+			<</if>>
+		<</if>>
+	<</if>>
+
+	/* Anus */
+	<<if $leftaction is "manusentrance" and $rightaction is "manusentrance">>
+		<<set $leftactiondefault to "manusrub">><<set $leftaction to 0>><<set $leftarm to "manusentrance">>
+		<<set $rightactiondefault to "manusrub">><<set $rightaction to 0>><<set $rightarm to "manusentrance">>
+		<<arousal 200 "masturbationAss">>
+		<<if $worn.under_lower.anus_exposed is 1 and $worn.lower.anus_exposed is 1>>
+			<span class="blue">你把手伸到裸露的<<bottom>>，轻轻地把手指按在菊穴上。</span>
+		<<elseif $worn.under_lower.anus_exposed is 1>>
+			<span class="blue">你把手伸到你的<<bottom>>，隔着你的$worn.lower.cn_name_cap轻轻按压你的菊穴。</span>
+		<<elseif $worn.lower.anus_exposed is 1>>
+			<span class="blue">你把手伸到你的<<bottom>>，隔着你的$worn.under_lower.cn_name_cap轻轻按压你的菊穴。</span>
+		<</if>>
+	<<elseif $leftaction is "manusentrance" or $rightaction is "manusentrance">>
+		<<if $leftaction is "manusentrance">>
+			<<set $leftactiondefault to "manusrub">><<set $leftaction to 0>><<set $leftarm to "manusentrance">>
+		<</if>>
+		<<if $rightaction is "manusentrance">>
+			<<set $rightactiondefault to "manusrub">><<set $rightaction to 0>><<set $rightarm to "manusentrance">>
+		<</if>>
+		<<arousal 200 "masturbationAss">>
+		<<if $worn.under_lower.anus_exposed is 1 and $worn.lower.anus_exposed is 1>>
+			<span class="blue">你把手伸到裸露的<<bottom>>，用手指轻轻地按在菊穴上。</span>
+		<<elseif $worn.under_lower.anus_exposed is 1>>
+			<span class="blue">你把手伸到你的<<bottom>>，用一根手指，隔着你的$worn.lower.cn_name_cap轻轻地按在菊穴上。</span>
+		<<elseif $worn.lower.anus_exposed is 1>>
+			<span class="blue">你把手伸到你的<<bottom>>，用一根手指隔着你的$worn.under_lower.cn_name_cap轻轻地按压你的菊穴。</span>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "manus" and $rightaction is "manus">>
+		<<set $leftactiondefault to "manustease">><<set $leftaction to 0>><<set $leftarm to "manus">>
+		<<set $rightactiondefault to "manustease">><<set $rightaction to 0>><<set $rightarm to "manus">>
+		<<arousal 200 "masturbationAnal">>
+		<<set _lubricated to ($leftFingersSemen gte 1 or $rightFingersSemen gte 1 ? "精液润滑的" : "")>>
+		<<if _lubricated.length>><<set $semenInAnus to true>><</if>>
+		<span class="purple">你把两个_lubricated的手指插进你的<<bottom>>。</span>
+	<<elseif $leftaction is "manus" or $rightaction is "manus">>
+		<<if $leftaction is "manus">>
+			<<set $leftactiondefault to "manustease">><<set $leftaction to 0>><<set $leftarm to "manus">>
+			<<set $semenInAnus to ($leftFingersSemen gte 1)>>
+			<<set _lubricated to ($leftFingersSemen gte 1 ? "精液润滑的" : "")>>
+		<<elseif $rightaction is "manus">>
+			<<set $rightactiondefault to "manustease">><<set $rightaction to 0>><<set $rightarm to "manus">>
+			<<set $semenInAnus to ($rightFingersSemen gte 1)>>
+			<<set _lubricated to ($rightFingersSemen gte 1 ? "精液润滑的" : "")>>
+		<</if>>
+		<<arousal 200 "masturbationAnal">>
+		<span class="purple">你把_lubricated的手指插进你的<<bottom>>。</span>
+	<</if>>
+
+	<<if $leftaction is "manusrub" and $rightaction is "manusrub">>
+		<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<<arousal 400 "masturbationAnal">>
+		<<print either(
+			"你把手指探入<<bottom>>之间，轻柔地抚慰着自己的菊门。",
+			"你在菊穴周围轻轻摩擦。",
+			"你把手指推到菊穴口。你能感觉到它松开了一些。"
+		)>>
+	<<elseif $leftaction is "manusrub" or $rightaction is "manusrub">>
+		<<if $leftaction is "manus">>
+			<<set $leftactiondefault to "manustease">><<set $leftaction to 0>><<set $leftarm to "manus">>
+		<<elseif $rightaction is "manus">>
+			<<set $rightactiondefault to "manustease">><<set $rightaction to 0>><<set $rightarm to "manus">>
+		<</if>>
+		<<arousal 200 "masturbationAnal">>
+		<<print either(
+			"你把手指探入<<bottom>>之间，轻柔地抚慰着自己的菊门。",
+			"你在菊穴周围轻轻摩擦。",
+			"你把手指推到菊穴口。你能感觉到它松开了一些。"
+		)>>
+	<</if>>
+
+	<<if $leftaction is "manustease" and $rightaction is "manustease">>
+		<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<<arousal 400 "masturbationAnal">>
+		<<print either(
+			"你用手指轻柔地探索着自己<<bottom>>的内部。",
+			"你慢慢地把你的手指伸进又伸出你的菊穴。",
+			"你用手指操弄你的<<bottom>>。玩弄这种地方让你感到很下流。"
+		)>>
+	<<elseif $leftaction is "manustease" or $rightaction is "manustease">>
+		<<if $leftaction is "manustease">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<</if>>
+		<<if $rightaction is "manustease">>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<</if>>
+		<<arousal 200 "masturbationAnal">>
+		<<print either(
+			"你用手指轻柔地探索着自己<<bottom>>的内部。",
+			"你的手指在菊穴中慢慢抽插。",
+			"你用手指操弄你的<<bottom>>。玩弄这种地方让你感到很下流。"
+		)>>
+	<</if>>
+
+	<<if $leftaction is "manusprostate" and $rightaction is "manusprostate">>
+		<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<<arousal 600 "masturbationAnal">>
+		<<if $arousal gte ($arousalmax / 5) * 4>>
+			你按压你的前列腺使其挤出精液，让你浑身颤抖。
+		<<elseif $arousal gte ($arousalmax / 5) * 3>>
+			你压迫你的前列腺，造成一种几乎难以忍受的敏感的愉悦。
+		<<else>>
+			你轻轻地戳你的前列腺，每戳一下，你的身体都会产生一股快感。
+		<</if>>
+	<<elseif $leftaction is "manusprostate" or $rightaction is "manusprostate">>
+		<<if $leftaction is "manusprostate">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<</if>>
+		<<if $rightaction is "manusprostate">>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<</if>>
+		<<arousal 300 "masturbationAnal">>
+		<<if $arousal gte ($arousalmax / 5) * 4>>
+			你按压你的前列腺使其挤出精液，让你浑身颤抖。
+		<<elseif $arousal gte ($arousalmax / 5) * 3>>
+			你压迫你的前列腺，造成一种几乎难以忍受的敏感的愉悦。
+		<<else>>
+			你轻轻地戳你的前列腺，每戳一下，你的身体都会产生一股快感。
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "manusstop" and $rightaction is "manusstop">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="purple">你把手从<<bottom>>上拿开。</span>
+
+	<<elseif $leftaction is "manusstop">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<span class="purple">你将你的左手从<<bottom>>上移开。</span>
+
+	<<elseif $rightaction is "manusstop">>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="purple">你将右手从你的<<bottom>>上移开。</span>
+	<</if>>
+
+	<<if $leftaction is "manusentrancedildo" and $rightaction is "manusentrancedildo">>
+		<<set $leftactiondefault to "manusrubdildo">><<set $leftaction to 0>><<set $leftarm to "manusentrancedildo">>
+		<<set $rightactiondefault to "manusrubdildo">><<set $rightaction to 0>><<set $rightarm to "manusentrancedildo">>
+		<<arousal 300 "masturbationAss">>
+		<<if $worn.under_lower.anus_exposed is 1 and $worn.lower.anus_exposed is 1>>
+			<span class="blue">你把手伸到你裸露的<<bottom>>，轻轻地按下你的<<toyName $currentToyLeft>>和你的<<toyName $currentToyRight>>在你的菊穴上。</span>
+		<<elseif $worn.under_lower.anus_exposed is 1>>
+			<span class="blue">你把手伸到你的<<bottom>>上，轻轻地用你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>隔着$worn.lower.cn_name_cap按压你的菊穴。</span>
+		<<elseif $worn.lower.anus_exposed is 1>>
+			<span class="blue">你把手伸到你的<<bottom>>上，隔着你的$worn.under_lower.cn_name_cap轻轻地把<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>压向菊穴。</span>
+		<</if>>
+	<<elseif $leftaction is "manusentrancedildo">>
+		<<set $leftactiondefault to "manusrubdildo">><<set $leftaction to 0>><<set $leftarm to "manusentrancedildo">>
+		<<arousal 200 "masturbationAss">>
+		<<if $worn.under_lower.anus_exposed is 1 and $worn.lower.anus_exposed is 1>>
+			<span class="blue">你把手伸到你裸露的<<bottom>>上，轻轻地把你的<<toyName $currentToyLeft>>按在你的菊穴上。</span>
+		<<elseif $worn.under_lower.anus_exposed is 1>>
+			<span class="blue">你把手伸到你的<<bottom>>，隔着你的$worn.lower.cn_name_cap轻轻地把<<toyName $currentToyLeft>>按在你的菊穴上。</span>
+		<<elseif $worn.lower.anus_exposed is 1>>
+			<span class="blue">你把手伸到你的<<bottom>>，隔着你的$worn.under_lower.cn_name_cap轻轻地把<<toyName $currentToyLeft>>按在你的菊穴上。</span>
+		<</if>>
+	<<elseif $rightaction is "manusentrancedildo">>
+		<<set $rightaction to 0>><<set $rightarm to "manusentrancedildo">>
+		<<set $rightactiondefault to "manusrubdildo">><<set $rightaction to 0>><<set $rightarm to "manusentrancedildo">>
+		<<arousal 200 "masturbationAss">>
+		<<if $worn.under_lower.anus_exposed is 1 and $worn.lower.anus_exposed is 1>>
+			<span class="blue">你把手伸到你裸露的<<bottom>>上，轻轻地把你的<<toyName $currentToyRight>>按在你的菊穴上。</span>
+		<<elseif $worn.under_lower.anus_exposed is 1>>
+			<span class="blue">你把手伸到你的<<bottom>>，隔着你的$worn.lower.cn_name_cap轻轻地把<<toyName $currentToyRight>>按在你的菊穴上。</span>
+		<<elseif $worn.lower.anus_exposed is 1>>
+			<span class="blue">你把手伸到你的<<bottom>>，隔着你的$worn.under_lower.cn_name_cap轻轻地把<<toyName $currentToyRight>>按在你的菊穴上。</span>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "manusdildo" and $rightaction is "manusdildo">>
+		<<set $leftactiondefault to "manusteasedildo">><<set $leftaction to 0>><<set $leftarm to "manusdildo">>
+		<<set $rightactiondefault to "manusteasedildo">><<set $rightaction to 0>><<set $rightarm to "manusdildo">>
+		<<arousal 500 "masturbationAnal">>
+		<<set _lubricated to ($leftFingersSemen gte 1 or $rightFingersSemen gte 1 ? "精液润滑的" : "")>>
+		<<if _lubricated.length>><<set $semenInAnus to true>><</if>>
+		<span class="purple">你把你_lubricated的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>推到你的<<bottom>>。</span>
+	<<elseif $leftaction is "manusdildo" or $rightaction is "manusdildo">>
+		<<if $leftaction is "manusdildo">>
+			<<set $leftactiondefault to "manusteasedildo">><<set $leftaction to 0>><<set $leftarm to "manusdildo">>
+			<<set $semenInAnus to ($leftFingersSemen gte 1)>>
+			<<set _lubricated to ($leftFingersSemen gte 1 ? "精液润滑的" : "")>>
+			<span class="purple">你把你_lubricated的<<toyName $currentToyLeft>>推到你的<<bottom>>里。</span>
+		<<elseif $rightaction is "manusdildo">>
+			<<set $rightactiondefault to "manusteasedildo">><<set $rightaction to 0>><<set $rightarm to "manusdildo">>
+			<<set $semenInAnus to ($rightFingersSemen gte 1)>>
+			<<set _lubricated to ($rightFingersSemen gte 1 ? "精液润滑的" : "")>>
+			<span class="purple">你把你_lubricated的<<toyName $currentToyRight>>推到你的<<bottom>>。</span>
+		<</if>>
+		<<arousal 250 "masturbationAnal">>
+	<</if>>
+
+	<<if $leftaction is "manusrubdildo" and $rightaction is "manusrubdildo">>
+		<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<<arousal 500 "masturbationAnal">>
+		<<print either(
+			"你把<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>探入股间，轻柔地抚慰着菊穴的入口。",
+			"你用你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>做圆周运动摩擦你的菊穴。",
+			"你把你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>推到你的菊穴上。你会感觉到它打开了一点。"
+		)>>
+	<<elseif $leftaction is "manusrubdildo" or $rightaction is "manusrubdildo">>
+		<<if $leftaction is "manusrubdildo">>
+			<<set $leftactiondefault to "manusrubdildo">><<set $leftaction to 0>><<set $leftarm to "manusentrancedildo">>
+			<<arousal 250 "masturbationAnal">>
+			<<print either(
+				"你把<<toyName $currentToyLeft>>探入股间，轻柔地抚慰着菊穴的入口。",
+				"你做圆周运动摩擦菊穴用你的<<toyName $currentToyLeft>>.",
+				"你将<<toyName $currentToyLeft>>抵住你的菊穴。你感觉它打开了一点。"
+			)>>
+		<<elseif $rightaction is "manusrubdildo">>
+			<<set $rightactiondefault to "manusrubdildo">><<set $rightaction to 0>><<set $rightarm to "manusentrancedildo">>
+			<<print either(
+				"你把<<toyName $currentToyRight>>探入股间，轻柔地抚慰着菊穴的入口。",
+				"你用你的<<toyName $currentToyRight>>以圆周运动摩擦你的菊穴。",
+				"你把你的<<toyName $currentToyRight>>推到你的肛门。你会感觉到它打开了一点。"
+			)>>
+			<<arousal 250 "masturbationAnal">>
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "manusteasedildo" and $rightaction is "manusteasedildo">>
+		<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<<arousal 500 "masturbationAnal">>
+		<<print either(
+			"你用<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>轻柔地探索着自己<<bottom>>的内部。",
+			"你慢慢地把你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>色 $_righttoy推入和推出你的肛门。",
+			"你用你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>操你的<<bottom>>。你觉就这样玩下去，实在是太涩情了。"
+		)>>
+	<<elseif $leftaction is "manusteasedildo" or $rightaction is "manusteasedildo">>
+		<<if $leftaction is "manusteasedildo">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+			<<print either(
+				"你用<<toyName $currentToyLeft>>轻柔地探索着自己<<bottom>>的内部。",
+				"你慢慢地把你的<<toyName $currentToyLeft>>推进和推出你的菊穴。",
+				"你用你的<<toyName $currentToyLeft>>操你的<<bottom>>。你觉就这样玩下去，实在是太涩情了。"
+			)>>
+		<</if>>
+		<<if $rightaction is "manusteasedildo">>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+			<<print either(
+				"你用<<toyName $currentToyRight>>轻柔地探索着自己<<bottom>>的内部。",
+				"你慢慢地把你的<<toyName $currentToyRight>>推进又推出你的菊穴。",
+				"你用你的<<toyName $currentToyRight>>操你的<<bottom>>。你觉就这样玩下去，实在是太涩情了。"
+			)>>
+		<</if>>
+		<<arousal 250 "masturbationAnal">>
+	<</if>>
+
+	<<if $leftaction is "manusprostatedildo" and $rightaction is "manusprostatedildo">>
+		<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+		<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+		<<arousal 700 "masturbationAnal">>
+		<<if $arousal gte ($arousalmax / 5) * 4>>
+			你用你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>，按摩你的前列腺使其分泌精液，让你浑身颤抖。
+		<<elseif $arousal gte ($arousalmax / 5) * 3>>
+			你用<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>，按压前列腺，造成一种几乎难以忍受的敏感的愉悦。
+		<<else>>
+			你轻轻地用<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>戳你的前列腺，每一次的刺激都会使你的身体穿过一阵电流般的快感。
+		<</if>>
+	<<elseif $leftaction is "manusprostatedildo" or $rightaction is "manusprostatedildo">>
+		<<if $leftaction is "manusprostatedildo">>
+			<<set $leftactiondefault to $leftaction>><<set $leftaction to 0>>
+			<<set $_toy to getToyName($currentToyLeft)>>
+		<</if>>
+		<<if $rightaction is "manusprostatedildo">>
+			<<set $rightactiondefault to $rightaction>><<set $rightaction to 0>>
+			<<set $_toy to getToyName($currentToyRight)>>
+		<</if>>
+		<<arousal 350 "masturbationAnal">>
+		<<if $arousal gte ($arousalmax / 5) * 4>>
+			你用你的$_toy按摩你的前列腺，使其挤出精液，让你浑身颤抖。
+		<<elseif $arousal gte ($arousalmax / 5) * 3>>
+			你用你的$_toy压迫你的前列腺，造成一种几乎难以忍受的敏感的愉悦。
+		<<else>>
+			你轻轻地用你的$_toy戳你的前列腺，每戳一次都会在你的身体里发出一波快乐。
+		<</if>>
+	<</if>>
+
+	<<if $leftaction is "manusstopdildo" and $rightaction is "manusstopdildo">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="purple">你移动你的<<toyName $currentToyLeft>>和<<toyName $currentToyRight>>从你的<<bottom>>离开。</span>
+
+	<<elseif $leftaction is "manusstopdildo">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>>
+		<span class="purple">你移动你左手中的_playerToys[$currentToyLeft].namecap离开<<bottom>>。</span>
+
+	<<elseif $rightaction is "manusstopdildo">>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>>
+		<span class="purple">你移动你右手中的_playerToys[$currentToyRight].namecap离开你的<<bottom>>。</span>
+	<</if>>
+
+	<<if $leftaction is "mmouthstopdildo">>
+		<<set $leftactiondefault to "mrest">><<set $leftaction to 0>><<set $leftarm to 0>><<set $mouth to 0>>
+		<span class="purple">你移动你左手中的_playerToys[$currentToyLeft].name离开你的嘴。</span>
+	<<elseif $rightaction is "mmouthstopdildo">>
+		<<set $rightactiondefault to "mrest">><<set $rightaction to 0>><<set $rightarm to 0>><<set $mouth to 0>>
+		<span class="purple">你移动你右手中的_playerToys[$currentToyRight].namecap离开你的嘴。</span>
+	<</if>>
+
+
+	<<rng>>
+	<<if $leftaction is "mrest">>
+		<<set $leftactiondefault to 0>>
+		<<if $rng gte 91 and $corruption_slime gt (currentSkillValue('willpower') / 10) and $corruptionMasturbation is undefined>>
+			<<set $corruptionMasturbation to true>>
+			<<set $corruptionMasturbationCount to random(2,6)>>
+			<span class="red">你耳朵里的黏液决定了它会继续控制你。</span>
+		<<else>>
+			<<set $leftactiondefault to "mrest">>
+			<<set $leftaction to 0>>
+		<</if>>
+	<</if>>
+	<<rng>>
+	<<if $rightaction is "mrest">>
+		<<set $rightactiondefault to 0>>
+		<<if $rng gte 91 and $corruption_slime gt (currentSkillValue('willpower') / 10) and $corruptionMasturbation is undefined>>
+			<<set $corruptionMasturbation to true>>
+			<<set $corruptionMasturbationCount to random(2,6)>>
+			<span class="red">你耳朵里的黏液决定了它会继续控制你。</span>
+		<<else>>
+			<<set $rightactiondefault to "mrest">>
+			<<set $rightaction to 0>>
+		<</if>>
+	<</if>>
+	<<rng>>
+	<<if $rng gte Math.clamp(135 - ($corruption_slime / 2),80,98) and $corruption_slime gt (currentSkillValue('willpower') / 10) and $corruptionMasturbation is undefined>>
+		<<set $corruptionMasturbation to true>>
+		<<set $corruptionMasturbationCount to random(1,4)>>
+		<span class="red">你耳朵里的黏液决定了它想让你有更多的乐趣.</span>
+	<</if>>
+	<br><br>
+<</widget>>

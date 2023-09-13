@@ -1,0 +1,701 @@
+:: Manor Garden
+<<set $outside to 1>><<location "kylarmanor_outside">><<effects>>
+
+你在凯拉尔庄园的前花园。透不过气的杂草和多刺的灌木环绕着草地。
+<br><br>
+
+<<if $daily.manorGarden is undefined and $kylar_parents_trust lt 100>>
+	<<link [[修剪树篱(1:00)|Manor Garden Trim]]>><<kylar_parents_trust 1>><<set $daily.manorGarden to 1>><<pass 60>><</link>><<tendingdifficulty 1 1000>>
+	<br><br>
+<</if>>
+
+<<link [[进入庄园 (0:01)|Manor Hall]]>><<pass 1>><</link>>
+<br>
+<<link [[围绕着庄园的侧面走 (0:01)|Manor Grounds]]>><<pass 1>><</link>>
+<br><br>
+<<link [[离开 (0:02)|Danube Street]]>><<pass 2>><</link>>
+<br>
+
+:: Manor Hall
+<<set $outside to 0>><<location "kylarmanor">><<effects>>
+
+你正待在凯拉尔庄园的前厅处，这里的空气中萦绕着一股化学气味，与此同时你听到楼上传来令人不安的噪音。
+<br><br>
+
+<<link [[去厨房|Manor Kitchen]]>><</link>>
+<br>
+<<link [[去实验室|Manor Lab]]>><</link>>
+<br>
+<<link [[去凯拉尔的卧室|Manor Kylar Room]]>><</link>>
+<br>
+<<link [[去凯拉尔父母的房间|Manor Parents Room]]>><</link>>
+<br>
+
+<<link [[离开 (0:01)|Manor Garden]]>><<pass 1>><</link>>
+<br>
+
+
+:: Manor Parents Room
+<<effects>>
+
+凯拉尔父母的房间看起来像是这栋庄园的主卧，这里除了那个四帷柱大床没有被破坏外，其余的家具都已被撕成了碎片。碎片和旧布料随意的散落在地毯上，唯一的动静就是床下传来的呼吸声。
+<br><br>
+
+<<if $daily.manorParents is undefined and $kylar_parents_trust lt 100>>
+	<<link [[安抚凯拉尔的父母(1:00)|Manor Parents Room Soothe]]>><<set $daily.manorParents to 1>><<kylar_parents_trust 1>><<pass 60>><</link>><<gstress>><<gtrust>>
+	<br><br>
+<</if>>
+
+
+<<link [[离开|Manor Hall]]>><</link>>
+<br>
+
+:: Manor Lab
+<<set $outside to 0>><<location "kylarmanor">><<effects>>
+
+你正待在凯拉尔庄园的实验室内，这里的空气中弥漫着一股辛辣的化学气味。
+<br><br>
+
+<<if $daily.manorLab is undefined and $kylar_parents_trust lt 100>>
+	<<link [[清洁(1:00)|Manor Lab Clean]]>><<set $daily.manorLab to 1>><<kylar_parents_trust 1>><<pass 60>><</link>><<skill_difficulty "$science" "科学" 1 1000>><<gtrust>>
+	<br><br>
+<</if>>
+
+<<link [[离开|Manor Hall]]>><</link>>
+<br>
+
+:: Manor Kitchen
+<<set $outside to 0>><<location "kylarmanor">><<effects>>
+
+你正待在凯拉尔庄园的厨房内。
+
+<br><br>
+
+<<if $daily.manorKitchen isnot 1 and $kylar_parents_trust lt 100>>
+	<<link [[清洁(1:00)|Manor Kitchen Clean]]>><<set $daily.manorKitchen to 1>><<kylar_parents_trust 1>><<pass 60>><</link>><<gtrust>>
+	<br>
+<</if>>
+
+<<link [[前往前厅|Manor Hall]]>><</link>>
+<br>
+<<link [[前往后院 (0:01)|Manor Grounds]]>><<pass 1>><</link>>
+<br>
+
+:: Manor Grounds
+<<set $outside to 1>><<location "forest">><<effects>>
+
+你正待在凯拉尔庄园的后院，这是一片长势茂盛的林地，长有一些奇怪的蘑菇。
+<br><br>
+
+<<if $daily.manorForage is undefined>>
+	<<icon "tending/mushroom.png">> <<link [[摘蘑菇 (1:00)|Manor Forage]]>><<set $daily.manorForage to 1>><<pass 60>><</link>><<tendingdifficulty 1 500>>
+	<br>
+<</if>>
+
+<<ind>><<link [[前往花园 (0:01)|Manor Garden]]>><<pass 1>><</link>>
+<br>
+<<foresticon>><<link [[前往森林 (0:10)|Forest]]>><<pass 10>><<set $forest to 0>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Manor Forage
+<<effects>>
+
+你在树根处搜寻着灰白色的<<icon "tending/mushroom.png">>蘑菇，但貌似其中大部分都没有长到可以采摘的程度。
+<<if $tendingSuccess>>
+	<span class="green">但你找到的东西已经足够装满一个篮子了。</span>
+	<<tending_pick ghostshroom 12 36>>
+	<br><br>
+
+	它们摸起来有些冷的刺手。<<arousal -600>><<larousal>>
+	<br><br>
+
+	<<link [[继续|Manor Grounds]]>><</link>>
+	<br>
+<<else>>
+	<span class="red">而其余的都已经烂掉了</span><<gtending>><<tending 2>>
+	<br><br>
+
+	<<link [[继续|Manor Grounds]]>><</link>>
+	<br>
+<</if>>
+
+:: Manor Kylar Room
+<<set $outside to 0>><<location "kylarmanor">><<effects>>
+
+你正待在凯拉尔的卧室里。桌上的电脑在持续运转着，与之相连接的显示器有足足六个。此之外还有一张大床，上面铺着许多床单和枕头。
+<<if Time.dayState is "night">>
+	<<if $weather is "rain">>
+		雨敲打着天窗，传来啪嗒啪嗒的声音.
+	<<elseif $weather is "clear">>
+		月光透过天窗照射了进来。
+	<<else>>
+		天窗那里黑漆漆的，什么都看不见.
+	<</if>>
+<<else>>
+	<<if $weather is "rain">>
+		雨敲打着天窗，传来啪嗒啪嗒的声音.
+	<<elseif $weather is "clear">>
+		阳光透过天窗倾泻下来。
+	<<else>>
+		透过天窗，你可以看见天空上的云彩。
+	<</if>>
+<</if>>
+<br><br>
+
+<<set _kylar to statusCheck("Kylar")>>
+<<if _kylar.state isnot "prison">>
+	<<if Time.hour gte 18>>
+		凯拉尔坐在<<nnpc_his "Kylar">>的电脑前。
+		<br><br>
+
+		<<link [[靠近凯拉尔|Manor Kylar]]>><</link>>
+		<br>
+	<<elseif Time.hour lte 6>>
+		凯拉尔以一个随意的角度躺在<<nnpc_his "Kylar">>的床上，那些床单被杂乱的裹扎在<<nnpc_him "Kylar">>的身上。
+		<br><br>
+	<</if>>
+
+	<<if $kylar_sleep_abduction is undefined>>
+		<<link [[睡觉|Manor Sleep Abduction]]>><<set $kylar_sleep_abduction to 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+<<link [[离开 (0:01)|Manor Hall]]>><<pass 1>><</link>>
+<br>
+
+:: Manor Kylar
+<<effects>><<set $bus to "kylarmanor">>
+
+<<run statusCheck("Kylar")>>
+
+<<npc Kylar>><<person1>>
+当你走近时，凯拉尔本能地将打开的那些窗口关闭，然后将椅子转过来面对你。
+<br><br>
+<<kylaroptions>>
+<<if $kylar_parents_trust gte 100 and $kylar_manor_secret is undefined>>
+	<<link [[告诉凯拉尔庄园已经清扫干净了|Manor Kylar Secret]]>><<set $kylar_manor_secret to 1>><</link>>
+	<br>
+<<elseif $kylar_parents_trust gte 1 and $kylar_manor_secret is undefined>>
+	<<link [[谈谈庄园的状况|Manor Kylar Word]]>><</link>>
+	<br>
+<</if>>
+
+:: Manor Kylar Word
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我-我知道一个人照顾像这样的建筑，是很困难的，"你说，"但是你能帮我保持它的整洁吗？"
+<<elseif $speech_attitude is "bratty">>
+	"这个地方就是个垃圾场，"你说，"你至少应该让厨房像样一点。"
+<<else>>
+	"这个庄园有点脏乱，"你说，"你能和我一起保持它的整洁吗？"
+<</if>>
+<br><br>
+
+凯拉尔有些羞愧，"我，我有在自己打扫，"尽管有些吃力……而且，我-我的父母制造了很多混乱。"
+<br><br>
+
+<<kylaroptions>>
+
+<<link [["询问发生在 " + $NPCList[0].pronouns.his + "父母身上的事 "|Manor Kylar Word 2]]>><</link>>
+<br>
+
+:: Manor Kylar Word 2
+<<effects>>
+
+"我，我不知道。"<<hes>>似乎有些矛盾，"我不知道，我只记得有一天晚上，他们看起来有些不安，并让我早早的上床睡觉，然后我听到了窗户被砸碎的声音，我—我害怕的躲在了被子里。然后到了第二天早上，他们就变成这样了。"
+<br><br>
+<<kylaroptions>>
+
+:: Manor Kylar Secret
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"我-我为你把庄园弄得很干净，"你说，"以后不要再这么乱了。"
+<<elseif $speech_attitude is "bratty">>
+	"我清理了你积累的陈年污垢，"你说，"我真的不想再做一次了。"
+<<else>>
+	"我整理了庄园，"你说，"之后保持干净应该不算太困难。"
+<</if>>
+<br><br>
+"谢谢你，"凯拉尔说，"我看到你在打扫，但我可能帮不了你，我-我不知道该如何做清洁，特别是实验室。要用水管冲刷它吗？"
+<br><br>
+
+<<link [[继续|Manor Kylar Secret 2]]>><</link>>
+<br>
+
+:: Manor Kylar Secret 2
+<<effects>>
+
+你带着凯拉尔下楼，并将其领入实验室，以此来向<<him>>展示你的成果。<span class="red">但当你来到这里的时候，已经有一个存在等候在那。</span>
+<br><br>
+
+凯拉尔的父母之一蹲在一张桌子上，直勾勾地盯着你。"我们应该晚点再来的，"凯拉尔说着的同时转过身去，差点就撞上了<<He>>的另一位家长。毕竟没有什么东西可以区分他们，甚至就连覆盖在他们身上的那块黑色破布都如此的一致。
+<br><br>
+
+"怎-怎么了？" 凯拉尔将你推到角落里，在你身前做出防卫式的姿势。"你今天的行为很奇怪。"
+<br><br>
+
+蹲着的家长从桌子上跳了下来，在跳到房间中间后，它伸手去摸上面的灯，并试图拽下什么,<span class="green">一个隐蔽的活板门被打开了，一个梯子顺着落了下来。</span>
+<br><br>
+
+<<link [[继续|Manor Kylar Secret 3]]>><</link>>
+<br>
+
+
+:: Manor Kylar Secret 3
+<<effects>>
+
+"我-我不知道这是哪里，"凯拉尔盯着那黑黢黢的洞口，神情有些紧张。"你要我们上去吗？"<<His>>的父母用尖叫着回答，这着实吓了<<him>>一跳。随后，他们从房间里跑了出来，其中一个人在离开前用指甲在门框上刮了一个口子。
+<br><br>
+
+凯拉尔看着楼梯，有些犹豫不决。"你-你想先上去吗？"
+<br><br>
+
+<<link [[自己先上去|Manor Kylar Secret 4]]>><<set $phase to 0>><<stress 6>><</link>><<gstress>>
+<br>
+<<link [[让凯拉尔先上去|Manor Kylar Secret 4]]>><<set $phase to 1>><<npcincr Kylar love -1>><</link>><<llove>>
+<br>
+
+:: Manor Kylar Secret 4
+<<effects>>
+
+<<if $phase is 0>>
+	你爬上楼梯，进入这未知的黑暗。你差点被扬起的灰尘所呛到。凯拉尔紧随其后，也开始咳嗽起来。
+	<br><br>
+<<else>>
+	凯拉尔爬上楼梯，"我不能--"<<he>>咳了一声，接着说道:"我什么也看不见。" 当你跟着上去时，你也差点被灰尘呛着。
+	<br><br>
+<</if>>
+你的眼睛适应后，你注意到在你的可触范围内有一个拉绳开关。你拉动了它，一盏灯嗡嗡作响地亮起。
+<br><br>
+
+在你面前矗立着一个奇异的神龛，它几乎和你一样高。无数银色和青铜的尖刺环绕着一个中央空间，就像是太阳一样。顶部的金属被扭曲了，仿佛有人把其中的一部分给砍掉了。那青铜卷须从底座冒出，沿着尖顶的下半部分盘绕着。
+<br><br>
+
+"那-那是什么？" 凯拉尔问。
+<br><br>
+<<if $history gte 600>>
+	<span class="green">你从历史课上认出了它。</span> "这是供圣体面包的圣餐台，" 你解释道，<span class="gold">"或许神殿里会对这个有更多了解。"</span>
+	<br><br>
+<<else>>
+	<span class="red">你也不太清楚这是什么。</span>"这是某种和宗教有关的东西，"你思索一番，<span class="gold">"也许神殿会有人知道更多。"</span>
+	<br><br>
+<</if>>
+
+<<link [[继续|Manor Kylar Secret 5]]>><</link>>
+<br>
+
+
+:: Manor Kylar Secret 5
+<<effects>>
+
+"我不认为我的父母信教，"凯拉尔回到了实验室，"他们为什么给我们看这个？为什么是现在？"<<He>>看起来浑身不自在。
+<br><br>
+
+你们回到了凯拉尔的卧室，<<He>>看起来似乎很想把这个谜团忘掉。
+<br><br>
+
+<<link [[继续|Manor Kylar Room]]>><<endevent>><</link>>
+<br>
+
+
+:: Manor Sleep Abduction
+<<effects>>
+
+<<npc Kylar>><<person1>>
+<<if Time.hour gte 18>>
+	你爬进被子里，凯拉尔向你转头。在显示屏的亮光下，只能勉强看见其身形的轮廓。<<He>>注视着你，然后悄悄靠近，生怕吵到了你。<<he>>爬进你旁边的床，用颤抖的双臂紧紧地搂住你的腰。
+	<br><br>
+<<elseif Time.hour lte 6>>
+	在你躺在被子里后，凯拉尔猛地站起身来。在盯着看了你一会后，躺到了你的身边，随后颤抖地搂住了你的腰。
+	<br><br>
+<<else>>
+	你躺到了被子里面，它竟然出乎意料地舒适。
+	<br><br>
+<</if>>
+
+<<link [[继续|Manor Sleep Abduction 2]]>><</link>>
+<br>
+
+:: Manor Sleep Abduction 2
+<<location "forest">><<effects>>
+
+当你醒来时，一双白色的眼睛正直勾勾地盯着你。伴随着一声尖叫，凯拉尔的父母将你从床上抓起并向门口跑去。
+<br><br>
+
+"不！"凯拉尔尖叫，"放开<<phim>>！" 但凯拉尔的父母并没有理会<<him>>的呼喊，只是带着你径直的向楼下冲去，虽然你试图挣扎，但它的手死死的抓抓住你。<<ggstress>><<gtrauma>><<stress 12>><<trauma 6>>
+<br><br>
+
+<<link [[继续|Manor Sleep Abduction 3]]>><</link>>
+<br>
+
+:: Manor Sleep Abduction 3
+<<effects>>
+<<pass 10>>
+你被带着穿过厨房的一扇门，经过杂草丛生的后花园，当这个怪物离开庄园并在森林深处穿梭时，你只感觉到无数的树木在你眼前闪过。你在它的控制下完全没有脱身的能力，直到它突然停了下来。
+<br><br>
+
+你瞥见在你的面前有一个石坛，然后它意外的用温柔的力道将你放在了石坛上面。然后它便转身消失在了一片灌木丛中。
+<br><br>
+
+你静静地躺了一会儿，不过什么也没有发生。于是你开始观察起了四周，这块石头的形状像一个圆盘，蜿蜒的常春藤寄居在上面。你爬到石台边缘，顺着掉到了下面的草地上。整个石台被一条粗壮的底座高高撑起，这让它看起来就像一个祭坛一样。
+<br><br>
+
+<<link [[继续|Manor Sleep Abduction 4]]>><</link>>
+<br>
+
+
+:: Manor Sleep Abduction 4
+<<effects>>
+
+在过了一会后，凯拉尔过来了，你注意到<<his>>的衣服上满是被挂烂的破洞。<<He>>在看见你后很明显地松了一口气，然后跪在地上抓住了你的大腿:"我，我，"<<he>>结结巴巴地说："我很抱歉! 但是他们以前从未做过类似的事情。"<<Hes>>说着说着就哭了起来。
+<br><br>
+
+<<link [[让他安心|Manor Sleep Abduction Reassure]]>><<npcincr Kylar love 1>><</link>><<glove>>
+<br>
+<<link [[生气|Manor Sleep Abduction Angry]]>><<npcincr Kylar love -3>><</link>><<lllove>>
+<br>
+<<link [[保持沉默|Manor Sleep Abduction Silent]]>><<npcincr Kylar love -1>><</link>><<llove>>
+<br>
+
+
+:: Manor Sleep Abduction Reassure
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"别-别哭，"你抚摸着<<his>>的头发，"我很安全。"
+<<elseif $speech_attitude is "bratty">>
+	"你太担心了，"你说，抚摸着<<his>>的头发。
+<<else>>
+	"别担心，"你抚摸着<<his>>的头发，"我很安全。"
+<</if>>
+<br><br>
+
+凯拉尔抬头看着你，点了点头。你帮助<<him>>站起身。"你不能再在那里睡觉了，"<<he>>说，"那里不安全。但，你仍然可以来访！请-请不要不过来看我。"
+<br><br>
+
+<<link [[继续|Manor Sleep Abduction 5]]>><</link>>
+<br>
+
+:: Manor Sleep Abduction Angry
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"别-别哭了，"你说，"都怪你。"
+<<elseif $speech_attitude is "bratty">>
+	"你把我置于危险之中，"你说，"现在你在乞求安慰？"
+<<else>>
+	"我可能会受伤的！”你说。
+<</if>>
+<br><br>
+
+凯拉尔站起来，试图抑制住眼泪。"我-我-我很抱歉，"<<he>>抽泣着。"你不能再睡在那里了，这不安全。但-但是你仍然可以来访！请-请不要不过来看我。"
+<br><br>
+
+<<link [[继续|Manor Sleep Abduction 5]]>><</link>>
+<bR>
+
+:: Manor Sleep Abduction Silent
+<<effects>>
+
+凯拉尔站着，试图抑制住眼泪。"对不起，"<<he>>抽泣着。"你不能再睡在那里了。不安全。但-但你仍然可以来访！请-请不要不过来看我。"
+<br><br>
+
+<<link [[继续|Manor Sleep Abduction 5]]>><</link>>
+<br>
+
+:: Manor Sleep Abduction 5
+<<effects>>
+
+你和凯拉尔一起穿过森林，<<He>>在旅途中保持沉默，在你回到庄园时就溜走了。<<Hes>>看起来很愧疚，故意想要躲着你。
+<br><br>
+
+<<link [[继续|Manor Grounds]]>><<endevent>><</link>>
+<br>
+
+
+:: Manor Kylar Pounce
+<<effects>>
+
+你向凯拉尔爬去。<<He>>用床单遮住<<his>>的脸，只有眼睛暴露在外。你跨坐在<<him>>的身上，然后把<<him>>困在你的身下。<<He>>看起来几乎要瘫倒了。
+<<promiscuity1>>
+
+<<link [[继续|Manor Kylar Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+
+:: Manor Kylar Sex
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[继续|Manor Kylar Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Manor Kylar Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Manor Kylar Sex Finish
+
+<<set $outside to 0>><<effects>><<run statusCheck("Kylar")>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>><<npcincr Kylar lust -20>><<lllust>>
+	<<He>>躺了下去，心满意足地闭上眼睛。
+	<<if $orgasmcurrent is 0 and !playerChastity()>>
+		<<if _kylarStatus.includes("Rage")>>
+			几秒钟后，<<he>>起身，直到面对你的<<genitals>>。"你没有高潮，"<<he>>喃喃自语着。"是-是我做的不够好吗？"<<He>>猛烈地摇着头，抓住了你的肩膀。"我会补偿你的，我会好好表现的。"
+		<<else>>
+			几秒钟后，<<he>>起身，直到面对你的<<genitals>>。"你没有高潮，"<<he>>喃喃自语着。"这对你不公平，是你要请我的，让我来补偿你。"
+		<</if>>
+		<br><br>
+		<<kylarFinish>>
+		<<if Time.hour lt 18>>
+			<<He>>再次闭上<<his>>的眼睛，开始打鼾。
+		<<else>>
+			<<He>>最终坐了起来，回到<<his>>的电脑前。
+		<</if>>
+	<<else>>
+		<<if Time.hour lt 18>>
+			<<He>>开始打鼾。
+		<<else>>
+			<<He>>最终坐了起来，回到<<his>>的电脑前。
+		<</if>>
+	<</if>>
+	<br><br>
+
+	<<tearful>>你从床上爬下来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<elseif $enemyhealth lte 0>>
+	你把凯拉尔推开。
+	<<if Time.hour lt 18>>
+		<<He>>把自己裹进被子里。你能感觉到<<him>>正透过一个模糊的缝隙在盯着你。看。
+	<<else>>
+		<<He>>最终坐了起来，回到<<his>>的电脑前，警惕地看了你一眼。
+	<</if>>
+	<br><br>
+	<<tearful>>你从床上爬下来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<else>>
+	<<if Time.hour lt 18>>
+		<<He>>把自己裹进被子里。你能感觉到<<him>>正透过一个模糊的缝隙在盯着你。看。
+	<<else>>
+		<<He>>最终坐了起来，回到<<his>>的电脑前。
+	<</if>>
+	<br><br>
+	<<tearful>>你从床上爬下来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+
+<<link [[继续|Manor Kylar Room]]>><</link>>
+<br>
+
+:: Manor Kylar Goodnight
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"晚-晚安，亲爱的，”你低声说。
+<<elseif $speech_attitude is "bratty">>
+	"晚安，我的爱人。"你道别。
+<<else>>
+	"晚安，我的爱人，"你道别。
+<</if>>
+<br><br>
+凯拉尔用床单盖住了<<himself>>。你能感觉到<<him>>正透过一个模糊的缝隙在盯着你。
+<br><br>
+
+<<link [[继续|Manor Kylar Room]]>><<endevent>><</link>>
+<br>
+
+
+:: Manor Garden Trim
+<<effects>>
+
+你用一把大剪刀修剪花园周围荒凉的树篱。
+<<if $tendingSuccess>>
+	带刺的树枝缠绕扭曲，<span class="green"> 但你可以驯服它们。</span>
+	<br><br>
+<<else>>
+	带刺的树枝似乎在寻找你，
+	<<if $exposed gte 2>>
+		<span class="red"> 划伤了你的皮肤。</span><<gpain>><<pain 4>>
+	<<else>>
+		<span class="red"> 刮烂了你的衣服。</span>
+		<<set $worn.upper.integrity -= 10>>
+		<<set $worn.lower.integrity -= 10>>
+		<<set $worn.under_upper.integrity -= 10>>
+		<<set $worn.under_lower.integrity -= 10>>
+	<</if>>
+<</if>>
+<br><br>
+
+<<if $kylar_parents_trust gte 80>>
+	你觉得你还没到老眼昏花的地步，但确实有一只手臂从树篱中伸出，帮助你切断了倒钩——可你转身的时候什么也没看到。
+<<elseif $kylar_parents_trust gte 60>>
+	当透过树枝看到半透明的苍白的眼睛时，你的心咯噔了一下。或者，只是你神志不清？
+<<elseif $kylar_parents_trust gte 40>>
+	有歌曲的片段，从风中模糊地传来。
+<<elseif $kylar_parents_trust gte 20>>
+	你觉得你听到身后有什么声音——也许是风声。
+<<else>>
+	你打了个寒颤，看到有个身影从庄园的窗户上一闪而过。<<gstress>><<stress 6>>
+<</if>>
+<br><br>
+
+<<if $kylar_parents_trust gte 100>>
+	<span class="green">庄园比你来的时候整洁多了。你应该去凯拉尔的<<nnpc_his "Kylar">>房间。</span>
+	<br><br>
+<</if>>
+
+<<link [[继续|Manor Garden]]>><</link>>
+<br>
+
+
+:: Manor Lab Clean
+<<effects>>
+
+设备很坚固，虽然有点过时。凯拉尔用其中一些来制作胡椒喷雾剂，但是清理工作做得不好，到处都是灰尘。
+<br><br>
+
+你拿一瓶外用酒精，开始工作。从大烧杯的外部开始。
+<<if $science gte random(1, 1000)>>
+	<span class="green"> 你放下擦干净的烧杯，</span> 接着去清洗其他更复杂的仪器。
+<<else>>
+	<span class="red"> 你几乎把它从桌子上摔下来，</span>
+	<<if $exposed gte 1>>
+		好在及时接住了。<<gstress>><<stress 6>>
+	<<else>>
+		你的衣服沾上了一点腐蚀性液体。
+		<<set $worn.upper.integrity -= 10>>
+		<<set $worn.lower.integrity -= 10>>
+		<<set $worn.under_upper.integrity -= 10>>
+		<<set $worn.under_lower.integrity -= 10>>
+	<</if>>
+<</if>>
+<br><br>
+
+<<if $kylar_parents_trust gte 80>>
+	实验室比你来的时候干净多了，这应该能帮到凯拉尔。
+<<elseif $kylar_parents_trust gte 60>>
+	你把墙壁擦干净。它们被一种薄片状的橙色物质还有黑焦油似的什么粘液覆盖，也许更糟。
+<<elseif $kylar_parents_trust gte 40>>
+	你从铜蒸馏器里舀出化学污泥。这架钢琴看起来像个古董，但太重了，搬不动。
+<<elseif $kylar_parents_trust gte 20>>
+	你清理掉散落在地上的一些纸，把它们放到橱柜里。上面写着复杂的化学式，你不确定它们是否依旧有用。
+<<else>>
+	你清理了一些散落在地上的纸。上面覆盖着厚厚的血红色化学污渍。你希望它们只是化学污渍。<<gstress>><<stress 6>>
+<</if>>
+<br><br>
+
+<<if $kylar_parents_trust gte 100>>
+	<span class="green">庄园比你来的时候整洁多了。你应该去凯拉尔的<<nnpc_his "Kylar">>房间。</span>
+	<br><br>
+<</if>>
+
+<<link [[继续|Manor Lab]]>><</link>>
+<br>
+
+
+:: Manor Kitchen Clean
+<<effects>>
+
+凯拉尔不太会收拾残局。
+
+<<if $kylar_parents_trust gte 80>>
+	你清理木地板，尽管你不得不忍受这些污渍。
+<<elseif $kylar_parents_trust gte 60>>
+	你用海绵把柜台擦干净，去除了各种粘糊糊的东西。
+<<elseif $kylar_parents_trust gte 40>>
+	你开始处理堆积如山的未洗碗碟，它们在柜台上摇摇欲坠。乐观点吧，至少水龙头还能用。
+<<elseif $kylar_parents_trust gte 20>>
+	你检查橱柜里有没有过期的食物。这也太多了，你把空架子掸干净。
+<<else>>
+	你开始清理散落在地板上的垃圾，并把它们装进垃圾袋带然后到了外面。你吓到了一只在垃圾里安家的老鼠，它吱吱叫着跑来跑去。那也吓到了你。<<gstress>><<stress 6>>
+<</if>>
+<br><br>
+
+<<if $kylar_parents_trust gte 100>>
+	<span class="green">庄园比你来的时候整洁多了。你应该去凯拉尔的<<nnpc_his "Kylar">>房间。</span>
+	<br><br>
+<</if>>
+
+<<link [[继续|Manor Kitchen]]>><</link>>
+<br>
+
+
+:: Manor Parents Room Soothe
+<<effects>>
+
+你不确定床底下是不是有一个，或者两个，但你坐在上面自言自语。你是他们
+<<if $NPCName[$NPCNameList.indexOf("Kylar")].pronoun is "m">>
+	儿子的
+<<else>>
+	女儿的
+<</if>>
+<<girlfriend>>,不管怎样。他们应该要了解你。
+<br><br>
+<<if $kylar_parents_trust gte 80>>
+	一个人影从床底下站起来，顶着一张憔悴的脸向你点了点头，它向你伸出手，抚摸着你的皮肤。在它退到黑暗中之前你不敢动。
+<<elseif $kylar_parents_trust gte 60>>
+	当你说话的时候，一只手从床底伸出，搁在你旁边的床单上。你触碰到了到冰冷的银器和更冰冷的肉体，然后它缩了回去。
+<<elseif $kylar_parents_trust gte 40>>
+	一颗头从床底下冒了出来。在它再次消失之前，苍白的眼睛观察了你一会儿。
+<<elseif $kylar_parents_trust gte 20>>
+	没有任何回应，除了轻蔑的嘶嘶声。
+<<else>>
+	没有回应。
+<</if>>
+<br><br>
+
+<<if $kylar_parents_trust gte 100>>
+	<span class="green">庄园比你来的时候整洁多了。你应该去凯拉尔的<<nnpc_his "Kylar">>房间。</span>
+	<br><br>
+<</if>>
+
+<<link [[继续|Manor Parents Room]]>><</link>>
+<br>
+
+:: Manor Kylar Invite
+<<effects>>
+
+<<if $phase is 1>>
+	你公主抱凯拉尔，<<him>>惊吓的尖叫了一声，任凭你把<<him>>抱到床上。<<He>>一路上都紧紧的抓着你，把脸埋进你的胸前。你走到床边，和凯拉尔一起坐到了床上。
+<<else>>
+	你轻轻地把凯拉尔从椅子上拉开。<<he>>和你一起走到床前，扑通一声爬到上面，饥渴地盯着你。
+<</if>>
+<br><br>
+
+<<link [[继续|Manor Kylar Sex]]>><<set $sexstart to 1>><</link>>
+
+:: Kylar Walk Manor
+<<effects>><<location "kylarmanor">>
+
+<<if $speech_attitude is "bratty">>
+	"没有我你哪也去不了，"你一边说一边抓住凯拉尔的胳膊，"我不想让你迷路。"
+<<elseif $speech_attitude is "meek">>
+	"我可以和你一起去吗?"你把手伸向凯拉尔，<<he>>牢牢地握住了。
+<<else>>
+	"我和你一起去，"你说着，拉住凯拉尔的胳膊。
+<</if>>
+你们一起走到庄园，凯拉尔在坐在<<his>>的电脑前给了你一个拥抱。
+<br><br>
+
+<<kylaroptions>>

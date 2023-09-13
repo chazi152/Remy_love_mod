@@ -1,0 +1,226 @@
+:: Office Lobby
+<<location "office_building">><<effects>>
+这幢大楼里有各种公司的办公室。你在大厅。
+<<if $stress gte $stressmax>>
+	<br><br>
+	<<if isPlayerNonparasitePregnancyEnding()>>
+		<<pregnancyWatersBrokenPassout "office">>
+	<<else>>
+		<<officepassout>>
+	<</if>>
+<<else>>
+	房间中央有一个大的锦鲤池，在安全服务台的前面。它后面是四台玻璃电梯，通往楼上。
+	<br>
+	<<if Time.isWeekEnd()>>
+		现在是周末，所以除了保安人员、管理人员和一些周末战士外，大楼基本是空的。
+	<<elseif Time.dayState is "day">>
+		大厅里充满了各种办公室职员的忙碌。
+	<<elseif Time.dayState is "dusk">>
+		虽然大堂并非完全空无一人，但大多数员工都已经下班了。
+	<<elseif Time.dayState is "dawn">>
+		员工们正成群结队地进入大厅，开始他们的工作日，排队等电梯。
+	<<elseif Time.dayState is "night">>
+		大厅里空荡荡的，除了巡逻的保安。
+	<</if>>
+	<<if Time.isWeekEnd()>>
+		<<officeafterhours>>
+	<<elseif Time.hour gte 6 && Time.hour lte 21>>
+		<<officebusinesshours>>
+	<<else>>
+		<<officeafterhours>>
+	<</if>>
+	<br><br>
+	<<link [[去外面|High Street]]>><</link>>
+<</if>>
+
+:: Office Security Passout
+<<effects>>
+你可以到大厅后面的保安办公室。
+<br><br>
+"看来你终于醒过来了，"保安说，是一个<<generate1>><<person1>><<person>>。"另一个保安发现你昏倒在楼上。"
+<br>
+<<if $exposed gte 1>>
+	<<He>>把毛巾递给你，而你马上用它把自己裹了起来，以便遮掩你那<<lewdness>>。<<towelup>>
+<</if>>
+<br><br>
+"我们不能让你在客户面前昏倒。这让管理层看起来很糟糕。我们不知道你发生了什么事，但我们必须发出警告。"<<gsecurity>><<officeupdatecomplaints 1>>
+<br><br>
+<<He>>帮助你起身，护着你进入大厅。
+<br><br>
+<<link [[继续|Office Lobby]]>><</link>>
+
+:: Office Supply Molest
+<<effects>>
+<<if $molestationstart is 2>>
+	你醒来发现自己在一个储物柜里。你不确定你在哪一层。在你上面有一个<<generate1>><<person1>><<person>>。
+	<<set $officeFloor to random(4,15)>>
+	<br><br>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $enemyanger to 0>>
+<<elseif $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $enemyanger to 0>>
+<</if>>
+
+<<effects>>
+
+<<effectsman>><<man>>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if $enemyhealth lte 0>>
+	<span id="next"><<link [[继续|Office Supply Molest Escape]]>><</link>></span><<nexttext>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<span id="next"><<link [[继续|Office Supply Molest Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Office Supply Molest]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Office Supply Molest Finish
+<<effects>>
+<<ejaculation>>
+<<person1>><<person>>站起来，穿好衣服，然后一言不发地离开，把你留在衣柜地板上。
+<br>
+<<stealclothes>>
+<br><br>
+<<tearful>>你爬起来，慢慢地走出壁橱。
+<br><br>
+<<clotheson>>
+<<endcombat>>
+
+<<if $exposed lte 0>>
+	<<link [[返回大厅|Office Lobby]]>><</link>>
+<<else>>
+	<<link [[继续|Office Streak]]>><</link>>
+<</if>>
+
+:: Office Supply Molest Escape
+<<effects>>
+你拿起一个沉重的订书机，把它砸在<<person1>><<persons>>的头上。<<He>>向后跌倒，撞到一个架子上，办公用品落在<<him>>的上面。
+<br><br>
+<<tearful>>你跑出壁橱到安全的地方。
+<br><br>
+<<clotheson>>
+<<endcombat>>
+
+<<if $exposed lte 1>>
+	<<link [[返回大厅|Office Lobby]]>><</link>>
+<<else>>
+	<<link [[继续|Office Streak]]>><</link>>
+<</if>>
+
+:: Widgets Office Main [widget]
+<<widget "officepassout">>
+	一切都变黑了……
+	<br>
+	<<passout>>
+	<<set $danger to random(1, 10000)>>
+	<<if $danger gte (9900 - $allure)>>
+		<<rng>>
+		<<if $rng gte 80>>
+			<<link [[苏醒|Office Supply Molest]]>><<set $molestationstart to 2>><</link>>
+		<<else>>
+			<<if $officecomplaints gte 10>>
+				<<link [[苏醒|Office Security Passout Molest]]>><<set $molestationstart to 1>><</link>>
+			<<else>>
+				<<link [[苏醒|Office Security Passout]]>><</link>>
+			<</if>>
+		<</if>>
+		<<pass 20>>
+	<<else>>
+		<<pass 60>>
+		<<ambulance>>
+	<</if>>
+	<<trauma 6>><<set $stress -= 2000>>
+<</widget>>
+
+<<widget "officebusinesshours">>
+	<<if $exposed gte 1>>
+		你躲在一株大盆栽后面，隐藏你的<<lewdness>>。似乎没人注意到你。
+		<br>
+		<span class="red">如果你以这种状态在大楼里闲逛，你肯定会遇到安全问题。</span>
+	<<else>>
+		<<if $officejobintro isnot 1>>
+			你注意到有人围在一个问讯亭周围，上面的牌子大大地写着"招聘"二字。
+			<br>
+			<<link [[前往问讯亭|Office Job Start]]>><</link>>
+		<<else>>
+			<<officecheckcomplaints>>
+			<<link [[去临时工中介休息室(0:01)|Office Agency]]>><<pass 1>><</link>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "officeafterhours">>
+	<<if $exposed gte 1>>
+		你躲在一株大盆栽后面，隐藏你的<<lewdness>>。好像没有一个保安注意到你。
+		<br>
+		如果你在这种状态下被保安抓住，谁知道他们会对你做什么。
+	<<else>>
+		有几个保安在大厅巡逻，还有一个保安在锦鲤池后面的安全服务台。你应该离开了。
+	<</if>>
+<</widget>>
+
+<<widget "officeupdatecomplaints">>
+	<<set $officelastcomplaintday to 0>>
+	<<set $officecomplaints += _args[0]>>
+	<<managerLove `-2 * _args[0]`>>
+<</widget>>
+
+<<widget "officecheckcomplaints">>
+	<<if $officelastcomplaintday % 3 is 0 and $officecomplaints gte 1>>
+		<<set $officecomplaints -= 1>>
+	<<elseif $officelastcomplaintday gte 14>>
+		<<set $officecomplaints to 0>>
+	<</if>>
+	<<if $officecomplaints gte 10>>
+		大厅里的每个人都在盯着你看。有人看到你时倒吸了一口气，匆匆走向安检台。你觉得你应该离开。
+	<<elseif $officecomplaints gte 7>>
+		当你走进大厅时，你会觉得人们可能在盯着你看。你感觉不太受欢迎。
+	<<elseif $officecomplaints gte 4>>
+		当你走进大厅时，有几个人向你挥手，但有些人愤怒地从你身边推开。你可能在大楼里树敌不少。
+	<</if>>
+	<br><br>
+<</widget>>
+
+<<widget "checkfloor">>
+	<span class="blue">$officeFloor楼</span>
+<</widget>>
+
+<<widget "office_manager">><<silently>>
+	<<set _text_output to $per_npc.manager.name>>
+<</silently>><span class="manager"><<print _text_output>></span><</widget>>
+
+<<widget "generateManager">>
+	<<if _args[0]>>
+		<<set $_id to _args[0]>>
+	<<else>>
+		<<set $_id to 0>>
+	<</if>>
+
+	<<if $per_npc.manager>>
+		<<loadNPC $_id "manager">>
+	<<else>>
+		<<generateRole $_id "办公室" "经理">>
+		<<set $NPCList[$_id].name_known to 1>>
+		<<saveNPC $_id "manager">>
+	<</if>>
+<</widget>>
+
+<<widget "managerLove">>
+	<<if Number.isFinite(_args[0])>>
+		<<set $managerLove to Math.clamp(($managerLove || 0) + _args[0], -50, 200)>>
+	<</if>>
+<</widget>>

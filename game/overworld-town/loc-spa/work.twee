@@ -1,0 +1,2220 @@
+:: Spa Work Start
+<<effects>>
+
+你沿着前台后面的走廊走下去，经过几扇通向水疗中心的薄窗。
+<<if $daily.spaEvent is "party">>
+	穿着泳装的客人正在热气腾腾的池子里嬉耍打闹。
+<<else>>
+	裹着毛巾的顾客正在热气腾腾的池子里放松。
+<</if>>
+<br><br>
+
+<<if $leftarm is "bound" or $rightarm is "bound">>
+	<<generate1>><<person1>>"手绑成那样可没法干活，"一名路过的员工看到了你手上的绑带，笑了。"过来"<<He>>帮你解开了绑带。
+	<br><br>
+	<<unbind>>
+	<<endevent>>
+<</if>>
+
+你进入按摩室，等待你的客人。
+<br><br>
+
+<<spa_work>>
+
+
+:: Spa Work
+<<effects>>
+
+你按了按桌子下的按钮，通知前台你已经准备好迎接下一个客人。
+<br><br>
+
+<<spa_work>>
+
+
+:: Spa Work Cute
+<<effects>>
+
+<<switch $spa.personality>>
+<<case hesitant>>
+	"是的！"你说，"您只管躺下，剩下的交给我就行了。"
+	<br><br>
+
+	<<person>>按照指示躺下。你把精油抹到手上，<<handtext>>揉捏着<<his>>的背部。<<ghandskill>><<handskill 5>>
+	<br><br>
+
+	<<Hes>>有些紧张，但很快就改善了。<<Hes>>在按摩结束后感谢了你。<<body_tip hand 0.3>><<tipreceive>><<pass 50>>
+	<br><br>
+
+	<<spa_end>>
+<<case tired>>
+	"请好好放松，"你在双手间揉搓着精油。"我会好好-"
+	<br><br>
+	"安静点，"<<person>>不耐烦地说，"我花钱不是来听你说话的。"<<gstress>><<stress 6>>
+	<br><br>
+	<<body_tip hand 0.1>>
+	<<spa_rob_options>>
+<<case rude>>
+	<<if $beauty gte 8000>>
+		"十分感谢您的赞赏！"你说，"也希望您也会喜欢接下来的服务。"<<body_tip hand 0.5>>
+	<<else>>
+		"不要这样，"你说，"请照顾一下我的感受。"<<body_tip hand 0.3>>
+	<</if>>
+	你开始工作。你用双手<<handtext>>在<<his>>身上涂抹着精油。
+	<br><br>
+
+	<<He>>抱怨<<his>>的工作，<<his>>的家庭生活，和所有的一切。<<He>>在你结束动作之后看起来似乎冷静了下来。<<ghandskill>><<handskill 5>>
+	<br><br>
+
+	<<if $beauty gte 8000>>
+		<<if $rng gte 71>>
+			<<if $player.gender_appearance is "f" and random(1, 2) is 2>>
+				<<set $phase2 to 0>>
+				当<<He>>给你小费时，<<he>>咧开嘴笑着，并盯着你的<<breasts>>。<<tipreceive>><<pass 50>>
+				<br><br>
+				"让我偷偷瞄一眼，如何？"<<he>>问你。
+				<br><br>
+
+				<<link [[拒绝|Spa Rude Refuse]]>><</link>>
+				<br>
+				<<if $exhibitionism gte 55>>
+					<<link [[展示|Spa Rude Show]]>><</link>><<exhibitionist4>>
+					<br>
+					<<link [[要钱|Spa Rude Money]]>><</link>><<exhibitionist4>>
+					<br>
+				<</if>>
+			<<else>>
+				<<set $phase2 to 1>>
+				<<He>>给你小费的时候咧嘴笑着并看着你的裤裆。<<tipreceive>><<pass 50>>
+				<br><br>
+				"让我偷偷瞄一眼，如何？"<<he>>问你。
+				<br><br>
+				<<link [[拒绝|Spa Rude Refuse]]>><</link>>
+				<br>
+				<<if $exhibitionism gte 75>>
+					<<link [[展示|Spa Rude Show]]>><</link>><<exhibitionist5>>
+					<br>
+					<<link [[要钱|Spa Rude Money]]>><</link>><<exhibitionist5>>
+					<br>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<He>>给你留了小费。<<tipreceive>><<pass 50>>
+			<br><br>
+			<<spa_end>>
+		<</if>>
+	<<else>>
+		<<He>>一言不发地离开了。<<pass 50>>
+		<br><br>
+
+		<<spa_end>>
+	<</if>>
+<<case lewd>>
+	"您太着急了。"你说，"放松就好，我会全都照顾好的。"
+	<br><br>
+
+	"全部？"<<person>>说
+	<<if $NPCList[0].penis isnot "none">>
+		"包括我勃起的鸡巴吗？"<<He>>笑道，"好啦我只是在开玩笑。"
+	<<else>>
+		"甚至是我的小穴吗？"<<He>>笑道，"这只个玩笑而已。"
+	<</if>>
+	<<if $awareness lt 100>>
+		<<gawareness>><<awareness 1>>
+	<</if>>
+	<br><br>
+	<<if random(1, 2) is 2>>
+		<<He>>在你工作的时候呻吟, 你的手<<handtext>>把精油揉搓在<<his>>的背上。<<ghandskill>><<handskill 5>>
+		<br><br>
+		<<He>>在结束的时候翻身面向天花板，将<<his>>的头枕在<<his>>的手上。你避开了你的目光。
+		<br><br>
+		"也许我不是在开玩笑，"<<he>>说，"多少钱能让我开心？"
+		<br><br>
+
+		<<link [[拒绝|Spa Lewd Hand Refuse]]>><</link>>
+		<br>
+		<<if $promiscuity gte 35>>
+			<<link [[谈判|Spa Lewd Hand Negotiate]]>><</link>><<promiscuous3>>
+			<br>
+		<<elseif $uncomfortable.prostituting is false>>
+			<<link [[谈判|Spa Lewd Hand Negotiate]]>><<set $desperateaction to 1>><</link>><<promiscuous3>>
+			<br>
+		<</if>>
+	<<else>>
+		<<He>>在你工作时发出呻吟的声音，但并没有任何抗拒，并且在水疗结束时看起来很满意。<<handskill 5>><<ghandskill>>
+		<<body_tip hand 0.3>><<tipreceive>><<pass 50>>
+		<br><br>
+		<<spa_end>>
+	<</if>>
+<<case polite>>
+	"我是您今天的按摩师，"你说，"我希望我能让您变得舒服一些。"
+	<br><br>
+	<<body_tip hand 0.5>>
+
+	你将精油准备好，然后<<handtext>>揉搓<<persons>>的背。<<He>>看起来十分乐意在你工作的时候和你聊天。<<lstress>><<stress -6>>
+	<br><br>
+
+	<<He>>在结束时感谢了你，并且给了你一笔小费。<<tipreceive>><<pass 50>>
+	<br><br>
+
+	<<spa_end>>
+
+<</switch>>
+
+
+:: Spa Work Sophisticated
+<<effects>>
+
+
+<<switch $spa.personality>>
+<<case hesitant>>
+	"是这样的<<sir>>，"你说，"等您准备好。"
+	<br><br>
+
+	<<person>>面朝上躺着，然后你开始工作，你的手<<handtext>>把精油揉搓在<<his>>的背上。
+
+	<<body_tip hand 0.1>>
+	<br><br>
+
+	<<He>>在按摩过程中保持沉默，让你很难判断你服务得怎么样，但<<he>>确实留下了一笔小费。<<tipreceive>><<pass 50>><<ghandskill>><<handskill 5>>
+	<br><br>
+
+	<<spa_end>>
+
+<<case tired>>
+	<<Hes>>看起来没心情聊天，所以你继续工作，<<handtext>>把精油揉搓到<<his>>的身上。
+	<br><br>
+	<<body_tip hand 0.3>>
+	<<spa_rob_options>>
+<<case rude>>
+	<<if $beauty gte 8000>>
+		"我很高兴您能认可，"你说，"请放松。"<<body_tip hand 0.5>>
+	<<else>>
+		"我很抱歉您感到失望，"你说，"请放松。"<<body_tip hand 0.1>>
+	<</if>>
+	你开始工作。你用双手<<handtext>>在<<his>>身上涂抹着精油。
+	<br><br>
+
+	<<He>>抱怨<<his>>的工作，<<his>>的家庭生活，和所有的一切。<<He>>在你结束动作之后看起来似乎冷静了下来。<<ghandskill>><<handskill 5>>
+	<br><br>
+
+	<<if $beauty gte 8000>>
+		<<if $rng gte 51>>
+			<<if $player.gender_appearance is "f" and random(1, 2) is 2>>
+				<<set $phase2 to 0>>
+				当<<He>>给你小费时，<<he>>咧开嘴笑着，并盯着你的<<breasts>>。<<tipreceive>><<pass 50>>
+				<br><br>
+				"让我偷偷瞄一眼，如何？"<<he>>问你。
+				<br><br>
+
+				<<link [[拒绝|Spa Rude Refuse]]>><</link>>
+				<br>
+				<<if $exhibitionism gte 55>>
+					<<link [[展示|Spa Rude Show]]>><</link>><<exhibitionist4>>
+					<br>
+					<<link [[要钱|Spa Rude Money]]>><</link>><<exhibitionist4>>
+					<br>
+				<</if>>
+			<<else>>
+				<<set $phase2 to 1>>
+				<<He>>给你小费的时候咧嘴笑着并看着你的裤裆。<<tipreceive>><<pass 50>>
+				<br><br>
+				"让我偷偷瞄一眼，如何？"<<he>>问你。
+				<br><br>
+				<<link [[拒绝|Spa Rude Refuse]]>><</link>>
+				<br>
+				<<if $exhibitionism gte 75>>
+					<<link [[展示|Spa Rude Show]]>><</link>><<exhibitionist5>>
+					<br>
+					<<link [[要钱|Spa Rude Money]]>><</link>><<exhibitionist5>>
+					<br>
+				<</if>>
+			<</if>>
+		<<else>>
+			<<He>>给你留了小费。<<tipreceive>><<pass 50>>
+			<br><br>
+			<<spa_end>>
+		<</if>>
+	<<else>>
+		<<He>>一言不发地离开了。<<pass 50>>
+		<br><br>
+
+		<<spa_end>>
+	<</if>>
+<<case lewd>>
+	"请放松，"你说，尽力保持专业。
+	<br>
+	"我试试。"<<person>>回答。
+	<<if $NPCList[0].penis isnot "none">>
+		"我的勃起会让这很困难。"
+	<<else>>
+		"如果我把桌子弄湿了，那是你的错。"
+	<</if>>
+	<<if $awareness lt 100>>
+		<<gawareness>><<awareness 1>>
+	<</if>>
+	<br><br>
+
+	<<if random(1, 2) is 2>>
+		<<He>>在你工作的时候呻吟, 你的手<<handtext>>把精油揉搓在<<his>>的背上。<<He>>在过程中侧身，你避开了你的目光。
+		<br><br>
+
+		"你看起来很僵硬，"<<he>>说，"我给你按摩怎么样？别担心，我不会收费的。"
+		<br><br>
+
+		<<link [[接受|Spa Lewd Accept]]>><<stress -6>><</link>><<lstress>>
+		<br>
+		<<link [[拒绝|Spa Lewd Refuse]]>><<handskill 5>><</link>><<ghandskill>>
+		<br>
+	<<else>>
+		<<He>>在你工作时发出呻吟的声音，但并没有任何抗拒，并且在水疗结束时看起来很满意。<<handskill 5>><<ghandskill>>
+		<<body_tip hand 0.3>><<tipreceive>><<pass 50>>
+		<br><br>
+		<<spa_end>>
+	<</if>>
+<<case polite>>
+	"请放松。"你边说边在手上涂满精油。<<He>>看起来很乐意配合你的工作。你的手<<handtext>>揉搓<<his>>的背。<<handskill 5>><<ghandskill>>
+	<br><br>
+
+	<<He>>在水疗结束时感谢你.<<body_tip hand 0.5>><<tipreceive>><<pass 50>>
+	<br><br>
+
+	<<spa_end>>
+<</switch>>
+
+:: Spa Work Alluring
+<<effects>>
+
+
+<<switch $spa.personality>>
+<<case hesitant>>
+	"就是这样。"你说，"但首先，把那条碍事的毛巾扔了怎么样？"
+	<<promiscuity1>>
+
+	<<person>>脸红了， "我...我的毛巾？"<<he>>支支吾吾道， "我...我没注意到。"<<He>>抓住毛巾下摆，犹豫不决。
+	<br><br>
+	<<link [[等待|Spa Hesitant Wait]]>><</link>>
+	<br>
+	<<if $promiscuity gte 15>>
+		<<link [[脱光你的顾客|Spa Hesitant Strip]]>><</link>><<promiscuous2>>
+	<</if>>
+	<br>
+
+<<case tired>>
+	你把手上涂满精油，然后<<handtext>>地揉搓<<his>>的背。 你沿着<<his>>的身体向下走，直到碰到<<his>>的屁股。
+	<<promiscuity1>>
+
+	<<link [[继续工作|Spa Tired Work]]>><</link>>
+	<br>
+	<<if $promiscuity gte 35>>
+		<<link [[猥亵|Spa Tired Grope]]>><</link>><<promiscuous3>>
+		<br>
+	<</if>>
+<<case rude>>
+	<<if $beauty gte 8000>>
+		"你自己看起来也不赖啊。"你低声说道。<<body_tip hand 0.5>><<set $tip_add to ($tip + random(100, 1000))>>
+	<<else>>
+		"我比你想象中的要更好。"你说道。<<body_tip hand 0.3>><<set $tip_add to ($tip + random(100, 1000))>>
+	<</if>>
+	<<promiscuity1>>
+
+	<<person>>轻笑, 然后闭上了<<his>>的眼睛。你把手上涂满精油，然后<<handtext>>揉搓<<persons>>的背。<<ghandskill>><<handskill 5>>
+	<br><br>
+
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip is 0>>
+		<<He>>在水疗结束前坐了起来，拉下<<his>>的浴巾，露出<<his>>
+		<<if $NPCList[0].penis isnot "none">>
+			<<print $NPCList[0].penisdesc>>.
+		<<else>>
+			小穴.
+		<</if>>
+		<br><br>
+		<<body_tip hand 1>>
+		"用你的嘴怎么样？"<<he>>问。 "我会给你<<printmoney $tip>>。"
+		<br><br>
+		<<pass 50>>
+		<<if $promiscuity gte 55>>
+			<<link [[接受|Spa Oral Start]]>><</link>><<promiscuous4>>
+			<br>
+		<<elseif $uncomfortable.prostituting is false>>
+			<<link [[接受|Spa Oral Start]]>><<set $desperateaction to 1>><</link>><<promiscuous4>>
+			<br>
+		<</if>>
+		<<link [[拒绝|Spa Oral Refuse]]>><</link>>
+		<br>
+	<<else>>
+		<<He>>在按摩结束后坐了起来。
+		"我感觉你也没那么差，"<<he>>说。 "给你。"<<tipreceive>><<pass 50>>
+		<br><br>
+
+		<<He>>离开了房间。
+		<br><br>
+
+		<<spa_end>>
+	<</if>>
+
+<<case lewd>>
+
+	"和您一起工作是真正的享受。"你说。
+	<<promiscuity1>>
+
+	"我打赌，"<<person>>说。"对我粗暴一点。"
+
+	你将精油涂在手上，<<handtext>>揉搓<<persons>>的背。<<ghandskill>><<handskill 5>>
+	<br><br>
+
+	<<if random(1, 2) is 2>>
+		<<He>>在你按摩的时候呻吟，然后在快结束的时候翻身面向天花板，将<<his>>的头枕在<<his>>的手上，同时注视着你的身体。
+		<br><br>
+		<<set $tipmod to 2>><<tipset>><<set $tip_add to ($tip + random(100, 1000))>>
+		"如果你也不穿衣服，我会给你<<printmoney $tip>>。"
+		<br><br>
+
+		<<link [[拒绝|Spa Lewd Naked Refuse]]>><</link>>
+		<br>
+		<<if $exhibitionism gte 75>>
+			<<link [[接受|Spa Lewd Naked]]>><</link>><<exhibitionist5>>
+			<br>
+		<</if>>
+	<<else>>
+		<<He>>在你工作时发出呻吟的声音，但并没有任何抗拒，并且在水疗结束时看起来很满意。<<handskill 5>><<ghandskill>>
+		<<body_tip hand 0.3>><<tipreceive>><<pass 50>>
+		<br><br>
+		<<spa_end>>
+	<</if>>
+
+
+<<case polite>>
+
+	"我想会喜欢为您按摩的，”你一边说一边把精油涂在手上，"请放松。"你<<handtext>>揉搓<<his>>的背。<<handskill 5>><<ghandskill>>
+	<<body_tip hand 0.1>>
+	<<promiscuity1>>
+
+	<<He>>在水疗结束时似乎已经感到满意。"谢谢，"<<he>>说。"拿着。"<<tipreceive>><<pass 50>>
+	<br><br>
+
+	<span class="lewd">也许你能弄到更多的小费。</span>
+	<br><br>
+	<<link [[让你的顾客离开|Spa Polite Leave]]>><</link>>
+	<br>
+	<<if $promiscuity gte 35>>
+		<<link [[继续勾引|Spa Polite Seduce]]>><</link>><<promiscuous3>>
+		<br>
+	<<elseif $uncomfortable.prostituting is false>>
+		<<link [[继续勾引|Spa Polite Seduce]]>><<set $desperateaction to 1>><</link>><<promiscuous3>>
+		<br>
+	<</if>>
+
+<</switch>>
+
+
+:: Spa Tired Keep
+<<effects>>
+
+你继续工作，尽管不确定<<person>>是否会喜欢，但你是收了钱来干活的。
+<br><br>
+
+<<if $spa.behaviour is "sophisticated">>
+	水疗结束，你轻推了一下把<<him>>弄醒了。"谢谢惠顾，"你说。<<He>>昏昏沉沉地环顾四周。"希望您喜欢我们的服务。"
+<<else>>
+	水疗结束，你轻推了一下把<<him>>弄醒了。"起来吧懒虫，"你说。<<He>>昏昏沉沉地环顾四周。"希望您喜欢我的服务。"
+<</if>>
+<br><br>
+<<He>>点点头，半醒着，爬了起来。你把目光移开，递给<<him>><<his>>的毛巾。<<tipreceive>><<pass 50>>
+<br><br>
+
+<<spa_end>>
+
+:: Spa Tired Break
+<<effects>>
+
+你坐在角落的凳子上，靠在墙上休息眼睛。当你睁开眼时水疗就该结束了。
+<br><br>
+
+<<if $spa.behaviour is "sophisticated">>
+	水疗结束，你轻推了一下把<<him>>弄醒了。"谢谢惠顾，"你说。<<He>>昏昏沉沉地环顾四周。"希望您喜欢我们的服务。"
+<<else>>
+	水疗结束，你轻推了一下把<<him>>弄醒了。"起来吧懒虫，"你说。<<He>>昏昏沉沉地环顾四周。"希望您喜欢我的服务。"
+<</if>>
+<br><br>
+
+<<He>>点点头，半醒着，爬了起来。你把目光移开，递给<<him>><<his>>的毛巾。<<tipreceive>><<pass 50>>
+<br><br>
+
+<<spa_end>>
+
+
+:: Spa Tired Steal
+<<effects>>
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+	<<earnFeat "Idle Hands">>
+	<<switch $phase>>
+	<<case 0>>
+		<span class="green">你从<<persons>>身上取下<<if $pronoun is "f">>项链<<else>>链子<</if>>，</span>把它藏起来了。
+		<<set $blackmoney += 80>><<crimeup 80>>
+	<<case 1>>
+		<span class="green">你从<<persons>>手指上取下戒指，</span>把它藏起来了。
+		<<set $blackmoney += 50>><<crimeup 50>>
+	<<case 2>>
+		<span class="green">你解开手表，</span>把它藏起来了。
+		<<set $blackmoney += 3000>><<crimeup 3000>>
+	<</switch>>
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	你继续工作到结束，
+
+	<<if $spa.behaviour is "sophisticated">>
+		你轻推了一下把<<person>>弄醒了。"谢谢惠顾，"你说。<<He>>昏昏沉沉地环顾四周。"希望您喜欢我们的服务。"
+	<<elseif $spa.behaviour is "cute">>
+		你轻推了一下把<<person>>弄醒了。"起来吧懒虫，"你说。<<He>>昏昏沉沉地环顾四周。"希望您喜欢我的服务。"
+	<<else>>
+		你抚摸<<person>>直到<<he>>醒来。"按摩结束了，"你低声说道。"希望你能满意。"
+	<</if>>
+	<br><br>
+
+	<<He>>点点头，半醒着，爬了起来。 你把目光移开，递给<<his>>毛巾。<<tipreceive>><<pass 50>>
+	<br><br>
+
+	<<spa_end>>
+
+<<else>>
+
+	<<switch $phase>>
+	<<case 0>>
+		<span class="red">在<<he>>动弹的时候，你的手指轻触到了<<persons>>的脖子。</span>
+	<<case 1>>
+		<span class="red">在<<he>>动弹的时候，你的手指轻触到了<<persons>>的手指。</span>
+	<<case 2>>
+		<span class="red">在<<he>>动弹的时候，你的手指轻触到了<<persons>>的手腕。</span>
+	<</switch>>
+	<<He>>怀疑地回头看你一眼，并且不再打瞌睡了.<<body_tip hand 0.1>>
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	你继续工作，直到结束。
+
+	<<if $spa.behaviour is "sophisticated">>
+		你轻推了一下把<<person>>弄醒了。"谢谢惠顾，"你说。<<He>>昏昏沉沉地环顾四周。"希望您喜欢我们的服务。"
+	<<else>>
+		你轻推了一下把<<person>>弄醒了。"起来吧懒虫，"你说。<<He>>昏昏沉沉地环顾四周。"希望您喜欢我的服务。"
+	<</if>>
+	<br><br>
+
+	<<tipreceive>><<pass 50>>
+
+	<<spa_end>>
+
+<</if>>
+
+
+:: Spa Rude Refuse
+<<effects>>
+
+<<if $spa.behaviour is "sophisticated">>
+	"这不是我来这里的原因，<<sir>>"你说，"谢谢你的惠顾。"
+<<else>>
+	"这太羞耻了，我没办法做这种事，"你说道，"对不起，但是不管怎样，我希望你喜欢我的服务。"
+<</if>>
+<br><br>
+
+<<if $rng gte 81>>
+	<<if $phase2 is 1>>
+		<<spa_genitals_strip>>
+	<<else>>
+		<<spa_breasts_strip>>
+	<</if>>
+<<elseif $rng gte 41>>
+	<<person>>揉了揉<<his>>的下巴，然后拿出了一叠现金。“我可以给更慷慨的小费，”<<he>>说。
+	<br><br>
+
+	<<if $exhibitionism gte 75 and $phase2 is 1>>
+		<<link [[谈判|Spa Rude Negotiate]]>><</link>><<exhibitionist5>>
+		<br>
+	<<elseif $exhibitionism gte 55 and $phase2 is 0>>
+		<<link [[谈判|Spa Rude Negotiate]]>><</link>><<exhibitionist4>>
+		<br>
+	<</if>>
+	<<link [[拒绝|Spa Rude Refuse 2]]>><</link>>
+	<br>
+<<else>>
+	那个<<person>>摩擦了一下<<his>>的下巴。"不值得，"<<he>>嘟囔着，然后离开房间。
+	<br><br>
+
+	<<spa_end>>
+<</if>>
+
+
+:: Spa Rude Refuse 2
+<<effects>>
+
+
+<<if $rng gte 61>>
+	<<if $phase2 is 1>>
+		<<spa_genitals_strip>>
+	<<else>>
+		<<spa_breasts_strip>>
+	<</if>>
+<<else>>
+	那个<<person>>摩擦了一下<<his>>的下巴。"不值得，"<<he>>嘟囔着，然后离开房间。
+	<br><br>
+
+	<<spa_end>>
+<</if>>
+
+
+:: Spa Rude Under Top
+<<effects>>
+
+<<He>>用<<his>>的另一只手抓住你的$worn.under_upper.cn_name_cap，
+<<if $worn.under_upper.open is 1 or $worn.under_upper.set isnot $worn.under_lower.set or $worn.under_upper.integrity lte 20>>
+	<<fameexhibitionism 1>>
+	<<if $worn.under_upper.open is 1>>
+		从你的胸口往下拽，
+	<<elseif $worn.under_upper.integrity gt 20>>
+		把它拉起来，
+	<<else>>
+		把它从你的身体上拽走，
+		<<set $worn.under_upper.integrity -= 20>>
+		<<integritycheck>><<exposure>>
+	<</if>>
+	<span class="pink">揭开你的<<breasts>>.</span><<gtrauma>><<trauma 6>>
+	<br><br>
+
+	"很好，"<<he>>说，看清楚后放了你。<<covered>><<He>>转身离开房间。
+	<br><br>
+	<<spa_end>>
+<<else>>
+	<<He>>试图把它从你的身体上撕下来, 但在你设法扭开之前已经被扯坏了一点.<<set $worn.under_upper.integrity -= 20>>
+	<br><br>
+
+	<<He>>看起来准备再试一次，但另一名工作人员在外面用力敲门。"里面一切都好吗？"
+	<br>
+	"是的，"<<person>>回答。"我要走了。"<<He>>在离开房间前最后看你一眼。
+	<br><br>
+
+	<<spa_end>>
+<</if>>
+
+
+:: Spa Rude Slap
+<<effects>>
+
+<<person>>再次靠近，你打了<<him>>一耳光
+<br><br>
+
+<<He>>摇摇晃晃地离开你，突然有人敲门。"里面一切都好吗？"
+<br>
+<<person>>揉了揉<<his>>的脸。"是的，我正要走。"<<He>>在离开房间前最后看你一眼。
+<br><br>
+
+<<spa_end>>
+
+
+:: Spa Rude Polite
+<<effects>>
+
+<<if $spa.behaviour is "sophisticated">>
+	"谢谢你的惠顾，<<sir>>，"你打开门重复道，"希望你在此过得愉快。"
+<<else>>
+	"你差点撞到我，"你笑着打开门，"祝你有愉快的一天。"
+<</if>>
+<br><br>
+
+<<person>>想了一会儿，然后走出房间，在离开前<<he>>看了你一眼。
+<br><br>
+
+<<spa_end>>
+
+
+:: Spa Rude Show
+<<effects>>
+
+<<if $phase2 is 1>>
+	<<pulldownall>>
+<<else>>
+	<<pullupall>>
+<</if>>
+
+<<if $phase2 is 1>>
+	<<exhibitionism5>>
+<<else>>
+	<<exhibitionism4>>
+<</if>>
+
+<<person>>一直斜视着你。"很好，"<<he>>满意地说。<<He>>最后看了你一眼，然后走出房间。
+<<if $phase is 1>>
+	<<tipreceive>>
+<</if>>
+<br><br>
+
+
+<<spa_end>>
+
+
+
+:: Spa Rude Money
+<<effects>>
+
+<<if $spa.behaviour is "sophisticated">>
+	"给小费是习惯，”你说。"特别是特殊的服务。"
+<<else>>
+	"我喜欢让顾客开心，”你说。“尤其是那些给小费慷慨的人。"
+<</if>>
+<br><br>
+
+<<if $rng gte 41>>
+	<<person>>沉思片刻，然后缓和下来。
+	<<if $phase2 is 1>>
+		<<tipset 0.5>>
+	<<else>>
+		<<tipset 0.7>>
+	<</if>>
+	你向客人协商了一笔<<printmoney $tip>>的费用，
+	<<if $tipreaction is "low">>
+		比你希望的要少。
+	<<else>>
+		这似乎很合理。
+	<</if>>
+	<br><br>
+
+	<<link [[接受|Spa Rude Show]]>><<set $phase to 1>><</link>>
+	<br>
+	<<link [[拒绝|Spa Rude Refuse 2]]>><</link>>
+	<br>
+<<else>>
+	<<if $phase2 is 1>>
+		<<spa_genitals_strip>>
+	<<else>>
+		<<spa_breasts_strip>>
+	<</if>>
+<</if>>
+
+
+:: Spa Rude Negotiate
+<<effects>>
+<<if $phase2 is 1>>
+	<<tipset 0.5>>
+<<else>>
+	<<tipset 0.7>>
+<</if>>
+
+你向客人协商了一笔<<printmoney $tip>>的费用，
+<<if $tipreaction is "low">>
+	比你希望的要少。
+<<else>>
+	这似乎很合理。
+<</if>>
+<br><br>
+
+<<link [[接受|Spa Rude Show]]>><<set $phase to 1>><</link>>
+<br>
+<<link [[拒绝|Spa Rude Refuse 2]]>><</link>>
+<br>
+
+
+
+:: Spa Rude Under
+<<effects>>
+
+<<if $worn.lower.outfitSecondary is undefined>>
+	<<set _broken to true>>
+<<elseif $worn.lower.outfitSecondary[1] is "broken" or $worn.lower.outfitSecondary[1] is "split">>
+	<<set _broken to true>>
+<</if>>
+<<He>>用另一只手抓住你的$worn.under_lower.cn_name_cap，
+<<if $worn.under_lower.open is 1 or _broken or $worn.under_lower.integrity lte 20>>
+	<<fameexhibitionism 1>>
+	<<if setup.clothes.under_lower[clothesIndex('under_lower', $worn.under_lower)].skirt is 1>>
+		把它翻转过来，
+	<<elseif $worn.under_lower.integrity gt 20>>
+		把它往下拉，
+	<<else>>
+		把它从你的身体上拽走，
+		<<set $worn.under_lower.integrity -= 20>>
+		<<integritycheck>><<exposure>>
+	<</if>>
+	<span class="pink">露出你的<<genitals>>.</span><<gtrauma>><<trauma 6>>
+	<br><br>
+
+	<<spa_genitals_reaction>>
+	<<covered>><<He>>转身离开房间。
+	<br><br>
+	<<spa_end>>
+<<else>>
+	<<He>>试图将其从你的身体上撕下，幸好你挣脱开了，不然衣物会损坏的。
+	<<set $worn.under_lower.integrity -= 20>>
+	<br><br>
+
+	<<He>>看起来准备再试一次，但另一名工作人员在外面用力敲门。"里面一切都好吗？"
+	<br>
+	"是的，"<<person>>回答。"我要走了。"<<He>>在离开房间前最后看你一眼。
+	<br><br>
+
+	<<spa_end>>
+<</if>>
+
+
+
+:: Spa Lewd Accept
+<<effects>>
+
+你点了点头。<<person>>笑着站起来。
+<br><br>
+
+<<link [[躺下|Spa Lewd Lie]]>><</link>>
+<br>
+<<if $exhibitionism gte 75>>
+	<<link [[先脱掉衣服|Spa Lewd Strip]]>><</link>><<exhibitionist5>>
+	<br>
+<</if>>
+
+
+
+:: Spa Lewd Refuse
+<<effects>>
+
+<<if $spa.behaviour is "sophisticated">>
+	你摇摇头。“对不起，<<sir>>，”你说。“这项内容不在我的服务内。"
+<<else>>
+	你摇摇头说抱歉。"这可能会让我的老板不高兴。"
+<</if>>
+<br><br>
+
+<<person>>耸耸肩，然后躺下。"随你便。"
+<br><br>
+
+<<Hes>>在之后的水疗过程中有点安静，但在水疗结束时似乎很满意。<<body_tip hand 0.1>><<tipreceive>><<pass 50>>
+<br><br>
+
+<<spa_end>>
+
+
+
+:: Spa Lewd Lie
+<<effects>>
+
+你躺在按摩台上。"请你放松，"<<person>>一边用欢快的语气说着，一边把手按在你的背上。
+<br><br>
+
+他的手法真的很好。"我可是经验丰富，"<<he>>自夸道，好像知道你想说什么一样。<<His>>的手指在背上游走时好像有些过于靠下了，但<<he>>还是没有乘机占你的便宜。<<garousal>><<arousal 600>>
+<br><br>
+
+"唔，真爽，"在按摩完后<<he>>感叹道。<<He>>似乎很满意。<<set $tipmod to 1>><<tipset>><<tipreceive>><<pass 50>>
+<br><br>
+<<spa_end>>
+
+
+
+
+:: Spa Lewd Strip
+<<effects>>
+
+<<passagestrip>>
+<<exhibitionism5>>
+
+<<person>>一直盯着你。你躺在了按摩桌上。
+<br><br>
+
+"请你放松，"<<he>>用欢快的语气说着，在手里揉搓着精油。<<He>>开始为你按摩。
+<br><br>
+
+<<if random(1, 2) is 2>>
+	<<His>>的手法真的很好。"我可是经验丰富，"<<he>>自夸道，好像知道你想说什么一样。<<His>>的手指在背上游走时好像有些过于靠下了，<<he>>摸索你的<<bottom>>.<<garousal>><<arousal 600 "genitals">>
+	<br><br>
+
+	<<if $pronoun is "f">>
+		"就是这样，"<<he>>说完就走了。你想要转身站起来，但是突然感到一阵疼痛，<span class="lewd">被<<he>>推倒在地</span>。在你反应过来之前，<<He>>已经跨到了你的身上。你的<<genitals>>擦过了<<his>>的<<if $NPCList[0].penis isnot "none">>阴茎<<else>>阴道。<</if>><<ggarousal>><<arousal 1200 "genitals">>
+		<br><br>
+
+		"还有其他形式的按摩，"<<he>>说，抓住你的肩膀，<<his>>的<<print $NPCList[0].breastsdesc>>紧贴着你的身体。<<He>>用<<his>>的胸膛摩擦你的胸膛，
+		<<if $NPCList[0].penis isnot "none">>让<<his>>的肉棒靠着你.<<else>>并且每次<<he>>向前时<<his>>的小穴都会亲吻你.<</if>><<ggarousal>><<arousal 1200 "genitals">>
+		<br><br>
+
+		<<link [[要求停止|Spa Lewd Woman Stop]]>><</link>>
+		<br>
+		<<link [[忍受|Spa Lewd Woman]]>><<arousal 2400 "genitals">><</link>><<gggarousal>>
+		<br>
+
+	<<else>>
+		"就是这样，"<<he>>说完就走了。你想要爬起来，但是突然感到一阵疼痛，<span class="lewd">被<<he>>抓住了你的臀部</span>，抬起了你的<<bottom>>。在你反应过来之前，<<hes>>已经爬上桌子，将<<his>>的骨盆挤压在你的骨盆上。你的<<genitals>>擦过了<<his>>的<<if $NPCList[0].penis isnot "none">>阴茎<<else>>阴道.<</if>><<ggarousal>><<arousal 1200 "genitals">>
+		<br><br>
+
+		<<he>>说："还有其他形式的按摩。" 紧接着，<<he>>抓住了你的肩膀，用力地挤压着你。<<if $NPCList[0].penis isnot "none" and ($player.vaginaExist or $analdisable is "f") and !playerChastity()>><<He>>并没有试图进行插入，但是从这个姿势来看非常容易。<</if>><<ggarousal>><<arousal 1200 "genitals">>
+		<br><br>
+
+
+		<<link [[要求停止|Spa Lewd Man Stop]]>><</link>>
+		<br>
+		<<link [[忍受|Spa Lewd Man]]>><<arousal 2400 "genitals">><</link>><<gggarousal>>
+		<br>
+	<</if>>
+<<else>>
+	他的手法真的很好。"我可是经验丰富，"<<he>>自夸道，好像知道你想说什么一样。<<His>>的手指在背上游走时好像有些过于靠下了，但<<he>>还是没有乘机占你的便宜。<<garousal>><<arousal 600>>
+	<br><br>
+
+	"唔，真爽，"在按摩完后<<he>>感叹道。<<He>>似乎很满意。<<set $tipmod to 1>><<tipset>><<tipreceive>><<pass 50>>
+	<br><br>
+	<<clotheson>>
+
+	<<spa_end>>
+<</if>>
+
+
+
+:: Spa Lewd Woman
+<<effects>>
+
+<<person>>在你的胸部擦油，然后继续用<<his>>的身体摩擦你的。
+
+<<if $player.penisExist and $NPCList[0].penis is "none" and !playerChastity()>>
+	<<He>>只需要稍微后退一点，你的<<penis>>就会进入<<him>>，但是<<he>>不会占便宜。
+<</if>>
+<br><br>
+
+<<if $arousal gte $arousalmax>>
+	<<orgasm>>
+	<br>
+	<<He>>笑着看你慢慢的停止抽动。"我最好不要做得太过火，"<<he>>说着从你身上下来。"再继续的话我可能会控制不了自己，谢谢你迁就我。"<<set $tipmod to 1.5>><<tipset>><<tipreceive>><<pass 50>>
+<<else>>
+	<<He>>一直持续到水疗结束。 "如果时间再长一点,我可能会失去控制，" 当<<he>>从你身上爬下来时<<he>>笑了。"谢谢你迁就我。"<<set $tipmod to 1.2>><<tipset>><<tipreceive>><<pass 50>>
+<</if>>
+<br><br>
+
+<<clotheson>>
+
+<<spa_end>>
+
+
+:: Spa Lewd Woman Stop
+<<effects>>
+
+<<if $arousal gte $arousalmax>>
+	你张嘴说话，就像你的身体背叛你一样。<<orgasm>>
+	<br>
+	那个<<person>>笑了，在你胸前擦油。"你刚才想说什么吗?"当你在<<he>>下面抽搐时，<<him>>说。<<if $player.penisExist>>"你把我的屁股弄得黏糊糊的。<</if>>
+	<br><br>
+
+	<<He>>爬下来。"谢谢你迁就我。值得称赞的服务，全方位的。"<<He>>拿起<<his>>的毛巾离开房间。
+	<<set $tipmod to 1.5>><<tipset>><<tipreceive>><<pass 50>>
+	<br><br>
+
+	<<clotheson>>
+
+	<<spa_end>>
+<<else>>
+	<<if $speech_attitude is "meek">>
+		"请停下来。"，你说:"我可能会有麻烦。"
+	<<elseif $speech_attitude is "bratty">>
+		"滚开，"你说。"你会给我惹麻烦的。"
+	<<else>>
+		"请停止，"你说。"你会给我惹麻烦的。"
+	<</if>>
+	<br><br>
+	这个<<person>>笑了，然后爬了下来。"我可不想那样。谢谢你迁就我。"<<set $tipmod to 1>><<tipset>><<tipreceive>><<pass 50>>
+	<br><br>
+
+	<<clotheson>>
+
+	<<spa_end>>
+
+<</if>>
+
+
+:: Spa Lewd Man
+<<effects>>
+
+
+这个<<person>>在你的背上擦油，然后继续背你。
+
+<<if ($vagina is 1 or $analdisable is "f") and $NPCList[0].penis isnot "none" and !playerChastity()>>
+	<<He>>只需要重新对齐一点，<<his>>的<<print $NPCList[0].penisdesc>>就会进入你，但是<<he>>不会占便宜。
+<</if>>
+<br><br>
+
+<<if $arousal gte $arousalmax>>
+	<<orgasm>>
+	<br>
+	<<He>>笑着看你慢慢的停止抽动。"我最好不要做得太过火，"<<he>>边说着边从按摩床爬下来。"再继续的话我可能会控制不了自己，谢谢你迁就我。"<<set $tipmod to 1.5>><<tipset>><<tipreceive>><<pass 50>>
+<<else>>
+	<<He>>继续以这种方式按摩你的背部，直到水疗结束。"如果时间再继续，我可能没办法控制自己了，" 当<<he>>从按摩床爬下来时<<he>>笑了。 "感谢你迁就我。"<<set $tipmod to 1.2>><<tipset>><<tipreceive>><<pass 50>>
+<</if>>
+<br><br>
+
+<<clotheson>>
+
+<<spa_end>>
+
+
+:: Spa Lewd Man Stop
+<<effects>>
+
+
+<<if $arousal gte $arousalmax>>
+	你张嘴说话，就像你的身体背叛你一样。<<orgasm>>
+	<br>
+	<<person>>哈哈大笑，涂抹着油在你的背上。"你在试着说什么吗？"当你在<<him>>身上抽搐时，<<he>>说道。<<if ($vagina is 1 or $analdisable is "f") and $NPCList[0].penis isnot "none" and !playerChastity()>>"我非常想要一口气全部进去。"<</if>>
+	<br><br>
+
+	当你的垃圾邮件平息时，<<He>>从桌子上爬下来。"谢谢你迁就我。值得称赞的服务，全方位的。"<<He>>拿起<<his>>的毛巾离开房间。
+	<<set $tipmod to 1.5>><<tipset>><<tipreceive>><<pass 50>>
+	<br><br>
+
+	<<clotheson>>
+
+	<<spa_end>>
+
+<<else>>
+	<<if $speech_attitude is "meek">>
+		"请停下来。"，你说:"我可能会有麻烦。"
+	<<elseif $speech_attitude is "bratty">>
+		"滚开，"你说。"你会给我惹麻烦的。"
+	<<else>>
+		"请停止，"你说。"你会给我惹麻烦的。"
+	<</if>>
+	<br><br>
+	<<person>>哈哈大笑，从桌子上爬了下来。"我并不想要那样。谢谢你让我开心一下。" <<set $tipmod to 1>><<tipset>><<tipreceive>><<pass 50>>
+	<br><br>
+
+	<<clotheson>>
+
+	<<spa_end>>
+
+<</if>>
+
+:: Spa Lewd Hand Refuse
+<<effects>>
+
+你摇了摇头。"那对我来说太淫荡了，"你说。"对不起。"
+<br><br>
+
+"真可惜，"当<<he>>站起来时，<<person>>说。<<He>>把<<his>>的毛巾扔在<<his>>肩膀上，大步走出去。<<body_tip hand 0.3>><<tipreceive>><<pass 50>>
+<br><br>
+
+<<spa_end>>
+
+:: Spa Lewd Hand Negotiate
+<<effects>>
+
+<<body_tip hand 0.5>><<tip_neg>><<set $tip_add to ($tip + random(100, 1000))>>
+<br><br>
+
+<<person>>靠着肘部，注视着你。
+<br><br>
+
+<<link [[着手工作|Spa Lewd Hand]]>><<handskill 5>><</link>><<ghandskill>>
+<br>
+<<link [[拒绝|Spa Lewd Hand Refuse 2]]>><<unset $desperateaction>><</link>>
+<br>
+
+
+:: Spa Lewd Hand Refuse 2
+<<effects>>
+
+你摇了摇头。"对不起，"你说。"我得准备迎接下一个顾客。"
+<br><br>
+
+<<person>>叹气。"好吧。谢谢你的按摩。"<<He>>站起来，把<<his>>的毛巾扔到<<his>>肩上，大步走出房间。<<pass 50>>
+<br><br>
+
+<<spa_end>>
+
+
+:: Spa Lewd Hand
+<<effects>>
+
+<<set $prostitutionstat += 1>>
+
+<<if $NPCList[0].penis isnot "none">>
+	<<if $NPCList[0].penissize gte 4>>
+		你用双手握住<<his>>的<<print $NPCList[0].penisdesc>>。并且<<handtext>>上下撸动，它在你手中一跳一跳。它已经勃起了，但随着你的卖力它在变得越来越大。
+	<<elseif $NPCList[0].penissize gte 1>>
+		你用双手握住<<his>>的<<print $NPCList[0].penisdesc>>，并<<handtext>>上下撸动, 它在你手中一跳一跳。它已经勃起了，而且随着你的卖力它在变得越来越大。
+	<<else>>
+		你用大拇指和食指捏着<<his>>的<<print $NPCList[0].penisdesc>>，并<<handtext>>上下撸动, 它在你手指间跳动。你用另一只手的手指揉搓<<his>>的龟头。
+	<</if>>
+<<else>>
+	你用食指和拇指捏住<<his>>的阴蒂, 用一根手指按在<<his>>的阴唇之间。你<<handtext>>开始挑逗。
+<</if>>
+<<promiscuity3>>
+
+<<person>>躺下，然后闭上了<<his>>的眼睛。
+"快-快了,"<<he>>的声音颤抖着,<<his>>的身体在抽搐. "再-再快一点."
+<br><br>
+
+<<link [[完成你的服务|Spa Lewd Hand Finish]]>><</link>>
+<br>
+<<link [[要求更多的钱|Spa Lewd Hand 2]]>><</link>><<skill_difficulty "$handskill" "手部技巧" 1 600>>
+<br>
+
+:: Spa Lewd Hand Finish
+<<effects>>
+
+
+<<if $NPCList[0].penis isnot "none">>
+	<<handejacstat>><<ejacstat>><<bodyliquid "leftarm" "semen">><<bodyliquid "rightarm" "semen">>
+	你加快速度，直到<<his>>的<<print $NPCList[0].penisdesc>>在你的手上达到高潮，而<<his>>的身体不断地痉挛和抽搐。
+<<else>>
+	你加快速度，直到<<his>>的身体痉挛和抽搐。你感觉到手指上的<<his>>的爱液。
+<</if>>
+<br><br>
+
+<<He>>在桌子上躺了一会儿，喘着气，用胳膊捂着<<his>>的眼睛。"谢谢，"<<he>>说道。"不客气。"<<tipreceive>><<pass 50>>
+<br><br>
+
+<<He>>把毛巾系在腰上，走出房间。
+<br><br>
+
+<<spa_end>>
+
+
+:: Spa Lewd Hand 2
+<<effects>>
+
+
+<<if $handskill gte random(1, 600)>>
+
+	你放慢了动作，<span class="green">让<<him>>处在高潮的边缘。</span>
+
+	<<if $spa.behaviour is "cute">>
+		"这很有趣，"你说。"我可以做一整天。"
+	<<else>>
+		"我喜欢你这样在我手里，"你说。"我可以做一整天。"
+	<</if>>
+	<br><br>
+	<<person>>结巴地说道："我……我可以再多付点钱，只要快一点。"<<body_tip hand add>><<set $tip_add to ($tip + random(500, 1500))>><<tip_up>>
+	<br><br>
+
+	<<link [[完成|Spa Lewd Hand Finish]]>><</link>>
+	<br>
+	<<link [[要更多钱|Spa Lewd Hand 3]]>><</link>><<skill_difficulty "$handskill" "手部技巧" 1 800>>
+	<br>
+<<else>>
+	<<if random(1, 10) gte 4>>
+		你放慢了速度，但是<<person>>在你的手指上摩擦，<span class="red"><<himself>>自己完成了高潮。</span>
+		<<spa_hand_failed>>
+	<<else>>
+		你放慢了速度，<span class="red">那个<<person>>失去了控制。</span><<He>>抓住你的胳膊，把你拉到桌子上。
+		<br><br>
+
+		<<link [[继续|Spa Lewd Rape]]>><<set $phase to 0>><<set $molestationstart to 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+
+:: Spa Lewd Hand 3
+<<effects>>
+
+
+<<if $handskill gte random(1, 800)>>
+
+	<<He>>对着你的手指呻吟着，但你拉开的距离刚好让<span class="green"><<he>>不能完全达到高潮。</span>
+	<<He>>更加用力地哼唱，急于完成。
+	<br><br>
+
+	<<if $spa.behaviour is "cute">>
+		"别那么粗暴," 你笑了. "乖，我才会再碰你."
+	<<else>>
+		"我跟你还没完呢。"你咕哝道。
+	<</if>>
+	<br><br>
+
+
+	那个<<person>>向后躺下. "求-求求你,"<<he>>说道: "帮-帮我高潮!"<<body_tip hand add>><<set $tip_add to ($tip + random(500, 1500))>><<tip_up>>
+	<br><br>
+
+	<<link [[完成|Spa Lewd Hand Finish]]>><</link>>
+	<br>
+	<<link [[要求更多钱|Spa Lewd Hand 4]]>><</link>><<skill_difficulty "$handskill" "手部技巧" 1 1100>>
+	<br>
+
+<<else>>
+	<<if random(1, 10) gte 4>>
+		你放慢了速度，但是<<person>>在你的手指上摩擦，<span class="red"><<himself>>自己完成了高潮。</span>
+		<<spa_hand_failed>>
+	<<else>>
+		你放慢了速度，<span class="red">那个<<person>>失去了控制。</span><<He>>抓住你的胳膊，把你拉到桌子上。
+		<br><br>
+
+		<<link [[继续|Spa Lewd Rape]]>><<set $phase to 0>><<set $molestationstart to 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Spa Lewd Hand 4
+<<effects>>
+
+
+<<if $handskill gte random(1, 1100)>>
+	你再次伸手向前，用你的手指拂过<<his>>的生殖器，不让<<him>>平静下来，<span class="green">但也不让<<him>>高潮。</span>
+
+	<<if $spa.behaviour is "cute">>
+		"我会的，"你说。"但我真的很需要钱。"
+	<<else>>
+		"你得做得更好，"你说。
+	<</if>>
+	<br><br>
+	"是-是的，"<<person>>声音颤抖着说："怎-怎么样都可以。我没办法再忍受了。"<<body_tip hand add>><<set $tip_add to ($tip + random(500, 1500))>><<tip_up>>
+	<br><br>
+
+	在你考虑下一步行动之前, 这个<<person>>终于忍不住了.<<He>>摸向<<his>>的
+	<<if $NPCList[0].penis isnot "none">>
+		<<print $NPCList[0].penisdesc>>,
+	<<else>>
+		小穴,
+	<</if>>
+	决心完成<<himself>>的高潮。
+	<br><br>
+
+	<<link [[允许|Spa Lewd Hold Finish]]>><</link>>
+	<br>
+	<<link [[放下你客户的手臂|Spa Lewd Hold]]>><</link>>
+	<br>
+<<else>>
+	<<if random(1, 10) gte 4>>
+		你放慢了速度，但是<<person>>在你的手指上摩擦，<span class="red"><<himself>>自己完成了高潮。</span>
+		<<spa_hand_failed>>
+	<<else>>
+		你放慢了速度，<span class="red">那个<<person>>失去了控制。</span><<He>>抓住你的胳膊，把你拉到桌子上。
+		<br><br>
+
+		<<link [[继续|Spa Lewd Rape]]>><<set $phase to 0>><<set $molestationstart to 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+
+:: Spa Lewd Hold Finish
+<<effects>>
+
+那个<<person>>
+
+<<if $NPCList[0].penis isnot "none">>
+	立刻就射精了,<<his>><<print $NPCList[0].penisdesc>>洒在<<his>>自己的胸前到处都是。
+<<else>>
+	随着高潮，<<his>>身体颤抖地尖叫出声。
+<</if>>
+<<He>>筋疲力尽躺下。
+<br><br>
+
+<<He>>调整<<himself>>的坐姿，并将<<himself>>擦拭干净，"谢，谢谢你，"<<he>>说道。"喏。"<<tipreceive>><<pass 50>>
+<br><br>
+
+<<He>>把毛巾系在腰上，走出房间。
+<br><br>
+
+<<spa_end>>
+
+
+
+:: Spa Lewd Hold
+<<effects>>
+
+你用手抓住<<his>>的手腕，用力将它们压在桌子上<<his>>头的两侧。<<He>>反射性的挣扎，但你坐在<<his>>的肚子上，用你的体重把<<him>>压回去。
+<br><br>
+
+<<if $angel gte 6>>
+	"自渎是一种罪。"你说。
+<<elseif $spa.behaviour is "cute">>
+	"别碰自己，"你说，"那是我的工作。"
+<<else>>
+	"我没说过你可以摸自己，”你说。
+<</if>>
+
+<<he>>猛地挺起了<<his>>的腰，但你跳开让其扑了个空。
+<br><br>
+
+你的手被占用了，你需要用别的东西。
+<br><br>
+
+
+<<link [[使用大腿|Spa Lewd Thigh]]>><<thighskill 5>><</link>><<skill_difficulty "$thighskill" "腿部技巧" 1 400>><<gthighskill>>
+<br>
+<<link [[使用屁股|Spa Lewd Bottom]]>><<bottomskill 5>><</link>><<skill_difficulty "$bottomskill" "臀部技巧" 1 400>><<gbottomskill>>
+<br>
+
+
+:: Spa Lewd Thigh Finish
+<<effects>>
+
+<<if $NPCList[0].penis isnot "none">>
+	<<bodyliquid "thigh" "semen">><<thighejacstat>><<ejacstat>>
+	你<<thightext>>摩擦着<<his>><<print $NPCList[0].penisdesc>>在你的大腿之间的硬物。<<his>>身体颤抖，<<he>>射出了精液，溅在了你的身上。
+<<else>>
+	你<<thightext>>用大腿用力的摩擦着<<his>>的阴部.<<his>>的身体痉挛的颤抖和痉挛，明显是高潮了。
+<</if>>
+<br><br>
+
+<<He>>躺着抽搐渐渐平息, 一只手捂住<<his>>的脸. "谢-谢谢,"<<he>>说. "给." <<tipreceive>><<pass 50>>
+<br><br>
+
+<<He>>坐起来，在离开房间之前在<<his>>的腰上缠上一条毛巾。
+<br><br>
+<<spa_end>>
+
+:: Spa Lewd Thigh
+
+<<effects>>
+<<if $thighskill gte random(1, 400)>>
+	你平躺在<<person>>身上，
+	<<if $NPCList[0].penis isnot "none">>
+		并且将<<his>><<print $NPCList[0].penisdesc>><<thightext>>夹在你的大腿间。<<He>>抽插着你的大腿，漫不经心地在你的爱抚中挣扎着。你小心地不将<<his>>的肉棒挤得太紧，<span class="green">确保<<he>>无法射精。</span>
+	<<else>>
+		并且<<thightext>>把你的大腿顶在<<his>>的小穴上。<<He>>摩擦着你的大腿，漫不经心地在你的爱抚中挣扎着。你小心地不将大腿压得太紧，<span class="green">确保<<he>>无法高潮。</span>
+	<</if>>
+	<br><br>
+	<<if $player.breastsize gte 1>>
+		你把你的<<breasts>>压在<<him>>身上。
+	<</if>>
+	<<if $spa.behaviour is "cute">>
+		"这样感觉好吗?"你问，让<<him>>处于痛苦的边缘。"我可能很快就会让你高潮，大概……？"
+	<<else>>
+		"感觉怎么样？"你问，让<<him>>处于痛苦边缘。"我想让你这样待多久都行"
+	<</if>>
+	<br><br>
+
+	"求，求你了。"<<person>>恳求道。"怎样都随便你！让我高潮吧！"<<body_tip thigh add>><<set $tip_add to ($tip + random(500, 1500))>><<tip_up>>
+	<br><br>
+
+	<<link [[结束|Spa Lewd Thigh Finish]]>><</link>>
+	<br>
+	<<link [[要求更多钱|Spa Lewd Thigh 2]]>><</link>><<skill_difficulty "$thighskill" "腿部技巧" 300 700>>
+	<br>
+
+<<else>>
+	<<if random(1, 10) gte 4>>
+		你平躺在<<person>>身上，
+		<<if $NPCList[0].penis isnot "none">>
+			<<bodyliquid "thigh" "semen">><<thighejacstat>><<ejacstat>>
+			并且将<<his>><<print $NPCList[0].penisdesc>><<thightext>>夹在你的大腿间。<<He>>抽插着你的大腿，漫不经心地在你的爱抚中挣扎着。<span class="red">最终<<himself>>还是达到了高潮</span>，喷射着精液弄脏了你的双腿。
+		<<else>>
+			并且<<thightext>>把你的大腿顶在<<his>>的小穴上。<<He>>摩擦着你的大腿，漫不经心地在你的爱抚中挣扎着。<span class="red">最终<<himself>>还是达到了高潮</span>，<<his>>的身体一阵抽搐。
+		<</if>>
+
+		<<He>>躺着抽搐渐渐平息, 一只手捂住<<his>>的脸. "谢-谢谢,"<<he>>说. "给." <<tipreceive>><<pass 50>>
+		<br><br>
+
+		<<He>>坐起来，在离开房间之前在<<his>>的腰上缠上一条毛巾。
+		<br><br>
+
+		<<spa_end>>
+	<<else>>
+		你平躺在<<person>>身上，
+		<<if $NPCList[0].penis isnot "none">>
+			并且用大腿<<thightext>>夹住了<<his>>的<<print $NPCList[0].penisdesc>>。
+		<<else>>
+			并且<<thightext>>把你的大腿压到<<his>>的小穴。
+		<</if>>
+		<span class="red"><<He>>失去控制，</span>挣脱开了你的手臂。
+		<<spa_rape_failed>>
+		<br><br>
+
+		<<link [[继续|Spa Lewd Rape]]>><<set $phase to 1>><<set $molestationstart to 1>><</link>>
+	<</if>>
+<</if>>
+
+:: Spa Lewd Thigh 2
+<<effects>>
+
+<<if $thighskill gte random(300, 700)>>
+
+
+	<<if $spa.behaviour is "cute">>
+		"再多给点儿钱就行了，"你说。"我保证。"
+	<<else>>
+		"再给点钱就行了，"你嘟囔着地说。"我就放过你"
+	<</if>>
+	<br><br>
+
+	<span class="green"><<he>>点头颤抖着说道。</span>"好，好，"<<he>>说。"什么都行。"
+	<<body_tip thigh add>><<set $tip_add to ($tip + random(500, 1500))>><<tip_up>>
+	<br><br>
+
+	如果继续这样下去，你很担心<<his>>的健康，
+	<<if $NPCList[0].penis isnot "none">>
+		<<bodyliquid "thigh" "semen" 2>><<thighejacstat>><<ejacstat>>
+		于是你<<thightext>>夹住<<his>>的<<print $NPCList[0].penisdesc>>，尽可能地使劲抽动。
+	<<else>>
+		所以你<<thightext>>把你的大腿压在<<his>>的阴部上，尽你所能用力摩擦。
+	<</if>>
+	<br><br>
+
+	效果立竿见影。
+	<<if $NPCList[0].penis isnot "none">>
+		<<His>>的背弓起来，整个身体抽搐着，将你的腿淹没在一片精液中。
+	<<else>>
+		<<His>>的背随着<<his>>的全身痉挛。
+	<</if>>
+	<<He>>呻吟的声音大到你担心有人会来查看。需要半分钟的时间<<him>>才能恢复到偶尔的抽搐。<<Hes>>还喘不过气来。
+	<br><br>
+	<<link [[继续|Spa Lewd Torment End]]>><</link>>
+	<br>
+
+<<else>>
+
+	<<if random(1, 10) gte 4>>
+		<<if $NPCList[0].penis isnot "none">>
+			<<bodyliquid "thigh" "semen">><<thighejacstat>><<ejacstat>>
+			<<person>>抽插着你的大腿，漫不经心地在你的爱抚中挣扎着。<span class="red">最终<<himself>>还是达到了高潮</span>，喷射着精液弄脏了你的双腿。
+		<<else>>
+			<<person>>摩擦着你的大腿，漫不经心地在你的爱抚中挣扎着。<span class="red">最终<<himself>>达到了高潮</span>，<<his>>的身体一阵抽搐。
+		<</if>>
+
+		<<He>>躺着抽搐渐渐平息, 一只手捂住<<his>>的脸. "谢-谢谢,"<<he>>说. "给." <<tipreceive>><<pass 50>>
+		<br><br>
+
+		<<He>>坐起来，在离开房间之前在<<his>>的腰上缠上一条毛巾。
+		<br><br>
+
+		<<spa_end>>
+	<<else>>
+		你试图让<<person>>在高潮边缘停留的时间更长一些，<span class="red">但是<<he>>没有被你控制，</span>抓住并推开了你的手臂。
+		<<spa_rape_failed>>
+		<br><br>
+
+		<<link [[继续|Spa Lewd Rape]]>><<set $phase to 1>><<set $molestationstart to 1>><</link>>
+	<</if>>
+<</if>>
+
+:: Spa Lewd Bottom Finish
+<<effects>>
+
+<<if $NPCList[0].penis isnot "none">>
+	<<bodyliquid "bottom" "semen">><<bottomejacstat>><<ejacstat>>
+	你<<bottomtext>>用<<bottom>>用力的摩擦<<persons>>的<<print $NPCList[0].penisdesc>>，直到<<he>>痉挛并在你身上高潮。
+<<else>>
+	你<<bottomtext>>用<<bottom>>用力的摩擦<<persons>>的阴部，直到<<his>>的身体在高潮中抽搐。
+<</if>>
+<br><br>
+
+<<He>>躺着抽搐渐渐平息, 一只手捂住<<his>>的脸. "谢-谢谢,"<<he>>说. "给." <<tipreceive>><<pass 50>>
+<br><br>
+
+<<He>>坐起来，在离开房间之前在<<his>>的腰上缠上一条毛巾。
+<br><br>
+
+<<spa_end>>
+
+
+
+:: Spa Lewd Bottom
+<<effects>>
+
+<<if $bottomskill gte random(1, 400)>>
+	你把自己从<<his>>的身体里抽出来，
+	<<if $NPCList[0].penis isnot "none">>
+		直到你感觉<<his>>的<<print $NPCList[0].penisdesc>>对着你的<<bottom>>。你开始<<bottomtext>>上下吞吐<<his>>的肉棒。<span class="green">小心不要太早让<<him>>高潮。</span>
+	<<else>>
+		你和<<bottomtext>>一起磨擦着你的<<bottom>>，刺激<<his>>的阴道。<span class="green">小心不要太早让<<him>>高潮。</span>
+	<</if>>
+	<br><br>
+
+	<<if $player.breastsize gte 1>>
+		你把你的<<breasts>>压在<<him>>身上。
+	<</if>>
+	<<if $spa.behaviour is "cute">>
+		"这样感觉好吗?"你问，让<<him>>处于痛苦的边缘。"我可能很快就会让你高潮，大概……？"
+	<<else>>
+		"感觉怎么样？"你问，让<<him>>处于痛苦边缘。"我想让你这样待多久都行"
+	<</if>>
+	<br><br>
+	"拜托，"那个<<person>>恳求道。"随你的便!"让我射吧!"<<body_tip bottom add>><<set $tip_add to ($tip + random(500, 1500))>><<tip_up>>
+	<br><br>
+
+	<<link [[结束|Spa Lewd Bottom Finish]]>><</link>>
+	<br>
+	<<link [[要更多钱|Spa Lewd Bottom 2]]>><</link>><<skill_difficulty "$bottomskill" "臀部技巧" 300 700>>
+	<br>
+
+<<else>>
+	<<if random(1, 10) gte 4>>
+		你把自己从<<his>>的身体里抽出来，
+		<<if $NPCList[0].penis isnot "none">>
+			<<bodyliquid "bottom" "semen">><<bottomejacstat>><<ejacstat>>
+			直到你感觉<<his>>的<<print $NPCList[0].penisdesc>>对着你的<<bottom>>。你开始<<bottomtext>>上下吞吐<<his>>的肉棒。<span class="red">这会让<<him>>越过边界。</span><<He>>身体痉挛，<<his>>的精液喷到你身上。
+		<<else>>
+			你和<<bottomtext>>一起磨擦着你的<<bottom>>，刺激<<his>>的阴道。<span class="green">这让<<him>>达到了高潮</span>，<<He>>的身体抽搐着，发出呻吟声。
+		<</if>>
+		<br><br>
+
+		<<He>>躺着抽搐渐渐平息, 一只手捂住<<his>>的脸. "谢-谢谢,"<<he>>说. "给." <<tipreceive>><<pass 50>>
+		<br><br>
+
+		<<He>>坐起来，在离开房间之前在<<his>>的腰上缠上一条毛巾。
+		<br><br>
+
+		<<spa_end>>
+	<<else>>
+		你把自己从<<his>>的身体里抽出来，
+		<<if $NPCList[0].penis isnot "none">>
+			<<bodyliquid "bottom" "semen">><<bottomejacstat>><<ejacstat>>
+			直到你感觉<<his>>的<<print $NPCList[0].penisdesc>>对着你的<<bottom>>。你开始<<bottomtext>>上下吞吐<<his>>的肉棒。
+		<<else>>
+			你和<<bottomtext>>一起磨擦着你的<<bottom>>，刺激<<his>>的阴道。
+		<</if>>
+		<br><br>
+		<span class="red"><<He>>失去控制，</span>挣脱开了你的手臂。
+
+		<<spa_rape_failed>>
+		<br><br>
+
+		<<link [[继续|Spa Lewd Rape]]>><<set $phase to 1>><<set $molestationstart to 1>><</link>>
+	<</if>>
+<</if>>
+
+
+:: Spa Lewd Bottom 2
+<<effects>>
+
+
+<<if $bottomskill gte random(300, 700)>>
+
+	<<if $spa.behaviour is "cute">>
+		"再多给点儿钱就行了，"你说。"我保证。"
+	<<else>>
+		"再给点钱就行了，"你嘟囔着地说。"我就放过你"
+	<</if>>
+	<br><br>
+
+	<span class="green"><<he>>点头颤抖着说道。</span>"好，好，"<<he>>说。"什么都行。"
+	<<body_tip bottom add>><<set $tip_add to ($tip + random(500, 1500))>><<tip_up>>
+	<br><br>
+
+	如果继续这样下去，你很担心<<his>>的健康，
+	<<if $NPCList[0].penis isnot "none">>
+		<<bodyliquid "bottom" "semen" 2>><<thighejacstat>><<ejacstat>>
+		你<<bottomtext>>用你的<<bottom>>用力地挤压着<<his>>的<<print $NPCList[0].penisdesc>>，然后疯狂的抽插。
+	<<else>>
+		你用<<bottomtext>>你的<<bottom>>用力的压着<<his>>阴部, 并且用力的摩擦着.
+	<</if>>
+	<br><br>
+
+	效果立竿见影。
+	<<if $NPCList[0].penis isnot "none">>
+		<<his>>的背随着<<his>>的全身抽搐起来，你的屁股覆盖在了一大片的精液中。
+	<<else>>
+		<<His>>的背随着<<his>>的全身痉挛。
+	<</if>>
+
+	<<He>>呻吟的声音大到你担心有人会来查看。需要半分钟的时间<<him>>才能恢复到偶尔的抽搐。<<Hes>>还喘不过气来。
+	<br><br>
+	<<link [[继续|Spa Lewd Torment End]]>><</link>>
+	<br>
+<<else>>
+	<<if random(1, 10) gte 4>>
+		<<if $NPCList[0].penis isnot "none">>
+			<<bodyliquid "bottom" "semen">><<bottomejacstat>><<ejacstat>>
+			<<person>>在你的屁股之间抽送着，<span class="red">最终成功让<<himself>>达到了高潮</span>，<<his>>的<<print $NPCList[0].penisdesc>>喷射着精液弄脏了你的<<bottom>>。
+		<<else>>
+			<<person>>顶着你的<<bottom>>,<span class="red">，只顾着让<<himself>>自己舒服，</span>很快的<<his>>的整个身体因为性高潮抽搐起来。
+		<</if>>
+		<br><br>
+
+		<<He>>躺着抽搐渐渐平息, 一只手捂住<<his>>的脸. "谢-谢谢,"<<he>>说. "给." <<tipreceive>><<pass 50>>
+		<br><br>
+
+		<<He>>坐起来，在离开房间之前在<<his>>的腰上缠上一条毛巾。
+		<br><br>
+
+		<<spa_end>>
+	<<else>>
+		你想让<<person>>崩溃，<span class="red">但是<<he>>没有被你控制，</span>抓住并推开了你的手臂。
+		<<spa_rape_failed>>
+		<br><br>
+
+		<<link [[继续|Spa Lewd Rape]]>><<set $phase to 1>><<set $molestationstart to 1>><</link>>
+	<</if>>
+<</if>>
+
+
+:: Spa Lewd Torment End
+<<effects>>
+
+你从<<person>>身上爬下来，<<he>>挣扎着坐起来。
+
+<<if $spa.behaviour is "cute">>
+	"希望你喜欢我的按摩，”你伸出手说。
+<<else>>
+	"我希望有机会再来一次，”你伸出手说。
+<</if>>
+
+<<He>>抬头看着你，然后又低下，摇了摇头。
+<br><br>
+<<if $player.gender_appearance is "m">>
+	"该死的魅魔，"<<he>>喃喃地说，"好吧，这是你的钱。"
+<<else>>
+	"该死的魅魔，"<<he>>喃喃自语。"好吧，这是你的钱。"
+<</if>>
+<<tipreceive>><<pass 50>>
+<br><br>
+
+<<He>>把毛巾缠在腰上，摇摇晃晃地走出房间。
+<br><br>
+
+<<spa_end>>
+
+
+:: Spa Lewd Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+
+	<<maninit>>
+	<<if $daily.spaEvent isnot "party">>
+		<<enable_rescue>>
+	<</if>>
+	<<set $enemyarousal to ($enemyarousalmax * 0.9)>>
+	<<if $phase is 1>>
+		<<npc_attempt_sex>>
+	<</if>>
+	<<prop table>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+
+<<if $alarm is 1 and $rescue isnot 1>>
+	<span class="pink">你的哭声被聚会的喧嚣淹没了。</span>
+	<<set $alarm to 0>>
+	<br><br>
+<</if>>
+
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Spa Lewd Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Spa Lewd Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Spa Lewd Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>躺在桌子上, 一只手捂住<<his>>的眼睛.<<tearful>>你摔倒在地. "拿着,"<<he>>说. <<tipreceive>><<pass 50>>
+	<br><br>
+	<<He>>把毛巾系在腰上，然后走出房间。
+
+<<elseif $enemyhealth lte 0>>
+	你把<<person>>推到桌子上。<<He>>向你扑了过来。<<tearful>>你害怕的后退。
+	<br><br>
+	<<if $NPCList[0].penis isnot "none">>
+		相反，<<he>>用手握住<<his>>的<<print $NPCList[0].penisdesc>>，狠狠地抽动着，最终颤抖着喷射在地板上。
+	<<else>>
+		相反，<<he>>将一根手指伸进<<his>>的阴道里，狠狠地抽动着，直到<<his>>的身体颤抖着达到了高潮。
+	<</if>>
+	<br><br>
+	<<tearful>>你远离了按摩床。"抱歉，" 那<<person>>说。"拿着吧。" <<tipreceive>><<pass 50>>
+	<br><br>
+
+	<<He>>把毛巾系在腰上，然后走出房间。
+
+<<elseif $alarm is 1 and $rescue is 1>>
+	<<set $rescued += 1>>
+	有人在敲门。"里面一切都好吗?"
+	<br><br>
+	"是的!"那个<<person>>说着释放了你。
+	<<if $NPCList[0].penis isnot "none">>
+		<<He>>抓着<<his>>的<<print $NPCList[0].penisdesc>>用自己的手，使劲地前后撸动，在地板上射出一滩精液。
+	<<else>>
+		<<He>>把手指推入自己的阴部，用力抽吸，直到<<his>>的身体颤抖着进入高潮。
+	<</if>>
+	<br><br>
+	<<tearful>>你远离了按摩床。"抱歉，" 那<<person>>说。"拿着吧。" <<tipreceive>><<pass 50>>
+	<br><br>
+
+	<<He>>把毛巾系在腰上，然后走出房间。
+<<else>>
+	<<person>>与自己的欲望作斗争，然后从你身边抽离。
+	<<if $NPCList[0].penis isnot "none">>
+		<<He>>抓着<<his>>的<<print $NPCList[0].penisdesc>>用自己的手，使劲地前后撸动，在地板上射出一滩精液。
+	<<else>>
+		<<He>>把手指推入自己的阴部，用力抽吸，直到<<his>>的身体颤抖着进入高潮。
+	<</if>>
+	<br><br>
+	<<He>>躺下用一只手捂住<<his>>的眼睛, 然后把浴巾系在<<his>>的腰上, 走出房间.<<tearful>>你清理着按摩床.<<pass 50>>
+<</if>>
+<br><br>
+<<endcombat>>
+<<clotheson>>
+
+<<spa_end>>
+
+
+:: Spa Hesitant Strip
+
+<<effects>>
+
+"让我来帮忙，"你说着伸手去拿毛巾。<<He>>试图远离你，但你设法抓住了毛巾。在<<he>>躲避时，毛巾就掉了下来，
+<<if $pronoun is "f">>
+	<<if $NPCList[0].penis isnot "none">>
+		<span class="lewd"><<his>>的<<print $NPCList[0].breastsdesc>>和<<print $NPCList[0].penisdesc>>暴露了出来。</span>
+	<<else>>
+		<span class="lewd"><<his>>的<<print $NPCList[0].breastsdesc>>和阴部暴露了出来。</span>
+	<</if>>
+<<else>>
+	<<if $NPCList[0].penis isnot "none">>
+		<span class="lewd"><<his>>的<<print $NPCList[0].penisdesc>>暴露了出来。</span>
+	<<else>>
+		<span class="lewd"><<his>>的阴部暴露了出来。</span>
+	<</if>>
+<</if>>
+<<promiscuity2>>
+
+<<He>>喘着气，用手遮住<<his>>的身体。"躺在桌子上，"你说道，"我会照顾你的。"
+<br><br>
+
+<<He>>又犹豫了一下, 然后照做了. 你给手掌倒好油, 接着<<handtext>>开始了工作.<<ghandskill>><<handskill 5>>
+<br><br>
+
+<<body_tip hand 1>>
+<<Hes>>水疗结束时， 她感觉舒服多了，并留下了小费。<<tipreceive>><<pass 50>>
+<br><br>
+
+<<spa_end>>
+
+
+:: Spa Hesitant Wait
+<<effects>>
+
+
+<<if $rng gte 51>>
+	<<person>>脸更红了，<<he>>让毛巾掉到了地上，
+	<<if $pronoun is "f">>
+		<<if $NPCList[0].penis isnot "none">>
+			<span class="lewd"><<his>>的<<print $NPCList[0].breastsdesc>>和<<print $NPCList[0].penisdesc>>暴露了出来。</span>
+		<<else>>
+			<span class="lewd"><<his>>的<<print $NPCList[0].breastsdesc>>和阴部暴露了出来。</span>
+		<</if>>
+	<<else>>
+		<<if $NPCList[0].penis isnot "none">>
+			<span class="lewd"><<his>>的<<print $NPCList[0].penisdesc>>暴露了出来。</span>
+		<<else>>
+			<span class="lewd"><<his>>的阴部暴露了出来。</span>
+		<</if>>
+	<</if>>
+	<br><br>
+
+	<<He>>用<<himself>>的手遮住<<his>>自己, 让自己脸朝下躺在按摩床上. 你把精油倒在手心, 接着<<handtext>>开始了工作.<<ghandskill>><<handskill 5>>
+	<br><br>
+
+	<<body_tip hand 1>>
+	<<Hes>>水疗结束时， 她感觉舒服多了，并留下了小费。<<tipreceive>><<pass 50>>
+	<br><br>
+
+	<<spa_end>>
+
+<<else>>
+	<<person>>脸更红了，但是一时没勇气。<<He>>转身离开了房间。
+	<br><br>
+	<<set $masseur_stat -= 1>>
+	<<set $money -= 1000>>
+	<<spa_end>>
+<</if>>
+
+
+:: Spa Tired Work
+<<effects>>
+
+
+<<body_tip hand 0.3>>
+<<spa_rob_options>>
+
+
+
+:: Spa Tired Grope
+<<effects>>
+
+<<set $seductiondifficulty to 8000>>
+<<seductioncheck>>
+<br><br>
+<<if $seductionskill lt 1000>>
+	<span class="gold">你对自己的诱惑力更有信心了。</span>
+	<br><br>
+<</if>>
+<<seductionskilluse>>
+
+你用双手抓住<<persons>>的臀部，然后挤压着。
+<<promiscuity3>>
+
+<<if $seductionrating gte $seductionrequired>>
+
+	<<He>>看上去有些担心，<span class="green">但没有阻止你。</span>你把你的摸索融入到按摩中，激起了偶尔的呻吟。
+	<br><br>
+	<<He>>在水疗结束时将<<himself>>调整成<<his>>仰面朝天的状态，然后指了指<<his>>的
+	<<if $NPCList[0].penis isnot "none">>
+		<<print $NPCList[0].penisdesc>>.
+	<<else>>
+		小穴.
+	<</if>>
+	"皆大欢喜的结局怎么样?"
+	<br><br>
+
+	<<link [[拒绝|Spa Lewd Hand Refuse]]>><</link>>
+	<br>
+	<<if $promiscuity gte 35>>
+		<<link [[谈判|Spa Lewd Hand Negotiate]]>><</link>><<promiscuous3>>
+		<br>
+	<<elseif $uncomfortable.prostituting is false>>
+		<<link [[谈判|Spa Lewd Hand Negotiate]]>><<set $desperateaction to 1>><</link>><<promiscuous3>>
+		<br>
+	<</if>>
+<<else>>
+	<<body_tip hand 0.1>>
+	<span class="red">"别胡来，"<<he>>说。</span>"我是来按摩的，不是来嫖的。"
+	<br><br>
+
+	<<spa_rob_options>>
+
+<</if>>
+
+
+:: Spa Oral Start
+<<effects>>
+
+你跪在<<person>>面前。<<He>>抓住你的后脑勺。
+<<promiscuity4>>
+
+
+<<link [[继续|Spa Oral]]>><<set $sexstart to 1>><</link>>
+<br>
+
+
+:: Spa Oral Refuse
+<<effects>>
+
+"我不是那种<<girl>>，"你说。"抱歉让你失望了。"
+<br><br>
+
+<<if $rng gte 81>>
+	"那不是请求，"那个<<person>>说。<span class="red"><<He>>抓住你的手臂，</span>把你拉到桌子上。
+	<br><br>
+
+	<<link [[继续|Spa Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	<<person>>耸了耸肩。"随便你。"<<He>>整理好<<his>>的毛巾，然后离开了房间。
+	<br><br>
+
+	<<spa_end>>
+<</if>>
+
+
+:: Spa Oral
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+
+	<<maninit>>
+	<<npcoral>>
+	<<set $enemytrust -= 20>>
+	<<if $daily.spaEvent isnot "party">>
+		<<enable_rescue>>
+	<</if>>
+<</if>>
+<<effects>>
+<<effectsman>>
+
+<<if $alarm is 1 and $rescue isnot 1>>
+	<span class="pink">你的哭声被聚会的喧嚣淹没了。</span>
+	<<set $alarm to 0>>
+	<br><br>
+<</if>>
+
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Spa Oral Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Spa Oral]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Spa Oral Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>将<<his>>的毛巾绕着<<his>>的身体围起来，说：“谢谢你，小可爱。”<<he>>又说：“到这儿来。”<<He>>离开了房间。 <<tipreceive>>
+	<br><br>
+	<<tearful>>你擦桌子。
+
+<<elseif $enemyhealth lte 0>>
+	你把那个<<person>>从你身边推开。<<He>>冲向你，但没有抓到，你把毛巾丢到了<<He>>脸上。
+	<br><br>
+	有人在敲门。"里面一切都好吗?"
+	<br><br>
+	"没错！"<<person>>说道，"我就要完成了。"<<He>>把<<his>>的毛巾围在<<his>>的身上，然后离开了房间。
+	<br><br>
+	<<tearful>>你擦桌子。
+<<elseif $alarm is 1 and $rescue is 1>>
+	<<set $rescued += 1>>
+	有人在敲门。"里面一切都好吗?"
+	<br><br>
+	那个<<person>>从你身边退去。"没错！"<<he>>说道，"我就要完成了。"<<He>>系上了毛巾，然后离开了房间。
+	<br><br>
+	<<tearful>>你擦桌子。
+<<else>>
+	"他妈的，"那个<<person>>说。"别以为你会得到小费。"<<He>>把<<his>>的毛巾围在<<his>>的身上，然后离开了房间。
+	<br><br>
+	<<tearful>>你擦桌子。
+<</if>>
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<spa_end>>
+
+
+
+
+:: Spa Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<if $daily.spaEvent isnot "party">>
+		<<enable_rescue>>
+	<</if>>
+	<<prop table>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+
+<<if $alarm is 1 and $rescue isnot 1>>
+	<span class="pink">你的哭声被聚会的喧嚣淹没了。</span>
+	<<set $alarm to 0>>
+	<br><br>
+<</if>>
+
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Spa Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Spa Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Spa Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>躺在桌子上，一只手遮住眼睛，"这里。"<<he>>说道。<<tipreceive>>
+	<br><br>
+	<<He>>把毛巾系在腰上，然后走出房间。
+	<br><br>
+
+	<<tearful>>你擦桌子。
+
+<<elseif $enemyhealth lte 0>>
+	你把<<person>>推到桌子上。<<He>>冲向你，但你躲开了。
+	<br><br>
+	有人在敲门。"里面一切都好吗?"
+	<br><br>
+	"没错！"<<person>>说道，"我就要完成了。"<<He>>系上了毛巾，然后离开了房间。
+	<br><br>
+
+	<<tearful>>你擦桌子。
+
+<<else>>
+	<<set $rescued += 1>>
+	有人在敲门。"里面一切都好吗?"
+	<br><br>
+	"没错！"<<person>>说道，"我就要完成了。"<<He>>系上了毛巾，然后离开了房间。
+	<br><br>
+	<<tearful>>你擦桌子。
+
+<</if>>
+<br><br>
+<<endcombat>>
+<<clotheson>>
+<<spa_end>>
+
+:: Spa Lewd Naked Refuse
+
+<<effects>>
+"我宁愿是那个寻找的人，"你说。
+<br><br>
+
+<<person>>笑了笑，然后翻了个身。
+<br><br>
+<<set $tipmod to 0>><<unset $tip_add>>
+<<body_tip hand 0.1>>
+尽管遭到你的拒绝，但<<He>>在水疗结束时仍然看起来很满意，并留下了小费。<<tipreceive>><<pass 50>>
+<br><br>
+<<spa_end>>
+
+:: Spa Lewd Naked
+<<effects>>
+
+"让我想想，"你说着，轻拍着脸颊。<<person>>向前倾身，<<his>>脸上露出希望的表情。
+<br><br>
+
+"好吧，"你说。<<passagestrip>>
+<<exhibitionism5>>
+
+<<person>>一直在看。"很好，"<<he>>说。"你知道，还有其他形式的按摩。你为什么不试试不用手呢?我会让你不虚此行的。"
+<br><br>
+
+<<if $promiscuity gte 35>>
+	<<link [[继续|Spa Lewd Breasts]]>><<chestskill 5>><</link>><<promiscuous3>><<gchestskill>>
+	<br>
+<<elseif $uncomfortable.prostituting is false>>
+	<<link [[继续|Spa Lewd Breasts]]>><<chestskill 5>><<set $desperateaction to 1>><</link>><<promiscuous3>><<gchestskill>>
+	<br>
+<</if>>
+<<link [[拒绝|Spa Lewd Breasts Refuse]]>><</link>>
+<br>
+
+:: Spa Lewd Breasts Refuse
+<<effects>>
+
+"我会坚持用手。"，你说:"你可以看，但不能碰。"
+<br><br>
+
+<<person>>点头，失望但不沮丧。在服务结束时，<<He>>似乎很满意。<<tipreceive>><<pass 50>>
+<br><br>
+
+<<clotheson>>
+<<spa_end>>
+
+
+:: Spa Lewd Breasts
+<<effects>>
+
+<<body_tip chest add>><<set $tip_add to ($tip + random(100, 1000))>>
+你把油倒在你的<<if $player.breastsize gte 1>><<breasts>><<else>>胸部<</if>>顺着你的身体流下，然后在你身上揉搓。你爬到桌子上，把一条腿搭在那个<<person>>身上。
+<br><br>
+
+"像这样吗?"你把身体压到对方身上并询问。<<He>>点头，然后你<<if $player.breastsize gte 1>>把<<breasts>>紧紧贴在<<his>>的身体上，并<</if>>开始上下摩擦<<him>>。
+
+<<if $NPCList[0].penis isnot "none">>
+	有时你滑得太靠后，你的<<bottom>>压在<<his>>勃起的阴茎上。
+<</if>>
+<br><br>
+
+
+<<if random(1, 2) is 2>>
+	你继续用你的整个身体按摩，直到<<he>>向前伸出<span class="purple">并抓住你的<<breasts>>。</span>
+	<br><br>
+
+	<<link [[忍耐|Spa Lewd Breasts Endure]]>><</link>><<garousal>><<gstress>>
+	<br>
+	<<link [[让你的客户停止|Spa Lewd Breasts Stop]]>><</link>>
+	<br>
+<<else>>
+	你继续按摩你的整个身体，直到水疗结束。"谢谢你，亲爱的，"<<he>>说，把<<his>>的毛巾绑在<<his>>的身上。"在这里。"<<tipreceive>><<pass 50>>
+	<br><br>
+
+	<<clotheson>>
+
+	<<spa_end>>
+<</if>>
+
+
+:: Spa Lewd Breasts Endure
+<<effects>>
+
+<<body_tip chest add>><<set $tip_add to ($tip + random(100, 1000))>>
+当<<person>>按摩你油乎乎的<<breasts>>时，你继续尽你所能地工作。
+
+<<if random(1, 2) is 2>>
+	<<His>>的手沿着你的腹部，然后到达你的臀部。<<He>>用双手抓住你的<<bottom>>，并试图把你推到<<his>>的骨盆上。
+	<br><br>
+
+	"我需要做爱，"<<he>>说。"你快把我逼疯了。"
+	<br><br>
+
+	<<if $promiscuity gte 75>>
+		<<link [[允许|Spa Sex]]>><<set $sexstart to 1>><</link>><<promiscuous5>>
+		<br>
+	<<elseif $uncomfortable.prostituting is false>>
+		<<link [[允许|Spa Sex]]>><<set $sexstart to 1>><<set $desperateaction to 1>><</link>><<promiscuous5>>
+		<br>
+	<</if>>
+	<<link [[往下爬|Spa Lewd Breasts Stop]]>><</link>>
+	<br>
+<<else>>
+	<<He>>一直在摸索，直到服务结束，让你感到相当脸红。
+	<br><br>
+	"谢谢你，亲爱的，"<<he>>边说边把<<he>>的毛巾系在<<his>>的腰上。"这个是给你的。"<<tipreceive>><<pass 50>>
+	<br><br>
+	<<clotheson>>
+	<<spa_end>>
+<</if>>
+
+:: Spa Lewd Breasts Stop
+<<effects>>
+
+你抓住<<persons>>的手臂，把他们推开。"看，"你说。"别碰。"
+<br><br>
+
+<<if random(1, 5) is 5>>
+	"去他妈的，"那个<<person>>说着，又伸手去摸你的<<breasts>>。"我忍不住了。"
+	<br><br>
+
+	<<link [[继续|Spa Lewd Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	<<person>>不争论。<<He>>向后躺着，闭上<<his>>的眼睛，你继续工作。
+	<br><br>
+	"谢谢你，亲爱的，"<<he>>在服务结束时说。<<He>>把<<his>>的毛巾系在<<his>>的身上。"给。"<<tipreceive>><<pass 50>>
+	<br><br>
+
+	<<clotheson>>
+
+	<<spa_end>>
+<</if>>
+
+
+:: Spa Sex
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+
+	<<maninit>><<npc_attempt_sex>>
+	<<if $daily.spaEvent isnot "party">>
+		<<enable_rescue>>
+	<</if>>
+	<<set $enemyarousal to ($enemyarousalmax * 0.65)>>
+	<<promiscuity5>>
+	<<if $player.penisExist>>
+		<<body_tip penile add>><<set $tip_add to ($tip + random(100, 1000))>>
+	<</if>>
+	<<if $player.vaginaExist>>
+		<<body_tip vaginal add>><<set $tip_add to ($tip + random(100, 1000))>>
+	<</if>>
+	<<prop table>>
+<</if>>
+<<effects>>
+<<effectsman>>
+
+<<if $alarm is 1 and $rescue isnot 1>>
+	<span class="pink">你的哭声被聚会的喧嚣淹没了。</span>
+	<<set $alarm to 0>>
+	<br><br>
+<</if>>
+
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Spa Lewd Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Spa Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+
+:: Spa Polite Leave
+<<effects>>
+
+<<person>>关上了<<him>>身后的门。
+<br><br>
+
+<<spa_end>>
+
+:: Spa Polite Seduce
+<<effects>>
+
+
+<<set $seductiondifficulty to 10000>>
+<<seductioncheck>>
+<br><br>
+<<seductionskilluptext>>
+<<seductionskilluse>>
+
+你站在<<person>>的前面，阻止<<him>>离开房间。"你确定没有什么我可以为你做的吗?"你靠在门框上问道。
+<<promiscuity3>>
+
+<<if $seductionrating gte $seductionrequired>>
+
+	<<He>>犹豫了一下，<span class="green">扫视了一遍你的身体，</span>然后摇了摇头，打破了这种氛围。"我做不到，"<<he>>说道，"我<<spouse>>会杀了我的。"
+	<<if !$soup_kitchen_known>>
+		<<He>>看着你的眼睛，但是某种东西让<<him>>移开了视线。"他们负担过重，但是如果你需要帮助，狼街上有一家施粥所。它在神殿旁边的一座灰色建筑里。开放时间是<span class="gold"><<ampm 18 00>>到<<ampm 21 00>></span>。"
+		<br><br>
+
+		<span class="gold">你发现了狼街上的施粥所。</span>
+		<br><br>
+		<<set $soup_kitchen_known to 1>>
+		<<He>>从你身边推开。
+	<<else>>
+		<<He>>从你身边推开。
+	<</if>>
+	<br><br>
+	<<link [[恳求|Spa Polite Beg]]>><<sub 1>><<stress 6>><</link>><<gstress>>
+	<br>
+	<<link [[让你的顾客离开|Spa Polite Leave]]>><</link>>
+	<br>
+<<else>>
+
+	<<person>>犹豫了一下，<span class="red">然后摇了摇头。</span>"我只是想按摩。"<<he>>说，"谢谢你。"<<He>>绕开了你。
+	<br><br>
+
+	<<spa_end>>
+
+<</if>>
+
+:: Spa Polite Beg
+
+<<effects>>
+
+你握住<<his>>的手臂.
+
+<<if $speech_attitude is "meek">>
+	"求--求求你<<sir>>," 你恳求道, "我真的很需要钱。"
+<<elseif $speech_attitude is "bratty">>
+	"来吧" 你说道, "我真的很需要钱."
+<<else>>
+	"请重新考虑，"你说。"我需要钱。"
+<</if>>
+<br><br>
+
+<<if $submissive gte 1500 or $dissociation gte 1>>
+	<span class="sub">你的话语影响了<<him>>。</span><<He>>在离开前给你<<moneyGain 100>>。
+	<<ltrauma>><<trauma -6>>
+<<elseif $rng gte 91>>
+	<<He>>看了你一眼，然后在离开之前递给你<<moneyGain 100>>。
+	<<ltrauma>><<trauma -6>>
+<<elseif $rng gte 71>>
+	<<He>>看了你一眼，然后在离开前递给你<<moneyGain 60>>。
+	<<ltrauma>><<trauma -6>>
+<<elseif $rng gte 51>>
+	<<He>>看了你一眼，然后在离开之前递给你<<moneyGain 30>>。
+	<<ltrauma>><<trauma -6>>
+<<elseif $rng gte 31>>
+	<<He>>看了你一眼，然后在离开之前递给你<<moneyGain 10>>。
+	<<ltrauma>><<trauma -6>>
+<<else>>
+	<<He>>甩开你的胳膊，继续一言不发。<<gtrauma>><<trauma 6>>
+<</if>>
+<br><br>
+
+<<spa_end>>

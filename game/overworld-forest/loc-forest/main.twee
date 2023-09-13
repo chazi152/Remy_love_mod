@@ -1,0 +1,548 @@
+:: Forest
+
+<<location "forest">><<effects>><<wPersist "forest">><<getTarget true>>
+<<if $foresthunt gte 1>>
+	<<if $edenforesthunt is 1>>
+		<<print either(
+			`<span class="red">你正在被追捕。你看到子弹壳散落在地上。</span>`,
+			`<span class="red">你正在被追捕。你看到地上有靴子的脚印。</span>`,
+			`<span class="red">你正在被追捕。你听到远处传来枪声。</span>`
+		)>>
+	<<elseif $blackwolfhunt is 1>>
+		<<print either(
+			`<span class="red">你正在被追杀，你留意到树枝上挂着一撮狼毛。</span>`,
+			`<span class="red">你正在被追杀，你看到地上有狼活动的痕迹。</span>`,
+			`<span class="red">你正在被追捕。你听到远处传来一声咆哮。</span>`
+		)>>
+	<<elseif $wraith.hunt>>
+		<<if $moonstate is "morning" and Time.hour gte 6>>
+			随着太阳的升起，您感到如释重负，恐惧的黑夜终于过去了。<span class="blue"><i>你安全了——至少在下一个血月之前。</i></span>
+			<<clearWraith>>
+		<<else>>
+			<<print either(
+				`<span class="red">你正在被追杀。红色的月光在你周围投下可怕的阴影。</span><<stress 6>><<gstress>>`,
+				`<span class="red">你正在被追杀，你听到远处传来笑声。</span><<trauma 6>><<gtrauma>>`,
+				`<span class="red">你正在被追杀，你感觉你的呼吸正变得越来越困难。</span><<stress 6>><<gstress>><<trauma 6>><<gtrauma>>`
+			)>>
+		<</if>>
+	<<else>>
+		<!-- generic text for when a hunt is happening but we haven't written a more specific version of the text. -->
+		<span class="red">你正在被猎杀。</span>
+	<</if>>
+	<br><br>
+<</if>>
+
+<<if $arousal gte $arousalmax>>
+	<<orgasmforest>>
+<</if>>
+
+<<if $forest lte 0>>
+	<<set $forest to 0>>
+	<<forestmove>>
+	<<if $stress gte $stressmax and !$possessed>>
+		<<passoutforest>>
+	<<elseif $foresthunt gte 10>>
+		<<foresthunt>>
+	<<else>>
+		<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $eventskip is 0>>
+			<<rng>>
+			<<if $rng gte 81 or ($forest_search is true and $rng gte 61)>>
+				<<eventforestitem>>
+			<<elseif $danger gte (9900 - ($allure * $forestmod))>>
+				<<eventforestoutskirts>>
+			<<else>>
+				<<eventforestsafe>>
+			<</if>>
+		<<elseif $town_projects.road is 1>>
+			<<set $town_projects.road to 2>>
+			你在森林郊区。你从树木的缝隙间依稀辨认出前方的镇子。
+			<br><br>
+
+			你差点被一块磨损的砖头绊倒。这引起了你对其他砖头的注意。这里曾经有一条道路，连接着城镇和湖泊。<span class="teal">一个想法突然涌上心头。</span>如果这条路得以修复，学生们的旅程将会更加安全。
+			<br><br>
+
+			<i>你可以在市政厅了解这条路的情况。</i>
+			<br><br>
+
+			<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<<elseif $town_projects.road is 3>>
+			<<set $town_projects.road to 4>>
+			你在森林郊区。你从树木的缝隙间依稀辨认出前方的镇子。
+			<br><br>
+
+			市长办公室很快就采取了行动，一条笔直地道路伸展进森林里，它一直向前直到在一个转弯后才消失在视野中.<span class="green">现在往返湖泊将会更加容易了。</span>
+			<br><br>
+
+			<<earnFeat "Safe Trail">>
+			<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<<elseif $eventskip gte 1>>
+			你在森林郊区。你从树木的缝隙间依稀辨认出前方的镇子。
+			<br><br>
+
+			<<if $exposed lte 1>>
+				<<if $forest_shop_intro is 1>>
+					<<forestshopicon>><<link [[森林商店|Forest Shop]]>><</link>>
+					<br><br>
+				<<else>>
+					<<forestshopicon>><<link [[奇怪的商店|Forest Shop]]>><</link>>
+					<br><br>
+				<</if>>
+			<</if>>
+
+			<<forestdeeper>>
+			<br><br>
+
+			<<forestsearch>>
+			<br><br>
+
+			离开森林
+			<br>
+			<<danubeicon>><<link [[多瑙河街 (0:10)|Danube Street]]>><<pass 10>><<set $foresthunt to 0>><</link>>
+			<br>
+			<<wolficon>><<link [[狼街 (0:10)|Wolf Street]]>><<pass 10>><<set $foresthunt to 0>><</link>>
+			<br>
+			<<nightingaleicon>><<link [[南丁格尔街 (0:10)|Nightingale Street]]>><<pass 10>><<set $foresthunt to 0>><</link>>
+			<br>
+			<<if $temple_rank isnot undefined and $temple_rank isnot "prospective">>
+				<<wolficon>><<link [[神殿(0:10)|Temple Garden]]>><<pass 10>><<set $foresthunt to 0>><</link>>
+				<br>
+			<</if>>
+			<br><br>
+
+			<<if $historytrait gte 2 and $thicket_tunnel_intro is 1>>
+				<<link [[走秘密隧道到住宅区的小巷(0:05)|Residential Thicket]]>><<pass 5>><</link>>
+				<br>
+			<</if>>
+			<<if $historytrait gte 3>>
+				<<link [[沿着森林深处的秘道前进 (0:10)|Forest]]>>
+					<<set $forestmod to 1.5>><<set $forest += 50>><<set $forestmove to "secretin">><<pass 10>>
+					<<if $foresthunt gte 1>><<set $foresthunt += 1>><</if>>
+				<</link>>
+				<br>
+			<</if>>
+		<</if>>
+	<</if>>
+
+<<elseif $forest lte 20>>
+	<<forestmove>>
+	<<if $stress gte $stressmax and !$possessed>>
+		<<passoutforest>>
+	<<elseif $foresthunt gte 10>>
+		<<foresthunt>>
+	<<else>>
+		<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $eventskip is 0>>
+			<<rng>>
+			<<if $rng gte 81 or ($forest_search is true and $rng gte 61)>>
+				<<eventforestitem>>
+			<<elseif $danger gte (9900 - ($allure * $forestmod))>>
+				<<eventforestoutskirts>>
+			<<else>>
+				<<eventforestsafe>>
+			<</if>>
+		<<elseif $eventskip gte 1>>
+			你在森林里。树木很稀疏，你离城镇尚不太远。
+			<br><br>
+
+			<<if $forest gte 10 and $forest lte 14>>
+				<<ind>><<link [[老教堂墓地|Churchyard]]>><</link>>
+				<br><br>
+			<</if>>
+
+			<<if $smuggler_location is "forest" and $smuggler_timer is 0 and Time.dayState is "night" and Time.hour gte 18>>
+				<span class="gold">你看到树林中闪烁着光芒。像是一团火焰。</span>
+				<br><br>
+			<</if>>
+
+			<<if $smuggler_location is "forest" and $smuggler_timer is 0 and Time.dayState is "night" and Time.hour gte 18>>
+				<<link [[接近火焰|Smuggler Forest]]>><</link>>
+				<br><br>
+			<</if>>
+
+			<<forestdeeper>>
+			<br><br>
+
+			<<forestsearch>>
+			<br><br>
+
+			<<forestlessdeep>>
+		<</if>>
+	<</if>>
+
+<<elseif $forest lte 50>>
+	<<forestmove>>
+	<<if $stress gte $stressmax and !$possessed>>
+		<<passoutforest>>
+	<<elseif $foresthunt gte 10>>
+		<<foresthunt>>
+	<<else>>
+		<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $eventskip is 0>>
+			<<rng>>
+			<<if $rng gte 81 or ($forest_search is true and $rng gte 61)>>
+				<<eventforestitem>>
+			<<elseif $danger gte (9900 - ($allure * $forestmod))>>
+				<<eventforest>>
+			<<else>>
+				<<eventforestsafe>>
+			<</if>>
+		<<elseif $eventskip gte 1>>
+			你在森林里，感到自己正被大自然包围。
+			<br><br>
+
+			<<if $forest lte 30>>
+				<<if $nextPassageCheck is "Lake Shore">>
+					<span class="nextLink"><<lakeicon>><<link [[湖泊.|Lake Shore]]>><<pass 10>><</link>></span>
+				<<else>>
+					<<lakeicon>><<link [[湖泊 (0:10)|Lake Shore]]>><<pass 10>><</link>>
+				<</if>>
+			<<elseif $forest lte 40>>
+				<<lakeicon>><<link [[湖泊(0:10)|Lake Waterfall]]>><<pass 10>><</link>>
+			<<else>>
+				<<if $nextPassageCheck is "Lake Fishing Rock">>
+					<span class="nextLink"><<lakeicon>><<link [[湖泊.|Lake Fishing Rock]]>><<pass 10>><</link>></span>
+				<<else>>
+					<<lakeicon>><<link [[湖泊(0:10)|Lake Fishing Rock]]>><<pass 10>><</link>>
+				<</if>>
+			<</if>>
+			<br><br>
+
+			<<forestdeeper>>
+			<br><br>
+
+			<<forestsearch>>
+			<br><br>
+
+			<<forestlessdeep>>
+			<br><br>
+
+			<<if $historytrait gte 3>>
+				<<link [[走出森林秘道(0:10)|Forest]]>>
+					<<set $forestmod to 1.5>><<set $forest -= 50>><<set $forestmove to "secretout">><<pass 10>>
+					<<if $foresthunt gte 1>><<set $foresthunt += 1>><</if>>
+				<</link>>
+				<br>
+			<</if>>
+		<</if>>
+	<</if>>
+
+<<elseif $forest lte 99>>
+	<<forestmove>>
+	<<if $stress gte $stressmax and !$possessed>>
+		<<passoutforest>>
+	<<elseif $foresthunt gte 10>>
+		<<foresthunt>>
+	<<else>>
+		<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $eventskip is 0>>
+			<<rng>>
+			<<if $rng gte 81 or ($forest_search is true and $rng gte 61)>>
+				<<eventforestitem>>
+			<<elseif $danger gte (9900 - ($allure * $forestmod))>>
+				<<eventforestdeep>>
+			<<else>>
+				<<eventforestsafe>>
+			<</if>>
+		<<elseif $eventskip gte 1>>
+			你在森林深处。树木十分高大，树枝缠绕在一起形成树冠遮住了阳光，显得有些昏暗。
+			<br><br>
+
+			<<if $edenfreedom gte 1>>
+				<<link [[伊甸的小屋(0:10)|Eden Clearing]]>><<pass 10>><</link>>
+				<br>
+			<<elseif $syndromeeden gte 1>>
+				<<link [[伊甸的小屋(0:10)|Eden Clearing]]>><<pass 10>><</link>>
+				<br>
+			<</if>>
+			<<if $syndromewolves gte 1 and $caveHumanPregnancyDiscovered isnot 1>>
+				<<link [[狼穴 (0:10)|Wolf Cave Clearing]]>><<pass 10>><</link>>
+				<br>
+			<<elseif $syndromewolves gte 1 and $caveHumanPregnancyDiscovered is 1>>
+				<span class="blue">你觉得狼群不会允许你在怀孕结束前回来。</span>
+				<br>
+			<</if>>
+			<<if $pubtask is "forest" and $pubtask2 isnot 1>>
+				<<rng>>
+				<!-- Modified for Monster People -->
+				<<if $pubtasksetting is "bear" and $bestialitydisable is "f">>
+					<<link [[寻找兰德里的黑匣子|Forest Bear Box]]>><</link>>
+				<<elseif $pubtasksetting is "pair">>
+					<<link [[寻找兰德里的黑匣子|Forest Box]]>><</link>>
+				<<elseif $rng gte 51 and $bestialitydisable is "f">>
+					<<link [[寻找兰德里的黑匣子|Forest Bear Box]]>><</link>>
+				<<else>>
+					<<link [[寻找兰德里的黑匣子|Forest Box]]>><</link>>
+				<</if>>
+			<</if>>
+			<br><br>
+
+			<<forestdeeper>>
+			<br><br>
+
+			<<forestsearch>>
+			<br><br>
+
+			<<forestlessdeep>>
+		<</if>>
+	<</if>>
+
+<<elseif $forest gte 100>>
+	<<set $forest to 100>>
+	<<forestmove>>
+
+	<<if $stress gte $stressmax and !$possessed>>
+		<<passoutforest>>
+	<<elseif $foresthunt gte 10>>
+		<<foresthunt>>
+	<<else>>
+		<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $eventskip is 0>>
+			<<rng>>
+			<<if $rng gte 81 or ($forest_search is true and $rng gte 61)>>
+				<<eventforestitem>>
+			<<elseif $danger gte (9900 - ($allure * $forestmod))>>
+				<<eventforestdeep>>
+			<<else>>
+				<<eventforestsafe>>
+			<</if>>
+		<<elseif $eventskip gte 1>>
+			你在森林深处。你可以透过树枝辨认出精神病院。
+			<br><br>
+
+			<<forestsearch>>
+			<br><br>
+
+			<<forestlessdeep>>
+		<</if>>
+	<</if>>
+<</if>>
+
+<<unset $forest_search>>
+<<set $eventskip to 0>>
+
+:: Forest Bear Box
+<<location "forest">><<effects>>
+
+<<if $pubtasksetting is "bear">>
+	你回到找到兰德里的黑匣子的洞穴中。你听到里面有什么生物正在发出粗重的呼吸声。
+<<else>>
+	<<set $pubtasksetting to "bear">>
+
+	你来到一个山洞前，兰德里曾说过黑匣子就在那里面。它一定就在里面。
+	<br><br>
+
+	你刚走没两步，就听见一声低沉的咆哮传来。看来真的有个大家伙在里面。
+<</if>>
+<br><br>
+
+<<link [[进入|Forest Bear Box Molestation]]>><<set $molestationstart to 1>><</link>>
+<br>
+<<link [[离开|Forest]]>><</link>>
+
+:: Forest Box
+<<location "forest">><<effects>>
+
+<<if $pubtasksetting is "pair">>
+	<<generate1>><<generate2>>
+	你回到有破旧小屋的空地。<<fullGroup>>还在那里。
+	"改变主意了？"<<person1>><<person>>说，"让我们和你玩玩，我们就把黑匣子给你。"
+<<else>>
+	<<set $pubtasksetting to "pair">>
+
+	<<generate1>><<generate2>>
+	你来到据称有黑匣子所在的空地。那块空地中间有一间破旧的木屋。
+	一群<<fullGroup>>坐在外面的火边。当你走近时，他们会抬头。
+	"真是意外"，<<person1>><<person>>说道，"什么风把你吹来了？"
+	<br><br>
+
+	你告诉他们你在找一个小黑盒子。"哦"，<<he>>回到，"你是说这个？"<<He>>站起来，从<<his>>口袋里掏出一个黑盒子。
+	"也许我们可以把它给你…不过我们想要一些回报。"<<He>>走近你。
+	"你可真是个可爱的小东西，兰德里还真会挑人。如果你让我们操你，我们就把那个盒子给你。"<<person2>><<person>>咧嘴一笑。
+<</if>>
+<br><br>
+
+<<if $promiscuity gte 15>>
+	<<link [[接受|Forest Box Molestation]]>><<set $sexstart to 1>><</link>><<promiscuous2>>
+	<br>
+<</if>>
+<<if $submissive lte 500>>
+	<<link [[攻击他们|Forest Box Molestation]]>><<set $molestationstart to 1>><<set $phase to 2>><</link>>
+	<br>
+<</if>>
+<<link [[拒绝|Forest Box Refuse]]>><</link>>
+<br>
+
+:: Forest Bear Box Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+
+	<<beastNEWinit 1 bear>>
+	<<beastCombatInit>><<set $enemytrust -= 40>><<set $enemyanger += 40>><<set $enemyhealthmax to 400>><<set $enemyhealth to 400>>
+	你偷偷溜进了山洞。在黑暗中摸索了一会儿之后，你看到光亮照在什么东西上。是那个黑盒子。
+	拿着盒子，你转身正要离开山洞，但突然，有什么东西从黑暗中浮现。你刚转过身，<<bhe>>就下落到你身上。
+	<<set $pubtask2 to 1>>
+	<br><br>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Forest Bear Box Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Forest Bear Box Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Forest Bear Box Molestation Finish
+<<location "forest">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+
+	心满意足后，那个<<beasttype>>退回到<<bhis>>的窝里。
+	<<if $monster is 1>>
+		<<bHe>>打了个哈欠，在进入<<bhis>>的梦乡之前，在<<bhis>>毛茸茸的胸部前最后抓了一下。
+	<</if>>
+<<elseif $enemyhealth lte 0>>
+	<<if $monster is 1>>
+		<<beasttype>>吃痛退缩，转身就要逃离。<<bHe>>用手捂住手腕，朝处深的老巢逃去。
+	<<else>>
+		那个<<beasttype>>转身离开你，逃到更深的地方。
+	<</if>>
+<</if>>
+<br><br>
+
+<<tearful>>你离开洞穴。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Forest]]>><</link>>
+
+:: Forest Box Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+
+	<<if $phase is 1>>
+		<<set $enemytrust -= 40>>
+	<<elseif $phase is 2>>
+		<<set $enemyanger += 40>><<set $enemytrust -= 100>><<set $enemyhealth -= 100>>
+		你站在原地，等待他们靠近。
+		趁他们不注意，你一脚踩在<<person2>><<persons>>的脚上，然后猛得抽打<<his>>的脸，把<<him>>一巴掌打倒在地。
+		<<person1>>那个<<person>>不觉得有趣。 "愚蠢的贱人。你会为此付出代价的。"
+		<br><br>
+	<</if>>
+
+<<elseif $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 40>>
+	<<promiscuity2>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Forest Box Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Forest Box Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Forest Box Refuse
+<<location "forest">><<effects>>
+
+"我认为你还不明白自己的处境"，<<person1>><<person>>贴在你耳边说，"是我们得到了胜利。"
+<br><br>
+
+<<link [[继续|Forest Box Molestation]]>><<set $phase to 1>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Forest Box Molestation Finish
+<<effects>>
+
+<<if $finish is 1>>
+	"别以为那么容易就能逃走，"那个<<person1>><<person>>说道。
+	<br><br>
+
+	<<controlloss>><<set $consensual to 0>><<molested>><<set $finish to 0>>
+
+	<<link [[继续|Forest Box Molestation]]>><</link>>
+
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	"给你，"<<person1>><<person>>说，把盒子扔到你面前。 "代我们向兰德里问好。"<<tearful>>你拿起盒子然后离开了空地。
+	<<set $pubtask2 to 1>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Forest]]>><</link>>
+
+<<elseif $enemyhealth lte 0>>
+	两人吃痛后退，盒子掉在了草地上。<<tearful>>你一把抄起盒子就逃离了空地，留下他们在原地愤怒的叫喊声。
+	<<set $pubtask2 to 1>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Forest]]>><</link>>
+<</if>>
+
+:: Forest Science Shroom
+<<location "forest">><<effects>>
+
+<<if $scienceshroomknown isnot 1>>
+	<<set $scienceshroomknown to 1>>
+	<span class="gold">你发现了一个新的科学项目。</span>
+	<br><br>
+<</if>>
+
+<<if $phase is 0>>
+	<<set $scienceshroomheart += 1>>
+	你跪下来采集蘑菇。它们闻起来有一股清香味。
+	<<ltiredness>><<tiredness -6>>
+	<br><br>
+
+	<span class="gold">你可以在卧室或学校图书馆中，将找到的蘑菇添加到科学项目中。</span>
+	<br><br>
+<<else>>
+	<<set $scienceshroomwolf += 1>>
+	你跪下来采蘑菇。它们闻起来有股甜味。
+	<<garousal>><<arousal 600>>
+	<br><br>
+
+	<span class="gold">你可以在卧室或学校图书馆中，将找到的蘑菇添加到科学项目中。</span>
+	<br><br>
+<</if>>
+
+<<link [[继续|Forest]]>><<set $eventskip to 1>><</link>>
+<br>

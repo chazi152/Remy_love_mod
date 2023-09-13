@@ -1,0 +1,745 @@
+:: Flats Lock
+<<effects>><<set $lock to 200>>
+
+这扇门正紧锁着。
+<br><br>
+<<if currentSkillValue('skulduggery') gte $lock>>
+	<span class="green">这把锁看起来很容易撬开。</span>
+	<br><br>
+	<<link [[闯入 (0:05)|Flats Sneak]]>><<pass 5>><<crimeup 1>><</link>><<crime>>
+	<br>
+<<else>>
+	<span class="red">要撬开这把锁看起来超出了你的能力范围。</span><<skulduggeryrequired>>
+	<br><br>
+<</if>>
+
+<<link [[离开|Flats]]>><</link>>
+<br>
+
+:: Flats Sneak
+<<effects>>
+
+你成功地撬开了锁并进到了这栋房子里。
+<<if $skulduggery lt 300>>
+	<<skulduggeryskilluse>>
+<<else>>
+	<span class="blue">你无法从这么简单的锁中学到更多东西。</span>
+<</if>>
+<br><br>
+
+<<cleareventpool>>
+
+<<addinlineevent "flats_sneak_1" 1>>
+    室内被柔和的粉红色灯光照亮。墙上装饰着色情照片，沙发有一个奇怪的弧度。它看起来像一件珍贵的古董，但太大了，无法搬动。
+	<br><br>
+	<<set _blackmoney to 0>>
+	<<set _rng to random(1, 5)>>
+	<<switch _rng>>
+		<<case 1>>
+			地板上有一本古董杂志。在黑市上可能值一些钱。<<set _blackmoney += 10>>
+		<<case 2>>
+			桌子旁边有张面值20的外国钞票。在黑市上可能值一些钱。<<set _blackmoney += 20>>
+		<<case 3>>
+			桌子旁边有一条珍珠项链。在黑市上可能值一些钱。<<set _blackmoney += 30>>
+		<<case 4>>
+			桌子旁边有一副金色袖扣。在黑市上可能值一些钱。<<set _blackmoney += 40>>
+		<<default>>
+			桌子旁边有一枚古董戒指。它有一个奇怪的蜂窝形状，但是它是真金制成的。在黑市上可能值一些钱。<<set _blackmoney += 80>>
+	<</switch>>
+	<br><br>
+
+	<<link [[拿走它|Flats]]>><<set $blackmoney += _blackmoney>><<crimeup _blackmoney>><</link>><<crime>>
+	<br>
+	<<link [[离开|Flats]]>><</link>>
+	<br>
+<</addinlineevent>>
+
+<<addinlineevent "flats_sneak_2" 1>>
+	<<npcClothesType $NPCList[0] "worker">>
+	<<generate1>><<person1>><<npcClothesType $NPCList[0] "bathrobe">>
+	你听到水声。有人在淋浴。公寓里没有什么不寻常的地方，但你找不到任何贵重物品，直到你在卧室里发现了一个保险箱。它有一种老式的锁定机制，你应该能够破解，但可能需要一些时间。
+	<br><br>
+	你听到一个<<personsimple>>的声音，那个人在淋浴间里唱歌。
+	<br><br>
+
+	<<set $skulduggerydifficulty to 400>>
+	<<link [[破解|Flats Sneak Crack]]>><</link>><<skulduggerydifficulty>>
+	<br>
+	<<link [[离开|Flats]]>><<endevent>><</link>>
+	<br>
+<</addinlineevent>>
+
+<<addinlineevent "flats_sneak_3" 1>>
+	风从一扇敞开的门吹进来，吹向一个阳台。周围一个人也没有，但你不确定这能持续多久。
+	<br><br>
+
+	<<if $flats_vents_init is undefined>>
+		你调查了一下阳台。除了晾着的衣服什么也没有。一个相邻的阳台靠得足够近，可以爬过去。你不确定那个公寓通常是如何进入的。那边没有门。
+		<br><br>
+		<<link [[到另一边阳台上去|Flats Sneak Terrace]]>><</link>><<willpowerdifficulty 1 400>>
+		<br>
+		<<link [[调查这间公寓|Flats Sneak Investigate]]>><</link>>
+		<br>
+	<<else>>
+		你在公寓里搜寻贵重物品，在床垫下找到了<span class="gold">30英镑</span>。
+		<br><br>
+
+		<<link [[拿走|Flats]]>><<moneyGain 30>><<crimeup 30>><</link>><<crime>>
+		<br>
+		<<link [[离开此处|Flats]]>><</link>>
+		<br>
+	<</if>>
+<</addinlineevent>>
+
+<<addinlineevent "flats_sneak_4" 1>>
+	<<generate1>><<person1>>
+	你关上门，窗户上拉上了厚重的窗帘，房间变得很暗。你摸索着找到了灯开关。房间被照亮，你发现一个<<person>>坐在椅子上，一只猫躺在<<his>>的腿上。<<He>>正盯着你看。
+	<br><br>
+
+	"我没想到会有客人，"<<he>>说。"更不用说是个闯入者了。你有什么话要说吗？"你注意到了<<his>>手上戴着的昂贵手表，你努力移开了目光。
+	<br><br>
+
+	<<if $promiscuity gte 15>>
+		<<link [[勾引|Flats Sneak Seduce]]>><</link>><<promiscuous2>>
+		<br>
+	<</if>>
+	<<link [[袭击|Flats Sneak Attack]]>><</link>>
+	<br>
+	<<link [[逃跑|Flats Sneak Run]]>><</link>>
+	<br>
+<</addinlineevent>>
+
+<<if $crime gte 500>>
+	<<addinlineevent "flats_sneak_5" 0.2>>
+		一个刺鼻的气味弥漫在空气中，但公寓看起来除此之外很正常。然而，当你走了两步，门后面的金属百叶窗突然关闭，发出巨大的噪音。警报响了起来。
+		<br><br>
+
+		"警方已被通知，"机器人的声音宣布。"预计到达时间：五分钟。请等待。"
+		<br><br>
+
+		窗户没有被百叶窗关闭，但是你在很高的楼层。制作一条绳子至少需要几分钟时间。
+		<br><br>
+
+		<<set $flats_alarm_fabric to 0>>
+		<<set $flats_alarm_time to 5>>
+
+		<<flats_alarm_links>>
+
+	<</addinlineevent>>
+<</if>>
+
+<<addinlineevent "flats_sneak_6" 1>>
+	<<generate1>><<person1>>
+	一个<<person>>在沙发上打着鼾。你小心翼翼地走过去，寻找战利品。你在卧室里找到了一盒珠宝，虽然各方面都比较平平无奇，但在黑市上可能值一些钱。
+	<br><br>
+
+	<<link [[拿走|Flats Sneak Snore]]>><<set $blackmoney += 30>><<crimeup 30>><</link>><<crime>>
+	<br>
+	<<link [[离开|Flats]]>><<endevent>><</link>>
+	<br>
+<</addinlineevent>>
+
+<<addinlineevent "flats_sneak_7" 1>>
+	<<generate1>><<person1>>
+	你闻到烤蔬菜的味道。一个<<person>>站在厨房里，一边打电话，一边望着窗外。
+	<br><br>
+
+	<<His>>的<<wallet>>就在离<<him>>不远的桌子上。里面有<span class="gold">40英镑</span>。
+	<br><br>
+
+	<<link [[拿走|Flats Sneak Wallet]]>><<moneyGain 40>><<crimeup 40>><</link>><<crime>>
+	<br>
+	<<link [[离开|Flats]]>><<endevent>><</link>>
+	<br>
+<</addinlineevent>>
+
+<<addinlineevent "flats_sneak_8" 1>>
+	墙上挂着一把古董枪，但它被固定得太牢，无法带走。你四处搜寻，从抽屉里找到了<span class="gold">20英镑</span>。
+	<br><br>
+
+	<<link [[拿走|Flats]]>><<moneyGain 20>><<crimeup 20>><</link>><<crime>>
+	<br>
+	<<link [[离开|Flats]]>><<endevent>><</link>>
+	<br>
+<</addinlineevent>>
+
+<<addinlineevent "flats_sneak_9" 1>>
+	一个岩浆灯在角落里发出柔和的光芒，照亮了老式的装饰。但是，你找不到太多可以带走的有价值物品，不过你在一个鞋盒里发现了一些珠宝首饰。
+	<br><br>
+
+	<<link [[拿走|Flats]]>><<set $blackmoney += 30>><<crimeup 30>><</link>><<crime>>
+	<br>
+	<<link [[离开|Flats]]>><</link>>
+	<br>
+<</addinlineevent>>
+
+<<addinlineevent "flats_sneak_10" 1>>
+	房间里空荡荡一片。甚至连灯和开关也都不见了，只有电线悬挂着。你需要去别的地方找找看。
+	<br><br>
+	<<link [[离开|Flats]]>><<endevent>><</link>>
+	<br>
+<</addinlineevent>>
+
+<<runeventpool>>
+
+:: Flats Sneak Wallet
+<<effects>>
+
+你趁<<person>>不注意，从桌子上偷走了<<his>>的<<wallet>>。<<He>>听到突然响起的声音吓得转过头来，手机都差点儿掉到地上。看到你手里的钱包后，<<He>>愤怒地拨打了一个号码。你转身就跑。
+<br><br>
+"警察!"在你身后的那个<<person>>说。"我被抢劫了!"
+<br><br>
+你逃离公寓，那个居民依然还在对着<<his>>的手机大喊大叫。
+<br><br>
+
+<<link [[继续|Flats]]>><<endevent>><</link>>
+<br>
+
+:: Flats Sneak Snore
+<<effects>>
+
+<<if random(1, 2) is 2>>
+	你偷走了钱财，然后蹑手蹑脚地离开了公寓。
+	<br><br>
+
+	<<link [[继续|Flats]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	你偷走了钱财，但在你想要离开的时候，那个<<person>>醒了。
+	<br><br>
+
+	"我不知道你在搞什么鬼，"<<he>>说着伸手抓住了你的大腿。"但是你现在惹上了麻烦。"
+	<br><br>
+
+	<<link [[继续|Flats Sneak Rape 3]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Flats Sneak Rape 3
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $enemyanger to 40>><<set $enemytrust to -50>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Flats Sneak Rape 3 Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Sneak Rape 3]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Sneak Rape 3 Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>把你赶出了公寓。
+	<br><br>
+	<<tearful>>你爬了起来。
+	<br><br>
+<<else>>
+	<<person1>><<person>>跑了，躲进了卧室。
+	<br><br>
+	<<tearful>>你逃出了公寓。
+	<br><br>
+<</if>>
+<<endcombat>>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Flats]]>><</link>>
+<br>
+
+
+:: Flats Sneak Housekeeping
+<<effects>>
+
+你搜遍了公寓，寻找床单、衣服、毛巾和任何你能绑在一起的东西。
+<<if $housekeepingSuccess>>
+	<<set $flats_alarm_fabric += 1>>
+		你用力一拉。
+	<<if $flats_alarm_fabric gte 3>>
+		<span class="green">感觉很结实。</span>你把它扔出窗外，看着它落到下面的人行道上。
+		<br><br>
+
+		<<link [[逃出去!|Flats Sneak Rope]]>><</link>>
+		<br>
+	<<else>>
+		<span class="green">感觉很结实，</span>但需要再长一点。
+		<br><br>
+		<<flats_alarm_time>>
+	<</if>>
+<<else>>
+	警报声不断，这让事情变得更加困难。<span class="red">你以为你已经把绳子绑牢了，但是你的临时绳子在你用力拉的时候散了。</span>
+	<br><br>
+
+	<<flats_alarm_time>>
+<</if>>
+
+:: Flats Sneak Physique
+<<effects>>
+
+你用身体撞在门上，用尽全力撞击着门。
+
+<<if $physiqueSuccess>>
+	<span class="green">你听到金属百叶窗上的一些薄弱点嘎吱作响，似乎有些松动了。</span>你一次又一次地冲撞着它，直到薄弱点断裂，金属百叶窗掉在地毯上。
+	<br><br>
+
+	<<earnFeat "Panic Room">>
+	<<flats_alarm_end>>
+
+	你跑出了公寓，远离了警报声。在远离警报的地方，你可以听到外面的警报声。你避开了主楼梯。
+	<br><br>
+
+	<<link [[继续|Flats]]>><</link>>
+	<br>
+<<else>>
+	<span class="red">没用。</span>金属在你的锤击下还是很坚固。
+	<br><br>
+
+	<<flats_alarm_time>>
+<</if>>
+
+
+:: Flats Sneak Assume
+<<effects>>
+
+你四肢着地，把你的<<bottom>>露在半空中，等待警察的到来。
+<br><br>
+
+<<generate1>><<generate2>>
+<span class="red">"警察已到现场，"机器人的声音宣布。"祝你有愉快的一天。"</span> 金属百叶窗打开了，两名警察，一个<<person1>><<person>>和<<person2>><<person>>翻了进来。
+<br><br>
+
+"看起来<<pshe>>已经准备好乖乖地投降了，"<<person1>><<person>>笑着说。"别动。"<<person2>><<person>>拿着一副手铐走了过来。
+<br><br>
+
+<<link [[安静地走|Hospital Arrest Journey]]>><<flats_alarm_end>><</link>>
+<br>
+<<link [[反抗|Flats Sneak Fight]]>><<set $fightstart to 1>><</link>>
+<br>
+
+:: Flats Sneak Hide
+<<effects>>
+
+你在公寓里寻找藏身之处。你能找到的最好的东西就是一个橱柜。
+<br><br>
+
+你还在寻找的时候，突然听到外面走廊里传来沉重的脚步声。时间所剩无几，你跳到旁边的桌子下面。
+<br><br>
+
+<<generate1>><<generate2>>
+<span class="red">"警察已到现场，"机器人的声音宣布。"祝你有愉快的一天。"</span> 金属百叶窗打开了，两名警察，一个<<person1>><<person>>和<<person2>><<person>>翻了进来。
+<br><br>
+
+"我要检查一下橱柜，"<<person1>><<person>>说。
+<br>
+"没这个必要，"<<person2>><<person>>摇摇头。"<<pShe>>在桌子下面。"
+<br>
+"最好安静地来，"<<person1>><<person>>笑着说，<<his>>的同伴拿着一副手铐靠近。
+<br><br>
+
+<<link [[安静地走|Hospital Arrest Journey]]>><<flats_alarm_end>><</link>>
+<br>
+<<link [[反抗|Flats Sneak Fight]]>><<set $fightstart to 1>><</link>>
+<br>
+
+:: Flats Sneak Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Flats Sneak Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Sneak Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Sneak Fight Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	两人靠在墙上休息。<<tearful>>你抓住机会逃跑了。你能听到<<person1>><<person>>虚弱地呼叫支援的声音，你快速的逃离了走廊。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<earnFeat "Panic Room">>
+	<<flats_alarm_end>>
+
+	<<link [[继续|Flats]]>><</link>>
+	<br>
+
+<<elseif $enemyhealth lte 0>>
+	<<person2>><<person>>倒下了，<<person1>><<person>>退后了几步，伸手拿起了<<his>>的对讲机。<<tearful>>你趁机逃跑了。你听到<<him>>在呼叫支援，而你则沿着走廊逃离了现场。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<earnFeat "Panic Room">>
+	<<flats_alarm_end>>
+
+	<<link [[继续|Flats]]>><</link>>
+	<br>
+<<else>>
+	<<tearful>>你摔倒在地，因为受伤了失去了战斗能力。
+	<br><br>
+	<<saveNPC 0 "flats_arrest_1">>
+	<<saveNPC 1 "flats_arrest_2">>
+
+	<<clotheson>>
+	<<endcombat>>
+	<<flats_alarm_end>>
+
+	<<link [[继续|Hospital Arrest Journey]]>><<loadNPC 0 "flats_arrest_1">><<loadNPC 1 "flats_arrest_2">><<clearNPC "flats_arrest_1">><<clearNPC "flats_arrest_2">><</link>>
+	<br>
+
+<</if>>
+
+
+:: Flats Sneak Rope
+<<effects>>
+
+你顺着建筑物的侧面爬下来。一对老夫妇从窗户里看着你经过，他们似乎对你的出现并不感到惊讶。
+<br><br>
+
+你顺利地到达了底部。从高处你逃跑的窗户里，有一颗头探出来，但他们离得太远，无法辨认出你的脸。
+<br><br>
+
+<<link [[继续|Flats]]>><<endevent>><</link>>
+<br>
+
+
+:: Flats Sneak Smash
+<<effects>>
+
+<<earnFeat "Panic Room">>
+<<flats_alarm_end>>
+
+
+
+:: Flats Sneak Seduce
+<<effects>>
+
+<<set $seductiondifficulty to 6000>>
+<<seductioncheck>>
+<br><br>
+<<if $seductionskill lt 1000>>
+	<span class="gold">你对自己的诱惑力更有信心了。</span>
+	<br><br>
+<</if>>
+<<seductionskilluse>>
+
+<<if $speech_attitude is "meek">>
+	"抱歉，打扰了，"你说。"有人付钱让我陪他们。我一定是弄错地址了。"
+<<elseif $speech_attitude is "bratty">>
+	"我难道是找错房间了?"你问。"幸亏你告诉了我。如你所见，我是个妓。我的客人付钱想让我上门服务，抱歉打扰到了你。"
+<<else>>
+	"我一定是走错房间了，"你说。"我是一个妓，有人付钱让我陪他一夜。"
+<</if>>
+你转身离开。
+<<promiscuity2>>
+
+<<if $seductionrating gte $seductionrequired>>
+
+	<span class="green">"等等，"</span>听了你的话后那个人开口打断了你，吓得<<his>>腿上的猫都跳到了地板上。"我刚刚是开玩笑的，我就是点你作陪的那个客人，只是你太久了没来一时没反应过来。"
+	<br><br>
+
+	你走向<<him>>，没有看一眼<<his>>腕上的手表。
+	<br><br>
+
+	<<link [[继续|Flats Sneak Sex]]>><<set $sexstart to 1>><</link>>
+	<br>
+
+<<else>>
+
+	<span class="red">"也算是难得的体验,"</span><<person>>笑着对你说，吓得<<his>>腿上的猫都跳到了地板上。"既然你来都来了，送上门的小东西我要是都放过了，那我还是人吗?"
+	<br><br>
+
+	<<link [[继续|Flats Sneak Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+
+<</if>>
+
+:: Flats Sneak Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[继续|Flats Sneak Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Sneak Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Sneak Sex Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	在<<he>>高潮失去意识的时候，你灵巧的偷走了<<his>>腕上的手表并藏了起来。<<He>>没有发现你的小动作。<<set $blackmoney += 80>><<crimeup 80>><<crime>>
+	<br><br>
+	<<tearful>>你留下瘫坐在椅子上的<<him>>跑走了。
+	<br><br>
+<<elseif $enemyhealth lte 0>>
+	你把<<person1>><<person>>推开，在<<he>>摔倒的时候，你抓住手表。用力把它从<<his>>的手腕上扯了下来。<<set $blackmoney += 80>><<crimeup 80>><<crime>>
+	<br><br>
+	<<tearful>>你逃出了公寓。
+	<br><br>
+<<else>>
+	"你还真是个名副其实的婊子啊，"<<person1>><<person>>嘲笑道。"滚出去。"
+	<br><br>
+	<<tearful>>你离开了公寓。
+	<br><br>
+<</if>>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Flats]]>><</link>>
+
+:: Flats Sneak Attack
+<<effects>>
+
+你不会等着<<person1>><<person>>先采取行动。你跑向<<him>>，几乎没有给<<him>>站起来的时间。猫从你身边跳开了。
+<br><br>
+
+<<link [[继续|Flats Sneak Rape 2]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Flats Sneak Run
+<<effects>>
+
+你试着打开前门，但是那个<<person>>跳起来朝你冲过来，猫被甩飞了。
+<br><br>
+
+<<link [[继续|Flats Sneak Rape 2]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Flats Sneak Rape 2
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $enemyanger += 100>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Flats Sneak Rape 2 Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Sneak Rape 2]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Sneak Rape 2 Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>打开门，把你推了出去。
+	<br><br>
+	<<tearful>>你爬了起来。
+	<br><br>
+<<elseif $enemyhealth lte 0>>
+	你把<<person1>><<person>>推开，在<<he>>摔倒的时候，你抓住手表。用力把它从<<his>>的手腕上扯了下来。<<set $blackmoney += 80>><<crimeup 80>><<crime>>
+	<br><br>
+	<<tearful>>你逃出了公寓。
+	<br><br>
+<</if>>
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Flats]]>><</link>>
+
+:: Flats Sneak Terrace
+<<effects>>
+
+<<if $willpowerSuccess>>
+	距离并不远，但跨过这样的鸿沟仍然很可怕。你忍住不往下看，<span class="green">跳了过去。</span>
+	<br><br>
+	这套公寓的阳台门是关着的，但没有上锁。除了你用过的那个门外，这里没有正门，而且只有一个房间。不过，有一架梯子通向天花板上的通风管道。
+	<br><br>
+	除了一把凳子以外，这里唯一的家具就是两堆计算机服务器。它们坐落在玻璃屏幕后面，闪烁着蓝色的灯光。
+	<br><br>
+	<<link [[继续|Flats Sneak Terrace 2]]>><</link>>
+	<br>
+<<else>>
+	你往下看，看着远处的人行道。距离一直这么远吗?你把一只脚踩在栏杆上，<span class="red">一种突如其来的恐惧攫住了你。</span>你逃离公寓。<<gstress>><<stress 6>><<gwillpower>><<willpower 1>>
+	<br><br>
+
+	<<link [[继续|Flats]]>><</link>>
+	<br>
+<</if>>
+
+:: Flats Sneak Terrace 2
+<<effects>>
+
+你爬上梯子，在通风口上下张望。它足够宽，你可以挤过去。一个方向通向死胡同，但另一个方向向下倾斜，并在拐弯处消失。它足够宽，可以挤过去。
+<br><br>
+
+<<link [[探索(0:10)|Flats Sneak Terrace Explore]]>><<pass 10>><</link>>
+<br>
+<<link [[离开|Flats]]>><<endevent>><</link>>
+<br>
+
+
+:: Flats Sneak Terrace Explore
+<<effects>>
+<<set $flats_vents_init to 1>>
+你爬行穿过通风管道。它们曲折前行，从房间上方穿过，让你透过细小的缝隙偷窥内部。有些房间里有人，但你悄无声息地经过。
+<br><br>
+
+然而，直到你最终到达一个洗衣房的底部，都没有其他入口。你从通风口爬出来，向外张望。这是一条普通的走廊。很快你就找到了方向。
+<br><br>
+
+
+<<link [[继续|Flats]]>><</link>>
+<br>
+
+
+:: Flats Sneak Investigate
+<<effects>>
+
+你在公寓里搜寻贵重物品，在床垫下找到了<span class="gold">30英镑</span>。
+<br><br>
+
+<<link [[拿走|Flats]]>><<moneyGain 30>><<crimeup 30>><</link>><<crime>>
+<br>
+<<link [[离开此处|Flats]]>><</link>>
+<br>
+
+
+:: Flats Sneak Crack
+<<effects>>
+
+你把耳朵贴在保险柜上，听着转动转盘的时候发出的细微声音。
+<br><br>
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+
+	<span class="green">保险箱打开了，</span>你取出里面的东西。有<span class="gold">120英镑</span>
+	<br><br>
+
+	<<if $skulduggery lte ($skulduggerydifficulty + 100)>>
+		<<skulduggeryskilluse>>
+	<<else>>
+		<span class="blue">这对你来说实在太简单了，你从中什么都没有学到。</span>
+		<br><br>
+	<</if>>
+
+	<<link [[拿走|Flats]]>><<moneyGain 120>><<crimeup 120>><<endevent>><</link>><<crime>>
+	<br>
+	<<link [[离开|Flats]]>><<endevent>><</link>>
+	<br>
+
+<<else>>
+
+	<span class="red">你听到流水停了。</span>你还没来得及逃出卧室，一个<<person>>就从浴室里走了出来，<<he>>只穿着一件还在滴水的浴袍。
+	<br><br>
+
+	"你想偷我的东西?"<<he>>说。"该好好给你上一课了。"
+	<br><br>
+
+	<<if $skulduggery lte ($skulduggerydifficulty + 100)>>
+		<<skulduggeryskilluse>>
+	<<else>>
+		<span class="blue">这对你来说实在太简单了，你从中什么都没有学到。</span>
+		<br><br>
+	<</if>>
+
+	<<link [[继续|Flats Sneak Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+
+<</if>>
+
+
+:: Flats Sneak Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Flats Sneak Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Sneak Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Sneak Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"别乱动我的东西，"<<he>>一边说，一边把你推到门口。"现在给我马上滚。"
+	<br><br>
+	<<tearful>>你听到身后的门砰的一声关上了。
+	<br><br>
+<<elseif $enemyhealth lte 0>>
+	<<person>>被<<his>>的长袍绊倒，摔倒在浴室的地板上。
+	<br><br>
+	<<tearful>>你逃出了公寓。
+	<br><br>
+<</if>>
+<<endcombat>>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Flats]]>><<endevent>><</link>>
+<br>

@@ -1,0 +1,2972 @@
+<!-- Version 2.X.X - REV 190709 -->
+:: Brothel
+
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+<<unset $corruptionDancing>>
+
+<<if $brothelshowdata.intro is true>>
+	<<set $brothelshowdata.intro to 1>>
+<</if>>
+
+你在妓院里，拥挤的房间里点缀着几个舞台，员工们看起来很慌乱，像劳累过度的样子。
+<br><br>
+<<if $stress gte $stressmax>>
+	<<passoutshop>>
+<<elseif $briarPunishment gte 1>>
+	<<set $briarPunishReason to "default">>
+	<<npc Briar>><<generate2>><<generate3>><<person1>>
+	布莱尔冲向你，<<his>>的两个打手挡在入口处。"我很惊讶你居然还敢回来，"<<he>>说道。"别以为我会对你所做的事情放过你。"<<He>>向<<his>>的打手点了点头，然后前走来。如果你想逃跑，现在是你唯一的机会。不过他们一共有三个人。<<person1>>
+	<br><br>
+	<<link [[跟他们走|Brothel Punishment 2]]>><</link>>
+	<br>
+	<<link [[反抗|Brothel Punishment Fight]]>><<set $fightstart to 1>><<def 3>><</link>>
+	<br>
+
+<<elseif $brothelshowdata.missed>>
+	<<set $brothelshowdata.missed to false>><<npcincr Briar love -1>>
+	<<npc Briar>><<generate2>><<generate3>><<person1>>布莱尔怒气冲冲的带着<<his>>两个手下向你冲了过来。"你去哪里了？"<<he>>问道。"顾客们很期待这场演出，你必须支付我的损失，"<<he>>向你伸出了<<his>>手。 "£1000，现在就给我。"
+	<br><br>
+	<<if $money gte 100000>>
+		<<link [[支付 (£1000)|Brothel Pay]]>><<npcincr Briar dom 1>><<set $money -= 100000>><<sub 1>><</link>>
+		<br>
+	<</if>>
+	<<link [["说你钱不够"|Brothel Pay Refuse]]>><</link>>
+	<br>
+	<<link [[拒绝|Brothel Pay Refuse]]>><<npcincr Briar dom -1>><<def 1>><</link>>
+	<br>
+
+<<elseif $brothel_escortjob and ($brothel_escortjob.missed is true or $brothel_escortjob.escape is true)>>
+	<<unset $brothel_escortjob>><<npcincr Briar love -1>>
+	<<npc Briar>><<generate2>><<generate3>><<person1>>布莱尔跟两个打手气势汹汹地挡住了入口。“你之前在哪儿？”他问道，“我的客人来光顾我是因为他们觉得能看到他们期待的。安抚他们可花了我不少代价，不过你会还给我的不是吗？”<<He>>伸出举手，“<<printmoney 200000>>，就现在。"
+	<br><br>
+
+	<<if $money gte 200000>>
+		<<link [[付钱 (£2000)|Brothel Pay]]>><<npcincr Briar dom 1>><<set $money -= 200000>><<sub 1>><</link>>
+		<br>
+	<</if>>
+	<<link [["说你钱不够"|Brothel Pay Refuse]]>><</link>>
+	<br>
+	<<link [[拒绝|Brothel Pay Refuse]]>><<npcincr Briar dom -1>><<def 1>><</link>>
+	<br>
+
+<<elseif $NPCName[$NPCNameList.indexOf("Leighton")].init is 1 and $leightonbrothel is undefined and $brotheljob is 1 and Time.weekDay gte 6 and $pillory_tenant.special.name isnot "Leighton">><<set $leightonbrothel to 1>>
+	<<npc Leighton>><<person1>>
+	"你看起来像我的一个学生，"你右边的一个有趣的声音说。是礼顿。
+	<<if playerBellyVisible()>>
+		"我还说你怎么把肚子搞大了，"<<he>>接着说着，"原来你在这种地方干活啊。"
+	<</if>>
+	<<He>>独自一人坐在沙发上，伸展双臂，靠在椅背上。
+	<br><br>
+
+	"我就知道你是那种人，你的老板是我朋友，"<<he>>说道。<<He>>从<<his>>口袋里掏出一沓现金，拍了拍<<him>>旁边的座位。"你最好能让我开心。"
+	<br><br>
+
+	<<link [[坐下 (0:05)|Brothel Leighton Sit]]>><<npcincr Leighton love 1>><<npcincr Leighton dom 1>><<pass 5>><</link>>
+	<br>
+	<<link [[生气|Brothel Leighton Angry]]>><<npcincr Leighton love -1>><<npcincr Leighton dom -1>><<def 1>><<stress -6>><</link>><<lstress>>
+	<br>
+	<<link [[拒绝|Brothel Leighton Refuse]]>><</link>>
+	<br>
+
+<<else>>
+
+<<if $exposed gte 1>>
+	尽管你不是唯一一个穿着如此淫荡的人，但你还是觉得自己很暴露。
+	<br><br>
+<</if>>
+
+<<if $arousal gte $arousalmax>>
+	<<orgasmLocation "brothel">>
+<</if>>
+
+<<if $brotheljob is 1 and $fame.prostitution gte 30 and not $brothelshowdata.intro>>
+	<<generate1>><<person1>>看门的<<person>>把手放在你的肩膀上。<span class="gold">"老板要见你。"</span><<endevent>>
+	<br><br>
+
+<<elseif $brotheljob is 1 and $fame.prostitution gte 200 and $brothelshowdata.intro is 1>>
+	<<generate1>><<person1>>那个<<person>>守卫把手搭在了你的肩膀上，<span class="gold">"老板想跟你再见一面。"</span><<endevent>>
+	<br><br>
+<</if>>
+
+<<if $brotheljob is 1>>
+
+<<link [[成为一名舞者|Brothel Dance]]>><<set $dancestart to 1>><<stress -4>><<tiredness 4>><</link>><<lstress>><<gtiredness>>
+<br>
+	<<if $brothelshowdata.intro>>
+		<<link [[走到舞台后面|Brothel Stage]]>><</link>>
+		<br>
+	<</if>>
+	<<if $weekly.leightonDanceRefused and $headblackmailed is 1 and $pillory_tenant.special.name isnot "Leighton">>
+		<<link [[更衣室(0:01)|Leighton Club Ignore]]>><<pass 1>><<set $weekly.leightonDanceRefused to false>><</link>>
+		<br>
+	<<else>>
+		<<link [[更衣室 (0:01)|Brothel Dressing Room]]>><<pass 1>><</link>>
+		<br>
+	<</if>>
+	<<link [[地下室 (0:01)|Brothel Basement]]>><<pass 1>><</link>>
+	<br>
+	<<link [[浴室和淋浴间 (0:01)|Brothel Bathroom]]>><<pass 1>><</link>>
+	<br>
+<</if>>
+
+<<link [[布莱尔的办公室 (0:03)|Briar's Office]]>><<pass 3>><</link>>
+<br>
+	<<if $exposed lte 0>>
+		<<link [[离开 (0:01)|Harvest Street]]>><<pass 1>><</link>>
+		<br>
+	<<elseif $exposed gte 2 and $exhibitionism gte 75 and Time.dayState isnot "night">>
+		<<link [[离开 (0:01)|Brothel Leave Naked Day]]>><<pass 1>><</link>><<if $daily.ex.brothel isnot 1>><<exhibitionist5>><</if>>
+		<br>
+	<<elseif $exposed gte 2 and $exhibitionism gte 55 and Time.dayState is "night">>
+		<<link [[离开 (0:01)|Brothel Leave Naked]]>><<pass 1>><</link>><<if $daily.ex.brothel isnot 1>><<exhibitionist4>><</if>>
+		<br>
+	<<elseif $exposed is 1 and $exhibitionism gte 35 and Time.dayState isnot "night">>
+		<<link [[离开 (0:01)|Brothel Leave Undies Day]]>><<pass 1>><</link>><<if $daily.ex.brothel isnot 1>><<exhibitionist3>><</if>>
+		<br>
+	<<elseif $exposed is 1 and $exhibitionism gte 15 and Time.dayState is "night">>
+		<<link [[离开 (0:01)|Brothel Leave Undies]]>><<pass 1>><</link>><<if $daily.ex.brothel isnot 1>><<exhibitionist2>><</if>>
+		<br>
+	<</if>>
+
+<</if>>
+
+
+:: Brothel Dressing Room
+<<effects>><<set $outside to 0>><<set $location to "brothel">>
+
+你在妓院的更衣室里。室内有几面镜子，正被做发型和化妆的工作人员们占据着。
+<br><br>
+
+<<if $leftarm is "bound" or $rightarm is "bound" or $feetuse is "bound">>
+    <<link [[解开身上的绑缚(0:10)|Brothel Dressing Room]]>><<set $unbind to 1>><<pass 10>><<unbind>><</link>>
+    <br><br>
+<</if>>
+
+<<if $brothelVending>>
+	<<if $brothelVending.status is "asked" or $brothelVending.status is "sold">>
+		你可以在购物中心买一台自动贩卖机放在这里。
+		<br><br>
+	<<elseif $brothelVending.status is "bought">>
+		<<link [[安装自动贩卖机 (0:30)|Brothel Dressing Room]]>><<set $brothelVending.status to "set">><<set $weekly.brothelVMCollect to true>><<pass 30>><<set $brothelVending.weeksEmpty to 0>><</link>>
+		<br><br>
+	<<elseif $brothelVending.status is "set" and $brothelVending.weeksEmpty lt 4>>
+		<<if !($brothelVending.products % 2) and $condomLvl gte 1>>
+			你可以跟药房的护士谈谈分销避孕套的事情。
+			<br><br>
+		<</if>>
+		<<if $brothelVending.products lt 2 and $adultshopunlocked>>
+			你可以跟西里斯谈谈关于分销润滑液的事情。
+			<br><br>
+		<</if>>
+		<<if $brothelVending.products>>
+			你检查了自动售卖机的库存。
+			<<if $brothelVending.products % 2>>
+				<<if $brothelVending.condoms lte 1>>
+					避孕套库存是空的。你可以在药房买到。
+					<br><br>
+				<<else>>
+					<<if $brothelVending.condoms gte 200>>
+						避孕套库存是满的。
+					<<else>>
+						<<set $brothelVending.condomsToRefill to 200 - $brothelVending.condoms>>
+						还剩下$brothelVending.condoms 袋避孕套。还有装 $brothelVending.condomsToRefill 个3袋装的空间。你可以在药房买到。
+					<</if>>
+					<br>
+					你把3袋装避孕套的价格设置成了£80，在药房的进货价是 £60。
+					<br>
+					<<link [[买避孕套 (£80)|Brothel Vending Machine Buy]]>><<set $phase to 1>><</link>>
+					<br><br>
+				<</if>>
+			<</if>>
+			<<if $brothelVending.products gte 2>>
+				<<if $brothelVending.lube lte 1>>
+					润滑液库存是空的，你可以在成人商店买到它们。
+					<br><br>
+				<<else>>
+					<<if $brothelVending.lube gte 200>>
+						润滑液库存是满的。
+					<<else>>
+						<<set $brothelVending.lubeToRefill to 200 - $brothelVending.lube>>
+						还剩下$brothelVending.lube 瓶润滑液。还有放下 $brothelVending.lubeToRefill 瓶润滑液的空间。你可以在成人商店买到它们。
+					<</if>>
+					<br>
+					你将润滑液售价设置成£30，在成人商店的进货价是£20。
+					<br>
+					<<link [[购买润滑液 (£30)|Brothel Vending Machine Buy]]>><<set $phase to 2>><</link>>
+					<br><br>
+				<</if>>
+			<</if>>
+			<br><br>
+		<</if>>
+	<</if>>
+<</if>>
+
+<<wardrobeicon>><<link [[衣柜|Brothel Wardrobe]]>><</link>>
+<br>
+<<if playerHasSexToys()>>
+	<<sextoysicon>><<link [[性玩具|Sextoys Inventory]]>><<set $sextoyInvReturnLink to $passage>><</link>>
+	<br>
+<</if>>
+<<mirroricon>><<link [[镜子|Brothel Mirror]]>><<preMirror>><</link>>
+<br><br>
+
+<<if isPubfameTaskAccepted("briar") and $pubfame.briar.distract isnot 2>>
+	你注意到一个舞者正在将衣物装进手提箱里。
+	<br>
+	<<link [[接近|Brothel Distraction]]>><</link>>
+	<br><br>
+<</if>>
+
+<<link [[回到俱乐部 (0:01)|Brothel]]>><<pass 1>><</link>>
+<br><br>
+<<link [[设置|Settings]]>><<set $settingsExitPassage to "Brothel Dressing Room">><</link>>
+<br>
+<<attitudesControlCheck>>
+<<if $attitudesControl.showGoldLink is true>>
+	<span class="goldLink"><<link [[态度|Attitudes]]>><<set $attitudesExitPassage to $passage>><</link>></span><span class="red">!!</span>
+<<else>>
+	<<link [[态度|Attitudes]]>><<set $attitudesExitPassage to $passage>><</link>>
+<</if>>
+<br><br>
+
+:: Brothel Mirror
+<<effects>>
+
+<<link [[离开|Brothel Dressing Room]]>><<unset $mirrorMenu>><<unset $bodywritingSet>><<postMirror>><</link>>
+<br>
+
+<<mirror>>
+<br><br>
+
+
+
+:: Brothel Leave Naked Day
+<<effects>>
+
+当你从前门偷看时，布莱尔的收下会密切关注你。这条街上挤满了汽车和其他车辆，还有许多行人走在人行道上。<<flaunting>>你走到街上。
+
+<<if $daily.ex.brothel isnot 1>>
+	<<set $daily.ex.brothel to 1>>
+	<<exhibitionism5>>
+<<else>>
+<br><br>
+<</if>>
+
+<<link [[继续|Harvest Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Brothel Leave Undies Day
+<<effects>>
+
+当你从前门偷看时，布莱尔的收下会密切关注你。这条街上挤满了汽车和其他车辆，还有许多行人走在人行道上。<<flaunting>>你走到街上。
+
+<<if $daily.ex.brothel isnot 1>>
+	<<set $daily.ex.brothel to 1>>
+	<<exhibitionism3>>
+<<else>>
+<br><br>
+<</if>>
+
+<<link [[继续|Harvest Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Brothel Leave Naked
+<<effects>>
+
+当你从前门偷看时，布莱尔的手下会密切关注你。街道很暗，只被偶尔车辆的光线照亮。<<flaunting>>你走到街上。
+
+<<if $daily.ex.brothel isnot 1>>
+	<<set $daily.ex.brothel to 1>>
+	<<exhibitionism4>>
+<<else>>
+<br><br>
+<</if>>
+
+<<link [[继续|Harvest Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Brothel Leave Undies
+<<effects>>
+
+当你从前门偷看时，布莱尔的手下会密切关注你。街道很暗，只被偶尔车辆的光线照亮。<<flaunting>>你走到街上。
+
+<<if $daily.ex.brothel isnot 1>>
+	<<set $daily.ex.brothel to 1>>
+	<<exhibitionism2>>
+<<else>>
+<br><br>
+<</if>>
+
+<<link [[继续|Harvest Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Brothel Intro
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+
+你进入大楼，不知道会发生什么。<<generate1>><<person1>>一个<<person>>站在前厅的尽头，看守着另一扇门。<<He>>在看到你后对你微笑。"你看起来像是迷路了，<<girl>>。你是怎么过来的？"
+<br><br>
+
+"有人告诉我来这里，" 你不好意思地回答。
+<br><br>
+
+<<his>>笑得更开心了。"很好，请稍等片刻。"<<He>>用手指抵住<<his>>的耳朵，然后自言自语。"我们有一个……没错。好的，老板。"<<He>>把手放低。"老板很快就会下来见你，你不需要等很久。"
+<br><br>
+
+<<He>>是对的。<<endevent>><<npc Briar>><<person1>>
+
+<<if $pronoun is "m">>
+门打开了，走进来一名穿着蓝色西装外套的一名男子，里面没有穿衬衫，将<<his>>健康的胸部和腹部展露无遗。<<he>>进来时，栗色的长发在<<him>>身后飘动。
+<<else>>
+门打开了，走进来一名穿着价格不菲的红色礼服的女子，领口低垂，露出了<<his>>一部分$NPCList[0].breastsdesc.当<<he>>进来时，栗色的长发在<<him>>身后飘动。
+<</if>>
+<br><br>
+<<He>>用赤褐色的眼睛盯着你，一声不吭地抓住你的手腕，把你拉进门。
+<br><br>
+
+你进入一个拥挤的大房间，汗味很大。房间里点缀着舞台，台上的舞者们正在表演。顾客们向他们欢呼，其他工作人员都以不同的脱衣状态等待着他们。你被领着穿过房间，穿过一扇不起眼的门。走过一段楼梯之后，你发现自己身处一间装饰华丽的办公室。
+<br><br>
+
+<<He>>躺在房间中间的天鹅绒沙发上，用一只手臂支起头来观察你。你四处寻找一个可以坐的地方，但是除了沙发没有其他座位。<<He>>打断了你。"我叫布莱尔，欢迎来到我的公司。"
+<br><br>
+
+<<link [[继续|Brothel Intro2]]>><</link>>
+<br>
+
+:: Brothel Intro2
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+
+<<if $phase is 0>>
+
+<<He>>一边说着，一边上下打量着你。
+
+"不错，非常好。我们的顾客们会喜欢你的。
+
+我想雇你照顾我们的顾客。你在上面也看到是怎么一回事了。"<<He>>顿了顿，接着说，"哦，对了，还要和你说明下细节。不规定你穿什么，但是如果穿对衣服，赚的就会更多。站上舞台，搔首弄姿。靠这个你可以赚点小钱，但你真正的目标应当是吸引顾客请你提供‘私人服务’。我们会提供专门的包间。"
+<br><br>
+
+"你应该照顾好自己。如果有人想强奸你就自行处理，不要打扰我。我可不是你的<<mummy>>。"
+<br><br>
+
+"我们从你赚到的东西中收取40%的份额。不要动小心思，也别以为你能瞒过我们。当然，你可以进入更衣室。我想我已经讲的很详细了。所以，你感兴趣吗？"
+<br><br>
+
+<<link [[是|Brothel Intro2]]>><<set $phase to 1>><<set $brotheljob to 1>><<set $wardrobes.brothel.unlocked to true>><</link>>
+<br>
+<<link [[不|Brothel Intro2]]>><<set $phase to 2>><</link>>
+<br>
+<<link [[我想知道更多的信息|Brothel Intro2]]>><<set $phase to 3>><</link>>
+<br>
+
+<<elseif $phase is 1>>
+"好!当你想通过身体来工作的时候就过来，我会让其他员工知道你要加入他们的。"<<He>>站了起来，带着你上楼。
+
+<<if $id is 0>>
+<<He>>在下楼时对你说，"还有一件事，如果您的合法身份有问题，我们可以为您提供假身份证。当然，这是有代价的。"你转过头看向<<him>>，但是<<he>>已经离开了。
+<<else>>
+在<<he>>带着你下楼时，<<He>>什么也没说道。
+<</if>>
+<br><br>
+
+<<link [[继续|Brothel]]>><<endevent>><</link>>
+<<elseif $phase is 2>>
+"真可惜。如果你改变主意，你知道在哪里可以找到我们。像你这样的身体肯定会十分叫座。"<<He>>站了起来，带着你上楼。
+
+<<if $id is 0>>
+<<He>>在下楼时对你说，"还有一件事，如果您的合法身份有问题，我们可以为您提供假身份证。当然，这是有代价的。"你转过头看向<<him>>，但是<<he>>已经离开了。
+<<else>>
+在<<he>>带着你下楼时，<<He>>什么也没说道。
+<</if>>
+<br><br>
+
+<<link [[继续|Brothel]]>><<endevent>><</link>>
+
+<<elseif $phase is 3>>
+
+	<<He>>眨了眨眼，然后笑了。"别害羞，亲爱的。你已经看到楼下发生了什么，我相信你可以自己解决剩下的问题。"
+	<br><br>
+
+<<link [["我很感兴趣"|Brothel Intro2]]>><<set $phase to 1>><<set $brotheljob to 1>><<set $wardrobes.brothel.unlocked to true>><</link>>
+<br>
+<<link [["不感兴趣"|Brothel Intro2]]>><<set $phase to 2>><</link>>
+<br>
+
+<</if>>
+
+:: Brothel Dance
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+
+<<if $dancestart is 1>>
+	<<unset $dancestart>>
+	<<danceinit>>
+	<<robinbrothelappear>>
+	<<set $dancing to 1>>
+	<<set $venuemod to 3>>
+	<<set $dancelocation to "brothel">>
+<</if>>
+
+<<danceeffects>>
+<<danceaudience>>
+<<danceactions>>
+
+<<if $corruptionDancing gt 0 and $danceevent is 0 and (($exhibitionism lte 74 and $exposed gte 2) or ($exhibitionism lte 34 and $exposed gte 1))>>
+	你不可能在如此暴露的情况下继续跳舞。
+<<elseif $danceevent is 0 and $exhibitionism lte 74 and $exposed gte 2>>
+	你不可能在如此暴露的情况下继续跳舞!你的脸红了，逃离了现场。
+	<br><br>
+<<elseif $danceevent is 0 and $exhibitionism lte 34 and $exposed gte 1 and !$worn.under_lower.type.includes("dance")>>
+	你不可能在如此暴露的情况下继续跳舞!你的脸红了，逃离了现场。
+	<br><br>
+<</if>>
+
+<<if $danceevent is "finish">>
+	<<unset $corruptionDancing>>
+	<<link [[继续|Brothel]]>><<clotheson>><<endevent>><</link>>
+<<elseif $danceevent is "private">>
+	<<if $corruptionDancing is 2>>
+		史莱姆希望你和更多人一起玩。
+	<<elseif $promiscuity gte 35>>
+		<<link [[私人房间|Brothel Private]]>><<dance_private_init>><</link>><<promiscuous3>>
+	<<elseif $promiscuity lte 34 and $uncomfortable.prostituting is false>>
+		<<link [[私人房间|Brothel Private]]>><<dance_private_init>><<set $desperateaction to 1>><</link>><<promiscuous3>>
+		<br>
+	<</if>>
+<<elseif $danceevent is "rape">>
+	<<link [[继续|Brothel Dance Rape]]>><<set $molestationstart to 1>><<unset $corruptionDancing>><</link>>
+<<elseif $danceevent is "leighton">>
+	<<if $corruptionDancing is 2>>
+		史莱姆希望你和更多人一起玩。
+	<<elseif $promiscuity gte 35>>
+		<<link [[包间|Leighton Private]]>><<clotheson>><<endevent>><<unset $corruptionDancing>><</link>><<promiscuous3>>
+		<br>
+	<</if>>
+<<elseif $danceevent is "robin">>
+	<<if $corruptionDancing is 2>>
+		史莱姆希望你和更多人一起玩。
+	<<else>>
+		<<link [[包间|Robin Brothel]]>><<clotheson>><<endevent>><<unset $corruptionDancing>><</link>>
+	<</if>>
+<<elseif $danceevent is "briarseduce">>
+	<<link [[继续|Briar Sex]]>><<endcombat>><<unset $corruptionDancing>><<npc Briar>><<person1>><<set $sexstart to 1>><</link>>
+	<br>
+<<elseif $danceevent is 0>>
+	<<if $corruptionDancing isnot undefined>>
+		你耳中的史莱姆在逼迫着你。
+	<<elseif $exposed gte 2 and $exhibitionism lte 74>>
+		<<link [[迅速离开|Brothel Dressing Room]]>><<clotheson>><<endevent>><<unset $corruptionDancing>><</link>>
+	<<elseif $exposed gte 1 and $exhibitionism lte 34>>
+		<<link [[迅速离开|Brothel Dressing Room]]>><<clotheson>><<endevent>><<unset $corruptionDancing>><</link>>
+	<<else>>
+		<<link [[停止|Brothel]]>><<clotheson>><<endevent>><<unset $corruptionDancing>><</link>>
+	<</if>>
+<</if>>
+
+:: Briar's Office
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+
+<<npc Briar>><<person1>>
+<<if $phase is 1>>
+	"好!当你想通过身体工作的时候就过来，我会让其他员工知道你要加入他们的。"<<He>>站了起来，带着你上楼。在你下楼的时候，<<He>>默不作声。
+	<br><br>
+
+	<<link [[继续|Brothel]]>><<endevent>><</link>>
+
+<<elseif $brotheljob is 1 and $fame.prostitution gte 30 and not $brothelshowdata.intro>>
+	<<set $brothelshowdata.intro to 1>><<set $brothelshowdata.type to "none">>
+	布莱尔倚靠在窗台上，看向窗外。"真高兴你能加入我，"<<he>>头也不转地说道。"好些人都问起了你的下落。看起来你已经有点出名了。"<<He>>转过身来，仔细端详着你。"我希望在<span class="gold">星期五</span>举行一场小小的演出，把那些大客户吸引过来。你有兴趣成为这次表演的主角吗？"
+	<br><br>
+
+	<<He>>并没有等待你回答。"我知道这不是你一般会做的事，而我也需要点时间准备下。回去好好考虑考虑，然后再来找我。到那个时候我们再谈具体条件——还有你的报酬。"
+	<br><br>
+	<<endevent>>
+	<<link [[继续|Brothel]]>><</link>>
+	<br>
+
+<<elseif $brotheljob is 1 and $fame.prostitution gte 200 and $brothelshowdata.intro is 1>>
+	<<set $brothelshowdata.intro to 2>>
+	布莱尔正坐在<<his>>桌子后面打着电话。<<He>>示意你稍微等一下。
+	你等着布莱尔打完电话。<<He>>看向了你，心情看起来不错。
+	<br><br>
+
+	"我们的小明星来了。”布莱尔坐到了<<his>>沙发上说道。
+	<br><br>
+
+	"看起来你的表演很成功。你有一些仰慕者很愿意花大价钱来跟你度过一段时间。”<<he>>说道。<<He>>拍打着沙发，邀请你坐在<<him>>的身边。
+	<br><br>
+
+	<<link [[坐下|Brothel Escort Job Intro]]>><<set $phase to 1>><</link>><<glove>><<npcincr Briar love 1>>
+	<br>
+	<<link [[站着|Brothel Escort Job Intro]]>><<set $phase to 2>><</link>>
+
+<<elseif $brotheljob isnot 1>>
+
+	布莱尔侧躺在沙发上，手里举着一杯红酒。在你进来时，<<He>>的目光转向了你。"你有没有重新考虑我的提议？"
+	<br><br>
+
+	<<link [[有|"Briar's Office"]]>><<endevent>><<set $brotheljob to 1>><<set $phase to 1>><<set $wardrobes.brothel.unlocked to true>><</link>>
+	<br>
+	<<if $id is 0>>
+		<<link [[询问身份证的事|"Briar's Office ID"]]>><</link>>
+		<br>
+	<</if>>
+	<<link [[离开|Brothel]]>><<endevent>><</link>>
+	<br>
+
+<<else>>
+
+	布莱尔侧躺在沙发上，手里举着一杯红酒。在你进来时，<<He>>的目光转向了你。"有什么需要我做的吗？"
+	<br><br>
+
+	<<if isPubfameTaskAccepted("briar")>>
+		<<His>>的笔记本电脑放在<<him>>旁边的沙发上。"米奇"让你黑进布莱尔的电脑。
+		<br>
+		你
+		<<if $pubfame.briar.distract is 2>>
+			<span class="green">已安排好人去分散注意</span>，
+		<<else>>
+			<span class="pink">没有分散注意的手段</span>，
+		<</if>>
+		<<if $pubfame.briar.distract is 2 and ($pubfame.briar.escape is 2 or $cat gte 6) or $pubfame.briar.distract isnot 2 and $pubfame.briar.escape isnot 2 and $cat lt 6>>
+			然后
+		<<else>>
+			但是
+		<</if>>
+		<<if $pubfame.briar.escape is 2>>
+			<span class="green">规划好了逃生路线</span>.
+		<<elseif $cat gte 6>>
+			你可以轻松地通过窗户逃跑。<span class="green">猫总是能平稳落地。</span>
+		<<else>>
+			<span class="pink">没有计划好的逃跑路线</span>。
+		<</if>>
+		<<if !$pubfame.briar.notice and $pubfame.briar.distract isnot 2>>
+			<<set $pubfame.briar.notice to true>>
+			<<if $cat gte 6>>
+				你可以通过在妓院闲逛来分散注意力。
+			<<else>>
+				你可以通过在妓院闲逛，来找到一个分散注意力和逃跑路线的机会。
+			<</if>>
+		<</if>>
+		<br>
+		<<link [[分散布莱尔的注意|Briar Hack]]>><</link>>
+		<br><br>
+	<</if>>
+	<<if $brothelVending>>
+		<<if $brothelVending.status is "idea">>
+			<<link [[请求布莱尔设置一台自动售卖机 (0:20)|Brothel VM ask]]>><<pass 20>><</link>>
+			<br>
+		<<elseif $brothelVending.products and $brothelVending.status is "set" and !$weekly.brothelVMCollect>>
+			<<link [[收集自动贩卖机的钱 (0:10)|Brothel VM income]]>><<pass 10>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+	<<if $brothelshowdata.intro and $brothelshowdata.type is "none">>
+		<<link [[安排一场演出|"Briar's Office Show"]]>><</link>>
+		<br>
+	<</if>>
+	<<if $brothelshowdata.intro is 2 and $weekly.escortjob isnot 1>>
+		<<link [[为有钱的顾客服务|Brothel Escort Job Accept]]>><</link>>
+		<br>
+	<</if>>
+	<<if $id is 0>>
+		<<link [[询问身份证的事|"Briar's Office ID"]]>><</link>>
+		<br>
+	<</if>>
+	<<if $brothel_machine_repair is 1>>
+		<<link [[询问布莱尔关于性爱机器|Briar Machine Ask]]>><<set $brothel_machine_repair to 2>><</link>>
+		<br>
+	<<elseif $brothel_machine_repair is 3>>
+		<<link [[把凝胶给布莱尔|Briar Gel Give]]>><<set $brothel_machine_repair to 4>><</link>>
+		<br>
+	<</if>>
+	<<link [[离开|Brothel]]>><<endevent>><</link>>
+	<br>
+
+<</if>>
+
+
+:: Briar Machine Ask
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"那-那里有台涩涩机器，"你说道。"它在后台-"
+<<elseif $speech_attitude is "bratty">>
+	"那里有个打炮机，"你说道。"它在后台-"
+<<else>>
+	"那里有台涩涩机器，"你说道。"它在后台-"
+<</if>>
+<br><br>
+
+<<if $brothel_machine_science is 1>>
+	<<unset $brothel_machine_science>>
+	布莱尔笑了起来，打断了你的话。"那个老古董啊，"<<he>>说道。"已经没用咯。一开始倒是蛮好玩的，但是它需要-"
+	<br><br>
+
+	"一种特殊的燃料。"这次换你插话了。布莱尔看起来很惊讶。"它没有插头，"你耸了耸肩。"而且它也不用电池。所以我觉得问题就出在那。"
+	<br><br>
+
+	"我确实应该当心点，别让你到处乱翻，"布莱尔笑了笑。"不过你说的没错。附近倒是有人生产这种燃料，一种粉色的凝胶，但是他们一直不肯卖给我。"<<gcontrol>><<control 10>><<glove>><<npcincr Briar love 1>><<npcincr Briar dom -1>>
+	<br><br>
+<<else>>
+	布莱尔笑了起来，打断了你的话。"那个老古董啊，"<<he>>说道。"已经没用咯。一开始倒是蛮好玩的，但是它需要一种特殊燃料——一种粉色凝胶。附近倒是有造这玩意的，但是他们不肯卖。"
+	<br><br>
+<</if>>
+
+<<link [[继续|Briar Machine Ask 2]]>><</link>>
+<br>
+
+
+:: Briar Machine Ask 2
+<<effects>>
+
+
+布莱尔穿过房间，倚靠在窗台上，目光越过了对面的建筑，看向了远方工业区的烟囱。<span class="gold">"他们把垃圾都倒在垃圾场里，"</span><<he>>说道。"如果有人说那里面会有凝胶，我可不会太惊讶。"
+<br><br>
+
+"他们不肯卖凝胶，确实蛮可惜的。"<<he>>继续说道。"我愿意花<span class="gold">£2000</span>买下一罐。"
+<br><br>
+
+<<He>>走回<<his>>的座椅。"还有什么事吗？"
+<br><br>
+
+<<if currentSkillValue('skulduggery') gte 400>>
+	<i>你突然想到了一点。</i> 如果他们不卖那种燃料的话，布莱尔之前怎么让机器运行的呢？
+	<br><br>
+
+	<<link [[询问|Briar Machine Ask 3]]>><<control 10>><</link>><<gcontrol>>
+	<br>
+	<<link [[不管了|Brothel]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<link [[离开|Brothel]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+
+
+:: Briar Machine Ask 3
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你-你之前肯定找到过些凝胶吧，”你说道。
+<<elseif $speech_attitude is "bratty">>
+	"你之前用过那台机器，"你说道。"但是恐怕他们也不卖那些了，是吧？"
+<<else>>
+	"你之前肯定找到过些凝胶，"你说道。
+<</if>>
+<br><br>
+
+布莱尔又笑了笑，一时间有点措手不及。"你还蛮有好奇心的嘛，"<<he>>说道。"这倒没错，但是没人会去专门调查一个失控的性玩具。当然，除非我们引起了某些不必要的注意。这就是为什么这个机器仅供VIP用户使用。"
+<br><br>
+
+布莱尔躺回了<<his>>椅子。"还有什么要说的吗？"
+<br><br>
+
+<<link [[离开|Brothel]]>><<endevent>><</link>>
+<br>
+
+
+:: Briar Gel Give
+<<effects>>
+
+<<earnFeat "Stolen Technology">>
+你拿出了罐子，但是布莱尔似乎对你更有兴趣。"真是惊喜啊，"<<he>>说道。<<He>>听起来一点也不惊喜。"£2000是吗？给你。罐子随便找个地方放就可以了。"
+<br><br>
+
+你赚到了<<moneyGain 2000>>。
+<br><br>
+
+<<He>>喝了一口酒。"我们很快就会让那台机器重新运转。现在就只差一个愿意使用它的人了。但那估计不算个问题。"<<He>>笑了。
+<br><br>
+
+<<link [[离开|Brothel]]>><<endevent>><</link>>
+<br>
+
+
+:: Briar's Office ID
+
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+<<if $phase is 1>>
+	"很好，你不会后悔的。"<<He>>走向<<his>>办公桌，并按下了藏在一幅画后面的按钮。一个书柜随即分开，展现出一个工作室，<<generate2>><<person2>>里面坐着一位戴着单片眼镜，盯着些许文件的<<person>>。
+	<br><br>
+	"一张身份证。"布莱尔说着，在你经过的时候往你的屁股上拍了一下。
+	<br><br>
+	那位<<person>>问了你些问题，并拍了张照。20分钟之后你便拿到了你的身份证。
+	<br><br>
+	<<link [[继续|Brothel]]>><<endevent>><</link>>
+<<else>>
+	"我可以给你张假身份证。但我记得我说过，那玩意可不便宜。更准确的说，£500。别被这价格吓到了，我这边的假身份证可以骗过政府扫描和边境检查。相信我，你可不会希望承担买了便宜货被抓包的风险。"
+	<br><br>
+	<<if $money gte 50000>>
+		<<link [[我要买一张（0:20）|Briar's Office ID]]>><<set $phase to 1>><<set $id to 1>><<pass 20>><<set $money -= 50000>><</link>>
+		<br>
+	<</if>>
+	<<link [[离开|Brothel]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Brothel Private
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+
+<<if $phase is 0>>
+
+<<set $tipmod to 3>><<tipset>>
+
+<<promiscuity3>>你带着<<person>>进入了其中一个小房间。相对于妓院的主体而言，它亮了许多，以至于你的眼睛需要一段适应时间。在房间的一角，有一个带有钢管的小舞台。房间里还有一张被特殊塑造的沙发，以供多种不同的体位使用。
+<br><br>
+
+	<<if $rng gte 71>>
+在你转身之前，<<person>>把手环在你的腰上，亲吻你的脖子。
+<br><br>
+
+	<<link [[拉远距离|Brothel Private]]>><<set $phase to 1>><</link>>
+	<br>
+	<<link [[试着在被爱抚的时候谈判|Brothel Private]]>><<arousal 300 "genitals">><<arousal 300 "breasts">><<set $phase to 2>><<submission 5>><<garousal>><</link>>
+	<br>
+
+	<<else>>
+<<person>>羞怯地站在门边，显然在等你行动。
+<br><br>
+<<rng>>
+
+		<<if $tipreaction is "low">>
+你牵着<<him>>的手，坐到沙发上。你们协商的价格为<<printmoney $tip>>，低于你的期望。
+<br><br>
+
+"我知道这不算多，"<<he>>说，"但如果我明天还想吃得起饭的话，我只能掏得起这么多钱。"<<He>>低头看向了<<his>>的脚。
+<br><br>
+
+			<<if $rng gte 51>>
+			"还有，如果可以的话，我不想碰任何东西。嗯，也许会有一些吧，但我主要是想和你谈谈。"
+			<br><br>
+
+			<<link [[接受 (0:30)|Brothel Private]]>><<set $phase to 3>><<pass 30>><</link>>
+			<br>
+			<<link [[拒绝|Brothel Private]]>><<set $phase to 4>><</link>>
+			<br>
+			<<else>>
+			<<link [[接受 (0:30)|Brothel Private Sex]]>><<set $consensual to 1>><<pass 30>><<set $sexstart to 1>><</link>>
+			<br>
+			<<link [[拒绝|Brothel Private]]>><<set $phase to 4>><</link>>
+			<br>
+			<</if>>
+
+		<<elseif $tipreaction is "mid">>
+你牵着<<him>>的手，坐到沙发上。你们协商的价格为<<printmoney $tip>>，在你的期望之内。
+<br><br>
+
+			<<if $rng gte 51>>
+			<<He>>轻轻地说，"还有，如果可以的话，我不想碰任何东西。嗯，也许会有一些吧，但我主要是想和你谈谈。"
+			<br><br>
+
+			<<link [[接受 (0:30)|Brothel Private]]>><<set $phase to 3>><<pass 30>><</link>>
+			<br>
+			<<link [[拒绝|Brothel Private]]>><<set $phase to 4>><</link>>
+			<br>
+			<<else>>
+			<<link [[接受 (0:30)|Brothel Private Sex]]>><<pass 30>><<set $consensual to 1>><<set $sexstart to 1>><</link>>
+			<br>
+			<<link [[拒绝|Brothel Private]]>><<set $phase to 4>><</link>>
+			<br>
+			<</if>>
+		<</if>>
+
+	<</if>>
+
+<<elseif $phase is 1>>
+	<<if $rng gte 21>>
+	你从<<person>>手中挣脱出来。<<He>>看起来十分焦躁，但是对你无能为力。
+	<<set $enemyanger += 20>>
+
+		<<if $tipreaction is "low">>
+	你们协商的价格为<<printmoney $tip>>，低于你的期望。
+	<br><br>
+
+	"你觉得你能值更多钱？"<<He>>笑了，"要知道，我能免费操和你一样的婊子。给你钱就像是做慈善一样。"
+	<br><br>
+
+			<<link [[接受 (0:30)|Brothel Private Sex]]>><<pass 30>><<set $consensual to 1>><<set $sexstart to 1>><</link>>
+			<br>
+			<<link [[拒绝|Brothel Private]]>><<set $phase to 5>><</link>>
+			<br>
+
+		<<elseif $tipreaction is "mid">>
+	你们协商的价格为<<printmoney $tip>>，在你的期望之内。
+	<br><br>
+
+			<<link [[接受 (0:30)|Brothel Private Sex]]>><<pass 30>><<set $consensual to 1>><<set $sexstart to 1>><</link>>
+			<br>
+			<<link [[拒绝|Brothel Private]]>><<set $phase to 5>><</link>>
+			<br>
+
+		<</if>>
+
+	<<else>>
+	你试图把自己从<<his>>的手中拉开，但是<<he>>一手抓住你的胳膊，并用另一只手堵上了你的嘴。
+	<br><br>
+	<<set $enemyanger += 20>>
+
+	<<link [[继续|Brothel Private Sex]]>><<pass 30>><<set $molestationstart to 1>><</link>>
+	<br>
+
+	<</if>>
+
+<<elseif $phase is 2>>
+	<<if $tipreaction is "low">>
+在<<his>>的不断骚扰之下，你依旧协商了<<printmoney $tip>>的价格，低于你的期望。
+<br><br>
+	<<elseif $tipreaction is "mid">>
+在<<his>>的不断骚扰之下，你依旧协商了<<printmoney $tip>>的价格，在你的期望之内。
+<br><br>
+	<</if>>
+
+	<<link [[接受 (0:30)|Brothel Private Sex]]>><<set $consensual to 1>><<pass 30>><<set $sexstart to 1>><</link>>
+	<br>
+	<<link [[拒绝|Brothel Private]]>><<set $phase to 5>><</link>>
+	<br>
+
+<<elseif $phase is 3>>
+<<He>>把<<his>>的头枕在你的腿上，你随即开始轻抚<<his>>的头发。你同情地听着<<He>>讲述着<<his>>的日常生活。尽管话题如此庸常，<<he>>一时竟泪流满面，向你讲述着<<he>>如何无法向<<his>>的配偶敞开心扉。
+<br><br>
+
+当<<his>>的三十分钟过去了之后，<<he>>把商定的价钱付给了你，并对你付出的时间表达了谢意。<<He>>看起来对你十分感激。
+<br><br>
+<<fameprostitution 1>>
+
+<<clotheson>>
+
+<<link [[继续|Brothel]]>><<set $money += $tip>><<endevent>><</link>>
+
+<<elseif $phase is 4>>
+<<He>>点了点头，眼神阴沉。<<He>>迅速的离开了房间。
+<br><br>
+
+<<clotheson>>
+
+<<link [[继续|Brothel]]>><<endevent>><</link>>
+
+<<elseif $phase is 5>>
+<<rng>>
+	<<if $rng gte 21>>
+	<<He>>看向你，似乎不知如何是好。最终，<<he>>说："反正你身上估计也有点脏东西。"随后便离开了房间。
+	<br><br>
+
+<<clotheson>>
+
+<<link [[继续|Brothel]]>><<endevent>><</link>>
+
+	<<else>>
+<<He>>茫然的看着你，然后大笑起来。"很好，现在给我跪下，否则老子抽死你！"<<He>>朝你袭来！
+<br><br>
+
+<<link [[继续|Brothel Private Sex]]>><<pass 30>><<set $molestationstart to 1>><</link>>
+<br>
+
+	<</if>>
+<</if>>
+
+:: Brothel Private Sex
+<<if $molestationstart is 1>>
+<<set $molestationstart to 0>>
+<<controlloss>>
+<<violence 1>>
+<<neutral 1>>
+<<molested>>
+
+<<maninit>>
+	<<if $phase is 1>>
+<<set $NPCList[0].lefthand to "arms">>
+<<set $leftarm to "grappled">>
+<<set $rightarm to "grappled">>
+<<hand_gag 0 right>>
+	<<elseif $phase is 5>>
+<<set $enemyanger += 40>>
+	<</if>>
+
+<<elseif $sexstart is 1>>
+<<set $sexstart to 0>>
+<<set $consensual to 1>>
+<<neutral 1>>
+
+<<maninit>>
+<<set $enemytrust += 40>>
+	<<if $phase is 2>>
+"这最好值得我花的钱，"<<he>>说道。
+	<<else>>
+<<set $enemytrust += 40>>
+	<</if>>
+	<<if $phase is 1>>
+"这最好值得我花的钱，"<<he>>说道。
+	<<else>>
+<<set $enemytrust += 40>>
+	<</if>>
+
+<</if>>
+
+<<effects>>
+<<effectsman>><<man>>
+
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<set _chance to random(1, 200)>>
+/* 0.5% (1/200) chance per turn, only when crime is non-zero, when over 6 weeks into game, and gte 3 weeks from last raid*/
+<<if _chance is 13 and $crime gte 500 and Time.days gte 42 and ((Time.days - $brothel_raid_day) gte 21)>>
+	<span id="next"><<link [[继续|Brothel Raid]]>><</link>></span><<nexttext>>
+<<elseif $enemyarousal lte $enemyarousalmax and $enemyhealth gte 0 and $finish is 0>>
+	<span id="next"><<link [[继续|Brothel Private Sex]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Brothel Private Sex Finish]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Brothel Private Sex Finish
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+<<if $stealtarget isnot "">><<set $brothel_thief += 1>><</if>>
+<<if $consensual is 1>>
+
+	<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>><<set $prostitutionstat += 1>><<fameprostitution 1>>
+		<<if $phase is 2>>
+	"这是你的报酬，婊子，"<<person>>高潮了，喘着气对你说道。<<He>>头也不回的离开了房间。
+	<br><br>
+	<<tipreceive>>
+		<<elseif $phase is 1>>
+	"这是你的报酬，婊子，"<<person>>高潮了，喘着气对你说道。<<He>>头也不回的离开了房间。
+	<br><br>
+	<<tipreceive>>
+		<<else>>
+		<<He>>满意的笑着。"谢谢你的陪伴。喏，拿着。"在离开房间之前，<<He>>对你露出了一个灿烂的笑容。
+		<br><br>
+	<<tipreceive>>
+		<</if>>
+
+	<<else>>
+		<<if $phase is 2>>
+		"行。你可别指望拿到一分钱。"<<He>>厌恶的看着你，离开了房间。
+		<br><br>
+		<<elseif $phase is 1>>
+		"行。你可别指望拿到一分钱。"<<He>>厌恶的看着你，离开了房间。
+		<br><br>
+		<<else>>
+		"我做错什么了吗？真的对不起！"<<He>>从房间里跑了出去。
+		<br><br>
+		<</if>>
+
+	<</if>>
+
+<<else>>
+
+	<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>><<fameprostitution 1>>
+	"这是你的报酬，婊子，"<<person>>高潮了，喘着气对你说道。他们头也不回的离开了房间。
+	<br><br>
+	<<tipreceive>>
+	<<elseif $enemyhealth lte 0>>
+	你成功地把<<person>>击退，为你提供了逃跑的时间。 <<tearful>>你逃进了繁忙的妓院主室。
+	<br><br>
+
+	<</if>>
+
+<</if>>
+<br><br>
+
+<<clotheson>>
+
+<<endcombat>>
+<<rng>>
+<<if $crime gte 4500 and $brothel_raid gte 1 and $brothel_thief gte $rng>>
+/*If you're (a) very wanted and (b) Briar has been raided before, then the (c) chance of Briar selling you out increases the more you steal from their customers.*/
+	<<link [[继续|Brothel Arrest]]>><</link>>
+<<else>>
+	<<link [[继续|Brothel]]>><</link>>
+<</if>>
+
+:: Brothel Dance Rape
+
+<<if $corruptionDancing is 2>>
+	<<unset $corruptionDancing>>
+	<<set $molestationstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+<<elseif $molestationstart is 1>>
+	<<unset $corruptionDancing>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<br>
+	<<violence 1>>
+	<<neutral 1>>
+	<<maninit>>
+<</if>>
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if $alarm is 1>>
+	<<if $rescue is 0>>
+		<<set $alarm to 0>>
+		<br><br>
+		<<if $enemyarousal gte $enemyarousalmax>>
+			<span id="next"><<link [[继续->Brothel Dance Rape Finish]]>><</link>></span><<nexttext>>
+		<<elseif $enemyhealth lte 0>>
+			<span id="next"><<link [[继续->Brothel Dance Rape Finish]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续->Brothel Dance Rape]]>><</link>></span><<nexttext>>
+		<</if>>
+	<</if>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<span id="next"><<link [[继续->Brothel Dance Rape Finish]]>><</link>></span><<nexttext>>
+<<elseif $enemyhealth lte 0>>
+	<span id="next"><<link [[继续->Brothel Dance Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续->Brothel Dance Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Brothel Dance Rape Finish
+
+<<effects>>
+<<if $enemyhealth lte 0>>
+	<<if Time.dayState isnot "night">>
+		<<He>>吃痛退开，给了你可乘之机。<<tearful>>你逃进了更衣室里。
+		<br><br>
+	<<else>>
+		<<He>>吃痛退开，给了你可乘之机。<<tearful>>你逃进了更衣室里。
+		<br><br>
+	<</if>>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Brothel Dressing Room]]>><</link>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<if $audience is 1>>
+		随着<<person1>><<person>>的高潮，人群中爆发出一片欢呼。<<tearful>>你趁还没有其他人开始动歪心思时，蹒跚着溜走了。
+	<<elseif $audience lte 6>>
+		<<person1>><<person>>与<<person2>><<person>>互相击掌。<<tearful>>你趁观众们欢呼庆祝的时候蹒跚着溜走了。
+	<<else>>
+		人群中爆发出一片欢呼，大家似乎都很喜欢这场表演。<<tearful>>你趁还没有其他人开始动歪心思时，蹒跚着溜走了。
+	<</if>>
+	<br><br>
+	<<stealclothes>>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Brothel Dressing Room]]>><</link>>
+<</if>>
+
+:: Brothel Punishment
+
+<<set $outside to 1>><<set $location to "brothel">><<effects>>
+<<set $briarPunishReason to "whore">>
+你被按坐在了一张长凳上，听见了车子启动的声音 。你头上的麻袋被拿了下来。<<npc Briar>><<generate2>><<generate3>>
+<<if $brothelintro is 1>>
+	对面的座位上坐着妓院老板布莱尔，身边坐着一名<<person2>><<person>>和一名<<person3>><<person>>。<<person1>>
+	<br><br>
+<<else>>
+	<<set $brothelintro to 1>>
+	<<if $pronoun is "m">>
+		对面的座位上坐着一名穿着蓝色西装外套的一名男子，里面没有穿衬衫，将<<his>>健康的胸部和腹部展露无遗。栗色的长发披散在他身后。
+	<<else>>
+		对面的座位上坐着一名穿着很贵的红色礼服的女子，领口低垂，露出了她诱人胸脯的一部分。栗色的长发披散在她身后。
+	<</if>>
+	<br><br>
+	<<Hes>>身边坐着一名<<person2>><<person>>和一名<<person3>><<person>>。<<person1>><<He>>用赤褐色的眼睛盯着你。
+	<br><br>
+	"就是你这个流浪汉在给我惹麻烦啊。我是布莱尔，我手下的店全镇最好。"<<He>>向后靠在了长凳上。
+<</if>>
+"听说你在酒吧里卖身呢。这可就有问题了。全镇的妓男妓女都归我管，而你这贱货在外面干嘛？当然是当妓了。也就是说，你也归我管。但是，我却还一分钱都没收到。而现在，这种情况就要到此为止了。"
+<br><br>
+货车停下了，<<person2>><<person>>与<<person3>><<person>>把你押下了车，带着你来到一栋建筑旁通往地下的楼梯井。如果要逃跑的话，现在是你唯一的机会。然而，他们一共有三个人。<<person1>>
+<br><br>
+<<link [[跟他们走|Brothel Punishment 2]]>><</link>>
+<br>
+<<link [[反抗|Brothel Punishment Fight]]>><<set $fightstart to 1>><<def 3>><</link>>
+<br>
+
+:: Brothel Punishment 2
+
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+<<if $briarPunishment>>
+	<<set $punishmenthole to $briarPunishment>>
+	<<unset $briarPunishment>>
+<<else>>
+	<<set $punishmenthole to 5>>
+<</if>>
+你被带进了一条昏暗的走廊。你听见头上某个地方正播放着音乐。<<person2>><<person>>把你推进了一扇门，门里是一间小小的牢房，墙上有个洞。<<he>>和<<person3>><<person>>开始一圈圈地用绳子绑住你。最后他们把你的手脚一起绑在了身后，把你扛起来吊在天花板上。
+<br><br>
+"好了，"布莱尔说道。"现在你准备好为我们的客人提供服务了。出于仁慈，你只需要帮助他们中的<<number $punishmenthole>>个人。"<<person1>><<He>>将你的脖子绑在洞下的钉子上，让你的嘴贴在洞口上。"玩得开心！"<<he>>说着，关上门，让你陷入黑暗之中。
+<br><br>
+<<set $leftarm to "bound">>
+<<set $rightarm to "bound">>
+<<set $head to "bound">>
+<<set $feetuse to "bound">>
+<<set $punishmentposition to "gloryhole">>
+<<set $punishmenthole to 5>>
+<<endevent>>
+<<link [[继续|Brothel Punishment Gloryhole]]>><</link>>
+<br>
+
+:: Brothel Punishment Fight
+
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+	布莱尔一见你要反抗，便笑了起来。"哦，你这傻<<girl>>，你可跑不掉。"
+	<br><br>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Brothel Punishment Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Brothel Punishment Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Brothel Punishment Fight Finish
+
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<unset $briarPunishment>>
+	<<ejaculation "short">>
+	"别让那<<girl>>跑了！"布莱尔缓过神来，对<<person1>><<his>>的喽啰喊着，但你早已逃得没影了。<<tearful>>你顺着道路逃跑了。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<harvestquick>>
+<<elseif $enemyhealth lte 0>>
+	<<unset $briarPunishment>>
+	你狠推了<<person2>><<person>>一把，赢得了逃跑的机会。<<tearful>>你从他们的间隙间穿过，顺着道路逃跑了。你听见布莱尔对<<person1>><<his>>的手下喊着什么。
+	<<ltrauma>><<lstress>><<trauma -6>><<stress -12>>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<harvestquick>>
+<<else>>
+	布莱尔又笑了起来。"哎呀，这小<<girl>>是觉得痛吗？"你受伤太严重，无法继续抵抗了。<<person2>><<person>>与<<person3>><<person>>把你拖下了楼梯。
+	<br><br>
+	<<link [[继续|Brothel Punishment 2]]>><</link>>
+	<br>
+<</if>>
+
+:: Brothel Punishment Gloryhole
+
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+
+<<if $punishmenthole lte 0>>
+
+	<<endevent>><<npc Briar>><<person1>>牢房门打开了，布莱尔走了进来，手里拿着一把刀。<<He>>把吊着你的绳子割开，你掉在了地上。"这下我们两清了。"<<he>>一边说着，一边继续割着你身上的绳子。
+	<<if $briarPunishReason is "whore">>
+		"如果你还想接着卖身的话，也得来我这卖。"
+	<<else>>
+		"也许现在你会三思而后行，不敢再触怒我了。"
+	<</if>>
+	<<unset $briarPunishReason>>
+	<<He>>割完了绳子，退了一步。"听懂了吗？很好。"<<He>>让到一边，一名<<generate2>><<person2>><<person>>走了进来，把你原路拖了出去，关上了门。你的双手没被解开，仍被绑着。
+	<br><br>
+
+	<<if $brothelknown isnot 1>>
+		<<set $brothelknown to 1>><span class="gold">你现在可以访问丰收街的妓院了。</span>
+	<</if>>
+
+	<<clotheson>>
+	<<endevent>>
+
+	<<set $head to 0>>
+	<<set $feetuse to 0>>
+	<<set $punishmentposition to 0>>
+
+	<<link [[继续|Harvest Street]]>><</link>>
+	<br>
+<<elseif $punishmentposition is "wall">><!-- Wall outcome with $position = "wall" -->
+	你被绳子绑在牢房里，你的腿，屁股和<<genitals>>从墙上的洞里伸着出去，无论如何挣扎都无法挪动分毫。
+	<br><br>
+	<<set $punishmenthole -= 1>>
+
+	<<generate1>><<person1>>
+
+	<<switch random(1, 8)>>
+		<<case 1 2>>
+			有人捏了你的<<bottom>>一把。
+		<<case 3 4>>
+			你感觉有人在抚摸你的<<genitals>>。
+		<<case 5 6>>
+			你感觉有人在舔你的大腿后部。
+		<<default>>
+			有人拍了你的<<bottom>>一把。
+	<</switch>>
+	<br><br>
+
+	<<link [[继续|Brothel Punishment Molestation]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>><!-- Gloryhole outcome with $punishmentposition = "gloryhole" -->
+	你被绳子绑在牢房里，嘴抵在墙上的洞上，无论如何挣扎都无法挪动分毫。
+	<br><br>
+	<<set $punishmenthole -= 1>>
+
+	<<generate1>><<person1>>
+
+	<<if $NPCList[0].vagina is "clothed">>
+	有人把阴部抵在了洞上，抵在了你的嘴唇上。
+	<br><br>
+	<<else>>
+	有人把一根$NPCList[0].penisdesc伸进了洞里，抵着你的嘴唇。
+	<br><br>
+	<</if>>
+
+	<<link [[继续|Brothel Punishment Molestation]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Brothel Punishment Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<if $punishmentposition is "wall">>
+		<<set $position to "wall">>
+		<<set $enemyhealthmax to 1000>><<set $enemyhealth to 1000>>
+		<<else>><!-- Gloryhole outcome with $punishmentposition = "gloryhole" -->
+		<<npcoral>>
+		<<set $enemyhealthmax to 10>><<set $enemyhealth to 10>>
+		<<set $enemyarousal to $enemyarousalmax - 100>>
+		<<set $NPCList[0].lefthand to "none">>
+		<<set $position to "doggy">>
+		<<set $NPCList[0].righthand to "none">>
+		<<set $NPCList[0].mouth to "none">>
+	<</if>>
+<</if>>
+<<set $enemyarousal += 10>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or $penisbitten is 1>>
+	<span id="next"><<link [[继续|Brothel Punishment Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Brothel Punishment Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Brothel Punishment Molestation Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>><<set $forcedprostitutionstat += 1>><<set $gloryholestat += 1>>
+
+	<<tearful>>你做好了心理准备，迎接更多的虐待。
+	<br><br>
+
+	<<endcombat>>
+
+	<<link [[继续|Brothel Punishment Gloryhole]]>><</link>>
+<<else>>
+	<<person>>吃痛从洞口退开。你听见<<him>>和谁吼着，随后便是沉默。<<endevent>><<npc Briar>><<person1>>一会后，布莱尔打开了牢房门。"我原本还想对你好点的，"<<he>>说道。"不过你如果这样不乖的话，那我就没办法了。"<<He>>解开你脖子上的绳子，拉动了墙根的一根控制杆，墙上的洞便变大了好几倍。<<He>>把你塞进洞里，让你的腿和屁股露在外面，并再次把你绑好。"好了。现在，客户们可以享用你'没那么暴力'的部分了。"<<He>>摔门出去了。
+	<br><br>
+	<<endcombat>>
+	<<set $punishmenthole += 1>><<pass 1>><<set $punishmentposition to "wall">>
+
+	<<link [[继续|Brothel Punishment Gloryhole]]>><</link>>
+	<br>
+<</if>>
+
+:: Briar's Office Show
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+
+"很好，"布莱尔说。
+<<if Time.weekDay is 6>>
+	"今天没时间安排表演了，不过下个星期可以。"
+<<else>>
+<</if>>
+
+<<brothelshowintro>>
+<br><br>
+
+布莱尔抿了一口<<his>>酒。"那么，你喜欢什么？"
+
+<<brothelshowoptions>>
+<br><br>
+
+<<if _askShow isnot 1>>
+	<<link [[询问每场演出的更多信息|Briar's Office Show Ask]]>><</link>>
+	<br><br>
+<</if>>
+<<link [[离开|Brothel]]>><<endevent>><</link>>
+
+:: Briar's Office Show Ask
+<<brothelshowintro>>
+<<brothelshowoptions>>
+<br><br>
+<<link [[离开|Brothel]]>><<endevent>><</link>>
+
+:: Briar's Office Show 2
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+<<if $brothelshowdata.type is "flirt">>
+	你同意与观众调情并在舞台上做爱。"好吧。"<<he>>说道。"到时候只要表现得可爱就行。
+<<elseif $brothelshowdata.type is "gangbang">>
+	你同意角色扮演为一名学校<<girl>>，并在台上被轮奸。"演的时候别紧张，"<<he>>说道。"人家又不是来看你演戏的。
+<<elseif $brothelshowdata.type is "pig">>
+	你同意在台上与猪做爱。"你还真是下流。"<<he>>一边说着，一边站起来。"这会吸引不少人来的。
+<<elseif $brothelshowdata.type is "swarm">>
+	你同意在舞台上泡进装满小型生物的玻璃缸里。"你玩得真变态啊，"<<he>>一边说着，一边站起来。"我喜欢，而且我觉得观众也会喜欢的。
+<<elseif $brothelshowdata.type is "machine">>
+	你同意试用修好的性爱机器。布莱尔双手一拍。"很好。
+<<elseif $brothelshowdata.type is "tentacles">>
+	你同意使用修复后的性机器，选择触手模式。布莱尔双手一拍。"好极了。
+<<elseif $brothelshowdata.type is "horse">>
+	你建议和马一起表演。
+	<<if $brothelHorse isnot 1>>
+		<<set $brothelHorse to 1>>
+		布莱尔笑道："那将是场值得纪念的演出，"<<he>>又顺着说道，"但我可没有机会弄到一匹马。"
+		<br><br>
+		"我有办法，"你回道。
+		<br><br>
+	<</if>>
+		布莱尔双手一拍。"好极了。那你给你的‘演员同事’安排好。
+<<elseif $brothelshowdata.type is "bukkake">>
+	你建议做一个类似的游戏，让观众用他们的精液来参与。
+	<<if $brothelBukkake isnot 1>>
+		<<set $brothelBukkake to 1>>
+		布莱尔抚摸着<<his>>的下巴在思考。"观众会喜欢它。将会有相当多的混乱要清理。"
+		<br><br>
+		"只要我不碰到就行了，"你回答道。
+		<br><br>
+	<<else>>
+		"你上次做的时候，观众确实很喜欢，"布莱尔说。"有相当多的混乱需要清理。"
+		<br><br>
+		"我这次会试着抓住更多的机会，"你回答。
+		<br><br>
+	<</if>>
+	布莱尔笑了起来。"我们有了一场表演。<span class="gold">你每次帮忙，你每帮忙一次我就发你£50。"</span>
+<</if>>
+
+我会保证这边都安排妥当的。
+
+<<if Time.weekDay is 6>>
+	今天时间不够，准备不好了。<span class="gold">下个星期五就能搞定了。</span>
+<</if>>
+
+相信观众们肯定会很激动的。"<<He>>送你上了楼。"记得要按时来。客人专门为你而来的，可不能随便拉个妓糊弄他们。"
+<br><br>
+
+<<link [[离开|Brothel]]>><<endevent>><</link>>
+<br><br>
+
+:: Brothel Stage
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+
+你在妓院最大的舞台的后台。最吸引人的表演都在这个舞台上展出。
+<br><br>
+
+<<if $brothel_machine_repair is undefined>>
+	一台性爱机器摆在角落里，旁边贴了一张纸条，写着："故障"。
+	<br><br>
+<</if>>
+
+<<if isPubfameTaskAccepted("briar") and !$pubfame.briar.escape and $cat lte 5>>
+	<<set $pubfame.briar.escape to 1>>
+	一扇遮挡窗户的窗帘拉开了一些，它正好位于二楼布莱尔办公室的正下方。
+	<br><br>
+
+	<span class="blue">你突然有了一个想法。</span>如果你能弄到一个面向布莱尔办公室的梯子，你可以从那里离开。
+	<br><br>
+<</if>>
+
+<<if $brothelshowdata.type isnot "none" and Time.weekDay is 6 and not $brothelshowdata.done>>
+	你看见布莱尔在和最大的舞台旁的某人说话。你同意今天表演。
+	<br><br>
+
+	<<if $brothelshowdata.type is "horse">>
+		<<if $farm.steed>>
+			<<if $bestialitydisable is "f" or $per_npc.saddled_steed.monster is "monster">>
+				你的$farm.steed在等着你。
+				<br><br>
+				<<link [[参加表演|Brothel Show]]>><</link>>
+				<br>
+			<<else>>
+				你回想起约定好的表演内容，不由得感到压力万钧。你开始觉得恶心。<span class="red">你不敢上台表演了。</span>
+				<br>
+			<</if>>
+		<<else>>
+			<span class="blue">你约好要在舞台上和马同台共演，但你从来没骑过马！</span>
+			<br>
+		<</if>>
+	<<else>>
+		<<link [[参加表演|Brothel Show]]>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+<<if $brothel_machine_repair is undefined>>
+	<<link [[调查机器|Brothel Machine Investigate]]>><<set $brothel_machine_repair to 1>><</link>>
+	<br>
+<</if>>
+
+<<link [[离开|Brothel]]>><</link>>
+<br>
+
+:: Brothel Machine Investigate
+<<effects>>
+
+你检查了一下做爱机器。主体上有一根耸立的阴茎，边上还有一些灯与数字键盘，形状和一把枪一样。你能想象得到这东西是用来干什么的，<span class="gold">但布莱尔应该会更懂。</span>
+<br><br>
+
+<<link [[仔细查看|Brothel Machine Investigate 2]]>><</link>><<skill_difficulty "$science" "科学" 400 1000>>
+<br>
+<<link [[离开|Brothel Stage]]>><</link>>
+<br>
+
+
+:: Brothel Machine Investigate 2
+<<effects>>
+
+<<if currentSkillValue('science') gte random(400, 1000)>>
+	你打开机器侧面的盖板，看了一眼内部。缠绕着的电线后有一个空的玻璃水箱。
+	<br><br>
+
+	你看了看机器的下面，发现机器上并没有电源插口，无法连接到电源。<span class="green">肯定有其他的方式提供能量。</span>
+	<br><br>
+	<<set $brothel_machine_science to 1>>
+	你关上了盖板，退后几步。
+	<br><br>
+<<else>>
+	你打开机器侧面的盖板，看了一眼内部。缠绕着的电线后有一个空的玻璃水箱。
+	<br><br>
+
+	你看了看机器的下面，<span class="red">没有发现什么异常。</span>
+	<br><br>
+
+	你关上了盖板，退后几步。
+	<br><br>
+<</if>>
+
+<<link [[继续|Brothel Stage]]>><</link>>
+<br>
+
+
+:: Brothel Punishment Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<generate1>><<person1>><<maninit>><<set $position to "wall">><<set $head to "bound">>
+<</if>>
+
+<<set $position to "wall">>
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Brothel Punishment Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Brothel Punishment Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Brothel Punishment Rape Finish
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+<<ejaculation>>
+
+<<He>>最后再捏了你一把便离开了你。
+<br><br>
+
+<<endcombat>><<set $leftarm to "bound">><<set $rightarm to "bound">>
+
+<<else>>
+
+你把<<person>>从你身上踢开。你听见<<him>>嘟囔着什么，但还是离开了你。
+<br><br>
+
+<<endcombat>><<set $leftarm to "bound">><<set $rightarm to "bound">>
+
+<</if>>
+
+<<set $punishmenthole -= 1>>
+
+<<if $punishmenthole lte 0>>
+
+<<npc Briar>><<person1>>
+门打开了，布莱尔走了进来。"希望你玩的开心。"<<he>>说道。<<He>>拉动控制杆，你腰间的束缚松开了。你蠕动着爬进了房间，落在了地上。
+<br><br>
+
+"你可以走了。记住，你和你的资产，都属于我。"
+<br><br>
+<<unbind>>
+<<clotheson>>
+<<endevent>>
+
+<<link [[继续|Harvest Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+<<elseif $punishmenthole is 5>>
+<<npc Briar>><<person1>>
+门打开了。布莱尔走了进来，单膝跪在你面前，手里拿着一张卡片。卡片上印着一张你的正脸照片，还写着你的年龄和"£10"的字样。"我觉得你应该想看看他们眼中的你是什么样子的，"<<he>>说着，向着卡住你的墙点了点头。"如果你不想被贱卖的话，就别再犯贪心了，<<girl>>。"<<He>>站了起来。"休息时间结束了。"<<He>>走了出去，甩上了门。
+<br><br>
+<<endevent>>
+<<link [[继续|Brothel Punishment Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+<<else>>
+<<tearful>>你准备着迎接更多的虐待。下一个人很快就来了。
+<br><br>
+
+<<link [[继续|Brothel Punishment Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+<</if>>
+
+:: Brothel Pay
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+
+布莱尔数了数钱。"很好，"<<he>>说着，向<<his>>的打手点了点头，后者便从门前让开了。"我不管你是他妈被狼叼走了还是怎样，下次，一定要准时到。"<<He>>说完，回到了自己的办公室。
+<br><br>
+
+<<link [[继续|Brothel]]>><<endevent>><</link>>
+<br>
+
+:: Brothel Pay Refuse
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+
+布莱尔收回了手。<<He>>向<<his>>打手点了点头。"好吧，"<<he>>说道。"没事，付钱的方法多的是。"
+<br><br>
+
+<<link [[继续|Brothel Pay Strip]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Brothel Pay Strip
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>><<npcstrip>><<npcidlegenitals>>
+	<<set $enemyanger += 200>><<set $enemytrust -= 60>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Brothel Pay Strip Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Brothel Pay Strip]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Brothel Pay Strip Finish
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+<<ejaculation>>
+
+观众们鼓着掌，似乎在观看一场表演。可能对于他们来说这就是表演。
+<br><br>
+
+<<person1>>布莱尔靠在一把椅子上。<<He>>看着聚集过来围观的顾客们，露出了微笑。"你还是懂吸引眼球的。"<<he>>说着，声音被音乐掩盖，几乎都听不见了。"下次记得准时来。"<<He>>回到了自己的办公室里。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Brothel]]>><</link>>
+<br>
+
+<<elseif $enemyhealth lte 0>>
+
+<<person1>>你击退了布莱尔，把<<He>>推向一张桌子。<<He>>倒在了桌子上，桌上的饮料撒得到处都是。<<His>>的打手们手足无措。观众们鼓着掌，似乎在观看一场表演。可能对于他们来说这就是表演。
+<br><br>
+
+布莱尔爬了起来，拍了拍身上的灰。<<He>>看着聚集过来围观的顾客们，露出了微笑。"你还是懂吸引眼球的。"<<he>>说着，声音被音乐掩盖，几乎都听不见了。"下次记得准时来。"<<He>>回到了自己的办公室里。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Brothel]]>><</link>>
+<br>
+
+<<else>>
+
+<<person1>>你疼痛难忍，无法继续反抗，倒在了地上。观众们鼓着掌，似乎在观看一场表演。可能对于他们来说这就是表演。
+<br><br>
+
+布莱尔向观众鞠了一躬。"谢谢，谢谢。"<<he>>说着。"朋友们，现在，请尽情享用这个骚货吧，完全免费。"又一阵欢呼响起，随后从四面八方伸来了无数的手。
+<br><br>
+
+<<endcombat>>
+
+<<link [[继续|Brothel Pay Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+<</if>>
+
+:: Brothel Pay Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<generate1>><<generate2>><<generate3>><<generate4>><<generate5>><<generate6>><<maninit>><<person1>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Brothel Pay Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Brothel Pay Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Brothel Pay Finish
+
+<<effects>>
+<<if $enemyhealth lte 0>>
+	一部分人吃痛退开，人群中出现了一个缝隙。你从中爬过，避开骚扰躲进了更衣室。
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Brothel Dressing Room]]>><</link>>
+<<else>>
+	<<ejaculation>>
+	人群中爆发出一片欢呼，大家似乎都很喜欢这场表演。<<tearful>>你逃进了更衣室。
+	<br><br>
+	<<stealclothes>>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Brothel Dressing Room]]>><</link>>
+<</if>>
+
+:: Brothel Bathroom
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+
+你在妓院的澡堂里。这里有供舞者们在工作中或下班后使用的公共淋浴头。这些淋浴头并不干净，但你见过更脏的。没人特别关注你。
+<br><br>
+
+<<if $stress gte $stressmax>>
+<<passoutshop>>
+<<else>>
+	<<pregnancyTest "Brothel Bathroom">>
+	<<if $exhibitionism gte 35>>
+		<<link [[洗澡(0:15)->Brothel Shower]]>><<strip>><<pass 15>><<stress -1>><<set $hygiene to 0>><</link>><<lstress>>
+		<br><br>
+		<<link [[妓院 (0:01)->Brothel]]>><<pass 1>><</link>>
+		<br>
+	<<else>>
+		你不愿意用公共淋浴头。
+		<br><br>
+		<<link [[妓院 (0:01)->Brothel]]>><<pass 1>><</link>>
+		<br>
+
+	<</if>>
+<</if>>
+
+:: Brothel Shower
+<<effects>><<set $location to "brothel">><<set $outside to 0>>
+
+<<if Time.dayState isnot "day" and Time.dayState isnot "dawn" and $rng % 3>>妓院一直很忙，淋浴间也是如此。淋浴头向你喷出冰冷的水，让你喘不过气来。你想，洗个冷水澡总比不洗澡好，于是就这样做了。
+<<larousal>>
+<br><br>
+<<elseif Time.dayState isnot "night" and $rng % 2>>淋浴头喷出的冷水冲击着你，让你喘不过气来。似乎有人把热水用完了。你觉得冷水澡也比不洗好，于是便将就着洗了。
+<<larousal>>
+<br><br>
+<<else>>发现还有热水，你就放心了。<</if>>
+
+你洗得干干净净。<<wash>>
+<br><br>
+
+<<link [[自慰|Brothel Shower Masturbation]]>><<set $masturbationstart to 2>><</link>>
+<br>
+
+<<link [[出去->Brothel Bathroom]]>><<clotheson>><</link>>
+<br>
+
+:: Brothel Raid
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+/* Police raid in the middle of action */
+<<set $brothel_raid += 1>>
+<<set $brothel_raid_day to Time.days>>
+<span class="red">你听到外面一声巨响，随后便是叫喊和尖叫。</span><<person>>停下了。
+<<set $enemyarousal to 0>><<set $enemytrust to -200>>
+<<set $enemyhealth to ($enemyhealthmax / 5) * 4>><<set $enemyanger to ($enemyangermax / 5) * 2>>
+<<if $options.images is 1 and $options.combatImages is 1>>
+	<<timed 100ms>>
+		<br><br><br>
+		<<combatimg>>
+		<br>
+	<</timed>>
+<</if>>
+<<stateman>>
+<br><br>
+<span class="red">"所有人不许动！警察！呆在原地！"</span>
+<br><br>
+<<person>>咒骂着，把你推开，穿好了衣服。
+<br><br>
+<span id="next"><<link [[整理自己的仪表|Brothel Raid 2]]>><</link>></span><<nexttext>>
+
+:: Brothel Raid 2
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+/* Police raid the place */
+<<person>>冲了出去。
+<<clotheson>>
+<<endcombat>>
+
+你从门缝中往外瞧。外面的走廊还很安静，不过你听见不远处传来喊叫声，碰撞声，一片混乱。
+<br><br>
+警察马上就要来了。
+<br><br>
+<<if currentSkillValue('skulduggery') gte 200>>
+	<<set $skulduggerydifficulty to 800>><<link [[试图逃脱|Brothel Raid Escape]]>><</link>><<skulduggerydifficulty>>
+	<br>
+<<else>>
+	<span class="blue">你想不到如何逃脱。</span>
+	<br>
+<</if>>
+<<link [[等候逮捕|Brothel Raid Pre Arrest]]>><</link>>
+<br>
+
+:: Brothel Raid Escape
+
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+<<generate1>><<person1>>你悄悄溜进走廊里，听见远处的混乱逐渐接近。有好几个空房间能供你躲藏，不过它们很可能都会被搜一遍。
+<br><br>
+一名<<person>>冲进了走廊，寻找着藏身之处。
+"怎么会这样……我<<if $pronoun is "m">>妈<<else>>爸<</if>>会怎么说我？"
+<br><br>
+"这里！"你说着，指向一间空房间。"快躲进去，把门锁上。"
+<br><br>
+"你-你怎么办？"
+<br><br>
+"你是顾客，"你坚定地说道。"我就呆在这，保证不让那群混球抓住你。"
+<br><br>
+<<skulduggerycheck>>
+<br><br>
+<<if $skulduggerysuccess is 1>>
+	<<His>>的眼神亮了起来。"谢谢你！"
+	<br><br>
+	门被关上了，咔哒一声上了锁。你扫视着走廊，发现附近一扇门下塞着一条鲜艳的<<print either("红色","条纹","黄色","粉色","白色")>>内裤。你把它挂在了<<persons>>的门把手上，躲进了对面的空房间里。
+	你把门打开，让外面的人看见房间是空的，自己躲在门后面。
+	<br><br>
+	不一会，警察便冲进了走廊。
+	<br><br>
+	"嘿！看那个门把手。"
+	<br>
+	"还挺有想法。"
+	<br>
+	你听见他们搜查对面房间的声音。
+	<br>
+	"开门！"你听见了响亮的敲门声。"警察。我们知道你在里面。"
+	<br>
+	有人往你的房间里瞧了一眼，踩在地板上吱呀作响。你努力后退贴近墙壁。
+	<br>
+	"那边有人吗？"
+	<br>
+	"没，"声音从你面前的门后传来。"可能已经在外面队里了。"
+	<br>
+	"感觉得把这门踹开。"
+	<br>
+	"好。"地板又响了一声，他们走开了。
+	<br><br>
+	不一会你便听见了一声巨响，随后便是喊叫声，以及<<person>>一边被拖走一边祈求着，抽泣着的声音。
+	<br><br>
+	<<skulduggeryuse>>
+	<<link [[等待 (1:00)|Brothel Raid Escape 2]]>><<pass 60>><<endevent>><<npc Briar>><<person1>><</link>>
+	<br>
+<<else>>
+	"你个扯谎的人渣！"<<he>>喊着，一把把你推倒在一张椅子上。不一会，你便被拉了起来。
+	<br><br>
+	<span class="red">"你被捕了。"</span>
+	<br><br>
+	<<skulduggeryuse>>
+	<<link [[继续|Brothel Raid Arrest]]>><</link>>
+	<br>
+	<<endevent>>
+<</if>>
+
+:: Brothel Raid Escape 2
+
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+你继续躲着，听着警察把人聚集起来的声音。一会后，当一切都静下来时，你走了出来。
+<br><br>
+你漫步走过包间区，发现布莱尔正在扶起地上的椅子。<<He>>看见你，轻笑了两声。
+<br><br>
+"怎么做到的？干得好。他们还在外面，最好先等等，喝一杯再说道。都出这种事了，这杯我请。你也可以帮我整理下，会给你报酬的。你决定吧。"
+<br><br>
+<<link [[帮忙(£5, 0:30)|Brothel]]>><<pass 30>><<set $money += 500>><<tiredness 2>><<endevent>><</link>><<gtiredness>>
+<br>
+<<link [[等待离开(0:30)|Harvest Street]]>><<pass 30>><<endevent>><</link>>
+<br>
+
+:: Brothel Raid Pre Arrest
+
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+几个警察在包间区旁边发现了你。其中一名把手放在了你肩膀上。
+<br><br>
+<span class="red">"你被捕了。"</span>
+<br><br>
+<<link [[继续|Brothel Raid Arrest]]>><</link>>
+<br>
+<<endevent>>
+
+:: Brothel Raid Arrest
+
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+两名警察带着你走过妓院主厅，停在了一个侧门处。
+<<if $crime lte 900>>
+	有人打开了门。
+	<br><br>
+	"你看上去像个好人，"他说道。"没必要被卷入这事里。走吧。"
+	<<set _bribe to 0>>
+<<elseif $crime lte 2000>><<set _bribe to 800>>
+	一名警察把手放在了门把手上。
+	<br><br>
+	"我们知道你是谁，"她说道:"卷入这里面可就有大麻烦了，给我们捐£_bribe，我们就当没见过你。"
+<<elseif $crime lte 4500>><<set _bribe to Math.trunc($crime)>>
+	一名警察站在门前。
+	<br><br>
+	"被抓进去可没你好果子吃，"另一名警察说道。"如果有£_bribe的话，我们可能就会分心，把你留在这扇无人把守的门附近了。"
+<<else>>
+<br><br>
+	"哈 ！我们找你有一会了，这次你可逃不掉了。"
+	<<set _bribe to 500000>>
+<</if>>
+<br><br>
+<<if _bribe is 0>>
+	<<link [[离开|Brothel Raid Leave]]>><</link>>
+<<else>>
+	<<if _bribe lt 500000>>
+		<<if $money gte (_bribe * 100)>>
+			<<link [["贿赂(£" + _bribe + ")"|Brothel Raid Leave]]>><<set $money -= (_bribe * 100)>><</link>>
+			<br>
+		<<else>>
+			<span class="red">你需要至少£_bribe才能贿赂警察们。</span>
+			<br>
+		<</if>>
+	<</if>>
+	<<if $promiscuity gte 35>>
+		<<link [[用肉体交易|Brothel Raid Arrest Sex]]>><<set $sexstart to 1>><<generatePolice 1>><<generatePolice 2>><</link>><<promiscuous3>>
+		<br>
+	<</if>>
+
+	<<if $promiscuity lte 34 and $uncomfortable.prostituting is false>>
+		<<link [[不情愿的用肉体交易|Brothel Raid Arrest Sex]]>><<set $sexstart to 1>><<generatePolice 1>><<generatePolice 2>><<set $desperateaction to 2>><</link>><<promiscuous3>>
+		<br>
+	<</if>>
+	<<link [[接受逮捕|Brothel Raid Arrest 2]]>><</link>>
+<</if>>
+<br>
+
+:: Brothel Raid Leave
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+你走过打开的门，悄悄地穿过了几道小巷。
+<br><br>
+因为警察的活跃，你不得不等到风波平息再回到大街上。
+<br><br>
+<<link [[继续 (0:40)|Harvest Street]]>><<pass 40>><</link>>
+
+:: Brothel Raid Arrest Sex
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+
+	<<maninit>>
+	<<set $enemytrust += 100>><<promiscuity5>>
+	你挑逗地向他们微笑着。
+	<br><br>
+	"如果你们能行行好放我走，"你说，"我会让你们好人有好报的。"
+	<br><br>
+
+	<<person1>>"行吧，"<<person>>说道。
+	<br><br>
+	<<if $crime gte 4500>>
+		<<person2>>"这货很狡猾，"<<person>>说道。"先给<<phim>>拷上，免得<<pshe>>耍什么花招。"
+		<br><br>
+		"好。"
+		<<set $leftarm to "bound">><<set $rightarm to "bound">>
+	<</if>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Brothel Raid Arrest Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Brothel Raid Arrest Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Brothel Raid Arrest Sex Finish
+
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	他们穿好了自己的衣服。
+	<br><br>
+	<<tearful>>你爬了起来。
+	<br>
+	<<clotheson>>
+	<<if $crime lte 4000 or $rng % 2>>
+		<br>一个人打开了门。
+		<br><br>
+		<span class="green">"行，你走吧。"</span>
+		<br><br>
+		<<endcombat>>
+		<<link [[离开|Brothel Raid Leave]]>><</link>>
+	<<else>>
+		"谢了。"<<person>>说道。
+		<br><br>
+		"嗯，确实很爽。"<<person1>><<person>>说道。<span class="red">"不过我们还是要逮捕你。"</span>
+		<br><br>
+		<<endcombat>>
+		<<link [[继续|Brothel Raid Arrest 2]]>><</link>>
+	<</if>>
+<<elseif $enemyhealth lte 0>>
+	他们吃痛推开，你趁机推开门，逃进了小巷。
+	<br><br>
+	<<tearful>>你跑掉了。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Brothel Raid Leave]]>><</link>>
+<<else>>
+	"好吧，无所谓了，那我们接着逮捕你了。"
+	<br><br>
+	一只手拍了拍你的肩膀。"这边。"
+	<br><br>
+	<<tearful>>你缓了过来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Brothel Raid Arrest 2]]>><</link>>
+<</if>>
+
+:: Brothel Raid Arrest 2
+<<set $outside to 0>><<set $location to "town">><<effects>>
+<<set $leftarm to "bound">><<set $rightarm to "bound">>
+<<pass 45>>
+你被带到了外面，妓院的工作人员都被拷住，靠墙排成一排。一群路人正在围观。
+<br><br>
+警察们在处理嫖客们，而你被晾在一旁站了一小时。围观人群嘲笑着，吹着口哨。
+<br><br>
+<<famesex 2>><<fameprostitution 2>>
+<br><br>
+<<link [[继续|Brothel Raid Arrest 3]]>><</link>>
+
+:: Brothel Raid Arrest 3
+<<set $outside to 0>><<set $location to "town">><<effects>>
+
+一组警察押送车队气势汹汹的赶来，你和其他人一起被赶上了其中一辆。警察把你带到了警察局，关进了拘留牢房里。
+<br><br>
+"今天抓进来这么多，估计要一会了。"看守和你说着。"会轮到你的。乖乖坐好。"
+<br><br>
+
+<<link [[继续 (2:00)|Police Cell]]>><<pass 2 hour>><</link>>
+
+:: Brothel Arrest
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+<<set $brothel_thief to 0>>
+你走了出来，<span class="red">和两名守株待兔的警察撞了个正着。</span>
+布莱尔站在他们旁边。
+<br><br>
+警察把你按在墙上，死死控制住你的双手。"他们想再来劫我一边来着，"布莱尔解释着，"就为了找你。这回他们好像特别想抓你。"
+<br><br>
+你双手被按在背后，被警察拖进了妓院内。布莱尔跟着你一起走。"被劫一次可代价不菲，"布莱尔接着说着，"还不仅仅是钱的问题，还有名声。我原本还打算保你的，不过我可很注重我的名声。原本我都打算扛下来的，"
+<br><br>
+"但是，"布莱尔低吼着，"我听说你从我客户身上偷东西，损害了我的店铺名誉，让我损失顾客。"
+<br><br>
+<<npc Briar>><<person1>>
+布莱尔打开了一扇隐藏在顾客视野之外的运货用门，带着警察走了出去。一辆无标识的车在等着你。
+<br><br>
+<<endevent>>
+"有句话说得好，说的什么兔子什么草的，"布莱尔说着。警察把你按在了引擎盖上。
+<br><br>
+<<generate1>><<generate2>>
+<<link [[继续|Hospital Arrest Journey]]>><</link>>
+
+:: Brothel Exposed
+<<effects>>
+
+你溜到了妓院前。这里和其他的建筑几乎一样，毫不显眼。进去之后你就没法躲藏了，但至少里面和你一样暴露的人多的是。
+<br><br>
+
+你进入了妓院，从布莱尔的打手面前走过。他们朝你笑了笑，什么都没说道。
+<br><br>
+<<if $rng gte 81>>
+	<<generate1>><<person1>>
+	你一进入主厅，便有一名<<person>>踉踉跄跄的走过来。<<covered>>"真不错，"<<he>>说着，便擅自揉捏起了你的<<breasts>>。
+	<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+	<br><br>
+
+	<<link [[忍耐(0:03)|Brothel Exposed Endure]]>><<pass 3>><<sub 1>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+	<br>
+	<<link [[生气|Brothel Exposed Angry]]>><<def 1>><<pain 6>><<trauma -6>><</link>><<ltrauma>><<gpain>>
+	<br>
+	<<if $submissive lte 500>>
+		<<link [[吓唬|Brothel Exposed Intimidate]]>><<trauma -6>><<stress -6>><</link>><<defianttext>><<ltrauma>><<lstress>>
+		<br>
+	<<elseif $submissive gte 1500>>
+		<<link [[祈求|Brothel Exposed Plead]]>><<trauma -6>><<stress -6>><</link>><<submissivetext>><<ltrauma>><<lstress>>
+		<br>
+	<</if>>
+<<else>>
+	<<link [[继续|Brothel]]>><</link>>
+	<br>
+<</if>>
+
+:: Brothel Exposed Endure
+<<effects>>
+
+你站着不动，忍受着<<person1>><<person>>笨拙的爱抚，想等<<his>>自觉无趣走开。最终，另一名舞者吸引了<<his>>注意，<<he>>便离开了你。
+<br><br>
+
+<<link [[继续|Brothel]]>><<endevent>><</link>>
+<br>
+
+:: Brothel Exposed Angry
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"不-不要，"你说，"摸之前要问人家同不同意的。"
+<<elseif $speech_attitude is "bratty">>
+	"管好你的手，"你说，"变态。"
+<<else>>
+	"我可没让你摸我，"你说，"快停下。"
+<</if>>
+<br><br>
+
+<<person>>最后再捏了你的<<nipples>>一下，捏得你生疼，便离开了你。
+<br><br>
+
+<<link [[继续|Brothel]]>><<endevent>><</link>>
+<br>
+
+:: Brothel Exposed Intimidate
+<<effects>>
+
+"把你那脏爪子挪开，"你说，"否则我就把它们扯下来"
+<br><br>
+
+<<He>>往后退了一步。"我就玩玩嘛，"<<he>>说道。"来这里不就是为了玩吗？"
+<br><br>
+
+你们互相盯着。<<He>>先绷不住了，移开了视线，去烦别人去了。
+<br><br>
+
+<<link [[继续|Brothel]]>><<endevent>><</link>>
+<br>
+
+:: Brothel Exposed Plead
+<<effects>>
+
+"谁-谁来帮帮我，"你说，"求求了。"
+<br><br>
+
+<<person1>><<person>>收回了乱摸的手。"放松，<<girl>>，"他说道。"别哭啊。好吧好吧，对不起，行了吧？别告诉别人啊。"
+<br><br>
+
+<<He>>转头去找别人烦去了。
+<br><br>
+
+<<link [[继续|Brothel]]>><<endevent>><</link>>
+<br>
+
+:: Briar Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 30>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<audience>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[继续|Briar Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Briar Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Briar Sex Finish
+<<set $outside to 0>><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	布莱尔从舞台上滑下来。"为我们的表演者鼓掌！"<<he>>大声喊道，指着你。人们纷纷喝彩，现金撒落在舞台上。<<set _rng to random(30, 100)>>你获得了<<moneyGain _rng>>。
+	<br><br>
+	<<tearful>>你捡起钱，然后从舞台跌落下来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<elseif $enemyhealth lte 0>>
+	布莱尔从舞台上摔下来，但<<his>>成功稳住双脚，并保持了<<himself>>的尊严。人群为这一壮观的场面欢呼，舞台上洒满了钞票。<<set _rng to random(30, 100)>>你获得了<<moneyGain _rng>>。
+	<br><br>
+	<<tearful>>你捡起钱，然后跌落到地板上。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<else>>
+	布莱尔走下了舞台，走向另一个舞台，随着音乐的节奏摇摆着身体。
+	<br><br>
+	<<tearful>>你倒在地上。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+
+<<link [[继续|Brothel]]>><</link>>
+<br>
+
+:: Brothel Distraction
+<<effects>>
+<<if $pubfame.briar.distract is 1>>
+	<<loadNPC 0 "pubfame_distract">><<person1>>
+
+	你走近那个<<person>>.<<He>>假装没看见你。
+	<br><br>
+
+	<<link [[请求帮助|Brothel Distraction 2]]>><</link>><<englishdifficulty 400 1000>>
+	<br>
+	<<link [[离开|Brothel Dressing Room]]>><<endevent>><</link>>
+<<else>>
+	<<set $pubfame.briar.distract to 1>>
+	<<generateRole 0 0 "舞者">><<saveNPC 0 "pubfame_distract">><<person1>>
+
+	你接近<<personsimple "normal">>，一个<<person>>。<<He>>在你接近时皱眉。"不要试图改变我的想法。我受够了这个破地方，受够了这种生活方式。离我远点。"
+	<br><br>
+
+	<<He>>转身看向<<his>>的手提箱。"我要离开这个城市。找个布莱尔找不到我的地方。我很想报复<<nnpc_him "Briar">>让我在这里所经历的一切，但我想不出我能做的任何事情... 对于像<<nnpc_him "Briar">>这样的人来说，我做什么都不够。"
+	<br><br>
+
+	<span class="blue">你突然有了一个想法。</span><<He>>可能是分散布莱尔注意力的好方法，而且<<he>>说不定能被说服。
+	<br><br>
+
+	<<link [[请求帮助|Brothel Distraction 2]]>><</link>><<englishdifficulty 400 1000>>
+	<br>
+	<<link [[离开|Brothel Dressing Room]]>><<endevent>><</link>>
+<</if>>
+
+:: Brothel Distraction 2
+<<effects>>
+你让那个<<person>>帮忙分散布莱尔的注意力。
+<<if $englishSuccess>>
+	<<set $pubfame.briar.distract to 2>>
+	<span class="green">你设法改变<<his>>的想法</span>，你告诉<<him>>，<<he>>能在布莱尔发现不对之前脱身。"我喜欢你思考的方式，"<<person>>承认。"那么，计划是什么?"
+	<br><br>
+
+	<<His>>要做的事情非常简单。<<He>>收拾好<<his>>的手提箱，然后向你点点头。"不管你干的是什么蠢事，你最好能成功。祝你好运。"<span class="green">现在你有了一个有效的分散注意力的方法。</span>
+	<br><br>
+
+	<<link [[继续|Brothel Dressing Room]]>><<endevent>><</link>>
+<<else>>
+	<span class="red">你太强调这对布莱尔的影响了。</span><<he>>嘲笑道:"我绝对不会参与这么大的事情，你自己想找死别带上我！"
+	<br><br>
+
+	<<link [[继续|Brothel Dressing Room]]>><<endevent>><</link>>
+<</if>>
+
+:: Briar Hack
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你也许想去楼下看看，"你说道。"我听说警察要来一次突击搜查。"
+<<elseif $submissive gte 850>>
+	"抬头，"你说着看向楼梯的方向。"警察随时都可能到。欢迎你提前提醒。"
+<<else>>
+	"我听到一些警察说他们要突袭这里，"你说道。"你觉得我们该怎么办?"
+<</if>>
+<br><br>
+
+布莱尔咯咯地笑着，从沙发上站了起来。"别担心你的小脑袋。
+<<if $pubfame.briar.distract is 2>>
+	<<loadNPC 1 "pubfame_distract">><<clearNPC "pubfame_distract">>
+	"我要——"
+	<br><br>
+
+	你听到了楼下传来的玻璃破碎的声音。"警察!"你听到<<person2>><<person>>的呼喊。"所有人都趴下，马上!"
+	<br><br>
+
+	布莱尔愁眉苦脸。没有再看你一眼，<<person1>><<he>>走向楼梯。
+<<else>>
+	我来处理这件事。”<<He>>悠闲地走向楼梯。
+<</if>>
+<<His>>的笔记本电脑一直开着。
+<br><br>
+
+在确定布莱尔已经走了的时候，你马上冲到笔记本电脑前。你把u盘插上USB接口。你看不懂屏幕上的内容，但你假设它在做什么。
+<br><br>
+
+<<link [[继续|Briar Hack 2]]>><<pass 1>><</link>>
+
+:: Briar Hack 2
+<<effects>>
+
+<<if $pubfame.briar.distract is 2>>
+	过了一段时间后，你拔出u盘。不管它在做什么，你都希望它完成了。
+	<br><br>
+
+	<<if $pubfame.briar.escape is 2>>
+		你走到窗前，爬上梯子。你关上窗户，爬下来，把梯子从楼里移开。布莱尔不会知道你做了什么。
+		<br><br>
+
+		<<person2>><<person>>从附近的一辆车里向你挥手，然后把车开出城外。
+		<br><br>
+
+		<<pubfameComplete "briar">>
+
+		<<link [[继续|Harvest Street]]>><<endevent>><</link>>
+	<<elseif $cat gte 6>>
+		<<set $pubfame.detail to "briarWindow">>
+		你走到窗边翻了出去，抓住把手将它缓缓合上，然后轻盈地落到地上。布莱尔不会知道你做了什么。
+		<br><br>
+
+		<<person2>><<person>>从附近的一辆车里向你挥手，然后把车开出城外。
+		<br><br>
+
+		<<pubfameComplete "briar">>
+
+		<<link [[继续|Harvest Street]]>><<endevent>><</link>>
+	<<else>>
+		<<set $briarPunishment to 3>>
+		你走下楼梯，出现在妓院的主厅里。舞者们正慢慢回到舞台上，顾客们在酒吧里喋喋不休。你注意到其中一扇窗户正在更换。
+		<br><br>
+
+		布莱尔站在窗边，注意到了你。你在<<he>>问任何问题之前就跑出去了。
+		<<npcincr Briar love -3>><<lllove>>
+		<br><br>
+
+		<<person2>><<person>>从附近的一辆车里向你挥手，然后把车开出城外。
+		<br><br>
+
+		<<pubfameComplete "briar" "punish">>
+
+		<<link [[继续|Harvest Street]]>><<endevent>><</link>>
+	<</if>>
+<<else>>
+	<span class="red">"我就知道你在做这个。"</span>布莱尔漫步回到办公室，保镖跟在<<him>>身后站成一排。你数不清有多少。"我有一种感觉，没有警察突袭。不过，我不想假设。它把你和我都变成了傻瓜。"<<He>>喝了一口<<his>>的酒。"当然，在我看来，这里唯一的混蛋就是你。"
+	<<npcincr Briar love -3>><<lllove>>
+	<br><br>
+
+	你迅速从笔记本电脑上拔出U盘，布莱尔笑了。"我一点也不在乎你刚才做了什么。但让我恼火的是你竟然以为自己能逃脱惩罚。这可不好。"
+	<br><br>
+
+	<<if $pubfame.briar.escape is 2>>
+		<<set $briarPunishment to 5>>
+		保镖向你逼近，你跑向窗口。"有好几层楼高呢，"<<he>>笑着说道。"尽管去吧，直接跳下去，摔得四分五裂说不定比我原本的想法更好。"
+		<br><br>
+
+		你推开窗户，赶紧爬下梯子。布莱尔喘着气跑向窗户，但你已经到达了底部，而且在<<he>>或任何保镖爬下来之前拆掉了梯子。"你会遭报应的，"<<he>>在关上窗户之前朝下喊道。
+		<br><br>
+
+		<<pubfameComplete "briar" "punish">>
+
+		<<link [[继续|Harvest Street]]>><<endevent>><</link>>
+	<<elseif $cat gte 6>>
+		<<set $briarPunishment to 5>><<set $pubfame.detail to "briarWindow">>
+		保镖向你逼近，你跑向窗口。"有好几层楼高呢，"<<he>>笑着说道。"尽管去吧，直接跳下去，摔得四分五裂说不定比我原本的想法更好。"
+		<br><br>
+
+		你推开窗户敏捷地跳了出去。你双脚着地，几乎没有发出声音。你抬起头来看向窗口，布莱尔目瞪口呆，表情很快变得扭曲。"你会遭报应的！"<<he>>在关上窗户之前吼道。
+		<br><br>
+
+		<<pubfameComplete "briar" "punish">>
+
+		<<link [[继续|Harvest Street]]>><<endevent>><</link>>
+	<<else>>
+		保镖向你逼近，你跑向窗口。"有好几层楼高呢，"<<he>>笑着说道。"尽管去吧，直接跳下去，摔得四分五裂说不定比我原本的想法更好。"
+		<<if $harpy gte 6 or $angel gte 6 or $demon gte 6 or $fallenangel gte 2>>
+			地面很远，但对于你的翅膀来说还是太接近了，无法减缓下降速度，让你安全着陆。
+		<</if>>
+		<br><br>
+
+		你试图反击抵抗那些保镖，但他们不断地涌来。最终，其中一人得手了，将你打倒在地。其余的人一拥而上。
+		<<pain 40>><<trauma 6>><<ggpain>><<gtrauma>>
+		<br><br>
+
+		<<pubfameComplete "briar" "failure">>
+
+		<<link [[继续|Briar Hack Fail]]>><<pass 10>><</link>>
+	<</if>>
+<</if>>
+
+:: Briar Hack Fail
+<<set $outside to 1>><<set $location to "alley">><<effects>><<set $bus to "industrial">>
+
+布莱尔对着一个保镖的耳朵低语，<<he>>点了点头。你很快被蒙上眼睛，被带下楼，穿过走廊。
+<br><br>
+
+你感觉到<<if $weather is "overcast" or $weather is "clear">>风<<else>><<print $weather.replace("rain","雨").replace("snow","雪")>><</if>>吹拂在你的脸上。你在户外。很快你被人猛地塞进了一辆车里，几秒钟后车子就开动了。
+<br><br>
+
+大约十分钟的沉默之后，布莱尔开口了。你没有意识到<<he>>竟然也在车里。"当我让某人住在我家里时，这意味着我在信任他。你知道我的意思吗？这是一个心照不宣的协议，我提供给你住所和生活必需品，而你不会给我惹麻烦。所以当这份信任被破坏时，我感到非常痛心。"
+<br><br>
+
+<<He>>深吸了一口气。"我的意思是，你伤害了我。这很难让我释怀。我不会原谅你……但是等他们处理完你之后，我会的。"
+<br><br>
+
+车子停下来，布莱尔把你拉了出来。"我不喜欢来这个地方。它对我的口味来说太……不盈利了。但是对于像这样的情况，它的价值是远高于此的。"另一双手抓住你，把你带进门口，解下你的眼罩。你听到并看到车子开走了，门在后面关上。
+<br><br>
+
+<<link [[继续|Underground Intro]]>><<generate2>><<generate3>><</link>>
+
+:: Brothel VM income
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+你问布莱尔<<he>>是否已经检查了你的自动售货机的库存，并在本周收取了钱。
+<br><br>
+<<if $brothelVending.weeksEmpty gte 4>>
+	布莱尔嗤之以鼻。"你的自动售货机已经空了整整$brothelVending.weeksEmpty周了。我告诉过你，如果它连续三周都是空的，我就会把它扔掉。你已经没有自动售货机了。"
+	<br><br>
+	你试图解释为什么你这么久都没能给机器补货，但布莱尔打断了你。
+	<br><br>
+	"我不关心你的生活，时间，或者你的钱。做生意，既需要时间，也需要金钱，有时候还需要点运气。如果你没有时间每周购买产品，你就多花钱来给机器补充大量的产品。如果你没有足够的钱给机器完全补货，你就多花点时间，每周给机器补一点货。"布莱尔从抽屉里拿出一叠钞票。"但你很幸运。我的一个朋友需要一台自动售货机放在学校厕所，因为有人把那里的一台弄坏了。我把你的售货机卖给了<<nnpc_him Leighton>>，而没有把它扔掉。这是1000英镑，给你。现在，如果你愿意的话，<span class="gold">你可以买一台新的自动售货机，把它摆在更衣室里</span>，但这次一定要让它维持有货。规则和以前一样。"
+	<br><br>
+	<<set $money += 100000>>
+	<<set $brothelVending.status to "sold">>
+	<<if $brothelVending.condomsSold + $brothelVending.lubeSold>>
+		布莱尔停顿了下，"在它卖光之后，最后一次的销售额你还没有收集。它还是卖了些钱的。
+	<</if>>
+<<else>>
+	"是的，就在5分钟前，销售了
+<</if>>
+<<if $brothelVending.condomsSold + $brothelVending.lubeSold>>
+	<<if $brothelVending.condomsSold>>
+		$brothelVending.condomsSold个避孕套，大约<<formatmoney `$brothelVending.condomsSold * 6000`>>_printmoney的成本，也就是说净赚<<formatmoney `$brothelVending.condomsSold * 2000`>>_printmoney<<if !$brothelVending.lubeSold>>。<</if>>
+	<</if>>
+	<<print $brothelVending.condomsSold && $brothelVending.lubeSold ? "和" : "">>
+	<<if $brothelVending.lubeSold>>
+		润滑液$brothelVending.lubeSold瓶，大约<<formatmoney `$brothelVending.lubeSold * 2000`>>_printmoney的成本，净赚<<formatmoney `$brothelVending.lubeSold * 1000`>>_printmoney。
+	<</if>>
+	<<set _BVMBenefits to $brothelVending.condomsSold *2000 + $brothelVending.lubeSold * 1000>>
+	而利润呢，我要拿走£50<<if $brothelVending.weeksRent gt 1>>，<<formatmoney `$brothelVending.weeksRent * 5000`>>_printmoney，<<else>>作为每周的租金，<</if>>
+	<<set _BVMBenefits to Math.max(0, _BVMBenefits - $brothelVending.weeksRent * 5000)>>
+	<<if _BVMBenefits>>
+		净利润为<<formatmoney _BVMBenefits>>_printmoney. 其中的40%利润, 归你所有,
+		<<set _BVMBenefits *= .4>>
+		总数是<<printmoney _BVMBenefits>>。"
+		<<famebusiness 2>>
+		<<set $money += _BVMBenefits>>
+	<<else>>
+		所以都是为了我，没有什么是为了你。"
+	<</if>>
+	<<set $money += $brothelVending.condomsSold * 6000 + $brothelVending.lubeSold * 2000>>
+	<<set $brothelVending.condomsToRefill to 200 - $brothelVending.condoms>>
+	<<set $brothelVending.condomsSold to 0>>
+	<<set $brothelVending.lubeToRefill to 200 - $brothelVending.lube>>
+	<<set $brothelVending.lubeSold to 0>>
+	<<set $brothelVending.weeksRent to 0>>
+	<<set $weekly.brothelVMCollect to true>>
+<</if>>
+<br><br>
+<<link [[继续|"Briar's Office"]]>><</link>>
+
+:: Brothel VM ask
+<<effects>>
+你告诉布莱尔你关于在妓院洗手间设立自动售货机的想法，解释说这将是一个方便工人获得他们工作所需的方法。
+
+布莱尔的笑容介于厌恶和戏谑之间. "我已经告诉过你, 我不是任何人的<<mummy>>。如果我的任何妓女需要<<if $condomLvl gte 1>>避孕套<</if>><<if $condomLvl gte 1 and $adultshopunlocked>>或<</if>><<if $adultshopunlocked>>润滑油<</if>>，他们应该知道在哪里能弄到。那不在我的工作范畴之内，而是他们的问题。所以，我拒绝，我不会为你的小冒险提供帮助。"
+<br><br>
+<<link [[坚持(0:10)|Brothel VM insist]]>><<pass 10>><</link>>
+<br>
+<<link [[走开|Brothel VM desist]]>><<pass 1>><</link>>
+
+:: Brothel VM insist
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+"这不一定是你的钱，"你开始说。"一切让我来处理。我能搞到机器，也有办法拿到货，我们可以分享利润。你不需要担心任何事情。"
+
+布莱尔他用犀利的目光注视着你，咧着嘴大笑着,<<his>>牙齿都漏了出来."我喜欢你的商业头脑。我的条件是:你可以买下这台机器，你可以储存它。你会把它放在更衣室里,我六你四.加上<span class="blue">50英镑</span>每周的房间<span class="blue">租金。如果不能连续三周保持库存，你的小商业计划就会和垃圾一起被扔掉。</span>这是我唯一的报价。"
+<br><br>
+<<link [[接受|Brothel VM Accept]]>><<set $brothelVending.status to "asked">><</link>>
+<br>
+<<link [[拒绝|Brothel VM decline]]>><</link>>
+<br>
+
+:: Brothel VM desist
+<<set $outside to 0>><<set $location to "brothel">><<effects>>
+你转身准备离开布莱尔的办公室，不过在你我到门把手之前，<<he>>叫住了你。
+<br><br>
+"听着，如果你想要这么干，我不会阻止你。不过得按照我的条件来。你可以买你的机器，你可以放满它，也可以把它放在更衣室。收益我们六四分，再加上每星期<span class="blue">£50</span>的场地费。<span class="blue">不过如果你没有连续三周保持库存，你的小小商业计划就会被跟垃圾一起扔出去。</span> 这是你有且仅有一次的机会。"
+<br><br>
+<<link [[接受|Brothel VM Accept]]>><<set $brothelVending.status to "asked">><</link>>
+<br>
+<<link [[拒绝|Brothel VM decline]]>><</link>>
+<br>
+
+:: Brothel VM Accept
+<<effects>>
+你接受了布莱尔的提案，告诉<<him>>你会负责买贩卖机以及保持好它的库存。
+<br><br>
+<<link [[继续|"Briar's Office"]]>><</link>>
+
+:: Brothel VM decline
+<<effects>>
+你告诉布莱尔你对<<his>>提案不感兴趣。
+<br><br>
+"随你便吧，我不会该改主意。”<<he>>戳饮着红酒说道。
+<br><br>
+<<link [[继续|"Briar's Office"]]>><</link>>
+
+:: Brothel Vending Machine Buy
+<<effects>>
+<<if $phase is 1>>
+	你把钱放进了售卖机，然后你取走了一盒从出货口滑出来的3袋装避孕套。
+	<br><br>
+	<<set $money -= 8000>>
+	<<gcondoms 3>>
+	<<set $brothelVending.condoms -=1>>
+	<<set $brothelVending.condomsSold +=1>>
+	<<link [[返回|Brothel Dressing Room]]>><<endevent>><</link>>
+<<else>>
+	你把钱放入了售卖机，然后把从出货口滑出来的润滑液取走了。
+	<br><br>
+	<<set $money -= 3000>>
+	<<run window.sexShopOnBuyClick(8, false, false, false)>>
+	<<set $brothelVending.lube -=1>>
+	<<set $brothelVending.lubeSold +=1>>
+	<<link [[返回|Brothel Dressing Room]]>><<endevent>><</link>>
+<</if>>
+
+:: Brothel Escort Job Intro
+<<effects>>
+
+<<if $phase is 1>>
+	你接受了邀请坐在了布莱尔隔壁。<<He>>把手放在了你的大腿上，满意地对你笑着。
+	<br>
+
+	"当然了，这并不是平常的工作，”<<he>>继续说道，“付很多钱的顾客同样也有很多的要求。我想知道你准备好了没有？"
+	<br><br>
+
+<<else>>
+	"随你便，”<<he>>说道，“我提供的这份工作利润可以分成丰厚的。记住那些顾客可是花了大价钱的，我不会容忍任何的不服从。"
+	<br><br>
+
+<</if>>
+
+<<He>>打开了一瓶红酒。
+<br><br>
+
+"什么时候想发财就来跟我说一声。”<<he>>一边把红酒倒入酒杯一边说道。
+<br><br>
+
+<<link [[继续|Brothel]]>><<endevent>><</link>>
+
+:: Brothel Escort Job Accept
+<<effects>>
+
+"我就知道你会在这里，”布莱尔说道，“这些是我目前为止收集到的。”<<He>>在桌子上筛选了一些散乱的文件。
+<br><br>
+
+"这个住在<span class="gold">多瑙河街</span>的客人想要个人参加派对。”<<he>>说道，“你负责当派对里的惊喜玩具。不需要什么特别的技能，看起来他们觉得你的身体比什么都好使。他们是出了名的粗鲁，可能会有点难熬。你会被支付<<printmoney 200000>>。"
+<br><br>
+
+<<link [[接受|Brothel Escort Job Accept 2]]>><</link>>
+<br>
+<<link [[离开|Brothel]]>><<endevent>><</link>>
+
+:: Brothel Escort Job Accept 2
+<<effects>><<set $weekly.escortjob to 1>>
+
+<<set $brothel_escortjob to {}>>
+
+<<script>>
+	const date = new DateTime(Time.date);
+	date.addDays(random(1,7));
+	date.addHours(random(0,23));
+	V.brothel_escortjob.date = date.timeStamp;
+<</script>>
+
+<<set _date to new DateTime($brothel_escortjob.date)>>
+
+"我会安排的。一个司机会在<span class="gold">_date.weekDayName</span><span class="gold"><<ampm _date.hour>></span>到我的单位前接你，"布莱尔说。"你最好准时出现，记住：我希望你能表现得最好。"
+<br><br>
+
+<<link [[继续|Brothel]]>><<endevent>><<set $brothel_escortjob.accept to true>><</link>>
+
+:: Brothel Escort Job Ride
+<<effects>>
+
+一次平淡的散步将你带到了多瑙河街附近一栋漂亮的房栋旁。
+<br><br>
+
+豪华轿车停在前面。你注意到了节日装饰。房子前面装饰着五颜六色的气球和彩带。
+<br><br>
+
+你来到前门，按响了门铃。
+<br><br>
+
+<<link [[继续|Brothel Escort Job Ride 2]]>><</link>>
+
+:: Brothel Escort Job Ride 2
+<<effects>>
+<<generate1>><<generate2>>
+
+你可以制造响亮的音乐与喧闹的派对。听起来会很好玩。
+<br><br>
+
+<<person1>><<person>>打开门，微笑着迎接你，"请进。"
+
+当房子里的其他地方在举办派对的时候，你被领进一间僻静的房间里，<<person2>><<person>>已经在里面等着了。
+<br><br>
+
+"我们的宝贝正在庆祝一项伟大的成就，"<<person1>><<person>>着解释道。"我们想让你招待一下<<him>>和<<his>>的朋友。"
+<br><br>
+
+你注意到地板上的绳索与锁链，令你感到有些忧虑。
+<br><br>
+
+"请脱衣服吧。我们会替你保管好衣服，直到一切结束的。"<<person2>><<person>>插话。
+<br><br>
+
+<<if $exhibitionism gte 75>>
+	<<link [[脱衣|Brothel Escort Job Undress]]>><<set $phase to 1>><</link>><<exhibitionist5>>
+<<else>>
+	<<link [[不情愿地脱衣|Brothel Escort Job Undress]]>><<set $phase to 1>><</link>><<ggstress>><<ggtrauma>><<stress 12>><<trauma 4>>
+<</if>>
+<br>
+<<link [[试着逃跑|Brothel Escort Job Escape]]>><</link>><<athleticsdifficulty 1 600>>
+
+:: Brothel Escort Job Undress
+<<effects>><<strip>>
+
+<<set $leftarm to "bound">><<set $rightarm to "bound">><<shackle_feet>>
+
+<<if $phase is 1>>
+	<<person1>><<person>>和<<person2>><<person>>在你脱下衣服的时候向你投以下流的眼神。他们将你推到了房间的中央。
+	<br><br>
+<</if>>
+
+"跪下来。"<<person1>><<person>>命令道。
+<br><br>
+
+他们开始用绳索缠绕你的身体，将你的双臂绑在背上，并将绳索像龟甲缚一样缠绕在您的胸前。他们还在您的腿部和颈部绑上铁链，小心地掰开您的双腿。
+<br><br>
+
+没过多久，你就被捆绑得动弹不得。他们挂上铁链，用绞盘将你抬到腰部高度。你的私处完全暴露出来
+<br><br>
+
+"太棒了，" 那<<person1>><<person>>满面笑容地赞叹道。 "我相信你一定会成为派对上的最耀眼的星星!"
+<br><br>
+
+<<if $phase is 1>>
+	那<<person1>><<person>>给你盖上床单，而<<person2>>离开房间， 大概是去接参加聚会的客人。
+	<br><br>
+
+<<else>>
+	那<<person2>><<person>>在<<person1>><<person>>给你盖上床单之前又给了你一巴掌。<<gpain>><<violence 3>>
+	<br><br>
+
+	最后那<<person1>><<person>>离开去接参加聚会的客人。
+	<br><br>
+
+<</if>>
+
+<<link [[继续|Brothel Escort Job]]>><</link>>
+
+:: Brothel Escort Job
+<<effects>>
+
+你被捆绑并悬挂起来，无法移动，也没法看见四周。走廊里传来欢声笑语，越来越近。参加聚会的客人进来，聚集在你周围。谈话逐渐平静下来，空气中弥漫着一种悬疑感。
+<br><br>
+
+"太棒了!" 那<<person1>><<person>>欢呼着<<he>>拉开你身上的被单， 将你展现在全场观众面前。 有些人目瞪口呆， 张大嘴巴， 有些人则欢呼雀跃。<<garousal>><<gstress>><<arousal 600>><<stress 6>>
+<br><br>
+
+<<link [[忍受|Brothel Escort Job 2]]>><<set $phase to 1>><<endevent "phaseless">><<stress 6>><<trauma 1>><</link>><<gstress>><<gtrauma>>
+<br>
+
+<<if $submissive gte 1150>>
+    <<link [[表现出顺服的模样|Brothel Escort Job 2]]>><<set $phase to 2>><<set $brothel_escortjob.sub to 1>><<endevent "phaseless">><</link>><<submissivetext>>
+<<elseif $submissive lte 850>>
+    <<link [[表现出反叛的模样|Brothel Escort Job 2]]>><<set $phase to 3>><<endevent "phaseless">><</link>><<defianttext>>
+<</if>>
+<br>
+
+<<if $promiscuity gte 55>>
+	<<link [[表现出渴求的模样|Brothel Escort Job 2]]>><<set $phase to 4>><<endevent "phaseless">><</link>><<promiscuous4>>
+<</if>>
+
+:: Brothel Escort Job 2
+<<effects>><<generate1>>
+
+<<person1>><<person>>走上前来，将<<his>>的手抚过你暴露的肌肤。
+
+<<if $phase is 1>>
+	你咬紧牙关，试着表现出一副勇敢的样子。
+	<br><br>
+
+	那<<person1>><<person>>看着你，<<his>>眼中充满了欲望。<<He>>抽打你的<<bottom>>。<<gpain>><<violence 3>>
+	<br><br>
+
+	"我会很享受的，"<<he>>说着然后露出<<his>><<if $NPCList[0].vagina is "none">>$NPCList[0].penisdesc<<else>>vagina<</if>>。
+	<br><br>
+
+	<<link [[继续|Brothel Escort Job Sex]]>><<set $molestationstart to 1>><</link>>
+
+<<elseif $phase is 2>>
+	"请...请尽情享受您的惊喜，"你假装尴尬地嘟囔道。
+	<br><br>
+
+	那个<<person1>><<person>>给了你一个满意的微笑。<<He>>按摩着你的<<bottom>>。<<garousal>><<arousal 600>>
+	<br><br>
+
+	"我一直想要一个像你这样的玩具，"<<he>>说，然后透露出<<his>><<if $NPCList[0].vagina is "none">>$NPCList[0].penisdesc<<else>>小穴<</if>>。
+	<br><br>
+
+	<<link [[继续|Brothel Escort Job Sex]]>><<set $sexstart to 1>><</link>>
+
+<<elseif $phase is 3>>
+	不要碰我，你这个变态，"你啐了一口。
+	<br><br>
+
+	那个<<person1>><<person>>退缩了，不确定，但人群为<<him>>欢呼。
+	<br><br>
+
+	"对于一个无助的小玩具来说，我们很勇敢，不是吗？"<<he>>说，试图掩盖<<his>>的不安感。<<He>>展示<<his>><<if $NPCList[0].vagina is "none">>$NPCList[0].penisdesc<<else>>小穴<</if>>。
+	<br><br>
+
+	<<link [[继续|Brothel Escort Job Sex]]>><<set $molestationstart to 1>><</link>>
+
+<<else>>
+	"就像这样，"你呻吟着，尽可能地配合在<<his>>的触摸上。"我已经等不及了。
+	<br><br>
+
+	"这只有我们俩"<<person1>><<person>>说，用手指在你的身体上描画。<<He>>展示<<his>><<if $NPCList[0].vagina is "none">>$NPCList[0].penisdesc<<else>>小穴<</if>>。
+	<br><br>
+
+	<<link [[继续|Brothel Escort Job Sex]]>><<set $sexstart to 1>><</link>>
+<</if>>
+
+<<unset $phase>>
+
+:: Brothel Escort Job Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>>
+	<<set $position to "doggy">>
+
+<<elseif $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $position to "doggy">>
+
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Brothel Escort Job Sex End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Brothel Escort Job Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Brothel Escort Job Sex End
+<<effects>>
+
+<<if $phase isnot 5>>
+	<<if $enemyarousal gte $enemyarousalmax>>
+		<<ejaculation>>
+		满意地<<person1>><<person>>在你的屁股上打了最后一巴掌。<<gpain>><<violence 3>>。
+		<br><br>
+
+		"这很有趣，"<<he>>说，然后转向客人们。"来吧，伙计们。这是个聚会,每个人都应该有一些乐趣！"
+		<br><br>
+
+	<<else>>
+		那个<<person1>><<person>>踉踉跄跄地退后，畏畏缩缩。
+		<br><br>
+
+		"我们要看看你能逞强多久，"<<he>>低声说，然后转向客人们。"<<pShes>>是个好斗的人。让我们把这变成一个游戏。这里有谁认为他们能打败<<pher>>？
+		<br><br>
+
+	<</if>>
+
+	群众欢呼起来。又有两个人站出来和你一起玩了。
+	<br><br>
+
+	<<link [[继续|Brothel Escort Job Sex]]>><<set $molestationstart to 1>><<set $phase to 5>><<generate2>><<generate3>><</link>>
+
+<<else>>
+	<<ejaculation>>
+
+	<<link [[继续|Brothel Escort Job End]]>><</link>>
+
+<</if>>
+
+:: Brothel Escort Job End
+<<effects>>
+
+你已经到了力竭的时候了。幸运的是，客人们似乎相当满意。
+一些人离开房间，人群慢慢散去。
+<br><br>
+
+那个<<person1>><<person>>抓住你的下巴，抬起你的头，好好看了看你的脸。
+<br><br>
+
+<<if $submissive gte 1150>>
+    <<link [[顺从|Brothel Escort Job End 2]]>><<set $phase to 1>><<set $brothel_escortjob.sub += 1>><</link>><<submissivetext>>
+<<elseif $submissive lte 850>>
+    <<link [[看向他们的双眼|Brothel Escort Job End 2]]>><<set $phase to 2>><</link>><<defianttext>>
+<</if>>
+<br>
+
+<<link [[移开视线|Brothel Escort Job End 2]]>><<set $phase to 3>><</link>>
+
+:: Brothel Escort Job End 2
+<<effects>>
+
+<<if $phase is 1>>
+	你媚眼如丝,迎接<<his>>的目光。"请给我更多...... "你说。<<He>>显然对你的顺从行为感到性奋。
+	<br><br>
+
+	"有一天我会来买下你！"<<he>>感叹道。
+	<br><Br>
+
+	那个<<person1>><<person>>把手放在<<his>>的肩膀上，引导<<him>>离开房间。
+	<br><br>
+
+<<elseif $phase is 2>>
+	你与<<his>>视线正面交锋。你的决心似乎让<<him>>感到不安
+	<br><br>
+
+	"我得到很多乐趣，"<<he>>说，避开你的目光。"谢谢你。"<<llstress>><<stress - 12>>。
+	<br><br>
+
+	<<He>>转身离开房间。
+	<br><br>
+
+<<else>>
+	羞愧的你移开了眼睛。<<His>>目光实在太有侵略性了。突然，<<he>>在你脸上打了一巴掌。<<gpain>><<violence 3>>
+	<br><br>
+
+	你是一个美妙的礼物。"<<he>>以嘲弄的口吻说。"我想再来一轮，但你很臭。我不知道要花多长时间才能把这股臭味洗掉。
+	<br><br>
+
+	<<He>>转身，最后离开房间。
+	<br><br>
+
+<</if>>
+
+<<link [[继续|Brothel Escort Job End 3]]>><</link>>
+
+:: Brothel Escort Job End 3
+<<effects>><<generate4>>
+
+最后你被放了下来，被<<person4>><<person>>解开了束缚。
+你站了起来，但仍然摇摇晃晃。你的四肢需要一段时间才能恢复正常感觉。
+<br><br>
+
+<<if $brothel_escortjob.sub is 2>>
+	"你让我挺惊喜的，"<<person4>><<person>>说道。
+	<br><br>
+
+	在你被<<person4>><<person>>领到门口之前，你正在穿衣服
+	<br><br>
+
+	"你最好离<<if $NPCList[0].pronoun is "f">>女孩<<else>>男孩<</if>>远一点。我们不希望他因为一个娼妓而失足。"<<he>>用着居高临下的语气说着，<<He>>扔给你<<moneyGain 2000>>。
+	<br><br>
+
+<<else>>
+	"太棒了，"<<person2>>欢笑道，"你真的让这个派对大获成功。"
+	<br><br>
+
+	在被<<person2>>领进门前，你着装了一番。
+	<br><br>
+
+	"我们会在以后再问你的。”<<he>>微笑着承诺道，地给了你<<moneyGain 2000>>块。
+	<br><br>
+
+<</if>>
+
+终于结束了，你松了口气，离开了房子。
+<br><br>
+
+<<link [[继续|Brothel Escort Job End 4]]>><<unbind>><<remove_shackle>><<clotheson>><</link>>
+
+:: Brothel Escort Job End 4
+<<effects>>
+
+当你真沿着车道走着的时候，一个<<person3>><<person>>拦住了你。
+<br><br>
+
+"等等，”<<he>>气喘吁吁地说道。“你的表现实在是太棒了，来，请收下这些！"
+<br><br>
+
+<<he>>微笑着递给了你额外的<<moneyGain 200>>。
+<br><br>
+
+<<link [[接吻|Brothel Escort Job End 5]]>><<set $phase to 1>><</link>>
+<br>
+<<link [[拿钱|Brothel Escort Job End 5]]>><<set $phase to 2>><</link>>
+<br>
+<<link [[拒绝拿钱|Brothel Escort Job End 5]]>><<set $phase to 3>><</link>>
+
+:: Brothel Escort Job End 5
+<<effects>>
+
+<<if $phase is 1>>
+	作为离别礼物，你在拿钱之前亲了<<his>>的脸颊一下。<<He>>脸红了。
+	<br><br>
+
+	"谢啦，”你说道。
+	<br><br>
+
+	<<him>>站着那里，凝视着你。
+	<br><br>
+
+<<elseif $phase is 2>>
+	"谢谢。”你说道，从<<his>>手里收下了钱。
+	<br><br>
+
+	<<He>>期待着看着你，不过你就这样离开了。
+	<br><br>
+
+<<else>>
+	"我已经收到过报酬了，”你惊讶地说道。
+	<br><br>
+
+	"抱歉，我只是想给你一下额外的报酬，”<<he>>结结巴巴地说道。<<He>>看着<<He>>手里的钱，随后摇着头走了回去。
+	<br><br>
+
+	你没管<<him>>，继续离开了。
+	<br><br>
+
+	<<set $money -= 200>>
+
+<</if>>
+
+<<link [[继续|Danube Street]]>><<endevent>><<endcombat>><<unset $brothel_escortjob>><<stress -200>><<pass 60>><</link>>
+
+:: Brothel Escort Job Escape
+<<effects>>
+
+<<if $athleticsSuccess>>
+	整个情况都让你感到害怕。在没有警告的情况下，你转身推向<<person1>><<person>>和<<person2>><<person>>。
+	<br><br>
+
+	<span class="green">令人惊讶的是他们居然没有成功阻止你。</span> 在你竭尽全力地跑出庄园之后，你的心脏砰砰直跳着。
+	<br><br>
+
+	当你停下的时候，你发现自己已经来到了住宅区。
+	你可能暂时地逃了出来，但是你一想到布莱尔会对此有什么反应，你就不寒而栗。<<ggstress>><<stress 12>>
+	<br><br>
+
+	<<link [[继续|Domus Street]]>><<endevent>><<run delete $brothel_escortjob.accept>><<set $brothel_escortjob.escape to true>><</link>>
+
+<<else>>
+	你转身试图推开<<person1>><<person>>和<<person2>><<person>>，<span class = "red">然而他们一动不动，挡住了你逃离的线路</span>。
+	<br><br>
+
+	<<link [[继续|Brothel Escort Job Escape Fight]]>><<set $molestationstart to 1>><</link>>
+
+<</if>>
+
+:: Brothel Escort Job Escape Fight
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Brothel Escort Job Escape Fight End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Brothel Escort Job Escape Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Brothel Escort Job Escape Fight End
+<<effects>>
+
+<<if $enemyhealth lte 0 or $enemyarousal gte $enemyarousalmax>>
+
+	<<if $enemyarousal gte $enemyarousalmax>>
+		<<ejaculate>>
+	<</if>>
+
+	你可以产生把这两人推开一下，给你一点疯狂跑向出口的空间。
+	但你以最快的速度跑出庄园时，你的心脏砰砰直跳着。
+	<br><br>
+
+	当你停下的时候，你发现自己已经来到了住宅区。
+	你可能暂时地逃了出来，但是你一想到布莱尔会对此有什么反应，你就不寒而栗。<<ggstress>><<stress 12>>
+	<br><br>
+
+	<<link [[继续|Domus Street]]>><<endevent>><<run delete $brothel_escortjob.accept>><<set $brothel_escortjob.escape to true>><</link>>
+
+<<else>>
+	你倒在了地上，伤痕累累，无法抵抗。
+	<br><br>
+
+	"我不会让你这个忘恩负义的婊子毁了这场派对的。”<<person2>>愤怒地啐道。
+	<br><br>
+
+	他们开始撕掉你的衣服，把你推到房间中央。
+	<br><br>
+<</if>>

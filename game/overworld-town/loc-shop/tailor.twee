@@ -1,0 +1,355 @@
+:: Tailor Shop
+<<set $outside to 0>><<set $location to "shopping_centre">><<effects>>
+
+你在裁缝店里。它有各种颜色的布挂在架子上。
+<br><br>
+
+<<if $sewingKit isnot 1 and $debug is 1>>
+	看起来这家店有台新机器在陈列中出售。
+	<br><br>
+<</if>>
+<<if $sewingBought is 1>>
+	"谢谢你的购买。你回来的时候，我会把这个送到你房间的。"
+	<br><br>
+	<<set $sewingBought to 0>>
+<</if>>
+
+<<set $tailor_cost to 0>>
+<<set $outfitRepair to []>>
+<<set _time to 0>>
+<<set _outfitTime to 0>>
+<<set _brokenOutfit to 0>>
+
+<<for _active_clothes range Object.keys($worn)>>
+	<<if _active_clothes is "butt_plug">>
+		<<continue>>
+	<</if>>
+	<<if _active_clothes is "lower" or _active_clothes is "under_lower">>
+		<<if $worn[_active_clothes].one_piece is 1>>
+			<<if $worn[_active_clothes].integrity lt clothingData(_active_clothes,$worn[_active_clothes],'integrity_max')>>
+				<<set _outfitTime += 5>>
+			<</if>>
+			<<continue>>
+		<</if>>
+	<</if>>
+	<<if $worn[_active_clothes].integrity lt clothingData(_active_clothes,$worn[_active_clothes],'integrity_max') and $worn[_active_clothes].integrity gt 0 and clothingData(_active_clothes,$worn[_active_clothes],'integrity_max') gt 0>>
+		<<set $tailor_cost += Math.trunc(tailorClothingCost($worn[_active_clothes],_active_clothes) * (1 - $worn[_active_clothes].integrity / clothingData(_active_clothes,$worn[_active_clothes],'integrity_max')))>>
+		<<set _time += 5>>
+	<</if>>
+
+	<<if _brokenOutfit is 0>>
+		<<set _brokenOutfit to getOutfitPair()>>
+		<<if _brokenOutfit.length is 0>>
+			<<set _brokenOutfit to 1>>
+		<</if>>	
+	<</if>>
+<</for>>
+
+<<if $stress gte $stressmax>>
+	<<passoutshop>>
+<<else>>
+	<<if Time.hour is 21>>
+		现在要关门了。保安正把大家赶到外面。<<if $exposed gte 1>>你意识到如果保安发现你穿成这样，你会有多大风险时，你内心感到了恐慌。<</if>>
+		<br><br>
+
+		<<if $exposed lte 0>>
+			<<link [[出去|High Street]]>><<endevent>><</link>>
+			<br>
+		<<else>>
+			<<link [["藏起来等保安走开 (1:00)"|Tailor Shop]]>><<pass 1 hour>><<endevent>><</link>>
+		<</if>>
+	<<else>>
+		<<if Time.dayState is "night">>
+			你独自待在黑暗中。
+			<br><br>
+
+			<<if Time.hour isnot $closinghour and !$weekly.theft.tailor>>
+			<<link [[检查收银机|Tailor Register]]>><</link>>
+			<br>
+			<</if>>
+
+		<<elseif $exposed gte 1>>
+
+			你藏在布匹后，以保护你的尊严。
+			<br><br>
+
+			<<if _brokenOutfit isnot 0 && _brokenOutfit isnot 1>>
+				<<generate1>><<person1>>在柜台后工作的<<person>>注意到你，并跟你说<<he>>能为你服务。
+
+				<<for _i = 0; _i lt _brokenOutfit.length; _i++>>
+					<<set _brokenOutfitTime to 15>><<set _tailorCostMod to .55>>
+					<<set _tailorCostMod += .43 * (1 - $worn[_brokenOutfit[_i].wornHalf].integrity / clothingData(_brokenOutfit[_i].wornHalf,$worn[_brokenOutfit[_i].wornHalf],'integrity_max'))>>
+					
+					<<if _brokenOutfit[_i].brokenHalf.includes("under")>>
+						<<set _brokenOutfitTime += 5>><<set _tailorCostMod += .06>>
+						<<He>>告诉你，你的<<print _brokenOutfit[_i].name>>将会花费更多的时间和精力，如果你决定冒险一试的话。修复将花费<<printmoney `Math.trunc(_brokenOutfit[_i].cost * _tailorCostMod)`>>。
+					<<else>>
+						<<He>>能修复你遗失的<<print _brokenOutfit[_i].name>>，并收取<<printmoney `Math.trunc(_brokenOutfit[_i].cost * _tailorCostMod)`>>。
+					<</if>>
+					<br>
+
+					<<set _tempText to `修复` + _brokenOutfit[_i].cn_name_cap + ` (0:` + (_brokenOutfitTime lt 10 ? "0":"") + _brokenOutfitTime + `)`>>
+
+					<<capture _i>>
+						<<link [[_tempText|Fix Outfit]]>> <<set $outfitRepair to _brokenOutfit[_i]>><<pass _brokenOutfitTime>><<set $money -= Math.trunc(_brokenOutfit[_i].cost * _tailorCostMod)>> <</link>>
+					<</capture>>
+					<br><br>
+				<</for>>
+
+				<<unset _tempText>>
+			<</if>>
+
+		<<else>>
+			<<generate1>><<person1>>"欢迎，"裁缝师说。"你今天需要什么服务？
+			我们提供衣服修复服务。我们还提供每月一次的送修服务。"
+			<br><br>
+			<<if $tailor_cost gte 1 and $money gte $tailor_cost>>
+				他提出要以<<printmoney `Math.trunc($tailor_cost)`>>的价格修复你现在穿的衣服。
+				<br>
+				<<print '<<link [[缝补衣服 (0:'+(_time lt 10 ? "0":"")+_time+')|Fix Clothes]]>><<set $money -= $tailor_cost>><<pass _time>><</link>>'>>
+				<br><br>
+				<<set _options to true>>
+			<<elseif $money lt $tailor_cost>>
+				你没有足够的钱来修复你现在的衣服。(<<printmoney `Math.trunc($tailor_cost)` "red">>.)
+				<br><br>
+				<<set _options to true>>
+			<</if>>
+
+			<<if ($worn.upper.set is $worn.lower.set and $worn.lower.integrity lt clothingData('lower',$worn.lower,'integrity_max')) or ($worn.under_upper.set is $worn.under_lower.set and $worn.under_lower.integrity lt clothingData('under_lower',$worn.under_lower,'integrity_max'))>>
+				裁缝将免费修复服装的下半部分。
+				<br>
+				<<print '<<link [[缝补衣服 (0:'+(_outfitTime lt 10 ? "0":"")+_outfitTime+')|Fix Lower]]>><<pass _outfitTime>><</link>>'>>
+				<br><br>
+				<<set _options to true>>
+			<</if>>
+
+			<<if _brokenOutfit isnot 0 && _brokenOutfit isnot 1>>
+
+				<<He>>注意到你的<<print _brokenOutfit[random(0,_brokenOutfit.length -1)].name>>已经损毁了。
+				"虽然要点时间，但我可以把这些装到另一半上，让它们成为整体。"<<He>>停了一下，试着判断你的反应，"有兴趣吗？"
+				<br><br>
+
+				<<set _secondUnderItem to false>><<set _secondOverItem to false>>
+
+				<<for _i = 0; _i lt _brokenOutfit.length; _i++>>
+					<<set _brokenOutfitTime to 15>><<set _tailorCostMod to .55>>
+					<<set _tailorCostMod += .43 * (1 - $worn[_brokenOutfit[_i].wornHalf].integrity / clothingData(_brokenOutfit[_i].wornHalf,$worn[_brokenOutfit[_i].wornHalf],'integrity_max'))>>
+					
+					<<if _brokenOutfit[_i].brokenHalf.includes("under")>>
+						<<set _brokenOutfitTime += 5>><<set _tailorCostMod += .06>>
+
+						<<if _secondUnderItem isnot true>>
+							<<set _secondUnderItem to true>>
+							"啊，像你的<<print _brokenOutfit[_i].name>>这种状况，会需要花较多的时间与精力修复。" 语毕，<<He>>向你展示了一些<<he>>需要用到的特殊布料。
+							"如果没问题的话，我可以替换它，只要<<printmoney `Math.trunc(_brokenOutfit[_i].cost * _tailorCostMod)`>>。"
+						<<else>>
+							<<He>>可以修复你的<<print _brokenOutfit[_i].name>>，并收取<<printmoney `Math.trunc(_brokenOutfit[_i].cost * _tailorCostMod)`>>。
+						<</if>>
+
+					<<elseif _brokenOutfit[_i].brokenHalf.includes("over")>>
+						<<set _brokenOutfitTime -= 5>><<set _tailorCostMod -= .08>>
+
+						<<if _secondOverItem isnot true>>
+							<<set _secondOverItem to true>>
+							"对我这样手艺纯熟的人来说，修复这<<print _brokenOutfit[_i].name>>只是小菜一碟。"<<He>>指着店里几件修起来更麻烦的物品，证明自己所言不虚。
+							"这东西相对好修，所以我可以只收<<printmoney `Math.trunc(_brokenOutfit.over.outfitCost * _tailorCostMod)`>>，成交吗？"
+						<<else>>
+							这次修复相当简单，也就是说<<he>>缝补你的<<print _brokenOutfit[_i].name>>可以只收<<printmoney `Math.trunc(_brokenOutfit[_i].cost * _tailorCostMod)`>>。
+						<</if>>
+		
+					<<else>>
+						<<He>>提议要替换你遗失的<<print _brokenOutfit[_i].name>>，并收取<<printmoney `Math.trunc(_brokenOutfit[_i].cost * _tailorCostMod)`>>。
+					<</if>>
+					<br>
+
+					<<set _tempText to `修复` + _brokenOutfit[_i].cn_name_cap + ` (0:` + (_brokenOutfitTime lt 10 ? "0":"") + _brokenOutfitTime + `)`>>
+					<<capture _i>>
+						<<link [[_tempText|Fix Outfit]]>> <<set $outfitRepair to _brokenOutfit[_i]>><<pass _brokenOutfitTime>><<set $money -= Math.trunc(_brokenOutfit[_i].cost * _tailorCostMod)>> <</link>>
+					<</capture>>
+					<br><br>
+				<</for>>
+
+				<<unset _tempText>><<unset _secondUnderItem>><<unset _secondOverItem>>
+				<<set _options to true>>
+			<</if>>
+
+			<<if _options isnot true>>
+				你目前穿的衣服已经完全修复好了。
+				<br><br>
+			<</if>>
+
+			<<if $wardrobeRepair isnot undefined>>
+				你需要访问衣柜收集修复过的衣服。
+			<<elseif $tailorMonthlyService is undefined>>
+				裁缝发现你在看<<him>>旁边的小板条箱。"啊，如果你需要我们的每月服务，那你就很幸运了。我们刚好有一个空位，只要是在本地衣服都能送到。"
+				<br>
+				/*<<link [[Ask how much they offer for old clothes|Tailor Monthly Discard]]>><</link>>*/
+				<br>
+				<<link [[询问他们修复所有衣服的费用是多少|Tailor Monthly Repair]]>><</link>>
+			<<elseif $tailorMonthlyService is "repair">>
+				你有一个板条箱，等待接收衣服进行修复。
+			<<elseif $tailorMonthlyService is "discard">>
+				你有一个板条箱，等待接收你想出售的衣服。
+			<<elseif $tailorMonthlyService gt 0>>
+				你最近使用了这项服务，必须等待$tailorMonthlyService天后才能再次使用。
+			<</if>>
+			<br><br>
+
+			<<if $sewingKit isnot 1 and $debug is 1>>
+				<<link [[走近展示柜|Tailor Shop Sewing Machine]]>><</link>>
+				<br><br>
+			<</if>>
+		<</if>>
+		<<link [[离开|Shopping Centre Top]]>><<endevent>><<unset $outfitRepair>><</link>>
+	<</if>>
+<</if>>
+
+:: Fix Clothes
+
+你的衣服已经修复好了。
+<br><br>
+<<set _equip to setup.clothingLayer.all>>
+<<for _i to 0; _i lt _equip.length; _i++>>
+	<<set $worn[_equip[_i]].integrity = clothingData(_equip[_i],$worn[_equip[_i]],'integrity_max')>>
+<</for>>
+
+<<link [[返回|Tailor Shop]]>><<endevent>><</link>>
+
+:: Fix Lower
+
+你的下装已经修复好了。
+<br><br>
+<<if $worn.upper.set is $worn.lower.set>>
+	<<set $worn.lower.integrity = clothingData('lower',$worn.lower,'integrity_max')>>
+<</if>>
+
+<<if $worn.under_upper.set is $worn.under_lower.set>>
+	<<set $worn.under_lower.integrity = clothingData('under_lower',$worn.under_lower,'integrity_max')>>
+<</if>>
+
+<<link [[返回|Tailor Shop]]>><<endevent>><</link>>
+
+:: Tailor Shop Sneak
+<<set $outside to 0>><<effects>><<set $lock to 0>>
+
+	<<if currentSkillValue('skulduggery') gte $lock>>
+	<span class="green">这把锁看起来很容易撬开。</span>
+	<br><br>
+
+	<<link [[撬开它 (0:10)|Tailor Shop]]>><<pass 10>><<crimeup 1>><</link>><<crime>>
+	<br>
+	<<else>>
+	<span class="red">这把锁看上去超出了你的能力范围。</span>
+	<<skulduggeryrequired>>
+	<br><br>
+	<</if>>
+
+<<link [[离开|Shopping Centre Top]]>><<endevent>><</link>>
+<br>
+
+:: Tailor Shop Sewing Machine
+<<effects>>
+	你走近展示柜，里面是一台缝纫机。展示柜旁挂着一张广告海报，上面写着:
+
+	<br><br>
+	缝制大师-9000<sup>tm</sup>
+	<br><br>
+	- 狗咬坏了你的内裤？<span class="pink">~触手~</span>撕破了你的衣服？这都没问题！
+	<br><br>
+	- 能在一分钟内修复任何一件衣服！
+	<br><br>
+	-<span class="green">不需要技能</span>！就连贝利也能用！
+	<br><br>
+	- 附带终身供应的维修用布！
+	<br><br>
+	- 仅需<span class ="gold">£1000.00！</span>
+	<br><br>
+
+	<<if $money gte 100000>>
+		<<link [[购买缝纫机 - 在你的房间里修复你的衣服！£1000|Tailor Shop]]>><<set $money -= 100000>><<set $sewingKit to 1>><<set $sewingBought to 1>><<endevent>><</link>>
+		<br>
+	<</if>>
+	<<link [[返回|Tailor Shop]]>><<endevent>><</link>>
+
+:: Tailor Monthly Discard
+"当然，<<if $player.gender_appearance is "m">>先生<<else>>女士<</if>>。我们会让人把箱子送来。当你准备好要卖掉的时候，就把它装起来。请记住，我们不允许退回任何物品。我们也只会接收我们可以修复和转售的物品。"
+<br><br>
+
+<<set _value to 0>>
+<<for _label, _items range $wardrobe>>
+	<<for _i to 0; _i lt _items.length; _i++>>
+		<<if setup.clothes[_label][clothesIndex(_label,_items[_i])].shop.length is 0>>
+			<<continue>>
+		<</if>>
+		<<if _items[_i].outfitSecondary isnot undefined>>
+			<<continue>>
+		<</if>>
+		<<set _value += Math.floor(getClothingCost(_items[_i]) * (_items[_i].integrity / clothingData(_label,_items[_i],'integrity_max')) / 3,_label)>>
+	<</for>>
+<</for>>
+你认为在拿回押金后，目前能为你赚<<printmoney `_value + 5000`>>。
+
+<br><br>
+<<if $money gte 5000>>
+	<<link [[确认销售并支付定金£50|Tailor Monthly Driver]]>>
+		<<set $money -= 5000>>
+		<<set $tailorMonthlyService to "discard">>
+	<</link>>
+<<else>>
+	你付不起定金。
+	<br>
+<</if>>
+<br>
+<<link [[退出销售|Tailor Shop]]>><<endevent>><</link>>
+
+:: Tailor Monthly Repair
+"当然，<<if $player.gender_appearance is "m">>先生<<else>>女士<</if>>。我们会让人把箱子送来。当你准备好要修复时，就把它装起来。请记住，我们需要一天时间才能把它们送回给你。
+请确保在送来后不要买太多新衣服，否则我们的司机将不得不把它们当作捐赠收回。"
+<br><br>
+
+<<set _value to 0>>
+<<for _label, _items range $wardrobe>>
+	<<for _i to 0; _i lt _items.length; _i++>>
+		<<set _value += Math.floor(tailorClothingCost(_items[_i],_label) * (1 - (_items[_i].integrity / clothingData(_label,_items[_i],'integrity_max'))) * 1.25,_label)>>
+	<</for>>
+<</for>>
+你发现自己
+<<if _value gt 5000>>
+	<<printmoney `_value - 5000`>>
+<<else>>
+	不需要花什么钱
+<</if>>
+因为押金降低了成本。
+
+<br><br>
+<<if $money gte 5000>>
+	<<link [[确认修复并支付定金£50|Tailor Monthly Driver]]>>
+		<<set $money -= 5000>>
+		<<set $tailorMonthlyService to "repair">>
+	<</link>>
+<<else>>
+	无法支付定金。
+<</if>>
+<br>
+<<link [[退出销售修复|Tailor Shop]]>><<endevent>><</link>>
+
+:: Tailor Monthly Driver
+裁缝拿起板条箱，把它搬到了商店的后面。
+<br><br>
+<<link [[继续|Tailor Shop]]>><<endevent>><</link>>
+
+:: Fix Outfit
+	<<if $exposed gte 1>>
+		裁缝在修复时，你继续躲藏着，经过令人坐立难安的等待后，<<he>>将你的<<print $outfitRepair.cn_name_cap>>交还给你，你穿上了它。
+		<br><br>
+	<<else>>
+		你一直在店里闲逛，直到裁缝把你叫过去以便做些小修小改。
+		就这样，你的<<print $outfitRepair.cn_name_cap>>变得完好如初。
+		<br><br>
+	<</if>>
+
+	<<set $worn[$outfitRepair.wornHalf].integrity = clothingData($outfitRepair.wornHalf,$worn[$outfitRepair.wornHalf],'integrity_max')>>
+	<<set makeMissingOutfit($outfitRepair)>>
+	<<unset $outfitRepair>>
+
+<<link [[返回|Tailor Shop]]>><<endevent>><</link>>

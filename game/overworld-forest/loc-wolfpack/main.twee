@@ -1,0 +1,769 @@
+:: Wolf Cave
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>><<getTarget true>>
+
+<<set $wolfpackharmony = Math.clamp($wolfpackharmony, 0, 22)>>
+<<set $wolfpackferocity = Math.clamp($wolfpackferocity, 0, 22)>><<set $bus to "wolfcave">>
+你在狼洞里。洞顶垂得很低。从后面吹来一阵微风。
+<<if $exposed gte 1>>
+	<<wolf_cave_plural>>并不在意，但不管怎么说，裸体都是让人很尴尬的。
+<</if>>
+<<storeon "wolfcave" "check">>
+<<if _store_check is 1>>
+	你的衣服藏在一块石头后面.
+<</if>>
+<<if $wolfstate is "hunt">>
+	大部分狼都出去打猎了.
+<<else>>
+	<<if $weather is "rain">>
+		狼群躲避雨.
+	<<elseif $weather is "snow">>
+		狼群躲避雪.
+	<<else>>
+		狼群休息。
+	<</if>>
+	<<wolfcavestate>>
+<</if>>
+<br><br>
+<<if isPlayerNonparasitePregnancyEnding() and !$possessed>>
+	<<pregnancyBirthWolfCave>>
+<<elseif npcPregnancyEnding("Black Wolf") and !$possessed and $wolfstate is "cave">>
+	<<pregnancyBirthBlackWolf>>
+<<elseif $wolfevent gte 1 and !$possessed>>
+	<<set $wolfevent to 0>>
+	<<wolfcaveselect>>
+<<else>>
+	<<if !$possessed>>
+		<<storeactions "wolfcave">>
+	<<else>>
+		<<if $leftarm is "bound" or $rightarm is "bound" or $feetuse is "bound">>
+			你低头盯着你的绑带。你一拉，它们就散架了，无法遮挡住你。
+			<br><br>
+			<<unbind>>
+		<</if>>
+	<</if>>
+	<<if $wolfcavedig gte 13>>
+		<<ind>><<link [[从洞里钻下去|Forest Wolf Cave Hole]]>><</link>>
+	<<elseif $wolfcavedig gte 12 and $physiquesize lte 12000>>
+		<<ind>><<link [[从洞里钻下去|Forest Wolf Cave Hole]]>><</link>><<small_text>>
+	<<elseif $wolfcavedig gte 11 and $physiquesize lte 10000>>
+		<<ind>><<link [[从洞里钻下去|Forest Wolf Cave Hole]]>><</link>><<small_text>>
+	<<elseif $wolfcavedig gte 10 and $physiquesize lte 6000>>
+		<<ind>><<link [[从洞里钻下去|Forest Wolf Cave Hole]]>><</link>><<small_text>>
+	<<elseif $wolfcavedig gte 1>>
+		<<ind>><<link [[在洞穴后面挖洞(1:00)|Forest Wolf Cave Dig]]>><<pass 1 hour>><<set $wolfcavedig += 1>><</link>>
+	<<else>>
+		<<ind>><<link [[检查洞穴的后面|Forest Wolf Cave Examine]]>><<set $wolfcavedig to 1>><</link>>
+	<</if>>
+	<br>
+	<<if $leftarm is "bound" or $rightarm is "bound" or $feetuse is "bound">>
+		<<ind>><<link [[磨断身上的束缚|Wolf Cave Unbind]]>><</link>>
+		<br>
+	<</if>>
+	<!-- Modified for monster people -->
+	<<getChildrenIds $location>>
+	<<if _childrenIds.length gt 0 or $knowsAboutDen is 1>>
+		<<wolfpup>><<link [[幼崽窝|Pups Den]]>><</link>>
+		<br>
+	<</if>>
+	<<wolfsleep>><<link [[睡觉|Wolf Cave Bed]]>><</link>>
+	<br>
+	<<if $nextPassageCheck is "Wolf Cave Clearing">>
+		<span class="nextLink"><<link [[出去|Wolf Cave Clearing]]>><</link>></span>
+	<<else>>
+		<<ind>><<link [[去外面|Wolf Cave Clearing]]>><</link>>
+	<</if>>
+	<br><br>
+	<<link [[设置|Wolf Cave Settings]]>><</link>>
+	<br>
+	<<attitudesControlCheck>>
+	<<if $attitudesControl.showGoldLink is true>>
+		<span class="goldLink"><<link [[态度|Attitudes]]>><<set $attitudesExitPassage to $passage>><</link>></span><span class="red">!!</span>
+	<<else>>
+		<<link [[态度|Attitudes]]>><<set $attitudesExitPassage to $passage>><</link>>
+	<</if>>
+	<br><br>
+<</if>>
+<<storecleanup>>
+
+:: Wolf Cave Clearing
+<<set $outside to 1>><<set $location to "wolf_cave">><<effects>><<getTarget true>>
+<<set _bwmother to Object.values($children).find(child => child.mother === "Black Wolf" && child.location === "wolf_cave")>>
+
+<<set $wolfpackharmony = Math.clamp($wolfpackharmony, 0, 22)>>
+<<set $wolfpackferocity = Math.clamp($wolfpackferocity, 0, 22)>><<set $bus to "wolfcaveclearing">>
+你在狼洞外面的空地上。一条小溪流过。
+<<if $exposed gte 1>>
+	<<wolf_cave_plural>>并不在意，但不管怎么说，裸体都是让人很尴尬的。
+<</if>>
+
+<<if $nextPassageCheck is "Wolf Cave Wash">>
+	一只<<beastNEWinit 1 wolf>><<beasttype>><<endevent>>好奇地向你走来。其他一些狼则保持距离。
+<<elseif $nextPassageCheck is "Forest">>
+	<<wolf_cave_plural>>对着你吠叫，试图包围你。
+<<elseif $wolfstate is "hunt">>
+	大部分狼都出去打猎了.
+<<else>>
+	<<if $weather is "rain">>
+		狼群躲避雨.
+	<<elseif $weather is "snow">>
+		狼群躲避雪.
+	<<else>>
+		狼群休息。
+	<</if>>
+	<<wolfcavestate>>
+<</if>>
+<<if $pound and $pound.progress is 5>>
+	<span class="blue">一个黑影潜伏在树丛中。</span>
+	<br>
+<</if>>
+<br><br>
+<<if $foresthunt gte 1>>
+	<span class="lblue">你在山洞里很安全。不管是什么在追捕你，最终都会无功而返。</span>
+	<br><br>
+	<<set $foresthunt to 0>>
+<</if>>
+<<if $wolfpatrolsent gte 3>>
+	<<unset $wolfpatrolsent>><<npc "Black Wolf">>
+	黑狼向你走来。<<bhis>>身上没有伤口，<<bhis>>的下巴上也没有伤口。
+	<<if $monster is 1>>
+		"没什么，"<<bhe>>咕哝着说道。"没有入侵者。"
+	<<else>>
+		当你<<if $wolfpackleader is 1>>送<<bhim>><<else>>看着<<bhim>>离开<</if>>去调查的时候，一定什么都没有。
+	<</if>>
+	<<bHe>>似乎很失望。
+	<br><br>
+	<<endevent>>
+<</if>>
+<<if isPlayerNonparasitePregnancyEnding() and !$possessed>>
+	<<pregnancyBirthWolfCave>>
+<<elseif $wolfevent gte 1 and !$possessed>><<set $wolfevent to 0>>
+	<<wolfcaveselect>>
+<<else>>
+	<<if $halloweenWolves and $wolfstate is "cave">>
+		<span class="blue">你的注意力被吸引到洞穴外的一大群<<wolf_cave_plural>>身上。</span>
+		<br>
+		<<link [[调查|Wolf Halloween]]>><</link>>
+		<br><br>
+	<</if>>
+	<<link [[玩耍(1:00)|Wolf Cave Play]]>><<stress -12>><<pass 1 hour>><</link>><<lstress>>
+	<br>
+	<<if $pound and $pound.progress is 5>>
+		<<link [[接近深色的形状|Wolf Cave Dog Intro]]>><<set $pound.progress to 6>><<stress 6>><<trauma -6>><<control 25>><</link>><<gstress>><<ggcontrol>><<ltrauma>>
+		<br>
+	<<elseif $pound and $pound.progress is 6 and Time.dayState is "day" and $daily.wolfCaveDog is undefined>>
+		<<link [[接近黑狗|Wolf Cave Dog]]>><</link>>
+		<br>
+	<</if>>
+	<<if $nextPassageCheck is "Wolf Cave Wash">>
+		<span class="nextLink"><<link [[水.|Wolf Cave Wash]]>><</link>></span>
+	<<else>>
+		<<link [[在小溪里洗(0:20)|Wolf Cave Wash]]>><<pass 20>><</link>>
+	<</if>>
+	<br>
+	<<if $worn.upper.exposed gte 2 and $worn.under_upper.exposed gte 1
+	or $worn.upper.exposed gte 2 and $underupperwetstage gte 3
+	or $upperwetstage gte 3 and $worn.under_upper.exposed gte 1
+	or $upperwetstage gte 3 and $underupperwetstage gte 3>>
+		<<link [[用植物和树枝做一个上衣(0:20)|Wolf Cave Plant]]>><<set $phase to 1>><<pass 20>><</link>>
+		<br>
+	<</if>>
+	<<if $worn.lower.exposed gte 2 and $worn.under_lower.exposed gte 1
+	or $worn.lower.exposed gte 2 and $underlowerwetstage gte 3
+	or $lowerwetstage gte 3 and $worn.under_lower.exposed gte 1
+	or $lowerwetstage gte 3 and $underlowerwetstage gte 3>>
+		<<link [[用植物和小树枝做一条裙子(0:20)|Wolf Cave Plant]]>><<set $phase to 2>><<pass 20>><</link>>
+		<br>
+	<</if>>
+	<br>
+	小溪随着你的倒影荡漾，
+	<<if isBloodmoon()>>
+		你淹没在血月的绯红中。
+	<<elseif Time.dayState is 'dawn'>>
+		黎明的余晖给你披上了一层琥铂色的光环。
+	<<elseif Time.dayState is 'day'>>
+		画面一尘不染，完美无瑕。
+	<<elseif Time.dayState is 'dusk'>>
+		夕阳的余晖给你披上了一层琥铂色的光环。
+	<<else>>
+		明月映君影。
+	<</if>>
+	<br>
+	<<mirroricon>><<link [[检查你的倒影|Wolf Cave Mirror]]>><<preMirror>><</link>>
+	<br>
+	<br>
+	小溪附近的土壤看起来不错，但几乎没有野生植物。
+	<br>
+	<<link [[检查|Wolf Cave Plots]]>><</link>>
+	<br>
+	<<pregnancyTest "Wolf Cave Clearing">>
+	<br>
+	<<if $wolfstate is "cave" and npcPregnancyEnding("Black Wolf")>>
+	<<elseif _bwmother and ((Time.hour gte 8 and Time.hour lte 15) or (Time.hour gte 18 and Time.hour lte 21))>>
+		你看到黑狼在一块岩石旁休息，俯瞰着洞穴和周围的环境。
+		<br>
+		<<link [[靠近|Wolf Relax]]>><<npc "Black Wolf">><<set $phase to 1>><</link>>
+		<br><br>
+	<<elseif !_bwmother and $wolfstate is "cave" and Time.dayState isnot "night">>
+		你看到黑狼在一块岩石旁休息，俯瞰着洞穴和周围的环境。
+		<br>
+		<<link [[靠近|Wolf Relax]]>><<npc "Black Wolf">><<set $phase to 1>><</link>>
+		<br><br>
+	<<elseif $wolfstate is "cave" and $wolfcavepatrol is 1 and $wolfcavepatrolchance is 1 and Time.dayState is "night">>
+		黑狼在远离狼群的地方休息，视察着林地交界处，偶尔关注一下路过的成员。<span class="blue"><<nnpc_He "Black Wolf">>看起来有些躁动。</span>
+		<br>
+		<<link [[靠近|Wolf Patrol Intro]]>><<npc "Black Wolf">><</link>>
+		<br><br>
+	<</if>>
+	<<if $wolfstate is "cave" and Time.dayState isnot "night" and !["rain","snow"].includes($weather)>>
+		一些更强壮的<<wolf_cave_plural>>躺在空地周围，等待狩猎。它们看起来很无聊。
+		<br>
+		<<link [[挑战猎兽们(0:20)|Wolf Cave Spar]]>><</link>><<gtiredness>><<gphysique>><<lstress>>
+		<br><br>
+	<</if>>
+	<<link [[走进去|Wolf Cave]]>><</link>>
+	<br><br>
+	<<if $nextPassageCheck is "Forest">>
+		<span class="nextLink"><<foresticon>><<link [[离开 (0:10)|Forest]]>><<pass 10>><<set $eventskip to 1>><<set $forest to 60>><</link>></span>
+	<<else>>
+		<<foresticon>><<link [[走进森林 (0:10)|Forest]]>><<pass 10>><<set $eventskip to 1>><<set $forest to 60>><</link>>
+	<</if>>
+	<br>
+<</if>>
+
+:: Wolf Cave Dog Intro
+<<effects>>
+
+<<loadNPC 0 "black_dog">>
+黑影在你到达之前就消失了。你转身离开，迎面来了一双黄眼睛。这种生物跳到你身上，蹭了蹭你的背，在你脸上舔来舔去。<span class="green">是你从收容所救出来的那只黑色的<<beasttype>>。</span>
+<br><br>
+
+<<if $monster is 1>>
+	"对不起，"<<bhe>>说，从你身上爬下来。<<bHe>>采取了<<bhis>>一贯的粗暴态度，但是<<bhis>>的眼睛里有一种以前没有的光芒。<<bHe>>看起来更健康了。"很高兴见到你。"
+<<else>>
+	<<bHe>>从你身上爬下来，恢复了<<bhis>>一贯的粗暴态度，好像是清醒了过来，但是<<bhis>>的眼睛里有一种以前没有的光。<<bHe>>看起来更健康了。<<bHe>>调皮冲你叫了几声。
+<</if>>
+<br><br>
+
+<<link [[继续|Wolf Cave Clearing]]>><<endevent>><</link>>
+<br>
+
+:: Wolf Cave Dog
+<<effects>>
+<<loadNPC 0 "black_dog">>
+那只黑狗潜伏在空地的外围。<<wolf_cave_plural>>容忍<<bhim>>，但保持距离。
+<br><br>
+
+<<bHe>>躺在一棵大蕨类植物下面，看着你走近。
+<br><br>
+
+<<link [[休息 (0:30)|Wolf Cave Dog Relax]]>><<set $daily.wolfCaveDog to 1>><<pass 30>><<trauma -6>><<stress -6>><</link>><<ltrauma>><<lstress>>
+<br>
+<<link [[鼓励与小狼崽玩耍|Wolf Cave Dog Play]]>><<set $daily.wolfCaveDog to 1>><</link>>
+<br><br>
+
+
+<<link [[离开|Wolf Cave Clearing]]>><<endevent>><</link>>
+<br>
+
+:: Wolf Cave Dog Relax
+<<effects>>
+你坐在<<beasttype>>旁边，开始聊天。
+<<if $monster is 1>>
+	<<if $rng gte 81>>
+		"这是我<<if $NPCName[$NPCNameList.indexOf("Black Wolf")].pronoun is "f">>同父异母的姐姐的<<else>>同父异母的哥哥的<</if>>狼群,"<<bhe>>说道。"我在这里不受欢迎。哪儿都不受欢迎。我没有别的地方可去。"
+	<<elseif $rng gte 61>>
+		"远离大的人类洞穴，"<<bhe>>说道。"危险"。
+	<<elseif $rng gte 41>>
+		"远离湖泊，"<<bhe>>说道。"比森林还危险。比城里更危险。"
+	<<elseif $rng gte 21>>
+		"小狼崽害怕我，"<<bhe>>说道。"看起来一定很奇怪。"
+	<<else>>
+		"我不恨主人，"<<bhe>>说道。"但是要求太多了。"
+	<</if>>
+<<else>>
+	你靠在<<beasttype>>身上，盯着上面的树冠，随着<<bhis>>的呼吸起起落落。这几乎足以让你入睡。
+<</if>>
+<br><br>
+
+<<link [[继续|Wolf Cave Clearing]]>><<endevent>><</link>>
+<br>
+
+:: Wolf Cave Dog Play
+<<effects>>
+
+<<beasttype>>怒吼着，从<<bhis>>隐藏的地方，向玩耍的小狼崽走去。
+<<if $wolfstate is "cave">>
+	黑狼在洞顶上看着，很感兴趣，但并不担心。
+<<elseif $wolfstate isnot "hunt">>
+	成年的<<wolf_cave_plural>>警惕地看着。
+<<else>>
+	它们单独待着，但当一个巨大的身影从它们面前的灌木丛中出现时，它们吓得后退了。
+<</if>>
+<br><br>
+<<if $rng gte 51>>
+	<<bHe>>咆哮着跑向最近的地方。它们争先恐后地逃跑。你看着它们在空地上四处追逐，毫不费力地嗅出它们的藏身之处。<<bHe>>只是在玩，但你不确定小狗们知道这一点。<<gferocity>>
+<<else>>
+	<<bHe>>躺了一会儿，直到一只更有冒险精神的小狼崽鼓起勇气靠近，并知道没有什么好害怕的。
+	<br><br>
+	你看着<<beasttype>>和幼崽玩耍。然而，它们比<<bhe>>有更多的能量，并且<<bhe>>很快回到树上休息。<<gharmony>>
+<</if>>
+<br><br>
+
+<<link [[继续|Wolf Cave Clearing]]>><<endevent>><</link>>
+<br>
+
+
+:: Wolf Cave Plots
+<<effects>>
+
+<<plot_effects>>
+
+<<if $wolf_plot_intro is 1>><<unset $wolf_plot_intro>>
+	<<plots_init wolf 3 earth 2 medium>>
+<</if>>
+
+<<display_plot wolf>>
+
+<br>
+
+<<link [[离开|Wolf Cave Clearing]]>><</link>>
+<br>
+
+<<unset $event_trigger>>
+
+:: Wolf Cave Returned
+
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+<<pass 30>>
+<<npc "Black Wolf">>
+黑狼穿过森林，一路跑回山洞。<<bHe>>把你扔在后面，在转身离开之前发出警告咆哮。
+<<if $monster is 1>>
+	"留下来。你属于狼群。"
+<</if>>
+<br><br>
+<<link [[继续|Wolf Cave]]>><<clotheson>><<endevent>><</link>>
+<br>
+
+:: Wolf Cave Unbind
+
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+你在锋利的岩石上摩擦你的绑带，它们很快就会松动。
+<br><br>
+<<unbind>>
+<<link [[继续|Wolf Cave]]>><</link>>
+<br>
+
+:: Wolf Cave Bed
+
+<<effects>>
+<<if $wolfpackharmony gte 10>>
+	<<beastNEWinit 1 wolf>>
+	<<if $rng gte 51>>
+		<<if $wolfstate is "hunt">>
+			你找了个空地方躺下，闭上眼睛。当你躺在那里时，你会感到温暖而毛茸茸的小身体在你周围移动。看起来小狼崽们看到你上床睡觉了，只要成狼离开，它们就会觉得和你在一起更安全。其中一只会舔你的脸，然后把<<bhis>>的头埋进你的头发里。
+			<br><br>
+			今晚你不会觉得冷，它们也不会孤单。<<lstress>><<ltrauma>><<stress -10>><<trauma -10>>
+		<<else>>
+			你找了个空地方躺下，闭上眼睛。当你躺在那里时，你会感到一堵毛皮墙在你周围移动。看起来好像<<wolf_cave_plural>>看到你上床睡觉了，自己也困了。其中一个用鼻子在你的胳膊下面蹭<<bhis>>的头。
+			<br><br>
+			今晚你不会冷的。<<lstress>><<ltrauma>><<stress -6>><<trauma -6>>
+		<</if>>
+		<<set $wolfbed to 1>>
+	<<else>>
+		你依偎在<<beasttype>>的旁边取暖，闭上眼睛。
+	<</if>>
+	<<endevent>>
+<<else>>
+	你找了个空地方躺下，闭上眼睛。
+<</if>>
+<br><br>
+
+<<nightmareCheck "Wolf Cave Sleep">>
+
+<<if $sleeptrouble is 1 and $controlled is 0>>
+	<<link [[睡10个小时|Wolf Cave Sleep]]>><<set $sleephour to 10>><<incrementautosave>><</link>> (<<timeAfterXHours 10>>)<<ltiredness>>
+	<br>
+	<<link [[睡9个小时|Wolf Cave Sleep]]>><<set $sleephour to 9>><<incrementautosave>><</link>> (<<timeAfterXHours 9>>)<<ltiredness>>
+	<br>
+<</if>>
+<<link [[睡8个小时|Wolf Cave Sleep]]>><<set $sleephour to 8>><<incrementautosave>><</link>> (<<timeAfterXHours 8>>)<<ltiredness>>
+<br>
+<<link [[睡7个小时|Wolf Cave Sleep]]>><<set $sleephour to 7>><<incrementautosave>><</link>> (<<timeAfterXHours 7>>)<<ltiredness>>
+<br>
+<<link [[睡6个小时|Wolf Cave Sleep]]>><<set $sleephour to 6>><<incrementautosave>><</link>> (<<timeAfterXHours 6>>)<<ltiredness>>
+<br>
+<<link [[睡5个小时|Wolf Cave Sleep]]>><<set $sleephour to 5>><<incrementautosave>><</link>> (<<timeAfterXHours 5>>)<<ltiredness>>
+<br>
+<<link [[睡4个小时|Wolf Cave Sleep]]>><<set $sleephour to 4>><<incrementautosave>><</link>> (<<timeAfterXHours 4>>)<<ltiredness>>
+<br>
+<<link [[睡3个小时|Wolf Cave Sleep]]>><<set $sleephour to 3>><<incrementautosave>><</link>> (<<timeAfterXHours 3>>)<<ltiredness>>
+<br>
+<<link [[睡2个小时|Wolf Cave Sleep]]>><<set $sleephour to 2>><<incrementautosave>><</link>> (<<timeAfterXHours 2>>)<<ltiredness>>
+<br>
+<<link [[睡1个小时|Wolf Cave Sleep]]>><<set $sleephour to 1>><<incrementautosave>><</link>> (<<timeAfterXHours 1>>)<<ltiredness>>
+<br>
+<<link [[只是睡觉|Wolf Cave Sleep]]>><<set $sleephour to -1>><<incrementautosave>><</link>> (??:??)<<ltiredness>>
+<br><br>
+<<link [[爬下床|Wolf Cave]]>><<set $wolfbed to 0>><<loadTempHairStyle>><</link>>
+<br><br>
+
+:: Wolf Cave Settings [exitCheckBypass]
+<<set $settingsExitPassage to "Wolf Cave">>
+<<settings>>
+
+:: Wolf Cave Descent
+
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+你坐在悬崖边上，想把自己放下去，但岩石松动了，你掉进了黑暗的水中。
+<br><br>
+<<link [[继续|Underground Lake]]>><</link>>
+<br>
+
+:: Wolf Cave Sleep
+<<set _autosavehere to true>>
+<<sleep>><<effects>>
+<<if $wraith.nightmare is 2 and isBloodmoon()>>
+	<<sleepeffects>>
+	你梦见一个美丽的身影，披着白衣，站在红月下。它向你张开双臂，做出欢迎的姿态。当你走近它的时候，你可以感觉到它的目光在你的脑海中变得空洞。
+	<br><br>
+	它被树木环绕，都向内弯曲，漂浮在湖面上。你周围的一切都在移动，你发现自己悬在一个巨大的废墟之上。你不能呼吸。
+	<br><br>
+	你慢慢睁开眼睛，慢吞吞地站着<<if $wolfbed is 1>>，从周围的<<wolf_cave_plural>>中抽离出来<</if>>。你的耳朵在响。
+	<br><br>
+	<<wraithPossess "wolf_cave">>
+	<span class="nextLink"><<link [[散步|Wolf Cave]]>><</link>></span>
+	<br>
+<<else>>
+	<<wakingEffects $sleepHoursTotal>>
+	<<if ["dryheaving","nausea"].includes(_wakingEffect)>>
+		你睡得很香，但现在感觉有点不舒服。
+		<br><br>
+	<<elseif $nightmares gte 1 and $controlled is 0>>
+		你<<if _wakingEffect>>梦见了<<else>>梦到自己被<</if>>某个可怕的东西追逐，那个怪物非常<<if ["haunt", "despair"].includes($wraith.state) and $rng lte 25>>苍白<<else>>黑暗<</if>>。
+	<<else>>
+		<<if $specialClothesEffects.bimboTotal gte random(100,1000) or $arousal gte ($arousalmax / 10) * 9>>
+			你的睡眠<<if _wakingEffect>>刚刚<<else>><</if>>被肮脏的梦困扰。
+			<<arousal `$specialClothesEffects.bimboTotal / 10 * $sleepHoursTotal`>>
+			<<arousal `100 * $sleepHoursTotal`>>
+			<<if $arousal gte $arousalmax>>
+				它们把你推向了极点。
+				<<orgasm>>
+			<<else>>
+				<br><br>
+			<</if>>
+		<<elseif !_wakingEffect>>
+			你睡得很香。
+			<br><br>
+		<<else>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<sleepeffects>>
+	<<if _sleepinterrupt>>
+		<<beastNEWinit 1 wolf>>
+		你醒来发现有什么东西在逼近你。
+		<br><br>
+		<<link [[顺其自然|Wolf Cave Sleep Sex]]>><<set $sexstart to 1>><</link>><<deviant1>>
+		<br>
+		<<link [[推开|Wolf Cave Sleep Push]]>><</link>>
+	<<elseif $wolfbed is 1>>
+		你睡觉的同伴在你睡醒之前起床，继续一天的生活。你感觉不到它们在动，它们也不会吵醒你。
+		<br><br>
+		<<link [[起来|Wolf Cave]]>><</link>>
+	<<else>>
+		<br><br>
+		<<link [[起来|Wolf Cave]]>><</link>>
+	<</if>>
+<</if>>
+<<set $wolfbed to 0>>
+
+:: Wolf Cave Sleep Sex
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<beastCombatInit>>
+	你改变姿势，为了更方便好色的<<beasttype>>.
+	<<deviancy1>><<set $enemytrust -= 20>>
+	<<if $wolfpackharmony gte 1>>
+		<<enable_rescue>>
+	<</if>>
+<<elseif $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $enemytrust -= 40>>
+	<<if $wolfpackharmony gte 1>>
+		<<enable_rescue>>
+	<</if>>
+<</if>>
+<<effects>>
+<<effectsman>>
+<<alarmstate "<span class='red'><<beastsplural>>忙着为自己着想而无法帮助你。</span>">>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Wolf Cave Sleep Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Wolf Cave Sleep Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Wolf Cave Sleep Push
+
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+你把<<beasttype>>从你身边推开。
+<<lharmony>>
+<br><br>
+<<if $wolfpackferocity lte 19>>
+	<<bHe>>离开了，你安心了下来。<<endevent>>
+	<br><br>
+	<<link [[继续睡|Wolf Cave Bed]]>><</link>>
+	<br>
+	<<link [[起来|Wolf Cave]]>><</link>>
+	<br>
+<<else>>
+	<<bHe>>咆哮并试图强行压在你身上!
+	<br><br>
+	<<link [[继续|Wolf Cave Sleep Sex]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Wolf Cave Sleep Sex Finish
+
+<<set $outside to 1>><<set $location to "wolf_cave">><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>><<wolfpacktrust>>
+	<br>
+	<<beasttype>>打了个哈欠，躺了下来。
+	<br><br>
+	<<tearful>>你试着再找一个舒服的位置。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<elseif $enemyhealth lte 0>>
+	<<beasttype>>一瘸一拐地离开了你。
+	<br><br>
+	<<tearful>>你试着再找一个舒服的位置。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<elseif $rescue is 1 and $alarm is 1>>
+	<<set $rescued += 1>>
+	其他<<beastsplural>>朝着欺负你的<<beasttype>>吼叫着。<<bHe>>最开始还敢于吼回来，但之后就离开你，灰溜溜地跑掉了。
+	<<lharmony>>
+	<br><br>
+	<<tearful>>你试着再找一个舒服的位置。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<else>>
+	<<beasttype>>打了个哈欠，躺了下来。
+	<br><br>
+	<<tearful>>你试着再找一个舒服的位置。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+<<link [[继续|Wolf Cave Bed]]>><</link>>
+<br>
+
+:: Wolf Cave Play
+<<beastNEWinit 1 wolf>>
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+
+<<if $rng gte 51>>
+	你和一个年轻的<<beastsplural>>玩闹打斗。<<bHe>>跳起来用嘴咬住你的胳膊，但没有用力咬下去，直到<<bHe>>把你拉到地上。<<bHe>>闻你的腹股沟。
+	<br><br>
+	<<link [[让它继续|Wolf Cave Play Sex]]>><<set $sexstart to 1>><</link>><<deviant1>>
+	<br>
+	<<link [[把它推开|Wolf Cave Clearing]]>><<endevent>><</link>>
+	<br>
+
+<<elseif !$weekly.watchingForest and $wolfpackharmony gte 20 and Time.dayState is "day" and $rng gte 80 and $wolfstate is "cave">>
+	<<set $weekly.watchingForest to true>>
+	<<npc "Black Wolf">>
+
+	<<if $monster is 1>>
+
+		当你在和年轻的狼玩耍时，你感到有温暖的东西抚摸着你的下背部。你回头看，看到黑狼的手放在你的腰上。
+		<br><br>
+
+		"需要你，"<<bhe>>说道。
+		<br><br>
+
+	<<else>>
+
+		当你在和小狼玩的时候，你感觉到有什么东西湿润了你的背部。你向后看，看到黑狼在用鼻子戳你。 
+		<br><br>
+
+	<</if>>
+
+	<<bHe>>不经常引起你的注意，所以你找借口走开，跟着黑狗。
+	<br><br>
+
+	黑狼一直朝森林的边缘走去，一边摇着尾巴，一边回头看着你，好像在邀请你一起走。
+	<br><br>
+
+	<<link [[跟随黑狼|Watching the Forest Follow]]>><</link>>
+	<br>
+	<<link [[呆在洞穴里|Watching the Forest Stay]]>><</link>><<lharmony>>
+
+
+<<else>>
+	你和年轻的<<beastsplural>>玩类似于捉迷藏的游戏。它们不愿离开洞穴太远，但附近有很多藏身之处。它们的嗅觉给了它们一个优势，它们每次都能很快找到你，但这很有趣。
+	<br><br>
+	<<link [[继续|Wolf Cave Clearing]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Wolf Cave Wash
+
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+你在小溪里洗澡。水很冷，但很干净。
+<br><br>
+<<wash>>
+<<link [[继续|Wolf Cave Clearing]]>><</link>>
+<br>
+
+:: Wolf Cave Play Sex
+
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<beastCombatInit>>
+	<<beasttype>>变得更加大胆。
+	<<deviancy1>><<set $enemytrust -= 20>>
+	<<if $wolfpackharmony gte 1>>
+		<<enable_rescue>>
+	<</if>>
+<<elseif $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $enemytrust -= 40>>
+	<<if $wolfpackharmony gte 1>>
+		<<enable_rescue>>
+	<</if>>
+<</if>>
+<<effects>>
+<<effectsman>>
+<<alarmstate "<span class='red'><<beastsplural>>忙着为自己着想而无法帮助你。</span>">>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Wolf Cave Play Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Wolf Cave Play Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Wolf Cave Play Sex Finish
+
+<<set $outside to 1>><<set $location to "wolf_cave">><<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>><<wolfpacktrust>>
+	<br>
+	<<beasttype>>打了个哈欠，躺了下来。
+	<br><br>
+	<<tearful>>你爬起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<elseif $enemyhealth lte 0>>
+	<<beasttype>>一瘸一拐地离开了你。
+	<br><br>
+	<<tearful>>你爬起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<elseif $rescue is 1 and $alarm is 1>>
+	<<set $rescued += 1>>
+	另一个<<beastsplural>>对攻击你的狼咆哮。<<bhe>>一开始会咆哮，但后来会退缩，让你一个人呆着。
+	<<lharmony>>
+	<br><br>
+	<<tearful>>你爬起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<else>>
+	<<beasttype>>打了个哈欠，躺了下来。
+	<br><br>
+	<<tearful>>你爬起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<</if>>
+<<link [[继续|Wolf Cave Clearing]]>><</link>>
+<br>
+
+:: Wolf Cave Breastfeed
+<<set $outside to 0>><<set $location to "wolf_cave">><<effects>>
+
+<<if $phase is 1>>
+	你也鼓励那些不那么自信的狼吃奶。
+<<else>>
+	<<if $worn.upper.exposed lte 0 or $worn.under_upper.exposed lte 0>>
+		<<upperstrip>><<underupperstrip>>你裸露你的<<breasts>>，鼓励狼崽吃奶。
+	<<else>>
+		你鼓励小狼吃奶。
+	<</if>>
+<</if>>
+<<pass 5>>
+<<if $milk_amount gte 1>>
+	<<if $wolfcavebreast is undefined>>
+		<<set $wolfcavebreast to 1>>
+	<<else>>
+		<<set $wolfcavebreast += 1>>
+	<</if>>
+
+	小狼们闻着你的乳房。一只含住了一个乳头，用笨拙的舔来戏弄你。<<deviancy3>>
+
+	<<if $wolfcavebreast is 3>>
+		最后的幼崽很满意。他们蜷缩起来打盹。
+		<<gharmony>>
+	<<else>>
+		其他的狼都在争抢机会。
+	<</if>>
+	<br><br>
+	<<transform wolf 1>>
+	<<breastfeed 5>>
+	<<if $wolfcavebreast isnot 3>>
+		<<link [[继续喂养(0:05)|Wolf Cave Breastfeed]]>><<set $phase to 1>><</link>><<deviant3>>
+		<br>
+	<</if>>
+	<<link [[停止|Pups Den]]>><<clotheson>><<set $phase to 0>><</link>>
+	<br>
+<<else>>
+
+	奶水不会从你的乳头流出。<span class="pink">你用完了。</span>狼在沮丧中继续咬着。
+	<<gpain>><<pain 6>><<milkvolume 1>>
+	<br><br>
+
+	<<link [[继续|Pups Den]]>><<clotheson>><<set $phase to 0>><</link>>
+	<br>
+<</if>>
+
+:: Wolf Cave Mirror
+
+<<effects>>
+<<link [[离开|Wolf Cave Clearing]]>><<unset $mirrorMenu>><<unset $bodywritingSet>><</link>>
+<br>
+<<mirror "reflection">>
+<br><br>

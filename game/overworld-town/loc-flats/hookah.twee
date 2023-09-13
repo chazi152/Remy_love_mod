@@ -1,0 +1,962 @@
+:: Flats Hookah
+<<effects>>
+
+<<if isPlayerNonparasitePregnancyEnding()>>
+    <<set _noWake to true>>
+	<<pregnancyWatersBrokenPassout "hookah">>
+<<else>>
+    <<if $hookah_state is 3>>
+        你在在水烟馆里。水烟机被坐垫环绕位于房间中央。
+        <br><br>
+
+        <<hookah_juice>>
+
+        <<if $hookah.juice gte 1>>
+            <<if $daily.hookah is 1>>
+                <span class="red">有人警告过你，每天吸烟超过一小时很危险。</span>
+                <br>
+                <<if random(1, 2) is 2>>
+                    <<link [[无论如何都要抽(1:00)|Flats Hookah Smoke]]>><<set $hookah.juice -= 1>><<hallucinogen 60>><</link>>
+                    <br>
+                <<else>>
+                    <<link [[无论如何都要抽(1:00)|Flats Hookah Smoke Danger]]>><<set $hookah.juice -= 1>><<hallucinogen 60>><</link>>
+                    <br>
+                <</if>>
+            <<else>>
+                <<link [[抽烟(1:00)|Flats Hookah Smoke]]>><<set $hookah.juice -= 1>><<set $daily.hookah to 1>><<hallucinogen 60>><</link>>
+                <br>
+            <</if>>
+            <<if $exposed lte 0>>
+                <<link [[吸引顾客(1:00)|Flats Hookah Work]]>><<set $hookah.juice -= 1>><<hallucinogen 60>><</link>>
+                <br>
+            <</if>>
+        <</if>>
+        <<link [[离开|Flats]]>><</link>>
+        <br>
+    <<elseif $hookah_state is 2>>
+        你在你的水烟馆里。水烟管倒在地板上，但香的味道依然存在。
+        <br><br>
+
+        <<link [[打扫(3:00)|Flats Hookah Clean]]>><<set $hookah_state to 3>><<pass 180>><</link>>
+        <br>
+        <<link [[离开|Flats]]>><</link>>
+        <br>
+    <<elseif $hookah_state is undefined>>
+        <<set $hookah_state to 1>>
+        <<generate1>><<person1>><<generate2>><<generate3>><<generate4>><<generate5>><<generate6>>
+        你推开门往里看。五个人躺在天鹅绒垫子上，他们围着一个水烟管。这气味令人陶醉。
+        <br><br>
+        一个<<person1>><<person>>从隔壁房间进来，<<his>>的手里拿着一个碗和一把钳子。<<He>>从容器中夹起一个蠕动的东西，把它放在水烟管里。
+        <br><br>
+        "啊哈，"<<he>>注意到了你。<<he>>转身时，你听到了一阵叮当声。一副小眼镜架在<<his>>的鼻尖上。"新客人，水烟一小时50英镑。"
+        <br><br>
+        "没有两个人有相同的经历，"<<he>>补充道，好像在预测一个问题。"恐怕这种物质本身必须保密。"
+        <<if playerBellyVisible()>>
+            <<He>>低头看着你的<<bellyDescription "pc">>。"别担心，这东西很安全。我是说，对你的孩子来说很安全。"
+        <</if>>
+        <br><br>
+        <span class="gold">你发现了水烟馆。</span>
+        <br><br>
+        <<saveNPC 0 "hookah">>
+        <<link [[离开|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+        <br>
+    <<else>>
+        <<loadNPC 0 "hookah">><<person1>>
+        水烟馆和你记忆中的不太一样，但你闻到了一股熟悉的香味，这有助于你找到它。水烟馆前门开着，里面闪着紫光。你把它推开，往里面看。
+        <br><br>
+        <<if $rng gte 81>>
+            戴眼镜的水烟<<hookah_master>>坐在其中一个靠垫上，<<himself>>正在读报纸。
+        <<elseif $rng gte 61>>
+            戴眼镜的水烟<<hookah_master>>跪在一个柜子前，在里面翻找。
+        <<elseif $rng gte 41>>
+            戴眼镜的水烟<<hookah_master>>正在清洗烟斗。
+        <<elseif $rng gte 21>>
+            戴眼镜的水烟<<hookah_master>>靠在窗户上，看着<<if $weather is "rain">>下雨<<elseif $weather is "snow">>下雪<<else>>的街道。<</if>>
+        <<else>>
+            戴眼镜的水烟<<hookah_master>>坐在凳子上喝茶。
+        <</if>>
+        <br><br>
+        <<if $daily.hookah is 1>>
+            <<He>>看着你。"我们不会让客人每天花超过一个小时在水烟上，"<<he>>说。"这是为了你的安全。"
+            <br><br>
+        <<else>>
+            <<He>>看着你。"水烟一小时50英镑。"
+            <br><br>
+        <</if>>
+
+        <<if $money gte 5000 and $daily.hookah is undefined>>
+            <<link [[吸烟(1:00)|Flats Hookah Smoke]]>><<set $daily.hookah to 1>><<set $money -= 5000>><</link>>
+            <br>
+        <</if>>
+        <<link [[离开|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+        <br>
+    <</if>>
+<</if>>
+
+:: Flats Hookah Smoke
+<<effects>>
+
+你坐在水烟管前的垫子上，把水管放到嘴里，然后吸气。
+<br><br>
+
+你躺在地上，大脑一片混沌，你感觉天花板在你的眼中不断旋转，旋转。四周光怪陆离，一片炫彩，整个人仿佛已经不在人间。
+<br><br>
+
+<<if $awareness gte 400>>
+    你几乎要被压垮，<span class="green">但是你坚持下来了。</span>一片外星森林从传送门出现。巨大的触须在天空中扭曲扭动。
+    <br><br>
+    <<if $tentacledisable is "f">>
+        <<link [[进入|Tentacle Forest Entrance]]>><<set $tentacleEntrance to "hookah">><<endevent>><</link>>
+        <br>
+	<<else>>
+		<span class="red">你被它们吓坏了，</span>开始反抗自己的意识，试图强迫自己醒来。然而，在短暂的清醒时刻，<span class="lewd">你想知道如果你放任你的思想，会发生什么。</span>
+		<br><br>
+		<<link [[尝试进入|Tentacle Forest Enable]]>><</link>><<willpowerdifficulty 1 1>> | <span class="pink">这将使触手可以出现。</span> <!-- Appears even with blind stats enabled. Intentional -->
+		<br>
+	<</if>>
+    <<link [[忽视|Flats Hookah Flow]]>><<pass 1 hour>><<willpower 6>><<if $awareness lt 600>><<awareness 6>><</if>><</link>><<ggwillpower>><<if $awareness lt 600>><<ggawareness>><</if>>
+    <br>
+<<else>>
+    你无法理解它，<span class="red">你的思想脱离了你的控制。</span><<ggwillpower>><<willpower 6>><<if $awareness lt 600>><<ggawareness>><<awareness 6>><</if>>
+    <br><br>
+    <<link [[继续|Flats Hookah Flow]]>><<pass 1 hour>><</link>>
+    <br>
+<</if>>
+
+
+:: Flats Hookah Flow
+<<effects>>
+
+你看到了一闪而过的奇异景象，但这些经历在被铭刻在你的记忆之前就被从意识中夺走了，取而代之的是被遗忘的真相的低语。这些感觉依次被其他不可能的感觉所取代。
+<br><br>
+<<endevent>>
+<<loadNPC 0 "hookah">><<person1>>
+<<if $hookah_state gte 2>>
+    他们一遍又一遍地攻击你，直到你在水烟馆的垫子上醒来。你等着世界停止转动，然后站起来。
+    <br><br>
+
+    <<endevent>>
+
+    <<link [[继续|Flats Hookah]]>><</link>>
+    <br>
+<<else>>
+    他们一遍又一遍地攻击你，直到你在水烟馆的垫子上醒来。"谢谢您的光临，"<<hookah_master>>说。"我们不会让客人每天花超过一个小时在水烟上，安全起见。"
+    <br><br>
+
+    <<He>>扶你站起来，然后把你带到了门口。
+    <br><br>
+
+    <<endevent>>
+
+    <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+    <br>
+<</if>>
+
+
+:: Flats Hookah End
+<<location "flats">><<set $outside to 0>><<effects>>
+
+<<storeon "hookah">>
+
+<<if $hookah_state gte 2>>
+    你在水烟馆醒来。你等待旋转平息，然后站起来。
+    <br><br>
+
+    <<link [[继续|Flats Hookah]]>><</link>>
+    <br>
+<<else>>
+    <<loadNPC 0 "hookah">><<person1>>
+    你在水烟馆醒来。"谢谢您的光临，"<<hookah_master>>苦笑道。"旅途还愉快吧?"
+    <br><br>
+
+    <<if $rng gte 81>>
+        "你最好不要在那里呆太久，"<<he>>把你扶了起来。"很少有人会犯不止一次的错误。"
+    <<elseif $rng gte 61>>
+        "不要告诉别人，"<<he>>边说边扶你站起来。"他们会告诉你这不是水烟的意义，但他们会嫉妒的。"
+    <<elseif $rng gte 41>>
+        "如果我是你，我会直接回家，"<<he>>边说边扶你站起来。"旅行往往会让人变得敏感。"
+    <<elseif $rng gte 21>>
+        "如果你在接下来的一个小时左右看到任何不寻常的事情，不要担心，"<<he>>边说边扶你站起来。"影响可能会持续一段时间。"
+    <<else>>
+        "在你离开之前让我看看外面，"<<he>>边说边扶你站起来。"只是为了确保周围没有混混或者打手。
+    <</if>>
+    <br><br>
+
+    <<He>>把<<his>>的眼镜推到<<his>>的鼻梁上，然后走到门口。
+    <br><br>
+
+    <<link [[继续|Flats]]>><<endevent>><<set $eventskip to 1>><</link>>
+    <br>
+<</if>>
+
+:: Flats Hookah Clean
+<<effects>>
+
+你用簸箕和扫帚清除碎玻璃的碎片，然后用真空吸尘器清理干净更细的颗粒。客厅里的很多家具都毁了。你把碎片倒去了外面。
+<br><br>
+客厅看起来很整洁，你检查了一下水烟的情况。花瓶打碎了，但其余的都完好无损。
+<br><br>
+<<npc Bailey>><<person1>><<generate2>>
+你感觉到有人在入口看着你。<span class="pink">贝利</span>靠在门框上。<<his>>的手下们，一个<<person2>><<person>>, 站在<<person1>><<him>>身后.
+<br><br>
+
+<<link [[继续|Flats Hookah Clean 2]]>><</link>>
+<br>
+
+:: Flats Hookah Clean 2
+<<effects>>
+
+贝利盯着你看了很久。"我要从你的收入里<span class="pink">抽成50%</span>，"<<He>>说。"没有任何商量的余地。"<<He>>瞥了一眼<<person2>><<person>>，那个人消失在了外面的走廊里。
+<br><br>
+
+<<link [[答应|Flats Hookah Clean Nod]]>><<sub 1>><</link>>
+<br>
+<<link [[生气|Flats Hookah Clean Angry]]>><<def 1>><</link>>
+<br>
+
+:: Flats Hookah Clean Nod
+<<effects>>
+
+你点点头，尽管贝利已经认为你的同意是理所当然的。"你需要一个新的水烟管。我帮不了你…不管老主人放了什么进去。<i>去城外的农场看看。</i>我知道可能有人找到了你需要的东西。"
+<br><br>
+
+<<person>>回来了，带着一个完整的水烟管。<<He>>把它带到房间中央。
+<br><br>
+
+<<link [[继续|Flats Hookah Clean End]]>><</link>>
+<br>
+
+:: Flats Hookah Clean Angry
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+    "但你已经拿了这么多了，"你说。
+<<elseif $speech_attitude is "bratty">>
+    "好像我给你的钱还不够多似的，"你说。
+<<else>>
+    "但我已经付钱给你了，"你说。
+<</if>>
+<br><br>
+"这是另一码事，"贝利冷笑着说。"你需要一个新的水烟管。我帮不了你…不管老主人放了什么进去。<i>去城外的农场看看。</i>我知道可能有人找到了你需要的东西。"
+<br><br>
+
+<<person>>回来了，带着一个完整的水烟管。<<He>>把它带到房间中央。
+<br><br>
+
+<<link [[继续|Flats Hookah Clean End]]>><</link>>
+<br>
+
+
+:: Flats Hookah Clean End
+<<effects>>
+
+贝利等着<<person1>><<his>>的手下离开，然后用<<his>>的眼睛最后扫视了一遍房间，转身离开了。
+<br><br>
+
+<<link [[继续|Flats Hookah]]>><<endevent>><</link>>
+<br>
+
+:: Flats Hookah Juice Carried
+<<effects>>
+
+你从厨房拿了一把钳子，把潜伏者从你的网里夹了出来。当你把它放进水烟管时，它无力的胡乱扭动。
+<br><br>
+
+空气中弥漫着甜甜的香。
+<br><br>
+
+<<link [[继续|Flats Hookah]]>><</link>>
+<br>
+
+:: Flats Hookah Juice Fridge
+<<effects>>
+
+你从厨房里拿出一把钳子，从冰箱里的笼子里夹出一只潜伏者。当你把它放进水烟管时，它无力的胡乱扭动。
+<br><br>
+
+空气中弥漫着甜甜的香。
+<br><br>
+
+<<link [[继续|Flats Hookah]]>><</link>>
+<br>
+
+:: Flats Hookah Fridge
+<<effects>>
+
+你打开冰箱，打开里面的一个笼子。你展开你的网，让里面的生物掉了下来，然后在它逃脱之前砰地关上笼子。
+<br><br>
+
+<<link [[继续|Flats Hookah]]>><</link>>
+<br>
+
+:: Flats Hookah Smoke Danger
+<<effects>>
+
+你坐在水烟管前的垫子上，把水管放到嘴里，然后吸气。
+<br><br>
+
+你躺在地上，大脑一片混沌，你感觉天花板在你的眼中不断旋转，旋转。四周光怪陆离，一片炫彩，整个人仿佛已经不在人间。
+<br><br>
+
+<span class="red">一股不可抗拒的力量抓住了你，</span>拉着你穿过一个奇幻的迷宫。
+<br><br>
+
+<<link [[继续|Flats Hookah Smoke Danger 2]]>><<pass 60>><</link>>
+<br>
+
+:: Flats Hookah Smoke Danger 2
+<<effects>>
+
+你在垃圾箱后面醒来。<span class="pink">你的衣服不见了。</span>你不知道你在镇上的哪里，周围也没有其他人，你把身体遮住站了起来。
+<br><br>
+
+<<clothesruined>>
+<<switch $rng>>
+<<case 1>>
+    <<set $bus to "nightingale">>
+<<case 2>>
+    <<set $bus to "domus">>
+<<case 3>>
+    <<set $bus to "elk">>
+<<case 4>>
+    <<set $bus to "high">>
+<<case 5>>
+    <<set $bus to "starfish">>
+<<case 6>>
+    <<set $bus to "barb">>
+<<case 7>>
+    <<set $bus to "connudatus">>
+<<case 8>>
+    <<set $bus to "wolf">>
+<<case 9>>
+    <<set $bus to "harvest">>
+<<case 10>>
+    <<set $bus to "oxford">>
+<<case 11>>
+    <<set $bus to "danube">>
+<<case 12>>
+    <<set $bus to "mer">>
+<<case 13>>
+    <<set $bus to "cliff">>
+<</switch>>
+<<destination>>
+
+
+:: Flats Hookah Work
+<<effects>>
+
+你打开前门，让甜甜的香飘到外面。你不需要等太久。你想如何表现自己?
+<br><br>
+
+<<link [[友好|Flats Hookah Work Friendly]]>><</link>><<note "困扰的事件" "blue">>
+<br>
+<<link [[专业|Flats Hookah Work Professional]]>><</link>><<note "令人困扰的顾客" "blue">>
+<br>
+
+
+
+:: Flats Hookah Work Professional
+<<effects>>
+
+你在门边等着。
+<<cleareventpool>>
+
+<<addinlineevent "hookah_work_professional_1" 1>>
+    <<generate1>><<person1>>一个<<person>>从你身边走过，环顾四周。
+    <br><br>
+    "欢迎来到水烟馆，"你说。<<He>>听到你的声音后吓的跳了起来。"水烟一小时50英镑。"
+    <br><br>
+    <<He>>张开<<his>>的嘴想说什么。"没有两个人有相同的经历，"你打断他，好像已经预想到了<<He>>想问什么一样。"恐怕这种物质本身必须保密。"
+    <br><br>
+    <<He>>付钱给你，然后坐在了垫子上。你赚了<<moneyGain 25>>.
+    <br><br>
+    <<link [[继续|Flats Hookah Work Professional Grope]]>><<pass 60>><</link>>
+    <br>
+<</addinlineevent>>
+
+<<addinlineevent "hookah_work_professional_2" 1>>
+    <<generate1>><<generate2>><<person1>>
+    一个<<person>>和<<person2>><<person>>走了进来。
+    <br><br>
+    "欢迎来到水烟馆，"你说。"价格50英镑-"
+    <br><br>
+    "我们不是第一次来了，"<<person2>><<person>>一边说一边把两个顾客的钱递给你。你赚了<<moneyGain 50>>。
+    <br><br>
+
+    两人坐在水烟周围的几个靠垫上。
+    <br><br>
+
+    <<link [[继续|Flats Hookah Work Professional Pair]]>><<pass 60>><</link>>
+    <br>
+<</addinlineevent>>
+
+<<addinlineevent "hookah_work_professional_3" 1>>
+    <<generate1>><<generate2>><<generate3>><<person1>>
+    <<person>>，<<person2>><<person>>和<<person3>><<person>>犹豫的走了进来。
+    <br><br>
+    "欢迎来到水烟馆，"你说。"水烟一小时50英镑。"
+    <br><br>
+    "这不是妓院吗?"<<person1>><<person>>问道。
+    <br><br>
+    你不断地深呼吸，努力压抑着心中的愤怒。"不，这不是那种店。"
+    <br><br>
+    <<person>>抬起<<his>>的手臂做了一个安抚的手势。"好吧，好吧。我们看看这水烟是怎么回事。"<<He>>把钱递给你。你赚了<<moneyGain 75>>。
+    <br><br>
+    <<link [[继续|Flats Hookah Work Professional Trio]]>><<pass 60>><</link>>
+    <br>
+<</addinlineevent>>
+
+<<runeventpool>>
+
+
+:: Flats Hookah Work Professional Trio
+<<effects>>
+
+你的顾客吸入烟雾。它让他们进入不稳定的睡眠状态。
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if ($danger gte (9900 - $allure) or $eventforced)>>
+    一个小时过去了。你把他们从梦中唤醒。"谢谢您的光临，"你说。"我们不会让客人每天花超过一个小时在水烟上，安全起见。"
+    <br><br>
+    你把他们带到门口，但是<<person1>><<person>>挡在了你前面，<<he>>砰地关上了门。"水烟让我欲火焚身，"<<he>>说。"帮我泄泄火怎么样?"<<person2>><<person>>和<<person3>><<person>>站在你的两侧。他们看起来不会接受你说出"不"这个答案。
+    <br><br>
+
+    <<link [[继续|Flats Hookah Work Professional Trio Rape]]>><<set $molestationstart to 1>><</link>>
+    <br>
+<<else>>
+    <<link [[继续|Flats Hookah Work Simple Good End]]>><</link>>
+    <br>
+<</if>>
+
+:: Flats Hookah Work Professional Trio Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Flats Hookah Work Professional Trio Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Hookah Work Professional Trio Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Hookah Work Professional Trio Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	他们离开了客厅，留下你瘫坐在门边。
+	<br><br>
+	<<tearful>>你站了起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+<<else>>
+	你打开门，重重的一脚踢在了<<person1>><<person>>的后背上，<<He>>滚到了屋外。<<person2>><<person>>和<<person3>><<person>>吓得后退了两步，他们互相看了两眼然后快速的跑了出去。
+	<br><br>
+	<<tearful>>你关上门。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+<</if>>
+
+<<link [[继续|Flats Hookah]]>><</link>>
+<br>
+
+:: Flats Hookah Work Professional Pair
+<<effects>>
+
+<<person1>><<person>>和<<person2>><<person>>吸着水烟，靠在垫子上。你留心观察着他们，确保他们的动作没有令人担忧的迹象。
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if ($danger gte (9900 - $allure) or $eventforced)>>
+    一个小时过去了。你叫醒了你的顾客，可是<<person1>><<person>>抓住了你的手腕，把你用力往<<he>>的方向拉。
+    <br><br>
+    "每个人付50英镑来吸烟，这有点贵，不是吗？"<<he>>说。"我们要物有所值。"
+    <br><br>
+
+    <<link [[继续|Flats Hookah Work Professional Pair Rape]]>><<set $molestationstart to 1>><</link>>
+    <br>
+<<else>>
+    <<link [[继续|Flats Hookah Work Simple Good End]]>><</link>>
+    <br>
+<</if>>
+
+
+:: Flats Hookah Work Professional Pair Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Flats Hookah Work Professional Pair Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Hookah Work Professional Pair Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Hookah Work Professional Pair Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	他们离开了，把你一个人留在了靠垫上。
+	<br><br>
+	<<tearful>>你站了起来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+<<else>>
+	<<person1>><<person>>踉跄了一下，抓着水烟管稳住自己。他们碰到了花瓶，一团浓烈的烟雾笼罩了他们的脸。
+	<br><br>
+    他们踉跄着离开了房间，喃喃自语着胡话。<<person2>><<person>>跟着他们，脸上带着担忧的表情。
+    <br><br>
+	<<tearful>>你要确保水烟管不掉下来。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+<</if>>
+
+<<link [[继续|Flats Hookah]]>><</link>>
+<br>
+
+:: Flats Hookah Work Professional Grope
+<<effects>>
+
+<<person1>><<person>>吸着水烟失去了知觉。你留心观察着<<him>>，确保<<his>>的动作没有令人担忧的迹象。
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if ($danger gte (9900 - $allure) or $eventforced)>>
+    一个小时过去了。你正准备叫醒<<him>>，突然<<he>>自己坐起身来。<<He>>用充满欲望的眼睛盯着你。
+    <br><br>
+
+    <<He>>向前走，把手放在你的<<breasts>>前。"又是一个性感的美女，"<<he>>说。"我应该趁机好好利用一下。"
+    <br><br>
+
+    <<link [[继续|Flats Hookah Work Professional Grope Rape]]>><<set $molestationstart to 1>><</link>>
+    <br>
+<<else>>
+    <<link [[继续|Flats Hookah Work Simple Good End]]>><</link>>
+    <br>
+<</if>>
+
+
+:: Flats Hookah Work Professional Grope Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Flats Hookah Work Professional Grope Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Hookah Work Professional Grope Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Flats Hookah Work Professional Grope Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<He>>等了一会儿，然后掐了一下自己。"哎呀，"<<he>>说。"对不起，我以为我在做梦。"
+	<br><br>
+	<<tearful>>你让<<him>>离开。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Flats Hookah]]>><</link>>
+    <br>
+
+<<else>>
+	你打倒了那个<<person>>。<<He>>眨了眨眼睛。"对不起，"<<he>>说。"我以为我在做梦。"
+	<br><br>
+	<<tearful>>你让<<him>>离开。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Flats Hookah]]>><</link>>
+    <br>
+
+<</if>>
+
+
+:: Flats Hookah Work Friendly
+<<effects>>
+
+你在门边等着。
+
+<<cleareventpool>>
+
+<<addinlineevent "hookah_work_friendly_1" 1>>
+    <<generate1>><<person1>>一个<<person>>探头。"你好，"你微笑着说。"欢迎来到水烟馆。水烟一小时50英镑。"
+    <br><br>
+
+    <<person>>环顾四周，付了钱，然后坐在垫子上。你赚了<<moneyGain 25>>。
+    <br><br>
+    <<link [[继续|Flats Hookah Work Friendly Tentacles]]>><<pass 60>><</link>>
+    <br>
+<</addinlineevent>>
+
+<<addinlineevent "hookah_work_friendly_2" 1>>
+    <<generate1>><<generate2>><<person1>>一个<<person>>走了进来，后面跟着一个<<person2>><<person>>
+    <br><br>
+    "你好，"你说。"欢迎来到水烟馆。水烟一小时50英镑。"
+    <br><br>
+    "新老板?"<<person>>付钱给你，<<person1>><<person>>直接坐了下来。"随便了，反正对我来说都一样。"
+    <br><br>
+
+    你赚了<<moneyGain 50>>.
+    <br><br>
+
+    <<link [[继续|Flats Hookah Work Friendly Slime]]>><<pass 60>><</link>>
+    <br>
+
+<</addinlineevent>>
+
+<<addinlineevent "hookah_work_friendly_3" 1>>
+    <<generate1>><<generate2>><<generate3>><<person1>>
+    一个<<person>>、<<person2>><<person>>和<<person3>><<person>>进入了客厅。
+    <br><br>
+    "你好，"你说。"欢迎来到水烟馆。水烟一小时50英镑。"
+    <br><br>
+    那个<<person>>看起来有些犹豫，但<<person1>><<person>>为他们三个支付了费用，然后坐在垫子上。其他两个人也效仿<<his>>的样子。你赚了<<moneyGain 75>>。
+    <br><br>
+
+    <<link [[继续|Flats Hookah Work Friendly Window]]>><<pass 60>><</link>>
+    <br>
+<</addinlineevent>>
+
+<<runeventpool>>
+
+:: Flats Hookah Work Friendly Window
+<<effects>>
+
+三个人吸着水烟很快就陷入了沉睡。你站在窗边，看着下面人来人往的街道。
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if ($danger gte (9900 - $allure) or $eventforced)>>
+    有什么东西吸引了你的目光。远下方的人们在人行道上站着不动，他们注视着上方。看起来他们在盯着你。<<gstress>><<stress 6>>
+    <br><br>
+
+    <<link [[拉上窗帘|Flats Hookah Work Window Close]]>><</link>>
+    <br>
+    <<link [[看回去|Flats Hookah Work Window Stare]]>><<if $awareness lt 600>><<awareness 6>><</if>><</link>><<ggstress>><<if $awareness lt 600>><<gawareness>><</if>>
+    <br>
+<<else>>
+    <<link [[继续|Flats Hookah Work Simple Good End]]>><</link>>
+    <br>
+<</if>>
+
+:: Flats Hookah Work Window Close
+<<effects>>
+
+你关上窗帘。你要心烦的事已经够多了。
+<br><br>
+
+时间快结束了，你叫醒了你的顾客。
+<br><br>
+
+"太棒了，"<<person2>><<person>>说。"我还需要一个小时。"
+<br>
+"对不起，"你说。"但是每天抽水烟超过一个小时是不安全的。我希望你下次再来!"
+<br><br>
+
+你把门打开，然后三个人离开了。
+<br><br>
+
+<<link [[继续|Flats Hookah]]>><<endevent>><</link>>
+<br>
+
+
+:: Flats Hookah Work Window Stare
+<<effects>>
+
+你注视着下方的人，但很快注意到其他人也在看你。毫无疑问，他们在看着你。
+<br><br>
+
+你被吸引得几乎忘记了时间。你将目光从窗户上移开，叫醒了你的客人。
+<br><br>
+
+"太棒了，"<<person2>><<person>>说。"我还需要一个小时。"
+<br>
+"对不起，"你说。"但是每天抽水烟的时间不宜超过一小时，这样做不安全。希望你能在另一个日子再来！"
+<br><br>
+
+你把门打开，然后三个人离开了。
+<br><br>
+
+<<link [[继续|Flats Hookah]]>><<endevent>><</link>>
+<br>
+
+:: Flats Hookah Work Friendly Slime
+<<effects>>
+
+那两个人在水烟壶前陷入了沉睡。你注视着他们，确保他们的动作不会变得太剧烈。
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if ($danger gte (9900 - $allure) or $eventforced)>>
+    <<if $slimedisable is "f">>
+        你听到厨房里有一声啪的声音。你调查了一下，发现有一个大史莱姆正在地板上滑动。另一个从水槽里跌落，砰的一声摔在地上然后融在了一起。更多的史莱姆跟着出现。
+        <br><br>
+        你回到客厅叫醒了你的客人。"希望你做了一个愉快的梦，"你边说边扶着<<person1>><<person>>站起身。"欢迎下次再来。"
+        <br><br>
+        你领着他们走向门口，希望他们没有注意到厨房里又一声啪的声音。
+        <br><br>
+        <<link [[继续|Flats Hookah Work Friendly Slime 2]]>><</link>>
+        <br>
+    <<else>>
+        <<link [[继续|Flats Hookah Work Simple Bad End]]>><</link>>
+        <br>
+    <</if>>
+<<else>>
+    <<link [[继续|Flats Hookah Work Simple Good End]]>><</link>>
+    <br>
+<</if>>
+
+:: Flats Hookah Work Friendly Slime 2
+<<effects>>
+
+你关上门，转过身去面对那些史莱姆。
+<br><br>
+
+<<link [[继续|Flats Hookah Work Friendly Slime Rape]]>><<endevent>><<set $struggle_start to 1>><</link>>
+<br>
+
+:: Flats Hookah Work Friendly Slime Rape
+
+<<if $struggle_start is 1>>
+	<<struggle_init>>
+	<<set $struggle.creature to "slime">>
+	<<struggle_creatures 4 1>>
+	<<set $combat to 1>>
+	<<controlloss>>
+	<<violence 1>>
+	<<molested>>
+	<<unset $struggle_start>>
+<</if>>
+
+<<struggle>>
+
+
+<<if $struggle.done gte $struggle.number>>
+	<span id="next"><<link [[继续|Flats Hookah Work Friendly Slime Rape End]]>><</link>></span>
+	<br>
+<<else>>
+	<span id="next"><<link [[继续|Flats Hookah Work Friendly Slime Rape]]>><</link>></span>
+	<br>
+<</if>>
+
+
+:: Flats Hookah Work Friendly Slime Rape End
+<<effects>>
+
+最后一团史莱姆跳进了厨房水槽，消失在排水口里。
+<br><br>
+
+<<tearful>>你泪眼汪汪地检查水烟管，你得确保它没有被损坏。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Flats Hookah]]>><</link>>
+<br>
+
+:: Flats Hookah Work Friendly Tentacles
+<<effects>>
+
+<<person1>><<person>>在水烟管前陷入了沉睡。你注视着<<him>>，确保<<his>>偶尔的抽搐不会发展成令人担忧的症状。
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if ($danger gte (9900 - $allure) or $eventforced)>>
+    <<if $tentacledisable is "f">>
+        你听到浴室里有奇怪的声音。你探头望过去，发现触手正在从水槽、浴缸和水龙头的排水口中钻出来。
+        <br><br>
+
+        你叫醒了<<person>><<person1>>，帮助<<him>>站起身来。"谢谢你的光临，"你说。"希望你做了一个愉快的梦。"你领着<<him>>走向门口，尽力不看身后浴室里钻出来的触手。
+        <br><br>
+        <<link [[继续|Flats Hookah Work Friendly Tentacles 2]]>><</link>>
+        <br>
+    <<else>>
+        <<link [[继续|Flats Hookah Work Simple Bad End]]>><</link>>
+        <br>
+    <</if>>
+<<else>>
+    <<link [[继续|Flats Hookah Work Simple Good End]]>><</link>>
+    <br>
+<</if>>
+
+:: Flats Hookah Work Friendly Tentacles 2
+<<effects>>
+
+你关上<<person>>后面的门，转过身来面对触手的威胁。
+<br><br>
+
+<<link [[继续|Flats Hookah Work Friendly Tentacles Rape]]>><<endevent>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Flats Hookah Work Friendly Tentacles Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<set $combat to 1>>
+	<<set $enemytype to "tentacles">>
+	<<molested>>
+	<<controlloss>>
+
+	<<tentaclestart 6 12>>
+
+<</if>>
+
+<<statetentacles>>
+
+
+<<effects>>
+<<effectstentacles>>
+<<tentacles>>
+<<actionstentacles>>
+
+<<if $tentacles.active lte ($tentacles.max / 2)>>
+	<span id="next"><<link [[继续|Flats Hookah Work Friendly Tentacles Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Flats Hookah Work Friendly Tentacles Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+
+:: Flats Hookah Work Friendly Tentacles Rape Finish
+<<effects>>
+
+触手缩回，消失在浴室里，钻进排水口。
+<br><br>
+
+<<tearful>>你要确保水烟管没有被动过。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Flats Hookah]]>><</link>>
+<br>
+
+
+:: Flats Hookah Work Simple Bad End
+<<effects>>
+
+<<if $enemyno gte 2>>
+    你照看你的顾客。他们似乎睡着了，但仍然时不时地把烟斗叼到嘴里。
+    <br><br>
+<<else>>
+    你照看你的顾客。<<He>>看起来在睡觉，但是偶尔还会把烟斗放到嘴边。
+    <br><br>
+<</if>>
+<<person1>>
+<<set $rng to random(1, 5)>>
+<<if $rng is 5>>
+    那个<<person>>不停地动个不停。你把水烟从<<him>>身上移开。你怕<<he>>会把它打碎。<<gstress>><<stress>>
+    <br><br>
+<<elseif $rng is 4>>
+    <<person>>发出一声恐怖的哀号。你捂住耳朵。至少这声音没持续太久.<<gstress>><<stress 6>>
+    <br><br>
+<<elseif $rng is 3>>
+    那个<<person>>含糊不清地喃喃自语。<<his>>说话的语调有些不自然，让人感到不安。<<gstress>><<stress 6>>
+    <br><br>
+<<elseif $rng is 2>>
+    那个<<person>>舔着手指，仿佛在品尝美味的蜂蜜。<<He>>的声音听起来非常含糊不清。<<gstress>><<stress 6>>
+    <br><br>
+<<else>>
+    <<person1>><<person>>颤抖着，脚在空中乱蹬。你担心<<he>>会打破什么东西，因此你抓住<<His>>的脚使其保持静止。<<gstress>><<stress 6>>
+    <br><br>
+<</if>>
+
+<<if $enemyno gte 2>>
+    在轮班结束时，你叫醒你的顾客并帮助他们站起来。
+    <br><br>
+<<else>>
+    在轮班结束时，你叫醒你的客户，帮<<him>>站起来。
+    <br><br>
+<</if>>
+
+<<link [[继续|Flats Hookah]]>><<endevent>><</link>>
+<br>
+
+:: Flats Hookah Work Simple Good End
+<<effects>>
+
+<<if $enemyno gte 2>>
+    你照看你的顾客。他们似乎睡着了，但仍然时不时地把烟斗叼到嘴里。
+    <br><br>
+<<else>>
+    你照看你的顾客。<<He>>看起来在睡觉，但是偶尔还会把烟斗放到嘴边。
+    <br><br>
+<</if>>
+<<person1>>
+<<set $rng to random(1, 5)>>
+<<if $rng is 5>>
+    那个<<person>>时不时地低声喃喃，描述着<<his>>的幻觉。其中一些听起来很不妙。<<if $awareness lt 600>><<awareness 6>><<gawareness>><</if>>
+    <br><br>
+<<elseif $rng is 4>>
+    那个<<person>>低声嘀咕着<<his>>在麋鹿街上的工作。听起来很有趣。<<gscience>><<scienceskill>>
+    <br><br>
+<<elseif $rng is 3>>
+    那个<<person>>大声喊着些和数学公式有关的胡言乱语。大部分对你来说都太难了，可能对<<person>><<himself>>也是如此，但你有些问题还是能够跟上的。<<gmaths>><<mathsskill>>
+    <br><br>
+<<elseif $rng is 2>>
+    那个<<person>>大声背诵着诗歌。至少你认为<<he>>是在吟诗。它们有一种奇妙的启迪作用。<<genglish>><<englishskill>>
+    <br><br>
+<<else>>
+    那个<<person>>谈论<<his>>的童年。这些故事可能被夸大了，但仍然很有趣。<<ghistory>><<historyskill>>
+    <br><br>
+<</if>>
+
+<<if $enemyno gte 2>>
+    在轮班结束时，你叫醒你的顾客并帮助他们站起来。
+    <br><br>
+<<else>>
+    在轮班结束时，你叫醒你的客户，帮<<him>>站起来。
+    <br><br>
+<</if>>
+
+<<link [[继续|Flats Hookah]]>><<endevent>><</link>>
+<br>

@@ -1,0 +1,1428 @@
+:: Pregnancy [widget]
+
+<<widget "moveCreature">>
+	/*0 -> _pregnancy.fetus[_i] or location (any but portable)*/
+	/*1 -> Type*/
+	/*2 -> locationId*/
+	<<if _args[0] isnot null and _args[1]>>
+		<<set _portable to $container.portable>>
+		<<set _container to $container[$phase]>>
+		<<set $_pregnancy to $sexStats[_args[3] or "anus"].pregnancy>>
+
+		<<set _result to _args[1]>>
+		<<switch _args[0]>>
+			<<case 0 1 2 3>>
+				<!-- With a number as argument 0, it takes the parasite of that argument in your current pregnancy item -->
+				<<set _creature to clone($_pregnancy.fetus[_args[0]])>>
+			<<default>>
+				<!-- With a string as argument 0, it takes a parasite from the container matching the argument. Which parasite it takes corresponds to argument 2 -->
+				<!-- Currently only used when transferring parasites for selling in :: Containers, inside a for loop -->
+				<<if _args[2] isnot null>>
+					<<set _creature to clone($container[_args[0]].creatures[_args[2]])>>
+				<</if>>
+		<</switch>>
+
+		<<if _creature>>
+			<<if _result is "destroy">>
+				<!-- Simply gets rid of the parasite -->
+				<<set _creature to null>>
+				<<removeCreature _args[0] _args[2] _args[3]>>
+			<<elseif _result is "portable">>
+				<!-- Transfers the parasites for selling. The value of the parasite depends on its growth stat -->
+				<<set _portable.creatures.push(clone(_creature))>>
+				<<set _value to Math.floor(1000 / _creature.stats.growth)>>
+				<<set _portable.value += _value>>
+				<<removeCreature _args[0] _args[2] _args[3]>>
+			<<elseif _result is "replace" and _args[2] isnot null and _args[0] gte 0 and _args[0] lte 3>>
+				<!-- Replaces an existing parasite, for when you birth more than you can currently store -->
+				<!-- The replaced parasite gets transferred for selling -->
+				<<if _container.creatures[_i] isnot undefined>>
+					<<if _container.creatures[_i] isnot null>>
+						<<set _portable.creatures.push(clone(_container.creatures[_args[2]]))>>
+						<<set _value to Math.floor(1000 / _container.creatures[_args[2]].stats.growth)>>
+						<<set _portable.value += _value>>
+						<<set _container.creatures[_args[2]] to clone(_creature)>>
+						<<set _replaced to true>>
+					<</if>>
+				<</if>>
+				<<if _replaced isnot true>>
+					<<set _container.creatures[_args[2]] to clone(_creature)>>
+					<<set _container.count += 1>>
+				<</if>>
+				<<removeCreature _args[0] undefined _args[3]>>
+			<<elseif _result is "container">>
+				<!-- Keeps the parasite and moves it to the current container -->
+				<<set _moveTo to false>>
+				<<for _containerSlot to 0; _containerSlot lt _container.maxCount; _containerSlot++>>
+					<<if _container.creatures[_containerSlot] is undefined>>
+						<<set _moveTo to true>>
+					<<elseif _container.creatures[_containerSlot] is null>>
+						<<set _moveTo to true>>
+					<</if>>
+					<<if _moveTo is true>>
+						<<set $container[$phase].creatures[_containerSlot] to clone(_creature)>>
+						<<set $container[$phase].count += 1>>
+						<<removeCreature _args[0] _args[2] _args[3]>>
+						<<break>>
+					<</if>>
+				<</for>>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "removeCreature">>
+	<<if _args[0] isnot null>>
+		<<set $_pregnancy to $sexStats[_args[2] or "anus"].pregnancy>>
+		<<switch _args[0]>>
+			<<case 0 1 2 3>>
+				<!-- With a number as argument 0, it removes the parasite of that argument in your current pregnancy item -->
+				<<set $_pregnancy.fetus[_args[0]].toDelete to true>>
+				<<set $_pregnancy.parasiteBirthEvents += 1>>
+				<<if $_pregnancy.motherStatus is 0 and $_pregnancy.parasiteBirthEvents gte 3>>
+					<<set $_pregnancy.motherStatus to 1>>
+				<</if>>
+			<<default>>
+				<!-- With a string as argument 0, it removes a parasite from the container matching the argument. Which parasite it takes corresponds to argument 1 -->
+				<<if _args[1] isnot null>>
+					<<set $container[_args[0]].creatures[_args[1]] to null>>
+					<<set $container[_args[0]].count -= 1>>
+				<</if>>
+		<</switch>>
+	<</if>>
+<</widget>>
+
+<<widget "clearToDeleteParasiteFetus">>
+	<<if $sexStats.anus.pregnancy.type is "parasite">>
+		<<run $sexStats.anus.pregnancy.fetus to $sexStats.anus.pregnancy.fetus.filter(child => child && !child.toDelete)>>
+		<<if $sexStats.anus.pregnancy.fetus.length is 0>>
+			<<set $sexStats.anus.pregnancy.type to null>>
+		<</if>>
+	<</if>>
+	<<if $sexStats.vagina.pregnancy.type is "parasite">>
+		<<run $sexStats.vagina.pregnancy.fetus to $sexStats.vagina.pregnancy.fetus.filter(child => child && !child.toDelete)>>
+		<<if $sexStats.vagina.pregnancy.fetus.length is 0>>
+			<<set $sexStats.vagina.pregnancy.type to null>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "menstruationCycleState">>
+	<<set $sexStats.vagina.menstruation.running to $player.vaginaExist or (!$player.vaginaExist and $skin and $skin.pubic.pen is "magic" and $skin.pubic.special is "pregnancy")>>
+<</widget>>
+
+<<widget "menstruationCycle">>
+	<<set _menstruation to $sexStats.vagina.menstruation>>
+	<<if _args[0] is "daily">>/*Daily cycle*/
+		<<set _menstruation.nonCycleRng.push(random(0,6))>>
+		<<set _menstruation.nonCycleRng.deleteAt(0)>>
+	<<elseif _args[0] is "overdose">>/*Daily cycle*/
+		<<set _menstruation.nonCycleRng[0] to 0>>
+	<</if>>
+
+	<<menstruationCycleState>>
+
+	<<if _menstruation.running is true>>
+		<<set [$_pregnancy, $_pregLocation] to getPregnancyObject("pc", true)>>
+		<<set _pills to $sexStats.pills>>
+		<<switch _menstruation.currentState>>
+			<<case "normal">>
+				<<if $cycledisable is "t">>
+					<<playerPregnancyAttempt `Math.pow(4,_menstruation.nonCycleRng[0])` $_pregLocation>>
+				<<elseif _menstruation.currentDay lt _menstruation.currentDaysMax>>
+					/*Continue the cycle again*/
+					<<if _menstruation.currentDay gte _menstruation.currentDaysMax / 2 and _menstruation.lastDaysMax isnot _menstruation.currentDaysMax>>
+					<</if>>
+					<<if _menstruation.currentDay lt _menstruation.stages[1]>>
+						/*Menstrual phase - period occurs right at the start of this part*/
+						<<if _pills.pills["fertility booster"].doseTaken gte 2>>
+							<<set _menstruation.currentDay += 0.5>>
+						<</if>>
+						<<if $skin.pubic.type is "magic" and $skin.pubic.special is "pregnancy">>
+							<<set _menstruation.currentDay += 0.5>>
+						<</if>>
+						<<if (_pills.pills["contraceptive"].doseTaken gte 1 and random(0,100) gte 50) or _pills.pills["contraceptive"].doseTaken gte 2>>
+						<<else>>
+							<<set _menstruation.currentDay += 0.5>>
+						<</if>>
+					<<elseif _menstruation.currentDay lt _menstruation.stages[2]>>
+						/*Follicular phase*/
+						<<if _pills.pills["fertility booster"].doseTakenn gte 2 and _menstruation.currentDay lt _menstruation.stages[2]>>
+							<<set _menstruation.currentDay += 0.5>>
+						<</if>>
+						<<if $skin.pubic.type is "magic" and $skin.pubic.special is "pregnancy" and _menstruation.currentDay lt _menstruation.stages[2]>>
+							<<set _menstruation.currentDay += 0.5>>
+						<</if>>
+						<<if _menstruation.currentDay lt _menstruation.stages[2]>>
+							<<set _menstruation.currentDay += 0.5>>
+						<</if>>
+						/*Check for pregnancy at a reduced chance for a few days before*/
+						<<if _menstruation.currentDay gte _menstruation.stages[3] - 4>>
+							<<set $_multi = Math.clamp(Math.ceil(6 * (1 + _menstruation.stages[3] - _menstruation.currentDay)),6,30)>>
+							<<playerPregnancyAttempt $_multi $_pregLocation>>
+						<</if>>
+					<<elseif _menstruation.currentDay lt _menstruation.stages[3]>>
+						/*Ovulation phase*/
+						<<set _menstruation.currentDay += 0.5>>
+						<<set _menstruation.lastDaysMax to _menstruation.currentDaysMax>>
+
+						/*Check for pregnancy*/
+						<<playerPregnancyAttempt 3 $_pregLocation>>
+					<<else>>
+						/*Luteal phase*/
+						/*Check for pregnancy at a reduced chance for a few days after*/
+						<<if _menstruation.currentDay lte _menstruation.stages[3] + 4>>
+							<<set $_multi = Math.clamp(Math.ceil(6 * (1 + _menstruation.currentDay - _menstruation.stages[3])),6,30)>>
+							<<playerPregnancyAttempt $_multi $_pregLocation>>
+						<</if>>
+						<<if _pills.pills["fertility booster"].doseTaken gte 2>>
+							<<set _menstruation.currentDay += 0.5>>
+						<</if>>
+						<<if $skin.pubic.type is "magic" and $skin.pubic.special is "pregnancy">>
+							<<set _menstruation.currentDay += 0.5>>
+						<</if>>
+						<<if (_pills.pills["contraceptive"].doseTaken gte 1 and random(0,100) gte 50) or _pills.pills["contraceptive"].doseTaken gte 2>>
+						<<else>>
+							<<set _menstruation.currentDay += 0.5>>
+						<</if>>
+					<</if>>
+				<<else>>
+					/*Start the cycle again*/
+					<<restartMenstruationCycle>>
+					<<set _menstruation.periodEnabled to true>>
+				<</if>>
+			<<case "pregnant">>
+				/*To progress as normal so that the heat cycle and pregnancy risk still works as normal, will be reset in the recovering stage*/
+				<<if _menstruation.currentDay lt _menstruation.currentDaysMax>>
+					<<if (_pills.pills["contraceptive"].doseTaken gte 1 and random(0,100) gte 50) or _pills.pills["contraceptive"].doseTaken gte 2>>
+					<<else>>
+						<<set _menstruation.currentDay += 0.5>>
+					<</if>>
+					<<if _menstruation.currentDay lt _menstruation.currentDaysMax>>
+						<<if $skin.pubic.type is "magic" and $skin.pubic.special is "pregnancy">>
+							<<set _menstruation.currentDay += 0.5>>
+						<</if>>
+						<<if _pills.pills["fertility booster"].doseTaken gte 2>>
+							<<set _menstruation.currentDay += 0.5>>
+						<</if>>
+						<<if _menstruation.currentDay gt _menstruation.currentDaysMax>>
+							<<set _menstruation.currentDay to _menstruation.currentDaysMax>>
+						<</if>>
+					<</if>>
+				<</if>>
+				/*To deal with an issues that occured when players cheated with the bugged 'Clear current pregnancy'*/
+				<<if !getPregnancyObject().type is null or getPregnancyObject().type is "parasite">>
+					<<restartMenstruationCycle>>
+					<<set _menstruation.currentState to "normal">>
+					<<set _menstruation.recoveryTime to null>>
+					<<set _menstruation.recoveryTimeStart to null>>
+					<<set _menstruation.recoveryStage to null>>
+				<</if>>
+			<<case "recovering">>
+				<<set _menstruation.recoveryTime -= 0.5>>
+				<<switch _pills.pills["fertility booster"].doseTaken>>
+					<<case 1>><<set _menstruation.recoveryTime -= 0.5>>
+					<<case 2 3 4>><<set _menstruation.recoveryTime -= 1>>
+				<</switch>>
+				<<if $skin.pubic.type is "magic" and $skin.pubic.special is "pregnancy">>
+					<<set _menstruation.recoveryTime -= 0.5>>
+				<</if>>
+				<<if $_pregnancy.totalBirthEvents gt 2>>
+					<<set _menstruation.recoveryTime -= 0.5>>
+				<</if>>
+				<<set _menstruation.recoveryStage to Math.floor((1 - (_menstruation.recoveryTime / _menstruation.recoveryTimeStart))*5)>>
+				<<if _menstruation.recoveryTime lte 0>>
+					<<set $effectsmessage to 1>>
+					<<set $recovered_from_pregnancy to 1>>
+					/*Ready to give birth again*/
+					<<restartMenstruationCycle>>
+					<<set _menstruation.currentState to "normal">>
+					<<set _menstruation.recoveryTime to null>>
+					<<set _menstruation.recoveryTimeStart to null>>
+					<<set _menstruation.recoveryStage to null>>
+				<</if>>
+		<</switch>>
+	<</if>>
+	<<updateRecordedSperm "vagina" "pc" 0.5>>
+	<<updateRecordedSperm "anus" "pc" 0.5>>
+<</widget>>
+
+<<widget "rutCycle">>
+	<<if $player.penisExist and ($wolfgirl gte 2 or $cat gte 2 or $cow gte 2 or $fox gte 2)>>
+		<<if !$player.beastRut>>
+			<<set $player.beastRut to 0>>
+		<</if>>
+		<<set $_pills = $sexStats.pills.pills>>
+		<<if $wolfgirl gte 2>>
+			<<set $_changeReduction to $wolfbuild>>
+		<<elseif $cat gte 2>>
+			<<set $_changeReduction to $catbuild>>
+		<<elseif $cow gte 2>>
+			<<set $_changeReduction to $cowbuild>>
+		<<elseif $fox gte 2>>
+			<<set $_changeReduction to $foxbuild>>
+		<</if>>
+		<<set $player.beastRut += 1 + $_pills["fertility booster"].doseTaken>>
+
+		<<if $player.beastRut gte random(30 - Math.ceil($_changeReduction / 5), 120 - Math.clamp($_changeReduction, 0, 100)) or _args[0] or $_pills["fertility booster"].doseTaken gt 2>>
+			<<set $player.beastRut to 0>>
+		<</if>>
+	<<else>>
+		<<run delete $player.beastRut>>
+	<</if>>
+<</widget>>
+
+:: Pregnancy2 [widget]
+
+<<widget "bodyPregCalc">>
+	<<switch $bodysize>>
+		<<case 0>><<set _bodySize to ["tiny","tiny","tiny","small","small","normal","large"]>>
+		<<case 1>><<set _bodySize to ["tiny","tiny","small","small","small","normal","normal","large"]>>
+		<<case 2>><<set _bodySize to ["tiny","small","small","normal","normal","normal","large","large"]>>
+		<<case 3>><<set _bodySize to ["tiny","small","normal","normal","large","large","large"]>>
+		<<default>>
+	<</switch>>
+	<<set _hairColour to [$naturalhaircolour, $naturalhaircolour, $naturalhaircolour, $naturalhaircolour,"red","jetblack","black","brown","burntorange","platinumblond","strawberryblond","ginger","ashyblond","blond"]>>
+<</widget>>
+
+/*Don't call outside of the menstruationCycle widget*/
+<<widget "restartMenstruationCycle">>
+	<<set $_menstruation to $sexStats.vagina.menstruation>>
+	<<set $_menstruation.currentDay to 0.5>>
+	<<set $_menstruation.currentDaysMax to $_menstruation.baseDays + random(0, $_menstruation.baseDaysRng)>>
+	<<set _stage2 to Math.round($_menstruation.currentDaysMax * 0.17)>>
+	<<if _stage2 gte 4>>
+		<<set _stage2-->>
+	<</if>>
+	<<set _stage3 to Math.round($_menstruation.currentDaysMax * 0.5)>>
+	<<if _stage3 lt 13>>
+		<<set _stage3++>>
+	<<elseif _stage3 gte 18>>
+		<<set _stage3-->>
+	<</if>>
+	<<set $_menstruation.stages to [0, _stage2, _stage3, _stage3 + random(1,2) * 0.5]>>
+<</widget>>
+
+/* Used for the passage where the player has given birth in */
+<<widget "playerPrebirth">>
+	<<set getPregnancyObject().gaveBirth to true>>
+<</widget>>
+
+/*args[0] - mother, args[1] - birth location, args[2] - location of where the clildren should go to, _args[3] - next passage, _args[4] - time passage*/
+/*args[0] - birth location, args[1] - location of where the clildren should go to, _args[2] - next passage, _args[3] - time passage*/
+<<widget "birthUi">>
+	<<if _args[0] is "pc">>
+		<<set _pregnancyBirth to getPregnancyObject()>>
+	<<elseif C.npc[_args[0]]>>
+		<<set _pregnancyBirth to getPregnancyObject(_args[0])>>
+	<</if>>
+	<<if _pregnancyBirth and _pregnancyBirth.fetus>>
+		<<pregnancyFeats _args[0]>>
+		<div id="birthUi">
+			<<for _i to 0; _i lt _pregnancyBirth.fetus.length; _i++>>
+				<<capture _i>>
+					<div @id="'child-' + _i" class="childUi">
+						<<birthChildElement _args[0] _i>>
+					</div>
+				<</capture>>
+			<</for>>
+		</div>
+		<br>
+		<<if _args[3]>>
+			<<set _hours to Math.floor(_args[4] / 60)>>
+			<<set _minutes to _args[4] % 60>>
+			<<set _timeString to " (" + (_hours lt 10 ? "0": "") +_hours+":"+(_minutes lt 10 ? "0": "")+_minutes+")">>
+		<</if>>
+		<<link [["继续" + (_args[4] ? _timeString : "")|_args[3]]]>>
+			<<if _args[0] is "pc">>
+				<<run delete _pregnancyBirth.gaveBirth>>
+				<<endPlayerPregnancy _args[1] _args[2]>>
+			<<elseif $NPCNameList.includes(_args[0])>>
+				<<endNpcPregnancy _args[0] _args[1] _args[2]>>
+			<</if>>
+		<</link>>
+	<<else>>
+		Error Pregnancy Object not found in the passage '<<print $passage>>'.
+	<</if>>
+<</widget>>
+
+<<widget "pregnancyFeats">>
+	<<if _args[0] is "pc">>
+		<<earnFeat "Miracle of Life">>
+		<<if _pregnancyBirth.potentialFathers.filter(npc => npc.type === T.pregnancyBirth.type).length gte 5>>
+			<<earnFeat "Bicycle Mother">>
+		<</if>>
+		<<if _pregnancyBirth.type is "human" and _pregnancyBirth.fetus.length is 3>>
+			<<earnFeat "Life Comes in Threes">>
+		<</if>>
+		<<if ($player.virginity.anal is true && !$player.vaginaExist) || ($player.virginity.vaginal is true && $player.vaginaExist)>>
+			<<earnFeat "Hail Mary">>
+		<</if>>
+		<<if !$player.vaginaExist>>
+			/* ToDo: Pregnancy: uncomment once MPreg is possable in-game
+				<<earnFeat "Life begins when you least expect">>
+			*/
+		<</if>>
+	<</if>>
+	<<if _args[0] isnot "pc">>
+		<<if _pregnancyBirth.fetus[0].mother isnot "pc" && _pregnancyBirth.fetus[0].father is "pc">>
+			<<earnFeat "First Fatherhood">>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "birthChildElement">>
+	<<if _pregnancyBirth>>
+		<<capture _args>>
+			<<if _pregnancyBirth.fetus[_args[1]].type isnot "human">>
+				种族: <<print _pregnancyBirth.fetus[_args[1]].type[0].toUpperCase() + _pregnancyBirth.fetus[_args[1]].type.substring(1)>> |
+			<</if>>
+			性别:
+			<<switch _pregnancyBirth.fetus[_args[1]].gender>>
+				<<case "m">>男性
+				<<case "f">>女性
+				<<case "h">>扶她
+			<</switch>>
+			<br>
+			母亲:
+			<<if _pregnancyBirth.fetus[_args[1]].motherKnown>>
+				<<print pregnancyNameCorrection(_pregnancyBirth.fetus[_args[1]].mother, true)>>
+			<<else>>
+				????
+			<</if>>
+			| 父亲:
+			<<if _pregnancyBirth.fetus[_args[1]].fatherKnown>>
+				<<print pregnancyNameCorrection(_pregnancyBirth.fetus[_args[1]].father, true)>>
+			<<else>>
+				????
+			<</if>>
+			<br>
+			尺寸： <<print _pregnancyBirth.fetus[_args[1]].features.size>> | 发色:<<hairmapcolourtext _pregnancyBirth.fetus[_args[1]].features.hairColour>>
+			<<if _pregnancyBirth.fetus[_args[1]].features.skinColour>>
+				|皮肤颜色:<<skinColourName _pregnancyBirth.fetus[_args[1]].features.skinColour>>
+			<</if>>
+			<br>
+			<<if _pregnancyBirth.fetus[_args[1]].features.identical>>
+				相似度: <<print _pregnancyBirth.fetus[_args[1]].features.identical>>
+				<br>
+			<</if>>
+			<label><<print '<<textbox "_pregnancyBirth.fetus['+_args[1]+'].name" `_pregnancyBirth.fetus['+_args[1]+'].name or ""`>>'>></label>
+			<br>
+			<span class="no-numberify">
+				<<link "随机名称">>
+					<<if _args[0] is "pc">>
+						<<if $player.vaginaExist>>
+							<<set _pregnancyNaming to $sexStats.vagina.pregnancy>>
+						<<else>>
+							<<set _pregnancyNaming to $sexStats.anus.pregnancy>>
+						<</if>>
+					<<elseif C.npc[_args[0]] and C.npc[_args[0]].pregnancy>>
+						<<set _pregnancyNaming to C.npc[_args[0]].pregnancy>>
+					<</if>>
+					<<set _pregnancyNaming.fetus[_args[1]].name to generateBabyName(undefined, _pregnancyNaming.fetus[_args[1]].gender, _expectedChildId)>>
+					<<replace `"#child-" + _args[1]`>><<birthChildElement _args[0] _args[1]>><</replace>>
+				<</link>>
+			</span>
+			<small class="right">
+				保存:<<print $saveId>>
+				<<if $saveName isnot "">>
+					| name: <<print $saveName>>
+				<</if>>
+			</small>
+		<</capture>>
+	<<else>>
+
+	<</if>>
+<</widget>>
+
+<<widget "wakingEffects">><<silently>>
+	<<if !$sexStats.vagina.menstruation.running>>
+	<<elseif _args[0] and $sexStats.vagina.menstruation.currentState is "pregnant" or ($sexStats.vagina.menstruation.currentState is "normal" and ($playerPregnancyHumanDisable is "f" or $playerPregnancyBeastDisable is "f"))>>
+		<<set $_pregnancy to getPregnancyObject()>>
+		<<set _wakingEffect to wakingPregnancyEvent()>>
+		<<if Array.isArray(_wakingEffect)>>
+			<<set _wakingEffect to _wakingEffect[random(0,_wakingEffect.length - 1)]>>
+		<</if>>
+		<<switch _wakingEffect>>
+			<<case "tired">>
+				<<set $_text_output to "一觉醒来，你感觉疲惫多于回复的精力。<<tiredness 10>><<gtiredness>>">>
+			<<case "crying">>
+				<<set $_text_output to "你在泪水中醒来。你甚至不知道自己为什么哭，但这种情绪很快就过去了。">>
+			<<case "angry">>
+				<<set $_text_output to "你醒来时感到愤怒。这种情绪让你感到突然，但它很快就过去了。">>
+			<<case "meatCraving">>
+				<<set $_text_output to `你被一种奇怪的渴望唤醒${V.wolfgirl >= 2 ? "，你突然想用你的尖牙咬一些" : "，它指向了一些"} 带肉的东西。`>>
+			<<case "foodCraving">>
+				<<set $_text_output to `你醒来时发现自己有一种奇怪的感觉，开始对某种 ${["甜的东西","辣的东西","酸的东西","美味的东西","苦的东西"][random(0,4)]} 有些渴望。`>>
+			<<case "headache">>
+				<<set $_text_output to "你醒来时头痛欲裂。你不确定是什么引起了头痛，但最终还是很快恢复了。">>
+			<<case "sensitiveBreasts">>
+				<<set $_text_output to "你醒来时发现自己的<<breasts>>比平时更柔软。值得庆幸的是，这种感觉很快消失了。">>
+			<<case "bloated">>
+				<<set $_text_output to "你醒来时有点酸胀的感觉。">>
+				<<set $daily.bloated to random(1,2)>>
+			<<case "lightHeaded">>
+				<<set $_text_output to "醒来后，你感觉头晕目眩。">>
+			<<case "dizzy">>
+				<<set $_text_output to "你醒来时感觉有点头晕，但很快就过去了。">>
+			<<case "mildNausea">>
+				<<set $_text_output to "你醒来时感到有点恶心，但很快就过去了。">>
+			<<case "nausea">>
+				<<set $_text_output to "你醒来时感到很恶心，但一段时间后就消失了。">>
+			<<case "dryheaving">>
+				<<if $location is "wolf_cave">>
+					<<set $_text_output to "你醒来时感到恶心，于是慌忙下床跑到洞穴边缘。你被迫在边缘剧烈地干呕。<<stress 10>><<gstress>><<pain 1>><<gpain>>">>
+				<<elseif $location is "farm">>
+					<<set $_text_output to "你醒来时感到恶心，于是慌忙下床跑到牛棚边缘。你被迫在边缘剧烈地干呕。<<stress 10>><<gstress>><<pain 1>><<gpain>>">>
+				<<elseif $location is "tower">>
+					<<set $_text_output to "你醒来时感到恶心，于是慌忙下床跑到塔的边缘。你被迫在边缘剧烈地干呕。<<stress 10>><<gstress>><<pain 1>><<gpain>>">>
+				<<else>>
+					<<set $_text_output to "你醒来时感到恶心，于是慌忙下床跑到垃圾桶旁边。你朝向里面剧烈地干呕。<<stress 10>><<gstress>><<pain 1>><<gpain>>">>
+				<</if>>
+				<<if $awareness gte 200 and $sciencetrait gte 4 and playerNormalPregnancyTotal() gte 1>>
+					<<set $_text_output += " <span class='red'>也许你应该进行一下测试</span>。">>
+				<</if>>
+			<<case "lightBabyKick">>
+				<<set $_text_output to "你醒来时感觉到来自<<pregnancyBabyText 'pc'>>的一脚轻踢。<<stress -10>><<lstress>>">>
+			<<case "babyKick">>
+				<<set $_text_output to " 你醒来时感觉到<<pregnancyBabyText 'pc'>>正在乱蹬着你的身体。<<stress -10>><<lstress>><<pain 1>><<gpain>>">>
+			<<case "babyMovement">>
+				<<set $_text_output to "你醒来时感觉到<<pregnancyBabyText 'pc'>>到处乱动。<<stress -10>><<lstress>>">>
+			<<case "babyHiccup">>
+				<<set $_text_output to "你醒来时感觉宝宝似乎打了个嗝。<<stress -10>><<lstress>>">>
+			<<case "earlyContractions">>
+				<<set $_text_output to "你醒来时感到了短暂且零碎的宫缩。<<stress 5>><<gstress>><<pain 1>><<gpain>>">>
+			<<case "bellySize">>
+				<<set $_text_output to "当你醒来时，你看到了自己日渐隆起的肚子。你终于意识到自己怀孕了。">>
+				<<if $_pregnancy.potentialFathers.length is 1>>
+					<<set $_fatherName to pregnancyNameCorrection($_pregnancy.potentialFathers[0].source)>>
+					<<set $_text_output += "<span class='lewd'>很明显"+ ($_fatherName === "yourself" ? "你是" : $_fatherName + " 是") +"孩子他爸。</span>">>
+				<<else>>
+					<<set $_text_output += " <span class='red'>你想知道孩子的父亲是谁。</span>">>
+				<</if>>
+				<<set $_pregnancy.awareOf to true>>
+			<<case "missedPeriod">>
+				<<set $_text_output to "你醒来时意识到，已经快到了分娩的时候了。">>
+				<<if $awareness gte 200 and $sciencetrait gte 4 and playerNormalPregnancyTotal() gte 1>>
+					<<set $_text_output += "你想知道你是不是又怀孕了。<span class='red'>也许你应该进行一下测试</span>。">>
+				<</if>>
+				<<set $sexStats.vagina.awareOfPeriodDelay to true>>
+			<<case "clothesRemoval">>
+				<<set $_text_output to `<span class="red">你被身体上的重压压醒。</span> `>>
+				<<set $_slots to ["genitals","under_upper","upper","under_lower","lower"]>>
+				<<set $_broken to []>>
+				<<set $_removed to []>>
+				<<for $_slot range $_slots>>
+					<<if $worn[$_slot].type.includes("constricting")>>
+						<<if $worn[$_slot].cursed>>
+							<<if $worn[$_slot].name is "gold chastity belt" and $worn[$_slot].integrity gt 0>>
+								<<set $_goldenCB to true>>
+								<<set $antiquemoney += Math.floor(2000 / ($worn.genitals.integrity / clothingData('genitals',$worn.genitals,'integrity_max')))>>
+							<<else>>
+								<<set $_broken.pushUnique($worn[$_slot].name)>>
+							<</if>>
+							<<set $worn[$_slot].type.push("broken")>>
+							<<generalRuined $_slot>>
+						<<else>>
+							<<set $_removed.pushUnique($worn[$_slot].name)>>
+							<<generalUndress "wardrobe" $_slot>>
+						<</if>>
+					<</if>>
+				<</for>>
+				<<if $_removed.length gte 1>>
+					<<set $_text_output += "你竞速似的清除你的" + formatList($_removed, "和", true,"、") + "。 ">>
+				<</if>>
+				<<if $_broken.length gte 1>>
+					<<set $_text_output += "你低头看到自己的" + formatList($_broken, "和", true,"、") + "损坏了。">>
+				<</if>>
+				<<if $_goldenCB>>
+					<<set $_text_output += `由于你的肚子越来越大，你的金色贞操带被强行撑开，如果你再多施加一些压力，它就会哐当一声掉在地上。<span class="blue">或许博物馆馆长会对它感兴趣。</span> `>>
+				<</if>>
+				<<set $_text_output += `<br><span class="red">你怀孕的身体已经穿不下这样的衣服了。</span> <<pain 2>><<gpain>>`>>
+		<</switch>>
+	<</if>>
+	<</silently>><<if $_text_output>><<print $_text_output>><</if>>
+<</widget>>
+
+<<widget "pregnancyDailyEvent">><<silently>>
+	<<if !["Asylum Sleep","Cabin Sleep","Wolf Cave Sleep","Bird Tower Sleep","Livestock Sleep","Farm Abduction wake 4","Sleep","Avery Hotel Morning","Avery Hotel Trauma Drink 2","Prison Sleep","Robin Trauma Visit Sleep","Pound Sleep","Robin Sleep"].includes($passage)>>
+		<<set _pregnancyDailyEvent to dailyPregnancyEvent(_rng)>>
+		<<if Array.isArray(_pregnancyDailyEvent)>>
+			<<set _pregnancyDailyEvent to _pregnancyDailyEvent[random(0,_pregnancyDailyEvent.length - 1)]>>
+		<</if>>
+		<<switch _pregnancyDailyEvent>>
+			<<case "tired">>
+				<<set $_text_output to "你打了个哈欠。一切事情似乎都需要比平时付出更多的力气。<<tiredness 2>><<gtiredness>>">>
+			<<case "crying">>
+				<<set $_text_output to "你突然泪流满面。你甚至不知道自己为什么哭，但这种悲伤很快就过去了。<<stress 5>><<gstress>>">>
+			<<case "angry">>
+				<<set $_text_output to "你突然感到愤怒。情绪的变化让你感到惊异，但它很快就过去了。<<stress 5>><<gstress>>">>
+			<<case "meatCraving">>
+				<<set $_text_output to `你突然感到一种奇怪的欲望， ${V.wolfgirl >= 2 ? "你突然想用你的尖牙咬些什么" : "它指向了一些"} 带肉的东西。`>>
+			<<case "foodCraving">>
+				<<set $_text_output to `你突然发现自己有一种奇怪的感觉，开始对某种 ${["甜的东西","辣的东西","酸的东西","美味的东西","苦的东西"][random(0,4)]} 有些渴望。`>>
+			<<case "cramping">>
+				<<set $_text_output to `你感到小腹处一阵剧痛。<<stress 5>><<gstress>><<pain 5>><<gpain>>`>>
+			<<case "bloated">>
+				<<set $_text_output to "你感觉腹部有些胀痛。<<stress 3>><<gstress>>">>
+				<<set $daily.bloated to random(1,2)>>
+			<<case "lightHeaded">>
+				<<set $_text_output to "你感到一阵头晕目眩。">>
+			<<case "dizzy">>
+				<<set $_text_output to "你开始感到有点头晕，但它很快就过去了。">>
+			<<case "mildNausea">>
+				<<set $_text_output to "你感到有些恶心，但它很快就消失了。">>
+			<<case "nausea">>
+				<<set $_text_output to "你开始感到恶心，但一段时间后就消失了。">>
+			<<case "lightBabyKick">>
+				<<set $_text_output to "你感觉到来自<<pregnancyBabyText 'pc'>>的一脚轻踢。<<stress -10>><<lstress>>">>
+			<<case "babyKick">>
+				<<set $_text_output to "你感觉到<<pregnancyBabyText 'pc'>>正在乱蹬着你的身体。<<stress -10>><<lstress>><<pain 1>><<gpain>>">>
+			<<case "babyMovement">>
+				<<set $_text_output to "你感觉到<<pregnancyBabyText 'pc'>>到处乱动。<<stress -10>><<lstress>>">>
+			<<case "babyHiccup">>
+				<<set $_text_output to "你感觉宝宝似乎打了个嗝。<<stress -10>><<lstress>>">>
+			<<case "earlyContractions">>
+				<<set $_text_output to "你感觉到了短暂且零碎的宫缩。<<stress 5>><<gstress>>">>
+		<</switch>>
+		<<if _pregnancyDailyEvent>>
+			<<run delete $daily.pregnancyEvent>>
+		<<else>>
+			<<if !$daily.pregnancyEvent>>
+				<<set $daily.pregnancyEvent to 0>>
+			<</if>>
+			<<set $daily.pregnancyEvent += 15>>
+		<</if>>
+	<</if>>
+	<</silently>><<if $_text_output>><<print $_text_output>><br><</if>>
+<</widget>>
+
+/*ToDo: Pregnancy Story Content: Lacks content, small unique events for when the player's stress passes out due to their pregnancy*/
+<<widget "pregnancyWatersBrokenPassout">>
+	<<set $_pregnancy to getPregnancyObject()>>
+	<<if $_pregnancy.fetus>>
+		<<set $_pregnancy.waterBreaking to false>>
+		/*ToDo: Pregnancy - fill out for specific pregnancy passout events*/
+		/*Area specific passout text for alternative pregnancy birth events*/
+		<<switch _args[0]>>
+			<<case "asylum">>
+				<<if $asylumstate is "sleep">>
+					<<endevent>>
+					<<generate1>><<person1>>
+					被锁在里面过夜，你坐在床上。你坐着的时候，感觉很湿。你的大腿上似乎沾满了透明的液体。你要生了。
+					<br><br>
+
+					清清嗓子，摇摇晃晃地走到门口。穿过门上的洞，你大声呼喊。守卫在大厅巡逻，应该不会太久。
+					<br><br>
+
+					你的电话被忽视的时间足够长，以至于你的骨盆开始隐隐作痛。“我说了熄灯后保持安静!”守卫不相信你。
+					<br><br>
+
+					你拒绝放弃，不停地敲门，直到你的手受伤。这能让保安过来看看。 
+					<br><br>
+
+					"躺在你的床上，我去叫哈珀医生。” 他 用平淡的声音指导你。你按照他说的做。当你试图保持清醒时，你会因为身体的疼痛而畏缩和颤抖。
+					<br><br>
+
+					意识会从你身边消失。
+				<<else>>
+					你坐在床上，尽量保持稳定。你坐着的时候，感觉很湿。你的大腿上似乎沾满了透明的液体。你要生了。
+					<br><br>
+
+					你摇摇晃晃地走到门口，结结巴巴地走出来。一个护士很快跑到你身边。放轻松，亲爱的，我抓住你了。我们要慢慢呼吸，好吗?"
+					<br><br>
+
+					护士扶你坐下，大声呼救，你的意识逐渐消失。				
+				<</if>>
+			<<case "asylumOutside">>
+				<<endevent>>
+				<<generate1>><<person1>>
+				"你真的应该去厕所，"一个病人经过时对你冷笑。令人困惑的是，<<if $worn.lower.type.includes("naked")>>你低头看到湿漉漉的东西顺着大腿滴下来<<else>>你低头发现在你的$worn.lower.cn_name_cap上出现了一块湿痕<</if>>。
+				<br><br>
+
+				"宝宝要出来了,”你喘着气说。当你紧紧抓住肚子时，那剧烈的疼痛是出乎意料的。
+				<br><br>
+
+				路过的病人停了下来，眼睛瞪得滚圆，回头道: “在这儿等着，我去找人!"
+				<br><br>
+
+				从你眼角的余光看到病人跑向一些看护人员。你选择把注意力集中在缓解疼痛上。
+				<br><br>
+
+				你眨了眨眼。人们围着你，一个担架躺在地上。一只温柔的手引导你向前。
+				<br><br>
+
+				当你昏倒的时候，是另一只手支撑着你。
+			<<case "asylumCafe">>
+				<<endevent>>
+				<<generate1>><<person1>>				
+				你弓着身子呻吟着，一只手按在你的肚子上。感觉你体内的压力释放了。清澈的液体从你的大腿上滴下来。
+				<br><br>
+
+				病人转过身来看着你，有些人靠近你，有些人退后。骚动导致警卫走近。 
+				<br><br>
+
+				"<<pShe>>怀孕了！"<<person>>喊道。守卫匆忙向你走去，将挡路的病人推开。
+				<br><br>
+
+				它们帮助你走路，当你被带到某个地方的时候，它们会让你远离人群。你很快就会忘记自己身在何处，眼前的景象也会消失。
+			<<case "asylumLibrary">>
+				<<endevent>>
+				<<generate1>><<person1>>
+				你身下的椅子黏糊糊的。你把手往下伸，发现你的裆部湿透了——看起来你要生了。
+				<br><br>
+
+				<<person>>注意到你湿润的手指。<<He>>蹦过来了把书从你手中抢走。"别损坏图书。"<br>
+				"我没有，我的孩子要出生了,”你结结巴巴地说，深呼吸让自己冷静下来。
+				<br><br>
+
+				这个<<person>>似乎不相信你。<<He>>继续辱骂你，直到勤务员接近这里来解决事故。
+				<br><br>
+
+				勤务兵看了看你蜷缩的身体，然后骂了一句。<<He>>叫来更多的人帮忙。当你被抱起并带离图书馆时，一些<<person>>想过来阻止。 
+				<br><br>
+
+				你的意识会衰退。
+			<<case "asylumHarper">>
+				<<endevent>><<npc "Harper">><<person1>>
+				当你走进哈珀医生的办公室时，你感到不安。哈珀注意到了这一点，走到书桌前摸了摸你的额头。检查你的身体，然后注意到你的两腿之间逐渐湿润。
+				<br><br>
+
+				"哎呀，今天的节目得推迟了，看来你的包子要出炉了。"
+				<br><br>
+
+				当你开始呼吸急促时，哈珀叫来护理人员帮助你。疼痛逐渐在你的腹部形成。
+				<br><br>
+
+				你可以听到哈珀说话，但是当你的思想集中在痛苦上时，语言就变得混乱了。
+				<br><br>
+
+				有人移动你，扶着你的胳膊，当你被带到某个地方，一切意识都消失了。
+			<<case "forest" "lake">>
+				你跌跌撞撞，勉强在一棵大树上站稳。你往下看，看到一股清澈的液体从你的腿上滴下来。你要生了。
+				<br><br>
+
+				你不由自主地呜咽。即使是努力站着也会引起灼热的疼痛。一根树枝在你的左边裂开。
+			<<case "tentacleworld" "tentacleforest">>
+				你痛苦地驼背。所有的触手都离你远去。你跪下来，用尽全力抓住地面。
+				<br><br>
+
+				天空在闪烁，当你发出一声痛苦的尖叫，这异象就消失了。
+			<<case "farmroad">>
+				<<if $location is "farm" and $_pregnancy.potentialFathers.find(father => father.source === "Alex")>>
+					/*Alex can help here*/
+				<<else>>
+
+				<</if>>
+			<<case "remy">>
+				<<if $outside is 1>>
+					一只
+					<<if ($monsterchance gte 1 and ($hallucinations gte 1 or $monsterhallucinations is "f"))>>
+						<<set $monster to 1>>
+						<<if maleChance() lt random(1, 100)>>牛女孩<<else>>牛男孩<</if>>
+					<<else>>
+						母牛
+					<</if>>
+					一边轻推你的大腿一边哞哞叫。你低头一看，发现一种清澈的液体正从你的腿上滴下来，然后一阵短暂的疼痛在你的下腹部蔓延开来。你要生了。 
+					<br><br>
+
+					喘着气，你慢慢地坐下。更多的<<livestock_cows>>聚集起来，对骚动感到好奇。
+					<<if $monster is 1>>
+						其中一个喊道: "宝贝！<<pHer>>孩子要出生了!"
+					<<else>>
+						"他们到底在干什么?"一个农场工人从田地的另一边喊道。
+					<</if>>
+					<br><br>
+
+					几个农场工人注意到了这种奇怪的行为，就走了过来。他们发现你抱着肚子呼吸缓慢。
+					"啊,该死,羊水已经破了!去找雷米!"你感到疼痛加剧,然后慢慢地躺下,农场工人蹲在你身边. 
+					<br><br>
+
+					你隐约听到靴子踩碎草地的声音，随着视力的模糊，你听到更多的喊叫声。
+				<<else>>
+					<<endevent>>
+					<<generate1>><<person1>>
+					你身下的干草堆黏糊糊的，很恶心。你低头往下看，发现自己的裆部湿透了——看样子你要生了。
+					<br><br>
+
+					你试着保持冷静，慢慢地深呼吸，但是很快第一次宫缩来了，你大声喊出来。 
+					<br><br>
+
+					"那是什么?"<br>
+					"别理它，只是一头寻求关注的笨牛。"农场工人继续无视你。
+					<br><br>
+					
+					又一次宫缩来临，你又一次大喊。这次有人来检查。 
+					"你应该保持安静——"在他瞪大眼睛之前，他咕哝了一句。"叫雷米来! 现在! 这只要生了!"
+					当世界慢慢变黑，你听到骚动开始了。 
+				<</if>>
+			<<case "remyAbduction">>
+			<<case "remyHarperExam">>
+			<<case "remyNiki">>
+			<<case "moor">>
+			<<case "castle">>
+				<<npc "Great Hawk">>
+				你痛苦地翻了个身，看见一股清澈的液体从你的腿上滴下来。你要生了。你绝望地环顾四周，发出一声痛苦的叫喊，然后跌跌撞撞地走。
+				<br><br>
+
+				你的眼睛闭上。当眼睛再次睁开时，你会看到<<beasttype>>。
+				<<if $monster is 1>>
+					<<bHe>>对你说了些什么，但听起来像是胡言乱语。
+				<<else>>
+					<<bHe>>用好奇和关心的眼光看着你。
+				<</if>>
+				<<bHis>>翅膀开始拍打。你会觉得自己被提到了一个羽毛状的东西上。下次你睁开眼睛的时候，你已经高高在上了。你立刻从震惊中昏厥过去。
+				<br><br>
+
+				你感到胃里一阵翻腾。你再次睁开眼睛，看到了下面的医院，眼角的羽毛。
+				你一眨眼，你就突然被降低了。你的脚碰到了人行道。一股气流随之而来，<<beasttype>>消失了。
+			<<case "wraith">>
+				你痛苦地翻了个身，看见一股清澈的液体从你的腿上滴下来。你要生了。你绝望地环顾四周，发出一声痛苦的叫喊，然后跌跌撞撞地走着。你觉得被困住了。你甚至能听见自己激烈的心跳
+				<br><br>
+
+				闭上眼睛，等你再睁开的时候,一对<<wraithEyes>>凝视着你的眼睛”<span class="wraith">痛苦，生活，美好。</span>"
+				<br><br>
+
+				当它进入你的身体时，你无法抗拒。你的痛苦会立刻停止。你长舒了一口气，站了起来。你的意识会随着身体的前进而慢慢消失。
+				<br><br>
+
+				你感到寒冷，突然又暖和起来，然后就什么都没有了。直到你睁开眼睛，看到眼前的医院。疼痛再次袭来。一张苍白的脸映入你的眼帘。"<span class="wraith">多美丽啊。保佑他们的平安吧。</span>"
+			<<case "dungeon">>
+				/* Needs to account for Robin also being in the dungeon */
+				<<endevent>>
+				<<generate1>><<person1>>
+				<<dungeonescape>>
+				地板似乎黏糊糊的。你低头往下看，皱了皱眉，你的裆部全湿了——你似乎快要生了。 
+				<br><br>
+
+				惊慌失措之下，你在空荡荡的房间里寻找逃生之路。别无选择，你只能敲门。"救命啊！我的孩子要出生了!"你一边敲门一边大叫。你不确定是否有人会听到你。 
+				<br><br>
+
+				你一直在喊，不知道要多久你才能听到开锁的声音，一个不满的声音<<person>>走过去，准备在看到你的困境之前大喊。 
+				<br><br>
+
+				"等等,"他咆哮着，又一次留下你一个人。疼得太厉害了，你爬到脏兮兮的床垫上躺下。
+				<br><br>
+
+				当门再次尖叫着打开时，你的视线逐渐模糊。 
+			<<case "alley">>
+			<<case "arcade">>
+			<<case "beach">>
+			<<case "bus">>
+			<<case "docksSneak">>
+			<<case "docks">>
+			<<case "home">>
+			<<case "hospital">>
+			<<case "trash">>
+			<<case "sea">>
+			<<case "shop">>
+			<<case "monsterTower">>
+			<<case "street">>
+			<<case "compound">>
+			<<case "temple">>
+				你跌跌撞撞的，好不容易才站稳。你的双腿颤抖。你马上就要分娩了。
+				<br><br>
+
+				一双有力的大手将你托起，然后轻轻地将你放在座椅上。
+				<<if C.npc.Jordan.init is 1>>
+					约旦的脸在你面前晃动。
+				<<else>>
+					一个身穿长袍的身影在你周围徘徊，他年轻的脸上流露出担忧，一缕金色的头发从兜帽的两侧露了出来。
+				<</if>>
+				你听到有人对你说话，但这些话没有任何意义。其他穿着长袍的人开始把你包围起来。
+				<<if _sydney_location is "temple" and C.npc.Sydney.init is 1>>
+					悉尼冲破人群，但在你面前停了下来。
+				<</if>>
+				<br><br>
+
+				你感觉自己被托起。
+			<<case "cave">>
+			<<case "prison">>
+				你跌跌撞撞地跪在地上。毫无疑问，你就要分娩了。当第一次宫缩来临时，你尖叫起来。
+				<br><br>
+				<<if $prison.schedule is "lockdown">>
+					你看到一双靴子走近，它们就停在你面前，你抬头看。
+					<br><br>
+
+					<<generate_anxious_guard 0>><<person1>>
+					<<anxious_guard 0>>他皱着眉头看着你。
+					<br><br>
+
+					"你不应该离开你的牢房."他紧张地四处张望。"让我们把你送回去，不要大惊小怪，好吗?"
+					<br><br>
+
+					他等站你起来，可是太痛了。<<anxious_guard 0>>花一点时间才意识到自己正处于痛苦之中，你的恐慌蔓延到了他身上。
+					<br><br>
+
+					"哦，不。不在这里。"他又四处张望，仿佛在祈祷有人能够趁虚而入，拯救他。"听着，别动！呆在那儿别动!"
+					<br><br>
+
+					他匆匆离去，留下你一个人。你挣扎着让自己直立起来，你的视线游离于腹部传来的剧痛之中。当你听到有人喊叫，世界就会消失。
+				<<else>>
+					你的心跳敲打着你耳朵的鼓膜。你的视力开始衰退，痛苦一遍又一遍地撕裂你。你抬起头，发现自己已经陷入了了包围。
+					<br><br>
+
+					"给<<phim>>一些空间，现在!"一个声音大喊大叫，刚好能穿透你的迷雾。当你感到自己被举起时，世界就会消失。
+				<</if>>
+			<<case "prisonCell">>
+				<<if $prison.schedule is "lockdown">>
+					你在黑暗的牢房里坐在床上。感觉很湿。你得花点时间才能意识到你的腿也湿了。你要生了。
+					<br><br>
+
+					恐慌笼罩着你。
+					<br><br>
+
+					你跌跌撞撞地走向你的牢门，开始敲它。“救... 救我!”你想让守卫注意到你。 
+					你敲几下就能让犯人醒过来。有些人叫你闭嘴，有些人不理你。一个人问你是否还好。
+					<br><br>
+
+					<<generate_veteran_guard 0>><<person1>>
+					<<veteran_guard 0 cap>>过了一会儿，他出现了，敲打着每个牢房的门，向下走去。"熄灯！意思是闭嘴!"
+					<br><br>
+
+					他最后停在你的牢房前，怒视着你。 
+					"你知道不守规矩的惩罚是什么吗——"当<<He>>注意到你两腿之间的脏东西时，<<he>>打断了<<himself>>话.
+					<br><br>
+
+					"请，请帮帮我."你轻声说，你的视线已经模糊了。 
+					<<veteran_guard 0 cap>><<his>>立即掏出钥匙打开了你的房门，伸出强壮的手臂抓住了你。你的双膝跪地，腹部传来阵阵疼痛。当你被抬出牢房时，整个世界都陷入了黑暗。 
+				<<else>>
+					牢房的石板地面上溅起水花的声音引起了你的注意，你发现你的下半身已经变得非常湿润了，这意味着一件事——你要分娩了。
+					<br><br>
+
+					你开始恐慌，并试图走出牢房寻求帮助。但腹部的剧痛使你蜷缩起身体，靠在栏杆上。
+					<br><br>
+
+					<<generate1>><<person1>>
+					"请帮帮我！”你在走廊上大喊着。一个囚犯说笑着走过，但一看到你就停了下来。 
+					"该死的。"<<He>>后退并沿原路返回，希望找到其他人的协助。 
+					<br><br>
+
+					其他来的囚犯从你身边走过，对你视而不见，或驻足观看以取乐。只有几个人试图帮助你。有个人正要俯身帮你站起来，看到有其他人走过来，又离开了。
+					<<endevent>>
+					<<generate_methodical_guard 0>><<person1>>
+					<<methodical_guard 0 cap>>带着囚犯一起到达。人群立刻变得稀疏起来，皱着眉头看着你。蹲下来看看你。
+					<br><br>
+
+					"时间太不巧了,”<<He>>说，“我们没有产房，只能凑合着用了。
+					<br><br>
+
+					<<methodical_guard 0 cap>>站起来命令两个囚犯帮你走路。你一半被抬着，一半被拖下楼梯。警卫开始对着对讲机说话。
+					当你被抬下另一层楼时，你的视线开始模糊。当你昏过去的时候，你听不清周围的喊声。
+				<</if>>
+			<<case "prisonLaundry">>
+				<<if $prison.schedule is "work">>
+					<<generate1>><<person1>>
+					你可以听到一个囚犯在你身后窃笑。 
+					"还好我们在洗衣房，对吧?”朝你傻笑。“只是需要有人帮你清理干净"
+					<br><br>
+
+					你颤抖着，突然感到一阵疼痛。你就要分娩了。犯人走近一步，斜眼看着你。
+					<br><br>
+
+					"嘿，退后，马上,”一个声音命令道。 
+					
+					<<generate_relaxed_guard 1>><<person2>>
+					<<relaxed_guard 1 cap>>来到你身后，囚犯皱着眉头，但还是去做<<person1>><<his>>的工作了。<<person2>><<He>>低头看着你的腿，什么也没问。疼痛再次从你的腹部里传来，你又蜷缩起身体。 
+					<br><br>
+
+					"救... 救... 我的孩子...”你呜咽着说。
+					<br><br>
+
+					<<relaxed_guard 1 cap>>扶着你的胳膊肘，支撑着你。
+					<br><br>
+
+					"这孩子还太小，还不能开始服刑，嗯哼？来吧。如果你把这小东西生出来，这里的规矩就会要了我的命。"你几乎听不到<<his>>的声音。疼痛让你的头剧烈抽搐，你挣扎着保持直立，但随后一切都消失了。
+				<<else>>
+					你往下看。有清澈的液体从你的大腿流下来。疼痛在你的胃里挣扎。你正在分娩。
+					<br><br>
+
+					"有人在吗?”你挣扎着走到门口时大声喊道。“我需要帮助!”你靠在门框上。
+					<br><br>
+					<<generate_relaxed_guard 0>><<person1>>
+					"工作时间结束了”<<relaxed_guard 0 cap>>走过来，<<his>>还在玩骰子。“除非你准备好取悦我，否则我不会打开机器——"
+					<br><br>
+
+					<<His>>的眼睛落到你的腿上。<<His>>的笑容开始消失，<<he>>突然意识到发生了什么。
+					<br><br>
+
+					"操。”<<relaxed_guard 0 cap>>环顾四周，然后用一只手搂住你的腰。“得了吧，我们不会把144号囚犯扔出去的。"
+					<br><br>
+
+					你挣扎着不让自己失去知觉，胃部的疼痛越来越厉害。<<relaxed_guard 0 cap>>对你说了些什么，但你已经太痛苦而听不到了。世界渐渐消失，你几乎听不到有人开始恐慌。 
+				<</if>>
+			<<case "prisonCanteen">>
+			<<case "prisonMedical">>
+				<<generate_methodical_guard 0>><<person1>>
+				你的胃仿佛要被痛穿了一样，你发出痛呼。你就要分娩了。它提醒<<methodical_guard 0>><<he>>马上过来。
+				<br><br>
+
+				<<He>>干净利落。<<methodical_guard 0 cap>>紧紧抓住你的二头肌将你转向其中一张床。 
+				"你要生了。”<<He>>告诉你。你刚刚在床上坐下，又一阵剧痛袭来，让你弯腰驼背。 
+				<br><br>
+
+				当你倒下的时候，你很感激你脚下的床，努力地正确地吸气。虽然监狱不是你想要孩子的地方但至少你在医疗室。
+				<br><br>
+
+				你开始因为疼痛而感到头晕目眩。当你的意识下滑时，你被轻轻地放回到一个躺着的姿势。
+			<<case "prisonYard">>
+			<<case "prisonBeach">>
+			<<case "prisonShowers">>
+			<<case "pound">>
+				<<run delete $pound.door>>
+				<<endevent>>
+				从栏杆之间看出去，你不舒服地移动。更高水平的湿水池在你脚下的混凝土上。你要生了。
+				<br><br>
+
+				你会听到你隔壁狗舍传来的呜咽声，<<pound_text>>而另一个狗舍则能闻到正在发生的事情。 
+				<br><br>
+
+				"喂?”你抓着狗舍的栏杆大声喊道。你不能在这里生孩子。
+				<br><br>
+
+				几分钟过去了，没有人来帮忙。随着疼痛逐渐扩散到你的下半身，你的呼叫变得更加急促。
+				<<pound_text>>你周围的越来越大声地抱怨，直到他们开始吠叫和咆哮，以回应你痛苦的喘息。骚动足以让人来检查。
+				<br><br>
+
+				<<generate1>><<person1>>
+				<<person>>沿着<<his>>狗舍走了下去。<<He>>一边大喊大叫，一边用手电筒照着里面的栅栏。当<<He>>到达你身边时，<<he>>停顿了一下。
+				<br><br>
+
+				"哦，妈的!”<<he>>在冲出狗舍之前大喊。你不确定救援是否会到来，疼痛让你无法保持清醒。
+				<br><br>
+
+				一切都变得太过分了，你的眼睛紧闭，耳边回荡着骚动。
+			<<case "edencabin">>
+				<!--
+				<<if $_pregnancy.potentialFathers.find(father => father.source === "Eden")>>
+					Eden thinks it's his child?
+				<<else>>
+				<</if>>
+				-->
+				<<endevent>>
+				你的大腿感到湿润，你开始感到剧烈的疼痛。你就要分娩了。
+				<<if $edenbed is 1>>
+					伊甸还在熟睡。
+				<<elseif Time.hour gte 11 and Time.hour lte 14>>
+					伊甸出去打猎了，<<nnpc_he "Eden">>现在帮不了你。
+				<<else>>
+					伊甸正忙于自己的家务，<<nnpc_his "Eden">>并没有注意到你的惊慌。
+				<</if>>
+				<<if $worn.neck.collared is 1 and $worn.neck.type.includes("leash")>>
+					<<detach_leash>>
+					你拼命地拉着你的皮带，希望它会断掉。最后几根顽固的线仍然坚持着。惊慌失措之下，你开始啃噬细线。当灾难来临时，你会感到如释重负。 
+				<</if>>
+				<br><br>
+
+				你跌跌撞撞地走进森林，因为你开始感到宫缩的疼痛。你甚至不知道你要去哪里。
+				<<if $syndromeeden is 1>>
+					你正要转身回到小屋，这时一根树枝在你左边裂开了。
+				<<else>>
+					在你停下来之前，你走了一段不知道多远的路，精疲力尽，无法继续下去，肾上腺素从你的身体里消失了。你左边有根树枝裂开了。
+				<</if>>
+			<<case "drain">>
+			<<case "school">>
+			<<case "schoolLibrarian">>
+				/*Wake up while being put in an ambulance?*/
+			<<case "adultShop">>
+			<<case "office">>
+			<<default>>
+				你的羊水破了，你太虚弱了，无法继续。
+		<</switch>>
+		<br><br>
+
+		/*Links for alternative pregnancy birth events*/
+		<<switch _args[0]>>
+			<<case "asylum" "asylumOutside" "asylumCafe" "asylumLibrary" "asylumHarper">>
+				<<link [[继续|Pregnancy Birth Asylum]]>><<set $stress -= 5000>><<endevent>><</link>>
+			<<case "prison" "prisonCell" "prisonLaundry" "prisonSpire" "prisonCanteen" "prisonMedical" "prisonYard" "prisonBeach" "prisonShowers">>
+				<<link [[继续|Pregnancy Birth Prison]]>><<set $stress -= 5000>><<endevent>><</link>>
+			<<case "tentacleworld">>
+				<<if $tentacleEntrance is "mirror">>
+					你发现自己躺在卧室的镜子前，一切都变黑了。
+					<br><br>
+
+					<<link [[继续|Pregnancy Birth Hospital Passout]]>><<set $stress -= 5000>><<endevent>><</link>>
+				<<else>>
+					你尖叫。你听到自己的回声的声音。一次又一次，你尖叫直到你的喉咙沙哑。<span class="red">没人理你</span><<trauma 50>><<gggtrauma>>
+					<br><br>
+
+					被痛苦和恐惧淹没，你就会失去意识。
+					<br><br>
+
+					<<link [[继续|Pregnancy Birth Asylum]]>><<set $stress -= 5000>><<endevent>><</link>>
+				<</if>>
+			<<case "tentacleforest" "hookah">>
+				<<if _noWake>>
+					突然的疼痛让你措手不及，宫缩，分娩，跌跌撞撞地倒在地板上。
+					<br><br>
+
+					你的视力很快就消失了，当它回来时，你感觉好像时间已经过去了。
+					<br><br>
+				<<else>>
+					你在客厅里突然醒来。
+				<</if>>
+				<<if $hookah_state is 1>>
+					<<loadNPC 0 "hookah">><<person1>>
+					水烟<<hookah_master>>的脸俯视着你，看起来十分关心。<<He>>大声命令周围。
+					<br><br>
+
+					"…然后把那扇窗打开。为了<<phim>>将这里通风。摆弄一下那把锁。这应该很难开！是，是，我们会全额给你报销的…"
+					<br><br>
+
+					<<His>>的声音变得遥远，当宫缩的疼痛袭来时，黑暗爬进了你视线的角落。你最后听到的是你自己的尖叫。
+				<<else>>
+					有人在敲门。你的视线开始随着警笛声再次消失
+				<</if>>
+				<br><br>
+
+				<<link [[继续|Pregnancy Birth Hospital Rescue]]>><<set $stress -= 5000>><<endevent>><</link>>
+			<<case "forest" "edencabin">>
+				<<if $_pregnancy.type is "wolf">>
+					<<beastNEWinit 1 wolf>>
+					<<if $monster is 1>>
+						一只<<beasttype>>向你靠近，冲到你的身边，把<<bhis>>的手臂放在你的身后以求支持。
+						<<if $syndromewolves is 1>>
+							你之前已经在洞穴里见过<<bhim>>了。"<<pPackbrother>>的崽子们要出生了。"<<bhe>>说道："快点。"<<bHe>>让你靠在<<bhim>>身上，蹒跚着回到你家。
+						<<else>>
+							你不知道为什么，但是和<<bhim>>一起走的时候觉得很安全。"你的崽子们要出生了，"<<bhe>>说道："你跟着我的族群很安全，"<<bHe>>让你靠在<<bhim>>身上，蹒跚着回到一个你希望安全的地方。
+						<</if>>						
+					<<else>>
+						一只<<beasttype>>靠近你，用鼻子蹭着你的手。
+						<<if $syndromewolves is 1>>
+							你之前已经在洞穴里见过<<bhim>>了。你靠着<<bhis>>的背一起蹒跚地回家。
+						<<else>>
+							你不知道为什么，但是和<<bhim>>一起走的时候觉得很安全。你靠着<<bhis>>的背，蹒跚着回到一个你希望安全的地方。
+						<</if>>
+					<</if>>
+					在疼痛中保持运动是很困难的。最终你的双腿会失去知觉，你的视力也会随之下降,
+					<<if $monster is 1>>但一双有力的手托扶住你，使你免受伤害。<<else>>但你却轻轻地摔倒在柔软的毛皮上。<</if>>
+					<br><br>
+
+					<<link [[继续|Pregnancy Birth Wolf Rescue]]>><<set $stress -= 5000>><<endevent>><</link>>
+				<<else>>
+					<<endevent>>
+					<<generate1>><<person1>>
+					你听到<<personsimple>>的声音。"喂，你还好吗？"<<he>>一边靠近一边问着。<<He>>看起来有些熟悉。<<his>>的背上挂着一把斧头。你觉得曾经在<<he>>砍木头的时候，路过讲过话。
+					<br><br>
+
+					当又一次宫缩来临时，你几乎不能说话，比之前的宫缩更加痛苦。<<personsimple>>脱下<<his>>的外套，轻轻地披在你的肩上。 
+					<br><br>
+					
+					来吧，靠在我身上。我带你去医院”在你迈出下一步之前，你的视力模糊了。
+					<br><br>
+
+					<<link [[继续|Pregnancy Birth Hospital Rescue]]>><<set $stress -= 5000>><<endevent>><</link>>
+				<</if>>
+			<<case "edencabin">>
+				<!--
+				<<if $_pregnancy.potentialFathers.find(father => father.source === "Eden")>>
+					Alternative place to give birth?
+					<<link [[继续|Pregnancy Birth Hospital Passout]]>><<set $stress -= 5000>><<endevent>><</link>>
+				<<else>>
+					<<link [[继续|Pregnancy Birth Hospital Passout]]>><<set $stress -= 5000>><<endevent>><</link>>
+				<</if>>
+				-->
+			<<case "remy" "remyAbduction" "remyHarperExam" "remyNiki">>
+				<<link [[继续|Pregnancy Birth Livestock]]>><<set $stress -= 5000>><<endevent>><</link>>
+			<<case "farmroad">>
+				<<if $location is "farm" and $_pregnancy.potentialFathers.find(father => father.source === "Alex")>>
+					/*Alternative place to give birth?*/
+					<<link [[继续|Pregnancy Birth Hospital Passout]]>><<set $stress -= 5000>><<endevent>><</link>>
+				<<else>>
+					<<link [[继续|Pregnancy Birth Hospital Passout]]>><<set $stress -= 5000>><<endevent>><</link>>
+				<</if>>
+			<<case "dungeon" "pound" "temple">>
+				<<link [[继续|Pregnancy Birth Hospital Rescue]]>><<set $stress -= 5000>><<endevent>><</link>>
+			<<case "hospital">>
+				<<link [[继续|Pregnancy Birth Hospital]]>><<set $stress -= 5000>><<endevent>><</link>>
+			<<default>>
+				<<link [[继续|Pregnancy Birth Hospital Passout]]>><<set $stress -= 5000>><<endevent>><</link>>
+		<</switch>>
+	<<else>>
+		Error Pregnancy Object not found in the passage '<<print $passage>>'.
+	<</if>>
+<</widget>>
+
+<<widget "pregnancyMorningAfterPill">>
+	<<set $_menstruation to $sexStats.vagina.menstruation>>
+	<<set $_pregnancy to getPregnancyObject()>>
+	<<set _morningAfterPillResult to "no pregnant">> /* This variable returns the result of taking the pill */
+	<<if $_menstruation.currentState is "pregnant">>
+		<<if $_pregnancy.type is "human">>
+			<<set _currentDay to $_pregnancy.timer / (1 / ((1 / 9) * $humanPregnancyMonths))>>
+		<<elseif $_pregnancy.type is "wolf">>
+			<<set _currentDay to $_pregnancy.timer / (1 / ((1 / 12) * $wolfPregnancyWeeks))>>
+		<<else>>
+			<<set _currentDay to 1000>>
+			<<set _morningAfterPillResult to "unknown type">>
+		<</if>>
+		<<if _currentDay lte 2>> /* the first 2 days the pill clears the pregnancy and restarts the menstrual cycle */
+			<<set $_pregnancy.type to null>>
+			<<set $_pregnancy.fetus to []>>
+			<<set $_pregnancy.waterBreaking to false>>
+			<<set $_pregnancy.waterBreakingTimer to null>>
+			<<set $_pregnancy.timer to null>>
+			<<set $_pregnancy.timerEnd to null>>
+			<<set $_pregnancy.awareOf to null>>
+			<<set $_pregnancy.awareOfMultiple to null>>
+			<<set $_pregnancy.awareOfDetails to null>>
+			<<set $_pregnancy.potentialFathers to []>>
+			<<set $sexStats[($player.vaginaExist ? "vagina" : "anus")].sperm to []>>
+			<<restartMenstruationCycle>>
+			<<set $_menstruation.currentState to "normal">>
+			<<set _morningAfterPillResult to "successful">>
+		<<elseif _currentDay lte 3>>
+			<<set $_pregnancy.type to null>>
+			<<set $_pregnancy.fetus to []>>
+			<<set $_pregnancy.waterBreaking to false>>
+			<<set $_pregnancy.waterBreakingTimer to null>>
+			<<set $_pregnancy.timer to null>>
+			<<set $_pregnancy.timerEnd to null>>
+			<<set $_pregnancy.awareOf to null>>
+			<<set $_pregnancy.awareOfMultiple to null>>
+			<<set $_pregnancy.awareOfDetails to null>>
+			<<set $_pregnancy.potentialFathers to []>>
+			<<set $sexStats[($player.vaginaExist ? "vagina" : "anus")].sperm to []>>
+			<<set $_menstruation.currentDay to .5>>
+			<<restartMenstruationCycle>>
+			<<set $_menstruation.currentState to "normal">>
+			<<set _morningAfterPillResult to "a little late">>
+		<<elseif _currentDay lte 4>>
+			<<set $_pregnancy.type to null>>
+			<<set $_pregnancy.fetus to []>>
+			<<set $_pregnancy.waterBreaking to false>>
+			<<set $_pregnancy.waterBreakingTimer to null>>
+			<<set $_pregnancy.timer to null>>
+			<<set $_pregnancy.timerEnd to null>>
+			<<set $_pregnancy.awareOf to null>>
+			<<set $_pregnancy.awareOfMultiple to null>>
+			<<set $_pregnancy.awareOfDetails to null>>
+			<<set $_pregnancy.potentialFathers to []>>
+			<<set $sexStats[($player.vaginaExist ? "vagina" : "anus")].sperm to []>>
+			<<set $_menstruation.currentDay to .5>>
+			<<set $_menstruation.currentState to  "recovering">>
+			<<set $_menstruation.recoveryTime to ($_pregnancy.type === "human" ? random(2, 3) * $humanPregnancyMonths : random(1, 2) * $wolfPregnancyWeeks)>>
+			<<set $_menstruation.recoveryTimeStart to $_menstruation.recoveryTime>>
+			<<set $_menstruation.recoveryStage to 0>>
+			<<set $_menstruation.periodEnabled to false>>
+			<<menstruationCycle>>
+			<<set _morningAfterPillResult to "late">>
+		<<else>>
+			<<set _morningAfterPillResult to "too late">> /* It's too late, the pill does nothing to the pregnancy */
+		<</if>>
+	<<else>>
+		<<set $sexStats[($player.vaginaExist ? "vagina" : "anus")].sperm to []>>
+		<<set $_menstruation.currentDay to .5>> /* If the player isn't pregnant the pill only restarts the menstrual cycle and clears sperm*/
+	<</if>>
+<</widget>>
+
+<<widget "pregnancyGendersText">><<silently>>
+	<<set $_pregnancy to getPregnancyObject()>>
+	<<set $_pregnancy.genderKnown to true>>
+	<<set $_genders to {m:0,f:0,h:0}>>
+	<<run $_pregnancy.fetus.forEach(b => $_genders[b.gender]++)>>
+	<<if $_pregnancy.fetus[0].features.identical is true>>
+		<<set $_text_output to `"我相信他们都是<<if $_pregnancy.fetus.length is 3>>同卵三胞胎<<else>>同卵双胞胎<</if>>。他们性别相同，面部特征相似。"`>>
+	<<elseif ($_genders.m is $_pregnancy.fetus.length or $_genders.f is $_pregnancy.fetus.length or $_genders.h is $_pregnancy.fetus.length) and $_pregnancy.fetus.length gt 1>>
+		<<set $_text_output to `"尽管性别相同，但我认为他们并不完全相同。他们的面部特征看上去也有些不一样。"`>>
+	<<else>>
+		<<set $_text_output to "你有">>
+		<<if $_genders.m gt 0>>
+			<<switch $_genders.m>>
+				<<case 1>><<set $_text_output += "一个">>
+				<<default>><<set $_text_output += "" + $_genders.m>>
+			<</switch>>
+			<<set $_text_output += "男婴">><<if $_genders.m gt 1>><<set $_text_output += "">><</if>>
+			<<if $_genders.f gt 0 and $_genders.h gt 0>>
+				<<set $_text_output += ",">>
+			<<elseif $_genders.f gt 0 or $_genders.h gt 0>>
+				<<set $_text_output += "和">>
+			<</if>>
+		<</if>>
+		<<if $_genders.f gt 0>>
+			<<switch $_genders.f>>
+				<<case 1>><<set $_text_output += "一个">>
+				<<default>><<set $_text_output += "" + $_genders.f>>
+			<</switch>>
+			<<set $_text_output += "女婴">>
+			<<if $_genders.f gt 1>><<set $_text_output += "">><</if>>
+			<<if $_genders.h gt 0>><<set $_text_output += "和">><</if>>
+		<</if>>
+		<<if $_genders.h gt 0>>
+			<<switch $_genders.h>>
+				<<case 1>><<set $_text_output += "一个">>
+				<<default>><<set $_text_output += "" + $_genders.h>>
+			<</switch>>
+			<<set $_text_output += "双性婴儿">>
+			<<if $_genders.h gt 1>><<set $_text_output += "">><</if>>
+		<</if>>
+		<<set $_text_output += ".">>
+	<</if>>
+<</silently>><<if $_text_output>><<print $_text_output>><</if>>
+<</widget>>
+
+<<widget "babyType">><<silently>>
+    <<if $_pregnancy.awareOfDetails || ((!_args[0] || _args[0] is "pc") and $_pregnancy.potentialFathers.every((father, index, array) => father.type === array[0].type))>>
+        <<switch $_pregnancy.type>>
+            <<case "human">>
+                <<if $_pregnancy.fetus.length gt 1>>
+                    <<set $_text_output to "孩子">>
+                <<else>>
+                    <<set $_text_output to "孩子">>
+                <</if>>
+            <<case "wolf">>
+                <<if $_pregnancy.fetus.length gt 1>>
+                    <<set $_text_output to "幼崽">>
+                <<else>>
+                    <<set $_text_output to "幼崽">>
+                <</if>>
+        <</switch>>
+	<<elseif $_pregnancy.awareOfMultiple and $_pregnancy.fetus.length gt 1>>
+		<<set $_text_output to "孩子">>
+    <<else>>
+        <<set $_text_output to "孩子">>
+    <</if>>
+<</silently>><<print $_text_output>>
+<</widget>>
+
+<<widget "pregnancyBabyText">><<silently>>
+	<<if _args[0] isnot "pc" and C.npc[_args[0]] and C.npc[_args[0]].pregnancy.enabled isnot undefined>>
+		<<set $_pregnancy to C.npc[_args[0]].pregnancy>>
+	<<else>>
+		<<set $_pregnancy to getPregnancyObject()>>
+	<</if>>
+	<<if $_pregnancy.awareOfDetails || ((!_args[0] || _args[0] is "pc") and $_pregnancy.potentialFathers.every((father, index, array) => father.type === array[0].type))>>
+		<<set $_num to ($_pregnancy.awareOfDetails || $_pregnancy.awareOfMultiple ? $_pregnancy.fetus.length : 1)>>
+		<<if $_pregnancy.awareOfDetails>>
+			<<switch $_pregnancy.type>>
+				<<case "human">>
+					<<if $_num gt 1>>
+						<<set $_text_output to ($_num is 3 ? "三胞胎" : "双胞胎")>>
+					<<else>>
+						<<set $_text_output to "孩子">>
+					<</if>>
+				<<case "wolf">>
+					<<if $_num lte 3>>
+						<<set $_text_output to ($_num is 1 ? "幼崽" : "幼崽")>>
+					<<else>>
+						<<set $_text_output to "一窝幼崽">>
+					<</if>>
+				<<default>>
+					<<set $_text_output to ($_num gt 1 ? "孩子" : "孩子")>>
+			<</switch>>
+		<<else>>
+			<<set $_text_output to ($_pregnancy.awareOfMultiple && $_pregnancy.fetus.length gt 1 ? "孩子" : "孩子")>>
+		<</if>>
+	<<else>>
+		<<set $_text_output to ($_pregnancy.awareOfMultiple && $_pregnancy.fetus.length gt 1 ? "孩子" : "孩子")>>
+	<</if>>
+<</silently>><<print $_text_output>><</widget>>
+
+<<widget "npcPregnancyUpdater">>
+	<<for $_i to 0; $_i lt $NPCNameList.length; $_i++>>
+		<<set $_name to $NPCNameList[$_i]>>
+		<<if $NPCName[$NPCNameList.indexOf($_name)].pregnancy is undefined>>
+			<<set $NPCName[$NPCNameList.indexOf($_name)].pregnancy to {}>>
+		<</if>>
+		<<set $_pregnancy to $NPCName[$NPCNameList.indexOf($_name)].pregnancy>>
+		<<if !setup.pregnancy.infertile.includes($_name) and setup.pregnancy.typesEnabled.includes($NPCName[$NPCNameList.indexOf($_name)].type) and
+		(($incompletePregnancyDisable is "f" and $NPCName[$NPCNameList.indexOf($_name)].pregnancy.enabled is undefined and !setup.pregnancy.ignoresIncompeteCheck.includes($_name)) or 
+		(setup.pregnancy.canBePregnant.includes($_name) and $NPCName[$NPCNameList.indexOf($_name)].pregnancy.enabled is undefined))>>
+			<<set $_pregnancy.fetus to []>>
+			<<set $_pregnancy.givenBirth to 0>>
+			<<set $_pregnancy.totalBirthEvents to 0>>
+			<<set $_pregnancy.timer to null>>
+			<<set $_pregnancy.timerEnd to null>>
+			<<set $_pregnancy.waterBreaking to null>>
+			<<set $_pregnancy.npcAwareOf to null>>
+			<<set $_pregnancy.pcAwareOf to null>>
+			<<set $_pregnancy.type to null>>
+			<<set $_pregnancy.enabled to true>>
+			<<set $_pregnancy.cycleDaysTotal to random(24,32)>>
+			<<set $_pregnancy.cycleDay to random(1,$_pregnancy.cycleDaysTotal)>>
+			<<set $_pregnancy.cycleDangerousDay to 10>>
+			<<set $_pregnancy.sperm to []>>
+			<<set $_pregnancy.potentialFathers to []>>
+			<<set $_pregnancy.nonCycleRng to [random(0,3),random(0,3)]>>
+			<<switch $_name>>
+				<<case "Kylar">><<set $_pregnancy.pills to "fertility">>
+				<<case "Alex" "Wren">><<set $_pregnancy.pills to "contraceptive">>
+				<<default>><<set $_pregnancy.pills to null>>
+			<</switch>>
+		<<elseif setup.pregnancy.infertile.includes($_name) or (!setup.pregnancy.canBePregnant.includes($_name) and $incompletePregnancyDisable isnot "f")>>
+			/*For saves that have the variables set, but have no need to be there*/
+			<<set $NPCName[$NPCNameList.indexOf($_name)].pregnancy to {}>>
+		<</if>>
+			/* 0 = never uses a condom, Kylar has a special exception
+			* 50 = Will use a condom, but will refrain if asked
+			* 100 = Always uses a condom, will not remove it
+			*/
+		<<if !$NPCName[$NPCNameList.indexOf($_name)].pregnancyAvoidance or $objectVersion.pregnancyAvoidance is undefined>>
+			<<switch $_name>>
+				<<case "Kylar" "Black Wolf" "Great Hawk" "Eden" "Ivory Wraith">><<set $NPCName[$NPCNameList.indexOf($_name)].pregnancyAvoidance to 0>>
+				<<case "Robin" "Whitney" "Alex" "Wren" "Avery">><<set $NPCName[$NPCNameList.indexOf($_name)].pregnancyAvoidance to 50>>
+				<<default>><<set $NPCName[$NPCNameList.indexOf($_name)].pregnancyAvoidance to 100>>
+			<</switch>>
+		<</if>>
+	<</for>>
+	<<set $objectVersion.pregnancyAvoidance to 1>>
+<</widget>>
+
+/*ToDo: Pregnancy Story Content: Not used in events at the moment, add to appropriate story passages, when the player gives birth to their children*/
+<<widget "earSlimePregnancy">>
+	<<if _args[0] and $corruption_slime gte 80>>
+		<<switch _args[0]>>
+			<<case "human">><<set $_type to _args[1]? 'babies' : 'baby'>>
+			<<case "wolf">><<set $_type to _args[1] ? 'wolf puppies' : 'wolf pup'>>
+			<<default>><<set $_type to _args[1] ? 'babies' : 'baby'>>
+		<</switch>>
+		<<set $_babiesText to _args[1] ? `to some beautiful ${$_type}` : `to a beautiful ${$_type}`>>
+		<<if $parasite.left_ear.name is "slime" and $parasite.right_ear.name is "slime">>
+			<span class="green">一股温暖感充斥在你的内心。</span>
+			你几乎忘记了世间的纷争。你可以感觉到这是你耳朵里的史莱姆对你生下<<print $_babiesText>>的奖励。
+			<<lllcorruption>><<lltrauma>><<llstress>><<trauma -24>><<stress -24>><<corruption `Math.floor($corruption_slime * -0.4)`>>
+			<br><br>
+		<<elseif $parasite.left_ear.name is "slime" or $parasite.right_ear.name is "slime">>
+			<span class="green">一股温暖感充斥在你的内心。</span>
+			你几乎忘记了世界的纷争。你可以说是你耳朵里的史莱姆，给了你新的生命<<print $_babiesText>>。
+			<<llcorruption>><<ltrauma>><<lstress>><<trauma -12>><<stress -12>><<corruption `Math.floor($corruption_slime * -0.2)`>>
+			<br><br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<<widget "fetishPregnancyImg">>
+	<<if _playerIsNowPregnant or _npcIsNowPregnant>>
+		<div class="impregnatedGrid">
+			<<if _playerIsNowPregnant>>
+				<div @class="$options.images is 1 ? 'impregnated' : ''">
+					<div>
+						<<if _playerIsNowPregnant is "pc">>
+							<span class="lewd">你刚发现自己怀孕了</span>
+						<<else>>
+							<span class="lewd"><<print pregnancyNameCorrection(_playerIsNowPregnant, true)>>之前授孕了你。</span>
+						<</if>>
+					</div>
+					<<if $options.images is 1>>
+						<<if $player.vaginaExist>>
+							<<set $_fCum to Math.clamp(setup.bodyliquid.combined("vagina"),1,5)>>
+						<<else>>
+							<<set $_fCum to Math.clamp(setup.bodyliquid.combined("anus"),1,5)>>
+						<</if>>
+						<img class="fertilization" @src="'img/sex/fertilization/fert' + $_fCum + '.gif'">
+					<</if>>
+				</div>
+				<<unset _playerIsNowPregnant>>
+			<</if>>
+			<<if _npcIsNowPregnant>>
+				<div @class="$options.images is 1 ? 'impregnated' : ''">
+					<div><span class="lewd">你刚刚授孕了<<print pregnancyNameCorrection(_npcIsNowPregnant)>>。</span></div>
+					<<if $options.images is 1>><img class="fertilization" src="img/sex/fertilization/fert6.gif"><</if>>
+				</div>
+				<<earnFeat "First Fatherhood">>
+				<<unset _npcIsNowPregnant>>
+			<</if>>
+		</div>
+	<</if>>
+<</widget>>

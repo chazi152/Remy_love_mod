@@ -1,0 +1,206 @@
+:: Oxford Street
+
+<<set $outside to 1>><<set $location to "town">><<effects>><<set $bus to "oxford">><<getTarget true>>
+你正在牛津街，这里交叉坐落着各式各样的建筑物，不过最显眼的还是那栋学校。
+<<if Time.schoolDay>>
+	<<if Time.dayState is "day">>
+		<<if $weather is "rain">>
+			就算在下雨，这条街还是很热闹。
+		<<elseif $weather is "snow">>
+			就算天气十分寒冷，街上还是很热闹。
+		<<else>>
+			<<if Time.hour gte 7 and Time.hour lte 16>>
+				叽叽喳喳的笑声从校园里传出。
+			<<else>>
+				学生们在附近闲逛着。
+			<</if>>
+		<</if>>
+	<<elseif Time.dayState is "dawn">>
+		学生们在附近闲逛着。
+	<<elseif Time.dayState is "dusk">>
+		一些学生正穿着校服在周围成群的徘徊着.
+	<<elseif Time.dayState is "night">>
+		由于它身处城镇中心，所以尽管已经是这个时候了，路上还是能见到几个行人.
+	<</if>>
+<<else>>
+	<<if Time.dayState is "day">>
+		<<if $weather is "rain">>
+			就算在下雨，这条街还是很热闹。
+		<<elseif $weather is "snow">>
+			就算天气十分寒冷，街上还是很热闹。
+		<<else>>
+			路上时不时的有着车辆和行人经过.
+		<</if>>
+	<<elseif Time.dayState is "dawn">>
+		<<if $weather is "rain">>
+			人们在雨中匆忙地走着，仿佛想着快点到上班的地方来躲避雨水。
+		<<elseif $weather is "snow">>
+			人们在雪中匆忙地走着，仿佛想着快点到上班的地方来躲避寒风。
+		<<else>>
+			人们正在前去上班.
+		<</if>>
+	<<elseif Time.dayState is "dusk">>
+		<<if $weather is "rain">>
+			人们在雨中匆忙地走着，仿佛在寻找能够躲雨的地方。
+		<<elseif $weather is "snow">>
+			人们在雨中匆忙地走着，仿佛在寻找能够躲避寒风的地方。
+		<<else>>
+			人们正在赶回家躺下休息。
+		<</if>>
+	<<elseif Time.dayState is "night">>
+		<<if $weather is "rain">>
+			尽管是在这个时候而且还下着雨，偶尔还是能看见那么几个行人.
+		<<elseif $weather is "snow">>
+			黑暗笼罩着街道，尤其是在雪天更是如此，但依旧有行人会经过这里.
+		<<else>>
+			由于它身处城镇中心，所以尽管已经是这个时候了，路上还是能看见几个行人.
+		<</if>>
+	<</if>>
+<</if>>
+<<streeteffects>>
+<br><br>
+<<if $exposed gte 1>>
+	<<exhibitionism "street">>
+<</if>>
+<<if $arousal gte $arousalmax>>
+	<<orgasmstreet>>
+<</if>>
+<<if $stress gte $stressmax and !$possessed>>
+	<<passoutstreet>>
+<<elseif $mathsproject is "ongoing" and $stimdealerknown isnot 1 and !$possessed>>
+	<<set $stimdealerknown to 1>>
+	<<generatey1>><<person1>>你认出了那个与你数学课同班的<<person>>。学校对面，<<Hes>>与其他几个学生一起扎堆站在一条小巷的尽头。 他们正跟一个身披厚重大衣的人说着话，那人站在了更深处的阴影中。
+	<br><br>
+	在你的注视下，几个包裹于他们之间来回传递着。<<person>>在自己身上摸索，将一个小塑料袋掉在了人行道上，色彩鲜艳的药片洒了满地。有一阵警笛声自远方响起，那个身穿大衣的人于是退回到阴影之中。其他学生们装作若无其事地走出小巷，而那个<<person>>急忙捡起<<his>>的药片追了上去。
+	<br><br>
+	当其他学生从你身边走过时，你无意中听到那些家伙在取笑<<him>>。"我不敢相信，你以前从未听说过这种东西。"
+	<br>
+	"只有失败者才会把时间浪费在正常的学习上..."
+	<br><br>
+	这并不是你第一次看到学生与这里的毒贩子做生意。然而，你是第一次听说学生购买毒品来帮助他们的学习，这可能是毒贩子经常光顾这个地区的原因。
+	<br><br>
+	<span class="gold">你可以在牛津街的毒贩处买到兴奋剂。</span>
+	<br><br>
+	<<link [[继续|Oxford Street]]>><<endevent>><</link>>
+	<br>
+
+<<elseif $NPCName[$NPCNameList.indexOf("Avery")].state is "active" and $averyschoolpickup is 0 and Time.schoolDay and Time.hour is 15 and $exposed lte 0 and (($NPCName[$NPCNameList.indexOf("Avery")].love gte random(20, 100) and ($rng gte 50 or $weather is "rain" or $weather is "snow")) or ($NPCName[$NPCNameList.indexOf("Avery")].love gte 20 and Time.weekDay is 2))>>
+<<npc Avery>><<person1>>
+<<set $averyschoolpickup to 1>>
+
+	<<if $averyschoolpickupintro is 1 and $fame.business gte 400 and random(1,10) is 1 and $weather is "clear">>
+		当你正要离开教学楼时，你听到了一阵喧哗声。数十名学生正聚集在校外，一架直升机正向学校辖区降落。一群带着墨镜的保安跳了出来。艾弗里在里面招手。
+		<br><br>
+
+		"快点，快进来，我可没那么多时间等!有重要的事情等着呢!"
+		<br><br>
+
+		<<link [[登上直升机(0:20)|Avery Helicopter]]>><<npcincr Avery love 2>><</link>><<gglove>>
+		<br>
+		<<link [[走开|Avery Helicopter Walk]]>><<npcincr Avery love -1>><<npcincr Avery rage 5>><</link>><<garage>><<llove>>
+
+	<<else>>
+
+		<<if $averyschoolpickupintro is 1>>
+			一辆汽车停在你身边，车门打开，一个<<if $pronoun is "m">>穿着西装的男人<<else>>穿着优雅裙子的女人<</if>>探出头来，是艾弗里. "让我来送你一程吧,"<<he>>说道:"快上车。"
+		<<else>>
+			<<set $averyschoolpickupintro to 1>>
+			一辆外观昂贵的汽车停在你面前，你周围的大多数学生都停下来敬畏地注视着它。车窗降下，你认出了它的司机，是艾弗里"你来了，"<<he>>微笑着说道:"我正好在下班回家的路上，所以就想着来接你了。"
+			<br><br>
+
+			有几个学生相互间嘀咕着，那些家伙一定在想，你怎么可能负担得起这样的待遇呢？<<gcool>><<status 1>>
+		<</if>>
+		<br><br>
+
+		<<link [[上车|Avery School Pickup Accept]]>><</link>>
+		<br>
+		<<link [[拒绝|Avery School Pickup Refuse]]>><<npcincr Avery rage 5>><<npcincr Avery love -1>><</link>><<garage>><<llove>>
+		<br>
+
+	<</if>>
+
+<<else>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if ($danger gte (9900 - $allure) or $eventforced) and $eventskip is 0>>
+		<<eventsstreet>>
+	<<else>>
+		<<if $options.mapTop is true>>
+			<<map "oxford">>
+			<br>
+		<</if>>
+		<<set _robin to statusCheck("Robin")>>
+		<<if $robindebtevent gte 1>>
+		<<elseif Time.hour is 15 and _robin_location is "school" and $exposed lte 0>>
+			你看到罗宾正透过商店的窗户看里面的商品。
+			<br><br>
+			<<if _robin.trauma gte 80>>
+				<<link [[与罗宾一起步行回家 (0:40)|Robin Walk Home]]>><<run setRobinLocationOverride("orphanage", 15)>><<endevent>><<pass 40>><</link>><<glove>>
+				<br><br>
+			<<else>>
+				<<if ($player.gender is "f" or $player.gender is "h") and $worn.upper.exposed gte 2 and $genderknown.includes("Robin")>>
+					<<link [[与罗宾一起步行回家 (0:15)|Robin Walk Home Topless]]>><<run setRobinLocationOverride("orphanage", 15)>><<endevent>><<pass 15>><</link>><<glove>><<glust>>
+				<<else>>
+					<<link [[与罗宾一起步行回家 (0:20)|Robin Walk Home]]>><<run setRobinLocationOverride("orphanage", 15)>><<endevent>><<pass 20>><</link>><<glove>>
+				<</if>>
+				<br><br>
+			<</if>>
+		<</if>>
+		<<if Time.schoolDay and Time.hour is 15 and $exposed lte 0 and $weather isnot "rain" and $weather isnot "snow">>
+			一群学生在附近聊天，你听见那些学生说着要去湖边。
+			<br><br>
+			<<if $town_projects.road gte 4>>
+				<<link [[一起去湖边 (0:15)|Lake Journey Road]]>><<pass 15>><</link>>
+			<<else>>
+				<<link [[一起去湖边 (0:30)|Lake Journey]]>><<pass 30>><</link>>
+			<</if>>
+			<br><br>
+		<</if>>
+		可访问地点
+		<br>
+		<<if Time.schoolDay and Time.hour gte 7 and Time.hour lte 16>>
+			<<schoolicon>><<link [[学校 (0:02)|School Front Courtyard]]>><<pass 2>><</link>>
+			<br>
+		<<else>>
+			<<schoolicon>><<link [[学校 (0:01)|School Locked]]>><<pass 1>><</link>>
+			<br>
+		<</if>>
+		<<if Time.isWeekEnd() and Time.dayState is "day" and $town_projects.diving isnot 3>>
+			<<if $exposed lte 0>>
+				<<museumicon>><<link [[博物馆 (0:01)|Museum]]>><<pass 1>><</link>>
+				<br>
+			<</if>>
+		<<else>>
+			<<if $exposed lte 0>>
+				<<museumicon>><<link [[博物馆 (0:01)|Museum Lock]]>><<pass 1>><</link>>
+				<br>
+			<</if>>
+		<</if>>
+		<<if $stimdealerknown is 1 and $mathsproject is "ongoing" and $exposed lte 0>>
+			<<ind>><<link [[兴奋剂经销商|Stim Dealer]]>><</link>>
+			<br>
+		<</if>>
+		<br>
+		<<if $exposed gte 1 and Time.dayState isnot "night">>
+		<<else>>
+		<<add_link "其他区域<br>">><<hideDisplay>>
+			<<starfish>>
+			<<nightingale>>
+			<<mer>>
+			<<elk>>
+			<<if $exposed lte 0>>
+				<<buswait>>
+			<</if>>
+			<<loiter>>
+		<</if>>
+		<<add_link "<br>快捷小路<br>">><<hideDisplay>>
+		<<park>>
+		<<industrial>>
+		<<stormdrain>>
+		<<displayLinks>>
+		<<if $options.mapTop isnot true>>
+			<br>
+			<<map "oxford">>
+		<</if>>
+	<</if>>
+<</if>>
+<<set $eventskip to 0>>

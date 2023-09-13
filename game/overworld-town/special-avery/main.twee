@@ -1,0 +1,4171 @@
+:: Widgets Avery [widget]
+<<widget "streetavery">>
+	<<if $NPCName[$NPCNameList.indexOf("Avery")].init isnot 1>>
+		<<npc Avery>><<initnpc Avery>><<generate2>><<generate3>>一个<<person2>><<person>>拦住了你。 你试着绕过<<him>>， 但是<<he>>挡住了你的路。"像你这样的<<girl>>怎么一个人在路上走啊？"<<he>>笑嘻嘻的说，"你会受伤的。"<<He>>抓住你的手臂想要把你拉走，直到一个<<nnpc_gender "Avery">>轻轻拍了拍<<him>>的肩膀。
+		<br><br>
+
+		"滚，"新来的人说。"现在。"
+		<br><br>
+
+		<<person>>回头瞪了一会儿，然后低下头，松开手臂，走开了。
+		<br><br>
+
+		<<endevent>><<npc Avery>><<person1>>
+		新来的人看向你。"你没事吧?"<<he>>问道。"我叫艾弗里。"<<He>>犹豫了一下。"虽然有点唐突，但你想喝一杯吗?我知道一个可爱的小地方。"
+		<br><br>
+
+		<<link [[同意 (0:30)|Park Lichen Accept]]>><<pass 30>><</link>>
+		<br>
+		<<link [[拒绝|Park Lichen Refuse]]>><</link>>
+		<br>
+	<<elseif $NPCName[$NPCNameList.indexOf("Avery")].rage gte 96 and $averyragerevealed is 1>>
+		<<npc Avery>><<person1>>
+		你走在街上，时不时小心翼翼地四处看。果然，你很快就看到一辆熟悉的车向你驶来。是艾弗里。
+		<br><br>
+		<<link [[躲在小巷里|Avery Dismissal Intro]]>><<set $phase to 1>><</link>>
+		<br>
+		<<link [[待在原地不动|Avery Dismissal Intro]]>><<set $phase to 2>><</link>>
+		<br>
+	<<elseif $averydatemissed is 1>><<set $averydatemissed to 0>>
+		<<if $NPCName[$NPCNameList.indexOf("Avery")].rage gte random(20, 100)>><<set $averyragerevealed to 1>>
+
+			<<npc Avery>><<person1>>一辆车在你旁边停了下来。一个<<nnpc_gender "Avery">>从里面探出了身子，是艾弗里。"你放了我鸽子，"<<He>>打开车门，生气的瞪着你。"让我像个傻瓜一样白等了一个小时，进去！"
+			<<gggarage>><<npcincr Avery rage 15>>
+			<br><br>
+
+			<<link [[进入|Street Avery Rape Drive]]>><<npcincr Avery rage -5>><</link>><<larage>>
+			<br>
+			<<link [[道歉|Street Avery Car Apologise]]>><</link>>
+			<br>
+			<<link [[拒绝|Street Avery Refuse]]>><</link>><<gggarage>><<lllove>>
+			<br>
+
+		<<else>>
+			<<if $avery_location is 2>>
+				<<npc Avery>><<person1>>一辆车在你旁边停了下来。一个 <<nnpc_gender "Avery">>探出身子。是艾弗里。“我还没有原谅你放我鸽子。那个房间可不便宜，”<<he>>说。“也许你可以补偿我。我可以再订一个房间。怎么样？"
+				<<ggarage>><<npcincr Avery rage 10>>
+
+			<<elseif $avery_location is 1>>
+				<<npc Avery>><<person1>>一辆车在你旁边停了下来。一个 <<nnpc_gender "Avery">>探出身子。是艾弗里。“我还没有原谅你放我鸽子，”<<he>>说。“也许你可以补偿我。今晚还有个派对。怎么样?"
+				<<ggarage>><<npcincr Avery rage 10>>
+
+			<<else>>
+				<<npc Avery>><<person1>>一辆车在你旁边停了下来。一个<<nnpc_gender "Avery">>探出身子。是艾弗里。“我还没有原谅你放我鸽子，”<<he>>说。“也许你可以补偿我。我已经订了另一张桌子。怎么样？"
+				<<ggarage>><<npcincr Avery rage 10>>
+			<</if>>
+			<br><br>
+
+			<<link [[好|Street Avery Yes]]>><<npcincr Avery love 1>><</link>><<glove>>
+			<br>
+			<<link [[道歉|Street Avery Apologise]]>><</link>>
+			<br>
+			<<link [[不|Street Avery No]]>><<npcincr Avery love -1>><<npcincr Avery rage 5>><</link>><<llove>><<garage>>
+			<br>
+		<</if>>
+	<<else>>
+
+		<<if $avery_location is 2>>
+			<<npc Avery>><<person1>>一辆车在你旁边停了下来。一个<<nnpc_gender "Avery">>探出身子。是艾弗里。“我一直想着能不能遇到你，”<<he>>笑着说。“我今晚为了……生意要订一个酒店房间。两个人的房间。你愿意陪我吗？"
+		<<elseif $avery_location is 1>>
+			<<npc Avery>><<person1>>一辆车在你旁边停了下来. 一个<<nnpc_gender "Avery">>探出身子。是艾弗里。“我一直想见你，”<<he>>笑着说。“我被邀请参加今晚的聚会。我可以带个舞伴去。怎么样?"
+		<<else>>
+			<<npc Avery>><<person1>>一辆车在你旁边停了下来. 一个<<nnpc_gender "Avery">>探出身子。是艾弗里。“我一直想见你，”<<he>>笑着说。“今晚能让我带你出去吃饭吗?我已经订了一张桌子。"
+		<</if>>
+		<br><br>
+
+		<<link [[好|Street Avery Yes]]>><<npcincr Avery love 1>><</link>><<glove>>
+		<br>
+		<<link [[不|Street Avery No]]>><<npcincr Avery love -1>><<npcincr Avery rage 5>><</link>><<llove>><<garage>>
+		<br>
+
+	<</if>>
+<</widget>>
+
+<<widget "averyscore">>
+	<<set $NPCName[$NPCNameList.indexOf("Avery")].love = Math.clamp($NPCName[$NPCNameList.indexOf("Avery")].love, 0, 100)>>
+	<<set $NPCName[$NPCNameList.indexOf("Avery")].rage = Math.clamp($NPCName[$NPCNameList.indexOf("Avery")].rage, 0, 100)>>
+
+	<<set $endear = Math.clamp($endear, 0, 100)>>
+
+	<span class="gold">艾弗里的印象</span>
+	<br>
+
+	好感:
+
+	<<if $NPCName[$NPCNameList.indexOf("Avery")].love gte 100>>
+		<span class="green">S</span>
+	<<elseif $NPCName[$NPCNameList.indexOf("Avery")].love gte 80>>
+		<span class="teal">A</span>
+	<<elseif $NPCName[$NPCNameList.indexOf("Avery")].love gte 60>>
+		<span class="lblue">B</span>
+	<<elseif $NPCName[$NPCNameList.indexOf("Avery")].love gte 40>>
+		<span class="blue">C</span>
+	<<elseif $NPCName[$NPCNameList.indexOf("Avery")].love gte 20>>
+		<span class="purple">D</span>
+	<<else>>
+		<span class="pink">F</span>
+	<</if>>
+	<br>
+	亲密度：
+
+	<<if $endear gte 80>>
+		<span class="green">S</span>
+	<<elseif $endear gte 50>>
+		<span class="teal">A</span>
+	<<elseif $endear gte 40>>
+		<span class="lblue">B</span>
+	<<elseif $endear gte 30>>
+		<span class="blue">C</span>
+	<<elseif $endear gte 10>>
+		<span class="purple">D</span>
+	<<else>>
+		<span class="pink">F</span>
+	<</if>>
+	<br>
+	<hr>
+	<br>
+	<<if $dateCount.Avery is 3>>
+		<<if $loveInterest.primary is "None">>
+			<<set $loveInterest.primary to "Avery">>
+			<span class = "gold">艾弗里现在是你的爱人了！你感觉你在这个世界上的地位变高了一些。</span>
+			<br><br>
+		<<else>>
+			<span class = "gold">艾弗里现在可以成为你的爱人了!你觉得自己在这个社会上的地位变得更高了。<br>你可以在"态度"菜单中改变你的爱慕对象。</span>
+			<br><br>
+		<</if>>
+	<</if>>
+<</widget>>
+
+<!-- Dismisses Avery, cleans up anything unneeded and gives the dismissal message. -->
+<<widget "dismissAvery">>
+	<<npcset Avery state "dismissed">>
+	<<unset $averyPub>>
+	<<unset $avery_location>>
+	<<unset $averyCrimeTracker>>
+	<<unset $averydate>>
+	<<unset $averydateattended>>
+	<<unset $averydatedone>>
+	<<unset $averyschoolpickup>>
+	<<set $averyDismissalSceneWait to 1>>
+	<<if $loveInterest.primary is "Avery">>
+		<<if $loveInterest.secondary isnot "None">>
+			<<set $loveInterest.primary to $loveInterest.secondary>>
+			<<set $loveInterest.secondary to "None">>
+		<<else>>
+			<<set $loveInterest.primary to "None">>
+		<</if>>
+		<span class = "red">艾弗里不再是你的爱人了。</span>
+	<<elseif $loveInterest.secondary is "Avery">>
+		<<set $loveInterest.secondary to "None">>
+		<span class = "red">艾弗里不再是你的爱人了。</span>
+	<<elseif $dateCount.Avery gte 3>>
+		<span class = "red">艾弗里不再是你的爱人了。</span>
+	<<else>>
+		<span class = "red">艾弗里离开了。</span>
+	<</if>>
+	<br><br>
+<</widget>>
+
+:: Street Avery Car Apologise
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"请不要生我的气，"你恳求道，"再给我个机会吧。"
+<<elseif $speech_attitude is "bratty">>
+	"我经常会很忙，"你说。"如果给你带来不便了，我很抱歉。"
+<<else>>
+	"对不起，"你说。"我不是故意的。"
+<</if>>
+<br><br>
+
+"如果你真的感到抱歉，”艾弗里咬牙切齿地说。“那你就他妈的快点儿上我的车。"
+<br><br>
+
+<<link [[进入|Street Avery Rape Drive]]>><<npcincr Avery rage -5>><</link>><<larage>>
+<br>
+<<link [[拒绝|Street Avery Refuse]]>><</link>><<gggarage>><<lllove>>
+<br>
+
+:: Street Avery Apologise
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"请不要生我的气，"你恳求道，"再给我个机会吧。"
+<<elseif $speech_attitude is "bratty">>
+	"我经常会很忙，"你说。"如果给你带来不便了，我很抱歉。"
+<<else>>
+	"对不起，"你说。"我不是故意的。"
+<</if>>
+<br><br>
+
+"别担心，”艾弗里说。“你今晚可以补偿我，怎么样？"
+<br><br>
+
+<<link [[好|Street Avery Yes]]>><<npcincr Avery love 1>><</link>><<glove>>
+<br>
+<<link [[不|Street Avery No]]>><<npcincr Avery love -1>><<npcincr Avery rage 5>><</link>><<llove>><<garage>>
+<br>
+
+:: Street Avery Yes
+<<effects>>
+<<set $averydate to 1>>
+<<He>>微笑。"很好，我今晚八点在<span class="green">宅邸街</span>接你。对了，记得<span class="green">一定要穿正式的衣服</span>，注意着装规范。"<<He>>开车离开了。
+<br><br>
+
+<<endevent>>
+<<destinationeventend>>
+
+:: Street Avery No
+<<effects>>
+
+<<if $NPCName[$NPCNameList.indexOf("Avery")].rage gte random(20, 100)>><<set $averyragerevealed to 1>>
+
+<<He>> 的手放在方向盘上，盯着你看了一会儿. <<He>> 把车开上人行道，打开车门。“进来，” <<he>> 说。
+<<gggarage>><<npcincr Avery rage 15>>
+<br><br>
+
+<<link [[进入|Street Avery Rape Drive]]>><<npcincr Avery rage -5>><</link>><<larage>>
+<br>
+<<link [[拒绝|Street Avery Refuse]]>><<npcincr Avery rage 15>><<pain 5>><</link>><<gggarage>><<lllove>><<gpain>>
+<br>
+
+<<else>>
+"随你便，"<<he>>开车离开了。
+<br><br>
+
+<<endevent>>
+<<destinationeventend>>
+
+<</if>>
+
+:: Street Avery Refuse
+<<effects>>
+
+"我说了，"<<he>>吼道。"给我上车。"<<He>>抓住你的头发，强行把你拽上车。
+<br><br>
+
+<<link [[进入|Street Avery Rape Drive]]>><<npcincr Avery rage -5>><</link>><<larage>>
+<br>
+<<link [[反抗|Street Avery Fight]]>><<set $fightstart to 1>><<npcincr Avery rage 15>><</link>><<gggarage>><<lllove>>
+<br>
+:: Street Avery Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>><<set $NPCList[0].lefthand to "hair">>
+	<<enable_rescue>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Street Avery Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Street Avery Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Street Avery Fight Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation "short">>
+
+	<<He>>靠在车上喘气。
+	<br><br>
+
+	<<tearful>>你抓住机会，逃到街上更繁忙的地方。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<destinationeventend>>
+<<elseif $enemyhealth lte 0>>
+	<<He>>后退几步，靠在了<<his>>的车上。
+	<br><br>
+
+	<<tearful>>你抓住机会，逃到街上更繁忙的地方。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<destinationeventend>>
+<<elseif $rescue is 1 and $alarm is 1>>
+	<<He>>冷眼看着你哭喊的样子，转过头离开了你。"之后见，"<<he>>回到了车上，对你冷笑道。
+	<br><br>
+
+	<<tearful>>你看着<<him>>开车离开。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<destinationeventend>>
+<<else>>
+	<<tearful>>你摇摇晃晃，痛得无法继续行动。艾弗里把你拖到汽车后座。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Street Avery Rape Drive]]>><<npcincr Avery rage -5>><</link>><<larage>>
+	<br>
+<</if>>
+
+:: Street Avery Rape Drive
+<<effects>>
+<<endevent>><<npc Avery>><<person1>>
+艾弗里在你身后砰地一声关上车门，然后回了驾驶座。艾弗里锁上了车门，开车离开了。
+<br><br>
+
+"真不敢相信，"<<he>>眉头紧皱。"你居然在公共场合这样表现。"<<He>>怒视着怀抱中的你。"你居然这么不尊重我？那好吧，那让我们直接跳到最后一步吧。"
+<br><br>
+
+<<He>>把车停在一条小巷里。<<He>>解开安全扣，来到了你坐的后座上。
+<br><br>
+
+<<link [[继续|Street Avery Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+:: Street Avery Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>><<set $enemytrust -= 40>><<set $enemyanger += $NPCName[$NPCNameList.indexOf("Avery")].rage>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Street Avery Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Street Avery Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Street Avery Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	艾弗里打开车门，把你推到了人行道上。片刻后，引擎轰鸣着启动，<<he>>离开了。
+	<<larage>><<npcincr Avery rage -5>>
+	<br><br>
+
+	<<tearful>>你爬了起来。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<destinationeventend>>
+<<else>>
+	艾弗里吃痛退开。"操！"<<he>>怒骂。"该死的<<bitch>>，给脸不要脸！"<<He>>走回前排座椅，然后打开了车门。"给我滚出去！"
+	<<ggarage>><<npcincr Avery rage 5>>
+	<br><br>
+
+	<<tearful>>你从车上爬了下来。引擎咆哮着发动起来，然后就开走了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<destinationeventend>>
+<</if>>
+
+:: Avery Date
+<<effects>>
+<<set $averydateattended to 1>><<set $endear to 0>>
+<<npc Avery>><<person1>>当你走近时，艾弗里抬起头来。<<if $pronoun is "m">><<He>>穿着设计考究的西装。<<else>><<He>>穿着一件华丽的礼服。<</if>> "你来啦，<<pcpetname "Avery">>。"<<he>>
+
+<<if $worn.over_upper.name isnot "naked" or $worn.over_lower.name isnot "naked">>
+	<<outfitChecks>>
+	<<he>>说，"让我看看你的外套下的样子。你可以把它脱到后座那边。"
+	<br><br>
+	你
+	<<if _overOutfit>>
+		$worn.over_upper.cn_name_cap
+	<<else>>
+		<<if $worn.over_upper.name isnot "naked" and $worn.over_lower.name isnot "naked">>
+			$worn.over_upper.cn_name_cap和$worn.over_lower.cn_name_cap
+		<<elseif $worn.over_upper.name isnot "naked">>
+			$worn.over_upper.cn_name_cap
+		<<else>>
+			$worn.over_lower.cn_name_cap
+		<</if>>
+	<</if>>
+	坐在了后座。
+	<<undressOverClothes "averyCar">>
+<<else>>
+	说。
+<</if>>
+<<set $averyLastApp to $player.gender_appearance>>
+<<if $exposed gt 0>>
+	<br><br>
+	艾弗里面对你的丑态扬起了眉毛。"你确实知道如何设定期望值。让我们跳过晚餐，直接开始吧。"
+	<br><br>
+	<<link [[和艾弗里一起走|Avery Date 5]]>><<set $averydatedone to 1>><<npcincr Avery love 5>><<set $endear += 30>><</link>><<gendear>><<glove>>
+	<br>
+	<<link [[改变想法回家|Avery Date Refuse]]>><<set $averydatedone to 1>><</link>>
+	<br>
+<<elseif $worn.upper.type.includes("formal") or $worn.lower.type.includes("formal")>>
+	"你看起来很<<if $player.gender_appearance is "m">>英俊<<else>>美丽<</if>>。"
+	<br><br>
+	<<link [[恭维|Avery Date Compliment]]>><<npcincr Avery love 1>><<set $averydatedone to 1>><</link>><<glove>>
+	<br>
+	<<link [[微笑|Avery Date Smile]]>><<set $endear += 10>><<set $averydatedone to 1>><</link>><<gendear>>
+	<br>
+<<else>>
+	<<if $avery_misdressed gte 3>>
+		艾弗里微笑着注视着你的穿着状态，但是笑意不达眼底。"我想你根本不想吃晚饭。我们直接开始吧，怎么样？"
+		<<npcincr Avery rage -5>><<set $endear -= 5>><<npcincr Avery love -3>><<larage>><<lendear>><<llove>>
+		<br><br>
+		<<set $avery_misdressed += 1>>
+		<<link [[和艾弗里一起走|Avery Date 5]]>><<set $averydatedone to 1>><<npcincr Avery love 1>><</link>><<glove>>
+		<br>
+		<<link [[改变想法回家|Avery Date Refuse]]>><<set $averydatedone to 1>><</link>>
+		<br>
+	<<elseif $avery_misdressed gte 2>>
+		艾弗里盯着你的衣服。愤怒掠过<<his>>的脸。"既然你不能听从指示，那我们就不吃饭了。你可以用其他方式招待我。"
+		<<npcincr Avery rage 5>><<set $endear -= 5>><<npcincr Avery love -3>><<garage>><<lendear>><<llove>>
+		<br><br>
+		<<link [[和艾弗里一起走|Avery Date 5]]>><<set $averydatedone to 1>><<set $avery_misdressed += 1>><</link>>
+		<br>
+		<<link [[改变想法回家|Avery Date Refuse]]>><<set $averydatedone to 1>><</link>>
+		<br>
+	<<elseif $avery_misdressed gte 1>>
+		艾弗里看着你的衣服眉头紧皱。"我们不是说好了吗？和我在一起的时候你要穿正装，去<span class="green">换一身衣服</span>吧。"
+		<<npcincr Avery rage 5>><<set $endear -= 5>><<garage>><<lendear>>
+		<br><br>
+		<<set $avery_misdressed += 1>>
+		<<link [[去换衣服|Domus Street]]>><<endevent>><</link>>
+		<br>
+	<<else>>
+		艾弗里看着你的衣服笑了。"这些衣服不行，去商店买些更<span class="green">正式的衣服</span>吧，这<span class="gold">£150</span>就当是给你买衣服的钱了。"
+		<br><br>
+		<<set $money += 15000>>
+		<<set $avery_misdressed to 1>>
+		<<link [[去换衣服|Domus Street]]>><<endevent>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Avery Date Compliment
+<<effects>><<set $outside to 0>>
+<<pass 20>>
+<<if $speech_attitude is "meek">>
+	"你看起来比我好多了，”你说。
+<<elseif $speech_attitude is "bratty">>
+	"我们两个很相配。”你说。
+<<else>>
+	"你看起来也很棒，”你说。
+<</if>>
+<br><br>
+
+<<He>>笑着打开旁边的门。"上车，距离不远。"
+<br><br>
+
+
+<<if $avery_location is 2>><<set $avery_location to 0>>
+	<<He>>开车送你到商业街，最终把车停到了一家豪华的酒店前。<<He>>递给你一把钥匙，上面潦草地写着房间号。"给。拿着这个，你先去上面等我。我去停一下车。"你从车里下来进了酒店。
+	<br><br>
+
+	<<link [[继续|Avery Hotel]]>><</link>>
+	<br>
+<<elseif $avery_location is 1>><<set $avery_location to 2>>
+
+	<<generate2>>
+	<<He>>开车送你到多瑙河街一栋公馆的前门。<<He>>向一位身着侍者服装的<<person2>><<person>>出示了一张请柬，当另一辆车停在你们后面等待时，<<person>>向你们挥了挥手。
+	<br><br>
+	<<endevent>><<npc Avery>><<person1>>
+
+	<<link [[继续|Avery Party]]>><</link>>
+	<br>
+<<else>><<set $avery_location to 1>>
+	<<He>>开车送你到康努达塔斯街，然后把车停在一家餐馆外面。<<He>>领着你进入大楼的时候，伸手让你挽住。
+	<br><br>
+
+	<<link [[牵手|Avery Date 2]]>><<set $phase to 1>><</link>><<handholdingvirginitywarning>>
+	<br>
+	<<link [[拒绝|Avery Date 2]]>><<set $phase to 2>><<npcincr Avery love -1>><<set $endear -= 10>><</link>><<lendear>><<llove>>
+	<br>
+<</if>>
+
+:: Avery Date Smile
+<<effects>><<set $outside to 0>>
+<<pass 20>>
+你对<<him>>微笑，<<He>>也笑了。"你真可爱，"<<he>>边说边打开<<him>>旁边的门。"上车，距离不远。"
+<br><br>
+
+<<if $avery_location is 2>><<set $avery_location to 0>>
+	<<He>>开车送你到商业街，最终把车停到了一家豪华的酒店前。<<He>>递给你一把钥匙，上面潦草地写着房间号。"给。拿着这个，你先去上面等我。我去停一下车。"你从车里下来进了酒店。
+	<br><br>
+
+	<<link [[继续|Avery Hotel]]>><</link>>
+	<br>
+<<elseif $avery_location is 1>><<set $avery_location to 2>>
+
+	<<generate2>>
+	<<He>>开车送你到多瑙河街一栋公馆的前门。<<He>>向一位身着侍者服装的<<person2>><<person>>出示了一张请柬，当另一辆车停在你们后面等待时，<<person>>向你们挥了挥手。
+	<br><br>
+	<<endevent>><<npc Avery>><<person1>>
+
+	<<link [[继续|Avery Party]]>><</link>>
+	<br>
+<<else>><<set $avery_location to 1>>
+	<<He>>开车送你到康努达塔斯街，然后把车停在一家餐馆外面。<<He>>领着你进入大楼的时候，伸手让你挽住。
+	<br><br>
+
+	<<link [[牵手|Avery Date 2]]>><<set $phase to 1>><</link>><<handholdingvirginitywarning>>
+	<br>
+	<<link [[拒绝|Avery Date 2]]>><<set $phase to 2>><<npcincr Avery love -1>><<set $endear -= 10>><</link>><<lendear>><<llove>>
+	<br>
+<</if>>
+<br>
+
+:: Avery Hotel
+<<effects>><<set $outside to 0>>
+<<pass 5>><<famesocial 5>><<set $dateCount.Total++>><<set $dateCount.Avery++>>
+
+酒店内部简直是奢华至极。大堂里数量众多的吊灯与地板中央的大型华丽喷泉让你吃了一惊。
+<br><br>
+
+<<if $worn.upper.type.includes("costume") or $worn.lower.type.includes("costume")>>
+	几个穿着讲究的乘客打量着你，好几人在你走向电梯时嗤之以鼻。
+<<else>>
+	几个穿着讲究的乘客打量着你，但当你走向电梯时，他们并没有太在意你。
+<</if>>
+一个标志详细说明了每层楼的房间号码。你的房间似乎在最顶层。你走进电梯，看着一排金色按钮。你按下最高的一个。
+<br><br>
+
+电梯的行程比预期的要长。门打开了，你走向房间。你在将钥匙插入锁孔之前犹豫了一下。听到一声咔嗒声后，你转动了门把手。
+<br><br>
+房间内部宽敞，和酒店其他地方一样豪华。这不是一个普通的房间，而是一个套房，配有阳台和一个看起来像是热水浴缸的东西。还有一张非常大的床。你坐在床上，它和孤儿院的床相比，真的很柔软。你在床上跳了一下。
+<br><br>
+
+<<link [[等待艾弗里|Avery Hotel 2]]>><</link>>
+<br>
+<<if $exhibitionism gte 55>>
+	<<link [[脱光衣服给艾弗里一个惊喜|Avery Hotel Strip]]>><<npcincr Avery love 1>><<npcincr Avery rage -5>><</link>><<exhibitionist4>><<glove>><<larage>>
+<</if>>
+<br><br>
+
+:: Avery Hotel Strip
+<<effects>><<pass 5>>
+<<strip>>
+<<if !playerChastity("hidden")>>
+	<<set $genderknown.pushUnique("Avery")>>
+<</if>>
+
+你站起来，脱下衣服，确保整齐地挂在套房的衣柜里。那里已经叠好了一套内衣，看起来是你的尺寸。<<stress 6>><<gstress>>
+<br><br>
+
+你躺在床上，柔软的织物接触着你的裸露皮肤，使你感到放松。你的目光转向阳台和下面的城镇。
+<<exhibitionism4>>
+门口传来一声咔嗒声，打断了你的沉思。门打开了，你的心跳加速。艾弗里走了进来，停了一会儿看着你。<<He>>微笑着走了过来。
+<br><br>
+<<if $averyragerevealed is 1>>
+	"我希望这就是你指的好好表现，<<pcpetname "Avery">>。"<<his>>的表情变得柔和。
+<<else>>
+	"今晚一定会很美好，<<pcpetname "Avery">>。"
+<</if>>
+<br><br>
+
+<<He>>脱下<<his>>的外套。"我本来想让你在点菜的时候放松一下，但我看你已经准备好了......"<<He>>用手抬起你的下巴。"......虽然不是预想的晚餐，但是比晚餐更让人高兴。"
+<br><br>
+
+<<link [[继续|Avery Hotel Strip 2]]>><</link>>
+<br>
+
+:: Avery Hotel Strip 2
+<<effects>>
+<<He>>突然吻了你一下，强势地将舌头伸入你的口中，同时<<his>>的手也开始顺着你的小腹往下摸。当<<he>>触摸到你的<<genitals>>时，你的身体颤了颤。<<takeKissVirginity "Avery" `($dateCount.Avery gte 3?"loveInterest":"romantic")`>>
+<<if playerChastity("hidden")>>
+	你无法阻止这种感觉。
+<</if>>
+<<He>>和你保持着眼神接触，同时<<his>>的攻势也变得愈发强烈。<<ggarousal>>
+<br><br>
+<<arousal 4000 "genitals">>
+<<if $arousal gte $arousalmax>>
+	<<orgasm>>
+	当艾弗里同你分开时你不禁发出一声呻吟，舌头保持着伸出来的状态。<<He>>看起来非常自豪。<<set $endear += 20>><<ggendear>>
+<<else>>
+	过了一会儿，艾弗里离开了你，然后对你笑了笑。
+<</if>>
+<br><br>
+"我们可以在晚餐后再玩得更开心，<<pcpetname "Avery">>，"<<he>>说着，把菜单放在床上，然后进入套房的浴室洗手。考虑到菜单的厚度，看来这家酒店匹配了一整座餐厅。
+<br><br>
+
+<<link [[让艾弗里为你点餐|Avery Hotel Order]]>><<set $phase to 0>><<npcincr Avery love 1>><<set $endear += 10>><</link>><<glove>><<gendear>>
+<br>
+<<link [[选便宜的|Avery Hotel Order]]>><<set $phase to 1>><<stress -6>><<set $endear -= 5>><<npcincr Avery rage 5>><</link>><<garage>><<lendear>><<lstress>>
+<br>
+<<link [[选昂贵的食物|Avery Hotel Order]]>><<set $phase to 2>><<set $endear -= 10>><<npcincr Avery rage 5>><<npcincr Avery love -1>><<stress -18>><</link>><<llove>><<garage>><<llendear>><<llstress>>
+<br>
+
+:: Avery Hotel 2
+<<effects>><<pass 5>>
+门口传来一声咔嗒声，吸引了你的注意。艾弗里走了进来，环顾了一下房间，然后微笑着向你靠近。"很高兴看到你找到了这里，<<pcpetname "Avery">>。我已经计划好了一个愉快的夜晚，只属于我们两个人的夜晚。"
+<br><br>
+<<He>>脱下外套，整齐地叠好放在了最近的椅子上。"我们来点餐吧，他们会立刻给我们送上来的。"<<He>>递给你一份客房服务的菜单。看起来酒店有一家菜品丰富的餐厅。
+<br><br>
+
+<<link [[让艾弗里为你点餐|Avery Hotel Order]]>><<set $phase to 0>><<npcincr Avery love 1>><<set $endear += 10>><</link>><<glove>><<gendear>>
+<br>
+<<link [[选便宜的|Avery Hotel Order]]>><<set $phase to 1>><<stress -6>><<set $endear -= 5>><<npcincr Avery rage 5>><</link>><<garage>><<lendear>><<lstress>>
+<br>
+<<link [[选昂贵的食物|Avery Hotel Order]]>><<set $phase to 2>><<set $endear -= 10>><<npcincr Avery rage 5>><<npcincr Avery love -1>><<stress -18>><</link>><<llove>><<garage>><<llendear>><<llstress>>
+<br>
+
+:: Avery Hotel Order
+<<effects>><<pass 10>>
+<<if $phase is 0>>
+	<<He>>微笑着对你扬眉，然后同意了你的提议。"我们去坐下吧。"
+<<elseif $phase is 1>>
+	<<He>>对你微笑，然后指了指阳台。"那边氛围更好。"
+<<elseif $phase is 2>>
+	<<He>>皱眉，但对你的选择没有发表什么评价。"我们去坐下吧。"
+<</if>>
+<br><br>
+
+<<if $exposed gte 2>>
+	<<He>>停了一会儿，然后又转过身来面对你。"还是把衣服穿回去吧，还是说你真的想裸着吃晚餐？"
+	<br><br>
+
+	<<if $exhibitionism gte 75>>
+		<<link [[光着身子吃饭|Avery Hotel 3]]>><<set $endear += 20>><</link>><<exhibitionist5>><<ggendear>>
+		<br>
+	<<else>>
+		你还没下流到能裸身出门。
+		<br>
+	<</if>>
+	<<link [[穿衣服|Avery Hotel 3]]>><<clotheson>><</link>>
+	<br>
+<<else>>
+<<link [[继续|Avery Hotel 3]]>><</link>>
+<br>
+<</if>>
+
+:: Avery Hotel 3
+<<effects>><<pass 10>>
+<<generateRole 1 0 "服务员/女服务员">>
+<<if $exposed gte 2>><<exposure>><</if>>
+你走到外面，在华丽的桌子旁坐下。阳台有玻璃遮挡不会让你吹冷风，附近的热水浴缸喷出的蒸汽也让这个区域一直保持着温度<<if $exposed gte 2>>现在的你浑身赤裸。<<exhibitionism5>><<else>><</if>>
+没过多久，外面传来了敲门声。艾弗里打开门然后走回了桌子旁。一个穿着仆人衣服的<<person2>><<person>>走了进来。艾弗里坐回了原来的位置上，<<person2>><<personsimple>>手上拿着一个大托盘，上面放着两个盘子。
+<<if $exposed gte 2>>
+	<<person2>><<He>>刚看到你就停下了脚步，<<person2>><<his>>的脸涨的通红，<<person2>><<his>>专业的行为举止也迟钝了下来。艾弗里拿出一捆现金，然后对<<person2>><<him>>眨了眨眼睛。
+<</if>>
+<br><br>
+<<if $phase is 0>>
+	<<person2>><<personsimple>>在艾弗里面前放了一盘意大利面，然后在你面前也放了一盘同样的意大利面，艾弗里对你微笑。
+<<elseif $phase is 1>>
+	<<person2>><<personsimple>>在艾弗里面前放了一盘意大利面，在你面前放了一个漂亮的三明治。
+<<elseif $phase is 2>>
+	<<person2>><<personsimple>>在艾弗里面前放了一盘牛排，以及一盘同样的菜在你面前。
+<</if>>
+<br><br>
+
+送完餐后，<<person2>><<personsimple>>把一个瓶子和两个杯子放在你们面前。<<person2>><<He>>转身拿着托盘离开了<<if $exposed gte 2>>，艾弗里还给<<he>>一大笔小费<</if>>。你们两个吃饭的时候，艾弗里开始闲聊。
+当你们两个吃完后，<<person1>><<he>>笑着举起酒瓶，"要来点儿香槟吗？"
+<br><br>
+
+<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+	<span class="blue">你还在怀孕中，你不能让自己喝酒。</span>
+<<else>>
+	<<link [[接受|Avery Hotel Drink]]>><<endevent>><<set $phase to 0>><<alcohol 160>><<drugs 220>><<npcincr Avery love 1>><</link>><<glove>><<garousal>>
+<</if>>
+<br>
+<<link [[不动|Avery Hotel Drink]]>><<endevent>><<set $phase to 1>><</link>>
+<br>
+
+:: Avery Hotel Drink
+<<effects>><<pass 30>>
+<<npc Avery>><<person1>>
+<<if $phase is 0>>
+	<<if $speech_attitude is "meek">>
+		"看起来很贵，真的可以吗？"
+	<<elseif $speech_attitude is "bratty">>
+		"是的。"
+	<<else>>
+		"是的,拜托了。"
+	<</if>>
+	<<He>>微笑着，先给你倒了一杯酒，并举起酒杯庆祝。你也这么做。这饮料让你觉得身体很暖和。
+	<br><br>
+<<else>>
+	<<if $speech_attitude is "meek">>
+		"…不用了，谢谢。"
+	<<elseif $speech_attitude is "bratty">>
+		"你没那么容易动摇我。"
+	<<else>>
+		"不了，谢谢。"
+	<</if>>
+	<<He>>皱着眉头，给<<himself>>倒了一杯酒，然后喝了一大口，把刚刚倒空的杯子放回原处。
+	<br><br>
+<</if>>
+
+<<his>>的眼睛在你的<<if $exposed gte 2>>裸体<</if>>身体上徘徊，然后<<his>>的视线移动到你旁边的热水浴缸。"今晚外面有点冷，没关系吧？"
+你瞥了一眼明显冒着热气的水。
+<br><br>
+
+<<if $exposed gte 2>>
+	<<link [[接受|Avery Hotel Bath Naked]]>><<set $endear += 10>><<npcincr Avery love 3>><</link>><<gendear>><<gglove>>
+	<br>
+	<<link [[拒绝|Avery Hotel Refuse]]>><<npcincr Avery love -1>><<npcincr Avery rage 5>><</link>><<llove>><<garage>>
+	<br>
+<<elseif $player.gender_appearance is "m" and $worn.under_lower.type.includes("swim")>>
+	幸运的是，你带了合适的泳衣。
+	<br><br>
+	<<if $exhibitionism gte 35>>
+		<<link [[脱光衣服|Avery Hotel Bath Naked]]>><<set $endear += 10>><<npcincr Avery love 3>><</link>><<exhibitionist3>><<gendear>><<gglove>>
+		<br>
+	<<else>>
+		你还不够淫荡，没办法在这里完全暴露自己。
+		<br>
+	<</if>>
+	<<link [[接受|Avery Hotel Bath Swimwear]]>><<npcincr Avery love 1>><</link>><<glove>>
+	<br>
+	<<link [[拒绝|Avery Hotel Refuse]]>><<npcincr Avery love -1>><<npcincr Avery rage 5>><</link>><<llove>><<garage>>
+	<br>
+<<elseif $player.gender_appearance isnot "m" and $worn.under_lower.type.includes("swim") and $worn.under_upper.type.includes("swim")>>
+	幸运的是，你带了合适的泳衣。
+	<br><br>
+
+	<<if $exhibitionism gte 35>>
+		<<link [[脱光衣服|Avery Hotel Bath Naked]]>><<set $endear += 10>><<npcincr Avery love 3>><</link>><<exhibitionist3>><<gendear>><<gglove>>
+		<br>
+	<<else>>
+		你还不够淫荡，没办法在这里完全暴露自己。
+		<br>
+	<</if>>
+	<<link [[接受|Avery Hotel Bath Swimwear]]>><<npcincr Avery love 1>><</link>><<glove>>
+	<br>
+	<<link [[拒绝|Avery Hotel Refuse]]>><<npcincr Avery love -1>><<npcincr Avery rage 5>><</link>><<llove>><<garage>>
+	<br>
+
+<<else>>
+	<<if $speech_attitude is "meek">>
+		你凝视着水面，避免与艾弗里目光接触。"对不起，我没有带泳衣，"
+	<<elseif $speech_attitude is "bratty">>
+		"有泳衣吗？我自己没有带，"
+	<<else>>
+		"但我没有带泳衣，"
+	<</if>>
+	你说。
+	<br><br>
+	"我也没有。"<<his>>的眼睛里闪烁着光芒。
+	<br><br>
+
+	<<if $exhibitionism gte 55>>
+		在套房里裸体是一回事，但你现在正在外面……
+		<br>
+	<</if>>
+	<<if $worn.under_lower.type.includes("naked")>>
+		你里面什么都没穿！
+		<br>
+	<<elseif $player.gender_appearance isnot "m" and $worn.under_upper.type.includes("naked")>>
+			你没穿内衣！你的<<breasts>>会暴露出来！
+			<br>
+		<<if $exhibitionism gte 15>>
+			<<link [[半裸进入|Avery Hotel Bath Topless]]>><<set $endear += 10>><<npcincr Avery love 1>><</link>><<exhibitionist2>><<gendear>><<glove>>
+			<br>
+		<<else>>
+			你还不够淫荡，不能光着上身去。
+			<br>
+		<</if>>
+	<<else>>
+		<<link [[脱到只剩内衣|Avery Hotel Bath Underwear]]>><<set $endear += 10>><</link>><<exhibitionist1>><<gendear>>
+		<br>
+	<</if>>
+	<<if $exhibitionism gte 35>>
+		<<link [[脱光衣服|Avery Hotel Bath Naked]]>><<set $endear += 10>><<npcincr Avery love 3>><</link>><<exhibitionist3>><<gendear>><<gglove>>
+		<br>
+	<<else>>
+		你还不够淫荡，没办法在这里完全暴露自己。
+		<br>
+	<</if>>
+	<<link [[拒绝|Avery Hotel Refuse]]>><<npcincr Avery love -1>><<npcincr Avery rage 5>><</link>><<llove>><<garage>>
+	<br><br>
+<</if>>
+<br>
+
+:: Avery Hotel Refuse
+<<effects>>
+<<if $NPCName[$NPCNameList.indexOf("Avery")].rage gte random(20, 100)>><<set $averyragerevealed to 1>>
+	艾弗里盯着你看了一会儿，<span class="red">然后愤怒的拍了一下桌子。</span> "我不能对你提任何要求，是吗？"<<he>>说着，把<<his>>的餐具扔到一边。"我们现在走，立刻！"<<He>>抓住你的手腕，把你拖回套房。
+	<br><br>
+	<<if $exposed gte 2>>
+		你勉强抓起自己的衣服。<<clotheson>>
+	<</if>>
+	<<averyscore>>
+	<<endevent>>
+
+	你被推到走廊里，听到身后的门咔嚓一声关上了。你听到另一边有东西碎掉的声音。你最好不要逗留。
+	<br><br>
+
+	很容易就能找到电梯，你乘梯下到大厅。独自离开酒店，步入商业街夜晚寒冷的空气中。
+	<br><br>
+	<<endevent>>
+
+	<<link [[继续|High Street]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	艾弗里盯着你看了一会儿，然后耸了耸肩。"那么，我们也可以早睡了。总有其他方式来让身子热起来，<<pcpetname "Avery">>。"<<He>>站起来，朝套房走去。
+	<br><br>
+	<<endevent>>
+
+	<<link [[继续|Avery Hotel 5]]>><<set $phase to 0>><</link>>
+<</if>>
+<br>
+
+:: Avery Hotel Bath Swimwear
+<<effects>>
+<<if $worn.upper.set is $worn.lower.set>>
+	你把你的$worn.upper.cn_name_cap脱下，然后放在了椅子上。
+<<else>>
+	你把你的$worn.upper.cn_name_cap和$worn.lower.cn_name_cap脱下放在了椅子上。
+<</if>>
+<<overupperstrip>><<upperstrip>><<overlowerstrip>><<lowerstrip>><<legsstrip>><<feetstrip>>
+<<water>>
+<br><br>
+艾弗里看着你一件件的脱衣服到最后一丝不挂。<<He>>笑了。"真不幸，我没有带自己的泳衣。"
+<br><br>
+<<link [[继续|Avery Hotel 4]]>><</link>>
+<br>
+
+:: Avery Hotel Bath Underwear
+<<effects>>
+<<if $worn.upper.set is $worn.lower.set>>
+	你把你的$worn.upper.cn_name_cap脱下，然后放在了椅子上。
+<<else>>
+	你把你的$worn.upper.cn_name_cap和$worn.lower.cn_name_cap脱下放在了椅子上。
+<</if>>
+<<overupperstrip>><<upperstrip>><<overlowerstrip>><<lowerstrip>><<legsstrip>><<feetstrip>>
+<<exhibitionism1>><<water>>
+艾弗里在脱光前仔细地看着你。<<He>>笑了，但很明显<<he>>想看更多。
+<br><br>
+<<link [[继续|Avery Hotel 4]]>><</link>>
+<br>
+
+:: Avery Hotel Bath Topless
+<<effects>>
+<<if $worn.upper.set is $worn.lower.set>>
+	你把你的$worn.upper.cn_name_cap脱下，然后放在了椅子上。
+<<else>>
+	你把你的$worn.upper.cn_name_cap和$worn.lower.cn_name_cap脱下放在了椅子上。
+<</if>>
+<<if $exhibitionism lte 34>>
+	你尽可能地遮住你的<<breasts>>，然后赶紧进了热水浴缸。
+<<else>>
+	你让你的<<breasts>>完全暴露在外。
+<</if>>
+<<overupperstrip>><<upperstrip>><<overlowerstrip>><<lowerstrip>><<legsstrip>><<feetstrip>>
+<<exhibitionism2>><<water>>
+艾弗里在脱衣服之前仔细看了你一眼。你已经可以看到<<his>>的兴奋了。
+<br><br>
+<<link [[继续|Avery Hotel 4]]>><</link>>
+<br>
+
+:: Avery Hotel Bath Naked
+<<effects>>
+<<if $exposed gte 2>>
+	你全身赤裸，为了逃离夜晚的寒冷空气，你从椅子上站起来，匆匆忙忙地走向热水浴缸。
+	<br><br>
+	艾弗里在脱光前仔细地看着你。你已经可以看到<<his>>的兴奋，<<he>>似乎对你的热情感到满意。
+<<else>>
+	<<strip>><<water>>
+	<<if !playerChastity("hidden")>>
+		<<set $genderknown.pushUnique("Avery")>>
+	<</if>>
+
+	你脱掉了所有的衣服，感受到夜晚的寒冷空气，你瑟瑟发抖。<<exhibitionism3>>
+	艾弗里在脱光前仔细地看着你。你已经可以看到<<his>>的兴奋了。
+<</if>>
+<br><br>
+<<link [[继续|Avery Hotel 4]]>><</link>>
+<br>
+
+:: Avery Hotel 4
+<<effects>>
+你滑进热水浴缸，泡在温暖的水中。<<stress -6>><<lstress>><<wash>>
+<br><br>
+漫无目的的闲谈，内容基本上都是有关艾弗里的一周。在很长一段时间里，你们都满足于安静地享受温暖。一段时间后，<<he>>问起你课程进展如何。
+<br><br>
+<<if $flashbackschoolready is 1 and $controlled is 0>>
+	<<set $flashbackschoolready to 0>>
+	<<flashbackschool>>
+	艾弗里摇了你一下，你从中解脱出来了。"嘿！怎么了，<<pcpetname "Avery">>？你怎么了？"
+	<br><br>
+	你告诉了<<him>>这件事，不是想做什么，但话就是不停地涌出来。<<he>>紧紧抱住你，<<his>>的表情变得非常灰暗。
+	<<npcincr Avery love 1>><<set $endear -=10>><<npcincr Avery rage -20>><<glove>><<lendear>><<lllarage>>
+	<br><br>
+	"也许我们可以早点去床上休息，我刚好有一种办法能让你忘掉烦恼。"<<He>>从热水浴缸里出来，然后伸手也把你拉了出来。
+	<br><br>
+	<<link [[继续|Avery Hotel Trauma]]>><<clotheson>><</link>>
+
+<<else>>
+	<<link [[告诉|Avery Hotel Chat]]>><<stress 6>><</link>><<gstress>><<note "+ 好感?" "green">>
+	<br>
+	<<link [[不回答|Avery Hotel No Chat]]>><<npcincr Avery love -1>><</link>><<llove>>
+	<br>
+	<<if $trauma gte ($traumamax / 7) * 1 or $stress gte ($stressmax / 7) * 1>>
+		<<link [[抱怨|Avery Hotel Stress Chat]]>><<stress -12>><<trauma -12>><<set $endear -=10>><<npcincr Avery rage -5>><</link>><<llstress>><<lltrauma>><<lendear>><<larage>>
+	<</if>>
+<</if>>
+<br><br>
+
+:: Avery Hotel Chat
+<<effects>>
+你详细地告诉艾弗里你在学校里的表现
+<<if $school gte 4000>>
+	<span class="green"> 你在学校的表现堪称模范学生.</span> <<He>> 骄傲地对你微笑。"很高兴听到你这么说。"<<npcincr Avery love 3>><<gglove>>
+<<elseif $school gte 2800>>
+	<span class="teal">优秀。</span><<He>>似乎很为你骄傲。<<npcincr Avery love 1>><<glove>>
+<<elseif $school gte 1600>>
+	<span class="lblue">很好。</span><<He>>似乎很中意。
+<<elseif $school gte 800>>
+	<span class="blue">还行。</span><<He>>好像不太关心。
+<<elseif $school gte 400>>
+	<span class="purple">不好。</span><<He>>看起来不感兴趣。<<npcincr Avery love -1>><<llove>>
+<<elseif $school gte 1>>
+	<span class="pink">糟糕。</span><<He>>看起来很为你失望。<<npcincr Avery love -3>><<lllove>>
+<<else>>
+	<span class="red">可怕。</span><<He>>笑了。"我听说裸体学习可以帮助你巩固记忆。虽然不知道是哪里来的传言，但也许你应该试试。"
+<</if>>
+<br><br>
+
+你感觉到<<him>>把一只手滑到你的大腿上。"我们早点休息怎么样，<<pcpetname "Avery">>?"
+<br><br>
+
+<<link [[伸手|Avery Hotel 5]]>><<clotheson>><<endevent>><<set $phase to 1>><</link>>
+<br>
+<<link [[拍开|Avery Hotel Slap]]>><<stress -6>><<npcincr Avery love -1>><<npcincr Avery rage 5>><</link>><<lstress>><<llove>><<garage>>
+<br>
+<<if $promiscuity gte 35>>
+	<<link [[跨坐上去|Avery Hotel Bath Sex]]>><<set $sexstart to 1>><<npcincr Avery love 1>><<set $endear +=10>><</link>><<promiscuous3>><<glove>><<gendear>>
+<</if>>
+<br>
+
+:: Avery Hotel No Chat
+<<effects>>
+你看向一旁，嘟哝着说自己的情况还不错。<<He>>注意到你的拒绝，对你皱起了眉。
+<br><br>
+你感觉到<<him>>把一只手滑到你的大腿内。"你觉得我们早点休息怎么样，<<pcpetname "Avery">>?"
+<br><br>
+
+<<link [[伸手|Avery Hotel 5]]>><<clotheson>><<endevent>><<set $phase to 1>><</link>>
+<br>
+<<link [[拍开|Avery Hotel Slap]]>><<stress -6>><<npcincr Avery love -1>><<npcincr Avery rage 5>><</link>><<lstress>><<llove>><<garage>>
+<br>
+<<if $promiscuity gte 35>>
+	<<link [[跨坐上去|Avery Hotel Bath Sex]]>><<set $sexstart to 1>><<npcincr Avery love 1>><<set $endear +=10>><</link>><<promiscuous3>><<glove>><<gendear>>
+<</if>>
+<br>
+
+:: Avery Hotel Stress Chat
+<<effects>>
+你叹了口气，告诉<<him>>你最近困扰的事情。<<He>>一开始皱着眉，但最后理解地点了点头，给了你一些建议。你感觉好些了。
+<br><br>
+<<his>>的表情一下子舒展了起来。"我想到一种办法可以让你忘记烦恼，<<pcpetname "Avery">>。"<<He>>站起来，伸出<<his>>的手。
+<br><br>
+
+<<link [[搭上手|Avery Hotel Trauma]]>><<clotheson>><</link>>
+<br>
+<<link [[拍开|Avery Hotel Slap]]>><<stress -6>><<npcincr Avery love -1>><<npcincr Avery rage 5>><</link>><<lstress>><<llove>><<garage>>
+<br>
+<<if $promiscuity gte 35>>
+	<<link [[跨坐上去|Avery Hotel Bath Sex]]>><<set $sexstart to 1>><<npcincr Avery love 1>><<set $endear +=10>><</link>><<promiscuous3>><<glove>><<gendear>>
+<</if>>
+<br>
+
+:: Avery Hotel Slap
+<<effects>>
+你轻蔑地甩开艾弗里的手。
+<<if $NPCName[$NPCNameList.indexOf("Avery")].rage gte random(20, 100)>><<set $averyragerevealed to 1>>
+	艾弗里盯着你看了一会儿，<span class="red">握拳猛地砸在了水面上，没有碰到你的大腿，却溅起了大片的水花。</span>"这只是一个简单的问题，小鬼！"<<he>>吼道，然后站起了身， 突然<span class="red">用力的扼住了你的喉咙。</span>
+	<br><br>
+	<<link [[继续|Avery Hotel Bath Rape]]>><<set $molestationstart to 1>><</link>>
+<<else>>
+	<<He>>很快冷静了下来，放开了你，<<he>>皱着眉头。"没必要这么抵触，这只是一个小问题而已。"<<He>>从热水浴缸站起来，向套房示意。
+	<br><br>
+	你们俩擦干身体穿好衣服。艾弗里走进套房，打开门的力度可能有点太大了。当它砰的一声关上时，你们两个都后退了两步。
+	<br><br>
+	<<link [[继续|Avery Hotel 5]]>><<clotheson>><<endevent>><<set $phase to 0>><</link>>
+<</if>>
+<br>
+
+:: Avery Hotel Bath Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<npcexpose>>
+	<<set $enemyanger += 30>><<set $NPCList[0].lefthand to "throat">><<set $NPCList[0].righthand to "throat">><<set $neckuse to "hand">>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Avery Hotel Bath Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Avery Hotel Bath Rape]]>><</link>></span><<nexttext>>
+<</if>>
+<br>
+
+:: Avery Hotel Bath Rape Finish
+<<effects>>
+<<averyscore>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	<<He>>满意地喘着气，你趁机从浴缸里爬出来，冲向门口，顺便抓起自己的衣服。你猛地拉开门跑向楼梯，艾弗里的脚步声同时传来。你一口气跳下所有台阶，从后门冲了出去。
+
+	<<larage>><<npcincr Avery rage -5>>
+	<br><br>
+
+	<<tearful>>你跑到了商业街上。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+	<<endevent>>
+
+	<<link [[继续|Commercial alleyways]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	你用力将<<him>>推开，<<him>>滑倒在了浴缸中。<<tearful>>你趁机从浴缸里爬了出来，冲向门口，顺便带走了自己的衣服。你可以听到身后艾弗里的脚步声，你把门打开，跑向楼梯。可怕的脚步声一直在后面追着你，你跑下台阶，冲出后门。
+	<br><br>
+
+	你跑到了商业街小巷里。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+	<<endevent>>
+
+	<<link [[继续|Commercial alleyways]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Avery Hotel Bath Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<npcexpose>>
+	<<set $enemytrust += 100>>
+	你抓住艾弗里的手，迅速地用一条腿跨在<<him>>身上。<<his>>的手开始探索你的身体。
+	<<promiscuity3>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Avery Hotel Bath Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Avery Hotel Bath Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Avery Hotel Bath Sex Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	"好<<girl>>,"<<he>>笑了，然后再次吻上你的双唇.<<takeKissVirginity "Avery" `($dateCount.Avery gte 3?"loveInterest":"romantic")`>>
+	<<larage>><<npcincr Avery rage -5>><<glove>><<npcincr Avery love 3>>
+	<br><br>
+
+	<<tearful>>你再次握住<<his>>的手，然后你们两个从装满热水的浴缸里爬了出来，也擦干了身体。
+	<br><br>
+
+	<<endcombat>>
+	<<endevent>>
+
+	<<link [[继续|Avery Hotel 5]]>><<clotheson>><<endevent>><<set $phase to 2>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	<<averyscore>>
+
+	你用力将<<him>>推开，<<him>>滑倒在了浴缸中。<<tearful>>你趁机从浴缸里爬了出来，冲向门口，顺便带走了自己的衣服。你可以听到身后艾弗里的脚步声，你把门打开，跑向楼梯。可怕的脚步声一直在后面追着你，你跑下台阶，冲出后门。
+	<br><br>
+
+	你跑到了商业街小巷里。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+	<<endevent>>
+
+	<<link [[继续|Commercial alleyways]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	"如你所愿，"<<he>>说着，拉着你一起离开了热水浴缸。<<set $endear -= 10>><<lendear>>
+	<br><br>
+
+	<<tearful>>你再次握住<<his>>的手，然后你们两个从装满热水的浴缸里爬了出来，也擦干了身体。
+	<br><br>
+
+	<<endcombat>>
+
+	<<link [[继续|Avery Hotel 5]]>><<clotheson>><<endevent>><<set $phase to 1>><</link>>
+	<br>
+<</if>>
+
+:: Avery Hotel Trauma
+<<effects>><<set $underlowerwet to 0>><<set $underupperwet to 0>>
+
+你拉着艾弗里的手离开了浴缸。<<he>>在带你回到套房之前，先帮你擦干，穿好衣服。
+<br><br>
+<<He>>在<<his>>的提箱里翻找，然后拿出一个棕色纸袋。"每次我想忘掉什么的时候，都靠的它。"<<He>>从袋子里拿出一个精致的瓶子，它看起来比之前的香槟贵多了。
+<<He>>打开瓶塞，抿了一小口，然后递给你。"挺不错的，<<pcpetname "Avery">>。我保证。"
+<br><br>
+
+<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+	<span class="blue">你还在怀孕中，你不能让自己喝酒。</span>
+<<else>>
+	<<link [[接受|Avery Hotel Trauma Drink]]>><<alcohol 260>><<trauma -24>><<stress -24>><<awareness -5>><</link>><<lllstress>><<llltrauma>><<llawareness>>
+<</if>>
+<br>
+<<link [[拒绝|Avery Hotel 5]]>><<endevent>><<set $phase to 3>><</link>>
+<br>
+
+:: Avery Hotel Trauma Drink
+<<effects>>
+你抿了一口饮料。很明显这不是普通的酒精。
+<<if $phase is 0>>
+	在某个时刻，艾弗里再次开口说话，但你听不清楚<<him>>讲话的内容。房间开始旋转，你可能喝多了。
+	<br><br>
+	你的眼前一片模糊，艾弗里温柔的声音慢慢地把你催眠了。
+	<br><br>
+
+	<<link [[继续(3:00)|Avery Hotel Trauma Drink 2]]>><<set $endear += 20>><<set $sleephour to 3>><</link>><<ltiredness>><<ggendear>>
+	<br>
+
+<<else>>
+	"别紧张。这酒度数比较高，所以别喝太多。"<<He>>把瓶子从你手里拿回去。你已经忘了之前到底是什么让你这么不高兴了。
+	<br><br>
+
+	<<link [[继续|Avery Hotel 5]]>><<endevent>><<set $phase to 3>><</link>>
+	<br>
+<</if>>
+
+:: Avery Hotel 5
+<<effects>><<set $underlowerwet to 0>><<set $underupperwet to 0>>
+<<npc Avery>><<person1>>
+<<if $phase is 0>>
+	<<He>>停了一会儿。"我想，现在的你也许该早点儿回家。除非你能忍受和我共度一夜，"<<he>>说着，举起手臂。
+<<elseif $phase is 1>>
+	你握住艾弗里的手，<<he>>把你从热水浴缸里拉出来。你们两个擦干并穿好衣服，走回套房。<<He>>看了看现在的时间，"这是个可爱的夜晚，<<pcpetname "Avery">>。你愿意和我一起度过剩下的时间吗？还是我送你回家？"
+<<elseif $phase is 2>>
+	<<He>>在你们穿好衣服后，搂着你的腰一起回到套房。"太棒了，<<pcpetname "Avery">>。"<<He>>注意到时间的时候，满意的神色渐渐转为了失望。<<He>>打了个哈欠。"如果你想的话，我可以早点送你回家。"
+<<elseif $phase is 3>>
+	<<He>>把瓶子封好，瞥了一眼墙上的挂钟。"天色已经很晚了，我想你需要休息一下，你愿意和我一起过夜吗？"
+<</if>>
+<br><br>
+<<link [[说你想留下来过夜 (9:00)|Avery Hotel Stay]]>><<set $endear += 20>><<npcincr Avery love 1>><</link>><<ggendear>><<glove>>
+<br>
+<<link [[说你想回家|Avery Hotel Early End]]>><<clotheson>><<set $endear -= 10>><</link>><<lendear>>
+<br>
+
+:: Avery Hotel Stay
+<<effects>><<pass 60>>
+艾弗里对你笑了笑。"我喜欢听这个"。<<He>>走到套房的衣柜前，打开衣柜，里面有一套情趣内衣和一套普通睡衣。"去换衣服吧" 。<<He>>躺回床上。
+<br><br>
+<<link [[穿上情趣内衣|Avery Hotel Lingerie]]>><</link>>
+<br>
+<<link [[穿上普通睡衣|Avery Hotel Pajamas]]>><</link>>
+<br>
+
+
+:: Avery Hotel Lingerie
+<<effects>>
+<<undress "averyhotel">>
+<<set $uppertemp to "init">><<upperwear 18>><<set $worn.upper.colour to either("black", "blue", "brown", "green", "pink", "purple", "red", "tangerine")>>
+你穿上了情趣型内衣。
+<<if $player.gender_appearance is "m" and $background isnot "crossdresser">>
+	你感到非常尴尬。艾弗里咯咯地笑。"你穿上会很可爱的！"
+<</if>>
+<br><br>
+<<if $phase is 2>>
+	艾弗里好像很喜欢看着你。<<He>>拍了拍<<he>>的身旁。在你躺下后，<<him>>抱着你让你靠在了<<him>>的胸前，然后伸出另一只手把灯给关了。"晚安，<<pcpetname "Avery">>，谢谢你让我度过了一个愉快的夜晚。"
+	<br><br>
+	<<link [[睡觉|Avery Hotel Morning]]>><<set $sleephour to 8>><</link>>
+<<else>>
+	你穿衣服的时候，不由自主地感觉到<<his>>的目光在注视着你。你转过身去面对<<him>>，惊讶地看到<<him>>只穿着内衣坐在床上。你不禁想知道<<he>>是怎么这么快这么安静地脱衣服的。
+	当<<he>>拍着床示意你过去时，<<his>>的眼中闪过一丝光芒。
+	<br><br>
+	你坐下后<<he>>转向你，眼神在你身上扫过，然后<<he>>将你按在了床上。"如果我承认我就是想看你脱掉衣服，这会显得太自负吗？"
+	<br><br>
+	<<link [[亲吻|Avery Hotel Sex]]>><<set $phase to 0>><<set $sexstart to 1>><<set $endear += 10>><</link>><<promiscuous1>><<gendear>>
+	<br>
+	<<link [[偏过头|Avery Hotel No No No No Sex]]>><<npcincr Avery love -1>><<npcincr Avery rage 3>><</link>><<llove>><<garage>>
+	<br>
+	<<if $submissive lte 500>>
+		<<link [[主动翻身到艾弗里上面|Avery Hotel Sex]]>><<def 1>><<set $phase to 1>><<set $sexstart to 1>><<set $endear += 10>><</link>><<promiscuous1>><<defianttext>><<gendear>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Avery Hotel Pajamas
+<<effects>>
+<<undress "averyhotel">>
+<<set $uppertemp to "init">><<upperwear 2>><<set $worn.upper.colour to either("black", "blue", "brown", "green", "pink", "purple", "red", "tangerine")>>
+<<set $lowertemp to "init">><<lowerwear 2>><<set $worn.lower.colour to either("black", "blue", "brown", "green", "pink", "purple", "red", "tangerine")>>
+你穿上普通睡衣。
+<br><br>
+<<if $phase is 2>>
+	艾弗里好像很喜欢看着你。<<He>>拍了拍<<he>>的身旁。在你躺下后，<<him>>抱着你让你靠在了<<him>>的胸前，然后伸出另一只手把灯给关了。"晚安，<<pcpetname "Avery">>，谢谢你让我度过了一个愉快的夜晚。"
+	<br><br>
+	你靠在艾弗里的臂弯里睡在床上。
+	<br><br>
+	<<link [[睡觉|Avery Hotel Morning]]>><<set $sleephour to 8>><<set $bedGuest to "Avery">><<incrementautosave>><</link>><<ltiredness>>
+	<br>
+<<else>>
+	你穿衣服的时候，不由自主地感觉到<<his>>的目光在注视着你。你转过身去面对<<him>>，惊讶地看到<<him>>只穿着内衣坐在床上。你不禁想知道<<he>>是怎么这么快这么安静地脱衣服的。
+	当<<he>>拍着床示意你过去时，<<his>>的眼中闪过一丝光芒。
+	<br><br>
+	你坐下后<<he>>转向你，眼神在你身上扫过，然后<<he>>将你按在了床上。"如果我承认我就是想看你脱掉衣服，这会显得太自负吗？"
+	<br><br>
+	<<link [[亲吻|Avery Hotel Sex]]>><<set $phase to 0>><<set $sexstart to 1>><<set $endear += 10>><</link>><<promiscuous1>><<gendear>>
+	<br>
+	<<link [[偏过头|Avery Hotel No No No No Sex]]>><<npcincr Avery love -1>><<npcincr Avery rage 3>><</link>><<llove>><<garage>>
+	<br>
+	<<if $submissive lte 500>>
+		<<link [[主动翻身到艾弗里上面|Avery Hotel Sex]]>><<def 1>><<set $phase to 1>><<set $sexstart to 1>><<set $endear += 10>><</link>><<promiscuous1>><<defianttext>><<gendear>>
+		<br>
+	<</if>>
+<</if>>
+<br>
+
+:: Avery Hotel Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<npcClothesType $NPCList[0] "undies">>
+	<<set $enemytrust += 100>>
+	<<if $phase is 0>>
+		你亲吻<<him>>，你们开始探索彼此。<<takeKissVirginity "Avery" `($dateCount.Avery gte 3?"loveInterest":"romantic")`>>
+	<<else>>
+		你把腿圈在了<<him>>的腰上，强迫<<him>>翻过来，最后你骑在了<<him>>的上面。
+	<</if>>
+	<<promiscuity1>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Avery Hotel Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Avery Hotel Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Avery Hotel Sex Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+<<ejaculation>>
+
+"好<<girl>>,"<<he>>笑了，然后再次吻上你的双唇.<<takeKissVirginity "Avery" `($dateCount.Avery gte 3?"loveInterest":"romantic")`>>
+<<larage>><<npcincr Avery rage -5>><<glove>><<npcincr Avery love 3>>
+<br><br>
+
+<<tearful>>你靠在艾弗里的怀里，你们一起睡在床上。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Avery Hotel Morning]]>><<set $sleephour to 8>><<set $bedGuest to "Avery">><<incrementautosave>><</link>><<ltiredness>>
+<br>
+
+<<elseif $enemyhealth lte 0>>
+<<averyscore>>
+
+你用力把<<him>>推下床。艾弗里的头撞到了床头柜上。<<tearful>>你趁机从床上爬了起来，冲向门口，顺便还带走了自己的衣服。你能听到身后艾弗里追赶的脚步声，你把门打开跑向楼梯。你的脚步声非常沉重，你跑下台阶，冲出后门。
+<br><br>
+
+你跑到了商业街小巷里。
+<br><br>
+
+<<storeon "averyCar" "check">>
+<<if _store_check is 1>>
+	<<storeon "averyCar" "delete">>
+<</if>>
+
+<<clotheson>>
+<<endcombat>>
+<<endevent>>
+
+<<link [[继续|Commercial alleyways]]>><<storeon "averyhotel">><<set $eventskip to 1>><</link>>
+<br>
+
+<<else>>
+
+"如你所愿，"<<he>>说着转过身去。<<set $endear -=10>><<lendear>>
+<br><br>
+
+<<tearful>>你靠在艾弗里的怀里，你们一起睡在床上。
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[继续|Avery Hotel Morning]]>><<set $sleephour to 8>><<set $bedGuest to "Avery">><<incrementautosave>><</link>><<ltiredness>>
+<br>
+<</if>>
+
+:: Avery Hotel No No No No Sex
+<<effects>>
+你翻了个身，强迫艾弗里离开你。
+<<if $speech_attitude is "meek">>
+	"我真的很累，对不起。"你蜷缩起来，用毯子盖住了自己。
+<<elseif $speech_attitude is "bratty">>
+	"放开我！" 你生气地翻了个身，把毯子都扯走裹在了自己身上。
+<<else>>
+	"我不愿意。"你把被子盖在自己身上，背对着<<him>>。
+<</if>>
+<br><br>
+你听到<<him>>嘟囔着什么，但<<him>>很快就翻了个身，安静了下来。
+<br><br>
+<<link [[继续|Avery Hotel Morning]]>><<set $sleephour to 8>><<set $bedGuest to "Avery">><<incrementautosave>><</link>><<ltiredness>>
+<br>
+
+:: Avery Hotel Morning
+<<set _autosavehere to true>>
+<<sleep>><<effects>>
+<<sleepeffects>>
+<<averyscore>>
+<<storeon "averyhotel">>
+<<wakingEffects true>>
+<<if _wakingEffect is "dryheaving">>
+	你睡得很香，但现在感觉有点不舒服。
+	<br><br>
+	"我想昨晚对你来说太难熬了。“至少你把心里的忧愁都抒发掉了，”艾弗里说。
+<<else>>
+	<<if _wakingEffect isnot undefined>>
+		看着艾弗里
+	<<else>>
+		你醒来时艾弗里
+	<</if>>
+	已经穿好衣服，你的<<if $worn.upper.set is $worn.lower.set>>$worn.upper.cn_name_cap<<else>>$worn.upper.cn_name_cap和$worn.lower.cn_name_cap<</if>>放在床脚，叠得整整齐齐。"早上好，<<pcpetname "Avery">>。"
+	<br><br>
+	<<if $speech_attitude is "meek">>
+		"早……早上好，"
+	<<elseif $speech_attitude is "bratty">>
+		"早上好，可人儿，"
+	<<else>>
+		"早安，"
+	<</if>>
+	你说。
+<</if>>
+<<endevent>><<npc Avery>><<person1>>
+你伸手去拿衣服。<<He>>迅速把它们从你身边拿走，然后调皮地扔回给了你。
+<br><br>
+
+<<if $endear gte 60>>
+"昨晚太棒了，谢谢你对我的纵容，" <<he>> 说。
+<<elseif $endear gte 30>>
+"谢谢你让我度过了愉快的夜晚，” <<he>> 说。
+<<else>>
+"快点穿好衣服，” <<he>> 说。"出去的时候别让我难堪."
+<</if>>
+<br><br>
+
+<<He>>收拾好<<his>>的东西，拿走了房间钥匙。<<He>>把你带到大厅，然后返回<<his>>的车，车就在大厅前等着。当<<he>>开车送你回家时，你回头看了一眼酒店。
+<br><br>
+<<storeon "averyCar" "check">>
+<<if _store_check is 1>>
+	<<storeon "averyCar">>
+	你穿上放在后座上的外套。
+	<br><br>
+<</if>>
+回到孤儿院后<<he>>打开<<his>>鼓鼓的<<wallet>>从里面拿出了一叠现金。<<He>>拿着<span class="gold">£<<print ($NPCName[$NPCNameList.indexOf("Avery")].love * 10 + $endear * 10 + 10)>></span>。"买点好东西，我请客。"
+<br><br>
+
+你伸手去拿钱，但<<he>>却把钱从你身边拿走了。"首先，"<<he>>微笑着用手点了点<<his>>的嘴唇。
+<br><br>
+
+<<link [[亲吻|Avery Hotel Kiss]]>><<npcincr Avery love 1>><</link>><<glove>>
+<br>
+<<link [[拒绝|Avery Hotel Kiss Refuse]]>><</link>>
+<br>
+
+:: Avery Hotel Kiss
+<<effects>>
+<<set $money += (($NPCName[$NPCNameList.indexOf("Avery")].love * 10 + $endear * 10 + 10) * 100)>>
+
+你倾身亲吻了艾弗里。<<He>>微笑着把钱递给你。你从车里爬了出来。<<He>>在开车离开之前看了你一会儿。<<takeKissVirginity "Avery" `($dateCount.Avery gte 3?"loveInterest":"romantic")`>>
+<br><br>
+
+<<endevent>>
+
+<<link [[继续|Domus Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Avery Hotel Kiss Refuse
+<<effects>>
+<<set $money += (($NPCName[$NPCNameList.indexOf("Avery")].love * 10 + $endear * 10 + 10) * 100)>>
+
+你把艾弗里的头推到一边。<<Hes>>正要说些什么，但在注意到有人从孤儿院的窗户里看向这边后，<<he>>没说什么，直接把钱交给了你。你从车里爬了出来，<<he>>在开车离开之前看了你一会儿。
+<br><br>
+
+<<endevent>>
+
+<<link [[继续|Domus Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Avery Hotel Trauma Drink 2
+<<sleep>><<effects>>
+<<sleepeffects>>
+你被电视的声音吵醒。发现自己正靠在艾弗里的床上，身上的衣服穿戴整齐。
+<br><br>
+<<He>>低头看着你微笑道"晚上好，<<pcpetname "Avery">>。我没想到这酒对你有那么大的影响，你喝了之后马上就睡着了。我还在考虑要不要叫救护车呢，结果听见你打起了呼噜。"你觉得自己太虚弱了，动弹不得。
+<br><br>
+"有那么一会儿你可能不在状态。但现在你应该发现自己的头脑清醒多了。"<<his>>的话听起来是真的。你几乎不记得以前是什么让你如此不安了。你突然觉得自己被从床上抱起来了。"我带你回家。你现在最需要的是休息。"你的意识又开始不清晰了。
+<br><br>
+当你再次睁开眼睛的时候，你正被艾弗里带出<<his>>的车。你的视线很模糊，但每次你眨眼时，都能看到孤儿院越来越近。
+<br><br>
+<<link [[继续|Avery Hotel Trauma End]]>><</link>>
+<br>
+
+:: Avery Hotel Trauma End
+<<set $location to "home">><<set $outside to 0>><<effects>>
+<<endevent>><<npc Avery>><<person1>><<generate2>><<person2>>
+<<averyscore>>
+<<set $money += (($NPCName[$NPCNameList.indexOf("Avery")].love * 10 + $endear * 10 + 10) * 100)>>
+<br><br>
+当孤儿院的门打开时，艾弗里撞见了一个孤儿。<<person2>><<He>>张开嘴想说话，但当艾弗里拿出一捆钱时，<<he>>沉默了。"当我没来过，明白？"<<He>>看起来欣喜若狂，握钱的手颤抖着。"我会保密的！非常感谢<<person1>><<sir>>！"<<person2>><<He>>边数钱边安静地跑开了。
+<br><br>
+艾弗里把你抱回房间，让你躺在床上。"谢谢你让我度过了愉快的夜晚，我希望你明天早上会感觉好些。"<<person1>><<his>>离开时，<<he>>为你留下了<span class="gold">£<<print ($NPCName[$NPCNameList.indexOf("Avery")].love * 10 + $endear * 10 + 10)>></span>。
+<br><br>
+<<storeon "averyCar" "check">>
+<<if _store_check is 1>>
+	<<storeon "averyCar" "wardrobe">>
+	<<He>>把你的外套放在床尾。
+	<br><br>
+<</if>>
+<<link [[继续|Bedroom]]>><<endevent>><</link>>
+<br>
+
+:: Avery Hotel Early End
+<<effects>>
+<<endevent>><<npc Avery>><<person1>>
+<<averyscore>>
+<<if $endear gte 60 or $phase is 2>>
+	<<set $money += (($NPCName[$NPCNameList.indexOf("Avery")].love * 10 + $endear * 10 + 10) * 100)>>
+	<<He>>微笑着点点头。<<He>>递给你一叠现金<span class="gold">£<<print ($NPCName[$NPCNameList.indexOf("Avery")].love * 10 + $endear * 10 + 10)>></span>。"你应该给自己买点好东西，我请客。"
+	<br><br>
+	<<He>>再次牵着你的手，带你走出套房，来到大堂。你们花了几分钟才办完退房手续，随后你们两个便踏上了前往孤儿院的道路。<<He>>似乎对你的表现很满意。
+	<br><br>
+	<<storeon "averyCar" "check">>
+	<<if _store_check is 1>>
+		<<storeon "averyCar">>
+		你穿上放在后座上的外套。
+		<br><br>
+	<</if>>
+	<<He>>让你在宅邸街下车，在下车前你们聊了一会儿天，<<he>>再次表达了对你的喜爱。
+	<br><br>
+	<<link [[继续|Domus Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<<elseif $endear gte 30>>
+	<<set $money += (($NPCName[$NPCNameList.indexOf("Avery")].love * 10 + $endear * 10 + 10) * 100)>>
+	<<He>>点点头。<<He>>拿出了一叠钱<span class="gold">£<<print ($NPCName[$NPCNameList.indexOf("Avery")].love * 10 + $endear * 10 + 10)>></span>。
+	<br><br>
+	<<He>>再次牵起你的手，带你走出套房来到大堂。你们花了几分钟才办完退房手续，随后你们两个便踏上了前往孤儿院的道路。"我希望你下次能在这里过夜。"
+	<br><br>
+	<<storeon "averyCar" "check">>
+	<<if _store_check is 1>>
+		<<storeon "averyCar">>
+		你穿上放在后座上的外套。
+		<br><br>
+	<</if>>
+	艾弗里让你在宅邸街下车，在原地停了片刻后<<He>>就开车离开了。
+	<br><br>
+	<<link [[继续|Domus Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<<elseif $endear gte 0>>
+	<<set $money += (($NPCName[$NPCNameList.indexOf("Avery")].love * 1 + $endear * 1 + 10) * 100)>>
+	<<He>>皱起眉头。"你很幸运，你没有在公共场合这样做。"<<He>>拿出了一叠现金给你<span class="red">£<<print ($NPCName[$NPCNameList.indexOf("Avery")].love * 1 + $endear * 1 + 10)>></span>.
+	<br><br>
+	<<He>>抓住你的手，把你拽出套房，你在路上不小心绊了一下。他花了几分钟才办完退房手续，但很快你们两个就在去孤儿院的路上了。"下次我会重新考虑一下这种私人安排的。"
+	<br><br>
+	<<storeon "averyCar" "check">>
+	<<if _store_check is 1>>
+		<<storeon "averyCar">>
+		你穿上放在后座上的外套。
+		<br><br>
+	<</if>>
+	艾弗里让你在宅邸街下车，在原地停了片刻后<<He>>就开车离开了。
+	<br><br>
+	<<link [[继续|Domus Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	<<set $money += (($NPCName[$NPCNameList.indexOf("Avery")].love * 1 + $endear * 1 + 10) * 100)>>
+	"难以置信。"<<He>>很快就把一些钱塞到你手里。还没等你数清楚，你就被推进玄关，身后的门咔哒一声关上了。
+	<br><br>
+	很容易就能找到回电梯的路，在下到大堂后，你一个人离开旅馆，踏入商业街的冰冷空气中。你数了数钱，一共有<span class="red">£<<print ($NPCName[$NPCNameList.indexOf("Avery")].love * 1 + $endear * 1 + 10)>></span>。
+	<br><br>
+	<<storeon "averyCar" "check">>
+	<<if _store_check is 1>>
+		<<storeon "averyCar" "delete">>
+	<</if>>
+	<<link [[继续|High Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+<br><br>
+
+
+:: Avery Party
+<<set $outside to 0>><<effects>>
+
+艾弗里把车停在公馆外面，即使在这片地区，这也是一栋豪华的建筑。另一个仆人打开了门。<<he>>从车前绕行的时候顺便把钥匙扔给了他们。
+<br><br>
+
+<<if $pronoun is "m">>
+	<<He>>伸出<<his>>的手臂。
+	<br><br>
+
+	<<link [[挽住|Avery Party Arm]]>><<npcincr Avery love 1>><<set $endear += 10>><</link>><<glove>><<gendear>>
+	<br>
+	<<link [[拒绝|Avery Party Arm Refuse]]>><<def 1>><<npcincr Avery rage 5>><<npcincr Avery love -1>><<set $endear -= 5>><</link>><<garage>><<llove>><<lendear>>
+	<br>
+<<else>>
+	<<He>>挽住你的手臂，试图把你领到门口。
+	<br><br>
+
+	<<link [[接受|Avery Party Arm]]>><<npcincr Avery love 1>><<set $endear += 10>><</link>><<glove>><<gendear>>
+	<br>
+	<<link [[推开|Avery Party Arm Refuse]]>><<def 1>><<npcincr Avery rage 5>><<npcincr Avery love -1>><<set $endear -= 5>><</link>><<garage>><<llove>><<lendear>>
+	<br>
+<</if>>
+<br><br>
+
+:: Avery Party Arm
+<<effects>>
+
+<<if $pronoun is "m">>
+	你挽住艾弗里的胳膊，<<he>>带你来到门口。
+<<else>>
+	艾弗里紧紧抓住你的胳膊，<<he>>领你走到门口。
+<</if>>
+<br><br>
+<<link [[继续|Avery Party 2]]>><</link>>
+<br>
+
+:: Avery Party Arm Refuse
+<<effects>>
+
+<<if $pronoun is "m">>
+	你无视了艾弗里的动作。<<He>>明白了这个暗示，但<<he>>收回手的时候握紧了拳头。
+<<else>>
+	你把艾弗里的胳膊抖开。<<He>>明白了这个暗示，但<<he>>收回手的时候握紧了拳头。
+<</if>>
+一起走着，但各走各的，你们来到门口。
+<br><br>
+
+<<link [[继续|Avery Party 2]]>><</link>>
+<br>
+
+:: Avery Party 2
+<<effects>>
+<<pass 5>><<set $dateCount.Total++>><<set $dateCount.Avery++>>
+<<famesocial 10>><<generate2>>
+你们进入大厦。两个楼梯从入口延伸，中间留出一个圆形空间。仆人们站在房间的边缘，双手放在身体两侧，昂首挺胸，等待着回应任何可能出现的需要。你听到远处传来的酒杯碰撞声和格调非凡的音乐声。
+<br><br>
+
+一个<<person2>><<person>>走近艾弗里，抓住了<<person1>><<his>>的手。
+<br><br>
+<<person2>>
+<<if $rng gte 81>>
+	"啊，艾弗里，” <<he>> 说。“很高兴你能来。"
+<<elseif $rng gte 61>>
+	"我的朋友，"<<he>>说。"我看到你又在做坏事了。"
+<<elseif $rng gte 41>>
+	"很高兴你能来，” <<he>> 说。
+<<elseif $rng gte 21>>
+	"很高兴终于见到你了，” <<he>> 说。
+	<<set _averyPartyUnrecognised to true>>
+<<else>>
+	"很高兴见到你，"<<he>>说。"不过我希望这次你不要再闹出什么事来了。"
+<</if>>
+<br><br>
+<<He>>转向你。
+<<if $worn.face.type.includes("mask")>>
+	"为什么要神神秘秘的，又不是化装舞会。不过也没关系就是，每个人都有自己的秘密。"
+<<elseif $fame.social gte 1000>>
+	<<if _averyPartyUnrecognised>>
+		"你当然知道如何给人留下深刻的印象，用像<<phim>>这样的美人来给我们增添光彩。"
+	<<else>>
+		"艾弗里一定是混得风生水起，才会有像你这样的美人陪伴。"
+	<</if>>
+	<<He>>向你微微鞠了一躬。
+<<elseif $fame.social gte 600>>
+	"您今晚能赏光来访，我深感荣幸。"<<He>>向你微微鞠了一躬。
+<<elseif $fame.social gte 400>>
+	"谢谢您赏光今晚来访。"
+<<elseif $fame.social gte 200>>
+	<<if _averyPartyUnrecognised>>
+		"我认得你的同伴。我承认<<pshes>>比你通常吃的东西更有品。"
+	<<else>>
+		"我认得你的同伴，艾弗里。我承认，我还以为你又会带个贱货来呢。"
+	<</if>>
+	<<He>>笑了。
+<<elseif $fame.social gte 100>>
+	"早。"
+<<elseif $fame.social gte 30>>
+	<<if _averyPartyUnrecognised>>
+		"你也一样。
+	<<else>>
+		"我想我们还没见过面。
+	<</if>>
+	"欢迎。"
+<<else>>
+	"这是你的同伴<<if !_averyPartyUnregonised>>，艾弗里<</if>>？你得告诉我你在哪里找到的这么些可爱的<<girls>>的。"
+<</if>>
+<br><br>
+你们身后走进来了另一对情侣，把<<his>>的注意力吸引走了。"又有客人来了，"<<he>>边走边说，"抱歉不能继续聊天了。祝你们有个愉快的夜晚。"
+<br><br>
+
+<<link [[继续|Avery Party 3]]>><</link>>
+<br>
+
+:: Avery Party 3
+<<effects>>
+
+<<person1>>你和艾弗里进入一个大厅。一个乐队在角落里演奏。穿着讲究的客人们成群结队地聊天，仆人们端着一盘盘的饮料在他们中间穿梭。一些人对艾弗里点点头。
+
+<<if $fame.social gte 1000>>
+	更多人向你点头。
+<<elseif $fame.social gte 600>>
+	很多人向你点头。
+<<elseif $fame.social gte 400>>
+	有些人甚至对你点头。
+<<else>>
+<</if>>
+<br><br>
+
+你陪着艾弗里聊天，你想如何表现？
+<br><br>
+
+<<link [[可爱|Avery Party Cute]]>><<sub 1>><<npcincr Avery love 1>><<set $endear += 10>><</link>><<glove>><<gendear>>
+<br>
+<<link [[有礼|Avery Party Polite]]>><<npcincr Avery love 3>><<set $endear += 10>><</link>><<gglove>>
+<br>
+<<link [[高冷|Avery Party Aloof]]>><<def 1>><<npcincr Avery love 5>><<set $endear -= 5>><</link>><<ggglove>><<lendear>>
+<br>
+
+:: Avery Party Cute
+<<effects>>
+<<pass 15>>
+你几乎整个人挂在了艾弗里的胳膊上。你对<<his>>以及同<<he>> 交流的人所说的笑话哈哈大笑。当有人直接跟你说话时，你看向艾弗里，好像不会回答一样，让<<him>>帮你说话。你觉得<<he>>很喜欢这样。
+<br><br>
+
+仆人给你递了一杯酒，艾弗里朝你点了点头。
+<br><br>
+
+<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+	<span class="blue">你还在怀孕中，你不能让自己喝酒。</span>
+<<else>>
+	<<link [[喝下|Avery Party Drink]]>><<alcohol 120>><<set $endear += 10>><</link>><<gendear>>
+<</if>>
+<br>
+<<link [[拒绝|Avery Party Drink Refuse]]>><</link>><<set $endear -= 5>><<lendear>>
+<br>
+
+:: Avery Party Polite
+<<effects>>
+<<pass 15>>
+你尽最大的努力保持礼貌，只有当被直接问起时才开口。你简洁的回答似乎让艾弗里印象深刻。
+<br><br>
+
+仆人给你递了一杯酒，艾弗里朝你点了点头。
+<br><br>
+
+<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+	<span class="blue">你还在怀孕中，你不能让自己喝酒。</span>
+<<else>>
+	<<link [[喝下|Avery Party Drink]]>><<alcohol 120>><<set $endear += 10>><</link>><<gendear>>
+<</if>>
+<br>
+<<link [[拒绝|Avery Party Drink Refuse]]>><</link>><<set $endear -= 5>><<lendear>>
+<br>
+
+:: Avery Party Aloof
+<<effects>>
+<<pass 15>>
+你无视他们的谈话，就像是不屑一顾一样。当你被直接问起时，你也只给出简短的回答。艾弗里看起来有些不满，但同时他的心中升起了一股以前没有过的渴望。
+<br><br>
+
+仆人给你递了一杯酒，艾弗里朝你点了点头。
+<br><br>
+
+<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+	<span class="blue">你还在怀孕中，你不能让自己喝酒。</span>
+<<else>>
+	<<link [[喝下|Avery Party Drink]]>><<alcohol 120>><<set $endear += 10>><</link>><<gendear>>
+<</if>>
+<br>
+<<link [[拒绝|Avery Party Drink Refuse]]>><</link>><<set $endear -= 5>><<lendear>>
+<br>
+
+:: Avery Party Drink
+<<effects>>
+
+你从托盘里拿出一杯饮料，抿了一口。你想它应该很贵。酒的口感有些苦，艾弗里为<<he>>自己也拿了一杯。
+<br><br>
+
+<<link [[继续|Avery Party 4]]>><</link>>
+<br>
+
+:: Avery Party Drink Refuse
+<<effects>>
+
+你拒绝了饮料。在托盘被端到艾弗里面前的时候，艾弗里拿了两杯，然后转向你。
+<br><br>
+
+"在宴会上拒绝喝酒是不礼貌的。"<<He>>低声说着，递给你一只玻璃杯。"至少拿在手上做做样子。"
+<br><br>
+
+<<link [[接过|Avery Party Drink Take]]>><<npcincr Avery love 1>><</link>><<glove>>
+<br>
+<<link [[拒绝|Avery Party Drink Refuse 2]]>><<npcincr Avery love -1>><</link>><<llove>>
+<br>
+
+:: Avery Party Drink Take
+<<effects>>
+
+你接过递来的杯子。艾弗里放松了下来，"很好。"
+<br><br>
+
+<<link [[继续|Avery Party 4]]>><</link>>
+<br>
+
+:: Avery Party Drink Refuse 2
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"对，对不起"你说，"我不想。"
+<<elseif $speech_attitude is "bratty">>
+	"我说了不"你说，"说不就不。"
+<<else>>
+	"对不起，"你说，"我真的不想。"
+<</if>>
+<br><br>
+
+"随你便，"艾弗里说，<<his>>的嗓音带着愤怒，"别让我难堪。"
+<br><br>
+
+<<link [[继续|Avery Party 4]]>><</link>>
+<br><br>
+
+:: Avery Party 4
+<<effects>>
+
+<<rng 2 2>>
+<<if $rng is 1>>
+	你听到金属碰在玻璃上的叮当声。<<person2>><<person>>站在房间的尽头，两扇敞开的门旁边。每个人都转过身来听。
+	<br><br>
+
+	"感谢您今晚的光临，” <<person>> 在观众席上微笑着说。“如果你愿意跟我到外面去，我有东西给你看。"
+	<br><br>
+
+	兴奋的客人们穿过敞开的门，你和艾弗里跟着他们一起走。喷泉旁建了一座高亭，一面朝着花园，面向一组看台。你和艾弗里坐下。
+	<br><br>
+
+<<elseif $rng is 2>>
+	在角落里演奏的乐队结束了他们的表演。他们等掌声平息后才开始下一轮。这首曲子节奏更轻快，艾弗里伸出了<<person1>><<his>>的手。"我能邀请你跳这支舞吗？"
+	<br><br>
+
+	<<link [[把手递给艾弗里|Avery Party Dance]]>><<npcincr Avery love 1>><<set $endear += 10>><</link>><<glove>><<gendear>>
+	<br>
+	<<link [[拒绝|Avery Party Dance Refuse]]>><<npcincr Avery love -1>><<set $endear -= 50>><</link>><<garage>><<llove>><<lendear>>
+	<br>
+
+<<else>>
+	"各位，欢迎，” <<he>> 说。"今晚我在老面孔中看到了一些新面孔."
+
+<</if>>
+
+:: Avery Party Dance
+<<effects>>
+
+你搭上<<him>>的手，<<him>>把你拉进舞池。其他舞伴们也在做同样的事，人们在大厅里偏偏起舞。<<takeHandholdingVirginity "Avery" `($dateCount.Avery gte 3 ?'romantic':'')`>>
+<br><br>
+
+<<link [[跟随艾弗里的舞步|Avery Party Dance Follow]]>><<sub 1>><<npcincr Avery love 1>><<set $endear += 10>><</link>><<glove>><<gendear>>
+<br>
+<<link [[由你主导|Avery Party Dance Lead]]>><<def 1>><</link>><<dancedifficulty 1 600>>
+<br>
+
+:: Avery Party Dance Refuse
+<<effects>>
+
+你拒绝握住艾弗里的手。<<He>>环顾房间。其他舞伴们已经要开始跳舞了。
+<br><br>
+
+艾弗里走近一步，抓住你的胳膊。"别让我难堪，"<<he>>小声说，"你不敢。"
+<br><br>
+
+<<link [[顺从|Avery Party Dance Follow]]>><<sub 1>><<npcincr Avery love 1>><</link>><<glove>>
+<br>
+<<link [[推开艾弗里|Avery Party Dance Shove]]>><<npcincr Avery rage 3>><<npcincr Avery love -1>><<set $endear -= 5>><</link>><<ggarage>><<llove>><<lendear>>
+<br>
+
+:: Avery Party Dance Follow
+<<effects>>
+
+你听从艾弗里的指挥。<<Hes>>跳得很好，你们很快就引来了一小群围观群众。音乐结束时，你上气不接下气。观众们鼓起了掌。艾弗里紧紧地抱着你，鞠躬，手放在你的大腿上。<<danceskilluse>>
+<br><br>
+
+你和艾弗里继续跳舞直到派对结束。艾弗里向熟人道别，你们一起离开了。
+<br><br>
+
+<<link [[继续|Avery Party End]]>><</link>>
+
+:: Avery Party Dance Lead
+<<effects>>
+
+艾弗里试图引导你，但你却把<<him>>拉向了另一个方向。
+
+<<if $danceSuccess>>
+	<<He>>稍微抵触了一下，<span class="green">但还是选择顺从你的行为。</span>
+
+	<<if currentSkillValue('danceskill') gte 600>>
+		毕竟你很擅长这个。
+	<<elseif currentSkillValue('danceskill') gte 400>>
+		你是一个自信的舞者，但你很小心没有让<<him>>没面子。
+	<<elseif currentSkillValue('danceskill') gte 100>>
+		这不是你的第一支舞，但你还是害怕让<<him>>出丑。你努力跟着音乐跳舞，好在没出什么错。
+	<<else>>
+		你担心你会让<<him>>出丑，直到你注意到其他舞者也都是新手，你放下心来。
+	<</if>>
+
+	艾弗里舞跳得很好，你们很快就吸引了不少观众。
+	<<danceskilluse>><<gglove>><<ggendear>><<npcincr Avery love 3>><<set $endear += 20>>
+	<br><br>
+
+	你们继续跳舞。其他舞伴们停下来，饶有兴趣的看着你和艾弗里。除了某一对伴侣，他们也吸引了自己的观众。
+	<br><br>
+
+	<<link [[继续|Avery Party Dance Competition]]>><</link>>
+	<br>
+
+<<else>>
+	<span class="red">你的舞步太笨拙，丑态百出，</span>你俩都倒在地板上。人群中传来了一阵笑声。艾弗里试图一笑置之，但你很肯定<<hes>>一定是生气了。
+	<<danceskilluse>><<garage>><<llove>><<lendear>><<npcincr Avery rage 5>><<npcincr Avery love -1>><<set $endear -= 5>><<gstress>><<stress 6>><<gpain>><<pain 6>>
+	<br><br>
+
+	你们不再参加剩下的舞会，只是在旁边看着其他人的舞蹈。艾弗里全程一言不发，即使是在晚会结束时，几位客人走过来跟<<him>>道别<<him>>也没多说几句话。<<his>>的态度让想嘲笑你们在舞池里不幸事件的那几个人无功而返。
+	<br><br>
+
+	<<link [[继续|Avery Party End]]>><</link>>
+	<br>
+
+<</if>>
+
+:: Avery Party Dance Competition
+<<effects>>
+<<generate3>><<person3>>
+"多么好的一对儿搭档，我想是时候来一场即兴舞蹈比赛了，"<<person2>><<person>>宣布，"两对搭档轮流表演跳舞，在场的每个人都有权投票选出胜者，大家觉得这个主意怎么样？"
+<br><br>
+
+宾客们都很喜欢这个主意，艾弗里和另一对伴侣也是如此。尤其是其中的那个<<person3>><<person>>，对你狡猾的笑了笑。
+<br><br>
+
+<<link [[跳舞|Avery Party Dance Accept]]>><<npcincr Avery love 1>><<set $endear += 10>><</link>><<glove>><<gendear>>
+<br>
+<<link [[拒绝|Avery Party Dance Competition Refuse]]>><<set $endear -= 5>><</link>><<lendear>>
+<br>
+
+:: Avery Party Dance Accept
+<<effects>>
+
+另一对舞伴先表演。音乐家们开始演奏一首新曲子，比他们之前演奏过的任何曲子都要快。这对搭档的舞步跟上了。
+
+<<if currentSkillValue('danceskill') gte 800>>
+	他们跳得很好，很美。但你觉得自己能做的更好。
+<<elseif currentSkillValue('danceskill') gte 400>>
+	他们很好，真的很好。要取胜是个挑战。
+<<else>>
+	他们很好，真的很好。你觉得你没办法赢过他们。
+<</if>>
+<br><br>
+
+<<person3>><<if $pronoun is "m">>
+	<<person>>穿着西装看起来很矜贵，但你注意到他们一直避免做出过大的动作。即使有些动作对于舞蹈来说是必要的。
+<<else>>
+	<<persons>>的裙子随着<<he>>的移动而展开，但你注意到他们一直避免做出让裙子走光的过大的动作。即使有些动作对于舞蹈来说是必要的。
+<</if>>
+<br><br>
+
+<<link [[公平竞争|Avery Party Dance Fair]]>><</link>><<dancedifficulty 1 1000>>
+<br>
+<<if $promiscuity gte 15>>
+	<<link [[作弊|Avery Party Dance Cheat]]>><<npcincr Avery love 1>><<set $endear += 10>><</link>><<promiscuous2>><<glove>><<gendear>>
+	<br>
+<</if>>
+
+:: Avery Party Dance Fair
+<<effects>>
+
+这对伴侣在热烈的掌声中结束了舞蹈。轮到你们了。你和艾弗里挽起彼此的臂膀开始跳舞。
+<br><br>
+
+<<if $danceSuccess>>
+
+	<span class="green">你舞跳的很好，</span>优雅又华丽。艾弗里很乐意被你领导。你瞥见<<person3>><<person>>在观看时皱起了眉头。<<if $speech_attitude is "bratty">>你俏皮的吐舌。<</if>>
+	<<danceskilluse>>
+	<br><br>
+
+	<<if $rng gte 51>>
+		你转动着离开艾弗里，靠近观众，但当你们试图重聚时，你遇到了麻烦。<<person3>><<person>>从人群中伸出手，<span class="pink">一把抓住了你的$worn.lower.cn_name_cap.</span><<He>>用力拖拽。
+		<<set $worn.lower.integrity -= 50>>
+		<br><br>
+		<<if $worn.lower.integrity lte 0>>
+			<<integritycheck>><<exposure>>
+			伴随着可怕的撕裂声，你的衣服从你的身体上撕落，留在了<<persons>>的手中。
+				<<if $worn.under_lower.type.includes("naked")>>
+					<<if !playerChastity("hidden")>>
+						<<set $genderknown.pushUnique("Avery")>>
+					<</if>>
+					你的腰部以下赤裸着，在房间的中间，你的<<genitals>>和<<bottom>>变成了目光的焦点。<<covered>>
+					<br><br>
+					<<fameexhibitionism 30>>
+					<<if $exhibitionism gte 75>>
+						<<link [[继续跳舞|Avery Party Dance Naked]]>><</link>><<exhibitionist5>>
+						<br>
+					<</if>>
+					<<link [[跑|Avery Party Dance Run]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+				<<else>>
+					你的腰部以下只剩下了$worn.under_lower.cn_name_cap，你在房间的中间，视线的中心。<<covered>>
+					<br><br>
+					<<fameexhibitionism 10>>
+					<<if $exhibitionism gte 35>>
+						<<link [[继续跳舞|Avery Party Dance Undies]]>><</link>><<exhibitionist3>>
+						<br>
+					<</if>>
+					<<link [[跑|Avery Party Dance Run]]>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+					<br>
+
+				<</if>>
+		<<else>>
+			你将衣服从<<his>>的束缚中撕走。它们破损得更厉害了，但应该还挺得住。你回到舞蹈中完成了整支舞。
+			<br><br>
+
+			音乐停了下来，客人们鼓起了热烈的掌声。你和艾弗里显然是赢家，你鞠了一躬。
+			<<gglove>><<ggendear>><<npcincr Avery love 3>><<set $endear += 20>><<famesocial 10>>
+			<br><br>
+			<<earnFeat "Ballroom Show-off">>
+			你和艾弗里在派对结束前都被仰慕者包围着。你们一起离开了大厦。
+			<br><br>
+
+			<<link [[继续|Avery Party End]]>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+		音乐停了下来，客人们鼓起了热烈的掌声。你和艾弗里显然是赢家，你鞠了一躬。
+		<<gglove>><<ggendear>><<npcincr Avery love 3>><<set $endear += 20>><<famesocial 10>>
+		<br><br>
+		<<earnFeat "Ballroom Show-off">>
+		你和艾弗里在派对结束前都被仰慕者包围着。你们一起离开了大厦。
+		<br><br>
+
+		<<link [[继续|Avery Party End]]>><</link>>
+		<br>
+	<</if>>
+
+<<else>>
+	<span class="red">很不幸，</span>在这么多人的注视下，艾弗里并不想让你领舞，你们一直踩在对方的脚上。你瞥见了<<person3>><<person>>脸上得意的笑容。
+	<<danceskilluse>><<lendear>><<set $endear -= 10>>
+	<br><br>
+	音乐停了下来，很明显你输了。观众还是鼓起了掌，尽管与你的竞争对手获得的相比，他们鼓掌的声音太小了。
+	<br><br>
+
+	派对结束时，艾弗里向熟人道别，你们一起离开了公馆。
+	<br><br>
+
+	<<link [[继续|Avery Party End]]>><</link>>
+
+<</if>>
+
+:: Avery Party Dance Run
+<<effects>>
+
+心跳加速，你红着脸逃离了房间，躲进了食品储藏室。艾弗里很快就到了，拿着一条毛巾。
+<br><br>
+
+"相信我，"<<he>>在你伸出手时说道，"我会为这件事报复点什么的，这不会就这么算了。"尽管嘴上说着这种话，但<<his>>的表情看起来没有什么起色。在你想接过毛巾时，<<he>>把毛巾拿远了。
+<br><br>
+
+"我想先看一看，” <<pcpetname "Avery">>," <<he>> 说。“否则你就直接这样走回家吧。”你无法判断 <<hes>> 是否在开玩笑。
+<br><br>
+
+<<if !$worn.under_lower.type.includes("naked")>>
+	<<if $exhibitionism gte 15>>
+		<<link [[炫耀|Avery Party Dance Undies Flaunt]]>><<set $endear += 20>><</link>><<exhibitionist2>><<ggendear>>
+		<br>
+	<</if>>
+	<<link [[展示|Avery Party Dance Show]]>><<sub 1>><<trauma 6>><<stress 6>><<set $endear += 20>><</link>><<gtrauma>><<gstress>><<ggendear>>
+	<br>
+	<<link [[拒绝|Avery Party Dance Naked Refuse]]>><<def 1>><<set $endear -= 10>><<npcincr Avery rage 5>><</link>><<garage>><<llendear>>
+	<br>
+<<else>>
+	<<if $exhibitionism gte 55>>
+		<<link [[炫耀|Avery Party Dance Naked Flaunt]]>><<set $endear += 30>><</link>><<exhibitionist4>><<gggendear>>
+		<br>
+	<</if>>
+	<<link [[展示|Avery Party Dance Show]]>><<sub 1>><<trauma 6>><<stress 6>><<set $endear += 30>><</link>><<gtrauma>><<gstress>><<gggendear>>
+	<br>
+	<<link [[拒绝|Avery Party Dance Naked Refuse]]>><<def 1>><<set $endear -= 5>><<npcincr Avery rage 5>><</link>><<garage>><<lendear>>
+	<br>
+<</if>>
+<br><br>
+
+:: Avery Party Dance Undies Flaunt
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你，你想多看看我吗？"你故作羞涩的询问。
+<<elseif $speech_attitude is "bratty">>
+	"你一定很喜欢这个吧？"你笑着说。
+<<else>>
+	"你一定想看更多吧？"你笑着说，"承认吧，所有人都一样。"
+<</if>>
+
+<<if $leftarm is "bound" and $rightarm is "bound">>
+	你转过身面对艾弗里，让<<him>>能把你的$worn.under_lower.cn_name_cap看得更清楚。
+<<else>>
+	你移动你的手，让<<him>>透过你的$worn.under_lower.cn_name_cap瞥见你<<genitals>>的轮廓。
+<</if>>
+<<exhibitionism4>>
+
+艾弗里看了一会儿，然后半跪下来。"让我来。"<<He>>把毛巾包在你的腰上。<<Hes>>的动作很慢。
+<br><br>
+<<towelup>>
+
+<<link [[继续|Avery Party Dance Return]]>><</link>>
+<br>
+
+:: Avery Party Dance Naked Flaunt
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"你，你想多看看我吗？"你故作羞涩的询问。
+<<elseif $speech_attitude is "bratty">>
+	"你一定很喜欢这个吧？"你笑着说。
+<<else>>
+	"你一定想看更多吧？"你笑着说，"承认吧，所有人都一样。"
+<</if>>
+
+<<if $leftarm is "bound" and $rightarm is "bound">>
+	你转过身面对艾弗里，让<<him>>看清你的<<genitals>>。
+<<else>>
+	你移动你的手，让你的<<genitals>>在被遮起来前供<<him>>瞥一眼。你把手从身上挪开，试图表现出尴尬的样子，你知道自己无法隐瞒任何事情。
+<</if>>
+<<exhibitionism4>>
+
+艾弗里看了一会儿，然后半跪下来。"让我来。"<<He>>把毛巾缠在你的腰上。<<Hes>>的动作很慢。
+<br><br>
+<<towelup>>
+
+<<link [[继续|Avery Party Dance Return]]>><</link>>
+<br>
+
+:: Avery Party Dance Show
+<<effects>>
+
+你闭上眼睛，也许这样能让事情变得轻松些。
+
+<<if $leftarm is "bound" and $rightarm is "bound">>
+	你转过身面对艾弗里，让<<him>>看清你的<<undies>>。你抑制住了逃跑和躲藏的冲动。
+<<else>>
+	你把手放在背后，向艾弗里暴露出你的<<undies>>。你抑制住了想要隐藏或者跑开躲起来的冲动。
+<</if>>
+<br><br>
+
+艾弗里盯着你看了一会儿，然后半跪下来。"让我来。"<<He>>把毛巾缠在你的腰上。<<Hes>>的动作很慢。
+<br><br>
+<<towelup>>
+
+<<link [[继续|Avery Party Dance Return]]>><</link>>
+<br>
+
+:: Avery Party Dance Naked Refuse
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"请，请不要，”你说。“太丢人了。"
+<<elseif $speech_attitude is "bratty">>
+	"滚开。"你说，"我不需要你的帮助。"
+<<else>>
+	"不要，”你说。“太丢人了。"
+<</if>>
+<br><br>
+
+<<if $NPCName[$NPCNameList.indexOf("Avery")].rage gte random(20, 100)>><<set $averyragerevealed to 1>>
+	艾弗里盯着你看了一会儿，<span class="red">然后用手把毛巾揉成一团。</span>"我不过是提出了一个对我们来说很公平的要求而已，"<<he>>说，<<he>>气得声音颤抖。"你自己一个人回家吧。"<<He>>离开食品储藏室。
+	<br><br>
+
+	<<averyscore>>
+
+	你向<<him>>背后张望，也许你应该呼救。
+	<br><br>
+	<<endevent>>
+	<<link [[寻求帮助|Avery Party Dance Call]]>><</link>>
+	<br>
+	<<link [[寻找能遮挡的东西|Avery Party Dance Search]]>><</link>>
+	<br>
+<<else>>
+	艾弗里盯着你看了一会儿，然后扔给你毛巾。"好吧，"<<he>>说，<<his>>的声音里带着恼怒。你把自己盖起来。
+	<<towelup>>
+	<br><br>
+
+	<<link [[继续|Avery Party Dance Return]]>><</link>>
+	<br>
+<</if>>
+
+:: Avery Party Dance Search
+<<effects>>
+<<generate1>><<person1>>
+你从食品储藏室偷偷溜出来，<<covered>>当你正在搜查一个橱柜时，一个穿着侍者服装的<<person>>从拐角处走了出来，你一下子紧张了起来，随后冲回了食品储藏室。
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"请，请帮帮我，"你紧张的说，"我现在腰部以下没办法见人。"
+<<elseif $speech_attitude is "bratty">>
+	"你有毛巾什么的吗？"你询问道。
+<<else>>
+	"你能给我一条毛巾什么的吗？"你问道。
+<</if>>
+<br><br>
+
+<<if $rng gte 51>>
+	<<Hes>>脸红了。<<He>>从来时的路走了回去，一会儿后拿了一条毛巾回来。<<He>>把它递给你，然后一声不吭地离开了。
+	<br><br>
+	<<towelup>>
+	<<endevent>>
+	<<link [[继续|Avery Party End Alone]]>><</link>>
+	<br>
+<<else>>
+	<<He>>对你微笑。"当然可以，"<<he>>边说边向你靠近，然后从口袋里掏出了一条毛巾。"我这儿有条毛巾。"<<He>>到达食品储藏室的门时，加快脚步，<span class="red">把你推了进去。</span><<He>>关上了<<him>>后面的门。
+	<br><br>
+
+	"该死的<<bitch>>，"<<he>>吼道。"穿着光鲜亮丽的衣服，就以为你比我们都强了是吧？你听着，现在没人听得见你说话了，给我安分点！"
+	<br><br>
+
+	<<link [[继续|Avery Party Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Avery Party Dance Call
+<<effects>>
+
+你从你的藏身之处发出呼喊声。一开始没人回应。你能听见穿过墙壁的音乐声，但非常微弱，你不确定自己的声音在这里能传得有多远。
+<br><br>
+
+<<generate1>><<person1>>
+你正准备放弃的时候，一个穿着侍者服装的人经过拐角。当<<he>>看到你从食品储藏室探头偷看的时候，脚步停了下来。
+<br><br>
+
+<<if $speech_attitude is "meek">>
+	"请，请帮帮我，"你紧张的说，"我现在腰部以下没办法见人。"
+<<elseif $speech_attitude is "bratty">>
+	"你有毛巾什么的吗？"你询问道。
+<<else>>
+	"你能给我一条毛巾什么的吗？"你问道。
+<</if>>
+<br><br>
+
+<<if $rng gte 51>>
+	<<He>>困惑了一会儿，等到意识到什么的时候脸红了。<<He>>从来时的路走了回去，一会儿后拿了一条毛巾回来。<<He>>把它递给你，然后一声不吭地离开了。
+	<br><br>
+	<<towelup>>
+	<<endevent>>
+	<<link [[继续|Avery Party End Alone]]>><</link>>
+	<br>
+<<else>>
+	<<He>>对你微笑。"当然可以，"<<he>>边说边向你靠近，然后从口袋里掏出了一条毛巾。"我这儿有条毛巾。"<<He>>到达食品储藏室的门时，加快脚步，<span class="red">把你推了进去。</span><<He>>关上了<<him>>后面的门。
+	<br><br>
+
+	"该死的<<bitch>>，"<<he>>吼道。"穿着光鲜亮丽的衣服，就以为你比我们都强了是吧？你听着，现在没人听得见你说话了，给我安分点！"
+	<br><br>
+
+	<<link [[继续|Avery Party Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Avery Party Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $enemyanger += 100>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Avery Party Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Avery Party Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Avery Party Rape Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	<<person1>><<person>>在离开前透过储藏室的门看了看。
+	<br><br>
+	<<tearful>>你穿着被<<he>>丢弃的毛巾。
+	<br><br>
+	<<clothesontowel>>
+	<<endcombat>>
+	<<link [[继续|Avery Party End Alone]]>><</link>>
+
+<<else>>
+	<<He>>向后倒下，撞到架子上，面粉撒了一地。
+	<br><br>
+	<<tearful>>你从房间里跑出去，你把掉在地上的毛巾围在腰上。
+	<br><br>
+	<<clothesontowel>>
+	<<endcombat>>
+	<<link [[继续|Avery Party End Alone]]>><</link>>
+
+<</if>>
+
+:: Avery Party Dance Return
+<<effects>>
+
+你和艾弗里回到大厅，没有人提起这起意外，但有不少客人朝你的方向偷看。
+<br><br>
+派对结束了，你和艾弗里离开了公馆。
+<br><br>
+
+<<link [[继续|Avery Party End]]>><</link>>
+<br>
+
+:: Avery Party Dance Undies
+<<effects>>
+<<famesocial 10>>
+<<person1>>
+你忽略了你的窘境，以及周围的惊叹和斜视，继续只穿着$worn.under_lower.cn_name_cap跳舞。即便你穿成这个样子，艾弗里也想办法保持了稳定。
+<<exhibitionism3>>
+<<earnFeat "Ballroom Show-off">>
+音乐停了，你和艾弗里鞠躬。掌声响彻了整个建筑。谁赢了是毫无疑问的。一个仆人冲过来用毛巾把你盖住。
+<<towelup>>
+<br><br>
+
+你们两个在派对剩下的时间里被一群仰慕者包围着。每个人都想认识你。很多人都把目光投向你的方向。
+<br><br>
+
+聚会结束了，艾弗里赶走了最后几个闲聊的人。你们一起离开了这座大厦。
+<br><br>
+
+<<link [[继续|Avery Party End]]>><</link>>
+<br>
+
+:: Avery Party Dance Naked
+<<effects>>
+<<famesocial 10>>
+你的心跳得像打鼓，你的整个身体刺痛，但你忽略了你的窘境。你忽略了周围的惊叹声和斜视，继续舞动着，每个人都看到了你的<<genitals>>。即使你穿成这样，艾弗里也想办法保持了稳定。
+<<exhibitionism5>>
+<<earnFeat "Ballroom Show-off">>
+音乐停了，你和艾弗里鞠躬。掌声响彻了整个建筑。谁赢了是毫无疑问的。一个仆人冲过来用毛巾把你盖住。
+<<towelup>>
+<br><br>
+
+你们两个在派对剩下的时间里被一群仰慕者包围着。每个人都想认识你。很多人都把目光投向你的方向。
+<br><br>
+
+聚会结束了，艾弗里赶走了最后几个闲聊的人。你们一起离开了这座大厦。
+<br><br>
+
+<<link [[继续|Avery Party End]]>><</link>>
+<br>
+
+:: Avery Party Dance Cheat
+<<effects>>
+<<famesocial 10>>
+当<<person3>><<person>>在你面前旋转时，你伸出手，紧紧抓住<<his>>的<<if $pronoun is "f">>裙子<<else>>裤子<</if>>。<<his>>从你身边旋转着离开时，布料松开，从<<his>>的身体滑落，留在了你的手中。
+<br><br>
+
+<span class="lewd"><<Hes>>的下面什么都没穿。</span>过了一阵子<<him>>才意识到<<hes>>现在腰部以下正赤裸着，站在拥挤的房间里，成为了众人注意力的中心，<<his>>的<<if $NPCList[2].penis isnot "none" and !npcHasStrapon(2)>>肉棒<<else>>小穴<</if>>还有屁股在所有人眼中一览无遗。
+<br><br>
+
+有些观众把目光移开，但另一些观众则明目张胆地瞪着眼睛。当<<He>>注意到的时候，<<his>>尖叫着蜷缩起来试图遮盖自己，脸可见的快速涨红。<<his>>的伙伴为<<his>>用一片餐巾遮挡下身，两人一起逃离了房间。
+<<promiscuity2>>
+
+<br><br>
+
+<<link [[继续|Avery Party Dance Cheat 2]]>><</link>>
+<br>
+
+:: Avery Party Dance Cheat 2
+<<effects>>
+<<person1>>
+"我们本来就可以打败他们。"当你回到舞池时艾弗里这么说道，现在你们守住了本就属于你们的胜利，"但是这样更好。"
+<br><br>
+<<earnFeat "Ballroom Show-off">>
+你和艾弗里继续跳舞直到派对结束。艾弗里向熟人道别，你们一起离开了。
+<br><br>
+
+<<link [[继续|Avery Party End]]>><</link>>
+
+:: Avery Party Dance Competition Refuse
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"对，对不起"你说，"但我只会让艾弗里失望。"
+<<elseif $speech_attitude is "bratty">>
+	"不，"你说，"我不是一只用来表演的猴子。"
+<<else>>
+	"我只是为了好玩才跳舞的，"你说，"比赛压力太大了。"
+<</if>>
+<br><br>
+
+客人们失望的叹气。“真可惜，” <<person2>><<person>> 说。“你明明就很擅长跳舞。”艾弗里看起来很生气，但什么也没说。你和 <<person1>><<he>> 继续跳舞直到派对结束。艾弗里向熟人告别，你们一起离开了大厦。
+<br><br>
+
+<<link [[继续|Avery Party End]]>><</link>>
+
+:: Avery Party Dance Shove
+<<effects>>
+
+<<famesocial 10>>
+你把艾弗里从你身边推开，同时把你的胳膊从<<his>>的抓握中挣脱出来。每个人都转过脸来看。艾弗里试图一笑置之，但<<he>> 的声音中透露出不忿。
+<br><br>
+
+你们不再参加剩下的舞会，只是在旁边看着其他人的舞蹈。艾弗里全程一言不发，即使是在晚会结束时，几位客人走过来跟<<him>>道别<<him>>也没多说几句话。<<his>>的态度让想嘲笑你们在舞池里不幸事件的那几个人无功而返。
+<br><br>
+
+<<link [[继续|Avery Party End]]>><</link>>
+
+:: Avery Party End Alone
+<<effects>>
+
+你们离开了公馆。另一个侍者为你打开了门，然后你们一起走到了多瑙河街上。
+<br><br>
+<<storeon "averyCar" "check">>
+<<if _store_check is 1>>
+	<<storeon "averyCar" "delete">>
+<</if>>
+
+<<link [[继续|Danube Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Avery Party End
+<<effects>>
+<<pass 60>>
+<<if $endear gte 30>>
+	"我很高兴这次能带你来，<<pcpetname "Avery">>。"艾弗里在你们走向车的路上说道，车已经被仆人取走了，"你给人们留下了好印象。"你们上了车。
+<<elseif $endear gte 0>>
+	"这次我就原谅你了。"艾弗里在你们走向车的路上说道，车已经被仆人取走了，"不过你得注意自己的表现。你的行为会影响到我的形象，<<pcpetname "Avery">>。"
+<<else>>
+	艾弗里在回车上的路上默不作声，车已经被一个仆人接走了。你们上了车，艾弗里抓住方向盘。
+<</if>>
+<br><br>
+
+<<link [[继续|Avery Date 4]]>><</link>>
+<br>
+
+:: Avery Date 2
+<<effects>><<set $outside to 0>>
+<<pass 20>><<famesocial 10>><<set $dateCount.Total++>><<set $dateCount.Avery++>>
+<<if $phase is 1>>
+	你让艾弗里牵着你的手。<<He>>笑了。<<takeHandholdingVirginity "Avery" "romantic">>
+	<br><br>
+<<else>>
+	你局促的站着。 <<He>> 对你皱眉，什么也没说。
+	<br><br>
+<</if>>
+<<set $phase to 0>>
+<<generate2>><<person2>>一个<<person>>前来欢迎艾弗里和你。“啊哈，”<<he>>说。"很高兴再次见到你<<person1>><<sir>>，还有你的朋友。" <<person2>><<He>>对你微笑。"这边请。"
+<br><br>
+
+<<He>> 带你到二楼窗户旁边的一张小桌子。“我会带着菜单回来的，” <<he>> 说。
+<br><br>
+
+当<<he>>返回时，<<he>>带的不是菜单，而是一瓶葡萄酒。<<He>>等待着你们的指示。艾弗里对你微笑。"很好喝的，相信我。"
+<br><br>
+
+<<person1>>
+<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+	<span class="blue">你还在怀孕中，你不能让自己喝酒。</span>
+	<br>
+<<else>>
+	<<link [[喝艾弗里推荐的酒|Avery Date Wine]]>><<alcohol 120>><<drugs 180>><<set $endear += 10>><<npcincr Avery love 1>><</link>><<glove>><<gendear>><<garousal>>
+<</if>>
+<br>
+<<link [[让他们倒酒，但不喝|Avery Date No Wine]]>><</link>>
+<br>
+<<link [[提出想喝别的|Avery Date Drink]]>><<def 1>><<npcincr Avery rage 5>><<set $endear -= 5>><</link>><<garage>><<lendear>>
+<br>
+
+:: Avery Date Wine
+<<effects>>
+你喝了一口艾弗里的酒。它让你感到头晕，身体暖暖的。
+<br><br>
+
+<<person2>><<person>>又回来了，这次只带了主菜单。<<He>>把菜单交给艾弗里。<<person1>>"我知道你会喜欢什么，<<pcpetname "Avery">>。"艾弗里说，<<if $averyragerevealed is 1>>"能保持身材的东西。"<</if>>
+<br><br>
+
+<<link [[让艾弗里为你点餐|Avery Date Order]]>><<set $phase to 0>><<npcincr Avery love 1>><<set $endear += 10>><</link>><<glove>><<gendear>>
+<br>
+<<link [[选便宜的|Avery Date Cheap]]>><<set $phase to 1>><<stress -6>><<set $endear -= 5>><<npcincr Avery rage 5>><</link>><<garage>><<lendear>><<lstress>>
+<br>
+<<link [[选昂贵的食物|Avery Date Expensive]]>><<set $phase to 2>><<set $endear -= 10>><<npcincr Avery rage 5>><<npcincr Avery love -1>><<stress -18>><</link>><<llove>><<garage>><<llendear>><<llstress>>
+<br>
+
+:: Avery Date No Wine
+<<effects>>
+你闻了闻饮料，但把它放回去。艾弗里喝了一小口。<<He>>看向你的杯子，在察觉到你的犹豫后，<<he>>没有再提起这件事。
+<br><br>
+
+<<person2>><<person>>又回来了，这次只带了主菜单。<<He>>把菜单交给艾弗里。<<person1>>"我知道你会喜欢什么，<<pcpetname "Avery">>。"艾弗里说，<<if $averyragerevealed is 1>>"能保持身材的东西。"<</if>>
+<br><br>
+
+<<link [[让艾弗里为你点餐|Avery Date Order]]>><<set $phase to 0>><<npcincr Avery love 1>><<set $endear += 10>><</link>><<glove>><<gendear>>
+<br>
+<<link [[选便宜的|Avery Date Cheap]]>><<set $phase to 1>><<stress -6>><<set $endear -= 5>><<npcincr Avery rage 5>><</link>><<garage>><<lendear>><<lstress>>
+<br>
+<<link [[选昂贵的食物|Avery Date Expensive]]>><<set $phase to 2>><<set $endear -= 10>><<npcincr Avery rage 5>><<npcincr Avery love -1>><<stress -18>><</link>><<llove>><<garage>><<llendear>><<llstress>>
+<br>
+
+:: Avery Date Drink
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"不，不，”你说。“我想吃点别的。"
+<<elseif $speech_attitude is "bratty">>
+	"我可没要这个，"你说，"给我一份饮料菜单。"
+<<else>>
+	"不，谢谢，"你说，"我想喝点别的。"
+<</if>>
+<br><br>
+
+<<person2>><<person>>看向艾弗里。艾弗里皱着眉头，但点了点头。<<He>>拿来一份饮料菜单，你选择了一种甜饮料。
+<br><br>
+<<person1>>
+
+<<person2>><<person>>又回来了，这次只带了主菜单。<<He>>把菜单交给艾弗里。<<person1>>"我知道你会喜欢什么，<<pcpetname "Avery">>。"艾弗里说，<<if $averyragerevealed is 1>>"能保持身材的东西。"<</if>>
+<br><br>
+
+<<link [[让艾弗里为你点餐|Avery Date Order]]>><<set $phase to 0>><<npcincr Avery love 1>><<set $endear += 10>><</link>><<glove>><<gendear>>
+<br>
+<<link [[选便宜的|Avery Date Cheap]]>><<set $phase to 1>><<stress -6>><<set $endear -= 5>><<npcincr Avery rage 5>><</link>><<garage>><<lendear>><<lstress>>
+<br>
+<<link [[选昂贵的食物|Avery Date Expensive]]>><<set $phase to 2>><<set $endear -= 10>><<npcincr Avery rage 5>><<npcincr Avery love -1>><<stress -18>><</link>><<llove>><<garage>><<llendear>><<llstress>>
+<br>
+
+:: Avery Date Order
+<<effects>>
+
+艾弗里为你点了一份沙拉，为自己点了一份鱼汤。
+<br><br>
+
+<<He>>向后靠着，看着餐厅。
+
+<<if $rng gte 51 and $NPCName[$NPCNameList.indexOf("Avery")].love gte 20 and $footdisable is "f">>
+	有东西碰到了你的腹股沟，很快地又来了一次。它不停地上下摩擦。你瞥了一眼桌子底下，艾弗里脱掉了<<his>>的鞋子，正在用<<his>>的脚来骚扰你。从<<His>>的脸上看不出<<hes>>在做什么。
+	<br><br>
+
+	<<link [[享受|Avery Date Enjoy]]>><<set $endear += 10>><</link>><<promiscuous1>><<gendear>>
+	<br>
+		<<if $promiscuity gte 15>>
+			<<link [[调戏回去|Avery Date Return]]>><<npcincr Avery love 1>><</link>><<promiscuous2>><<glove>>
+			<br>
+		<</if>>
+	<<link [[踢开|Avery Date Kick]]>><<def 1>><<npcincr Avery love -1>><<set $endear -= 5>><<npcincr Avery rage 5>><</link>><<garage>><<llove>><<lendear>>
+	<br>
+<<else>>
+	<<He>>开始谈论平时的工作内容，你觉得有些无聊。
+	<br><br>
+
+	<<link [[转移话题|Avery Date Change]]>><<npcincr Avery love -1>><</link>><<llove>>
+	<br>
+	<<link [[笑着点头|Avery Date Nod]]>><<npcincr Avery love 1>><<set $endear += 10>><<tiredness 1>><</link>><<gtiredness>><<glove>><<gendear>>
+	<br>
+	<<link [[坐立不安|Avery Date Fidget]]>><<stress -6>><<set $endear -= 5>><<npcincr Avery rage 1>><</link>><<garage>><<lendear>><<lstress>>
+<</if>>
+
+:: Avery Date Cheap
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"但，但是。"你说，"我想自己选择食物，拜托了。"
+<<elseif $speech_attitude is "bratty">>
+	"谢谢，但是我可以自己点菜。"你伸手去拿菜单。
+<<else>>
+	"我想自己选择食物，"你说。
+<</if>>
+<br><br>
+
+你点了个三明治，艾弗里看起来很生气，但 <<he>> 什么也没说。 <<He>> 为自己点了一份鱼汤。
+<br><br>
+
+<<He>>向后靠着，看着餐厅。
+
+<<if $rng gte 51 and $NPCName[$NPCNameList.indexOf("Avery")].love gte 20 and $footdisable is "f">>
+	有东西碰到了你的腹股沟，很快地又来了一次。它不停地上下摩擦。你瞥了一眼桌子底下，艾弗里脱掉了<<his>>的鞋子，正在用<<his>>的脚来骚扰你。从<<His>>的脸上看不出<<hes>>在做什么。
+	<br><br>
+
+	<<link [[享受|Avery Date Enjoy]]>><<set $endear += 10>><</link>><<promiscuous1>><<gendear>>
+	<br>
+		<<if $promiscuity gte 15>>
+			<<link [[调戏回去|Avery Date Return]]>><<npcincr Avery love 1>><</link>><<promiscuous2>><<glove>>
+			<br>
+		<</if>>
+	<<link [[踢开|Avery Date Kick]]>><<def 1>><<npcincr Avery love -1>><<set $endear -= 5>><<npcincr Avery rage 5>><</link>><<garage>><<llove>><<lendear>>
+	<br>
+<<else>>
+	<<He>>开始谈论平时的工作内容，你觉得有些无聊。
+	<br><br>
+
+	<<link [[转移话题|Avery Date Change]]>><<npcincr Avery love -1>><</link>><<llove>>
+	<br>
+	<<link [[笑着点头|Avery Date Nod]]>><<npcincr Avery love 1>><<set $endear += 10>><<tiredness 1>><</link>><<gtiredness>><<glove>><<gendear>>
+	<br>
+	<<link [[坐立不安|Avery Date Fidget]]>><<stress -6>><<set $endear -= 5>><<npcincr Avery rage 1>><</link>><<garage>><<lendear>><<lstress>>
+<</if>>
+
+:: Avery Date Expensive
+<<effects>>
+
+<<if $speech_attitude is "meek">>
+	"但，但是。"你说，"我想自己选择食物，拜托了。"
+<<elseif $speech_attitude is "bratty">>
+	"谢谢，但是我可以自己点菜。"你伸手去拿菜单。
+<<else>>
+	"我想自己选择食物，"你说。
+<</if>>
+<br><br>
+
+你点了菜单上最贵的东西，是一道鱼汤。艾弗里生气了，但还是给自己点了同样的汤。
+<br><br>
+
+<<He>>向后靠着，看着餐厅。
+
+<<if $rng gte 51 and $NPCName[$NPCNameList.indexOf("Avery")].love gte 20 and $footdisable is "f">>
+
+有东西碰到了你的腹股沟，很快地又来了一次。它不停地上下摩擦。你瞥了一眼桌子底下，艾弗里脱掉了<<his>>的鞋子，正在用<<his>>的脚来骚扰你。从<<His>>的脸上看不出<<hes>>在做什么。
+<br><br>
+
+<<link [[享用|Avery Date Enjoy]]>><<set $endear += 10>><</link>><<promiscuous1>><<garousal>><<gendear>>
+<br>
+	<<if $promiscuity gte 15>>
+	<<link [[调戏回去|Avery Date Return]]>><<npcincr Avery love 1>><</link>><<promiscuous2>><<garousal>><<glove>>
+	<br>
+	<</if>>
+<<link [[踢开|Avery Date Kick]]>><<def 1>><<npcincr Avery love -1>><<set $endear -= 5>><<npcincr Avery rage 5>><</link>><<garage>><<llove>><<lendear>>
+<br>
+
+<<else>>
+
+<<He>>开始谈论平时的工作内容，你觉得有些无聊。
+<br><br>
+
+<<link [[转移话题|Avery Date Change]]>><<npcincr Avery love -1>><</link>><<llove>>
+<br>
+<<link [[笑着点头|Avery Date Nod]]>><<npcincr Avery love 1>><<set $endear += 10>><<tiredness 1>><</link>><<gtiredness>><<glove>><<gendear>>
+<br>
+<<link [[坐立不安|Avery Date Fidget]]>><<stress -6>><<set $endear -= 5>><<npcincr Avery rage 1>><</link>><<garage>><<lendear>><<lstress>>
+
+<</if>>
+
+:: Avery Date Enjoy
+<<effects>>
+<<pass 20>>
+你向后靠让艾弗里继续。<<He>>看着窗外，面无表情，而你的性欲却逐渐被唤起。
+<<promiscuity1>>
+
+<<arousal 3000>>
+<<if $arousal gte $arousalmax>>
+	<<orgasm>>
+
+	你发出了几声呻吟。食物刚上来，艾弗里就缩了回脚，<<he>>对你眨了眨眼睛。
+	<<gggendear>><<set $endear += 30>>
+	<br><br>
+<<else>>
+	食物刚到，<<He>>就缩回了脚。
+	<br><br>
+<</if>>
+
+<<link [[继续|Avery Date 3]]>><</link>>
+<br>
+
+:: Avery Date Return
+<<effects>>
+<<pass 20>>
+你将腿抬高到<<his>>上方，学着<<his>>的动作挑逗了起来。<<He>>惊讶地皱起眉头，但接着又笑了。
+<<promiscuity2>>
+
+<<arousal 3000 "genitals">>
+<<if $arousal gte $arousalmax>>
+	<<orgasm>>
+
+	你发出了几声呻吟。食物刚上来，艾弗里就缩了回脚，<<he>>对你眨了眨眼睛。
+	<<gggendear>><<set $endear += 30>>
+	<br><br>
+<<else>>
+	食物刚到，<<He>>就缩回了脚。
+	<br><br>
+<</if>>
+
+<<link [[继续|Avery Date 3]]>><</link>>
+<br>
+
+:: Avery Date Kick
+<<effects>>
+<<pass 20>>
+你踢开<<his>>的腿，使你的<<genitals>>免受<<his>>的骚扰。<<He>>对着窗外皱着眉头。
+<br><br>
+
+食物很快就到了。
+<br><br>
+
+<<link [[继续|Avery Date 3]]>><</link>>
+<br>
+
+:: Avery Date Change
+<<effects>>
+<<pass 20>>
+
+你成功地把话题从枯燥乏味的事情上引开，但却很难找到其他两人都感兴趣的东西。似乎<<him>>醒着的时候大部分时间都在工作。
+<br><br>
+
+食物很快就到了。
+<br><br>
+
+<<link [[继续|Avery Date 3]]>><</link>>
+<br>
+
+:: Avery Date Nod
+<<effects>>
+<<pass 20>>
+
+你不理会噪音，只是微笑着点头。艾弗里似乎很满意。
+<br><br>
+
+食物很快就到了。
+<br><br>
+
+<<link [[继续|Avery Date 3]]>><</link>>
+<br>
+
+:: Avery Date Fidget
+<<effects>>
+<<pass 20>>
+
+你玩弄着你的餐具，餐巾，以及你的手在桌子上能找到的任何东西。“别坐立不安，”艾弗里说。"你会让我们俩都难堪的。"
+<br><br>
+
+食物很快就到了。
+<br><br>
+
+<<link [[继续|Avery Date 3]]>><</link>>
+<br>
+
+:: Avery Date 3
+<<effects>>
+<<pass 20>>
+<<if $phase is 0>>
+	沙拉很不错，但是艾弗里鱼汤的味道飘过来，让你希望吃点更丰盛的东西。
+<<elseif $phase is 1>>
+	三明治很不错，考虑到它的价格，它实际上比你想象中的更大份。而且你发现艾弗里似乎很享受<<his>>的鱼汤。
+<<elseif $phase is 2>>
+	汤很美味，艾弗里似乎也很享受<<his>>那份。
+<</if>>
+
+<<He>>喝着鱼汤，不时还停下来向熟人挥手聊天。那些客人都穿得很讲究。
+<br><br>
+
+<<if $endear gte 30>>
+	"谢谢你让我度过了一个愉快的夜晚, <<pcpetname "Avery">>," <<he>> 把汤匙放进空碗后说。 <<He>> 挽着你的胳膊，领着你离开餐厅。 <<He>> 为你打开<<his>>的车门。
+<<elseif $endear gte 0>>
+	"你没必要表现的这么扭捏，” <<he>> 把汤匙放进空碗后说。"出门的时候别让我难堪, <<pcpetname "Avery">>。" 你们一起离开餐厅，回了<<his>>的车。
+<<else>>
+	<<He>>把汤匙丢进空碗里，一言不发地站起身。抓住你的胳膊把你从餐厅拉出来。<<He>>把你塞进<<his>>的车里。
+<</if>>
+<br><br>
+
+<<link [[继续|Avery Date 4]]>><<endevent>><</link>>
+<br>
+
+:: Avery Date 4
+<<effects>>
+<<endevent>><<npc Avery>><<person1>>
+<<averyscore>>
+
+艾弗里开车送你回家。一回到孤儿院，<<he>>就打开鼓鼓的<<wallet>>拿出现金。<<He>>拿着<span class="gold">£<<print ($NPCName[$NPCNameList.indexOf("Avery")].love * 10 + $endear * 10 + 10)>></span>。"你应该买点好东西，我请客。"
+<br><br>
+
+<<if $rng gte 51>>
+	你伸手去拿钱，但<<he>>却把钱从你身边拿走了。"首先，"<<he>>说，"我想多看看你，脱掉你的衣服。"
+	<br><br>
+
+	<<link [[脱|Avery Date Strip]]>><</link>>
+	<br>
+	<<link [[拒绝|Avery Date Refuse]]>><</link>>
+	<br>
+<<else>>
+	你伸手去拿钱，但 <<he>> 却把钱从你身边拿走了。"首先，" <<he>> 说。 <<He>> 轻抚你的脸颊，然后向前倾身亲吻。
+	<br><br>
+
+	<<link [[亲吻|Avery Date Sex]]>><<set $sexstart to 1>><</link>><<promiscuous1>>
+	<br>
+	<<link [[拒绝|Avery Date Refuse]]>><<npcincr Avery rage 5>><<npcincr Avery love -1>><</link>><<garage>><<llove>>
+	<br>
+<</if>>
+
+:: Avery Date 5
+
+<<effects>>
+<<endevent>><<npc Avery>><<person1>>
+<<averyscore>>
+<<He>>打开<<him>>旁边的车门。"上车。"
+<br><br>
+<<He>>打开<<his>>鼓鼓的<<wallet>>取出了一叠现金。<<He>>拿着<span class="gold">£<<print ($NPCName[$NPCNameList.indexOf("Avery")].love * 10 + $endear * 10 + 10)>></span>。"这是买下你时间的报酬。"
+<br><br>
+你伸手去拿钱，但 <<he>> 却把钱从你身边拿走了。"首先, <<pcpetname "Avery">>," <<he>> 说。 <<He>> 把你的身体拉近，靠近亲吻。
+<br><br>
+<<link [[亲吻|Avery Date Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+<<link [[拒绝|Avery Date Refuse 2]]>><<npcincr Avery rage 5>><<npcincr Avery love -1>><</link>><<garage>><<llove>>
+<br>
+
+:: Avery Date Refuse
+
+<<effects>>
+你从车里出来沿着小路走回孤儿院。艾弗里看了一会儿开车走了。
+<br><br>
+<<storeon "averyCar" "check">>
+<<if _store_check is 1>>
+	<<storeon "averyCar">>
+<</if>>
+<<clotheson>>
+<<endcombat>>
+<<link [[继续|Domus Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Avery Date Refuse 2
+
+<<effects>>
+你推开<<him>>并试图离开汽车。<<He>>把你拉回去锁上车门。"你自己点的火，不会还想什么都不发生就全身而退吧，小淘气。<span class="pink">既然已经这样了。</span>让我们去一个更私密一点的地方找些乐子吧。"
+<br><br>
+抓住你的头发把你压在座位上之后，<<he>>开车到了学校附近一个僻静的地方。<span class="pink"><<He>>扑到你身上。</span>
+<br><br>
+<<link [[继续|Avery Walk Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Avery Date Strip
+
+<<effects>>
+<<set $money += (($NPCName[$NPCNameList.indexOf("Avery")].love * 10 + $endear * 10 + 10) * 100)>>
+<<strip>>
+<<if !playerChastity("hidden")>>
+	<<set $genderknown.pushUnique("Avery")>>
+<</if>>
+
+在车里很尴尬，你脱掉衣服，直到你赤身裸体的坐在艾弗里身边。 <<covered>> <<He>> 盯着你看了很久，然后把钱递给你。“我会保持联系， <<pcpetname "Avery">>," <<he>> 说。
+<br><br>
+<<He>>看着你穿好衣服然后下车。<<He>>在开车离开前又逗留了一会儿。
+<br><br>
+
+<<endevent>>
+<<link [[继续|Domus Street]]>>
+	<<clotheson>>
+	<<set $eventskip to 1>>
+	<<storeon "averyCar" "check">>
+	<<if _store_check is 1>>
+		<<storeon "averyCar">>
+	<</if>>
+<</link>>
+<br>
+
+:: Avery Date Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>>
+	你回吻了<<him>>，<<his>>的手探索着你的身体。<<takeKissVirginity "Avery" `($dateCount.Avery gte 3?"loveInterest":"romantic")`>>
+	<<promiscuity1>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Avery Date Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Avery Date Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Avery Date Sex Finish
+<<set $outside to 0>><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>><<set $money += (($NPCName[$NPCNameList.indexOf("Avery")].love * 10 + $endear * 10 + 10) * 100)>>
+
+	"好<<girl>>，"<<he>>笑着把现金交给你。
+	<<larage>><<npcincr Avery rage -5>><<glove>><<npcincr Avery love 3>>
+	<br><br>
+
+	<<tearful>>你从车里爬了出来。<<He>>在开车离开前看了你一会儿。
+	<br><br>
+	<<storeon "averyCar" "check">>
+	<<if _store_check is 1>>
+		<<storeon "averyCar">>
+	<</if>>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Domus Street]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	<<He>>倒在方向盘上，让你有了机会。
+	<<ggarage>><<npcincr Avery rage 10>><<set $money += (($NPCName[$NPCNameList.indexOf("Avery")].love * 10 + $endear * 10 + 10) * 100)>>
+	<br><br>
+
+	<<tearful>>你抢过钱跑向孤儿院。<<He>>在你后面喊着什么，但没有追过来。你听到<<him>>开车走了。
+	<<ggarage>><<npcincr Avery rage 10>>
+	<br><br>
+	<<storeon "averyCar" "check">>
+	<<if _store_check is 1>>
+		<<storeon "averyCar">>
+	<</if>>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Domus Street]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	"如你所愿，"<<he>>说着，把现金放回了<<his>>的<<wallet>>。
+	<br><br>
+
+	<<tearful>>你从车里爬了出来。<<He>>在开车离开前看了你一会儿。
+	<br><br>
+	<<storeon "averyCar" "check">>
+	<<if _store_check is 1>>
+		<<storeon "averyCar">>
+	<</if>>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Domus Street]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Avery Walk School
+<<set $outside to 0>><<effects>>
+
+"没关系，"你小声对罗宾说，"我认识他们，上车比我们自己在街上走更安全。"
+<br><br>
+
+罗宾点点头，但似乎并没有被说服。你们俩都进了艾弗里的车后座。
+<br><br>
+
+车程很短，即使你们被交通阻塞也没花太久。艾弗里透过后视镜边撇你边和你聊天。"我接你上学是有原因的，"<<he>>说道:"这是我平时就走的路线，我应该也能接你放学，每周一，还有其他早下班的日子。"
+<<glove>><<npcincr Avery love 1>>
+<br><br>
+
+艾弗里无视了罗宾，<<endevent>><<npc Robin>><<person1>>而罗宾全程低头盯着自己的手。
+<br><br>
+
+结束后罗宾似乎松了口气。
+<br><br>
+
+<<link [[继续|School Front Courtyard]]>><<endevent>><</link>>
+<br>
+
+:: Avery Walk Refuse
+<<set $outside to 0>><<effects>>
+
+<<if $speech_attitude is "meek">>
+	"谢谢。"你说，"但剩下的路我们可以自己走。"
+<<elseif $speech_attitude is "bratty">>
+	"不了，"你说，"反正我们快到了。"
+<<else>>
+	"没事的。"你说，"剩下的路我们可以走过去。"
+<</if>>
+<br><br>
+
+<<if $NPCName[$NPCNameList.indexOf("Avery")].rage gte random(20, 100)>><<set $averyragerevealed to 1>>
+
+	艾弗里阴沉地看了罗宾一眼。<<He>>凝视着前方，用手指轻敲方向盘，接着<<he>>打开车门走了出来。"我已经很给你面子了！"<<he>>咆哮着向你走来。"该死的，给我上车！"<<He>>抓住你的手臂，想把你拽走。<<He>>完全不理睬站在你身边抱紧<<endevent>><<npc Robin>><<person1>>书包的罗宾。
+	<br><br>
+
+	<<endevent>>
+	<<npc Avery>><<person1>>
+
+	<<if $NPCName[$NPCNameList.indexOf("Robin")].dom gte 91>>
+		<<set $robinaverybeat to 1>>
+
+		艾弗里看着你的身后。<<his>>的脸上带着怒气，一个书包突然砸到了<<his>>的脸上。随着一声惨叫，<<he>>松开了你的手臂，倒在<<his>>的车上。罗宾走上前去，拿起<<endevent>><<npc Robin>><<person1>><<his>>的书包，并把它用力的砸在了艾弗里的头上。里面厚实的书本带着很重的力道。"放开<<phim>>！"罗宾喊道。"<<pShes>>是我的！"
+		<br><br>
+
+		<<endevent>><<npc Avery>><<person1>>
+
+		艾弗里举着<<his>>的双臂防身，并匆忙的回了<<his>>的车上。<<He>>瞪着罗宾："你会后悔的，我保证！"<<his>>的汽车呼啸而过。
+		<br><br>
+
+		<<endevent>><<npc Robin>><<person1>>
+
+		罗宾用<<his>>的双臂抱住你，<<Hes>>浑身都在发抖，直到艾弗里的身影彻底消失才放下心来。
+		<br><br>
+
+		<<link [[感谢罗宾|Avery Walk Thank]]>><<npcincr Robin love 3>><</link>><<gglove>>
+		<br>
+		<<link [[调戏罗宾|Avery Walk Tease]]>><<npcincr Robin love 1>><<npcincr Robin lust 1>><</link>><<glove>><<glust>>
+		<br>
+	<<else>>
+		<<link [[顺从|Avery Walk Comply]]>><<npcincr Avery rage -5>><</link>><<larage>>
+		<br>
+		<<link [[拒绝|Avery Walk Refuse 2]]>><<npcincr Avery rage 5>><</link>><<garage>>
+		<br>
+	<</if>>
+<<else>>
+	艾弗里暗暗地看了罗宾一眼，但还是笑了笑，<<his>>的笑意不达眼底。"随你便。"<<He>>开车走了。
+	<<llove>><<npcincr Avery love -1>>
+	<br><br>
+
+	"对不起，"罗宾松了一口气，"希望你不是为了我才拒绝的，<<He>>确实让我有些害怕。"
+	<<glove>><<npcincr Robin love 1>>
+	<br><br>
+
+	罗宾的心情开朗起来，你们一起走着去了学校。
+	<br><br>
+
+	<<link [[继续|School Front Courtyard]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Avery Walk Comply
+
+<<set $outside to 0>><<effects>>
+
+<<endevent>><<npc Robin>><<person1>>
+你低头进了艾弗里的车后座。罗宾在人行道上看着你，即使隔着一段距离，<<he>>脸上的忧虑也清晰可见。<<endevent>><<npc Avery>><<person1>>
+<br><br>
+
+艾弗里开车经过学校，进入附近的小巷。<<He>>解开安全带，和你一起到了车后座。<<He>>把你推倒。"别反抗，<<pcpetname "Avery">>，"<<he>>按着你。"否则我上班会迟到的。"
+<br><br>
+
+<<link [[继续|Avery Walk Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Avery Walk Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Avery Walk Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Avery Walk Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Avery Walk Rape Finish
+
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+
+	<<He>>满意地喘气。没说一句话，<<he>>就直接打开车门把你推了出去。
+	<<larage>><<npcincr Avery rage -5>>
+	<br><br>
+
+	<<tearful>>你振作了起来。艾弗里开车离开了。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Oxford Street]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	你把<<him>>从你身边推开，你找到了机会。<<tearful>>你打开车门逃出了艾弗里的汽车。你沿着小巷跑到了空旷的街道上。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Oxford Street]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Avery Walk Refuse 2
+<<set $outside to 0>><<effects>>
+
+你试图挣脱艾弗里的控制，但 <<he>> 却把你拉近了<<his>>的车。你感觉到另一只胳膊被拉了一下，是罗宾。 <<endevent>><<npc Robin>><<person1>> "让，让 <<phim>> 走，" <<he>> 说。"停下！"
+<br><br>
+
+<<endevent>>
+<<npc Avery>><<person1>>
+
+你和罗宾一起努力反抗艾弗里，你们的拉拉扯扯引起了路人的注意。艾弗里也注意到了，<<he>>放开了手。"我发誓！"<<he>>气愤的吼道，"你会学会尊重你的主人的！"<<He>>推开<<his>>的车门上车，随后直接开车离开了。
+<<llove>><<garage>><<gstress>><<stress 6>><<gtrauma>><<trauma 6>><<npcincr Avery love -1>><<npcincr Avery rage 5>>
+<br><br>
+
+<<endevent>>
+<<npc Robin>><<person1>>
+
+艾弗里松开你的手臂时，你差点摔倒，但罗宾扶着你让你没有倒下。 <<Hes>> 颤抖着紧紧抱着你，直到艾弗里的车在一个拐弯处消失，你们两人无助的好像风可以把你们吹走。“太可怕了，” <<he>> 埋着头说。
+<br><br>
+
+剩下的一路平安无事，但罗宾坚持要走近路。
+<<gdom>><<glove>><<npcincr Robin dom 1>><<npcincr Robin love 1>>
+<br><br>
+
+<<link [[继续|School Front Courtyard]]>><<endevent>><</link>>
+<br>
+
+:: Avery Walk Thank
+
+<<set $outside to 0>><<effects>>
+"谢谢，"你感激的说，"是你救了我！"
+<br><br>
+<<Hes>>看起来快要哭了。"我害怕你会受伤，"<<he>>眼含泪水，"我不知道该怎么办。"
+<br><br>
+<<link [[拥抱|Avery Walk Hug]]>><</link>>
+<br>
+<<if $robinromance is 1>>
+	<<link [[亲吻|Avery Walk Kiss]]>><</link>>
+	<br>
+<</if>>
+
+:: Avery Walk Tease
+
+<<set $outside to 0>><<effects>>
+"你刚才说了什么？"你笑着说，"<<pShes>>是我的？"
+<br><br>
+罗宾的脸已经很红了，但在听了你的话后<<his>>的脸变得更红。"我，我"<<he>>紧张的说，"对不起，说出了这么粗鲁的话。我害怕你受伤，一时情急之下就说出了这种话。"
+<br><br>
+<<link [[拥抱|Avery Walk Hug]]>><</link>>
+<br>
+<<if $robinromance is 1>>
+	<<link [[亲吻|Avery Walk Kiss]]>><</link>>
+	<br>
+<</if>>
+
+:: Avery Walk Hug
+
+<<set $outside to 0>><<effects>>
+你紧紧的抱着<<him>>，<<He>>把脸埋在你的肩膀里。
+<br><br>
+剩下的一路平安无事，罗宾全程都跟着你。
+<br><br>
+<<link [[继续|School Front Courtyard]]>><<endevent>><</link>>
+<br>
+
+:: Avery Walk Kiss
+
+<<set $outside to 0>><<effects>>
+你亲吻<<him>>，<<He>>闭上眼睛回吻。当你们分开时，<<his>>的脸颊被泪浸湿，你也是。<<takeKissVirginity "Robin" `($robinromance is 1?"loveInterest":"romantic")`>>
+<br><br>
+剩下的一路平安无事，罗宾全程都跟着你。
+<br><br>
+<<link [[继续|School Front Courtyard]]>><<endevent>><</link>>
+<br>
+
+:: Avery School Pickup Accept
+
+<<set $outside to 0>><<effects>>
+你上了艾弗里的车，然后<<he>>开车送你去孤儿院。
+<<if $averyCrimeTracker eq null>>
+	<<set _crimeEvent to true>>
+<<elseif $averyCrimeTracker gte 1000>>
+	<<set _crimeEvent to true>>
+<</if>>
+<<if $crime gte 2000 and _crimeEvent is true and $NPCName[$NPCNameList.indexOf("Avery")].rage gte random(20, 100) and $averyragerevealed is 1>>
+	你按照预期的路线走，直到你转到倒钩街。
+	<br><br>
+
+	艾弗里把车停在警察局对面，你心里很不安，毕竟你有犯罪史。
+	<br><br>
+
+	"怎么了， <<pcpetname "Avery">> ？”艾弗里严肃地说。“紧张吗？”两个巡警在拐角处走来走去。他们朝这边走来，他们会认出你吗？
+	<<if $averyCrimeTracker eq null>>
+		"我知道你一直在干些什么。"
+	<<else>>
+		"你触犯了法律。"
+	<</if>>
+	<<He>>继续说，"别否认。"警察拦下了一个长得很像你的<<girl>>。他们在询问<<phim>>。
+	"每个公民都有责任举报他们目睹的犯罪。"<<He>>看着你。"我可是守法公民，我最讨厌罪犯了。"<<He>>笑了。
+	<br><br>
+	<<set $averyCrimeTracker to 0>>
+
+	<<if $submissive gte 1500>>
+		<<link [[恳求|Avery School Pickup Plead]]>><<sub 1>><<npcincr Avery rage -5>><</link>><<larage>><<submissivetext>>
+		<br>
+	<</if>>
+	<<if $submissive lte 500>>
+		<<link [[威胁|Avery School Pickup Threaten]]>><<def 1>><<npcincr Avery rage 5>><</link>><<garage>><<defianttext>>
+		<br>
+	<</if>>
+	<<link [[尝试逃跑|Avery School Pickup Escape]]>><<npcincr Avery rage 5>><</link>><<athleticsdifficulty 1 1200>><<garage>>
+	<br>
+	<<link [[献身|Avery School Pickup Seduction]]>><</link>><<promiscuous1>>
+	<br>
+<<else>>
+	那条路好像是平时公交车走的路线。很快你们俩就到孤儿院了。
+
+	在解开安全带之前，你听到了艾弗里清了清<<his>>的嗓子，<<he>>将一只手搭到了你的肩膀上。"我把你平安带回家难道不该有点什么奖励吗，<<pcpetname "Avery">>？"<<He>>用手指轻点<<his>>的嘴唇。
+	<br><br>
+
+	<<link [[亲吻|Avery School Pickup Kiss]]>><<npcincr Avery love 1>><</link>><<glove>>
+	<br>
+	<<link [[直接离开|Avery School Pickup Leave]]>><</link>>
+	<br>
+<</if>>
+
+:: Avery School Pickup Refuse
+<<effects>>
+<<if $speech_attitude is "meek">>
+	"谢谢你的邀请，但我还有别的事要做。对不起，"
+<<elseif $speech_attitude is "bratty">>
+	"我很忙，"
+<<else>>
+	"不要，我还有别的事要做，"
+<</if>>
+你说。
+<br><br>
+<<if $crime gte 1000 and $NPCName[$NPCNameList.indexOf("Avery")].rage gte random(20, 100)>><<set $averyragerevealed to 1>>
+	<<His>>眼里闪着愤怒，语气也变了。"我说了，进去......"你注意到一小圈学生聚集在你周围。在窃窃私语中，一个<<generatey2>><<person2>><<person>>叫道："那个可怕的家伙是谁？"艾弗里恢复了<<person1>><<his>>温和理智的样子。"再见，"<<his>>用干巴巴的严肃口气说，然后迅速地离开了。
+	<br><br>
+
+	学生们开始散去，几个关切的目光从你的面前掠过。
+	<br><br>
+
+	<<link [[继续|Oxford Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	<<He>>皱眉。"你确定吗？"<<He>>脸上挂着一抹虚伪的微笑。"好吧，随你的便。"艾弗里什么也没说就开车走了。
+	<br><br>
+
+	<<link [[继续|Oxford Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Avery School Pickup Kiss
+<<effects>>
+你倾身在艾弗里的嘴唇上落下了一个吻。<<He>>笑了，你下了车。<<He>>在开车离开之前看了你一会儿。<<takeKissVirginity "Avery" `($dateCount.Avery gte 3?"loveInterest":"romantic")`>>
+<br><br>
+
+<<endevent>>
+
+<<link [[继续|Domus Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Avery School Pickup Leave
+<<effects>>
+你快速打开车门从车里出来。艾弗里着皱眉，你
+<<if $speech_attitude is "meek">>
+	给了<<him>>一个纯真的微笑。
+<<elseif $speech_attitude is "bratty">>
+	把目光移开，加快自己的脚步。
+<<else>>
+	向<<him>>吐出舌头。
+<</if>>
+<<He>>在开车离开之前看了你一会儿。
+<br><br>
+
+<<endevent>>
+
+<<link [[继续|Domus Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Avery School Pickup Plead
+<<effects>><<pain 5>>
+你几乎控制不住内心的恐慌。"求你了，不要！"你说，"你不会让我经历那些吧？"
+你倾身抓住<<him>>，看着<<his>>的眼睛。"我别无选择，请相信我。"从现在起，我会表现得更好。"<<His>>的表情变得柔和了。
+<br><br>
+
+<<He>> 把一只手放在你的头上，然后笑了。“你必须得理解，” <<he>> 说。"像我这样有身份的人被看到和一个众所周知的罪犯在一起，会造成多恶劣的影响。"
+<br><br>
+
+你靠得更近了。"求你了？"
+<br><br>
+
+<<He>>叹了口气。"好像我能忍心看着你被带走一样。来吧，<<pcpetname "Avery">>，我送你回家。"你微笑着在<<his>>的脸上吻了一下，然后坐回座位上。
+<br><br>
+
+很快，你们俩就到孤儿院了。
+
+在解开安全带之前，你听见艾弗里清了清<<his>>的嗓子，<<he>>将一只手搭到了你的肩膀上。"我把你平安带回家难道不该有点什么奖励吗？"<<He>>用手指轻点<<his>>的嘴唇。
+<br><br>
+
+<<link [[亲吻|Avery School Pickup Kiss]]>><<npcincr Avery love 1>><<pain -5>><</link>><<glove>>
+<br>
+<<link [[直接离开|Avery School Pickup Leave]]>><<pain -5>><</link>>
+<br>
+
+:: Avery School Pickup Threaten
+<<effects>>
+你看着艾弗里嘲笑道："你以为我会信你会那么轻易地放弃我？"你说，"如果你不是在虚张声势，那我们也没什么好谈的了。"你伸手去开门，但<<he>>抓住了你的手。
+<br><br>
+
+"看来你还没有清醒的认识，"<<he>>咆哮着。"你要是走出这辆车，我就--"
+<br><br>
+
+"你就怎样？"你打断道，"把我交给警察？我会告诉他们我们做爱的每一个肮脏的细节，你不敢的，你不敢面临社会性死亡的。你只是在虚张声势。"
+<br><br>
+
+沉默了很长一段时间。艾弗里看起来带着怒火，但接着<<he>>笑了起来。"你是个聪明的小混蛋。"<<He>>启动引擎，去孤儿院的路上一片寂静。
+<br><br>
+
+一到目的地，你就一言不发地下了车。<<He>>在开车离开之前看了你一会儿。
+<br><br>
+
+<<endevent>>
+
+<<link [[继续|Domus Street]]>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Avery School Pickup Escape
+<<effects>>
+
+<<if $athleticsSuccess>>
+	你打开车门，跑了起来。"等一下，你要去哪儿--"艾弗里在你后面喊道。警察注意到你在跑，开始追赶你。当艾弗里加速离开时，你能听到<<his>>轮胎的尖叫声。
+	<br><br>
+
+	<span class="green"> 你设法逃脱了警察的追捕，溜进了小巷。</span> 艾弗里早就离开了，几分钟后，危险解除了。
+	<br><br>
+
+	<<endevent>>
+
+	<<link [[继续|Commercial alleyways]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	你打开车门，从座位上跳了出去。<span class="red">然而，艾弗里抓住你的胳膊把你拉回了车里。</span>
+	<br><br>
+
+	"你疯了吗？！"<<he>>大叫着，把你推回椅子上。<<He>>在侧车门仍打开的情况下启动发动机。"我不是真的想把你交给警察，只是想吓唬吓唬你！"
+	<br><br>
+
+	你关上车门，重新系上安全带。回家的路程悄无声息地过去了，直到艾弗里把车停在孤儿院对面，<<he>>笑了起来。"你真的与众不同，<<pcpetname "Avery">>。你不能总是逃避你的恶行，你总有一天会长教训的。"<<He>>指着车门让你离开。
+	<br><br>
+
+	<<if $NPCName[$NPCNameList.indexOf("Avery")].rage gte random(20, 100)>><<set $averyragerevealed to 1>>
+		当你走出汽车时，<span class="red"><<he>>猛敲了一下方向盘。</span> "如果有必要，我会亲自教育你的！"你头也不回的离开，不想去揣摩<<he>>话的含义。
+		<br><br>
+	<</if>>
+	<<He>>看了一会儿你的背影，然后开车离开了。
+	<br><br>
+
+	<<endevent>>
+
+	<<link [[继续|Domus Street]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Avery School Pickup Seduction
+<<effects>>
+<<endevent>><<npc Avery>><<person1>>
+<<set $seductiondifficulty to 2000>>
+<<seductioncheck>>
+<br><br>
+<<if $seductionskill lt 1000>>
+	<span class="gold">你对自己的诱惑力更有信心了。</span>
+	<br><br>
+<</if>>
+<<seductionskilluse>>
+你靠在艾弗里身上，把一只手放在<<his>>的大腿上。
+<<if $speech_attitude is "meek">>
+	"求你了...你可以对我做任何你想做的事。"
+<<elseif $speech_attitude is "bratty">>
+	"被威胁真的让我无法招架，我就喜欢这种刺激的感觉。"
+<<else>>
+	"我知道你想要什么。如果你原谅我，我就给你。"
+<</if>>
+<<promiscuity1>>
+
+<<if $seductionrating gte $seductionrequired>>
+	<<He>>看起来很惊讶，<<he>>好像没想到会这样。<<He>>迅速坐起来，恢复了<<his>>得意的样子。"我怎么会拒绝这样的请求呢？"
+	<br><br>
+
+	<<link [[继续|Avery School Pickup Sex]]>><<set $sexstart to 1>><</link>>
+	<br>
+<<else>>
+	艾弗里沉默了一会儿，<<he>>摇摇头，低声笑了起来，然后<<he>>的笑声越来越大。过了一会儿，<<he>>开口说话了。"你很幸运，我不是真的想告发你，如果我认真考虑过，你肯定不会成功。"<<He>>开始开车，你不禁感到有些尴尬。
+	<br><br>
+	回家的路上一片寂静，直到艾弗里把车停在孤儿院对面，又笑了起来。"你真的很与众不同。"<<He>>指着车门。
+	<br><br>
+
+	<<He>>看了一会儿你的背影，然后开车离开了。
+	<br><br>
+
+	<<endevent>>
+
+	<<link [[继续|Domus Street]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Avery School Pickup Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>>
+	<<He>>吻了你，然后<<his>>的手开始探索你的身体。<<takeKissVirginity "Avery" `($dateCount.Avery gte 3?"loveInterest":"romantic")`>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Avery School Pickup Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Avery School Pickup Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Avery School Pickup Sex Finish
+<<set $outside to 0>><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	"好<<girl>>，"<<he>>笑了，<<He>>轻轻地引导你回到座位上，然后重新开始驾驶。
+	<<larage>><<npcincr Avery rage -5>><<glove>><<npcincr Avery love 3>>
+	<br><br>
+
+	回家的路上一片寂静，艾弗里把车停在孤儿院对面。
+	<br><br>
+
+	<<tearful>>你从车里爬了出来。<<He>>在开车离开前看了你一会儿。
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+	<<endevent>>
+
+	<<link [[继续|Domus Street]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<elseif $enemyhealth lte 0>>
+	<<He>>倒在方向盘上，让你有了机会。
+	<<ggarage>><<npcincr Avery rage 10>>
+	<br><br>
+
+
+<<He>>倒在方向盘上，让你有了机会。
+<<ggarage>><<npcincr Avery rage 10>>
+<br><br>
+
+<<tearful>>你快速奔跑。<<He>>在你后面喊着什么，但<<he>>没有追上。你听到<<him>>开车走了。
+
+	<<tearful>>你快速奔跑。<<He>>在你后面喊着什么，但<<he>>没有追上。你听到<<him>>开车走了。
+
+
+	<<clotheson>>
+	<<endcombat>>
+	<<endevent>>
+
+	<<link [[继续|Commercial alleyways]]>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	"只是个玩笑。你很幸运，我并不是真的要让你被捕， <<pcpetname "Avery">>，" <<he>> 说。 <<He>> 引导你回到座位上，继续开车。
+	<br><br>
+
+	回家的路上一片寂静，艾弗里把车停在孤儿院对面。
+	<br><br>
+
+
+	<<tearful>>你从车里爬了出来。<<He>>在开车离开前看了你一会儿。
+	<br><br>
+
+
+	<<clotheson>>
+	<<endcombat>>
+	<<endevent>>
+
+	<<link [[继续|Domus Street]]>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Avery Dismissal Intro
+<<effects>>
+<<if $phase is 1>>
+	你躲到附近的小巷里等着，但艾弗里并没有停下。你跑出去，发现那里有一辆
+<<else>>
+	汽车从你身边经过，但是它没有停下来。你看到一个
+<</if>>
+<<if $averyLastApp>>
+	<<generateNPC 2 t $averyLastApp>>
+<<else>>
+	<<generateNPC 2 t $player.gender_appearance>>
+<</if>>
+<<person2>><<person>>坐在前座。
+<<if $phase is 2>>
+	艾弗里一边和<<him>>说话<<person1>><<his>>一边看路。<<he>>可能是看到你了，但是<<he>>没有任何特别的反应。
+<</if>>
+<<saveNPC 1 avery_sidepiece>>
+<<set $averyPub to 1>>
+<<if $bus is "harvest">>
+	他们慢慢停下，<span class="blue">步行穿过一条条街道和一个个酒吧。</span>
+	<br><br>
+
+	<<endevent>>
+	<<destinationeventend>>
+<<else>>
+	从方向判断，他们正向<span class="blue">丰收街移动。</span>
+	<br><br>
+
+	<<endevent>>
+	<<destinationeventend>>
+<</if>>
+
+:: Avery Dismissal Restroom
+<<effects>>
+<<person2>>
+你从远离吧台的位置进入洗手间，发现<<person>>正在水池边紧张地<<if $pronoun is "m">>整理<<his>>的衣服<<else>>整理着<<himself>><</if>>。
+<<if $player.gender_appearance isnot $pronoun>>
+	<<He>>似乎因为看到洗手间里出现异性被吓了一跳，但认出是你后又放松了下来。<<He>>继续回去修复<<he>>在镜子中的形象。
+<<else>>
+	<<He>>在你进入时瞥了你一眼，认出你后<<he>>友好地挥手致意。
+<</if>>
+<br><br>
+<<link [[鼓励|Avery Dismissal Encourage]]>><<trauma 6>><<stress 6>><<hope 2>><</link>><<gtrauma>><<gstress>><<ghope>>
+<br>
+<<link [[警告他艾弗里不是好人|Avery Dismissal Warn]]>><<trauma -20>><<stress -20>><<hope -1>><</link>><<lltrauma>><<llstress>><<lhope>>
+<br>
+<<link [[威胁|Avery Dismissal Threaten]]>><<stress 6>><<reb -1>><</link>><<gstress>><<lreb>>
+<br>
+
+:: Avery Dismissal Encourage
+<<effects>>
+<<if $speech_attitude is "meek">>
+	"外面那场约会让你紧张吗？"你问。"不必紧张，我觉得你们两个在一起会很合适的。"
+<<elseif $speech_attitude is "bratty">>
+	"你拖欠了贝利的还款，对吗？"你问。"我敢说那个<<nnpc_gender "Avery">>一定会给你很多，非常多。"
+<<else>>
+	"跟你在一起的可人儿是谁？"你撒谎说，"看起来太优质了！我都嫉妒了。"
+<</if>>
+<br><br>
+你一直在夸赞艾弗里。尽管你担心自己可能给人留下过于急切的印象，但<<person>>似乎已被你的话所安抚。
+<<He>>感谢你的鼓励，离开洗手间时<<his>>的脚步如春天到来般恢复了活力。<<ghope>>
+<br><br>
+
+你等了几分钟，然后在<<him>>之后离开洗手间。你看到<<him>>在吧台那边和艾弗里亲密交谈，他们俩看起来都很开心。
+<br><br>
+
+你只能希望艾弗里对<<him>>能比<<nnpc_he "Avery">>对你更好。
+<br><br>
+<<set $averyDismissalScene to 1>>
+<<dismissAvery>>
+
+<<link [[离开酒吧|Harvest Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Avery Dismissal Warn
+<<effects>>
+<<person1>>
+<<if $speech_attitude is "meek">>
+	"艾弗里很危险。"你辩解说。"请不要再继续了， <<He>> 会伤害你的。"
+<<elseif $speech_attitude is "bratty">>
+	"还有比艾弗里更容易下手的目标，"你说，"那个有钱的卑鄙小人？不值得。"
+<<else>>
+	"小心点，"你说，"艾弗里并不像看上去那么迷人。"
+<</if>>
+<br><br>
+"你怎么知道<<his>>的名字？"<<person2>><<person>>问道。接下来的几分钟里，你向<<he>>描述了你和艾弗里的约会。然后，你给<<him>>看了你之前被艾弗里打出的瘀伤，并简要地分享了你拒绝艾弗里的求欢时的经历。
+<<person>>点了点头，对你描述的事件感到震惊。
+<<if $loft_kylar>>
+	<<He>><<npcUndressText $NPCList[0] "upper" "self">>拿出了一罐胡椒喷雾。"我虽然想尝试和<<nnpc_him "Avery">>在一起...但你是对的，"
+<<elseif $orphan_hope lte 0>>
+	"我真的很需要这笔钱......但你是对的，这不值得，"
+<<else>>
+	"谢谢你提醒我。"
+<</if>>
+<<he>>很紧张，"我们现在怎么办？"<<lhope>>
+<br><br>
+你建议<<he>>在你分散艾弗里注意力的时候离开酒吧。在你们两个分开之前，<<He>>抱了你一下。
+<br><br>
+<<set $averyDismissalScene to 2>>
+
+<<link [[继续|Avery Dismissal Confront]]>><</link>>
+<br>
+
+:: Avery Dismissal Threaten
+<<effects>>
+<<if $speech_attitude is "meek">>
+	"你不应该继续和外面的 <<nnpc_gender "Avery">> 说话了，”你坚定地说。“我是认真的。"
+<<elseif $speech_attitude is "bratty">>
+	你走到<<person>>面前命令道："艾弗里是我的，离开<<nnpc_him "Avery">>！"
+<<else>>
+	"我不会允许这场约会继续的，”你说。"你得明白什么不该做。"
+<</if>>
+
+<<person>>看到你凶狠的目光，不敢继续激怒你，直接逃离了洗手间。在镜子前稍作整理，你离开去找你的爱人了。<<lreb>>
+<br><br>
+
+<<link [[继续|Avery Dismissal Bar]]>><</link>>
+<br>
+
+:: Avery Dismissal Bar
+<<effects>>
+你坐到<<person2>><<person>>留下的座位上。<span class="green"><<His>>的桌前还留下了一杯酒。</span>艾弗里注意到了你，皱了皱眉，但是<<he>>什么也没有说，<<his>>的眼睛直勾勾地看着前方。
+你想着，如果不是公共场合，艾弗里的态度会有多大的不同呢。
+<br><br>
+<<person1>>
+<<if $speech_attitude is "meek">>
+	你们两个沉默地坐一会儿。现在<<hes>>就在你身边，你却完全不知道该如何继续。
+<<elseif $speech_attitude is "bratty">>
+	"你怎么能这样？"你愤怒地说道。"你怎么能背着我去找其他<<person2>><<personsimple>><<person1>>？"
+<<else>>
+	"我知道我们并不完全专一，"你试图开玩笑地说，"我确实还挺难对付的吧？"
+<</if>>
+<br><br>
+"我以为这就是你想要的，"艾弗里最后说，"我们分开吧，对彼此客气一点儿。"
+<<He>>随意地喝着<<his>>的葡萄酒，但你可以看到<<he>>紧紧的抓住<<his>>的酒杯的手。
+<br><br>
+
+<<link [[道歉|Avery Dismissal Apologise]]>><</link>>
+<br>
+<<link [[和艾弗里分手|Avery Dismissal Break]]>><</link>>
+<br>
+<<link [[把酒泼到艾弗里脸上|Avery Dismissal Throw]]>><<trauma -20>><<stress -20>><</link>><<lltrauma>><<llstress>>
+<br>
+
+:: Avery Dismissal Confront
+<<effects>>
+<<person1>>
+你直接走到艾弗里所在的吧台。<<He>>注意到了你的接近，但是并没有离开<<his>>的座位。
+<<person2>>
+<<if $speech_attitude is "meek">>
+	"我已经警告过<<him>>了，"你垂眸看着艾弗里，"你没办法再伤害到更多人了。"
+<<elseif $speech_attitude is "bratty">>
+	"<<Hes>>不会回来了。"你骄傲地宣布。"我讨厌当告密者，但你那张丑脸活该。"
+<<else>>
+	"<<Hes>>不会回来了，"你宣布。"我警告过<<him>>了，你的脾气没人受得了。"
+<</if>>
+<<endevent>>
+<<npc Avery>><<person1>>
+<br><br>
+你后退一步，准备在发表声明后逃跑，但艾弗里的速度更快。<<He>>抓住你的手臂，把你拖到酒吧的一个僻静的角落，然后把你扔到地上。<<trauma 20>><<pain 3>><<ggtrauma>><<gpain>>
+<br><br>
+
+<<link [[继续|Avery Dismissal Fight]]>><<set $fightstart to 1>><</link>>
+<br>
+
+:: Avery Dismissal Break
+<<effects>>
+<<if $NPCName[$NPCNameList.indexOf("Avery")].love lt 50>>
+	<<if $speech_attitude is "meek">>
+		"好吧……"你无话可说，"这样也好，我希望你对<<person2>><<him>>比对我好，再见。"
+	<<elseif $speech_attitude is "bratty">>
+		"终于！"你回答，"你现在变成别人的麻烦了，再也不见！"
+	<<else>>
+		"很好，"你回答，"我很高兴你能领会我的暗示。"
+	<</if>>
+<<else>>
+	<<if $speech_attitude is "meek">>
+		你感觉自己都快哭了。"谢谢你对我一直以来的照顾，"你没有说再见。
+	<<elseif $speech_attitude is "bratty">>
+		"好吧。你要知道，不是你要和我分手，是我要和你分手！"你逞强地大叫。你的爆发被艾弗里忽视了。
+	<<else>>
+		"好吧，我明白了，反正我也早就不想要你了，"你抿着唇。"我想，回头见。也许再也不会见了，随便吧。"
+	<</if>>
+<</if>>
+<br><br>
+你从座位上站起来离开，你感受到了一种奇怪的平静，因为你可能再也见不到艾弗里了。<<trauma -50>><<stress -100>><<llltrauma>><<lllstress>>
+<br><br>
+<<set $averyDismissalScene to 1>>
+<<dismissAvery>>
+
+<<link [[离开酒吧|Harvest Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Avery Dismissal Apologise
+<<effects>>
+<<person1>>
+<<if $speech_attitude is "meek">>
+	"对不起，我错了。"你愧疚地低头看着地板。"真的，我......我不是故意要这样的......"
+<<elseif $speech_attitude is "bratty">>
+	"拜托，再给我一次机会？”你说。
+<<else>>
+	"也许我们可以试着谈谈。我还是想解决这个问题，”你说。
+<</if>>
+<br><br>
+艾弗里转过身来面对着你："我给过你很多机会来纠正你的行为，可你从不珍惜。我为什么要和你这样傲慢的<<girl>>待在一起？"
+<<He>>不再注意你，还给自己倒了一杯酒。谈话显然结束了。
+<br><br>
+
+<<link [[跪下求饶|Avery Dismissal Beg]]>><<trauma 3>><<stress 3>><<npcincr Avery love 5>><<npcincr Avery rage -70>><</link>><<gtrauma>><<gstress>><<gglove>><<lllarage>>
+<br>
+<<link [[和艾弗里分手|Avery Dismissal Break]]>><</link>>
+<br>
+<<link [[把酒泼到艾弗里脸上|Avery Dismissal Throw]]>><<trauma -20>><<stress -20>><</link>><<lltrauma>><<llstress>>
+<br>
+
+:: Avery Dismissal Beg
+<<effects>>
+<<person1>>
+你在艾弗里面前跪下。酒吧里的其他人都饶有兴趣地看着你们，等着看这件事会如何发展。
+他们窃窃私语，但距离太远，很难准确听到他们在说什么。你眼睛盯着地板，呆愣的跪在原地，不知道<<he>>会有什么反应。
+
+<br><br>
+<<if $NPCName[$NPCNameList.indexOf("Avery")].love lt 25>>
+	片刻之后，你听到了艾弗里从<<his>>的椅子上站起来的声音。然后，在<<he>>离开酒吧时，你听到了<<if $pronoun is "m">><<his>>的鞋子踩在地上发出的声音<<else>><<his>>的高跟鞋踩在地上的声音<</if>>。<<stress 20>><<ggstress>>
+	<br><br>
+
+	你一直跪着，盼着<<him>>回来，希望能看到<<him>>最后一面。但是没有，<<he>>再也没有出现，酒保把你赶了出去。
+	<br><br>
+	<<set $averyDismissalScene to 1>>
+	<<dismissAvery>>
+
+	<<link [[离开酒吧|Harvest Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<<else>>
+	一阵可怕的沉默，突然你感觉到有一双手抓住了你的肩膀，把你从地板上拉了起来。你抬起头，是艾弗里。
+	<<He>>把一只手放在你的脸颊上，温柔地凝视着你。
+	<br><br>
+	"我怎么能拒绝这么一个卑微的小可怜呢？"<<he>>的脸上带着你熟悉的笑容，"但你这只是在让自己难堪罢了，有更好的方式来表达你的歉意，跟我来。"
+	<<He>>牵起你的手将你带了出去。<<takeHandholdingVirginity "Avery" "romantic">>
+	<br><br>
+
+	<<endevent>><<npc Avery>><<person1>>
+	<br><br>
+	<<link [[继续|Avery Dismissal Sex]]>><<set $sexstart to 1>><</link>>
+	<br>
+<</if>>
+
+:: Avery Dismissal Throw
+<<effects>>
+<<endevent>>
+<<npc Avery>><<person1>>
+被<<his>>的话激怒了，<span class="red">你捡起被丢弃的饮料，泼到了艾弗里的脸上！</span>
+你知道你会立即后悔你的行为，但看到艾弗里的脸和衣服浸在酒中的狼狈样子，你感到了一种诡异的兴奋和满足。
+<br><br>
+
+果然如你预想的一样，艾弗里愤怒的抓住了你的手臂。<<He>>把你拖到酒吧的一个僻静的角落，然后把你扔到地上。<<trauma 20>><<pain 3>><<ggtrauma>><<gpain>>
+<<set $averyDismissalScene to 1>>
+<br><br>
+
+<<link [[继续|Avery Dismissal Fight]]>><<set $fightstart to 1>><</link>>
+<br>
+
+:: Avery Dismissal Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<enable_rescue>>
+	<<npcidlegenitals>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Avery Dismissal Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Avery Dismissal Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Avery Dismissal Fight Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	你趁机把艾弗里推开："结束了！"你向<<him>>宣布。<<tearful>>你往后退。
+	<br><br>
+	酒吧里的其他顾客都盯着你们看，你忽略他们直接走出了酒吧。
+<<elseif $enemyhealth lte 0>>
+	艾弗里踉跄着后退，摔倒在了地板上。"再也不要碰我，还有孤儿院里的任何人！"你对<<him>>大喊。
+	<<tearful>>你逃离了现场。
+	<br><br>
+	你看到一些顾客关切地盯着你，但当你冲出去时，你忽略了他们的目光。
+<<elseif $rescue is 1 and $alarm is 1>><<set $rescued += 1>>
+	你引起了酒保的注意，一个<<generate2>><<person2>><<person>>。<<He>>抓住艾弗里，把<<him>>从你身上拉开。当你跑出酒吧时，你向<<him>>表示感谢。
+	你听到<<him>>大喊着要报警，但你还没听完就跑到外面了。
+<<else>>
+	你蜷缩起来，你被压垮了，无法继续反抗艾弗里的侵犯。
+	<<He>>对着你的脸吐口水，<<he>>盯着你狼狈的样子把<<his>>的凌乱的衣服整理好。
+	<br><br>
+	"再见。"<<He>>最后踢了你一脚。你看着<<he>>大步走出酒吧。
+	你静静地躺着尽量不去想身上的疼痛。酒保，一个<<generate2>><<person2>><<person>>过来扶着你坐到了附近的座位上。
+	<<Hes>>很担心，但你拒绝了<<his>>报警的提议。<<He>>给你倒了杯水后就离开了。
+<</if>>
+<<clotheson>>
+<<endcombat>>
+你想你再也见不到艾弗里了。
+<br><br>
+<<dismissAvery>>
+<<link [[离开酒吧|Harvest Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Avery Dismissal Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 200>>
+	艾弗里把你带到<<his>>的车前，然后打开了后门。<<He>>轻轻地将你推到后座上，同时用手抚摸你的全身。
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Avery Dismissal Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Avery Dismissal Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Avery Dismissal Sex Finish
+<<set $outside to 0>><<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	艾弗里紧紧地抱着你。你把头靠在<<his>>的胸口，你喘口气。
+
+	<<if $speech_attitude is "meek">>
+		"我再也不会惹你生气了。"你保证道。
+	<<elseif $speech_attitude is "bratty">>
+		"是我错了，我不该这样。"你勉强地认了错。
+	<<else>>
+		"我希望我们从来没有争执过，”你最后说。
+	<</if>>
+	<br><br>
+	<<He>>没有回答，但<<he>>一直抚摸着你的后背。你们俩紧紧地贴在一起，久久不愿分开。<<lllarage>>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Avery Dismissal Home]]>><</link>>
+<<else>>
+	艾弗里的脸猛地撞向方向盘，发出一声响亮的喇叭声。<<He>>把你从车里推到了坚硬的路面上。
+	"我为你做了那么多，你却这样对我！"<<he>>的车飞驰而去，只留下你在一团尘土和废气中咳嗽。
+	<<clotheson>>
+	<<endcombat>>
+	你想你再也见不到艾弗里了。
+	<br><br>
+	<<set $averyDismissalScene to 1>>
+	<<dismissAvery>>
+	<<link [[继续|Harvest Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+	<br>
+<</if>>
+
+:: Avery Dismissal Home
+<<effects>>
+<<npc Avery>><<person1>>
+艾弗里开车送你回家，一路上你们两个都一言不发。
+<br><br>
+你下了车对<<he>>挥手道别，艾弗里的车疾驰而去。你希望<<he>>能像往常一样，再来找你约定下一场周末的约会。
+<br><br>
+<span class="green"><i><<Hes>>暂时原谅了你，最好不要再让<<him>>生气了。</i></span>
+<br><br>
+<<unset $averyPub>>
+<<unset $averyDismissalScene>>
+<<link [[继续|Domus Street]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+:: Avery Helicopter
+<<effects>><<set $phase to 0>>
+
+你上了直升机，在艾弗里身边坐下。保安紧跟着也进来了，他们迅速消失在了你的视线范围中，只留下了你和艾弗里在机舱里。直升机起飞时你有点头晕。艾弗里露出了一丝狡黠的微笑。
+<br><br>
+
+"终于有隐私了。我正要去多瑙河街附近见一个重要客户，所以我得到了使用公司直升机的许可。这次会面很重要，不过我还是想抽点时间给你。希望你能理解我的心意。"
+<br><br>
+
+你望向窗外，看着越来越小的小镇。窗外是无垠的天空。 
+
+<<if !playerBellyVisible()>>
+	艾弗里往玻璃杯中倒酒，然后把其中一只倒满的玻璃杯递给你，那酒杯晶莹剔透，看起来既脆弱又昂贵。
+	<br><br>
+
+	"喝点儿香槟?"
+	<br><br>
+
+	<<if playerIsPregnant() and playerAwareTheyArePregnant()>>
+		<span class="blue">你还在怀孕中，你不能让自己喝酒。</span>
+		<br>
+	<<else>>
+		<<link [[喝|Avery Helicopter Drink]]>><<alcohol 120>><<drugs 180>><<npcincr Avery rage -2>><<npcincr Avery love 1>><</link>><<galcohol>><<glove>><<larage>>
+		<br>
+	<</if>>
+
+	<<link [[拒绝|Avery Helicopter Refuse]]>><<npcincr Avery rage 5>><</link>><<garage>>
+
+<<else>>
+
+	<<link [[继续|Avery Helicopter 2]]>><</link>>
+
+<</if>>
+
+:: Avery Helicopter Drink
+<<effects>>
+
+你接过玻璃杯，艾弗里在一旁微笑着看着你，你小心的喝了一口。这香槟是你从没喝过的。你试图掩饰你的惊讶，但无济于事。艾弗里得意地笑了。
+<br><br>
+
+"你还不习惯过这种上流式的生活是吗？没关系，有我陪着你，你总会适应的。"
+<br><br>
+
+<<link [[继续|Avery Helicopter 2]]>><</link>>
+
+:: Avery Helicopter Refuse
+<<effects>>
+
+<<if $NPCName[$NPCNameList.indexOf("Avery")].rage gte 60 and !playerIsPregnant() and !playerAwareTheyArePregnant() and $averyragerevealed is 1>>
+
+	艾弗里皱眉。
+	<br><br>
+
+	"你这个忘恩负义的小<<bitch>>，你知道这东西有多贵吗？光这一瓶就比你值钱！我肯定不会浪费，所以你最好现在就把它喝了！"
+	<br><br>
+
+	<<He>>把杯子放到你面前。
+	<br><br>
+
+	<<link [[扇巴掌|Avery Helicopter Slap]]>><<npcincr Avery rage 5>><</link>><<garage>>
+
+<<else>>
+
+	艾弗里皱着眉头，但接受了你的决定。
+	<br><br>
+
+	"你的意思是你没心情?那就随你便吧。你不知道你错过了什么。"
+	<br><br>
+
+	<<He>>把你的杯子放在一边，开始自己喝闷酒，<<He>>喝得太匆忙了，显然心情不是很好。
+	<br><br>
+
+	<<link [[继续|Avery Helicopter 2]]>><</link>>
+
+<</if>>
+
+:: Avery Helicopter 2
+<<effects>>
+
+与此同时，直升机开始向北飞行。 
+<br><br>
+
+向窗外望去，无边无际的海浪在脚下蔓延，海水在日光下闪闪发光。 
+<br><br>
+
+艾弗里示意飞行员在海浪上方盘旋，你能看见海洋生物在底下嬉戏。远处还有一群海豚在水中穿梭。<<lstress>><<stress -6>>
+<br><br>
+
+<<if C.npc.Avery.rage gte 60>>
+
+	艾弗里注意到了你的欣喜。"容易被触动也是件好事，尤其是当我要给你看样东西的时候。" 艾弗里指了指外面。 
+	<br><br>
+	
+	"你看到那个荒无人烟的小岛了吗？那是一座监狱，那就是当坏人的下场。那些不听话，不守规矩，自以为可以把勤劳可敬的公民当傻子耍的人都会被关进去。这些人的下场往往很惨。但你不是那种人对吗？我知道你有自知之明。"<<gtrauma>><<trauma 1>>
+	<br><br>
+
+	<<link [[点头|Avery Helicopter Nod]]>><<npcincr Avery rage -2>><</link>><<larage>>
+	<br>
+	<<link [[翻白眼|Avery Helicopter Roll]]>><<npcincr Avery rage 5>><</link>><<garage>>
+
+<<else>>
+
+	"很美，不是吗？"艾弗里说，"我特意提前出发就是为了给你看这个。当然，我已经看过很多次了，对我来说还挺平常的。不过说到美......"
+	<br><br>
+
+	你感觉艾弗里的手搭在了你的肩膀上。"看看我是怎么对待你的，我也应该得到些小奖励，你不觉得吗？"
+	<br><br>
+
+	<<link [[亲吻|Avery Helicopter Sex]]>><<set $phase to 1>><<npcincr Avery love 1>><<set $sexstart to 1>><</link>><<glove>>
+	<br>
+	<<link [[不予理睬|Avery Helicopter Brush]]>><<npcincr Avery rage 5>><<npcincr Avery love -1>><</link>><<llove>><<garage>>
+
+<</if>>
+
+:: Avery Helicopter Nod
+<<effects>>
+
+艾弗里微笑。"很好，证明给我看。"
+<br><br>
+
+<<He>>身体前倾，撅起<<his>>的嘴唇。
+<br><br>
+
+<<link [[亲吻|Avery Helicopter Sex]]>><<set $molestationstart to 1>><</link>>
+<br>
+<<link [[推开|Avery Helicopter Push]]>><<npcincr Avery rage 5>><</link>><<garage>>
+
+:: Avery Helicopter Brush
+<<effects>>
+
+艾弗里眯起眼睛。"喜欢装高冷是吗？你这种态度在这个世界是走不远的，你很快就会发现这点。这只是一个我对你的小忠告。"
+<br><br>
+
+接下来的旅程都在沉默中度过。最后直升机降落在了多瑙河街的一座庄园附近。保安跳下飞机，艾弗里跟在他们后面，一路上都没有回头看你一眼。
+<br><br>
+
+<<link [[继续|Danube Street]]>><<endevent>><<pass 30>><<set $eventskip to 1>><</link>>
+
+:: Avery Helicopter Push
+<<effects>>
+
+艾弗里脸色阴沉。
+<br><br>
+
+"也许我说得不够清楚。或许你只是迟钝。不管怎样，我想一堂示范课会让你明白的。"
+<br><br>
+
+<<link [[继续|Avery Helicopter Sex]]>><<set $phase to 1>><<set $molestationstart to 1>><</link>>
+
+:: Avery Helicopter Sex
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 100>><<promiscuity2>>
+
+<<elseif $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Avery Helicopter Sex End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Avery Helicopter Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Avery Helicopter Sex End
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<if $phase is 0>>
+		艾弗里向后退，整理了一下<<his>>的衣服。
+		<br><br>
+
+		"这真是一次愉快的旅行，你说呢？顺便我们已经到了。"
+		<br><br>
+
+		直升机降落在了多瑙河街一座令人印象深刻的庄园里，工作人员迎接着直升机。保安跳下直升机，随即一片喧闹。艾弗里下了直升机。
+		<br><br>
+
+		"我相信你能自己走完剩下的路吧？不是很远，后会有期。"
+		<br><br>
+
+		艾弗里向你点点头，<<he>>随即消失在人海中。
+		<br><br>
+
+		<<endcombat>><<clotheson>>
+
+		<<link [[继续|Danube Street]]>><<pass 30>><<set $eventskip to 1>><</link>>
+	<<elseif $phase is 1>>
+		艾弗里向后退，整理了一下<<his>>的衣服。
+		<br><br>
+
+		"嗯，很高兴知道我们如此了解彼此。我相信我们以后不需要再进行这样的对话了。恕我失陪，我还有要事在身。剩下的路你自己走吧。"
+		<br><br>
+
+		直升机降落在了多瑙河街一座令人印象深刻的庄园里，工作人员迎接着直升机。安保人员跳下直升机，随即一片喧哗。艾弗里头也不回地下了直升机，助手护送你到了出口。
+		<br><br>
+
+		<<endcombat>><<clotheson>>
+
+		<<link [[继续|Danube Street]]>><<pass 30>><<set $eventskip to 1>><</link>>
+	<<else>>
+		艾弗里向后退，整理了一下<<his>>的衣服。
+		<br><br>
+
+		"是我平时对你太好了吗？但是我希望你现在已经认清现实了，你这个傲慢的孩子。不要去想任何多余的东西，你也许是有一些小聪明没错，但是与我相比你就像是尘埃一样渺小又微不足道。你要明白怎么做才会对自己更有好处，你可以选择乖乖顺从我，也可以选择和那些垃圾一样的人站在一边。无论如何，也请你慎重考虑一下。"
+		<br><br>
+
+		直升机降落在多瑙河街的一个诡异的庄园前。艾弗里打开门头也不回地走了，保安把你拖了出去，你被丢在了垃圾堆旁边。
+		<br><br>
+
+		<<endcombat>><<clotheson>>
+
+		<<link [[继续|Residential alleyways]]>><<pass 30>><<set $eventskip to 1>><</link>>
+	<</if>>
+<<elseif $enemyhealth lte 0>>
+	<<if $phase is 0>>
+		回过神来时艾弗里已经松开了你，<<He>>迅速把<<his>>的衣服调整回原样。
+		<br><br>
+
+		"偶尔这样反抗两下也是种不错的小情趣，毕竟我不喜欢像死鱼一样的猎物。但是偶尔玩玩就行了，一直这样可就不好了。先不说这些，看看外面，我们到了。"
+		<br><br>
+
+		直升机降落在了多瑙河街一座令人印象深刻的庄园里，工作人员迎接着直升机。保安跳下直升机，随即一片喧闹。艾弗里下了直升机。
+		<br><br>
+
+		"好了，我们的小探险到此结束。之后有空再联系吧，保安会带你出去的。”你被护送到了街上。
+		<br><br>
+
+		<<endcombat>><<clotheson>>
+
+		<<link [[继续|Danube Street]]>><<pass 30>><<set $eventskip to 1>><</link>>
+	<<elseif $phase is 1>>
+		艾弗里后退了一下，把你从<<his>>的抓握中放了出来。
+		<br><br>
+		"你真是个固执的孩子啊，我受够你那些滑稽的行为了。像你这样的底层社会的垃圾，可不适合陪着我参加上流社会的宴会。把握不好门票，我就把你送回一个更适合你的地方去。"
+		<br><br>
+
+		艾弗里向飞行员下达指令，直升机便飞向公园在一片开阔地降落。艾弗里打开了直升机门。
+		<br><br>
+
+		"在我让保安把你拖出去之前，自己乖乖离开。下次记得表现好点，我还是很喜欢你的，可以原谅你这次的小冒犯。"
+		<br><br>
+
+		艾弗里在你身后砰地关上了门，直升机再次升空。
+		<br><br>
+
+		<<endcombat>><<clothes>>
+
+		<<link [[继续|Park]]>><<pass 30>><<set $eventskip to 1>><</link>>
+	<<else>>
+		艾弗里后退了一下，把你从<<his>>的抓握中放了出来。
+		<br><br>
+
+		"够了，你这个没用的<<bitch>>!我受够你了!也许这会让你知道你属于哪里!"
+		<br><br>
+
+		艾弗里打开直升机的门，把你推了出去。你扑通一声落在水里。<<ggstress>><<stress 12>>
+		<br><br>
+
+		你被抛在大海中央，看着艾弗里的直升机消失在地平线上。
+		<br><br>
+
+		<<endcombat>>
+
+		<<link [[继续|Sea]]>><<set $sea to 50>><<endevent>><<pass 30>><<set $eventskip to 1>><</link>>
+	<</if>>
+<<elseif $finish is 1>>
+	艾弗里向后退，整理了一下<<his>>的衣服。
+	<br><br>
+
+	"好吧，我们把事情解决了。现在给我离开，如果你知道什么对你好的话，以后记得乖乖听话。我会盯着你的。"
+	<br><br>
+
+	直升机降落在了多瑙河街附近一座令人印象深刻的庄园。艾弗里下了直升机，保安把你一直拖到出口。
+	<br><br>
+
+	<<endcombat>><<clotheson>>
+
+	<<link [[继续|Danube Street]]>><<pass 30>><<set $eventskip to 1>><</link>>
+<</if>>
+
+:: Avery Helicopter Roll
+<<effects>>
+
+艾弗里皱眉。"我一定是在胡思乱想!你这个忘恩负义的小婊子，是你，是你一直都在亏欠我!没有我你什么都不是!没有我你不过是一个邋里邋遢的孤儿！娼妇！是你对不起我!你是我的所有物，明白吗?我要拿回属于我的东西!"
+<br><br>
+
+<<link [[继续|Avery Helicopter Sex]]>><<set $phase to 2>><<set $molestationstart to 1>><</link>>
+
+:: Avery Helicopter Slap
+<<effects>>
+
+你用力地把玻璃杯甩飞到一边。里面的液体洒的到处都是，座位上、艾弗里的衣服上，甚至是艾弗里的头发上……液体顺着<<His>>的头发往下滴，艾弗里的脸因为愤怒瞬间涨的深红。
+<br><br>
+
+"你这个小贱种!看看你都干了些什么好事!我以为你只是出身是孤儿而已，结果你连学都没好好上过是吗?受不了……!我要马上把这身脏衣服换掉!但是首先要摆脱你!感谢自己的好运吧，下次再教训你!"
+<br><br>
+
+艾弗里叫飞行员往回飞。直升机在公园里下降，就差一点儿就要接触地面，而艾弗里毫不客气地把你推了出去。<<gpain>><<violence 3>>
+<br><br>
+
+你整个人倒在地上，看着艾弗里的直升机飞离的场景。
+<br><br>
+
+<<link [[继续|Park]]>><<endevent>><<pass 30>><<set $eventskip to 1>><</link>>
+
+:: Avery Helicopter Walk
+<<effects>>
+
+你无视艾弗里，选了另一条路离开了。艾弗里的脸涨的通红，<<he>>示意飞行员起飞。保安们惊慌失措地赶紧爬回机舱内。
+<br><br>
+
+<<link [[继续|Oxford Street]]>><<endevent>><<set $eventskip to 1>><</link>>

@@ -1,0 +1,168 @@
+:: Stolen Clothing Shop Result
+<<effects>>
+<<ShowUnderEquip "over">>
+<<ShowUnderEquip "normal">>
+<<if currentSkillValue('skulduggery') lt 100>>
+	一个保安看守着入口。没有其他出口，所以你只能在离开前把东西都放了回去。
+	<<clothingReset>>
+<<else>>
+	<<rng>>
+	<<if $crime gte 50000 or ($crime gte 40000 and $rng * 20 gte currentSkillValue('skulduggery')) or ($crime gte 25000 and $rng * 10 gte currentSkillValue('skulduggery'))
+	or ($crime gte 10000 and $rng * 5 gte currentSkillValue('skulduggery'))>>
+		<<generateSecurity 1>><<person1>>
+		一名保安看着入口处，当你试图走过去时，<<he>>阻止了你。
+		<br><br>
+		"所以，我一直在盯着你，"<<he>>继续说，"这次我放你走，但你要
+		被禁止进入这里一段时间。希望这能帮助你了解为何你不应该偷窃衣物。"
+		<<if $clothingShop.banCount lt 4>>
+			<<set $clothingShop.ban to 7>>
+		<<elseif $clothingShop.banCount lt 8>>
+			<<set $clothingShop.ban to 10>>
+		<<else>>
+			<<set $clothingShop.ban to 14>>
+		<</if>>
+		<<crime>>
+		<<set $clothingShop.banCount++>>
+	<<else>>
+		一名保安看着入口处，但你漫步而过，没有引起怀疑。
+		<<crime>>
+	<</if>>
+	<<set _crime to ($tryOn.value / 100)>>
+	<<crimeup _crime>>
+<</if>>
+<br><br>
+<<link [[继续|Shopping Centre Top]]>><<set $tryOn.autoReset to true>><<endevent>><</link>>
+
+:: Clothing Shop Guard
+<<effects>>
+<<generateSecurity 1>><<person1>>
+一名保安看着入口处，发现了你。<<He>>对一个你看不见的人说了几句话，然后走近你。
+<br><br>
+"抱歉，不能让你通过，"<<he>>说。"还有<<if $clothingShop.ban gt 1>><<number $clothingShop.ban>>天<<else>>一天<</if>>
+你的逐出令就解除了。"
+<br><br>
+
+<<link [[继续|Shopping Centre Top]]>><<endevent>><</link>>
+
+:: Clothing Shop Sneak Guard
+<<effects>>
+你发现保安就在入口处。看起来你不可能偷偷溜过去。
+
+<<link [[继续|Shopping Centre Top]]>><</link>>
+
+:: Clothing Shop Night Guard Found
+<<effects>>
+<<generateSecurity 1>><<person1>>
+<<set $clothingShop.banCount++>>
+<<set $clothingShop.spotted to false>>
+在确保自己尽可能安静地关好商店的门之后，你回过头来，惊讶地
+发现一名保安正面对着你。在你反应过来要跑之前，<<He>>摁住了你的肩膀。
+<br><br>
+"看看我们抓到了什么？一只小老鼠，想偷走一些精美的服饰然后逃跑？"<<He>>带着
+不赞同的表情说道，"我会把这里的情况告诉这家店主。"
+<br><br>
+<<He>>拿出了<<his>>手机，看起来是要打给这里的店主。
+<<if $clothingShop.ban gt 0>>
+	<<set $clothingShop.banExtension to true>>
+	<<set $clothingShop.ban += 7>>
+	"啊哈！所以你已经有禁令了，"他继续说，"他们确实有一个相当严格的禁令政策，
+	所以你要在这里购物还要一段时间喽。"
+<<else>>
+	<<if $clothingShop.banCount lt 4>>
+		<<set $clothingShop.ban to 7>>
+	<<elseif $clothingShop.banCount lt 8>>
+		<<set $clothingShop.ban to 10>>
+	<<else>>
+		<<set $clothingShop.ban to 14>>
+	<</if>>
+	"这样应该可以了，"他继续说，"好吧。你将在相当长的一段时间内都不能进入这个公共机构。
+	希望这能给你一个教训。"
+<</if>>
+<br><br>
+"现在跟着我，我会陪同你离开这里。你很幸运，我没有直接把你带到柱子上。"
+
+<br><br>
+<<link [[跑|Clothing Shop Night Guard Found Run]]>><</link>><<athleticsdifficulty 500>>
+<br>
+<<link [[跟着保安|Clothing Shop Night Guard Found Follow]]>><</link>>
+
+:: Clothing Shop Night Guard Found Run
+<<effects>>
+你决定逃跑并躲藏起来。
+<<if $athleticsSuccess>>
+	保安试图抓住你，但你能避开<<him>>，刚好逃脱走了。
+	你跑到了屋顶上，<<him>>在远处叫喊着。
+	<br><br>
+	<<link [[屋顶|Commercial rooftops]]>><<endevent>><</link>>
+<<else>>
+	然而，在成功躲过保安之前，<<he>>用力拉着你，直接让你摔倒在地。
+	<br><br>
+	"你会后悔尝试从我这里逃跑的，"<<he>>笑着说。"这里可没有任何的摄像头。"
+	<br><br>
+	<<link [[继续|Clothing Shop Night Guard Molestation]]>><<set $molestationstart to 1>><</link>>
+<</if>>
+
+:: Clothing Shop Night Guard Found Follow
+<<effects>>
+<<He>>引导你向出口走去。
+<<if random(0,100) gte 50>>
+	"你知道吗？"<<he>>问道，"这里可没有任何的摄像头。"
+	<br><br>
+	在<<he>>抓住你之前，你带着担忧的表情看着<<him>>。
+	<br><br>
+	<<link [[继续|Clothing Shop Night Guard Molestation]]>><<set $molestationstart to 1>><</link>>
+<<else>>
+	你默默地走下楼梯，当到达购物中心的主入口时，
+	保安为你开了门。
+	<br><br>
+	"希望这对你来说是个好教训，"<<He>>笑着说，"你应该寻找更诚实的
+	赚钱方式。这样对每个人来说都会少些麻烦。"
+	<br><br>
+	<<He>>在你离开时锁上了门。
+	<br><br>
+	<<link [[离开|High Street]]>><<endevent>><</link>>
+<</if>>
+
+:: Clothing Shop Night Guard Molestation
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+	<<set $enemytrust -= 40>>
+	<<set $enemyanger += 40>>
+	<<set $NPCList[0].lefthand to "arms">>
+	<<set $leftarm to "grappled">>
+	<<set $rightarm to "grappled">>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[继续|Clothing Shop Night Guard Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Clothing Shop Night Guard Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Clothing Shop Night Guard Molestation Finish
+
+<<if $enemyhealth lte 0>>
+	你能够伤到<<him>>，这足以让你逃脱。<<tearful>>你逃离了商店。
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[屋顶|Commercial rooftops]]>><<endevent>><</link>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	"嗯，这很有趣，"<<he>>说，"但我想你该离开了。"
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[离开|High Street]]>><<endevent>><</link>>
+<</if>>

@@ -1,0 +1,151 @@
+:: Beach Cave
+<<set $location to "underground">><<set $outside to 0>>
+<<if $cave gte 50>>
+<<elseif $cave gte 20>>
+	<<water waist>>
+<<else>>
+	<<water>>
+<</if>>
+<<effects>>
+<<set $cave = Math.clamp($cave, 0, 100)>>
+你在海岸边的一个山洞里，自然发光的地衣爬满了洞壁。
+<br><br>
+<<if $cave gte 100>>
+	<span class="lblue">你处于洞穴的深处。</span>一个腐朽的木制王座立在你的面前。
+	<<if !$weekly.beachCaveCompass>>
+		那里有一个箱子。
+	<</if>>
+<<elseif $cave gte 50>>
+	你的脚淹没在湍急的水流中。
+<<elseif $cave gte 20>>
+	水没过了你的腰部。
+<<elseif $cave gte 1>>
+	水没过了你的脖子。
+<<else>>
+	水没过了你的脖颈。通向外面的洞顶就在附近的水面下，但你得游过去。
+<</if>>
+<br><br>
+
+<<beach_cave_pursuit>>
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<if $stress gte $stressmax>>
+	<<passoutcave>>
+<<elseif $eventskip isnot 1 and $cave lt 100>>
+	<<if random(1, 4) is 4>>
+		<<eventscavetreasure>>
+	<<elseif $danger gte (9900 - $allure) and $eventskip is 0>>
+		<<eventscave>>
+	<<else>>
+		<<eventscavesafe>>
+	<</if>>
+<<else>>
+	<<if $cave lt 100>>
+		<<link [[往更深处走 (0:10)|Beach Cave]]>><<set $cave += 5>><<pass 10>><</link>>
+		<br>
+	<<elseif !$weekly.beachCaveCompass>>
+		<<link [[打开宝箱|Beach Cave Open]]>><<set $weekly.beachCaveCompass to true>><</link>>
+		<br>
+	<</if>>
+	<<if $cave gt 0>>
+		<<link [[向着大海启程 (0:10)|Beach Cave]]>><<set $cave -= 5>><<pass 10>><</link>>
+		<br>
+	<<else>>
+		<<link [[游出去 (0:05)|Beach Cave Up]]>><<pass 5>><</link>>
+		<br>
+	<</if>>
+<</if>>
+<<set $eventskip to 0>>
+
+
+:: Beach Cave Open
+<<effects>>
+
+你打开了箱子，里面闪烁着银光。是一个指南针，看起来很有价值。博物馆馆长会知道更多关于它的信息。
+<<set $antiquemoney += 2200>><<museumAntiqueStatus "antiquesilvercompass" "found">>
+<br><br>
+<<set $pursuit += 1>>
+<<if $museumAntiques.antiques.antiqueleathermap isnot "found" and $museumAntiques.antiques.antiqueleathermap isnot "talk" and $museumAntiques.antiques.antiqueleathermap isnot "museum">>
+	<<set $skulduggerydifficulty to 700>>
+	<<link [[更仔细地检查箱子|Beach Cave Examine]]>><</link>><<skulduggerydifficulty>>
+	<br>
+<</if>>
+
+<<link [[离开|Beach Cave]]>><<set $eventskip to 1>><</link>>
+<br>
+
+
+:: Beach Cave Examine
+<<effects>>
+
+
+你仔细检查着箱子，然后贴着箱壁慢慢试探着。
+<br><br>
+
+<<skulduggerycheck>>
+<<if $skulduggerysuccess is 1>>
+	<<earnFeat "X Marks the Spot">>
+	你在木板上摸到了一个难以察觉的按钮。你没有按它，相反，你用指尖轻触，感受到在这上面还有个更小的按钮。你用指甲按下，在这个箱子的底部<span class="green">有个隐藏的隔间打开了</span>。
+	<br><br>
+	<<set $antiquemoney += 4000>><<museumAntiqueStatus "antiqueleathermap" "found">>
+	里面有一个用蜡质细绳捆着的皮革卷轴。你把它展开，是一张保存完好的地图。这张地图描绘了一个森林旁边的沿海定居点。表示海洋的部分上，线条纵横交错，有的地方被符号标注了，可能是一些重要的地点。在地图的左上角画着一只克拉肯，右下角画着一条龙。博物馆馆长也许会知道更多关于它的信息。
+	<br><br>
+	<<skulduggeryuse>>
+
+	<<link [[继续|Beach Cave]]>><</link>>
+	<br>
+
+<<else>>
+
+	你在木板上摸到了一个难以察觉的按钮。你按下了它。箱子底部突然打开，<span class="red">一个飞镖弹了出来。</span>它射偏了，但这吓到了你。你匆忙把这个箱子扔掉，它落进水中，被吸进了一个细缝里。<<gstress>><<stress 6>>
+	<br><br>
+
+	<<skulduggeryuse>>
+
+	<<link [[继续|Beach Cave]]>><</link>>
+	<br>
+
+<</if>>
+
+
+:: Beach Cave Up
+<<effects>>
+
+你潜进水里，开始四处游动。洞穴向上延伸。
+
+<<if Time.dayState is "night">>
+	<<if $weather is "clear">>
+		你向着头顶月光的方向游去，终于感受到了寒冷的夜风。
+	<<elseif $weather is "rain">>
+		这里是如此的黑暗，难以分辨哪条路向上。你在恐惧控住住你之前，迎头闯入泼洒在海面的雨水里。<<gstress>><<stress 6>>
+	<<else>>
+		这里是如此的黑暗，难以分辨哪条路向上。你在恐惧占据你之前，冲进寒冷的夜风中。<<gstress>><<stress 6>>
+	<</if>>
+<<else>>
+	<<if $weather is "clear">>
+		你向着头顶的亮光游去，在凉爽的海风围绕下浮出水面。
+	<<elseif $weather is "rain">>
+		你向着头顶的亮光游去，迎头闯入泼洒在海面的雨水里。
+	<<else>>
+		你向着头顶的亮光游去，终于感受到凉爽的海风拂过。
+	<</if>>
+<</if>>
+<br><br>
+<<beach_cave_end>>
+<<link [[继续|Rocks Pool]]>><</link>>
+<br>
+
+:: Beach Cave Entrance
+<<set $location to "underground">><<set $outside to 0>><<effects>>
+
+
+你游进洞穴，朝着那束柔光前进。你的手抓住了岩壁，将自己拉入一处空气泡内。自然发光的地衣爬满了洞壁。
+<br><br>
+
+<<link [[继续|Beach Cave]]>><<set $cave to 0>><<beach_cave_init>><<set $eventskip to 1>><</link>>
+<br>
+
+
+
+

@@ -1,0 +1,508 @@
+:: Social [widget]
+
+<<widget "social">>
+	<div id="relation-display">
+		<<silently>>
+			<<script>>
+				if (V.wolfpackharmony) C.npc["Black Wolf"].harmony = V.wolfpackharmony;
+				if (V.wolfpackferocity) C.npc["Black Wolf"].ferocity = V.wolfpackferocity;
+				/*data config for non-standard NPCs boxes, allows for different stat configs, custom display data, and dynamic requirements*/
+				T.npcConfig = {
+					"Robin" : {
+						important : true,
+						dom : { name : "Confidence", activeIcon : "img/ui/confidence.png", color: "blue" }
+					},
+					"Whitney" : {
+						important : true,
+						love : { maxValue : 30 },
+						dom : { maxValue: 20 }
+					},
+					"Eden" : {
+						important : true,
+						love : { maxValue: 200 },
+						dom : { maxValue: 150 } /*false always hides this stat*/
+					},
+					"Kylar" : {
+						important : true,
+						rage : { name : "Jealousy", activeIcon : "img/ui/wideeye.png", color: "green" }
+					},
+					"Avery" : {
+						important : true,
+						rage : { requirements : V.averyragerevealed }
+					},
+					"Great Hawk" : {
+						important : true,
+					},
+					"Black Wolf" : {
+						important : true,
+						love : { maxValue : 30 },
+						harmony : { name : "Wolf Pack Harmony", maxValue: 20, activeIcon : "img/ui/wolfharmony.png" },
+						ferocity : { name : "Wolf Pack Ferocity", maxValue: 20, activeIcon : "img/ui/wolfferocity.png" }
+					},
+					"Sydney" : {
+						important : true,
+						love : { maxValue: 150 },
+						purity : { requirements : V.NPCName[28].purity > 0, maxValue : 100, minValue : 0 },
+						corruption : { requirements : V.NPCName[28].corruption > 0, maxValue : 50, minValue : 0 }
+					},
+					"Mason" : {
+						love : { maxValue : 50 }
+					},
+					"Alex" : {
+						important : true,
+						love : { maxValue : 100 },
+						lust : { maxValue : 100 },
+						dom : { maxValue : 100 }
+					},
+					"Remy" : {
+						important : true,
+						love : { maxValue : 100 },
+						lust : { maxValue : 100 },
+						dom :  { maxValue: 100 }
+					},
+					"Darryl" : {
+						love : { maxValue : 50 }
+					},
+					"River" : {
+						love : { maxValue : 50 }
+					},
+					"Sam" : {
+						love : { maxValue : 50 }
+					},
+					"Ivory Wraith" : {
+						lust : { name: "痴迷", activeIcon : (V.wraith && (V.wraith.state == "haunt" || V.wraith.state == "despair") ? "img/ui/obsessionblood.png" : "img/ui/obsession.png"), inactiveIcon : "img/ui/obsessionempty.png", maxValue : 20 }
+					}
+				};
+
+				/* This list dictates the order that the important NPCs will show up in on the social menu screen */
+				T.importantNpcOrder = ["Robin", "Whitney", "Eden", "Kylar", "Sydney", "Avery", "Great Hawk", "Black Wolf", "Alex", "Remy"];
+				T.specialNPCs = ["Ivory Wraith"];
+
+				/* this list is sorted */
+				T.importantNPCs = T.importantNpcOrder.map(name => V.NPCName[V.NPCNameList.indexOf(name)]);
+
+				/* this list is unsorted */
+				T.otherNPCs = V.NPCName.filter(npc => !T.importantNpcOrder.includes(npc.nam) && !T.specialNPCs.includes(npc.nam));
+
+				/* sorting takes the lower value and puts it first, so if a < b, a goes first. */
+				/* yes, this works on words, somehow. it's math shit, but it works. read a book if necessary. */
+				T.otherNPCs.sort((a,b) => a.nam - b.nam);
+			<</script>>
+		<</silently>>
+
+		<br>
+		<span class="gold">主要角色</span>
+		<div id="npc-relations" class="relation-box-list">
+			<<set _initNPC to 0>>
+			<<for _k = 0; _k lt _importantNPCs.length; _k++>>
+				<<relation-box _importantNPCs[_k] _npcConfig[_importantNPCs[_k].nam]>>
+				<<set _initNPC += _npcData.init>>
+			<</for>>
+		</div>
+		<<if _initNPC is 0>>
+			//你现在没有羁绊角色//
+			<br>
+		<</if>>
+
+		<br>
+		<span class="gold">普通角色</span>
+		<div id="secondary-npcs" class="relation-box-list">
+			<<set _initNPC to 0>>
+			<<for _k= 0; _k lt _otherNPCs.length; _k++>>
+				<<relation-box _otherNPCs[_k] _npcConfig[_otherNPCs[_k].nam]>>
+				<<set _initNPC += _npcData.init>>
+			<</for>>
+		</div>
+		<div id="secondary-npcs" class="relation-box-list">
+			<<for _ik= 0; _ik lt _specialNPCs.length; _ik++>>
+				<<relation-box $NPCName[$NPCNameList.indexOf(_specialNPCs[_ik])] _npcConfig[_specialNPCs[_ik]]>>
+				<<set _initNPC += _npcData.init>>
+			<</for>>
+		</div>
+		<<if _initNPC is 0>>
+			//你现在没有羁绊角色//
+			<br>
+		<</if>>
+
+		<br>
+		<span class="gold">声誉</span>
+		<div id="faction-reputations" class="relation-box-list">
+			<<silently>>
+				/* Police config */
+				<<set _policeCrimeConfig = { currentValue : $crimehistory, states : [
+					{ requiredValue: 0,		color: 'green',		description: '警方认为你无关紧要，'},
+					{ requiredValue: 1000,	color: 'teal',		description: '警方的报告里出现了你的名字，'},
+					{ requiredValue: 2000,	color: 'lblue',		description: '警方认为你是一个可疑人物，'},
+					{ requiredValue: 3000,	color: 'blue',		description: '警方认为你是一个捣乱分子，'},
+					{ requiredValue: 5000,	color: 'purple',	description: '警方认为你是一个罪犯，'},
+					{ requiredValue: 10000,	color: 'pink',		description: '警方为你建立了一个专用的犯罪资料集，'},
+					{ requiredValue: 30000,	color: 'red',		description: '你的犯罪记录已经占满一整个档案柜，'}
+				]}>>
+				<<set _policeEvidenceConfig = { currentValue : $crimehistory, secondaryValue : $crime, states : [
+					{ requiredValue: 0, secondaryStates : [
+						{ requiredValue: 0,	color: 'green',	description: '也没有任何证据表明你与犯罪有关。'},
+						{ requiredValue: 1,	color: 'teal',	description: '尽管只有丝毫证据将你与犯罪关联。'},
+					]},
+					{ requiredValue: 1000, secondaryStates : [
+						{ requiredValue: 0,		color: 'green',	description: '但缺乏足够证据来实施逮捕。'},
+						{ requiredValue: 1000,	color: 'pink',	description: '同时有充分证据来实施逮捕。'},
+						{ requiredValue: 5000,	color: 'red',	description: '并掌握了远超实施逮捕所需的证据量。'},
+					]}
+				]}>>
+				<<set _policeBoxConfig = { name : "警察局", icon : "img/misc/icon/police.png", description: "<<relation-text _policeCrimeConfig>> <<relation-text _policeEvidenceConfig>>"}>>
+
+				/* Orphanage */
+				<<set _orphanageMoodConfig = { currentValue: $orphan_hope, secondaryValue: $orphan_reb, preText: '孤儿院的整体氛围是 ', states : [
+					{ requiredValue: -100, secondaryStates : [
+						{ requiredValue: -100,	color: 'pink',	description: '绝望的。'},
+						{ requiredValue: -40,	color: 'pink',	description: '萎靡的。'},
+						{ requiredValue: -10,	color: 'pink',	description: '低落的。'},
+						{ requiredValue: 10,	color: 'pink',	description: '愤怒的。'},
+						{ requiredValue: 40,	color: 'def',	description: '渴望复仇的。'},
+					]},
+					{ requiredValue: -40, secondaryStates : [
+						{ requiredValue: -100,	color: 'purple',	description: '颓废的。'},
+						{ requiredValue: -40,	color: 'purple',	description: '阴郁的。'},
+						{ requiredValue: -10,	color: 'purple',	description: '屈从的。'},
+						{ requiredValue: 10,	color: 'purple',	description: '忤逆的。'},
+						{ requiredValue: 40,	color: 'def',		description: '我行我素的。'},
+					]},
+					{ requiredValue: -10, secondaryStates : [
+						{ requiredValue: -100,	color: 'blue',	description: '俯首的。'},
+						{ requiredValue: -40,	color: 'blue',	description: '顺从的。'},
+						{ requiredValue: -10,	color: 'blue',	description: '平静的。'},
+						{ requiredValue: 10,	color: 'blue',	description: '躁动的。'},
+						{ requiredValue: 40,	color: 'def',	description: '惹是生非的。'},
+					]},
+					{ requiredValue: 10, secondaryStates : [
+						{ requiredValue: -100,	color: 'teal',	description: '隐忍的。'},
+						{ requiredValue: -40,	color: 'teal',	description: '服从的。'},
+						{ requiredValue: -10,	color: 'teal',	description: '乐观的。'},
+						{ requiredValue: 10,	color: 'teal',	description: '桀骜不驯的。'},
+						{ requiredValue: 40,	color: 'def',	description: '揭竿而起的。'},
+					]},
+					{ requiredValue: 40, secondaryStates : [
+						{ requiredValue: -100,	color: 'green',	description: '温顺的。'},
+						{ requiredValue: -40,	color: 'green',	description: '友好的。'},
+						{ requiredValue: -10,	color: 'green',	description: '满怀希望的。'},
+						{ requiredValue: 10,	color: 'green',	description: '理想主义的。'},
+						{ requiredValue: 40,	color: 'def',	description: '革命性的。'},
+					]},
+				]}>>
+				<<set _orphanageBoxConfig = { name : "孤儿院", icon : "img/misc/icon/orphanage.png", description: "<<relation-text _orphanageMoodConfig>>"}>>
+
+				/* School config */
+				<<set _teacherRepConfig = { currentValue: $delinquency, preText: '老师们把你视作 ', postText: '', states : [
+					{ requiredValue: 0,		color: 'green',		description: '模范学生。'},
+					{ requiredValue: 10,	color: 'teal',		description: '普通学生。'},
+					{ requiredValue: 200,	color: 'lblue',		description: '品行不端的学生。'},
+					{ requiredValue: 400,	color: 'blue',		description: '屡教不改的学生。'},
+					{ requiredValue: 600,	color: 'purple',	description: '学风差劲的学生。'},
+					{ requiredValue: 800,	color: 'pink',		description: '无法无天的学生。'},
+					{ requiredValue: 1000,	color: 'red',		description: '学校里的害群之马。'}
+				]}>>
+				<<set _studentRepConfig = { currentValue: $cool, preText: '你的同学认为你 ', states : [
+					{ requiredValue: 0,		color: 'red',		preText: '你的同学', description: '对你避之不及。'},
+					{ requiredValue: 40,	color: 'pink',		description: '非常怪异。'},
+					{ requiredValue: 80,	color: 'purple',	description: '呆头呆脑。'},
+					{ requiredValue: 120,	color: 'blue',		description: '还行。'},
+					{ requiredValue: 160,	color: 'lblue',		description: '很酷。'},
+					{ requiredValue: 240,	color: 'teal',		description: '与众不同。'},
+					{ requiredValue: 400,	color: 'green',		preText: '你的同学', description: '渴望与你待在一起。'}
+				]}>>
+				<<set _teacherBoxConfig = { name : "教师", icon : "img/misc/icon/school.png", description: "<<relation-text _teacherRepConfig>> <<statbar $delinquency 1000>>"}>>
+				<<set _studentBoxConfig = { name : "学校", icon : "img/misc/icon/schoolnew.png", description: "<<relation-text _studentRepConfig>> <<statbarinverted $cool $coolmax>>"}>>
+
+				/*Crossdressing*/
+				<<if $schoolrep.crossdress neq 0>>
+					<<set _crossdressRepConfig = { currentValue: $schoolrep.crossdress, states : [
+						{ requiredValue: 1,	color: 'lblue',		description: '学校中流传着你身着异性服装的流言，不过很少有人真的相信。'},
+						{ requiredValue: 2,	color: 'blue',		description: '流言在学校里传播，有人说你是个异装者。'},
+						{ requiredValue: 3,	color: 'purple',	description: '学生们对你所谓的异装说三道四，尽管大多数人都是一笑而过。'},
+						{ requiredValue: 4,	color: 'pink',		description: '学校里的每个人都听说过关于你异装的传言。'},
+						{ requiredValue: 5,	color: 'red',		description: '学校里的所有人都知道了你是个异装癖，包括老师。'}
+					]}>>
+					<<set _crossdressBoxConfig = { name : "异装", description : '<<relation-text _crossdressRepConfig>>'}>>
+				<</if>>
+
+				/*Herm*/
+				<<if $schoolrep.herm neq 0>>
+					<<set _hermRepConfig = { currentValue: $schoolrep.herm, states : [
+						{ requiredValue: 1,	color: 'lblue',		description: '流言称有一个学生同时有着男性和女性的部位，但很少有人真的相信。'},
+						{ requiredValue: 2,	color: 'blue',		description: '关于双性人的流言在学校里传播。'},
+						{ requiredValue: 3,	color: 'purple',	description: '学生们热烈讨论着学校内双性人的传言。'},
+						{ requiredValue: 4,	color: 'pink',		description: '学校里的每个人都听说过关于你那独一无二生殖器的传言。'},
+						{ requiredValue: 5,	color: 'red',		description: '学校里的所有人都知道了你是个双性人，包括老师。'}
+					]}>>
+					<<set _hermBoxConfig = { name : "双性", description : '<<relation-text _hermRepConfig>>'}>>
+				<</if>>
+
+				/* Prison */
+				<<if $prison>>
+					<<set _prisonMoodConfig = { currentValue: $prison.hope, secondaryValue: $prison.reb, preText: '监狱的整体氛围是 ', states : [
+						{ requiredValue: 0, secondaryStates : [
+							{ requiredValue: 0,	color: 'pink',	description: '绝望的。'},
+							{ requiredValue: 20,	color: 'pink',	description: '萎靡的。'},
+							{ requiredValue: 40,	color: 'pink',	description: '低落的。'},
+							{ requiredValue: 60,	color: 'pink',	description: '愤怒的。'},
+							{ requiredValue: 80,	color: 'def',	description: '渴望复仇的。'},
+						]},
+						{ requiredValue: 20, secondaryStates : [
+							{ requiredValue: 0,	color: 'purple',	description: '颓废的。'},
+							{ requiredValue: 20,	color: 'purple',	description: '阴郁的。'},
+							{ requiredValue: 40,	color: 'purple',	description: '屈从的。'},
+							{ requiredValue: 60,	color: 'purple',	description: '忤逆的。'},
+							{ requiredValue: 80,	color: 'def',		description: '我行我素的。'},
+						]},
+						{ requiredValue: 40, secondaryStates : [
+							{ requiredValue: 0,	color: 'blue',	description: '俯首的。'},
+							{ requiredValue: 20,	color: 'blue',	description: '顺从的。'},
+							{ requiredValue: 40,	color: 'blue',	description: '平静的。'},
+							{ requiredValue: 60,	color: 'blue',	description: '躁动的。'},
+							{ requiredValue: 80,	color: 'def',	description: '惹是生非的。'},
+						]},
+						{ requiredValue: 60, secondaryStates : [
+							{ requiredValue: 0,	color: 'teal',	description: '隐忍的。'},
+							{ requiredValue: 20,	color: 'teal',	description: '服从的。'},
+							{ requiredValue: 40,	color: 'teal',	description: '乐观的。'},
+							{ requiredValue: 60,	color: 'teal',	description: '桀骜不驯的。'},
+							{ requiredValue: 80,	color: 'def',	description: '揭竿而起的。'},
+						]},
+						{ requiredValue: 80, secondaryStates : [
+							{ requiredValue: 0,	color: 'green',	description: '容忍的。'},
+							{ requiredValue: 20,	color: 'green',	description: '坚韧的。'},
+							{ requiredValue: 40,	color: 'green',	description: '满怀希望的。'},
+							{ requiredValue: 60,	color: 'green',	description: '理想主义的。'},
+							{ requiredValue: 80,	color: 'def',	description: '革命性的。'},
+						]},
+					]}>>
+					<<set _guardRepConfig = { currentValue: $prison.guards, preText: '守卫 ', states : [
+						{ requiredValue: 0,		color: 'red',		description: '把你置于绝对的监视之下。'},
+						{ requiredValue: 15,	color: 'pink',		description: '视你为麻烦人物。'},
+						{ requiredValue: 30,	color: 'purple',		description: '监视着你。'},
+						{ requiredValue: 45,	color: 'blue',		description: '对你抱有警惕。'},
+						{ requiredValue: 60,	color: 'lblue',		description: '不认为你会造成威胁。'},
+						{ requiredValue: 80,	color: 'teal',		description: '对你毫不在意。'},
+						{ requiredValue: 100,	color: 'green',		description: '忘记了你的存在。'}
+					]}>>
+					<<set _inmateRepConfig = { currentValue: $prison.inmates, preText: '大多数囚犯 ', states : [
+						{ requiredValue: 0,		color: 'red',		description: '认为你是到嘴的肥肉。'},
+						{ requiredValue: 15,	color: 'pink',		description: '视你为肉便器。'},
+						{ requiredValue: 30,	color: 'purple',	description: '认为你是个婊子。'},
+						{ requiredValue: 45,	color: 'blue',		description: '把你当作同伴。'},
+						{ requiredValue: 60,	color: 'lblue',		description: '对你印象良好。'},
+						{ requiredValue: 80,	color: 'teal',		description: '对你十分尊重。'},
+						{ requiredValue: 100,	color: 'green',		description: '称你为老大。'}
+					]}>>
+					<<set _prisonBoxConfig = { name : "监狱氛围", icon : "img/misc/icon/police.png", description: "<<relation-text _prisonMoodConfig>>"}>>
+					<<set _guardBoxConfig = { name : "监狱守卫", icon : "img/misc/icon/police.png", description: "<<relation-text _guardRepConfig>>"}>>
+					<<set _inmateBoxConfig = { name : "监狱囚犯", icon : "img/misc/icon/police.png", description: "<<relation-text _inmateRepConfig>>"}>>
+				<</if>>
+				/*Docks */
+				<<if $dockwork gte 2>>
+					<<set _dockRepConfig = { currentValue: $dockstatus, preText: '其他的工人 ', states : [
+						{ requiredValue: 0,	    color: 'purple',	description: '对你不屑一顾。'},
+						{ requiredValue: 10,	color: 'blue',		description: '对你将信将疑。'},
+						{ requiredValue: 30,	color: 'lblue',		description: '对你心照不宣。'},
+						{ requiredValue: 80,	color: 'teal',		description: '对你无可置疑。'},
+						{ requiredValue: 100,	color: 'green',		description: '对你敬爱有加。'}
+					]}>>
+					<<set _dockBoxConfig = { name : "码头", icon : "img/misc/icon/mer.png", description : '<<relation-text _dockRepConfig>>'}>>
+				<</if>>
+			<</silently>>
+			<<relation-box-simple _policeBoxConfig>>
+			<<relation-box-simple _orphanageBoxConfig>>
+			<<relation-box-simple _teacherBoxConfig>>
+			<<relation-box-simple _studentBoxConfig>>
+			<<if $schoolrep.crossdress neq 0>>
+				<<relation-box-simple _crossdressBoxConfig>>
+			<</if>>
+			<<if $schoolrep.herm neq 0>>
+				<<relation-box-simple _hermBoxConfig>>
+			<</if>>
+			<<if $prison>>
+				<<relation-box-simple _guardBoxConfig>>
+				<<relation-box-simple _inmateBoxConfig>>
+				<<relation-box-simple _prisonBoxConfig>>
+			<</if>>
+			<<if $dockwork gte 2>>
+				<<relation-box-simple _dockBoxConfig>>
+			<</if>>
+				<<relation-box-wolves>>
+
+		</div>
+		<<if $farm_stage gte 2>>
+			<<silently>>
+				/* Farm Animals */
+				/*Horses*/
+				<<set _farmHorseRepConfig = { currentValue: $farm.beasts.horses, preText: '马群 ', postText: ' 着你。', states: [
+					{ requiredValue: -100,	color: 'pink',		description: '亵渎', postText: ' 着你。'},
+					{ requiredValue: -20,	color: 'purple',	description: '藐视', postText:  ''},
+					{ requiredValue: -5,	color: '',			description: '警惕'},
+					{ requiredValue: 5,		color: 'lblue',		description: '信任'},
+					{ requiredValue: 20,	color: 'green',		description: '敬爱'}
+				]}>>
+				/*Pigs*/
+				<<set _farmPigRepConfig = { currentValue: $farm.beasts.pigs, preText: '猪群 ', postText: ' 着你。', states: [
+					{ requiredValue: -100,	color: 'pink',		description: '亵渎', postText: ' 着你。'},
+					{ requiredValue: -20,	color: 'purple',	description: '藐视', postText:  ''},
+					{ requiredValue: -5,	color: '',			description: '警惕'},
+					{ requiredValue: 5,		color: 'lblue',		description: '信任'},
+					{ requiredValue: 20,	color: 'green',		description: '敬爱'}
+				]}>>
+				/*Cattle*/
+				<<set _farmCattleRepConfig = { currentValue: $farm.beasts.cattle, preText: '牛群 ', postText: ' 着你。', states: [
+					{ requiredValue: -100,	color: 'pink',		description: '亵渎', postText: ' 着你。'},
+					{ requiredValue: -20,	color: 'purple',	description: '藐视', postText:  ''},
+					{ requiredValue: -5,	color: '',			description: '警惕'},
+					{ requiredValue: 5,		color: 'lblue',		description: '信任'},
+					{ requiredValue: 20,	color: 'green',		description: '敬爱'}
+				]}>>
+				/*Dogs*/
+				<<set _farmDogRepConfig = { currentValue: $farm.beasts.dogs, preText: '狗群 ', postText: ' 着你。', states: [
+					{ requiredValue: -100,	color: 'pink',		description: '亵渎', postText: ' 着你。'},
+					{ requiredValue: -20,	color: 'purple',	description: '藐视', postText:  ''},
+					{ requiredValue: -5,	color: '',			description: '警惕'},
+					{ requiredValue: 5,		color: 'lblue',		description: '信任'},
+					{ requiredValue: 20,	color: 'green',		description: '敬爱'}
+				]}>>
+				<<set _farmHorseBoxConfig =		{ name: "马群",	description : '<<relation-text _farmHorseRepConfig>>'}>>
+				<<set _farmPigBoxConfig =		{ name: "猪群",		description : '<<relation-text _farmPigRepConfig>>'}>>
+				<<set _farmCattleBoxConfig =	{ name: "牛群",	description : '<<relation-text _farmCattleRepConfig>>'}>>
+				<<set _farmDogBoxConfig =		{ name: "狗群",		description : '<<relation-text _farmDogRepConfig>>'}>>
+
+				<<if $farm_stage gte 5>>
+					/* Farm Sabotage */
+					<<set _farmSabotageConfig = { currentValue: $farm.aggro, states: [
+						{ requiredValue: 0,		color: 'green',		description: '农场十分平静。'},
+						{ requiredValue: 1,		color: 'teal',		description: '奇怪的人在远处监视着农场。'},
+						{ requiredValue: 10,	color: 'lblue',		description: '农场周围发现了入侵的痕迹。'},
+						{ requiredValue: 20,	color: 'blue',		description: '什么东西在惊扰着农场里的牲畜。'},
+						{ requiredValue: 40,	color: 'purple',	description: '农场在夜里遭到破坏。'},
+						{ requiredValue: 60,	color: 'pink',		description: '农场正在遭到破坏，不分昼夜。'},
+						{ requiredValue: 100,	color: 'red',		description: '雷米的手下光明正大地破坏着农场的运营。'},
+					]}>>
+					<<set _farmSabotageBoxConfig = { name: "农场安保", description : '<<relation-text _farmSabotageConfig>>'}>>
+				<</if>>
+			<</silently>>
+
+			<br>
+			<span class="gold">农场声誉</span>
+			<div id="farm-status" class="relation-box-list">
+				<<relation-box-simple _farmHorseBoxConfig>>
+				<<relation-box-simple _farmPigBoxConfig>>
+				<<relation-box-simple _farmCattleBoxConfig>>
+				<<relation-box-simple _farmDogBoxConfig>>
+				<<if $farm_stage gte 5>>
+				<<relation-box-simple _farmSabotageBoxConfig>>
+				<</if>>
+			</div>
+		<</if>>
+
+		<br>
+		<span class="gold">知名度</span>
+		<div id="global-recognition" class="relation-box-list">
+			<<silently>>
+				<<set _fameStates = [
+					{ requiredValue: 0,		color: 'green',		description: '默默无闻'},
+					{ requiredValue: 30,	color: 'teal',		description: '鲜为人知'},
+					{ requiredValue: 100,	color: 'lblue',		description: '崭露头角'},
+					{ requiredValue: 200,	color: 'blue',		description: '小有名气'},
+					{ requiredValue: 400,	color: 'purple',	description: '引人瞩目'},
+					{ requiredValue: 600,	color: 'pink',		description: '家喻户晓'},
+					{ requiredValue: 1000,	color: 'red',		description: ' 声名狼藉的 _config.flavorText'}
+				]>>
+				<<set _inverseFameStates = [
+					{ requiredValue: 0,		color: 'red',		description: '默默无闻'},
+					{ requiredValue: 30,	color: 'pink',		description: '鲜为人知'},
+					{ requiredValue: 100,	color: 'purple',	description: '崭露头角'},
+					{ requiredValue: 200,	color: 'blue',		description: '小有名气'},
+					{ requiredValue: 400,	color: 'lblue',		description: '引人瞩目'},
+					{ requiredValue: 600,	color: 'teal',		description: '家喻户晓'},
+					{ requiredValue: 1000,	color: 'green',		description: ' 声名远扬的 _config.flavorText'}
+				]>>
+
+				<<set _sexFameConfig =				{ currentValue: $fame.sex,				preText: '淫乱：',			flavorText: '婊子',				states: _fameStates }>>
+				<<set _prostitutionFameConfig =		{ currentValue: $fame.prostitution,		preText: '卖淫：',	flavorText: '娼妓',			states: _fameStates }>>
+				<<set _rapeFameConfig =				{ currentValue: $fame.rape,				preText: '强暴：',			flavorText: '肉便器',			states: _fameStates }>>
+				<<if $bestialitydisable is "f">>
+					<<set $_pre to "兽交：">>
+					<<set $_flavor to "雌畜">>
+				<<else>>
+					<<set $_pre to "人外：">>
+					<<set $_flavor to "兽王">>
+				<</if>>
+				<<set _bestialityFameConfig =		{ currentValue: $fame.bestiality,		preText: $_pre,				flavorText: $_flavor,			states: _fameStates }>>
+				<<set _exhibitionismFameConfig =	{ currentValue: $fame.exhibitionism,	preText: '露出：',	flavorText: '暴露狂',			states: _fameStates }>>
+				<<if $fame.pregnancy gte 600>>
+					<<set $_name to "苗床">>
+				<<elseif $fame.pregnancy gte 200>>
+					<<set $_name to "母猪">>
+				<<else>>
+					<<set $_name to "产妇">>
+				<</if>>
+				<<set _pregnancyFameConfig =		{ currentValue: $fame.pregnancy,		preText: '妊娠：',		flavorText: $_name,				states: _fameStates }>>
+				<<if $fame.impreg gte 600>>
+					<<set $_name to "淫柱">>
+				<<elseif $fame.impreg gte 200>>
+					<<set $_name to "种马">>
+				<<else>>
+					<<set $_name to "精囊">>
+				<</if>>
+				<<set _impregFameConfig =			{ currentValue: $fame.impreg,			preText: '播种:',		flavorText: $_name,				states: _fameStates }>>
+				<<set _combatFameConfig =			{ currentValue: $fame.scrap,			preText: '战斗：',			flavorText: '拳皇',			states: _inverseFameStates }>>
+				<<set _kindnessFameConfig =			{ currentValue: $fame.good,				preText: '善良：',		flavorText: '圣人',		states: _inverseFameStates }>>
+				<<set _businessFameConfig =			{ currentValue: $fame.business,			preText: '商业：',		flavorText: '企业家',		states: _inverseFameStates }>>
+				<<set _socialFameConfig =			{ currentValue: $fame.social,			preText: '社交：',		flavorText: '名流',		states: _inverseFameStates }>>
+				<<set _modelFameConfig =			{ currentValue: $fame.model,			preText: '走秀：',		flavorText: '模特',			states: _inverseFameStates }>>
+				<<set _overallFameConfig =			{ currentValue: fameTotal(),			preText: '总体：',		flavorText: '',					states: [
+					{ requiredValue: 0,		color: 'green',		description: '默默无闻'},
+					{ requiredValue: 100,	color: 'pink',		description: '鲜为人知'},
+					{ requiredValue: 500,	color: 'purple',		description: '崭露头角'},
+					{ requiredValue: 1000,	color: 'blue',		description: '小有名气'},
+					{ requiredValue: 2000,	color: 'lblue',	description: '引人瞩目'},
+					{ requiredValue: 3000,	color: 'teal',		description: '家喻户晓'},
+					{ requiredValue: 4000,	color: 'green',		description: '声名赫赫'}
+				]}>>
+
+				<<set _sexFameBoxConfig =			{ description : '<<relation-text _sexFameConfig>>' }>>
+				<<set _prostitutionFameBoxConfig =	{ description : '<<relation-text _prostitutionFameConfig>>' }>>
+				<<set _rapeFameBoxConfig =			{ description : '<<relation-text _rapeFameConfig>>' }>>
+				<<set _bestialityFameBoxConfig =	{ description : '<<relation-text _bestialityFameConfig>>' }>>
+				<<set _exhibitionismFameBoxConfig =	{ description : '<<relation-text _exhibitionismFameConfig>>' }>>
+				<<set _pregnancyFameBoxConfig =		{ description : '<<relation-text _pregnancyFameConfig>>' }>>
+				<<set _combatFameBoxConfig =		{ description : '<<relation-text _combatFameConfig>>' }>>
+				<<set _kindnessFameBoxConfig =		{ description : '<<relation-text _kindnessFameConfig>>' }>>
+				<<set _businessFameBoxConfig =		{ description : '<<relation-text _businessFameConfig>>' }>>
+				<<set _socialFameBoxConfig =		{ description : '<<relation-text _socialFameConfig>>' }>>
+				<<set _modelFameBoxConfig =			{ description : '<<relation-text _modelFameConfig>>' }>>
+				<<set _overallFameBoxConfig =		{ description : '<<relation-text _overallFameConfig>>' }>>
+			<</silently>>
+
+			<<relation-box-simple _sexFameBoxConfig>>
+			<<relation-box-simple _prostitutionFameBoxConfig>>
+			<<relation-box-simple _rapeFameBoxConfig>>
+			<<relation-box-simple _bestialityFameBoxConfig>>
+			<<relation-box-simple _exhibitionismFameBoxConfig>>
+			<<if $fame.model gte 1>>
+				<<relation-box-simple _modelFameBoxConfig>>
+			<</if>>
+			<<relation-box-simple _pregnancyFameBoxConfig>>
+			<<relation-box-simple _combatFameBoxConfig>>
+			<<relation-box-simple _kindnessFameBoxConfig>>
+			<<relation-box-simple _businessFameBoxConfig>>
+			<<relation-box-simple _socialFameBoxConfig>>
+			<<relation-box-simple _overallFameBoxConfig>>
+
+			<div class="relation-box" @style="(_boxConfig.style || '')">
+				<div class="relation-description">
+				镇上的居民认为你是个<span class="teal"><<overworld_nickname>>，</span>而地下社会的人则会称呼你为<span class="pink"><<underworld_nickname>>。</span>
+				</div>
+			</div>
+
+		</div>
+
+		<br>
+	</div>
+	<br>
+<</widget>>

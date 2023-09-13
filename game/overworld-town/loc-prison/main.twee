@@ -1,0 +1,2364 @@
+:: Prison Cell
+<<set $outside to 0>><<location "prison">><<effects>><<effects_prison>><<set $bus to "cell">>
+
+你正待在你的牢房里，一张床放在角落里，另一边放着一个柜子。一扇铁门阻隔了你通往外界的通道，毕竟这里没有隐私可言。
+<<if $prison.poster is "man">>
+	一面墙上挂着一张画着性感男士的海报。
+<<elseif $prison.poster is "woman">>
+	一面墙上挂着一张画着性感女士的海报。
+<<elseif $prison.poster is "puppy">>
+	一面墙上挂着一张画着可爱小狗的海报。
+<</if>>
+<br><br>
+<<if Time.hour is 20 and $prison.evening isnot 1>>
+	随着牢锁的关闭，砰砰声在大厅里回荡。
+	<br><br>
+	<<set $prison.evening to 1>>
+<<elseif $prison.schedule is "lockdown">>
+	门被锁上了。
+	<br><br>
+<</if>>
+<<if isPlayerNonparasitePregnancyEnding()>>
+	<<pregnancyWatersBrokenPassout "prisonCell">>
+<<elseif $prison.schedule is "hunt" and $prison.morning isnot 1>>
+	<<set $prison.schedule to "wake">>
+	<<generate_methodical_guard 0>><<person1>>
+	灯光嗡嗡作响，牢门推开时发出的响动回荡在耳边。一名<<personsimple "normal">>的声音响彻大厅。"点名。"你看到其他囚犯排起了队伍。
+	<br><br>
+
+	<<link [[排队|Prison Cell Role]]>><<cell_trouble -1>><</link>>
+	<br>
+	<<link [[拒绝|Prison Cell Refuse]]>><<prison_guards 1>><<prison_inmates 1>><<pain 4>><<cell_trouble 1>><</link>><<gpain>><<gsuspicion>><<grespect>>
+	<br>
+	<<set $prison.morning to 1>>
+<<else>>
+
+	<<if $leftarm is "bound" or $rightarm is "bound">>
+		<<ind>><<link [[解开束缚(0:10)|Prison Cell]]>><<set $unbind to 1>><<pass 10>><<arm_unbind>><</link>>
+		<br><br>
+	<</if>>
+	<<if $prison.poster and !$prison.tunnel>>
+		<<ind>><<link [[检查你的海报|Prison Poster]]>><<set $prison.tunnel to 1>><</link>>
+		<br>
+	<<elseif $prison.tunnel is 1 and $prison.hammer is 1>>
+		<<ind>><<link [[摸索海报后面的墙壁|Prison Poster 2]]>><<set $prison.tunnel to 2>><</link>>
+		<br>
+	<<elseif $prison.tunnel gte 120 and $prison.schedule is "lockdown">>
+		<<ind>><<link [[检查通道|Prison Tunnel]]>><</link>>
+		<br>
+	<<elseif $prison.tunnel gte 2 and $prison.schedule is "lockdown">>
+		<<ind>><<link [[挖掘通道|Prison Tunnel]]>><</link>>
+		<br>
+	<</if>>
+	<<if $prison.schedule is "revolt">>
+		<span class="blue">太吵了，根本睡不着。</span>
+		<br>
+	<<else>>
+		<<listsleepoutfits "prison bed">>
+		<<bedicon>><<link [[脱光并爬到床上|Prison Bed]]>><<undressSleep "prison bed">><</link>>
+		<br>
+	<</if>>
+	<<roomoptions>>
+	<<if $prison.schedule isnot "lockdown" and !$worn.face.type.includes("blindfold")>>
+		<<plaqueicon>><<link [[铭牌|Prison Plaque]]>><</link>>
+		<br>
+	<</if>>
+	<<wardrobeicon>><<link [[衣柜|Prison Wardrobe]]>><</link>>
+	<br>
+	<<if $prison.mirror gte 1>>
+		<<mirroricon>><<link [[镜子|Prison Mirror]]>><<preMirror>><</link>>
+		<br>
+	<</if>>
+	<br>
+	<<if $prison.schedule isnot "lockdown">>
+		<<link [[离开|Prison Walkway]]>><</link>>
+		<br>
+	<</if>>
+	<br>
+	<<link [[设置|Prison Settings]]>><</link>>
+	<br>
+
+	<<attitudesControlCheck>>
+	<<if $attitudesControl.showGoldLink is true>>
+		<span class="goldLink"><<link [[态度|Attitudes]]>><<set $attitudesExitPassage to $passage>><</link>></span><span class="red">!!</span>
+	<<else>>
+		<<link [[态度|Attitudes]]>><<set $attitudesExitPassage to $passage>><</link>>
+	<</if>>
+	<br>
+<</if>>
+
+<<set $eventskip to 0>>
+
+:: Prison Mirror
+<<effects>>
+
+<<link [[走开|Prison Cell]]>><<unset $mirrorMenu>><<unset $bodywritingSet>><<postMirror>><</link>>
+<br>
+
+<<mirror>>
+<br><br>
+
+:: Prison Poster
+<<effects>>
+
+你审视了你的海报。
+<<if $prison.poster is "man">>
+	他的表情很诱人，但眼神中却有些东西。就像他在保守着一个秘密。
+<<elseif $prison.poster is "lady">>
+	她的表情很诱人，但眼神中却有些东西。就像她在保守着一个秘密。
+<<elseif $prison.poster is "puppy">>
+	小狗看起来活泼又调皮。好似在隐藏着什么东西。
+<</if>>
+<br><br>
+
+你记起墙上的裂缝。你把海报拉回来，用手指沿着裂缝往下摸。一些石头碎裂开来。
+<br><br>
+<i>如果你有什么能用来挖的工具，你就能做得更甚。</i>
+<br><br>
+<<link [[继续|Prison Cell]]>><</link>>
+<br>
+
+
+:: Prison Poster 2
+<<effects>>
+
+你手握锤子，小心翼翼地敲打海报后面的墙壁，以防发出太大声响。更多的石头碎裂掉落下来。<span class="purple">这要花上很长时间，</span>但是能用锤子来挖，再用海报来掩盖你做的事，如此以来你足以挖出到达小岛的边缘的隧道。
+<br><br>
+
+你只能在禁闭期时挖掘。否则风险太大。
+<br><br>
+
+<<link [[继续|Prison Cell]]>><</link>>
+<br>
+
+:: Prison Tunnel
+<<effects>>
+
+<<if $prison.tunnel gte 120>>
+	你向隧道深处窥视，天空则回望你。
+	<br><br>
+
+	<<link [[爬到边缘(0:03)|Prison Tunnel Edge]]>><<pass 3>><</link>>
+	<br>
+<<else>>
+	<<if $prison.tunnel gte 80>>
+		隧道延伸至黑暗之中。
+	<<elseif $prison.tunnel gte 40>>
+		隧道穿过监狱围墙，延伸至岛上的天然岩石。
+	<<elseif $prison.tunnel gte 20>>
+		短距隧道穿透了监狱围墙。
+	<<elseif $prison.tunnel gte 10>>
+		墙上的洞的宽度已经足以容纳你的身体。
+	<<else>>
+		墙壁裂开了。
+	<</if>>
+	<br><br>
+	<<for _i to 1; _i lt 9; _i++>>
+		<<if _i is 1>>
+			<<link [[挖1小时|Prison Tunnel Dig]]>><<set $prison_dig to 1>><</link>><<gtiredness>>
+			<br>
+		<<else>>
+			<<capture _i>>
+				<<link [["挖" + _i + "小时"|Prison Tunnel Dig]]>><<set $prison_dig to _i>><</link>><<gtiredness>>
+				<br>
+			<</capture>>
+		<</if>>
+	<</for>>
+
+<</if>>
+
+
+<<link [[离开|Prison Cell]]>><</link>>
+<br>
+
+
+:: Prison Tunnel Dig
+<<effects>>
+
+<<for _dig to 0; _dig lt $prison_dig; _dig++>>
+	<<set $prison.tunnel += 1>>
+	<<tiredness 6>>
+	<<advancetohour>>
+	<<if Time.hour is 6>>
+		<<set $prison.schedule to "wake">>
+		<<break>>
+	<</if>>
+<</for>>
+<<unset $prison_dig>>
+
+<<if $prison.tunnel gte 120>>
+	你爬进黑暗深处，继续挖掘。
+	<br><br>
+	<span class="green">你被一阵突然而令人振奋的微风吹拂。</span>闻起来像盐。你挖掉最后一块岩石，把洞扩大到足够容纳你的身体。
+	<br><br>
+	<<earnFeat "Time and Pressure">>
+	你在岛的边缘，在海面上。
+	<br><br>
+
+<<elseif $prison.tunnel gte 100>>
+	你爬进黑暗深处，继续挖掘。
+	<<set _rng to random(1, 3)>>
+	<<switch random(1, 3)>>
+	<<case 1>>
+		贝壳融入在周围的石头里。
+	<<case 2>>
+		你感觉你听到了海鸥的声音，不过也可能是你的幻觉。
+	<<case 3>>
+		你听到隆隆声。
+	<</switch>>
+<<elseif $prison.tunnel gte 80>>
+	你爬进黑暗中，继续挖掘。
+	<<set _rng to random(1, 3)>>
+	<<switch random(1, 3)>>
+	<<case 1>>
+		你听见了湍急的水流。
+	<<case 2>>
+		隧道在颤抖，天花板降下灰尘。
+	<<case 3>>
+		你吸入了些灰尘，开始咳嗽。<<gstress>><<stress 6>>
+	<</switch>>
+<<elseif $prison.tunnel gte 60>>
+	你从洞里爬出来，继续挖掘。
+	<<set _rng to random(1, 3)>>
+	<<switch random(1, 3)>>
+	<<case 1>>
+		脆弱的岩石很容易碎裂。<<lstress>><<stress -6>>
+	<<case 2>>
+		你的胳膊被粗糙的岩石擦伤了。<<gpain>><<pain 4>>
+	<<case 3>>
+		岩石均匀一致。
+	<</switch>>
+<<elseif $prison.tunnel gte 40>>
+	你爬下洞，继续挖掘。
+	<<set _rng to random(1, 3)>>
+	<<switch random(1, 3)>>
+	<<case 1>>
+		你敲击硬东西，摸起来像一块鹅卵石。你可以在它周围挖掘，把它从岩石中撬出来。
+	<<case 2>>
+		天然岩石就像沙子一样碎裂开来。
+	<<case 3>>
+		石雕渗入天然岩石，后者更脆弱。
+	<</switch>>
+<<elseif $prison.tunnel gte 20>>
+	你爬进洞里继续挖掘。
+	<<set _rng to random(1, 3)>>
+	<<switch random(1, 3)>>
+	<<case 1>>
+		其中有一块砖已经松动，这很好。<<lstress>><<stress -6>>
+	<<case 2>>
+		石砌结构古老。有些砖块已经变形了。
+	<<case 3>>
+		上方的一块砖掉了下来，砸到你的背上。<<gpain>><<gstress>><<pain 4>><<stress 6>>
+	<</switch>>
+<<elseif $prison.tunnel gte 10>>
+	你把手伸进洞里继续挖掘。
+	<<set _rng to random(1, 3)>>
+	<<switch random(1, 3)>>
+	<<case 1>>
+		海报在突如其来的微风中飘动。你停顿了片刻才继续。
+	<<case 2>>
+		太黑了什么也看不见，但你瞥了一眼牢房的门，确保没有人在监管。
+	<<case 3>>
+		下层的石头比上层更坚硬，颜色也更深。
+	<</switch>>
+<<else>>
+	你一块一块地凿开墙壁。
+	<<set _rng to random(1, 3)>>
+	<<switch random(1, 3)>>
+	<<case 1>>
+		裂缝变宽。
+	<<case 2>>
+		你听到一声咳嗽，僵住片刻才继续。<<gstress>><<stress 6>>
+	<<case 3>>
+		它不费吹灰之力就碎了。
+	<</switch>>
+<</if>>
+<br><br>
+
+<<if $prison.schedule is "wake" and $prison.morning isnot 1>>
+	<<generate_methodical_guard 0>><<person1>>
+	你听到牢门在你身后打开发出的嘎嘎声。
+	<<if $prison.tunnel gte 20>>
+		你冲进隧道，用海报盖住入口。
+	<<else>>
+		你用海报盖住入口。
+	<</if>>
+
+	一个<<personsimple "normal">>的声音响彻大厅。"点名。"而你看到其他囚犯在排队。
+	<br><br>
+
+	<<link [[排队|Prison Cell Role]]>><<cell_trouble -1>><</link>>
+	<br>
+	<<link [[拒绝|Prison Cell Refuse]]>><<prison_guards 1>><<prison_inmates 1>><<pain 4>><<cell_trouble 1>><</link>><<gpain>><<gsuspicion>><<grespect>>
+	<br>
+	<<set $prison.morning to 1>>
+<<else>>
+	<<link [[继续|Prison Cell]]>><</link>>
+	<br>
+<</if>>
+
+
+:: Prison Tunnel Edge
+<<effects>>
+
+<<if $phase is 1>>
+	你爬上岩石，挤进你的隧道。
+	<<set $phase to 0>>
+<<else>>
+	你爬到悬崖边往下看去，眼前是一片沙滩。沙滩不远，但海浪汹涌。
+	<<if $weather is "clear">>
+		你在月光下能看见周围的薄雾。
+	<<else>>
+		你看不到太远的地方。
+	<</if>>
+<</if>>
+<br><br>
+
+<<link [[爬入牢房|Prison Cell]]>><</link>>
+<br>
+<<link [[爬到海滩 (0:05)|Prison Beach]]>><<pass 5>><</link>>
+<br>
+
+:: Prison Bed
+<<effects>>
+<<wearoutfit>>
+
+<<set $bus to "prison_bedroom">><<effects>>
+你躺在床垫上。很难让自己舒服<<if ($worn.neck.name is "free use collar" or $worn.neck.name is "free use collar with leash")>>，尤其是你脖子上的锯齿状金属戳着你的皮肤<</if>>。
+<br><br>
+<<prison_sleep_options>>
+
+:: Prison Sleep
+<<set _autosavehere to true>>
+<<sleep>><<effects>>
+
+<<wakingEffects $sleepHoursTotal>>
+<<if $nightmares gte 1 and $controlled is 0>>
+	<<if _wakingEffect isnot undefined>>
+		你梦到了
+	<<else>>
+		你梦到你
+	<</if>>
+	被<<if ["haunt", "despair"].includes($wraith.state) and $rng lte 25>>苍白<<else>>黑暗<</if>>且恐怖的存在追击着。
+<<else>>
+	<<if ["dryheaving","nausea"].includes(_wakingEffect)>>
+		你睡得很香，但现在感觉有点不舒服。
+		<br><br>
+	<<elseif $specialClothesEffects.bimboTotal gte random(100,1000) or $arousal gte 9000>>
+		你的睡眠被淫秽的梦所困扰。
+		<<arousal `$specialClothesEffects.bimboTotal / 10 * $sleepHoursTotal`>>
+		<<arousal `100 * $sleepHoursTotal`>>
+		<<if $arousal gte $arousalmax>>
+			他们把你推到了边缘。
+			<<orgasm>>
+		<<else>>
+			<br><br>
+		<</if>>
+	<<elseif !_wakingEffect>>
+		你睡得很香。
+		<br><br>
+	<<else>>
+		<br><br>
+	<</if>>
+<</if>>
+<<sleepeffects>>
+<<if $daily.prison.wake>>
+	一阵铃声响起，将你从睡梦中唤醒。
+	<br><br>
+	<<set $wardrobe_location to "prison">>
+	<<wardrobeSelection true>>
+	<<radiooutfits>>
+	<br><br>
+	<<link [[继续|Prison Cell]]>><<bedclotheson "prison bed">><<endevent>><</link>>
+	<br>
+
+<<else>>
+	<br><br>
+	<<set $wardrobe_location to "prison">>
+	<<wardrobeSelection true>>
+	<<radiooutfits>>
+	<br><br>
+	<<link [[起来|Prison Cell]]>><<bedclotheson "prison bed">><</link>>
+<</if>>
+
+:: Prison Wardrobe [exitCheckBypass]
+<<effects>>
+
+你打开橱柜。
+<br><br>
+<<set $wardrobe_location to "prison">>
+<<wardrobeSelection>>
+<div id="wardrobewear"><<wardrobewear>></div>
+<div id="wardrobeExits"><<wardrobeExits>></div>
+
+<<wardrobe>>
+
+
+:: Prison Settings [exitCheckBypass]
+<<set $settingsExitPassage to "Prison Cell">>
+<<settings>>
+
+:: Prison Plaque
+<<effects>>
+
+<span class="red">上帝正注视着。</span><br>
+服从警卫<br>
+看守们服从典狱长的命令<br>
+你每天需要工作九个小时<br>
+<br>
+
+<<if $prison.active_punishments.includes("free use")>>
+	<span class="red">请勿取下你的"公用性奴"项圈</span>
+	<br>
+<</if>>
+<<if $prison.active_punishments.includes("nude")>>
+	<span class="pink">不穿衣服</span>
+	<br>
+<<elseif $prison.active_punishments.includes("topless")>>
+	<span class="blue">上半身没穿任何衣服</span>
+	<br>
+<<elseif $prison.active_punishments.includes("bottomless")>>
+	<span class="blue">下半身没穿任何衣服</span>
+	<br>
+<</if>>
+<<if $prison.active_punishments.includes("underwear") and $prison.active_punishments.includes("free use")>>
+	<span class="teal">仅限内衣</span>
+	<br>
+<</if>>
+<<if $prison.active_punishments.includes("blindfold")>>
+	<span class="purple">请勿摘下你的眼罩</span>
+	<br>
+<</if>>
+<<if $prison.active_punishments.includes("leash")>>
+	<span class="lblue">请勿取下你的牵引绳</span>
+	<br>
+<</if>>
+<<if $prison.active_punishments.includes("cuffs")>>
+	<span class="lblue">请勿卸下你的镣铐</span>
+	<br>
+<</if>>
+<<if $prison.active_punishments.includes("gag")>>
+	<span class="purple">请勿取下你的口塞</span>
+	<br>
+<</if>>
+<<if $prison.active_punishments.includes("bindings")>>
+	<span class="pink">请勿移除你的束缚</span>
+	<br>
+<</if>>
+<br>
+
+日程:
+<br>
+<<ampm 6 00>>：淋浴和早餐
+<br>
+<<ampm 7 00>>: 工作
+<br>
+<<ampm 12 00>>：午餐
+<br>
+<<ampm 13 00>>：院子
+<br>
+<<ampm 14 00>>：工作
+<br>
+<<ampm 18 00>>：晚餐
+<br>
+<<ampm 19 00>>：空闲时间
+<br>
+<<ampm 20 00>>：熄灯
+<br><br>
+
+你被判处<span class="red">$prison.time</span>天牢狱，到指定时间后你才会被释放。
+<br><br>
+
+<<link [[离开|Prison Cell]]>><</link>>
+<br>
+
+:: Prison Cell Role
+<<set $bus to "walkway">><<effects>><<effects_prison>>
+
+
+<<if $prison_kylar_timer gte 1>>
+	<<set $prison_kylar_timer -= 1>>
+<</if>>
+
+你站在牢房外，等待<<methodical_guard 0>>读出每个数字。
+<br><br>
+"...144号囚犯。"
+<br>
+<<if $worn.face.type.includes("gag")>>
+	"呜呜!"你呜叫着，囚犯们笑了出来。<<lrespect>><<prison_inmates -1>>
+<<else>>
+	"在这。"你回应道。
+<</if>>
+<br><br>
+
+<<if $NPCName[$NPCNameList.indexOf("Kylar")].state is "prison" and $prison.kylar is 0 and $prison_kylar_timer lte 0>>
+	<<set $prison.kylar to "active">>
+	<<unset $prison_kylar_timer>>
+	<<endevent>>
+	<<addNNPCOutfit "Kylar" "prisonJumpsuit">>
+	<<npc Kylar>><<person1>>
+	<<generate_methodical_guard 1>>
+	<<generate_veteran_guard 2>>
+	<<person2>><<He>>再度张嘴，但被下面某处砰砰作响的门声打断了。你看到<<veteran_guard 2>>穿过你脚下的走道，推着一个小身影走在<<person3>><<him>>前面。
+	<br><br>
+	最后一推，把<<person1>><<his>>推的踉踉跄跄，这新人就这么摔了个狗啃泥。<<He>>慌忙站起来，把头发从脸上撩开。<span class="gold">那是凯拉尔。</span>
+	<br><br>
+
+	<<link [[继续|Prison Kylar Intro]]>><</link>>
+	<br>
+<<elseif $prison.active_punishments.includes("free use") and $worn.neck.name isnot "free use collar" and $worn.neck.name isnot "free use collar with leash">>
+	"你的项圈呢？"<<he>>问你，"你最好给我过来。"
+	<br><br>
+	<<prison_repunishment_options>>
+<<elseif $prison.active_punishments.includes("nude") and ($worn.upper.name isnot "naked" or $worn.lower.name isnot "naked" or $worn.under_upper.name isnot "naked" or $worn.under_lower.name isnot "naked")>>
+	"你不应该是裸着的吗？"<<he>>问道，"你给我过来。"
+	<br><br>
+	<<prison_repunishment_options>>
+<<elseif $prison.active_punishments.includes("blindfold") and !$worn.face.type.includes("blindfold")>>
+	"你的眼罩呢？"<<he>>问你，"你最好给我过来。"
+	<br><br>
+	<<prison_repunishment_options>>
+<<elseif $prison.active_punishments.includes("topless") and ($worn.upper.name isnot "naked" or $worn.under_upper.name isnot "naked")>>
+	"你应该光着上身的，"<<he>>说，"你给我过来。"
+	<br><br>
+	<<prison_repunishment_options>>
+<<elseif $prison.active_punishments.includes("bottomless") and ($worn.lower.name isnot "naked" or $worn.under_lower.name isnot "naked")>>
+	"你应该光着下身的，"<<he>>说，"你给我过来。"
+	<br><br>
+	<<prison_repunishment_options>>
+<<elseif $prison.active_punishments.includes("leash") and $worn.neck.collared isnot 1>>
+	"你的项圈呢？"<<he>>问你，"你跟我过来。"
+	<br><br>
+	<<prison_repunishment_options>>
+<<elseif $prison.active_punishments.includes("underwear") and ($worn.upper.name isnot "naked" or $worn.lower.name isnot "naked")>>
+	"这看起来不像内衣，"<<he>>说道，"你给我过来。"
+	<br><br>
+	<<prison_repunishment_options>>
+<<elseif $prison.active_punishments.includes("cuffs") and !$worn.feet.type.includes("shackle")>>
+	"你的镣铐呢？"<<he>>问你，"你给我过来。"
+	<br><br>
+	<<prison_repunishment_options>>
+<<elseif $prison.active_punishments.includes("gag") and !$worn.face.type.includes("gag")>>
+	"你的口球呢？"<<he>>问你，"你跟我过来。"
+	<br><br>
+	<<prison_repunishment_options>>
+<<elseif $prison.active_punishments.includes("bindings") and ($leftarm isnot "bound" or $rightarm isnot "bound")>>
+	"你的胳膊本该捆着的，"<<he>>说道，"你跟我过来。"
+	<br><br>
+	<<prison_repunishment_options>>
+<<elseif $prison.time lte 0>>
+	空气短暂的凝固了一下。<span class="green">"你的刑期已满，"</span><<he>>说完，便把簿册扣上，"跟我来。"
+	<br><br>
+
+	<<link [[继续|Prison End]]>><<set $prison.hours_worked to 0>><</link>>
+	<br>
+<<elseif $prison.hours_worked lt 9>>
+	空气短暂的凝固了一下。<span class="red">"你没有达到工作配额，"</span><<he>>说完，便把簿册扣上，"跟我来。"
+	<br><br>
+
+	<<link [[安静地跟上|Prison Punishment]]>><<endevent>><<set $prison.hours_worked to 0>><</link>>
+	<br>
+	<<link [[拒绝|Prison Cell Punishment Refuse]]>><</link>>
+	<br>
+<<elseif $prison_punished_days lte 0 and $prison.active_punishments.length gte 1>>
+	<<set $prison.hours_worked to 0>>
+	空气短暂的凝固了一下。
+	<<if $prison.active_punishments.length gte 2>>
+		<span class="teal">"我想我们可以解除对你的一项惩罚了，"</span><<he>>说着，将簿册扣上。
+	<<else>>
+		<span class="teal">"我想我们可以解除对你的惩罚了，"</span><<he>>说着，将簿册扣上。
+	<</if>>
+	<<set $prison_punished_days to 2>>
+	<<set _rng to random(0, ($prison.active_punishments.length - 1))>>
+	<<set _punishment to $prison.active_punishments[_rng]>>
+	<<switch _punishment>>
+		<<case "free use">>
+			<<set $prison.active_punishments.delete("free use")>>
+			<<He>>沿着走道走着，从口袋里摸出一把钥匙。
+			<br><br>
+
+			<<link [[继续|Prison Remove Free Use]]>><</link>>
+			<br>
+		<<case "nude">>
+			<<set $prison.active_punishments.delete("nude")>>
+			<<if random(1, 2) is 2>>
+				<<set $prison.active_punishments.delete("topless")>>
+				"你可以继续穿衣服了，<span class="pink">不过只能穿内衣，而且目前必须保持下身裸露的状态。"</span>
+				<br><br>
+			<<else>>
+				<<set $prison.active_punishments.delete("bottomless")>>
+				"你可以继续穿衣服了，<span class="pink">不过只能穿内衣，而且目前必须保持上身裸露的状态。"</span>
+				<br><br>
+			<</if>>
+			<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+			<br>
+		<<case "blindfold">>
+			<<set $prison.active_punishments.delete("blindfold")>>
+			走廊随着你的走近向后移动。
+			<br><br>
+
+			<<link [[继续|Prison Remove Blindfold]]>><</link>>
+			<br>
+		<<case "topless">>
+			<<set $prison.active_punishments.delete("topless")>>
+			<<if $prison.active_punishments.includes("nude")>>
+				<<set $prison.active_punishments.delete("nude")>>
+				<<if $prison.active_punishments.includes("underwear")>>
+					"你可以穿上胸罩或背心，但不能再多了。<span class="pink">从腰部以下保持裸体。"</span>
+					<br><br>
+				<<else>>
+					"你可以继续穿着上衣，<span class="pink">但从腰部往下还得是裸着的。</span>
+					<br><br>
+				<</if>>
+			<<else>>
+				<<if $prison.active_punishments.includes("underwear")>>
+					"你可以用胸罩或背心遮住胸部，<span class="pink">但暂时不能有衬衫之类的东西。"</span>
+				<<else>>
+					<span class="green">"你可以重新好好穿衣服了。"</span>这促使其他囚犯再次目不转睛地盯着你看。
+				<</if>>
+				<br><br>
+			<</if>>
+			<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+			<br>
+		<<case "leash">>
+			<<set $prison.active_punishments.delete("leash")>>
+			<<He>>一边向你走来，一边从口袋里掏出一把钳子。
+			<br><br>
+			<<link [[继续|Prison Remove Leash]]>><</link>>
+			<br>
+		<<case "underwear">>
+			<<if $prison.active_punishments.includes("nude")>>
+				<<set $prison.active_punishments.delete("nude")>>
+				<<if random(1, 2) is 2>>
+					<<set $prison.active_punishments.delete("topless")>>
+					"你可以继续穿衣服了，<span class="pink">不过只能穿内衣，而且目前必须保持下身裸露的状态。"</span>
+					<br><br>
+				<<else>>
+					<<set $prison.active_punishments.delete("bottomless")>>
+					"你可以继续穿衣服了，<span class="pink">不过只能穿内衣，而且目前必须保持上身裸露的状态。"</span>
+					<br><br>
+				<</if>>
+			<<else>>
+				<<set $prison.active_punishments.delete("underwear")>>
+				<<if $prison.active_punishments.includes("topless")>>
+					"你可以继续穿裤子了，<span class="pink">不过目前还得保持胸部裸露。"</span>
+					<br><br>
+				<<elseif $prison.active_punishments.includes("bottomless")>>
+					"你可以继续穿上衣了。<span class="pink">但你从腰部往下还得是裸着的。"</span>
+					<br><br>
+				<<else>>
+					<span class="green">"你可以重新好好穿衣服了。"</span>这促使其他囚犯再次目不转睛地盯着你看。
+					<br><br>
+				<</if>>
+			<</if>>
+			<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+			<br>
+		<<case "cuffs">>
+			<<set $prison.active_punishments.delete("cuffs")>>
+			<<He>>一边向你走来，一边从<<his>>的口袋里掏出一把钥匙。
+			<br><br>
+
+			<<link [[继续|Prison Remove Cuffs]]>><</link>>
+			<br>
+		<<case "bottomless">>
+			<<set $prison.active_punishments.delete("bottomless")>>
+			<<if $prison.active_punishments.includes("nude")>>
+				<<set $prison.active_punishments.delete("nude")>>
+				<<if $prison.active_punishments.includes("underwear")>>
+					"你可以继续穿内衣了，<span class="pink">但必须保持上身赤裸。"</span>
+				<<else>>
+					"你可以继续穿裤子了，<span class="pink">但必须保持上身赤裸。"</span>
+				<</if>>
+				<br><br>
+			<<else>>
+				<<if $prison.active_punishments.includes("underwear")>>
+					"你可以继续穿底裤了，<span class="pink">但衬衫之类的目前还是不能穿。"</span>
+				<<else>>
+					<span class="green">"你可以重新好好穿衣服了。"</span>这促使其他囚犯再次目不转睛地盯着你看。
+				<</if>>
+				<br><br>
+			<</if>>
+			<<link [[继续|Prison Walkway]]>><<endevent>><</link>>
+			<br>
+		<<case "gag">>
+			<<set $prison.active_punishments.delete("gag")>>
+			<<He>>走近。"反正你能说话，那我的工作也就轻松多了。"
+			<br><br>
+
+			<<link [[继续|Prison Remove Gag]]>><</link>>
+			<br>
+		<<default>>
+			<<set $prison.active_punishments.delete("bindings")>>
+			随着<<he>>向你走来，走廊向他的身后移动。"你腾出双臂的话才更有用处。"
+			<br><br>
+
+			<<link [[继续|Prison Remove Bindings]]>><</link>>
+			<br>
+	<</switch>>
+<<else>>
+	<<methodical_guard 0 cap>>合上簿册，一扇高大的门在大厅的另一端打开，囚犯们向大门走去。
+	<br><br>
+
+	<<link [[继续|Prison Walkway]]>><<endevent>><<set $prison.hours_worked to 0>><</link>>
+	<br>
+
+<</if>>
+
+:: Prison Cell Refuse
+<<effects>><<effects_prison>>
+
+<<if $prison.shock is 1>>
+	<<methodical_guard 0 cap>>叹了口气，然后把手伸进<<his>>的衬衫口袋。从你的颈部传来<span class="red">一阵穿遍你全身的可怕的震动。</span>虽然只持续了一会，但足以让你倒地抽搐。<<gtrauma>><<ggstress>><<gggpain>><<trauma 4>><<stress 4>><<pain 4>>
+	<br><br>
+
+	当<<methodical_guard 0>>把你铐起，拖出牢房时，你已经伤得无法反抗了。其他囚犯在你经过时取笑你，但听起来不算恶意。<<grespect>><<prison_inmates 1>>
+	<<bind>>
+	<br><br>
+	<<link [[继续|Prison Punishment]]>><<endevent>><<set $prison.hours_worked to 0>><</link>>
+<<else>>
+	<<if $prison.cell_trouble gte 5>>
+		<<generate_veteran_guard 1>><<generate_anxious_guard 2>><<generate_relaxed_guard 3>>
+		走道在<<methodical_guard 0 apo>>的脚下嘎嘎作响。<<Hes>>不是独自一人。"必须要逼我们拿你树榜样吗?"<<he>>的话中充斥着威胁，"因为我们是会这么做的。"
+		<br><br>
+
+		<<He>>来到你的牢房，<<veteran_guard 1>>、<<anxious_guard 2>>和<<relaxed_guard 3>>紧随其后。他们解下了警棍。
+		<br><br>
+
+		<<link [[继续|Prison Cell Fight]]>><<set $fightstart to 1>><</link>>
+		<br>
+	<<elseif $prison.cell_trouble gte 4>>
+		<<generate_veteran_guard 1>><<generate_anxious_guard 2>>
+		走道在<<methodical_guard 0 apo>>的脚下嘎嘎作响。<<Hes>>不是独自一人。"必须要逼我们拿你树榜样吗?"<<he>>的话中充斥着威胁，"因为我们是会这么做的。"
+		<br><br>
+
+		<<He>>来到你的牢房，<<veteran_guard 1>>和<<anxious_guard 2>>紧随其后。他们解下了警棍。
+		<br><br>
+
+		<<link [[继续|Prison Cell Fight]]>><<set $fightstart to 1>><</link>>
+		<br>
+	<<elseif $prison.cell_trouble gte 3>>
+		<<generate_veteran_guard 1>>
+		走道在<<methodical_guard 0 apo>>的脚下嘎嘎作响。<<Hes>>不是独自一人。"必须要逼我们拿你树榜样吗?"<<he>>的话中充斥着威胁，"因为我们是会这么做的。"
+		<br><br>
+
+		<<He>>来到你的牢房，<<veteran_guard 1>>紧随其后。他们解下了警棍。
+		<br><br>
+
+		<<link [[继续|Prison Cell Fight]]>><<set $fightstart to 1>><</link>>
+		<br>
+	<<elseif $prison.cell_trouble gte 2>>
+		走道在<<methodical_guard 0 apo>>的脚下嘎嘎作响。"你最好真的生病了，"<<he>>警告道，"否则你会后悔的。"
+		<br><br>
+
+		<<He>>发现你懒洋洋地躺在床上，就从身边解下警棍。
+		<br><br>
+
+		<<link [[继续|Prison Cell Fight]]>><<set $fightstart to 1>><</link>>
+		<br>
+	<<else>>
+		你仍待在牢房里。"144号，"<<methodical_guard 0>>厉声道，"马上离开你的牢房。"
+		<br><br>
+		<<link [[离开你的牢房|Prison Cell Role]]>><</link>>
+		<br>
+		<<link [[拒绝|Prison Cell Refuse]]>><<cell_trouble 1>><<prison_guards 1>><<prison_inmates 1>><</link>><<gsuspicion>><<grespect>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Prison Cell Punishment Refuse
+<<effects>><<effects_prison>>
+
+<<if $prison.shock is 1>>
+	<<methodical_guard 0 cap>>叹了口气，然后把手伸进<<his>>的衬衫口袋。从你的颈部传来<span class="red">一阵穿遍你全身的可怕的震动。</span>虽然只持续了一会，但足以让你倒地抽搐。<<gtrauma>><<ggstress>><<gggpain>><<trauma 4>><<stress 4>><<pain 4>>
+	<br><br>
+
+	当<<methodical_guard 0>>把你铐起，拖出牢房时，你已经伤得无法反抗了。其他囚犯在你经过时取笑你，但听起来不算恶意。<<grespect>><<prison_inmates 1>>
+	<<bind>>
+	<br><br>
+	<<link [[继续|Prison Punishment]]>><<endevent>><<set $prison.hours_worked to 0>><</link>>
+<<else>>
+	<<if $prison.cell_trouble gte 5>>
+		<<generate_veteran_guard 1>><<generate_anxious_guard 2>><<generate_relaxed_guard 3>>
+		走道在<<methodical_guard 0 apo>>的脚下嘎嘎作响。<<Hes>>不是独自一人。"必须要逼我们拿你树榜样吗?"<<he>>的话中充斥着威胁，"因为我们是会这么做的。"
+		<br><br>
+
+		<<He>>来到你的牢房，<<veteran_guard 1>>、<<anxious_guard 2>>和<<relaxed_guard 3>>紧随其后。他们解下了警棍。
+		<br><br>
+
+		<<link [[继续|Prison Cell Fight]]>><<set $fightstart to 1>><</link>>
+		<br>
+	<<elseif $prison.cell_trouble gte 4>>
+		<<generate_veteran_guard 1>><<generate_anxious_guard 2>>
+		走道在<<methodical_guard 0 apo>>的脚下嘎嘎作响。<<Hes>>不是独自一人。"必须要逼我们拿你树榜样吗?"<<he>>的话中充斥着威胁，"因为我们是会这么做的。"
+		<br><br>
+
+		<<He>>来到你的牢房，<<veteran_guard 1>>和<<anxious_guard 2>>紧随其后。他们解下了警棍。
+		<br><br>
+
+		<<link [[继续|Prison Cell Fight]]>><<set $fightstart to 1>><</link>>
+		<br>
+	<<elseif $prison.cell_trouble gte 3>>
+		<<generate_veteran_guard 1>>
+		走道在<<methodical_guard 0 apo>>的脚下嘎嘎作响。<<Hes>>不是独自一人。"必须要逼我们拿你树榜样吗?"<<he>>的话中充斥着威胁，"因为我们是会这么做的。"
+		<br><br>
+
+		<<He>>来到你的牢房，<<veteran_guard 1>>紧随其后。他们解下了警棍。
+		<br><br>
+
+		<<link [[继续|Prison Cell Fight]]>><<set $fightstart to 1>><</link>>
+		<br>
+	<<else>>
+		走道在<<methodical_guard 0 apo>>的脚下嘎吱作响。"你耽误了监狱系统的运作。"<<he>>在到达牢房之前，就解下了身边的警棍。
+		<br><br>
+
+		<<link [[继续|Prison Cell Fight]]>><<set $fightstart to 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Prison Cell Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Prison Cell Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Prison Cell Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Prison Cell Fight Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation "short">>
+
+	<<if $enemynomax gte 2>>
+		当狱警踉踉跄跄地走出你的牢房时，囚犯们欢呼雀跃。<<veteran_guard 1>>谨慎地盯着你，但<<methodical_guard 0>><<person1>>摇了摇头。"没时间了，"<<he>>说，摸索着寻找<<his>>的眼镜。"我们会盯着你的。"<<ggsuspicion>><<prison_guards -3>><<ggrespect>><<prison_inmates 3>>
+	<<else>>
+		当<<methodical_guard 0>>从你的牢房里踉踉跄跄地走出来时，囚犯们欢呼雀跃，要不是有栏杆，他可能就从走道上摔下去了。"没时间了，"<<he>>说着，摸索着捡起眼镜，"我会盯着你的。"<<ggsuspicion>><<prison_guards -3>><<ggrespect>><<prison_inmates 3>>
+	<</if>>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<prison_revolt_options>>
+
+<<elseif $enemyhealth lte 0>>
+	<<if $enemynomax gte 2>>
+		当狱警踉踉跄跄地走出你的牢房时，囚犯们欢呼雀跃。<<veteran_guard 1>>谨慎地盯着你，但<<methodical_guard 0>><<person1>>摇了摇头。"没时间了，"<<he>>说，摸索着寻找<<his>>的眼镜。"我们会盯着你的。"<<ggsuspicion>><<prison_guards -3>><<ggrespect>><<prison_inmates 3>>
+	<<else>>
+		当<<methodical_guard 0>>从你的牢房里踉踉跄跄地走出来时，囚犯们欢呼雀跃，要不是有栏杆，他可能就从走道上摔下去了。"没时间了，"<<he>>说着，摸索着捡起眼镜，"我会盯着你的。"<<ggsuspicion>><<prison_guards -3>><<ggrespect>><<prison_inmates 3>>
+	<</if>>
+	<<switch $enemynomax>>
+		<<case 1>>
+			<<greb>><<prison_reb 1>>
+		<<case 2>>
+			<<greb>><<prison_reb 2>>
+		<<case 3>>
+			<<ggreb>><<prison_reb 3>>
+		<<default>>
+			<<ggreb>><<prison_reb 4>>
+	<</switch>>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<prison_revolt_options>>
+<<else>>
+	当<<methodical_guard 0>>把你铐起，拖出牢房时，你已经伤得无法反抗了。其他囚犯在你经过时取笑你，但听起来不算恶意。<<grespect>><<prison_inmates 1>>
+	<<bind>>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Prison Punishment]]>><</link>>
+	<<cell_trouble -5>>
+<</if>>
+
+<<set $prison.hours_worked to 0>>
+
+:: Prison Shower
+<<effects>><<effects_prison>><<set $bus to "shower">>
+
+你在监狱的淋浴室里。
+<<if $prison.schedule is "wake">>
+	囚犯们脱掉衣服，把衣服放在木凳上，然后进入淋浴间。你听到了流水声。
+	<<if $prison.kylar is "active">>
+		凯拉尔站在角落里，看着你。
+	<</if>>
+	<br><br>
+	<<generate_veteran_guard 0>><<person1>><<veteran_guard 0 cap>>踱步穿过房间。
+	<br><br>
+	<<endevent>>
+	<<if !$daily.prison.veteranGreet and $prison.veteran gte 15>>
+		<<prison_guard_greet veteran>>
+	<<elseif random(1, 5) is 5 and $eventskip isnot 1>>
+		<<prison_guard_watch veteran>>
+	<<elseif $worn.upper.name is "naked" and $worn.lower.name is "naked" and $worn.under_upper.name is "naked" and $worn.under_lower.name is "naked">>
+		<<link [[洗澡(0:10)|Prison Shower Take]]>><<pass 10>><</link>>
+		<br>
+		<<link [[离开|Prison Block]]>><</link>>
+		<br>
+	<<else>>
+		<<if $exhibitionism gte 15>>
+			<<link [[公开脱衣(0:10)|Prison Shower Open]]>><</link>>
+			<br>
+		<<else>>
+			<span class="blue">你无法忍受在众人面前脱衣。</span>
+			<br>
+		<</if>>
+		<<link [[找个隐蔽点的地方脱衣(0:10)|Prison Shower Private]]>><</link>>
+		<br>
+		<<link [[离开|Prison Block]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	周围没人。警卫只会开一小时的水。
+	<br><br>
+
+	<<link [[离开|Prison Block]]>><</link>>
+	<br>
+
+	<<set $eventskip to 0>>
+<</if>>
+
+
+:: Prison Walkway
+<<set $outside to 0>><<effects>><<effects_prison>><<set $bus to "walkway">>
+
+你现在位于牢房外的金属走道上，在牢房区的顶部。有一处楼梯通向底楼。
+<br><br>
+<<if Time.hour is 20>>
+	你听到警铃响起."禁闭时间,"<<generate_veteran_guard 0>><<veteran_guard 0>>喊道."回到你的牢房."
+	<br><br>
+	你和其他囚犯混在一起.
+	<br><br>
+	<<link [[继续|Prison Cell]]>><<endevent>><</link>>
+	<br>
+<<elseif $stress gte $stressmax>>
+	<<passout_prison>>
+<<else>>
+	<<if $prison.schedule is "wake">>
+		其他囚犯摇摇晃晃地走向淋浴间。
+		<br><br>
+	<<elseif $prison.schedule is "free time">>
+		很多囚犯躺在床上休息。
+		<br><br>
+	<<elseif $prison.schedule is "lockdown">>
+		你听到了鼾声。
+		<br><br>
+	<<else>>
+
+	<</if>>
+
+	<<if $prison.schedule isnot "lockdown" and $prison.attention gte 100>>
+		<<events_prison_attention>>
+	<<else>>
+		<<if $prison.schedule isnot "lockdown" and $eventskip isnot 1>>
+			<<events_prison>>
+		<</if>>
+		<<if $prison_event_trigger>>
+			<<events_prison_triggered>>
+		<<else>>
+			你的牢房在角落里。
+			<br>
+
+			<<cellicon>><<link [[你的牢房|Prison Cell]]>><</link>>
+			<br><br>
+
+			<<if $prison.attention_level gte 1 and !$prison.protection and $prison.schedule is "free time">>
+				<<if !$prison.protection>>
+					<<if !$daily.prison.scarredDone>>
+						<<generate_scarred_inmate 0>><<person1>>
+						<<scarred_inmate 0 capo>>的牢房比大多数牢房都要简陋。几乎无人居住。
+						<<endevent>>
+						<br>
+						<<cellicon>><<link [[简朴的牢房|Prison Scarred]]>><</link>>
+						<br><br>
+					<</if>>
+					/*
+					<<generate_tattooed_inmate 0>><<person1>>
+					The walls of <<tattooed_inmate 0 apo>> cell, as well as parts of the ceiling, are decorated with pornography.
+					<<endevent>>
+					<br>
+					<<cellicon>><<link [[Porn-decorated cell|Prison Tattooed]]>><</link>>
+					<br><br>
+					*/
+				<</if>>
+			<</if>>
+			塔楼对面有一扇厚重的木门。一个褪色的绿色十字架点缀其间，上面画着一个银色十字架。
+			<br>
+			<<if $prison.schedule is "lockdown">>
+				<span class="blue">医疗室的大门紧锁。</span>
+				<br><br>
+			<<else>>
+				<<prisonmedicalicon>><<link [[医务室|Prison Medical]]>><</link>>
+				<br><br>
+			<</if>>
+			阶梯围绕着中央塔楼蜿蜒而上。
+			<br>
+			<<link [[下楼|Prison Block]]>><</link>>
+			<br><br>
+			<<prison_map walkway>>
+		<</if>>
+		<<set $eventskip to 0>>
+	<</if>>
+<</if>>
+
+
+
+:: Prison Block
+<<set $outside to 0>><<effects>><<effects_prison>><<set $bus to "cell_block">>
+
+你现在位于牢房区的底部。这里有楼梯通往上面的走道，还有大厅通往监狱的其他地方。
+<br><br>
+
+<<if Time.hour is 20>>
+	你听到警铃响起."禁闭时间,"<<generate_veteran_guard 0>><<veteran_guard 0>>喊道."回到你的牢房."
+	<br><br>
+	你和其他囚犯混在一起.
+	<br><br>
+	<<link [[继续|Prison Cell]]>><<endevent>><</link>>
+	<br>
+<<elseif $stress gte $stressmax>>
+	<<passout_prison>>
+<<else>>
+	<<if $prison.schedule is "wake">>
+		其他囚犯摇摇晃晃地走向淋浴间。
+		<br><br>
+	<<elseif $prison.schedule is "free time">>
+		很多囚犯躺在床上休息。
+		<br><br>
+	<<elseif $prison.schedule is "lockdown">>
+		你听到了鼾声。
+		<br><br>
+	<<else>>
+
+	<</if>>
+
+	<<if $prison.schedule isnot "lockdown" and $prison.attention gte 100>>
+		<<events_prison_attention>>
+	<<else>>
+		<<if $prison.schedule isnot "lockdown" and $eventskip isnot 1>>
+			<<events_prison>>
+		<</if>>
+		<<if $prison_event_trigger>>
+			<<events_prison_triggered>>
+		<<else>>
+			区域的一端有着一扇双开门，门上挂着几个牌子。一个写着 "淋浴"。另一块写着 "禁止性行为"。
+			<<if $prison.schedule is "wake">>
+				<span class="lblue">蒸汽喷涌而出。</span>
+			<</if>>
+			<br>
+			<<link [[淋浴间|Prison Shower]]>><</link>>
+			<br><br>
+			另一扇门周围弥漫着淡淡的化学气味。靠近的牢房都空着，金属已经变形和腐蚀。
+			<br>
+			<<prisonlaundryicon>><<link [[洗衣房|Prison Laundry]]>><</link>>
+			<br><br>
+
+			<<if $prison.kylar is "active" and !$prison_kylar_cell and ($prison.schedule is "free time" or $prison.schedule is "yard")>>
+				<<npc Kylar>><<person1>>
+				凯拉尔坐在<<his>>牢房的床上，对腿上的东西发牢骚。
+				<<endevent>>
+				<br>
+				<<cellicon>><<link [[凯拉尔的牢房|Prison Kylar]]>><</link>>
+				<br><br>
+			<</if>>
+
+			一条走廊通向远方，朝着日光。
+			<br>
+			<<link [[外面|Prison Yard]]>><</link>>
+			<br><br>
+			楼梯环绕着中央塔楼。你从这处进入。
+			<br>
+			<<link [[爬上楼梯，前往自己的牢房|Prison Walkway]]>><</link>>
+			<br><br>
+
+			<<prison_map block>>
+		<</if>>
+		<<set $eventskip to 0>>
+	<</if>>
+<</if>>
+
+:: Prison Laundry
+<<set $bus to "laundry">><<set $outside to 0>><<effects>><<effects_prison>>
+
+你现在所在的位置是洗衣房。墙壁的一部分是原石。粗大的管道从粗糙的表面延伸出来，形成不规则的图案。
+<<if $prison.schedule is "work">>
+	囚犯们在整理衣物，大型机器隆隆作响。
+	<br><br>
+	<<generate_relaxed_guard 0>><<relaxed_guard 0 cap>>坐在一张矮桌旁的凳上，凝视着房间的另一边，心不在焉地掷着骰子。
+	<<endevent>>
+	<br><br>
+<<else>>
+	机器仍在运转。
+	<br><br>
+<</if>>
+
+
+<<if isPlayerNonparasitePregnancyEnding()>>
+	<<pregnancyWatersBrokenPassout "prisonLaundry">>
+<<elseif Time.hour is 20>>
+	你听到铃声响起。"禁闭时间，"<<generate_relaxed_guard 0>><<relaxed_guard 0>>喊道，"回你们的牢房去。"
+	<br><br>
+	你和其他囚犯混在一起.
+	<br><br>
+	<<link [[继续|Prison Cell]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<if !$daily.prison.prisonRelaxedGreet and $prison.relaxed gte 15 and $prison.schedule is "work">>
+		<<prison_guard_greet relaxed>>
+	<<elseif random(1, 5) is 5 and $eventskip isnot 1 and $prison.schedule is "work">>
+		<<prison_guard_watch relaxed>>
+	<<else>>
+		<<if $prison.schedule is "work">>
+			<<if $prison.job is "laundry">>
+				<<link [[工作|Prison Laundry Work]]>><<endevent>><</link>>
+				<br>
+			<<else>>
+				<span class="blue">你将在别处辛勤劳动。</span>
+				<br>
+			<</if>>
+		<</if>>
+		<<link [[离开|Prison Block]]>><</link>>
+		<br>
+
+		<<prison_map laundry>>
+	<</if>>
+<</if>>
+
+
+:: Prison Medical
+<<set $bus to "medical">><<set $outside to 0>><<effects>><<effects_prison>>
+
+你现在身处医疗室。一排排病床绵延而下，其中很多都已经占用了。这里有个橱柜，用着与环境格格不入的现代化装置锁着。
+<br><br>
+
+<<if $prison.schedule is "work">>
+	<<generate_methodical_guard 0>><<person1>><<methodical_guard 0 cap>>站在其中一个旁边，写字板上涂写着。
+	<br><br>
+	<<endevent>>
+<<else>>
+
+<</if>>
+<<if Time.hour is 20>>
+	铃声响了起来。"禁闭时间，"<<generate_methodical_guard 0>><<methodical_guard 0>>喊道，"回到你的牢房去。"
+	<br><br>
+	<<methodical_guard 0 cap>>也离开了，并锁上了<<him>>身后的门。
+	<br><br>
+	<<link [[继续|Prison Cell]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<if random(1, 5) is 5 and $eventskip isnot 1 and $prison.schedule is "work">>
+		<<prison_guard_watch methodical>>
+	<<else>>
+		<<if $prison.schedule is "work">>
+			<<if $prison.job is "medical">>
+				<<link [[工作|Prison Medical Work]]>><</link>>
+				<br>
+			<<else>>
+				<span class="blue">你将在别处辛勤劳动。</span>
+				<br>
+			<</if>>
+		<</if>>
+		<<if $prison.shock is 1>>
+			<br>
+			角落里有一扇黑黄相间的门。
+			<br>
+			<<link [[接近|Prison Medical Door]]>><</link>>
+			<br><br>
+		<</if>>
+		<<link [[离开|Prison Walkway]]>><</link>>
+		<br>
+		<<prison_map medical>>
+	<</if>>
+<</if>>
+
+:: Prison Medical Door
+<<effects>>
+
+你走近那扇黑黄相间的门。门上没有明显的锁，但旁边有一个键盘。
+
+<<if $prison.code is 1>>
+	伦恩声称<<nnpc_he Wren>>卖给你的代码会起作用。
+	<<if $prison.schedule is "work">>
+		<<generate_methodical_guard 0>><<person1>>
+		在尝试之前，你需要等待<<methodical_guard 0>>离开。
+		<br><br>
+	<<else>>
+		<br><br>
+		<<link [[进入|Prison Medical Shock]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	你需要找到密码。
+	<br><br>
+<</if>>
+
+<<link [[离开|Prison Medical]]>><<endevent>><</link>>
+<br>
+
+:: Prison Medical Shock
+<<effects>>
+
+你输入了密码，门上方灯闪烁出了绿色的光芒，然后门打开了。
+<br><br>
+
+即使与监狱的其他部分相比,里面也是相当黑暗的.入口附近有一排锤子,螺丝刀和其他工具.当你的眼镜逐渐适应了黑暗以后，你看到了一台小型巴士大小的机器,也是黄黑配色的.一排金属线圈从顶部弹出.有一块铭牌.当你擦去尘土的时候被静电电了一下
+<br><br>
+
+"实验性冲击发生器.需要专门的项圈才能发挥作用."
+<br><br>
+
+这台机器看起来或听起来都不稳定。你大概可以用附近的工具彻底弄坏这台机器，但你不可能逃得了惩罚。
+<br><br>
+
+<<link [[搞破坏|Prison Medical Sabotage]]>><<prison_hope 20>><<prison_reb 20>><<set $prison.shock to 0>><<prison_guards -20>><<prison_inmates 20>><</link>><<gggsuspicion>><<gggreb>><<ggghope>><<gggrespect>>
+<br>
+<<link [[离开|Prison Medical]]>><</link>>
+<br>
+
+:: Prison Medical Sabotage
+<<effects>>
+
+<<earnFeat "Breaker">>
+你举起了最大的一个木柄铁锤开始干活.你砸瘪了管道,把玻璃敲了个稀碎并把仪表板砸了个千疮百孔.
+
+<<if currentSkillValue('physique') gte 10000>>
+	通过你的力量,你可以在守卫到来之前对机器造成巨大的破坏.<<ggrespect>><<prison_inmates 10>>
+<<else>>
+	即使以你有限的力量,也可以在守卫到来之前造成很多的破坏.
+<</if>>
+<br><br>
+
+<<generate_methodical_guard 0>>
+<<generate_veteran_guard 1>>
+
+<<methodical_guard 0 cap>><<person1>>在<<veteran_guard 1>>的带领下抵达。"你都干了些什么？"<<he>>厉声问道，把手伸进了衬衫口袋里，拿出一个遥控器，指着你，按下按钮。<span class="green">什么都没发生。</span><<He>>试了一次又一次，都是无济于事。
+<br><br>
+
+"回到最基本的，"<<veteran_guard 1>><<person2>>说，上前一步，准备好<<his>>警棍。"很好。最好悄悄地来。"
+<br><br>
+
+<<link [[安静的跟上|Prison Punishment]]>><<endevent>><</link>>
+<br>
+<<link [[战斗|Prison Medical Fight]]>><<set $fightstart to 1>><</link>>
+<br>
+
+
+:: Prison Medical Fight
+<<if $fightstart is 1>>
+	<<set $fightstart to 0>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust -= 100>>
+	<<set $enemyanger += 200>>
+	<<npcidlegenitals>>
+	囚犯们围在门口观看,有些人还裹着绷带.
+	<br><br>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend or ($pain gte 100 and $willpowerpain is 0)>>
+	<span id="next"><<link [[继续|Prison Medical Fight Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Prison Medical Fight]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Prison Medical Fight Finish
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation "short">>
+	他们踉踉跄跄地倒在那台破旧的机器上,耗尽了体力.囚犯们嘲弄他们,直到<<veteran_guard 1>>转过身并举起<<his>>的警棍.<<ggsuspicion>><<prison_guards -3>><<ggrespect>><<prison_inmates 3>>
+	<br><br>
+	"够了，"<<methodical_guard 0>>出声说道，"我要去打几个电话。"
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<prison_revolt_options>>
+<<elseif $enemyhealth lte 0>>
+	他们从你身边退到门口,囚犯们嘲笑着他们,直到<<veteran_guard 1>>转过身并举起<<his>>的警棍.<<ggsuspicion>><<prison_guards -3>><<ggrespect>><<prison_inmates 3>><<greb>><<prison_reb 1>>
+	<br><br>
+	"够了，"<<methodical_guard 0>>出声说道，"我要去打几个电话。"
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<prison_revolt_options>>
+<<else>>
+	你倒在地上，伤得太重，无法继续。<<He>>给你戴上手铐，拉你站起来。其他囚犯在你经过时取笑你，但听起来并无恶意。<<grespect>><<prison_inmates 1>>
+	<<bind>>
+	<br><br>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Prison Punishment]]>><</link>>
+	<br>
+<</if>>
+
+:: Prison Yard
+<<set $location to "prison">><<set $bus to "yard">><<set $outside to 1>><<effects>><<effects_prison>>
+
+你在监狱院子里.院子很宽敞,但周围的墙非常的高了,而且墙壁似乎向墙内有所弧度的弯曲.
+<br><br>
+
+<<if $prison.schedule is "yard">>
+	囚犯们有的在举重,有的在互相交流.<<generate_veteran_guard 0>><<veteran_guard 0 cap>>目光严厉地注视着囚犯们.<<endevent>>
+	<br><br>
+<<elseif $prison.schedule is "revolt">>
+	<<beastNEWinit 6 hawk>>
+	当<<beastsplural>>飞过头顶的时候,阴影从草上掠过.囚犯们成群结队地穿过院子,或者待在阴影里.有些被捕获并带上了天空.你不确定他们被带到了哪里.
+	<<endevent>>
+	<br><br>
+<</if>>
+<<if Time.hour is 20>>
+	你听到警铃响起."禁闭时间,"<<generate_veteran_guard 0>><<veteran_guard 0>>喊道."回到你的牢房."
+	<br><br>
+	你和其他囚犯混在一起.
+	<br><br>
+	<<link [[继续|Prison Cell]]>><<endevent>><</link>>
+	<br>
+<<elseif $stress gte $stressmax>>
+	<<passout_prison>>
+<<elseif $prison_wren_intro is 1 and $prison.schedule is "yard">>
+	<<if $wren_seen is "cards">>
+		<<npc "Wren">><<person1>>
+		"在这里见到你，我的心情很复杂，"一个年轻的<<if $pronoun is "m">>短发男人<<else>>头发齐肩的女人<</if>>说道。<span class="gold">我是伦恩。</span>
+		<br><br>
+
+		"很遗憾你没能偷偷溜走.也许我们可以对彼此有所帮助."
+		<br><br>
+		<<link [[继续|Prison Wren Intro Met]]>><<unset $prison_wren_intro>><<set $wren_seen to "prison">><</link>>
+		<br>
+	<<elseif $wren_seen is "catsuit">>
+		<<npc "Wren">><<person1>>
+		"在这里见到你，我的心情很复杂，"一个年轻的<<if $pronoun is "m">>短发男人<<else>>头发齐肩的女人<</if>>说道。<span class="gold">我是伦恩。</span>
+		<br><br>
+
+		"很遗憾你没能偷偷溜走.也许我们可以对彼此有用."
+		<br><br>
+
+		<<link [[继续|Prison Wren Intro Met]]>><<unset $prison_wren_intro>><<set $wren_seen to "prison">><</link>>
+		<br>
+	<<else>>
+		<<npc "Wren">><<person1>>
+		"新来的？"一个年轻的<<if $pronoun is "m">>短发男人问，<<else>>留着齐肩长发的女人<</if>>说道。"正是我喜欢的类型。<<He>>穿着囚服，但似乎与其他囚犯不同，更加自由。
+		<br><br>
+
+		<<link [[继续|Prison Wren Intro]]>><<unset $prison_wren_intro>><<set $wren_seen to "prison">><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<if $prison.schedule isnot "lockdown" and $prison.attention gte 100>>
+		<<events_prison_attention>>
+	<<else>>
+		<<if $prison.schedule isnot "lockdown" and $eventskip isnot 1>>
+			<<events_prison>>
+		<</if>>
+		<<if $prison_event_trigger>>
+			<<events_prison_triggered>>
+		<<else>>
+			<<if $prison.schedule is "yard" and !$daily.prison.veteranGreet and $prison.veteran gte 15>>
+				<<prison_guard_greet veteran>>
+			<<elseif $prison.schedule is "yard" and random(1, 5) is 5 and $eventskip isnot 1>>
+				<<prison_guard_watch veteran>>
+			<<else>>
+				<<if $prison.schedule isnot "revolt">>
+					<<if $worn.feet.type.includes("shackle")>>
+						<span class="blue">你的双腿被束缚，无法奔跑</span>
+						<br>
+					<<else>>
+						<<prisonrunicon>><<link [[跑 (0:30)|Prison Yard Run]]>><<endevent>><<tiredness 6>><<athletics 6>><<pass 30>><</link>><<gathletics>><<gphysique>>
+						<br>
+					<</if>>
+					<<if $leftarm is "bound" or $rightarm is "bound">>
+						<span class="blue">你的双臂被绑住，无法举起。</span>
+						<br>
+					<<else>>
+						<<prisonlifticon>><<link [[举哑铃 (0:30)|Prison Yard Exercise]]>><<endevent>><<pass 30>><<tiredness 6>><</link>><<gtiredness>><<ggphysique>>
+						<br>
+					<</if>>
+				<</if>>
+				<<if $prison.schedule is "yard">>
+					<<if $worn.face.type.includes("gag")>>
+						<span class="blue">有了这个东西，你就不能和警卫或囚犯说话了。</span>
+						<br>
+					<<else>>
+						<<link [[跟警卫说话(0:30)|Prison Yard Speak]]>><<pass 30>><<prison_rep veteran 1>><<endevent>><</link>><<glove>>
+						<br>
+						<<link [[与囚犯调情(0:30)|Prison Yard Flirt]]>><<set $phase to 0>><<pass 30>><<prison_hope 1>><<endevent>><</link>><<promiscuous1>><<ghope>>
+						<br>
+						<<if $promiscuity gte 15>>
+							<<link [[淫荡地与囚犯调情(0:30)|Prison Yard Flirt]]>><<set $phase to 1>><<pass 30>><<prison_reb 1>><<endevent>><</link>><<promiscuous2>><<greb>>
+							<br>
+						<</if>>
+					<</if>>
+				<</if>>
+				<<if $prison.schedule is "yard" and Time.weekDay is 6>>
+					<br>
+					<<npc Wren>><<person1>>
+					<span class="teal">伦恩靠在墙上。</span>如果警卫注意到了<<him>>，他们会假装没看见。
+					<br>
+
+					<<link [[跟伦恩说话|Prison Wren]]>><<endevent>><</link>>
+					<br>
+				<</if>>
+				<br>
+				地面缓缓倾斜，通向一扇宽大的门。空气中弥漫着陈腐食物的味道。
+				<br>
+				<<prisoncanteenicon>><<link [[食堂|Prison Canteen]]>><<endevent>><</link>>
+				<br><br>
+
+				墙壁突出，形成一座高塔，比监狱的其他部分要高得多。底部有一扇金属门。
+				<br>
+				<<if $prison.job is "spire">>
+					<<link [[攀登尖塔(0:05)|Prison Spire]]>><<tiredness 6>><<pass 5>><</link>><<gtiredness>>
+					<br>
+					<<if $prison.schedule isnot "revolt">>
+						<<if $prison.rope is 1>>
+							<br>
+							你可以把绳子从尖塔底部的洞里放下去。
+							<br>
+							<<link [[使用绳子|Prison Spire Rope]]>><<set $prison.rope to 2>><</link>>
+							<br>
+						<<elseif $prison.rope is 2>>
+							<<link [[从尖塔上下来(0:05)|Prison Spire Descend]]>><<tiredness 6>><<pass 5>><</link>><<gtiredness>>
+							<br>
+						<<else>>
+							<br>
+							在尖塔底部有一个深洞。
+							<br>
+							<<link [[望向洞里|Prison Spire Hole]]>><</link>>
+							<br>
+						<</if>>
+					<</if>>
+				<<else>>
+					<span class="blue">你在尖塔里不受信任。</span>
+					<br>
+				<</if>>
+				<br>
+				这里有一小块遮挡视线的地方。一扇上锁的大门与周围的石头融为一体。
+				<br>
+				<<if $prison.yard_door is 1>>
+					<<prisondooricon>><<link [[偷偷溜到海滩 (0:01)|Prison Beach]]>><<endevent>><<pass 1>><</link>>
+					<br>
+				<<else>>
+					<<prisondooricon>><<link [[大门|Prison Yard Door]]>><<endevent>><</link>>
+					<br>
+				<</if>>
+				<br>
+				<<link [[牢房区域|Prison Block]]>><<endevent>><</link>>
+				<br>
+				<<prison_map yard>>
+			<</if>>
+		<</if>>
+		<<set $eventskip to 0>>
+	<</if>>
+<</if>>
+
+:: Prison Spire Hole
+<<set $outside to 1>><<effects>>
+
+你小心翼翼地接近洞口并从边缘往外看。 劣质石雕排列着通向深渊的竖井。 太深了，看不到底部。 你听到奇怪的嘎吱声和偶尔的水流声，但你看不到黑暗之外的任何东西。 一想到下面可能有什么，你就会感到不安.<<stress 2>><<gstress>>
+<br><br>
+
+你想知道下面会有什么，<span class="blue">但如果没有东西帮你从尖塔上下来，你就无从得知了。</span>
+<br><br>
+
+你回到院子里。
+<br><br>
+
+<<link [[继续|Prison Yard]]>><</link>>
+<br>
+
+:: Prison Spire Rope
+<<location "underground">><<set $outside to 0>><<effects>>
+
+你把绳子绑紧，然后把另一头扔进洞里。几秒钟后，你听到下面传来砰的一声。你试了试绳子。看起来很安全。你随时都可以下去。
+<br><br>
+
+<<link [[继续|Prison Yard]]>><<location "prison">><</link>>
+<br>
+
+:: Prison Spire Descend
+<<location "underground">><<set $outside to 0>><<effects>>
+
+
+你爬下尖塔，进入监狱下方的黑暗中。
+
+<<if $prison_egg is 1 or $prison.watchers_friend is 2>>
+	你的脚差点被底部光滑的岩石滑倒。这就是你发现蛋的洞穴。你感到不安，不想再无缘无故地探险，于是爬回地面。
+	<br><br>
+<<else>>
+	你的脚差点被底部光滑的岩石滑倒。这下面有东西藏在阴影里。不过，如果你继续下去，可能就很难找到回去的路了。
+	<br><br>
+
+	<<link [[惯例考察|Prison Rut]]>><<set $rut to 0>><<set $rut_entry to "rope">><</link>>
+	<br>
+<</if>>
+
+<<link [[重新爬上去|Prison Yard]]>><<location "prison">><</link>>
+<br>
+
+:: Prison Yard Door
+<<effects>>
+
+你走近大门。门是锁着的。
+<br><br>
+
+<<if $prison.yard_key is 1>>
+	<<link [[使用钥匙|Prison Yard Door Key]]>><<set $prison.yard_door to 1>><</link>>
+	<br>
+<<else>>
+	<<set $lock to 1000>>
+
+	这扇门正紧锁着.
+	<br><br>
+
+	<<if currentSkillValue('skulduggery') gte $lock>>
+		<span class="green">这把锁看起来很容易被撬开。</span>
+		<br><br>
+
+		<<link [[闯入(0:05)|Prison Yard Door Pick]]>><<set $prison.yard_door to 1>><<pass 5>><</link>>
+		<br>
+	<<else>>
+		<span class="red">这把锁看上去超出了你的能力范围。</span><<skulduggeryrequired>>
+		<br><br>
+	<</if>>
+<</if>>
+
+<<link [[离开|Prison Yard]]>><</link>>
+<br>
+
+:: Prison Yard Door Key
+<<effects>>
+
+钥匙很合适,但是需要很大的力量才能转动.门吱呀呀地打开了.一条笔直的石头隧道向下倾斜.在底部能看到有光线照出来。
+<br><br>
+
+你关上了你身后的门,走向了光线,最后出现在了海滩上.
+<br><br>
+
+<<link [[继续|Prison Beach]]>><</link>>
+<br>
+
+
+:: Prison Yard Door Pick
+<<effects>>
+
+锁很精致，在这里必须如此。但还是比不上你。门吱呀一声开了，一条笔直的石洞向下倾斜，底部有光。
+<br><br>
+
+你关上了你身后的门,走向了光线,最后出现在了海滩上.
+<br><br>
+
+<<link [[继续|Prison Beach]]>><</link>>
+<br>
+
+
+:: Prison Yard Speak
+<<effects>>
+
+<<generate_veteran_guard 0>><<person1>>
+<<generate2>>
+<<if $prison.veteran gte 60 and !$NPCList[0].name_known>>
+	<<generatep3 0>>
+	你发现<<veteran_guard 0>>正在检查<<his>>掌中的东西。当<<He>>看到你走近时，<<he>>握紧了<<his>>的拳头。<<He>>全神贯注，起初没有注意到你。<<he>>也没有注意到<<person2>><<person>>向<<person1>><<him>>退去。
+	<br><br>
+	碰撞是偶然的，但<<veteran_guard 0>>伸手拿起警棍，对<<person2>><<persons>>的腹部进行了惩罚性的一击。棍子从<<person1>><<his>>手中滑落，落在草地上。
+	<br><br>
+
+	<<link [[捡起来|Prison Yard Locket]]>><</link>>
+	<br>
+<<else>>
+	<<generate3>>
+	你走近了<<veteran_guard 0>>.
+
+	尽管<<his>>的举止有些粗鲁,但是<<He>>看起来很乐于聊天.
+	<br><br>
+
+	<<if $rng gte 81>>
+		一个<<person2>><<person>>尝试爬墙.<<veteran_guard 0 cap>><<person1>>看起来并不担心."你这次会成功的,"<<he>>笑着说."加油吧."
+	<<elseif $rng gte 61>>
+		你跟着<<he>>在院子里走来走去的,只有在用<<person1>><<his>>的警棍殴打<<person2>><<person>>的时候会停下来.
+	<<elseif $rng gte 41>>
+		<<He>>斜眼看着<<person2>><<person>>做深蹲.
+	<<elseif $rng gte 21>>
+		"他们认为只要他们能爬过这堵墙我们就允许他们离开,"<<he>>笑着抬头看了看塔尖."但是这并不取决于我们."
+	<<else>>
+		<<He>>停下了并制止了<<person2>><<person>>和<<person3>><<person>>之间的斗殴.
+	<</if>>
+	<br><br>
+
+	<<link [[继续|Prison Yard]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Prison Yard Locket
+<<effects>>
+
+<<set $NPCList[0].name_known to 1>>
+<<save_veteran_guard>>
+
+这是一个打开的小盒。里面有一张年轻<<person3>><<personsimple>>的照片。是一幅画而不是照片，但细节丰富。上面写着 "献给我<<veteran_guard 0>>""永远属于你"
+<br><br>
+
+气喘吁吁的<<veteran_guard 0>>从卷曲的<<person2>><<person>>身边走过。你伸出吊坠。<<person1>><<He>>从你手中夺过它，并给了你一个恶狠狠的眼神。
+<br><br>
+
+<<link [[继续|Prison Yard]]>><<endevent>><</link>>
+<br>
+
+:: Prison Spire
+<<set $bus to "spire">><<set $outside to 1>><<effects>><<effects_prison>>
+
+<<if $prison.spire_intro isnot 1>>
+	你敲得金属门铛铛作响。一台上面的监控摄像头转过来面向你。你听到机械的嗡嗡声，然后咔嗒一声。门开了，一股气流吹过。
+	<br><br>
+
+	里面除了一个盘旋的楼梯什么都没有,尽管向下的台阶很快就通向一个巨大的深坑.你决定爬上去.
+	<br><br>
+
+	<<link [[继续|Prison Spire Intro]]>><<set $prison.spire_intro to 1>><<set $prison.birds to 0>><</link>>
+	<br>
+<<else>>
+	<<beastNEWinit 5 "hawk">><<generate_anxious_guard 5>><<person1>>
+	你在塔尖顶上的小木屋里.
+	<<if $prison.schedule is "work">>
+		<<anxious_guard 5 cap>>坐在几个监控显示器前面,但是<<person6>><<his>>的眼看着外面的<<person1>><<beastsplural 0>>.
+	<<else>>
+		你通过窗户看着<<person1>><<beastsplural 0>>.
+	<</if>>
+	<<endevent>>
+	<br><br>
+	<<if Time.hour is 20>>
+		<<generate_anxious_guard 0>>
+		铃声响了起来. "禁闭时间,"<<anxious_guard 0>><<person1>>叹气道."最后,回到你的牢房里."
+		<br><br>
+		你在那个生物反应过来之前和<<anxious_guard 0>>一起跑向了楼梯.<<He>>带着你走下楼梯,穿过院子和其他囚室,进入了你的单间.
+		<br><br>
+		<<link [[继续|Prison Cell]]>><<endevent>><</link>>
+		<br>
+	<<elseif $prison.birds gte 30 and !$prison.watchers_friend>>
+		<<beastNEWinit 6 hawk>><<person1>>
+		<<beastsplural>>静静的看着你,然后伸出了一只爪子,腾空而起.你吓了一跳,但是<<bhe>>抓住了你,把你提到了空中.
+		<br><br>
+		<<bHe>>在其他人的歌声中绕着烽火台飞一圈，然后降落在烽火台顶上。
+		<br><br>
+
+		<<link [[继续|Prison Spire Beacon]]>><<set $prison.watchers_friend to 1>><</link>>
+		<br>
+	<<else>>
+		<<if $prison.schedule is "work">>
+			<<if !$daily.prison.anxiousGreet and $prison.anxious gte 15>>
+				<<prison_guard_greet anxious>>
+			<<elseif random(1, 5) is 5 and $eventskip isnot 1>>
+				<<prison_guard_watch anxious>>
+			<<else>>
+				<<if $prison.birds gte 30>>
+					<span class="green">观察者们喜欢你.</span>
+				<<elseif $prison.birds gte 20>>
+					<span class="teal">观察者们觉得你很有用.</span>
+				<<elseif $prison.birds gte 10>>
+					<span class="lblue">观察者们认识你.</span>
+				<<else>>
+					<span class="blue">观察者们把你当做一块肉.</span>
+				<</if>>
+				<br><br>
+				<<if $prison.job is "spire">>
+					<<link [[工作|Prison Spire Work]]>><</link>>
+					<br>
+				<<else>>
+					<span class="blue">你将在别处辛勤劳动。</span>
+					<br>
+				<</if>>
+				<<if $prison.watchers_friend is 1 and $prison_egg is 1>>
+					<<link [[举起鸡蛋|Prison Spire Egg]]>><</link>>
+					<br>
+				<</if>>
+				<<if $harpy gte 6 and $birdFly gte 1>>
+					<br>
+					你的翅膀和风都很强劲.你认为你可以从这里一路飞到大陆.
+					<br>
+					<<link [[飞回陆地|Prison Soar]]>><</link>>
+					<br><br>
+				<</if>>
+				<<link [[离开 (0:05)|Prison Yard]]>><<pass 5>><</link>>
+				<br>
+			<</if>>
+		<<else>>
+			<<if $harpy gte 6 and $birdFly gte 1>>
+				你的翅膀和风都很强劲.你认为你可以从这里一路飞到大陆.
+				<br>
+				<<link [[飞回陆地|Prison Soar]]>><</link>>
+				<br><br>
+			<</if>>
+			<<link [[离开 (0:05)|Prison Yard]]>><<pass 5>><</link>>
+			<br>
+		<</if>>
+		<<prison_map spire>>
+	<</if>>
+<</if>>
+
+
+:: Prison Soar
+<<effects>>
+
+<<beastNEWinit 2 hawk>><<person1>>
+你又跑又跳,让风抓住你的翅膀.你飞了起来.
+
+
+<<if $prison.schedule is "revolt">>
+	<<beastsplural>>忙于镇压暴动以至于没有注意到你.<span class="green">没有什么能够阻止你逃跑了.</span>
+	<br><br>
+
+	<<link [[逃离 (0:30)|Prison Soar Escape]]>><<tiredness 12>><<prison_end>><<prisoncrimeup>><<pass 30>><<prison_guards -40>><</link>><<crime>><<gggsuspicion>><<ggtiredness>>
+	<br>
+	<<link [[登陆|Prison Spire]]>><<endevent>><</link>>
+	<br>
+<<elseif $prison.watchers_friend gte 2>>
+	两个<<beastsplural>>和你一起飞了一会儿.
+	<<if $monster is 1>>
+		"一路平安,"其中一个在风中喊道.
+	<<else>>
+
+	<</if>>
+	然后他们两个都转过身,回到了塔尖.
+	<span class="green">没有什么能阻止你逃跑了.</span>
+	<br><br>
+
+	<<link [[逃离 (0:30)|Prison Soar Escape]]>><<tiredness 12>><<prison_end>><<prisoncrimeup>><<pass 30>><<prison_guards -40>><</link>><<crime>><<gggsuspicion>><<ggtiredness>>
+	<br>
+	<<link [[登陆|Prison Spire]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<span class="red">两个<<beastsplural>>在你的身后飞.</span>你躲开了其中一个,但是另一个用<<his>>的爪子抓住了你的肩膀.<<He>>抓着你回到了塔尖.<<gpain>><<gtrauma>><<gstress>><<pain 4>><<trauma 6>><<stress 6>>
+	<br><br>
+	<<if $monster is 1>>
+		"我们在看着,"<<bhe>>警告道."别忘了."<<bHe>>回到了灯塔.
+	<<else>>
+		<<bHe>>尖啸着警告,然后便回到了灯塔.
+	<</if>>
+	如果你不分散<<beastsplural>>的注意力或者成为它们的朋友,那么你就不可能飞走.
+	<br><br>
+
+	<<link [[继续|Prison Spire]]>><</link>>
+	<br>
+<</if>>
+
+:: Prison Soar Escape
+<<effects>>
+<<earnFeat "Not Meant to be Caged">>
+你飞离小岛,越过薄雾,飞向大陆.
+
+<<if Time.dayState is "night">>
+	<<if $weather is "clear">>
+		你看到城市的灯光照亮了前方的地平线.
+	<<else>>
+		你在黑暗中无法辨认出海岸,但你知道它就在那里.
+	<</if>>
+<<else>>
+	你看到了地平线上的小镇。
+<</if>>
+<br><br>
+
+<<prison_bondage_removal>>
+<<if _punishments_removed is true>>
+	你感觉到气流一片一片地剥离了你的束缚.
+<</if>>
+
+这是一段劳累的旅程,但是风站在你这边.你感到像鸟儿一样自由,你俯冲到了沙滩上.
+<br><br>
+
+<<link [[继续|Beach]]>><<endevent>><<set $eventskip to 1>><</link>>
+<br>
+
+
+:: Prison Spire Beacon
+<<effects>>
+
+灯塔上布满了巢穴,大部分由浮木制成.另一块<<beastsplural>>的土地围绕着你。你没有恶意。抱着你的那个人低着<<his>>的头，刮了刮其中一个巢穴的中间.里面有一个凹痕，好像有什么东西曾经坐在那里。
+<br><br>
+
+<<if $monster is 1>>
+	"鸡蛋被偷了，"<<bhe>>说道。"蛋很少见。请在下面找。在下面很远的地方！下面太远了。"其他人唱起了忧伤的小调。
+<<else>>
+	他们丢了一枚蛋吗?它肯定是藏在一个他们无法够到的地方了.
+<</if>>
+
+<<if $prison_egg is 1>>
+	你已经在很下面的地方找到了一枚蛋,你把蛋拿了出来.<span class="green"><<beastsplural>>惊讶得跳了起来,然后兴奋而又欣慰地叽叽喳喳地叫着.</span>
+	<br><br>
+
+	<<link [[继续|Prison Spire Egg 2]]>><<set $spraymax += 1>><<spray 5>><<set $prison.watchers_friend to 2>><</link>>
+	<br>
+<<else>>
+	<br><br>
+	另一只<<beasttype>>抓住你的肩膀，搬着你回到平台。
+	<br><br>
+
+	<<link [[继续|Prison Spire]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Prison Spire Egg
+<<effects>>
+
+<<beastNEWinit 6 hawk>><<person1>>
+你站在灯塔前面,举起了鸡蛋.一个<<beasttype>>注意到了你,兴奋地唱着歌跳了起来,这也引起了其他的注意,他们从巢穴里爬了出来并加入了合唱,其中一个俯冲下来然后把你从原地提了起来.
+<br><br>
+
+<<bHe>>把你带到灯塔,轻轻地把你放在空巢旁边.其他人降落在你周围形成一个圆圈把你围了起来.
+<br><br>
+
+<<link [[继续|Prison Spire Egg 2]]>><<set $spraymax += 1>><<spray 5>><<set $prison.watchers_friend to 2>><</link>>
+<br>
+
+:: Prison Spire Egg 2
+<<effects>>
+<<unset $prison_egg>>
+你将蛋放入巢中。<<beasttype>>弄乱了<<bhis>>的羽毛，然后坐在了蛋上。
+<<earnFeat "Friends in the Sky">>
+<<if $monster is 1>>
+	"谢谢你,"<<he>>说道."我们现在是朋友了.来这."<<He>>拖动着一颗沉重的浮木.
+<<else>>
+	<<bHe>>低头移动一块沉重的浮木。
+<</if>>
+下面有一个奇怪的圆柱体，底部有一个裸露的电脑芯片。看起来像是辣椒喷雾器的充电装置。<<beasttype>>把它滚到你面前，你把它插上。
+<<gspraymax>>
+<br><br>
+
+<span class="green">你已经和观察者成为朋友，</span>并且<span class="gold">获得了额外的防狼喷雾。</span>
+<br><br>
+
+另一只<<beasttype>>抓住你的肩膀，搬着你回到平台。
+<br><br>
+
+<<link [[继续|Prison Spire]]>><<endevent>><</link>>
+<br>
+
+:: Prison Spire Intro
+<<set $outside to 1>><<effects>>
+
+攀爬的过程让人喘不过气来。你穿过另一扇金属门，来到一个宽敞的平台上。不远处还有一座更小的塔。塔顶上有一盏灯，现在很暗。那是灯塔。
+<br><br>
+
+狂风呼啸。你现在在监狱上方。
+<br><br>
+
+<<link [[继续|Prison Spire Intro 2]]>><</link>>
+<br>
+
+:: Prison Spire Intro 2
+<<set $outside to 1>><<effects>>
+<!-- fuckity fuck. <<generate_x_guard N>> expects $NPCList[N] slot. <<beastNEWinit N>> expects the number of beasts to generate, NOT slot number. <<generateBEAST N>> expects npc number ($NPCList[N+1]), NOT $NPCList[N] slot. <<beastsplural N>> - expects $NPCList[N] slot. and <<personN>> expects npc number. <<bHe>> and <<beastsplural>> expect npclist slot and do not respect <<personN>>. WHY -->
+<<generate_anxious_guard 0>><<generateBEAST 2 "hawk">>
+<<person1>>"在这里，"你左边传来一道声音。是<<anxious_guard 0>>。<<Hes>>身体探出水泥小屋，一只脚还在屋里。<<He>>抬头望着天空。"快。"
+<br><br>
+
+你听到呼的一声，像是风声大作，于是匆忙向<<him>>走去。"操。"<<anxious_guard 0>>说道，然后<<he>>退回建筑内。"快跑！"
+<br><br>
+在可怕恐惧的驱使下，你向门口跑去，不经意间向后瞥了一眼。<<beasttype 1>>在空中俯冲，伸出爪子。<<ggstress>><<stress 12>>
+<br><br>
+你在<<beasttype 1>>降落前一刻成功地逃回了小屋，<<anxious_guard 0>>在你身后关上了门。<<beasttype 1>>重新起飞，爪子轻松在石头上留下印记。你隔着窗户看着其他<<beastsplural 1>>降落，落在灯塔上和灯塔周围。
+<br><br>
+
+<<link [[继续|Prison Spire Intro 3]]>><</link>>
+<br>
+
+
+:: Prison Spire Intro 3
+<<set $outside to 1>><<effects>><<effects_prison>>
+
+<<person1>>"它们每次狩猎归来都相当有攻击性，"<<anxious_guard 0>>说道。"这间屋子并不安全。希望你能比上次撑更长时间。"<<He>>指着不远处的地面。"离边远点儿。墙早没了。"
+<br><br>
+
+"以前试过给它们戴项圈。"<<He>>摇摇头。"总之，工作内容就是让他们吃饱，收集鲨鱼的牙齿，没收走私货物。不知道他们从哪儿弄来的，但如果我们什么都不做，这些东西最终会落到其他囚犯手里。"
+<br><br>
+
+<<link [[继续|Prison Spire]]>><<endevent>><</link>>
+<br>
+
+
+
+:: Prison Tattooed
+<<effects>>
+
+<<link [[继续|Prison Walkway]]>><</link>>
+<br>
+
+
+:: Prison Spire Precipice
+<<effects>>
+
+<<anxious_guard 0 cap>>大喊，但<<his>>说的话难以听清。<<He>>撒手前没被带到多高多远的地方，但风力会让<<him>><span class="red">滚落悬崖。</span>
+<br><br>
+
+只能看到<<his>>的手指绝望地扒着悬崖边。
+<br><br>
+
+<<link [[进行帮助|Prison Spire Precipice Help]]>><<famegood 20>><<prison_rep anxious 1>><</link>><<ggglove>>
+<br>
+<<link [[提出要求|Prison Spire Precipice Demand]]>><<def 3>><</link>>
+<br>
+
+:: Prison Spire Precipice Help
+<<effects>>
+
+你冲向边缘抓住了<<anxious_guard 0 apo>>的手。在一块你就能抓起<<him>>越过顶部。
+<br><br>
+
+<<He>>摇摇晃晃的向着小屋走去，不过走了几步以后<<his>>便膝盖颤抖着倒下了。再次扶起<<him>>后你抓着<<his>>到了安全的地方。
+<br><br>
+<<set $NPCList[0].name_known to 1>>
+<<save_anxious_guard>>
+<<pass 10>>
+<<He>>坐了几分钟才勉强开口。"谢谢"<<he>>说着。"顺便，我是<<anxious_guard 0>>，不是故意要分享我们的名字的…但去他妈的，我以为我就这样了。"
+<br><br>
+
+<<prison_spire_options>>
+
+:: Prison Spire Precipice Demand
+<<effects>>
+
+"我-我什么都没有，"<<anxious_guard 0>>说道。"求求你，也许……等等，我有一把钥匙！海滩的钥匙。如果你救了我，我就把它给你，我不会告诉任何人你有它。"
+<br><br>
+
+<<if $skulduggery gte 1000>>
+	这钥匙对你这样有天赋的人来说没什么用处，不过估计其他人用的上。
+<</if>>
+<br><br>
+
+你抓住了<<anxious_guard 0 apo>>的手。在一块你就能抓起<<him>>越过顶部。
+<br><br>
+
+<<He>>摇摇晃晃的向着小屋走去，不过走了几步以后<<his>>便膝盖颤抖着倒下了。再次扶起<<him>>后你抓着<<his>>到了安全的地方。
+<br><br>
+<<set $NPCList[0].name_known to 1>>
+<<save_anxious_guard>>
+<<pass 10>>
+<<He>>坐了几分钟才勉强开口。"谢谢"<<he>>说着。"顺便，我是<<anxious_guard 0>>，不是故意要分享我们的名字的…但去他妈的，我以为我就这样了。"
+<br><br>
+
+你伸出你的手，"是的，"<<he>>说道。"我保证过。"<<He>>从<<his>>口袋里掏出一把沉重的铁钥匙。"如果你被抓住了，不要告诉他们你是从哪儿得到它的。"
+<br><br>
+
+<<set $prison.yard_key to 1>>
+<br><br>
+
+<<prison_spire_options>>
+
+:: Passout Prison
+<<effects>>
+你把自己逼得太紧了。
+<br><br>
+<<passout>>
+<<link [[醒来|Passout Prison 2]]>><</link>>
+<br>
+<<pass 1 hour>>
+<<trauma 6>><<set $stress -= 2000>>
+
+:: Passout Prison 2
+<<location "prison">><<effects>>
+
+<<generate_veteran_guard 0>><<person1>>
+"醒醒小屎蛋，"一个<<personsimple "normal">>的声音传来。是<<veteran_guard 0>>"除了你的牢房哪儿都不准睡觉，起来吧你。"<<He>>提着你的衣领让你站起来。
+<br><br>
+
+不等你恢复，<<He>>就让你开始行军。
+<br><br>
+
+<<link [[继续|Prison Punishment]]>><<endevent>><</link>>
+<br>
+
+:: Prison Revolt Refuse
+<<effects>>
+
+就目前而言，沉浸在胜利的喜悦中足够了。
+<br><br>
+
+<<destination_prison>>
+
+:: Prison Revolt
+<<effects>>
+<<set $prison.schedule to "revolt">>
+<<if $worn.face.type.includes("gag")>>
+	你对着附近的两名囚犯不停地呜呜。他们伸手拽住了你的口塞。虽然费了点力气，但他们还是设法腾出了足够的位置，让你能把它拔出来。
+	<<set $worn.face.type.push("broken")>>
+	<<faceruined>>
+	<br><br>
+<</if>>
+<<if $speech_attitude is "meek">>
+	"是时候结束他们的霸权了，"你喊道。"让咱告诉他们咱们可不会任人摆布!"
+<<elseif $speech_attitude is "bratty">>
+	"我真他妈受够了这些傻逼教人做事！"你大喊。"来把他们操烂！"
+<<else>>
+	"这地方该变变样子了，"你说道。"现在是我们当家了！"
+<</if>>
+<br><br>
+<<generate1>><<person1>><<generate2>>
+囚犯们欢呼雀跃。一个<<person>>用<<his>>的手握住附近窗户的栅栏将其徒手拉开。另一个人则扔出石头打碎盏灯。无政府状态爆发了。
+<br><br>
+<<set $prison.attention to 0>>
+<<destination_prison>>
+
+:: Pregnancy Birth Prison
+<<set $outside to 0>><<effects>>
+<<set $first_birth to !$pregnancyStats.humanToysUnlocked>>
+<<generate_methodical_guard 0>><<person1>>
+<<generate_relaxed_guard 1>>
+<<generate_anxious_guard 2>>
+<<generate_veteran_guard 3>>
+你在一张医疗床上醒来。几个模糊的身影在周围移动。其中一个靠得更近，<<his>>的模糊特征逐渐凝聚成<<methodical_guard 0>>的样貌。"放轻松。如果你不清楚怎么回事的话，你在医务室。你要分娩了。"
+<br><br>
+
+你感到手臂被轻轻刺了一下以后意识开始逐渐模糊。"你很快就会感觉到镇静剂的作用......"<<his>>的声音随着疼痛开始慢慢消失。
+<br><br>
+
+<<person3>>
+另一个声音戳入模糊的意识里。听起来像是 <<anxious_guard 2>> "我-我简直不敢相信。你真的知道自己在做什么吗？也许我们应该带<<phim>>去大陆-"
+<br>
+"闭嘴！<<pShe>>永远旅行不了了。看着<<phim>>， <<pshes>>已经准备要跑了！" 听上去像是<<veteran_guard 2>>的声音。
+<br>
+"控制住<<He>>是在陆地支援到达之前我们要做的最重要的事。" <<relaxed_guard 1>>说道。
+<br><br>
+
+"请安静，我要给你脱衣服。"
+<<if playerChastity("hidden")>>
+	<<He>>注意到你的<<print $worn.genitals.cn_name_cap>>，打开一个齐胸高的橱柜。<<He>>取出一个形状像一对尖头但体积更大的工具，“我们需要移除这个装置，不会疼的。"
+	<br><br>
+	<<He>>用钳子夹住你的<<print $worn.genitals.cn_name_cap>>，并按下手柄上的按钮。你听到工具内部发出嗡嗡声，<span class="pink">然后他们将金属夹子断开了。</span>
+	<<set $worn.genitals.type.push("broken")>>
+<</if>>
+<br><br>
+<<wash>><<undress "prison_birth">>
+
+<<link [[继续|Pregnancy Birth Prison 2]]>><</link>>
+<br>
+
+:: Pregnancy Birth Prison 2
+<<effects>>
+
+<<methodical_guard 0 cap>>给你戴上一个面罩。你感到意识逐渐模糊。
+<br><br>
+
+<<set _pregnancy to getPregnancyObject()>>
+<<if _pregnancy.totalBirthEvents gte 5>>
+	<<set _min to 15>>
+	<<set _max to 60>>
+<<elseif _pregnancy.totalBirthEvents gte 3>>
+	<<set _min to 30>>
+	<<set _max to 120>>
+<<else>>
+	<<set _min to 60>>
+	<<set _max to 180>>
+<</if>>
+
+<<set _max to Math.floor(_max * (1 + Math.floor(_pregnancy.fetus.length * 0.2)))>>
+<<set _min to Math.floor(_min * (1 + Math.floor(_pregnancy.fetus.length * 0.2)))>>
+
+<<set _timeCalc to random(_min, _max)>>
+<<set _hours to Math.floor(_timeCalc / 60)>>
+<<set _minutes to _timeCalc % 60>>
+
+<<switch playerNormalPregnancyType()>>
+	<<case "human">>
+		<<methodical_guard 0 capo>>的声音在雾中飘过，"运气很好，孩子的位置很正常，头快出来了。我需要你配合... ..."
+		<br><br>
+
+		时间似乎快速加速和减速，疼痛加剧。你听到"呼吸"和"用力"这些词很多次，尽力配合着做。
+		<br><br>
+
+		<<link [["继续("+_hours+":"+(_minutes lt 10 ? "0": "")+_minutes+")"| Pregnancy Birth Prison 3]]>><<endevent>><<pass _timeCalc>><<playerPrebirth>><</link>>
+	<<case "wolf">>
+		<<methodical_guard 0 capo>>的声音从雾中传来。"不敢相信，生下来的居然不是人类。严格按照我的指示行事…"
+		<br><br>
+
+		时间似乎快速加速和减速，疼痛加剧。你听到"呼吸"和"用力"这些词很多次，尽力配合着做。
+		<br><br>
+
+		<<link [["继续("+_hours+":"+(_minutes lt 10 ? "0": "")+_minutes+")"| Pregnancy Birth Prison Wolf]]>><<endevent>><<pass _timeCalc>><<playerPrebirth>><</link>>
+<</switch>>
+
+:: Pregnancy Birth Prison 3
+<<effects>>
+<<generate5>><<person5>>
+<<set $litter_size to getPregnancyObject().fetus.length>>
+你在医疗室醒来。一个微笑的接生员站在你的床边，
+<<if $litter_size is 1>>
+	<<his>>怀抱着一个包裹着的婴儿。
+	<br><br>
+
+	"看来妈妈醒了。"说着，<<he>>把孩子递给你。他们坐在你的怀里，闭着眼睛，胸膛随着温柔的呼吸上下起伏。
+	<br><br>
+
+	"我尽快赶来了。那个警卫把你的孩子接生得很好，我给你和孩子做了全套检查，"接生员说，"你们都很健康。对了，你想好孩子的名字了吗？"
+	<br><br>
+
+<<elseif $litter_size is 2>>
+	<<his>>怀抱着两个包裹着的婴儿。
+	<br><br>
+
+	"妈咪醒了，看起来。"<<he>>说着，先递给你一个，然后递给你另一个。一个坐在你的左臂，另一个坐在你的右臂，他们的眼睛都闭着，胸部轻轻地起伏着，呼吸平稳。
+	<br><br>
+
+	"我尽快赶来了。那个警卫把你的孩子接生得很好，我给你做了全套检查。"接生员说，"你很健康。对了，你想好他们的名字了吗？"接生员问。
+	<br><br>
+
+<<else>>
+
+	<<his>>怀里抱着三个被包裹起来的婴儿。
+	<br><br>
+
+	"妈咪醒了，看起来。"<<he>>说着，先递给你一个，然后递给你另一个。一个坐在你的左臂，另一个坐在你的右臂，接生员则把第三个婴儿拿到了你的胸前。他们的眼睛都闭着，胸部轻轻地起伏着，呼吸平稳。
+	<br><br>
+
+	"我尽快赶来了。那个警卫把你的孩子接生得很好，我给你做了全套检查。"接生员说，"你很健康。对了，你想好他们的名字了吗？"接生员问。
+	<br><br>
+<</if>>
+
+<<set $bornChildrenIds to []>>
+<<run getPregnancyObject().fetus.forEach(child => $bornChildrenIds.push(child.childId))>>
+
+<<setBabyIntro "pc" "Bailey">>
+<<birthUi "pc" "prison" "home" "Pregnancy Birth Prison 4" 120>>
+
+:: Pregnancy Birth Prison 4
+<<effects>>
+<<getChildrenIds>><<childSelect _childrenIds.last()>>
+<<set _pregFame to ($litter_size * 5)>>
+<<famepregnancy _pregFame>>
+<<if $litter_size is 1>>
+
+	你抱着婴儿，享受着<<childhis>>微小的呼吸和动作。<<childhis>>大部分时间都在睡觉，但偶尔会睁开眼睛，凝视着你的眼睛。你还抱着<<childHe>>，享受这个美妙的时刻。
+	<br><br>
+	接生员回来了。
+	<<if $first_birth>>
+		<<He>>教你怎么换<<childname>>尿布，怎么给<<childhim>>洗澡。
+	<<else>>
+		<<He>>帮助你更换<<childname>>的尿布，和给 <<childhim>>洗澡。
+	<</if>>
+	"当你感到困倦时，请告诉我，"<<he>>说，"你也需要休息，在此期间我们可以照顾你的孩子。你今天的工作被免除了。"
+	<br><br>
+	你想要抱紧<<childname>>，但是整个人昏昏欲睡。
+	<br><br>
+<<elseif $litter_size is 2>>
+	你抱着婴儿，享受着他们微小的呼吸和动作。他们大部分时间都在睡觉，但偶尔会睁开眼睛，凝视着你的眼睛。你还抱着他们，享受这个美妙的时刻。
+	<br><br>
+	接生员回来了。
+
+	<<if $first_birth>>
+		<<He>>教你如何更换他们的尿布，以及如何给他们洗澡。
+	<<else>>
+		<<He>>帮他们换尿布，帮他们洗澡。
+	<</if>>
+	"当你感到困倦时，请告诉我，"<<he>>说，"你也需要休息，在此期间我们可以照顾你的孩子。你今天的工作被免除了。"
+	<br><br>
+	你只想抱抱双胞胎，却发现自己还是在打瞌睡。
+	<br><br>
+<<elseif $litter_size is 3>>
+	你抱着婴儿，享受着他们微小的呼吸和动作。他们大部分时间都在睡觉，但偶尔会睁开眼睛，凝视着你的眼睛。你还抱着他们，享受这个美妙的时刻。
+	<br><br>
+	接生员回来了。
+
+	<<if $first_birth>>
+		<<He>>教你如何给他们换尿布，如何给他们洗澡。
+	<<else>>
+		<<He>>帮他们换尿布，帮他们洗澡。
+	<</if>>
+	"当你感到困倦时，请告诉我，"<<he>>说，"你也需要休息，在此期间我们可以照顾你的孩子。你今天的工作被免除了。"
+	<br><br>
+	你最想做的就是抱着三胞胎，但你发现自己还是打起了盹儿。
+	<br><br>
+<</if>>
+
+<<link [[继续|Pregnancy Birth Prison 5]]>><<storeon "prison_birth">><<pass 24 hour>><<stress -40>><</link>>
+<br><br>
+
+:: Pregnancy Birth Prison 5
+<<effects>>
+
+<<if $litter_size gte 2>><<childrenNames $bornChildrenIds>>睡<<else>><<childname>>睡<</if>>在摇篮里，接生员帮你站起来。
+
+<<if $first_birth or playerNormalPregnancyTotal() is 0>>
+	当你站起来时，你感到自己的内脏在下降，但是<<he>>向你保证这是正常的。
+	<br><br>
+
+	除了疼痛，你走路比生产前舒服多了。你已经忘了没怀孕前是多么容易移动。
+	<br><br>
+
+	接生员帮你穿衣服。
+<<elseif between(playerNormalPregnancyTotal(), 1, 2)>>
+	当你站着的时候，你感觉到你的内脏在下坠。你记得你上次生产时的感觉，并且知道这是正常的。
+	<br><br>
+
+	除了疼痛，你走路比生产前舒服多了。你已经忘了没怀孕前是多么容易移动。
+	<br><br>
+
+	接生员帮你穿衣服。
+<<elseif between(playerNormalPregnancyTotal(), 3, 7)>>
+	当你站着的时候，你感觉到你的内脏在下坠，你仍然不习惯这种感觉。
+	<br><br>
+
+	你很容易就开始走路了。虽然有些笨拙，但是这个转变并没有以前那么糟糕。没有另一个人在你身体里面的时候，移动还是更容易的。
+	<br><br>
+
+	接生员仍然坚持帮你穿衣服。
+<<elseif between(playerNormalPregnancyTotal(), 8, 49)>>
+	你毫无障碍地站了起来。感觉上几乎没有什么不同，尽管你确实感觉灵活多了。
+	<br><br>
+
+	<<He>>对你的灵活性感到印象深刻，只是为了保持稳定，他才把一只手臂搭在你身上。"我很少看到有人能这么快就站起来。你一定很强壮！"
+	<br><br>
+
+	接生员仍然坚持帮你穿衣服。
+<<elseif playerNormalPregnancyTotal() gte 50>>
+	你没有任何帮助就站了起来，感觉内心空虚。你已经开始怀念怀孕的感觉了。
+	<br><br>
+
+	当你没有任何帮助地走路时，<<He>>目瞪口呆地看着你。你很快穿好衣服。
+	<br><br>
+
+	"你已经可以走了，"<<he>>说道。
+<</if>>
+"你的孩子将被送到孤儿院接受临时照顾，直到你获释，到时候他们会被交还给你。"
+<br><br>
+
+<<link [[继续|Pregnancy Birth Prison 6]]>><<endevent>><</link>>
+
+:: Pregnancy Birth Prison 6
+<<effects>>
+
+你回到自己的牢房。你已经错过了与<<childrenNames $bornChildrenIds>>的拥抱。你重拾了离开这里的决心。<<stress -10>><<llstress>><<trauma -10>><<lltrauma>>
+<br><br>
+
+<<link [[继续|Prison Cell]]>><<unset $litter_size>><<unset $first_birth>><<endevent>><<unset $bornChildrenIds>><</link>>
+<br>
+
+:: Pregnancy Birth Prison Wolf
+<<set $outside to 0>><<set $location to "asylum">><<asylumeffects>><<effects>>
+<<endevent>>
+<<generate1>><<person1>>
+<<set $litter_size to getPregnancyObject().fetus.length>>
+<<set _baby_type to getPregnancyObject().fetus[0].type>>
+当你醒来时，你已经在另一个房间了。你听到微弱的哭声，一个微笑着地接生员正站在你的床边。
+<<if $litter_size is 1>>
+	<<his>>抱着一个裹着布的 _baby_type 孩子在怀里。
+	<br><br>
+
+	<<he>>说："看起来妈妈醒了"，然后把孩子递给你。它在你的怀里，闭着眼睛，胸部轻微地起伏着呼吸。
+	<br><br>
+
+	"我尽快赶来了。那个警卫把你的孩子接生得很好，我做了全套检查确认你的身体情况。"接生员说，"你很健康，对了，你给孩子想好名字了吗？"
+	<br><br>
+
+<<else>>
+	接生员推着一个装着<<number $litter_size>> _baby_type 小孩的婴儿床。
+	<br><br>
+
+	<<he>>说："看起来妈妈醒了"，然后把孩子递给你。孩子窝在你怀里，闭着眼睛，胸部轻微地起伏着呼吸。
+	<br><br>
+
+	"我尽快赶来了。那个警卫把你的孩子接生得很好，我给你做了全套检查。"接生员说，"你很健康。对了，你想好他们的名字了吗？"接生员问。
+	<br><br>
+
+<</if>>
+
+<<set $bornChildrenIds to []>>
+<<run getPregnancyObject().fetus.forEach(child => $bornChildrenIds.push(child.childId))>>
+
+<<birthUi "pc" "prison" "wolf_cave" "Pregnancy Birth Prison Wolf 2" 180>>
+
+:: Pregnancy Birth Prison Wolf 2
+<<effects>>
+<<getChildrenIds>><<childSelect _childrenIds.last()>>
+<<famebestiality $litter_size>>
+<<if $litter_size is 1>>
+	你抱着你的<<childtype>>，享受着<<childhis>>微小的呼吸和动作。<<childhis>>大部分时间都在睡觉，但偶尔会睁开眼睛，凝视着你的眼睛。你还抱着<<childHe>>，享受这个美妙的时刻。
+	<br><br>
+	接生员回来了。
+	<<he>>说："如果你感到困倦，请告诉我。你也需要休息，我们可以在此期间照顾你的孩子。"
+	<br><br>
+	你想要抱紧<<childname>>，但是整个人昏昏欲睡。
+	<br><br>
+<<else>>
+	你抱了一会儿你的小狼崽们，它们呼吸轻缓。它们大部分时间都在睡觉，偶尔会睁开眼睛看你。
+	<br><br>
+	接生员回来了。
+	"你困了就告诉我，"<<he>>说，"你也需要休息，我们可以帮你照顾你的小狗。"
+	<br><br>
+	你想再多抱抱它们，但很快你就昏昏欲睡了。
+	<br><br>
+<</if>>
+
+<<link [[继续|Pregnancy Birth Prison Wolf 3]]>><<storeon "prison_birth">><<pass 24 hour>><<stress -40>><</link>>
+<br>
+
+:: Pregnancy Birth Prison Wolf 3
+<<effects>>
+
+<<if $litter_size gte 2>><<childrenNames $bornChildrenIds>>睡<<else>><<childname>>睡<</if>>在摇篮里，接生员帮你站起来。
+
+<<if $first_birth or playerNormalPregnancyTotal() is 0>>
+	当你站起来时，你感到自己的内脏在下降，但是<<he>>向你保证这是正常的。
+	<br><br>
+
+	尽管有疼痛，但你感觉走路比分娩前舒服多了。你已经忘记了没有狼在你身体里面的时候，移动是多么容易了。
+	<br><br>
+
+	接生员帮你穿衣服。
+<<elseif between(playerNormalPregnancyTotal(), 1, 2)>>
+	当你站着的时候，你感觉到你的内脏在下坠。你记得你上次生产时的感觉，并且知道这是正常的。
+	<br><br>
+
+	尽管有疼痛，但你感觉走路比分娩前舒服多了。你已经忘记了没有狼在你身体里面的时候，移动是多么容易了。
+	<br><br>
+
+	接生员帮你穿衣服。
+<<elseif between(playerNormalPregnancyTotal(), 3, 7)>>
+	当你站着的时候，你感觉到你的内脏在下坠，你仍然不习惯这种感觉。
+	<br><br>
+
+	你很容易就开始走路了。虽然有些笨拙，但是这个转变并没有以前那么糟糕。没有一窝狼崽子在你身体里面的时候，移动还是很容易的。
+	<br><br>
+
+	接生员仍然坚持帮你穿衣服。
+<<elseif between(playerNormalPregnancyTotal(), 8, 49)>>
+	你毫无障碍地站了起来。感觉上几乎没有什么不同，尽管你确实感觉灵活多了。
+	<br><br>
+
+	<<He>>对你的灵活性感到印象深刻，只是为了保持稳定，他才把一只手臂搭在你身上。"我很少看到有人能这么快就站起来。你一定很强壮！"
+	<br><br>
+
+	接生员仍然坚持帮你穿衣服。
+<<elseif playerNormalPregnancyTotal() gte 50>>
+	你没有任何帮助就站了起来，感觉内心空虚。你已经开始怀念怀孕的感觉了。
+	<br><br>
+
+	当你没有任何帮助地走路时，<<He>>目瞪口呆地看着你。你很快穿好衣服。
+	<br><br>
+
+	"你已经可以走了，"<<he>>说道。
+<</if>>
+"一旦幼崽能自食其力，他们就会被放归森林。"
+<br><br>
+
+<<link [[继续|Pregnancy Birth Asylum 6]]>><<endevent>><</link>>
+<br>

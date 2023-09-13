@@ -1,0 +1,153 @@
+:: Eerie Mirror
+
+<<effects>>
+你走到镜子前，凝视着它的深处。它不再映照，而是发出一种奇异的光。是紫色或粉色，也可能是红色。
+<br><br>
+光线成形并延伸到你面前的空间。那是一条单独的触手。它舞动着靠近了。
+<br><br>
+<<link [[观察|Eerie Mirror 2]]>><</link>><<deviant1>>
+<br>
+<<link [[退开|Eerie Mirror Stop]]>><</link>>
+<br>
+
+:: Eerie Mirror Stop
+
+<<effects>>
+你从镜子前抽身。光芒瞬间消失了。
+<br><br>
+<<link [[走开|Bedroom]]>><<unset $mirrorMenu>><<unset $bodywritingSet>><<postMirror>><</link>>
+<<mirror>>
+
+:: Eerie Mirror 2
+
+<<effects>>
+触手轻抚着你的脸颊。它脉动着。每一次拂动都会渗入你的肌肤，沿着你的身体荡漾而下。你颤抖起来。它闻起来是如此甜美。
+<<deviancy1>>
+<<link [[舔舐|Eerie Mirror 3]]>><</link>><<deviant1>>
+<br>
+<<link [[退开|Eerie Mirror Stop]]>><</link>>
+<br>
+
+:: Eerie Mirror 3
+
+<<effects>>
+你伸出舌头时心脏砰砰乱跳着，而触手摆动着靠近你。它轻弹尖端，来回摆动着直到
+它触到你的嘴唇。它在亲吻你。<<takeKissVirginity "Eerie Mirror Tentacle" "tentacle">>
+<<deviancy1>>
+一种粉色的液体从尖端滴落。
+<br><br>
+<<if $deviancy gte 15>>
+	<<link [[舔舐|Eerie Mirror 4]]>><</link>><<drugs 60>><<deviant2>>
+	<br>
+<</if>>
+<<link [[退开|Eerie Mirror Stop]]>><</link>>
+<br>
+
+:: Eerie Mirror 4
+
+<<effects>>
+你舔舐着触须的尖端，品尝着粉红色的液体。它很甜美，且温暖。你将它舔食殆尽，并感觉到那颤抖的温暖
+蔓延到了你的嘴和喉咙。
+<<deviancy2>>
+其他一些触手也从光中形成。他们舞动着靠近。
+<br><br>
+<<if $deviancy gte 15>>
+	<<link [[舔舐|Eerie Mirror 5]]>><<drugs 60>><</link>><<deviant2>>
+	<br>
+<</if>>
+<<link [[退开|Eerie Mirror Stop]]>><</link>>
+<br>
+
+:: Eerie Mirror 5
+<<effects>>
+<<if $moonstate is "morning">>
+	你继续舔舐着触手的尖端，品尝着甜美的液体。它推着你的舌头，就仿佛它想
+	插进你的嘴。
+	<<deviancy2>>
+	光线变亮了，变成一种怪异的红色，其他触手缠绕在你的手臂、腿和臀部上。愉悦的颤抖
+	从他们接触到的所有地方散发而出。它们以轻柔的节奏挤压着、爱抚着。
+	<br><br>
+	<<if $deviancy gte 75>>
+		<<link [[含在口中|Eerie Mirror 6]]>><</link>><<oralvirginitywarning>><<deviant5>>
+		<br>
+	<</if>>
+	<<link [[退开|Eerie Mirror Stop]]>><</link>>
+	<br>
+<<else>>
+	第一个触手缩回，令你心驰神往。这没有持续太久。其他的触手缠绕在你的手臂、腿
+	和臀部上。被它们抚摸过的部位都发出一阵愉悦的颤抖。
+	它们以轻柔的节奏挤压着、爱抚着。
+	<<deviancy2>>
+	光线暗淡了，触手也与其一同消失了。
+	<br><br>
+	<<link [[走开|Bedroom]]>><<unset $mirrorMenu>><<unset $bodywritingSet>><<postMirror>><</link>>
+	<br><br>
+
+	<br><br>
+	<<mirror>>
+<</if>>
+
+:: Eerie Mirror 6
+<<effects>>
+你将第一根触手放入你的
+<<if $player.virginity.oral is true>>
+	那依旧保持着初吻的嘴并开始吮吸起来<span class="red">它的味道很奇怪。</span>
+<<else>>
+	的嘴并吮吸了起来。
+<</if>>
+你大口大口地咽下那温暖甜蜜的液体。
+<<takeVirginity "诡异的镜中触手" "oral">>
+<<oralstat>>
+<<oralejacstat>>
+<<ejacstat>>
+<<deviancy5>>
+<<undress "wardrobe">>
+其他的触须非常灵巧地脱下你的衣服。它们进一步缠绕着你的手臂、腿
+和臀部，同时摆动着靠近你的<<genitals>>。
+<br><br>
+<<link [[继续|Eerie Mirror Tentacles]]>><<set $sexstart to 1>><</link>>
+
+:: Eerie Mirror Tentacles
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+
+	<<set $enemytrust += 100>>
+	<<tentaclestart 10 15>>
+	<<set $mouthstate to "tentacledeep">><<set $mouthuse to "tentacle">><<set $tentacles[0].shaft to "shoulders">><<set $tentacles[0].head to "mouthdeep">><<set $mouthtarget to "tentacles">>
+<</if>>
+<span class="lewd">一团红雾从镜子里冒出来，让你觉得很有趣。</span><<drugs 1>>
+<br>
+<<statetentacles>>
+
+
+<<effects>>
+<<effectstentacles>>
+<<tentacles>>
+<<actionstentacles>>
+<<if $tentacles.active lte ($tentacles.max / 2)>>
+	<span id="next"><<link [[继续|Eerie Mirror Tentacles Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Eerie Mirror Tentacles]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Eerie Mirror Tentacles Finish
+<<effects>>
+
+毫无征兆地，触手紧紧地抓住你，把你拉向镜子。
+<br><br>
+你试着尖叫求救，<span class="pink">但春药让那听起来像淫荡的呻吟。</span>一些触手摩擦着你的<<genitals>>，但更多的仍在不断拉扯着你。
+<br><br>
+<<endcombat>>
+
+<<link [[继续|Eerie Mirror Tentacle Plains]]>><<set $sexstart to 1>><</link>>
+
+:: Eerie Mirror Tentacle Plains
+<<location "tentworld">><<effects>>
+<<tentacleworldintro>>
+被拉着穿过镜子后，你发现自己在一片陌生的地域。
+巨大的触须在天空中扭动。<span class="red">在这里高潮可能会很危险。</span>
+<br><br>
+<<link [[继续|Tentacle Plains]]>><<set $tentacleEntrance to "mirror">><</link>>

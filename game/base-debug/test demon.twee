@@ -1,0 +1,108 @@
+:: Demon Start
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+<!-- Generate Demon -->
+<<generateDemon 1>><<person1>>
+You investigate the noise coming from the school's hallway.
+
+Suddenly, with a HERMMMMM-POP a portal swirls open in front out you. From the portal <span class="blue">a <<person>> strides out,</span> <<his>> red eyes never leaving contact with yours.
+<br><br>
+
+The <<person>> opens <<his>> mouth and roars hotly. <span class="red">Your clothes are shredded to nothing in a blast of heat and wind as you wince from the impact,</span> your skin glowing hotly.
+<<tanned 2400>><<gggtanned>>
+<br>
+<<set $worn.lower.integrity to 0>><<set $worn.upper.integrity to 0>><<set $worn.under_lower.integrity to 0>><<set $worn.under_upper.integrity to 0>>
+<<headruined>><<legsruined>><<feetruined>>
+<<integritycheck>>
+<br>
+You look up, feeling a combination of awe and terror. The <<persons>> $NPCList[0].breastsdesc are standing straight out in defiance of gravity, <<his>> $NPCList[0].penisdesc dangling semi-engorged over <<his>> vagina... while the <<person>> is standing in front of you, everything shifts about lazily, as if you were looking at painting being swirled.
+<br><br>
+
+The <<person>> speaks in a commanding voice breaking your reverie, "Serve me well mortal and you shall be rewarded."
+<br><br>
+
+You consider your options...
+<br><br>
+
+<<link [[Run away screaming|Oxford Street]]>><</link>>
+<br>
+<<link [[Stay and see what happens...|Demon Sex]]>><<set $sexstart to 1>><</link>>
+<br>
+
+:: Demon Sex
+<<effects>><<person1>>
+<<if $sexstart is 1>>
+	<span class="pink">Prepare yourself, mortal.</span>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<set $enemytrust += 500>>
+	<<set $enemyarousalmax to 10000>>
+	<<set $ostart to $orgasmcount>><<set $oindex to 0>><<set $o to 0>>
+<</if>>
+/% DEBUG: $NPCList[0].penis $NPCList[0].vagina<br> %/
+/% DEBUG: ocount $orgasmcount $o $oindex $ostart <br> %/
+<<set $o to ($orgasmcount - $ostart)>>
+<<if $o gt $oindex>>
+	You have cum $o times. <span class="purple">The <<person>> grows in power as <<he>> drains you.
+	<<awareness -10>><<llawareness>></span>
+	<br>
+	<<set $oindex to $o>>
+<</if>>
+
+<<set $enemyanger to 0>>
+<<effects>>
+<<effectsman>><<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if $enemyhealth lte 0>>
+	<span id="next"><<link [[Next|Demon Sex Finish]]>><</link>></span><<nexttext>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<span id="next"><<link [[Next|Demon Sex Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Demon Sex]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Demon Sex Finish
+<<schooleffects>><<effects>>
+<<unset $o>><<unset $ostart>><<unset $oindex>>
+<<person1>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation-demon>>
+	You wake on a grassy field, refreshed but drenched in semen and goo... the <<person>> is gone, <span class="blue">leaving you with a deep sense of longing you can't shake or understand.</span>
+	<br><br>
+	<<set $tiredness to 1>>
+	<<set $pain to 0>>
+	<<drench "semen" "slime" 5>>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[Next|Park]]>><</link>>
+<<else>>
+	<<He>> recoils and vanishes. You are left with a deep sense of longing you can't shake or understand.
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[Next|Hallways]]>><</link>>
+<</if>>
+
+:: Ejaculation Demon [widget]
+<<widget "ejaculation-demon">>
+	<<famesex 1>>
+
+	<<if $exposed is 1>>
+		<<fameexhibitionism 1>>
+	<<elseif $exposed gte 2>>
+		<<fameexhibitionism 2>>
+	<</if>>
+
+	You pass out from exertion, completely spent, <span class="blue">while the <<person>> roars and continues to work away on your limp body.</span>
+	<br><br>
+
+	<<if $options.images is 1 and $options.combatImages is 1>>
+		<<combatimg>>
+		<br>
+	<</if>>
+<</widget>>

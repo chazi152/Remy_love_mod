@@ -1,0 +1,949 @@
+<!-- Version 2.0.3 - REV 190715 -->
+
+:: Dance Studio
+<<set $outside to 0>><<set $location to "dance_studio">><<effects>>
+你在舞蹈室里。这儿不仅可以花钱提高自己的舞蹈技巧，还提供高跟鞋学习课程和瑜伽课程。教官据说拥有专业的背景。学费一课时£12。
+<br><br>
+<<set _store_location to "dance_studio">>
+<<if $stress gte $stressmax>>
+	<<passoutshop>>
+<<else>>
+	<<if $arousal gte $arousalmax>>
+		<<orgasmLocation "danceStudio">>
+	<</if>>
+	<<if Time.hour is $closinghour>>
+		现在是关门时间，接待员正在清场。<<if $exposed gte 1>>一想到自己这副样子可能会被人看到，你心里就不由得一紧。<</if>>
+		<br>
+		<<storeon _store_location "check">>
+		<<if _store_check is 1>>
+			<br>
+			你突然想起来衣服貌似落在了更衣室里面。
+			<br>
+			<<link [[在离开前穿好衣服|Barb Street]]>><<storeload _store_location>><</link>>
+			<br>
+		<</if>>
+	<<elseif $openinghours is 0>>
+		你独自一人在黑暗中。
+		<br><br>
+	<<elseif $exposed gte 1>>
+		<<if $uncomfortable.nude is false>>
+			你正藏在衣柜里。你并不在意其他人看到你暴露的样子，但这次你选择待着不动。
+		<<else>>
+			你藏在衣柜里以维护自尊。
+		<</if>>
+		<br><br>
+	<</if>>
+	<<if $openinghours is 1 and $exposed lt 1>>
+		<<if $dance_job_intro>>
+			<<if $weekly.danceJob is "done">>
+				<span class="blue">查里下周会给你另一项工作。</span>
+				<br>
+			<<else>>
+				<<link [[找工作|Dance Job Ask]]>><</link>>
+				<br>
+			<</if>>
+		<</if>>
+		<<if $exposed lt 1>>
+			<<if $money gte 1200>>
+				<<if $danceskill gte 800 and $dance_job_intro is undefined and $dancestudiointro gte 1>>
+					<<link [[上一节舞蹈课 (£12 1:00)|Dancing Lesson Job Intro]]>><</link>><<gtiredness>><<note "+ + 舞蹈技能" "green">>
+					<br>
+				<<else>>
+					<<link [[上一节舞蹈课 (£12 1:00)|Dancing Lesson]]>><<set $phase to 0>><<set $money -= 1200>><<set $dancestage to 0>><</link>><<gtiredness>><<note "+ + 舞蹈技能" "green">>
+					<br>
+				<</if>>
+			<<else>>
+				<span class="blue">你付不起一次舞蹈课的钱。</span>
+				<br>
+			<</if>>
+		<</if>>
+		<<if (Time.weekDay is 3 or Time.weekDay is 5) and $worn.feet.type.includes("heels")>>
+			<<if $money gte 1200 and $exposed lt 1>>
+				<<link [[上一节高跟鞋课 (£12 0:30)|Heel Lesson]]>><<set $phase to 0>><<set $money -= 1200>><<pass 30>><</link>><<gtiredness>><<gfeetskill>>
+				<br>
+			<</if>>
+		<<else>>
+			<<link [[询问有关高跟鞋课的内容|Heel Lesson Inquiry]]>><</link>>
+			<br>
+		<</if>>
+		<<if (Time.weekDay is 2 or Time.weekDay is 4 or Time.weekDay is 6)>>
+			<<link [[上一节瑜伽课 (£22 1:00)|Yoga Classes Change Room]]>><</link>><<gtiredness>><<llstress>><<if !$daily.yogaWillpower>><<gwillpower>><<else>>| 你今天不能增加意志了<</if>>
+			<br>
+		<<else>>
+			<<link [[询问瑜伽课|Yoga Classes Inquire]]>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+	<<if Time.hour isnot $closinghour>>
+		<<link [[更衣室|Dance Studio Changing Room]]>><</link>>
+		<br>
+	<</if>>
+	<<if $openinghours is 0 and Time.hour isnot $closinghour and !$weekly.theft.danceStudio>>
+		<<link [[检查收银机|Dance Studio Register]]>><</link>>
+		<br>
+	<</if>>
+	<br>
+	<<storeon _store_location "check">>
+	<<if _store_check is 1 and ($worn.upper.name is "naked" or $worn.lower.name is "naked") and $exposed is 1>>
+		你把衣服留在更衣室里。虽然你的<span class="lewd"><<lewdness>></span>对这里而言不成问题，但对外面而言就太暴露了。
+		<br><br>
+		<<if $exhibitionism gte 15>>
+			<<link [[就要这样离开|Dance Studio Outside Exhibitionism]]>><</link>><<if $daily.ex.studio isnot 1>><<exhibitionist2>><</if>>
+			<br>
+		<</if>>
+	<<else>>
+		<<link [[离开|Barb Street]]>><</link>>
+		<br><br>
+	<</if>>
+<</if>>
+
+:: Dance Studio Changing Room
+<<effects>>
+你在舞蹈室的更衣室中。墙边放着一排长椅，墙上有挂衣服用的挂钩。
+<br><br>
+<<dancingclothes>>
+<<link [[离开|Dance Studio]]>><</link>>
+
+:: Dance Studio Outside Exhibitionism
+<<effects>>
+<<flaunting>>你走出室内。你穿的不是普通的户外服装，有些人会上下打量你，审视你的样子。
+<<if $daily.ex.studio isnot 1>>
+	<<set $daily.ex.studio to 1>><<exhibitionism3>>
+<<else>>
+	<br><br>
+<</if>>
+当你离开相对安全的舞蹈室时，心跳开始加速。
+<br><br>
+<<link [[继续|Barb Street]]>><</link>>
+<br>
+
+:: Dance Studio Lock
+<<set $outside to 0>><<effects>><<set $lock to 200>>
+<<openinghours>>
+<<if currentSkillValue('skulduggery') gte $lock>>
+	<span class="green">这把锁看起来很容易撬开。</span>
+	<br><br>
+	<<link [[撬开它 (0:10)|Dance Studio]]>><<pass 10>><<crimeup 1>><</link>><<crime>>
+	<br>
+<<else>>
+	<span class="red">这把锁看起来不是你能撬开的。</span><<skulduggeryrequired>>
+	<br><br>
+<</if>>
+<<link [[离开|Barb Street]]>><</link>>
+<br>
+
+:: Dancing Lesson
+<<if $dancestudiointro is 1 and $phase is 0>><<pass 20>><</if>>
+<<set $outside to 0>><<set $location to "dance_studio">><<effects>>
+<<if $dancestudiointro isnot 1>>
+	<<set $dancestudiointro to 1>>
+	<<npc Charlie>><<person1>>
+	你付钱给接待员后，被引导着穿过左边的门。你走进一个大房间，里面铺着木地板，墙上挂着镜子。里面已经有十几个人了。要找一个教练不是什么难事。<<he>>双手叉腰，站着对全班讲解适当热身运动的重要性。
+	<br><br>
+	门在你身后关上，让<<him>>注意到了你。<<He>>转过<<his>>祖母绿的眼睛对你微笑。"有一个新学生要加入我们！欢迎！"<<His>>姜黄色短发冠的脸上长满了雀斑，<<his>>的紧身装彰显了<<his>>健美和运动的身体.
+	<<if $pronoun is "m">>
+		你不禁注意到，<<his>>的阴部高高隆起，顶起了<<his>>的底裤.
+	<<elseif $pronoun is "f">>
+		<<if $NPCList[0].breastsize gte 5>>
+			<<his>>宽大的胸部紧贴着<<his>>的躯干，使<<him>>的轮廓看起来很纤细。
+		<<elseif $NPCList[0].breastsize gte 3>>
+			<<his>>的胸部紧贴<<his>>的躯干，使<<him>>的轮廓看起来很纤细。
+		<<elseif $NPCList[0].breastsize gte 1>>
+			<<his>>小小的乳房平贴在<<his>>的躯干上，使<<him>>的轮廓看起来很纤细。
+		<<else>>
+			<<his>>扁平的胸部使<<him>>的轮廓看起来很纤细。
+		<</if>>
+	<</if>>
+	<br><br>
+	<<he>>似乎没有注意到你猥亵的目光，<<he>>没有任何反应。你应该自我介绍，但如何介绍？
+	<br><br>
+	<<link [[怯懦|Dancing Lesson]]>><<npcincr Charlie love 20>><<set $phase to 1>><</link>><<ggglove>>
+	<br>
+	<<link [[自信|Dancing Lesson]]>><<set $phase to 2>><</link>>
+	<br>
+	<<link [[挑逗|Dancing Lesson]]>><<npcincr Charlie love -10>><<stress -12>><<trauma -6>><<set $phase to 3>><</link>><<promiscuous1>><<lllove>><<lstress>><<ltrauma>>
+	<br>
+<<elseif $phase is 1>>
+	<<set $phase to 0>>
+	"你，你好……"你喃喃道，眼睛盯着自己的脚。
+	<br><br>
+	教官没有说什么，走到你身边，用手臂护住你的肩膀。<<He>>轻声说："别担心，我不咬人。我的名字叫查里。我会帮你走出你的世界。"<<He>>在开始上课之前，温柔地护送你到其他同学那。
+	<br><br>
+	<<link [[继续|Dancing Lesson]]>><<endevent>><</link>>
+	<br>
+<<elseif $phase is 2>>
+	<<set $phase to 0>>
+	"很高兴见到你！我迫不及待地想要开始了！"
+	<br><br>
+	教官回答说："充满热情很好，但太急于求成会让你的肌肉紧张。"尽管<<his>>这样提醒你，但<<he>>看起来似乎很高兴。"过来吧。顺便说一下，我是查里。是你的老师。那么，我说到哪里了？"当课程开始时，你走了过去。
+	<br><br>
+	<<link [[继续|Dancing Lesson]]>><<endevent>><</link>>
+	<br>
+<<elseif $phase is 3>>
+	<<set $phase to 0>>
+	<<promiscuity1>>"衣服不错。完美凸显了你的优点。" 你的眼睛上下打量着<<his>>的身体，让<<him>>明白你到底是指哪种优点。
+	<br><br>
+	<<He>>有些不自在，好像突然意识到了你的想法，<<He>>突然生气了起来，"我叫查里，你愿意坐在这个位置上吗？"<<He>>转身回到班里，你也跟着走了进去。很快就开始上课了。
+	<br><br>
+	<<link [[继续|Dancing Lesson]]>><<endevent>><</link>>
+	<br>
+<<elseif $dancestage gte 2>>
+	<<tiredness 4>><<danceskill 14>><<danceskilluse>><<wearandtear "dance">><<physique 2>>
+	这节课的其余时间无事发生。
+	<br><br>
+	<<link [[继续|Dance Studio]]>><<endevent>><</link>>
+<<else>>
+	<<if $arousal gte $arousalmax>>
+		<<orgasmLocation "danceStudioLesson">>
+	<</if>>
+	<<if $exposed gte 1>>
+		不知怎么的，你似乎分散了班上的注意力。往下看，你会立刻发现原因。
+		<<if $uncomfortable.nude is false>>
+			当你的身体裸露时，你会感到一种兴奋，让其他人快速窥视你的身体。
+			<br>
+			当查里带着毛巾冲向你时，你掩饰自己，尽力维持体面。
+			<<towelup>><<garousal>><<gstress>><<gtrauma>><<arousal 100>><<npcincr Charlie love 1>><<glove>>
+			<br><br>
+		<<else>>
+			当查里拿着毛巾冲向你时，你尖叫着掩饰好自己。
+			<<towelup>><<garousal>><<gstress>><<gtrauma>><<arousal 100>><<stress 1>><<trauma 1>><<npcincr Charlie love 1>><<glove>>
+			<br><br>
+		<</if>>
+	<</if>>
+	<<tiredness 4>><<set $dancestage += 1>><<danceskill 14>><<danceskilluse>><<wearandtear "dance">><<physique 2>><<npc Charlie>><<person1>>
+	<<if $rng lte 20>>
+		<<set $dancelesson to "barre">>
+		你做出空举杠铃的动作，拉伸和锻炼你的肌肉。
+		<<if currentSkillValue('danceskill') lte 200>>
+			保持平衡很难。你可以从镜子里看到，你看起来有点傻，特别是与更有经验的学生相比。
+		<<elseif currentSkillValue('danceskill') lte 800>>
+			你很擅长保持平衡。你可以练习更高深的技术。
+		<<else>>
+			你可以用它作为替代伙伴，在练习空中技巧时支撑你的体重。其他一些学生羡慕地看着。
+		<</if>>
+		<br><br>
+	<<elseif $rng lte 40>>
+		<<set $dancelesson to "duo">><<generate2>><<person2>>
+		你和一个<<person>>搭档。
+		<<if currentSkillValue('danceskill') lte 200>>
+			<<He>>比你更有经验，所以你让<<him>>带头。
+		<<elseif currentSkillValue('danceskill') lte 800>>
+			你在练习技巧时最好需要一个伙伴，以便于轮协助流对方。
+		<<elseif currentSkillValue('danceskill') lte 1000>>
+			你经验丰富，开始带领着对方行动，你尽量小心翼翼，注意不把<<him>>逼得过紧。
+		<</if>>
+		<br><br>
+	<<elseif $rng lte 60>>
+		<<set $dancelesson to "airbarre">>
+		你做出空举杠铃的动作，拉伸和锻炼你的肌肉。
+		<<if currentSkillValue('danceskill') lte 200>>
+			有经验的学生会用来锻炼自己的力量和平衡感，而你只能滑稽地摇摆身体。
+		<<elseif currentSkillValue('danceskill') lte 800>>
+			你要努力培养自己的气质。
+		<<elseif currentSkillValue('danceskill') lte 1000>>
+			高举手臂，你充分展示着你的优雅和技巧。
+		<</if>>
+		<br><br>
+		<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+			在练习跳跃舞步时，你才意识到穿裙子来跳舞是个错误的决定。事实证明，当你跃在空中时，全班人绝对都能看到你裙下的<<undies>>。
+			<<set _uncomVar to ($worn.under_lower.type.includes("naked") ? "nude" : "underwear")>>
+			<<if $uncomfortable[_uncomVar] is false>>
+				<span class="lewd">你毫不介意别人的眼光。</span>
+				<<garousal>><<arousal 600>>
+				<br><br>
+			<<else>>
+				<<garousal>><<gstress>><<gtrauma>><<arousal 600>><<stress 6>><<trauma 6>>
+				<br><br>
+			<</if>>
+		<</if>>
+	<<elseif $rng lte 80>>
+		<<set $dancelesson to "instructor">>
+		查里亲自为你指导了几次。
+		<<if currentSkillValue('danceskill') lte 200>>
+			<<He>>帮助你掌握基本的知识。
+		<<elseif currentSkillValue('danceskill') lte 800>>
+			<<He>>示范了一些新的舞步供你练习。
+		<<elseif currentSkillValue('danceskill') lte 1000>>
+			<<He>>帮你调整课一些舞蹈姿态上的缺陷。
+		<</if>>
+		<br><br>
+	<<elseif $rng lte 100>>
+		<<set $dancelesson to "noinstructor">>
+		查里在全班同学面前演示了一些动作，同学们都尽力向<<him>>学习.
+		<br><br>
+	<</if>>
+	<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+	<<if $danger gte (9900 - $allure) and $eventskip is 0>>
+		<<eventsdance>>
+	<<else>>
+		<<link [[继续|Dancing Lesson]]>><<endevent>><</link>>
+	<</if>>
+<</if>>
+
+:: Widgets Events Dance [widget]
+<<widget "eventsdance">>
+	<<set $dangerevent to random(1, 100)>>
+	<<if $dancelesson is "barre">>
+		<<endevent>><<generate1>><<person1>>查里说他们需要清理一些房间，并要求你和一个<<person>>将便携式栏杆收起来。你设法把它带出工作室，进入一个装满其他设备的房间。然而，当你放下它时，你听到身后的门关上了。<span class="red">你转过身来，发现<<person>>在向你靠近，<<his>>眼中充满了欲望。</span>
+		<br><br>
+		<<link [[继续|Dance Studio Molestation]]>><<set $molestationstart to 1>><</link>>
+	<<elseif $dancelesson is "duo">>
+		你觉得<<he>>根本不必把<<his>>的手放在离你屁股那么近的地方，或者说把你的身体拉过去紧贴在<<his>>身前。<span class="blue">你能感觉到<<his>>硬挺的<<if $NPCList[1].penis is "clothed">>肉棒<<else>>乳头<</if>>压向了你。</span>
+		<br><br>
+		<<link [[忍耐|Dance Studio Duo]]>><<set $phase to 0>><</link>><<garousal>>
+		<br>
+		<<link [[拍开|Dance Studio Duo]]>><<set $phase to 1>><</link>>
+		<br>
+		<<if $promiscuity gte 15>>
+			<<link [[回应|Dance Studio Duo]]>><<set $phase to 2>><</link>><<promiscuous2>>
+			<br>
+		<</if>>
+	<<elseif $dancelesson is "airbarre">>
+		杠杠稍微让开，足以破坏你微妙的平衡。本能会让你扭动身体，试图从摔倒中拯救自己。你成功了，但杠杠却缠在你的腰上。
+		<br><br>
+		<<if $worn.lower.type.includes("naked")>>
+			<<if !$worn.under_lower.type.includes("naked")>>
+				你试图站立起来，但没有成功。更糟糕的是，尽管你的身体紧紧地缠绕在杆子上，你还是滑倒了,最终"砰"的一声倒在地上。
+				<<if $uncomfortable.nude is false>>
+					当你重新找到方向时，你会看到你的$worn.under_lower.cn_name_cap悬浮在你头顶的空中。尽管周围有窃窃私语和咯咯的笑声，当你找回它们时，你缓了过来，脸上带着自信的微笑。
+					<<garousal>>
+				<<else>>
+					当你重新找到方向时，你会看到你的$worn.under_lower.cn_name_cap悬浮在你头顶的空中。你对自己的<<genitals>>在课堂上如此暴露感到不安，你赶紧找回了你的$worn.under_lower.cn_name_cap，意识到周围的窃窃私语和笑声。
+					<<gtrauma>><<gstress>><<garousal>>
+				<</if>>
+			<<else>>
+				<<if $uncomfortable.nude is false>>
+					你试图站立起来，但没有成功。更糟糕的是，尽管你的身体紧紧地缠绕在杆子上，你还是滑倒了,最终"砰"的一声倒在地上。 你的双腿分开，让整个房间都能清楚地看到你的<<genitals>>。你假装恐惧，不被周围的窃窃私语和笑声所困扰。
+					<<garousal>>
+				<<else>>
+					你试图站起来，但没有成功。更糟糕的是，尽管你的身体紧紧地缠绕在杆子上，你还是滑倒了,最终"砰"的一声倒在地上。 你的双腿分开，让整个房间都能清楚地看到你的<<undies>>，你的脸因尴尬而发红。你赶紧掩饰自己，意识到周围的窃窃私语和笑声。
+					<<gtrauma>><<gstress>><<garousal>>
+				<</if>>
+			<</if>>
+		<<elseif currentSkillValue('danceskill') gte 600>>
+			你巧妙地转移你的重量，并慢慢回到直立的姿势。好险！
+		<<else>>
+			<<if $uncomfortable.underwear is false>>
+				你试图站立起来，但没有成功。更糟糕的是，尽管你的身体紧紧地缠绕在杆子上，你还是滑倒了,最终"砰"的一声倒在地上。 当你重新找回方向时，你看到你的<<bottoms>>漂浮在你上方的空气中。尽管周围有窃窃私语和咯咯的笑声，当你找回它们时，你缓了过来，脸上带着自信的微笑。你不介意再炫耀一下。
+			<<else>>
+				你试图站立起来，但没有成功。更糟糕的是，尽管你的身体紧紧地缠绕在杆子上，你还是滑倒了，最终"砰"的一声倒在地上。当你重新找到方向时，你会看到你的<<bottoms>>悬浮在你上方的空气中。你对自己的<<undies>>在课堂上如此暴露感到不安，你赶紧恢复你的<<bottoms>>，意识到周围的窃窃私语和咯咯笑。
+				<<gtrauma>><<gstress>><<garousal>>
+			<</if>>
+		<</if>>
+		<br><br>
+		<<link [[继续|Dancing Lesson]]>><<endevent>><</link>>
+	<<elseif $dancelesson is "instructor">>
+		<<He>>将<<his>>的身体压在你背上，并将你的双手握在<<his>>自己的手里，这样<<he>>可以更直接地向你演示。<<takeHandholdingVirginity "Charlie">>尽管<<him>>没有做出什么明显的性行为，但当<<his>>健美的身体如此亲密地靠近你时，你还是会忍不住感到有点兴奋。
+		<<garousal>><<arousal 300>>
+		<br><br>
+		<<link [[温柔的赞美|Dance Studio Instructor]]>><</link>>
+		<br>
+		<<link [[自信的自夸|Dance Studio Instructor]]>><<set $phase to 1>><</link>>
+		<br>
+		<<if $promiscuity gte 15>>
+			<<link [[调情|Dance Studio Instructor]]>><<set $phase to 2>><</link>><<promiscuous2>>
+			<br>
+		<</if>>
+	<<else>>
+		接待员从门口望着这里，<<he>>看着查里，查里似乎明白了<<he>>的意思。"我需要五个。"<<he>>宣布。"继续练习，不会花很长时间的。"
+		<br><br>
+		<<endevent>>
+		<<if $dancestudioanger gte 10>>
+			<<set $dancestudioanger -= 10>>
+			<<generate1>><<generate2>><<generate3>><<generate4>><<generate5>><<generate6>><<person1>>关门的声音比平时更不祥。你很快就明白了为什么，房间里的其他人几乎都沉默了。其他人都在看着你。一个<<person>>开口了。<span class="red"> "我们受够了你的废话。该上一堂真正的课了。"</span>他们冲向你。
+			<br><br>
+			<<link [[继续|Dance Studio Strip]]>><<set $molestationstart to 1>><<set $timer to 10>><</link>>
+			<br>
+		<<else>>
+			查里不在的时候你想怎么表现？
+			<br><br>
+			<<link [[专注练习|Dancing Lesson No Instructor]]>><</link>>
+			<br>
+			<<link [[帮助其他学生|Dancing Lesson No Instructor]]>><<set $phase to 1>><</link>>
+			<br>
+			<<if $trauma gte 1 and currentSkillValue('danceskill') gte 200>>
+				<<link [[在经验不足的学生面前展示你的技能|Dancing Lesson No Instructor]]>><<set $phase to 2>><</link>><<lstress>>
+				<br>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+:: Dance Studio Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+<<effects>>
+<<effectsman>><<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if $alarm is 1>>
+	<<if $rescue is 1>>
+	<<else>>
+		没有人来帮你。
+		<<set $alarm to 0>>
+		<<if $drugged gte 1>>药物抑制了你，你的哭泣没那么有说服力。<</if>>
+		<br><br>
+		<<if $enemyarousal gte $enemyarousalmax>>
+			<span id="next"><<link [[继续->Dance Studio Molestation Ejaculation]]>><</link>></span><<nexttext>>
+		<<elseif $enemyhealth lte 0>>
+			<span id="next"><<link [[继续->Dance Studio Molestation Escape]]>><</link>></span><<nexttext>>
+		<<else>>
+			<span id="next"><<link [[继续->Dance Studio Molestation]]>><</link>></span><<nexttext>>
+		<</if>>
+	<</if>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<span id="next"><<link [[继续->Dance Studio Molestation Ejaculation]]>><</link>></span><<nexttext>>
+<<elseif $enemyhealth lte 0>>
+	<span id="next"><<link [[继续->Dance Studio Molestation Escape]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续->Dance Studio Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Dance Studio Molestation Ejaculation
+<<effects>>
+<<ejaculation>>
+<<if $enemyanger gte ($enemyangermax / 5) * 3>>
+	离开前，<<he>>向你吐了口唾沫并说道:"记住,别把这件事告诉任何人"。
+	<br><br>
+	<<faceejacstat>><<ejacstat>><<set $hygiene += 500>><<bodyliquid "face" "goo">>
+<<elseif $enemyanger gte 1>>
+	"你不敢说出去的。"在说完 后<<he>>便离开了。
+	<br><br>
+<<else>>
+	<<He>>对你微笑道："让这成为我们的小秘密，好吗？"<<He>>留你一人躺在地板上。
+	<br><br>
+<</if>>
+<<clotheson>>
+<<tearful>>你挣扎着站起来，然后在回到教室的时候尽量让自己表现出一副勇敢的样子。
+<br><br>
+<<endcombat>>
+<<link [[继续|Dancing Lesson]]>><</link>>
+
+:: Dance Studio Molestation Escape
+<<effects>>
+<<He>>大叫一声，摔倒在地。<span class="green"><<tearful>>你利用这个机会逃离房间，逃回工作室。</span>
+<br><br>
+<<endcombat>>
+<<npc Charlie>><<person1>><<npcincr Charlie love 2>><<glove>>
+查里立刻意识到有问题。<<He>>把你拉到一边，轻轻询问。想把你的苦难抛在身后，你告诉<<him>>一切都很好。查里继续上课，但看起来仍然很担心。
+<br><br>
+<<clothesontowel>>
+<<endevent>>
+<<link [[继续|Dancing Lesson]]>><</link>>
+
+:: Dance Studio Duo
+<<set $outside to 0>><<set $location to "dance_studio">><<effects>>
+<<if $phase is 0>>
+	你的沉默鼓励，想让<<him>>更大胆一些。<<He>>抓住一切机会抚摸你，当你尽力忽略<<him>>并集中注意力时。当查里宣布是时候做些不同的事情时，你松了一口气。
+	<<arousal 300 "breasts">><<arousal 300 "bottom">>
+	<br><br>
+<<elseif $phase is 1>>
+	你推开<<him>>，<<him>>大声摔倒在地板上。当查里宣布是时候换搭档时，<<he>>站起来咒骂。<<person2>><<person>>在与一个年龄更大的<<personsimple>>配对之前，<span class="pink">给了你一个愤怒的眼神。</span>
+	<<set $dancestudioanger += 1>>
+	<br><br>
+<<elseif $phase is 2>>
+	<<promiscuity2>>不甘示弱，你也摸了回去。在舞蹈练习的表面下隐藏着猥亵的触碰，你们在房间的正中央互相摸索，班上其他人都不知道就在他们面前发生的猥亵行为。当查里要求停止时，你和<<person>>的呼吸都比任何人都要沉重得多.
+	<br><br>
+<</if>>
+<<link [[继续|Dancing Lesson]]>><<endevent>><</link>>
+
+:: Dance Studio Instructor
+<<set $outside to 0>><<set $location to "dance_studio">><<effects>>
+<<if $phase is 0>>
+	你转过头去看<<him>>. "我希望有一天能像你一样好。”当<<he>>试图与你的目光相遇时，你温顺地避开了目光。
+	<br>
+	<<He>>轻轻握着你的双手，"你会的，而且比你想象的要快。"你发誓，<<he>>在接下来的课程中，比起其他学生更关注你。
+	<<npcincr Charlie love 2>><<glove>> <<danceskilluse>>
+	<br><br>
+	<span class="pink">其他学生也注意到了，很多人都嫉妒你。</span>
+	<<set $dancestudioanger += 1>>
+<<elseif $phase is 1>>
+	"你最好小心点，"你大声说，"我很快就会好起来的！"
+	<br>
+	<<He>>笑道："我希望如此，这意味着我已经做好了我的工作。现在别再说话了，好好看着..."
+<<elseif $phase is 2>>
+	你用屁股摩擦<<his>>的裆部。"你的身材太棒了，不知道你是怎么做到的。"
+	<br>
+	<<He>>将胯部移离你，<<his>>的脸上变得通红。"是的。我是说，不，我是说……你做得很好，我需要去看看其他人。"<<He>>在本课程的其余部分都避免朝你的方向看。
+	<<npcincr Charlie love -2>><<promiscuity2>><<llove>>
+<</if>>
+<br><br>
+<<link [[继续|Dancing Lesson]]>><<endevent>><</link>>
+<br>
+
+:: Dance Studio Strip
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>><<npcstrip>>
+	<<set $timer to 5>>
+<</if>>
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend or $timer lte 0>>
+	<span id="next"><<link [[继续|Dance Studio Strip Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Dance Studio Strip]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Dancing Lesson No Instructor
+<<set $outside to 0>><<set $location to "dance_studio">><<effects>>
+<<if $phase is 0>>
+	<<endevent>>
+	<<npc Charlie>><<person1>>
+	你像查里示范的那样练习。不久，<<he>>就回来了。
+	<<danceskilluse>>
+<<elseif $phase is 1>>
+	<<endevent>>
+	<<npc Charlie>><<person1>>
+	一个在你旁边的<<generate2>><<person2>><<person>>差点儿失去平衡摔倒在地板上，还好你帮了<<he>>。你花一些时间教<<he>>如何保持冷静。你自己没学到多少东西，但<<he>>显然很感激，<span class="green"> 而且全班似乎对你的慷慨感到满意.</span>查里很快就回来了.
+	<<set $dancestudioanger -= 1>>
+<<elseif $phase is 2>>
+	<<endevent>>
+	<<npc Charlie>><<person1>>
+	你在其他学生面前炫耀你的技能。表现得比别人都好,<span class="pink">但你收到的表情表明其他学生不喜欢这样表现.</span>查里很快就回来了。
+	<<stress -12>><<set $dancestudioanger += 1>>
+<</if>>
+<br><br>
+<<link [[继续|Dancing Lesson]]>><<endevent>><</link>>
+
+:: Dance Studio Strip Finish
+
+<<if $enemyhealth lte 0>>
+	<span class="green">你听到查里的声音越来越大，直到盖过了<<group>>的嘲笑声。</span>那个<<person2>><<person>>在停手之后说道:"还有更多的事情要做呢。"
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Dancing Lesson]]>><</link>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<span class="green">你听到查里的声音越来越大，直到盖过了<<group>>的嘲笑声。</span>那个<<person2>><<person>>在停手之后说道:"还有更多的事情要做呢。"
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Dancing Lesson]]>><</link>>
+<<else>>
+	<span class="green">你听到查里的声音越来越大，直到盖过了<<group>>的嘲笑声。</span>那个<<person2>><<person>>在停手之后说道:"还有更多的事情要做呢。"
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Dancing Lesson]]>><</link>>
+<</if>>
+
+:: Widgets Events Yoga Lesson [widget]
+
+<<widget "yogalessons">>
+	<<if $worn.under_upper.type.includes("dance")>>
+		<<switch random(1,4)>>
+			<<case 1>>
+				<<if ["lightheaded","dizzy"].includes(_pregnancyDailyEvent)>>
+					查里看了看你的<<bellyDescription>>，然后关切地询问你感觉如何。
+					<br><br>
+					<<if $speech_attitude is "meek">>
+						"我还可以坚持，"你微笑着小声说道;"我只是最近有点头晕，我今早上还担心我会不会晕倒呢。"
+					<<elseif $speech_attitude is "bratty">>
+						"嗯，还行吧."你耸耸肩继续说道:"那种眩晕感在今天快把我折腾死了."
+					<<else>>
+						"有点头晕，"你回应道:"但其他的话还好。"
+					<</if>>
+					<br><br>
+					查里点点头，"那是意料之中的事，"<<nnpc_he "Charlie">>接着说道："我们今天在课堂上会用一些具有恢复性地瑜伽动作来放松，其中地一些姿势可以通过均衡血液循环来改善你的平衡点，以此来帮助缓解头晕的症状。"<<nnpc_He "Charlie">>随后演示了一些姿势，而你在跟着完成了这套动作后，你觉得自己的脚步更扎实了。
+				<<else>>
+					课程继续进行，你现在不费吹灰之力就能跟上课程的节奏。
+				<</if>>
+			<<case 2>>
+				<<if ["cramping"].includes(_pregnancyDailyEvent)>>
+					查里带领全班同学做侧卧撑，当你按照<<nnpc_his "Charlie">>的指示做时，你感觉到你的骨盆开始拉伸，它缓解了你的痉挛，这让你松了一口气。<<lpain>><<pain -12>>
+				<<else>>
+					查里演示了几个比较简单的姿势，它们是很好的热身运动，你可以感觉到你的身体得到了很好的拉伸。
+				<</if>>
+			<<case 3>>
+				<<if ["crying"].includes(_pregnancyDailyEvent)>>
+					查里带领全班做了一个叫做婴儿式的动作，你听到这个名字后笑了笑，并摸了摸你那<<bellyDescription>>。你跪在地上，将额头贴在垫子上，当你坐在脚跟上时，将手臂伸到你的面前。查里指示你保持这个姿势来做几次长而稳定的呼吸，以此来释放你身体里的紧张感。不知为什么，但你很快发现自己已经泪流满面了。
+					<br><br>
+					当你做完这个姿势，你的瑜伽垫已经被泪水打湿了。你还在擦着脸时，查里那关切的眼神看了过来。<<nnpc_He "Charlie">>小心翼翼地接近了你。"瑜伽就是用来宣泄的，不是吗？"<<nnpc_he "Charlie">>接着喃喃道："不要害怕释放那些情绪。"<<nnpc_He "Charlie">>说罢轻快地捏了捏你的手，然后回到了教室前面。<<ltrauma>><<glove>><<trauma -6>><<npcincr Charlie love 1>>
+				<<else>>
+					<<if ["angry"].includes(_pregnancyDailyEvent)>>
+						在查里的指导下，你和其他人一起练习呼吸法，这种动作旨在帮助排出压抑的情绪，当你通过每个伸展动作来呼吸时，所有积聚了一整天的压力都会消散。<<lstress>><<stress -12>>
+					<<else>>
+						查里演示了几个更难的姿势，它们更难以保持住，所以你很快就开始感觉到你的身体发出了疲惫的信号。
+					<</if>>
+				<</if>>
+			<<case 4>>
+				随着课程的推进，查里选了个特别难以维持的姿势。在注意到你的挣扎之后，<<nnpc_he "Charlie">>接近你并指出你的错误，然后帮忙纠正了你的动作。你很快就找到了动作的重心，这让你能够更容易地保持姿势。
+		<</switch>>
+	<<else>>
+		<<switch random(1,4)>>
+			<<case 1>>
+				课程继续进行，尽管你既兴奋又尴尬，但你还是能够毫无困难地跟上那些动作。
+			<<case 2>>
+				查里演示了几个比较简单的姿势，它们是很好的热身运动。但这也使你对你目前的淫乱状态有了更清晰的认知，你敢发誓，其他人一定在偷偷地看向你.
+			<<case 3>>
+				查里演示了几个比较困难的姿势。它们具有足够的挑战性，以至于你都忘记了你现在的穿着状态，不过幸运的是，大多数地其他人也专注于练习而没有注意到你。
+			<<case 4>>
+				随着课程的推进，查里做出一个特别难以维持的姿势。在注意到你的挣扎之后，<<nnpc_he "Charlie">>走了过来，虽然<<nnpc_his "Charlie">>看起来有些尴尬，但<<nnpc_he "Charlie">>还是指出你的错误并帮忙纠正了你的动作。你很快就找到了这个动作的重心，这让你能够更容易地保持姿势。
+		<</switch>>
+	<</if>>
+	<br><br>
+	<<link [[继续|Yoga Classes Start 2]]>><</link>>
+<</widget>>
+
+<<widget "yogalewd">>
+	<<if $worn.under_upper.type.includes("dance")>>
+		<<endevent>><<generate1>>
+		<<switch random (1,2)>>
+			<<case 1>>
+				查里让你和另一个学员帮忙把垫子放好，你们俩各自拿了几个垫子前往储物室。在一进去之后，你听到了垫子落地和门被关上的声音。你回头一看，那个<<person1>><<person>>向你走了过来。
+				<br><br>
+				<<link [[继续|Yoga Classes Molestation]]>><<set $molestationstart to 1>><</link>>
+			<<case 2>>
+				在课程进行到一半时，查里被叫到了教室外面。<<nnpc_He "Charlie">>告诉大家继续保持姿势，<<nnpc_he "Charlie">>应该会在一分钟内赶回来，你试着按照<<nnpc_he "Charlie">>说的话做，但很快，你就感觉到一只手在摸你的屁股。
+				<br><br>
+				"最好保持安静，"那个<<person1>><<person>>说道:"你也不想引起骚乱，不是吗？"
+				<br><br>
+				<<link [[继续|Yoga Classes Molestation]]>><<set $molestationstart to 1>><</link>>
+		<</switch>>
+	<<else>>
+		<<endevent>><<generate1>><<generate2>><<generate3>><<generate4>>
+		随着课程的进行，查里被叫到教室外面。<<nnpc_He "Charlie">>告诉大家保持姿势，<<nnpc_he "Charlie">>马上就回来。你试着按<<nnpc_he "Charlie">>说的做，但很快就感觉到一只手在摸你的屁股。
+		<br><br>
+		"穿成这样来这里，"那个<<person1>><<person>>说道:"那这这可就你是自找的，不对吗？"
+		<br><br>
+		你环顾四周，注意到其他几个人也靠了过来，而且也都在色眯眯地盯着你的<<lewdness>>。
+		<br><br>
+		<<link [[保持沉默|Yoga Classes Non-Orgy]]>><<set $molestationstart to 1>><</link>>
+		<br>
+		<<if $promiscuity gte 75>>
+			<<link [[主动献身|Yoga Classes Orgy]]>><<set $sexstart to 1>><</link>><<promiscuous5>>
+		<</if>>
+	<</if>>
+<</widget>>
+
+:: Yoga Classes Inquire
+<<effects>>
+那个接待员看了眼广告，"哦，那个啊。那是我们工作室的最新课程，在每周一、三、五都有课程。它们可能比我们的舞蹈课要贵一点，但对身体的柔韧性有很大的帮助。" 
+<br><br>
+<<if playerBellyVisible()>>
+	接待员瞥了一眼你那<<bellyDescription "pc">>，"瑜伽也是一种很好的产前运动，这对你和你的宝宝有很大的好处，但是你要记好，如果你想参加的话，你最好带着便于活动的衣服来上课。"
+	<br><br>
+<<else>>
+	接待员回头看了您一眼。"此外，瑜伽有很好的治疗效果。请记住，如果您想参加，最好带上便于活动的衣服"。
+	<br><br>
+<</if>>
+<<link [[继续|Dance Studio]]>><</link>>
+
+:: Yoga Classes Change Room
+<<effects>>
+你进入更衣室，开始考虑参与这门课程需要准备什么样的服装。
+<br><br>
+<<dancingclothes>>
+<<if _store_check is 1>>
+	<<link [[进入|Yoga Classes Enter]]>><</link>>
+	<br>
+<</if>>
+<<link [[离开|Dance Studio]]>><</link>>
+<br>
+<<if $exhibitionism gte 75>>
+	<<link [[裸体进入|Yoga Classes Enter]]>><<strip>><</link>><<exhibitionist5>>
+	<br>
+<</if>>
+
+:: Yoga Classes Enter
+<<effects>>
+<<set $dancestage to 0>>
+<<if $worn.under_upper.type.includes("dance")>>
+	你在换好瑜伽服之后走进教室。地板上散落着几张瑜伽垫，大部分已经被别的学生拿走了。没人关注着你，于是你选择了一个靠近教室后面的垫子坐了下去。
+	<br><br>
+	很快，查里来到了教室里。<<nnpc_He "Charlie">>面对着你们，坐在了最前面的瑜伽垫上。瑜伽课程快要开始了。
+	<br><br>
+	<<link [[继续|Yoga Classes Start 2]]>><</link>>
+<<else>>
+	你脱下了所有的衣服，在确认自己完全赤裸之后，你深吸一口气，然后离开更衣室前往教室。当你进去后，你注意到地板上散落着几张瑜伽垫，其中的一些已经被其他学生拿走了。起初并没有人注意到你，但随着你的走动，越来越多的人看向你。一些人不好意思的扭过头，而另一些人则把不满表现在脸上。然而，大多数人在看向你时都表现出了纯粹的欲望. 
+	<br><br>
+	很快，查里就进到了房间里。在看到你之后，<<nnpc_he "Charlie">>先是停下脚步并对你的裸体感到惊讶。不过<<nnpc_he "Charlie">>并没有对此说些什么，而是选择转移<<nnpc_his "Charlie">>的视线，你注意到<<nnpc_his "Charlie">>的脸上带着一抹红晕<<nnpc_he "Charlie">>接着走到了教室前面，面对着你们坐在了教室前面的瑜伽垫上。你也找了一个比较靠前的位置坐了下去.
+	<br><br>
+	<<link [[继续|Yoga Classes Start 2]]>><</link>>
+<</if>>
+
+:: Yoga Classes Start 2
+<<effects>>
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+<<set _pregnancyDailyEvent to dailyPregnancyEvent()>>
+<<if Array.isArray(_pregnancyDailyEvent)>>
+  <<set _pregnancyDailyEvent to _pregnancyDailyEvent[random(0, _pregnancyDailyEvent.length - 1)]>>
+<</if>>
+<<tiredness 4>><<set $dancestage += 1>><<stress -6>><<wearandtear "dance">><<physique 2>><<pass 20>>
+<<if !$daily.yogaWillpower>><<set $daily.yogaWillpower to 1>><<willpower 4>><</if>>
+<<if ["tired"].includes(_event) and $dancestage gte 3>>
+	在课程快要结束时，查里告诉大家仰卧在垫子上。你们按照指示躺下，<<nnpc_he "Charlie">>带领你们进行指导性的冥想，"现在闭上你的眼睛，"查里轻声说道。<<nnpc_he "Charlie">>的声音在播放的舒缓音乐下几乎听不清了。"让你的身体变得柔软且放松，现在沉入地板，放空..." 也许之后查里还说了些什么，但你也听不见了，因为你依旧渐渐地进入梦乡了。
+	<br><br>
+	一只手温柔地搭在你的肩膀上，它把你推回了现实。你昏昏沉沉地环顾起四周，看到其他人已经卷起瑜伽垫准备离开了.在离开瑜伽室时,那些人彼此之间依旧喋喋不休地说着什么。
+	<br><br>
+	"在这个环节睡着是很正常的，"查里笑着说道:"但现在是时候该离开了。"<<nnpc_He "Charlie">>听起来有些抱歉，<<nnpc_he "Charlie">>向你伸出一只手帮助你站起来。"你和你的小家伙应该去休息一下。"<<nnpc_He "Charlie">>在你离开时为你打开门。 
+	<<ltiredness>><<glove>><<tiredness -12>><<npcincr Charlie love 1>>
+	<br><br>
+	<<link [[继续|Dance Studio Changing Room]]>><<set $money -= 2200>><<if $exposed gte 2>><<clotheson>><</if>><<endevent>><</link>>
+<<elseif $dancestage gte 3>>
+	这节课的其余时间无事发生。
+	<br><br>
+	<<link [[继续|Dance Studio Changing Room]]>><<set $money -= 2200>><<if $exposed gte 2>><<clotheson>><</if>><<endevent>><</link>>
+<<elseif $danger gte (9900 - $allure) and $eventskip is 0>>
+	<<yogalewd>>
+<<else>>
+	<<yogalessons>>
+<</if>>
+
+:: Yoga Classes Molestation
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[继续|Yoga Classes Molestation End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Yoga Classes Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Yoga Classes Molestation End
+<<effects>>
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<if $enemyanger gte ($enemyangermax / 5) * 3>>
+		离开前，<<he>>向你吐了口唾沫并说道:"记住,别把这件事告诉任何人"。
+		<br><br>
+		<<faceejacstat>><<ejacstat>><<set $hygiene += 500>><<bodyliquid "face" "goo">>
+	<<elseif $enemyanger gte 1>>
+		"你不敢说出去的。"在说完 后<<he>>便离开了。
+		<br><br>
+	<<else>>
+		<<He>>对你微笑道："让这成为我们的小秘密，好吗？"<<He>>留你一人躺在地板上。
+		<br><br>
+	<</if>>
+	<<tearful>>你挣扎着站起来，然后在回到教室的时候尽量让自己表现出一副勇敢的样子。
+	<br><br>
+	
+	<<clotheson>>
+	<<endcombat>>
+	<<link [[继续|Yoga Classes Start 2]]>><</link>>
+	
+<<else>>
+	<<He>>大叫一声，摔倒在地。<span class="green"><<tearful>>你利用这个机会逃离房间，逃回工作室。</span>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+	查里立即意识到了不对劲。<<nnpc_He "Charlie">>把你拉到一边轻声询问。你把你的遭遇抛在脑后，你告诉<<nnpc_him "Charlie">>一切都很好。查里继续上课，但看起来仍然很担忧你。<<npcincr Charlie love 2>><<glove>>
+	<br><br>
+	<<link [[继续|Yoga Classes Start 2]]>><</link>>
+<</if>>
+
+:: Yoga Classes Non-Orgy
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<maninit>>
+<</if>>
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[继续|Yoga Classes Orgy End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Yoga Classes Non-Orgy]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Yoga Classes Orgy
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<maninit>>
+	<<if $speech_attitude is "meek">>
+		你感觉你的两胯之间越来越热，于是你把双腿分开，让那些人完全看到你的<<genitals>>。"你...可以做你想做的事..." 
+	<<elseif $speech_attitude is "bratty">>
+		你感觉你的两胯之间越来越热，你对那些家伙笑着说道:"哦...如果我是故意的话，你想做些什么呢?"
+	<<else>>
+		你感觉你的两胯之间越来越热，你沉默着把双腿分开，向众人完全展示着你的<<genitals>>。
+	<</if>>
+	<br><br>
+	
+	这就是那些家伙所需要的诱因，那些人向你扑来.
+	<<promiscuity5>>
+<</if>>
+<<effects>>
+<<effectsman>>
+<<alarmstate>>
+<<man>>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<if _combatend>>
+	<span id="next"><<link [[继续|Yoga Classes Orgy End]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Yoga Classes Orgy]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Yoga Classes Orgy End
+<<effects>>
+<<if $enemyhealth lte 0>>
+	你把所有扑向你的人都打倒了，那些攻击你的家伙们被迫习得了一种更危险的瑜伽.
+	<<clotheson>>
+	<<endcombat>>
+	教室的门打开了，那些家伙们迅速地回到自己的垫子上。查里扫视了一圈，其中的许多人都浑身伤痕且摇摇欲坠。尽管如此，<<nnpc_he "Charlie">>也没有说些什么，只是在垫子上坐了下来。
+	<br><br>
+	这节课的其余时间无事发生。
+	<br><br>
+	<<link [[继续|Yoga Classes Start 2]]>><</link>>
+	<br>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<ejaculation>>
+	<<clotheson>>
+	<<endcombat>>
+	教室的门打开了，袭击你的家伙迅速回到了垫子上。查里扫视了一圈，尽管其中许多人不再保持查里要求的姿势，<<nnpc_he "Charlie">>没有多说什么，只是在<<nnpc_he "Charlie">>的垫子上坐了下来。
+	<br><br>
+	这节课的其余时间无事发生。
+	<br><br>
+	<<link [[继续|Yoga Classes Start 2]]>><</link>>
+	<br>
+<<else>>
+	<<clotheson>>
+	<<endcombat>>
+	教室的门打开了，袭击你的家伙迅速回到了垫子上。查里扫视了一圈，尽管其中许多人不再保持查里要求的姿势，<<nnpc_he "Charlie">>没有多说什么，只是在<<nnpc_he "Charlie">>的垫子上坐了下来。
+	<br><br>
+	这节课的其余时间无事发生。
+	<br><br>
+	<<link [[继续|Yoga Classes Start 2]]>><</link>>
+	<br>
+<</if>>
+
+:: Heel Lesson Inquiry
+<<set $outside to 0>><<set $location to "dance_studio">><<effects>>
+接待员上下打量你。"我们每周二和周四开设高跟鞋课，但学生必须自备鞋子。
+<<if $worn.feet.type.includes("heels")>>
+	这些$worn.feet.cn_name_cap看起来非常适合课程。"
+<<else>>
+	如果你感兴趣，去购物中心买一双。"
+<</if>>
+<br><br>
+<<link [[继续|Dance Studio]]>><</link>>
+
+:: Heel Lesson
+<<set $outside to 0>><<set $location to "dance_studio">><<effects>>
+
+<<if $dancestudiointro isnot 1>>
+	<<set $dancestudiointro to 1>>
+	<<npc Charlie>><<person1>>
+	你付钱给接待员后，被引导着穿过左边的门。你走进一个大房间，里面铺着木地板，墙上挂着镜子。里面已经有十几个人了。要找一个教练不是什么难事。<<he>>双手叉腰，站着对全班讲解走路姿势的重要性。
+	<br><br>
+	门在你身后关上，看到你后，<<him>>微笑着转向你。"我们来了一个新学生！欢迎。"<<He>>顶着一头姜黄色的短发，脸上有一些雀斑。<<his>>的紧身衣展示了<<his>>健美的身体。<<if $pronoun is "m">>你没办法忽视，<<his>>的阴茎的隆起压在<<his>>的屁股上的样子。<<elseif $pronoun is "f">><<his>>宽大的胸部紧贴着<<his>>的躯干，看起来很苗条。<</if>>
+	<br><br>
+	<<he>>似乎没有注意到你猥亵的目光，<<he>>没有任何反应。你应该自我介绍，但如何介绍？
+	<br><br>
+
+	<<link [[怯懦|Heel Lesson]]>><<npcincr Charlie love 20>><<set $phase to 1>><</link>><<ggglove>>
+	<br>
+	<<link [[自信|Heel Lesson]]>><<set $phase to 2>><</link>>
+	<br>
+	<<link [[轻浮|Heel Lesson]]>><<npcincr Charlie love -10>><<stress -12>><<trauma -6>><<set $phase to 3>><</link>><<promiscuous1>><<lllove>><<lstress>><<ltrauma>>
+	<br>
+<<elseif $phase is 1>>
+	<<set $phase to 0>>
+	"你，你好……"你喃喃道，眼睛盯着自己的脚。
+	<br><br>
+	教官没有说什么，走到你身边，用手臂护住你的肩膀。<<He>>轻声说："别担心，我不咬人。我的名字叫查里。我会帮你走出你的世界。"<<He>>在开始上课之前，温柔地护送你到其他同学那。
+	<br><br>
+	<<link [[继续|Heel Lesson]]>><<endevent>><</link>>
+	<br>
+<<elseif $phase is 2>>
+	<<set $phase to 0>>
+	"很高兴见到你！我迫不及待地想要开始了！"
+	<br><br>
+	教官回答说："充满热情很好，但太急于求成会让你的肌肉紧张。"尽管<<his>>这样提醒你，但<<he>>看起来似乎很高兴。"过来吧。顺便说一下，我是查里。是你的老师。那么，我说到哪里了？"当课程开始时，你走了过去。
+	<br><br>
+	<<link [[继续|Heel Lesson]]>><<endevent>><</link>>
+	<br>
+<<elseif $phase is 3>>
+	<<set $phase to 0>>
+	<<promiscuity1>>"衣服不错。完美凸显了你的优点。" 你的眼睛上下打量着<<his>>的身体，让<<him>>明白你到底是指哪种优点。
+	<br><br>
+	<<He>>有些不自在，好像突然意识到了你的想法，<<He>>突然生气了起来，"我叫查里，你愿意坐在这个位置上吗？"<<He>>转身回到班里，你也跟着走了进去。很快就开始上课了。
+	<br><br>
+	<<link [[继续|Heel Lesson]]>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<if $arousal gte $arousalmax>>
+		<<orgasmLocation "danceStudioHeelLesson">>
+	<</if>>
+	<<rng 5>>
+	<<if $rng is 1>>
+		查里递给你和其他同学一摞书。不是让你们阅读,<<npc Charlie>><<person1>><<he>>指示你们把书顶在头上，并在房间里绕圈来学习保持平衡。你需要用尽所有的注意力来防止它们掉落。
+	<<elseif $rng is 2>>
+		你走进舞蹈室，发现地板上放着各种各样的汽车轮胎。按照查里的指示，你和你的同学轮流进出每个轮胎。查里边走边喊："快！快！快，快！"
+	<<elseif $rng is 3>>
+		舞蹈室里堆满了散落的紧身衣、舞蹈器材和地垫。<<npc Charlie>><<person1>><<he>>向全班打招呼，"在这节课上，我希望你们不要用手打扫房间，要用你的脚后跟。"
+	<<else>>
+		舞蹈室的地板上放着一条长毯。你和你的同学们轮流在上面走秀，优雅地模仿时装模特。当你走的时候，查里抓住你的腰，引导你的每一步。"就这样！继续前进！"
+	<</if>>
+	<br><br>
+	<<tiredness 20>>
+	<<feetskill 10>>
+	<span class="gold">你对自己用脚给予快乐的能力感到更有信心了。</span>
+	<br><br>
+	<<link [[完成|Heel Lesson Video]]>><</link>>
+<</if>>
+
+:: Heel Lesson Video
+下课时，你和其他学生被带到一个角落，那里有一台大电视。查里打开电视，指示全班在离开前观看一段简短的教学视频。
+<br><br>
+<<rng 8>>
+<<if $rng is 1>>
+	这节课的视频是关于高跟鞋的历史。你可以看到17世纪的鞋子照片，以及皇室成员过去如何穿着它们。
+<<elseif $rng is 2>>
+	屏幕上出现了礼仪指南。时髦的解说员讲解了在一家高级餐厅里应该如何优雅的走路。
+<<elseif $rng is 3>>
+	视频画质很低且模糊。它展示了一个穿着高跟鞋的女人踩在香蕉上。
+	<<if $awareness gte 200>>
+		"这一定是某人的癖好，"你想。
+		<<garousal>><<arousal 100>>
+	<</if>>
+<<elseif $rng is 4>>
+	一个穿着紧身衣的女人出现在屏幕上。你看她表演舞蹈，注意她如何穿着高跟鞋保持优雅。
+	<<garousal>><<arousal 300>>
+<<else>>
+	这段视频是穿高跟鞋走路的指南。它向你展示了如何站立，如何坐，以及如何优雅地行走。
+<</if>>
+<br><br>
+<<endevent>>
+<<link [[离开|Dance Studio]]>><</link>>

@@ -1,0 +1,312 @@
+:: Widgets Masturbation Slime Control [widget]
+<<widget "masturbationSlimeControl">>
+	<<set $_genitals_exposed to $worn.over_lower.vagina_exposed gte 1 and $worn.lower.vagina_exposed gte 1 and $worn.under_lower.vagina_exposed gte 1>>
+	<<if !_playerToys>>
+		<<set _playerToys to window.listUniqueCarriedSextoys().filter(toy => (V.player.penisExist && !playerChastity("penis") && toy.type.includesAny("stroker")) || toy.type.includesAny("dildo","breastpump"))>>
+	<</if>>
+	<<set $_toysId to Array.from(Array(_playerToys.length).keys())>>
+	/*Stroker doesn't exactly have many ways to play with it, too boring for the ear slimes*/
+	<<set $_toysId to $_toysId.filter(i => !_playerToys[i].type.includes("stroker"))>>
+
+	<<if $leftaction is 0 or $leftaction is "mrest">>
+		<<set $leftaction to "slime">>
+	<</if>>
+
+	<<if $rightaction is 0 or $rightaction is "mrest">>
+		<<set $rightaction to "slime">>
+	<</if>>
+
+	<<if ($leftaction is "mpenisstop" and !($mouth is "mpenis" and $selfsuckDepth is $penisHeight)) or $leftaction is "mvaginastop" or $leftaction is "manusstop">>
+		<span class="red">史莱姆使你的左手无法挪开。</span>
+		<<set $leftaction to "slime">>
+	<</if>>
+
+	<<if ($rightaction is "mpenisstop" and !($mouth is "mpenis" and $selfsuckDepth is $penisHeight)) or $rightaction is "mvaginastop" or $rightaction is "manusstop">>
+		<span class="red">史莱姆使你的右手无法挪开.</span>
+		<<set $rightaction to "slime">>
+	<</if>>
+
+	<<if $mouthaction is "mpenisstop" or $mouthaction is "mpenismouthoff">>
+		<span class="red">黏液阻止你把嘴从你的<<penis>>移开.</span>
+		<<set $mouthaction to "slime">>
+	<<elseif $mouthaction is "mpenispullback">>
+		<span class="red">黏液阻止你往回拉，使你无法像现在这样深深地吸吮<<penis>>。</span>
+		<<set $mouthaction to "slime">>
+	<<elseif $mouthaction is "mvaginastop">>
+		<span class="red">黏液阻止你将嘴从阴道移开。</span>
+		<<set $mouthaction to "slime">>
+	<</if>>
+
+	<<if ["mdildostop","mvaginastopdildo","manusstopdildo","mpenisstopstroker","mmouthstopdildo"].includes($leftaction) and !($mouth isnot 0 and _playerToys[$currentToyLeft].type.includes("stroker"))>>
+		<span class="red">黏液阻止你将左手中的性玩具放下。</span>
+		<<set $leftaction to "slime">>
+	<</if>>
+
+	<<if ["mdildostop","mvaginastopdildo","manusstopdildo","mpenisstopstroker","mmouthstopdildo"].includes($rightaction) and !($mouth isnot 0 and _playerToys[$currentToyRight].type.includes("stroker"))>>
+		<span class="red">黏液阻止你将右手中的性玩具放下。</span>
+		<<set $rightaction to "slime">>
+	<</if>>
+
+	<<if $corruptionMasturbation>>
+		<span class="red">它迫使你继续下去。</span>
+	<</if>>
+	<<unset _force>>
+	<<arousal 100>>
+
+	/*Left Arm*/
+
+	<<if $worn.over_lower.exposed is 0 and ($leftaction is "slime" is 0 and random(0,100) gte 25)>>
+		<<set $leftaction to "moverlower">>
+	<<elseif $worn.lower.exposed is 0 and ($leftaction is "slime" or (random(0,100) gte 50 and $worn.over_lower.exposed gt 0))>>
+		<<set $leftaction to "mlower">>
+	<<elseif $worn.under_lower.exposed is 0 and ($leftaction is "slime" or (random(0,100) gte 50 and $worn.lower.exposed gt 0))>>
+		<<set $leftaction to "munder">>
+	<</if>>
+
+	<<if ["moverlower","mlower","munder"].includes($leftaction)>>
+	<<elseif $leftarm is 0>>
+		<<if (random(0,100) gte 80) and $_toysId.length gt 0 and (["home","brothel","cafe"].includes($location) or _enableSexToys)>>
+			<<if $leftaction is "mpickupdildo">>
+				<<set $_toysId to $_toysId.filter(e => e !== T.selectedToyRight)>>
+			<</if>>
+			<<set $leftaction to "mpickupdildo">>
+			<<set $selectedToyLeft to $_toysId.pluck()>>
+		<<elseif $player.penisExist and ($leftaction is "slime" or ($leftaction is "mchest" and random(0,100) gte 97)) and !($mouth is "mpenis" and $selfsuckDepth is $penisHeight) and !playerChastity("penis")>>
+			<<set $leftaction to "mpenisentrance">>
+		<<elseif !playerChastity("anus") and ((random(0, 100) lt 25 and $rightaction is "slime") or ($rightaction is "mchest" and random(0,100) gte 97))>>
+			<<set $leftaction to "manusentrance">>
+		<<elseif $leftaction is "slime">>
+			<<set $leftaction to "mchest">>
+		<</if>>
+	<<elseif $leftarm is "mpenisentrance">>
+		<<set $leftaction to "mpenisshaft">>
+	<<elseif $leftarm is "mvaginaentrance">>
+		<<if random(0,100) gte 50>>
+			<<set $leftaction to "mvaginaclit">>
+		<<else>>
+			<<set $leftaction to "mvaginarub">>
+		<</if>>
+	<<elseif $leftarm is "manusentrance">>
+		<<set $leftaction to "manus">>
+	<<elseif $leftarm is "manus" and $player.penisExist>>
+		<<set $leftaction to "manusprostate">>
+	<<elseif $leftarm is "mpickupdildo" and $currentToyLeft and (["home","brothel","cafe"].includes($location) or _enableSexToys)>>
+		<<if _playerToys[$currentToyLeft].type.includes("stroker")>>
+			<<if $penisuse isnot 0>>
+				/*When no action is avaliable*/
+				<<set $leftaction to "mdildostop">>
+			<<elseif $player.penisExist and random(0,100) gte 50>>
+				<<set $leftaction to "mpenisentrancestroker">>
+			<<elseif $leftaction isnot "mpenisentrancestroker">>
+				<<set $leftaction to "mpenisentrancestroker">>
+			<</if>>
+		<<elseif _playerToys[$currentToyLeft].type.includes("breastpump")>>
+			<<set $leftaction to "mbreastpump">>
+		<<elseif _playerToys[$currentToyLeft].type.includes("dildo")>>
+			<<if $player.vaginaExist and random(0,100) gte 75>>
+				<<set $leftaction to "mvaginaentrancedildo">>
+			<<elseif random(0,100) gte 75>>
+				<<set $leftaction to "manusentrancedildo">>
+			<<elseif ["small dildo","dildo"].includes(_playerToys[$currentToyLeft].name) and random(0,100) gte 75 and $mouth is 0 and !($canSelfSuckPenis and $penisuse is 0)>>
+				<<set $leftaction to "mdildomouthentrance">>
+			<<elseif !["mvaginaentrancedildo","manusentrancedildo"].includes($leftaction) and _playerToys[$currentToyLeft].name is "bullet vibe">>
+				<<set _actions to ["mchestvibrate"]>>
+				<<if $player.penisExist and $penisuse is 0 and !playerChastity("penis")>>
+					<<run _actions.push("mpenisvibrate")>>
+				<</if>>
+				<<if !$player.penisExist and !playerChastity("vagina")>>
+					<<run _actions.push("mvaginaclitvibrate")>>
+				<</if>>
+				<<set $leftaction to _actions.pluck()>>
+			<<else>>
+				/*To ensure there is a default action, not a duplicate*/
+				<<set $leftaction to "manusentrancedildo">>
+			<</if>>
+		<</if>>
+	<<elseif $leftarm is "mpenisentrancestroker">>
+		<<if $worn.over_lower.vagina_exposed gte 1 and $worn.lower.vagina_exposed gte 1 and $worn.under_lower.vagina_exposed gte 1 and $penisuse is 0>>
+			<<if random(0,100) gte 50>>
+				<<set $leftaction to "mpenisstroker">>
+			<<elseif $leftaction isnot "mpenisstroker">>
+				<<set $leftaction to "mpenisentrancestroker">>
+			<</if>>
+		<</if>>
+	<<elseif $leftarm is "mpenisstroker">>
+		<<set $leftaction to "mpenisstroker">>
+	<<elseif $leftarm is "mbreastpump">>
+		<<set $leftaction to "mbreastpumppump">>
+	<<elseif $leftarm is "manusentrancedildo">>
+		<<if $worn.over_lower.anus_exposed gte 1 and $worn.lower.anus_exposed gte 1 and $worn.under_lower.anus_exposed gte 1 and !playerChastity("anus")>>
+			<<set $leftaction to "manusdildo">>
+		<<elseif $leftaction isnot "manusdildo">>
+			<<set $leftaction to "manusrubdildo">>
+		<</if>>
+	<<elseif $leftarm is "manusdildo">>
+		<<if $player.penisExist and random(0,100) gte 50>>
+			<<set $leftaction to "manusprostatedildo">>
+		<<elseif $leftaction isnot "manusprostatedildo">>
+			<<set $leftaction to "manusteasedildo">>
+		<</if>>
+	<<elseif $leftarm is "mvaginaentrancedildo">>
+		<<if ($rightarm isnot "mvagina" and $rightarm isnot "mvaginadildo") and random(0,100) gte 50>>
+			<<set $leftaction to "mvaginadildo">>
+		<<elseif $leftaction isnot "mvaginadildo">>
+			<<set $leftaction to "mvaginaclitdildo">>
+		<</if>>
+	<<elseif $leftarm is "mvaginadildo">>
+		<<set $leftaction to "mvaginateasedildo">>
+	<<elseif $leftarm is "mdildomouthentrance">>
+		<<set $leftaction to "mdildomouth">>
+	<<elseif $leftarm is "mdildomouth">>
+		<<set $leftaction to "mdildopiston">>
+	<</if>>
+
+	/*Right Arm*/
+
+	<<if $worn.over_upper.exposed is 0 and ($rightaction is "slime" is 0 and random(0,100) gte 25)>>
+		<<set $rightaction to "moverupper">>
+	<<elseif $worn.upper.exposed is 0 and ($rightaction is "slime" or (random(0,100) gte 50 and $worn.over_upper.exposed gt 0))>>
+		<<set $rightaction to "mupper">>
+	<<elseif $worn.under_upper.exposed is 0 and ($rightaction is "slime" or (random(0,100) gte 50 and $worn.upper.exposed gt 0))>>
+		<<set $rightaction to "munder_upper">>
+	<</if>>
+
+	<<if ["moverupper","mupper","munder_upper"].includes($rightaction)>>
+	<<elseif $rightarm is 0>>
+		<<if (random(0,100) gte 80) and $_toysId.length gt 0 and (["home","brothel","cafe"].includes($location) or _enableSexToys)>>
+			<<if $rightaction is "mpickupdildo">>
+				<<set $_toysId to $_toysId.filter(e => e !== T.selectedToyLeft)>>
+			<</if>>
+			<<set $rightaction to "mpickupdildo">>
+			<<set $selectedToyRight to $_toysId.pluck()>>
+		<<elseif $player.vaginaExist and !playerChastity("vagina") and ($rightaction is "slime" or ($rightaction is "mchest" and random(0,100) lte 3))>>
+			<<set $rightaction to "mvaginaentrance">>
+		<<elseif !playerChastity("anus") and ((random(0, 100) lt 25 and $rightaction is "slime") or ($rightaction is "mchest" and random(0,100) lte 3))>>
+			<<set $rightaction to "manusentrance">>
+		<<elseif $rightaction is "slime">>
+			<<set $rightaction to "mchest">>
+		<</if>>
+	<<elseif $rightarm is "mpenisentrance">>
+		<<set $rightaction to "mpenisshaft">>
+	<<elseif $rightarm is "mvaginaentrance">>
+		<<if random(0,100) gte 50>>
+			<<set $rightaction to "mvaginaclit">>
+		<<else>>
+			<<set $rightaction to "mvaginarub">>
+		<</if>>
+	<<elseif $rightarm is "manusentrance">>
+		<<set $rightaction to "manus">>
+	<<elseif $rightarm is "manus" and $player.penisExist>>
+		<<set $rightaction to "manusprostate">>
+	<<elseif $rightarm is "mpickupdildo" and $currentToyRight and (["home","brothel","cafe"].includes($location) or _enableSexToys)>>
+		<<if _playerToys[$currentToyRight].type.includes("stroker")>>
+			<<if $penisuse isnot 0>>
+				/*When no action is avaliable*/
+				<<set $rightaction to "mdildostop">>
+			<<elseif $player.penisExist and random(0,100) gte 50>>
+				<<set $rightaction to "mpenisentrancestroker">>
+			<<elseif $rightaction isnot "mpenisentrancestroker">>
+				<<set $rightaction to "mpenisentrancestroker">>
+			<</if>>
+		<<elseif _playerToys[$currentToyRight].type.includes("breastpump")>>
+			<<set $rightaction to "mbreastpump">>
+		<<elseif _playerToys[$currentToyRight].type.includes("dildo")>>
+			<<if $player.vaginaExist and random(0,100) gte 75>>
+				<<set $rightaction to "mvaginaentrancedildo">>
+			<<elseif random(0,100) gte 75>>
+				<<set $rightaction to "manusentrancedildo">>
+			<<elseif ["small dildo","dildo"].includes(_playerToys[$currentToyRight].name) and random(0,100) gte 75 and $mouth is 0 and !($canSelfSuckPenis and $penisuse is 0)>>
+				<<set $rightaction to "mdildomouthentrance">>
+			<<elseif !["mvaginaentrancedildo","manusentrancedildo"].includes($rightaction) and _playerToys[$currentToyRight].name is "bullet vibe">>
+				<<set _actions to ["mchestvibrate"]>>
+				<<if $player.penisExist and $penisuse is 0 and !playerChastity("penis")>>
+					<<run _actions.push("mpenisvibrate")>>
+				<</if>>
+				<<if !$player.penisExist and !playerChastity("vagina")>>
+					<<run _actions.push("mvaginaclitvibrate")>>
+				<</if>>
+				<<set $rightaction to _actions.pluck()>>
+			<<else>>
+				/*To ensure there is a default action, not a duplicate*/
+				<<set $rightaction to "manusentrancedildo">>
+			<</if>>
+		<</if>>
+	<<elseif $rightarm is "mpenisentrancestroker">>
+		<<if $worn.over_lower.vagina_exposed gte 1 and $worn.lower.vagina_exposed gte 1 and $worn.under_lower.vagina_exposed gte 1 and $penisuse is 0>>
+			<<if random(0,100) gte 50>>
+				<<set $rightaction to "mpenisstroker">>
+			<<elseif $rightaction isnot "mpenisstroker">>
+				<<set $rightaction to "mpenisentrancestroker">>
+			<</if>>
+		<</if>>
+	<<elseif $rightarm is "mpenisstroker">>
+		<<set $rightaction to "mpenisstroker">>
+	<<elseif $rightarm is "mbreastpump">>
+		<<set $rightaction to "mbreastpumppump">>
+	<<elseif $rightarm is "manusentrancedildo">>
+		<<if $worn.over_lower.anus_exposed gte 1 and $worn.lower.anus_exposed gte 1 and $worn.under_lower.anus_exposed gte 1 and !playerChastity("anus")>>
+			<<set $rightaction to "manusdildo">>
+		<<elseif $rightaction isnot "manusdildo">>
+			<<set $rightaction to "manusrubdildo">>
+		<</if>>
+	<<elseif $rightarm is "manusdildo">>
+		<<if $player.penisExist and random(0,100) gte 50>>
+			<<set $rightaction to "manusprostatedildo">>
+		<<elseif $rightaction isnot "manusprostatedildo">>
+			<<set $rightaction to "manusteasedildo">>
+		<</if>>
+	<<elseif $rightarm is "mvaginaentrancedildo">>
+		<<if ($rightarm isnot "mvagina" and $rightarm isnot "mvaginadildo") and random(0,100) gte 50>>
+			<<set $rightaction to "mvaginadildo">>
+		<<elseif $rightaction isnot "mvaginadildo">>
+			<<set $rightaction to "mvaginaclitdildo">>
+		<</if>>
+	<<elseif $rightarm is "mvaginadildo">>
+		<<set $rightaction to "mvaginateasedildo">>
+	<<elseif $rightarm is "mdildomouthentrance">>
+		<<set $rightaction to "mdildomouth">>
+	<<elseif $rightarm is "mdildomouth">>
+		<<set $rightaction to "mdildopiston">>
+	<</if>>
+
+	/*Mouth*/
+	<<if $_genitals_exposed>>
+		<<if $mouth is 0>>
+			<<if $canSelfSuckPenis and $penisuse is 0 and (random(0,100) gte 50 or !($canSelfSuckVagina and $vaginause is 0 and $fingersInVagina is 0))>>
+				<<set $mouthaction to "mpenisentrance">>
+			<<elseif $canSelfSuckVagina and $vaginause is 0 and $fingersInVagina is 0>>
+				<<set $mouthaction to "mvaginaentrance">>
+			<</if>>
+		<<elseif $mouth is "mpenisentrance">>
+			<<if random(0,100) gte 50>>
+				<<set $mouthaction to "mpenistakein">>
+			<<elseif $mouthaction isnot "mpenistakein">>
+				<<set $mouthaction to "mpenislick">>
+			<</if>>
+		<<elseif $mouth is "mpenis">>
+			<<if $selfsuckDepth lt $selfsuckLimit and random(0,100) gte 50>>
+				<<set $mouthaction to "mpenisdeepthroat">>
+			<<elseif $mouthaction isnot "mpenisdeepthroat">>
+				<<set $mouthaction to "mpenissuck">>
+			<</if>>
+		<<elseif $mouth is "mvaginaentrance">>
+			<<if random(0,100) gte 50>>
+				<<set $mouthaction to "mvaginaclit">>
+			<<else>>
+				<<set $mouthaction to "mvaginalick">>
+			<</if>>
+		<<elseif $mouth is "mdildomouthentrance">>
+			<<if random(0,100) gte 50>>
+				<<set $mouthaction to "mdildolick">>
+			<<else>>
+				<<set $mouthaction to "mdildokiss">>
+			<</if>>
+		<<elseif $mouth is "mdildomouth">>
+			<<if random(0,100) gte 50>>
+				<<set $mouthaction to "mdildolick">>
+			<<else>>
+				<<set $mouthaction to "mdildosuck">>
+			<</if>>
+		<</if>>
+	<</if>>
+<</widget>>
