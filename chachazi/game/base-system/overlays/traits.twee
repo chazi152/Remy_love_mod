@@ -1,0 +1,997 @@
+:: Traits [widget]
+<<widget "traits">>
+	<<set _traitLists to [
+		{
+			title: "General Traits",
+			traits: [
+				{
+					name: "Virgin",
+					colour: "green",
+					has: $player.virginity.vaginal is true and $player.virginity.penile is true,
+					text: "Your purity recovers faster. Your virginity might be worth something.",
+				},
+				{
+					name: "Chastity Vow",
+					colour: "blue",
+					has: $player.virginity.temple is true,
+					text: "Lost when your <<if $player.penisExist>>penis is enveloped<</if>><<if $player.penisExist and $player.vaginaExist>> or your <</if>><<if $player.vaginaExist>>vagina is penetrated<</if>>. The temple will know.",
+				},
+				{
+					name: "Broken Vow",
+					colour: "red",
+					has: $player.virginity.temple is false and $temple_rank isnot "prospective" and $temple_rank isnot undefined,
+					text: "The temple will know.",
+				},
+				{
+					name: "Rite of Promise: $templePromised",
+					colour: "blue",
+					has: $templePromised isnot "" and $player.virginity.temple is true,
+					text: "You've been bound to another initiate. Sex with this person will not break your vows.",
+				},
+				{
+					name: "Broken Promise: $templePromised",
+					colour: "red",
+					has: $templePromised isnot "" and $player.virginity.temple isnot true,
+					text: "The temple will know.",
+				},
+				{
+					name: "Purity boost",
+					colour: "green",
+					has: $featsPurityBoost gt 0,
+					text: "You are gaining purity daily.",
+				},
+				{
+					name: "Impurity boost",
+					colour: "red",
+					has: $featsPurityBoost lt 0,
+					text: "You are losing purity daily.",
+				},
+				{
+					name: "Crossdresser",
+					colour: "pink",
+					has: $backgroundTraits.includes("crossdresser") and $player.gender is "m",
+					text: "Stress decays faster while dressed as a girl, but slower when dressed as a boy.",
+				},
+				{
+					name: "Crossdresser",
+					colour: "lblue",
+					has: $backgroundTraits.includes("crossdresser") and $player.gender is "f",
+					text: "Stress decays faster while dressed as a boy, but slower when dressed as a girl.",
+				},
+				{
+					name: "Lustful",
+					colour: "lewd",
+					has: $backgroundTraits.includes("lustful"),
+					text: "Arousal increases over time, and needs to be managed.",
+				},
+				{
+					name: "Green Thumb",
+					colour: "green",
+					has: $backgroundTraits.includes("greenthumb"),
+					text: "More bountiful crops and no decay when using fertiliser.",
+				},
+				{
+					name: () => V.submissive <= 850 ? "Dendrophile" : "Plant Lover",
+					colour: "lewd",
+					has: $backgroundTraits.includes("plantlover"),
+					text: "Plants are everything to you. Plantpeople and plant-based tentacles no longer require hallucinations to encounter. You get a bonus to tending, as your trauma increases.",
+				},
+				{
+					name: "Nectar Addict",
+					colour: "red",
+					has: $backgroundTraits.includes("plantlover"),
+					text: "You're more vulnerable to aphrodisiacs and alcohol. You draw nourishment from nectar. Drinking it invigorates your body, improving physique and reducing stress. Failing to consume nectar for an extended period will take its toll on your body, and eventually cause this trait and the <<if $submissive lte 850>><span class='lewd'>Dendrophile</span><<else>><span class='lewd'>Plant Lover</span><</if>> trait to disappear.<span class='hidden'></span>",
+				},
+                {
+                    name: "Pregnant",
+                    colour: "lewd",
+                    has: playerIsPregnant() and playerAwareTheyArePregnant(),
+                    text: () => playerBellySize() lt 10 or playerNormalPregnancyTotal() gte 50 ? "You are with child." : "You are with child. Some skills will suffer as your belly grows.",
+                },
+				{
+					name: "First Time Mother",
+					colour: "lewd",
+					has: playerNormalPregnancyTotal() is 1,
+					text: "You have given birth to your first child. Reduces the physical penalties for being pregnant.",
+				},
+				{
+					name: "Second Time Mother",
+					colour: "lewd",
+					has: playerNormalPregnancyTotal() is 2,
+					text: "You have given birth to children two times now. Reduces the physical penalties for being pregnant.",
+				},
+				{
+					name: "Mother",
+					colour: "lewd",
+					has: between(playerNormalPregnancyTotal(), 3, 7),
+					text: "You have some good experiences of being a mother. Moderately reduces the physical penalties for being pregnant.",
+				},
+				{
+					name: "Broodmother",
+					colour: "lewd",
+					has: between(playerNormalPregnancyTotal(), 8, 49),
+					text: "You have given birth to many, many children. Greatly reduces the physical penalties for being pregnant.",
+				},
+				{
+					name: "Gaia",
+					colour: "gold",
+					has: playerNormalPregnancyTotal() gte 50,
+					text: "You have given a birth to a veritable dynasty of children. No physical penalties for being pregnant.",
+				},
+				{
+					name: "Parasite Broodmother",
+					colour: "lewd",
+					has: $sexStats.anus.pregnancy.motherStatus is 2 or $sexStats.vagina.pregnancy.motherStatus is 2,
+					text: "You've become host to an endless number of little critters<<if $sexStats.anus.pregnancy.motherStatus is 2 and $sexStats.vagina.pregnancy.motherStatus is 2>> <span class='lewd'>in multiple places in your body</span><</if>><span class='hidden'></span>",
+				},
+				{
+					name: "Parasite Mother",
+					colour: "lewd",
+					has: ($sexStats.anus.pregnancy.motherStatus is 1 or $sexStats.vagina.pregnancy.motherStatus is 1) and !($sexStats.anus.pregnancy.motherStatus is 2 or $sexStats.vagina.pregnancy.motherStatus is 2),
+					text: "You have given birth to little critters<<if $sexStats.anus.pregnancy.motherStatus is 1 and $sexStats.vagina.pregnancy.motherStatus is 1>> <span class='lewd'>in multiple places in your body</span><</if>><span class='hidden'></span>",
+				},
+				{
+					name: "Lactating",
+					colour: "blue",
+					has: $lactating gte 1 and $breastfeedingdisable is "f",
+					text: "Your breasts are ready to be milked.",
+				},
+				{
+					name: "Milk Factory",
+					colour: "blue",
+					has: $lactating gte 1 and $breastfeedingdisable is "f" and $milk_volume gte 1000,
+					text: "Your breasts are able to hold a tremendous amount of milk.",
+				},
+				{
+					name: "Sperm bank",
+					colour: "blue",
+					has: $semen_volume gte 1000 and $player.penisExist,
+					text: "You carry a tremendous amount of semen.",
+				},
+				{
+					name: "Possessed",
+					colour: "wraith",
+					has: $possessed,
+					text: "Your body is not your own.",
+				},
+				{
+					name: "Wolf <<girl>>",
+					colour: "grey",
+					has: $wolfgirl gte 6,
+					text: "The spirit of the wild lives within you, making you more defiant over time. Your ears and tail make you more conspicuous.",
+				},
+				{
+					name: "Cat <<girl>>",
+					colour: "grey",
+					has: $cat gte 6,
+					text: 'You have an urge to lap up cream. Unlocks the "groom" action while dancing with lewd fluid on your person. Your ears and tail make you more conspicuous.',
+				},
+				{
+					name: () => {
+						if(V.player.gender_appearance is "m"){
+							if(V.player.gender is "f"){
+								return "Bull boy (female)";
+							}
+							return "Bull boy";
+						}else{
+							if(V.player.gender is "m"){
+								return "Cow girl (male)";
+							}
+							return "Cow girl";
+						}
+					},
+					colour: "brat",
+					has: $cow gte 6,
+					text: "You yearn to be milked. Milk and semen volume is increased. Certain body parts might grow. Your horns, ears and tail make you more conspicuous.",
+				},
+				{
+					name: () => V.hallucinations gte 2 || V.bestialitydisable is "t" ? "Harpy" : "Bird <<girl>>",
+					colour: "grey",
+					has: $harpy gte 6,
+					text: "The skies call.",
+				},
+				{
+					name: () => {
+						if(V.player.gender_appearance is "m"){
+							if(V.player.gender is "f"){
+								return "Fox (female)";
+							}
+							return "Fox";
+						}else{
+							if(V.player.gender is "m"){
+								return "Vixen (male)";
+							}
+							return "Vixen";
+						}
+					},
+					colour: "",
+					style: `background: linear-gradient(to right,#fe9000 0%, #ffffff 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;`,
+					has: $fox gte 6,
+					text: "You have the urge to keep what's not yours. Improves skulduggery. Your ears and tail make you more alluring and attractive.",
+				},
+				{
+					name: "Fangs",
+					colour: "def",
+					has: $transformationParts.traits.fangs isnot "disabled",
+					text: "Biting is three times as effective.",
+				},
+				{
+					name: "Sharp eyes",
+					colour: "def",
+					has: $transformationParts.traits.sharpEyes isnot "disabled",
+					text: "Little escapes your notice. +5% skulduggery.",
+				},
+				{
+					name: "Heterochromia",
+					colour: "",
+					style: `background: linear-gradient(to right,${setup.colours.eyes_map[$rightEyeColour].canvasfilter.blend} 0%, ${setup.colours.eyes_map[$leftEyeColour].canvasfilter.blend} 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;`,
+					has: $heterochromia is 1,
+					text: "Your eyes are two different colours.",
+				},
+				{
+					name: "Sturdy Horns",
+					colour: "def",
+					has: $cow gte 2 and $demon lt 2,
+					text: "Headbutts no longer hurt you.",
+				},
+				{
+					name: "Mate For Life",
+					colour: "",
+					style: `background: linear-gradient(to right,#e646c6 0%, #ffffff 100%);-webkit-background-clip: text;-webkit-text-fill-color: transparent;`,
+					has: $transformationParts.traits.mateForLife isnot "disabled",
+					text: "Gain bonuses when sleeping or copulating with your Love Interest. Changing Love Interests causes stress and trauma.",
+				},
+				{
+					name: "Fallen angel",
+					colour: "black",
+					has: $fallenangel gte 3,
+					text: "The world is so cruel. Though you feel less pure by the day, you will not relinquish yourself.",
+				},
+				{
+					name: "Fallen angel",
+					colour: "black",
+					has: $fallenangel is 2,
+					text: "The world is so cruel. You feel less pure by the day.",
+				},
+				{
+					name: "Angel",
+					colour: "gold",
+					has: $angel gte 6,
+					text: 'You radiate purity. Unlocks the "forgive" action once per encounter, removing any trauma gained so far. Beware, losing your virginity will remove this trait and leave you broken.',
+				},
+				{
+					name: () => {
+						if(V.player.gender_appearance is "m"){
+							if(V.player.gender is "f"){
+								return "Incubus (female)";
+							}
+							return "Incubus";
+						}else{
+							if(V.player.gender is "m"){
+								return "Succubus (male)";
+							}
+							return "Succubus";
+						}
+					},
+					colour: "red",
+					has: $demon gte 6,
+					text: "You're devoid of purity. You lose trauma when something cums inside you, or you cum inside something else. Tentacles reduce stress and pain instead of trauma. Beware, ending a day with anything but minimum purity will be very stressful.",
+				},
+				{
+					name: "Radiant",
+					colour: "gold",
+					has: between($angel,4,5),
+					text: 'You are pure. Unlocks the "banish" action a number of times per day based on your angelicness, dealing heavy damage to a tentacle. Its strength is greatly increased while at maximum purity. Uses remaining today: ($angelBanish / $angelBanishMax)',
+				},
+				{
+					name: "Dark Horns",
+					colour: "def",
+					has: $cow lt 2 and $demon gte 2,
+					text: "Headbutts deal twice as much damage.",
+				},
+				{
+					name: "Compound Horns",
+					colour: "def",
+					has: $cow gte 2 and $demon gte 2,
+					text: "Your headbutts are vicious. Headbutts are four times as powerful, and no longer hurt you.",
+				},
+				{
+					name: "Strong wings",
+					colour: "gold",
+					has: $harpy gte 6 and $birdFly gte 1,
+					text: "Can glide from high locations. Can fly where the wind is willing.",
+				},
+				{
+					name: "Wings",
+					colour: "grey",
+					has: !($harpy gte 6 and $birdFly gte 1) and ($angel gte 6 or $fallenangel gte 2 or $demon gte 6 or $harpy gte 6),
+					text: "Can glide from high locations.",
+				},
+				{
+					name: "Meek",
+					colour: "meek",
+					has: $submissive gte 1150 and $submissive lt 1500,
+					text: 'Unlocks the "Moan" action.',
+				},
+				{
+					name: "Submissive",
+					colour: "sub",
+					has: $submissive gte 1500,
+					text: 'Unlocks the "Moan" action.',
+				},
+				{
+					name: "Bratty",
+					colour: "brat",
+					has: $submissive lte 850 and $submissive gt 500,
+					text: 'Unlocks the "Demand" action.',
+				},
+				{
+					name: "Defiant",
+					colour: "def",
+					has: $submissive lte 500,
+					text: 'Unlocks the "Demand" action.',
+				},
+				{
+					name: "Innocent",
+					colour: "blue",
+					has: $innocencestate is 1,
+					text: "You're flattered that so many people want to spend time with you. This trait will disappear should you run out of innocence, and any trauma you've accumulated will be applied. Being attacked and low control will reduce innocence.",
+				},
+				{
+					name: "Guilty Masochist",
+					colour: "blue",
+					has: $masochism_level is 1,
+					text: "Provides a small resistance to most sources of pain. Those sources increase arousal instead.",
+				},
+				{
+					name: "Masochist",
+					colour: "purple",
+					has: $masochism_level is 2,
+					text: "Provides resistance to most sources of pain. Those sources increase arousal instead.",
+				},
+				{
+					name: "Hardened Masochist",
+					colour: "pink",
+					has: $masochism_level is 3,
+					text: "Provides strong resistance to most sources of pain. Those sources increase arousal instead.",
+				},
+				{
+					name: "Drooling Masochist",
+					colour: "red",
+					has: $masochism_level is 4,
+					text: "Provides incredible resistance to most sources of pain. Those sources increase arousal instead.",
+				},
+				{
+					name: "Guilty Sadist",
+					colour: "blue",
+					has: $sadism_level is 1,
+					text: "Your defiant acts inflict a little more pain. Inflicting pain increases arousal.",
+				},
+				{
+					name: "Sadist",
+					colour: "purple",
+					has: $sadism_level is 2,
+					text: "Your defiant acts inflict more pain. Inflicting pain increases arousal.",
+				},
+				{
+					name: "Hardened Sadist",
+					colour: "pink",
+					has: $sadism_level is 3,
+					text: "Your defiant acts inflict much more pain. Inflicting pain increases arousal.",
+				},
+				{
+					name: "Vengeful Sadist",
+					colour: "red",
+					has: $sadism_level is 4,
+					text: "Your defiant acts are far more dangerous. Inflicting pain increases arousal.",
+				},
+				{
+					name: "Farmer",
+					colour: "green",
+					has: $farm_stage gte 6,
+					text: "You know your way around a barn. Your physique is easier to maintain.",
+				},
+				{
+					name: "Knowledge: Quicksand",
+					colour: "",
+					has: $quicksand gte 5,
+					text: "You know how to react when stuck in the stuff.",
+				},
+			],
+		},
+		{
+			title: "Special Traits",
+			traits: [
+				{
+					name: () => V.submissive <= 850 ? "Hedonist" : "Orgasm Addict",
+					colour: "lewd",
+					has: $orgasmtrait gte 1,
+					text: "So many orgasms has had a physiological effect. Cumming is more difficult but pleasurable orgasms relieve more stress and painful orgasms no longer increase stress.",
+				},
+				{
+					name: "Asphyxiophilia",
+					colour: "lewd",
+					has: $choketrait gte 1,
+					text: "You've come to love the feeling of lack of oxygen. Getting choked makes sex more pleasurable.",
+				},
+				{
+					name: () => V.submissive <= 850 ? "Cumoisseur" : "Cum Dump",
+					colour: "lewd",
+					has: $ejactrait gte 1,
+					text: "You've become accustomed to the scent of ejaculate and can take advantage of its calming effect. Your stress is reduced hourly depending on how much slime and semen covers you.",
+				},
+				{
+					name: () => V.submissive <= 850 ? "Graceful" : "Plaything",
+					colour: "lewd",
+					has: $molesttrait gte 1,
+					text: "You've learned to better cope with psychological trauma. Being molested no longer removes your sense of control (rape still does).",
+				},
+				{
+					name: () => V.submissive <= 850 ? "Survivor" : "Fucktoy",
+					colour: "lewd",
+					has: $rapetrait gte 1,
+					text: "You've been raped so much, but you've learned how to cope. Trauma increases more slowly.",
+				},
+				{
+					name: () => V.submissive <= 850 ? "Tamer" : "Bitch",
+					colour: "lewd",
+					has: $bestialitytrait gte 1,
+					text: "Animals have tried to <<if $pregnancyspeechdisable is 'f'>>breed<<else>>mate<</if>> with you so often that you're used to it. Trauma increases more slowly when attacked by animals.",
+				},
+				{
+					name: () => V.submissive <= 850 ? "Witch" : "Prey",
+					colour: "lewd",
+					has: $tentacletrait gte 1,
+					text: "Many tentacles have had their way with your body. Trauma increases more slowly when attacked by tentacles.",
+				},
+				{
+					name: () => V.submissive <= 850 ? "Daredevil" : "Tasty",
+					colour: "lewd",
+					has: $voretrait gte 1,
+					text: "You've found your way into the belly of many a creature. They'll have a harder time swallowing you as they savour your taste.",
+				},
+				{
+					name: () => V.submissive <= 850 ? "Milk Enthusiast" : "Milk Addict",
+					colour: "lewd",
+					has: $milkdranktrait gte 1,
+					text: "You take full advantage of the nutrition in fresh breast milk. Drinking it invigorates your body, improving physique.",
+				},
+			],
+		},
+		{
+			title: "School Traits",
+			traits: [
+				{
+					name: "Passable Science",
+					colour: "blue",
+					has: $sciencetrait is 1,
+					text: "Pain is slightly easier to cope with.",
+				},
+				{
+					name: "Decent Science",
+					colour: "lblue",
+					has: $sciencetrait is 2,
+					text: "Pain is moderately easier to cope with.",
+				},
+				{
+					name: "Good Science",
+					colour: "teal",
+					has: $sciencetrait is 3,
+					text: "Pain is easier to cope with.",
+				},
+				{
+					name: "Excellent Science",
+					colour: "green",
+					has: $sciencetrait is 4,
+					text: "Pain is much easier to cope with.",
+				},
+				{
+					name: "Passable Maths",
+					colour: "blue",
+					has: $mathstrait is 1,
+					text: "You make 25% more from tips and negotiated fees.",
+				},
+				{
+					name: "Decent Maths",
+					colour: "lblue",
+					has: $mathstrait is 2,
+					text: "You make 50% more from tips and negotiated fees.",
+				},
+				{
+					name: "Good Maths",
+					colour: "teal",
+					has: $mathstrait is 3,
+					text: "You make 75% more from tips and negotiated fees.",
+				},
+				{
+					name: "Excellent Maths",
+					colour: "green",
+					has: $mathstrait is 4,
+					text: "You make 100% more from tips and negotiated fees.",
+				},
+				{
+					name: "Passable English",
+					colour: "blue",
+					has: $englishtrait is 1,
+					text: "Speech actions (plead, moan, demand, apologise, mock, tease, ask to be more rough) are twice as effective.",
+				},
+				{
+					name: "Decent English",
+					colour: "lblue",
+					has: $englishtrait is 2,
+					text: "Speech actions (plead, moan, demand, apologise, mock, tease, ask to be more rough) are three times as effective.",
+				},
+				{
+					name: "Good English",
+					colour: "teal",
+					has: $englishtrait is 3,
+					text: "Speech actions (plead, moan, demand, apologise, mock, tease, ask to be more rough) are four times as effective.",
+				},
+				{
+					name: "Excellent English",
+					colour: "green",
+					has: $englishtrait is 4,
+					text: "Speech actions (plead, moan, demand, apologise, mock, tease, ask to be more rough) are five times as effective.",
+				},
+				{
+					name: "Passable History",
+					colour: "blue",
+					has: $historytrait is 1,
+					text: "You know there are secret paths around town.",
+				},
+				{
+					name: "Decent History",
+					colour: "lblue",
+					has: $historytrait is 2,
+					text: "You know of a few secret paths around town.",
+				},
+				{
+					name: "Good History",
+					colour: "teal",
+					has: $historytrait is 3,
+					text: "You know of several secret paths around town.",
+				},
+				{
+					name: "Excellent History",
+					colour: "green",
+					has: $historytrait is 4,
+					text: "You know of many secret paths around town.",
+				},
+				{
+					name: "Okay at school",
+					colour: "blue",
+					has: $schooltrait is 1,
+					text: "Your performance at school has improved your self-esteem, slightly increasing your daily trauma decay.",
+				},
+				{
+					name: "Decent at school",
+					colour: "lblue",
+					has: $schooltrait is 2,
+					text: "Your performance at school has improved your self-esteem, moderately increasing your daily trauma decay.",
+				},
+				{
+					name: "Good at school",
+					colour: "teal",
+					has: $schooltrait is 3,
+					text: "Your performance at school has improved your self-esteem, increasing your daily trauma decay.",
+				},
+				{
+					name: "Excellent at school",
+					colour: "green",
+					has: $schooltrait is 4,
+					text: "Your performance at school has improved your self-esteem, greatly increasing your daily trauma decay.",
+				},
+				{
+					name: "Science Fair Winner",
+					colour: "green",
+					has: $scienceprojectwon is 1,
+				},
+				{
+					name: "Maths Competition Winner",
+					colour: "green",
+					has: $mathsprojectwon is 1,
+				},
+				{
+					name: "Stage Play Performer",
+					colour: "green",
+					has: $englishPlayWell is 1,
+				},
+			],
+		},
+		{
+			title: "Trauma Traits",
+			traits: [
+				{
+					name: () => V.controlled === 0 ? "Insomnia" : "Controlled Insomnia",
+					colour: () => V.controlled === 0 ? "red" : "blue",
+					has: $sleeptrouble gte 1,
+					text: "Sleep less effective.",
+					textColour: () => V.controlled === 0 ? "red" : "black",
+				},
+				{
+					name: () => V.controlled === 0 ? "Nightmares" : "Controlled Nightmares",
+					colour: () => V.controlled === 0 ? "red" : "blue",
+					has: $nightmares gte 1,
+					text: "Sleep is stressful.",
+					textColour: () => V.controlled === 0 ? "red" : "black",
+				},
+				{
+					name: () => V.controlled === 0 ? "Anxiety Disorder" : "Controlled Anxiety Disorder",
+					colour: () => V.controlled === 0 ? "red" : "blue",
+					has: $anxiety gte 1,
+					text: "Stress won't automatically decrease over time.",
+					textColour: () => V.controlled === 0 ? "red" : "black",
+				},
+				{
+					name: () => V.controlled === 0 ? "Severe Anxiety Disorder" : "Controlled Severe Anxiety Disorder",
+					colour: () => V.controlled === 0 ? "red" : "blue",
+					has: $anxiety gte 2,
+					text: "Stress increases over time.",
+					textColour: () => V.controlled === 0 ? "red" : "black",
+				},
+				{
+					name: () => V.controlled === 0 ? "Flashbacks" : "Controlled Flashbacks",
+					colour: () => V.controlled === 0 ? "red" : "blue",
+					has: $flashbacks gte 1,
+					text: "May relive nasty experiences.",
+					textColour: () => V.controlled === 0 ? "red" : "black",
+				},
+				{
+					name: () => V.controlled === 0 ? "Panic Attacks" : "Controlled Panic Attacks",
+					colour: () => V.controlled === 0 ? "red" : "blue",
+					has: $panicattacks gte 1,
+					text: "Chance of paralysis.",
+					textColour: () => V.controlled === 0 ? "red" : "black",
+				},
+				{
+					name: () => V.controlled === 0 ? "Severe Panic Attacks" : "Controlled Severe Panic Attacks",
+					colour: () => V.controlled === 0 ? "red" : "blue",
+					has: $panicattacks gte 2,
+					text: "Chance of uncontrollable violent outbursts.",
+					textColour: () => V.controlled === 0 ? "red" : "black",
+				},
+				{
+					name: () => V.controlled === 0 ? "Hallucinations" : "Controlled Hallucinations",
+					colour: () => V.controlled === 0 ? "red" : "blue",
+					has: $hallucinations gte 1,
+					text: "More dangers during encounters.",
+					textColour: () => V.controlled === 0 ? "red" : "black",
+				},
+				{
+					name: () => V.controlled === 0 ? "Severe Hallucinations" : "Controlled Severe Hallucinations",
+					colour: () => V.controlled === 0 ? "red" : "blue",
+					has: $hallucinations gte 2,
+					text: "More dangerous world.",
+					textColour: () => V.controlled === 0 ? "red" : "black",
+				},
+				{
+					name: "Visibly Disturbed",
+					colour: "red",
+					has: $dissociation gte 1,
+					text: "There's something wrong with you, and people can tell.",
+					textColour: "red",
+				},
+				{
+					name: () => V.controlled === 0 ? "Dissociation" : "Controlled Dissociation",
+					colour: () => V.controlled === 0 ? "red" : "blue",
+					has: $dissociation gte 2,
+					text: "Nothing feels real.",
+					textColour: () => V.controlled === 0 ? "red" : "black",
+				},
+			],
+		},
+		{
+			title: "NPC Traits",
+			traits: [
+				{
+					name: "Robin's protector",
+					colour: "lblue",
+					has: $robinpaid gte 1,
+					text: "Robin is dependent on you. You need to be strong. Increases daily trauma decay.",
+				},
+				{
+					name: "Stockholm Syndrome: Eden",
+					colour: "white",
+					has: $syndromeeden gte 1,
+					text: "It must be lonely living on your own in the woods.",
+					textColour: "red",
+				},
+				{
+					name: "Stockholm Syndrome: Kylar",
+					colour: "white",
+					has: $syndromekylar gte 1 and ($NPCName[$NPCNameList.indexOf("Kylar")].state isnot "prison" or $location is "prison"),
+					text: "Everyone deserves a friend.",
+					textColour: "red",
+				},
+				{
+					name: "斯德哥尔摩综合征: 雷米",
+					colour: "white",
+					has: $syndromeremy gte 1 and $livestock_obey gte 50,
+					text: "雷米只是为了保护你的安全，做一头奶牛没什么不好",
+					textColour: "red",
+				},
+				{
+					name: () => V.bestialitydisable === "f" ? "Stockholm Syndrome: Wolves" : "Stockholm Syndrome: Wolf People",
+					colour: "white",
+					has: $syndromewolves gte 1,
+					text: () => V.bestialitydisable === "f" ? "They're just cute animals." : "They're just cute monsters.",
+					textColour: "red",
+				},
+				{
+					name: () => V.hallucinations >= 2 || V.bestialitydisable === "t" ? "Stockholm Syndrome: Harpy" : "Stockholm Syndrome: Great Hawk",
+					colour: "white",
+					has: $syndromebird gte 1,
+					text: "It only wants a mate.",
+					textColour: "red",
+				},
+			],
+		},
+		{
+			title: "Hypnosis Traits",
+			traits: [
+				{
+					name: "Hypnotic Suggestion",
+					colour: "pink",
+					has: $hypnosis gte 1,
+					text: "Doctor Harper told you to do something, but you can't remember what.",
+				},
+				{
+					name: "Hypnotic Yearning",
+					colour: "lblue",
+					has: $hypnosis_traits.scream is 1,
+					text: "May beg for rougher treatment instead of screaming.",
+				},
+				{
+					name: "Bewitched Yearning",
+					colour: "blue",
+					has: $hypnosis_traits.scream is 2,
+					text: "Will sometimes beg for rougher treatment instead of screaming.",
+				},
+				{
+					name: "Beguiled Yearning",
+					colour: "purple",
+					has: $hypnosis_traits.scream is 3,
+					text: "Will usually beg for rougher treatment instead of screaming.",
+				},
+				{
+					name: "Mesmeric Yearning",
+					colour: "pink",
+					has: $hypnosis_traits.scream is 4,
+					text: "Will often beg for rougher treatment instead of screaming.",
+				},
+				{
+					name: "Sublime Yearning",
+					colour: "red",
+					has: $hypnosis_traits.scream is 5,
+					text: "Will beg for rougher treatment instead of screaming.",
+				},
+				{
+					name: "Hypnotic Flaunting",
+					colour: "lblue",
+					has: $hypnosis_traits.cover is 1,
+					text: "May flaunt your body parts instead of covering them.",
+				},
+				{
+					name: "Bewitched Flaunting",
+					colour: "blue",
+					has: $hypnosis_traits.cover is 2,
+					text: "Will sometimes flaunt your body parts instead of covering them.",
+				},
+				{
+					name: "Beguiled Flaunting",
+					colour: "purple",
+					has: $hypnosis_traits.cover is 3,
+					text: "Will usually flaunt your body parts instead of covering them.",
+				},
+				{
+					name: "Mesmeric Flaunting",
+					colour: "pink",
+					has: $hypnosis_traits.cover is 4,
+					text: "Will often flaunt your body parts instead of covering them.",
+				},
+				{
+					name: "Sublime Flaunting",
+					colour: "red",
+					has: $hypnosis_traits.cover is 5,
+					text: "Will flaunt your body parts instead of covering them.",
+				},
+				{
+					name: "Hypnotic Deviancy",
+					colour: "lblue",
+					has: $hypnosis_traits.deviancy is 1,
+					text: "May provoke beasts at the start of encounters.",
+				},
+				{
+					name: "Bewitched Deviancy",
+					colour: "blue",
+					has: $hypnosis_traits.deviancy is 2,
+					text: "Will sometimes provoke beasts at the start of encounters.",
+				},
+				{
+					name: "Beguiled Deviancy",
+					colour: "purple",
+					has: $hypnosis_traits.deviancy is 3,
+					text: "Will usually provoke beasts at the start of encounters.",
+				},
+				{
+					name: "Mesmeric Deviancy",
+					colour: "pink",
+					has: $hypnosis_traits.deviancy is 4,
+					text: "Will often provoke beasts at the start of encounters.",
+				},
+				{
+					name: "Sublime Deviancy",
+					colour: "red",
+					has: $hypnosis_traits.deviancy is 5,
+					text: "Will provoke beasts at the start of encounters.",
+				},
+			],
+		},
+		{
+			title: "Acceptance Traits",
+			traits: [
+				{
+					name: "Acceptance: Tiny Penis",
+					colour: "green",
+					has: $acceptance_penis_tiny gte 1000 and $player.penissize lte 0,
+					text: "You're proud of your tiny penis.",
+				},
+				{
+					name: "Acceptance: Small Penis",
+					colour: "green",
+					has: $acceptance_penis_small gte 1000 and $player.penissize is 1,
+					text: "You're proud of your small penis.",
+				},
+				{
+					name: "Acceptance: Tomgirl",
+					colour: "green",
+					has: $acceptance_tomgirl gte 100 and $acceptance_penis_tiny gte 1000,
+					text: "You're proud of becoming a tomgirl.",
+				},
+				{
+					name: "Acceptance: Enormous Penis",
+					colour: "green",
+					has: $acceptance_penis_big gte 1000 and $player.penissize gte 4,
+					text: "You're proud of your enormous penis.",
+				},
+				{
+					name: "Acceptance: Flat Chest",
+					colour: "green",
+					has: $acceptance_breasts_tiny gte 1000 and $player.breastsize lte 0 and $player.gender is "f",
+					text: "You're proud of your flat chest.",
+				},
+				{
+					name: "Acceptance: Small Breasts",
+					colour: "green",
+					has: $acceptance_breasts_small gte 1000 and $player.breastsize gte 1 and $player.breastsize lte 5,
+					text: "You're proud of your small breasts.",
+				},
+				{
+					name: "Acceptance: Huge Breasts",
+					colour: "green",
+					has: $acceptance_breasts_big gte 1000 and $player.breastsize gte 8,
+					text: "You're proud of your huge breasts.",
+				},
+				{
+					name: () => playerAwareTheyArePregnant() ? "Acceptance: Pregnant Belly" : "Acceptance: Pregnant Looking Belly",
+					colour: "green",
+					has: $acceptance_pregnancy gte 1000 and playerBellySize() gte 8,
+					text: () => playerAwareTheyArePregnant() ? "You're proud of your lifebearing belly." : "You're proud of your large belly.",
+				},
+			],
+		},
+	]>>
+
+	<div id="traitListsSearch">
+		<<traitListsSearch>>
+	</div>
+	<br>
+	<div id="traitLists">
+		<<traitLists>>
+	</div>
+<</widget>>
+
+<<widget "traitListsSearch">>
+	<<if $options.traitOverlayFormat is undefined>><<set $options.traitOverlayFormat to "table">><</if>>
+	<<set _traitSearch to "">>
+	<details>
+		<summary style="display:list-item;">Filter</summary>
+		<label>Search: <<textbox "_traitSearch" _traitSearch>></label>
+		<br><br>
+		<label>
+			Display Format:
+			<<listbox "$options.traitOverlayFormat" autoselect>>
+				<<option "Table" "table">>
+				<<option "Reduced Table" "reducedTable">>
+				<<option "List" "list">>
+			<</listbox>>
+		</label>
+		<br><br>
+		<<link Update>>
+			<<replace "#traitLists">><<traitLists>><</replace>>
+		<</link>> |
+		<<link Clear>>
+			<<set _traitSearch to "">>
+			<<replace "#traitListsSearch">><<traitListsSearch>><</replace>>
+			<<replace "#traitLists">><<traitLists>><</replace>>
+		<</link>> |
+	</details>
+<</widget>>
+
+<<widget "traitLists">>
+	<<set _traitSearch2 to _traitSearch.toLowerCase()>>
+	<<for $_traitList range _traitLists>>
+		<<if !$_traitList.traits.find(trait => trait.has &&
+			(T.traitSearch2 === "" ||
+			(typeof trait.name === "function" && trait.name().toLowerCase().includes(T.traitSearch2)) ||
+			(typeof trait.name !== "function" && trait.name.toLowerCase().includes(T.traitSearch2)) ||
+			(trait.text && typeof trait.text === "function" && trait.text().toLowerCase().includes(T.traitSearch2)) ||
+			(trait.text && typeof trait.text !== "function" && trait.text.toLowerCase().includes(T.traitSearch2)))
+		)>>
+			<<continue>>
+		<</if>>
+		<<if ["table","reducedTable"].includes($options.traitOverlayFormat)>>
+			<div @class="$options.traitOverlayFormat is 'table' ? 'traitList' : 'traitListReducedText'">
+				<div class="traitHeading">
+					<<print $_traitList.title>>
+				</div>
+				<div class="traits">
+				<<for $_trait range $_traitList.traits.filter(trait => trait.has &&
+					(T.traitSearch2 === "" ||
+					(typeof trait.name === "function" && trait.name().toLowerCase().includes(T.traitSearch2)) ||
+					(typeof trait.name !== "function" && trait.name.toLowerCase().includes(T.traitSearch2)) ||
+					(trait.text && typeof trait.text === "function" && trait.text().toLowerCase().includes(T.traitSearch2)) ||
+					(trait.text && typeof trait.text !== "function" && trait.text.toLowerCase().includes(T.traitSearch2)))
+				)>>
+					<div class="trait">
+						<<set $_name to typeof $_trait.name is "function" ? $_trait.name() : $_trait.name>>
+						<<set $_colour to typeof $_trait.colour is "function" ? $_trait.colour() : $_trait.colour>>
+						<<set $_style to typeof $_trait.style is "function" ? $_trait.style() : $_trait.style>>
+						<<set $_text to typeof $_trait.text is "function" ? $_trait.text() : $_trait.text>>
+						<<set $_textColour to typeof $_trait.textColour is "function" ? $_trait.textColour() : $_trait.textColour>>
+						<span @class="$_colour" @style="$_style">
+							<<print $_name>>
+						</span>
+						<<if !$_text>>
+						<<elseif $options.traitOverlayFormat is "table">>
+							- <small @class="$_textColour"><<print $_text>></small>
+						<<else>>
+							<mouse class="tooltip linkBlue">Info (?)<span @class="$_textColour"><<print $_text>></span></mouse>
+						<</if>>
+					</div>
+				<</for>>
+				</div>
+			</div>
+			<br>
+		<</if>>
+		<<if $options.traitOverlayFormat is "list">>
+			<div>
+				<h4>
+					<<print $_traitList.title>>
+				</h4>
+				<<for $_trait range $_traitList.traits.filter(trait => trait.has &&
+					(T.traitSearch2 === "" ||
+					(typeof trait.name === "function" && trait.name().toLowerCase().includes(T.traitSearch2)) ||
+					(typeof trait.name !== "function" && trait.name.toLowerCase().includes(T.traitSearch2)) ||
+					(trait.text && typeof trait.text === "function" && trait.text().toLowerCase().includes(T.traitSearch2)) ||
+					(trait.text && typeof trait.text !== "function" && trait.text.toLowerCase().includes(T.traitSearch2)))
+				)>>
+					<div class="trait">
+						<<set $_name to typeof $_trait.name is "function" ? $_trait.name() : $_trait.name>>
+						<<set $_colour to typeof $_trait.colour is "function" ? $_trait.colour() : $_trait.colour>>
+						<<set $_style to typeof $_trait.style is "function" ? $_trait.style() : $_trait.style>>
+						<<set $_text to typeof $_trait.text is "function" ? $_trait.text() : $_trait.text>>
+						<<set $_textColour to typeof $_trait.textColour is "function" ? $_trait.textColour() : $_trait.textColour>>
+						<span @class="$_colour" @style="$_style">
+							<<print $_name>>
+						</span>
+						<<if $_text>>
+							- <span @class="$_textColour"><<print $_text>></span>
+						<</if>>
+					</div>
+				<</for>>
+			</div>
+			<br>
+		<</if>>
+	<</for>>
+<</widget>>
