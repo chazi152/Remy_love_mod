@@ -1,89 +1,89 @@
 :: Widgets Attitudes [widget]
 
 <<widget "attitudes">>
-	How do you feel about consensual sex? <i>Provides a bonus after consensual sex based on how assertive you were.</i>
+	你对两厢情愿的性行为有什么感觉？<i>根据玩家在遭遇中的自信程度，在自愿性行为后提供奖励。</i>
 	<br>
 	<label>
 		<<radiobutton "$assertiveaction" "submissive" autocheck>>
-		<span class="meek">I like making people feel good</span> (increase submissiveness)
+		<span class="meek">我喜欢取悦别人</span> (增加顺从）
 	</label>
 	<br>
 	<label>
 		<<radiobutton "$assertiveaction" "defiant" autocheck>>
-		<span class="brat">I like being in control</span> (increase defiance)
+		<span class="brat">我喜欢掌握主动</span> (增加支配）
 	</label>
 	<br>
 	<label>
 		<<radiobutton "$assertiveaction" "trauma" autocheck>>
-		<span class="green">It's naughty</span> (decrease trauma)
+		<span class="green">这真的很涩情</span> (减少创伤）
 	</label>
 	<br>
 	<label>
 		<<radiobutton "$assertiveaction" "stress" autocheck>>
-		<span class="green">It's fun</span> (decrease stress)
+		<span class="green">这真的很有趣</span> (减少压力）
 	</label>
 	<br><br>
 
-	With what demeanor do you speak with others?
+	你与他人交谈时会采取什么样的态度？
 	<br>
-	<label><<radiobutton "$speech_attitude" "neutral" autocheck>> Neutral</label>
+	<label><<radiobutton "$speech_attitude" "neutral" autocheck>>中性的</label>
 	<br>
 	<<if $submissive gt 850>>
-		<label><<radiobutton "$speech_attitude" "meek" autocheck>> <span class="meek">Meek</span></label>
+		<label><<radiobutton "$speech_attitude" "meek" autocheck>> <span class="meek">温顺的</span></label>
 		<br>
 	<<else>>
-		<span class="black"><i>You're too defiant to adopt a meek demeanor.</i></span>
+		<span class="black"><i>你过于反抗，无法采取温顺的态度。</i></span>
 		<br>
 	<</if>>
 	<<if $submissive lt 1150>>
-		<label><<radiobutton "$speech_attitude" "bratty" autocheck>> <span class="brat">Bratty</span></label>
+		<label><<radiobutton "$speech_attitude" "bratty" autocheck>> <span class="brat">抗拒的</span></label>
 		<br>
 	<<else>>
-		<span class="black"><i>You're too submissive to adopt a bratty demeanor.</i></span>
+		<span class="black"><i>你太温顺了，无法采取反抗的态度。</i></span>
 		<br>
 	<</if>>
 	<br>
 
-	What makes you feel uncomfortable?
+	你对什么感到不安？
 	<br>
 	/* some events can force the switches to false without actually unlocking them */
 	<<if $attitudesControl.unlockExhibitionismUnderwear or $uncomfortable.underwear is false>>
-		<label><<checkbox "$uncomfortable.underwear" false true autocheck>> You're uncomfortable having your underwear seen by others.</label>
+		<label><<checkbox "$uncomfortable.underwear" false true autocheck>>被别人看见内衣会让你感觉很不舒服。</label>
 	<<else>>
-		<span class="black">You're uncomfortable having your underwear seen by others. <i>Requires higher exhibitionism.</i></span>
+		<span class="black">被他人看到内衣会使你不安，<i>你需要更高的暴露值。</i></span>
 	<</if>>
 	<br>
 	<<if $attitudesControl.unlockExhibitionismNude or $uncomfortable.nude is false>>
-		<label><<checkbox "$uncomfortable.nude" false true autocheck>> You're uncomfortable being nude in front of others.</label>
+		<label><<checkbox "$uncomfortable.nude" false true autocheck>>在他人面前赤身裸体会让你感到不安。</label>
 	<<else>>
-		<span class="black">You're uncomfortable being nude in front of others. <i>Requires higher exhibitionism.</i></span>
+		<span class="black">被他人看到裸体会使你不安，<i>你需要更高的暴露值。</i></span>
 	<</if>>
 	<br><br>
 
 	<<if $attitudesControl.unlockProstitution>>
-		<label><<checkbox "$uncomfortable.prostituting" false true autocheck>> You're uncomfortable prostituting yourself to help avoid Bailey's torments. <i>If unchecked, lets you prostitute yourself without appropriate promiscuity. Doing so will decrease control.</i></label>
+		<label><<checkbox "$uncomfortable.prostituting" false true autocheck>>你对为了免受贝利的折磨而出卖自己的身体感到不舒服。<i>如果没有勾选，则允许你在未达到足够淫乱等级的情况下出卖身体，但这么做会降低你的自控力。</i></label>
 		<br>
 	<<else>>
-		Is it worth prostituting yourself to help avoid Bailey's torments? <i>Lets you prostitute yourself without appropriate promiscuity. Doing so will decrease control.</i>
+		为了免受贝利的折磨而出卖自己的身体是否值得？<i>这会允许你在没有足够淫乱度的情况下卖淫——但这样做会降低你的自控力。</i>
 		<br>
-		<span class="black"><i>Bailey hasn't scared you enough.</i></span>
+		<span class="black"><i>贝利的恐吓对你无效。</i></span>
 		<br>
 	<</if>>
 	<br>
-
+	
 	<<if $gamemode isnot "hard">>
 		<<if $attitudesControl.unlockLewd>>
-			<label><<checkbox "$uncomfortable.lewd" false true autocheck>> You're uncomfortable reflecting on all the lewd acts you've performed. <i>If unchecked, exhibitionism, promiscuity, and deviancy will not decay. This can make managing control difficult.</i></label>
+			<label><<checkbox "$uncomfortable.lewd" false true autocheck>>你开始反思你所有的淫乱行为。你感到有些不安。<br><i>如果没有勾选，露出、淫乱、和异种癖就不会下降——这会让自控力的管理变得更加困难。</i></label>
 		<<else>>
-			You're uncomfortable reflecting on all the lewd acts you've performed.
+			回想起你所做过的淫荡行为，你感到不安。
 			<br>
-			<span class="black"><i>Unlock level 3 exhibitionist, promiscuous, or deviant acts.</i></span>
+			<span class="black"><i>将暴露、淫乱或异种属性升至三级。</i></span>
 		<</if>>
 		<br><br>
 	<</if>>
 
 	<<if $attitudesControl.unlockHypnosis>>
-		<label><<checkbox "$uncomfortable.hypnosis" false true autocheck>> You're uncomfortable being hypnotised during sex. <i>If unchecked, you will accept hypnosis attempts during combat regardless of willpower.</i></label>
+		<label><<print '<<checkbox "$uncomfortable.hypnosis" false true ' + ($uncomfortable.hypnosis ? "checked" : "") + '>>'>>在性爱中被催眠会使你感到不安。<i>取消勾选此项会使你在遭遇中自动接受别人发起的催眠，无视意志判定。</i></label>
 		<br>
 	<</if>>
 	<br>
@@ -99,7 +99,7 @@
 
 	<div class="solidBorderContainer">
 		<<setupDefaults>>
-		How do you feel about others? (Sets default combat actions.)
+		你对他人感觉怎么样? (设置遭遇中的默认行动）
 		<br>
 		<<if $moleststat gt 0 or $debug is 1>>
 			<<set _options to ["Everyone","Strangers","Animals","Tentacles","Acquaintances","Robin","Bailey"]>>
@@ -131,7 +131,7 @@
 				<<othersFeelings 0>>
 			</div>
 		<<else>>
-			<span class="black"><i>Default Actions will be unlocked after your first encounter.</i></span>
+			<span class="black"><i>默认行动选项将会在你的第一次遇袭后开放。</i></span>
 		<</if>>
 	</div>
 <</widget>>
@@ -141,41 +141,41 @@
 	<<set _stringDefault to "_defaultActions.consensual."+_options[_currentOptions]>>
 
 	<<switch _options[_currentOptions]>>
-		<<case "Everyone">><span class="red">"Everyone" will only apply defaults when the "Override related settings" link is used. This will override defaults for everyone.</span>
+		<<case "Everyone">><span class="red"> "所有人" 选项只有在点击 "覆盖相关设置" 后才会生效——这将覆盖每个人的默认设置。</span>
 		<br><br>
 		<<set _requireConfirm to true>>
-		<<case "Acquaintances">><span class="red">Will override the other named acquaintances in the list if you use "Override related settings".</span>
+		<<case "Acquaintances">><span class="red">使用 "覆盖相关设置" 将会覆盖列表中其他命名NPC的设置。</span>
 		<br><br>
 		<<set _requireConfirm to true>>
-		<<case "Alternative" "Defiant" "Submissive">>Can be used to replace moves mid-combat. Is not changed by "Override related settings" in any way.
+		<<case "Alternative" "Defiant" "Submissive">>可用于在战斗中替换动作。不受 "覆盖相关设置 " 影响。
 		<br><br>
 		<<set _requireConfirm to false>>
 		<<default>><<set _requireConfirm to false>>
 	<</switch>>
-	Lower action sets have higher priority. Defaults in higher sets are used if the default action in a lower set is unavailable.
+	排列较前的行动集具有更高的优先级。如果前一个行动集的动作不可用，则使用下一个动作集的动作。
 	<br>
-	Default Action Set: <<print _currentActionSet + 1>> / $maxDefaultActionSets.
+	默认行动集:<<print _currentActionSet + 1>> / $maxDefaultActionSets。
 	<br>
 	<<if _currentActionSet gt 0>>
-		<<link "Previous Action Set">>
+		<<link "上一个行动集">>
 			<<set _currentActionSet-->>
 			<<replace #othersFeelings>><<othersFeelings _currentOptions>><</replace>>
 		<</link>> |
 	<<else>>
-		Previous Action Set |
+		上一个行动集 |
 	<</if>>
 	<<if _currentActionSet lt $maxDefaultActionSets - 1>>
-		<<link "Next Action Set">>
+		<<link "下一个行动集">>
 			<<set _currentActionSet++>>
 			<<replace #othersFeelings>><<othersFeelings _currentOptions>><</replace>>
 		<</link>>
 	<<else>>
-		Next Action Set
+		下一个行动集 |
 	<</if>>
 	<br><br>
-	__If consensual:__
+	__自愿性遭遇：__
 	<br>
-	(Some actions require sufficient lewdity.)
+	（一些行动需要对应的属性等级。）
 	<br><br>
 	<<if _options[_currentOptions] is "Tentacles">>
 		<<tentacleDefaults false>>
@@ -188,17 +188,17 @@
 		<</if>>
 		<!-- This creates the consensual list of items. -->
 		<span class="listMargin">
-			<<print _titles[_i]>>:
+			<<print _titles[_i].replace("Left Hand","左手").replace("Right Hand","右手").replace("Feet","脚部").replace("Mouth","嘴部").replace("Penis","肉棒").replace("Vagina","小穴").replace("Anus","菊穴")>>
 			<<print '<<listbox "'+_stringDefault+'.'+_dataName[_i]+'['+_currentActionSet+']" autoselect>><<optionsfrom '+_data[_i]+'>><</listbox>>'>>
 		</span>
 		<br>
 	<</for>>
 	<<if _options[_currentOptions] is "Tentacles">>
-		<label>Auto Select different tentacle for grab actions when the current tentacle is occupied <<print '<<checkbox "_defaultActions.consensual.Tentacles.regrab[0]" false true ' + (_defaultActions.consensual.Tentacles.regrab[0] is true ? "checked" : "") + '>>'>></label>
+		<label>当前触手被占用时，自动选择别的触手进行抓取动作 <<print '<<checkbox "_defaultActions.consensual.Tentacles.regrab[0]" false true ' + (_defaultActions.consensual.Tentacles.regrab[0] is true ? "checked" : "") + '>>'>></label>
 		<br>
 	<</if>>
 	<<if _defaultActions.consensual[_options[_currentOptions]].askActions isnot undefined>>
-		<label>Mouth "Ask them" default option
+		<label>嘴部 "要求他们" 行动的默认选项
 		<<print '<<listbox "'+_stringDefault+'.askActions['+_currentActionSet+']" autoselect>><<optionsfrom _askActions>><</listbox>>'>></label>
 		<br>
 	<</if>>
@@ -212,7 +212,7 @@
 			<<sexDefaults true>>
 		<</if>>
 		<br>
-		__If assaulted:__
+		__非自愿遭遇：__
 		<br><br>
 
 		<<for _i to 0; _i lt _titles.length; _i++>>
@@ -220,17 +220,17 @@
 				<<continue>>
 			<</if>>
 			<span class="listMargin">
-				<<print _titles[_i]>>:
+				<<print _titles[_i].replace("Left Hand","左手").replace("Right Hand","右手").replace("Feet","脚部").replace("Mouth","嘴部").replace("Penis","肉棒").replace("Vagina","小穴").replace("Anus","菊穴")>>
 				<<print '<<listbox "'+_stringDefault+"."+_dataName[_i]+'['+_currentActionSet+']" autoselect>><<optionsfrom '+_data[_i]+'>><</listbox>>'>>
 			</span>
 			<br>
 		<</for>>
 		<<if _options[_currentOptions] is "Tentacles">>
-			<label>Auto Select different tentacle for grab actions when the current tentacle is occupied <<print '<<checkbox "_defaultActions.rape.Tentacles.regrab[0]" false true ' + (_defaultActions.rape.Tentacles.regrab[0] is true ? "checked" : "") + '>>'>></label>
+			<label>当前触手被占用时，自动选择别的触手进行抓取动作 <<print '<<checkbox "_defaultActions.rape.Tentacles.regrab[0]" false true ' + (_defaultActions.rape.Tentacles.regrab[0] is true ? "checked" : "") + '>>'>></label>
 			<br>
 		<</if>>
 		<<if _defaultActions.rape[_options[_currentOptions]].askActions isnot undefined>>
-			<label>Mouth "Ask them" default option
+			<label>嘴部 "要求他们" 行动的默认选项
 			<<print '<<listbox "'+_stringDefault+'.askActions['+_currentActionSet+']" autoselect>><<optionsfrom _askActions>><</listbox>>'>></label>
 			<br>
 		<</if>>
@@ -238,7 +238,7 @@
 	<br>
 
 	<<if _requireConfirm is true>>
-		<<link [[Override related settings|$passage]]>>
+		<<link [[覆盖相关设置|$passage]]>>
 			<<run DefaultActions.save(T.defaultActions)>>
 			<<switch _options[_currentOptions]>>
 				<<case "Everyone">>
@@ -258,7 +258,7 @@
 						<<set $actionDefaults.rape[_option] to clone($actionDefaults.rape.Everyone)>>
 					<</for>>
 				<<case "Acquaintances">>
-					<<set _options to ["Robin","Bailey","Whitney","Kylar","Eden","Avery","Leighton","Sydney","Black Wolf","Great Hawk"]>>
+					<<set _options to ["Robin","Bailey","Whitney","Kylar","Eden","Avery","Leighton","Sydney","Black Wolf","Great Hawk","Remy"]>>
 					<<for _option range _options>>
 						<<if !$actionDefaults.consensual>>
 							<<set $actionDefaults.consensual to {}>>
@@ -289,456 +289,456 @@
 <!-- _args[0] As Boolean: false is consensual, true is non-consensual. -->
 <<widget "sexDefaults">>
 	<<set _leftHand to {
-		"Rest": "rest",
-		"Stroke": "leftchest",
-		"Hold behind back": "behind",
-		"Stop holding behind": "stopbehind"
+		"休息": "rest",
+		"抚摸": "leftchest",
+		"别在身后": "behind",
+		"放回来": "stopbehind"
 	}>>
 
 	<<if _args[0] is true>>
-		<<set _leftHand["Punch"] to "lefthit">>
-		<<set _leftHand["Pull their hand off your neck"] to "stopchokenoncon">>
+		<<set _leftHand["击打"] to "lefthit">>
+		<<set _leftHand["把颈部的手拉开"] to "stopchokenoncon">>
 	<<else>>
-		<<set _leftHand["Press their hand to your neck"] to "keepchoke">>
-		<<set _leftHand["Take their hand off your neck"] to "stopchoke">>
+		<<set _leftHand["把手按到你的颈部"] to "keepchoke">>
+		<<set _leftHand["将对方的手从颈部移开"] to "stopchoke">>
 	<</if>>
-	<<set _leftHand["Cover your face"] to "leftcoverface">>
-	<<set _leftHand["Pose for camera"] to "leftcamerapose">>
-	<<set _leftHand["Whack the writing tool away"] to "penwhack">>
-	<<set _leftHand["Whack the hypnotic instrument away"] to "hypnosiswhack">>
+	<<set _leftHand["遮住你的脸"] to "leftcoverface">>
+	<<set _leftHand["对着镜头摆造型"] to "leftcamerapose">>
+	<<set _leftHand["推开书写工具"] to "penwhack">>
+	<<set _leftHand["推开催眠仪器"] to "hypnosiswhack">>
 	<<if currentSkillValue('skulduggery') gte 200>>
-		<<set _leftHand["Steal"] to "steal">>
+		<<set _leftHand["盗窃"] to "steal">>
 	<</if>>
-	<<set _leftHand["Struggle"] to "leftstruggle">>
+	<<set _leftHand["挣扎"] to "leftstruggle">>
 
-	<<set _leftHand["Stroke their penis"] to "leftstroke">>
+	<<set _leftHand["抚摸肉棒"] to "leftstroke">>
 
 	<<if $promiscuity gt 34 or $deviancy gt 34 or _args[0] is true>>
-		<<set _leftHand["Grab their penis"] to "leftgrab">>
-		<<set _leftHand["Work their shaft"] to "leftwork">>
+		<<set _leftHand["抓住肉棒"] to "leftgrab">>
+		<<set _leftHand["撸动"] to "leftwork">>
 
-		<<set _leftHand["Play with their pussy"] to "leftplay">>
-		<<set _leftHand["Rub their clit"] to "leftclit">>
+		<<set _leftHand["玩弄小穴"] to "leftplay">>
+		<<set _leftHand["揉弄阴蒂"] to "leftclit">>
 	<</if>>
 
 	<<if $promiscuity gte 15>>
 		<<if $player.penisExist>>
-			<<set _leftHand["Play with your penis"] to "leftmasturbatepenis">>
+			<<set _leftHand["自撸肉棒"] to "leftmasturbatepenis">>
 		<</if>>
 		<<if $player.vaginaExist>>
-			<<set _leftHand["Play with your pussy"] to "leftmasturbatepussy">>
+			<<set _leftHand["自摸小穴"] to "leftmasturbatepussy">>
 		<</if>>
 	<</if>>
 	<<if $promiscuity gte 35 and $awareness gte 200>>
-		<<set _leftHand["Play with your anus"] to "leftmasturbateanus">>
+		<<set _leftHand["自摸菊穴"] to "leftmasturbateanus">>
 	<</if>>
-	<<set _leftHand["Remove your buttplug"] to "removebuttplug">>
+	<<set _leftHand["拔掉菊塞"] to "removebuttplug">>
 
 	<<set _rightHand to {
-		"Rest":"rest",
-		"Stroke":"rightchest",
-		"Hold behind back": "behind",
-		"Stop holding behind": "stopbehind"
+		"休息":"rest",
+		"抚摸":"rightchest",
+		"别在身后": "behind",
+		"放回来": "stopbehind"
 	}>>
 
 	<<if _args[0] is true>>
-		<<set _rightHand["Punch"] to "righthit">>
-		<<set _rightHand["Pull their hand off your neck"] to "stopchokenoncon">>
+		<<set _rightHand["击打"] to "righthit">>
+		<<set _rightHand["把颈部的手拉开"] to "stopchokenoncon">>
 	<<else>>
-		<<set _rightHand["Press their hand to your neck"] to "keepchoke">>
-		<<set _rightHand["Take their hand off your neck"] to "stopchoke">>
+		<<set _rightHand["把手按到你的颈部"] to "keepchoke">>
+		<<set _rightHand["将手从颈部移开"] to "stopchoke">>
 	<</if>>
-	<<set _rightHand["Cover your face"] to "rightcoverface">>
-	<<set _rightHand["Pose for camera"] to "rightcamerapose">>
-	<<set _rightHand["Whack the writing tool away"] to "penwhack">>
-	<<set _rightHand["Whack the hypnotic instrument away"] to "hypnosiswhack">>
+	<<set _rightHand["遮住你的脸"] to "rightcoverface">>
+	<<set _rightHand["对着镜头摆造型"] to "rightcamerapose">>
+	<<set _rightHand["推开书写工具"] to "penwhack">>
+	<<set _rightHand["推开催眠仪器"] to "hypnosiswhack">>
 	<<if currentSkillValue('skulduggery') gte 200>>
-		<<set _rightHand["Steal"] to "steal">>
+		<<set _rightHand["盗窃"] to "steal">>
 	<</if>>
-	<<set _rightHand["Struggle"] to "rightstruggle">>
+	<<set _rightHand["挣扎"] to "rightstruggle">>
 
-	<<set _rightHand["Stroke their penis"] to "rightstroke">>
+	<<set _rightHand["抚摸肉棒"] to "rightstroke">>
 
 	<<if $promiscuity gt 34 or $deviancy gt 34 or _args[0] is true>>
-		<<set _rightHand["Grab their penis"] to "rightgrab">>
-		<<set _rightHand["Work their shaft"] to "rightwork">>
+		<<set _rightHand["抓住肉棒"] to "rightgrab">>
+		<<set _rightHand["撸动"] to "rightwork">>
 
-		<<set _rightHand["Play with their pussy"] to "rightplay">>
-		<<set _rightHand["Rub their clit"] to "rightclit">>
+		<<set _rightHand["玩弄小穴"] to "rightplay">>
+		<<set _rightHand["揉弄阴蒂"] to "rightclit">>
 	<</if>>
 
 	<<if $promiscuity gte 15>>
 		<<if $player.vaginaExist>>
-			<<set _rightHand["Play with your pussy"] to "rightmasturbatepussy">>
+			<<set _rightHand["自摸小穴"] to "rightmasturbatepussy">>
 		<</if>>
 		<<if $player.penisExist>>
-			<<set _rightHand["Play with your penis"] to "rightmasturbatepenis">>
+			<<set _rightHand["自撸肉棒"] to "rightmasturbatepenis">>
 		<</if>>
 	<</if>>
 	<<if $promiscuity gte 35 and $awareness gte 200>>
-		<<set _rightHand["Play with your anus"] to "rightmasturbateanus">>
+		<<set _rightHand["自摸菊穴"] to "rightmasturbateanus">>
 	<</if>>
-	<<set _rightHand["Remove your buttplug"] to "removebuttplug">>
+	<<set _rightHand["拔掉菊塞"] to "removebuttplug">>
 
 	<<set _feet to {
-		"Rest":"rest",
+		"休息":"rest",
 	}>>
 	<<if _args[0] is true>>
-		<<set _feet["Kick"] to "kick">>
+		<<set _feet["踢"] to "kick">>
 	<</if>>
 	<<if $promiscuity gt 34 or $deviancy gt 34 or _args[0] is true>>
-		<<set _feet["Grab their penis"] to "grab">>
-		<<set _feet["Rub their penis"] to "grabrub">>
+		<<set _feet["抓住肉棒"] to "grab">>
+		<<set _feet["足交"] to "grabrub">>
 
-		<<set _feet["Press against their pussy"] to "vaginagrab">>
-		<<set _feet["Rub their pussy"] to "vaginagrabrub">>
+		<<set _feet["抵住小穴"] to "vaginagrab">>
+		<<set _feet["按压小穴"] to "vaginagrabrub">>
 	<</if>>
 	<<if (_args[0] is false and ($promiscuity gte 35 or $deviancy gte 35)) or (_args[0] is true and ($promiscuity gte 95 or $deviancy gte 95))>>
-		<<set _feet["Leg lock them"] to "legLock">>
+		<<set _feet["用腿锁住"] to "legLock">>
 	<</if>>
 
 	<<set _mouth to {
-		"Rest":"rest",
+		"休息":"rest",
 		"Kiss":"kiss",
-		"Kiss Back":"kissback",
+		"回吻":"kissback",
 	}>>
 
 	<<if _args[0] is true>>
-		<<set _mouth["Scream"] to "scream">>
-		<<set _mouth["Plead"] to "plead">>
+		<<set _mouth["尖叫"] to "scream">>
+		<<set _mouth["恳求"] to "plead">>
 	<</if>>
 
 	<<if $wolfgirl gte 2>>
-		<<set _mouth["Growl"] to "growl">>
+		<<set _mouth["咆哮"] to "growl">>
 	<</if>>
 
 	<<if $submissive gte 1150>>
-		<<set _mouth["Moan"] to "moan">>
+		<<set _mouth["呻吟"] to "moan">>
 	<</if>>
 	<<if $angel gte 6 and $angelforgive isnot 1 and _args[0] is true>>
-		<<set _mouth["Forgive"] to "forgive">>
+		<<set _mouth["宽恕"] to "forgive">>
 	<</if>>
 	<<if $submissive lte 850 and _args[0] is true>>
-		<<set _mouth["Demand"] to "demand">>
+		<<set _mouth["挑衅"] to "demand">>
 	<</if>>
 
 	<<if $promiscuity gt 54 or $deviancy gt 54 or _args[0] is true>>
-		<<set _mouth["Move your lips to their penis"] to "mouth">>
+		<<set _mouth["将你的唇贴向肉棒"] to "mouth">>
 	<</if>>
 	<<if $promiscuity gt 34 or $deviancy gt 34 or _args[0] is true>>
-		<<set _mouth["Grab penis between breasts"] to "grasp">>
+		<<set _mouth["用乳房夹住肉棒"] to "grasp">>
 	<</if>>
-	<<set _mouth["Pull away"] to "pullaway">>
-	<<set _mouth["Lick their penis"] to "lick">>
+	<<set _mouth["拉开距离"] to "pullaway">>
+	<<set _mouth["舔肉棒"] to "lick">>
 	<<if $promiscuity gt 74 or $deviancy gt 74 or _args[0] is true>>
-		<<set _mouth["Take their penis into your mouth"] to "swallow">>
+		<<set _mouth["将肉棒含入口中"] to "swallow">>
 	<</if>>
-	<<set _mouth["Suck their penis"] to "suck">>
+	<<set _mouth["口交"] to "suck">>
 	<<if _args[0] is true>>
-		<<set _mouth["Bite their penis"] to "bite">>
+		<<set _mouth["咬"] to "bite">>
 	<</if>>
 	<<if _args[0] is false>>
-		<<set _mouth["Swallow their cum"] to "ejacswallow">>
-		<<set _mouth["Spit out their cum"] to "ejacspit">>
+		<<set _mouth["吞掉精液"] to "ejacswallow">>
+		<<set _mouth["吐出精液"] to "ejacspit">>
 	<</if>>
-	<<set _mouth["Pull away from their penis"] to "pullaway">>
+	<<set _mouth["远离肉棒"] to "pullaway">>
 
 	<<if $promiscuity gt 54 or $deviancy gt 54 or _args[0] is true>>
-		<<set _mouth["Move your lips to their pussy"] to "othervagina">>
+		<<set _mouth["将你的唇贴向小穴"] to "othervagina">>
 	<</if>>
-	<<set _mouth["Lick their pussy"] to "vaginalick">>
+	<<set _mouth["舔小穴"] to "vaginalick">>
 
 	<<if _args[0] is true>>
-		<<set _mouth["Bite their pussy"] to "bitepussy">>
+		<<set _mouth["咬小穴"] to "bitepussy">>
 	<</if>>
-	<<set _mouth["Pull away from their vagina"] to "pullawayvagina">>
+	<<set _mouth["远离小穴"] to "pullawayvagina">>
 
 	<<if $promiscuity gt 34 or _args[0] is true>>
-		<<set _mouth["Move your lips to their chest"] to "movetochest">>
+		<<set _mouth["将你的唇贴向胸部"] to "movetochest">>
 	<</if>>
 
-	<<set _mouth["Lick their breasts"] to "breastlick">>
-	<<set _mouth["Pull away from their breasts"] to "breastpull">>
+	<<set _mouth["舔胸"] to "breastlick">>
+	<<set _mouth["远离胸部"] to "breastpull">>
 
-	<<set _mouth["Suck their breasts"] to "breastsuck">>
+	<<set _mouth["吮吸胸部"] to "breastsuck">>
 	<<if _args[0] is true>>
-		<<set _mouth["Bite their breasts"] to "breastbite">>
+		<<set _mouth["咬胸部"] to "breastbite">>
 	<</if>>
-	<<set _mouth["Keep your mouth closed"] to "breastclosed">>
+	<<set _mouth["紧闭双唇"] to "breastclosed">>
 	<<if $promiscuity gt 55 or $deviancy gt 55 or _args[0] is true>>
-		<<set _mouth["Edge"] to "oraledge">>
+		<<set _mouth["寸止"] to "oraledge">>
 	<</if>>
 
-	<<set _mouth["Lick ass"] to "anallick">>
+	<<set _mouth["舔菊穴"] to "anallick">>
 	<<if $submissive gte 1150>>
-		<<set _mouth["Kiss ass"] to "analkiss">>
+		<<set _mouth["亲菊穴"] to "analkiss">>
 	<</if>>
 	<<if _args[0] is false>>
-		<<set _mouth["Pull away from their ass"] to "analpull">>
+		<<set _mouth["远离菊穴"] to "analpull">>
 	<</if>>
 
 	<<if _args[0] is true>>
-		<<set _mouth["Headbutt"] to "headbutt">>
+		<<set _mouth["头槌"] to "headbutt">>
 	<</if>>
 
-	<<set _mouth["Ask them"] to "ask">>
+	<<set _mouth["要求对方"] to "ask">>
 
-	<<set _askActions to {"Nothing":"rest"}>>
+	<<set _askActions to {"没什么":"rest"}>>
 	<<if _args[0] is false>>
-		<<set _askActions["to stop"] to "finish">>
+		<<set _askActions["停下来"] to "finish">>
 		<<if $player.vaginaExist>>
-			<<set _askActions["to not put anything in your pussy"] to "novaginal">>
+			<<set _askActions["不要插入你的小穴"] to "novaginal">>
 		<</if>>
 		<<if $player.penisExist>>
-			<<set _askActions["to not put your penis in anything"] to "nopenile">>
+			<<set _askActions["不要让你的肉棒插入任何东西"] to "nopenile">>
 		<</if>>
-		<<set _askActions["to not put anything in your anus"] to "noanal">>
+		<<set _askActions["不要插入你的菊穴"] to "noanal">>
 		<<if $asphyxiaLvl gte 1>>
-			<<set _askActions["to not choke you"] to "nochoke">>
+			<<set _askActions["不要掐住你的脖子"] to "nochoke">>
 		<</if>>
 	<</if>>
 	<<if (_args[0] is false and ($choketrait or ($chokeorgasm gte 1 and $submissive gt 850))) or ($awarelevel gte 2 and $submissive gte 1150)>>
-		<<set _askActions["to choke you"] to "askchoke">>
+		<<set _askActions["要掐住你的脖子"] to "nochoke">>
 	<</if>>
 	<<if (_args[0] is false and $masochism_level gte 1) or $masochism_level gte 3>>
-		<<set _askActions["to be more rough"] to "askrough">>
+		<<set _askActions["更加粗暴一点"] to "askrough">>
 	<</if>>
 	<<if $condomLvl gte 2>>
-		<<set _askActions["to use a condom"] to "condoms">>
-		<<set _askActions["to not use a condom"] to "noCondoms">>
+		<<set _askActions["使用避孕套"] to "condoms">>
+		<<set _askActions["不用避孕套"] to "noCondoms">>
 	<</if>>
-	<<set _askActions["to leave your top on"] to "noupper">>
+	<<set _askActions["不要脱下你的上衣"] to "noupper">>
 
 	<<if $asphyxiaLvl gte 1 and _args[0] is false and
 	($choketrait or ($chokeorgasm gte 1 and $submissive gt 850) or ($awarelevel gte 2 and $submissive gte 1150))>>
-		<<set _askActions["to choke you"] to "askchoke">>
+		<<set _askActions["要掐住你的脖子"] to "nochoke">>
 	<</if>>
 
 	<<if $consensual is 1 and $masochism_level gte 1 or $masochism_level gte 3>>
-		<<set _askActions["to be more rough"] to "askrough">>
+		<<set _askActions["更加粗暴一点"] to "askrough">>
 	<</if>>
 
 	<<set _penis to {
-		"Rest":"rest",
+		"休息":"rest",
 	}>>
 
 	<<if $promiscuity gt 74 or $deviancy gt 74 or _args[0] is true>>
-		<<set _penis["Press against their pussy"] to "penistovagina">>
+		<<set _penis["抵住穴口"] to "penistovagina">>
 
-		<<set _penis["Penetrate their pussy"] to "penisvaginafuck">>
+		<<set _penis["插入小穴"] to "penisvaginafuck">>
 	<</if>>
 	<<if $promiscuity gt 54 or $deviancy gt 54 or _args[0] is true>>
-		<<set _penis["Frot against their clit"] to "bay">>
+		<<set _penis["摩擦阴蒂"] to "bay">>
 	<</if>>
-	<<set _penis["Tease the pussy"] to "tease">>
-	<<set _penis["Pull away from their pussy"] to "escape">>
+	<<set _penis["挑逗小穴"] to "tease">>
+	<<set _penis["远离小穴"] to "escape">>
 
 	/*After bay*/
 	<<if $promiscuity gt 54 or $deviancy gt 54 or _args[0] is true>>
-		<<set _penis["Rub against their pussy"] to "rub">>
+		<<set _penis["磨蹭小穴"] to "rub">>
 	<</if>>
 
 	/*After penisvaginafuck*/
-	<<set _penis["Take the pussy"] to "take">>
-	<<set _penis["Cooperate with their pussy"] to "cooperate">>
+	<<set _penis["接受小穴"] to "take">>
+	<<set _penis["配合小穴"] to "cooperate">>
 	<<if ($promiscuity gt 54 or $deviancy gt 54 or _args[0] is true) and $penileskill gte 800>>
-		<<set _penis["Edge their vagina"] to "vaginaEdging">>
+		<<set _penis["寸止"] to "vaginaEdging">>
 	<</if>>
 	<<if $promiscuity gt 74 or $deviancy gt 74 or _args[0] is true>>
-		<<set _penis["Press against their ass"] to "penistoanus">>
+		<<set _penis["抵住后穴"] to "penistoanus">>
 
-		<<set _penis["Penetrate their ass"] to "penisanusfuck">>
+		<<set _penis["插入菊穴"] to "penisanusfuck">>
 	<</if>>
 	<<if $promiscuity gt 54 or $deviancy gt 54 or _args[0] is true>>
-		<<set _penis["Frot against their ass"] to "otheranusbay">>
+		<<set _penis["摩擦菊穴"] to "otheranusbay">>
 	<</if>>
-	<<set _penis["Tease the ass"] to "otheranustease">>
-	<<set _penis["Pull away from their ass"] to "otheranusescape">>
+	<<set _penis["挑逗菊穴"] to "otheranustease">>
+	<<set _penis["远离菊穴"] to "otheranusescape">>
 
 	/*After otheranusbay*/
 	<<if $promiscuity gt 54 or $deviancy gt 54 or _args[0] is true>>
-		<<set _penis["Rub against their ass"] to "otheranusrub">>
+		<<set _penis["磨蹭菊穴"] to "otheranusrub">>
 	<</if>>
 
 	/*After penisanusfuck*/
-	<<set _penis["Take the ass"] to "otheranustake">>
-	<<set _penis["Cooperate with their ass"] to "otheranuscooperate">>
+	<<set _penis["接受菊穴"] to "otheranustake">>
+	<<set _penis["配合菊穴"] to "otheranuscooperate">>
 	<<if ($promiscuity gt 54 or $deviancy gt 54 or _args[0] is true) and $penileskill gte 800>>
-		<<set _penis["Edge their ass"] to "otheranusEdging">>
+		<<set _penis["寸止"] to "otheranusEdging">>
 	<</if>>
-	<<set _penis["Press your thigh against their mouth"] to "thighbay">>
-	<<set _penis["Rub against their face"] to "othermouthtease">>
+	<<set _penis["用大腿夹住头部"] to "thighbay">>
+	<<set _penis["磨蹭脸部"] to "othermouthtease">>
 
-	<<set _penis["Rub against their lips"] to "othermouthrub">>
-	<<set _penis["Pull away from their mouth"] to "othermouthescape">>
+	<<set _penis["磨蹭嘴唇"] to "othermouthrub">>
+	<<set _penis["远离嘴巴"] to "othermouthescape">>
 
-	<<set _penis["Cooperate with their mouth"] to "othermouthcooperate">>
+	<<set _penis["配合嘴巴"] to "othermouthcooperate">>
 
 	<<set _vagina to {
-		"Rest":"rest",
-		"Offer your ass instead":"penisanus",
+		"休息":"rest",
+		"用你的后穴替代小穴":"penisanus",
 	}>>
 
 	<<if $promiscuity gt 74 or $deviancy gt 74 or _args[0] is true>>
-		<<set _vagina["Straddle their penis"] to "vaginatopenis">>
+		<<set _vagina["跨坐在肉棒上"] to "vaginatopenis">>
 
-		<<set _vagina["Envelop their penis"] to "vaginapenisfuck">>
+		<<set _vagina["容纳肉棒"] to "vaginapenisfuck">>
 	<</if>>
 	<<if $promiscuity gt 54 or $deviancy gt 54 or _args[0] is true>>
-		<<set _vagina["Try to keep their penis away with your thighs"] to "penisthighs">>
+		<<set _vagina["试着用大腿夹住阳具"] to "penisthighs">>
 	<</if>>
 	<<if $promiscuity gte 75 or $deviancy gte 75 or _args[0] is true>>
-		<<set _vagina["Push your pussy against theirs"] to "vaginatovagina">>
+		<<set _vagina["抵住小穴"] to "vaginatovagina">>
 	<</if>>
-	<<set _vagina["Pull away from their penis"] to "escape">>
-	<<set _vagina["Tease the tip"] to "penistease">>
+	<<set _vagina["从肉棒上移开"] to "escape">>
+	<<set _vagina["挑逗顶端"] to "penistease">>
 
 	/*After penisthighs*/
 	<<if $promiscuity gt 54 or $deviancy gt 54 or _args[0] is true>>
-		<<set _vagina["Rub against their penis"] to "rub">>
+		<<set _vagina["磨蹭肉棒"] to "rub">>
 	<</if>>
 
 	/*After vaginapenisfuck*/
-	<<set _vagina["Take it"] to "take">>
-	<<set _vagina["Cooperate"] to "cooperate">>
+	<<set _vagina["接受"] to "take">>
+	<<set _vagina["配合"] to "cooperate">>
 	<<if ($promiscuity gt 54 or $deviancy gt 54 or _args[0] is true) and $vaginalskill gte 800>>
-		<<set _vagina["Edge their penis with your vagina"] to "penisEdging">>
+		<<set _vagina["寸止"] to "penisEdging">>
 	<</if>>
-	<<set _vagina["Press your thigh against their mouth"] to "thighbay">>
-	<<set _vagina["Rub against their face"] to "othermouthtease">>
+	<<set _vagina["用大腿夹住头部"] to "thighbay">>
+	<<set _vagina["磨蹭脸部"] to "othermouthtease">>
 
-	<<set _vagina["Rub against their lips"] to "othermouthrub">>
-	<<set _vagina["Pull away from their mouth"] to "othermouthescape">>
+	<<set _vagina["磨蹭嘴唇"] to "othermouthrub">>
+	<<set _vagina["远离嘴巴"] to "othermouthescape">>
 
-	<<set _vagina["Cooperate with their mouth"] to "othermouthcooperate">>
+	<<set _vagina["配合嘴巴"] to "othermouthcooperate">>
 
 	<<set _anus to {
-		"Rest":"rest",
+		"休息":"rest",
 	}>>
 	<<if $player.vaginaExist>>
-		<<set _anus["Offer your pussy instead"] to "penispussy">>
+		<<set _anus["用你的小穴替代"] to "penispussy">>
 	<</if>>
 
 	<<if $promiscuity gt 74 or $deviancy gt 74 or _args[0] is true>>
-		<<set _anus["Straddle their penis"] to "anustopenis">>
+		<<set _anus["跨坐肉棒在上"] to "anustopenis">>
 
-		<<set _anus["Envelop their penis"] to "anuspenisfuck">>
+		<<set _anus["容纳肉棒"] to "anuspenisfuck">>
 	<</if>>
 	<<if $promiscuity gt 54 or $deviancy gt 54 or _args[0] is true>>
-		<<set _anus["Keep their penis away with your cheeks"] to "penischeeks">>
+		<<set _anus["试着用大腿夹住肉棒"] to "penischeeks">>
 	<</if>>
-	<<set _anus["Tease the tip"] to "penistease">>
+	<<set _anus["挑逗顶端"] to "penistease">>
 
-	<<set _anus["Pull away from their penis"] to "escape">>
+	<<set _anus["远离肉棒"] to "escape">>
 
 	/*After penischeeks*/
-	<<set _anus["Rub against their penis"] to "rub">>
+	<<set _anus["磨蹭肉棒"] to "rub">>
 
 	/*After anuspenisfuck*/
-	<<set _anus["Take it"] to "take">>
-	<<set _anus["Cooperate"] to "cooperate">>
+	<<set _anus["接受"] to "take">>
+	<<set _anus["配合"] to "cooperate">>
 	<<if ($promiscuity gt 54 or $deviancy gt 54 or _args[0] is true) and $analskill gte 800>>
-		<<set _anus["Edge their penis with your ass"] to "penisEdging">>
+		<<set _anus["寸止"] to "penisEdging">>
 	<</if>>
-	<<set _anus["Press your butt against their mouth"] to "bottombay">>
-	<<set _anus["Rub against their face"] to "othermouthtease">>
+	<<set _anus["用屁股抵住对方的嘴"] to "bottombay">>
+	<<set _anus["磨蹭脸部"] to "othermouthtease">>
 
-	<<set _anus["Rub against their lips"] to "othermouthrub">>
-	<<set _anus["Pull away from their mouth"] to "othermouthescape">>
+	<<set _anus["磨蹭嘴唇"] to "othermouthrub">>
+	<<set _anus["远离嘴巴"] to "othermouthescape">>
 
-	<<set _anus["Cooperate with their mouth"] to "othermouthcooperate">>
+	<<set _anus["配合嘴巴"] to "othermouthcooperate">>
 
-	<<set _anus["Rub their hand with your cheeks"] to "bottomhandbay">>
-	<<set _anus["Rub your anus against their hand"] to "handtease">>
+	<<set _anus["用股沟蹭对方的手"] to "bottomhandbay">>
+	<<set _anus["用菊穴蹭对方的手"] to "handtease">>
 
-	<<set _anus["Rub against their fingers"] to "handrub">>
-	<<set _anus["Pull away from their hand"] to "handescape">>
+	<<set _anus["磨蹭手指"] to "handrub">>
+	<<set _anus["远离手"] to "handescape">>
 
-	<<set _anus["Cooperate with their fingers"] to "handcooperate">>
+	<<set _anus["配合手指"] to "handcooperate">>
 <</widget>>
 
 <<widget "tentacleDefaults">>
 	<<set _leftHand to {
-		"Rest":"rest",
-		"Grab the":"leftgrab"
+		"休息":"rest",
+		"抓住":"leftgrab"
 	}>>
 	<<if $deviancy gte 75>>
-		<<set _leftHand["Guide to your penis"] to "showpenis">>
-		<<set _leftHand["Guide to your pussy"] to "showvagina">>
-		<<set _leftHand["Guide to your ass"] to "showbottom">>
+		<<set _leftHand["引导到你的肉棒"] to "showpenis">>
+		<<set _leftHand["引导到你的小穴"] to "showvagina">>
+		<<set _leftHand["引导到你的菊穴"] to "showbottom">>
 	<</if>>
 	<<if _args[0] is true>>
-		<<set _leftHand["Strike the"] to "lefthittentacle">>
+		<<set _leftHand["击打"] to "lefthittentacle">>
 	<</if>>
-	<<set _leftHand["Milk it"] to "leftrub">>
+	<<set _leftHand["榨汁"] to "leftrub">>
 
 	<<set _rightHand to {
-		"Rest":"rest",
-		"Grab the":"rightgrab"
+		"休息":"rest",
+		"抓住":"rightgrab"
 	}>>
 	<<if $deviancy gte 75>>
-		<<set _rightHand["Guide to your penis"] to "showpenis">>
-		<<set _rightHand["Guide to your pussy"] to "showvagina">>
-		<<set _rightHand["Guide to your ass"] to "showbottom">>
+		<<set _rightHand["引导到你的肉棒"] to "showpenis">>
+		<<set _rightHand["引导到你的小穴"] to "showvagina">>
+		<<set _rightHand["引导到你的菊穴"] to "showbottom">>
 	<</if>>
 	<<if _args[0] is true>>
-		<<set _rightHand["Strike the"] to "righthittentacle">>
+		<<set _rightHand["击打"] to "righthittentacle">>
 	<</if>>
-	<<set _rightHand["Milk it"] to "rightrub">>
+	<<set _rightHand["榨汁"] to "rightrub">>
 
 	<<set _feet to {
-		"Rest":"rest",
-		"Grab the":"feetgrab"
+		"休息":"rest",
+		"抓住":"feetgrab"
 	}>>
 	<<if $deviancy gte 75>>
-		<<set _feet["Guide to your penis"] to "showpenis">>
-		<<set _feet["Guide to your pussy"] to "showvagina">>
-		<<set _feet["Guide to your ass"] to "showbottom">>
+		<<set _feet["引导到你的肉棒"] to "showpenis">>
+		<<set _feet["引导到你的小穴"] to "showvagina">>
+		<<set _feet["引导到你的菊穴"] to "showbottom">>
 	<</if>>
 	<<if _args[0] is true>>
-		<<set _feet["Kick the"] to "feethit">>
+		<<set _feet["踢"] to "feethit">>
 	<</if>>
-	<<set _feet["Milk it"] to "feetrub">>
+	<<set _feet["榨汁"] to "feetrub">>
 
 	<<set _mouth to {
-		"Rest":"rest",
-		"Lick it":"mouthlick",
-		"Pull away":"mouthpullaway",
-		"Kiss it":"mouthkiss",
-		"Take it":"take",
+		"休息":"rest",
+		"舔它":"mouthlick",
+		"拉开":"mouthpullaway",
+		"亲它":"mouthkiss",
+		"接受":"take",
 		"Cooperate":"mouthcooperate"
 	}>>
 	<<if _args[0] is true>>
-		<<set _mouth["Bite"] to "mouthbite">>
+		<<set _mouth["咬"] to "mouthbite">>
 	<</if>>
 
 	<<set _penis to {
-		"Rest":"rest",
+		"休息":"rest",
 		"Rub":"penisrub",
-		"Pull away":"penispullaway",
-		"Take it":"take",
+		"拉开":"penispullaway",
+		"接受":"take",
 		"Cooperate":"peniscooperate"
 	}>>
 
 	<<set _vagina to {
-		"Rest":"rest",
+		"休息":"rest",
 		"Rub":"vaginarub",
-		"Pull away":"vaginapullaway",
-		"Take it":"take",
+		"拉开":"vaginapullaway",
+		"接受":"take",
 		"Cooperate":"vaginacooperate"
 	}>>
 
 	<<set _anus to {
-		"Rest":"rest",
+		"休息":"rest",
 		"Rub":"anusrub",
-		"Pull away":"anuspullaway",
-		"Take it":"take",
+		"拉开":"anuspullaway",
+		"接受":"take",
 		"Cooperate":"anuscooperate"
 	}>>
 <</widget>>
 
 <<widget "loveInterest">>
-	Who do you consider to be your primary love interest?
+	你认为谁是你的主要恋人？
 	<br>
 	<<set _npc = ["None","Robin","Whitney","Kylar","Sydney","Eden","Avery","Black Wolf","Great Hawk","Alex","Remy"]>>
 	<<set _potentialLoveInterests = ["None"]>>
@@ -773,7 +773,7 @@
 		<<run _potentialLoveInterests.push("Alex")>>
 	<</if>>
 	<<if _potentialLoveInterests.length lte 1>>
-		<span class="black"><i>You haven't developed feelings for anyone yet.</i></span>
+		<span class="black"><i>你还没有对任何人产生爱慕。</i></span>
 	<<else>>
 		<<listbox "$loveInterest.primary" autoselect>>
 			<<optionsfrom _potentialLoveInterests>>
@@ -785,23 +785,23 @@
 		<<if $awarelevel gte 2>>
 			<<if $loveInterest.primary is "None">>
 				<<set $loveInterest.secondary to "None">>
-				<span class="black">You need to choose primary love interest before you can choose a secondary.</span>
+				<span class="black">在选择次要恋人之前，你需要先选择你的主要恋人。</span>
 			<<else>>
-			Who do you consider to be your secondary love interest?
+			你认为谁是你的次要恋人？
 			<br>
 			<<listbox "$loveInterest.secondary" autoselect>>
 				<<optionsfrom _potentialLoveInterests>>
 			<</listbox>>
 			<</if>>
 		<<else>>
-			<span class="black">You don't consider it possible to have more than one love interest.</span>
+			<span class="black">你不认为你有另外一个恋人。</span>
 			<<set $loveInterest.secondary to "None">>
 		<</if>>
 	<</if>>
 	<<if $transformationParts.traits.mateForLife isnot "disabled" and (!isLoveInterest(_loveIntStart1) or (_loveIntStart2 isnot "None" and !isLoveInterest(_loveIntStart2)))>>
 		<<set $LIChanged to true>>
 		<br>
-		<span class="red">Changing your partners goes against your instincts to mate for life. It will take a toll on your mental state.</span>
+		<span class="red">更换伴侣违背了你终身相伴的誓言，这会对你的精神造成损伤。</span>
 	<<else>>
 		<<unset $LIChanged>>
 	<</if>>

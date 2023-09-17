@@ -1,0 +1,2869 @@
+:: Widgets Settings [widget]
+
+<<widget "initsettings">>
+	<<set $player.gender to "f">>
+	<<set $player.sex to "f">>
+	<<set $player.gender_body to "a">>
+	<<set $player.ballsExist to false>>
+	<<set $player.freckles to false>>
+	<<set $player.breastsize to 0>>
+	<<set $player.penissize to 1>>
+	<<set $bodysize to 2>>
+	<<set $mouthsensitivity to 1>>
+	<<set $breastsensitivity to 1>>
+	<<set $bottomsensitivity to 1>>
+	<<set $genitalsensitivity to 1>>
+	<<set $eyeselect to "purple">>
+	<<set $hairselect to "red">>
+	<<set $hairlength to 200>>
+	<<set $awareselect to "innocent">>
+	<<set $background to "waif">>
+	<<set $startingseason to "autumn">>
+	<<set $gamemode to "normal">>
+	<<set $blackchance to 10>>
+	<<set $bestialitydisable to "f">>
+	<<set $swarmdisable to "f">>
+	<<set $spiderdisable to "f">>
+	<<set $slugdisable to "f">>
+	<<set $waspdisable to "f">>
+	<<set $beedisable to "f">>
+	<<set $lurkerdisable to "f">>
+	<<set $horsedisable to "f">>
+	<<set $bodywritingLvl to 3>>
+	<<set $parasitedisable to "f">>
+	<<set $bestialitydisable to "f">>
+	<<set $slimedisable to "f">>
+	<<set $voredisable to "f">>
+	<<set $tentacledisable to "f">>
+	<<set $plantdisable to "f">>
+	<<set $analdisable to "f">>
+	<<set $analdoubledisable to "f">>
+	<<set $analingusdisablegiving to "f">>
+	<<set $analingusdisablereceiving to "f">>
+	<<set $vaginaldoubledisable to "f">>
+	<<set $transformdisable to "f">>
+	<<set $transformdisabledivine to "f">>
+	/*<<set $hirsutedisable to "t">>*/
+	<<set $breastfeedingdisable to "f">>
+	<<set $parasitepregdisable to "f">>
+	<<set $asphyxiaLvl to 3>>
+	<<set $NudeGenderDC to 1>>
+	<<set $npcVirginityChance to 50>>
+	<<set $npcVirginityChanceAdult to 10>>
+	<<set $footdisable to "f">>
+	<<set $toywhipdisable to "f">>
+	<<set $toydildodisable to "f">>
+	<<set $toymultiplepenetration to "f">>
+	<<set $pregnancyspeechdisable to "f">>
+	<<set $hypnosisdisable to "f">>
+	<<set $statdisable to "f">>
+	<<set $cheatdisable to "t">>
+	<<set $watersportsdisable to "t">>
+	<<set $facesitdisable to "f">>
+	<<set $ruffledisable to "f">>
+	<<set $forcedcrossdressingdisable to "f">>
+	<<set $saveName to "">>
+	<<set $checkstyle to "words">>
+	<<set $blackwolfmonster to 1>>
+	<<set $greathawkmonster to 1>>
+	<<set $reducedLineHeight to false>>
+	<<set $clothesPrice to 1>>
+	<<set $clothesPriceUnderwear to 1>>
+	<<set $clothesPriceSchool to 1>>
+	<<set $clothesPriceLewd to 1>>
+	<<set $furniturePriceFactor to 1>>
+	<<set $basePlayerPregnancyChance to 80>>
+	<<set $baseNpcPregnancyChance to 8>>
+	<<set $humanPregnancyMonths to 3>>
+	<<set $wolfPregnancyWeeks to 4>>
+	<<set $playerPregnancyHumanDisable to "f">>
+	<<set $playerPregnancyBeastDisable to "f">>
+	<<set $npcPregnancyDisable to "f">>
+	<<set $incompletePregnancyDisable to "t">>
+	<<set $cycledisable to "f">>
+	<<set $pregnancytype to "realistic">>
+	<<set $rentmod to 1>>
+	<<set $condomLvl to 3>>
+	<<set $condomChance to 60>>
+	<<set $condomUseChanceRape to 33>>
+	<<set $condomUseChanceCon to 83>>
+	<<set $multipleWardrobes to "isolated">>
+	<<set $tending_yield_factor to 5>>
+
+	<<set $notifyUpdate = true>>
+
+	<<startingPlayerImageReset>>
+<</widget>>
+
+<<widget "displaySettings">>
+	<<if _args[0]>>
+		<<set $currentSettings to _args[0]>>
+	<</if>>
+	<<if $passage isnot "Start" and ["characterSettings", "featSettings"].includes($currentSettings)>>
+		<<set $currentSettings to "gameSettings">>
+	<</if>>
+	<<switch $currentSettings>>
+		<<case "quickStart" "tweak">><<replace #settingsDiv>><<quickStart>><</replace>>
+		<<case "presetConfirmDetails">><<replace #settingsDiv>><<presetConfirmDetails>><</replace>>
+		<<case "characterSettings" "character">>
+			<<replace #settingsDiv>><<characterSettings>><</replace>>
+			<<if StartConfig.enableImages and $passage is "Start">><<startingPlayerImageUpdate>><<removeclass #startingPlayerImage "hidden">><</if>>
+		<<case "featSettings" "feat">><<replace #settingsDiv>><<featSettings>><</replace>>
+		<<case "gameSettings" "game">><<replace #settingsDiv>><<gameSettings>><</replace>>
+		<<case "sizeLimitsSettings" "size">><<replace #settingsDiv>><<sizeLimitsSettings>><</replace>>
+		<<case "npcSettings" "npc">><<replace #settingsDiv>><<npcSettings>><</replace>>
+		<<case "exportsettings" "export">><<replace #settingsDiv>><<exportsettings>><</replace>>
+		<<case "gallerySettings" "gallery">><<replace #settingsDiv>><<gallerySettings>><</replace>>
+		<<case "importConfirmDetails">><<replace #settingsDiv>><<importConfirmDetails>><</replace>>
+		<<case "startDescriptions">><<startDescriptions>>
+		<<default>><<replace #settingsDiv>><<gameSettings>><</replace>>
+	<</switch>>
+	<<if $currentSettings isnot "importConfirmDetails">>
+		<<unset $importString>>
+	<</if>>
+	<<run settingsDisableElement()>>
+<</widget>>
+
+<<widget "displaySubsection">>
+	<<if _args[0]>>
+		<<set $currentSubsection to _args[0]>>
+	<</if>>
+	<<switch $currentSubsection>>
+		<<case "humanSettings">><<set _subsection to "human">><<replace #subsectionDiv>><<humanSettings>><</replace>>
+		<<case "npcSettings">><<set _subsection to "npc">><<replace #subsectionDiv>><<npcSettings>><</replace>>
+		<<case "beastSettings">><<set _subsection to "beast">><<replace #subsectionDiv>><<beastSettings>><</replace>>
+		<<case "fetishSettings">><<set _subsection to "fetish">><<replace #subsectionDiv>><<fetishSettings>><</replace>>
+		<<case "priceSettings">><<set _subsection to "price">><<replace #subsectionDiv>><<priceSettings>><</replace>>
+		<<case "pregnancySettings">><<set _subsection to "pregnancy">><<replace #subsectionDiv>><<pregnancySettings>><</replace>>
+		<<case "sizeLimitsSettings">><<set _subsection to "sizeLimits">><<replace #subsectionDiv>><div class="solidBorderContainer settings-container"><<sizeLimitsSettings>></div><</replace>>
+		<<default>><<set _subsection to "human">><<replace #subsectionDiv>><<humanSettings>><</replace>>
+	<</switch>>
+	<<run settingsDisableElement()>>
+<</widget>>
+
+<<widget "fa-icon">><span @class="'fa-icon fa-' + $args.raw" alt="' + $args.raw + '"></span><</widget>>
+
+<<widget "startOptions">>
+<div class="containerStart">
+	<div id="startSelectionDefault">
+		<div @class="_selectedStart is 'default' ? 'gold buttonStartSelected' : 'buttonStart'" >
+			<<button "基础模式">>
+				<<set _selectedStart to "default">>
+				<<set _settingsTab to "startDescriptions">>
+				<<replace #startOptions>><<startOptions>><</replace>>
+				<<replace #settingsExit>><<settingsExit>><</replace>>
+			<</button>>
+		</div>
+	</div>
+
+	<div id="startSelectionAdjusted">
+		<div @class="_selectedStart is 'adjusted' ? 'gold buttonStartSelected' : 'buttonStart'" >
+			<<button "简单调整">>
+				<<set _selectedStart to "adjusted">>
+				<<set _settingsTab to "startDescriptions">>
+				<<replace #startOptions>><<startOptions>><</replace>>
+				<<replace #settingsExit>><<settingsExit>><</replace>>
+			<</button>>
+		</div>
+	</div>
+
+	<div id="startSelectionCustom">
+		<div @class="_selectedStart is 'custom' ? 'gold buttonStartSelected' : 'buttonStart'" >
+			<<button "进阶调整">>
+				<<set _selectedStart to "custom">>
+				<<set _settingsTab to "startDescriptions">>
+				<<replace #startOptions>><<startOptions>><</replace>>
+				<<replace #settingsExit>><<settingsExit>><</replace>>
+			<</button>>
+		</div>
+	</div>
+
+	<div id="startSelectionRandom">
+		<div @class="_selectedStart is 'random' ? 'gold buttonStartSelected' : 'buttonStart'" >
+			<<button "随机">>
+				<<set _selectedStart to "random">>
+				<<set _settingsTab to "startDescriptions">>
+				<<replace #startOptions>><<startOptions>><</replace>>
+				<<replace #settingsExit>><<settingsExit>><</replace>>
+			<</button>>
+		</div>
+	</div>
+</div>
+<hr>
+<<switch _selectedStart>>
+	/*Basic Start is selected */
+	<<case "default">>
+		<div class="containerStart">
+			/*Character Creation*/
+			<div @class="_settingsTab is 'character' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+			<<button "创建角色<span class='red'> *</span>">>
+				<<set _settingsTab to _settingsTab is "character" ? "startDescriptions" : "character">>
+				<<replace #startOptions>><<startOptions>><</replace>>
+				<<displaySettings _settingsTab>>
+			<</button>>
+			</div>
+			/*Feat Boosts */
+			<div @class="_settingsTab is 'feat' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+				<<if $options.images is 1>>
+					<<button "成就加点<span class='red'> *</span> <img class='imgButton' src='img/ui/GoldCoin.gif'/>">>
+						<<set _settingsTab to _settingsTab is "feat" ? "startDescriptions" : "feat">>
+						<<replace #startOptions>><<startOptions>><</replace>>
+						<<displaySettings _settingsTab>>
+					<</button>>
+				<<else>>
+					<<button "成就加点<span class='red'> *</span>">>
+						<<set _settingsTab to _settingsTab is "feat" ? "startDescriptions" : "feat">>
+						<<replace #startOptions>><<startOptions>><</replace>>
+						<<displaySettings _settingsTab>>
+					<</button>>
+				<</if>>
+			</div>
+			/*Gallery*/
+			<div @class="_settingsTab is 'gallery' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+				<<button "画廊">>
+					<<set _settingsTab to _settingsTab is "gallery" ? "startDescriptions" : "gallery">>
+					<<replace #startOptions>><<startOptions>><</replace>>
+					<<displaySettings _settingsTab>>
+				<</button>>
+			</div>
+		</div>
+
+		/*Container for different tabs*/
+		<div id="settingsDiv">
+			<<startDescriptions "default">>
+		</div>
+	/*Moderate Start is Selected */
+	<<case "adjusted">>
+		<div class="containerStart">
+		/*Character Creation*/
+			<div @class="_settingsTab is 'character' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+			<<button "创建角色<span class='red'> *</span>">>
+				<<set _settingsTab to _settingsTab is "character" ? "startDescriptions" : "character">>
+				<<replace #startOptions>><<startOptions>><</replace>>
+				<<displaySettings _settingsTab>>
+			<</button>>
+			</div>
+		/*Tweak Preferences, formerly Quick Start*/
+			<div @class="_settingsTab is 'tweak' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+			<<button "调整偏好">>
+				<<set _settingsTab to _settingsTab is "tweak" ? "startDescriptions" : "tweak">>
+				<<replace #startOptions>><<startOptions>><</replace>>
+				<<displaySettings _settingsTab>>
+			<</button>>
+			</div>
+		/*Feat Boosts */
+			<div @class="_settingsTab is 'feat' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+				<<if $options.images is 1>>
+					<<button "成就加点<span class='red'> *</span> <img class='imgButton' src='img/ui/GoldCoin.gif'/>">>
+						<<set _settingsTab to _settingsTab is "feat" ? "startDescriptions" : "feat">>
+						<<replace #startOptions>><<startOptions>><</replace>>
+						<<displaySettings _settingsTab>>
+					<</button>>
+				<<else>>
+					<<button "成就加点<span class='red'> *</span>">>
+						<<set _settingsTab to _settingsTab is "feat" ? "startDescriptions" : "feat">>
+						<<replace #startOptions>><<startOptions>><</replace>>
+						<<displaySettings _settingsTab>>
+					<</button>>
+				<</if>>
+			</div>
+		/*Gallery*/
+			<div @class="_settingsTab is 'gallery' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+				<<button "画廊">>
+					<<set _settingsTab to _settingsTab is "gallery" ? "startDescriptions" : "gallery">>
+					<<replace #startOptions>><<startOptions>><</replace>>
+					<<displaySettings _settingsTab>>
+				<</button>>
+			</div>
+		</div>
+
+		/*Container for different tabs*/
+		<div id="settingsDiv">
+			<<startDescriptions "adjusted">>
+		</div>
+	/*Custom Start is Selected */
+	<<case "custom">>
+		<div class="containerStart">
+		/*Character Creation*/
+			<div @class="_settingsTab is 'character' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+			<<button "创建角色<span class='red'> *</span>">>
+				<<set _settingsTab to _settingsTab is "character" ? "startDescriptions" : "character">>
+				<<replace #startOptions>><<startOptions>><</replace>>
+				<<displaySettings _settingsTab>>
+			<</button>>
+			</div>
+		/*Game Settings*/
+			<div @class="_settingsTab is 'game' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+			<<button "游戏设置">>
+				<<set _settingsTab to _settingsTab is "game" ? "startDescriptions" : "game">>
+				<<set _subsection to "human">>
+				<<replace #startOptions>><<startOptions>><</replace>>
+				<<displaySettings _settingsTab>>
+			<</button>>
+			</div>
+		/*Size Limits -- Folded into Character Customisation
+			<div @class="_settingsTab is 'size' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+			<<button "Size Limits">>
+				<<set _settingsTab to _settingsTab is "size" ? "startDescriptions" : "size">>
+				<<replace #startOptions>><<startOptions>><</replace>>
+				<<displaySettings _settingsTab>>
+			<</button>>
+			</div>*/
+		/*Named NPC Settings -- Folded into Game Settings
+			<div @class="_settingsTab is 'npc' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+			<<button "已命名NPC设置">>
+				<<set _settingsTab to _settingsTab is "npc" ? "startDescriptions" : "npc">>
+				<<replace #startOptions>><<startOptions>><</replace>>
+				<<displaySettings _settingsTab>>
+			<</button>>
+			</div>*/
+		/*Feat Boosts*/
+			<div @class="_settingsTab is 'feat' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+				<<if $options.images is 1>>
+					<<button "成就加点<span class='red'> *</span> <img class='imgButton' src='img/ui/GoldCoin.gif'/>">>
+						<<set _settingsTab to _settingsTab is "feat" ? "startDescriptions" : "feat">>
+						<<replace #startOptions>><<startOptions>><</replace>>
+						<<displaySettings _settingsTab>>
+					<</button>>
+				<<else>>
+					<<button "成就加点<span class='red'> *</span>">>
+						<<set _settingsTab to _settingsTab is "feat" ? "startDescriptions" : "feat">>
+						<<replace #startOptions>><<startOptions>><</replace>>
+						<<displaySettings _settingsTab>>
+					<</button>>
+				<</if>>
+			</div>
+		/*Gallery*/
+			<div @class="_settingsTab is 'gallery' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+				<<button "画廊">>
+					<<set _settingsTab to _settingsTab is "gallery" ? "startDescriptions" : "gallery">>
+					<<replace #startOptions>><<startOptions>><</replace>>
+					<<displaySettings _settingsTab>>
+				<</button>>
+			</div>
+		/*Export/Import Settings*/
+			<div @class="_settingsTab is 'export' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+				<<button "导出/导入设置">>
+					<<set _settingsTab to _settingsTab is "export" ? "startDescriptions" : "export">>
+					<<replace #startOptions>><<startOptions>><</replace>>
+					<<displaySettings _settingsTab>>
+				<</button>>
+			</div>
+		</div>
+
+		/*Container for different tabs*/
+		<div id="settingsDiv">
+			<<startDescriptions "custom">>
+		</div>
+	/*Random Start is Selected */
+	<<case "random">>
+		<div class="containerStart">
+		/*Feat Boosts*/
+			<div @class="_settingsTab is 'feat' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+				<<if $options.images is 1>>
+					<<button "成就加点<span class='red'> *</span> <img class='imgButton' src='img/ui/GoldCoin.gif'/>">>
+						<<set _settingsTab to _settingsTab is "feat" ? "startDescriptions" : "feat">>
+						<<replace #startOptions>><<startOptions>><</replace>>
+						<<displaySettings _settingsTab>>
+					<</button>>
+				<<else>>
+					<<button "成就加点<span class='red'> *</span>">>
+						<<set _settingsTab to _settingsTab is "feat" ? "startDescriptions" : "feat">>
+						<<replace #startOptions>><<startOptions>><</replace>>
+						<<displaySettings _settingsTab>>
+					<</button>>
+				<</if>>
+			</div>
+		/*Gallery*/
+			<div @class="_settingsTab is 'gallery' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+				<<button "画廊">>
+					<<set _settingsTab to _settingsTab is "gallery" ? "startDescriptions" : "gallery">>
+					<<replace #startOptions>><<startOptions>><</replace>>
+					<<displaySettings _settingsTab>>
+				<</button>>
+			</div>
+		</div>
+
+		/*Container for different tabs*/
+		<div id="settingsDiv">
+			<<startDescriptions "random">>
+		</div>
+<</switch>>
+<</widget>>
+
+<<widget "settingsStart">>
+	<<updatehistorycontrols>><!-- hides controls on going back in history after enabling that option -->
+	<<set $cheatdisabletoggle to $cheatdisable>>
+	<<if _selectedStart is undefined>>
+		<<set _selectedStart to "default">>
+	<</if>>
+
+	请选择游戏模式：
+	<br>
+	<div id="startOptions" class="no-numberify">
+		<<startOptions>>
+	</div>
+	<br>
+
+	<div id="settingsExit">
+		<<settingsExit>>
+	</div>
+<</widget>>
+
+
+<<widget "settingsOptions">>
+<<if _selectedSettings is undefined>><<set _selectedSettings to "quick">><</if>>
+<div class="containerStart">
+	<div @class="_selectedSettings is 'quick' ? 'gold buttonStartSelected' : 'buttonStart'" >
+		<<button "快速编辑">>
+			<<set _selectedSettings to "quick">>
+			<<replace #settingsOptions>><<settingsOptions>><</replace>>
+			<<replace #settingsExit>><<settingsExit>><</replace>>
+			<<displaySettings "quickStart">>
+		<</button>>
+	</div>
+	<div @class="_selectedSettings is 'game' ? 'gold buttonStartSelected' : 'buttonStart'" >
+		<<button "游戏设置">>
+			<<set _selectedSettings to "game">>
+			<<replace #settingsOptions>><<settingsOptions>><</replace>>
+			<<replace #settingsExit>><<settingsExit>><</replace>>
+			<<displaySettings "gameSettings">>
+			/* Resets Quick edit temporary values, to make them reflect current settings as closely as they can */
+			<<unset _malechance>>
+			<<unset _beastmalechance>>
+			<<unset _maleChanceSplit>>
+			<<unset _beastMaleChanceSplit>>
+			<<unset _pregnancytype>>
+			<<unset _cycledisable>>
+			<<unset _incompletePregnancyDisable>>
+		<</button>>
+	</div>
+	<div @class="_selectedSettings is 'gallery' ? 'gold buttonStartSelected' : 'buttonStart'" >
+		<<button "画廊">>
+			<<set _selectedSettings to "gallery">>
+			<<replace #settingsOptions>><<settingsOptions>><</replace>>
+			<<replace #settingsExit>><<settingsExit>><</replace>>
+			<<displaySettings "gallerySettings">>
+		<</button>>
+	</div>
+	<div @class="_selectedSettings is 'export' ? 'gold buttonStartSelected' : 'buttonStart'" >
+		<<button "导出/导入设置">>
+			<<set _selectedSettings to "export">>
+			<<replace #settingsOptions>><<settingsOptions>><</replace>>
+			<<replace #settingsExit>><<settingsExit>><</replace>>
+			<<displaySettings "exportsettings">>
+		<</button>>
+	</div>
+</div>
+<</widget>>
+
+<<widget "settings">>
+	<<updatehistorycontrols>><!-- hides controls on going back in history after enabling that option -->
+	<<set $cheatdisabletoggle to $cheatdisable>>
+	<div id="settingsOptions" class="no-numberify">
+		<<settingsOptions>>
+	</div>
+	<div id="settingsDiv" class="no-numberify">
+		<<quickStart>><<set $currentSettings to "quickStart">>
+	</div>
+	<br>
+	<div id="settingsExit">
+		<<settingsExit>>
+	</div>
+<</widget>>
+
+<<widget "settingsExit">>
+	<<saveNameSection>>
+	<div class="no-numberify" style="margin-top:15px">
+	<<if $passage is "Start">>
+		<<switch _selectedStart>>
+		<<case "default">>
+				<div><span class="gold bold">当前设置: </span> <i style="color:var(--000);">默认</i></div>
+					<<button "开始游戏!">>
+					/*If player changed any settings in Moderate/Advanced settings but then decided to just do Basic settings, resets settings back to default*/
+					<<set $gamemode to "normal">>
+					<<set $blackchance to 10>>
+					<<set $bestialitydisable to "f">>
+					<<set $swarmdisable to "f">>
+					<<set $spiderdisable to "f">>
+					<<set $slugdisable to "f">>
+					<<set $waspdisable to "f">>
+					<<set $beedisable to "f">>
+					<<set $lurkerdisable to "f">>
+					<<set $horsedisable to "f">>
+					<<set $bodywritingLvl to 3>>
+					<<set $parasitedisable to "f">>
+					<<set $bestialitydisable to "f">>
+					<<set $slimedisable to "f">>
+					<<set $voredisable to "f">>
+					<<set $tentacledisable to "f">>
+					<<set $plantdisable to "f">>
+					<<set $analdisable to "f">>
+					<<set $analdoubledisable to "f">>
+					<<set $analingusdisablegiving to "f">>
+					<<set $analingusdisablereceiving to "f">>
+					<<set $vaginaldoubledisable to "f">>
+					<<set $transformdisable to "f">>
+					<<set $transformdisabledivine to "f">>
+					<<set $breastfeedingdisable to "f">>
+					<<set $parasitepregdisable to "f">>
+					<<set $asphyxiaLvl to 3>>
+					<<set $NudeGenderDC to 1>>
+					<<set $npcVirginityChance to 50>>
+					<<set $npcVirginityChanceAdult to 10>>
+					<<set $footdisable to "f">>
+					<<set $toywhipdisable to "f">>
+					<<set $toydildodisable to "f">>
+					<<set $toymultiplepenetration to "f">>
+					<<set $pregnancyspeechdisable to "f">>
+					<<set $hypnosisdisable to "f">>
+					<<set $statdisable to "f">>
+					<<set $cheatdisable to "t">>
+					<<set $watersportsdisable to "t">>
+					<<set $facesitdisable to "f">>
+					<<set $ruffledisable to "f">>
+					<<set $forcedcrossdressingdisable to "f">>
+					<<set $checkstyle to "words">>
+					<<set $blackwolfmonster to 1>>
+					<<set $greathawkmonster to 1>>
+					<<set $reducedLineHeight to false>>
+					<<set $clothesPrice to 1>>
+					<<set $clothesPriceUnderwear to 1>>
+					<<set $clothesPriceSchool to 1>>
+					<<set $clothesPriceLewd to 1>>
+					<<set $furniturePriceFactor to 1>>
+					<<set $basePlayerPregnancyChance to 80>>
+					<<set $baseNpcPregnancyChance to 8>>
+					<<set $humanPregnancyMonths to 3>>
+					<<set $wolfPregnancyWeeks to 4>>
+					<<set $playerPregnancyHumanDisable to "f">>
+					<<set $playerPregnancyBeastDisable to "f">>
+					<<set $npcPregnancyDisable to "f">>
+					<<set $incompletePregnancyDisable to "t">>
+					<<set $cycledisable to "f">>
+					<<set $pregnancytype to "realistic">>
+					<<set $rentmod to 1>>
+					<<set $condomLvl to 3>>
+					<<set $condomChance to 60>>
+					<<set $condomUseChanceRape to 33>>
+					<<set $condomUseChanceCon to 83>>
+					<<set $multipleWardrobes to "isolated">>
+					<<set $tending_yield_factor to 5>>
+					<<settingsExitFunction>>
+				<</button>>
+		<<case "adjusted">>
+				<div><span class="gold bold">当前设置:</span> <i style="color:var(--000);">可调整</i></div>
+				<<button "开始游戏!">>
+					<<if ($feats.locked or ($cheatdisabletoggle is "t" and $rentmod gte 1)) and ($feats.soft or ($gamemode isnot "soft" and $alluremod gte 1)) and ($feats.pregnancyLocked or ($humanPregnancyMonths gte 3 and $wolfPregnancyWeeks gte 4)) and ($feats.pregnancySillyLocked or $pregnancytype isnot "silly")>>
+						<<settingsExitFunction>>
+					<<else>><!-- confirm cheats -->
+						<<replace #settingsExit>><<settingsExitConfirm>><</replace>>
+					<</if>>
+				<</button>>
+		<<case "custom">>
+				<div><span class="gold bold">当前设置:</span> <i style="color:var(--000);">自定义</i></div>
+				<<button "开始游戏!">>
+					<<if ($feats.locked or ($cheatdisabletoggle is "t" and $rentmod gte 1)) and ($feats.soft or ($gamemode isnot "soft" and $alluremod gte 1)) and ($feats.pregnancyLocked or ($humanPregnancyMonths gte 3 and $wolfPregnancyWeeks gte 4)) and ($feats.pregnancySillyLocked or $pregnancytype isnot "silly")>>
+						<<settingsExitFunction>>
+					<<else>><!-- confirm cheats -->
+						<<replace #settingsExit>><<settingsExitConfirm>><</replace>>
+					<</if>>
+				<</button>>
+		<<case "random">>
+				<div><span class="gold bold">当前设置:</span> <i style="color:var(--000);">随机</i></div>
+				<<button "开始游戏!">>
+						/*Rerolls all settings*/
+					<<presets "randomize" "characterSettings" `randomizeSettings()`>>
+					<<if ($feats.locked or ($cheatdisabletoggle is "t" and $rentmod gte 1)) and ($feats.soft or ($gamemode isnot "soft" and $alluremod gte 1)) and ($feats.pregnancyLocked or ($humanPregnancyMonths gte 3 and $wolfPregnancyWeeks gte 4)) and ($feats.pregnancySillyLocked or $pregnancytype isnot "silly")>>
+						<<settingsExitFunction>>
+					<<else>><!-- confirm cheats -->
+						<<replace #startOptions>><<startOptions>><</replace>>
+						<<replace #settingsExit>><<settingsExitConfirm>><</replace>>
+					<</if>>
+				<</button>>
+		<</switch>>
+	<<else>>
+		<<button "保存设置">>
+			<<if ($feats.locked or ($cheatdisabletoggle is "t" and $rentmod gte 1)) and ($feats.soft or ($gamemode isnot "soft" and $alluremod gte 1)) and ($feats.pregnancyLocked or ($humanPregnancyMonths gte 3 and $wolfPregnancyWeeks gte 4)) and ($feats.pregnancySillyLocked or $pregnancytype isnot "silly")>>
+				<<settingsExitFunction>>
+			<<else>><!-- confirm cheats -->
+				<<replace #settingsExit>><<settingsExitConfirm>><</replace>>
+			<</if>>
+		<</button>>
+	<</if>>
+	</div>
+<</widget>>
+
+<<widget "settingsExitConfirm">>
+	<<if _selectedStart is "random">>
+	<span class="red">由于随机生成的设置，某些成就已被禁用。</span>
+	<ul>
+		<<if $cheatdisabletoggle is "f">><li>作弊开启: 禁止全部成就获取。</li><</if>>
+		<<if $rentmod lt 1>><li>降低租金: 禁用所有成就。</li><</if>>
+		<<if !$feats.soft and $gamemode is "soft">><li>软核模式: 禁用一些成就。</li><</if>>
+		<<if !$feats.soft and $alluremod lt 1>><li>降低诱惑: 禁用部分成就。</li><</if>>
+		<<if !$feats.pregnancyLocked and $humanPregnancyMonths lt 3>><li>人类的怀孕期定在3个月以下: 禁用部分怀孕成就。</li><</if>>
+		<<if !$feats.pregnancyLocked and $wolfPregnancyWeeks lt 4>><li>狼的怀孕期设定为4周以下: 禁用部分怀孕成就。</li><</if>>
+		<<if !$feats.pregnancySillyLocked and $pregnancytype is "silly">><li>怀孕模式设置为"童话怀孕"：禁止部分怀孕成就。</li><</if>>
+	</ul>
+	您想保留这些设置变化吗？
+	<br>
+	<<button "否">>
+		<<set $cheatdisabletoggle to "t">>
+		<<if $gamemode is "soft">>
+			<<set $gamemode to "normal">>
+		<</if>>
+		<<if $alluremod lt 1>>
+			<<set $alluremod to 1>>
+		<</if>>
+		<<if $rentmod lt 1>>
+			<<set $rentmod to 1>>
+		<</if>>
+		<<if !$feats.pregnancyLocked and $humanPregnancyMonths lt 3>>
+			<<set $humanPregnancyMonths to 3>>
+		<</if>>
+		<<if !$feats.pregnancyLocked and $wolfPregnancyWeeks lt 4>>
+			<<set $wolfPregnancyWeeks to 4>>
+		<</if>>
+		<<if !$feats.pregnancySillyLocked and $pregnancytype is "silly">>
+			<<set $pregnancytype to "realistic">>
+		<</if>>
+		<<displaySettings "startDescriptions">>
+		<<replace #settingsExit>><<settingsExit>><</replace>>
+	<</button>>
+	<br>
+	<span class="gold small-description">(撤销一些修改，允许您重置设置)</span>
+	<br><br>
+	<<button "是">>
+		<<settingsExitFunction>>
+	<</button>>
+	<br>
+	<span class="red small-description">(这个存档将禁用成就。)</span>
+
+	<<else>>
+	<span class="red">由于您选择的某些设置，无法获得成就。</span>
+
+	<ul>
+		<<if $cheatdisabletoggle is "f">><li>作弊开启: 禁止全部成就获取。</li><</if>>
+		<<if $rentmod lt 1>><li>降低租金: 禁用所有成就。</li><</if>>
+		<<if !$feats.soft and $gamemode is "soft">><li>软核模式: 禁用一些成就。</li><</if>>
+		<<if !$feats.soft and $alluremod lt 1>><li>降低诱惑: 禁止部分成就</li><</if>>
+		<<if !$feats.pregnancyLocked and $humanPregnancyMonths lt 3>><li>人类的怀孕期定在3个月以下: 禁用部分怀孕成就。</li><</if>>
+		<<if !$feats.pregnancyLocked and $wolfPregnancyWeeks lt 4>><li>狼的怀孕期设定为4周以下: 禁用部分怀孕成就。</li><</if>>
+		<<if !$feats.pregnancySillyLocked and $pregnancytype is "silly">><li>怀孕模式设置为"童话怀孕"：禁止部分怀孕成就。</li><</if>>
+	</ul>
+	您想保留这些设置变化吗？
+	<br>
+	<<button "否">>
+		<<set $cheatdisabletoggle to "t">>
+		<<if $gamemode is "soft">>
+			<<set $gamemode to "normal">>
+		<</if>>
+		<<if $alluremod lt 1>>
+			<<set $alluremod to 1>>
+		<</if>>
+		<<if $rentmod lt 1>>
+			<<set $rentmod to 1>>
+		<</if>>
+		<<if !$feats.pregnancyLocked and $humanPregnancyMonths lt 3>>
+			<<set $humanPregnancyMonths to 3>>
+		<</if>>
+		<<if !$feats.pregnancyLocked and $wolfPregnancyWeeks lt 4>>
+			<<set $wolfPregnancyWeeks to 4>>
+		<</if>>
+		<<if !$feats.pregnancySillyLocked and $pregnancytype is "silly">>
+			<<set $pregnancytype to "realistic">>
+		<</if>>
+		<<if _settingsTab is 'tweak'>>
+			<<replace #gameModeQuick>><<gameMode>><</replace>>
+		<<elseif _settingsTab is 'game'>>
+			<<replace #gameMode>><<gameMode>><</replace>>
+		<</if>>
+		<<replace #settingsExit>><<settingsExit>><</replace>>
+	<</button>>
+	<br>
+	<span class="gold small-description">(撤销一些修改，允许您重置设置)</span>
+	<br><br>
+	<<button "是">>
+		<<settingsExitFunction>>
+	<</button>>
+	<br>
+	<span class="red small-description">(这个存档将禁用成就。)</span>
+	<</if>>
+<</widget>>
+
+<<widget "settingsExitConfirmHistory">>
+	<span class="red"><b>警告！您的历史记录深度设定值过高！</b><br>
+	数值超过5会导致您存档时出现错误！请确保您在继续之前知道您在做什么，或者把它调低！
+	</span>
+	<br>
+	<<link "禁用特性">>
+		<<set $options.maxStates to 1>>
+		<<replace #settingsExit>><<settingsExit>><</replace>>
+		<<displaySettings>>
+	<</link>>
+	<br>
+	<<link "降低至安全值">>
+		<<set $options.maxStates to 5>>
+		<<replace #settingsExit>><<settingsExit>><</replace>>
+		<<displaySettings>>
+	<</link>>
+	<br><br><br>
+	<<link "我就喜欢搬起石头砸自己的脚">>
+		<<settingsExitFunction>>
+	<</link>>
+<</widget>>
+
+<<widget "settingsExitFunction">>
+	<<if $settingsExitPassage is "Start2">>
+		<<setSkinColorBase>>
+	<</if>>
+	<<if !$ironmanmode>>
+		<<set $cheatdisable to $cheatdisabletoggle>>
+	<</if>>
+	<<if $cheatdisable is "f" or $rentmod lt 1>>
+		<<set $feats.locked to true>>
+	<</if>>
+	<<unset $cheatdisabletoggle>>
+	<<if $gamemode is "soft" or $alluremod lt 1>>
+		<<set $feats.soft to true>>
+	<</if>>
+	<<if $humanPregnancyMonths lt 3 or $wolfPregnancyWeeks lt 4>>
+		<<set $feats.pregnancyLocked to true>>
+	<</if>>
+	<<if $pregnancytype is "silly">>
+		<<set $feats.pregnancySillyLocked to true>>
+	<</if>>
+	<<updatehistorycontrols>>
+	<<initnpcgender>>
+	<<updatePersistentNPCs>>
+	<<hirsuteHideCheck>>
+	<<generateTipsList>>
+	<<tanned 0 "ignoreCoverage">>
+	<<if $player.freckles is "random">>
+		<<set $player.freckles to (random(1, 5) is 1)>>
+	<</if>>
+	/* Updates the npc's in case $incompletePregnancyDisable has been changed by the player */
+	<<npcPregnancyUpdater>>
+
+	/* this never worked as intended
+	<!-- check if specified face style is installed -->
+	<img id="testImage" class="hidden" @scr="'img/face/' + $facestyle + '/base.png'">
+	<<if $facestyle is "" or isImageOk("#testImage")>>
+		<<set $facestyle = "default">>
+	<</if>>
+	*/
+	<!-- Init shop mannequin gender -->
+	<<if $mannequinHasPenis is undefined>>
+		<<set $mannequinHasPenis to $player.penisExist>>
+		<<set $mannequinBreastsSize to ($mannequinHasPenis ? 0 : 3)>>
+	<</if>>
+	<<if $clothesPriceLewd lt Math.ceil(10 / $clothesPrice) * 0.1>>
+		<<set $clothesPriceLewd to parseFloat((Math.ceil(10 / $clothesPrice) * 0.1).toFixed(1))>>
+	<</if>>
+	<<set _settingsExitPassage to clone($settingsExitPassage)>>
+	<<unset $settingsExitPassage>>
+	<<run State.display(_settingsExitPassage)>>
+	<<set $saveName to $saveName.replace(/[^a-zA-Z\u4e00-\u9fa5\u4e00-\u9fa5 0-9]+/g,"")>>
+	<<unset $importString>>
+<</widget>>
+
+/*complete:{"Vrelnir (Default)":"vrelDefault","Lollipop Scythe":"lollipopScythe","PurityGuy":"purityGuy","Fangi":"fangi"},*/
+<<widget "quickStartOptions">>
+	<<if _quickStartOptions is undefined>>
+		<<set _quickStartOptions to {
+			player:{"孤儿（女性）":"femaleWaif","孤儿（男性）":"maleWaif", "孤儿（双性）":"hermaphroditeWaif", "Vrelnir PC":"vrel", "异装者":"crossdresser","硬汉":"toughGuy"},
+			genericNpc:{
+				"Default Genders":"genericNpcDefaultGender",
+				"All Male":"genericNpcAllMaleGender",
+				"75% Male":"genericNpc75MaleGender",
+				"All Female":"genericNpcAllFemaleGender",
+				"75% Female":"genericNpc75FemaleGender",
+				"All Opposite Gender":"genericNpcAllOppositeGenders",
+				"90% Opposite Gender":"genericNpc90OppositeGenders",
+				"75% Opposite Gender":"genericNpc75OppositeGenders",
+				"All Same Gender":"genericNpcAllSameGenders",
+				"90% Same Gender":"genericNpc90SameGenders",
+				"75% Same Gender":"genericNpc75SameGenders",
+			},
+			namedNpc:{"默认性别":"namedNpcDefaultGender", "全为男性":"namedNpcAllMaleGender", "全为女性":"namedNpcAllFemaleGender"},
+			beasts:{
+				"Default Genders":"beastDefaultGenders",
+				"All Male":"beastMaleGenders",
+				"75% Male":"beast75MaleGenders",
+				"All Female":"beastFemaleGenders",
+				"75% Female":"beast75FemaleGenders",
+				"All Opposite Gender":"beastOppositeGenders",
+				"90% Opposite Gender":"beast90OppositeGenders",
+				"75% Opposite Gender":"beast75OppositeGenders",
+				"All Same Gender":"beastSameGenders",
+				"90% Same Gender":"beast90SameGenders",
+				"75% Same Gender":"beast75SameGenders",
+			},
+			monsters:{"出现幻觉时":"monstersDefault", "无怪物":"monstersNone", "全部怪物":"monstersAll"},
+			kink:{"合理的":"kinkDefault", "原汁原味":"kinkVanilla", "没有野兽":"kinkNoBeasts", "全都给我":"kinkEverything"},
+			game:{
+				"正常 ":"gameNormal","轻松（无成就）":"gameSoft","困难":"gameHard","困难（铁人）":"gameHardIronman","受虐狂":"gameMasochist","轻松且开启作弊 （无成就）":"gameSoftCheats","正常且开启作弊 （无成就）":"gameNormalCheats","困难且开启作弊 （无成就）":"gameHardCheats","受虐狂且开启作弊 （无成就）":"gameMasochistCheats"
+			},
+			images:{"默认":"imagesdefault","高质量":"imagesHigh","低质量":"imagesLow","性能模式":"imagesPerformance","禁用图片":"imagesDisable"},
+			settings:{"电脑，有小贴士":"settingPCTip","电脑，无小贴士":"settingPCNoTip","移动设备，有小贴士":"settingMobileTips","移动设备，无小贴士":"settingMobileNoTips"}
+		}>>
+	<</if>>
+<</widget>>
+
+<<widget "quickStart">>
+	<div class="solidBorderContainer settings-container">
+		<<quickStartOptions>>
+		<div class="settingsToggleIndent">
+		<<if $passage is "Start">>
+			<i>对游戏进行比较宽泛地设置。如果您想要进行更加精细的设置，请选择<span class="gold">进阶开局</span>。</i>
+		<<else>>
+			<i>快速调整游戏设置。改动在存档后才会生效，并会<span class="red">覆盖所有</span>相关设置。如果希望进行更精细的设置，参见<span class="gold">游戏设置</span>条目。</i>
+		<</if>>
+		</div>
+
+		<div class="settingsGrid">
+			<<if $passage is "Start">>
+				<div id="gameModeQuick" class="settingsToggleItem">
+					<<gameMode>>
+				</div>
+			<</if>>
+
+			<div class="settingsToggleItem">
+				<span class="gold">性癖设置</span>
+				<br>
+				<<if _kinkPreset is undefined>><<set _kinkPreset to "kinkDefault">><</if>>
+				<label><mouse class="tooltip" style="border-bottom: 2px dotted var(--link)">适当放纵<span>默认设置。所有的倾向都会启用，除了水相关性事。</span></mouse>
+				 <<radiobutton "_kinkPreset" "kinkDefault" autocheck>></label> |
+				<label><mouse class="tooltip" style="border-bottom: 2px dotted var(--link)">经典<span>所有野兽相关内容将被禁用，同时也包括植物、触手、史莱姆、哺乳、颜面骑乘、双龙入穴和催眠。</span></mouse>
+				<<radiobutton "_kinkPreset" "kinkVanilla" autocheck>></label> |
+				<label><mouse class="tooltip" style="border-bottom: 2px dotted var(--link)">无兽交<span>所有野兽相关设置将被禁用，包括兽交、种群、吞入、寄生、蜘蛛、蛞蝓、黄蜂、潜伏者、蜜蜂和马。</span></mouse>
+				<<radiobutton "_kinkPreset" "kinkNoBeasts" autocheck>></label> |
+				<label><mouse class="tooltip" style="border-bottom: 2px dotted var(--link)">来者不拒<span>所有倾向都会启用，包括水相关性事。</span></mouse>
+				<<radiobutton "_kinkPreset" "kinkEverything" autocheck>></label>
+			</div>
+
+			<div class="settingsToggleItem">
+				<<set _foundPregnancy to !!Object.values($NPCName).find(npc => npc.pregnancy && npc.pregnancy.enabled && npc.pregnancy.type && !setup.pregnancy.canBePregnant.includes(npc.fullDescription))>>
+				<label>
+					<span class="gold">怀孕类型</span>
+					<br>
+					<label><<radiobutton "_pregnancytype" "realistic" `_pregnancytype ? "autocheck" : ($pregnancytype is "realistic" ? "checked": "")`>> <mouse class="tooltip green">真实<span>怀孕不会立刻发生，而且怀孕时您也不会立刻知晓。您需要先进行验孕，父亲是谁也无法预先知道。即使外射也可能使您怀孕，除非在接下来几个小时内清洗干净。</span></mouse></label> |
+					<label><<radiobutton "_pregnancytype" "fetish" `_pregnancytype ? "autocheck" : ($pregnancytype is "fetish" ? "checked": "")`>> <mouse class="tooltip pink">另类怀孕<span>精液进入您的便会立刻使你怀孕。此时您也会知晓，并且清楚父亲是谁。</span></mouse></label> |
+					<label><<radiobutton "_pregnancytype" "silly" `_pregnancytype ? "autocheck" : ($pregnancytype is "silly" ? "checked": "")`>> <mouse class="tooltip gold">童话怀孕<span>只要您牵手或者亲吻就有可能怀孕，尤其对象是您的恋人时。<i class="red none">有部分故事内容与该模式有关。该模式下部分成就会被禁止。</i></span></mouse></label> |
+					<label><<radiobutton "_pregnancytype" "disabled" autocheck>> <mouse class="tooltip red">禁用<span>怀孕将被禁用。不会影响已经存在的怀孕状态，也不会禁止您与您的孩子们进行互动。</span></mouse></label>
+				</label>
+				<br>
+				<label>
+					<<checkbox "_cycledisable" "t" "f" `_cycledisable ? "autocheck" : ($cycledisable is "f" ? "checked": "")`>>启用生理周期
+					<mouse class="tooltip linkBlue">(?)<span>
+						<div>在开启后，玩家何时可以怀孕将由玩家的月经周期来决定。</div>
+						<div>当禁用时，怀孕几率将被随机化。此外，当怀孕类型被设置为 "真实怀孕"时，玩家体内的精子将不会残留那么久。</div>
+					</span></mouse>
+				</label>
+				<br>
+				<label data-disabledif="T.foundPregnancy&&V.incompletePregnancyDisable==='f'">
+					<<checkbox "_incompletePregnancyDisable" "t" "f" `_incompletePregnancyDisable ? "autocheck" : ($incompletePregnancyDisable is "f" ? "checked": "")`>>启用实验性的怀孕内容
+					<<if _foundPregnancy>>
+						<mouse class="tooltip linkBlue">(!!!)<span>命名NPC在怀孕中时不能被禁用。</span></mouse>
+					<<else>>
+						<mouse class="tooltip linkBlue">(?)<span>
+							<div>在开启后，玩家将能够使所有可以怀孕的命名NPC受孕和被其播种怀孕，这包括那些没有怀孕剧情的NPC。</div>
+							<div class="red">警告: 这将导致命名NPC对玩家的怀孕或自己的怀孕没有反应，而且可能会在之后的更新中跳过一些相关剧情。</div>
+						</span></mouse>
+					<</if>>
+				</label>
+			</div>
+
+			<div class="settingsToggleItem">
+				<span class="gold">已命名NPC性别</span>
+				<br>
+				<<if _namedNpcPreset is undefined>><<set _namedNpcPreset to "namedNpcDefaultGender">><</if>>
+				<label>全为男性<<radiobutton "_namedNpcPreset" "namedNpcAllMaleGender" autocheck>></label> |
+				<label><<print $passage is "Start" ? "随机性别" : "当前性别">> <<radiobutton "_namedNpcPreset" "namedNpcDefaultGender" autocheck>></label> |
+				<label>全为女性<<radiobutton "_namedNpcPreset" "namedNpcAllFemaleGender" autocheck>></label>
+			</div>
+
+			<div class="settingsToggleItem">
+				<span class="gold">一般NPC性别</span>
+				<<numberslider "_malechance" `_malechance is undefined ? $malechance : _malechance` 0 100 25>>
+				<<run settingsNpcGenders()>>
+				<span id="humanSplitBy"><<humanSplitBy>></span>
+			</div>
+
+			<div class="settingsToggleItem">
+				<span class="gold">野兽性别</span>
+				<<numberslider "_beastmalechance" `_beastmalechance is undefined ? $beastmalechance : _beastmalechance` 0 100 25>>
+				<<run settingsBeastGenders()>>
+				<span id="beastSplitBy"><<beastSplitBy>></span>
+			</div>
+
+			<div class="settingsToggleItem">
+				<<if _monstersPreset is undefined>><<set _monstersPreset to "monstersDefault">><</if>>
+				<span class="gold">用怪物男孩和女孩来取代野兽</span>
+				<br>
+				<label>全天<<radiobutton "_monstersPreset" "monstersAll" autocheck>></label> |
+				<label>只有在产生幻觉的时候<<radiobutton "_monstersPreset" "monstersDefault" autocheck>></label> |
+				<label>从不<<radiobutton "_monstersPreset" "monstersNone" autocheck>></label>
+			</div>
+
+			<div class="settingsToggleButton">
+				<<button "保存调整过设置<span class='red'> *</span>">>
+					<<presets _kinkPreset "quickStart">>
+					<<presets _namedNpcPreset "quickStart">>
+					<<presets _monstersPreset "quickStart">>
+					<<set $malechance to _malechance>>
+					<<set $beastmalechance to _beastmalechance>>
+					<<set $maleChanceSplit to _maleChanceSplit or "f">>
+					<<set $beastMaleChanceSplit to _beastMaleChanceSplit or "f">>
+					<<if _maleChanceSplit is "t">>
+						<<switch _malechance>>
+							<<case 100>> /* All oposite sex */
+								<<set $maleChanceMale to 0>>
+								<<set $maleChanceFemale to 100>>
+							<<case 75>> /* 75% oposite sex */
+								<<set $maleChanceMale to 25>>
+								<<set $maleChanceFemale to 75>>
+							<<case 25>> /* 75% same sex */
+								<<set $maleChanceMale to 75>>
+								<<set $maleChanceFemale to 25>>
+							<<case 0>> /* All same sex */
+								<<set $maleChanceMale to 100>>
+								<<set $maleChanceFemale to 0>>
+							<<default>> /* Random sex */
+								<<set $maleChanceMale to random(1, 99)>>
+								<<set $maleChanceFemale to random(1, 99)>>
+						<</switch>>
+					<</if>>
+					<<if _beastMaleChanceSplit is "t">>
+						<<switch _beastmalechance>>
+							<<case 100>> /* All oposite sex */
+								<<set $beastMaleChanceMale to 0>>
+								<<set $beastMaleChanceFemale to 100>>
+							<<case 75>> /* 75% oposite sex */
+								<<set $beastMaleChanceMale to 25>>
+								<<set $beastMaleChanceFemale to 75>>
+							<<case 25>> /* 75% same sex */
+								<<set $beastMaleChanceMale to 75>>
+								<<set $beastMaleChanceFemale to 25>>
+							<<case 0>> /* All same sex */
+								<<set $beastMaleChanceMale to 100>>
+								<<set $beastMaleChanceFemale to 0>>
+							<<default>> /* Random sex */
+								<<set $beastMaleChanceMale to random(1, 99)>>
+								<<set $beastMaleChanceFemale to random(1, 99)>>
+						<</switch>>
+					<</if>>
+					<<if _pregnancytype is "disabled">>
+						<<set $playerPregnancyHumanDisable to "t">>
+						<<set $playerPregnancyBeastDisable to "t">>
+						<<set $npcPregnancyDisable to "t">>
+					<<else>>
+						<<set $pregnancytype to _pregnancytype>>
+						<<set $playerPregnancyHumanDisable to "f">>
+						<<set $playerPregnancyBeastDisable to "f">>
+						<<set $npcPregnancyDisable to "f">>
+					<</if>>
+					<<set $cycledisable to _cycledisable>>
+					<<if _incompletePregnancyDisable is "t" or (_incompletePregnancyDisable is "f" and !_foundPregnancy)>>
+						<<set $incompletePregnancyDisable to _incompletePregnancyDisable>>
+						<<npcPregnancyUpdater>>
+					<</if>>
+				<</button>>
+			</div>
+		</div>
+	</div>
+<</widget>>
+
+<<widget "humanSplitBy">>
+	<<link `_maleChanceSplit is "t" ? "默认" : "采定性取向"`>>
+		<<set _maleChanceSplit to _maleChanceSplit is "t" ? "f" : "t">>
+		<<replace "#humanSplitBy">><<humanSplitBy>><</replace>>
+		<<run settingsNpcGenders(true)>>
+	<</link>>
+<</widget>>
+
+<<widget "beastSplitBy">>
+	<<link `_beastMaleChanceSplit is "t" ? "默认" : "采定性取向"`>>
+		<<set _beastMaleChanceSplit to _beastMaleChanceSplit is "t" ? "f" : "t">>
+		<<replace "#beastSplitBy">><<beastSplitBy>><</replace>>
+		<<run settingsBeastGenders(true)>>
+	<</link>>
+<</widget>>
+
+<<widget "characterSettings">>
+
+<div class="solidBorderContainer settings-container">
+	<div class="settingsGrid">
+		<div class="settingsToggleItem">
+		<span class="gold">随机化: </span><br>
+			<<link "角色外观">><<presets "randomize" "characterSettings" `randomizeSettings('characterAppearance')`>><</link>>
+			<mouse class="tooltip linkBlue">(?)<span>随机化玩家的角色外观，包括发型，眼睛，肤色，性别和身体部位大小。开始游戏后，身体大小、体型、生殖器和基本皮肤颜色不能改变。</span></mouse>
+		<br>
+		</div>
+		<div class="settingsToggleItem">
+		<<if StartConfig.enableImages is true>>
+			<span class="gold">角色侧栏预览: </span><br> <label>隐藏服装 <<checkbox "_showClothes" true false autocheck>></label> <label>隐藏内衣 <<checkbox "_showUnderwear" true false autocheck>></label>
+			<mouse class="tooltip linkBlue">(?)<span>玩家和NPC肤色的视觉表现需要在选项菜单的性能选项中启用，之后才能在正常游戏中显示皮肤颜色。</span></mouse>
+			<br>
+			<<if $debug is 1>>
+				<span class="gold">图像</span>
+				<label><div class="settingsToggleBig"><div style="display: inline-flex;">
+				Face style
+				<div style="margin-left: 1em;"><<textbox "$facestyle" $facestyle>></div></div>
+				<div class="description">只有在安装了默认样式以外的外观样式时，此设置才有效。</div>
+				<<script>>jQuery(document).ready(() => { jQuery('#textbox-facestyle').css('width', '100%').css('min-width', 'unset').css('height', '0.75em'); });<</script>>
+				</div></label>
+				<br>
+			<</if>>
+		<</if>>
+		</div>
+	</div>
+	<hr>
+	<div class="settingsGrid">
+		<div class="settingsHeader">
+			身体
+		</div>
+
+		<div class="settingsToggleItem">
+			<span class="gold">体型大小: </span><br>
+			<label>娇小<<radiobutton "$bodysize" 0 autocheck>></label> |
+			<label>小巧<<radiobutton "$bodysize" 1 autocheck>></label> |
+			<label>中等<<radiobutton "$bodysize" 2 autocheck>></label> |
+			<label>高大<<radiobutton "$bodysize" 3 autocheck>></label>
+			<mouse class="tooltip linkBlue">(?)<span>较小的身体使你在战斗中造成的伤害较小，且使反抗更难。</span></mouse>
+		</div>
+
+		<div class="settingsToggleItem">
+			<div class="playergender">
+				<span class="gold">性别: </span><br>
+				<label>男性<<radiobutton "$player.gender" "m" autocheck>></label> |
+				<label>女性<<radiobutton "$player.gender" "f" autocheck>></label> |
+				<label>双性<<radiobutton "$player.gender" "h" autocheck>></label>
+			</div>
+		</div>
+
+		<div class="settingsToggleItem">
+			<span class="gold">体型: </span><br>
+			<label>男性化<<radiobutton "$player.gender_body" "m" autocheck>></label> |
+			<label>女性化<<radiobutton "$player.gender_body" "f" autocheck>></label> |
+			<label>双性化<<radiobutton "$player.gender_body" "a" autocheck>></label>
+		</div>
+
+		<<if $debug is 1>>
+			<div class="settingsToggleItem">
+				<span class="gold">性别: </span><br>
+				<label>阴茎<<radiobutton "$player.sex" "m" autocheck>></label> |
+				<label>小穴<<radiobutton "$player.sex" "f" autocheck>></label>
+			</div>
+		<</if>>
+
+		<div class="settingsToggleItem">
+			<span data-target="player.gender" data-disabledif="V.player.gender==='f'">
+			<span class="gold">阴茎大小 - 如果适用的话: </span><br>
+			<label>有待发育<<radiobutton "$player.penissize" 0 autocheck>></label> |
+			<label>偏小<<radiobutton "$player.penissize" 1 autocheck>></label> |
+			<label>普通<<radiobutton "$player.penissize" 2 autocheck>></label>
+			</span>
+		</div>
+
+		<div class="settingsToggleItem">
+			<span class="gold">乳房大小: </span><br>
+			<label>平坦<<radiobutton "$player.breastsize" 0 autocheck>></label> |
+			<label>微微隆起<<radiobutton "$player.breastsize" 1 autocheck>></label> |
+			<label>含苞欲放<<radiobutton "$player.breastsize" 2 autocheck>></label> |
+			<label>小巧玲珑<<radiobutton "$player.breastsize" 3 autocheck>></label> |
+			<label>只手可握<<radiobutton "$player.breastsize" 4 autocheck>></label>
+		</div>
+
+		<div class="settingsToggleItem">
+			<span class="gold">屁股大小: </span><br>
+			<label>扁平<<radiobutton "$player.bottomsize" 0 autocheck>></label> |
+			<label>苗条<<radiobutton "$player.bottomsize" 1 autocheck>></label> |
+			<label>适中<<radiobutton "$player.bottomsize" 2 autocheck>></label> |
+			<label>软弹<<radiobutton "$player.bottomsize" 3 autocheck>></label>
+		</div>
+
+		<div class="settingsToggleItem">
+			<span data-target="player.gender" data-disabledif="V.player.gender!=='h'">
+			<span class="gold">睾丸—仅适用于雌雄同体的情况: </span><br>
+			<label>有<<radiobutton "$player.ballsExist" true autocheck>></label> |
+			<label>否<<radiobutton "$player.ballsExist" false autocheck>></label>
+			</span>
+		</div>
+	</div>
+
+	<hr>
+
+	<<sizeLimitsSettings>>
+
+	<hr>
+
+	<div class="settingsGrid">
+		<div class="settingsHeader">
+			皮肤颜色 <mouse class="tooltip linkBlue">(?)<span  style="font-size:16px;">玩家和NPC的皮肤颜色的视觉表现和晒黑的变化必须通过选项菜单的性能选项来启用，随后才能发挥作用，由于某些设备的性能问题，它们在默认情况下是禁用的。</span></mouse>
+		</div>
+		<div class="settingsToggleItem">
+			<span class="gold">偏红: </span><br>
+			<label>浅<<radiobutton "$skinColor.natural" "light" autocheck>></label> |
+			<label>中等<<radiobutton "$skinColor.natural" "medium" autocheck>></label> |
+			<label>深<<radiobutton "$skinColor.natural" "dark" autocheck>></label> |
+			<label>辣妹肤色<<radiobutton "$skinColor.natural" "gyaru" autocheck>></label>
+		</div>
+		<div class="settingsToggleItem">
+			<span class="gold">偏黄: </span><br>
+			<label>浅<<radiobutton "$skinColor.natural" "ylight" autocheck>></label> |
+			<label>中等<<radiobutton "$skinColor.natural" "ymedium" autocheck>></label> |
+			<label>深色<<radiobutton "$skinColor.natural" "ydark" autocheck>></label> |
+			<label>辣妹肤色<<radiobutton "$skinColor.natural" "ygyaru" autocheck>></label>
+		</div>
+		<div class="settingsToggleItemWide">
+			<div class="numberslider-inline">
+			<label><span class="gold">初始日晒值: </span><<numberslider "$skinColor.range" $skinColor.range 0 100 1>></label>
+			</div>
+			<<if StartConfig.enableImages is true>>
+				<<link "测试颜色">>
+					<<replace #test>>
+						<<print '<div style="height: 30px; width: 50px; background-color: red; filter: '
+						+skinColor(true, $skinColor.range, setup.skinColor[$skinColor.natural])+';"></div>'>>
+					<</replace>>
+				<</link>>(预览)
+				<div id="test">/*<<print '<div style="height: 30px; width: 50px; background-color: red; filter: '+skinColor($options.tanImgEnabled, $skinColor.range,setup.skinColor[$skinColor.natural])+';"></div>'>>*/</div>
+			<</if>>
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="settingsGrid">
+		<div class="settingsHeader">
+			颜色
+		</div>
+		<div class="settingsToggleItemWide">
+			<span class="gold">瞳孔颜色: </span><br>
+			<label><span class="purple">紫色</span> <<radiobutton "$eyeselect" "purple" autocheck>></label> |
+			<label><span class="blue">深蓝色</span> <<radiobutton "$eyeselect" "dark blue" autocheck>></label> |
+			<label><span class="lblue">浅蓝色</span> <<radiobutton "$eyeselect" "light blue" autocheck>></label> |
+			<label><span class="tangerine">琥珀色</span> <<radiobutton "$eyeselect" "amber" autocheck>></label> |
+			<label><span class="brown">赤褐色</span> <<radiobutton "$eyeselect" "hazel" autocheck>></label> |
+			<label><span class="green">橄榄绿</span> <<radiobutton "$eyeselect" "green" autocheck>></label> |
+			<label><span class="lime-green">柠檬绿</span> <<radiobutton "$eyeselect" "lime green" autocheck>></label> |
+			<label><span class="red">红色</span> <<radiobutton "$eyeselect" "red" autocheck>></label> |
+			<label><span class="pink">粉色</span> <<radiobutton "$eyeselect" "pink" autocheck>></label> |
+			<label><span class="grey">灰色</span> <<radiobutton "$eyeselect" "grey" autocheck>></label> |
+			<label><span class="light-grey">淡灰色</span> <<radiobutton "$eyeselect" "light grey" autocheck>></label> |
+			<label><span>随机</span> <<radiobutton "$eyeselect" "random" autocheck>></label>
+		</div>
+		<div class="settingsToggleItemWide">
+			<span class="gold">头发颜色: </span><br>
+			<label><span class="red">红色</span> <<radiobutton "$hairselect" "red" autocheck>></label> |
+			<label><span class="black">深黑色</span> <<radiobutton "$hairselect" "jetblack" autocheck>></label> |
+			<label><span class="black">黑色</span> <<radiobutton "$hairselect" "black" autocheck>></label> |
+			<label><span class="brown">棕色</span> <<radiobutton "$hairselect" "brown" autocheck>></label> |
+			<label><span class="softbrown">浅褐色</span> <<radiobutton "$hairselect" "softbrown" autocheck>></label> |
+			<label><span class="lightbrown">亮棕色</span> <<radiobutton "$hairselect" "lightbrown" autocheck>></label> |
+			<label><span class="burntorange">鲜橙色</span> <<radiobutton "$hairselect" "burntorange" autocheck>></label> |
+			<label><span class="gold">金色</span> <<radiobutton "$hairselect" "blond" autocheck>></label> |
+			<label><span class="softblond">浅金色</span> <<radiobutton "$hairselect" "softblond" autocheck>></label> |
+			<label><span class="platinum">淡金色</span> <<radiobutton "$hairselect" "platinumblond" autocheck>></label> |
+			<label><span class="ashy">灰金色</span> <<radiobutton "$hairselect" "ashyblond" autocheck>></label> |
+			<label><span class="strawberry">草莓金</span> <<radiobutton "$hairselect" "strawberryblond" autocheck>></label> |
+			<label><span class="tangerine">姜黄色</span> <<radiobutton "$hairselect" "ginger" autocheck>></label> |
+			<label><span>随机</span> <<radiobutton "$hairselect" "random" autocheck>></label>
+		</div>
+		<div class="settingsToggleItem">
+			<span class="gold">头发长度: </span><br>
+			<label>到耳朵<<radiobutton "$hairlength" 0 autocheck>></label> |
+			<label>到脖子<<radiobutton "$hairlength" 200 autocheck>></label> |
+			<label>到胸部<<radiobutton "$hairlength" 400 autocheck>></label>
+		</div>
+		<div class="settingsToggleItem">
+			<span class="gold">雀斑: </span><br>
+			<label>有<<radiobutton "$player.freckles" true autocheck>></label> |
+			<label>无<<radiobutton "$player.freckles" false autocheck>></label> |
+			<label>随机<<radiobutton "$player.freckles" "random" autocheck>></label>
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="settingsGrid">
+		<div class="settingsHeader">
+			敏感度
+		</div>
+		<div class="settingsToggleItem">
+			<span class="gold">口腔敏感度: </span><br>
+			<label>普通<<radiobutton "$mouthsensitivity" 1 autocheck>></label> |
+			<label><span class="pink">敏感</span> <<radiobutton "$mouthsensitivity" 2 autocheck>></label> |
+			<label><span class="red">非常敏感</span> <<radiobutton "$mouthsensitivity" 3 autocheck>></label>
+		</div>
+		<div class="settingsToggleItem">
+			<span class="gold">胸部敏感度: </span><br>
+			<label>普通<<radiobutton "$breastsensitivity" 1 autocheck>></label> |
+			<label><span class="pink">敏感</span> <<radiobutton "$breastsensitivity" 2 autocheck>></label> |
+			<label><span class="red">非常敏感</span> <<radiobutton "$breastsensitivity" 3 autocheck>></label>
+		</div>
+
+		<div class="settingsToggleItem">
+			<span class="gold">屁股敏感度: </span><br>
+			<label>普通<<radiobutton "$bottomsensitivity" 1 autocheck>></label> |
+			<label><span class="pink">敏感</span> <<radiobutton "$bottomsensitivity" 2 autocheck>></label> |
+			<label><span class="red">非常敏感</span> <<radiobutton "$bottomsensitivity" 3 autocheck>></label>
+		</div>
+
+		<div class="settingsToggleItem">
+			<span class="gold">生殖器敏感度: </span><br>
+			<label>普通<<radiobutton "$genitalsensitivity" 1 autocheck>></label> |
+			<label><span class="pink">敏感</span> <<radiobutton "$genitalsensitivity" 2 autocheck>></label> |
+			<label><span class="red">非常敏感</span> <<radiobutton "$genitalsensitivity" 3 autocheck>></label>
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="settingsGrid">
+		<div class="settingsHeader">
+			性格
+		</div>
+		<div class="settingsToggleItemWide">
+			<span class="gold">随机化: </span>
+			<br>
+			<<link "角色特质">><<presets "randomize" "characterSettings" `randomizeSettings('characterTrait')`>><</link>>
+			<mouse class="tooltip linkBlue">(?)<span>随机化玩家角色的特质，包括背景、性知识和敏感度，这些特质在开始游戏后是不能改变的。</span></mouse>
+			<br>
+		</div>
+		<div class="settingsToggleItemWide">
+			<span class="gold">性知识: </span> <mouse class="tooltip linkBlue">(?)<span>尽管你的角色缺乏实战经验，但这会设定你的角色是否知道关于性的知识。</span></mouse>
+			<br>
+			<label>一无所知<<radiobutton "$awareselect" "innocent" autocheck>></label> |
+			<label>有所耳闻<<radiobutton "$awareselect" "knowledgeable" autocheck>></label>
+		</div>
+		<div class="settingsToggleItemWide">
+			<span class="gold">角色背景: </span><br>
+			<label><span class="green">流浪儿</span> <<radiobutton "$background" "waif" autocheck>> - 没有特别的优势或劣势，<i>新手推荐。</i></label>
+			<br>
+			<label><span class="teal">书呆子</span> <<radiobutton "$background" "nerd" autocheck>> - 在学校表现优秀，但被人挑剔。<span class="red">(这将阻止获得 "不合群的飞蛾 "特质。)</span></label>
+			<br>
+			<label><span class="teal">运动小子</span> <<radiobutton "$background" "athlete" autocheck>> - 你的运动细胞会更好，但是在学习这方面就会有些不尽人意。</label>
+			<br>
+			<label><span class="teal">坏学生</span> <<radiobutton "$background" "delinquent" autocheck>> - 你的行为使你在其他学生中饱受欢迎，但老师们可能就不那么喜欢了。</label>
+			<br>
+			<label><span class="blue">过激背德</span> <<radiobutton "$background" "promiscuous" autocheck>> - 相比于同龄人而言，你的经验可比那些家伙丰富多了。</label>
+			<br>
+			<label><span class="blue">暴露狂</span> <<radiobutton "$background" "exhibitionist" autocheck>> - 你很喜欢在公共场合向别人展现自己的身体。</label>
+			<br>
+			<label><span class="blue">动物爱好者</span> <<radiobutton "$background" "deviant" autocheck>> - 你<i>真的</i>很喜欢动物……是你想的那种喜欢。</label>
+			<br>
+			<label><span class="lewd">容貌出众</span> <<radiobutton "$background" "beautiful" autocheck>> - 你非常好看，这会吸引来更多的目光。<i>不建议新手使用。</i></label>
+			<br>
+			<label data-target="player.gender" data-disabledif="V.player.gender==='h'"><span class="lewd">异装癖爱好者</span> <<radiobutton "$background" "crossdresser" autocheck>> - 你喜欢穿异性的服装，这会给你带来额外的效果，但对双性人无效。</label>
+			<br>
+			<label><span class="lewd">色鬼</span> <<radiobutton "$background" "lustful" autocheck>> - 性奋会随着时间的推移而增加，这需要加以管理。</label>
+			/*<br>
+			<label>Green Thumb <<radiobutton "$background" "greenthumb" autocheck>> - More bountiful crops and no decay when using fertiliser. Start with ne unit of fertiliser.</label>*/
+			<br>
+			<label><mouse class="tooltip"><span class="lewd">植物适性</span> <<radiobutton "$background" "plantlover" autocheck>> - 植物就是你的一切，<span class="green">你对花蜜上瘾，你更容易受到媚药和酒精的影响。植物人和来自植物的触手不再需要幻觉才能遇到。随着你的创伤的增加，你会得到一个培育技能的奖励。</span></mouse>
+			</label>
+			/*<br>
+			 Keep last, in 'widget "variablesStart2"' be sure to add any new traits to the array after if '$background is "random"'
+			Commenting out due to be ing redundant with the randomise character traits link
+			<label>Random <<radiobutton "$background" "random" autocheck>></label>
+			<br>*/
+		</div>
+	</div>
+
+	<hr>
+
+	<div class="settingsGrid">
+		<div class="settingsHeader">
+			开局季节<mouse class="tooltip linkBlue">(?)<span style="font-size:16px;">游戏将在所选季节的第一个星期天开始。</span></mouse>
+		</div>
+		<div class="settingsToggleItemWide">
+			<label><mouse class="tooltip tangerine">秋<<radiobutton "$startingseason" "autumn" autocheck>><span class="green"><i>新手推荐。</i></span></mouse></label> |
+			<label><span class="teal">冬</span> <<radiobutton "$startingseason" "winter" autocheck>></label> |
+			<label><span class="lime-green">春</span> <<radiobutton "$startingseason" "spring" autocheck>></label> |
+			<label><span class="red">夏</span> <<radiobutton "$startingseason" "summer" autocheck>></label> |
+			<label>随机<<radiobutton "$startingseason" "random" autocheck>></label>
+		</div>
+	</div>
+	</div>
+	<br>
+	<<link "回到顶部">>
+		<<script>>
+			document.body.scrollTop = 0;
+			document.documentElement.scrollTop = 0;
+		<</script>>
+	<</link>>
+<</widget>>
+
+<<widget "featExplanation">>
+	<<link "隐藏说明...">>
+		<<replace #featExplanation>><</replace>>
+		<<toggleclass '#explain' 'hidden'>>
+	<</link>><br>
+	<span class="green">花费Vrel硬币在成就加成上时并不会永久消耗它们，而且从成就中获得的Vrel硬币不能第二次获得。</span>任何花费过的Vrel硬币可以保留到你的下一周目，并可以在开局再次使用。
+	<br><br>
+	<span class="red">改变某些设置可能会阻止您在当前游戏中获得一些成就和Vrel硬币。</span>在任何时候启用作弊都会阻止您在当前游戏的剩余时间内获得成就，当您改变某些阻止获取成就的设置时，您会收到警告。
+<</widget>>
+
+<<widget "featSettings">>
+	<div class="solidBorderContainer settings-container">
+		<div class="settingsToggleIndent">
+				当您在进行游戏时，您可以在游戏过程中解锁<span class="gold">成就</span>，您解锁的成就越多，能解锁的加成就越多，同时您还能获得更多的<span class="gold">Vrel硬币</span>。当您开始新周目时，您可以用这些硬币来进行<span class="gold">成就加点</span>，它们会让您在新周目开局获得对应的奖励内容。
+				<span id="explain">
+					<<link "阅读更多内容...">>
+						<<replace #featExplanation>><<featExplanation>><</replace>>
+						<<toggleclass '#explain' 'hidden'>>
+					<</link>>
+				</span>
+				<span id="featExplanation"></span>
+		</div>
+			<<if $feats.allSaves.points isnot undefined or $feats.allSaves.points isnot 0>>
+				<div class="settingsToggleIndent">
+				<<link "重置全部特质:">>
+					<<set $feats to {
+						"locked":false,
+						"soft":false,
+						"allSaves":{},
+						"currentSave":{},
+						"filter":"All"
+					}>>
+					<<script>>
+						localStorage.removeItem("dolFeats");
+					<</script>>
+					<<setupFeats true>>
+					<<displaySettings "featSettings">>
+				<</link>>
+				<span class="red">这将清除您迄今为止所获得的所有成就，这意味着您将不得不重新收集它们。</span>
+				</div>
+			<</if>>
+				<hr>
+
+				<<set _upgradeNames to Object.keys($featsBoosts.upgrades)>>
+				<<set _visibleUpgradeNames to []>>
+				<<set _visibleUpgradeIDs to []>>
+				<<for _i to 0; _i lt _upgradeNames.length; _i++>>
+					<<if $featsBoosts.upgradeDetails[_upgradeNames[_i]].count gte $featsBoosts.upgradeDetails[_upgradeNames[_i]].minCount>>
+						<<set _visibleUpgradeNames.push($featsBoosts.name[_upgradeNames[_i]])>>
+						<<set _visibleUpgradeIDs.push(clone(_i))>>
+					<<else>>
+						<<set _visibleUpgradeNames.push("?????")>>
+						<<set _visibleUpgradeIDs.push(clone(_i))>>
+					<</if>>
+				<</for>>
+				<div id="featsPointsMenu">
+					<<featsPointsMenu>>
+				</div>
+				<<featsPointsMenuReset>>
+	</div>
+<</widget>>
+
+<<widget "gameMode">>
+	<span class="gold">游戏模式</span>
+	<br>
+	<label><mouse class="tooltip green">普通模式<span>生存在一个危险的世界。</span></mouse>
+	<<if ($ironmanmode is true and $gamemode is "hard") and $passage != "Start">>
+		<input id="radiobutton-gamemode-8" name="radiobutton-gamemode" type="radio" tabindex="0" class="macro-radiobutton" disabled>
+	<<else>>
+		<<radiobutton "$gamemode" "normal" autocheck>>
+	<</if>>
+	</label>
+	<<ind>>
+	<label><mouse class = "tooltip blue">软核模式<span>对于那些喜欢较为轻松的冒险的人来说比较合适，尽管游戏在某些地方仍然存在黑暗。<br><i class="red normal">这是一个实验性功能，包含可能破坏游戏的bug，将来会更改或删除。软核模式下你不能获得成就，直到将其设置为普通模式，同时该模式将永久性地阻止一些成就的获得。</i></span></mouse>
+	<<if ($ironmanmode is true and ["hard","normal"].includes($gamemode) is true) and $passage != "Start">>
+		<input id="radiobutton-gamemode-8" name="radiobutton-gamemode" type="radio" tabindex="0" class="macro-radiobutton" disabled>
+	<<else>>
+		<<radiobutton "$gamemode" "soft" autocheck>>
+	<</if>>
+	</label>
+	<<ind>>
+	<<if $intro is 1 or $gamemode is "hard">>
+		<label><mouse class = "tooltip purple">困难模式<span>移除淫荡属性的衰减可能（淫乱、暴露、异种癖），使创伤和控制越来越难以管理。只能在游戏开始时选择，被关进精神病院会让你进入普通模式。<br><i class="red normal">这是一个实验性功能，将来会作出改变或删除。</i></span></mouse>
+		<<if $ironmanmode is true and $passage != "Start">>
+			<input id="radiobutton-gamemode-8" name="radiobutton-gamemode" type="radio" tabindex="0" class="macro-radiobutton" disabled>
+		<<else>>
+			<<radiobutton "$gamemode" "hard" autocheck>>
+		<</if>>
+		</label>
+	<</if>>
+	<br>
+	<label data-target="cheatdisabletoggle" data-disabledif="V.cheatdisabletoggle==='f'">
+		<input id="checkbox-ironmanmode" onclick="IronMan.UI.checkBox()" name="checkbox-ironmanmode" type="checkbox" tabindex="0" class="macro-checkbox"> <mouse class="tooltip white">铁人模式<span>禁用S/L或其他类似行为<br><br>该模式下可以存档，随后将会返回开始菜单。您可以加载该存档，但之后该存档便会被删除。<br><br>此外游戏内每4-8天都会进行一次额外存档，避免存档丢失。</span></mouse>&nbsp;<i class="ironman-clarify">(游戏开始后无法被取消)</i>
+		<<run IronMan.UI.checkBox(`init`)>>
+	</label>
+	<br>
+	<label data-target="ironmanmode" data-disabledif="V.ironmanmode===true">
+		<<checkbox "$cheatdisabletoggle" "t" "f" autocheck>> <mouse class="tooltip red">作弊模式<span>启用作弊模式将使你无法在保存中获得成就。</span></mouse> <i class="ironman-clarify">(作弊按钮显示在侧边栏)</i>
+	</label>
+<</widget>>
+
+<<widget "gameSettings">>
+	<div class="solidBorderContainer settings-container">
+		<div class="settingsGrid">
+
+			<div id="gameMode" class="settingsToggleItem">
+				<<gameMode>>
+			</div>
+
+			<div class="settingsToggleItem">
+				<span class="gold">遇敌概率</span>
+				<div class="small-description">默认值为1.0，增大该值会增加诱惑值对邂逅遇敌的概率的影响，反之则会减少。</div>
+				<div class="small-description"><span class="red">将该值设置为1以下将阻止您在此存档中获得某些成就，直到其被设置为1或以上时恢复。</span></div>
+				<div id="sliderAllureMode">
+					<<numberslider "$alluremod" $alluremod 0.2 2 0.1 $ironmanmode>>
+				</div>
+			</div>
+
+			<div class="settingsToggleItem">
+				<span class="gold">多重衣柜</span> <mouse class="tooltip linkBlue">(?)<span class="red">这是一个实验性功能，将来会作出更改或删除。虽然您可以在游戏过程中更改，但不建议这样做，禁用将无法接触到衣服，启用即可能会让您只能选择穿戴毛巾。</span></mouse>
+				<br>
+				<label><<radiobutton "$multipleWardrobes" false autocheck>>所有衣柜互相连通</label> |
+				<label><<radiobutton "$multipleWardrobes" "isolated" autocheck>>特殊地点将有自己的衣柜</label>
+				<br>
+				<<if $debug is 1>>
+					<!--This setting will not be ready on initial release-->
+					<label><<radiobutton "$multipleWardrobes" "all" autocheck>>启用所有衣柜</label>
+					<br>
+				<</if>>
+			</div>
+
+			<div class="settingsToggleItem">
+				<span class="gold">技能显示</span> <mouse class = "tooltip linkBlue">(?)<span>当您在游戏时，一些行动只有在技能高于某个数值的情况下才会成功，您可以选择在采取某项行动之前看看需要什么技能，以及您在该行动中成功的机会。</span></mouse>
+				<br>
+				<label>显示准确的成功几率<<radiobutton "$checkstyle" "percentage" autocheck>></label> |
+				<label>显示成功的大概几率<<radiobutton "$checkstyle" "words" autocheck>></label> |
+				<label>仅显示所需技能名称<<radiobutton "$checkstyle" "skillname" autocheck>></label>
+				<br>
+				<label>
+				<<checkbox "$statdisable" "f" "t" autocheck>> <mouse class = "tooltip linkBlue">启用状态不可见模式<span>启用状态不可见模式则意味着当您的状态发生变化时，您不会收到任何指示，或者在某些事件中需要什么技能才能成功，全部都只能靠您的直觉生存。<i class="red normal"><br>不建议新手使用，这是一个实验性的功能，将来可能被改变或删除。</i></span></mouse>
+				</label>
+			</div>
+
+			<div class="settingsToggleItem">
+				<span class="gold">随机化: </span><br>
+
+				<<link "游戏玩法">><<presets "randomize" "gameSettings" `randomizeSettings('gameplay')`>><</link>>
+				<mouse class="tooltip linkBlue">(?)<span>随机化所有与一般游戏相关的设置，包括遭遇率、服装价格、作物产量和贝利的租金。</span></mouse> |
+				<<link "邂逅遇敌">><<presets "randomize" "gameSettings" `randomizeSettings('encounter')`>><</link>>
+				<mouse class="tooltip linkBlue">(?)<span>随机化所有一般NPC相关设置。</span></mouse>
+				<br>
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div id="startTabSettings">
+		<<allSettings>>
+	</div>
+	<div id="subsectionDiv">
+		<<humanSettings>>
+	</div>
+	<br>
+	<<link "回到顶部">>
+		<<script>>
+			document.body.scrollTop = 0;
+			document.documentElement.scrollTop = 0;
+		<</script>>
+	<</link>>
+	<div style="clear:both;">/*Keep at end of toggles*/</div>
+<</widget>>
+
+<<widget "allSettings">>
+	<<if _subsection is undefined>><<set _subsection to "human">><</if>>
+	<div id="containerStart" class="containerWrap">
+		<div id="settingsHuman">
+		<div @class="_subsection is 'human' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+			<<button "一般NPC设置">>
+				<<set _subsection to "human">>
+				<<displaySubsection "humanSettings">>
+				<<replace #startTabSettings>><<allSettings>><</replace>>
+			<</button>>
+		</div>
+		</div>
+
+		<div id="settingsNPC">
+		<div @class="_subsection is 'npc' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+			<<button "已命名NPC设置">>
+				<<set _subsection to "npc">>
+				<<displaySubsection "npcSettings">>
+				<<replace #startTabSettings>><<allSettings>><</replace>>
+			<</button>>
+		</div>
+		</div>
+
+		<div id="settingsBeast">
+		<div @class="_subsection is 'beast' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+			<<button "野兽设置">>
+				<<set _subsection to "beast">>
+				<<displaySubsection "beastSettings">>
+				<<replace #startTabSettings>><<allSettings>><</replace>>
+			<</button>>
+		</div>
+		</div>
+
+		<div id="settingsFetish">
+		<div @class="_subsection is 'fetish' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+			<<button "性癖设置">>
+				<<set _subsection to "fetish">>
+				<<displaySubsection "fetishSettings">>
+				<<replace #startTabSettings>><<allSettings>><</replace>>
+			<</button>>
+		</div>
+		</div>
+
+		<div id="settingsPrice">
+		<div @class="_subsection is 'price' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+			<<button "成本与收益设置">>
+				<<set _subsection to "price">>
+				<<displaySubsection "priceSettings">>
+				<<replace #startTabSettings>><<allSettings>><</replace>>
+			<</button>>
+		</div>
+		</div>
+
+		<div id="settingsPregnancy">
+		<div @class="_subsection is 'pregnancy' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+			<<button "怀孕设置">>
+				<<set _subsection to "pregnancy">>
+				<<displaySubsection "pregnancySettings">>
+				<<replace #startTabSettings>><<allSettings>><</replace>>
+			<</button>>
+		</div>
+		</div>
+		<<if $passage isnot "Start">>
+			<div id="settingsSizeLimits">
+			<div @class="_subsection is 'sizeLimits' ? 'gold buttonSettingsSelected' : 'buttonSettings'" >
+				<<button "身体部位尺寸限制">>
+					<<set _subsection to "sizeLimits">>
+					<<displaySubsection "sizeLimitsSettings">>
+					<<replace #startTabSettings>><<allSettings>><</replace>>
+				<</button>>
+			</div>
+			</div>
+		<</if>>
+	</div>
+<</widget>>
+
+<<widget "humanSettings">>
+	<div class="solidBorderContainer settings-container">
+		<div class="settingsGrid">
+			<div class="settingsHeader">
+				NPC性别
+			</div>
+			<div id="simpleGenders" @class="'settingsToggleItemWide' + (V.maleChanceSplit === 't' ? ' hidden' : '')">
+				<<link "按性别外观划分">>
+					<<set $maleChanceSplit to "t">>
+					<<addclass "#simpleGenders" "hidden">>
+					<<replace "#splitGenders">><<maleChanceSplitControls>><</replace>>
+					<<removeclass "#splitGenders" "hidden">>
+				<</link>>
+				<div class="numberslider-inline maleChance">
+					<span class="gold">被你吸引的人中，男性的比例</span>
+					<<numberslider "$malechance" $malechance 0 100 1>>
+				</div>
+				<<run $(() => { $('.maleChance input').on('input change', e => {
+					let valSpan = $(e.currentTarget).siblings().first();
+					let value = valSpan.text();
+					V.maleChanceMale = parseInt(value);
+					V.maleChanceFemale = parseInt(value);
+				}).trigger('change') })>>
+			</div>
+			<div id="splitGenders" @class="'settingsToggleItemWide' + (V.maleChanceSplit === 'f' ? ' hidden' : '')">
+				<<maleChanceSplitControls>>
+			</div>
+			<div class="settingsToggleItemWide">
+				<div class="numberslider-inline">
+					<span class="gold">其他受害者中男性的比例</span>
+					<<numberslider "$malevictimchance" $malevictimchance 0 100 1>>
+				</div>
+				/*<div class="numberslider-inline">
+					<span class="gold">Proportion of same-sex couples</span>
+					<<numberslider "$homochance" $homochance 0 100 1>>
+				</div>*/
+			</div>
+		</div>
+		<hr>
+		<div class="settingsGrid">
+			<div class="settingsHeader">
+				NPC身体部位
+			</div>
+			<div class="settingsToggleItem numberslider-inline">
+				<span class="gold">女性乳房的平均大小
+				<mouse class="tooltip linkBlue">(?)<span>数字越大意味着世界上女性的乳房越大。设定为12时，每个人都会是极巨乳。设定为-12时，每个人都是平板。默认值为0，这将导致各种大小的乳量都可能出现。</span></mouse>
+				</span>
+				<<numberslider "$breast_mod" $breast_mod -12 12 1>>
+			</div>
+			<div class="settingsToggleItem numberslider-inline">
+				<span class="gold">NPC阴茎的平均尺寸
+				<mouse class="tooltip linkBlue">(?)<span>一个更大的数字意味着世界将存在更多更大的阴茎。当设定为8时，每个人都会有根巨大的阴茎。设定为-8时，每个人都会有个小小的阴茎。我们的值默认为0，这将导致出现各种大小的阴茎。</span></mouse>
+				</span>
+				<<numberslider "$penis_mod" $penis_mod -8 8 1>>
+			</div>
+			<div class="settingsToggleItem numberslider-inline">
+				<span class="gold">拥有阴茎的女性比例</span>
+				<<numberslider "$dgchance" $dgchance 0 100 1>>
+			</div>
+			<div class="settingsToggleItem numberslider-inline">
+				<span class="gold">拥有阴道的男性比例</span>
+				<<numberslider "$cbchance" $cbchance 0 100 1>>
+			</div>
+			<div class="settingsToggleItemWide numberslider-inline">
+				<span class="gold">拥有穿戴式假阳具的女性比例
+				<mouse class="tooltip linkBlue">(?)<span>“玩家和NPC皮肤颜色的视觉表现”需要在选项菜单的“性能”选项中启用，以便对穿戴式阳具的颜色进行修改。</span></mouse>
+				</span>
+				<<numberslider "$straponchance" $straponchance 0 100 1>>
+			</div>
+		</div>
+		<hr>
+		<div class="settingsGrid">
+			<div class="settingsHeader">
+				NPC属性
+			</div>
+			<div class="settingsToggleItem numberslider-inline">
+				<span class="gold">学生中依旧保持童贞的比例
+				<mouse class="tooltip linkBlue">(?)<span>这并不影响命名NPC，每个命名NPC的贞操都是个别设定，这意味着你可以进行不同地组合。</span></mouse>
+				</span>
+				<<numberslider "$npcVirginityChance" $npcVirginityChance 0 100 1>>
+			</div>
+			<div class="settingsToggleItem numberslider-inline">
+				<span class="gold">成年人中依旧保持童贞的比例
+				<mouse class="tooltip linkBlue">(?)<span>这并不影响命名NPC，每个命名NPC的贞操都是个别设定，这意味着你可以进行不同地组合。</span></mouse>
+				</span>
+				<<numberslider "$npcVirginityChanceAdult" $npcVirginityChanceAdult 0 100 1>>
+			</div>
+			<div class="settingsToggleItemWide numberslider-inline">
+				<span class="gold">路人拥有深色皮肤的可能性
+				<mouse class="tooltip linkBlue">(?)<span>“玩家和NPC皮肤颜色的视觉表现”需要在选项菜单的“性能”选项中启用。</span></mouse>
+				</span>
+				<<numberslider "$blackchance" $blackchance 0 100 1>>
+			</div>
+		</div>
+	</div>
+<</widget>>
+
+<<widget "maleChanceSplitControls">>
+	<<link "按NPC性别划分">>
+		<<set $maleChanceSplit to "f">>
+		<<removeclass "#simpleGenders" "hidden">>
+		<<addclass "#splitGenders" "hidden">>
+	<</link>>
+	<div class="settingsToggleItemWide numberslider-inline maleChanceMale">
+		<span class="gold">被男性吸引的NPC: <mouse class="tooltip linkBlue">(?)<span>影响在城镇周围看到的男性/男同情侣的数量。<i class="blue none">如果你看起来是男性，被你吸引的NPC则将遵循这个模式。</i></span></mouse></span>
+		<div class="numberSliderCompare">
+			<div id="maleChanceMale-female">女性: <<print 100 - $maleChanceMale>>%</div>
+			<span class="control"><<numberslider "$maleChanceMale" $maleChanceMale 0 100 1>></span>
+			<div id="maleChanceMale-male">男性: <<print $maleChanceMale>>%</div>
+		</div>
+	</div>
+	<<run $(() => { $('.maleChanceMale input').on('input change', e => {
+		let valSpan = $(e.currentTarget).siblings().first();
+		let value = valSpan.text();
+		$('#maleChanceMale-female')[0].textContent = "女性: " + (100 - value) + "%";
+		$('#maleChanceMale-male')[0].textContent = "男性: " + value + "%";
+		valSpan.text(() => "");
+	}).trigger('change') })>>
+
+	<div class="settingsToggleItemWide numberslider-inline maleChanceFemale">
+		<span class="gold">被女性吸引的NPC: <mouse class="tooltip linkBlue">(?)<span>影响在城镇周围看到的女性/女同情侣的数量。<i class="pink none">如果你看起来是女性，被你吸引的NPC则将遵循这个模式。</i></span></mouse></span>
+		<div class="numberSliderCompare">
+			<div id="maleChanceFemale-female">女性: <<print 100 - $maleChanceFemale>>%</div>
+			<span class="control"><<numberslider "$maleChanceFemale" $maleChanceFemale 0 100 1>></span>
+			<div id="maleChanceFemale-male" class="rightDiv">男性: <<print $maleChanceFemale>>%</div>
+		</div>
+	</div>
+	<<run $(() => { $('.maleChanceFemale input').on('input change', e => {
+		let valSpan = $(e.currentTarget).siblings().first();
+		let value = valSpan.text();
+
+		$('#maleChanceFemale-female')[0].textContent = "女性: " + (100 - value) + "%";
+		$('#maleChanceFemale-male')[0].textContent = "男性: " + value + "%";
+		valSpan.text(() => "");
+	}).trigger('change') })>>
+<</widget>>
+
+<<widget "beastSettings">>
+	<div class="solidBorderContainer settings-container">
+		<div class="settingsGrid">
+			<div class="settingsHeader">
+				野兽偏好
+			</div>
+			<div id="simpleBeastGenders" @class="'settingsToggleItemWide' + (V.beastMaleChanceSplit === 't' ? ' hidden' : '')">
+				<<link "按性别外观划分">>
+					<<set $beastMaleChanceSplit to "t">>
+					<<addclass "#simpleBeastGenders" "hidden">>
+					<<replace "#splitBeastGenders">><<beastMaleChanceSplitControls>><</replace>>
+					<<removeclass "#splitBeastGenders" "hidden">>
+				<</link>>
+				<div class="numberslider-inline beastmalechance">
+					<span class="gold">被你吸引的野兽或怪兽中，雄性的比例</span>
+					<<numberslider "$beastmalechance" $beastmalechance 0 100 1>>
+				</div>
+				<<run $(() => { $('.beastmalechance input').on('input change', e => {
+					let valSpan = $(e.currentTarget).siblings().first();
+					let value = valSpan.text();
+					V.beastMaleChanceMale = parseInt(value);
+					V.beastMaleChanceFemale = parseInt(value);
+				}).trigger('change') })>>
+			</div>
+			<div id="splitBeastGenders" @class="'settingsToggleItemWide' + (V.beastMaleChanceSplit === 'f' ? ' hidden' : '')">
+				<<beastMaleChanceSplitControls>>
+			</div>
+			<div class="settingsToggleItem">
+				<div class="numberslider-inline">
+					<span class="gold">野兽被替换成怪物女孩或男孩的比例</span>
+					<<numberslider "$monsterchance" $monsterchance 0 100 1>>
+				</div>
+			</div>
+			<div class="settingsToggleItem">
+				<span class="gold">用怪物男孩和女孩来取代野兽</span>
+				<br>
+				<label>只有在产生幻觉的时候 <<radiobutton "$monsterhallucinations" "t" autocheck>></label> |
+				<label>任何时间<<radiobutton "$monsterhallucinations" "f" autocheck>></label> |
+				<label>从不<<radiobutton "$monsterhallucinations" "f" autocheck>></label>
+			</div>
+		</div>
+		<hr>
+		<div class="settingsToggleIndent">
+			<span class="red">禁用兽交仍然会允许与怪物女孩和男孩的淫乱事件。</span>
+		</div>
+		<div class="settingsGrid">
+			<div class="settingsHeader">
+				野兽开关
+			</div>
+			<div class="settingsToggleButton" class="link-internal macro-button">
+				<<run beastTogglesCheck()>>
+				<<button `(_anyBeastOn ? "禁用" : "启用") + " 所有野兽的开关"`>>
+					<<script>>
+						let val = T.anyBeastOn ? 't' : 'f';
+						T.beastVars.forEach(x => V[x] = val);
+					<</script>>
+					<<displaySubsection "beastSettings">>
+				<</button>>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$bestialitydisable" "t" "f" autocheck>>启用兽交
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$swarmdisable" "t" "f" autocheck>>启用种群（比如鳗鱼等）
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$parasitedisable" "t" "f" autocheck>>启用寄生虫
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$tentacledisable" "t" "f" autocheck>>启用触手
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$slimedisable" "t" "f" autocheck>>启用史莱姆
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$voredisable" "t" "f" autocheck>>启用软体怪物吞食
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$spiderdisable" "t" "f" autocheck>>启用蜘蛛
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$slugdisable" "t" "f" autocheck>>启用蛞蝓
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$waspdisable" "t" "f" autocheck>>启用黄蜂
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$beedisable" "t" "f" autocheck>>启用蜜蜂
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$lurkerdisable" "t" "f" autocheck>>启用潜伏者
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$horsedisable" "t" "f" autocheck>>启用马和半人马
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$plantdisable" "t" "f" autocheck>>启用植物人
+				</label>
+			</div>
+		</div>
+		<div style="clear:both;">/*Keep at end of toggles*/</div>
+	</div>
+<</widget>>
+
+<<widget "beastMaleChanceSplitControls">>
+	<<link "按野兽性别划分">>
+		<<set $beastMaleChanceSplit to "f">>
+		<<removeclass "#simpleBeastGenders" "hidden">>
+		<<addclass "#splitBeastGenders" "hidden">>
+	<</link>>
+	<div class="numberslider-inline beastMaleChanceMale">
+		<span class="gold">被男性吸引的野兽NPC: <mouse class="tooltip linkBlue">(?)<span>当玩家的性别显示为男性时，这将导致NPC的性别在这个设定中被按百分比选择。</span></mouse></span>
+		<div class="numberSliderCompare">
+			<div id="beastMaleChanceMale-female">雌性: <<print 100 - $beastMaleChanceMale>>%</div>
+			<span class="control"><<numberslider "$beastMaleChanceMale" $beastMaleChanceMale 0 100 1>></span>
+			<div id="beastMaleChanceMale-male" class="rightDiv">雄性: <<print $beastMaleChanceMale>>%</div>
+		</div>
+	</div>
+	<<run $(() => { $('.beastMaleChanceMale input').on('input change', e => {
+		let valSpan = $(e.currentTarget).siblings().first();
+		let value = valSpan.text();
+		$('#beastMaleChanceMale-female')[0].textContent = "雌性: " + (100 - value) + "%";
+		$('#beastMaleChanceMale-male')[0].textContent = "雄性: " + value + "%";
+		valSpan.text(() => "");
+	}).trigger('change') })>>
+
+	<div class="numberslider-inline beastMaleChanceFemale">
+		<span class="gold">被女性吸引的野兽NPC: <mouse class="tooltip linkBlue">(?)<span>当玩家的性别显示为女性时，这将导致NPC的性别在这个设定中被按百分比选择。</span></mouse></span>
+		<div class="numberSliderCompare">
+			<div id="beastMaleChanceFemale-female">雌性：<<print 100 - $beastMaleChanceFemale>>%</div>
+			<span class="control"><<numberslider "$beastMaleChanceFemale" $beastMaleChanceFemale 0 100 1>></span>
+			<div id="beastMaleChanceFemale-male" class="rightDiv">雄性：<<print $beastMaleChanceFemale>>%</div>
+		</div>
+	</div>
+	<<run $(() => { $('.beastMaleChanceFemale input').on('input change', e => {
+		let valSpan = $(e.currentTarget).siblings().first();
+		let value = valSpan.text();
+		$('#beastMaleChanceFemale-female')[0].textContent = "雌性：" + (100 - value) + "%";
+		$('#beastMaleChanceFemale-male')[0].textContent = "雄性：" + value + "%";
+		valSpan.text(() => "");
+	}).trigger('change') })>>
+<</widget>>
+
+<<widget "fetishSettings">>
+	<div class="solidBorderContainer settings-container">
+		<div class="settingsGrid">
+		<div class="settingsToggleItem">
+			<label>
+				<<checkbox "$analdisable" "t" "f" autocheck>>启用肛交
+			</label>
+		</div>
+
+		<div class="settingsToggleItem" role="group" aria-labelledby="settingsAnalingusHead">
+			<span id="settingsAnalingusHead">舐肛: </span>
+			<label>
+				<<checkbox "$analingusdisablegiving" "t" "f" autocheck>>给予
+			</label>
+
+			<label>
+				<<checkbox "$analingusdisablereceiving" "t" "f" autocheck>>被动
+			</label>
+		</div>
+
+		<div class="settingsToggleItem" role="group" aria-labelledby="settingsDoubleHead">
+			<span id="settingsAnalingusHead">双重插入: </span>
+			<label>
+				<<checkbox "$vaginaldoubledisable" "t" "f" autocheck>>小穴
+			</label>
+			<label data-target="analdisable" data-disabledif="V.analdisable==='t'">
+				<<checkbox "$analdoubledisable" "t" "f" autocheck>>肛门
+			</label>
+			<mouse class="tooltip linkBlue">(?)<span>注意，肛门双插需要启用肛交。
+			<br>"这里的 "双重插入 "是指在玩家的同一个洞中有两根阳具。</span></mouse>
+		</div>
+
+		<div class="settingsToggleItem">
+			<label>
+				<<checkbox "$pbdisable" "t" "f" autocheck>>启用阴毛生长
+			</label>
+		</div>
+
+		<div class="settingsToggleItem" role="group">
+			转化：
+			<label><<checkbox "$transformdisable" "t" "f" autocheck>>动物</label>
+			<label><<checkbox "$transformdisabledivine" "t" "f" autocheck>>神性</label>
+			<mouse class="tooltip linkBlue">(?)<span>你可以同时拥有一种神性转化和一种动物转化。</span></mouse>
+		</div>
+
+		/*<label><div class="settingsToggleItem">
+		<<checkbox "$" "t" "f" autocheck>> Extra hirsute/hairy wolf transformation
+		</div></label>*/
+
+		<div class="settingsToggleItem">
+			<label>
+				<<checkbox "$breastfeedingdisable" "t" "f" autocheck>>启用哺乳
+			</label>
+		</div>
+
+		<div class="settingsToggleItem">
+			<label>
+				<<checkbox "$watersportsdisable" "t" "f" autocheck>>启用水相关性事
+				<mouse class="tooltip linkBlue">(?)<span>水相关性事指的是涉及排尿的性活动。</span></mouse>
+			</label>
+		</div>
+
+		<div class="settingsToggleItem">
+			<label>
+				<<checkbox "$footdisable" "t" "f" autocheck>>启用足交
+				<mouse class="tooltip linkBlue">(?)<span>不能移除玩家的脚。</span></mouse>
+			</label>
+		</div>
+
+		<div class="settingsToggleItem">
+			<label>
+				<<checkbox "$facesitdisable" "t" "f" autocheck>>启用颜面骑乘
+				<mouse class="tooltip linkBlue">(?)<span>不能防止舔阴。</span></mouse>
+			</label>
+		</div>
+
+		<div class="settingsToggleItem">
+			<label>
+				<<checkbox "$hypnosisdisable" "t" "f" autocheck>>启用催眠
+			</label>
+		</div>
+
+		<div class="settingsToggleItem">
+			<label>
+				<<checkbox "$forcedcrossdressingdisable" "t" "f" autocheck>>启用强制异装
+			</label>
+		</div>
+
+		<div class="settingsToggleItem" role="group" aria-labelledby="settingsToysHead">
+			<span id="settingsSexToysHead">性玩具: </span>
+			<label>
+				<<checkbox "$toydildodisable" "t" "f" autocheck>>假阳具
+			</label>
+			<label>
+				<<checkbox "$toywhipdisable" "t" "f" autocheck>>鞭子
+			</label>
+			<label>
+				<<checkbox "$toymultiplepenetration" "t" "f" autocheck>>多重插入
+			</label>
+			/*<label>
+				<<checkbox "$toyvirginitydisable" "t" "f" autocheck>> Take virginity
+			</label>*/
+			<mouse class="tooltip linkBlue">(?)<span>"假阳具 "是指插入式装置，如自慰器，肛门拉珠和类似装置。不会阻止你使用绑带一类的东西。<br>"鞭子"包括马鞭和其他鞭类，并没有把它们从打屁股的场景中删除。<br>"多重插入" 允许玩具在其他性交时出现,比如假阳具和肉棒同时插入阴道。</span></mouse>
+		</div>
+
+		<div class="settingsToggleItem">
+			身体涂鸦：
+			<<numberslider "$bodywritingLvl" $bodywritingLvl 0 3 1>>
+			<<run settingsBodywriting()>>
+		</div>
+
+		<div class="settingsToggleItem">
+			窒息：
+			<<numberslider "$asphyxiaLvl" $asphyxiaLvl 0 4 1>>
+			<<run settingsAsphyxiation()>>
+		</div>
+
+		<div class="settingsToggleItemWide">
+			性别判断：
+			<<numberslider "$NudeGenderDC" $NudeGenderDC -1 2 1>>
+			<<run settingsNudeGenderAppearance()>>
+		</div>
+		</div>
+	</div>
+<</widget>>
+
+<<widget "priceSettings">>
+	<div class="solidBorderContainer clothes-price-container">
+		<div class="settingsGrid">
+			<div class="settingsHeader">
+				贝利的租金：
+			</div>
+			<div class="settingsToggleItemWide">
+				<div class="small-description">
+					调整贝利每周索取的金额。默认为100%。<br>
+					<span class="red">低于100%将阻止在本存档中获得某些成就。</span>
+				</div>
+				<div class="ironman-slider" id="sliderRentMode">
+					<<numberslider "$rentmod" $rentmod 0.1 3 0.1 $ironmanmode>>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="settingsGrid">
+			<div class="settingsHeader">
+				商品价格
+			</div>
+			<div class="settingsToggleItem">
+				<div>
+					<span class="gold">服装价格</span>
+					<div class="small-description">修改服装项目的成本，这包括购买，自动重新购买和修理的费用，不过毛巾仍然是免费的。</div>
+				</div>
+				<hr style="border-top:1px solid var(--700)">
+				<div>
+					<span class="gold">服装价格（所有）</span>
+					<div class="small-description">对于困难模式，建议提升至200%。</div>
+					<<numberslider "$clothesPrice" $clothesPrice 1 10 0.5>>
+				</div>
+			</div>
+			<div>
+				<div class="settingsToggleItem">
+					<span class="gold">内衣价格</span>
+					<<numberslider "$clothesPriceUnderwear" $clothesPriceUnderwear 1 2 0.1>>
+				</div>
+				<div class="settingsToggleItem">
+					<span class="gold">校服价格</span>
+					<<numberslider "$clothesPriceSchool" $clothesPriceSchool 1 2 0.1>>
+				</div>
+				<div class="settingsToggleItem">
+					<span class="gold">情趣服饰价格</span>
+					<<numberslider "$clothesPriceLewd" $clothesPriceLewd 0.1 2 0.1>>
+				</div>
+			</div>
+			<div class="settingsToggleItemWide">
+				<span class="gold">家具价格</span>
+				<div class="small-description">调整家具的价格。</div>
+				<div class="ironman-slider" id="slider-furniture-price-factor">
+					<<numberslider "$furniturePriceFactor" $furniturePriceFactor 0.6 5 0.2 $ironmanmode>>
+				</div>
+			</div>
+		</div>
+		<hr>
+		<div class="settingsGrid">
+			<div class="settingsHeader">
+				农田
+			</div>
+			<div class="settingsToggleItemWide">
+				<div class="small-description">调整收获的作物量。默认为500%。100%为（经典）困难模式。</div>
+				<div class="ironman-slider" id="sliderTendingYieldFactor">
+					<<numberslider "$tending_yield_factor" $tending_yield_factor 1 10 1 $ironmanmode>>
+				</div>
+			</div>
+		</div>
+	</div>
+		<!-- Make it show % instead of fractions and add some colour -->
+		<<run $(() => { $('.clothes-price-container input').on('input change', e => {
+				let valSpan = $(e.currentTarget).siblings().first();
+				let value = valSpan.text();
+
+				valSpan.text((i, value) => Math.round(value * 100) + '%');
+
+				if (value > 1)
+					valSpan.css('color', 'gold');
+				else if (value < 1)
+					valSpan.css('color', 'green');
+				else
+					valSpan.css('color', 'unset');
+			}).trigger('change') })>>
+		<!-- Set the initial minimum -->
+		<<run $(() => {
+			let newmin = parseFloat((Math.ceil(10 / $('#numberslider-input-clothesprice').val()) * 0.1).toFixed(1));
+			let oldval = V.clothesPriceLewd;
+			$('#numberslider-input-clothespricelewd').attr('min', newmin).val(oldval).trigger('change');
+		})>>
+		<!-- Limit lewd slider so that all coef * lewd coef >= 100% -->
+		<<run $(() => {
+			$('#numberslider-input-clothesprice').on('input change', e => {
+				let newmin = parseFloat((Math.ceil(10 / $(e.currentTarget).val()) * 0.1).toFixed(1));
+				let oldval = V.clothesPriceLewd;
+				$('#numberslider-input-clothespricelewd').attr('min', newmin).val(oldval).trigger('change');
+			})
+		})>>
+<</widget>>
+
+<<widget "pregnancySettings">>
+	<div class="solidBorderContainer settings-container">
+		<div class="settingsGrid">
+			<div class="settingsHeader">
+				怀孕概率
+			</div>
+			<div class="settingsToggleItemWide">
+				<div class="numberslider-inline basePlayerPregnancyChance-container">
+					<span class="gold">玩家怀孕几率</span>
+					<<numberslider "$basePlayerPregnancyChance" $basePlayerPregnancyChance 0 96 4>>
+					<div class="small-description">在正确的时间授精就会有机会怀孕。有些事件可能会让你得到许多不同可以受孕的精液，其他的某些影响可能会修改基本怀孕机会，以此来增加和减少怀孕的概率。</div>
+				</div>
+			</div>
+			<<run $(() => { $('.basePlayerPregnancyChance-container input').on('input change', e => {
+				let valSpan = $(e.currentTarget).siblings().first();
+				let value = valSpan.text();
+
+				valSpan.text((i, value) => (100 - value) + "分之一");
+			}).trigger('change') })>>
+
+			<div class="settingsToggleItemWide numberslider-inline basenpcpregnancychance-container">
+				<span class="gold">NPC怀孕几率</span>
+				<<numberslider "$baseNpcPregnancyChance" $baseNpcPregnancyChance 0 16 4>>
+				<div class="small-description">NPC在排卵期时受孕的几率。</div>
+			</div>
+			<<run $(() => { $('.basenpcpregnancychance-container input').on('input change', e => {
+				let valSpan = $(e.currentTarget).siblings().first();
+				let value = valSpan.text();
+
+				valSpan.text((i, value) => (20 - value) + "分之一");
+			}).trigger('change') })>>
+		</div>
+		<hr>
+		<div class="settingsGrid">
+			<div class="settingsHeader">
+				孕期时长
+			</div>
+			<<if playerPregnancyProgress() gte 0.9>>
+				<span class="red">您目前不能改变怀孕时长的设置，因为您已经接近临盆了！</span>
+			<</if>>
+				<div class="settingsToggleItem numberslider-inline humanPregnancyMonths-container" data-target="humanPregnancyMonths" @data-disabledif="playerPregnancyProgress() gte 0.9">
+					<span class="gold">人类孕期时长</span>
+					<<numberslider "$humanPregnancyMonths" $humanPregnancyMonths 1 9 1>>
+				</div>
+				<div class="settingsToggleItem numberslider-inline wolfPregnancyWeeks-container" data-target="wolfPregnancyWeeks" @data-disabledif="playerPregnancyProgress() gte 0.9">
+					<span class="gold">野狼孕期时长</span>
+					<<numberslider "$wolfPregnancyWeeks" $wolfPregnancyWeeks 2 12 1>>
+				</div>
+				<<run $(() => { $('.humanPregnancyMonths-container input, .wolfPregnancyWeeks-container input').on('input change', e => {
+					if(V.feats.pregnancyLocked){
+						$('#pregnancyFeatsDisabled').text("一些怀孕相关的成就将被禁用。");
+						$('#pregnancyFeatsDisabled').css('display', 'block');
+					} else if(V.humanPregnancyMonths < 3 || V.wolfPregnancyWeeks < 4){
+						$('#pregnancyFeatsDisabled').text("一些怀孕相关的成就将被禁用。");
+						$('#pregnancyFeatsDisabled').css('display', 'block');
+					} else{
+						$('#pregnancyFeatsDisabled').text("");
+						$('#pregnancyFeatsDisabled').css('display', 'none');
+					}
+				}).trigger('change') })>>
+				<div id="pregnancyFeatsDisabled" class="red"></div>
+		</div>
+		<hr>
+		<div class="settingsGrid">
+			<div class="settingsHeader">
+				怀孕开关
+			</div>
+			<div class="settingsToggleItem">
+				<span class="red">改变这些开关不会停止现有的怀孕，也不会阻止您与您的孩子们进行互动。</span>
+			</div>
+			<div class="settingsToggleItem">
+				避孕套
+				<<numberslider "$condomLvl" $condomLvl 0 3 1>>
+				<<run settingsCondoms()>>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$playerPregnancyHumanDisable" "t" "f" autocheck>>启用玩家人类怀孕
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$playerPregnancyBeastDisable" "t" "f" autocheck>>启用玩家怀上非人的孩子
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$npcPregnancyDisable" "t" "f" autocheck>>启用NPC怀孕功能
+				</label>
+			</div>
+			<<set _foundPregnancy to !!Object.values($NPCName).find(npc => npc.pregnancy && npc.pregnancy.enabled && npc.pregnancy.type && !setup.pregnancy.canBePregnant.includes(npc.fullDescription))>>
+			<span data-target="incompletePregnancyDisable" data-disabledif="T.foundPregnancy&&V.incompletePregnancyDisable==='f'">
+				<div class="settingsToggleItem humanPregnancyMonths-container">
+					<label>
+						<<checkbox "$incompletePregnancyDisable" "t" "f" autocheck>>启用实验性的怀孕内容
+						<<if _foundPregnancy>>
+							<mouse class="tooltip linkBlue">(!!!)<span>命名NPC在怀孕中时不能被禁用。</span></mouse>
+						<<else>>
+							<mouse class="tooltip linkBlue">(?)<span>
+								<div>在开启后，玩家将能够使所有可以怀孕的命名NPC受孕和被其播种怀孕，这包括那些没有怀孕剧情的NPC。</div>
+								<div class="red">警告: 这将导致命名NPC对玩家的怀孕或自己的怀孕没有反应，而且可能会在之后的更新中跳过一些相关剧情。</div>
+							</span></mouse>
+						<</if>>
+					</label>
+				</div>
+			</span>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$parasitepregdisable" "t" "f" autocheck>>启用怀孕（寄生虫）
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$cycledisable" "t" "f" autocheck>>启用生理周期
+					<mouse class="tooltip linkBlue">(?)<span>
+						<div>在开启后，玩家何时可以怀孕将由玩家的月经周期来决定。</div>
+						<div>当禁用时，怀孕几率将被随机化。此外，当怀孕类型被设置为 "真实怀孕"时，玩家体内的精子将不会残留那么久。</div>
+					</span></mouse>
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					受孕模式:
+					<label><<radiobutton "$pregnancytype" "realistic" autocheck>> <mouse class="tooltip green">真实怀孕<span>怀孕不会立刻发生，而且怀孕时您也不会立刻知晓。您需要先进行验孕，父亲是谁也无法预先知道。即使外射也可能使您怀孕，除非在接下来几个小时内将其清洗干净。</span></mouse></label> |
+					<label><<radiobutton "$pregnancytype" "fetish" autocheck>> <mouse class="tooltip pink">另类怀孕<span>只要精液进入你的体内，你就有可能怀孕。当成功怀孕时，你会立即知晓孩子的父亲。</span></mouse></label> |
+					<label><<radiobutton "$pregnancytype" "silly" autocheck>> <mouse class="tooltip gold">童话怀孕<span>只要您牵手或接吻，就可能会怀孕，特别是与您的恋人这样做的时候。<i class="red none">这种模式可能会出现与故事内容有关的问题。所以在这种模式下，一些功能将被禁用。</i></span></mouse></label>
+				</label>
+			</div>
+			<div class="settingsToggleItem">
+				<label>
+					<<checkbox "$pregnancyspeechdisable" "t" "f" autocheck>>启用生育率参考
+					<mouse class="tooltip linkBlue">(?)<span>允许玩家受孕，或使他人受孕。禁用并不能阻止所有的怀孕，特别是在启用其他怀孕设置的情况下。</span></mouse>
+				</label>
+			</div>
+			<<if $debug is 1>>
+				<div style="clear:both;">/*Keep at end of toggles*/</div>
+				DEBUG:
+				<br>
+				<span class="gold">NPC使用避孕套的概率</span>
+				<br>
+				<<numberslider "$condomChance" $condomChance 0 100 1>>
+				<br><br>
+
+				<span class="gold">NPC在没有被要求的情况下使用避孕套的可能性...</span>
+				<br>
+				...during rape
+				<<numberslider "$condomUseChanceRape" $condomUseChanceRape 0 100 1>>
+				<br>
+				......在自愿的性行为中
+				<<numberslider "$condomUseChanceCon" $condomUseChanceCon 0 100 1>>
+				<br>
+			<</if>>
+		</div>
+		<div style="clear:both;">/*Keep at end of toggles*/</div>
+	</div>
+<</widget>>
+
+<<widget "sizeLimitsSettings">>
+	<div class="settingsGrid">
+		<div class="settingsHeader">
+			身体部位尺寸限制<mouse class="tooltip linkBlue">(?)<span style="font-size:16px;">当您参与或者被动参与猥亵行为时，您的对应身体部位可能会生长或收缩，手术、药丸和寄生虫会影响生长，以及其他情况也会有一些影响。</span></mouse>
+		</div>
+
+		<div class="settingsToggleItem">
+			<span class="gold">最小胸部尺寸:</span> /*<mouse class="tooltip linkBlue">(?)<span>原先小于该值的胸部不会自动变大。</span></mouse>*/
+			<br>
+			<<set _name to ["平坦", "微微隆起", "含苞欲放", "小巧玲珑", "只手可握"]>>
+			<<for _i to 0; _i lt _name.length; _i++>>
+				<span data-target="breastsizemax" @data-disabledif="_i + ' > V.breastsizemax'">
+					<label><<print _name[_i]>><<radiobutton "$breastsizemin" _i autocheck>></label>
+					<<if _i lt _name.length - 1>>|<</if>>
+				</span>
+			<</for>>
+		</div>
+
+		<div class="settingsToggleItem">
+			<span class="gold">最大胸部尺寸:</span> /*<mouse class="tooltip linkBlue">(?)<span>原先大于该值的胸部不会自动变小。胸部增长无关性别。男性和高纯洁度的人增长缓慢。手术，药物和寄生虫能在不同方向影响增长。胸部被把弄以及体内含有寄生虫都会加速增长。</span></mouse>*/
+			<br>
+			<<set _name to ["平坦", "微微隆起", "含苞欲放", "小巧玲珑", "只手可握", "适中", "圆润", "大", "浑圆", "丰满", "巨大", "爆裂", "极致宏伟"]>>
+			<<for _i to 0; _i lt _name.length; _i++>>
+				<span data-target="breastsizemin" @data-disabledif="'V.breastsizemin > ' + _i">
+					<label><<print _name[_i]>><<radiobutton "$breastsizemax" `_i` autocheck>></label>
+					<<if _i lt _name.length - 1>>|<</if>>
+				</span>
+			<</for>>
+		</div>
+
+		<div class="settingsToggleItem">
+			<span class="gold">最小臀部尺寸:</span> /*<mouse class="tooltip linkBlue">(?)<span>原先小于该值的臀部不会自动变大。</span></mouse>*/
+			<br>
+			<<set _name to ["扁平", "苗条", "适中", "软弹"]>>
+			<<for _i to 0; _i lt _name.length; _i++>>
+				<span data-target="bottomsizemax" @data-disabledif="_i + ' > V.bottomsizemax'">
+					<label><<print _name[_i]>><<radiobutton "$bottomsizemin" _i autocheck>></label>
+					<<if _i lt _name.length - 1>>|<</if>>
+				</span>
+			<</for>>
+		</div>
+
+		<div class="settingsToggleItem">
+			<span class="gold">最大臀部尺寸:</span> /*<mouse class="tooltip linkBlue">(?)<span>原先大于该值的臀部不会自动变小。</span></mouse>*/
+			<br>
+			<<set _name to ["扁平的", "纤细的", "适中的", "软弹的", "柔软的", "圆润的", "丰盈的", "娇俏的", "硕大的"]>>
+			<<for _i to 0; _i lt _name.length; _i++>>
+				<span data-target="bottomsizemin" @data-disabledif="'V.bottomsizemin > ' + _i">
+					<label><<print _name[_i]>><<radiobutton "$bottomsizemax" _i autocheck>></label>
+					<<if _i lt _name.length - 1>>|<</if>>
+				</span>
+			<</for>>
+		</div>
+		<<if $passage is "Start" or $player.penisExist>>
+			<div class="settingsToggleItem">
+				<span class="gold" data-target="player.gender" data-disabledif="V.player.gender==='f'">最小阴茎尺寸 - 如果适用的话:</span> /*<mouse class="tooltip linkBlue">(?)<span>原先小于该值的阴茎不会自动变大。较小的尺寸变小变大都有额外的要求。</span></mouse>*/
+				<br>
+				<<set _name to ["微小的","迷你的", "有待发育的"]>>
+				<<for _i to 0; _i lt _name.length; _i++>>
+					<span data-target="penissizemax" @data-disabledif="_i - 2 + ' > V.penissizemax'">
+						<label data-target="player.gender" data-disabledif="V.player.gender==='f'"><<print _name[_i]>><<radiobutton "$penissizemin" `(_i - 2)` autocheck>></label>
+						<<if _i lt _name.length - 1>>|<</if>>
+					</span>
+				<</for>>
+			</div>
+
+			<div class="settingsToggleItem">
+				<span class="gold" data-target="player.gender" data-disabledif="V.player.gender==='f'">最大阴茎尺寸 - 如果适用的话:</span> /*<mouse class="tooltip linkBlue">(?)<span>原先大于该值的阴茎不会自动变小。手术，药物和寄生虫能够在不同方向影响增长。</span></mouse>*/
+				<br>
+				<<set _name to ["微小的","迷你的", "有待发育的", "偏小的", "普通的", "粗壮的", "巨大的"]>>
+				<<for _i to 0; _i lt _name.length; _i++>>
+					<span data-target='["penissizemin", "player.gender"]' @data-disabledif="_i - 2 + ' < V.penissizemin'||V.player.gender==='f'">
+						<label data-target="player.gender" data-disabledif="V.player.gender==='f'"><<print _name[_i]>><<radiobutton "$penissizemax" `(_i - 2)` autocheck>></label>
+						<<if _i lt _name.length - 1>>|<</if>>
+					</span>
+				<</for>>
+			</div>
+		<</if>>
+	</div>
+<</widget>>
+
+<<widget "sizeLimitsSettingsOld">>
+	<div class="solidBorderContainer settings-container">
+		<div class="settingsToggleWide">
+			<span class="gold">玩家最大胸部尺寸</span> <mouse class="tooltip linkBlue">(?)<span>超过这个尺寸的胸部不会自动缩小。无论任何性别，你的胸部都会发育。男性和高纯洁的人发育较慢。手术、药物和寄生虫都对发育有双向影响。胸部被玩弄和被寄生都会促进发育。</span></mouse>
+			<br>
+			<<set _name to ["平坦", "微微隆起", "含苞欲放", "小巧玲珑", "只手可握", "适中", "圆润", "大", "浑圆", "丰满", "巨大", "爆裂", "极致宏伟"]>>
+			<<for _i to 0; _i lt _name.length; _i++>>
+				<span data-target="breastsizemin" @data-disabledif="'V.breastsizemin > ' + _i">
+					<label><<print _name[_i]>><<radiobutton "$breastsizemax" `_i` autocheck>></label>
+				</span> |
+			<</for>>
+		</div>
+
+		<div class="settingsToggleWide">
+			<span class="gold">玩家最小胸部尺寸</span> <mouse class="tooltip linkBlue">(?)<span>低于这个尺寸的胸部不会自动成长。</span></mouse>
+			<br>
+			<<for _i to 0; _i lt 5; _i++>>
+				<span data-target="breastsizemax" @data-disabledif="_i + ' > V.breastsizemax'">
+					<label><<print _name[_i]>><<radiobutton "$breastsizemin" _i autocheck>></label> |
+				</span>
+			<</for>>
+		</div>
+
+		<div class="settingsToggleWide">
+			<span class="gold">玩家最大臀部尺寸</span> <mouse class="tooltip linkBlue">(?)<span>超过这个尺寸的臀部不会自动缩小。</span></mouse>
+			<br>
+			<<set _name to ["扁平的", "纤细的", "适中的", "软弹的", "柔软的", "圆润的", "丰盈的", "娇俏的", "硕大的"]>>
+			<<for _i to 0; _i lt _name.length; _i++>>
+				<label><<print _name[_i]>><<radiobutton "$bottomsizemax" _i autocheck>></label> |
+			<</for>>
+		</div>
+
+		<div class="settingsToggleWide">
+			<span class="gold">玩家最大阴茎尺寸</span> <mouse class="tooltip linkBlue">(?)<span>超过这个尺寸的阴茎不会自动缩小。手术、药物和寄生虫都对发育有双向影响。</span></mouse>
+			<br>
+			<<set _name to ["微小的","迷你的", "有待发育的", "偏小的", "普通的", "粗壮的", "巨大的"]>>
+			<<for _i to 0; _i lt _name.length; _i++>>
+				<span data-target="penissizemin" @data-disabledif="_i - 2 + ' < V.penissizemin'">
+					<label><<print _name[_i]>><<radiobutton "$penissizemax" `(_i - 2)` autocheck>></label> |
+				</span>
+			<</for>>
+		</div>
+
+		<div class="settingsToggleWide">
+			<span class="gold">玩家最小阴茎尺寸</span> <mouse class="tooltip linkBlue">(?)<span>低于这个尺寸的阴茎不会自动成长。较小的尺寸缩小/成长有额外的要求。</span></mouse>
+			<br>
+			<<set _name to ["微小的","迷你的", "有待发育的"]>>
+			<<for _i to 0; _i lt _name.length; _i++>>
+				<span data-target="penissizemax" @data-disabledif="_i - 2 + ' > V.penissizemax'">
+					<label><<print _name[_i]>><<radiobutton "$penissizemin" `(_i - 2)` autocheck>></label> |
+				</span>
+			<</for>>
+		</div>
+		<div style="clear:both;"></div>
+	</div>
+<</widget>>
+
+<<widget "gallerySettings">>
+	<div class="solidBorderContainer settings-container">
+		<div class="settings-intro">
+		画廊选项不会以任何方式影响您的存档。
+		<hr>
+		<<if version.major gt 2 or version.minor gt 29>>
+			<span class="bold">
+				<<link [[角色造型(换衣系统)|Clothes Testing]]>>
+					<<set $lastPassage to $passage>>
+					<<set $gameTanImgSetting to clone($options.tanImgEnabled)>>
+				<</link>>
+			</span>
+			- 捏一个小人。
+			<br>
+		<</if>>
+		<br>
+		<<if $passage isnot "Start">>
+			<span class="bold">
+				<<link [[场景查看器|Scene Viewer]]>>
+					<<set $lastPassage to $passage>>
+					<<seenPassageChecks>>
+				<</link>>
+			</span>
+			- 允许你重放你已解锁的场景。
+			<br>
+		<<else>>
+			<span class=" red bold">场景查看器</span> -无法在初始页面访问，当您进行游戏时，您将解锁特殊场景。这些场景可以在画廊的场景查看器中重新播放，在房间里的<span class="gold">设置按钮</span>，打开之后可以通过画廊的场景查看器再查看已激活的场景。
+			<br>
+		<</if>>
+		/*<br>
+		<span class="bold">
+			<<link [[Test Renderer|Renderer Test Page]]>>
+				<<set $lastPassage to $passage>>
+			<</link>>
+		</span>
+		- This will check your browser's capabilities required for new renderer.
+		<br>*/
+		<br>
+		<span class="bold">
+			<<link [[提示一览|Tips]]>>
+				<<set $lastPassage to $passage>>
+			<</link>>
+		</span>
+		- 查看本游戏可用的提示和技巧的完整列表。在游玩过程中，这些提示将会随机出现在侧边栏，除非你通过<span class="gold">选项</span>按钮将其禁用。
+		</div>
+	</div>
+<</widget>>
+
+<<widget "npcSettings">>
+	<div class="solidBorderContainer settings-container">
+		<div class="settingsToggleIndent">
+			<span class="gold">为已命名NPC随机设置：</span> <mouse class="tooltip linkBlue">(?)<span>会根据一般NPC设置生成设置。</span></mouse>
+			<br>
+			<<link "性别">>
+				<<initnpcgender "genders">>
+				<<updatePersistentNPCs "genders">>
+				<<replace #npcSettingsMenu>><<npcSettingsMenu>><</replace>>
+			<</link>>
+			|
+			<<link "阴茎大小">>
+				<<initnpcgender "penis">>
+				<<updatePersistentNPCs "penis">>
+				<<replace #npcSettingsMenu>><<npcSettingsMenu>><</replace>>
+			<</link>>
+			|
+			<<link "胸部尺寸">>
+				<<initnpcgender "breasts">>
+				<<updatePersistentNPCs "breasts">>
+				<<replace #npcSettingsMenu>><<npcSettingsMenu>><</replace>>
+			<</link>>
+			|
+			<<link "肤色">>
+				<<initnpcskin "skincolour">>
+				<<updatePersistentNPCs "skincolour">>
+				<<replace #npcSettingsMenu>><<npcSettingsMenu>><</replace>>
+			<</link>>
+			<<if $debug is 1>>
+				|
+				<<link "重设头发和眼睛的颜色（只影响NPC的默认颜色）">>
+					<<generateNPCNameHairAndEyeColors "default">>
+					<<displaySettings>>
+				<</link>>
+			<</if>>
+		</div>
+		<hr>
+		<<if _npcId is undefined>>
+			<<set _npcId to 0>>
+
+			<<set _breastDescription to ["Flat","Small","Pert","Modest","Full","Large"]>>
+			<<set _breastDescriptionNPC to ["平坦的","微微隆起的","小的","适中的","丰盈的","巨大的"]>>
+			<<set _breastsDescriptionNPC to ["平坦的","微微隆起的","小的","适中的","丰盈的","巨大的"]>>
+
+			<<set _hairColorNPC to ["Red","Black","Brown","Light Brown","Blond","Platinum blond","Strawberry blond","Ginger", "Mousy"]>>
+			<<set _hairColorNPCData to ["red","black","brown","lightbrown","blond","platinumblond","strawberryblond","ginger", "mousy"]>>
+			<<set _hairColorNPCText to ["red","black","brown","lightbrown","gold","platinum","strawberry","tangerine", "mousy"]>>
+
+			<<set _eyeColorNPC to ["Purple","Dark Blue","Light Blue","Amber","Hazel","Green","Lime Green","Red","Pink","Grey","Light Grey"]>>
+			<<set _eyeColorNPCData to ["purple","dark blue","light blue","amber","hazel","green", "lime green","red","pink","grey", "light grey"]>>
+			<<set _eyeColorNPCText to ["purple","blue","lblue","tangerine","brown","green","lime-green","red","pink","grey", "light-grey"]>>
+		<</if>>
+
+		<<if _npcList is undefined>>
+			<<set _npcList to {}>>
+			<<for $_i to 0; $_i lt $NPCNameList.length; $_i++>>
+				<<set _npcList[clone($NPCNameList[$_i])] to clone($_i)>>
+			<</for>>
+			<<if $passage is "Start" or !$wraithIntro>>
+				<<run delete _npcList["Ivory Wraith"]>>
+			<</if>>
+		<</if>>
+
+		/* Updates the npc's in case $incompletePregnancyDisable has been changed by the player */
+		<<npcPregnancyUpdater>>
+		<div id="npcSettingsMenu">
+			<<npcSettingsMenu>>
+		</div>
+
+		<<if $passage isnot "start" and $per_npc and Object.keys($per_npc).length gt 0>>
+			<<run
+				if (!T.perNPCLock) {
+					$(".passage").on('change', '#perNPCSettingsMenu .macro-listbox', function (e) {
+						new Wikifier(null, '<<replace #perNPCSettingsMenu>><<perNPCSettingsMenu>><</replace>>');
+					});
+
+					T.keys = {};
+					T.keyNames = [];
+					const allowed_npcs = ["steed", "guard", "inmate", "panty_thief", "school_nurse", "tower_creature", "pinch", "black_dog", "hacker"];
+					Object.keys(V.per_npc).forEach(k => {
+						for (const j of allowed_npcs){
+							if (k.includes(j)){
+								T.keyNames.push(k);
+								T.keys[k.toUpperFirst().replace(/_/g, ' ')] = k;
+								break
+							}
+						}
+					});
+					T.perNPCLock = true;
+				}
+			>>
+			<<if T.keyNames and T.keyNames.length>>
+				<hr>
+				<div id="perNPCSettingsMenu">
+					<<perNPCSettingsMenu>>
+				</div>
+			<</if>>
+		<</if>>
+
+		<<if _listActive isnot true>>
+			<<NPCSettingsReset>>
+			<<set _listActive to true>>
+		<</if>>
+	</div>
+<</widget>>
+
+<<widget "exportsettings">>
+	<div class="solidBorderContainer settings-container">
+	<div class="settings-intro">
+	<span class="yellow">同时也会导入/导出【存档】和【选项】弹窗中的设置。</span>
+	<hr>
+	<h4 class="gold">导入/导出文件设置</h4>
+
+	<<if SugarCube.Browser.isMobile.any() is true>>
+		注意，从文件保存和加载的功能目前在Android上无效。
+	<<else>>
+		从文件加载: <input id="saveImport" type="file" value="Load from file" onchange="importSettings(this.files, 'file')">
+		<br><br>
+		<<if $ironmanmode is true>>
+			<input type="button" value="保存到文件" disabled>
+		<<else>>
+			<input type="button" value="保存到文件" onclick="exportSettings(null,'file')">
+		<</if>>
+	<</if>>
+	<hr>
+	<h4 class="gold">导入/导出文本设置</h4>
+
+	<ul>
+	<li>要保存当前设置，请点击【设置数据】，然后将存档码复制并粘贴到所需位置。</li>
+	<li>要加载当前设置，请粘贴设置数据，然后点击【加载设置数据】</li>
+	<li>你可以使用电子邮件或者PasteBin等服务将你的存档码在安卓和其他系统间交换。<h3 class="red">请确保你的数据准确且没有遗漏，以免出现问题。</h3></li>
+	<li>点击【复制文本区域】复制当前内容。如果您的设备或浏览器不支持，按钮名称将更改为【复制错误】</li>
+	</ul>
+	<textarea id="settingsDataInput" rows="4" cols="40" onClick="if(V.disableAutoSelect == false)this.select();" onfocus="V.tempDisable = true;" onblur="V.tempDisable = false;"></textarea>
+	<br>
+	<input type="button" value="清除文本框" onclick="clearTextBox('settingsDataInput')"/>
+	<input type="button" value="文本框顶部" onclick="topTextArea('settingsDataInput')"/>
+	<input type="button" value="文本框底部" onclick="bottomTextArea('settingsDataInput')"/>
+	<input type="button" value="获得设置数据" onclick="exportSettings(null,'text')"/>
+	<input type="button" value="加载设置数据" onclick="importSettings(null,'text')"/>
+	<input id="CopyTextArea" type="button" value="复制文本区域" onclick="copySavedata('settingsDataInput')">
+	<input id="LoadExternalExportFile" type="button" value="加载外部导出文件" onclick="loadExternalExportFile()">
+
+	<br><br>
+
+	<label>
+		<<checkbox "$disableAutoSelect" false true autocheck>>
+		禁用自动选择。
+	</label>
+	</div>
+	</div>
+<</widget>>
+
+<<widget "startDescriptions">>
+	<div class="solidBorderContainer settings-container">
+		<div class="settings-intro">
+		<<switch _args[0]>>
+			<<case "default">><span class="gold bold">基本开局: </span>性癖开关和难度设置将会采取<span class="teal">默认</span>设置。NPC将<span class="teal">随机</span> 生成。<i class="teal">推荐新手游玩。</i>
+			<<case "adjusted">><span class="gold bold">中等开局: </span>您可以<span class="teal">更改变化</span> 难度，预设，NPC性别。NPC将根据这些设置<span class="teal">随机的</span>生成。
+			<<case "custom">><span class="gold bold">高级开局: </span>您可以调整<span class="teal">所有设置</span>，包括性癖开关、难度设置和NPC性别，以创造一个适合您的游戏体验。
+			<<case "random">><span class="gold bold">随机设置: </span>当您开始游戏时，将<span class="teal">随机化</span>所有的游戏设置, 包括角色外观，难度设置，还有角色特征。您和所有的NPC都将是<span class="teal">随机</span>生成的。
+		<</switch>>
+		<br>
+		<div class="small-description">大多数的设置可以在游戏内的房间里进行更改。<span class="red">在游戏开始后，角色性器的大小和成就加点将无法更改。</span></div>
+		</div>
+	</div>
+<</widget>>
+
+<<widget "npcSettingsMenu">>
+	<div class="settingsToggleIndent">
+		<span class="gold">跳转至某具体NPC: </span>
+		<<listbox "_npcId" autoselect>>
+			<<optionsfrom _npcList>>
+		<</listbox>>
+	</div>
+	<div class="settingsGrid">
+		<div class="settingsHeader">
+			<<print $NPCName[_npcId].nam.replace("Avery","艾弗里").replace("Bailey","贝利").replace("Briar","布莱尔").replace("Charlie","查里").replace("Darryl","达里尔").replace("Doren","多伦").replace("Eden","伊甸").replace("Gwylan","格威岚").replace("Harper","哈珀").replace("Jordan","约旦").replace("Kylar","凯拉尔").replace("Landry","兰德里").replace("Leighton","礼顿").replace("Mason","梅森").replace("Morgan","摩根").replace("River","瑞沃").replace("Robin","罗宾").replace("Sam","萨姆").replace("Sirris","西里斯").replace("Whitney","惠特尼").replace("Winter","温特").replace("Niki","尼奇").replace("Quinn","奎因").replace("Remy","雷米").replace("Alex","艾利克斯").replace("Wren","伦恩").replace("Sydney","悉尼").replace("Taylor","泰勒").replace("Casey","凯西").replace("Ivory Wraith","象牙幽灵").replace("Black Wolf","黑狼").replace("Great Hawk","巨鹰")>>——<span style="text-transform: capitalize;"><<print $NPCName[_npcId].title.replace("businessperson", "商人").replace("businessman", "商人").replace("businesswoman", "商人").replace("caretaker", "监护人").replace("brothel owner", "妓院老板").replace("dance coach", "舞蹈教练").replace("club owner", "俱乐部老板").replace("English teacher", "英语老师").replace("huntress", "猎人").replace("hunter", "猎人").replace("shopkeeper", "商店店主").replace("doctor", "医生").replace("pious", "虔信者").replace("nun", "修女").replace("monk", "修士").replace("loner", "不合群者").replace("criminal", "罪犯").replace("headteacher", "校长").replace("headmaster", "校长").replace("headmistress", "校长").replace("swimming teacher", "游泳老师").replace("sewer dweller", "下水道居民").replace("maths teacher", "数学老师").replace("orphan", "孤儿").replace("cafe owner", "咖啡店主").replace("science teacher", "科学老师").replace("bully", "霸凌者").replace("history teacher", "历史老师").replace("alpha", "头狼").replace("photographer", "摄影师").replace("mayor", "市长").replace("farmer", "农场主").replace("farmhand", "农工").replace("terror", "恐怖者").replace("smuggler", "走私者").replace("faithful", "信徒").replace("fallen", "堕落者").replace("reflection", "映像").replace("explorer", "探险家").replace("delinquent", "违法者")>></span>
+			<span style="font-size:80%">
+				<br>
+				<<link "上一个">>
+					<<if _npcId is 0>>
+						<<set _npcId to $NPCNameList.length - 1>>
+					<<else>>
+						<<set _npcId-->>
+					<</if>>
+					<<if _npcList[$NPCName[_npcId].nam] is undefined>>
+						<<set _npcId-->>
+					<</if>>
+					<<replace #npcSettingsMenu>><<npcSettingsMenu>><</replace>>
+				<</link>> <span style="color:white">|</span>
+				<<link "下一个">>
+					<<if _npcId is $NPCNameList.length - 1>>
+						<<set _npcId to 0>>
+					<<else>>
+						<<set _npcId++>>
+					<</if>>
+					<<if _npcList[$NPCName[_npcId].nam] is undefined>>
+						<<set _npcId++>>
+					<</if>>
+					<<replace #npcSettingsMenu>><<npcSettingsMenu>><</replace>>
+				<</link>>
+			</span>
+		</div>
+		<<if V.NPCName[T.npcId].pregnancy.type>>
+			<div class="settingsToggleItem">
+				<br><br>
+				该NPC正处于怀孕状态，您无法更改部分设置。
+			</div>
+		<</if>>
+		<div class="settingsToggleItem">
+			<span class="gold">性别: </span>
+			<br>
+			<span data-target="npcname-npcidpronoun" data-disabledif="V.NPCName[T.npcId].pronoun==='i'">
+			<label><<radiobutton "$NPCName[_npcId].pronoun" "f" autocheck>>女性</label> |
+			<label><<radiobutton "$NPCName[_npcId].pronoun" "m" autocheck>>男性</label>
+			</span>
+		</div>
+		<div class="settingsToggleItem">
+			<span class="gold">生殖器: </span>
+			<br>
+			<span data-target="npcname-pregnancy" data-disabledif="V.NPCName[T.npcId].pregnancy.type">
+				<label><<radiobutton "$NPCName[_npcId].gender" "f" autocheck>>阴道</label> |
+				<label><<radiobutton "$NPCName[_npcId].gender" "m" autocheck>>阴茎</label>
+				<<if $debug is 1>>| <label><<radiobutton "$NPCName[_npcId].gender" "h" autocheck>>皆有</label><</if>>
+			</span>
+		</div>
+		<div class="settingsToggleItem">
+			<span class="gold">阴茎大小 - 如果有的话: </span>
+			<br>
+			<<set _penisNames to ["", "小", "平均", "大", "粗大"]>> /* the empty first element is necessary because _j starts at 1 */
+			<span data-target="npcname-npcidgender" data-disabledif="V.NPCName[T.npcId].gender==='f'">
+				<<for _j to 1; _j lt _penisNames.length; _j++>>
+					<label>
+						<<radiobutton "$NPCName[_npcId].penissize" _j autocheck>>
+						<<print _penisNames[_j]>>
+					</label>
+					<<if _j isnot _penisNames.length -1>>|<</if>>
+				<</for>>
+			</span>
+		</div>
+		<div class="settingsToggleItem">
+			<span data-target="npcname-pregnancy" data-disabledif="setup.pregnancy.infertile.includes(V.NPCName[T.npcId].nam)||V.NPCName[T.npcId].pregnancy.enabled===undefined||V.NPCName[T.npcId].pregnancy.type||!setup.pregnancy.typesEnabled.includes(V.NPCName[T.npcId].type)">
+				<span class="gold">启用NPC怀孕 - 如果可以的话: </span>
+				<mouse class="tooltip linkBlue">(?)<span>需要启用【NPC怀孕】，可能还需要启用【实验性的怀孕内容】</span></mouse>
+				<br>
+				<label><<radiobutton "$NPCName[_npcId].pregnancy.enabled" true autocheck>> 开启</label> |
+				<label><<radiobutton "$NPCName[_npcId].pregnancy.enabled" false autocheck>> 禁用</label>
+			</span>
+		</div>
+
+		<div class="settingsToggleItem">
+		<span class="gold">胸部尺寸: </span>
+		<br>
+		<<numberslider "$NPCName[_npcId].breastsize" $NPCName[_npcId].breastsize 0 12 1>>
+		<<run settingsNamedNpcBreastSize(Util.slugify('$NPCName[_npcId].breastsize'), false)>>
+		</div>
+
+		<div class="settingsToggleItem">
+			<span class="gold">肤色: </span>
+			<br>
+			<<if $NPCName[_npcId].nam is "Black Wolf">>/*disable skin colour toggle when player has BW set to 'always a beast'*/
+				<span data-target="blackwolfmonster" data-disabledif="V.blackwolfmonster===0">
+				<label><<radiobutton "$NPCName[_npcId].skincolour" "white" autocheck>> 苍白</label> |
+				<label><<radiobutton "$NPCName[_npcId].skincolour" "black" autocheck>>深色肤色</label>
+				</span>
+			<<elseif $NPCName[_npcId].nam is "Great Hawk">>/*disable skin colour toggle when player has BW set to 'always a beast'*/
+				<span data-target="greathawkmonster" data-disabledif="V.greathawkmonster===0">
+				<label><<radiobutton "$NPCName[_npcId].skincolour" "white" autocheck>> 苍白</label> |
+				<label><<radiobutton "$NPCName[_npcId].skincolour" "black" autocheck>>深色肤色</label>
+				</span>
+			<<else>>
+				<span data-target="npcname-npcidskincolour" data-disabledif="V.NPCName[T.npcId].skincolour==='ghost'">
+				<label><<radiobutton "$NPCName[_npcId].skincolour" "white" autocheck>> 苍白</label> |
+				<label><<radiobutton "$NPCName[_npcId].skincolour" "black" autocheck>>深色肤色</label>
+				</span>
+			<</if>>
+		</div>
+
+		<<if $NPCName[_npcId].nam is "Black Wolf">>
+			<div class="settingsToggleItemWide">
+				<span class="gold">野兽类型: </span>
+				<br>
+				<label><<radiobutton "$blackwolfmonster" 0 autocheck>>总是野兽</label> |
+				<label><<radiobutton "$blackwolfmonster" 1 autocheck>>满足怪物女孩或怪物男孩出现条件时</label> |
+				<label><<radiobutton "$blackwolfmonster" 2 autocheck>>总是怪物女孩或男孩</label>
+			</div>
+		<<elseif $NPCName[_npcId].nam is "Great Hawk">>
+			<div class="settingsToggleItemWide">
+				<span class="gold">野兽类型: </span>
+				<br>
+				<label><<radiobutton "$greathawkmonster" 0 autocheck>>总是野兽</label> |
+				<label><<radiobutton "$greathawkmonster" 1 autocheck>>满足怪物女孩或男孩要求时</label> |
+				<label><<radiobutton "$greathawkmonster" 2 autocheck>>总是怪物女孩或男孩</label>
+			</div>
+		<</if>>
+	</div>
+	<div style="clear:both;"></div>
+
+	<<if $debug is 1>>
+		DEBUG:
+		<br>
+		<div class="settingsToggleItemWide">
+			<span class="gold">发色: </span>
+			<br>
+			<<for _j to 0; _j lt _hairColorNPC.length; _j++>>
+				<label>
+					<<print '<<radiobutton "$NPCName['+_npcId+'].hairColour" "'+_hairColorNPCData[_j]+'" ' + ($NPCName[_npcId].hairColour is _hairColorNPCData[_j] ? "checked" : "") + '>>'>>
+					<span @class="_hairColorNPCText[_j]">_hairColorNPC[_j]</span>
+				</label> |
+			<</for>>
+		</div>
+
+		<div class="settingsToggleItemWide">
+			<span class="gold">瞳色: </span>
+			<br>
+			<<for _j to 0; _j lt _eyeColorNPC.length; _j++>>
+				<label>
+					<<print '<<radiobutton "$NPCName['+_npcId+'].eyeColour" "'+_eyeColorNPCData[_j]+'" ' + ($NPCName[_npcId].eyeColour is _eyeColorNPCData[_j] ? "checked" : "") + '>>'>>
+					<span @class="_eyeColorNPCText[_j]">_eyeColorNPC[_j]</span>
+				</label> |
+			<</for>>
+		</div>
+		<div style="clear:both;"></div>
+	<</if>>
+<<run settingsDisableElement()>>
+<</widget>>
+
+<<widget "perNPCSettingsMenu">>
+	<span class="gold">保持不变的NPC: </span>
+	<br>
+	<<listbox "_pNPCId" autoselect>>
+		<<optionsfrom _keys>>
+	<</listbox>>
+	<<switch _pNPCId>>
+		<<case "scarred_inmate">>
+			<<if $per_npc[_pNPCId].description isnot "scarred">>
+				<<generate_scarred_inmate 0>>
+				<<clearsinglenpc 0>>
+			<</if>>
+		<<case "veteran_guard">>
+			<<if $per_npc[_pNPCId].description isnot "veteran">>
+				<<generate_veteran_guard 0>>
+				<<clearsinglenpc 0>>
+			<</if>>
+	<</switch>>
+	<<set _index to _keyNames.indexOf(_pNPCId)>>
+	| <<link "上一个">>
+		<<set _index to (_index is 0 ? _keyNames.length - 1 : --_index)>>
+		<<set _pNPCId to _keyNames[_index]>>
+		<<replace #perNPCSettingsMenu>><<perNPCSettingsMenu>><</replace>>
+	<</link>> |
+	<<link "下一个">>
+		<<set _index++>>
+		<<set _pNPCId to _keyNames[_index]>>
+		<<replace #perNPCSettingsMenu>><<perNPCSettingsMenu>><</replace>>
+	<</link>>
+	<br><br>
+	<<if $per_npc[_pNPCId] eq null>>
+		<<error {
+			message	: `The given ID for pNPCs failed to match any available pNPC: ${_pNPCId}.`,
+			source	: _pNPCId
+		}>>
+	<<else>>
+		<<if $per_npc[_pNPCId].name_known>>
+			<span class="gold">$per_npc[_pNPCId].name the <<print _pNPCId.replace(/_/g, ' ')>></span>
+		<<elseif _pNPCId is "tower_creature">>
+			<span class="gold">夜魔</span>
+		<<elseif _pNPCId is "hacker">>
+			<span class="gold">'Mickey' the hacker</span>
+		<<else>>
+			<span class="gold"><<print _pNPCId.toUpperFirst().replace(/_/g, ' ')>></span>
+		<</if>>
+		<<if $per_npc[_pNPCId].name_known and $debug is 1>>
+			| <<link "Rename">>
+				<<if $per_npc[_pNPCId].pronoun is "f">>
+					<<set $per_npc[_pNPCId].name to $NPC_names_f.random()>>
+				<<else>>
+					<<set $per_npc[_pNPCId].name to $NPC_names_m.random()>>
+				<</if>>
+				<<replace #perNPCSettingsMenu>><<perNPCSettingsMenu>><</replace>>
+			<</link>>
+		<</if>>
+		<br>
+		<div class="settingsToggle">
+			<span data-target="pernpc-npcidpronoun" data-disabledif="V.per_npc[T.pNPCId].pronoun==='i'||V.per_npc[T.pNPCId].pronoun==='t'">
+			<label><<radiobutton "$per_npc[_pNPCId].pronoun" "f" autocheck>>女性</label> |
+			<label><<radiobutton "$per_npc[_pNPCId].pronoun" "m" autocheck>>男性</label>
+			</span>
+		</div>
+		<div class="settingsToggle">
+			<label><<radiobutton "$per_npc[_pNPCId].gender" "f" autocheck>>阴道</label> |
+			<label><<radiobutton "$per_npc[_pNPCId].gender" "m" autocheck>>阴茎</label>
+		</div>
+		<div class="settingsToggle">
+			阴茎大小 - 如果适用：
+			<br>
+			<<set _penisNames to ["", "小", "平均", "大", "粗大"]>> /* the empty first element is necessary because _j starts at 1 */
+			<span data-target="pernpc-npcidgender" data-disabledif="V.per_npc[T.pNPCId].gender==='f'">
+			<<for _j to 1; _j lt _penisNames.length; _j++>>
+				<label>
+					<<radiobutton "$per_npc[_pNPCId].penissize" _j autocheck>>
+					<<print _penisNames[_j]>>
+				</label>
+				<<if _j isnot _penisNames.length -1>>|<</if>>
+			<</for>>
+			</span>
+		</div>
+		<div class="settingsToggle" style="display: inline-flex;">
+			胸部尺寸：
+			<<numberslider "$per_npc[_pNPCId].breastsize" $per_npc[_pNPCId].breastsize 0 12 1>>
+			<<run settingsNamedNpcBreastSize(Util.slugify('$per_npc[_pNPCId].breastsize'), true)>>
+		</div>
+		<div class="settingsToggle">
+			肤色:
+			<br>
+			<label><<radiobutton "$per_npc[_pNPCId].skincolour" "white" autocheck>> 苍白</label> |
+			<label><<radiobutton "$per_npc[_pNPCId].skincolour" "black" autocheck>>深色肤色</label>
+		</div>
+	<</if>>
+	<div style="clear:both;"></div>
+<<run settingsDisableElement()>>
+<</widget>>
+
+<<widget "saveNameSection">>
+	<span class="gold bold">存档名: </span><i>(可选项)</i>
+	<br>
+	<<textbox "$saveName" $saveName>>
+	/*
+	<div class="description">Shows in the save menu in place of the save id.</div>
+	<div class="description"><span class="red">Only 10 characters at most will show in the save menu, leave empty to show the save ID.</span></div>
+	*/
+	<br>
+<</widget>>
+
+
+:: Settings [exitCheckBypass]
+<<settings>>
+
+:: Attitudes
+<<attitudes>>
+<<set $attitudesControl.showGoldLink to "false">>
+<br><br>
+<<link [[确认|$attitudesExitPassage]]>>
+	<<unset $attitudesExitPassage>>
+	<<run DefaultActions.save(T.defaultActions)>>
+	<<if $LIChanged>>
+		<<unset $LIChanged>>
+		<<set $stress += 2000>><<set $trauma += 600>>
+	<</if>>
+<</link>>
+<br>
