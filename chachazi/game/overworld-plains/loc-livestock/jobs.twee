@@ -186,12 +186,11 @@
 		<<link [[Next|Livestock Job Niki]]>><</link>>
 		<br>
 	<!---- 不是第一次做尼奇的工作，并且牛化等级四-->
-	<<elseif $cow gte 4 and $livestock_pig isnot undefined>>
+	<<elseif $cow gte 5 and $livestock_pig isnot undefined and $livestock_cowcam is undefined>>
 		<<endevent>><<beastNEWinit 1 pig>>
-		<<if $livestock_cowcam is undefined>>
 		    <<set $livestock_cowcam to 1>>室内一片昏暗。熟悉的垫子、灯光和相机都准备好了。尼奇在一边操作照相机。一只<<beasttype>>坐在前面，<<bhe>>正在一个干草捆旁边等着。
 			<br><br>
-			你看着<<bhe>>感觉<<if $deviancy gte 75>>非常兴奋<<else>>非常不适<<covered>><</if>>。
+			你看着<<bhe>>感觉非常<<if $deviancy gte 75>>兴奋<<else>>不适<</if>>。<<covered>>
 			<br><br>
 			<<endevent>><<npc Niki 1>><<npc Remy 2>><<person2>>雷米站在你的身边，<<him>>看着那只猪摩挲着下巴，然后低头看了看你。<<him>>似乎在思考着什么。
 			<br><br>
@@ -209,27 +208,24 @@
 			<br><br>
 			他们两个人交流了起来，没有人在意你的想法。
 			<br><br>
-			
 			<<link [[继续|Livestock Job Niki_change goon]]>><<pass 30>><</link>>
-			<br>
-		<<elseif $livestock_cowcam is 1 and $rng gte 30>>
-		    <<set $livestock_cowcam to 2>>室内一片昏暗。熟悉的布景板、灯光和相机都准备好了。尼奇在一旁操作照相机，一边的椅子上还放着你熟悉的那套奶牛装。门口守着好几个农场工人，防止你反抗逃跑。
-			<br><br>
-			墙上贴着你之前拍摄时留下的海报，看来雷米对你的这份工作很满意。雷米牵着你的皮带，带你走到了那个凳子旁边，示意你乖乖换上衣服。
-			<br><br>
-			<<endevent>><<npc Remy>><<person1>>"去吧，我的小农场代言人，像你以前表现的一样自己去穿上衣服，乖乖听话。"雷米说完后站在了一旁，显然<<him>>不会给你独处的空间。
-			<br><br>
-			<<endevent>>
-			<br><br>
-			<<link [[顺从|Livestock Job Niki_change obey]]>><<control 15>><<livestock_obey 5>><<npcincr Remy dom 1>><<npcincr Remy lust 1>><<transform cow 4>><<stress -12>><<awareness -20>><</link>><<ggobey>><<ggcontrol>><<llawareness>><<lstress>>
-			<br>
-			<<link [[反抗|Livestock Job Niki_change Struggle]]>><<livestock_obey -5>><<npcincr Remy love -2>><<npcincr Remy dom -2>><<stress 6>><</link>><<physiquedifficulty 1 $physiquemax>><<gstress>><<llobey>>
-			<br>
-			<<link [[乞求尼奇|Livestock Job Niki_change Plead]]>><<livestock_obey -1>><<npcincr Remy love -2>><<npcincr Remy dom -1>><<stress 6>><</link>><<lobey>><<gstress>>
-			<br>
-		<</if>>
+			<br>	
+		
+	<<elseif $livestock_cowcam is 1 and $rng gte 65>>
+		<<set $livestock_cowcam to 2>>室内一片昏暗。熟悉的布景板、灯光和相机都准备好了。尼奇在一旁操作照相机，一边的椅子上还放着你熟悉的那套奶牛装。门口守着好几个农场工人，防止你反抗逃跑。
 		<br><br>
-
+		墙上贴着你之前拍摄时留下的海报，看来雷米对你的这份工作很满意。雷米牵着你的皮带，带你走到了那个凳子旁边，示意你乖乖换上衣服。
+		<br><br>
+		<<endevent>><<npc Remy>><<person1>>"去吧，我的小农场代言人，像你以前表现的一样自己去穿上衣服，乖乖听话。"雷米说完后站在了一旁，显然<<him>>不会给你独处的空间。
+		<br><br>
+		<<endevent>>
+		<br><br>
+		<<link [[顺从|Livestock Job Niki_change obey]]>><<control 15>><<livestock_obey 5>><<npcincr Remy dom 1>><<npcincr Remy lust 1>><<transform cow 4>><<stress -12>><<awareness -20>><</link>><<ggobey>><<ggcontrol>><<llawareness>><<lstress>>
+		<br>
+		<<link [[反抗|Livestock Job Niki_change Struggle]]>><<livestock_obey -5>><<npcincr Remy love -2>><<npcincr Remy dom -2>><<stress 6>><</link>><<gstress>><<llobey>>
+		<br>
+		<<link [[乞求尼奇|Livestock Job Niki_change Plead]]>><<livestock_obey -1>><<npcincr Remy love -2>><<npcincr Remy dom -1>><<stress 6>><</link>><<lobey>><<gstress>>
+		<br>
 	<<elseif $livestock_pig is 1>>
 		<<set $livestock_pig to 2>>
 		<<endevent>><<beastNEWinit 1 pig>>
@@ -276,7 +272,7 @@
 <<effects>>
 <<unset $farm_phase>>
 <<npc Remy>><<person1>>
-雷米带你回到田野中。<<He>>停在外面，农场工人打开了大门。
+Remy leads you back to the field. <<He>> stops outside while the farmhands open the gate.
 <br><br>
 
 <<if $worn.face.type.includes("gag")>>
