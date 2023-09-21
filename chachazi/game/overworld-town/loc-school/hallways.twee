@@ -1,0 +1,175 @@
+:: Hallways
+<<set $outside to 0>><<set $location to "school">><<schooleffects>><<effects>>
+
+<<if !["early", "late", "earlynoschool", "latenoschool", "daynoschool"].includes($schoolstate)>>
+	<<if $schoolstate is "morning">>
+		You are in the school hallways. Students and faculty already move through the corridors,
+		<<if $cool lt 40>>
+			giving you a wide berth,
+		<</if>>
+		although school has not officially begun.
+		<br><br>
+	<<elseif $schoolstate is "afternoon">>
+		You are in the school hallways. Some students and faculty remain despite school finishing, as the facilities stay open for a couple of hours.
+		<br><br>
+	<<elseif $schoolstate is "lunch">>
+		You are in the school hallways. It is crowded with students on their lunch break.
+		<br><br>
+	<<else>>
+		You are in the school hallways. You hear speaking behind the various classroom doors.
+		<br><br>
+	<</if>>
+
+	<<if $exposed gte 1>>
+		You dart between storerooms, hide beneath stairwells and avoid popular areas to keep your <<lewdness>> hidden.
+		<br><br>
+	<</if>>
+<<else>>
+	The school hallways are empty.
+	<br><br>
+<</if>>
+
+<<if $arousal gte $arousalmax>>
+	<<orgasmLocation "schoolHallway">>
+<</if>>
+
+<<schoolperiodtext>>
+
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+
+<<if $forcedcrossdressingdisable is "t">><<unset $whitneyskirtmaths>><</if>>
+
+<<if $whitneypantiesmaths or $whitneyskirtmaths>>
+	<<if $whitneypantiesmaths is "seen">>
+		You've barely stepped into the hallway when <<npc Whitney>><<person1>>Whitney and <<his>> friends surround you. "You've been a bad <<girl>>," <<he>> grins. <<His>> friends look excited.
+		<<if $whitneypantiescheck is 1>>
+			"I said no <<if $player.gender_appearance is "f">>panties<<else>>underwear<</if>>, and I meant it. I'll have to take everything now."
+		<<elseif $whitneypantiescheck is 2>>
+			"I said you should wear panties, and I meant it. I'll have to take everything now."
+		<</if>>
+		<<if $forcedcrossdressingdisable is "t">>
+		<<elseif $whitneyskirtcheck is 1 and setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1 and $worn.lower.reveal gt 200>>
+			<<He>> sneers. "You're not even wearing a short skirt."
+		<<elseif $whitneyskirtcheck is 1 and setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt isnot 1>>
+			<<He>> sneers. "You're not even wearing a skirt."
+		<</if>>
+		<br><br>
+
+		<<link [[Let it happen|Bully Panties]]>><<trauma 6>><<stress 3>><<sub 1>><<npcincr Whitney dom 1>><</link>><<gtrauma>><<gstress>><<garousal>><<gdom>>
+		<br>
+		<<link [[Fight|Bully Panties Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+		<br>
+	<<elseif $whitneyskirtmaths>>
+		You've barely stepped into the hallway when <<npc Whitney>><<person1>>Whitney and <<his>> friends surround you. "You've been a bad <<girl>>," <<he>> grins. <<His>> friends look excited.
+
+		"Sluts don't dress like that. I said short skirts, and I meant it. I'll have to take everything now."
+		<br><br>
+
+		<<link [[Let it happen|Bully Panties]]>><<trauma 6>><<stress 3>><<sub 1>><<npcincr Whitney dom 1>><</link>><<gtrauma>><<gstress>><<garousal>><<gdom>>
+		<br>
+		<<link [[Fight|Bully Panties Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+		<br>
+	<<else>>
+		You've barely stepped into the hallway when <<npc Whitney>><<person1>>Whitney and <<his>> friends surround you. "I think you have something to hide," <<he>> says, smiling as <<he>> feels beneath your $worn.lower.name.
+		<br><br>
+
+		<<if $worn.under_lower.type.includes("naked") or ($whitneypantiescheck is 2 and $worn.under_lower.gender is "f")>>
+			"Hmm," <<he>> continues. "I guess you're a good <<girl>> after all. You should cooperate next time."
+			<br><br>
+
+			<<He>> and <<his>> friends saunter away.
+			<br><br>
+
+			<<endevent>>
+			<<link [[Next|Hallways]]>><<set $eventskip to 1>><</link>>
+			<br>
+		<<else>>
+			"Bad <<girl>>," Whitney chides, smiling. "I'll have to take everything now."
+			<br><br>
+
+			<<link [[Let it happen|Bully Panties]]>><<trauma 6>><<stress 3>><<sub 1>><<npcincr Whitney dom 1>><</link>><<gtrauma>><<gstress>><<garousal>><<gdom>>
+			<br>
+			<<link [[Fight|Bully Panties Fight]]>><<set $fightstart to 1>><<def 1>><<npcincr Whitney dom -1>><</link>><<ldom>>
+			<br>
+		<</if>>
+	<</if>>
+	<<unset $whitneypantiesmaths>>
+	<<unset $whitneyskirtmaths>>
+
+<<elseif $stress gte $stressmax>>
+<<link [[Everything fades to black...|School Passout]]>><</link>>
+
+<<elseif !["early", "late", "earlynoschool", "latenoschool", "daynoschool"].includes($schoolstate) and $danger gte (9900 - $allure) and $eventskip is 0>>
+	<<if $exposed gte 1>>
+		<<eventschoolhallwaysexposed>>
+	<<else>>
+		<<eventsschoolhallways>>
+	<</if>>
+
+/* 学校剧情 - 拍过牛牛广告后 */
+<<elseif !["early", "late", "earlynoschool", "latenoschool", "daynoschool"].includes($schoolstate) and $debug is 1>>
+    <<school_cow_recognition>>
+
+<<else>>
+	<<schoolperiod>>
+
+	<<if !["early", "late", "earlynoschool", "latenoschool", "daynoschool"].includes($schoolstate) and $exposed gte 1>>
+		<<schoolcourtyardicon>><<link [[Sneak to rear courtyard (0:05)|School Rear Courtyard]]>><<pass 5>><</link>>
+		<br>
+		<<swimmingicon>><<link [[Sneak to pool (0:03)|School Pool Entrance]]>><<pass 3>><</link>>
+		<br>
+		<<libraryicon>><<link [[Sneak to library (0:05)|School Library]]>><<pass 5>><</link>>
+		<br>
+		<<toileticon>><<link [[Sneak to toilets (0:05)|School Toilets]]>><<pass 5>><</link>>
+		<br>
+	<<else>>
+		<<if $schoolstate is "afternoon" and $detention gte 1 and $daily.school.detentionAttended isnot 1 and $pillory_tenant.special.name isnot "Leighton">>
+		<<headdeskicon>><<link [[Go to detention|School Detention]]>><</link>>
+		<br>
+			<<if $headdrive gte 1 and $headnodetention isnot 1 and $headmoney isnot 1 and $headphotoshoot isnot 1>>
+			<<link [[Blackmail Leighton|Head's Office Blackmail]]>><<npc Leighton>><<person1>><<set $phase to 1>><</link>><<crime>>
+			<br>
+			<</if>>
+		<br>
+		<</if>>
+
+		<<lockericon>><<link [[Lockers|School Lockers]]>><</link>>
+		<br><br>
+		Outside
+		<br>
+		<<exiticon>><<link [[Front courtyard (0:02)|School Front Courtyard]]>><<pass 2>><</link>>
+		<br>
+		<<schoolcourtyardicon>><<link [[Rear courtyard (0:02)|School Rear Courtyard]]>><<pass 2>><</link>>
+		<br><br>
+		Facilities
+		<br>
+		<<eaticon>><<link [[Canteen (0:01)|Canteen]]>><<pass 1>><</link>>
+		<br>
+		<<swimmingicon>><<link [[Pool (0:01)|School Pool Entrance]]>><<pass 1>><</link>>
+		<br>
+		<<libraryicon>><<link [[Library (0:02)|School Library]]>><<pass 2>><</link>>
+		<br>
+		<<if $schoolstate is "afternoon" and $detention gte 1 and $daily.school.detentionAttended isnot 1>>
+		<<else>>
+			<<headdeskicon>><<link [[Head's office (0:02)|Head's Office]]>><<pass 2>><</link>>
+			<br>
+		<</if>>
+		<<infirmaryicon>><<link [[Infirmary (0:02)|School Infirmary]]>><<pass 2>><<set $phase to 0>><</link>>
+		<br>
+		<<toileticon>><<link [[Toilets (0:02)|School Toilets]]>><<pass 2>><</link>>
+		<br><br>
+		Classrooms
+		<br>
+		<<scienceicon>><<link [[Science classroom (0:01)|Science Classroom]]>><<pass 1>><</link>>
+		<br>
+		<<mathicon>><<link [[Maths classroom (0:01)|Maths Classroom]]>><<pass 1>><</link>>
+		<br>
+		<<englishicon>><<link [[English classroom (0:01)|English Classroom]]>><<pass 1>><</link>>
+		<br>
+		<<historyicon>><<link [[History classroom (0:01)|History Classroom]]>><<pass 1>><</link>>
+		<br>
+	<</if>>
+<</if>>
+
+<<set $eventskip to 0>>
