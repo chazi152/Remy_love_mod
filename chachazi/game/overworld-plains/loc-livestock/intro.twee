@@ -1,0 +1,1590 @@
+:: Livestock Intro
+<<set $outside to 0>><<set $location to "farm">><<effects>>
+<<endevent>>
+<<npc Remy>><<person1>><<pain 1>>
+You are led through a pair of large doors.
+<<if Time.dayState is "night">>
+	Your eyes adjust to the dim light, and you find yourself facing another, larger barn. It's hard to tell in the dark, but you think you're on a farm.
+<<elseif Time.dayState is "dusk">>
+	Your eyes adjust to the dimming light, and you find yourself facing another, larger barn. Fields stretch in all other directions, up and over the surrounding hills. You're on a farm.
+<<elseif Time.dayState is "dawn">>
+	Your eyes adjust to the dim light, and you find yourself facing another, larger barn. Fields stretch in all other directions, up and over the surrounding hills. You're on a farm.
+<<else>>
+	You find yourself facing another, larger barn. Fields stretch in all other directions, up and over the surrounding hills. You're on a farm.
+<</if>>
+
+Your handler gives the leash a rough tug, and you're led inside.
+<br><br>
+<<set $livestock_robin to 1>>
+<<set $livestock_noise to false>>
+<<set $livestock_dig to 0>>
+<<if $livestock_intro is undefined>><<set $livestock_intro to 0>>
+	<<livestock_init>>
+	<<set $livestock_obey to 50>>
+	<!-- Modified for Monster People -->
+	<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+
+		Rows of caged cattle line the edge, eating cereal from troughs. It's only as you're pulled closer that you realise they aren't cows, but people with cow ears and tails. They eat from their troughs all the same, their feeding broken only by the occasional moo.
+		<br><br>
+
+		<<if $remy_seen is "riding_school">>
+			A <<if $pronoun is "m">>man with short, pale brown hair<<else>>woman with pale brown hair tied in a bun<</if>> tends to them. <<He>> turns to face you as you enter. It's Remy. <<He>> holds a whip in <<his>> gloved hand. <<He>> smiles, and <<his>> green eyes glimmer. There's not a flicker of recognition.
+			<br><br>
+		<<else>>
+			A <<if $pronoun is "m">>man with short, pale brown hair<<else>>woman with pale brown hair tied in a bun<</if>> tends to them. <<He>> turns to face you as you enter. <<He>> holds a whip in <<his>> gloved hand. <<He>> smiles, and <<his>> green eyes glimmer.
+			<br><br>
+		<</if>>
+
+		<<link [[Next|Livestock Intro 2]]>><</link>>
+		<br>
+	<<else>>
+
+		Rows of caged cows line each edge.
+
+		<<if $remy_seen is "riding_school" or $remy_seen is "farm">>
+			A <<if $pronoun is "m">>man with short, pale brown hair<<else>>woman with pale brown hair tied in a bun<</if>> tends to them. <<He>> turns to face you as you enter. It's Remy. There's a whip in <<his>> gloved hand. <<He>> smiles, and <<his>> green eyes glimmer. There's not a flicker of recoginition.
+			<br><br>
+		<<else>>
+			A <<if $pronoun is "m">>man with short, pale brown hair<<else>>woman with pale brown hair tied in a bun<</if>> tends to them. <<He>> turns to face you as you enter. <<He>> holds a whip in <<his>> gloved hand. <<He>> smiles, and <<his>> green eyes glimmer.
+			<br><br>
+		<</if>>
+
+		<<link [[Next|Livestock Intro 2]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<livestock_obey -10>>
+	<!-- Modified for Monster People -->
+	<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+
+		Rows of caged cattle line the edge, eating cereal from troughs. It's only as you're pulled closer that you realise they aren't cows, but people with cow ears and tails. They eat from their troughs all the same, their feeding broken only by the occasional moo.
+		<br><br>
+
+		<<if $livestock_obey lte 10>>
+			You expect to be placed in a cell right along with them. Instead, you're pulled forward, past the cages and through another set of doors.
+			<br><br>
+
+			"Don't you worry, you'll be back home in no time," your handler chuckles. "But the boss has got something special for you first."<<stress 6>><<gstress>>
+			<br><br>
+
+			<<link [[Next|Livestock Return Kennel]]>><<endevent>><</link>>
+			<br>
+		<<else>>
+			Remy the farmer tends to them. <<He>> turns to face you as you enter. <<He>> stretches <<his>> whip in <<his>> glove and <<his>> green eyes glimmer as <<he>> regards you.
+			<br><br>
+
+			<<link [[Next|Livestock Return]]>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+
+		Rows of caged cows line each edge.
+		<<if $livestock_obey lte 10>>
+			You expect to be placed in a cell right along with them. Instead, you're pulled forward, past the cages and through another set of doors.
+			<br><br>
+
+			"Don't you worry, you'll be back home in no time," your handler chuckles. "But the boss has got something special for you first."<<stress 6>><<gstress>>
+			<br><br>
+
+			<<link [[Next|Livestock Return Kennel]]>><<endevent>><</link>>
+			<br>
+		<<else>>
+			Remy the farmer tends to them. <<He>> turns to face you as you enter. <<He>> stretches <<his>> whip in <<his>> glove and <<his>> green eyes glimmer as <<he>> regards you.
+			<br><br>
+
+			<<link [[Next|Livestock Return]]>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<</if>>
+<<set $remy_seen to "livestock">>
+
+:: Livestock Return
+<<effects>>
+
+"哇哦，是你啊，"雷米说，<<his>>的黑色马靴每走一步，都会踩在撒在地板上的稻草上。
+<<if $livestockEscape is "birth">>
+	<<unset $livestockEscape>>
+	"我不太感激你被人从我们身边带走，生下那个孩子。但你没有多少选择的余地。"
+<<elseif $livestockEscape is "eden">>
+	"看看是谁回来了，这不是被偷猎者带走的小奶牛吗？看来那个混蛋没把你保护好啊……"
+
+<<else>>
+	"我们的小逃生大师回来了。"
+	<<lllobey>><<livestock_obey -10>>
+<</if>>
+<br><br>
+
+<<if $exposed lte 1 or $worn.head.name isnot "naked" or $worn.face.name isnot "naked" or $worn.legs.name isnot "naked" or $worn.feet.name isnot "naked" or $worn.hands.name isnot "naked" or $worn.over_upper.name isnot "naked" or $worn.over_lower.name isnot "naked" or $worn.over_head.name isnot "naked">>
+	<<He>> nods, and arms grasp your clothes from behind, <span class="lewd">tearing the fabric from your body.</span>
+	<br><br>
+	<<overheadruined>><<overupperruined>><<overlowerruined>><<upperruined>><<lowerruined>><<underupperruined>><<underruined>>
+	<<headruined>><<faceruined>><<legsruined>><<feetruined>><<handsruined>>
+<</if>>
+
+<<generate2>><<generate3>>
+"I'll take it from here," <<he>> continues, taking hold of your leash. <<He>> leads you into an adjoining room. A <<person2>><<person>> and <<person3>><<person>> are chatting inside. They fall silent as the doors open.
+<br><br>
+<<person1>>
+Without waiting for a command, they step forward and grasp both your arms before bending you over a hay bale. A firm push shunts you on top. The clanking of metal follows as <span class="lewd">your legs are forced into immobile iron shackles,</span> forcing you to stay on your knees. You feel <<his>> eyes on your <<bottom>> and <<genitals>>, and resist the urge to squirm.
+<<legbind>>
+<br><br>
+
+<<if $bodywritingLvl is 0>>
+
+	<<link [[Next|Livestock Return 3]]>><</link>>
+	<br>
+
+<<else>>
+	<<if $skin.left_bottom.special isnot "cattle">>
+
+		<<link [[Next|Livestock Return 2]]>><</link>>
+		<br>
+
+	<<else>>
+
+		<<link [[Next|Livestock Return 3]]>><</link>>
+		<br>
+
+	<</if>>
+<</if>>
+
+:: Livestock Return 2
+<<effects>>
+
+"Your cattle brand is gone," <<he>> tuts.
+
+<<if $skin.left_bottom.writing>>
+	You feel <<his>> hand on your <<bottom>>, spreading something on your skin. It feels like a gel. <span class="gold">Your <<tattoo left_bottom>> is cleared from your skin.</span>
+	<<bodywriting_clear left_bottom>>
+	<br><br>
+<</if>>
+You hear something heavy shift behind you. You struggle to peek over your shoulder. Remy holds something sharp, connected to a larger machine. <<He>> presses it against your <<bottom>>.
+<br><br>
+
+<<link [[Brace yourself (0:30)|Livestock Return Brace]]>><<transform cow 1>><<pass 30>><<trauma 18>><<stress 6>><<pain 6>><</link>><<ggtrauma>><<gstress>><<gpain>>
+<br>
+<<link [[Fantasise about revenge (0:30)|Livestock Return Fantasize]]>><<pass 30>><<trauma 6>><<stress 6>><<pain 12>><</link>><<gtrauma>><<gstress>><<gpain>>
+<br>
+
+:: Livestock Return Brace
+<<effects>>
+
+You close your eyes and brace yourself for the pain. The sensation stings, but there's nothing you can do but endure it.
+<br><br>
+
+Over time, though, you grow accustomed to the sting, and even a bit bored as it drags on. At last, Remy steps away from your <<bottom>> to examine <<his>> handiwork.
+<<add_bodywriting left_bottom cattle_brand tattoo>>
+<br><br>
+
+"Hopefully the ink won't fade this time," Remy says. "Or was it removed by poachers? No matter."
+<br><br>
+
+<<if $livestockReturnBranding>>
+	<<link [[Next|Livestock Return Cell]]>><<unset $livestockReturnBranding>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<link [[Next|Livestock Return 3]]>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Return Fantasize
+<<effects>>
+
+It stings. You wonder how these idiots would like this done to them, and think up humiliating designs for each of them. It helps, if only a little.
+<br><br>
+
+Over time, though, you grow accustomed to the sting, and even a bit bored as it drags on. At last, Remy steps away from your <<bottom>> to examine <<his>> handiwork.
+<<add_bodywriting left_bottom cattle_brand tattoo>>
+<br><br>
+
+"Hopefully the ink won't fade this time," Remy says. "Or was it removed by poachers? No matter."
+<br><br>
+
+<<if $livestockReturnBranding>>
+	<<link [[Next|Livestock Return Cell]]>><<unset $livestockReturnBranding>><<endevent>><</link>>
+	<br>
+<<else>>
+	<<link [[Next|Livestock Return 3]]>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Return 3
+<<effects>>
+
+"Despite all our care and attention," Remy says. "You defied us." You hear the snap of <<his>> glove as <<he>> tugs it back onto <<his>> hand. "Disobedience demands punishment."
+<br><br>
+
+<<His>> hands appear on either side of your head, holding leather straps attached to something metallic. <<He>> pulls it against your mouth, and ties the straps around the back of your head. It's a muzzle. <span class="purple">You can't move your mouth.</span> You hear another clank as a jangling iron collar shuts around your neck.<<facewear 23>><<headbind>><<set $livestock_muzzle to 1>>
+<<if $cow is 6>>
+	<<set $worn.neck.type.push("broken")>>
+	<<neckruined>>
+	<<neckwear 8>>
+<</if>>
+<br><br>
+
+<<saveNPC 1 "remy_farmhand_1">>
+<<saveNPC 2 "remy_farmhand_2">>
+<<endevent>>
+
+<<if random(1) and $horsedisable is "f">>
+	<<set _phase to 2>>
+	<<beastNEWinit 1 horse>>
+<<else>>
+	<<set _phase to 1>>
+	<<beastNEWinit 1 dog>>
+<</if>>
+
+<!-- Modified for Monster People -->
+<<if _phase is 2 and ($monster is 1 or $bestialitydisable is "f")>>
+	<<clearNPC "remy_farmhand_1">><<clearNPC "remy_farmhand_2">>
+	The doors open once more, and you hear the clomp of hooves alongside other footsteps. Remy walks into view,
+	<<if $monster is 1>>
+		holding a tall <<if $NPCList[0].pronoun is "f">>wo<</if>>man by a bridle tied around <<bhis>> face. A moment later you realise <<bhes>> only a <<if $NPCList[0].pronoun is "f">>wo<</if>>man above the waist. <span class="lewd">The rest of <<bhis>> body is that of a horse.</span>
+	<<else>>
+		holding a horse by a bridle tied around <<bhis>> face.
+	<</if>>
+	<br><br>
+
+	"Unlike you," Remy says, stroking the <<beasttypes>> hair. "This <<if $NPCList[0].pronoun is "m">>boy<<else>>girl<</if>> has been good. So your punishment is <<if $NPCList[0].pronoun is "m">>his<<else>>her<</if>> reward."
+	<<if $NPCList[0].penis isnot "none">>
+		More farmhands crouch on either side of you, ensuring that your legs are clamped firm<<if $monster is 1>>, but your eyes are transfixed on the centaur, and <<bhers>> on you. Unkempt and wild <<print $NPCList[0].hair>> hair tumbles around <<bhis>> head and over <<bhis>> <<if $NPCList[0].pronoun is "m">>toned chest<<else>>large breasts<</if>>, almost reaching <<bhis>> legs<</if>>.
+		<br><br>
+
+		Remy pulls <<bhim>> behind you and out of sight once more. You glimpse the <<beasttypes>> <span class="lewd">enormous penis</span> as <<bhe>> walks by, primed and erect.
+		<br><br>
+
+		The farmhands finish setting up a wooden support just as the <<beasttypes>> front legs appear either side of you. <<bHe>> rears up, resting them on the support. <span class="purple">You feel <<bhis>> penis rest against your skin.</span>
+	<<else>>
+		Two of the farmhands release your legs and neck, then spin you around<<if $monster is 1>>, but your eyes are transfixed on the centaur, and <<bhers>> on you. Unkempt and wild <<print $NPCList[0].hair>> hair tumbles around <<bhis>> head and over <<bhis>> <<if $NPCList[0].pronoun is "m">>toned chest<<else>>large breasts<</if>>, almost reaching <<bhis>> legs<</if>>.
+		<<unbind>>
+		<br><br>
+
+		Remy pulls <<bhim>> in front of you. You glimpse the <<beasttypes>> <span class="lewd">glistening pussy</span> as <<bhe>> walks by, wet and ready.
+		<br><br>
+
+		The farmhands finish setting up a wooden support just as the <<beasttypes>> body eclipses your view. <<bHe>> rears up, resting <<bhis>> legs on the support. <span class="purple"><<bHis>> pussy hovers above you.</span>
+	<</if>>
+	<br><br>
+
+	<<link [[Next|Livestock Return Horse Molestation]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<elseif _phase is 1 and ($monster is 1 or $bestialitydisable is "f")>>
+	<<clearNPC "remy_farmhand_1">><<clearNPC "remy_farmhand_2">>
+
+	The doors open once more, and you hear
+	<<if $monster is 1>>
+		a patter of bare feet alongside other footsteps. Remy walks into view, holding a naked <<if $NPCList[0].pronoun is "m">>boy<<else>>girl<</if>> by a lead. Dog ears tuft from <<bhis>> hair, and a tail wags behind <<bhim>>. <<bHe>> crawls on all-fours, and looks up at Remy with a happy expression.
+	<<else>>
+		several other footsteps. Remy walks into view, holding a dog by a lead.
+	<</if>>
+	<br><br>
+
+	"Unlike you," Remy says, stroking the <<beasttypes>> head. "This <<if $NPCList[0].pronoun is "m">>boy<<else>>girl<</if>> has been good. So your punishment is <<if $NPCList[0].pronoun is "m">>his<<else>>her<</if>> reward." Remy tugs the lead as other farmhands gather around you. Two of them release your legs and neck. You spin around just as the <<beasttype>> climbs on top of you.
+	<<unbind>>
+	<br><br>
+
+	<<link [[Next|Livestock Return Dog Molestation]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	<<endevent>><<npc Remy>>
+	<<loadNPC 1 "remy_farmhand_1">><<loadNPC 2 "remy_farmhand_2">>
+	<<clearNPC "remy_farmhand_1">><<clearNPC "remy_farmhand_2">>
+
+	You hear a whip crack behind you. It cracks again, this time inches from your face. "This hurts me, truly, but punish you I must." The <<person2>><<person>> and <<person3>><<person>> look ready to enjoy the show.<<person1>>
+	<br><br>
+
+	<<link [[Beg|Livestock Return Whip Beg]]>><<transform cow 1>><<sub 1>><</link>>
+	<br>
+	<<link [[Brace yourself (0:05)|Livestock Return Whip Brace]]>><<pass 5>><</link>>
+	<br>
+<</if>>
+
+/* <<if ($monsterchance gte random(1, 100) and ($hallucinations gte 1 or $monsterhallucinations is "f") or $bestialitydisable is "f") and $horsedisable is "f">>
+	<<if maleChance() lt random(1, 100)>>
+		<<if $dgchance gte 1>>
+			The doors open once more, and you hear the clomp of hooves alongside other footsteps. Remy walks into view, holding a tall woman by a bridle tied around her face. A moment later you realise she's only a woman above the waist. <span class="lewd">The rest of her body is that of a horse.</span>
+			<br><br>
+			"Unlike you," Remy says, stroking the centaur's hair. "This girl has been good. So your punishment is her reward." More farmhands crouch on either side of you, ensuring that your legs are clamped firm, but your eyes are transfixed on the centaur, and hers on you. Unkempt and wild brown hair tumbles around her head and over her large breasts, almost reaching her legs.
+			<br><br>
+			Remy pulls her behind you and out of sight once more. You glimpse the centaur's <span class="lewd">enormous penis</span> as she walks by, primed and erect.
+			<br><br>
+			The farmhands finish setting up a wooden support just as the centaur's front legs appear either side of you. She rears up, resting them on the support. <span class="purple">You feel her penis rest against your skin.</span>
+			<br><br>
+			<<endevent>>
+			<<link [[Next|Livestock Return Female Centaur Rape]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<<elseif random(1, 2) is 2>>
+			The doors open once more, and you hear the clomp of hooves alongside other footsteps. Remy walks into view, holding a tall woman by a bridle tied around her face. A moment later you realise she's only a woman above the waist. <span class="lewd">The rest of her body is that of a horse.</span>
+			<br><br>
+			"Unlike you," Remy says, stroking the centaur's hair. "This girl has been good. So your punishment is her reward." Two of the farmhands release your legs and neck, then spin you around,<<unbind>> but your eyes are transfixed on the centaur, and hers on you. Unkempt and wild brown hair tumbles around her head and over her large breasts, almost reaching her legs.
+			<br><br>
+			Remy pulls her in front of you. You glimpse the centaur's <span class="lewd">glistening pussy</span> as she walks by, wet and ready.
+			<br><br>
+			She rears up, resting them on the support. <span class="purple">Her pussy hovers above you.</span>
+			<br><br>
+			<<endevent>>
+			<<link [[Next|Livestock Return Female Centaur Vagina Rape]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<<else>>
+			The doors open once more, and you hear a patter of bare feet alongside other footsteps. Remy walks into view, holding a naked girl by a lead. Dog ears tuft from her hair, and a tail wags behind her. She crawls on all-fours, and looks up at Remy with a happy expression.
+			<br><br>
+			"Unlike you, Remy says, stroking the doggirl's hair. "This girl has been good. So your punishment is her reward." Remy tugs the lead as other farmhands gather around you. Two of them release your legs and neck. You spin around just as the doggirl climbs on top of you.<<unbind>>
+			<br><br>
+			<<endevent>>
+			<<link [[Next|Livestock Return Dog Girl Rape]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<</if>>
+	<<elseif $cbchance lt 100>>
+			The doors open once more, and you hear the clomp of hooves alongside other footsteps. Remy walks into view, holding a tall man by a bridle tied around his face. A moment later you realise he's only a man above the waist. <span class="lewd">The rest of his body is that of a horse.</span>
+			<br><br>
+			"Unlike you," Remy says, stroking the centaur's hair. "This boy has been good. So your punishment is his reward." More farmhands crouch on either side of you, ensuring that your legs are clamped firm, but your eyes are transfixed on the centaur, and his on you. Unkempt and wild brown hair tumbles around his head and over his toned chest, almost reaching his legs.
+			<br><br>
+			Remy pulls him behind you and out of sight once more. You glimpse the centaur's <span class="lewd">enormous penis</span> as he walks by, primed and erect.
+			<br><br>
+			The farmhands finish setting up a wooden support just as the centaur's front legs appear either side of you. He rears up, resting them on the support. <span class="purple">You feel his penis rest against your skin.</span>
+			<br><br>
+			<<endevent>>
+			<<link [[Next|Livestock Return Male Centaur Rape]]>><<set $molestationstart to 1>><</link>>
+			<br>
+	<<elseif $cbchance gte 1 and random(1, 2) is 2>>
+			The doors open once more, and you hear the clomp of hooves alongside other footsteps. Remy walks into view, holding a tall man by a bridle tied around his face. A moment later you realise he's only a man above the waist. <span class="lewd">The rest of his body is that of a horse.</span>
+			<br><br>
+			"Unlike you," Remy says, stroking the centaur's hair. "This boy has been good. So your punishment is his reward." Two of the farmhands release your legs and neck, then spin you around,<<unbind>> but your eyes are transfixed on the centaur, and his on you. Unkempt and wild brown hair tumbles around his head and over his toned chest, almost reaching his legs.
+			<br><br>
+			Remy pulls him in front of you. You glimpse the centaur's <span class="lewd">glistening pussy</span> as he walks by, wet and ready.
+			<br><br>
+			He rears up, resting them on the support. <span class="purple">His pussy hovers above you.</span>
+			<br><br>
+			<<endevent>>
+			<<link [[Next|Livestock Return Male Centaur Vagina Rape]]>><<set $molestationstart to 1>><</link>>
+			<br>
+	<<else>>
+		You hear a whip crack behind you. It cracks again, this time inches from your face. "This hurts me, truly, but punish you I must." The <<person2>><<person>> and <<person3>> look ready to enjoy the show.<<person1>>
+		<br><br>
+
+		<<link [[Beg|Livestock Return Whip Beg]]>><<transform cow 1>><<sub 1>><</link>>
+		<br>
+		<<link [[Brace yourself (0:05)|Livestock Return Whip Brace]]>><<pass 5>><</link>>
+		<br>
+	<</if>>
+<<elseif $bestialitydisable is "f">>
+	<<if beastMaleChance() gte 1 and $horsedisable is "f">>
+		The doors open once more, and you hear the clomp of hooves alongside other footsteps. Remy walks into view, holding a horse by a bridle tied around its face.
+		<br><br>
+		"Unlike you," Remy says, stroking the horse. "This boy has been good. So your punishment is his reward." More farmhands crouch on either side of you, ensuring that your legs are clamped firm.
+		<br><br>
+		Remy pulls the horse behind you and out of sight once more. You glimpse its <span class="lewd">enormous penis</span> as it walks by, primed and erect.
+		<br><br>
+		The farmhands finish setting up a wooden support just as the horse's front legs appear either side of you. It rears up, resting them on the support. <span class="purple">You feel its penis rest against your skin.</span>
+		<br><br>
+		<<endevent>>
+		<<link [[Next|Livestock Return Horse Rape]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<elseif random(1, 2) is 2 and $horsedisable is "f">>
+		The doors open once more, and you hear the clomp of hooves alongside other footsteps. Remy walks into view, holding a horse by a bridle tied around its face.
+		<br><br>
+		"Unlike you," Remy says, stroking the horse. "This girl has been good. So your punishment is her reward." Two of the farmhands release your legs and neck, then spin you around.<<unbind>>
+		<br><br>
+		Remy pulls the horse in front of you. You glimpse its <span class="lewd">glistening pussy</span> as it walks by, wet and ready.
+		<br><br>
+		The horse rears up, resting them on the support. <span class="purple">Its pussy hovers above you.</span>
+		<br><br>
+		<<endevent>>
+		<<link [[Next|Livestock Return Horse Female Rape]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<else>>
+		The doors open once more, and you hear several other footsteps. Remy walks into view, holding a dog by a lead.
+		<br><br>
+		"Unlike you, Remy says, stroking the dog's head. "This bitch has been good. So your punishment is her reward." Remy tugs the lead as other farmhands gather around you. Two of them release your legs and neck. You spin around just as the dog climbs on top of you.<<unbind>>
+		<br><br>
+		<<endevent>>
+		<<link [[Next|Livestock Return Dog Rape]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	You hear a whip crack behind you. It cracks again, this time inches from your face. "This hurts me, truly, but punish you I must." The <<person2>><<person>> and <<person3>> look ready to enjoy the show.<<person1>>
+	<br><br>
+
+	<<link [[Beg|Livestock Return Whip Beg]]>><<transform cow 1>><<sub 1>><</link>>
+	<br>
+	<<link [[Brace yourself (0:05)|Livestock Return Whip Brace]]>><<pass 5>><</link>>
+	<br>
+<</if>> */
+
+:: Livestock Return Horse Molestation
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<set $NPCList[0].stance to "top">>
+	<<if $NPCList[0].penis isnot "none">>
+		<<set $position to "wall">>
+		<<set $walltype to "horse_pillory">>
+	<<else>>
+		<<set $position to "missionary">>
+		<<set $position_lock to 1>>
+	<</if>>
+	<<prop haybale>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Livestock Return Horse Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Livestock Return Horse Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Return Horse Molestation Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+
+	The audience hoots with laughter as the <<beasttype>> backs away from you.
+	<<if $NPCList[0].penis isnot "none">>
+		Semen still trails from <<bhis>> enormous phallus, pooling on the floor beneath <<bhim>>.
+	<</if>>
+	A farmhand takes <<bhim>> by the bridle and pulls <<bhim>> from the room.
+<<else>>
+	<<if $monster is 1>>
+		The centaur backs away from you. "I-I'm just not in the mood," <<bhe>> stutters, trying to save face.
+	<<else>>
+		The horse backs away from you with a panicked neigh.
+	<</if>>
+	The farmhands enjoyed the show regardless. One of them takes the <<beasttype>> by the bridle and leads <<bhim>> from the room.
+<</if>>
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+<br>
+
+:: Livestock Return Dog Molestation
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Livestock Return Dog Molestation Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Livestock Return Dog Molestation]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Return Dog Molestation Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+
+	<<if $monster is 1>>
+		The <<beasttype>> collapses on top of you. It takes a couple of farmhands to pull <<bhim>> off. They lead <<bhim>> from the room.
+	<<else>>
+		One of the farmhands helps the dog off the hay bale, and leads it from the room.
+	<</if>>
+<<else>>
+	The <<beasttype>> whimpers and tumbles off the hay bale. The farmhands find it amusing. One of them leads <<bhim>> from the room.
+<</if>>
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+<br>
+
+:: Livestock Return Female Centaur Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+
+	<<beastNEWinit 1 horse f penis monster>>
+	<<beastCombatInit>>
+	<<set $NPCList[_n].stance to "top">>
+	<<set $position to "wall">>
+	<<set $walltype to "horse_pillory">>
+	<<prop haybale>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Livestock Return Female Centaur Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Livestock Return Female Centaur Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Return Female Centaur Rape Finish
+
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+<<beastejaculation>>
+
+The audience hoots with laughter as the centaur backs away from you. Semen still trails from her enormous phallus, pooling on the floor beneath her. A farmhand takes her by the bridle and pulls her from the room.
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+
+<<else>>
+
+The centaur backs away from you. "I-I'm just not in the mood," she stutters, trying to save face. The farmhands enjoyed the show regardless. One of them takes the centaur by the bridle and leads her from the room.
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+
+<</if>>
+
+:: Livestock Return Female Centaur Vagina Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastNEWinit 1 horse f vagina monster>>
+	<<beastCombatInit>>
+	<<set $NPCList[_n].stance to "top">><<set $position to "missionary">><<set $position_lock to 1>><<prop haybale>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Livestock Return Female Centaur Vagina Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Livestock Return Female Centaur Vagina Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Return Female Centaur Vagina Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+<<beastejaculation>>
+
+The audience hoot with laughter as the centaur backs away from you. A farmhand takes her by the bridle and pulls her from the room.
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+
+<<else>>
+
+The centaur backs away from you. "I-I'm just not in the mood," she stutters, trying to save face. The farmhands enjoyed the show regardless. One of them takes the centaur by the bridle and leads her from the room.
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+
+<</if>>
+
+:: Livestock Return Male Centaur Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+
+	<<beastNEWinit 1 horse m penis monster>>
+	<<beastCombatInit>>
+	<<set $NPCList[_n].stance to "top">>
+	<<set $position to "wall">>
+	<<set $walltype to "horse_pillory">>
+	<<prop haybale>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Livestock Return Male Centaur Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Livestock Return Male Centaur Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Return Male Centaur Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+<<beastejaculation>>
+
+The audience hoot with laughter as the centaur backs away from you. Semen still trails from his enormous phallus, pooling on the floor beneath him. A farmhand takes him by the bridle and pulls him from the room.
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+<<else>>
+
+The centaur backs away from you. "I-I'm just not in the mood," he stutters, trying to save face. The farmhands enjoyed the show regardless. One of them takes the centaur by the bridle and leads him from the room.
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+
+<</if>>
+
+:: Livestock Return Male Centaur Vagina Rape
+<<if $molestationstart is 1>>
+<<set $molestationstart to 0>>
+<<controlloss>>
+<<violence 1>>
+<<neutral 1>>
+<<molested>>
+<<beastNEWinit 1 horse m vagina monster>>
+	<<beastCombatInit>>
+<<set $NPCList[_n].stance to "top">><<set $position to "missionary">><<set $position_lock to 1>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Livestock Return Male Centaur Vagina Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Livestock Return Male Centaur Vagina Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Return Male Centaur Vagina Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+<<beastejaculation>>
+
+The audience hoot with laughter as the centaur backs away from you. A farmhand takes him by the bridle and pulls him from the room.
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+<<else>>
+
+The centaur backs away from you. "I-I'm just not in the mood," he stutters, trying to save face. The farmhands enjoyed the show regardless. One of them takes the centaur by the bridle and leads him from the room.
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+
+<</if>>
+
+:: Livestock Return Horse Rape
+<<if $molestationstart is 1>>
+<<set $molestationstart to 0>>
+<<controlloss>>
+<<violence 1>>
+<<neutral 1>>
+<<molested>>
+<<beastNEWinit 1 horse m penis beast>>
+	<<beastCombatInit>>
+<<set $NPCList[_n].stance to "top">>
+<<set $position to "wall">>
+<<set $walltype to "horse_pillory">>
+<<prop haybale>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Livestock Return Horse Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Livestock Return Horse Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Return Horse Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+<<beastejaculation>>
+
+The audience hoot with laughter as the horse backs away from you. Semen still trails from its enormous phallus, pooling on the floor beneath it. A farmhand takes it by the bridle and pulls it from the room.
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+
+<<else>>
+
+The horse backs away from you with a panicked neigh. The farmhands enjoyed the show regardless. One of them takes the horse by the bridle and leads it from the room.
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+
+<</if>>
+
+:: Livestock Return Horse Female Rape
+<<if $molestationstart is 1>>
+<<set $molestationstart to 0>>
+<<controlloss>>
+<<violence 1>>
+<<neutral 1>>
+<<molested>>
+<<beastNEWinit 1 horse m vagina beast>>
+	<<beastCombatInit>>
+<<set $NPCList[_n].stance to "top">><<set $position to "missionary">><<set $position_lock to 1>><<prop haybale>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Livestock Return Horse Female Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Livestock Return Horse Female Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Return Horse Female Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+<<beastejaculation>>
+
+The audience hoot with laughter as the horse backs away from you. A farmhand takes it by the bridle and pulls it from the room.
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+
+<<else>>
+
+The horse backs away from you with a panicked neigh. The farmhands enjoyed the show regardless. One of them takes the horse by the bridle and leads it from the room.
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+
+<</if>>
+
+:: Livestock Return Dog Girl Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastNEWinit 1 dog f vagina monster>>
+	<<beastCombatInit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Livestock Return Dog Girl Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Livestock Return Dog Girl Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Return Dog Girl Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+<<beastejaculation>>
+
+The doggirl collapses on top of you. It takes a couple of farmhands to pull her off. They lead her from the room.
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+
+<<else>>
+
+The doggirl whimpers and tumbles off the hay bale. The farmhands find it amusing. One of them leads her from the room.
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+
+<</if>>
+
+:: Livestock Return Dog Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastNEWinit 1 dog f vagina beast>>
+	<<beastCombatInit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br><br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Livestock Return Dog Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Livestock Return Dog Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Return Dog Rape Finish
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+<<beastejaculation>>
+
+One of the farmhands helps the dog off the hay bale, and leads it from the room.
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+
+<<else>>
+
+The dog whimpers and tumbles from the hay bale. The farmhands find it amusing. One of them leads the dog from the room.
+<br><br>
+
+Other farmhands release the bindings around your face and neck as Remy grasps your collar. <<tearful>> you're pulled to your feet. You're led through the doors yourself.
+<br><br>
+
+<<clotheson>>
+<<endcombat>>
+
+<<link [[Next|Livestock Return Cell]]>><</link>>
+<</if>>
+
+:: Livestock Return Cell
+<<effects>>
+<<npc Remy>><<person1>>
+<!-- Modified for Monster People -->
+<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+	Remy leads you halfway down the bar, past dozens of "cows" in their stalls.
+<<else>>
+	Remy leads you halfway down the barn, past dozens of cows in their stalls.
+<</if>>
+<<He>> stops beside one. It's empty.
+<br><br>
+
+"This time," <<he>> says, opening the gate. "You had better be a good <<girl>>." <<He>> holds your leash close to your neck, pulling you past <<him>> and into the cage. <<He>> shuts the gate behind you.
+<br><br>
+
+<<link [[Next|Livestock Cell]]>><<endevent>><</link>>
+<br>
+
+:: Livestock Return Whip Beg
+<<effects>>
+
+<<if $worn.face.type.includes("gag")>>
+	You try to speak, but the $worn.face.name renders your words unintelligible. You settle for a <<if $speech_attitude is "bratty">>growl<<else>>whimper<</if>>.
+<<elseif $speech_attitude is "meek">>
+	"P-please no," you whimper. "I'll be good. I'll be good!"
+<<elseif $speech_attitude is "bratty">>
+	"I'll do what you want, psycho," you say. "Put the fucking whip down."
+<<else>>
+	"I'll be good," you say. "Just don't hurt me."
+<</if>>
+<br><br>
+
+<<if $livestock_obey gte 80>>
+
+Remy cracks the whip again. "Are those whining noises I hear?" <<he>> says. "You were such a good <<girl>>, shame you had to ruin it by running away. And yet," the <<person2>><<person>> and <<person3>><<person>> untie your bindings. "Your prior obedience should count for something. Fine."<<unbind>>
+<br><br>
+
+Remy grasps your collar, and leads you back to the barn proper. You're led to the same cell as before. <<He>> holds the leash close to your collar, and guides you inside, before the door clanks shut.
+<br><br>
+
+<<endevent>>
+<<link [[Next|Livestock Cell]]>><</link>>
+<br>
+
+<<else>>
+
+	Remy cracks the whip again. "Are those whining noises I hear?" <<he>> says. "I'm not interested in your bleating." The whip bites into the unprotected skin of your <<bottom>>, sending an unbearable jolt of pain up your body.
+
+	<<if $masochism_level gte 4>>
+		You cry out, but more in pleasure than pain. The <<person2>><<person>> and <<person3>><<person>> grin as they watch.
+		<<gggpain>><<pain 20>>
+		<br><br>
+		Again and again Remy's whip strikes your skin, each blow pushing you closer to the edge.
+		<<if $arousal gte $arousalmax>>
+			The last strike is too much. Your body trembles in response.
+			<<orgasm>>
+			<br><br>
+
+			The <<person2>><<person>> and <<person3>><<person>> look at each other, astonished at your response. If Remy is disappointed however, <<person1>><<he>> doesn't show it.
+			<br><br>
+		<</if>>
+	<<elseif $masochism_level gte 1>>
+		You cry out, but there's pleasure mixed with the pain. The <<person2>><<person>> and <<person3>><<person>> grin as they watch.
+		<<gggpain>><<pain 20>>
+		<br><br>
+		Again and again Remy's whip strikes your skin, each blow pushing you closer to the edge.
+		<<if $arousal gte $arousalmax>>
+			The last strike is too much. Your body trembles in response.
+			<<orgasm>>
+			<br><br>
+
+			The <<person2>><<person>> and <<person3>><<person>> look at each other, astonished at your response. If Remy is disappointed however, <<person1>><<he>> doesn't show it.
+			<br><br>
+		<</if>>
+
+	<<else>>
+		You cry out. The <<person2>><<person>> and <<person3>><<person>> grin as they watch. Again and again Remy's whip strikes your skin, each blow eliciting an involuntary cry of pain.
+		<<gggpain>><<pain 20>>
+		<br><br>
+	<</if>>
+
+	Remy grasps your collar, and leads you back to the barn proper. You're led to the same cell as before. <<He>> holds the leash close to your collar and guides you inside. The door clanks shut.
+	<br><br>
+
+	<<endevent>>
+	<<link [[Next|Livestock Cell]]>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Return Whip Brace
+<<effects>>
+
+You brace yourself for the blow, but little could prepare you for the ordeal. The whip bites into the unprotected skin of your <<bottom>>, sending an unbearable jolt of pain up your body.
+
+<<if $masochism_level gte 4>>
+	You cry out, but more in pleasure than pain. The <<person2>><<person>> and <<person3>><<person>> grin as they watch.
+	<<gggpain>><<pain 20>>
+	<br><br>
+	Again and again Remy's whip strikes your skin, each blow pushing you closer to the edge.
+	<<if $arousal gte $arousalmax>>
+		The last strike is too much. Your body trembles in response.
+		<<orgasm>>
+		<br><br>
+
+		The <<person2>><<person>> and <<person3>><<person>> look at each other, astonished at your response. If Remy is disappointed however, <<person1>><<he>> doesn't show it.
+		<br><br>
+	<</if>>
+<<elseif $masochism_level gte 1>>
+	You cry out, but there's pleasure mixed with the pain. The <<person2>><<person>> and <<person3>><<person>> grin as they watch.
+	<<gggpain>><<pain 20>>
+	<br><br>
+	Again and again Remy's whip strikes your skin, each blow pushing you closer to the edge.
+	<<if $arousal gte $arousalmax>>
+		The last strike is too much. Your body trembles in response.
+		<<orgasm>>
+		<br><br>
+
+		The <<person2>><<person>> and <<person3>><<person>> look at each other, astonished at your response. If Remy is disappointed however, <<person1>><<he>> doesn't show it.
+		<br><br>
+	<</if>>
+
+<<else>>
+	You cry out in pain. The <<person2>><<person>> and <<person3>><<person>> grin as they watch. Again and again Remy's whip strikes your skin, each blow eliciting an involuntary cry of pain.
+	<<gggpain>><<pain 20>>
+	<br><br>
+<</if>>
+
+Remy grasps your collar, and leads you back to the barn proper. You're led to the same cell as before. <<He>> holds the leash close to your collar and guides you inside. The door clanks shut.
+<br><br>
+
+<<endevent>>
+<<link [[Next|Livestock Cell]]>><</link>>
+<br>
+
+:: Livestock Intro 2
+<<effects>>
+
+"Remy," a voice says behind you. "Got something new for you."
+<br><br>
+
+"That so?" Remy says. <<He>> tugs the leather glove off one hand as <<he>> walks closer, <<his>> black riding boots clapping against the barn floor. "New cattle. Good."
+<br><br>
+
+<<link [[Protest|Livestock Intro 3]]>><<set $phase to 1>><<def 1>><</link>>
+<br>
+<<link [[Remain silent|Livestock Intro 3]]>><<transform cow 1>><<set $phase to 0>><<sub 1>><</link>>
+<br>
+
+:: Livestock Intro 3
+<<effects>>
+
+<<if $phase is 1>><<set $phase to 0>>
+	<<if $worn.face.type.includes("gag")>>
+		You try to protest, but your $worn.face.name renders your words unintelligible. You settle for a <<if $speech_attitude is "bratty">>growl<<else>>whimper<</if>>
+	<<elseif $speech_attitude is "meek">>
+		"P-please let me go," you protest.
+	<<elseif $speech_attitude is "bratty">>
+		"Let me go at once," you demand.
+	<<else>>
+		"I'm not livestock," you protest. "Let me go."
+	<</if>>
+You're ignored.
+<</if>>
+
+The <<personsimple>>, now closer, grasps your chin and holds your head to the side. <<He>> examines one cheek, then the other. <<He>> sticks <<his>> fingers between your lips and tries to open your mouth.
+<br><br>
+
+<<link [[Allow|Livestock Intro Allow]]>><<transform cow 1>><<sub 1>><<livestock_obey 1>><<npcincr Remy love 1>><<npcincr Remy dom 1>><</link>><<gobey>>
+<br>
+<<link [[Chomp|Livestock Intro Chomp]]>><<def 1>><<livestock_obey -20>><<npcincr Remy love -1>><<npcincr Remy dom -1>><</link>><<lllobey>>
+<br>
+
+:: Livestock Intro Allow
+<<effects>>
+
+You open your mouth wider, allowing the <<personsimple>>'s fingers to explore as they will. <<He>> grasps your tongue between thumb and forefinger, and gives it a gentle tug. <<He>> seems satisfied as <<he>> steps away.
+<br><br>
+
+"I'll process it and add it to the herd," <<he>> says, taking your leash. "It seems docile enough."
+<br><br>
+
+<<if $exposed lte 1 or $worn.head.name isnot "naked" or $worn.face.name isnot "naked" or $worn.legs.name isnot "naked" or $worn.feet.name isnot "naked" or $worn.hands.name isnot "naked" or $worn.over_upper.name isnot "naked" or $worn.over_lower.name isnot "naked" or $worn.over_head.name isnot "naked">>
+	Hands intrude from behind, grasping your clothes, <span class="red">they tear the fabric from your body.</span>
+	<<overheadruined>><<overupperruined>><<overlowerruined>><<upperruined>><<lowerruined>><<underupperruined>><<underruined>>
+	<<headruined>><<faceruined>><<legsruined>><<feetruined>><<handsruined>>
+	<<if !playerChastity("hidden")>>
+		<<push_nnpc_genderknown true>>
+	<</if>>
+	<br><br>
+<</if>>
+
+<<link [[Next|Livestock Intro Light]]>><</link>>
+<br>
+
+:: Livestock Intro Chomp
+<<effects>>
+
+You bite down. Hard. <<His>> eyes flash and <<he>> withdraws, but <<he>> doesn't cry out. <<if $transformationParts.traits.fangs isnot "disabled">><span class="red">You can taste <<his>> blood.</span><<ltrauma>><<trauma -6>><</if>>
+<br><br>
+
+<<He>> takes hold of your leash. "I'll process it," <<he>> says with relish. "We'll have another docile member of the herd within a week."
+<br><br>
+
+<<if $exposed lte 1 or $worn.head.name isnot "naked" or $worn.face.name isnot "naked" or $worn.legs.name isnot "naked" or $worn.feet.name isnot "naked" or $worn.hands.name isnot "naked" or $worn.over_upper.name isnot "naked" or $worn.over_lower.name isnot "naked" or $worn.over_head.name isnot "naked">>
+	Hands intrude from behind, grasping your clothes, <span class="red">they tear the fabric from your body.</span>
+	<<overheadruined>><<overupperruined>><<overlowerruined>><<upperruined>><<lowerruined>><<underupperruined>><<underruined>>
+	<<headruined>><<faceruined>><<legsruined>><<feetruined>><<handsruined>>
+	<<if !playerChastity("hidden")>>
+		<<push_nnpc_genderknown true>>
+	<</if>>
+	<br><br>
+<</if>>
+
+<<link [[Next|Livestock Intro Heavy]]>><</link>>
+<br>
+
+:: Livestock Intro Light
+<<effects>>
+
+<<generate2>><<generate3>>
+
+<<covered>> Remy takes your leash, and leads you into a small adjoining room. A <<person2>><<person>> and <<person3>><<person>> are chatting inside. They fall silent as the doors open.
+<br><br>
+<<person1>>
+Without waiting for a command, they step forward and grasp both your arms before bending you over a hay bale. A firm push shunts you on top. The clanking of metal follows as <span class="lewd">your legs are forced into immobile iron shackles,</span> forcing you to stay on your knees. You feel <<his>> eyes on your <<bottom>> and <<genitals>>, and resist the urge to squirm.
+<<legbind>>
+<br><br>
+
+You jump as <<he>> rests a cold finger against your ass cheek. <<He>> trails <<his>> finger up your body, eliciting a shiver, until <<his>> hand comes to rest on the small of your back. <<He>> leans closer, until you feel <<his>> breath on your ear. "I know you're frightened," <<he>> whispers, as <<he>> clamps an iron collar around your neck.
+<<if playerBellyVisible()>>
+	<<He>> runs a finger over your belly. "You're going to be very productive. You don't need to worry about anything, I promise to keep you safe and sound."
+<<else>>
+	"But you're going to be safe and productive here. I promise.<<if $player.vaginaExist>> If needed, maybe we could help you in different ways.<</if>>"
+<</if>>
+<<headbind>>
+<<if $cow is 6>>
+	<<set $worn.neck.type.push("broken")>>
+	<<neckruined>>
+	<<neckwear 8>>
+<</if>>
+<br><br>
+
+<<if $bodywritingLvl gte 3>>
+	<<link [[Next|Livestock Intro Light Brand]]>><</link>>
+	<br>
+<<else>>
+	<<He>> pulls away, and the pair up front release your arms. With another tug, Remy leads you through the door and back into the main barn.
+	<br><br>
+	<<link [[Next|Livestock Intro Light Cell]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Intro Light Brand
+<<effects>>
+
+At Remy's nod, the <<person2>><<person>> and <<person3>><<person>> pull cables out from beneath the table, and tie them around your wrists. "This won't take long," Remy says behind you, <<person1>><<his>> voice cold yet assuring. "We just need to make sure we can find you again should you get lost."
+<br><br>
+
+<<if $skin.left_bottom.writing>>
+	<<His>> hand touches your <<bottom>> once more, but it's warm this time. <<He>> spreads something on your skin. It feels like a gel. <span class="gold">Your <<tattoo left_bottom>> is cleared from your skin.</span>
+	<<bodywriting_clear left_bottom>>
+	<br><br>
+<</if>>
+
+You hear something heavy shift behind you. You struggle to peek over your shoulder. Remy holds something sharp, connected to a larger machine. <<He>> presses it against your <<bottom>>.
+<br><br>
+
+<<link [[Brace yourself (0:30)|Livestock Intro Light Brace]]>><<transform cow 1>><<pass 30>><<trauma 18>><<stress 6>><<pain 6>><</link>><<ggtrauma>><<gstress>><<gpain>>
+<br>
+<<link [[Fantasise about revenge (0:30)|Livestock Intro Light Fantasize]]>><<pass 30>><<trauma 6>><<stress 6>><<pain 12>><</link>><<gtrauma>><<gstress>><<gpain>>
+<br>
+
+:: Livestock Intro Light Brace
+<<effects>>
+
+You close your eyes and brace yourself for the pain. The sensation stings, but there's nothing you can do but endure it.
+<br><br>
+
+Over time, though, you grow accustomed to the sting, and even a bit bored as it drags on. At last, Remy steps away from your <<bottom>> to examine <<his>> handiwork. You wonder what it looks like.
+<br><br>
+
+The <<person2>><<person>> and <<person3>><<person>> untie your arms from the table, and Remy tugs you to your feet. <<He>> leads you through the doors and back to the barn proper.<<unbind>>
+<br><br>
+<<add_bodywriting left_bottom cattle_brand tattoo>>
+<<link [[Next|Livestock Intro Light Cell]]>><<endevent>><</link>>
+
+:: Livestock Intro Light Fantasize
+<<effects>>
+
+It stings. You wonder how these idiots would like this done to them, and think up humiliating designs for each of them. It helps, if only a little.
+<br><br>
+
+Over time, though, you grow accustomed to the sting, and even a bit bored as it drags on. At last, Remy steps away from your <<bottom>> to examine <<his>> handiwork. You wonder what it looks like.
+<br><br>
+
+The <<person2>><<person>> and <<person3>><<person>> untie your arms from the table, and Remy tugs you to your feet. <<He>> leads you through the doors and back to the barn proper.<<unbind>>
+<br><br>
+<<add_bodywriting left_bottom cattle_brand tattoo>>
+<<link [[Next|Livestock Intro Light Cell]]>><<endevent>><</link>>
+
+:: Livestock Intro Light Cell
+<<effects>>
+<<npc Remy>><<person1>>
+<!-- Modified for Monster People -->
+<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+	Remy leads you halfway down the bar, past dozens of "cows" in their stalls.
+<<else>>
+	Remy leads you halfway down the barn, past dozens of cows in their stalls.
+<</if>>
+<<He>> stops beside one. It's empty.
+<br><br>
+
+"There's a good <<girl>>," <<he>> says, opening the gate. <<He>> holds your leash close to your neck, pulling you past <<him>> and into the cage. <<He>> shuts the gate behind you.
+<br><br>
+
+<<link [[Next|Livestock Cell]]>><<endevent>><</link>>
+<br>
+
+:: Livestock Intro Heavy
+<<effects>>
+
+<<generate2>><<generate3>>
+
+<<covered>> Remy takes your leash, and leads you into a small adjoining room. A <<person2>><<person>> and <<person3>><<person>> are chatting inside. They fall silent as the doors open.
+<br><br>
+<<person1>>
+Without waiting for a command, they step forward and grasp both your arms before bending you over a hay bale. A firm push shunts you on top. The clanking of metal follows as <span class="lewd">your legs are forced into immobile iron shackles,</span> forcing you to stay on your knees. You feel the farmer's eyes on your <<bottom>> and <<genitals>>, and resist the urge to squirm.
+<<legbind>>
+<br><br>
+
+<<His>> hands appear on either side of your head, holding leather straps attached to something metallic. <<He>> pulls it against your mouth, and ties the straps around the back of your head. It's a muzzle. <span class="purple">You can't move your mouth.</span>
+<<facewear 23>><<set $livestock_muzzle to 1>>
+<br><br>
+
+"If you weren't such a tempermental beast," Remy says behind you as <<he>> closes a jangling iron collar around your neck. "This wouldn't be necessary."
+<<if $cow is 6>>
+	<<set $worn.neck.type.push("broken")>>
+	<<neckruined>>
+	<<neckwear 8>>
+<</if>>
+<br><br>
+
+<<link [[Next|Livestock Intro Heavy 2]]>><</link>>
+<br>
+
+:: Livestock Intro Heavy 2
+<<effects>>
+
+You jump as Remy rests a cold finger against your ass cheek. <<He>> trails <<his>> finger up your body, eliciting a shiver, until <<his>> hand comes to rest on the small of your back. <<He>> leans closer, until you feel <<his>> breath on your ear. "I know you're frightened," <<he>> whispers,
+<<if playerBellyVisible()>>
+	running a finger over your belly. "I know you're going to be very productive. You don't need to worry about anything, I promise to keep you safe and sound."
+<<else>>
+	"But you're going to be safe and productive here. I promise.<<if $player.vaginaExist>> If needed, maybe we could help you in different ways.<</if>>"
+<</if>>
+<br><br>
+
+<<if $bodywritingLvl gte 3>>
+	<<link [[Next|Livestock Intro Light Brand]]>><</link>>
+	<br>
+
+<<else>>
+
+	<<He>> pulls away, and the pair up front release your arms. With another tug, Remy leads you through the door and back into the main barn.
+	<br><br>
+
+	<<link [[Next|Livestock Intro Light Cell]]>><<endevent>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Return Kennel
+<<set $outside to 1>><<set $location to "farm">><<effects>>
+<<beastNEWinit 5 dog>>
+
+As you're shoved through the doors, you find yourself outside once again. What appears to be a large wooden shed with a metal gate at the front appears before you. Inside you can hear the baying of hounds. <span class="purple">It looks like a kennel.</span>
+<br><br>
+
+You're forcefully shoved to the ground, falling to the dirt with a thud. Your prior suspicions are confirmed upon looking up. A <<beasttype>> stares at you from behind one of the cages,
+
+<<if $monster is 1>>
+	stark naked save for a spiked collar around <<bhis>> neck. <<bHe>> has a manic, hungry look in <<bhis>> eyes.
+	<br>
+	"Master promised a new toy," <<bhe>> says, licking <<bhis>> lips. "Hope you don't break as easily as the last one."<<stress 2>><<gstress>>
+<<else>>
+	large and intimidating with mangy fur. It growls as it looks down at you, its teeth bared.<<stress 2>><<gstress>>
+<</if>>
+<br><br>
+
+You have little time to anticipate what they have in store for you, as your thoughts are interrupted by the sound of footsteps approaching.
+<br><br>
+
+"I'll be," says a voice. It's Remy. <<nnpc_He "Remy">> squats down beside your head, <<nnpc_his "Remy">> leather boots squeaking slightly. "The little escape artist returns."<<livestock_obey -10>><<lllobey>>
+<br><br>
+
+<<link [[Next|Livestock Return Kennel 2]]>><</link>>
+<br>
+
+:: Livestock Return Kennel 2
+<<set $outside to 1>><<set $location to "farm">><<effects>>
+
+Remy nods at someone behind you, prompting several unseen hands to grasp your limbs roughly, forcing your legs into shackles that keep you on your knees. Your arms are tied behind your back, making you even more vulnerable. The predatory stares of the caged hounds make you uneasy.
+<<bind>><<shackle_feet>>
+<br><br>
+
+<<if $bodywritingLvl gte 3 and $skin.left_bottom.special isnot "cattle">>
+	<<set $livestockReturnBranding to true>>
+	You feel Remy's eyes on your <<bottom>> as the farmhands manhandle you. "Your cattle brand is gone," <<nnpc_he "Remy">> tuts. "We'll worry about it later, though. We have more pressing concerns."
+	<br><br>
+<<elseif $skin.left_bottom.special is "cattle">>
+	You feel Remy's eyes on your <<bottom>> as the farmhands manhandle you. "Your brand didn't fade," <<nnpc_he "Remy">> notes with satisfaction. "Good. Saves us some trouble, at least."
+	<br><br>
+<</if>>
+
+Remy approaches one of the cages, sticking <<nnpc_his "Remy">> hand through the bars and stroking the <<beasttypes>> head. "We care for you, keep you safe and secure," Remy says. "And yet, you still defy us." You hear the jangle of iron chains behind you as Remy speaks. "Defiance is never acceptable."
+<br><br>
+
+A thick iron collar clamps around your neck from behind, connecting the short length of chain with a mounting in the ground you hadn't noticed and rendering you immobile.
+<br><br>
+
+The farmhands whisper to each other as Remy undoes the latch to the cage, swinging the door open. You hear the <<if $monster is 1>>patter of bare feet<<else>>clatter of claws<</if>> on the floor as a slew of the estate's guard-<<beastsplural>> emerge from the kennel.
+<br><br>
+
+"These poor things spent hours looking for you," Remy says, squatting down in front of you as <<nnpc_he "Remy">> playfully rubs a <<beasttypes>> head. The others circle you hungrily. "They worked so hard to find you, it's only fair that they get rewarded for such hard work." Remy stands up and steps away from you, giving you a clear view of the <<beasttypes>> <<if $NPCList[0].penis isnot "none">>erect penis<<else>>wet pussy<</if>>.
+<br><br>
+
+Behind you, one of the <<beastsplural>> gives you a cursory sniff before mounting you.
+<br><br>
+
+<<link [[Next|Livestock Return Kennel Rape]]>><<set $molestationstart to 1>><</link>>
+<br>
+
+:: Livestock Return Kennel Rape
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<beastCombatInit>>
+	<<beastTrainGenerate>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<audience>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Livestock Return Kennel Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Livestock Return Kennel Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Livestock Return Kennel Rape Finish
+<<effects>>
+<<if $enemyhealth lte 0>>
+	<<beastwound>>
+	<<if $combatTrain.length gt 0>>
+		The <<beasttype>> recoils in pain and fear, but another is eager for a go.
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[Next|Livestock Return Kennel Rape]]>><</link>>
+	<<else>>
+		The <<beasttype>> recoils in pain and fear.
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[Next|Livestock Return Kennel Rape Finish]]>><<set $finish to 1>><</link>>
+	<</if>>
+<<elseif $enemyarousal gte $enemyarousalmax>>
+	<<beastejaculation>>
+	<<if $combatTrain.length gt 0>>
+		Satisfied, the <<beasttype>> moves and another takes its turn.
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[Next|Livestock Return Kennel Rape]]>><</link>>
+	<<else>>
+		Satisfied, the <<beasttype>> moves away from you.
+		<<combatTrainAdvance>>
+		<br><br>
+		<<link [[Next|Livestock Return Kennel Rape Finish]]>><<set $finish to 1>><</link>>
+	<</if>>
+<<elseif $finish is 1>>
+	<<if $enemywounded gte 2 and $enemyejaculated is 0>>
+		Feeling that you're more trouble than you're worth, the <<beastsplural>> whimper and hide behind Remy, who scowls as <<nnpc_he "Remy">> approaches.
+		<br>
+		<<tearful>> you brace yourself.
+		<br><br>
+
+		<<clotheson>>
+		<<endcombat>>
+		<<npc Remy>><<person1>>
+
+		<<He>> snatches your leash and yanks you to your feet, not bothering to unhook your collar. It's pulled taut against your throat, making you cough and gag as Remy brings your face close to <<hers>>.
+		<br>
+		"That was just a taste of what I can do to stubborn beasts like you," <<he>> growls. "You're going to be a nice and happy cow. Or else."
+		<br><br>
+
+		<<link [[Nod|Livestock Return Kennel End]]>><<set $phase to 0>><<sub 1>><<transform cow 1>><<livestock_obey 1>><<npcincr Remy love 1>><<npcincr Remy dom 1>><</link>><<gobey>>
+		<br>
+		<<link [[Spit|Livestock Return Kennel End]]>><<set $phase to 1>><<def 1>><<livestock_obey -5>><<npcincr Remy love -1>><<npcincr Remy dom -1>><</link>><<llobey>>
+		<br>
+	<<else>>
+		The last <<beasttype>> dismounts from you, leaving your spent and shivering on the grass and eliciting a small round of applause from the crowd. Remy approaches with a smile.
+		<br>
+		<<tearful>> you brace yourself.
+		<br><br>
+
+		<<clotheson>>
+		<<endcombat>>
+		<<npc Remy>><<person1>>
+
+		Remy crouches beside you, unhooking your collar and bringing your face close to <<hers>>.
+		<br>
+		"I'm sorry you made me do that to you, but you needed a lesson in obedience," <<he>> coos. "You're going to be a nice and happy cow, now, right?"
+		<br><br>
+
+		<<link [[Nod|Livestock Return Kennel End]]>><<set $phase to 0>><<sub 1>><<transform cow 1>><<livestock_obey 1>><<npcincr Remy love 1>><<npcincr Remy dom 1>><</link>><<gobey>>
+		<br>
+		<<link [[Spit|Livestock Return Kennel End]]>><<set $phase to 1>><<def 1>><<livestock_obey -5>><<npcincr Remy love -1>><<npcincr Remy dom -1>><</link>><<llobey>>
+		<br>
+	<</if>>
+<</if>>
+
+:: Livestock Return Kennel End
+<<set $outside to 0>><<set $location to "farm">><<effects>>
+
+<<if $phase is 1>>
+	You tremble for a moment, gathering your strength before spitting as hard as you can in Remy's face as a desperate act of defiance. It's only a small amount, and Remy doesn't even flinch.
+	<br><br>
+	Remy only smiles in response, pulling a handkerchief from their pocket and wiping <<his>> face.
+	<br>
+	"You're just an animal," <<he>> whispers. "A filthy, stubborn animal. Sooner or later, you'll learn your place."
+	<br><br>
+
+	<<He>> motions for <<his>> farmhands.
+<<else>>
+	You nod, body still trembling. Remy smiles, and proceeds to pat you on the head before motioning for <<his>> farmhands.
+<</if>>
+
+They remove your restraints, freeing your limbs. Your relief is short-lived, however, <span class="purple">as the farmhands affix a heavy muzzle to your face, preventing you from speaking.</span>
+<<unbind>><<remove_shackle>>
+<<facewear 23>><<headbind>><<set $livestock_muzzle to 1>>
+<<if $cow is 6>>
+	<<set $worn.neck.type.push("broken")>>
+	<<neckruined>>
+	<<neckwear 8>>
+<</if>>
+<br><br>
+
+Once the muzzle is properly secure, they force you to your feet and drag you back inside. Remy follows close behind.
+<br><br>
+
+<<if $livestockReturnBranding>>
+	<<link [[Next|Livestock Return 2]]>><</link>>
+	<br>
+<<else>>
+	<<link [[Next|Livestock Return Cell]]>><<endevent>><</link>>
+	<br>
+<</if>>
