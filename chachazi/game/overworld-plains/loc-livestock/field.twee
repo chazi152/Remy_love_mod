@@ -1,0 +1,199 @@
+:: Livestock Field
+<<set $outside to 1>><<effects>>
+
+You are on the cattle field within Remy's farm.
+<!-- Modified for Monster People -->
+<<if ($monsterchance gte 1 and ($hallucinations gte 1 or $monsterhallucinations is "f"))>>
+	<<livestock_cows "cap">> munch on grass, staying well away from the electric perimeter fence despite the grass growing thick beside it.
+<<else>>
+	Cows munch on grass, staying well away from the electric perimeter fence despite the grass growing thick beside it.
+<</if>>
+
+A river runs through one corner. The cattle stay almost as far away from the churning water as they do the fence.
+<br><br>
+
+<<if Time.hour gte 12>>
+	Remy's steeds feed near the river. The <<livestock_cows>> avoid them.
+	<br><br>
+<</if>>
+
+<<livestock_obey_description>>
+<br>
+<<if $livestock_grass isnot 1>>
+	<<hunger_description>>
+<</if>>
+<br><br>
+
+<<if isPlayerNonparasitePregnancyEnding()>>
+	<<pregnancyWatersBrokenPassout "remy">>
+<<elseif $stress gte $stressmax>>
+	<<passoutremy>>
+<<elseif Time.hour gte 18>>
+	<<npc Remy>><<person1>>
+	The gate rattles as two farmhands push it open. Remy strides in, mounts a <<livestock_horse>>, and spurs it around the field. <<He>> circles the cattle, rounding them together and pushing them towards the exit.
+	<br><br>
+	<<if $hunger gte 2000>>
+		You feel faint. <span class="red">You're starving.</span> Even the thought of grass is appetising.
+		<<gggstress>><<stress 36>>/*<<physique_loss 36>><<willpower 12>>*/
+	<<elseif $hunger gte 1600>>
+		Your stomach gives an angry rumble. <span class="pink">You're so hungry.</span> Even the thought of grass is appetising.
+		<<ggstress>><<stress 18>>
+	<<elseif $hunger gte 1200>>
+		Your stomach rumbles. <span class="purple">You're hungry.</span> Even the food at the orphanage would be palatable.
+		<<gstress>><<stress 6>>
+	<<elseif $hunger gte 800>>
+		<span class="blue">You're a bit peckish,</span> but that's tolerable given the situation.
+	<<elseif $hunger gte 400>>
+		You wish you had something nice to eat, <span class="lblue">but at least you're not hungry</span>
+		<<lstress>><<stress -6>>
+	<<elseif $hunger gte 1>>
+		<span class="teal">You feel satiated.</span> At least hunger pangs won't be keeping you awake.
+		<<lstress>><<stress -6>>
+	<<else>>
+		<span class="green">Your stomach is full.</span> At least hunger pangs won't be keeping you awake.
+		<<lstress>><<stress -6>>
+	<</if>>
+	<br><br>
+	<<if $livestock_muzzle is 1>>
+		<<if $livestock_obey gte 60>>
+			<<unset $livestock_muzzle>>
+			You and the cattle are led back to the barn. A couple of farmhands pull you aside at the entrance, and affix a muzzle around your mouth.
+			<br><br>
+
+			"Wait," says Remy's voice from behind. <<He>> rides behind the last of the cattle, and stops beside you. <<He>> looks down. "I think it's proven itself safe," <<he>> says. "The muzzle is unnecessary." <<He>> rides away as the farmhand removes the device, freeing your mouth.
+			<br><br>
+
+			You're led into the barn, where a farmhand pushes you into your cell.
+			<br><br>
+		<<else>>
+			You and the cattle are led back to the barn. A couple of farmhands pull you aside at the entrance, and <span class="purple">affix a muzzle around your mouth.</span>
+			<<facewear 23>>
+			<br><br>
+
+			You're led into the barn, where a farmhand pushes you into your cell.
+			<br><br>
+		<</if>>
+	<<else>>
+		You and the cattle are led back to the barn, where a farmhand pushes you into your cell.
+		<br><br>
+	<</if>>
+
+	<<endevent>>
+	<<link [[Next|Livestock Cell]]>><</link>>
+	<br>
+<<elseif Time.hour is 12>>
+
+	<<if $livestock_obey gte 30>>
+		<<npc Remy>><<person1>>
+		The gate opens, and Remy rides in at the head of a group of steeds. <<He>> dismounts <<his>> <<livestock_horse>> and looks around, until <<his>> eyes rest on you. "There you are <<girl>>," <<he>> says. "We have a special job for you. Come here." <<He>> walks closer, holding a leash.
+		<br><br>
+
+		<<link [[Obey|Livestock Job Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><</link>><<gobey>>
+		<br>
+		<<link [[Refuse|Livestock Job Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><</link>><<lobey>>
+		<br>
+
+	<<elseif C.npc.Remy.lust gte 10 and random(1,5) gte 3 and ($player.breastsize gte 8 or $player.penissize gte 4)>>
+		<<npc Remy>><<person1>>
+		大门打开了，雷米骑着一匹马冲了进来。<<He>>下马<<his>><<livestock_horse>>环顾四周，直到<<his>>的目光落在你身上。"你来了，<<girl>>"，<<he>>说，"我们有一份特别的工作给你，过来。"<<He>>走得更近，牵着皮带。
+		<br><br>
+
+		<<link [[服从|Livestock Job Obey1]]>><<npcincr Remy dom 1>><<livestock_obey 1>><</link>><<gobey>>
+		<br>
+		<<link [[拒绝|Livestock Job Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><</link>><<lobey>>
+		<br>
+
+	<<else>>
+		<<npc Remy>><<person1>>
+		The gate opens, and Remy rides in at the head of a group of steeds, each ridden by a farmhand. <<He>> pulls to a stop, but the farmhands continue riding. They form a circle around you. Each carries a long cattle prod.
+		<br><br>
+		Remy dismounts and walks closer, holding a leash. "We have a special job for you. Come here."
+		<br><br>
+
+		<<link [[Obey|Livestock Job Disobedient Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><</link>><<gobey>>
+		<br>
+		<<link [[Refuse|Livestock Job Disobedient Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<pain 6>><</link>><<lobey>><<gpain>>
+		<br>
+	<</if>>
+
+<<else>>
+	<<if $livestock_grass is 1>>
+		<<unset $livestock_grass>>
+		You look around the field. There's a lot of open space for exercise, but there doesn't seem to be anything else to do.
+		<br><br>
+		<<generate1>><<person1>><<set $hunger to 1200>>
+		<span class="pink">Your stomach rumbles.</span> You hear a chuckle. One of the farmhands watches you from the other side of the fence. "Hungry, <<girl>>?" <<he>> laughs again. "There's plenty of grass in there. You'd best be a good <<if $player.gender_appearance is "m">>bull<<else>>cow<</if>> and get chewing."
+		<br><br>
+
+		<<link [[Eat grass|Livestock Field Intro Grass]]>><<hunger -400>><<livestock_obey 1>><<transform cow 1>><</link>><<gobey>><<lhunger>>
+		<br>
+		<<link [[Ignore|Livestock Field Intro Ignore]]>><</link>>
+		<br>
+		<<link [[Protest|Livestock Field Intro Protest]]>><</link>>
+		<br>
+	<<elseif $arousal gte $arousalmax>>
+		<<orgasm>> Your knees buckle, and you fall to the grass.
+		<!-- Modified for Monster People -->
+		<<if ($monsterchance gte 1 and ($hallucinations gte 1 or $monsterhallucinations is "f"))>>
+			<<if maleChance() lt random(1, 100)>>
+				Cowgirls around the field look over in confusion.
+
+			<<else>>
+				Bullboys around the field look over in confusion.
+
+			<</if>>
+		<<else>>
+		<</if>>
+		<br><br>
+		<<generate1>><<generate2>><<generate3>><<generate4>><<person1>>
+		You lie in the field, and soon hear footsteps approach. "What have we here?" Says a <<personsimple>>'s voice beside you. "Is it unwell?"
+		<br><br>
+		"I think it needs a seeing to," says a <<person2>><<person>> as <<he>> crouches beside you, pinning your shoulders to the ground. You hear more farmhands approach.
+		<br><br>
+
+		<<link [[Next|Livestock Field Gang]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<elseif !(Time.days % 6) and $daily.eden.farmRescue isnot 1 and C.npc.Eden.love gte 120 and ($edenfreedom is 1 and $edendays gte 4 or $edenfreedom gte 2 and $edendays gte 9)>>
+		You see a figure in the distance, lurking on the moor.
+		<br><br>
+		<<link [[Investigate|Eden Fence Rescue]]>><<npcincr Eden dom 5>><<set $daily.eden.farmRescue to 1>><</link>>
+		<br>
+		<<link [[Ignore it|Eden Fence Ignore]]>><<set $daily.eden.farmRescue to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[Eat grass (1:00)|Livestock Field Grass]]>><<pass 60>><<livestock_obey 1>><<transform cow 1>><<hunger -400>><</link>><<gobey>><<lhunger>>
+		<br>
+		<<link [[Exercise (1:00)|Livestock Field Exercise]]>><<pass 60>><<tiredness 6>><<athletics 6>><</link>><<gtiredness>><<gathletics>>
+		<br>
+		<<if $livestock_fence is 1>>
+			<<link [[Examine the fence|Livestock Field Fence]]>><<unset $livestock_fence>><</link>>
+			<br>
+		<<elseif $livestock_dig gte 25>>
+			<<link [[Approach the tunnel under the fence|Livestock Tunnel]]>><</link>>
+			<br>
+		<<elseif $livestock_dig gte 24 and $physiquesize lte 12000>>
+			<<link [[Approach the tunnel under the fence|Livestock Tunnel]]>><</link>><<small_text>>
+			<br>
+		<<elseif $livestock_dig gte 23 and $physiquesize lte 10000>>
+			<<link [[Approach the tunnel under the fence|Livestock Tunnel]]>><</link>><<small_text>>
+			<br>
+		<<elseif $livestock_dig gte 22 and $physiquesize lte 6000>>
+			<<link [[Approach the tunnel under the fence|Livestock Tunnel]]>><</link>><<small_text>>
+			<br>
+		<<else>>
+			<<link [[Dig beneath the fence (1:00)|Livestock Field Dig]]>><<pass 60>><<tiredness 6>><<set $livestock_dig += 1>><</link>><<gtiredness>>
+			<br>
+		<</if>>
+		<<if $livestock_river is 1>>
+			<<link [[Examine the river|Livestock Field River Examine]]>><<unset $livestock_river>><</link>>
+			<br>
+		<<else>>
+			<<link [[Approach the river|Livestock Field River]]>><</link>>
+			<br>
+		<</if>>
+		<<if Time.hour gte 12>>
+			<<link [[Approach Remy's horses|Livestock Field Horse]]>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<</if>>
