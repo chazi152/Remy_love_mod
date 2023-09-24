@@ -1,3 +1,254 @@
+:: Livestock Cell
+<<set $outside to 0>><<set $location to "farm">><<effects>>
+
+You are in your cell in the barn. There's a bucket of what looks like clean water to drink, and a pile of straw to sleep on.
+<br><br>
+
+<<if Time.hour gte 6 and Time.hour lt 18>>
+	The barn's occupants are being herded outside, overseen by Remy.
+<<elseif Time.hour gte 18 and Time.hour lt 21>>
+	<!-- Modified for Monster People -->
+	<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+		<<livestock_cows "cap">> line up at the edge of their cells as farmhands affix milking machines to their bodies.
+	<<else>>
+		<<livestock_cows "cap">> line up at the edge of their cells as farmhands affix milking machines to their bodies.
+	<</if>>
+<<else>>
+	Bovine snoring fills the hall.
+<</if>>
+<<if $uncomfortable.nude is true>><<covered>><</if>>
+<br><br>
+
+<<if isPlayerNonparasitePregnancyEnding()>>
+	<<pregnancyWatersBrokenPassout "remy">>
+<<elseif $stress gte $stressmax>>
+	<<passoutremy>>
+	<<if Time.hour gte 5 and Time.hour lt 18>>
+		<<hunger 1000>>
+		<<set $livestock_noise to false>>
+	<</if>>
+<<elseif Time.hour gte 6 and Time.hour lt 18>>
+	<<set $livestock_noise to false>>
+	<<if random(1,10) gte 5>>
+		<<if C.npc.Remy.love gte 20>>
+			<<npc Remy>><<generate2>><<person2>>
+			清晨的阳光透过窗户落在你的身上，你缓缓的睁开了眼睛，看见一个<<person>>站在你的谷仓牢房外面，透过门上小窗虎视眈眈的看着你。
+			<br><br>
+			<<he>>的目光在你的身上打着转，欲望充斥着眼底。
+			<br><br>
+			"如果我动作够快的话，应该不会被抓住。"<<he>>喃喃自语的同时打开了你谷仓牢房大门。
+			<br><br>
+			你想起身逃脱，却被对方推倒在了稻草上面。
+			<br><br>
+			<<person>>正要对你上下其手时，一道冷漠的声音从你的谷仓牢房大门处传来："你在干什么？"
+			<br><br>
+			<<person>>吓的哆嗦了一下，连忙从你的身上起来。
+			<br><br>
+			你的视线越过<<he>>的肩膀，看见了倚靠着谷仓牢房大门的雷米。
+			<br><br>
+			<<link [[踹一脚侵犯者|extra love mod morning struggle]]>><<npcincr Remy love -1>><<livestock_obey -5>><</link>><<llobey>>
+			<br>
+			<<link [[一动不动|extra love mod morning Silent]]>><<npcincr Remy love -1>><<livestock_obey 5>><</link>><<ggobey>>
+			<br>
+			<<if $promiscuity gte 35>>
+				<<link [[诱惑|extra love mod morning youhuo]]>><<npcincr Remy love -3>><<npcincr Remy lust 2>><<livestock_obey 5>><</link>><<ggobey>>
+				<br>
+			<<else>>
+			<span class="blue">你还没有淫乱到能引诱<<he>>人的地步。</span>
+			<</if>>
+		<<elseif C.npc.Remy.love gte 50>>
+			<<npc Remy>><<generate2>><<person2>>
+			清晨的阳光透过窗户落在你的身上，你缓缓的睁开了眼睛，看见一个<<person>>站在你的谷仓牢房外面，<<he>>正透过门上小窗虎视眈眈的看着你。
+			<br><br>
+			<<he>>的目光在你的身上打着转，欲望充斥着眼底。
+			<br><br>
+			如果我动作够快的话，应该不会被抓住。"<<he>>喃喃自语的同时打开了你谷仓牢房大门。
+			<br><br>
+			你想起身逃脱，却被对方推倒在了稻草上面。
+			<br><br>
+			<<he>>把你压在身下，正在褪下自己衣物时，你听见了啪的一声，随后<<he>>突然吃痛的向边上倒去。
+			<br><br>
+			雷米正拿着马鞭站在你们的面前。
+			<br><br>
+			<<link [[踹|extra love mod morning struggle1]]>><<npcincr Remy love 1>><<livestock_obey -5>><</link>><<llobey>>
+			<br>
+			<<link [[发愣|extra love mod morning Silent1]]>><<npcincr Remy love -1>><<livestock_obey 5>><</link>><<ggobey>>
+			<br>
+			<<link [[牛叫|extra love mod morning mooo]]>><<transform cow 1>><<npcincr Remy love 1>><<npcincr Remy dom 1>><<livestock_obey 5>><</link>><<ggobey>>
+			<br>
+		<<elseif C.npc.Remy.love gte 70>>
+			<<npc Remy>><<generate2>><<person2>>
+			<<switch random(1, 3)>>
+			<<case 1>>
+				清晨的阳光透过窗户落在你的身上，你缓缓的睁开了眼睛，看见一个<<person>>站在你的谷仓牢房外，透过门上小窗虎视眈眈的看着你。
+				<br><br>
+				<<he>>的目光在你的身上打着转，欲望充斥着眼底。
+				<br><br>
+				你脑海中已经浮现了<<person>>打开你的大门，口中喃喃着，"如果我动作够快的话，应该不会被抓住。"然后对你实行侵犯。
+				<br><br>
+				你努力蜷缩在稻草堆上，假装自己还在睡梦之中。
+				<br><br>
+				你的谷仓牢房门被人推开，预想中的遭遇并没有发生。
+				<br><br>
+				<<person>>轻手轻脚的踏入其中，拿着牢房里那一桶看似干净的水，摇摇晃晃的走出去。
+				<br><br>
+				正疑惑的时候，<<person>>又拿着一桶明显已经更换过的水，走了进来。
+				<br><br>
+				<<person>>把水桶放下时，你听见了<<he>>说到："不能那么干，被雷米发现了这个月工资就没了……"
+				<br><br>
+				你感觉到了一股安心。<<stress -6>><<lstress>>
+				<br><br>
+				过了一会儿，一个农场工人进来把你拉出了小隔间。
+				<br><br>
+
+				<<link [[继续|Livestock Cell Leave]]>><<livestock_obey 1>><</link>><<gobey>>
+				<br>
+			<<case 2>>
+				<<person1>>
+				清晨的阳光透过窗户落在你的身上，你缓缓的睁开了眼睛，不对，<span class="red">不是窗户的阳光。</span>
+				<br><br>
+				你睁开眼看向阳光照射过来的方向，你才发现你的谷仓牢房门不知道什么时候被打开了。
+				<br><br>
+				<<if $speech_attitude is "bratty">>
+					难不成现在是一个逃跑时机？你正思考着如果现在冲出有没有逃脱的可能性。
+					<br><br>
+				<<elseif $speech_attitude is "meek">>
+					你看着门外，选择老老实实的躺在稻草堆上，不可能那么轻易逃脱的，你慢慢思索着。
+					<br><br>
+				<<else>>
+					或许是个陷阱，雷米的农场工人绝对不会出现这么大破绽的，你冷静的思考着。
+					<br><br>
+				<</if>>
+				<<if $syndromeremy is 1>>
+					你根本不在意，你可是最优秀的小<<if $player.gender_appearance is "m">>公<<else>>母<</if>>牛，
+					就算要跑，也要吃饱了再跑，你索性舒舒服服的躺下。
+					<br><br>
+				<</if>>
+				"好<<girl>>，你在干什么？"你正在思考的时候，雷米出现在了门口，手上拿着一把钥匙，看来门是<<he>>打开的。
+				<br><br>
+				雷米走到你的面前，用手上的牢房钥匙抵住你的嘴唇，你正疑惑时，听见雷米说，"张开嘴。"
+				<br><br>
+				<<if $speech_attitude is "bratty">>
+					你拒绝张开自己的嘴巴，狠狠地瞪着雷米，雷米并没有在意，而是收回了钥匙。
+					<br><br>
+					"你不愿意的话那就算了。"雷米表示无所谓，转身离开了。
+					<br><br>
+					过了一会儿，一个农场工人进来把你拉出了小隔间。
+					<br><br>
+
+					<<link [[继续|Livestock Cell Leave]]>><<livestock_obey 1>><</link>><<gobey>>
+					<br>
+				<<elseif $speech_attitude is "meek">>
+					你张开了自己的嘴，雷米用钥匙压着你的舌，打量着你的口腔，不一会儿就松开了。
+					<br><br>
+					你砸吧着嘴巴，一股铁锈味，雷米没洗钥匙，当你反应过来的时候雷米已经离开了你。
+					<br><br>
+				<<else>>
+					"我的口腔没问题，我并不是很想给你看。"你将雷米的钥匙从嘴唇上挪开，抱怨的说道。
+					<br><br>
+					雷米如同没有听见你说什么一样，捏住你的下巴喃喃，"应该没有问题。"
+					<br><br>
+					雷米站起了身。
+					<br><br>
+				<</if>>
+				<<if $syndromeremy is 1>>
+					"呜……"你感觉很委屈，你不明白自己为什么要被钥匙顶着嘴巴。
+					<br><br>
+				<</if>>
+					"好<<girl>>，我只是稍微检查一下你的健康情况。"雷米伸手揉搓着你的脑袋，"昨天有一只乳牛不小心吃进去了一块碎玻璃，
+					导致口腔以及喉管损伤，我只是来看看你。"
+					<br><br>
+					听到雷米的话，你也理解了<<he>>的举动，主动的张开自己的嘴巴给<<he>>检查，雷米坚持后，又在你的耳朵背后揉捏了几下，便离开了。
+					<br><br>
+					过了一会儿，一个农场工人进来把你拉出了小隔间。
+					<br><br>
+
+					<<link [[继续|Livestock Cell Leave]]>><<livestock_obey 1>><</link>><<gobey>>
+					<br>
+			<<case 3>>
+				清晨的阳光透过窗户落在你的身上，你缓缓的睁开了眼睛。
+				<br><br>
+				外面似乎发生了什么，你好奇到凑过去，通过谷仓牢房门上的窗户看过去。
+				<br><br>
+				你发现雷米站在门外，手持着马鞭，脸上没有什么表情，你却能感觉到愤怒，<<person1>><<he>>前面跪着一个<<person2>><<person>>，
+				你认得<<he>>，<<he>>是雷米的农场工人，那个人捂着自己的手臂，哀嚎着。
+				<br><br>
+				"你这个月工资没了。"雷米收好自己的马鞭，转身离开，独留下<<person>>在原地。
+				<br><br>
+				你默默的回到稻草上，如同什么也没发生一般躺下了。
+				<br><br>
+				过了一会儿，一个农场工人进来把你拉出了小隔间。
+				<br><br>
+
+				<<link [[继续|Livestock Cell Leave]]>><<livestock_obey 1>><</link>><<gobey>>
+				<br>
+			<</switch>>
+		<<else>>			
+			<<set $livestock_noise to false>>
+			雷米和农场工人绕着谷仓打开了隔间，放出里面的居住者，你也是其中的一只。
+			<br><br>
+
+			<<link [[离开你的牢房|Livestock Cell Leave]]>><<livestock_obey 1>><</link>><<gobey>>
+			<br>
+			<<link [[拒绝离开|Livestock Cell Refuse]]>><<livestock_obey -1>><<pain 6>><</link>><<lobey>><<gpain>>
+			<br>
+		<</if>>
+	<<else>>
+	Remy and the farmhands circle the barn, opening cells and releasing their occupants. One of them opens yours.
+	<br><br>
+
+	<<link [[Leave your cell|Livestock Cell Leave]]>><<livestock_obey 1>><</link>><<gobey>>
+	<br>
+	<<link [[Refuse to leave|Livestock Cell Refuse]]>><<livestock_obey -1>><<pain 6>><</link>><<lobey>><<gpain>>
+	<br>
+	<</if>>
+<<elseif Time.hour gte 18 and Time.hour lt 21>>
+	/* once every 4 days after pc's been missing for more than they have permissions for, when eden cares strongly enough to leave the forest and go all the way to the farmlands. if you think it's too easy, remember that grinding enough swimming to escape is easier than grinding eden's love, so see Figure 1. looking at you, fangi. */
+	<<if !(Time.days % 4) and $daily.eden.farmRescue isnot 1 and C.npc.Eden.love gte 120 and ($edenfreedom is 1 and $edendays gte 4 or $edenfreedom gte 2 and $edendays gte 9)>>
+		<<npc Eden>><<person1>>You feel a draft as Remy opens the gate and enters your cell. A hat drifts to your feet. Before you know what to do, something else <<if 150 - $submissive / 20 lt C.npc.Eden.dom>>commands<<else>>draws<</if>> your attention.
+		<br><br>
+		<span class="green">You hear Eden's voice,</span> arguing with someone near the front of the barn.
+		<br><br>
+		<<link [[Shout for Eden|Eden Shout]]>><<npcincr Eden dom 5>><<set $daily.eden.farmRescue to 1>><<livestock_obey -20>><</link>><<lllobey>><<gggdom>>
+		<br>
+		<<link [[Ignore it|Eden Shout Ignore]]>><<npcincr Remy dom 1>><<set $daily.eden.farmRescue to 1>><<livestock_obey 5>><</link>><<ggobey>>
+		<br>
+	<<elseif $livestock_obey lte 30>>
+		<<npc Remy>><<person1>>Remy marches over, looking you right in the eyes. "You're a problem specimen," <<he>> says, entering your cell. "So I'll handle you myself. Come here."
+		<br><br>
+
+		<<link [[Obey|Livestock Milking Obey]]>><<npcincr Remy dom 1>><<livestock_obey 5>><</link>><<ggobey>>
+		<br>
+		<<link [[Refuse|Livestock Milking Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -5>><</link>><<lobey>>
+		<br>
+	<<else>>
+		<<npc Remy>><<person1>>Remy walks over, looking you right in the eyes. "I'll handle this one myself," <<he>> says, entering your cell. "Come here."
+		<br><br>
+
+		<<link [[Obey|Livestock Milking Obey]]>><<npcincr Remy dom 1>><<livestock_obey 5>><</link>><<ggobey>>
+		<br>
+		<<link [[Refuse|Livestock Milking Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -5>><</link>><<lobey>>
+		<br>
+	<</if>>
+<<else>>
+	<<link [[Work out (1:00)|Livestock Workout]]>><</link>><<gtiredness>><<lstress>>
+	<br>
+	<<if $livestock_noise is false>>
+		<<link [[Make noise (0:10)|Livestock Noise]]>><<pass 10>><<stress -12>><<trauma -6>><<set $livestock_noise to true>><</link>><<llstress>><<ltrauma>><<lobey>>
+		<br>
+	<</if>>
+	<<link [[Sleep until dawn|Livestock Sleep]]>><<incrementautosave>><<set $phase to 0>><</link>><<ltiredness>>
+	<br><br>
+	<<link [[Settings|Livestock Settings]]>><</link>>
+	<br>
+	<<attitudesControlCheck>>
+	<<if $attitudesControl.showGoldLink is true>>
+		<span class="goldLink"><<link [[Attitudes]]>><<set $attitudesExitPassage to $passage>><</link>> </span><span class="red">!!</span>
+	<<else>>
+		<<link [[Attitudes]]>><<set $attitudesExitPassage to $passage>><</link>>
+	<</if>>
+	<br><br>
+<</if>>
 
 :: Livestock Eden Escape
 <<effects>>
