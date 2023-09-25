@@ -2,29 +2,29 @@
 <<widget "man-stalk">>
 	<<if $stalk_intro is undefined and $NPCList[0].legs isnot "run">>
 		<<set $stalk_intro to true>>
-		<i>你被跟踪了。<span class="brat">抗拒</span>的行为会阻止人们攻击你，而<span class="meek">温顺</span>的行为则会减少他们的暴力倾向。
+		<i>You are being stalked. <span class="brat">Bratty</span> actions will discourage people from assaulting you, while <span class="meek">meek</span> actions will make them less likely to be violent if they do.
 		<br><br>
-		你可以逃跑或者躲藏，但是失败会增加被袭击的几率。回头看一看，你就会知道他们是多么难以逃脱或欺骗。
+		You could always run or hide, but failing will increase the chance of being assaulted. Looking over your shoulder will give an idea of how hard they are to outrun or deceive.
 		<br><br></i>
 	<</if>>
 	<<if _n is 0 and $stalk_end isnot "escaped" and $stalk_end isnot "hide" and $stalk_end isnot "confront">>/*Only triggers on first NPC in a group. */
 		<<if $NPCList[_n].legs is "walk">>
 			<<set $NPCList[_n].distance -= 1>>
 			<<if $NPCList[_n].distance is 3>>
-				你听到身后<span class="blue">不远处</span>有脚步声。
+				You hear a pair of footsteps <span class="blue">some distance</span> behind you.
 			<<elseif $NPCList[_n].distance is 2>>
-				你听到身后<span class="purple">紧跟着</span>脚步声。
+				You hear a pair of footsteps <span class="purple">close</span> behind you.
 			<<elseif $NPCList[_n].distance is 1>>
-				你听到脚步声就在你<span class="pink">身后</span>。
+				You hear a pair of footsteps <span class="pink">right behind</span> you!
 			<</if>>
 		<<else>>
 			<<set $NPCList[_n].distance -= 1>>
 			<<if $NPCList[_n].distance is 3>>
-				你听到身后<span class="blue">不远处</span>有跑步声。
+				You hear footsteps running <span class="blue">some distance</span> behind you.
 			<<elseif $NPCList[_n].distance is 2>>
-				你听到身后<span class="purple">紧跟着</span>跑步声。
+				You hear footsteps running <span class="purple">close</span> behind you.
 			<<elseif $NPCList[_n].distance is 1>>
-			你听到跑步声就在你<span class="pink">身后</span>。
+			You hear footsteps running <span class="pink">right behind</span> you!
 			<</if>>
 		<</if>>
 
@@ -32,14 +32,14 @@
 			<<if !$stalk_end>>
 				<<if $NPCList[0].fullDescription isnot "Ivory Wraith" and ($NPCList[_n].legs is "run" or $NPCList[0].bold gte random(1, 1000))
 				or $NPCList[0].fullDescription is "Ivory Wraith" and C.npc["Ivory Wraith"].lust gte random(5,15)>>
-					<span class="red">你被胁迫了。</span>
+					<span class="red">You are accosted.</span>
 					<<if $npcrow.includes(0)>>
 						<<stalk_nnpc_text_attack $NPCList[0].fullDescription>>
 						<<if !$stalk_assess>>
 							<<if $NPCList[0].fullDescription is "Ivory Wraith">>
-								<span class="red">一个<<if $wraith.seen gte 3>>熟悉<</if>>苍白的身影低头凝视着你，眼神闪烁<<wraithEyes>>。</span>
+								<span class="red">A<<if $wraith.seen gte 3>> familiar<</if>> pale figure stares down at you, eyes flashing <<wraithEyes>>.</span>
 							<<else>>
-								<span class="pink">是<<print $npc[$npcrow.indexOf(0)]>>。</span>
+								<span class="pink">It's <<print $npc[$npcrow.indexOf(0)]>>.</span>
 							<</if>>
 						<</if>>
 						<br><br>
@@ -52,20 +52,20 @@
 					<<if $npcrow.includes(0)>>
 						<<stalk_nnpc_text_passed $NPCList[0].fullDescription>>
 					<<else>>
-						一個<<person1>><<person>>
+						A <<person1>><<person>>
 						<<switch $enemyno>>
 						<<case 6>>
-							和五人路过。<span class="teal">他们看都不看你一眼。</span>
+							and five others pass by. <span class="teal">They don't glance at you.</span>
 						<<case 5>>
-							和四人路过。<span class="teal">他们看都不看你一眼。</span>
+							and four others pass by. <span class="teal">They don't glance at you.</span>
 						<<case 4>>
-							和三人路过。<span class="teal">他们看都不看你一眼。</span>
+							and three others pass by. <span class="teal">They don't glance at you.</span>
 						<<case 3>>
-							和兩人路过。<span class="teal">他们看都不看你一眼。</span>
+							and two others pass by. <span class="teal">They don't glance at you.</span>
 						<<case 2>>
-							和<<person2>><<person>>路过。<span class="teal">他们看都不看你一眼。</span>
+							and <<person2>><<person>> pass by. <span class="teal">They don't glance at you.</span>
 						<<default>>
-							路过。<span class="teal"><<He>>看都不看你一眼。</span>
+							passes by. <span class="teal"><<He>> doesn't glance at you.</span>
 						<</switch>>
 					<</if>>
 					<<set $stalk_end to "passed">>
@@ -83,84 +83,84 @@
 			<<switch _rng>>
 				<<case 1>>
 					<<if Time.season is "autumn">>
-						片片树叶四处飘落。
+						Leaves fall all around.
 					<<elseif Time.season is "winter">>
-						雪从被压弯的树枝上滑落。
+						Snow tumbles from an overturned branch.
 					<<elseif Time.season is "spring">>
-						萌芽的树枝在微风中青青摇摆。
+						Budding branches sway in the breeze.
 					<<else>>
-						一丝一缕的阳光点缀着前方的道路。
+						Dapples of sunlight cover the path ahead.
 					<</if>>
 				<<case 2>>
-					你穿过低垂的树枝。
+					You push through low hanging branches.
 				<<case 3>>
-					你的脚差点被树根绊倒。
+					Your foot almost snags on a root.
 				<<case 4>>
 					<<if Time.season is "autumn">>
-						你的双脚踩在落叶上，发出莎莎的响声。
+						Leaves crunch underfoot.
 					<<elseif Time.season is "winter">>
-						积雪在脚下嘎吱作响。
+						Snow crunches underfoot.
 					<<elseif Time.season is "spring">>
-						你从一片野花丛中穿过。
+						You travel through a patch of wild flowers.
 					<<else>>
-						你从一片野花丛中穿过。
+						You travel through a patch of wild flowers.
 					<</if>>
 				<<case 5>>
-					你穿过一片茂密的蕨类植物.
+					You push through a dense patch of ferns.
 			<</switch>>
 		<<case moor>>
 			<<set _rng to random(1, 10)>>
 			<<switch _rng>>
 				<<case 1>>
-					你穿过一座小岩石山脊。
+					You traverse a small, rocky ridge.
 				<<case 2>>
-					你避开一个小池塘。
+					You avoid a small pond.
 				<<case 3>>
-					你推开一片石楠花。
+					You push through a patch of heather.
 				<<case 4>>
-					你会发现一条古老小路的遗迹，现在几乎被周围的植物吞没了。
+					You find the remains of an old path, now almost swallowed by surrounding plants.
 				<<case 5>>
-					你瞥见一只小动物匆匆跑进灌木丛。
+					You glimpse a small animal scurry into a bush.
 			<</switch>>
 		<<case alley>>
 			<<set _rng to random(1, 10)>>
 			<<switch _rng>>
 				<<case 1>>
-					蒸汽从附近的炉栅中升起。
+					Steam rises from a nearby grate.
 				<<case 2>>
 					<<if $weather is "rain">>
-						你避开了水坑。
+						You avoid a puddle.
 					<<elseif $weather is "snow">>
-						你避开了一片冰。
+						You avoid a patch of ice.
 					<<else>>
-						你避开了一堆垃圾。
+						You avoid a pile of rubbish.
 					<</if>>
 				<<case 3>>
-					建筑物耸立在狭窄的小巷周围。
+					The buildings tower around the thin alley.
 				<<case 4>>
-					小路起伏曲折。
+					The path dips and bends.
 				<<case 5>>
-					你被困在金属栅栏之间。
+					You're penned between metal fences.
 			<</switch>>
 		<<default>>
 			<<set _rng to random(1, 10)>>
 			<<switch _rng>>
 				<<case 1>>
-					蒸汽从附近的炉栅中升起。
+					Steam rises from a nearby grate.
 				<<case 2>>
 					<<if $weather is "rain">>
-						你避开了水坑。
+						You avoid a puddle.
 					<<elseif $weather is "snow">>
-						你避开了一片冰。
+						You avoid a patch of ice.
 					<<else>>
-						你避开了一堆垃圾。
+						You avoid a pile of rubbish.
 					<</if>>
 				<<case 3>>
-					你从遮阳篷下面经过。
+					You pass beneath an awning.
 				<<case 4>>
-					你从立交桥下走过。
+					You walk beneath an overpass.
 				<<case 5>>
-					路面粗糙不平。
+					The pavement is rough and uneven.
 			<</switch>>
 	<</switch>>
 <</widget>>
@@ -183,31 +183,31 @@
 					<<set _rng to random(1, 5)>>
 					<<switch _rng>>
 						<<case 1>>
-							你跑过一个排水盖。温暖的空气从下面的深处吹来。
+							You run across a metal grate. Warm air blows from the depths below.
 						<<case 2>>
 							<<switch $NPCList[0].size>>
 								<<case large>>
 									<<set $stalk_event to "wall_large">>
-									你的猎物<span class="blue">跳起来，翻越一堵<span class="purple">高</span>墙。</span>如果你想跟上，你也需要这样做。
+									Your quarry <span class="blue"> jumps and hauls <<himself>> over a <span class="purple">tall</span> wall.</span> You'll need to do likewise if you mean to follow.
 								<<case normal>>
 									<<set $stalk_event to "wall_normal">>
-									你的猎物<span class="blue">跳起来，翻越一堵墙。</span>如果你想跟上，你也需要这样做。
+									Your quarry <span class="blue"> jumps and hauls <<himself>> over a wall.</span> You'll need to do likewise if you mean to follow.
 								<<case small>>
 									<<set $stalk_event to "wall_small">>
-									你的猎物<span class="blue">跪下并爬过墙上的一个洞。</span>如果你想跟上，你也需要这样做。
+									Your quarry <span class="blue">kneels and scrambles through a hole in a wall.</span> You'll need to likewise if you mean to follow.
 								<<case tiny>>
 									<<set $stalk_event to "wall_tiny">>
-									你的猎物<span class="blue">跪下并爬过墙上的一个<span class="purple">狭窄的</span>小洞。</span>如果你想跟上，你也需要这样做。
+									Your quarry <span class="blue">kneels and scrambles through a <span class="purple">tight</span> hole in the wall.</span> You'll need to likewise if you mean to follow.
 							<</switch>>
 						<<case 3>>
 							<<set $stalk_event to "cat">>
-							你的猎物踢开一只熟睡的猫。它站起炸毛<span class="blue">，发出愤怒的嘶嘶声。</span>
+							Your quarry kicks aside a sleeping cat. It stands upright <span class="blue">and hisses in anger.</span>
 						<<case 4>>
 							<<set $stalk_event to "dead-end">>
-							你跟着<<him>>拐了个弯，看到前面有一堵砖墙。这看起来像是一条死胡同。<<He>>寻找一条出路。
+							You follow <<him>> around a corner, and see a brick wall up ahead. It looks like a dead-end. <<He>> searches for a way out.
 						<<case 5>>
 							<<set $stalk_event to "employee">>
-							<span class="blue">附近一家公司的一名员工靠在前面的墙上，</span> 略带好奇地看着<<person>>。
+							<span class="blue">An employee from a nearby establishment leans against the wall up ahead,</span> and regards the <<person>> with mild curiosity.
 					<</switch>>
 				<<else>>
 
@@ -219,42 +219,42 @@
 						<<switch _rng>>
 							<<case 1>>
 								<<set $stalk_event to "taxi">>
-								一辆出租车在街角处行驶。<span class="blue">它正往这边驶来。</span>
+								A taxi drives around the corner. <span class="blue">It's heading this way.</span>
 							<<case 2>>
 								<<set $stalk_event to "crowd">>
-								<<person>>跑到<span class="blue">喝醉的人群中。</span>
+								The <<person>> runs <span class="blue">into a drunken crowd.</span>
 							<<case 3>>
 								<<if $hallucinations gte 2>>
-									<span class="pink">黑暗中有东西缠住你的脚。</span>一条触手从雨水渠伸出，缠绕在你的脚踝上。
+									<span class="pink">Something snares your foot in the dark.</span> A tentacle extends from a storm drain, and coils around your ankle.
 								<<else>>
-									<span class="pink">黑暗中有东西缠住你的脚。</span>
+									<span class="pink">Something snares your foot in the dark.</span>
 								<</if>>
-								你摆脱了它，但你的猎物正在逃跑。
+								You shake it free, but your quarry is getting away.
 								<<set $NPCList[0].distance += 1>>
 							<<case 4>>
 								<<set $stalk_event to "night_house">>
-								<span class="blue">你听到前方建筑物传来的声音。</span>光线从窗户射出，照亮了街道。
+								<span class="blue">You hear voices from a building up ahead.</span> Light floods from the windows, bathing the street.
 							<<case 5>>
-								一阵寒风吹得你汗毛直竖。
+								A chill gust makes your hair stand on end.
 						<</switch>>
 					<<else>>
 						<<set _rng to random(1, 5)>>
 						<<switch _rng>>
 							<<case 1>>
 								<<set $stalk_event to "bus">>
-								一辆旅游车停在前面的街角处。<span class="blue">它正往这边驶来。</span>
+								A tourist bus pulls around the corner up ahead. <span class="blue">It's heading this way.</span>
 							<<case 2>>
 								<<set $stalk_event to "crowd">>
-								<<person>>跑到<span class="blue">人群中。</span>
+								The <<person>> runs <span class="blue">into a crowd.</span>
 							<<case 3>>
 								<<set $stalk_event to "restaurant">>
-								<<person>>跑过<span class="blue">一家繁忙的餐厅。</span>
+								The <<person>> runs past <span class="blue">a busy restaurant.</span>
 							<<case 4>>
 								<<set $stalk_event to "school">>
-								<<person>>跑过<span class="blue">一群你在学校认识的学生。</span>
+								The <<person>> runs past <span class="blue">a gaggle of students you recognise from school.</span>
 							<<case 5>>
 								<<set $stalk_event to "street">>
-								<<person>><span class="blue">跑过街道。</span>
+								The <<person>> <span class="blue">runs across the street.</span>
 						<</switch>>
 					<</if>>
 				<<else>>
@@ -267,211 +267,211 @@
 <<widget "stalk_events_followup">>
 	<<switch $stalk_event>>
 		<<case "bus">>
-			公交车开过去了。一个<<personsimple>>发现了你。<<His>>的嘴动了动，
+			The bus drives by. A <<personsimple>> spots you. <<His>> mouth moves,
 			<<set _rng to random(1, 2)>>
 			<<switch _rng>>
 				<<case 1>>
-					<span class="green">但似乎没有人对<<he>>要说的话感兴趣。</span>公交车开过去了。
+					<span class="green">but no one else seems interested in what <<he>> has to say.</span> The bus passes.
 				<<case 2>>
-					<span class="red">其他的人的头也转向你。</span>现场一片忙乱，游客们纷纷拿起相机，急切地想要拍下这位<<nude_text>><<girl>>。
+					<span class="red">and other heads turn your way.</span> There's a flurry of activity and the tourists grab their cameras, eager to snap the <<nude_text>> <<girl>>.
 					<<fameexhibitionism 10 "pic">>
 			<</switch>>
 		<<case "crowd">>
-			你跑进人群中。你希望移动得足够快，不让任何人看到你一眼。
+			You run into the crowd. You hope to move fast enough to keep anyone from snatching more than a glimpse.
 			<<if $allure gte random(1, 10000) / 2>>
 				<<if random(1, 3) is 3>>
-					<span class="pink">有人在你走过的时候摸你的<<bottom>>，鼓励着其他人也做。</span>更多的手伸过来，摩挲抚摸着你的身体。<<gtrauma>><<gstress>><<garousal>>
+					<span class="pink">Someone gropes your <<bottom>> as you pass, encouraging others.</span> More hands reach out, fondling and stroking your body.<<gtrauma>><<gstress>><<garousal>>
 					<br><br>
-					你从另一边出来，在困惑的行人拿起手机之前，逃到了拐角处。
+					You emerge from the other side, and escape around the corner before the bemused pedestrians can reach for their phones.
 				<<else>>
-					<span class="red"><<person>>伏击了你！</span><<He>>抓住你的手臂，把你推倒在地。
+					<span class="red">The <<person>> ambushes you!</span> <<He>> grasps your arms and shoves you to the ground.
 					<br><br>
 					<<stalk_attack>>
 					<<set $audience_active to true>>
 				<</if>>
 			<<else>>
-				你从另一边出来，在困惑的行人拿起手机之前，逃到了拐角处。
+				You emerge from the other side, and escape around the corner before the bemused pedestrians can reach for their phones.
 				<br><br>
 			<</if>>
 		<<case "restaurant">>
-			你匆匆经过餐厅。
+			You rush past the restaurant.
 			<<set _rng to random(1, 2)>>
 			<<switch _rng>>
 			<<case 1>>
-				<span class="green">每个人都忙着，没注意到一个<<nude_text>><<girl>>跑过。</span>
+				<span class="green">Everyone's too occupied to notice the <<nude_text>> <<girl>> run by.</span>
 				<br><br>
 			<<case 2>>
-				<span class="pink">有人在叫喊。</span>汤匙掉进了汤里，汤匙主人被跑过的<<nude_text>><<girl>>吓了一跳。其他人咯咯地笑着，拿起手机。
+				<span class="pink">Someone shouts.</span> Spoons drop in soup, their owners aghast at the sight of the <<nude_text>> <<girl>> running by. Others chuckle, and reach for their phones.
 				<<fameexhibitionism 10 "vid">>
 				<br><br>
 			<</switch>>
 		<<case "school">>
-			当你跑过时，学生们都在笑。
+			The students laugh as you run by.
 			<br>
 			<<if $worn.face.type.includes("mask")>>
 				<<if random(1, 2) is 2>>
-					"你在学校认识<<phim>>吗？"一个<<persony>>问。
+					"Do you recognise <<phim>> from school?" asks one <<persony>>.
 				<<else>>
-					"<<pShe>>必须去我们学校，"一个<<persony>>说。
+					"<<pShe>> must go to our school," says one <<persony>>.
 				<</if>>
 				<br>
 				<<if random(1, 2) is 2>>
-					"我看不见<<pher>>面具后的，"另一个人回答。
+					"I can't see behind <<pher>> mask," replies another.
 				<<else>>
-					"有人抢了<<pher>>的面具！"另一个人回答。
+					"Someone grab <<pher>> mask!" replies another.
 				<</if>>
 				<br>
 			<<elseif $face is "covered">>
 				<<if random(1, 2) is 2>>
-					"你在学校认识<<phim>>吗？"一个<<persony>>问。
+					"Do you recognise <<phim>> from school?" asks one <<persony>>.
 				<<else>>
-					"<<pShe>>必须去我们学校，"一个<<persony>>说。
+					"<<pShe>> must go to our school," says one <<persony>>.
 				<</if>>
 				<br>
 				<<if random(1, 2) is 2>>
-					"我不知道，"另一个人回答。"<<pHer>>的手挡住了路。"
+					"I can't tell," replies another. "<<pHer>> hands are in the way."
 				<<else>>
-					"有人抓住他们！"另一个人回答。
+					"Someone grab them!" replies another.
 				<</if>>
 				<br>
 			<<else>><<fameexhibitionism 5>>
 				<<if (random(1,3) is 1 and $loveInterest.primary is "Robin") or (random(1,3) is 2 and $loveInterest.secondary is "Robin")>>
-					"那不是罗宾的<<girlfriend>>？"一个<<persony>>问。
+					"Isn't that Robin's <<girlfriend>>?" asks one <<persony>>.
 					<br>
-					"谁能想到罗宾会喜欢变态呢，”另一个人说。
+					"Who'd have thought Robin would be into perverts," says another.
 					<br>
 				<<elseif (random(1,3) is 1 and $loveInterest.primary is "Whitney") or (random(1,3) is 2 and $loveInterest.secondary is "Whitney")>>
-					"是惠特尼经常欺负的那个<<girl>>，” 一个<<persony>>说。
+					"That's the <<girl>> Whitney always bullies," says one <<persony>>.
 					<br>
-					"我敢打赌这是惠特尼的错，"另一个人回答。
+					"I bet this is Whitney's fault," replies another.
 					<br>
 				<<elseif (random(1,3) is 1 and $loveInterest.primary is "Kylar") or (random(1,3) is 2 and $loveInterest.secondary is "Kylar")>>
-					"是经常和凯拉尔玩的那个<<girl>>，” 一个<<persony>>说。
+					"That's the <<girl>> Kylar hangs out with," says one <<persony>>.
 					<br>
-					"估计<<pshe>>就是个变态，"另一个人回答。
+					"Figures <<pshe>>'d be a pervert," replies another.
 					<br>
 				<<elseif (random(1,3) is 1 and $loveInterest.primary is "Sydney") or (random(1,3) is 2 and $loveInterest.secondary is "Sydney")>>
-					"等等，那是西尼的<<girlfriend>>，”一个<<persony>>说。 “<<pshe>>在搞什么鬼？"
+					"Hold on, that's Sydney's <<girlfriend>>," says one <<persony>>. "What's <<pshe>> doing like that?"
 					<br>
-					"偷了别人太多书，现在<<pshes>>在逃，”另一个人笑着说。
+					"Stole one too many books, now <<pshes>> on the run," laughs another.
 					<br>
 				<<else>>
 					<<if random(1, 2) is 2>>
-						"我认得<<phim>>！"一个<<persony>>宣称。
+						"I recognise <<phim>>!" proclaims one <<persony>>.
 					<<else>>
-						"我在学校认识<<phim>>，” 一个<<persony>>说。
+						"I know <<phim>> from school," says one <<persony>>.
 					<</if>>
 					<br>
 					<<if random(1, 2) is 2>>
-						"天哪，"另一个人回答。 "我等不及要告诉大家了。"
+						"Oh my god," replies another. "I can't wait to tell everyone."
 					<<else>>
-						"<<pShe>>太变态了，"另一个人回答。
+						"<<pShe>>'s so perverted," replies another.
 					<</if>>
 					<br>
 				<</if>>
 			<</if>>
-			你跑到一个拐角处，在他们变得躁动之前躲开他们的窥探。<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+			You run around a corner, and escape their prying before they get touchy.<<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
 			<br><br>
 		<<case "street">>
-		你穿过街道。
+		You cross the street.
 		<<set _rng to random(1, 5)>>
 		<<if _rng gte 5>>
-			<span class="blue">一辆车差点撞上你。</span>虽然立刻急刹车了，<span class="red">但仍然用足够的力量撞向你，把你撞倒在地。</span><<ggstress>><<stress 12>><<gtrauma>><<trauma 6>><<gpain>><<pain 4>>
+			<span class="blue">A car almost collides with you.</span> It screeches to a halt, <span class="red">but still thuds into you with enough force to knock you to the ground.</span><<ggstress>><<stress 12>><<gtrauma>><<trauma 6>><<gpain>><<pain 4>>
 			<br><br>
-			你被留在街道中央，给了每个人时间好好看着你。<<covered>>肇事车辆后面的<<personsimple>>走了出来，脸上露出困惑的表情。
+			You're left lying in the middle of the street, giving everyone time for a good look. <<covered>> The <<personsimple>> behind the offending vehicle steps out, a bewildered look on <<his>> face.
 			<br><br>
-			你挣扎着站起来，在<<person>>逃跑之前冲向<<he>>，你的脸火辣辣的。
+			You struggle to your feet, and rush after the <<person>> before <<he>> escapes, your face bright hot.
 			<br><br>
 			<<set $NPCList[0].distance += 1>>
 		<<elseif _rng gte 3>>
-			<span class="blue">一辆车差点撞上你，</span>但突然刹停了。当开车的<<personsimple>>看到你的打扮，脸上的表情变得迷糊。没时间道歉了。你走到另一边，那里有更多的掩护物。<<gstress>><<stress 6>>
+			<span class="blue">A car almost collides with you,</span> but screeches to a halt instead. The <<personsimple>> behind the wheel's expression softens in bewilderment when <<he>> sees your state of dress. You don't have time to apologise. You make it to the other side, where you're a bit more sheltered.<<gstress>><<stress 6>>
 		<<else>>
-			你一直专注于你的猎物，但你知道街上的人都在窥视你。你走到另一边，那里比较隐蔽。<<ggstress>><<stress 12>><<gtrauma>><<trauma 6>>
+			You keep focused on your quarry, but you know eyes up and down the street are glimpsing you. You make it to the other side, where you're a bit more sheltered.<<ggstress>><<stress 12>><<gtrauma>><<trauma 6>>
 		<</if>>
 		<br><br>
 		<<case "taxi">>
 			<<set _rng to random(1, 3)>>
 			<<switch _rng>>
 				<<case 1>>
-					<span class="purple">当你经过时，出租车停了下来，</span>乘客座位上的<<personsimple>>靠了过来。<<lewdcatcall>><<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
+					<span class="purple">The taxi pulls to a stop as you pass,</span> and the <<personsimple>> in the passenger seat leans. <<lewdcatcall>><<gtrauma>><<gstress>><<trauma 6>><<stress 6>>
 					<br><br>
 				<<case 2>>
-					一个<<personsimple>>当你经过时，出租车座位上的乘客靠了过来，<span class="purple">一个大相机贴在<<his>>的脸上。</span>你听到咔哒声。<<gtrauma>><<gstress>><<trauma 6>><<stress 6>><<fameexhibitionism 5 "pic">>
+					A <<personsimple>> leans out the passenger seat of the taxi as you pass, <span class="purple">a large camera pressed against <<his>> face.</span> You hear it click.<<gtrauma>><<gstress>><<trauma 6>><<stress 6>><<fameexhibitionism 5 "pic">>
 					<br><br>
 				<<case 3>>
-					出租车司机在你经过时盯着你看，但没有停下。<<gstress>><<stress 6>>
+					The taxi driver stares at you as you pass, but doesn't stop.<<gstress>><<stress 6>>
 					<br><br>
 			<</switch>>
 		<<case "night_house">>
 			<<set _rng to random(1, 3)>>
 			<<if _rng gte 3>>
-				你跑过灯光。<span class="purple">一阵欢笑声从亮着灯的大楼里爆出。</span>你瞥了一眼，看到十几张脸在盯着你看。<<gtrauma>><<gstress>><<trauma 12>><<stress 12>><<fameexhibitionism 12>>
+				You run through the light. <span class="purple">A cry of mirth erupts from the lit building.</span> You glance over, and see a dozen faces staring back.<<gtrauma>><<gstress>><<trauma 12>><<stress 12>><<fameexhibitionism 12>>
 				<br><br>
 			<<else>>
-				你穿过灯光，紧张地瞥了一眼窗户。里面有人，但没有人朝这边看。
+				You run through the light, sparing a nervous glance at the windows. There are people within, but none are looking this way.
 				<br><br>
 			<</if>>
 		<<case "wall_large">>
 			<<if $bodysize gte 3 or $bodysize gte 2 and random(1, 2) is 2>>
-				<span class="green">你跳起来，翻身过墙。</span>
+				<span class="green">You jump and haul yourself over the wall.</span>
 				<br><br>
 			<<else>>
-				你跳起来试图翻身过墙，<span class="red">但你太矮了。</span>你设法从底下的洞挤过去，但<<person>>正在逃跑。
+				You jump and try to grasp the top of the wall, <span class="red">but you're too short.</span> You manage to squeeze through a hole at the base instead, but the <<person>> is getting away.
 				<<set $NPCList[0].distance += 1>>
 				<br><br>
 			<</if>>
 		<<case "wall_normal">>
 			<<if $bodysize gte 2 or $bodysize gte 1 and random(1, 2) is 2>>
-				<span class="green">你跳起来，翻身过墙。</span>
+				<span class="green">You jump and haul yourself over the wall.</span>
 				<br><br>
 			<<else>>
-				你跳起来试图翻身过墙，<span class="red">但你太矮了。</span>你设法从底下的洞挤过去，但<<person>>正在逃跑。
+				You jump and try to grasp the top of the wall, <span class="red">but you're too short.</span> You manage to squeeze through a hole at the base instead, but the <<person>> is getting away.
 				<<set $NPCList[0].distance += 1>>
 				<br><br>
 			<</if>>
 		<<case "wall_small">>
 			<<if $bodysize lte 1 or $bodysize lte 2 and random(1, 2) is 2>>
-				你跪在地上，爬过洞口，<span class="green">从另一边钻出来。</span>你继续追逐。
+				You drop to your knees and crawl through the hole, <span class="green">emerging on the other side.</span> You continue the chase.
 				<br><br>
 			<<else>>
-				你跪在地上，爬过洞口，从另一边钻出来。<span class="red">但卡住了。</span>
+				You drop to your knees and crawl through the hole. You emerge on the other side, <span class="red">but get stuck.</span>
 				<br><br>
-				当<<person>>注意到你的困境时，<<he>>回来了。<<He>><<npcUndressText $NPCList[0] "lower" "self">>，
-				<span class="purple"><<npcRevealText $NPCList[0] "lower">>。</span>
+				The <<person>> returns when <<he>> notices your predicament. <<He>> <<npcUndressText $NPCList[0] "lower" "self">>,
+				<span class="purple"><<npcRevealText $NPCList[0] "lower">>.</span>
 				<<stalk_attack>>
 				<<stuck_in_wall_oral>>
 				<br><br>
 			<</if>>
 		<<case "wall_tiny">>
 			<<if $bodysize lte 0 or $bodysize lte 1 and random(1, 2) is 2>>
-				你跪在地上，爬过洞口，<span class="green">从另一边钻出来。</span>你继续追逐。
+				You drop to your knees and crawl through the hole, <span class="green">emerging on the other side.</span> You continue the chase.
 				<br><br>
 			<<else>>
-				你跪在地上，爬过洞口，从另一边钻出来。<span class="red">但卡住了。</span>
+				You drop to your knees and crawl through the hole. You emerge on the other side, <span class="red">but get stuck.</span>
 				<br><br>
-				当<<person>>注意到你的困境时，<<he>>回来了。<<He>><<npcUndressText $NPCList[0] "lower" "self">>，
-				<span class="purple"><<npcRevealText $NPCList[0] "lower">>。</span>
+				The <<person>> returns when <<he>> notices your predicament. <<He>> <<npcUndressText $NPCList[0] "lower" "self">>,
+				<span class="purple"><<npcRevealText $NPCList[0] "lower">>.</span>
 				<<stuck_in_wall_oral>>
 				<br><br>
 			<</if>>
 		<<case "cat">>
 			<<if $cat gte 6>>
-				你对着猫喵喵叫。<span class="green">它喵回了一声，</span>然后追着<<person>>跑。它跳到<<his>>的背上，爪子张开。<span class="green"><<He>>扔下你的 $stalk_clothes，然后伸手去抓袭击者。</span>
+				You meow at the cat. <span class="green">It meows back,</span> and runs after the <<person>>. It jumps on <<his>> back, its claws ablur. <span class="green"><<He>> drops your $stalk_clothes and reaches for the attacker.</span>
 				<br><br>
 
-				<<He>>把猫扔开，然后转身面对你。
+				<<He>> throws the cat away, then turns to face you.
 				<br><br>
 				<<stalk_catch>>
 			<<else>>
-				当你经过时，猫发出嘶嘶声。
+				The cat hisses as you pass.
 				<br><br>
 			<</if>>
 		<<case "dead-end">>
 			<<if random(1, 2) is 2>>
-				<<He>>发现建筑物和金属棚之间有一条狭窄的通道，然后挤了过去。
+				<<He>> spots a thin passage between a building and metal shed, and squeezes through.
 				<br><br>
 			<<else>>
-				找不到出路，<span class="blue"><<person>>转身面对你。</span>
+				Finding no way out, <span class="blue">the <<person>> turns to face you.</span>
 				<br><br>
 				<<stalk_catch>>
 			<</if>>
@@ -479,14 +479,14 @@
 			<<set _rng to random(1, 3)>>
 			<<switch _rng>>
 				<<case 3>>
-					员工发现了你，<<he>>把手伸进<<his>>的口袋，<span class="blue">拿出<<his>>的手机，</span>在你经过的时候对着你。
+					The employee reaches into <<his>> pocket when <<he>> spots you, <span class="blue">and produces <<his>> phone,</span> pointing it at you as you pass.
 					<<fameexhibitionism 5>>
 					<br><br>
 				<<case 2>>
-					当员工发现你时，<<he>>震惊地张大了嘴。<<His>>的香烟掉到了地上。
+					The employee's mouth opens in shock when <<he>> spots you. <<His>> cigarette falls to the floor.
 					<br><br>
 				<<case 1>>
-					当员工发现你时，<<he>>震惊地张大了嘴。
+					The employee's mouth opens in shock when <<he>> spots you.
 					<br><br>
 			<</switch>>
 	<</switch>>
@@ -497,17 +497,17 @@
 	<<if _n is 0>>
 		<<set $NPCList[_n].distance += 1>>
 		<<if $NPCList[_n].distance gte 4>>
-			你绕过一个角落，但却不见<<person>>踪影。<span class="red">你跟丢<<him>>了。</span>
+			You round a corner, but the <<person>> is nowhere to be seen. <span class="red">You've lost <<him>>.</span>
 			<<set $stalk_end to "outpaced">>
 		<<elseif $NPCList[_n].distance is 3>>
-			<<person>>在前面转了个弯。<span class="pink">你差点跟丢<<him>>了。</span>
+			The <<person>> rounds a corner ahead. <span class="pink">You've almost lost <<him>>.</span>
 		<<elseif $NPCList[_n].distance is 2>>
-			<<person>>在逃跑，你的衣服在<<him>>身后拖着。<span class="purple"><<Hes>>离你有一段距离。</span>
+			The <<person>> runs, your clothes trailing behind <<him>>. <span class="purple"><<Hes>> some distance from you.</span>
 		<<elseif $NPCList[_n].distance is 1>>
-			<<person>>在逃跑，偶尔回头看一眼。<span class="blue"><<Hes>>在前面不远处。</span>
+			The <<person>> runs, and throws the occasional glance over <<his>> shoulder. <span class="blue"><<Hes>> not far ahead.</span>
 		<<else>>
 			<<set $NPCList[_n].distance to 0>>
-			<<person>>在逃跑，<<his>>的胳膊底下夹着你的衣服。<span class="green"><<Hes>>就在你面前。</span>
+			The <<person>> runs, your clothes bundled under <<his>> arm. <span class="green"><<Hes>> right in front of you.</span>
 		<</if>>
 	<</if>>
 	<<stalk_img>>
@@ -582,7 +582,7 @@
 	<<set $stalk to true>>
 	<<set $enemyanger to 40>>
 	<<if $controlled is 0 and ($anxiety gte 2 and random(1, 3) is 3 or $anxiety gte 1 and random(1, 9) is 9)>>
-		<span class="red">你的大脑飞速运转，想象着可能发生在你身上的可怕情景。</span><<llcontrol>><<control -25>>
+		<span class="red">Your mind races, concocting terrible scenarios of what could befall you.</span><<llcontrol>><<control -25>>
 		<br>
 	<</if>>
 <</widget>>
@@ -592,7 +592,7 @@
 		<<if $npcrow.includes(0)>>
 			<<stalk_nnpc_text_confront $NPCList[0].fullDescription>>
 		<<else>>
-			<span class="purple">你的手臂被抓住，被拉回面对袭击者。</span>
+			<span class="purple">You're grabbed by the arm and pulled back to face your assailant.</span>
 		<</if>>
 		<<set $stalk_end to "confront">>
 	<<else>>
@@ -600,89 +600,89 @@
 		<<case 1>>
 			<<set _rng to random(1, 100)>>
 			<<if $worn.upper.name is "large towel" and $worn.upper.set is $worn.lower.set>>
-				一个<<person>><span class="purple">从你身上抢走毛巾，</span><span class="pink">露出你的<<undertop>>和<<undies>>。</span><<He>>跑在前面，把你暴露在<<location_text>>中间。
+				A <<person>> <span class="purple">snatches the towel from your body,</span> <span class="pink">exposing your <<undertop>> and <<undies>>.</span> <<He>> runs ahead, leaving you exposed in the middle of the <<location_text>>.
 				<<set $stalk_clothes to $worn.upper.name>>
 				<<upperstrip>>
 				<<exposure>>
 				<<stalk_pursuit>>
 				<br><br>
 			<<elseif $worn.upper.name is "large towel">>
-				一个<<person>><span class="purple">从你胸口抢走毛巾，</span><span class="pink">露出你的<<undertop>>。</span><<He>>跑在前面，把你暴露在<<location_text>>中间。
+				A <<person>> <span class="purple">snatches the towel from your chest,</span> <span class="pink">exposing your <<undertop>>.</span> <<He>> runs ahead, leaving you exposed in the middle of the <<location_text>>.
 				<<set $stalk_clothes to $worn.upper.name>>
 				<<upperstrip>>
 				<<exposure>>
 				<<stalk_pursuit>>
 				<br><br>
 			<<elseif $worn.lower.name is "large towel bottom">>
-				一个<<person>><span class="purple">从你腰间抢走毛巾，</span><span class="pink">露出你的<<undies>>。</span><<He>>跑在前面，把你暴露在<<location_text>>中间。
+				A <<person>> <span class="purple">snatches the towel from your waist,</span> <span class="pink">exposing your <<undies>>.</span> <<He>> runs ahead, leaving you exposed in the middle of the <<location_text>>.
 				<<set $stalk_clothes to $worn.lower.name>>
 				<<lowerstrip>>
 				<<exposure>>
 				<<stalk_pursuit>>
 				<br><br>
 			<<elseif $worn.upper.name is "towel top">>
-				一个<<person>><span class="purple">从你胸口抢走毛巾，</span><span class="pink">露出你的<<undertop>>。</span><<He>>跑在前面，把你暴露在<<location_text>>中间。
+				A <<person>> <span class="purple">snatches the towel from your chest,</span> <span class="pink">exposing your <<undertop>>.</span> <<He>> runs ahead, leaving you exposed in the middle of the <<location_text>>.
 				<<set $stalk_clothes to $worn.upper.name>>
 				<<upperstrip>>
 				<<exposure>>
 				<<stalk_pursuit>>
 				<br><br>
 			<<elseif $worn.lower.name is "towel skirt">>
-				一个<<person>><span class="purple">从你腰间抢走毛巾，</span><span class="pink">露出你的<<undies>>。</span><<He>>跑在前面，把你暴露在<<location_text>>中间。
+				A <<person>> <span class="purple">snatches the towel from your waist,</span> <span class="pink">exposing your <<undies>>.</span> <<He>> runs ahead, leaving you exposed in the middle of the <<location_text>>.
 				<<set $stalk_clothes to $worn.lower.name>>
 				<<lowerstrip>>
 				<<exposure>>
 				<<stalk_pursuit>>
 				<br><br>
 			<<elseif _rng gte 81 and $exposed lt 2>>
-				你听到有个<<person>>在你身后。<<catcall>>你还没来得及回应，就有双极富侵略性的手抓住了你的衣服！
+				You hear a <<person>> behind you. <<catcall>> Before you can respond, a pair of intruding hands grasp your clothes!
 				<<npcstrip>>
 				<<npcidlegenitals>>
 				<<stalk_attack>>
 				<br><br>
 			<<elseif $leftarm is "bound" or $rightarm is "bound">>
-				有人从后面抓住你被绑着的手臂。"包得像礼物一样，"一个<<person>>一边说，一边把你转过来。"我怎么能拒绝呢？"
+				Someone grabs your bound arms from behind. "All wrapped up like a present," says a <<person>> as <<he>> swivels you around. "How could I resist?"
 				<<stalk_attack>>
 				<br><br>
 			<<else>>
-				你听到有个<<person>>在你身后。<<catcall>>你还没来得及回应，一双手突然抓住你！
+				You hear a <<person>> behind you. <<catcall>> Before you can respond, a pair of intruding hands grasp you!
 				<<stalk_attack>>
 				<br><br>
 			<</if>>
 		<<case 2>>
-			你听到有个<<person1>><<person>>在你身后。你还没来得及回应，<<he>>就抓住了你的胳膊和嘴。
+			You hear a <<person1>><<person>> behind you. Before you can respond, <<he>> seizes you by the arms and mouth.
 			<<if $location is "alley">>
-				<<He>>把你拖进一条阴暗的小巷，<<his>>朋友在那里等待着。
+				<<He>> drags you into a shadowed alley, where <<his>> friend awaits.
 			<<elseif $location is "town">>
-				<<He>>把你拖进一条小巷，<<his>>朋友在那里等待着。
+				<<He>> drags you into an alley, where <<his>> friend awaits.
 			<<else>>
-				<<He>>把你拖进阴影里，<<his>>朋友在那里等待着。
+				<<He>> drags you into the shadows, where <<his>> friend awaits.
 			<</if>>
 			<<stalk_attack>>
 			<<set $leftarm to "grappled">><<set $rightarm to "grappled">><<hand_gag 0 left>><<set $NPCList[0].righthand to "arms">>
 			<br><br>
 		<<case 3>>
 			<<if $worn.upper.name is "large towel" or $worn.lower.name is "large towel bottom" or $worn.upper.name is "towel top" or $worn.lower.name is "towel skirt">>
-				一个<<person1>><<person>>走到你面前，另外两个人从后面走过来，把你夹在他们中间。“大晚上穿着这种衣服走来走去这么奇怪，”那个<<person1>><<person>>一边抚摸着你的毛巾一边说。“我想我很清楚你想要什么。"
+				A <<person1>><<person>> steps in front of you, while two other figures move in from behind, penning you between them. "That's an odd thing to walk around in during the night," says the <<person1>><<person>> as <<he>> strokes your towel. "I think I know exactly what you want."
 				<br><br>
-				<<set $combat_end_text to '"穿得像个骚货，就该和骚货一样被操。"<<person>>说。留你躺在人行道上。'>>
+				<<set $combat_end_text to '"Dress like a slut, get treated like one," says the <<person>>. They leave you lying on the pavement.'>>
 				<<stalk_attack>>
 			<<else>>
-				一个<<person1>><<person>>走到你面前，其他人影从后面走过来，把你夹在他们中间。
+				A <<person1>><<person>> steps in front of you, while other figures move in from behind, penning you between them.
 				<br><br>
 				<<stalk_attack>>
 			<</if>>
 		<<case 4>>
-			一个<<person1>><<person>>的手抓住了你的肩膀，另外三个人挡住了你的去路。“你哪儿也别想去<<lass>>，”<<person>>说。“等我们做完再说。"
+			A <<person1>><<person>>'s hand grasps your shoulder and three other figures block your path. "You're going nowhere <<lass>>," the <<person>> says. "Not til we're done."
 			<br><br>
 			<<stalk_attack>>
 		<<case 5>>
-			一个<<person1>><<person>>走到你面前，而<<person2>><<person>>把手放到你的屁股上。还有三人和他们在一起。他们不会放你走的。
+			A <<person1>><<person>> steps in front of you while <<person2>><<person>> rests <<his>> hands on your hips. Three others are with them. They aren't going to let you go.
 			<br><br>
 			<<person1>>
 			<<stalk_attack>>
 		<<default>>
-			<<person1>><<person>>和<<person2>><<person>>走到你面前，其他几个人从后面压过来，把你围困住。
+			A <<person1>><<person>> and <<person2>><<person>> step in front of you as several others press in from behind, penning you in.
 			<br><br>
 			<<person1>>
 			<<stalk_attack>>
@@ -693,7 +693,7 @@
 <<widget "events_stalk_nnpc">>
 	<<switch _args[0]>>
 		<<case "Avery">>
-			<<He>>把你拖进小巷，推到在墙上。你感觉到<<his>>的呼吸吹在你的脖子上。
+			<<He>> drags you into an alley and shoves you against a wall. You feel <<his>> breath on your neck.
 			<br><br>
 			<<person1>>
 			<<set $location to "alley">><<set $bus to "commercial">>
@@ -730,57 +730,57 @@
 			<<set _rng to random(1, 3)>>
 			<<switch _rng to random(1, 3)>>
 				<<case 1>>
-					你跳过一辆停着的车。
+					You leap over a parked car.
 				<<case 2>>
-					你穿梭在密密麻麻的垃圾箱之间。
+					You skirt between tightly-packed dumpsters.
 				<<case 3>>
-					你避开了一根护柱。
+					You avoid a bollard.
 			<</switch>>
 		<<case park>>
 			<<set _rng to random(1, 3)>>
 			<<switch _rng to random(1, 3)>>
 				<<case 1>>
-					你跳过垃圾箱，穿过灌木丛。
+					You leap over bins and through bushes.
 				<<case 2>>
-					你躲在高高的树篱下。
+					You duck beneath a tall hedge.
 				<<case 3>>
-					你拍开碍事的树枝。
+					You bat away obstructing branches.
 			<</switch>>
 		<<case moor>>
 			<<set _rng to random(1, 3)>>
 			<<switch _rng to random(1, 3)>>
 				<<case 1>>
-					你跳过一片泥泞土地。
+					You leap over a muddy patch.
 				<<case 2>>
-					你爬上山脊。
+					You scramble up a ridge.
 				<<case 3>>
-					你踩着一片矮荆棘走过。
+					You stomp through a patch of short brambles.
 			<</switch>>
 		<<case forest>>
 			<<set _rng to random(1, 3)>>
 			<<switch _rng to random(1, 3)>>
 				<<case 1>>
-					你跳过一条小溪。
+					You leap over a stream.
 				<<case 2>>
-					你挤进密密麻麻的树木之间。
+					You squeeze between dense trees.
 				<<case 3>>
-					你踩着一片蕨类植物走过。
+					You stomp through a patch of ferns.
 			<</switch>>
 		<<default>>
 			<<set _rng to random(1, 3)>>
 			<<switch _rng to random(1, 3)>>
 				<<case 1>>
 					<<if $weather is "rain">>
-						你跳过一个水坑。
+						You leap over a puddle.
 					<<elseif $weather is "snow">>
-						你跳过冰块。
+						You leap over ice.
 					<<else>>
-						你跳过一个坑洞。
+						You leap over a pothole.
 					<</if>>
 				<<case 2>>
-					你避开与<<if random(1, 2) is 2>>邮筒<<else>>垃圾箱<</if>>相撞。
+					You avoid colliding with a <<if random(1, 2) is 2>>postbox<<else>>bin<</if>>.
 				<<case 3>>
-					你在停放的汽车之间穿梭。
+					You weave between parked cars.
 			<</switch>>
 	<</switch>>
 <</widget>>
@@ -791,43 +791,6 @@
 <!-- Player is accosted after failing to run, hide or confront -->
 <<widget "stalk_nnpc_text_attack">>
 	<<switch _args[0]>>
-		<<case "Avery">>
-			<<switch random(1, 4)>>
-				<<case 4>>"够了，小鬼。"
-				<<case 3>>"我叫你来，你就来。"
-				<<case 2>>"你以为你谁呀，居然浪费我的时间？"
-				<<case 1>>"搞得我为你跑遍整个小镇，"<<he>>吐了一口唾沫。"这是你自找的。"
-			<</switch>>
-		<<case "Bailey">>
-			<<switch random(1, 4)>>
-				<<case 4>>"是时候还债了。"
-				<<case 3>>"我和你玩够了。"
-				<<case 2>>"谢谢你浪费我的时间喔，"<<he>>冷笑道。"现在别动。"
-				<<case 1>>"你带来的麻烦几乎超过了你的价值。"<<He>>笑了。"几乎。"
-			<</switch>>
-		<<case "Briar">>
-			<<switch random(1, 4)>>
-				<<case 4>>"我就告诉你谁才是这里的老大。"
-				<<case 3>>"无论如何，你都要给我补偿。"
-				<<case 2>>"<<pshe>>在那儿，我的眼中钉。"
-				<<case 1>>"没人敢惹我生气。你马上就会知道原因。"
-			<</switch>>
-		<<case "Eden">>
-			<<if $syndromeeden is 1>>
-				<<switch random(1, 4)>>
-					<<case 4>>"该回家了。"
-					<<case 3>>"安静。我找到你了。"
-					<<case 2>>"我就知道你会回来。"
-					<<case 1>>"以为你可以逃跑？"
-				<</switch>>
-			<<else>>
-				<<switch random(1, 4)>>
-					<<case 4>>"不要挣扎。"
-					<<case 3>>"不要再跑了。"
-					<<case 2>>"我现在找到你了。"
-					<<case 1>>"我总能找到猎物。"
-				<</switch>>
-			<</if>>
 		<<case "Remy">>
 			<<if $syndromeremy is 1>>
 				<<switch random(1, 4)>>
@@ -851,124 +814,124 @@
 					<<case 1>>"倔强的野兽，逃跑时间结束了。"
 				<</switch>>
 			<</if>>
-		<<case "Harper">>
-			<<if $cow gte 6>>
+		<<case "Avery">>
+			<<switch random(1, 4)>>
+				<<case 4>>"That's enough, brat."
+				<<case 3>>"When I say come, you come."
+				<<case 2>>"Who do you think you are, wasting my time?"
+				<<case 1>>"Making me run all over town for you," <<he>> spits. "You've earned this."
+			<</switch>>
+		<<case "Bailey">>
+			<<switch random(1, 4)>>
+				<<case 4>>"Time to pay up."
+				<<case 3>>"I'm done playing games with you."
+				<<case 2>>"Thanks for wasting my time," <<he>> sneers. "Now hold still."
+				<<case 1>>"You're almost more trouble than you're worth." <<He>> smiles. "Almost."
+			<</switch>>
+		<<case "Briar">>
+			<<switch random(1, 4)>>
+				<<case 4>>"Let me show you who's boss around here."
+				<<case 3>>"One way or another, you're paying me back."
+				<<case 2>>"There <<pshe>> is. The little thorn in my side."
+				<<case 1>>"No one pisses me off. You're about to find out why."
+			<</switch>>
+		<<case "Eden">>
+			<<if $syndromeeden is 1>>
 				<<switch random(1, 4)>>
-					<<case 4>>"雷米在等着。"
-					<<case 3>>"我们可想你了。"
-					<<case 2>>"来送你回家吧。"
-					<<case 1>>"你会再次得到安宁。"
+					<<case 4>>"Time to go home."
+					<<case 3>>"Quiet. I've got you."
+					<<case 2>>"I knew I'd get you back."
+					<<case 1>>"Thought you could run away?"
 				<</switch>>
 			<<else>>
 				<<switch random(1, 4)>>
-					<<case 4>>"嘘。放松点。"
-					<<case 3>>"闭上你的眼睛。"
-					<<case 2>>"深呼吸。"
-					<<case 1>>“你太紧张了，”<<he>>低声说。“这是不健康的。"
+					<<case 4>>"Don't struggle."
+					<<case 3>>"No more running."
+					<<case 2>>"I've got you now."
+					<<case 1>>"I always get my prey."
+				<</switch>>
+			<</if>>
+		<<case "Harper">>
+			<<if $cow gte 6>>
+				<<switch random(1, 4)>>
+					<<case 4>>"Remy's waiting."
+					<<case 3>>"We've missed you."
+					<<case 2>>"Let's get you home."
+					<<case 1>>"You'll be at peace again."
+				<</switch>>
+			<<else>>
+				<<switch random(1, 4)>>
+					<<case 4>>"Shh. Just relax."
+					<<case 3>>"Close your eyes."
+					<<case 2>>"Take a deep breath."
+					<<case 1>>"You're too tense," <<he>> whispers. "It's unhealthy."
 				<</switch>>
 			<</if>>
 		<<case "Kylar">>
 			<<switch random(1, 4)>>
-				<<case 4>>"别、别担心！是我！"
-				<<case 3>>“我不会让你逃掉的，”<<he>>低声说。“永远不会。"
-				<<case 2>>"找我吗？"<<he>>咯咯笑。"我就在这里，傻瓜！"
-				<<case 1>>"我、我情不自禁。"<<He>>舔着<<his>>的嘴唇。 "我需要你。"
+				<<case 4>>"D-don't worry! It's just me!"
+				<<case 3>>"I won't let you get away," <<he>> whispers. "Ever."
+				<<case 2>>"Looking for me?" <<he>> giggles. "I'm right here, silly!"
+				<<case 1>>"I-I couldn't help myself." <<He>> licks <<his>> lips. "I need you."
 			<</switch>>
 		<<case "Leighton">>
 			<<switch random(1, 4)>>
-				<<case 4>>"是时候对你进行管教了。"
-				<<case 3>>"好<<girls>>服从上级。"
-				<<case 2>>"最好保持安静，"<<he>>低语。 "如果你知道什么对你有好处的话。"
-				<<case 1>>"你应该感到荣幸，"<<he>>低语。 "大多数<<girls>>都不值得我注意。"
+				<<case 4>>"Time for your discipline."
+				<<case 3>>"Good <<girls>> obey their superiors."
+				<<case 2>>"Best keep quiet," <<he>> whispers. "If you know what's good for you."
+				<<case 1>>"You should be honoured," <<he>> whispers. "Most <<girls>> are beneath my notice."
 			<</switch>>
 		<<case "Morgan">>
 			<<switch random(1, 4)>>
 				<<case 4>>"<<charles>>!"
-				<<case 3>>"你在这儿，你这个淘气！"
-				<<case 2>>"我找到你了"<<he>>低语。 "终于。"
-				<<case 1>>"别担心，亲爱的，"<<he>>轻声说道。"我现在就在这儿。"
+				<<case 3>>"There you are, you little sneak!"
+				<<case 2>>"I've found you," <<he>> whispers. "At last."
+				<<case 1>>"Don't worry, darling," <<he>> coos. "I'm here, now."
 			<</switch>>
 		<<case "Whitney">>
 			<<switch random(1, 4)>>
-				<<case 4>>"猜猜是谁？"
-				<<case 3>>"惊喜吧，骚货。"
-				<<case 2>>"你觉得你安全了吗？再猜猜。"
-				<<case 1>>"我最喜欢的<<bitch>>，全靠<<pherself>>。"<<He>>咧嘴一笑。"幸运的我。"
+				<<case 4>>"Guess who?"
+				<<case 3>>"Surprise, slut."
+				<<case 2>>"Thought you were safe? Guess again."
+				<<case 1>>"My favourite <<bitch>>, all by <<pherself>>." <<He>> grins. "Lucky me."
 			<</switch>>
 		<<case "Ivory Wraith">>
 			<<set $stalk_assess to true>>
 			<<if $wraith.state is "haunt">>
 				<<switch random(1, 5)>>
-					<<case 5>><<set _wraith_output to "还回来。">>
-					<<case 4>><<set _wraith_output to "我无处不在。">>
-					<<case 3>><<set _wraith_output to "<<pcPetname \"Wraith\">>。">>
-					<<case 2>><<set _wraith_output to "除了往下你还能往哪跑？">>
-					<<case 1>><<set _wraith_output to "逃离你的罪恶，投入空虚的怀抱。">>
+					<<case 5>><<set _wraith_output to "Give it back.">>
+					<<case 4>><<set _wraith_output to "I am everywhere.">>
+					<<case 3>><<set _wraith_output to "<<pcPetname \"Wraith\">>.">>
+					<<case 2>><<set _wraith_output to "Where can you go but down?">>
+					<<case 1>><<set _wraith_output to "Run from your sins, into empty arms.">>
 				<</switch>>
 			<<elseif ["dead","sold"].includes($wraith.offspring)>>
 				<<switch random(1, 5)>>
-					<<case 5>><<set _wraith_output to "懦夫。">>
-					<<case 4>><<set _wraith_output to "都是你的错。">>
-					<<case 3>><<set _wraith_output to "<<pcPetname \"Wraith\">>。">>
-					<<case 2>><<set _wraith_output to "恐惧。孤独。你将会分担那些痛苦。">>
-					<<case 1>><<set _wraith_output to ($wraith.offspring is "dead" ? "你挖了它们的坟。现在下去陪他们。" : "他们还在叫着你的名字。你能听得到吗？")>>
+					<<case 5>><<set _wraith_output to "Coward.">>
+					<<case 4>><<set _wraith_output to "All your fault.">>
+					<<case 3>><<set _wraith_output to "<<pcPetname \"Wraith\">>.">>
+					<<case 2>><<set _wraith_output to "Afraid. Alone. You'll share that pain.">>
+					<<case 1>><<set _wraith_output to ($wraith.offspring is "dead" ? "You've dug their grave. Now lie with them." : "They're still calling your name. Will you hear them?")>>
 				<</switch>>
 			<<else>>
 				<<switch random(1, 5)>>
-					<<case 5>><<set _wraith_output to "找到你了。">>
-					<<case 4>><<set _wraith_output to "为什么要逃离既定的命运？">>
-					<<case 3>><<set _wraith_output to "<<pcPetname \"Wraith\">>。">>
-					<<case 2>><<set _wraith_output to "你能逃。但能逃到哪去呢？">>
-					<<case 1>><<set _wraith_output to "在砍掉你的羽翼前，尽情地飞吧。">>
+					<<case 5>><<set _wraith_output to "Find you.">>
+					<<case 4>><<set _wraith_output to "Why run from fate?">>
+					<<case 3>><<set _wraith_output to "<<pcPetname \"Wraith\">>.">>
+					<<case 2>><<set _wraith_output to "You can run. But where will you go?">>
+					<<case 1>><<set _wraith_output to "Fly while you can, before your wings are clipped.">>
 				<</switch>>
 			<</if>>
 			"<span class="wraith"><<print _wraith_output>></span>"
 			<<rainWraith true>>
 		<<default>>
-			"最好合作，"<<he>>说道。"对你来说会比较轻松。"
+			"Best play along," <<he>> says. "It'll be easier for you."
 	<</switch>>
 <</widget>>
 
 <!-- Successfully used the "confront" action -->
 <<widget "stalk_nnpc_text_threat">>
 	<<switch _args[0]>>
-		<<case "Avery">>
-			<<if $averyragerevealed is 1 and $NPCName[$NPCNameList.indexOf("Avery")].rage gte random(20, 100)>>
-				<<switch random(1, 3)>>
-					<<case 3>><<He>>上下打量你，<span class="green">然后翻了翻白眼。</span>"我没有时间浪费在你身上。"
-					<<case 2>><<He>>眯起眼睛，<span class="green">嘲笑着转身离开。</span> "不值得。"
-					<<case 1>><<He>>停下来，瞪着你。"我是一个忙碌的<<personsimple>>。<span class="green">你很幸运，我还有别的地方要去。"</span>
-				<</switch>>
-				<br><br>
-				<<He>>继续往前走.你感到紧张.<<stress 2>><<gstress>>
-			<<else>>
-				<<switch random(1, 3)>>
-					<<case 3>><span class="green"><<He>>扬起眉毛，</span>假笑着。"这就是你所谓的恰当问候吗？"<br><br><<He>>边走边笑。
-					<<case 2>><<He>>停下来盯着你，皱着眉头。<span class="green"><<He>>一言不发地从你身边擦身而过。</span><br><br>
-					<<case 1>><<He>>交叉双臂，举起手机。"你介意吗？"<br><br><<He>>继续走着，试图接上话。
-				<</switch>>
-				你觉得有点傻。
-			<</if>>
-		<<case "Bailey">>
-			<<switch random(1, 3)>>
-				<<case 3>><<He>>经过的时候没有中断眼神交流，<span class="green">但最终还是离开了你。</span>
-				<<case 2>><<He>>停在你面前，静静地凝视你，<span class="green">然后继续走<<his>>的路。</span>
-				<<case 1>><<He>>站在你面前，举起手机。你听到咔哒一声。<span class="green"><<He>>一句话也没说就走了。</span>
-			<</switch>>
-			<br><br>
-			当<<he>>前走时，你颤抖地呼出一口气。<<stress 6>><<gstress>>
-		<<case "Briar">>
-			<<switch random(1, 3)>>
-				<<case 3>><<He>>坏笑着，上下打量你，<span class="green">然后从你身边走过。</span>
-				<<case 2>><span class="green"><<He>>放声大笑。</span> "你？太可笑了。"
-				<<case 1>><span class="green"><<He>>发出尖锐的笑声。</span> "太可爱了。现在给我让开。"
-			<</switch>>
-			<br><br>
-			<<He>>一边侧过<<his>>肩膀看着你，<<he>>一边走着.你感到紧张.<<stress 2>><<gstress>>
-		<<case "Eden">>
-			<<He>>凝视了片刻，<span class="teal">然后默默地溜进了<<if $location is "forest">>树林间<<elseif $location is "moor">>雾里<<else>>小巷<</if>>。</span>
-			<br><br>
-			你颤抖地呼出一口气。<<stress 4>><<gstress>>
 		<<case "Remy">>
 			雷米冷淡的看着你哼了一声，<span class="green">没有再继续跟着你。</span><<He>>把<<His>>的鞭子收回了腰间。
 			<<switch random(1, 3)>>
@@ -978,56 +941,93 @@
 			<</switch>>
 			<br><br>
 			<<He>>最后看了你一眼，转身离开了。<<stress 4>><<gstress>>
-		<<case "Harper">>
-			<span class="green"><<He>>停止。</span><<His>>的礼貌微笑毫不动摇。
+		<<case "Avery">>
+			<<if $averyragerevealed is 1 and $NPCName[$NPCNameList.indexOf("Avery")].rage gte random(20, 100)>>
+				<<switch random(1, 3)>>
+					<<case 3>><<He>> looks you up and down, <span class="green">then rolls <<his>> eyes.</span> "I've no time to waste on you."
+					<<case 2>><<He>> narrows <<his>> eyes before <span class="green">turning away with a scoff.</span> "Not worth the effort."
+					<<case 1>><<He>> stops, fixing you with a glare. "I'm a busy <<personsimple>>. <span class="green">Lucky for you, I have places to be."</span>
+				<</switch>>
+				<br><br>
+				<<He>> walks on. You feel tense.<<stress 2>><<gstress>>
+			<<else>>
+				<<switch random(1, 3)>>
+					<<case 3>><span class="green"><<He>> raises an eyebrow,</span> smirking. "Is that your idea of a proper greeting?"<br><br> <<He>> laughs as <<he>> walks on.
+					<<case 2>><<He>> stops and stares at you, brow furrowed. <span class="green"><<He>> brushes past you without a word.</span><br><br>
+					<<case 1>><<He>> crosses <<his>> arms and holds up <<his>> phone. "Do you mind?"<br><br> <<He>> walks on, trying to pick up <<his>> conversation.
+				<</switch>>
+				You feel a little silly.
+			<</if>>
+		<<case "Bailey">>
 			<<switch random(1, 3)>>
-				<<case 3>>"你知道，对无辜的路人大发雷霆是压力的明显表现。"
-				<<case 2>>"对于某些人来说，愤怒只是一种求救呼声。请保重。"
-				<<case 1>>"你看起来很困扰。不要害怕寻求帮助。"
+				<<case 3>><<He>> doesn't break eye contact as <<he>> passes, <span class="green">but ultimately leaves you alone.</span>
+				<<case 2>><<He>> stops in front of you, stares in silence, <span class="green">then continues on <<his>> way.</span>
+				<<case 1>><<He>> stands in front of you and raises <<his>> phone. You hear a click. <span class="green"><<He>> leaves without a word.</span>
 			<</switch>>
 			<br><br>
-			<<He>>继续往前走.你感到紧张.<<stress 2>><<gstress>>
+			You let out a shaky breath as <<he>> walks on.<<stress 6>><<gstress>>
+		<<case "Briar">>
+			<<switch random(1, 3)>>
+				<<case 3>><<He>> smirks, eyes you up and down, <span class="green">then walks right past you.</span>
+				<<case 2>><span class="green"><<He>> bursts out laughing.</span> "You? That's rich."
+				<<case 1>><span class="green"><<He>> lets out a sharp bark of laughter.</span> "Cute. Now get out of my way."
+			<</switch>>
+			<br><br>
+			<<He>> peers at you over <<his>> shoulder as <<he>> walks on. You feel tense.<<stress 2>><<gstress>>
+		<<case "Eden">>
+			<<He>> stares for a moment, <span class="teal">then silently slinks <<if $location is "forest">>between the trees<<elseif $location is "moor">>into the fog<<else>>into an alley<</if>>.</span>
+			<br><br>
+			You let out a shaky breath.<<stress 4>><<gstress>>
+		<<case "Harper">>
+			<span class="green"><<He>> stops.</span> <<His>> polite smile doesn't falter.
+			<<switch random(1, 3)>>
+				<<case 3>>"Lashing out at innocent passersby is a sure sign of stress, you know."
+				<<case 2>>"For some people, anger is just a cry for help. Please, be well."
+				<<case 1>>"You look troubled. Don't be afraid to ask for help."
+			<</switch>>
+			<br><br>
+			<<He>> walks on. You feel tense.<<stress 2>><<gstress>>
 		<<case "Kylar">>
 			<<switch random(1, 3)>>
-				<<case 3>><<He>>小声嘀咕着什么。你听不出来。<span class="green"><<He>>从你身边匆匆走过。</span>
-				<<case 2>>当你转身时，<<He>>紧张起来，勉强挤出一个尴尬的微笑来挥手，<span class="green">然后匆匆走过你身边。</span>
-				<<case 1>><<He>>呆住了，<span class="green">然后向相反的方向跑走。</span>你感到困惑不解。
+				<<case 3>><<He>> mutters something under <<his>> breath. You can't make it out. <span class="green"><<He>> scurries past you.</span>
+				<<case 2>><<He>> tenses as you turn around, barely managing an awkward smile and a wave <span class="green">before hurrying past you.</span>
+				<<case 1>><<He>> freezes up, <span class="green">before bolting in the opposite direction.</span> You're left bewildered.
 			<</switch>>
 		<<case "Leighton">>
 			<<switch random(1, 3)>>
-				<<case 3>><<He>>啧了一声。<span class="green">"真粗鲁。如果我不是那么忙，我就要亲自管教你了。"</span>
-				<<case 2>><<He>>扬起一边眉毛，<span class="green">然后转身离开。</span>"我会忽略那句话。"
-				<<case 1>><span class="green"><<He>>轻蔑地低头看着你，</span> 低声喃喃地说道。"无礼的小鬼。"
+				<<case 3>><<He>> tuts. <span class="green">"How uncouth. If I weren't so busy, I'd discipline you myself."</span>
+				<<case 2>><<He>> raises an eyebrow, <span class="green">then turns away.</span> "I'll overlook that remark."
+				<<case 1>><span class="green"><<He>> looks down at you with contempt,</span> muttering under <<his>> breath. "Disrespectful brats."
 			<</switch>>
 			<br><br>
-			<<He>>继续前进。你觉得有点傻。
+			<<He>> walks on. You feel a little silly.
 		<<case "Morgan">>
 			<<switch random(1, 3)>>
-				<<case 3>><<He>>停下脚步，喘着气。"你说得对！我忘了拿烤饼！"<br><br><span class="green"><<He>>朝相反的方向跑走，</span>留下不知所措的你。
-				<<case 2>><span class="green"><<He>>跌跌撞撞地从你身边走过，仿佛你不存在似的。</span><br><br>你看着<<him>>离开，边走边自言自语。
-				<<case 1>><span class="green"><<He>>走过你身边时微笑着挥手。</span><br><br>你觉得傻透了，而且还有点迷惑。
+				<<case 3>><<He>> stops in <<his>> tracks and gasps. "You're right! I forgot the scones!"<br><br> <span class="green"><<He>> runs off in the opposite direction,</span> leaving you bewildered.
+				<<case 2>><span class="green"><<He>> stumbles past you as if you weren't there.</span><br><br> You watch <<him>> leave, babbling to <<himself>> all the while.
+				<<case 1>><span class="green"><<He>> smiles and waves as <<he>> walks past you.</span><br><br> You feel silly, and more than a little confused.
 			<</switch>>
 		<<case "Whitney">>
 			<<switch random(1, 3)>>
-				<<case 3>><span class="green"><<He>>从你身边挤过去，</span>差点把你撞倒。<br><br>你独自振作起来，庆幸没有发生更糟糕的事情。
-				<<case 2>><span class="green"><<He>>迅速举起<<his>>的双手，</span>无辜地笑着"我只是在这边看风景。"<br><br><<He>>在离开时拍了拍你的<<bottom>>。<<stress 2>><<arousal 150 "bottom">><<gstress>><<garousal>>
-				<<case 1>><<he>>接近你的时候，突然"嘭！"的一声向你扑来，你本能地躲开了<<he>>。<br><br>"胆小鬼，"<<he>>笑着<span class="green">把你甩在身后。</span><<stress 4>><<gstress>>
+				<<case 3>><span class="green"><<He>> shoves past you,</span> almost knocking you over.<br><br> You dust yourself off, thankful nothing worse became of it.
+				<<case 2>><span class="green"><<He>> throws <<his>> hands up,</span> smiling innocently. "Just admiring the view from back here."<br><br> <<He>> smacks your <<bottom>> as <<he>> walks on.<<stress 2>><<arousal 150 "bottom">><<gstress>><<garousal>>
+				<<case 1>>Just as <<he>> draws near, <<he>> jumps at you with a loud "Boo!" You flinch on instinct.<br><br> "Wuss," <<he>> laughs <span class="green">as <<he>> leaves you behind.</span><<stress 4>><<gstress>>
 			<</switch>>
 		<<case "Ivory Wraith">>
-			它咯咯地叫着，<span class="teal">然后消散成一团厚厚的、凉爽的雾。</span>它的声音在你周围回荡。
+			It cackles, <span class="teal">before dissipating into a thick, cool mist.</span> Its voice echoes around you.
 			<<switch random(1, 3)>>
-				<<case 3>><<set _wraith_output to "享受最后的幸福时光吧。夜晚很快就要来了。">>
-				<<case 2>><<set _wraith_output to "不值一提的小安慰。">>
-				<<case 1>><<set _wraith_output to "抓紧了。">>
+				<<case 3>><<set _wraith_output to "Bask while you can. The night comes quickly.">>
+				<<case 2>><<set _wraith_output to "For what little comfort it's worth.">>
+				<<case 1>><<set _wraith_output to "Hold it close.">>
 			<</switch>>
 			"<span class="wraith"><<print _wraith_output>></span>"
 			<br><br>
-			当你周围的阴霾散去时，你颤抖着发现露出了一片空旷的<<if $location is "forest">>空地<<elseif $location is "moor">>田野<<else>>街道<</if>>。
+			You shiver as the haze clears around you, revealing an empty <<if $location is "forest">>clearing<<elseif $location is "moor">>field<<else>>street<</if>>.
 			<<trauma 2>><<stress 4>><<gtrauma>><<gstress>>
 		<<default>>
-			<span class="green"><<He>>举起双手。</span>"放轻松点，<<girl>>，"<<he>>说，离你远远的。"我不是有意要吓唬你的。"
+			<span class="green"><<He>> throws up <<his>> hands.</span> "Easy <<girl>>," <<he>> says, giving you a wide berth. "I didn't mean to frighten you."
 			<br><br>
-			<<He>>走在前面。
+			<<He>> walks ahead.
 	<</switch>>
 <</widget>>
 
@@ -1036,71 +1036,71 @@
 	<<switch _args[0]>>
 		<<case "Avery">>
 			<<switch random(1, 3)>>
-				<<case 3>><<stalk_nnpc_name>>在经过时用<<his>>的手机聊天。<span class="teal"><<He>>无视你。</span>
-				<<case 2>><<stalk_nnpc_name>>从你身边经过时会用眼角的余光盯着你。<span class="teal"><<He>>没有打扰你。</span>
-				<<case 1>><<stalk_nnpc_name>>走过。<span class="teal"><<He>>看都不看你一眼。</span>
+				<<case 3>><<stalk_nnpc_name>> chats on <<his>> phone as <<he>> passes. <span class="teal"><<He>> ignores you.</span>
+				<<case 2>><<stalk_nnpc_name>> peers at you from the corner of <<his>> eye as <<he>> passes. <span class="teal"><<He>> leaves you alone.</span>
+				<<case 1>><<stalk_nnpc_name>> walks by. <span class="teal"><<He>> doesn't glance at you.</span>
 			<</switch>>
 		<<case "Bailey">>
 			<<switch random(1, 3)>>
-				<<case 3>><<stalk_nnpc_name>>走过，<span class="teal">忙着打电话没时间跟你打招呼。</span>
-				<<case 2>><<stalk_nnpc_name>>从你身边经过时会用眼角的余光盯着你。<span class="teal"><<He>>没有打扰你。</span>
-				<<case 1>>当<<stalk_nnpc_name>>经过时，<<his>>的肩膀撞到了你的肩膀。<span class="teal"><<He>>没有抬头。</span>
+				<<case 3>><<stalk_nnpc_name>> walks by, <span class="teal">too busy on the phone to acknowledge you.</span>
+				<<case 2>><<stalk_nnpc_name>> peers at you from the corner of <<his>> eye as <<he>> passes. <span class="teal"><<He>> leaves you alone.</span>
+				<<case 1>><<stalk_nnpc_name>> thumps <<his>> shoulder against yours as <<he>> passes. <span class="teal"><<He>> doesn't look up.</span>
 			<</switch>>
 			<<if $stalk_assess>>
-				你颤抖地呼出一口气。
+				You let out a shaky breath.
 				<<stress 4>><<gstress>>
 			<</if>>
 		<<case "Briar">>
 			<<switch random(1, 3)>>
-				<<case 3>><span class="teal">当<<stalk_nnpc_name>>走过时，</span><<he>>转过头对你眨眨眼。
-				<<case 2>><<stalk_nnpc_name>>停下来，转过头盯着你，<span class="teal">然后继续走<<his>>的路。</span>
-				<<case 1>><<stalk_nnpc_name>>走过。<span class="teal"><<He>>看都不看你一眼。</span>
+				<<case 3>><<stalk_nnpc_name>> winks over <<his>> shoulder <span class="teal">as <<he>> walks on by.</span>
+				<<case 2>><<stalk_nnpc_name>> stops, stares at you over <<his>> shoulder, <span class="teal">then continues on <<his>> way.</span>
+				<<case 1>><<stalk_nnpc_name>> walks by. <span class="teal"><<He>> doesn't so much as glance at you.</span>
 			<</switch>>
 		<<case "Eden">>
 			<<switch random(1, 3)>>
-				<<case 3>>突然被原始的恐惧抓住，你转过身来.<span class="teal">你孤身一人.</span><<stress 4>><<gstress>>
-				<<case 2>><span class="teal"><<stalk_nnpc_name>>从你身边重步走过，</span>匆忙中差点把你推倒在地。
-				<<case 1>>你听到身后有动静。你转过身，瞥见<<if $stalk_assess>>伊甸<<else>>一个巨大的身影<</if>><span class="teal">正消失在<<if $location is "forest">>树丛间<<elseif $location is "moor">>在雾中<<else>>小巷里<</if>>。</span>
+				<<case 3>>Suddenly seized by primal fear, you turn around. <span class="teal">You're alone.</span><<stress 4>><<gstress>>
+				<<case 2>><span class="teal"><<stalk_nnpc_name>> stomps past you,</span> almost shoving you to the ground in <<his>> haste.
+				<<case 1>>You hear movement behind you. You turn to catch a glimpse of <<if $stalk_assess>>Eden<<else>>a large figure<</if>> <span class="teal">disappearing <<if $location is "forest">>between the trees<<elseif $location is "moor">>into the fog<<else>>into an alley<</if>>.</span>
 			<</switch>>
 		<<case "Harper">>
 			<<switch random(1, 3)>>
-				<<case 3>><<stalk_nnpc_name>>经过时在日志上做笔记。<span class="teal"><<He>>没有理会你。</span>
-				<<case 2>><<stalk_nnpc_name>>从你身边经过时会用眼角的余光盯着你。<span class="teal"><<He>>没有打扰你。</span>
-				<<case 1>><<stalk_nnpc_name>>走过。<span class="teal"><<He>>看都不看你一眼。</span>
+				<<case 3>><<stalk_nnpc_name>> jots notes in a journal as <<he>> passes. <span class="teal"><<He>> ignores you.</span>
+				<<case 2>><<stalk_nnpc_name>> peers at you from the corner of <<his>> eye as <<he>> passes. <span class="teal"><<He>> leaves you alone.</span>
+				<<case 1>><<stalk_nnpc_name>> walks by. <span class="teal"><<He>> doesn't glance at you.</span>
 			<</switch>>
 		<<case "Kylar">>
 			<<switch random(1, 3)>>
-				<<case 3>><span class="teal"><<stalk_nnpc_name>>从你身边走过，</span><<his>>凝视着地板。
-				<<case 2>>您感觉到手臂从后面被人拉扯。当你转身时，<span class="teal">没有人在那里。</span><<stress 4>><<gstress>>
-				<<case 1>><<stalk_nnpc_name>>头也不抬地走过，<span class="teal">留下你独自一人。</span>
+				<<case 3>><span class="teal"><<stalk_nnpc_name>> walks right by you,</span> <<his>> gaze fixed to the floor.
+				<<case 2>>You feel a tug on your arm from behind. When you turn, <span class="teal">nobody's there.</span><<stress 4>><<gstress>>
+				<<case 1>><<stalk_nnpc_name>> passes without looking up, <span class="teal">leaving you alone.</span>
 			<</switch>>
 		<<case "Leighton">>
 			<<switch random(1, 3)>>
-				<<case 3>><<stalk_nnpc_name>>经过时向你抛媚眼，<span class="teal">但除此之外没有打扰你。</span>
-				<<case 2>><<stalk_nnpc_name>>向你点头示意。<span class="teal"><<He>>继续走<<his>>的路。</span>
-				<<case 1>><<stalk_nnpc_name>>走过，<span class="teal">忙着摆弄<<his>>的手表，没注意到你。</span>
+				<<case 3>><<stalk_nnpc_name>> leers as <<he>> passes, <span class="teal">but otherwise leaves you alone.</span>
+				<<case 2>><<stalk_nnpc_name>> gives you a passing nod. <span class="teal"><<He>> continues on <<his>> way.</span>
+				<<case 1>><<stalk_nnpc_name>> walks by, <span class="teal">too busy tinkering with <<his>> watch to notice you.</span>
 			<</switch>>
 		<<case "Morgan">>
 			<<switch random(1, 3)>>
-				<<case 3>><<stalk_nnpc_name>>在经过时高兴地哼着歌，<span class="teal">完全无视你的存在。</span>
-				<<case 2>><span class="teal"><<stalk_nnpc_name>>跌跌撞撞地从你身边走过，仿佛你不存在似的。</span>
-				<<case 1>>你听到身后的喘息声。<span class="teal">你及时转过身，瞥见<<if $stalk_assess>>摩根<<else>>一个人影<</if>>匆匆离去。</span>
+				<<case 3>><<stalk_nnpc_name>> cheerfully hums as <<he>> passes, <span class="teal">all but ignoring you.</span>
+				<<case 2>><span class="teal"><<stalk_nnpc_name>> stumbles past you as if you weren't there.</span>
+				<<case 1>>You hear a gasp behind you. <span class="teal">You turn in time to catch a fleeting glimpse of <<if $stalk_assess>>Morgan<<else>>a figure<</if>> scurrying away.</span>
 			<</switch>>
 		<<case "Whitney">>
 			<<switch random(1, 3)>>
-				<<case 3>><span class="teal"><<stalk_nnpc_name>>在经过时，转过头弹掉烟头。</span>烟头弹到你的脸上。
-				<<case 2>><<stalk_nnpc_name>>在<<he>>经过时拍打你的<<bottom>>.<<if $stalk_assess>><<He>>脸上闪过一丝得意的冷笑.<<else>><<Hes>>在你看清<<him>>之前就已经走了.<</if>><<stress 2>><<arousal 150 "bottom">><<gstress>><<garousal>>
-				<<case 1>><<stalk_nnpc_name>>在经过时抠着<<his>>的指甲。<span class="teal"><<Hes>>太专注了，没有注意到你。</span>
+				<<case 3>><span class="teal"><<stalk_nnpc_name>> flicks a cigarette butt over <<his>> shoulder as <<he>> passes.</span> It bounces off your cheek.
+				<<case 2>><<stalk_nnpc_name>> smacks your <<bottom>> as <<he>> passes.<<if $stalk_assess>><<He>> flashes a smug smirk over <<his>> shoulder.<<else>><<Hes>> gone before you can get a good look at <<him>>.<</if>><<stress 2>><<arousal 150 "bottom">><<gstress>><<garousal>>
+				<<case 1>><<stalk_nnpc_name>> picks at <<his>> nails as <<he>> passes. <span class="teal"><<Hes>> too engrossed to notice you.</span>
 			<</switch>>
 		<<case "Ivory Wraith">>
 			<<switch random(1, 3)>>
-				<<case 3>>一阵寒意袭来，<span class="teal">但很快就消失了。</span>
-				<<case 2>>一只冰冻湿冷的手抓住了你的肩膀。你转身，<span class="teal">但没有人在那里。</span>
-				<<case 1>>你感觉到某种存在。有人在你耳边呼吸。"<span class="wraith">并没有。</span> "一阵温暖的微风吹过你，<span class="teal">带走了不受欢迎的存在。</span>
+				<<case 3>>A cold chill blows over you, <span class="teal">but it vanishes just as quickly.</span>
+				<<case 2>>A cold, clammy hand grabs your shoulder. You turn, <span class="teal">but no one's there.</span>
+				<<case 1>>You feel a presence. Someone breathes in your ear. "<span class="wraith">Not yet.</span>" A warm breeze washes over you, <span class="teal">taking the unwelcome presence with it.</span>
 			<</switch>>
-			空气中残留着淡淡的雾气。你认为你是孤独一人。<<trauma 2>><<stress 4>><<gtrauma>><<gstress>>
+			A faint mist is left in the air. You think you're alone.<<trauma 2>><<stress 4>><<gtrauma>><<gstress>>
 		<<default>>
-			一个<<personsimple>>经过。<span class="teal"><<He>>看都不看你一眼。</span>
+			A <<personsimple>> passes by. <span class="teal"><<He>> doesn't glance at you.</span>
 	<</switch>>
 <</widget>>
 
@@ -1108,31 +1108,31 @@
 <<widget "stalk_nnpc_text_confront">>
 	<<switch _args[0]>>
 		<<case "Kylar">>
-			你感到有人拉你的胳膊。你转身面对
+			You feel a tug on your arm. You turn around to face
 			<<if $stalk_assess>>
 				<<print $NPCList[0].fullDescription>>.
 			<<else>>
-				罪魁祸首。
+				the culprit.
 			<</if>>
 		<<case "Ivory Wraith">>
-			你周围的空气变得寒冷。在本能的驱使下，你转过身，发现一双<<wraithEyes>>眼睛在盯着你。
+			The air chills around you. Animated by instinct, you turn around to find a pair of <<wraithEyes>> eyes staring back.
 		<<default>>
-			你的手臂被抓住，被拉回面对袭击者。
+			You're grabbed by the arm and pulled back to face your assailant.
 	<</switch>>
 <</widget>>
 
 <<widget "stalk_nnpc_name">>
 	<<if $NPCList[0].fullDescription is "Ivory Wraith">>
 		<<if $stalk_assess>>
-			苍白的身影
+			The pale figure
 		<<else>>
-			有人
+			Somebody
 		<</if>>
 	<<else>>
 		<<if $stalk_assess>>
 			<<print $NPCList[0].fullDescription>>
 		<<else>>
-			一个<<personsimple>>
+			A <<personsimple>>
 		<</if>>
 	<</if>>
 <</widget>>
