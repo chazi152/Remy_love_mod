@@ -163,14 +163,14 @@
 		<<else>>
 			<<set $nooxygen to 0>>
 		<</if>>
-		<span class="lblue">氧气：</span>
+		<span class="lblue">Air:</span>
 		<<if $oxygen lt 0>>
-			<span class="red">你窒息了！ 你的压力将会持续增长。在没有新鲜空气的情况下，你很快就会昏倒。</span>
+			<span class="red">You can't breathe! Your stress will increase and you'll soon pass out if you can't find air.</span>
 		<</if>>
 		<<oxygencaption>>
 		<<if $underwaterintro isnot 1 and $combat isnot 1 and !$possessed>>
 			<<set $underwaterintro to 1>>
-			<i>你不可能永远屏住呼吸，你的游泳技能越高，每次行动经过的时间就越短，消耗的氧气也会更少。</i>
+			<i>You can't hold your breath forever. You will pass less time and use less air per action with a higher swimming skill.</i>
 			<br><br>
 		<</if>>
 	<</if>>
@@ -192,9 +192,9 @@
 
 <<widget "virginitylosttext">>
 	<<if $templePromised is _args[0]>>
-		<span class="lblue">但你的纯洁之证依旧完好如初。</span>
+		<span class="lblue">yet you remain pure.</span>
 	<<else>>
-		<span class="red">永久地夺走了你的贞操。</span>
+		<span class="red">forever robbing you of your purity.</span>
 	<</if>>
 <</widget>>
 
@@ -546,7 +546,7 @@
 
 <<widget "seductionskilluptext">>
 	<<if $seductionskill lt 1000>>
-		<span class="gold">你对自己的诱惑能力更加的自信。</span>
+		<span class="gold">You feel more confident in your powers of seduction.</span>
 		<br><br>
 	<</if>>
 <</widget>>
@@ -595,7 +595,7 @@
 	<<if $statFreeze isnot true>>
 		<<set $skulduggery += 3>>
 		<<if $skulduggery lt 1000>>
-			<span class="gold"> 你学到了一些诡术上的技巧。</span>
+			<span class="gold"> You learned a thing or two about skulduggery.</span>
 		<</if>>
 	<</if>>
 	<br><br>
@@ -606,7 +606,7 @@
 		<<set $skulduggery += 3>>
 		<<set $skulduggery to Math.clamp($skulduggery, 0, 1000)>>
 		<<if $skulduggery lt 1000>>
-			<span class="gold"> 你学到了一些诡术上的技巧。</span>
+			<span class="gold"> You learned a thing or two about skulduggery.</span>
 		<</if>>
 	<</if>>
 <</widget>>
@@ -615,7 +615,7 @@
 	<<if $statFreeze isnot true>>
 		<<set $swimmingskill += 9>>
 		<<if $swimmingskill lt 1000>>
-			<span class="gold"> 你对自己的泳技更加自信。</span>
+			<span class="gold"> You've become more confident at swimming.</span>
 		<</if>>
 		<<set $swimmingskill to Math.clamp($swimmingskill, 0, 1000)>>
 	<</if>>
@@ -625,7 +625,7 @@
 	<<if $statFreeze isnot true>>
 		<<danceskill 1>>
 		<<if $danceskill lt 1000>>
-			<span class="gold"> 你对自己的舞技更加自信。</span>
+			<span class="gold"> You feel more confident in your dancing abilities.</span>
 		<</if>>
 	<</if>>
 <</widget>>
@@ -757,15 +757,15 @@
 		<<if _args[1]>>
 			<<if _args[1] isnot "noMessage">>
 				<<if ($combat is 1 and _args[1] isnot "workout") or _args[1] is "invig">>
-					<span class="gold"> 你感到活力十足。</span>
+					<span class="gold"> It invigorates you.</span>
 				<<else>>
-					<span class="gold"> 你得到了锻炼。</span>
+					<span class="gold"> You get a good workout.</span>
 				<</if>>
 			<</if>>
 		<<elseif $combat is 1>>
-			<span class="gold"> 你感到活力十足。</span>
+			<span class="gold"> It invigorates you.</span>
 		<<else>>
-			<span class="gold"> 你得到了锻炼。</span>
+			<span class="gold"> You get a good workout.</span>
 		<</if>>
 		<<set $physique = Math.clamp($physique, 0, $physiquesize)>>
 	<</if>>
@@ -940,47 +940,47 @@
 <</widget>>
 
 <<widget "hunger_description">>
-	<<if $hunger gte 2000>><span class="red">你正在挨饿！</span>
-	<<elseif $hunger gte 1600>><span class="pink">你饥肠辘辘。</span>
-	<<elseif $hunger gte 1200>><span class="purple">你非常饥饿。</span>
-	<<elseif $hunger gte 800>><span class="blue">你觉得饿了。</span>
-	<<elseif $hunger gte 400>><span class="lblue">你不是很饿。</span>
-	<<elseif $hunger gte 1>><span class="teal">你完全饱了。</span>
-	<<else>><span class="green">你吃的很撑。</span>
+	<<if $hunger gte 2000>><span class="red">You are starving!</span>
+	<<elseif $hunger gte 1600>><span class="pink">You are famished.</span>
+	<<elseif $hunger gte 1200>><span class="purple">You are ravenous.</span>
+	<<elseif $hunger gte 800>><span class="blue">You are hungry.</span>
+	<<elseif $hunger gte 400>><span class="lblue">You are peckish.</span>
+	<<elseif $hunger gte 1>><span class="teal">You are satiated.</span>
+	<<else>><span class="green">You are full.</span>
 	<</if>>
 <</widget>>
 
 <<widget "thirst">>
-	<<if $thirst gte 2000>><span class="red">你完全脱水了!</span>
-	<<elseif $thirst gte 1600>><span class="pink">你口干舌燥。</span>
-	<<elseif $thirst gte 1200>><span class="purple">你感觉很渴。</span>
-	<<elseif $thirst gte 800>><span class="blue">你喉咙发干。</span>
-	<<elseif $thirst gte 400>><span class="lblue">你不是很渴。</span>
-	<<elseif $thirst gte 1>><span class="teal">你并不口渴。</span>
-	<<elseif $thirst lte 0>><span class="green">你完全不渴。</span>
+	<<if $thirst gte 2000>><span class="red">You are dehydrated!</span>
+	<<elseif $thirst gte 1600>><span class="pink">You are really thirsty.</span>
+	<<elseif $thirst gte 1200>><span class="purple">You are thirsty.</span>
+	<<elseif $thirst gte 800>><span class="blue">Your throat is dry.</span>
+	<<elseif $thirst gte 400>><span class="lblue">You are satisfied.</span>
+	<<elseif $thirst gte 1>><span class="teal">You are satiated.</span>
+	<<elseif $thirst lte 0>><span class="green">You are full.</span>
 	<</if>>
 <</widget>>
 
 <<widget "tirednesscaption">>
 	<<if Number.isFinite($tiredness)>>
-		<div id="tirednesscaption" @title="'疲劳: ' + $tiredness.toFixed(2)">
+		<div id="tirednesscaption" @title="'Fatigue: ' + $tiredness.toFixed(2)">
 			<div @class="($options.showCaptionText is true ? '' : 'rightMeterText')">
-				疲劳：
+				Fatigue:
 				<<if $options.showCaptionText is true>>
 					<<if $tiredness gte C.tiredness.max>>
-						<span class="red">你已经筋疲力竭。</span>
+						<span class="red">You are exhausted.</span>
 					<<elseif $tiredness gte (C.tiredness.max / 5) * 4>>
-						<span class="pink">你非常的疲倦。</span>
+						<span class="pink">You are fatigued.</span>
 					<<elseif $tiredness gte (C.tiredness.max / 5) * 3>>
-						<span class="purple">你感到疲惫。</span>
+						<span class="purple">You are tired.</span>
 					<<elseif $tiredness gte (C.tiredness.max / 5) * 2>>
-						<span class="blue">你有点累了。</span>
+						<span class="blue">You are wearied.</span>
 					<<elseif $tiredness gte C.tiredness.max / 5>>
-						<span class="lblue">你十分清醒。</span>
+						<span class="lblue">You are alert.</span>
 					<<elseif $tiredness gte 1>>
-						<span class="teal">你的精力充沛。</span>
+						<span class="teal">You are wide awake.</span>
 					<<else>>
-						<span class="green">你感觉精神饱满。</span>
+						<span class="green">You are refreshed.</span>
 					<</if>>
 				<</if>>
 			</div>
@@ -999,42 +999,42 @@
 
 <<widget "hygiene">>
 	<<if $hygiene gte 2000>>
-		<span class="red">你的身上满是污秽.</span>
+		<span class="red">You are filthy.</span>
 	<<elseif $hygiene gte 1600>>
-		<span class="pink">你被弄脏了。</span>
+		<span class="pink">You are soiled.</span>
 	<<elseif $hygiene gte 1200>>
-		<span class="purple">你很臭。</span>
+		<span class="purple">You are smelly.</span>
 	<<elseif $hygiene gte 800>>
-		<span class="blue">你很邋遢。</span>
+		<span class="blue">You are messy.</span>
 	<<elseif $hygiene gte 400>>
-		<span class="lblue">你很整洁。</span>
+		<span class="lblue">You are neat.</span>
 	<<elseif $hygiene gte 1>>
-		<span class="teal">你很干净。</span>
+		<span class="teal">You are clean.</span>
 	<<elseif $hygiene lte 0>>
-		<span class="green">你干净的无可挑剔.</span>
+		<span class="green">You are speckless.</span>
 	<</if>>
 <</widget>>
 
 <<widget "stresscaption">>
 	<<if Number.isFinite($stress)>>
-		<div id="stresscaption" @title="'压力: ' + $stress.toFixed(2)">
+		<div id="stresscaption" @title="'Stress: ' + $stress.toFixed(2)">
 			<div @class="($options.showCaptionText is true ? '' : 'rightMeterText')">
-				压力：
+				Stress:
 				<<if $options.showCaptionText is true>>
 					<<if $stress gte $stressmax>>
-						<span class="red">巨大的压力击垮了你！</span>
+						<span class="red">You are overwhelmed!</span>
 					<<elseif $stress gte ($stressmax / 5) * 4>>
-						<span class="pink">你的精神接近崩溃。</span>
+						<span class="pink">You are distressed.</span>
 					<<elseif $stress gte ($stressmax / 5) * 3>>
-						<span class="purple">焦虑使你几乎无法呼吸。</span>
+						<span class="purple">You are strained.</span>
 					<<elseif $stress gte ($stressmax / 5) * 2>>
-						<span class="blue">你的内心紧绷。</span>
+						<span class="blue">You are tense.</span>
 					<<elseif $stress gte $stressmax / 5>>
-						<span class="lblue">你勉强保持镇定。</span>
+						<span class="lblue">You are calm.</span>
 					<<elseif $stress gte 1>>
-						<span class="teal">你很平静。</span>
+						<span class="teal">You are placid.</span>
 					<<else>>
-						<span class="green">你心如止水。</span>
+						<span class="green">You are serene.</span>
 					<</if>>
 				<</if>>
 			</div>
@@ -1048,24 +1048,24 @@
 
 <<widget "traumacaption">>
 	<<if Number.isFinite($trauma)>>
-		<div id="traumacaption" @title="'创伤: ' + $trauma.toFixed(2)">
+		<div id="traumacaption" @title="'Trauma: ' + $trauma.toFixed(2)">
 			<div @class="($options.showCaptionText is true ? '' : 'rightMeterText')">
-				创伤：
+				Trauma:
 				<<if $options.showCaptionText is true>>
 					<<if $trauma gte $traumamax>>
-						<span class="red">无尽的痛楚使你麻木不仁。</span>
+						<span class="red">You feel numb.</span>
 					<<elseif $trauma gte ($traumamax / 5) * 4>>
-						<span class="pink">过去的阴影折磨着你。</span>
+						<span class="pink">You are tormented.</span>
 					<<elseif $trauma gte ($traumamax / 5) * 3>>
-						<span class="purple">你十分的焦躁。</span>
+						<span class="purple">You are disturbed.</span>
 					<<elseif $trauma gte ($traumamax / 5) * 2>>
-						<span class="blue">你感到焦虑。</span>
+						<span class="blue">You are troubled.</span>
 					<<elseif $trauma gte ($traumamax / 5) * 1>>
-						<span class="lblue">你感到心神不宁。</span>
+						<span class="lblue">You are nervous.</span>
 					<<elseif $trauma gte 1>>
-						<span class="teal">你有些紧张。</span>
+						<span class="teal">You are uneasy.</span>
 					<<else>>
-						<span class="green">你的精神十分健康。</span>
+						<span class="green">You are healthy.</span>
 					<</if>>
 				<</if>>
 			</div>
@@ -1079,22 +1079,22 @@
 <<widget "innocencecaption">>
 	<div id="innocencecaption">
 		<div @class="($options.showCaptionText is true ? '' : 'rightMeterText')">
-			纯真：
+			Innocence:
 			<<if $options.showCaptionText is true>>
 				<<if $awareness gte 0>>
-					<span class="red">你已不再天真。</span>
+					<span class="red">You understand.</span>
 				<<elseif $awareness gt -40>>
-					<span class="pink">你无所适从。</span>
+					<span class="pink">You are uncertain.</span>
 				<<elseif $awareness gt -80>>
-					<span class="purple">你困惑不解。</span>
+					<span class="purple">You are perplexed.</span>
 				<<elseif $awareness gt -120>>
-					<span class="blue">你开始感到好奇。</span>
+					<span class="blue">You are curious.</span>
 				<<elseif $awareness gt -160>>
-					<span class="lblue">你轻信别人的话语。</span>
+					<span class="lblue">You are trusting.</span>
 				<<elseif $awareness gt -200>>
-					<span class="teal">你天真无邪。</span>
+					<span class="teal">You are naive.</span>
 				<<else>>
-					<span class="green">你懵懂无知。</span>
+					<span class="green">You are oblivious.</span>
 				<</if>>
 			<</if>>
 		</div>
@@ -1106,41 +1106,41 @@
 
 <<widget "controlcaption">>
 	<<if Number.isFinite($control)>>
-		<div id="controlcaption" @title="'自控: ' + $control.toFixed(2)">
+		<div id="controlcaption" @title="'Control: ' + $control.toFixed(2)">
 			<div @class="($options.showCaptionText is true ? '' : 'rightMeterText')">
-				自控：
+				Control:
 				<<if $options.showCaptionText is true>>
 					<<if $possessed>>
 						<<if $control gte $controlmax>>
-							<span class="green">你全盘掌控着自己。</span>
+							<span class="green">You are in control.</span>
 						<<elseif $control gte ($controlmax / 5) * 4>>
-							<span class="teal">你几乎完全掌控着自己。</span>
+							<span class="teal">You are nearly in control.</span>
 						<<elseif $control gte ($controlmax / 5) * 3>>
-							<span class="lblue">你的控制力正在动摇。</span>
+							<span class="lblue">You are struggling.</span>
 						<<elseif $control gte ($controlmax / 5) * 2>>
-							<span class="blue">你的身体沉重而空洞。</span>
+							<span class="blue">Your body feels hollow.</span>
 						<<elseif $control gte ($controlmax / 5) * 1>>
-							<span class="purple">你的意识逐渐麻木。</span>
+							<span class="purple">Your mind is numb.</span>
 						<<elseif $control gte 1>>
-							<span class="pink">你正在被操纵。</span>
+							<span class="pink">You're being puppeteered.</span>
 						<<else>>
-							<span class="red">你已经无力反抗。</span>
+							<span class="red">You're helpless.</span>
 						<</if>>
 					<<else>>
 						<<if $control gte $controlmax>>
-							<span class="green">你充满自信。</span>
+							<span class="green">You are confident.</span>
 						<<elseif $control gte ($controlmax / 5) * 4>>
-							<span class="teal">你感到不安。</span>
+							<span class="teal">You are insecure.</span>
 						<<elseif $control gte ($controlmax / 5) * 3>>
-							<span class="lblue">你开始忧虑。</span>
+							<span class="lblue">You are worried.</span>
 						<<elseif $control gte ($controlmax / 5) * 2>>
-							<span class="blue">你很焦虑。</span>
+							<span class="blue">You are anxious.</span>
 						<<elseif $control gte ($controlmax / 5) * 1>>
-							<span class="purple">你感到害怕。</span>
+							<span class="purple">You are scared.</span>
 						<<elseif $control gte 1>>
-							<span class="pink">你有些惊恐。</span>
+							<span class="pink">You are frightened.</span>
 						<<else>>
-							<span class="red">你极度恐慌。</span>
+							<span class="red">You are terrified.</span>
 						<</if>>
 					<</if>>
 				<</if>>
@@ -1154,24 +1154,24 @@
 
 <<widget "arousalcaption">>
 	<<if Number.isFinite($arousal)>>
-		<div id="arousalcaption" @title="'性奋: ' + $arousal.toFixed(2)">
+		<div id="arousalcaption" @title="'Arousal: ' + $arousal.toFixed(2)">
 			<div @class="($options.showCaptionText is true ? '' : 'rightMeterText')">
-				性奋：
+				Arousal:
 				<<if $options.showCaptionText is true>>
 					<<if $arousal gte $arousalmax>>
-						<span class="red">你颤栗着达到了高潮。</span>
+						<span class="red">You shake with arousal.</span>
 					<<elseif $arousal gte ($arousalmax / 5) * 4>>
-						<span class="pink">触电般热浪于小腹聚集。</span>
+						<span class="pink">A heat rises within.</span>
 					<<elseif $arousal gte ($arousalmax / 5) * 3>>
-						<span class="purple">你身体轻颤着索求更多。</span>
+						<span class="purple">You feel horny.</span>
 					<<elseif $arousal gte ($arousalmax / 5) * 2>>
-						<span class="blue">你的身体因欲望而抽痛。</span>
+						<span class="blue">You feel lustful.</span>
 					<<elseif $arousal gte $arousalmax / 5>>
-						<span class="lblue">情欲在你的体内积累。</span>
+						<span class="lblue">You feel aroused.</span>
 					<<elseif $arousal gte 1>>
-						<span class="teal">你的身体微微发烫。</span>
+						<span class="teal">You feel sensual.</span>
 					<<else>>
-						<span class="green">你很冷静。</span>
+						<span class="green">You feel cold.</span>
 					<</if>>
 				<</if>>
 			</div>
@@ -1184,17 +1184,17 @@
 
 <<widget "allurecaption">>
 	<<if Number.isFinite($allure)>>
-		<div id="allurecaption" @title="'诱惑: ' + $allure.toFixed(2)">
+		<div id="allurecaption" @title="'Allure: ' + $allure.toFixed(2)">
 			<div @class="($options.showCaptionText is true ? '' : 'rightMeterText')">
-				诱惑：
+				Allure:
 				<<if $options.showCaptionText is true>>
-					<<if $allure gte (6000 * $alluremod)>><span class="red">你看起来需要被蹂躏。</span>
-					<<elseif $allure gte (4000 * $alluremod)>><span class="pink">你看起来很有伤风化。</span>
-					<<elseif $allure gte (3000 * $alluremod)>><span class="purple">你看起来非常色情。</span>
-					<<elseif $allure gte (2000 * $alluremod)>><span class="blue">你在人群中十分显眼。</span>
-					<<elseif $allure gte (1500 * $alluremod)>><span class="lblue">你引人注目。</span>
-					<<elseif $allure gte (1000 * $alluremod)>><span class="teal">偶尔有人偷偷看你几眼。</span>
-					<<else>><span class="green">你看起来平平无奇。</span>
+					<<if $allure gte (6000 * $alluremod)>><span class="red">You look like you need to be ravaged.</span>
+					<<elseif $allure gte (4000 * $alluremod)>><span class="pink">You look perverted.</span>
+					<<elseif $allure gte (3000 * $alluremod)>><span class="purple">You look lewd.</span>
+					<<elseif $allure gte (2000 * $alluremod)>><span class="blue">You stand out.</span>
+					<<elseif $allure gte (1500 * $alluremod)>><span class="lblue">You attract attention.</span>
+					<<elseif $allure gte (1000 * $alluremod)>><span class="teal">You attract glances.</span>
+					<<else>><span class="green">You look unremarkable.</span>
 					<</if>>
 				<</if>>
 			</div>
@@ -1238,7 +1238,7 @@
 	<div id="oxygencaption">
 		<<if _args[0] is true>>
 			<div @class="($options.showCaptionText is true ? '' : 'rightMeterText')">
-				空气：
+				Air:
 			</div>
 			<<set _showCaptionText to !$options.showCaptionText>>
 		<<else>>
@@ -1250,31 +1250,31 @@
 <</widget>>
 
 <<widget "flashbacktown">>
-	<span class="red">远方传来了车鸣声。你惊慌失措，幽灵般的触手探入你的身体，束缚了你的四肢……一个无言的声音在嘲笑、贬低着你。尽管只持续了一会儿，但压抑与恐惧依旧让你胆战心惊。</span>
+	<span class="red">You hear a car horn blare somewhere in the distance, and you panic. Phantom tendrils probe your body and restrict your limbs as a wordless voice jeers and promises endless debasement. It lasts only a moment, but the impression of violation remains.</span>
 	<<garousal>><<gstress>><<gtrauma>><<arousal 600>><<stress 12>><<trauma 6>>
 	<br><br>
 <</widget>>
 
 <<widget "flashbackhome">>
-	<span class="red">远方传来了车驰声。你惊慌失措，幽灵般的触手探入你的身体，束缚了你的四肢……一个无言的声音在嘲笑、贬低着你。尽管只持续了一会儿，但压抑与恐惧依旧让你胆战心惊。</span>
+	<span class="red">You hear a car drive past, and you panic. Phantom tendrils probe your body and restrict your limbs as a wordless voice jeers and promises endless debasement. It lasts only a moment, but the impression of violation remains.</span>
 	<<garousal>><<gstress>><<gtrauma>><<arousal 600>><<stress 6>><<trauma 6>>
 	<br><br>
 <</widget>>
 
 <<widget "flashbackbeach">>
-	<span class="red">远方有海鸥在叫。你惊慌失措，幽灵般的触手探入你的身体，限束缚了你的四肢……一个无言的声音在嘲笑、贬低着你。尽管只持续了一会儿，但压抑与恐惧依旧让你胆战心惊。</span>
+	<span class="red">You hear a gull squawk, and you panic. Phantom tendrils probe your body and restrict your limbs as a wordless voice jeers and promises endless debasement. It lasts only a moment, but the impression of violation remains.</span>
 	<<garousal>><<gstress>><<gtrauma>><<arousal 600>><<stress 6>><<trauma 6>>
 	<br><br>
 <</widget>>
 
 <<widget "flashbackunderground">>
-	<span class="red">你感到大地在颤抖。你惊慌失措，幽灵般的触手探入你的身体，束缚了你的四肢……一个无言的声音在嘲笑、贬低着你。尽管只持续了一会儿，但压抑与恐惧依旧让你胆战心惊。</span>
+	<span class="red">You feel a tremor through the earth, and you panic. Phantom tendrils probe your body and restrict your limbs as a wordless voice jeers and promises endless debasement. It lasts only a moment, but the impression of violation remains.</span>
 	<<garousal>><<gstress>><<gtrauma>><<arousal 600>><<stress 6>><<trauma 6>>
 	<br><br>
 <</widget>>
 
 <<widget "flashbackschool">>
-	<span class="red">你回想起你在学校是怎样被人嘲笑与欺侮的。你开始惊慌，幽灵般的触手探入你的身体，束缚了你的四肢……一个无言的声音在嘲笑、贬低着你。尽管只持续了一会儿，但压抑与恐惧依旧让你胆战心惊。</span>
+	<span class="red">You remember the last time you were molested at school, and you panic. Phantom tendrils probe your body and restrict your limbs as a wordless voice jeers and promises endless debasement. It lasts only a moment, but the impression of violation remains.</span>
 	<<garousal>><<gstress>><<gtrauma>><<arousal 600>><<stress 6>><<trauma 6>>
 	<br><br>
 <</widget>>
@@ -1291,14 +1291,14 @@
 				<<if $options.showCaptionText is true>>
 					<<set $_drunk_level to Math.clamp(Math.floor($drunk / 120), 0, 4) * 120>>
 					<<switch $_drunk_level>>
-						<<case 0>><span @class="$_colour">你有些头晕。</span>
-						<<case 120>><span @class="$_colour">你略有醉意。</span>
-						<<case 240>><span @class="$_colour">你喝醉了。</span>
-						<<case 360>><span @class="$_colour">你烂醉如泥。</span>
-						<<case 480>><span @class="$_colour">你醉的不省人事。</span>
+						<<case 0>><span @class="$_colour">You are woozy.</span>
+						<<case 120>><span @class="$_colour">You are tipsy.</span>
+						<<case 240>><span @class="$_colour">You are drunk.</span>
+						<<case 360>><span @class="$_colour">You are smashed.</span>
+						<<case 480>><span @class="$_colour">You are wasted.</span>
 					<</switch>>
 				<<else>>
-					醉意：
+					Drunk:
 				<</if>>
 			</div>
 			<div @class="($options.showCaptionText is true ? 'meter' : 'rightMeter')">
@@ -1319,9 +1319,9 @@
 		<div id="druggedcaption">
 			<div @class="($options.showCaptionText is true ? '' : 'rightMeterText')">
 				<<if $options.showCaptionText is true>>
-					<span class="pink">一股淫荡的暖意在你体内荡漾。</span>
+					<span class="pink">A lewd warmth fills you</span>
 				<<else>>
-					药物：
+					Drugged:
 				<</if>>
 			</div>
 			<div @class="($options.showCaptionText is true ? 'meter' : 'rightMeter')">
@@ -1342,9 +1342,9 @@
 		<div id="hallucinogencaption">
 			<div @class="($options.showCaptionText is true ? '' : 'rightMeterText')">
 				<<if $options.showCaptionText is true>>
-					<span class="purple">你的感知发生了变化</span>
+					<span class="purple">Your perception is altered</span>
 				<<else>>
-					致幻：
+					Hallucinogen:
 				<</if>>
 			</div>
 			<div @class="($options.showCaptionText is true ? 'meter' : 'rightMeter')">
@@ -1357,17 +1357,17 @@
 
 <<widget "paincaption">>
 	<<if Number.isFinite($pain)>>
-		<div id="paincaption" @title="'疼痛: ' + $pain.toFixed(2)">
+		<div id="paincaption" @title="'Pain: ' + $pain.toFixed(2)">
 			<div @class="($options.showCaptionText is true ? '' : 'rightMeterText')">
-				疼痛：
+				Pain:
 				<<if $options.showCaptionText is true>>
-					<<if $pain gte 100 and $willpowerpain is 0>><span class="red">你无法控制地啜泣起来。</span>
-					<<elseif $pain gte 80>><span class="pink">疼痛使你大哭不止。</span>
-					<<elseif $pain gte 60>><span class="purple">你抽泣不止。</span>
-					<<elseif $pain gte 40>><span class="blue">眼泪从你的脸颊上流下。</span>
-					<<elseif $pain gte 20>><span class="lblue">泪花在你眼中打转。</span>
-					<<elseif $pain gte 1>><span class="teal">你有些难受。</span>
-					<<else>><span class="green">你感觉良好。</span>
+					<<if $pain gte 100 and $willpowerpain is 0>><span class="red">You sob uncontrollably.</span>
+					<<elseif $pain gte 80>><span class="pink">You cry and whimper.</span>
+					<<elseif $pain gte 60>><span class="purple">You are crying.</span>
+					<<elseif $pain gte 40>><span class="blue">Tears run down your face.</span>
+					<<elseif $pain gte 20>><span class="lblue">Tears well in your eyes.</span>
+					<<elseif $pain gte 1>><span class="teal">You are upset.</span>
+					<<else>><span class="green">You feel okay.</span>
 					<</if>>
 				<</if>>
 			</div>
@@ -1497,15 +1497,15 @@
 			<<else>>
 				<<set $controlstart to $control>><<control -25>>
 				<<if $control gte ($controlmax * 0.74)>>
-					<span class="purple">你的控制感动摇了。</span>
+					<span class="purple">Your sense of control wavers.</span>
 				<<elseif $control gte ($controlmax * 0.49)>>
-					<span class="purple">你的控制感下降了。</span>
+					<span class="purple">Your sense of control falters.</span>
 				<<elseif $control gte ($controlmax * 0.24)>>
-					<span class="pink">你的控制感破碎了。</span>
+					<span class="pink">Your sense of control cracks.</span>
 				<<elseif $control gte 1>>
-					<span class="pink">你的控制感崩溃了。</span>
+					<span class="pink">Your sense of control breaks down.</span>
 				<<else>>
-					<span class="red">你完全失去了对自己的控制。</span>
+					<span class="red">Your sense of control shatters.</span>
 				<</if>>
 			<</if>>
 		<</if>>
@@ -2181,31 +2181,31 @@
 		<<switch Time.dayState>>
 			<<case "day">>
 				<<switch $weather>>
-					<<case "clear">>外面阳光明媚。
-					<<case "rain">>外面正在下雨。
-					<<case "overcast">>乌云遮住了日光。
-					<<case "snow">>雪花从空中飘落。
+					<<case "clear">>It's a bright and sunny day.
+					<<case "rain">>It's a rainy day.
+					<<case "overcast">>Clouds are hiding the sun.
+					<<case "snow">>It's a snowy day.
 				<</switch>>
 			<<case "night">>
 				<<switch $weather>>
-					<<case "clear">>星星在夜光下闪烁。
-					<<case "rain">>外面正在下雨。
-					<<case "overcast">>漫天的乌云遮蔽了星光。
-					<<case "snow">>雪花安静地从空中飘落。
+					<<case "clear">>The stars are shining.
+					<<case "rain">>It's a rainy night.
+					<<case "overcast">>All starlight is blocked by the clouds.
+					<<case "snow">>It's a snowy night.
 				<</switch>>
 			<<case "dawn">>
 				<<switch $weather>>
-					<<case "clear">>太阳正从地平线上缓缓升起。
-					<<case "rain">>外面正在下雨。
-					<<case "overcast">>外面乌云密布。
-					<<case "snow">>雪花从空中飘落。
+					<<case "clear">>The sun is rising.
+					<<case "rain">>It's a rainy morning.
+					<<case "overcast">>It's a cloudy morning.
+					<<case "snow">>It's a snowy morning.
 				<</switch>>
 			<<case "dusk">>
 				<<switch $weather>>
-					<<case "clear">>落日的余晖在地平线上闪烁。
-					<<case "rain">>外面正在下雨。
-					<<case "overcast">>外面乌云密布。
-					<<case "snow">>雪花在夕阳下飘落。
+					<<case "clear">>The sun is setting.
+					<<case "rain">>It's a rainy evening.
+					<<case "overcast">>It's cloudy evening.
+					<<case "snow">>It's a snowy evening.
 				<</switch>>
 		<</switch>>
 		<br>
@@ -2413,7 +2413,7 @@
 		<<if $worn.over_upper.integrity lte 0>>
 			<<set $worn.over_upper.type.push("broken")>>
 			<<if _args[0] isnot "no_text">>
-				<span class="lewd">你的$worn.over_upper.cn_name_cap<<upperplural>>被撕成了碎片<<if $worn.upper.exposed gte 2>>，使你<<breasts>>暴露在了空气之中<</if>>。</span>
+				<span class="lewd">Your $worn.over_upper.name <<upperplural>> ripped into scraps<<if $worn.upper.exposed gte 2>>, exposing your <<breasts>><</if>>.</span>
 				<br>
 			<</if>>
 		<<overupperruined>><<clothesruinstat>><<if $worn.upper.exposed gte 2>><<set $upperoff to 0>><</if>>
@@ -2423,7 +2423,7 @@
 		<<if $worn.over_lower.integrity lte 0>>
 			<<set $worn.over_lower.type.push("broken")>>
 			<<if _args[0] isnot "no_text">>
-				<span class="lewd">你的$worn.over_lower.cn_name_cap<<upperplural>>被撕成了碎片<<if $worn.lower.exposed gte 2>>，使你<<undies>>暴露在了空气之中<</if>>。</span>
+				<span class="lewd">Your $worn.over_lower.name <<upperplural>> ripped into scraps<<if $worn.lower.exposed gte 2>>, exposing your <<undies>><</if>>.</span>
 				<br>
 			<</if>>
 		<<overlowerruined>><<clothesruinstat>><<if $worn.lower.exposed gte 2>><<set $upperoff to 0>><</if>>
@@ -2433,7 +2433,7 @@
 		<<if $worn.upper.integrity lte 0>>
 			<<set $worn.upper.type.push("broken")>>
 			<<if _args[0] isnot "no_text">>
-				<span class="lewd">你的$worn.upper.cn_name_cap<<upperplural>>被撕成了碎片，使你<<breasts>>暴露在了空气之中。</span>
+				<span class="lewd">Your $worn.upper.name <<upperplural>> ripped into scraps, exposing your <<breasts>>.</span>
 				<br>
 			<</if>>
 		<<upperruined>><<clothesruinstat>><<set $upperoff to 0>>
@@ -2443,7 +2443,7 @@
 		<<if $worn.lower.integrity lte 0>>
 			<<set $worn.lower.type.push("broken")>>
 			<<if _args[0] isnot "no_text">>
-				<span class="lewd">你的$worn.lower.cn_name_cap<<lowerplural>>被撕成了碎片，使你<<undies>>暴露在了空气之中。</span>
+				<span class="lewd">Your $worn.lower.name <<lowerplural>> ripped into scraps, exposing your <<undies>>.</span>
 				<br>
 			<</if>>
 		<<lowerruined>><<clothesruinstat>><<set $loweroff to 0>>
@@ -2453,7 +2453,7 @@
 		<<if $worn.under_upper.integrity lte 0>>
 			<<set $worn.under_upper.type.push("broken")>>
 			<<if _args[0] isnot "no_text">>
-				<span class="lewd">你的$worn.under_upper.cn_name_cap<<underupperplural>>被撕成了碎片，使你<<breasts>>暴露在了空气之中。</span>
+				<span class="lewd">Your $worn.under_upper.name <<underupperplural>> ripped into scraps, exposing your <<breasts>>.</span>
 				<br>
 			<</if>>
 		<<underupperruined>><<clothesruinstat>><<set $underupperoff to 0>>
@@ -2463,7 +2463,7 @@
 		<<if $worn.under_lower.integrity lte 0>>
 			<<set $worn.under_lower.type.push("broken")>>
 			<<if _args[0] isnot "no_text">>
-				<span class="lewd">你的$worn.under_lower.cn_name_cap<<underlowerplural>>被撕成了碎片，使你<<if $worn.genitals.name isnot "naked">>$worn.genitals.cn_name_cap暴露在了空气之中。<<else>><<genitals>>暴露在了空气之中。<</if>></span>
+				<span class="lewd">Your $worn.under_lower.name <<underlowerplural>> ripped into scraps, exposing your <<if $worn.genitals.name isnot "naked">>$worn.genitals.name.<<else>><<genitals>>.<</if>></span>
 				<br>
 			<</if>>
 		<<underlowerruined>><<clothesruinstat>><<set $underloweroff to 0>>
@@ -2473,23 +2473,23 @@
 		<<if $worn.genitals.integrity lte 0>>
 			<<set _chastityBreak to 1>>
 			<<if _args[0] isnot "no_text">>
-				<span class="lewd">你的$worn.genitals.cn_name_cap破裂了，使你<<genitals>>暴露在了空气之中。</span>
+				<span class="lewd">Your $worn.genitals.name breaks, exposing your <<genitals>>.</span>
 				<br>
 			<</if>>
 			<<if playerChastity()>>
 				<<set $worn.genitals.type.push("broken")>>
 				<<if $vaginalchastityparasite isnot 0>>
-					<span class="pink">随着<<print $worn.genitals.cn_name_cap>>的耐久耗尽,那个$vaginalchastityparasite也从你的阴道里掉了出来.</span>
+					<span class="pink">With the <<print $worn.genitals.name>> gone, the $vaginalchastityparasite fall out of your vagina.</span>
 					<br>
 					<<set $vaginalchastityparasite to 0>>
 				<</if>>
 				<<if $penilechastityparasite isnot 0>>
-					<span class="pink">随着<<print $worn.genitals.cn_name_cap>>的耐久耗尽,那个$penilechastityparasite也从你的肉棒上掉了下来.</span>
+					<span class="pink">With the <<print $worn.genitals.name>> gone, the $penilechastityparasite fall off of your penis.</span>
 					<br>
 					<<set $penilechastityparasite to 0>>
 				<</if>>
 				<<if $analchastityparasite isnot 0>>
-					<span class="pink">随着<<print $worn.genitals.cn_name_cap>>的耐久耗尽,那个$analchastityparasite也从你的菊穴掉落下来.</span>
+					<span class="pink">With the <<print $worn.genitals.name>> gone, the $analchastityparasite fall out of your anus.</span>
 					<br>
 					<<set $analchastityparasite to 0>>
 				<</if>>
@@ -2675,28 +2675,28 @@
 		<!-- Variables constructed: $semenoutsidecount, $goooutsidecount, $nectaroutsidecount -->
 		<<set _liquid to formatList(
 			["semen", "goo", "nectar"].filter(stuff => V[stuff + "outsidecount"] gte 1)
-			).replace("semen", "精液").replace("goo", "粘液").replace("nectar", "花蜜").replace(" and ", "和").replace(",", "、")
+			).replace("goo", "slime")
 		>>
 		<<if $liquidoutsidecount gte 100>>
-			<span class="red">你全身上下都浸润在淫秽的液体之中。</span>
+			<span class="red">Lewd fluid drenches you from head to toe.</span>
 			<br>
 		<<elseif $liquidoutsidecount gte 25>>
-			<span class="pink">大量的<<switch _liquid>><<case "semen">>精液<<case "goo">>粘液<<case "nectar">>花蜜<<default>>_liquid<</switch>>浸透了你。</span>
+			<span class="pink">You are drenched in _liquid.</span>
 			<br>
 		<<elseif $liquidoutsidecount gte 20>>
-			<span class="purple">你身上沾满了<<switch _liquid>><<case "semen">>精液<<case "goo">>粘液<<case "nectar">>花蜜<<default>>_liquid<</switch>></span>
+			<span class="purple">You are soaked with _liquid.</span>
 			<br>
 		<<elseif $liquidoutsidecount gte 15>>
-			<span class="purple">你的皮肤被<<switch _liquid>><<case "semen">>精液<<case "goo">>粘液<<case "nectar">>花蜜<<default>>_liquid<</switch>>湿润了。</span>
+			<span class="purple">Your skin is slick with _liquid.</span>
 			<br>
 		<<elseif $liquidoutsidecount gte 10>>
-			<span class="purple">你被<<switch _liquid>><<case "semen">>精液<<case "goo">>粘液<<case "nectar">>花蜜<<default>>_liquid<</switch>>弄湿了。</span>
+			<span class="purple">You are wet with _liquid.</span>
 			<br>
 		<<elseif $liquidoutsidecount gte 5>>
-			<span class="purple">你的皮肤被<<switch _liquid>><<case "semen">>精液<<case "goo">>粘液<<case "nectar">>花蜜<<default>>_liquid<</switch>>湿润了。</span>
+			<span class="purple">Your skin is moist with _liquid.</span>
 			<br>
 		<<elseif $liquidoutsidecount gte 1>>
-			<span class="blue">一些<<switch _liquid>><<case "semen">>精液<<case "goo">>粘液<<case "nectar">>花蜜<<default>>_liquid<</switch>>粘在你的皮肤上。</span>
+			<span class="blue">You feel _liquid on your skin.</span>
 			<br>
 		<</if>>
 	<</if>>
@@ -2705,7 +2705,7 @@
 		<!-- Variables constructed: $player.bodyliquid.vagina.semen, $player.bodyliquid.vagina.goo, $player.bodyliquid.vagina.nectar -->
 		<<set _liquid to formatList(
 			["semen", "goo", "nectar"].filter(stuff => V.player.bodyliquid.vagina[stuff] gte 1)
-			).replace("semen", "精液").replace("goo", "粘液").replace("nectar", "花蜜").replace(" and ", "和").replace(",", "、")
+			).replace("goo", "slime")
 		>>
 		<<set _liquidUpper to _liquid.toUpperFirst()>>
 		<<if _liquid.includes(" ")>>
@@ -2715,19 +2715,19 @@
 		<</if>>
 		<<switch Math.clamp(setup.bodyliquid.combined("vagina"), 1, 5)>>
 			<<case 5>>
-				<span class="red">无法容下的<<switch _liquid>><<case "semen">>精液<<case "goo">>粘液<<case "nectar">>花蜜<<default>>_liquid<</switch>>一股股从你胀满的子宫中溢出。</span>
+				<span class="red">Your womb overflows with _liquid.</span>
 				<br>
 			<<case 4>>
-				<span class="pink"><<switch _liquid>><<case "semen">>精液<<case "goo">>粘液<<case "nectar">>花蜜<<default>>_liquid<</switch>>从你<<pussy>>满溢而出。</span>
+				<span class="pink">Your <<pussy>> overflows with _liquid.</span>
 				<br>
 			<<case 3>>
-				<span class="pink"><<switch _liquidUpper>><<case "Semen">>精液<<case "Goo">>粘液<<case "Nectar">>花蜜<<default>>_liquidUpper<</switch>>从你<<pussy>>中顺着大腿缓缓淌下。</span>
+				<span class="pink">_liquidUpper flow_s from your <<pussy>>.</span>
 				<br>
 			<<case 2>>
-				<span class="pink"><<switch _liquidUpper>><<case "Semen">>精液<<case "Goo">>粘液<<case "Nectar">>花蜜<<default>>_liquidUpper<</switch>>在地面与你<<pussy>>间拉出一条细丝。</span>
+				<span class="pink">_liquidUpper stream_s from your <<pussy>>.</span>
 				<br>
 			<<case 1>>
-				<span class="pink"><<switch _liquidUpper>><<case "Semen">>精液<<case "Goo">>粘液<<case "Nectar">>花蜜<<default>>_liquidUpper<</switch>>从你<<pussy>>中滴落。</span>
+				<span class="pink">_liquidUpper drip_s from your <<pussy>>.</span>
 				<br>
 		<</switch>>
 	<</if>>
@@ -2736,7 +2736,7 @@
 		<!-- Variables constructed: $player.bodyliquid.anus.semen, $player.bodyliquid.anus.goo, $player.bodyliquid.anus.nectar -->
 		<<set _liquid to formatList(
 			["semen", "goo", "nectar"].filter(stuff => V.player.bodyliquid.anus[stuff] gte 1)
-			).replace("semen", "精液").replace("goo", "粘液").replace("nectar", "花蜜").replace(" and ", "和").replace(",", "、")
+			).replace("goo", "slime")
 		>>
 		<<set _liquidUpper to _liquid.toUpperFirst()>>
 		<<if _liquid.includes(" ")>>
@@ -2746,19 +2746,19 @@
 		<</if>>
 		<<switch Math.clamp(setup.bodyliquid.combined("anus"), 1, 5)>>
 			<<case 5>>
-				<span class="red">无法容下的<<switch _liquid>><<case "semen">>精液<<case "goo">>粘液<<case "nectar">>花蜜<<default>>_liquid<</switch>>一股股从你胀满的肠道中溢出。</span>
+				<span class="red">Your bowels overflows with _liquid.</span>
 				<br>
 			<<case 4>>
-				<span class="pink"><<switch _liquid>><<case "semen">>精液<<case "goo">>粘液<<case "nectar">>花蜜<<default>>_liquid<</switch>>从你<<bottom>>中满溢而出。</span>
+				<span class="pink">Your <<bottom>> overflows with _liquid.</span>
 				<br>
 			<<case 3>>
-				<span class="pink"><<switch _liquidUpper>><<case "Semen">>精液<<case "Goo">>粘液<<case "Nectar">>花蜜<<default>>_liquidUpper<</switch>>顺着你<<bottom>>缓缓淌下。</span>
+				<span class="pink">_liquidUpper flow_s from your <<bottom>>.</span>
 				<br>
 			<<case 2>>
-				<span class="pink"><<switch _liquidUpper>><<case "Semen">>精液<<case "Goo">>粘液<<case "Nectar">>花蜜<<default>>_liquidUpper<</switch>>在地面与你<<bottom>>间拉出一条细丝。</span>
+				<span class="pink">_liquidUpper stream_s from your <<bottom>>.</span>
 				<br>
 			<<case 1>>
-				<span class="pink"><<switch _liquidUpper>><<case "Semen">>精液<<case "Goo">>粘液<<case "Nectar">>花蜜<<default>>_liquidUpper<</switch>>从你的股间滴落。</span>
+				<span class="pink">_liquidUpper drip_s from your <<bottom>>.</span>
 				<br>
 		<</switch>>
 	<</if>>
@@ -2767,7 +2767,7 @@
 		<!-- Variables constructed: $player.bodyliquid.mouth.semen, $player.bodyliquid.mouth.goo, $player.bodyliquid.mouth.nectar -->
 		<<set _liquid to formatList(
 			["semen", "goo", "nectar"].filter(stuff => V.player.bodyliquid.mouth[stuff] gte 1)
-			).replace("semen", "精液").replace("goo", "粘液").replace("nectar", "花蜜").replace(" and ", "和").replace(",", "、")
+			).replace("goo", "slime")
 		>>
 		<<set _liquidUpper to _liquid.toUpperFirst()>>
 		<<if _liquid.includes(" ")>>
@@ -2778,19 +2778,19 @@
 		<<set _liquidUpper to _liquid.toUpperFirst()>>
 		<<switch Math.clamp(setup.bodyliquid.combined("mouth"), 1, 5)>>
 			<<case 5>>
-				<span class="red">你不断地咳出<<switch _liquid>><<case "semen">>精液<<case "goo">>粘液<<case "nectar">>花蜜<<default>>_liquid<</switch>>。</span>
+				<span class="red">You keep coughing up _liquid.</span>
 				<br>
 			<<case 4>>
-				<span class="pink">满溢的<<switch _liquidUpper>><<case "Semen">>精液<<case "Goo">>粘液<<case "Nectar">>花蜜<<default>>_liquidUpper<</switch>>正汇成丝线从你的唇缝中淌下。</span>
+				<span class="pink">_liquidUpper dribble_s down your chin.</span>
 				<br>
 			<<case 3>>
-				<span class="pink"><<switch _liquidUpper>><<case "Semen">>精液<<case "Goo">>粘液<<case "Nectar">>花蜜<<default>>_liquidUpper<</switch>>从你的唇缝间滴落。</span>
+				<span class="pink">_liquidUpper line_s the sides of your throat.</span>
 				<br>
 			<<case 2>>
-				<span class="pink"><<switch _liquidUpper>><<case "Semen">>精液<<case "Goo">>粘液<<case "Nectar">>花蜜<<default>>_liquidUpper<</switch>>在你的唇间拉出一道细线。</span>
+				<span class="pink">_liquidUpper layer_s the back of your throat.</span>
 				<br>
 			<<case 1>>
-				<span class="pink">残存<<switch _liquid>><<case "semen">>精液<<case "goo">>粘液<<case "nectar">>花蜜<<default>>_liquid<</switch>>味在你嘴中扩散。</span>
+				<span class="pink">The taste of _liquid permeate_s your mouth.</span>
 				<br>
 		<</switch>>
 	<</if>>
@@ -2856,8 +2856,8 @@
 	<<set $_part to $_part_text.replace(" ","")>>
 	<<set $player.bodyliquid[$_part].goo += 1>>
 
-	<<print either("飞溅到你的", "涂抹到你的", "落在了你的", "溅到了你的")>><<set $_part_text to $_part_text.replace("neck","脖子上").replace("right arm","右臂上").replace("left arm","左臂上").replace("thigh","大腿上").replace("bottom","屁股上").replace("tummy","小腹上").replace("chest","胸部上").replace("face","脸上").replace("hair","头发上").replace("feet","脚上")>>
-	<span class="purple">$_part_text。</span>
+	It <<print either("splatters onto your", "coats your", "lands on your", "splashes your")>>
+	<span class="purple">$_part_text.</span>
 <</widget>>
 
 <<widget "random_semen">>
@@ -2869,8 +2869,8 @@
 	<<set $_part to $_part_text.replace(" ","")>>
 	<<set $player.bodyliquid[$_part].semen += 1>>
 
-	<<print either("飞溅到你的", "涂抹到你的", "落在了你的", "溅到了你的")>><<set $_part_text to $_part_text.replace("neck","脖子上").replace("right arm","右臂上").replace("left arm","左臂上").replace("thigh","大腿上").replace("bottom","屁股上").replace("tummy","小腹上").replace("chest","胸部上").replace("face","脸上").replace("hair","头发上").replace("feet","脚上")>>
-	<span class="purple">$_part_text。</span>
+	It <<print either("splatters onto your", "coats your", "lands on your", "splashes your")>>
+	<span class="purple">$_part_text.</span>
 <</widget>>
 
 <<widget "random_goo_head">>
@@ -2881,8 +2881,8 @@
 	<<set $_part to $_part_text.replace(" ","")>>
 	<<set $player.bodyliquid[$_part].goo += 1>>
 
-	<<print either("飞溅到你的", "涂抹到你的", "落在了你的", "溅到了你的")>><<set $_part_text to $_part_text.replace("neck","脖子上").replace("right arm","右臂上").replace("left arm","左臂上").replace("thigh","大腿上").replace("bottom","屁股上").replace("tummy","小腹上").replace("chest","胸部上").replace("face","脸上").replace("hair","头发上").replace("feet","脚上")>>
-	<span class="purple">$_part_text。</span>
+	It <<print either("splatters onto your", "coats your", "lands on your", "splashes your")>>
+	<span class="purple">$_part_text.</span>
 <</widget>>
 
 <<widget "random_semen_head">>
@@ -2893,8 +2893,8 @@
 	<<set $_part to $_part_text.replace(" ","")>>
 	<<set $player.bodyliquid[$_part].semen += 1>>
 
-	<<print either("飞溅到你的", "涂抹到你的", "落在了你的", "溅到了你的")>><<set $_part_text to $_part_text.replace("neck","脖子上").replace("right arm","右臂上").replace("left arm","左臂上").replace("thigh","大腿上").replace("bottom","屁股上").replace("tummy","小腹上").replace("chest","胸部上").replace("face","脸上").replace("hair","头发上").replace("feet","脚上")>>
-	<span class="purple">$_part_text。</span>
+	It <<print either("splatters onto your", "coats your", "lands on your", "splashes your")>>
+	<span class="purple">$_part_text.</span>
 <</widget>>
 
 <<widget "washmakeup">>
@@ -2922,13 +2922,13 @@
 	<</if>>
 
 	<<if $waterwash gte 10>>
-		<span class="lewd">大量淫液被冲入水中。你希望这不会引起注意。</span><br>
+		<span class="lewd">Copious amounts of lewd fluid washes into the water. You hope it doesn't attract attention.</span><br>
 	<<elseif $waterwash gte 5>>
-		<span class="lewd">很多淫液被冲入水中。你希望这不会引起注意。</span><br>
+		<span class="lewd">Lots of lewd fluid washes into the water. You hope it doesn't attract attention.</span><br>
 	<<elseif $waterwash gte 2>>
-		<span class="lewd">淫液被冲入水中。你希望这不会引起注意。</span><br>
+		<span class="lewd">Lewd fluid washes into the water. You hope it doesn't attract attention.</span><br>
 	<<elseif $waterwash is 1>>
-		<span class="lewd">一些淫液被冲入水中。你希望这不会引起注意。</span><br>
+		<span class="lewd">Some lewd fluid washes into the water. You hope it doesn't attract attention.</span><br>
 	<</if>>
 	<<set $waterwash to 0>>
 
@@ -3024,7 +3024,7 @@
 <</widget>>
 
 <<widget "tipreceive">>
-	<span class="gold"><<if random(1, 10000) is 10000>>你得到了一笔小费<<else>>你赚到了<</if>><<printmoney $tip>>。</span>
+	<span class="gold"><<if random(1, 10000) is 10000>>You gain Brouzouf<<else>>You make<</if>> <<printmoney $tip>>.</span>
 	<<set $money += $tip>>
 	<<if $tip gte 50000>>
 		<<earnFeat "Negotiator">>
@@ -3033,16 +3033,16 @@
 <</widget>>
 
 <<widget "tip_neg">>
-	经过协商，报酬被定为<<printmoney $tip>>，
+	You negotiate a price of <<printmoney $tip>>,
 	<<if $tipreaction is "low">>
-		这低于你的期望。
+		less than you hoped for.
 	<<else>>
-		听起来十分公道。
+		which sounds reasonable.
 	<</if>>
 <</widget>>
 
 <<widget "tip_up">>
-	<<He>>加价至<<printmoney $tip>>。
+	<<He>> raises <<his>> offer to <<printmoney $tip>>.
 <</widget>>
 
 <<widget "passout">>
@@ -3109,18 +3109,18 @@
 <<widget "textmap">>
 	<<if $options.mapMovement is true and !$possessed>>
 	__Map__<br>
-		|.....<a class="no-numberify mapmove" onclick="mapMove('Barb Street')" title="Barb Street">倒</a> &#9866; <a class="no&#9866;numberify mapmove" onclick="mapMove('Cliff Street')" title="Cliff Street">峭</a> &#9866; <a class="no&#9866;numberify mapmove" onclick="mapMove('Starfish Street')" title="Starfish Street">海</a> &#9866; <a class="no&#9866;numberify mapmove" onclick="mapMove('Mer Street')" title="Mer Street">梅</a><br>
+		|.....<a class="no-numberify mapmove" onclick="mapMove('Barb Street')" title="Barb Street">Ba</a> &#9866; <a class="no&#9866;numberify mapmove" onclick="mapMove('Cliff Street')" title="Cliff Street">Cl</a> &#9866; <a class="no&#9866;numberify mapmove" onclick="mapMove('Starfish Street')" title="Starfish Street">St</a> &#9866; <a class="no&#9866;numberify mapmove" onclick="mapMove('Mer Street')" title="Mer Street">Me</a><br>
 		|..╱ ╲ ╱ ╲ ╱ ╲ ╱ ╲<br>
-		|<a class="no&#9866;numberify mapmove" onclick="mapMove('Domus Street')" title="Domus Street">宅</a> <a class="no&#9866;numberify mapmove" onclick="mapMove('Residential alleyways')" title="ResidentialAlley">&#9866;</a> <a class="no&#9866;numberify mapmove" onclick="mapMove('Connudatus Street')" title="Connudatus Street">康</a> <a class="no&#9866;numberify mapmove" onclick="mapMove('Commercial alleyways')" title="CommercialAlley">&#9866; </a><a class="no&#9866;numberify mapmove" onclick="mapMove('High Street')" title="High Street">商</a> <a class="no&#9866;numberify mapmove" onclick="mapMove('Park')" title="Park">&#9866;</a> <a class="no&#9866;numberify mapmove" onclick="mapMove('Oxford Street')" title="Oxford Street">牛</a> <a class="no&#9866;numberify mapmove" onclick="mapMove('Industrial alleyways')" title="IndustrialAlley">&#9866;</a> <a class="no&#9866;numberify mapmove" onclick="mapMove('Harvest Street')" title="Harvest Street">丰</a><br>
+		|<a class="no&#9866;numberify mapmove" onclick="mapMove('Domus Street')" title="Domus Street">Do</a> <a class="no&#9866;numberify mapmove" onclick="mapMove('Residential alleyways')" title="ResidentialAlley">&#9866;</a> <a class="no&#9866;numberify mapmove" onclick="mapMove('Connudatus Street')" title="Connudatus Street">Co</a> <a class="no&#9866;numberify mapmove" onclick="mapMove('Commercial alleyways')" title="CommercialAlley">&#9866; </a><a class="no&#9866;numberify mapmove" onclick="mapMove('High Street')" title="High Street">Hi</a> <a class="no&#9866;numberify mapmove" onclick="mapMove('Park')" title="Park">&#9866;</a> <a class="no&#9866;numberify mapmove" onclick="mapMove('Oxford Street')" title="Oxford Street">Ox</a> <a class="no&#9866;numberify mapmove" onclick="mapMove('Industrial alleyways')" title="IndustrialAlley">&#9866;</a> <a class="no&#9866;numberify mapmove" onclick="mapMove('Harvest Street')" title="Harvest Street">Ha</a><br>
 		|..╲ ╱ ╲ ╱ ╲ ╱ ╲ ╱<br>
-		|.....<a class="no&#9866;numberify mapmove" onclick="mapMove('Danube Street')" title="Danube Street">多</a> &#9866; <a class="no&#9866;numberify mapmove" onclick="mapMove('Wolf Street')" title="Wolf Street">狼</a> &#9866; <a class="no&#9866;numberify mapmove" onclick="mapMove('Nightingale Street')" title="Nightingale Street">南</a> &#9866; <a class="no&#9866;numberify mapmove" onclick="mapMove('Elk Street')" title="Elk Street">麋</a><br>
+		|.....<a class="no&#9866;numberify mapmove" onclick="mapMove('Danube Street')" title="Danube Street">Da</a> &#9866; <a class="no&#9866;numberify mapmove" onclick="mapMove('Wolf Street')" title="Wolf Street">Wo</a> &#9866; <a class="no&#9866;numberify mapmove" onclick="mapMove('Nightingale Street')" title="Nightingale Street">Ni</a> &#9866; <a class="no&#9866;numberify mapmove" onclick="mapMove('Elk Street')" title="Elk Street">El</a><br>
 	<<else>>
 		__Map__<br>
-		|.....倒 &#9866; 峭 &#9866; 海 &#9866; 梅<br>
+		|.....Ba &#9866; Cl &#9866; St &#9866; Me<br>
 		|..╱ ╲ ╱ ╲ ╱ ╲ ╱ ╲<br>
-		|宅 &#9866; 康 &#9866; 商 &#9866; 牛 &#9866; 丰<br>
+		|Do &#9866; Co &#9866; Hi &#9866; Ox &#9866; Ha<br>
 		|..╲ ╱ ╲ ╱ ╲ ╱ ╲ ╱<br>
-		|.....多 &#9866; 狼 &#9866; 南 &#9866; 麋<br>
+		|.....Da &#9866; Wo &#9866; Ni &#9866; El<br>
 	<</if>>
 	<br>
 <</widget>>
@@ -3181,23 +3181,23 @@
 		<<if $options.mapMovement is true and !$possessed>>
 			<!-- Image Map Generated by http://www.image-map.net/ -->
 			<map id="town-image-map" name="town-image-map">
-				<area class="no-numberify" alt="倒钩街" title="倒钩街" coords="62,20,39,42" shape="rect" onclick="mapMove('Barb Street')">
-				<area class="no-numberify" alt="宅邸街" title="宅邸街" coords="2,75,26,49" shape="rect" onclick="mapMove('Domus Street')">
-				<area class="no-numberify" alt="多瑙河街" title="多瑙河街" coords="33,110,70,84" shape="rect" onclick="mapMove('Danube Street')">
-				<area class="no-numberify" alt="狼街" title="狼街" coords="86,117,114,86" shape="rect" onclick="mapMove('Wolf Street')">
-				<area class="no-numberify" alt="商业街" title="商业街" coords="116,77,139,46" shape="rect" onclick="mapMove('High Street')">
-				<area class="no-numberify" alt="康努达塔斯街" title="康努达塔斯街" coords="64,77,88,49" shape="rect" onclick="mapMove('Connudatus Street')">
-				<area class="no-numberify" alt="峭壁街" title="峭壁街" coords="88,40,117,-1" shape="rect" onclick="mapMove('Cliff Street')">
-				<area class="no-numberify" alt="海星街" title="海星街" coords="147,41,172,12" shape="rect" onclick="mapMove('Starfish Street')">
-				<area class="no-numberify" alt="南丁格尔街" title="南丁格尔街" coords="143,115,170,82" shape="rect" onclick="mapMove('Nightingale Street')">
-				<area class="no-numberify" alt="牛津街" title="牛津街" coords="170,73,203,45" shape="rect" onclick="mapMove('Oxford Street')">
-				<area class="no-numberify" alt="梅尔街" title="梅尔街" coords="202,42,229,14" shape="rect" onclick="mapMove('Mer Street')">
-				<area class="no-numberify" alt="麋鹿街" title="麋鹿街 coords="197,111,238,77" shape="rect" onclick="mapMove('Elk Street')">
-				<area class="no-numberify" alt="丰收街" title="丰收街" coords="252,46,228,76" shape="rect" onclick="mapMove('Harvest Street')">
-				<area class="no-numberify" alt="工业小巷" title="工业小巷" coords="225,73,209,53" shape="rect" onclick="mapMove('Industrial alleyways')">
-				<area class="no-numberify" alt="公园" title="公园" coords="154,65,170,52" shape="rect" onclick="mapMove('Park')">
-				<area class="no-numberify" alt="商业街小巷" title="商业街小巷" coords="94,69,110,56" shape="rect" onclick="mapMove('Commercial alleyways')">
-				<area class="no-numberify" alt="住宅小巷" title="住宅小巷" coords="38,70,57,56" shape="rect" onclick="mapMove('Residential alleyways')">
+				<area class="no-numberify" alt="Barb Street" title="Barb Street" coords="62,20,39,42" shape="rect" onclick="mapMove('Barb Street')">
+				<area class="no-numberify" alt="Domus Street" title="Domus Street" coords="2,75,26,49" shape="rect" onclick="mapMove('Domus Street')">
+				<area class="no-numberify" alt="Danube Street" title="Danube Street" coords="33,110,70,84" shape="rect" onclick="mapMove('Danube Street')">
+				<area class="no-numberify" alt="Wolf Street" title="Wolf Street" coords="86,117,114,86" shape="rect" onclick="mapMove('Wolf Street')">
+				<area class="no-numberify" alt="High Street" title="High Street" coords="116,77,139,46" shape="rect" onclick="mapMove('High Street')">
+				<area class="no-numberify" alt="Connudatus Street" title="Connudatus Street" coords="64,77,88,49" shape="rect" onclick="mapMove('Connudatus Street')">
+				<area class="no-numberify" alt="Cliff Street" title="Cliff Street" coords="88,40,117,-1" shape="rect" onclick="mapMove('Cliff Street')">
+				<area class="no-numberify" alt="Starfish Street" title="Starfish Street" coords="147,41,172,12" shape="rect" onclick="mapMove('Starfish Street')">
+				<area class="no-numberify" alt="Nightingale Street" title="Nightingale Street" coords="143,115,170,82" shape="rect" onclick="mapMove('Nightingale Street')">
+				<area class="no-numberify" alt="Oxford Street" title="Oxford Street" coords="170,73,203,45" shape="rect" onclick="mapMove('Oxford Street')">
+				<area class="no-numberify" alt="Mer Street" title="Mer Street" coords="202,42,229,14" shape="rect" onclick="mapMove('Mer Street')">
+				<area class="no-numberify" alt="Elk Street" title="Elk Street" coords="197,111,238,77" shape="rect" onclick="mapMove('Elk Street')">
+				<area class="no-numberify" alt="Harvest Street" title="Harvest Street" coords="252,46,228,76" shape="rect" onclick="mapMove('Harvest Street')">
+				<area class="no-numberify" alt="Industrial Alley" title="Industrial Alley" coords="225,73,209,53" shape="rect" onclick="mapMove('Industrial alleyways')">
+				<area class="no-numberify" alt="Park" title="Park" coords="154,65,170,52" shape="rect" onclick="mapMove('Park')">
+				<area class="no-numberify" alt="Commercial Alley" title="Commercial Alley" coords="94,69,110,56" shape="rect" onclick="mapMove('Commercial alleyways')">
+				<area class="no-numberify" alt="Residential Alley" title="Residential Alley" coords="38,70,57,56" shape="rect" onclick="mapMove('Residential alleyways')">
 			</map>
 		<</if>>
 		<div id="divmap"><img id="map" src="img/misc/map.png"><img id="maparrow" usemap="#town-image-map" @src="'img/misc/maparrow' + _args[0] + '.png'"></div>
@@ -3207,7 +3207,7 @@
 <</widget>>
 
 <<widget "rentday">>
-	<<set $_text_output to ["周日","周一","周二","周三","周四","周五","周六"][$rentday-1]>>
+	<<set $_text_output to ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][$rentday-1]>>
 	<<print $_text_output>>
 <</widget>>
 
@@ -3219,7 +3219,7 @@
 
 <<widget "roomoptions">>
 	<<if $sexStats.pills.boughtOnce is true or $sexStats.pills["pills"]["Dr Harper\'s prescription"].owned gte 1 or $sexStats.pills["pills"]["asylum\'s prescription"].owned gte 1>>
-		<<icon "pill collection.png">><<link [[检查你的药物|PillCollection]]>><<set $pillsExitPassage to $passage>><<endevent>><</link>>
+		<<icon "pill collection.png">><<link [[Check your pills|PillCollection]]>><<set $pillsExitPassage to $passage>><<endevent>><</link>>
 		<br>
 	<</if>>
 <</widget>>
@@ -3228,26 +3228,26 @@
 	<<if $christmas_wrap is 1>>
 		<<switch $christmas_gift_robin>>
 			<<case "shirt_unwrapped">>
-				<<link [[把罗宾的衬衫和短裤包好 (0:10)|Bedroom Robin Wrap]]>><<pass 10>><<set $christmas_gift_robin to "shirt">><<set $christmas_gift_robin_wrapped to 1>><</link>>
+				<<link [[Wrap Robin's shirt and shorts (0:10)|Bedroom Robin Wrap]]>><<pass 10>><<set $christmas_gift_robin to "shirt">><<set $christmas_gift_robin_wrapped to 1>><</link>>
 				<br>
 			<<case "sundress_unwrapped">>
-				<<link [[把罗宾的连衣裙包好 (0:10)|Bedroom Robin Wrap]]>><<pass 10>><<set $christmas_gift_robin to "sundress">><<set $christmas_gift_robin_wrapped to 1>><</link>>
+				<<link [[Wrap Robin's sundress (0:10)|Bedroom Robin Wrap]]>><<pass 10>><<set $christmas_gift_robin to "sundress">><<set $christmas_gift_robin_wrapped to 1>><</link>>
 				<br>
 			<<case "kimono_unwrapped">>
-				<<link [[把罗宾的和服包好 (0:10)|Bedroom Robin Wrap]]>><<pass 10>><<set $christmas_gift_robin to "kimono">><<set $christmas_gift_robin_wrapped to 1>><</link>>
+				<<link [[Wrap Robin's kimono (0:10)|Bedroom Robin Wrap]]>><<pass 10>><<set $christmas_gift_robin to "kimono">><<set $christmas_gift_robin_wrapped to 1>><</link>>
 				<br>
 			<<case "tuxedo_set_unwrapped">>
-				<<link [[把罗宾的燕尾服包好 (0:10)|Bedroom Robin Wrap]]>><<pass 10>><<set $christmas_gift_robin to "tuxedo">><<set $christmas_gift_robin_wrapped to 1>><</link>>
+				<<link [[Wrap Robin's tuxedo (0:10)|Bedroom Robin Wrap]]>><<pass 10>><<set $christmas_gift_robin to "tuxedo">><<set $christmas_gift_robin_wrapped to 1>><</link>>
 				<br>
 			<<case "gothic_gown_unwrapped">>
-				<<link [[把罗宾的哥特长裙包好 (0:10)|Bedroom Robin Wrap]]>><<pass 10>><<set $christmas_gift_robin to "gothic gown">><<set $christmas_gift_robin_wrapped to 1>><</link>>
+				<<link [[Wrap Robin's gothic gown (0:10)|Bedroom Robin Wrap]]>><<pass 10>><<set $christmas_gift_robin to "gothic gown">><<set $christmas_gift_robin_wrapped to 1>><</link>>
 				<br>
 			<<case "christmas_unwrapped">>
-				<<link [[把罗宾的圣诞套装包好 (0:10)|Bedroom Robin Wrap]]>><<pass 10>><<set $christmas_gift_robin to "christmas">><<set $christmas_gift_robin_wrapped to 1>><</link>>
+				<<link [[Wrap Robin's Christmas outfit (0:10)|Bedroom Robin Wrap]]>><<pass 10>><<set $christmas_gift_robin to "christmas">><<set $christmas_gift_robin_wrapped to 1>><</link>>
 				<br>
 		<</switch>>
 		<<if $christmas_gift is "clothes_unwrapped">>
-			<<link [[为孤儿们包装礼物(3:00)|Bedroom Orphans Clothes Wrap]]>><<pass 180>><<set $christmas_gift to "clothes">><</link>>
+			<<link [[Wrap the orphans' gifts (3:00)|Bedroom Orphans Clothes Wrap]]>><<pass 180>><<set $christmas_gift to "clothes">><</link>>
 			<br>
 		<</if>>
 	<</if>>
@@ -3267,18 +3267,18 @@
 		<<crimeup 20>><<combatskulduggeryskilluse>><<combatcontrol 10>><<gcombatcontrol>>
 	<<elseif $location is "prison">>
 		<<set _teeth to random(3,10)>>
-		你抓走了一把白色半透明的宝石。
+		You steal a handful of white, translucent gems.
 		<<prison_teeth _teeth>> <<prison_teeth_text _teeth>>
 	<<elseif $rng gte 96 and $spray lt $spraymax>>
 		<<spray 1>>
-		<span class="green">你补充了一份防狼喷雾。</span>
+		<span class="green">You steal a charge for your pepper spray.</span>
 		<<crimeup 50>><<combatskulduggeryskilluse>><<combatcontrol 10>><<gcombatcontrol>>
 	<<elseif $rng gte 90 and !$compoundcard>>
 		<<set $compoundcard to 1>>
-		你偷到了一张奇怪的卡片。上面有一行小字，讲的是<span class="gold">麋鹿街</span>上的一处位置。
+		You steal a strange card. There's an address on it, for a location on <span class="gold">Elk Street.</span>
 	<<else>>
 		<<rng 5 100>>
-		你偷到了<<moneyGain $rng>>。
+		You steal <<moneyGain $rng>>.
 		<<crimeup $rng>><<combatskulduggeryskilluse>><<combatcontrol 10>><<gcombatcontrol>>
 	<</if>>
 <</widget>>
@@ -3451,7 +3451,7 @@
 			<span @class="'characteristic-description ' + _config.color">_config.description</span>
 		<</if>>
 		<<if _config.showStars>>
-			<span class="characteristic-description grade-progress">每日进度</span>
+			<span class="characteristic-description grade-progress">Daily Progress</span>
 			<div class="progress-stars">
 				<img class="icon" @src="'img/ui/' + (_config.starLevel > 0 ? 'bronze_star'	: 'empty_star') + '.png'" />
 				<img class="icon" @src="'img/ui/' + (_config.starLevel > 1 ? 'silver_star'	: 'empty_star') + '.png'" />
@@ -3481,11 +3481,11 @@
 		<span @class="$_modifier gt 0 ? 'green' : 'red'"><mouse class = "tooltip-small">
 			$_result
 			<<if $_good.length gt 0 and $_bad.length gt 0>>
-				<span class="green">有助你$_stat技术的物品: <<print $_good>> <span class="red">有碍你$_stat技术的物品: <<print $_bad>></span></span>
+				<span class="green">Increasing your $_stat: <<print $_good>> <span class="red">Decreasing your $_stat: <<print $_bad>></span></span>
 			<<elseif $_good.length gt 0>>
-				<span class="green">有助你$_stat技术的物品: <<print $_good>></span>
+				<span class="green">Increasing your $_stat: <<print $_good>></span>
 			<<elseif $_bad.length gt 0>>
-				<span class="red">有碍你$_stat技术的物品: <<print $_bad>></span>
+				<span class="red">Decreasing your $_stat: <<print $_bad>></span>
 			<</if>>
 		</mouse></span>
 	<</if>>
@@ -3564,17 +3564,17 @@
 			<<if $options.images>>
 					<img class="relation-icon" src="img/misc/icon/wolfpup.png" />
 			<</if>>
-			<span class="relation-name">狼群</span>
+			<span class="relation-name">Wolf Pack</span>
 		</div>
 		<div class="relation-description">
-			狼群
-			<<if $wolfpackleader gte 1>>将你视为<span class="green">狼群中的首领.</span>
-				<<elseif $syndromewolves gte 1>>将你视为<span class="green">它们的<<ppackbrother>>.</span>
-				<<elseif $wolfpacktrust gte 12>><span class="green">信任你.</span>
-				<<elseif $wolfpacktrust gte 6>><span class="teal">开始接受你.</span>
-				<<elseif $wolfpackfear gte 12>><span class="red">畏惧你.</span>
-				<<elseif $wolfpackfear gte 6>><span class="purple">开始对你感到恐惧.</span>
-				<<else>><span class="pink">视你为猎物.</span>
+			The wolves
+			<<if $wolfpackleader gte 1>>view you as <span class="green">the leader of the pack.</span>
+				<<elseif $syndromewolves gte 1>>view you as <span class="green">their <<ppackbrother>>.</span>
+				<<elseif $wolfpacktrust gte 12>><span class="green">trust you.</span>
+				<<elseif $wolfpacktrust gte 6>>are<span class="teal">starting to accept you.</span>
+				<<elseif $wolfpackfear gte 12>><span class="red">fear you.</span>
+				<<elseif $wolfpackfear gte 6>>are <span class="purple">starting to fear you.</span>
+				<<else>><span class="pink">view you as prey.</span>
 			<</if>>
 		</div>
 	</div>
@@ -3603,14 +3603,14 @@
 
 			let statDefaults = {
 				"love" : {
-					name : "爱意",
+					name : "Love",
 					value : T.npcData.love,
 					activeIcon : 'img/ui/heart.png',
 					inactiveIcon: 'img/ui/emptyheart.png',
 					color: 'red'
 				},
 				"lust" : {
-					name : "性欲",
+					name : "Lust",
 					value : T.npcData.lust,
 					iconOrientation : 'vertical',
 					activeIcon : 'img/ui/vial.png',
@@ -3618,45 +3618,45 @@
 					color: 'pink'
 				},
 				"dom" : {
-					name : "支配度",
+					name : "Dominance",
 					value : T.npcData.dom,
 					activeIcon : "img/ui/collar.png",
 					color: 'purple'
 				},
 				"trauma" : {
-					name : "创伤",
+					name : "Trauma",
 					value : T.npcData.trauma,
 					activeIcon : "img/ui/redbolt.png",
 					color: 'teal'
 				},
 				"rage" : {
-					name : "愤怒",
+					name : "Rage",
 					value : T.npcData.rage,
 					activeIcon : "img/ui/rage.png",
 					color: 'gold'
 				},
 				"purity" : {
-					name: "纯洁",
+					name: "Purity",
 					value: T.npcData.purity,
 					activeIcon: (T.npcData.virginity.vaginal == false || T.npcData.virginity.penile == false ? "img/ui/sym_fallen_purity.png" : "img/ui/sym_purity.png"),
 					color: 'white'
 				},
 				"corruption" : {
-					name: "堕落",
+					name: "Corruption",
 					value: T.npcData.corruption,
 					iconOrientation : 'horizontal-inverted',
 					activeIcon: "img/ui/sym_demon_purity.png",
 					color: 'purple'
 				},
 				"harmony" : {
-					name: "和谐",
+					name: "Harmony",
 					value: V.wolfpackharmony,
 					iconOrientation : 'vertical',
 					activeIcon: "img/ui/wolfharmony.png",
 					color: 'purple'
 				},
 				"ferocity" : {
-					name: "残暴",
+					name: "ferocity",
 					value: V.wolfpackferocity,
 					iconOrientation : 'vertical',
 					activeIcon: "img/ui/wolfferocity.png",
@@ -3690,8 +3690,8 @@
 				<div class="relation-box">
 					<div class="relation-top-line">
 						<span class="relation-name">
-							<<print _npcData.nam.replace("Avery","艾弗里").replace("Bailey","贝利").replace("Briar","布莱尔").replace("Charlie","查里").replace("Darryl","达里尔").replace("Doren","多伦").replace("Eden","伊甸").replace("Gwylan","格威岚").replace("Harper","哈珀").replace("Jordan","约旦").replace("Kylar","凯拉尔").replace("Landry","兰德里").replace("Leighton","礼顿").replace("Mason","梅森").replace("Morgan","摩根").replace("River","瑞沃").replace("Robin","罗宾").replace("Sam","萨姆").replace("Sirris","西里斯").replace("Whitney","惠特尼").replace("Winter","温特").replace("Niki","尼奇").replace("Quinn","奎因").replace("Remy","雷米").replace("Alex","艾利克斯").replace("Wren","伦恩").replace("Sydney","悉尼").replace("Taylor","泰勒").replace("Casey","凯西").replace("Ivory Wraith","象牙幽灵").replace("Black Wolf","黑狼").replace("Great Hawk","巨鹰")>>
-							<small class="relation-title black"><i>那个_wraithTitle</i></small>
+							_npcData.nam
+							<small class="relation-title black"><i>The _wraithTitle</i></small>
 						</span>
 						<div class="quick-stats">
 							<<for _j = 0; _j lt _otherNpcStats.length; _j++>>
@@ -3713,8 +3713,8 @@
 				<div class="relation-box">
 					<div class="relation-top-line">
 						<span class="relation-name">
-							<<print _npcData.nam.replace("Avery","艾弗里").replace("Bailey","贝利").replace("Briar","布莱尔").replace("Charlie","查里").replace("Darryl","达里尔").replace("Doren","多伦").replace("Eden","伊甸").replace("Gwylan","格威岚").replace("Harper","哈珀").replace("Jordan","约旦").replace("Kylar","凯拉尔").replace("Landry","兰德里").replace("Leighton","礼顿").replace("Mason","梅森").replace("Morgan","摩根").replace("River","瑞沃").replace("Robin","罗宾").replace("Sam","萨姆").replace("Sirris","西里斯").replace("Whitney","惠特尼").replace("Winter","温特").replace("Niki","尼奇").replace("Quinn","奎因").replace("Remy","雷米").replace("Alex","艾利克斯").replace("Wren","伦恩").replace("Sydney","悉尼").replace("Taylor","泰勒").replace("Casey","凯西").replace("Ivory Wraith","象牙幽灵").replace("Black Wolf","黑狼").replace("Great Hawk","巨鹰")>>?
-							<small class="relation-title black"><i>那个_wraithTitle</i></small>
+							_npcData.nam?
+							<small class="relation-title black"><i>The _wraithTitle</i></small>
 						</span>
 						<<if _loveInterest>>
 							<img class="love-interest-icon" src="img/ui/love_interest.png" alt="Love Interest" title="Love Interest"/>
@@ -3739,8 +3739,8 @@
 			<div class="relation-box">
 				<div class="relation-top-line">
 					<span class="relation-name">
-						<<print _npcData.nam.replace("Avery","艾弗里").replace("Bailey","贝利").replace("Briar","布莱尔").replace("Charlie","查里").replace("Darryl","达里尔").replace("Doren","多伦").replace("Eden","伊甸").replace("Gwylan","格威岚").replace("Harper","哈珀").replace("Jordan","约旦").replace("Kylar","凯拉尔").replace("Landry","兰德里").replace("Leighton","礼顿").replace("Mason","梅森").replace("Morgan","摩根").replace("River","瑞沃").replace("Robin","罗宾").replace("Sam","萨姆").replace("Sirris","西里斯").replace("Whitney","惠特尼").replace("Winter","温特").replace("Niki","尼奇").replace("Quinn","奎因").replace("Remy","雷米").replace("Alex","艾利克斯").replace("Wren","伦恩").replace("Sydney","悉尼").replace("Taylor","泰勒").replace("Casey","凯西").replace("Ivory Wraith","象牙幽灵").replace("Black Wolf","黑狼").replace("Great Hawk","巨鹰")>>
-						<small class="relation-title black"><i><<print _npcData.title.replace("businessperson", "商人").replace("businessman", "商人").replace("businesswoman", "商人").replace("caretaker", "监护人").replace("brothel owner", "妓院老板").replace("dance coach", "舞蹈教练").replace("club owner", "俱乐部老板").replace("English teacher", "英语老师").replace("huntress", "猎人").replace("hunter", "猎人").replace("shopkeeper", "商店店主").replace("doctor", "医生").replace("pious", "虔信者").replace("nun", "修女").replace("monk", "修士").replace("loner", "不合群者").replace("criminal", "罪犯").replace("headteacher", "校长").replace("headmaster", "校长").replace("headmistress", "校长").replace("swimming teacher", "游泳老师").replace("sewer dweller", "下水道居民").replace("maths teacher", "数学老师").replace("orphan", "孤儿").replace("cafe owner", "咖啡店主").replace("science teacher", "科学老师").replace("bully", "霸凌者").replace("history teacher", "历史老师").replace("alpha", "头狼").replace("photographer", "摄影师").replace("mayor", "市长").replace("farmer", "农场主").replace("farmhand", "农工").replace("terror", "恐怖者").replace("smuggler", "走私者").replace("faithful", "信徒").replace("fallen", "堕落者").replace("reflection", "映像").replace("explorer", "探险家").replace("delinquent", "违法者")>></i></small>
+						_npcData.nam
+						<small class="relation-title black"><i>The _npcData.title</i></small>
 					</span>
 					<<if _loveInterest>>
 						<img class="love-interest-icon" src="img/ui/love_interest.png" alt="Love Interest" title="Love Interest"/>
@@ -3764,8 +3764,8 @@
 			<div class="relation-box">
 				<div class="relation-top-line">
 					<span class="relation-name">
-						<<print _npcData.nam.replace("Avery","艾弗里").replace("Bailey","贝利").replace("Briar","布莱尔").replace("Charlie","查里").replace("Darryl","达里尔").replace("Doren","多伦").replace("Eden","伊甸").replace("Gwylan","格威岚").replace("Harper","哈珀").replace("Jordan","约旦").replace("Kylar","凯拉尔").replace("Landry","兰德里").replace("Leighton","礼顿").replace("Mason","梅森").replace("Morgan","摩根").replace("River","瑞沃").replace("Robin","罗宾").replace("Sam","萨姆").replace("Sirris","西里斯").replace("Whitney","惠特尼").replace("Winter","温特").replace("Niki","尼奇").replace("Quinn","奎因").replace("Remy","雷米").replace("Alex","艾利克斯").replace("Wren","伦恩").replace("Sydney","悉尼").replace("Taylor","泰勒").replace("Casey","凯西").replace("Ivory Wraith","象牙幽灵").replace("Black Wolf","黑狼").replace("Great Hawk","巨鹰")>>
-						<small class="relation-title black"><i><<print _npcData.title.replace("businessperson", "商人").replace("businessman", "商人").replace("businesswoman", "商人").replace("caretaker", "监护人").replace("brothel owner", "妓院老板").replace("dance coach", "舞蹈教练").replace("club owner", "俱乐部老板").replace("English teacher", "英语老师").replace("huntress", "猎人").replace("hunter", "猎人").replace("shopkeeper", "商店店主").replace("doctor", "医生").replace("pious", "虔信者").replace("nun", "修女").replace("monk", "修士").replace("loner", "不合群者").replace("criminal", "罪犯").replace("headteacher", "校长").replace("headmaster", "校长").replace("headmistress", "校长").replace("swimming teacher", "游泳老师").replace("sewer dweller", "下水道居民").replace("maths teacher", "数学老师").replace("orphan", "孤儿").replace("cafe owner", "咖啡店主").replace("science teacher", "科学老师").replace("bully", "霸凌者").replace("history teacher", "历史老师").replace("alpha", "头狼").replace("photographer", "摄影师").replace("mayor", "市长").replace("farmer", "农场主").replace("farmhand", "农工").replace("terror", "恐怖者").replace("smuggler", "走私者").replace("faithful", "信徒").replace("fallen", "堕落者").replace("reflection", "映像").replace("explorer", "探险家").replace("delinquent", "违法者")>></i></small>
+						_npcData.nam
+						<small class="relation-title black"><i>The _npcData.title</i></small>
 					</span>
 					<div class="quick-stats">
 						<<for _j = 0; _j lt _otherNpcStats.length; _j++>>
@@ -3792,7 +3792,7 @@
 	<</silently>>
 	<div class="relation-stat-block" @style="'--progress: ' + _config.progress + '%;'">
 		<<if _important>>
-			<label><<print _config.name.replace("Love", "爱意").replace("Lust", "性欲").replace("Dominance", "支配欲").replace("Trauma", "创伤").replace("Rage", "愤怒").replace("Purity", "纯洁").replace("Corruption", "堕落").replace("Wolf Pack Harmony", "狼窝的和谐").replace("Wolf Pack Ferocity", "狼窝的凶猛").replace("Confidence", "自信").replace("Jealousy", "嫉妒")>></label>
+			<label>_config.name</label>
 		<</if>>
 		<<if $options.images>>
 			<div class="relation-stat">
@@ -3945,40 +3945,40 @@
 <<widget "fringedescription">>
 	<<if $haircolour isnot $hairfringecolour>>
 		<<if $hairFringeColourStyle is "gradient">>
-			<<set _colour to "双色">>
+			<<set _colour to "two-toned">>
 		<<else>>
-			<<run Object.values(setup.colours.hair_map).forEach(colour => {if (V.hairfringecolour== colour.variable) V.hairfringecolourCN = colour.name_cap;})>><<set _colour to $hairfringecolourCN>>
+			<<set _colour to $hairfringecolour>>
 		<</if>>
-		<<set $_fringe to _colour + "刘海">>
+		<<set $_fringe to _colour + " fringe">>
 	<<else>>
-		<<set $_fringe to "刘海">>
+		<<set $_fringe to "fringe">>
 	<</if>>
 
 	<<if $fringelength gte 980>>
-		而且你的<<print $_fringe>>非常长。
+		and your <<print $_fringe>> is very long.
 	<<elseif $fringelength gte 800>>
-		而且你的<<print $_fringe>>很长.
+		and your <<print $_fringe>> is long.
 	<<elseif $fringelength gte 600>>
-		而且你的<<print $_fringe>>有些长。
+		and your <<print $_fringe>> is somewhat long.
 	<<elseif $fringelength gte 400>>
-		而且你的<<print $_fringe>>非常普通。
+		and your <<print $_fringe>> is quite normal.
 	<<elseif $fringelength gte 200>>
-		而且你的<<print $_fringe>>有些短。
+		and your <<print $_fringe>> is short.
 	<<else>>
-		而且你的<<print $_fringe>>特别短。
+		and your <<print $_fringe>> is very short.
 	<</if>>
 <</widget>>
 
 <<widget "willpowerpain">>
 	<<if $pain gte 100 and $willpowerpain is undefined and _willpowerpainchecked isnot true>>
 		<<if (currentSkillValue('willpower') / 10) gte (($pain - 100) + random(1, 100))>>
-			<span class="green">压倒性的疼痛朝你袭来，但你撑了过去。</span>
+			<span class="green">The pain threatens to overwhelm, but you endure it.</span>
 			<<gwillpower>><<willpower 1>>
 			<br>
 		<<else>>
-			<span class="red">压倒性的疼痛夺去了你反抗的力气。</span>
+			<span class="red">The pain overwhelms you.</span>
 			<<if $position is "stalk">>
-				你膝盖一软，瘫了下去。
+				You fall to your knees.
 			<</if>>
 			<<ggwillpower>><<willpower 5>><<set $willpowerpain to 0>>
 			<br>
@@ -3990,13 +3990,13 @@
 <<widget "willpowerorgasm">>
 	<<if $orgasmdown gte 1 and _willpowerorgasmchecked isnot true>>
 		<<if (currentSkillValue('willpower') / 10) gte (($orgasmdown * 30) + random(1, 80))>>
-			<span class="green">高潮如同电流一般击穿了你战栗的身体，你强忍着不被快感所击溃。</span>
+			<span class="green">You endure the orgasmic shivers running through you.</span>
 			<<gwillpower>><<willpower 1>><<set $orgasmdown to 0>>
 			<br>
 		<<else>>
-			<span class="red">高潮如同电流一般击穿了你痉挛的身体，你的大脑因快乐而一片空白。</span>
+			<span class="red">You struggle against the orgasmic spasms overwhelming you.</span>
 			<<if $position is "stalk">>
-				你膝盖一软，瘫了下去。
+				You fall to your knees.
 			<</if>>
 			<<gwillpower>><<willpower 1>>
 			<br>
@@ -4064,7 +4064,7 @@
 	<</if>>
 	<<if $backgroundTraits.includes("plantlover")>>
 		<<if $nectar_timer lte 14>>
-			<span class="green">你感到一股如释重负的解脱感。</span> <<stress -12>><<llstress>><<pain -4>><<lpain>>
+			<span class="green">You feel an overwhelming sense of relief.</span> <<stress -12>><<llstress>><<pain -4>><<lpain>>
 		<<else>>
 			<<set _nectarStress to (-1 * _nectarGain)>>
 			<<physique 1 "invig">><<stress _nectarStress>><<lstress>>
@@ -4115,12 +4115,12 @@
 
 	<<person1>>
 	<<if $pillory_tenant.special.name is "">>
-		一个<<person>><<if _already_served is 0>>正被锁在颈手枷上。<<else>>在不久前刚被锁到颈手枷上<</if>>
+		A <<person>> <<if _already_served is 0>>is currently being locked into the pillory.<<else>>has recently been locked in the pillory.<</if>>
 		<<endevent>>
 		<<npc_pillory_release_schedule>>
 		<br><br>
 	<<else>>
-		流言称<<he>>将被锁到颈手枷上。
+		Rumour has it <<he>> is being sent to the pillory.
 		<br>
 		<<endevent>>
 	<</if>>
@@ -4169,9 +4169,9 @@
 	<<silently>><<set _out to "">>
 	<<get_pillory_npc>>
 	<<if $pillory_tenant.special.name is "">>
-		<<set _out += "一个<<person>>">>
+		<<set _out += "A <<person>>">>
 	<<else>>
-		<<set _out += $pillory_tenant.special.name.replace("Avery","艾弗里").replace("Bailey","贝利").replace("Briar","布莱尔").replace("Charlie","查里").replace("Darryl","达里尔").replace("Doren","多伦").replace("Eden","伊甸").replace("Gwylan","格威岚").replace("Harper","哈珀").replace("Jordan","约旦").replace("Kylar","凯拉尔").replace("Landry","兰德里").replace("Leighton","礼顿").replace("Mason","梅森").replace("Morgan","摩根").replace("River","瑞沃").replace("Robin","罗宾").replace("Sam","萨姆").replace("Sirris","西里斯").replace("Whitney","惠特尼").replace("Winter","温特").replace("Niki","尼奇").replace("Quinn","奎因").replace("Remy","雷米").replace("Alex","艾利克斯").replace("Wren","伦恩").replace("Sydney","悉尼").replace("Taylor","泰勒").replace("Casey","凯西").replace("Ivory Wraith","象牙幽灵").replace("Black Wolf","黑狼").replace("Great Hawk","巨鹰")>>
+		<<set _out += $pillory_tenant.special.name>>
 	<</if>>
 	<</silently>><<print _out>>
 <</widget>>
@@ -4180,9 +4180,9 @@
 	<<silently>><<set _out to "">>
 	<<get_pillory_npc>>
 	<<if $pillory_tenant.special.name is "">>
-		<<set _out += "那<<person>>">>
+		<<set _out += "The <<person>>">>
 	<<else>>
-		<<set _out += $pillory_tenant.special.name.replace("Avery","艾弗里").replace("Bailey","贝利").replace("Briar","布莱尔").replace("Charlie","查里").replace("Darryl","达里尔").replace("Doren","多伦").replace("Eden","伊甸").replace("Gwylan","格威岚").replace("Harper","哈珀").replace("Jordan","约旦").replace("Kylar","凯拉尔").replace("Landry","兰德里").replace("Leighton","礼顿").replace("Mason","梅森").replace("Morgan","摩根").replace("River","瑞沃").replace("Robin","罗宾").replace("Sam","萨姆").replace("Sirris","西里斯").replace("Whitney","惠特尼").replace("Winter","温特").replace("Niki","尼奇").replace("Quinn","奎因").replace("Remy","雷米").replace("Alex","艾利克斯").replace("Wren","伦恩").replace("Sydney","悉尼").replace("Taylor","泰勒").replace("Casey","凯西").replace("Ivory Wraith","象牙幽灵").replace("Black Wolf","黑狼").replace("Great Hawk","巨鹰")>>
+		<<set _out += $pillory_tenant.special.name>>
 	<</if>>
 	<</silently>><<print _out>>
 <</widget>>
@@ -4191,9 +4191,9 @@
 	<<silently>><<set _out to "">>
 	<<get_pillory_npc>>
 	<<if $pillory_tenant.special.name is "">>
-		<<set _out += "一个<<person>>">>
+		<<set _out += "a <<person>>">>
 	<<else>>
-		<<set _out += $pillory_tenant.special.name.replace("Avery","艾弗里").replace("Bailey","贝利").replace("Briar","布莱尔").replace("Charlie","查里").replace("Darryl","达里尔").replace("Doren","多伦").replace("Eden","伊甸").replace("Gwylan","格威岚").replace("Harper","哈珀").replace("Jordan","约旦").replace("Kylar","凯拉尔").replace("Landry","兰德里").replace("Leighton","礼顿").replace("Mason","梅森").replace("Morgan","摩根").replace("River","瑞沃").replace("Robin","罗宾").replace("Sam","萨姆").replace("Sirris","西里斯").replace("Whitney","惠特尼").replace("Winter","温特").replace("Niki","尼奇").replace("Quinn","奎因").replace("Remy","雷米").replace("Alex","艾利克斯").replace("Wren","伦恩").replace("Sydney","悉尼").replace("Taylor","泰勒").replace("Casey","凯西").replace("Ivory Wraith","象牙幽灵").replace("Black Wolf","黑狼").replace("Great Hawk","巨鹰")>>
+		<<set _out += $pillory_tenant.special.name>>
 	<</if>>
 	<</silently>><<print _out>>
 <</widget>>
@@ -4202,9 +4202,9 @@
 	<<silently>><<set _out to "">>
 	<<get_pillory_npc>>
 	<<if $pillory_tenant.special.name is "">>
-		<<set _out += "那<<person>>">>
+		<<set _out += "the <<person>>">>
 	<<else>>
-		<<set _out += $pillory_tenant.special.name.replace("Avery","艾弗里").replace("Bailey","贝利").replace("Briar","布莱尔").replace("Charlie","查里").replace("Darryl","达里尔").replace("Doren","多伦").replace("Eden","伊甸").replace("Gwylan","格威岚").replace("Harper","哈珀").replace("Jordan","约旦").replace("Kylar","凯拉尔").replace("Landry","兰德里").replace("Leighton","礼顿").replace("Mason","梅森").replace("Morgan","摩根").replace("River","瑞沃").replace("Robin","罗宾").replace("Sam","萨姆").replace("Sirris","西里斯").replace("Whitney","惠特尼").replace("Winter","温特").replace("Niki","尼奇").replace("Quinn","奎因").replace("Remy","雷米").replace("Alex","艾利克斯").replace("Wren","伦恩").replace("Sydney","悉尼").replace("Taylor","泰勒").replace("Casey","凯西").replace("Ivory Wraith","象牙幽灵").replace("Black Wolf","黑狼").replace("Great Hawk","巨鹰")>>
+		<<set _out += $pillory_tenant.special.name>>
 	<</if>>
 	<</silently>><<print _out>>
 <</widget>>
@@ -4215,13 +4215,13 @@
 	<<if $pillory_tenant.special.name is "">>
 		<<set _out += "<<person>>">>
 	<<else>>
-		<<set _out += $pillory_tenant.special.desc.replace("businessperson", "商人").replace("businessman", "商人").replace("businesswoman", "商人").replace("caretaker", "监护人").replace("brothel owner", "妓院老板").replace("dance coach", "舞蹈教练").replace("club owner", "俱乐部老板").replace("English teacher", "英语老师").replace("huntress", "猎人").replace("hunter", "猎人").replace("shopkeeper", "商店店主").replace("doctor", "医生").replace("pious", "虔信者").replace("nun", "修女").replace("monk", "修士").replace("loner", "不合群者").replace("criminal", "罪犯").replace("headteacher", "校长").replace("headmaster", "校长").replace("headmistress", "校长").replace("swimming teacher", "游泳老师").replace("sewer dweller", "下水道居民").replace("maths teacher", "数学老师").replace("orphan", "孤儿").replace("cafe owner", "咖啡店主").replace("science teacher", "科学老师").replace("bully", "霸凌者").replace("history teacher", "历史老师").replace("alpha", "头狼").replace("photographer", "摄影师").replace("mayor", "市长").replace("farmer", "农场主").replace("farmhand", "农工").replace("terror", "恐怖者").replace("smuggler", "走私者").replace("faithful", "信徒").replace("fallen", "堕落者").replace("reflection", "映像").replace("explorer", "探险家").replace("delinquent", "违法者")>>
+		<<set _out += $pillory_tenant.special.desc>>
 	<</if>>
 	<</silently>><<print _out>>
 <</widget>>
 
 <<widget "npc_pillory">>
-	<<A_pillory_person>>被锁在小镇的颈手枷上。
+	<<A_pillory_person>> is locked in the town pillory.
 	<<npc_pillory_release_schedule>>
 	<br><br>
 	<<endevent>>
@@ -4229,7 +4229,7 @@
 
 <<widget "npc_pillory_detail">>
 	<<get_pillory_npc>>
-	<<A_pillory_person>>被锁在小镇的颈手枷上。
+	<<A_pillory_person>> is locked in the town pillory.
 	<<npc_pillory_appearance>>
 	<<npc_pillory_abuse>>
 	<<npc_pillory_release_schedule>>
@@ -4241,73 +4241,73 @@
 	<<update_npc_pillory_appearance>>
 	/*Desc*/
 	<<if Time.dayState is "night">>
-		<<if $pillory_tenant.crowd gte 10>>一大群醉醺醺的暴徒围了上来
-		<<elseif $pillory_tenant.crowd gte 6>>一大群喧闹的人群聚集在周围
-		<<elseif $pillory_tenant.crowd gte 4>>一群险恶的人围在一起
-		<<else>>一群人数不多但险恶的团体潜伏在周围
+		<<if $pillory_tenant.crowd gte 10>>A huge, drunken mob surround
+		<<elseif $pillory_tenant.crowd gte 6>>A large, rowdy mob crowd around
+		<<elseif $pillory_tenant.crowd gte 4>>A sinister crowd huddle around
+		<<else>>A small but sinister group lurk around
 		<</if>>
 	<<else>>
-		<<if $pillory_tenant.crowd gte 10>>一群兴奋、嘲笑的人群围了上来
-		<<elseif $pillory_tenant.crowd gte 6>>一大群人挤在周围
-		<<elseif $pillory_tenant.crowd gte 4>>一群好奇的人在附近徘徊
-		<<else>>一小群人在看着
+		<<if $pillory_tenant.crowd gte 10>>An excited, jeering crowd surround
+		<<elseif $pillory_tenant.crowd gte 6>>A large crowd press around
+		<<elseif $pillory_tenant.crowd gte 4>>A curious group hang around
+		<<else>>A small group watch
 		<</if>>
-	<</if>>一个<<pillory_type>>被锁在颈手枷上。
-	<<if $pillory_tenant.broken gte 32>><<He>>看起来受到了创伤，也许因为已经遭受的虐待而永远地崩溃了。
-	<<elseif $pillory_tenant.broken gte 16>><<He>>正因所遭受的虐待而哭泣着。
-	<<elseif $pillory_tenant.broken gte 8>><<He>>正因那些欺压而哭泣着。
-	<<elseif $pillory_tenant.broken gte 4>><<He>>虽然很不安，但努力掩饰着。
-	<<else>><<He>>目中无人，一脸不屑。
+	<</if>>the <<pillory_type>> locked prone in the pillory.
+	<<if $pillory_tenant.broken gte 32>><<He>> looks traumatised, perhaps permanently broken by the abuse <<hes>> already suffered.
+	<<elseif $pillory_tenant.broken gte 16>><<He>> is weeping from the abuse <<hes>> already suffered.
+	<<elseif $pillory_tenant.broken gte 8>><<He>> is sobbing from the abuse.
+	<<elseif $pillory_tenant.broken gte 4>><<He>> is visibly upset, but trying hard to hide it.
+	<<else>><<He>> is defiant, showing a brave face.
 	<</if>>
 	<br>
 
 	/*describe exposure*/
 	<<if $pillory_tenant.upperexposed gte 3>>
-		<<His>>的$pillory_tenant.person.breastsdesc完全暴露在人群中。
-		<<if $pillory_tenant.spank gte 8>><<His>>的乳头通红，被捏、拍打、吸吮、咬和拉扯过。
-		<<elseif $pillory_tenant.spank gte 4>><<His>>的乳头看起来因虐待而疼痛。
+		<<His>> $pillory_tenant.person.breastsdesc are fully exposed to the crowd.
+		<<if $pillory_tenant.spank gte 8>><<His>> nipples are red from being pinched, slapped, sucked, bitten and pulled.
+		<<elseif $pillory_tenant.spank gte 4>><<His>> nipples looks sore from abuse.
 		<</if>>
 	<<elseif $pillory_tenant.upperexposed gte 2>>
 		<<if $pronoun is "f">>
-			<<His>>赤裸着上身，仅剩一副可怜的胸罩将<<his>>的$pillory_tenant.person.breastsdesc挡住。
+			<<His>> top has been bared, with only <<his>> bra hiding <<his>> $pillory_tenant.person.breastsdesc from the crowd.
 		<<else>>
-			<<His>>赤裸着上身，把那$pillory_tenant.person.breastsdesc完全暴露了在人群之中。
-			<<if $pillory_tenant.spank gte 8>><<His>>乳头通红,被捏,拍打,咬和拉扯过.
-			<<elseif $pillory_tenant.spank gte 4>><<His>>的乳头看起来因虐待而疼痛。
+			<<His>> top has been bared, fully exposing <<his>> $pillory_tenant.person.breastsdesc to the crowd.
+			<<if $pillory_tenant.spank gte 8>><<His>> nipples are red from being pinched, slapped, bitten and pulled.
+			<<elseif $pillory_tenant.spank gte 4>><<His>> nipples looks sore from abuse.
 			<</if>>
 		<</if>>
-	<<elseif $pillory_tenant.upperexposed gte 1>><<His>>上衣被撕破，把<<his>>的<<if $pronoun is "f">>胸罩<<else>>$pillory_tenant.person.breastsdesc<</if>>暴露在了人群之中。
+	<<elseif $pillory_tenant.upperexposed gte 1>><<His>> upper clothes have been mauled, partially exposing <<his>> <<if $pronoun is "f">>bra<<else>>$pillory_tenant.person.breastsdesc<</if>> to the crowd.
 	<</if>>
-	<<if $pillory_tenant.lowerexposed gte 2>><<His>>的屁股<<if $pillory_tenant.upperexposed gte 1>>也<</if>>已经被暴露，这使得
-		<<if $pillory_tenant.person.gender is "f">><<his>>的小穴
+	<<if $pillory_tenant.lowerexposed gte 2>><<His>> ass has <<if $pillory_tenant.upperexposed gte 1>>also<</if>> been exposed, making
+		<<if $pillory_tenant.person.gender is "f">><<his>> pussy
 		<<else>><<his>> $pillory_tenant.person.penisdesc
-		<</if>>人人都能看到。
-		<<if $pillory_tenant.spank gte 5>><<His>>屁股有被粗暴对待过的迹象
-			<<if $pillory_tenant.fruit gte 5>>被拍打着，并且<<his>>那<<if $pillory_tenant.face gte 2>>被精液<<if $pillory_tenant.face gte 4>>涂满的<<else>>粘到的<</if>><</if>>脸上尽是淤青和烂水果。
-			<<else>>被拍打着。
+		<</if>>visible to all.
+		<<if $pillory_tenant.spank gte 5>><<His>> ass shows signs of rough
+			<<if $pillory_tenant.fruit gte 5>>spanking, and <<his>> <<if $pillory_tenant.face gte 2>>cum<<if $pillory_tenant.face gte 4>>-coated<<else>>-stained<</if>><</if>> face is a mess of bruises and broken fruit.
+			<<else>>spanking.
 			<</if>>
-		<<elseif $pillory_tenant.fruit gte 6>><<His>><<if $pillory_tenant.face gte 2>><<if $pillory_tenant.face gte 4>>沾满<<else>>沾有<</if>>精液<</if>>的脸上满是淤青和碎水果。
-		<<elseif $pillory_tenant.fruit gte 2>><<His>><<if $pillory_tenant.face gte 2>><<if $pillory_tenant.face gte 4>>沾满<<else>>沾有<</if>>精液<</if>>的脸上满是伤痕和碎水果。
+		<<elseif $pillory_tenant.fruit gte 6>><<His>> <<if $pillory_tenant.face gte 2>>cum<<if $pillory_tenant.face gte 4>>-coated<<else>>-stained<</if>><</if>> face is a mess of bruises and broken fruit.
+		<<elseif $pillory_tenant.fruit gte 2>><<His>> <<if $pillory_tenant.face gte 2>>cum<<if $pillory_tenant.face gte 4>>-coated<<else>>-stained<</if>><</if>> face is marked by bruises and broken fruit.
 		<</if>>
-		<<if $pillory_tenant.ass gte 2>><<His>>屁股被强奸的次数不止
-			<<if $pillory_tenant.genital gte 2>>一次,而且
-				<<if $pillory_tenant.person.gender is "m">>史莱姆覆盖着<<his>><<print either("raw","abused","sorry")>>肉棒.
-				<<else>>精液从<<his>><<print either("袒露","红肿","被残虐")>>的小穴中<<if $pillory_tenant.genital gte 4>>流出<<else>>滴落<</if>>。
+		<<if $pillory_tenant.ass gte 2>><<His>> ass has been raped more than
+			<<if $pillory_tenant.genital gte 2>>once, and
+				<<if $pillory_tenant.person.gender is "m">>slime coats <<his>> <<print either("raw","abused","sorry")>> penis.
+				<<else>>semen <<if $pillory_tenant.genital gte 4>>pours<<else>>drips<</if>> from <<his>> <<print either("raw","reddened","abused")>> pussy.
 				<</if>>
-			<<else>>一次.
+			<<else>>once.
 			<</if>>
-		<<elseif $pillory_tenant.genital gte 5>><<His>>的<<if $pillory_tenant.person.gender is "m">>肉棒<<else>>小穴<</if>>正被人残暴的凌辱着。
-		<<elseif $pillory_tenant.genital gte 2>><<He>>看上去被侵犯了不止一次。
+		<<elseif $pillory_tenant.genital gte 5>><<His>> <<if $pillory_tenant.person.gender is "m">>penis<<else>>pussy<</if>> has been raped raw.
+		<<elseif $pillory_tenant.genital gte 2>><<He>> has been raped more than once.
 		<</if>>
 	<<elseif $pillory_tenant.lowerexposed gte 1>>
-		<<His>><<if $pronoun is "f">>衣服被拉起越过腰部,<<else>>裤子被拉下,<</if>>
-		把<<his>>的内衣暴露在了人群之中。
-	<<elseif $pillory_tenant.wet is 2>><<His>>衣服被雨淋湿了。
-	<<elseif $pillory_tenant.wet is 1>><<His>>透明的衣服在慢慢地变干。
+		<<His>> <<if $pronoun is "f">>dress has been pulled up over <<his>> waist,<<else>>trousers have been pulled down,<</if>>
+		exposing <<his>> underwear to the crowd.
+	<<elseif $pillory_tenant.wet is 2>><<His>> clothes are see-through from the rain.
+	<<elseif $pillory_tenant.wet is 1>><<His>> clothes are semi-translucent from damp, but are drying out.
 	<</if>>
 	<<if $pillory_tenant.upperexposed is 0 and $pillory_tenant.lowerexposed is 0 and $pillory_tenant.face is 0 and $pillory_tenant.fruit gte 1>>
-		<<if $pillory_tenant.fruit gte 6>><<His>>脸上满是伤痕和烂水果。
-		<<elseif $pillory_tenant.fruit gte 2>><<His>>的脸上满是瘀伤和碎水果。
+		<<if $pillory_tenant.fruit gte 6>><<His>> face is a mess of bruises and broken fruit.
+		<<elseif $pillory_tenant.fruit gte 2>><<His>> face is marked by bruises and broken fruit.
 		<</if>>
 	<</if>>
 <</widget>>
@@ -4373,100 +4373,100 @@
 		<<set _ly to either("violently","openly","angrily","furiously","cheekily","repeatedly","clumsily","roughly","theatrically","dutifully","merrily","gleefully","drunkenly","ineptly")>>
 		<<if Time.dayState isnot "night">>
 			<<if $rng gte 56>> /* 45% chance of jeer and shout only, 55% chance of something active */
-				一群人在一个<<person>>的带领下，开始对犯人大声地嘲笑和辱骂。
+				A number of people, led by a <<person>> jeer and shout abuse at the prisoner.
 			<<elseif $rng gte 41>> /* 15% */
 				<<rng>>
 				<<if $pillory_tenant.person.pronoun is "f" and $rng gte 40>> /* 60% if upper-exposed F */
-					一个穿着粗糙的农民服装的<<person>>拿着铁桶向着颈手枷走去。
-					在把水桶放在<<pillory_type>>的胸部下面后，<<person2>><<he>>
-					<<if $pillory_tenant.upperexposed lte 1>>囚犯的上衣被移除了,<</if>>
-					<<if $pillory_tenant.upperexposed lte 2>><<set $pillory_tenant.upperexposed to 3>>的胸罩被脱了下来,<</if>>
-					抓住<<pillory_type>>的$pillory_tenant.person.breastsdesc，并开始尝试将奶水挤进桶里。
+					A <<person>> in rough farmer clothes approaches the pillory with a bucket.
+					Setting the bucket underneath the <<pillory_type>>'s chest, <<person2>><<he>>
+					<<if $pillory_tenant.upperexposed lte 1>>displaces the prisoner's top,<</if>>
+					<<if $pillory_tenant.upperexposed lte 2>><<set $pillory_tenant.upperexposed to 3>> slips off her bra,<</if>>
+					grabs the <<pillory_type>>'s $pillory_tenant.person.breastsdesc and sets about trying to milk her into the bucket.
 					<br><br>
 					<<if $rng % 3 is 0>>
 						<<if $rng % 2>>
-							乳汁从她的胸部喷涌而出。农夫微笑着很快掌握了节奏，熟练地开始用手挤着双乳。
+							Milk bursts from her breasts. Smiling, the farmer soon builds up a rhythm, adeptly milking both breasts.
 							<br>
-							"好姑娘，"那个农夫揉了揉<<the_pillory_person>>的头发，然后带着几乎满满的水桶离开了。
+							"Good cow," the farmer ruffles <<the_pillory_person>>'s hair before leaving with an almost full bucket.
 						<<else>><<set $pillory_tenant.spank += 1>>
-							乳汁从<<pillory_type>>的乳房中滴落下来，在持续不断地挤压和拉扯的下，农夫最终
-							在挤了相当多的乳汁之后，她的$pillory_tenant.person.breastsdesc看起来红肿不堪。
+							Milk dribbles from the <<pillory_type>>'s breasts. With a lot of persistent squeezing and nipple pulling the farmer is eventually
+							able to	get a fair amount of milk from the prisoner. Her $pillory_tenant.person.breastsdesc look raw and painful afterward.
 							<br>
-							农夫拍了拍囚犯的头，然后带着 <<person2>><<his>>那半满的铁桶离开了。
+							The farmer pats the prisoner's head before leaving with <<person2>><<his>> half-filled bucket.
 						<</if>>
 					<<else>><<set $pillory_tenant.spank += 1>>
-						尽管拉动与挤压变得愈发的粗暴，但乳汁还是没有出来。
+						Despite increasingly rough squeezing and pulling on her nipples, no milk is forthcoming.
 						<<if $rng % 2>>
-							<<person2>><<person>>了口气，然后拍了拍她的头。 "可怜的女孩，你都干涸了。"
+							Finally giving up, the <<person2>><<person>> pats her head. "Poor girl. You're all dried up."
 							<br>
-							<<He>>走到<<pillory_type>>的后面，然后
-							<<if $pillory_tenant.lowerexposed lte 1>>脱掉了<<his>><<print either("丝绸内裤","单色内裤","破损内裤","男式短裤")>>,
-							<<else>>将<<his>>的臀瓣分开，<</if>><<if $pillory_tenant.person.gender is "f">>把<<his>>的小穴<<else>>把<<his>>的屁股<</if>>暴露在了所有人的面前。
+							<<He>> walks behind the <<pillory_type>> and
+							<<if $pillory_tenant.lowerexposed lte 1>>strips <<his>> <<print either("silk panties","plain panties","tattered undies","boyshorts")>>,
+							<<else>>holds <<his>> butt-cheeks spread apart<</if>> exposing <<if $pillory_tenant.person.gender is "f">><<his>> pussy <<else>><<his>> ass <</if>>to all.
 							<br>
-							"这头牛没奶了，"<<person2>><<he>>向人群呼喊，<<if $pillory_tenant.person.gender is "f">>"来个人给她添个牛犊。"<<else>>"来个人填满她。"<</if>>
+							"This cow's dry," <<person2>><<he>> calls out to the crowd. <<if $pillory_tenant.person.gender is "f">>"Wants someone to put a calf in her."<<else>>"Wants someone to fill her up."<</if>>
 							<br>
-							<<He>>拿着空桶走了。
+							<<He>> walks away with <<his>> empty bucket.
 							<<set $pillory_tenant.lowerexposed to 2>>
 						<<else>>
-							在得知什么也挤不出来之后，农夫叹了口气，失望地带着空桶离开了。
+							Finally giving up, the farmer walks away with <<his>> empty bucket.
 						<</if>>
 						<br>
 					<</if>>
 				<<elseif $pillory_tenant.person.gender is "m" and $rng gte 40>>
-					一个穿着粗糙的农民服装的<<person>>拿着透明玻璃杯向着颈手枷靠近。
+					A <<person>> in rough farmer clothes approaches the pillory with a clear glass.
 					<br>
-					把一个玻璃罐放在了<<pillory_type>>的乳房下方，随后<<person2>><<he>>
-					<<if $pillory_tenant.lowerexposed lte 0>><<if $pillory_tenant.person.pronoun is "m">>拉下囚犯的裤子,<<else>>撩起囚犯的裙子,<</if>><</if>>
-					<<if $pillory_tenant.lowerexposed lte 1>><<set $pillory_tenant.lowerexposed to 2>><<if $pillory_tenant.person.pronoun is "m">>脱掉底裤,<<else>>脱掉内裤,<</if>><</if>>
-					抓住囚犯的$pillory_tenant.person.penisdesc，并开始摩擦。
-					囚犯看起来被震惊住了——之后是愤怒，最后又成了矛盾。<<person1>><<he>>最终在嘲笑声中射了出来，填满了靠近的透明玻璃杯，重又回归到了震惊之中。
+					Setting the glass underneath the <<pillory_type>>'s groin, <<person2>><<he>>
+					<<if $pillory_tenant.lowerexposed lte 0>><<if $pillory_tenant.person.pronoun is "m">>pulls down the prisoner's trousers,<<else>>hitches up the prisoner's skirt,<</if>><</if>>
+					<<if $pillory_tenant.lowerexposed lte 1>><<set $pillory_tenant.lowerexposed to 2>><<if $pillory_tenant.person.pronoun is "m">> removes his underpants, <<else>> pulls down her panties, <</if>><</if>>
+					grabs the prisoner's $pillory_tenant.person.penisdesc and starts to rub.
+					The prisoner looks shocked, then angry, then conflicted, and then shocked again as <<person1>><<he>> cums into a glass in front of a jeering crowd.
 					<<person2>>
 					<<if $rng % 3>>
-						农夫朝玻璃杯里瞥了一眼，又开始磨蹭那个囚犯的下体……手法非常的娴熟，甚至在一旁玩起了手机。
-						用一只手扶着罐子，然后用另一只手让那个<<pillory_type>>来到高潮.
+						The farmer glances in the glass and then starts again. Seemingly an 'old hand,' <<he>> starts to browse <<his>> phone with
+						one hand, while bringing the <<pillory_type>> to several more orgasms with the other.
 						<br>
-						十分钟后，农夫端着一杯精液走开了，而<<the_pillory_person>>仍被挂在颈手枷上，脸上的表情
-						在震惊、羞愧、痛苦和满足之间徘徊。
+						Ten minutes later, the farmer is walking off with a glassful of ejaculate, while <<the_pillory_person>> hangs in the pillory, <<his>> face
+						flickering between shock, shame, pain and satiation.
 					<<else>><<set $pillory_tenant.spank += 1>>
-						那个农夫一手拿着<<his>>的手机，另一只手则在试图让<<pillory_type>>重新达到高潮。
+						The farmer browses <<his>> phone with one hand, while trying to bring the <<pillory_type>> back to orgasm with the other.
 						<br>
-						大概过了一分钟左右，那个农夫困惑的抬起头，然后对那个<<the_pillory_person>>的不回应感到恼火。
-						那个<<person2>><<person>>从<<his>>的口袋里掏出一个装置，然后将装置的一端夹在那个<<pillory_type>>的阴茎根部,
-						并将另一端深深地插入了囚犯的菊穴里。
+						After a minute or so, the farmer looks confused, then annoyed at <<the_pillory_person>>'s lack of response.
+						The <<person2>><<person>> pulls a device from <<his>> pocket. <<He>> clips one end of the device to the base of the <<pillory_type>>'s penis,
+						and slides the other deep into the prisoner's anus.
 						<br>
-						农夫按下一个按钮。伴随着一声响亮的电子噼啪声，<<the_pillory_person>>不停地叫喊、抽搐着，身体开始持续不断地高潮。
+						The farmer presses a button and with a loud electric crackle, <<the_pillory_person>> yelps, jerks and starts to orgasm continually.
 						<br>
-						浏览手机约20秒后，<<person2>><<person>>关掉设备，看了一眼玻璃杯，满意地点了点头。
+						After about 20 seconds of phone browsing the <<person2>><<person>> turns the device off, glances at the glass, and nods.
 						<br>
-						人群全神贯注地看着农夫重复着过程，一遍又一遍，直到精液填满了杯子，农夫才欣然离开。
-						<<the_pillory_person>>瘫软地挂在颈手枷上，<<his>>的脸因痛苦、羞耻和一种奇怪的满足而抽搐扭曲着。
+						The crowd are engrossed as the farmer repeats this process several more times, until finally the farmer is walking away with a
+						glassful of ejaculate, while <<the_pillory_person>> hangs limp in the pillory, <<his>> face twitching with pain, shame and a strange satiation.
 					<</if>>
 					<br>
 				<<elseif $pillory_tenant.person.gender is "f" and $rng gte 20>>
-					一个穿着粗糙的农民服装的<<person>>拿着玻璃杯向颈手枷靠近。
+					A <<person>> in rough farmer clothes approaches the pillory with a glass beaker.
 					<br>
-					把烧杯放在<<pillory_type>>腹股沟下，随后<<person2>><<he>>
-					<<if $pillory_tenant.lowerexposed lte 0>><<if $pillory_tenant.person.pronoun is "f">>拉起犯人的裙子,<<else>>下犯人的裤子,<</if>><</if>>
-					<<if $pillory_tenant.lowerexposed lte 1>><<set $pillory_tenant.lowerexposed to 2>><<if $pillory_tenant.person.pronoun is "f">>脱下她的内裤,<<else>>脱掉他的内裤,<</if>><</if>>
-					贴近囚犯的小穴开始摩擦了起来。
-					片刻的震惊之后，<<the_pillory_person>>抿着嘴，让自己屈服于这种堕落，任由冰冷的金属塞进
-					<<his>>的小穴。不过片刻之后，<<he>>脸上的表情就变为了惊恐——有什么东西夹住了<<he>>的阴蒂。强烈的电流顿时袭来，<<he>>尖叫着扭动着身躯。
+					Setting the beaker underneath the <<pillory_type>>'s groin, <<person2>><<he>>
+					<<if $pillory_tenant.lowerexposed lte 0>><<if $pillory_tenant.person.pronoun is "f">>hitches up the prisoner's skirt,<<else>>pulls down the prisoner's trousers,<</if>><</if>>
+					<<if $pillory_tenant.lowerexposed lte 1>><<set $pillory_tenant.lowerexposed to 2>><<if $pillory_tenant.person.pronoun is "f">> pulls down her panties,<<else>> removes his underpants,<</if>><</if>>
+					grabs the prisoner's pussy and starts to rub.
+					After a moment's shock, <<the_pillory_person>> pouts and resigns <<himself>> to this debasement. That's when <<he>> feels cold metal shoved up
+					<<his>> pussy. A moment later panic crosses <<his>> face as something is clamped to <<his>> clit, and almost instantly waves of electricity hit <<him>>.
 					<br>
-					人群全神贯注地看着<<the_pillory_person>>在高潮中颤抖着扭动。农夫则一脸淡定，拿着
-					用烧杯接着<<the_pillory_person>>体内流出的液体的同时浏览着<<person2>><<his>>的手机。
-					最后，农夫关掉并取走了<<his>>的机器。<<Hes>>耸了耸肩，看着手机拿着
-					装满液体的烧杯满意地离开了
+					The crowd are engrossed as <<the_pillory_person>> writhes in orgasm after shuddering orgasm. The farmer barely pays attention, holding
+					the beaker close underneath to catch <<the_pillory_person>>'s fluids, while browsing <<person2>><<his>> phone.
+					At last, the farmer turns off and extracts <<his>> machine. <<Hes>> still browsing <<his>> phone as <<he>> walks away with a
+					full beaker of fluids.
 					<br>
-					<<The_pillory_person>>看起来羞愧异常，脸上的表情在震惊、羞耻和性疲惫之间来回转换着。
+					<<The_pillory_person>> looks mortified, <<his>> face flitting between shock, shame and sexual exhaustion.
 				<<else>>
 					<<if Time.month > 4 && Time.month < 9 and $rng % 4>>
 						<<set _bug to either("bee","wasp","bumblebee")>>
-						一只_bug围着<<The_pillory_person>>转来转去。<<him>>害怕地大喊大叫，无助地扭动拍打着。
+						<<The_pillory_person>> shouts and helplessly wriggles and flaps as a _bug starts to circle <<him>>.
 						<br>
 						<<if $rng % 3 is 0>>
-							一位好心的旁观者挥手将_bug赶走。
+							A kindly spectator waves the _bug away.
 						<<elseif $rng % 3 is 1>>
-							人群哄堂大笑，最终_bug失去了兴趣，慢悠悠地飞走了。
+							The crowd jeer and laugh. Eventually the _bug loses interest and flies away.
 						<<else>>
 							<<if $pillory_tenant.lowerexposed is 2 and $rng % 2>>
 								<<if $pronoun is "m">><<set _part to either("butt","upper leg","inner thigh","dick","balls","hip")>>
@@ -4479,161 +4479,161 @@
 							<<else>>
 								<<set _part to either("arm","shoulder","cheek","leg","waist","wrist","elbow")>>
 							<</if>>
-							<<He>><<print either("大叫着","尖叫着","抱怨着","哭叫着")>>祈求虫子的离开，_part传来阵阵刺痛。
+							<<He>> <<print either("yells","screams","whines","cries")>> as it lands on <<his>> _part and stings <<him>>.
 						<</if>>
 					<<else>>
-						一个愤怒的<<monk>>从神殿责骂人群的道德沦丧。
-						许多人看起来很惭愧，有些人离开了。
+						A furious <<monk>> from the temple scolds the crowd for preying on the morally sick.
+						Many people look ashamed and some leave.
 						<<set $pillory_tenant.crowd -= 1>>
 						<<if $pillory_tenant.upperexposed + $pillory_tenant.lowerexposed gte 1>>
 							<<set $pillory_tenant.upperexposed to 0>><<set $pillory_tenant.lowerexposed to 0>>
-							那个<<monk>>最终通过更换<<pillory_type>>的衣服来恢复<<his>>的尊严。
+							The <<monk>> finally restores the <<pillory_type>>'s dignity by replacing <<his>> clothes.
 						<</if>>
 					<</if>>
 				<</if>>
 			<<elseif $rng gte 36>> /* 5% */
-				一个<<person>>朝那个<<pillory_type>>扔水果，由于无法移动或抵御，水果直接击中了<<him>>的脸。
-				这看起来很痛，尤其是在<<he>>无法擦掉眼睛里的汁液时。
+				A <<person>> throws fruit at the <<pillory_type>>. Unable to move or defend, it hits <<him>> directly in the face.
+				It looks painful, especially as <<he>> cannot wipe the acids out of <<his>> eyes.
 				<<set $pillory_tenant.fruit += 1>>
 			<<elseif $rng gte 26>> /* 10% */
-				一个<<person>>把水果扔向<<pillory_type>>，但却没有丢中。
+				A <<person>> throws fruit at the <<pillory_type>> but misses completely.
 			<<elseif $rng gte 16>> /* 10% */
-				一个<<person>>走到颈手枷前，轻轻地抚摸起<<pillory_type>>的<<if $pronoun is "f">>乳房。<<else>>蛋蛋.<</if>>
+				A <<person>> walks up to the pillory and _ly fondles the <<pillory_type>>'s <<if $pronoun is "f">>breasts.<<else>>balls.<</if>>
 			<<elseif $rng gte 11 and $pillory_tenant.upperexposed lt 3>>/* 5% */
-				一个<<person>>走到那个<<pillory_type>>面前，然后
+				A <<person>> walks up to the <<pillory_type>> and
 				<<if $pillory_tenant.upperexposed is 2>>
 					<<if $pronoun is "f">>
-					_ly脱掉<<his>>的胸罩，把$pillory_tenant.person.breastsdesc直直地暴露在了嘲笑的人群面前。
+					_ly removes <<his>> bra, fully exposing <<his>> $pillory_tenant.person.breastsdesc to a jeering crowd.
 					<<else>>
-					_ly扭着<<his>>的乳头。
+					_ly twists <<his>> nipples.
 					<<set $pillory_tenant.spank += 1>>
 					<</if>>
 				<<elseif $pillory_tenant.upperexposed is 1>>
 					<<if $pronoun is "f">>
-					脱掉了<<his>>的上衣，只留下可怜的胸罩暴露在嘲笑的人群面前。
+					fully removes <<his>> top, leaving <<him>> with <<his>> bra exposed to the jeering crowd.
 					<<else>>
-					脱掉了<<his>>的上衣，就这样把$pillory_tenant.person.breastsdesc暴露在了嘲笑的人群面前。
+					fully removes <<his>> top, exposing <<his>> naked $pillory_tenant.person.breastsdesc to the jeering crowd.
 					<</if>>
 				<<else>>
 					<<if $pronoun is "f">>
-					在嘲笑声中掀起<<his>>的上衣，让胸罩在人群面前一闪而过。
+					lifts <<his>> top, partially exposing <<his>> bra to a jeering crowd.
 					<<else>>
-					掀起<<his>>的上衣，把大半块胸部暴露在了嘲笑的人群面前。
+					lifts <<his>> top, exposing much of <<his>> chest to the jeering crowd.
 					<</if>>
 				<</if>><<set $pillory_tenant.upperexposed += 1>>
 			<<elseif $rng gte 6 and $pillory_tenant.lowerexposed lt 2>>/* 5% */
-				一个<<person>>走到<<the_pillory_person>>前，并
+				A <<person>> walks up to <<the_pillory_person>> and
 				<<if $pillory_tenant.lowerexposed is 1>>
-					<<if $pillory_tenant.person.gender is "f">>脱掉<<pillory_type>>的内衣，将<<his>>的屁股和阴部完全暴露在嘲笑的人群面前。
-					<<else>>完全脱下<<pillory_type>>的内衣，将<<his>>的屁股和<<his>>的$pillory_tenant.person.penisdesc暴露在正在嘲笑的人群面前。
+					<<if $pillory_tenant.person.gender is "f">>removes the <<pillory_type>>'s underwear, fully exposing <<his>> ass and pussy to the jeering crowd.
+					<<else>>fully removes the <<pillory_type>>'s underwear, exposing <<his>> ass and <<his>> $pillory_tenant.person.penisdesc to the jeering crowd.
 					<</if>>
 				<<else>>
-					<<if $pronoun is "f">>掀起了<<pillory_type>>的裙子,<<else>>脱下来<<his>>的裤子,<</if>>把<<his>>的内衣暴露给了正在嘲笑的观众.
+					<<if $pronoun is "f">>lifts the <<pillory_type>>'s skirt,<<else>>pulls down <<his>> trousers,<</if>> exposing <<his>> underwear to a jeering crowd.
 				<</if>><<set $pillory_tenant.lowerexposed += 1>>
 			<<else>><<set $pillory_tenant.spank += 1>>/* 5% */
-				一个<<person>>走到<<pillory_type>>前，并狠狠地拍打<<him>>的屁股。啪啪的声音回荡在整个街道上。
+				A <<person>> walks up to the <<pillory_type>> and spanks <<him>> hard on the ass. The thwack echoes across the street.
 			<</if>>
 		<<else>> /*night*/
 			<<if $rng gte 86>> /* 15% chance of jeer and shout only, 85% chance of something active */
-				一群人在一个<<person>>的带领下对犯人放肆嘲笑着。
+				A number of people, led by a <<person>> jeer and shout at the prisoner.
 			<<elseif $rng gte 81>> /* 5% */
-				一个<<person>>把水果扔向<<pillory_type>>，因为无法防御和闪躲，水果直接打在了<<the_pillory_person>>的脸上，这引起了一片欢呼声.
-				这看起来很痛，尤其是在<<he>>无法擦掉眼睛里的汁液时。
+				A <<person>> throws fruit at the <<pillory_type>>. Unable to move or defend <<himself>>, it hits <<the_pillory_person>> directly in the face. There is a loud cheer.
+				It looks painful, especially as <<he>> cannot wipe the acids out of <<his>> eyes.
 				<<set $pillory_tenant.fruit += 1>>
 			<<elseif $rng gte 76>> /* 5% */
-				一个<<person>>把水果扔向<<pillory_type>>，但却没有丢中。
+				A <<person>> throws fruit at the <<pillory_type>> but misses completely.
 			<<elseif $pillory_tenant.person.pronoun is "f" and $pillory_tenant.upperexposed lt 3>>
 				<<set $pillory_tenant.upperexposed to 3>>
-				一个<<person>>走到那个无助的<<pillory_type>>面前，然后脱掉了<<his>>所有的上衣，把<<his>>的<<if $pronoun is "f">>$pillory_tenant.person.breastsdesc<<else>>胸部<</if>>暴露在人群前。
+				A <<person>> walks up to the helpless <<pillory_type>> and displaces all <<his>> upper clothes, fully baring <<his>> <<if $pronoun is "f">>$pillory_tenant.person.breastsdesc<<else>>chest<</if>> to the crowd.
 			<<elseif $pillory_tenant.person.pronoun is "m" and $pillory_tenant.upperexposed lt 2>>
 				<<set $pillory_tenant.upperexposed to 2>>
-				一个<<person>>走到那个无助的<<pillory_type>>面前，然后脱掉了<<his>>所有的上衣，把<<his>>的<<if $pronoun is "f">>$pillory_tenant.person.breastsdesc<<else>>胸部<</if>>暴露在人群前。
+				A <<person>> walks up to the helpless <<pillory_type>> and displaces all <<his>> upper clothes, fully baring <<his>> <<if $pronoun is "f">>$pillory_tenant.person.breastsdesc<<else>>chest<</if>> to the crowd.
 			<<elseif $pillory_tenant.lowerexposed lt 2>>
 				<<set $pillory_tenant.lowerexposed to 2>>
-				一个<<person>>走到无助的<<pillory_type>>前，脱掉了<<his>>下身所有的衣服，把<<his>>的<<if $pillory_tenant.person.gender is "f">>小穴<<else>>$pillory_tenant.person.penisdesc<</if>>就这样直直地暴露在人群的面前。口哨声顿时响起，一片欢呼雀跃。
+				A <<person>> walks up to the helpless <<pillory_type>> and displaces all <<his>> lower clothes, fully baring <<his>> <<if $pillory_tenant.person.gender is "f">>pussy<<else>>$pillory_tenant.person.penisdesc<</if>> to the crowd. There is a loud cheer.
 			<<elseif $rng gte 66>> /* 10% */
-				一个<<person>>试图煽动附近的狗爬到犯人赤裸的屁股上。它
-				<<if $rng % 2>>对着<<the_pillory_person>>的屁股试探地闻了几下,但
-				<</if>>不感兴趣.
+				A <<person>> tries to incite a nearby dog to mount the prisoner's naked backside. It
+				<<if $rng % 2>>gives <<the_pillory_person>>'s ass a few tentative sniffs, but
+				<</if>>is not interested.
 			<<elseif $rng gte 58>> /* 8% */
 				<<set $pillory_tenant.spank += 1>>
-				一个<<person>>偷偷溜到颈手枷后，然后_ly打向<<pillory_type>>那裸露的<<if $pillory_tenant.person.gender is "f">>小穴，<<else>>蛋蛋。<</if>>当<<he>>发出痛苦的嚎叫声时，人群无情嘲笑了起来。
+				A <<person>> sneaks up behind the pillory and _ly slaps the <<pillory_type>>'s exposed <<if $pillory_tenant.person.gender is "f">>cunt.<<else>>balls.<</if>> The crowd jeer and laugh as <<he>> howls in pain.
 			<<elseif $rng gte 51>> /* 7% */
 				<<set $pillory_tenant.spank += 2>><br>
-				某个你在学校附近见过但从未上过课的老师正醉醺醺地走向颈手枷。
+				Some teacher you've seen around the school but never had classes with, walks drunkenly toward the pillory.
 				<<if $pillory_tenant.special.name is "Whitney">>
 					<br><<set $pillory_tenant.spank += 1>>
-					"嘿，你好啊，惠特尼!<<print either("很高兴在这里见到你!","看看这是谁啊!","你被困在那里了吗？多么不幸啊!","这不是一个大转变吗?","在这里看到你真是个惊喜!")>>"<<he>>边说边笑道。
-					"<<print either("我们都知道，这是你应得的.","我们都知道你是有资格获得这个待遇的.","而今天的课程将是关于后果的问题。","还记得你给我起的那个刻薄绰号吗?","还记得你那天在我的课上做了什么吗？")>>"
+					"Well, hello, Whitney! <<print either("Fancy seeing you here!","Look who it is!","Are you stuck there? How unfortunate!","Isn't this quite the turnaround!?","Such a nice surprise to see you here!")>>" <<he>> slurs, grinning.
+					"<<print either("We both know that you've earned this.","We both know how richly you deserve this.","And today's lesson will be about consequences.","Do remember that mean little nickname you made up for me?","Do remember what you did in my class the other day?")>>"
 				<<elseif $pillory_tenant.special.name is "Leighton">>
 					<br><<set $pillory_tenant.spank += 1>>
-					"嗯，你好,是你吗，老板？"<<he>>说着的同时躲在颈手枷后面尽量不让人发现。
-					"<<print either("我想现在是时候进行一些'匿名员工反馈'了.","还记得你说过的'残忍是为了仁慈'吗？'","所以我想现在轮到你来做一些 '坦率和诚实的反馈'了。?","那么，这是表达员工不满的'正确论坛'吗？")>>"
+					"Well, hello there. Is that you, boss?" <<he>> says, staying out of sight behind the pillory.
+					"<<print either("I think it's time for some 'anonymous staff feedback'.","Remember what you said about 'cruel to be kind?'","So I guess it's your turn for some 'frank and honest feedback'?","So is this the 'right forum' to air staff grievances?")>>"
 				<<else>><br>
-					"喂，你好，"<<he>>咧嘴笑着说道。
-					"<<print either("看起来你很调皮.","纪律是很重要的.","这不是一个可爱的夜晚吗？你不觉得吗？看看那轮圆月!")>>"
+					"Well, hello there," <<he>> slurs, grinning.
+					"<<print either("Looks like you've been naughty.","Discipline. So important.","Isn't it a lovely evening? Don't you think? Look at that full moon!")>>"
 				<</if>><br>
-				<<He>>开始打<<pillory_type>>的屁股，直到<<person2>><<his>>的手臂打到发软为止.当<<person1>><<person>>因痛苦而嚎叫时，人群爆发出一阵一阵的嘲笑声。
+				<<He>> spanks the <<pillory_type>>'s ass until <<person2>><<his>> arm tires. The crowd jeer and laugh as the <<person1>><<person>> howls in pain.
 			<<elseif $rng gte 41>> /* 10% */
 				<<set $pillory_tenant.face += 1>>
-				一个<<person>>走到颈手枷前，_ly在<<pillory_type>>面前自慰。
-				<<person2>><<if $pronoun is "m">>的精液很快就溅到了<<the_pillory_person>>的脸上。
-				<<else>><<He>>用<<his>>的下体摩擦着<<the_pillory_person>><<person2>>的脸，直到达到高潮为止。
-				<</if>>人群欢呼雀跃，笑声不断.
+				A <<person>> walks in front of the pillory and _ly masturbates in front of the <<pillory_type>>.
+				<<person2>><<if $pronoun is "m">>Cum soon splatters across <<the_pillory_person>>'s face.
+				<<else>><<He>> grinds <<his>> cunt against <<the_pillory_person>>'s<<person2>> face as <<he>> orgasms.
+				<</if>> The crowd cheer and laugh.
 			<<elseif $rng gte 31>> /* 10% */
 				<<set $pillory_tenant.ass += 1>>
-				一个<<person>>走到颈手枷后，_ly<<if $pronoun is "m">>强暴着<<else>>指奸着<</if>><<pillory_type>>的菊穴。而人群则为<<person2>><<him>>欢呼了起来。
+				A <<person>> walks behind the pillory and _ly <<if $pronoun is "m">>rapes<<else>>fingers<</if>> the <<pillory_type>>'s asshole. The crowd cheer <<person2>><<him>> on.
 			<<elseif $rng gte 21>> /* 10% */
 				<<set $pillory_tenant.genital += 1>>
-				一个<<person>>走到颈手枷后，_ly<<if $pronoun is "m">>强暴着<<the_pillory_person>><<else>>用穿戴式假阳具强暴着<<the_pillory_person>><</if>>。而人群则为<<person2>><<him>>拍照欢呼。
+				A <<person>> walks behind the pillory and _ly rapes <<if $pronoun is "m">><<the_pillory_person>>.<<else>><<the_pillory_person>> with a strap-on.<</if>><<person2>> The crowd take pictures and cheer <<him>> on.
 			<<elseif $rng gte 11>> /* 10% */
 				<<set $pillory_tenant.genital += 1>><<set $pillory_tenant.ass += 1>>
-				人群围观並拍下流浪狗_ly强暴<<the_pillory_person>>的照片。一个<<person2>><<person>><<print either("用饼干","拍拍它的頭","用甜食","奶油面包")>>奖励这只狗狗。
+				The crowd watch and photograph as a stray dog rapes <<the_pillory_person>>. A <<person2>><<person>> rewards the dog with a <<print either("biscuit.","pat on the head.","sweet.","cream bun.")>>
 				<br>
-				众人享受着这样的变态的景象，颈项伸得很长，仿佛许多鸭，被无形的手捏住了似的，向上提着。
+				The crowd enjoys such a perverted spectacle.
 			<<elseif $rng gte 6 and maleChance() gt 0 and (maleChance() lt 100 or $pillory_tenant.person.gender isnot "m")>> /* 5% - with men allowed */
 				<<set $pillory_tenant.ass += 1>><<set $pillory_tenant.face += 1>>
-				<<if $rng % 3 is 0>>一对下班的警察走了过来.当他们给<<person>>做笔录时,<<else>>两个男人靠了过来.他们一块<</if>>
-				<<if $pillory_tenant.person.gender is "m">>对着菊穴<<else>>_ly <</if>>和<<the_pillory_person>>做起了3P。人群享受这精彩的表演.
+				<<if $rng % 3 is 0>>A couple of off-duty policemen approach. They make a <<person>> record as they<<else>>Two men approach. Together they<</if>>
+				<<if $pillory_tenant.person.gender is "m">>anally-<<else>>_ly <</if>>spit-roast <<the_pillory_person>>. The crowd enjoys the spectacle.
 			<<elseif $rng gte 6 and maleChance() lt 100 and (maleChance() gt 0 or $pillory_tenant.person.gender isnot "f")>> /* 5% - with women allowed */
 				<<set $pillory_tenant.ass += 1>><<set $pillory_tenant.face += 1>>
-				<<if $rng % 3 is 0>>一对下班的女警察走过来.当他们让<<person>>做笔录时,<<else>>两个女人靠了过来.他们一块<</if>>
-				<<if $pillory_tenant.person.gender is "m">>对着菊穴<<else>>_ly <</if>>和<<the_pillory_person>>用穿戴式假阳具做起了3P。人群享受这精彩的表演.
+				<<if $rng % 3 is 0>>A couple of off-duty policewomen approach. They make a <<person>> record as they<<else>>Two women approach. Together they<</if>>
+				<<if $pillory_tenant.person.gender is "m">>anally-<<else>>_ly <</if>>spit-roast <<the_pillory_person>> with strap-ons. The crowd enjoys the spectacle.
 			<<else>> /* 5% */
 				<<set $pillory_tenant.spank += 1>>
-				一个<<person>>走到<<pillory_type>>前，并狠狠地拍打<<him>>的屁股。啪啪的声音回荡在整个街道上。
+				A <<person>> walks up to the <<pillory_type>> and spanks <<him>> hard on the ass. The thwack echoes across the street.
 			<</if>>
 		<</if>>
 	<<else>>/* already abused this hour - no action, don't want spamming this scene to accelerate things ridiculously */
-		周围的人都在<<print either("嘲笑着","取笑着","指指点点着","大声辱骂着","奚落着","嘲弄着","嘲讽着")>>
+		The people around <<print either("jeer at","laugh at","point at","shout abuse at","taunt","mock","leer at")>>
 		<<if Time.schoolDay and ((Time.hour gte 7 and Time.hour lte 8) or Time.hour is 15) and $rng lte 34>>
-			<<pillory_type>>. 附近学校的一群学生在路过时目瞪口呆的看着
-			<<if $pillory_tenant.lowerexposed gte 2 or $pillory_tenant.upperexposed gte 3>>那个裸露得很淫荡的犯人。
+			the <<pillory_type>>. A group of students from the nearby school pass by, gaping at
+			<<if $pillory_tenant.lowerexposed gte 2 or $pillory_tenant.upperexposed gte 3>>the lewdly exposed prisoner.
 				<<if $rng % 3 is 0>>
-				一个愤怒的旁观者跑到颈手枷上，把<<pillory_type>>的衣服换了下来。
+				An outraged bystander runs up to the pillory and replaces the <<pillory_type>>'s clothes.
 				<<set $pillory_tenant.lowerexposed to 0>><<set $pillory_tenant.upperexposed to 0>><</if>>
-			<<else>>囚犯。
+			<<else>>the prisoner.
 			<</if>>
 		<<elseif Time.dayState isnot "night">>
 			<<if $rng lte 80>>
-				那个<<pillory_type>>并<<print either("窃窃私语着.","拍照","嘲笑了起来.")>>
+				the <<pillory_type>> and <<print either("mutter among themselves.","take photos.","amuse themselves.")>>
 			<<elseif $rng lte 93>>
-				那个<<pillory_type>>，其中一部分人厌倦的离开了.
+				the <<pillory_type>>. Some get bored and leave.
 				<<set $pillory_tenant.crowd -= 1>>
 			<<else>>
-				那个<<pillory_type>>.一辆公交车在附近停下，其中一些人下车并加入了围观颈手枷的人群中。
+				the <<pillory_type>>. A bus drops some people off nearby. A few join the crowd around the pillory.
 				<<set $pillory_tenant.crowd += 1>>
 			<</if>>
 		<<else>>
 			<<if $rng lte 67>>
-				<<if $pillory_tenant.lowerexposed gte 2 and $rng % 4 is 0>>那个<<pillory_type>>并在<<his>>那裸露的屁股旁边摆着姿势自拍.
-				<<else>><<pillory_type>>，同时还对着<<his>><<print either("自言自语。","喝上一杯。","投掷酒瓶。","进行诅咒。","一起拍照。","手冲打胶。")>>
+				<<if $pillory_tenant.lowerexposed gte 2 and $rng % 4 is 0>>the <<pillory_type>> and take selfies posing around <<his>> exposed, naked ass.
+				<<else>>the <<pillory_type>> and <<print either("mutter darkly.","drink.","throw empty beer cans.","make sinister threats.","take selfies with the prisoner.","tell dirty jokes.")>>
 				<</if>>
 			<<elseif $rng lte 85>>
-				那个<<pillory_type>>.有些人在觉得累了之后便离开了。
+				the <<pillory_type>>. Some get tired and leave.
 				<<set $pillory_tenant.crowd -= 1>>
 			<<else>>
-				那个<<pillory_type>>.一些路过的人加入了围观颈手枷的人群中。
+				the <<pillory_type>>. A few people passing by join the crowd around the pillory.
 				<<set $pillory_tenant.crowd += 1>>
 			<</if>>
 		<</if>>
@@ -4647,16 +4647,16 @@
 	<br>
 	<<if Time.days is $pillory_tenant.endday>>
 	<<set _a_few to ($pillory_tenant.endhour - Time.hour)>>
-		<<He>>将在
-		<<if _a_few gt 0>>_a_few小时后被释放。
-		<<else>>时间快到了。
+		<<He>> will be released
+		<<if _a_few gt 0>>in _a_few hours.
+		<<else>>imminently.
 		<</if>>
 	<<else>>
 		<<set _days_left to ($pillory_tenant.endday - Time.days)>>
-		<<He>>预定要被释放于<<if _days_left is 1>>明天<<else>>两天后<</if>>的
+		<<He>> is scheduled for release <<if _days_left is 1>>tomorrow<<else>>in two days<</if>> at
 		<<switch $pillory_tenant.endhour>>
-			<<case 0>>午夜时。
-			<<case 12>>中午时。
+			<<case 0>>midnight.
+			<<case 12>>noon.
 			<<default>><<ampm $pillory_tenant.endhour>>.
 		<</switch>>
 	<</if>>
@@ -4666,16 +4666,16 @@
 <<widget "end_npc_pillory">>
 	<<get_pillory_npc>>
 	<<if Time.minute lte 15>>
-		一个警察<<print either("正在释放","刚刚释放","正在努力释放","即将释放")>>
-		<<the_pillory_person>>.<<if $weather is "rain">><<His>>的衣服被淋湿得能够看透.<<elseif $weather is "snow">><<He>>冻得发抖.<</if>>
+		A police officer <<print either("is releasing","has just released","is struggling to release","is about to release")>>
+		<<the_pillory_person>> from the pillory. <<if $weather is "rain">><<His>> clothes are see-through from the rain.<<elseif $weather is "snow">><<He>> shivers in the cold.<</if>>
 	<<elseif Time.minute lte 30>>
-		<<The_pillory_person>>跌跌撞撞地离开了颈手枷，眼睛<<print either("里含着泪水","里流露出蔑视","里满是痛苦","里带着愤怒")>>。
-		<<if $weather is "rain">><<His>>衣服被雨淋透了.<</if>>
+		<<The_pillory_person>> staggers away from the pillory with <<print either("tears","defiance","signs of trauma","fury")>> in <<his>> eyes.
+		<<if $weather is "rain">><<His>> clothes are see-through from the rain.<</if>>
 	<<else>>
-		<<The_pillory_person>>终于被释放了。几个职员正在清理颈手枷上的污痕。
+		<<The_pillory_person>> was released and has left. A couple of civil servants clean the pillory.
 	<</if>>
 	<<set $rng += $pillory_tenant.duration>>
-	<<if $rng gte 67 or $rng gte 33 and $weather is "rain">>一大批人群发出嘲笑和叫喊声.<</if>>
+	<<if $rng gte 67 or $rng gte 33 and $weather is "rain">>A large crowd jeers and shouts.<</if>>
 	<br><br>
 	<<clear_pillory>>
 	<<endevent>>
@@ -4706,7 +4706,7 @@
 <<widget "awarenessup">>
 	<<set _awareness to _args[1]>>
 	<<if $awareness gte _args[0]>>
-		<span class="pink">没有什么是你不知道的。</span>
+		<span class="pink">It's nothing you weren't aware of.</span>
 	<<else>>
 		<<gawareness>><<awareness _awareness>>
 	<</if>>
@@ -4747,7 +4747,7 @@
 
 <<if _projectOptions || _playOptions || _bookOptions || $christmas_gift is "clothes_unwrapped" || ($christmas_gift_robin and $christmas_gift_robin_wrapped isnot 1)>>
 	<<if _args[0] is "noicon">>
-		你的_desk.nameCap和<<if _chair.name isnot "chair">>一张<</if>>_chair.nameCap占据着你衣柜旁那狭小的空间。
+		Your _desk.name and <<if _chair.name isnot "chair">>_chair.article <</if>>_chair.nameSolo are wedged next to your wardrobe.
 		<br>
 		<<projectoptions>>
 		<<homeStudyOptions>>
@@ -4757,7 +4757,7 @@
 <<else>>
 	<<if _args[0] is "icon">>
 		<br>
-		<<deskchairicon>>你的_desk.nameCap和<<if _chair.name isnot "chair">>一张<</if>>_chair.nameCap占据着你衣柜旁那狭小的空间。
+		<<deskchairicon>>Your _desk.name and <<if _chair.name isnot "chair">>_chair.article <</if>>_chair.nameSolo are wedged next to your wardrobe.
 	<</if>>
 <</if>>
 <</widget>>
@@ -4770,15 +4770,15 @@
 	<<if _args[0] is "noicon">>
 		<<if _table>>
 			<br>
-			你的_table.nameCap<<if _chair and _chair.name isnot "chair">>和你的一把_chair.nameCap<<else>><</if>>位于墙边。
+			Your _table.name <<if _chair and _chair.name isnot "chair">>and one of your _chair.name are <<else>>is <</if>> situated next to a wall.
 			<br>
 		<<elseif _chair and _chair.name isnot "chair">>
 			<br>
-			你的一张_chair.nameCap紧靠着墙。
+			One of your _chair.name is situated next to a wall.
 			<br>
 		<<else>>
 			<br>
-			你的鱼缸放在地板上。
+			Your fish tank sits on the floor.
 			<br>
 		<</if>>
 		<<fishtankicon>><<containersLink>>
@@ -4787,10 +4787,10 @@
 	<<if _args[0] is "icon">>
 		<<if _table>>
 			<br>
-			<<bedroomtablechairicon>>你的_table.nameCap<<if _chair and _chair.name isnot "chair">>和另一张_chair.nameCap<<else>><</if>>紧挨在墙壁边上。
+			<<bedroomtablechairicon>> Your _table.name <<if _chair and _chair.name isnot "chair">>and another _chair.nameSolo are <<else>>is <</if>> situated next to a wall.
 		<<elseif _chair and _chair.name isnot "chair">>
 			<br>
-			<<bedroomtablechairicon>>另有一张_chair.nameCap紧挨在墙壁边上。
+			<<bedroomtablechairicon>> A second _chair.nameSolo is situated next to a wall.
 		<</if>>
 	<</if>>
 <</if>>
@@ -4855,13 +4855,13 @@
 		<<if $skulduggery lte ($skulduggerydifficulty + 100)>>
 			<<combatskulduggeryskilluse>>
 		<<else>>
-			<span class="blue">这对你来说实在太简单了，你什么都没有学到。</span>
+			<span class="blue">That was too easy. You didn't learn anything.</span>
 		<</if>>
 	<<else>>
 		<<if $skulduggery lte ($skulduggerydifficulty + 100)>>
 			<<skulduggeryskilluse>>
 		<<else>>
-			<span class="blue">这对你来说实在太简单了，你什么都没有学到。</span>
+			<span class="blue">That was too easy. You didn't learn anything.</span>
 			<br><br>
 		<</if>>
 	<</if>>

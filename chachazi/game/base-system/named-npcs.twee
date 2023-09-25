@@ -16,7 +16,7 @@
 		<</for>>
 		<!-- In case someone calls the wrong NPC, or doesn't use upper case -->
 		<<if _ii is undefined>>
-			<span class="red">错误: <<print _passargs>>未激活。已终止。</span>
+			<span class="red">Error: <<print _passargs>> is not active. Aborting.</span>
 		<<else>>
 			<<set $NPCList[_ii].lefthand to "none">>
 			<<set $NPCList[_ii].righthand to "none">>
@@ -43,9 +43,9 @@
 			<<set $NPCList[_ii].paid to 0>>
 			<<if _ii < 1>>
 				<<set $NPCList[_ii].breastsize to 3>>
-				<<set $NPCList[_ii].breastsdesc to "乳房">>
-				<<set $NPCList[_ii].breastdesc to "乳房">>
-				<<set $NPCList[_ii].penisdesc to "阴茎">>
+				<<set $NPCList[_ii].breastsdesc to "breasts">>
+				<<set $NPCList[_ii].breastdesc to "breast">>
+				<<set $NPCList[_ii].penisdesc to "penis">>
 				<<set $NPCList[_ii].penissize to 2>>
 				<<set $NPCList[_ii].health to 200>>
 				<<set $NPCList[_ii].healthmax to 200>>
@@ -92,7 +92,7 @@
 /*Gender neutral names for future reference
 Aiden
 Akira
-艾利克斯
+Alex
 Alexis
 Ariel
 Armani
@@ -189,7 +189,7 @@ Shaw
 Shay
 Shiloh
 Spencer
-悉尼
+Sydney
 Taylor
 Teagan
 Toby
@@ -285,12 +285,12 @@ Zohar
 		<</if>>
 	<</if>>
 	<<if $NPCName[_i].breastsize gt 0>>
-		<<set _brdes to ["乳头","微微隆起的","含苞欲放的","小巧玲珑的","只手可握的","适中的","圆润的","大的","浑圆的","丰满的","巨大的","壮观的","极致宏伟的"]>>
-		<<set $NPCName[_i].breastdesc to _brdes[$NPCName[_i].breastsize]+"乳房">>
+		<<set _brdes to ["nipple","budding","tiny","small","pert","modest","full","large","ample","massive","huge","gigantic","enormous"]>>
+		<<set $NPCName[_i].breastdesc to _brdes[$NPCName[_i].breastsize]+" breast">>
 	<<else>>
-		<<set $NPCName[_i].breastdesc to "乳头">>
+		<<set $NPCName[_i].breastdesc to "nipple">>
 	<</if>>
-	<<set $NPCName[_i].breastsdesc to $NPCName[_i].breastdesc + "">>
+	<<set $NPCName[_i].breastsdesc to $NPCName[_i].breastdesc + "s">>
 
 	<!-- Set pp to defaults-->
 
@@ -340,16 +340,16 @@ Zohar
 		<<else>>
 			<<switch random(_p_mod_lower, _p_mod_upper)>>
 			<<case 8>>
-				<<set $NPCName[_i].penisdesc to either("丰满肉棒","巨大肉棒","极大肉棒","极巨大的肉棒","爆裂大肉棒","极致宏伟肉棒")>>
+				<<set $NPCName[_i].penisdesc to either("massive cock","huge cock","humongous cock","immense cock","gigantic cock","enormous cock")>>
 				<<set $NPCName[_i].penissize to 4>>
 			<<case 5 6 7>>
-				<<set $NPCName[_i].penisdesc to either("厚重肉棒","笨重肉棒","大肉棒","巨大肉棒","狰狞肉棒","肥厚肉棒")>>
+				<<set $NPCName[_i].penisdesc to either("thick cock","hefty cock","big cock","large cock","veiny cock","meaty cock")>>
 				<<set $NPCName[_i].penissize to 3>>
 			<<case 2 3 4>>
-				<<set $NPCName[_i].penisdesc to "阴茎">>
+				<<set $NPCName[_i].penisdesc to "penis">>
 				<<set $NPCName[_i].penissize to 2>>
 			<<default>>
-				<<set $NPCName[_i].penisdesc to either("细小阴茎","废物阴茎","可怜阴茎","小小阴茎","迷你阴茎","微型阴茎")>>
+				<<set $NPCName[_i].penisdesc to either("tiny penis","pathetic cock","little penis","small penis","mini penis","micro penis")>>
 				<<set $NPCName[_i].penissize to 1>>
 			<</switch>>
 		<</if>>
@@ -358,13 +358,13 @@ Zohar
 	<<if $NPCName[_i].penissize isnot 0>>
 		<<switch $NPCName[_i].penissize>>
 		<<case 4>>
-			<<set $NPCName[_i].penisdesc to either("丰满肉棒","巨大肉棒","极大肉棒","极巨大的肉棒","爆裂大肉棒","极致宏伟肉棒")>>
+			<<set $NPCName[_i].penisdesc to either("massive cock","huge cock","humongous cock","immense cock","gigantic cock","enormous cock")>>
 		<<case 3>>
-			<<set $NPCName[_i].penisdesc to either("厚重肉棒","笨重肉棒","大肉棒","巨大肉棒","狰狞肉棒","肥厚肉棒")>>
+			<<set $NPCName[_i].penisdesc to either("thick cock","hefty cock","big cock","large cock","veiny cock","meaty cock")>>
 		<<case 1>>
-			<<set $NPCName[_i].penisdesc to either("细小阴茎","废物阴茎","可怜阴茎","小小阴茎","迷你阴茎","微型阴茎")>>
+			<<set $NPCName[_i].penisdesc to either("tiny penis","pathetic cock","little penis","small penis","mini penis","micro penis")>>
 		<<default>>
-			<<set $NPCName[_i].penisdesc to "阴茎">>
+			<<set $NPCName[_i].penisdesc to "penis">>
 		<</switch>>
 	<</if>>
 
@@ -414,41 +414,41 @@ Zohar
 				<<set $NPCName[_i].cdquest to 0>>
 			<<case River>>
 				<<if $NPCName[_i].pronoun is "m">>
-					//瑞沃在学校中教数学。几根银丝夹杂在他棕色的短发之间。在那对锐利蓝眼睛的注视下，没有学生敢在他的课上轻举妄动。//
+					//River teaches maths at the local school. His short brown hair is flecked with grey and his piercing blue eyes scrutinise his surroundings. Students tend to be well-behaved in his class.//
 				<<else>>
-					//瑞沃在学校中教数学。几根银丝夹杂在她棕色的长发之间。在那对锐利蓝眼睛的注视下，没有学生敢在她的课上轻举妄动。//
+					//River teaches maths at the local school. Her long brown hair is flecked with grey and her piercing blue eyes scrutinise her surroundings. Students tend to be well-behaved in her class.//
 				<</if>>
 			<<case Leighton>>
 				<<if $NPCName[_i].pronoun is "m">>
 					<<set $NPCName[_i].title to "headmaster">>
-					//礼顿是学校的校长。他有一双绿色的眼睛，和一头虽已斑白但保养良好的头发。他高大而威严，对任何学生都态度坚决。//
+					//Leighton is the headmaster of the local school. He has green eyes and well-kept greying black hair. Tall and stately, he has a firm attitude towards the students at his school.//
 				<<else>>
 					<<set $NPCName[_i].title to "headmistress">>
-					//礼顿是学校的校长。她有一双绿色的眼睛，斑白但保养良好的头发在她脑后挽成一个发髻。她高大而威严，对任何学生都态度坚决。//
+					//Leighton is the headmistress of the local school. She has green eyes and greying black hair, held behind her head in a bun. Tall and stately, she has a firm attitude towards the students at her school.//
 				<</if>>
 			<<case Mason>>
 				<<if $NPCName[_i].pronoun is "m">>
-					//梅森是学校的游泳课教练。他是学校中最年轻的老师，只比一些学生大几岁。他健美的身体在课堂上自然地展现出来，即使注意到他人的目光，他也毫不在意。//
+					//Mason is the swimming teacher at the local school. He's the youngest teacher, only a few years older than some of the students. His toned body is naturally shown off during class, but if he notices the way he's leered at, he gives no indication.//
 				<<else>>
-					//梅森是学校的游泳课教练。她是学校中最年轻的老师，只比一些学生大几岁。她傲人的曲线在课堂上自然地展现出来，即使注意到他人的目光，她也毫不在意。//
+					//Mason is the swimming teacher at the local school. She's the youngest teacher, only a few years older than some of the students. Her toned body is naturally shown off during class, but if she notices the way she's leered at, she gives no indication.//
 				<</if>>
 			<<case Winter>>
 				<<if $NPCName[_i].pronoun is "m">>
-					//温特在学校中教授历史。他是一位年长的绅士，仪表堂堂，老成持重。//
+					//Winter teaches history at the local school. He's an older gentleman, well-groomed and sophisticated.//
 				<<else>>
-					//温特在学校中教授历史。她是一位年长的妇人，仪表堂堂，老成持重。//
+					//Winter teaches history at the local school. She's an older lady, well-groomed and sophisticated.//
 				<</if>>
 			<<case Doren>>
 				<<if $NPCName[_i].pronoun is "m">>
-					//多伦是学校的英语老师。他蓬乱的红发和胡须使他看起来粗野十足。//
+					//Doren teaches English at the local school. His shaggy red hair and beard give him a savage look.//
 				<<else>>
-					//多伦是学校的英语老师。她蓬乱的红发使她看起来粗野十足。//
+					//Doren teaches English at the local school. Her shaggy red hair gives her a savage look.//
 				<</if>>
 			<<case Sirris>>
 				<<if $NPCName[_i].pronoun is "m">>
-					//西里斯是学校的科学课老师。他平易近人，也很有耐心，但这点有时反倒会成为会课堂上秩序混乱的根源。//
+					//Sirris teaches science at the local school. He's calm and patient, which sometimes leads to a disordered classroom.//
 				<<else>>
-					//西里斯是学校的科学课老师。她平易近人，也很有耐心，但这点有时反倒会成为会课堂上秩序混乱的根源。//
+					//Sirris teaches science at the local school. She's calm and patient, which sometimes leads to a disordered classroom.//
 				<</if>>
 			<<case Eden>>
 				<<if $NPCName[_i].pronoun is "m">>
@@ -713,7 +713,7 @@ Zohar
 	<<set $_name to $_npcName.nam>>
 	<<switch $_name>>
 		<<case "Whitney">>
-			<<set $_npcName.strapons to [{"state": "worn", "color": "dark red", "size": 3, "description":"大型深红色穿戴式假肉棒"}]>>
+			<<set $_npcName.strapons to [{"state": "worn", "color": "dark red", "size": 3, "description":"large dark red strap-on cock"}]>>
 		<<default>>
 			<<set $_npcName.strapons to []>>
 	<</switch>>
@@ -754,7 +754,7 @@ Zohar
 		<<for _controller to 0; _controller lte $NPCList.length; _controller++>>
 			<<if _controller gte 6>>
 				<!-- Since 6 is past our limit, we want to alert the user something went wrong. For simplicity, we'll set _npcno to 0 and overwrite $NPCList[0] -->
-				<span class="red"> 错误: There are already 6 active NPCs. Clearing NPC 0 to make space for Named NPC.</span>
+				<span class="red"> Error: There are already 6 active NPCs. Clearing NPC 0 to make space for Named NPC.</span>
 				<<set _npcno to 0>>
 				<<clearsinglenpc 0>>
 				<<set _overwrite to true>>
@@ -855,7 +855,7 @@ Zohar
 		<<statsWraith>>
 		<<set $NPCList[_npcno].health to _wraithHP>>
 		<<set $NPCList[_npcno].healthmax to _wraithHP>>
-		<<set $NPCList[_npcno].traits to ["忧郁的", "警惕的", "固执的", "漂亮的"]>>
+		<<set $NPCList[_npcno].traits to ["brooding", "watchful", "willful", "beautiful"]>>
 		<<set _condomIgnore to true>>
 	<<case "Alex">>
 		<<set $NPCList[_npcno].health to 200>>
@@ -900,10 +900,10 @@ Zohar
 	<<set $NPCList[_npcno].skincolour to $NPCName[_i].skincolour>>
 
 	<<set $NPCList[_npcno].insecurity to $NPCName[_i].insecurity>>
-	<<set $NPCList[_npcno].description to $NPCName[_i].title.replace("businessperson", "商人").replace("businessman", "商人").replace("businesswoman", "商人").replace("caretaker", "监护人").replace("brothel owner", "妓院老板").replace("dance coach", "舞蹈教练").replace("club owner", "俱乐部老板").replace("English teacher", "英语老师").replace("huntress", "猎人").replace("hunter", "猎人").replace("shopkeeper", "商店店主").replace("doctor", "医生").replace("pious", "虔信者").replace("nun", "修女").replace("monk", "修士").replace("loner", "不合群者").replace("criminal", "罪犯").replace("headteacher", "校长").replace("headmaster", "校长").replace("headmistress", "校长").replace("swimming teacher", "游泳老师").replace("sewer dweller", "下水道居民").replace("maths teacher", "数学老师").replace("orphan", "孤儿").replace("cafe owner", "咖啡店主").replace("science teacher", "科学老师").replace("bully", "霸凌者").replace("history teacher", "历史老师").replace("alpha", "头狼").replace("photographer", "摄影师").replace("mayor", "市长").replace("farmer", "农场主").replace("farmhand", "农工").replace("terror", "恐怖者").replace("smuggler", "走私者").replace("faithful", "信徒").replace("fallen", "堕落者").replace("reflection", "映像").replace("explorer", "探险家").replace("delinquent", "违法者")>>
+	<<set $NPCList[_npcno].description to $NPCName[_i].title>>
 
 	<<set $NPCList[_npcno].insecurity to $NPCName[_i].insecurity>>
-	<<set $NPCList[_npcno].description to $NPCName[_i].title.replace("businessperson", "商人").replace("businessman", "商人").replace("businesswoman", "商人").replace("caretaker", "监护人").replace("brothel owner", "妓院老板").replace("dance coach", "舞蹈教练").replace("club owner", "俱乐部老板").replace("English teacher", "英语老师").replace("huntress", "猎人").replace("hunter", "猎人").replace("shopkeeper", "商店店主").replace("doctor", "医生").replace("pious", "虔信者").replace("nun", "修女").replace("monk", "修士").replace("loner", "不合群者").replace("criminal", "罪犯").replace("headteacher", "校长").replace("headmaster", "校长").replace("headmistress", "校长").replace("swimming teacher", "游泳老师").replace("sewer dweller", "下水道居民").replace("maths teacher", "数学老师").replace("orphan", "孤儿").replace("cafe owner", "咖啡店主").replace("science teacher", "科学老师").replace("bully", "霸凌者").replace("history teacher", "历史老师").replace("alpha", "头狼").replace("photographer", "摄影师").replace("mayor", "市长").replace("farmer", "农场主").replace("farmhand", "农工").replace("terror", "恐怖者").replace("smuggler", "走私者").replace("faithful", "信徒").replace("fallen", "堕落者").replace("reflection", "映像").replace("explorer", "探险家").replace("delinquent", "违法者")>>
+	<<set $NPCList[_npcno].description to $NPCName[_i].title>>
 
 	<<set $NPCList[_npcno].adult to $NPCName[_i].adult>>
 	<<set $NPCList[_npcno].teen to $NPCName[_i].teen>>
@@ -1062,7 +1062,7 @@ Zohar
 	<<if _i !== -1>>
 		<<set _npc to _args[0]>>
 	<<else>>
-		<<error { message: "<<npcrelationship>>提供了错误的参数" }>>
+		<<error { message: "<<npcrelationship>> was provided incorrect arguments" }>>
 	<</if>>
 	<<if $NPCName[_i].init is 1>>
 		<<relationshiptext>>
@@ -1195,33 +1195,6 @@ Zohar
 <<widget "relationshiptext">>
 	<!-- Special cases for Robin, Avery, Kylar, Whitney, Sydney, Alex, Wraith -->
 	<<switch _npc>>
-		<<case Robin>>
-			罗宾
-			<<if $robinromance is 1>>
-				<<if $NPCName[_i].trauma gte 80>>
-					<<if $NPCName[_i].lust gte 50>>
-						<span class="red">迷失在对你的渴求中。</span>
-					<<else>>
-						<span class="red">离开了你便一无是处。</span>
-					<</if>>
-				<<elseif $NPCName[_i].dom gte 40>>
-					<span class="lewd">深爱着你。</span>
-				<<else>>
-					<span class="lewd">深爱着你。</span>
-				<</if>>
-			<<elseif $NPCName[_i].trauma gte 80>>
-				<span class="red">受到了巨大的打击。</span>
-			<<elseif $NPCName[_i].trauma gte 40>>
-				<span class="red">处在痛苦之中。</span>
-			<<elseif $NPCName[_i].trauma gte 10>>
-				<span class="purple">处于忧虑中。</span>
-			<<elseif $NPCName[_i].dom gte 80>>
-				<span class="teal">对你有保护欲。</span>
-			<<elseif $NPCName[_i].dom gte 20>>
-				<span class="teal">把你当作最好的朋友。</span>
-			<<else>>
-				<span class="teal">敬仰着你。</span>
-			<</if>>
 		<<case Remy>>
 			雷米
 			<<if $NPCName[_i].state is "escape">>
@@ -1251,273 +1224,300 @@ Zohar
 				  <span class="teal">对你没有任何感觉。</span>
 			    <</if>>
 			<</if>>
+		<<case Robin>>
+			Robin
+			<<if $robinromance is 1>>
+				<<if $NPCName[_i].trauma gte 80>>
+					<<if $NPCName[_i].lust gte 50>>
+						<span class="red">is lost in need for you.</span>
+					<<else>>
+						<span class="red">is nothing without you.</span>
+					<</if>>
+				<<elseif $NPCName[_i].dom gte 40>>
+					<span class="lewd">cherishes you.</span>
+				<<else>>
+					<span class="lewd">loves you.</span>
+				<</if>>
+			<<elseif $NPCName[_i].trauma gte 80>>
+				<span class="red">is traumatised.</span>
+			<<elseif $NPCName[_i].trauma gte 40>>
+				<span class="red">is in pain.</span>
+			<<elseif $NPCName[_i].trauma gte 10>>
+				<span class="purple">is troubled.</span>
+			<<elseif $NPCName[_i].dom gte 80>>
+				<span class="teal">feels protective of you.</span>
+			<<elseif $NPCName[_i].dom gte 20>>
+				<span class="teal">thinks you're <<nnpc_his "Robin">> best friend.</span>
+			<<else>>
+				<span class="teal">looks up to you.</span>
+			<</if>>
 		<<case Avery>>
-			艾弗里
+			Avery
 			<<if $NPCName[_i].state is "dismissed">>
-				<span class="red">已经移情别恋。</span>
+				<span class="red">has moved on.</span>
 			<<elseif $NPCName[_i].rage gte 96>>
-				<span class="red">已经放弃了你。</span>
+				<span class="red">has given up on you.</span>
 			<<elseif $NPCName[_i].love gte 60>>
 				<<if $NPCName[_i].rage gte 60>>
-					<span class="pink">被你激怒了。</span>
+					<span class="pink">is infuriated by you.</span>
 				<<elseif $NPCName[_i].rage gte 20>>
-					<span class="blue">想把你束缚在身边。</span>
+					<span class="blue">wants you on a tighter leash.</span>
 				<<else>>
-					<span class="green">以你为傲。</span>
+					<span class="green">prizes you.</span>
 				<</if>>
 			<<elseif $NPCName[_i].love gte 20>>
 				<<if $NPCName[_i].rage gte 60>>
-					<span class="pink">对你感到恼怒。</span>
+					<span class="pink">is furious with you.</span>
 				<<elseif $NPCName[_i].rage gte 20>>
-					<span class="purple">视你为私有财产。</span>
+					<span class="purple">sees you as a possession.</span>
 				<<else>>
-					<span class="teal">觉得你很可爱。</span>
+					<span class="teal">thinks you're cute.</span>
 				<</if>>
 			<<else>>
 				<<if $NPCName[_i].rage gte 60>>
-					<span class="pink">认为你过于傲慢。</span>
+					<span class="pink">thinks you're insolent.</span>
 				<<elseif $NPCName[_i].rage gte 20>>
-					<span class="blue">认为你是个小鬼。</span>
+					<span class="blue">thinks you're a brat.</span>
 				<<else>>
-					对你没什么看法。
+					has no strong opinion of you.
 				<</if>>
 			<</if>>
 		<<case Kylar>>
-			凯拉尔
+			Kylar
 			<<if $NPCName[_i].state is "prison" and $location isnot "prison">>
-					<span class="red">锒铛入狱。</span>
+					<span class="red"> is imprisoned.</span>
 			<<elseif $NPCName[_i].love gte 90>>
 				<<if $NPCName[_i].rage gte 90>>
-					<span class="red">因嫉妒歇斯底里。</span>
+					<span class="red">is hysterical.</span>
 				<<elseif $NPCName[_i].rage gte 60>>
-					<span class="pink">痴迷于你。</span>
+					<span class="pink">is obsessed with you.</span>
 				<<elseif $NPCName[_i].rage gte 30>>
-					<span class="blue">痴迷于你。</span>
+					<span class="blue">is obsessed with you.</span>
 				<<else>>
-					<span class="green">痴迷于你。</span>
+					<span class="green">is obsessed with you.</span>
 				<</if>>
 			<<elseif $NPCName[_i].love gte 60>>
 				<<if $NPCName[_i].rage gte 90>>
-					<span class="red">因嫉妒歇斯底里。</span>
+					<span class="red">is hysterical.</span>
 				<<elseif $NPCName[_i].rage gte 60>>
-					<span class="pink">为你着迷。</span>
+					<span class="pink">is enamoured with you.</span>
 				<<elseif $NPCName[_i].rage gte 30>>
-					<span class="purple">为你着迷。</span>
+					<span class="purple">is enamoured with you.</span>
 				<<else>>
-					<span class="teal">为你着迷。</span>
+					<span class="teal">is enamoured with you.</span>
 				<</if>>
 			<<elseif $NPCName[_i].love gte 30>>
 				<<if $NPCName[_i].rage gte 90>>
-					<span class="red">因嫉妒歇斯底里。</span>
+					<span class="red">is hysterical.</span>
 				<<elseif $NPCName[_i].rage gte 60>>
-					<span class="pink">迷恋著你。</span>
+					<span class="pink">is infatuated with you.</span>
 				<<elseif $NPCName[_i].rage gte 30>>
-					<span class="purple">迷恋著你。</span>
+					<span class="purple">is infatuated with you.</span>
 				<<else>>
-					<span class="lblue">迷恋著你。</span>
+					<span class="lblue">is infatuated with you.</span>
 				<</if>>
 			<<else>>
 				<<if $NPCName[_i].rage gte 90>>
-					<span class="red">因嫉妒歇斯底里。</span>
+					<span class="red">is hysterical.</span>
 				<<elseif $NPCName[_i].rage gte 60>>
-					<span class="pink">对你念念不忘。</span>
+					<span class="pink">is fixated on you.</span>
 				<<elseif $NPCName[_i].rage gte 30>>
-					<span class="purple">对你念念不忘。</span>
+					<span class="purple">is fixated on you.</span>
 				<<else>>
-					<span class="blue">对你念念不忘。</span>
+					<span class="blue">is fixated on you.</span>
 				<</if>>
 			<</if>>
 		<<case Whitney>>
-			惠特尼
+			Whitney
 			<<if $NPCName[_i].state is "dungeon">>
-				<span class="red">消失了。</span>
+				<span class="red">is gone.</span>
 			 <<elseif $whitneyRescueStatus isnot undefined>>
 				<<if $whitneyRescueStatus is "humiliated" and !$whitneyRescueTimer>>
-					<span class="red">心理很脆弱。</span>
+					<span class="red">is vulnerable.</span>
 				<<elseif $whitneyRescueStatus is "humiliated">>
-					<span class="red">感到羞辱。</span>
+					<span class="red">is humiliated.</span>
 				<<elseif $whitneyRescueStatus is "shaken">>
-					<span class="pink">非常焦虑。</span>
+					<span class="pink">is unnerved and agitated.</span>
 				<<elseif $whitneyRescueStatus is "grateful">>
-					<span class="green">非常感激。</span>
+					is <span class="green">grateful.</span>
 				<</if>>
 			<<elseif $NPCName[_i].love gte 20>>
 				<<if $NPCName[_i].lust gte 60>>
-					<span class="lewd">想找点乐子。</span>
+					<span class="lewd">is up for some fun.</span>
 				<<else>>
 					<<if $NPCName[_i].dom gte 20>>
-						<span class="lewd">掌控着你。</span>
+						<span class="lewd">owns you.</span>
 					<<elseif $NPCName[_i].dom lte 8>>
-						认为你是<span class="green"><<nnpc_his "Whitney">>的<<if $player.gender_appearance is "m">>男朋友<<else>>女朋友<</if>>。</span>
+						thinks you're <span class="green"><<nnpc_his "Whitney">> <<girl>>friend.</span>
 					<<else>>
-						<span class="lewd">认为你是<<nnpc_his "Whitney">>的宠物。</span>
+						<span class="lewd">thinks you're <<nnpc_his "Whitney">> pet.</span>
 					<</if>>
 				<</if>>
 			<<elseif $NPCName[_i].love lte 5>>
 				<<if $NPCName[_i].lust gte 60>>
 					<<if $NPCName[_i].dom gte 18>>
-						<span class="pink">想让你跪地祈求。</span>
+						<span class="pink">wants to make you beg.</span>
 					<<else>>
-						<span class="pink">希望听到你的乞求。</span>
+						<span class="pink">wants to hear you beg.</span>
 					<</if>>
 				<<else>>
 					<<if $NPCName[_i].dom gte 20>>
-						认为你<span class="red">十分可悲。</span>
+						thinks you're <span class="red">pathetic.</span>
 					<<elseif $NPCName[_i].dom lte 7>>
 						<<if $NPCName[_i].dom lte 2 and $NPCName[_i].love lte 2>>
-							<span class="red">与你敌对。</span>
+							<span class="red">has a vendetta against you.</span>
 						<<else>>
-							认为你<span class="red">正在威胁<<nnpc_his "Whitney">>的地位。</span>
+							thinks you're <span class="red">a threat to <<nnpc_his "Whitney">> status.</span>
 						<</if>>
 					<<else>>
-						认为你<span class="red">是个怪胎。</span>
+						thinks you're <span class="red">a freak.</span>
 					<</if>>
 				<</if>>
 			<<else>>
 				<<if $NPCName[_i].dom gte 20>>
-					认为你<span class="teal">喜欢挑衅。</span>
+					thinks you're <span class="teal">fun to pick on.</span>
 				<<elseif $NPCName[_i].dom lte 8>>
-					觉得你<span class="purple">很烦人。</span>
+					finds you <span class="purple">annoying.</span>
 				<<else>>
-					认为你<span class="pink">很适合被欺凌。</span>
+					thinks you're <span class="pink">an easy target.</span>
 				<</if>>
 			<</if>>
 		<<case Sydney>>
-			悉尼
+			Sydney
 			<<if $sydneyromance is 1>>
 				<<if $NPCName[_i].purity gt 80>>
 					<<if $NPCName[_i].lust gte 60>>
-						<span class="lewd">无法思考除了你之外的任何事情。</span>
+						<span class="lewd">can't think of anything but you.</span>
 					<<else>>
-						<span class="lewd">爱你无以言表。</span>
+						<span class="lewd">loves you beyond words.</span>
 					<</if>>
 				<<elseif $NPCName[_i].purity gte 40>>
 					<<if $NPCName[_i].lust gte 30>>
-						<span class="lewd">渴望着你的抚摸。</span>
+						<span class="lewd">yearns for your touch.</span>
 					<<else>>
-						<span class="lewd">感受到了与你的羁绊。</span>
+						<span class="lewd">feels bound to you.</span>
 					<</if>>
 				<<elseif $NPCName[_i].corruption gte 40>>
 					<<if $NPCName[_i].lust gte 20>>
-						<span class="lewd">想要被你<<if $NPCName[_i].virginity.vaginal is true and $NPCName[_i].virginity.penile is true>>玷污<<else>>狠狠地蹂躏<</if>>。</span>
+						<span class="lewd">wants to be <<if $NPCName[_i].virginity.vaginal is true and $NPCName[_i].virginity.penile is true>>deflowered<<else>>defiled<</if>> by you.</span>
 					<<else>>
-						<span class="lewd">爱你无以言表。</span>
+						<span class="lewd">loves you beyond words.</span>
 					<</if>>
 				<<elseif $NPCName[_i].corruption gte 10>>
 					<<if $NPCName[_i].lust gte 10>>
-						<span class="lewd">渴求着你的触摸。</span>
+						<span class="lewd">craves your touch.</span>
 					<<else>>
-						<span class="lewd">全身心都被你俘获。</span>
+						<span class="lewd">belongs to you.</span>
 					<</if>>
 				<<else>>
-					<span class="lewd">深爱着你。</span>
+					<span class="lewd">loves you.</span>
 				<</if>>
 			<<elseif $NPCName[_i].love gte 60>>
 				<<if $NPCName[_i].purity gte 50>>
 					<<if $purity lte 500 or $demon gte 6>>
-						<span class="blue">想要救赎你。</span>
+						<span class="blue">wants to save you.</span>
 					<<elseif $temple_rank is "initiate" or $angel gte 6>>
-						<span class="green">视你为模范。</span>
+						<span class="green">considers you an inspiration.</span>
 					<<else>>
-						<span class="green">非常喜欢你。</span>
+						<span class="green">is very fond of you.</span>
 					<</if>>
 				<<elseif $NPCName[_i].corruption gte 10>>
-					<span class="lewd">被你腐化了。</span>
+					<span class="lewd">is influenced by you.</span>
 				<<else>>
-					<span class="purple">犹豫不决。</span>
+					<span class="purple">is torn.</span>
 				<</if>>
 			<<elseif $NPCName[_i].love gte 30>>
 				<<if $NPCName[_i].purity gte 50>>
 					<<if $purity lte 500 or $demon gte 6>>
-						认为你是<span class="blue">迷途羔羊。</span>
+						thinks you're <span class="blue">misguided.</span>
 					<<elseif $temple_rank is "initiate" or $angel gte 6>>
-						<span class="teal">敬仰着你。</span>
+						<span class="teal">looks up to you.</span>
 					<<else>>
-						<span class="teal">享受着你的陪伴。</span>
+						<span class="teal">enjoys your company.</span>
 					<</if>>
 				<<elseif $NPCName[_i].corruption gte 10>>
-					<span class="pink">想要更多的了解你。</span>
+					<span class="pink">wants to know you better.</span>
 				<<else>>
-					<span class="purple">感到很矛盾。</span>
+					<span class="purple">is conflicted.</span>
 				<</if>>
 			<<elseif $NPCName[_i].love gte 10>>
 				<<if $sydneySeen and $sydneySeen.includes("initiate")>>
 					<<if $purity lte 500 or $demon gte 6>>
-						<span class="pink">认为你迷失了方向。</span>
+						<span class="pink">thinks you're lost.</span>
 					<<else>>
-						<span class="lblue">为你感到骄傲。</span>
+						<span class="lblue">is proud of you.</span>
 					<</if>>
 				<<else>>
-					<span class="lblue">对你很感兴趣。</span>
+					<span class="lblue">is intrigued by you.</span>
 				<</if>>
 			<<else>>
 				<<if $sydneySeen and $sydneySeen.includes("initiate")>>
 					<<if $purity lte 500 or $demon gte 6>>
-						<span class="red">认为你是异端。</span>
+						<span class="red">thinks you're heretical.</span>
 					<<else>>
-						<span class="blue">很高兴认识另一位新人。</span>
+						<span class="blue">is happy to know another initiate.</span>
 					<</if>>
 				<<else>>
-					对你没什么看法。
+					has no strong opinion of you.
 				<</if>>
 			<</if>>
 		<<case Alex>>
-			艾利克斯
+			Alex
 			<<if $alex_countdown is undefined and $farm_stage gte 7>>
 				<<if $NPCName[_i].lust gte 60>>
-					<span class="lewd">想和你做爱到太阳<<if Time.dayState is "night">>升起<<else>>落山<</if>>。</span>
+					<span class="lewd">wants to ride until sun<<if Time.dayState is "night">>rise<<else>>set<</if>>.</span>
 				<<elseif $NPCName[_i].dom gte 30>>
-					<span class="lewd">掌控着局面。</span>
+					<span class="lewd">is in charge.</span>
 				<<elseif $NPCName[_i].dom lte -30>>
-					<span class="lewd">依赖着你。</span>
+					<span class="lewd">depends on you.</span>
 				<<else>>
-					<span class="lewd">视你为最棒的搭档。</span>
+					<span class="lewd">thinks you're <<nnpc_his "Alex">> partner.</span>
 				<</if>>
 			<<elseif $farm_stage gte 6>>
 				<<if $NPCName[_i].dom gte 30>>
-					<span class="pink">主导着局面。</span>
+					<span class="pink">is in control.</span>
 				<<elseif $NPCName[_i].dom lte -30>>
-					<span class="teal">信赖着你。</span>
+					<span class="teal">relies on you.</span>
 				<<else>>
-					<span class="blue">感激不尽。</span>
+					<span class="blue">can't be more grateful.</span>
 				<</if>>
 			<<elseif $farm_stage gte 5>>
 				<<if $NPCName[_i].dom gte 10>>
-					<span class="blue">尊重着你。</span>
+					<span class="blue">respects you.</span>
 				<<elseif $NPCName[_i].dom lte -10>>
-					<span class="blue">佩服你。</span>
+					<span class="blue">admires you.</span>
 				<<else>>
-					<span class="blue">十分感谢你。</span>
+					<span class="blue">appreciates you.</span>
 				<</if>>
 			<<elseif $farm_stage gte 4>>
 				<<if $NPCName[_i].dom gte 10>>
-					<span class="green">认为你十分负责。</span>
+					<span class="green">thinks you're responsible.</span>
 				<<elseif $NPCName[_i].dom lte -10>>
-					<span class="green">认为你非常能干。</span>
+					<span class="green">thinks you're capable.</span>
 				<<else>>
-					<span class="green">享受着你的陪伴。</span>
+					<span class="green">likes having you around.</span>
 				<</if>>
 			<<elseif $NPCName[_i].love gte 10>>
-				<span class="green">很高兴有人能帮忙。</span>
+				<span class="green">is glad to have help.</span>
 			<<elseif $NPCName[_i].love lte -10>>
 				<<if $NPCName[_i].lust gte 10>>
-					<span class="purple">认为你是个变态。</span>
+					<span class="purple">thinks you're a pervert.</span>
 				<<elseif $NPCName[_i].dom gte 10>>
-					<span class="red">想要换一个帮手。</span>
+					<span class="red">wants a new farmhand.</span>
 				<<else>>
-					<span class="red">认为你是个累赘。</span>
+					<span class="red">thinks you're a bother.</span>
 				<</if>>
 			<<else>>
-				对你没什么看法。
+				has no strong opinion of you.
 			<</if>>
 		<<case "Ivory Wraith">>
 			<<if $wraith>>
 				<<if $wraith.hunt and !$wraith.type>>
-					幽灵
+					The Wraith
 					<<if $wraith.state is "haunt">>
-						<span class="red">正在对你进行猛烈的追捕。</span>
+						<span class="red">is fiercely hunting you.</span>
 					<<else>>
-						<span class="blue">正在跟踪你。</span>
+						<span class="blue">is stalking you.</span>
 					<</if>>
 				<<elseif _rngWraithLineChance is 1>>
 					<<if !_rngWraithLine>>
@@ -1526,154 +1526,154 @@ Zohar
 					<</if>>
 					_line1
 				<<elseif $bus isnot "lake_ruin_prison" and !$wraith.type and isBloodmoon()>>
-					幽灵
+					The Wraith
 					<<if $wraith.state is "haunt">>
-						<span class="red">正在寻找你。</span>
+						<span class="red">is looking for you.</span>
 					<<else>>
-						<span class="blue">正在窥视。</span>
+						<span class="blue">prowls.</span>
 					<</if>>
 				<<else>>
-					幽灵
+					The Wraith
 					<<if $wraith.state is "haunt">>
 						<<if $NPCName[_i].lust gte 18>>
-							<span class="red">十分狂躁。</span>
+							<span class="red">is manic.</span>
 						<<elseif $NPCName[_i].lust gte 14>>
-							<span class="pink">被激怒了。</span>
+							<span class="pink">is enraged.</span>
 						<<else>>
-							<span class="purple">怀恨在心。</span>
+							<span class="purple">holds a grudge.</span>
 						<</if>>
 					<<elseif $wraith.state is "despair">>
 						<<if $NPCName[_i].lust gte 18>>
-							<span class="red">十分狂躁。</span>
+							<span class="red">is manic.</span>
 						<<elseif $NPCName[_i].lust gte 14>>
-							<span class="pink">正处于苦恼之中。</span>
+							<span class="pink">is in anguish.</span>
 						<<else>>
-							<span class="purple">是忧郁的。</span>
+							<span class="purple">is melancholy.</span>
 						<</if>>
 					<<else>>
 						<<if $NPCName[_i].lust gte 15>>
-							<span class="purple">痴迷于你。</span>
+							<span class="purple">is obsessed with you.</span>
 						<<elseif $NPCName[_i].lust gte 6>>
-							<span class="purple">对你很感兴趣。</span>
+							<span class="purple">is intrigued by you.</span>
 						<<else>>
-							<span class="blue">对你感兴趣。</span>
+							<span class="blue">is entertained by you.</span>
 						<</if>>
 					<</if>>
 				<</if>>
 			<</if>>
 			<<case "Great Hawk">>
-				巨鹰
+				Great Hawk
 			<<if $syndromebird is 1>>
 				<<if $NPCName[_i].love gte $npclovehigh>>
 					<<if $NPCName[_i].dom gte $npcdomhigh>>
-						已经<span class="lewd">称你作为<<nnpc_his "Great Hawk">>的<<wife>>。</span>
+						has <span class="lewd">claimed you as <<nnpc_his "Great Hawk">> <<wife>>.</span>
 					<<elseif $NPCName[_i].dom lte $npcdomlow>>
-						<span class="lewd">认为你是个好<<wife>>。</span>
+						<span class="lewd">thinks you're a good <<wife>>.</span>
 					<<else>>
-						<span class="lewd">认为你是<<nnpc_his "Great Hawk">>的<<wife>>。</span>
+						<span class="lewd">thinks you're <<nnpc_his "Great Hawk">> <<wife>>.</span>
 					<</if>>
 				<<elseif $NPCName[_i].love lte $npclovelow>>
 					<<if $NPCName[_i].dom gte $npcdomhigh>>
-						<span class="red">希望你回应<<nnpc_his "Great Hawk">>的爱意。</span>
+						<span class="red">wants you to return <<nnpc_his "Great Hawk">> affections.</span>
 					<<elseif $NPCName[_i].dom lte $npcdomlow>>
-						<span class="red">渴望得到你的爱。</span>
+						<span class="red">is desperate for your affection.</span>
 					<<else>>
-						<span class="red">心烦意乱。</span>
+						<span class="red">is distraught.</span>
 					<</if>>
 				<<else>>
 					<<if $NPCName[_i].dom gte $npcdomhigh>>
-						<span class="teal">想要你作为伴侣。</span>
+						<span class="teal">wants you as a mate.</span>
 					<<elseif $NPCName[_i].dom lte $npcdomlow>>
-						<span class="teal">沉迷于你。</span>
+						<span class="teal">is smitten with you.</span>
 					<<else>>
-						很孤独。
+						is lonely.
 					<</if>>
 				<</if>>
 			<<else>>
-				<span class="red">想让你永远留在身边</span>
+				<span class="red">wants you to stay forever.</span>
 			<</if>>
 				<<case "Black Wolf">>
-					黑狼
+					Black Wolf
 				<<if $syndromewolves is 1>>
 					<<if $NPCName[_i].love gte $npclovehigh>>
 						<<if $wolfpackferocity gt $wolfpackharmony>>
-							<span class="lewd"><<print $blackwolfmonster gte 1 ? "为" : "为">>你是<<nnpc_his "Black Wolf">>的伴侣而骄傲。</span>
+							<span class="lewd"><<print $blackwolfmonster gte 1 ? "is" : "seems">> proud you're <<nnpc_his "Black Wolf">> mate.</span>
 						<<elseif $wolfpackharmony gt $wolfpackferocity>>
-							<span class="lewd"><<print $blackwolfmonster gte 1 ? "正" : "正">>很高兴你作为<<nnpc_his "Black Wolf">>的伴侣。</span>
+							<span class="lewd"><<print $blackwolfmonster gte 1 ? "is" : "seems">> glad you're <<nnpc_his "Black Wolf">> mate.</span>
 						<<else>>
-							<span class="lewd">认为你是<<nnpc_his "Black Wolf">>的伴侣。</span>
+							<span class="lewd">thinks of you as <<nnpc_his "Black Wolf">> mate.</span>
 						<</if>>
 					<<elseif $NPCName[_i].love lte $npclovelow>>
 						<<if $wolfpackferocity gt $wolfpackharmony>>
-							<span class="red">想让你脱离族群。</span>
+							<span class="red">wants you out of the pack.</span>
 						<<elseif $wolfpackharmony gt $wolfpackferocity>>
-							<span class="red">对你心存戒备。</span>
+							<span class="red">is wary of you.</span>
 						<<else>>
-							<span class="red">认为你是个可怕的同伴。</span>
+							<span class="red">thinks you're a terrible packmate.</span>
 						<</if>>
 					<<else>>
 						<<if $wolfpackferocity gt $wolfpackharmony>>
-							<span class="pink">认为你是个有力的同伴。</span>
+							<span class="pink">thinks you're a strong packmate.</span>
 						<<elseif $wolfpackharmony gt $wolfpackferocity>>
-							<span class="teal">认为你是个值得信赖的同伴。</span>
+							<span class="teal">thinks you're a worthy packmate.</span>
 						<<else>>
-							<span class="teal">尊重你的地位。</span>
+							<span class="teal">values your place in the pack.</span>
 						<</if>>
 					<</if>>
 				<<else>>
 					<<if $NPCName[_i].love gte $npclovehigh>>
 						<<if $wolfpackferocity gt $wolfpackharmony>>
-							认为你是一个<span class="green">强大的</span>同伴。
+							thinks you'd be a <span class="green">powerful</span> packmate.
 						<<elseif $wolfpackharmony gt $wolfpackferocity>>
-							认为你是一个<span class="green">有价值的</span>同伴。
+							thinks you'd be a <span class="green">valuable</span> packmate.
 						<<else>>
-							认为你是一个<span class="green">好</span>同伴。
+							thinks you'd be a <span class="green">good</span> packmate.
 						<</if>>
 					<<elseif $NPCName[_i].love lte $npclovelow>>
 						<<if $wolfpackferocity gt $wolfpackharmony>>
-							认为你是一个<span class="red">柔弱的</span>同伴。
+							thinks you'd be a <span class="red">weak</span> packmate.
 						<<elseif $wolfpackharmony gt $wolfpackferocity>>
-							认为你是一个<span class="red">没用的</span>同伴。
+							thinks you'd be a <span class="red">useless</span> packmate.
 						<<else>>
-							认为你是一个<span class="red">可怜的</span>同伴。
+							thinks you'd be a <span class="red">poor</span> packmate.
 						<</if>>
 					<<else>>
 						<<if $wolfpackferocity gt $wolfpackharmony>>
-							<span class="pink">想与你一决高下。</span>
+							<span class="pink">wants to tussle with you.</span>
 						<<elseif $wolfpackharmony gt $wolfpackferocity>>
-							<span class="teal">希望与你共度更多时光。</span>
+							<span class="teal">wants to spend more time with you.</span>
 						<<else>>
-							对你没什么看法。
+							has no strong opinion of you.
 						<</if>>
 					<</if>>
 				<</if>>
 
 		<!-- Default cases for all other NNPCs -->
 		<<default>>
-			<<print _npc.replace("Avery","艾弗里").replace("Bailey","贝利").replace("Briar","布莱尔").replace("Charlie","查里").replace("Darryl","达里尔").replace("Doren","多伦").replace("Eden","伊甸").replace("Gwylan","格威岚").replace("Harper","哈珀").replace("Jordan","约旦").replace("Kylar","凯拉尔").replace("Landry","兰德里").replace("Leighton","礼顿").replace("Mason","梅森").replace("Morgan","摩根").replace("River","瑞沃").replace("Robin","罗宾").replace("Sam","萨姆").replace("Sirris","西里斯").replace("Whitney","惠特尼").replace("Winter","温特").replace("Niki","尼奇").replace("Quinn","奎因").replace("Remy","雷米").replace("Alex","艾利克斯").replace("Wren","伦恩").replace("Sydney","悉尼").replace("Taylor","泰勒").replace("Casey","凯西").replace("Ivory Wraith","象牙幽灵").replace("Black Wolf","黑狼").replace("Great Hawk","巨鹰")>>
+			_npc
 			<<if $NPCName[_i].love gte $npclovehigh>>
 				<<if $NPCName[_i].dom gte $npcdomhigh>>
-					认为你<span class="green">可爱十足。</span>
+					thinks you're <span class="green">adorable.</span>
 				<<elseif $NPCName[_i].dom lte $npcdomlow>>
-					认为你<span class="green">鼓舞人心。</span>
+					thinks you're <span class="green">inspiring.</span>
 				<<else>>
-					认为你<span class="green">令人愉悦。</span>
+					thinks you're <span class="green">delightful.</span>
 				<</if>>
 			<<elseif $NPCName[_i].love lte $npclovelow>>
 				<<if $NPCName[_i].dom gte $npcdomhigh>>
-					认为你<span class="red">十分可悲。</span>
+					thinks you're <span class="red">pathetic.</span>
 				<<elseif $NPCName[_i].dom lte $npcdomlow>>
-					认为你<span class="red">使人恼火。</span>
+					thinks you're <span class="red">irritating.</span>
 				<<else>>
-					认为你<span class="red">非常讨厌。</span>
+					thinks you're <span class="red">terrible.</span>
 				<</if>>
 			<<else>>
 				<<if $NPCName[_i].dom gte $npcdomhigh>>
-					认为你<span class="pink">很可爱。</span>
+					thinks you're <span class="pink">cute.</span>
 				<<elseif $NPCName[_i].dom lte $npcdomlow>>
-					<span class="teal">敬仰着你。</span>
+					<span class="teal">looks up to you.</span>
 				<<else>>
-					对你没什么看法。
+					has no strong opinion of you.
 				<</if>>
 			<</if>>
 	<</switch>>
