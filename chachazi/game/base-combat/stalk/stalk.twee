@@ -736,16 +736,6 @@
 				<<case 3>>
 					You avoid a bollard.
 			<</switch>>
-		<<case park>>
-			<<set _rng to random(1, 3)>>
-			<<switch _rng to random(1, 3)>>
-				<<case 1>>
-					You leap over bins and through bushes.
-				<<case 2>>
-					You duck beneath a tall hedge.
-				<<case 3>>
-					You bat away obstructing branches.
-			<</switch>>
 		<<case riding_school>>
 			<<set _rng to random(1, 3)>>
 			<<switch _rng to random(1, 3)>>
@@ -755,6 +745,16 @@
 					你跳过一片泥地。
 				<<case 3>>
 					你避过人群，快速奔跑着。
+			<</switch>>
+		<<case park>>
+			<<set _rng to random(1, 3)>>
+			<<switch _rng to random(1, 3)>>
+				<<case 1>>
+					You leap over bins and through bushes.
+				<<case 2>>
+					You duck beneath a tall hedge.
+				<<case 3>>
+					You bat away obstructing branches.
 			<</switch>>
 		<<case moor>>
 			<<set _rng to random(1, 3)>>
@@ -801,29 +801,6 @@
 <!-- Player is accosted after failing to run, hide or confront -->
 <<widget "stalk_nnpc_text_attack">>
 	<<switch _args[0]>>
-		<<case "Remy">>
-			<<if $syndromeremy is 1>>
-				<<switch random(1, 4)>>
-					<<case 4>>"该回家了，我的小牛。"
-					<<case 3>>"我受够了你的逃跑了。"
-					<<case 2>>"抓住你了，这次该给你什么惩罚？"
-					<<case 1>>"走吧，游戏时间结束了。"
-				<</switch>>
-			<<elseif $cow gte 6>>
-				<<switch random(1, 4)>>
-					<<case 4>>"都已经变成这幅样子了，你以为你还能去哪里？"
-					<<case 3>>"你难道不想念青草的味道吗？"
-					<<case 2>>"我们都很想你，不要继续逃跑了。"
-					<<case 1>>"你现在是人类还是一头奶牛？"
-				<</switch>>
-			<<else>>
-				<<switch random(1, 4)>>
-					<<case 4>>"你以为你能逃走？"
-					<<case 3>>"该回牛栏了，小牛犊。"
-					<<case 2>>"这次你能得到的只有鞭子。"
-					<<case 1>>"倔强的野兽，逃跑时间结束了。"
-				<</switch>>
-			<</if>>
 		<<case "Avery">>
 			<<switch random(1, 4)>>
 				<<case 4>>"That's enough, brat."
@@ -934,6 +911,29 @@
 			<</if>>
 			"<span class="wraith"><<print _wraith_output>></span>"
 			<<rainWraith true>>
+		<<case "Remy">>
+			<<if $syndromeremy is 1>>
+				<<switch random(1, 4)>>
+					<<case 4>>"该回家了，我的小牛。"
+					<<case 3>>"我受够了你的逃跑了。"
+					<<case 2>>"抓住你了，这次该给你什么惩罚？"
+					<<case 1>>"走吧，游戏时间结束了。"
+				<</switch>>
+			<<elseif $cow gte 6>>
+				<<switch random(1, 4)>>
+					<<case 4>>"都已经变成这幅样子了，你以为你还能去哪里？"
+					<<case 3>>"你难道不想念青草的味道吗？"
+					<<case 2>>"我们都很想你，不要继续逃跑了。"
+					<<case 1>>"你现在是人类还是一头奶牛？"
+				<</switch>>
+			<<else>>
+				<<switch random(1, 4)>>
+					<<case 4>>"你以为你能逃走？"
+					<<case 3>>"该回牛栏了，小牛犊。"
+					<<case 2>>"这次你能得到的只有鞭子。"
+					<<case 1>>"倔强的野兽，逃跑时间结束了。"
+				<</switch>>
+			<</if>>
 		<<default>>
 			"Best play along," <<he>> says. "It'll be easier for you."
 	<</switch>>
@@ -942,15 +942,6 @@
 <!-- Successfully used the "confront" action -->
 <<widget "stalk_nnpc_text_threat">>
 	<<switch _args[0]>>
-		<<case "Remy">>
-			雷米冷淡的看着你哼了一声，<span class="green">没有再继续跟着你。</span><<He>>把<<His>>的鞭子收回了腰间。
-			<<switch random(1, 3)>>
-				<<case 3>>"你以为你能跑掉多少次？总有一天你会明白农场才是你的家。"
-				<<case 2>>"你是一只擅长逃跑的奶牛。"
-				<<case 1>>"不要忘记我给你的牛牌，家永远都是你的家。"
-			<</switch>>
-			<br><br>
-			<<He>>最后看了你一眼，转身离开了。<<stress 4>><<gstress>>
 		<<case "Avery">>
 			<<if $averyragerevealed is 1 and $NPCName[$NPCNameList.indexOf("Avery")].rage gte random(20, 100)>>
 				<<switch random(1, 3)>>
@@ -1034,6 +1025,15 @@
 			<br><br>
 			You shiver as the haze clears around you, revealing an empty <<if $location is "forest">>clearing<<elseif $location is "moor">>field<<else>>street<</if>>.
 			<<trauma 2>><<stress 4>><<gtrauma>><<gstress>>
+		<<case "Remy">>
+			雷米冷淡的看着你哼了一声，<span class="green">没有再继续跟着你。</span><<He>>把<<His>>的鞭子收回了腰间。
+			<<switch random(1, 3)>>
+				<<case 3>>"你以为你能跑掉多少次？总有一天你会明白农场才是你的家。"
+				<<case 2>>"你是一只擅长逃跑的奶牛。"
+				<<case 1>>"不要忘记我给你的牛牌，家永远都是你的家。"
+			<</switch>>
+			<br><br>
+			<<He>>最后看了你一眼，转身离开了。<<stress 4>><<gstress>>
 		<<default>>
 			<span class="green"><<He>> throws up <<his>> hands.</span> "Easy <<girl>>," <<he>> says, giving you a wide berth. "I didn't mean to frighten you."
 			<br><br>

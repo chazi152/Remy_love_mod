@@ -4,14 +4,15 @@
   "additionFile": [
     "game/base-combat/addon-replace/stalk-Widgets Stalk-attack case Remy.txt",
     "game/base-combat/addon-replace/stalk-Widgets Stalk-threat case Remy.txt",
-    "\"game/base-combat/addon-replace/actionsText-Widgets Actions Text-loveInterest.txt\"",
+    "game/base-combat/addon-replace/actionsText-Widgets Actions Text-loveInterest.txt",
     "game/base-combat/addon-replace/speech-Widgets Speech-speechnamedrop.txt",
     "game/base-combat/addon-replace/widgets-Widgets Combat-takeKissVirgin.txt",
     "game/base-system/addon-replace/traits-Traits-syndrome.txt",
     "game/base-system/addon-replace/attitudes-Widgets Attitudes-loveInterest.txt",
     "game/base-system/addon-replace/bodywriting-objects-Widgets Bodywriting Objects-bodywriting.txt",
     "game/base-system/addon-replace/named-npcs-Widgets Named Npcs-relationship.txt",
-    "game/base-system/addon-replace/widgets-Widgets-NPCRemy.txt"
+    "game/base-system/addon-replace/widgets-Widgets-NPCRemy.txt",
+    "game/base-system/addon-replace/social-Social-Remy.txt"
   ],
   "addonPlugin": [
     {
@@ -19,20 +20,24 @@
       "addonName": "TweeReplacerAddon",
       "modVersion": "1.0.0",
       "params": [
-        /**
         {
           "passage": "Widgets Stalk",
-          "findString": "<<widget \"stalk_nnpc_text_attack\">>",
+          "findString": "\t\t\t<<rainWraith true>>",
           "replaceFile": "game/base-combat/addon-replace/stalk-Widgets Stalk-attack case Remy.txt"
         },
         {
           "passage": "Widgets Stalk",
-          "findString": "<<widget \"stalk_nnpc_text_threat\">>",
+          "findString": "\t\t\t<<trauma 2>><<stress 4>><<gtrauma>><<gstress>>",
           "replaceFile": "game/base-combat/addon-replace/stalk-Widgets Stalk-threat case Remy.txt"
         },
         {
+          "passage": "Widgets Stalk",
+          "findString": "\t\t<<case park>>",
+          "replaceFile": "game/base-combat/addon-replace/stalk-Widgets Stalk-run_text.txt"
+        },
+        {
           "passage": "Widgets Actions Text",
-          "findString": "<<if $npc.includes(_loveInterest) and random(0,100) lte 45>>",
+          "findString": "\t\t\t\t\"You're the only one I need, Kylar.\"",
           "replaceFile": "game/base-combat/addon-replace/actionsText-Widgets Actions Text-loveInterest.txt"
         },
         {
@@ -42,35 +47,54 @@
         },
         {
           "passage": "Widgets Combat",
-          "findString": "<<widget \"takeKissVirginityNamed\">>",
+          "findString": "\t\t<<case \"Robin\">>      <<set $_isLoveInterest to ($robinromance is 1)>>",
           "replaceFile": "game/base-combat/addon-replace/widgets-Widgets Combat-takeKissVirgin.txt"
         },
         {
+          "passage": "Social",
+          "findString": "\t\t\t\tT.npcConfig = {",
+          "replaceFile":"game/base-system/addon-replace/social-Social-Remy.txt"
+        },
+        {
+          "passage": "Social",
+          "findString": "\t\t\t\tT.importantNpcOrder = [\"Robin\", \"Whitney\", \"Eden\", \"Kylar\", \"Sydney\", \"Avery\", \"Great Hawk\", \"Black Wolf\", \"Alex\"];",
+          "replace":"T.importantNpcOrder = [\"Robin\", \"Whitney\", \"Eden\", \"Kylar\", \"Sydney\", \"Avery\", \"Great Hawk\", \"Black Wolf\", \"Alex\", \"Remy\"];"
+        },
+        {
           "passage": "Traits",
-          "findString": "\t\t\ttitle: \"NPC Traits\",",
+          "findString": "\t\t\ttitle: \"NPC Traits\",\n\t\t\ttraits: [",
           "replaceFile": "game/base-system/addon-replace/traits-Traits-syndrome.txt"
         },
         {
           "passage": "Widgets Attitudes",
-          "findString": "<<widget \"loveInterest\">>",
+          "findString": "\t<<set _npc = [\"None\",\"Robin\",\"Whitney\",\"Kylar\",\"Sydney\",\"Eden\",\"Avery\",\"Black Wolf\",\"Great Hawk\",\"Alex\"]>>",
+          "replace": "\t<<set _npc = [\"None\",\"Robin\",\"Whitney\",\"Kylar\",\"Sydney\",\"Eden\",\"Avery\",\"Black Wolf\",\"Great Hawk\",\"Alex\",\"Remy\"]>>"
+        },
+        {
+          "passage": "Widgets Attitudes",
+          "findString": "\t<<set _potentialLoveInterests = [\"None\"]>>",
           "replaceFile": "game/base-system/addon-replace/attitudes-Widgets Attitudes-loveInterest.txt"
         },
         {
           "passage": "Widgets Bodywriting Objects",
-          "findString": "<<set setup.bodywriting_namebyindex to []>>",
+          "findString": "\t}>>\n\t<<set setup.bodywriting_namebyindex to []>>",
           "replaceFile": "game/base-system/addon-replace/bodywriting-objects-Widgets Bodywriting Objects-bodywriting.txt"
         },
         {
           "passage": "Widgets Named Npcs",
-          "findString": "<<widget \"relationshiptext\">>",
+          "findString": "\t\t<!-- Default cases for all other NNPCs -->",
           "replaceFile": "game/base-system/addon-replace/named-npcs-Widgets Named Npcs-relationship.txt"
         },
         {
+          "passage": "Widgets Text",
+          "findString": "<<widget \"lcorruption\">>",
+          "replaceFile": "game/base-system/addon-replace/text-Widgets Text-pass_time.txt"
+        },
+        {
           "passage": "Widgets",
-          "findString": "\t<<set _i to $NPCNameList.indexOf(\"Remy\")>>",
+          "findString": "\t<<set _i to $NPCNameList.indexOf(\"Remy\")>>\n\t<<set $NPCName[_i].love = Math.clamp($NPCName[_i].love, -100, 100)>>",
           "replaceFile": "game/base-system/addon-replace/widgets-Widgets-NPCRemy.txt"
         }
-          **/
       ]
     }
   ]
