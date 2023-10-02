@@ -36,14 +36,14 @@
 <<widget "livestock_cows">>
 	<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
 		<<if maleChance() is 0>>
-			<<set _text_output to "母牛女孩">>
+			<<set _text_output to "cowgirls">>
 		<<elseif maleChance() is 100>>
-			<<set _text_output to "公牛男孩">>
+			<<set _text_output to "bullboys">>
 		<<else>>
-			<<set _text_output to "牛男孩女孩们">>
+			<<set _text_output to "cowgirls and bullboys">>
 		<</if>>
 	<<else>>
-		<<set _text_output to "牛们">>
+		<<set _text_output to "cows">>
 	<</if>>
 
 	<<if _args[0] is "cap">>
@@ -55,12 +55,12 @@
 
 <<widget "livestock_horse">>
 	<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f") or ($bestialitydisable is "t")>>
-		<<set _text_output to "半人马">>
+		<<set _text_output to "centaur">>
 	<<else>>
 		<<if beastMaleChance() gte random(1, 100)>>
-			<<set _text_output to "公马">>
+			<<set _text_output to "stallion">>
 		<<else>>
-			<<set _text_output to "母马">>
+			<<set _text_output to "mare">>
 		<</if>>
 	<</if>>
 	<<print _text_output>>
@@ -68,136 +68,136 @@
 
 <<widget "livestock_obey_description">>
 	<<if $livestock_obey gte 100>>
-		<span class="green">农场工人不会再多看你一眼，对这些家伙而言，你和牛群中的其他牛没有什么差别。</span>
+		<span class="green">The farmhands don't give you a second look. As far as they're concerned, you're a domesticated member of the herd.</span>
 	<<elseif $livestock_obey gte 80>>
-		<span class="teal">农场工人不怎么关注你，毕竟这些家伙并不希望有麻烦。</span>
+		<span class="teal">The farmhands don't pay you much attention. They expect no trouble.</span>
 	<<elseif $livestock_obey gte 60>>
-		<span class="lblue">农场工人们时不时地会瞥你一眼，但似乎并不关心你的行为。</span>
+		<span class="lblue">The farmhands glance at you now and then, but don't seem concerned about your behaviour.</span>
 	<<elseif $livestock_obey gte 40>>
-		<span class="blue">农场工人一直谨慎地盯着你。</span>
+		<span class="blue">The farmhands keep a cautious eye on you.</span>
 	<<elseif $livestock_obey gte 20>>
-		<span class="purple">农场工人们在栅栏后警惕地看着你。</span>
+		<span class="purple">The farmhands watch you warily from behind the fence.</span>
 	<<elseif $livestock_obey gte 1>>
-		<span class="pink">农场工人正在像在看一个麻烦精一样看着你。</span>
+		<span class="pink">The farmhands watch you, expecting trouble.</span>
 	<<else>>
-		<span class="red">农场工人们死死的盯着你，仿佛你随时都会逃跑一样。</span>
+		<span class="red">The farmhands watch you, expecting an escape attempt.</span>
 	<</if>>
 <</widget>>
 
 <<widget "livestock_overhear">>
 	<<generate1>><<generate2>><<person1>>
-	你无意中听见两个农场工人在栅栏后面的对话。
+	You overhear two farmhands talking behind the fence.
 	<<cleareventpool>>
 	<<addinlineevent "livestock_overhear 1">>
-		"雷米是如何控制那群野兽的？"一个<<person>>问道。
+		"How does Remy keep that herd of beasts under control?" a <<person>> asks.
 		<br>
-		"不知道，"一个<<person2>><<person>>回答道:"这些家伙不会回应任何人。"
+		"No clue," a <<person2>><<person>> responds. "They won't respond to anyone else."
 		<br>
-		"你有见过这些家伙全速奔跑么?"
+		"Have you seen them at full gallop?"
 		<br>
-		"当然，有一次奶牛逃跑了，雷米直接追了上去，真是太可怕了。"
+		"Aye. Cow got free once, and Remy chased it down on one. Was terrifying to see."
 		<br><br>
-		那两个家伙走开了。
+		They walk out of earshot.
 		<br><br>
 	<</addinlineevent>>
 
 	<<addinlineevent "livestock_overhear 2">>
-		"雷米就是个吝啬的混蛋," 那个<<person>>看了看<<his>>的后面，然后说道。
+		"Remy's a stingy bastard," a <<person>> says, looking over <<his>> shoulder.
 		<br>
-		"是啊，"一个<<person2>><<person>>回答道:"尤其是对那些动物而言，那家伙把苹果当成金子一样。"
+		"Aye," a <<person2>><<person>> responds. "Especially with the animals. Treats apples like they're fucking gold."
 		<br>
-		"我曾在那些马的面前吃了一个苹果.，那些马看向我的眼神我至今都难以忘记。"
+		"I ate an apple in front of those horses once. The way they looked at it, I almost felt bad."
 		<br><br>
-		那两个家伙走开了。
+		They walk out of earshot.
 		<br><br>
 	<</addinlineevent>>
 
 	<<addinlineevent "livestock_overhear 3">>
-		一个<<person>>问道："你认为那些牛奶最终到哪里去了？"
+		"Where'd you think the milk ends up?" a <<person>> asks.
 		<br>
-		"你觉得呢？"一个<<person2>><<person>>回答道："除了在超市里，还能在哪里？"
+		"Where'd you think?" a <<person2>><<person>> responds. "In a supermarket. Where else?"
 		<br>
-		"不,我的意思是,"<<person1>><<he>>看了看<<his>>的身后，继续说道： "这些特殊的牛奶，该不会和我们的下午茶混在了一起吧?"
+		"No, I mean the," <<person1>><<he>> looks over <<his>> shoulder. "The milk from the special cattle. I'm not drinking it with my tea am I?"
 		<br>
-		"我知道有些会在其他地方处理掉，更多的我就不清楚了."
+		"I know some gets processed elsewhere. Don't know more than that."
 		<br><br>
-		那两个家伙走开了。
+		They walk out of earshot.
 		<br><br>
 	<</addinlineevent>>
 
 	<<addinlineevent "livestock_overhear 4">>
-		"我昨晚听到了更多奇怪的声音," 一个<<person>>说道:"好像是从南边传来的."
+		"Heard more strange noises last night," a <<person>> says. "From the south."
 		<br>
-		"只是一些动物罢了,"一个<<person2>><<person>>回应道: "顶破天也就可能是一只狼，怎么，你害怕了?"
+		"Just some animal," a <<person2>><<person>> responds. "A wolf, at worst. What, you scared?"
 		<br>
-		"你是没听过. 我告诉你，拿回宿舍一声非常刺耳的尖叫. 我要去和雷米申请调换一下工作时间."
+		"You haven't heard it. I'm telling you. Like a screech. I'm asking Remy to change my hours."
 		<br><br>
-		那两个家伙走开了。
+		They walk out of earshot.
 		<br><br>
 	<</addinlineevent>>
 
 	<<addinlineevent "livestock_overhear 5">>
-		"没有办法，"其中一个<<person>>说道："某个老师会介入的。"
+		"There's no way," a <<person>> says. "One of the teachers would step in."
 		<br>
-		"但那些家伙不知道。"一个<<person2>><<person>>回应道；"也许他们不知道，但如果你不相信我的话，就自己去看看吧。"
+		"They don't though," a <<person2>><<person>> responds. "Maybe they don't know. Check it out yourself if you don't believe me."
 		<br>
-		"你知道我不喜欢城里的那个地方，闻起来就像大便一样。"
+		"You know I don't like that part of town. Smells like shit."
 		<br>
-		"那里闻起来就像我所知道的任何大便一样。"
+		"Doesn't smell like any shit I've known."
 		<br><br>
-		那两个家伙走开了。
+		They walk out of earshot.
 		<br><br>
 	<</addinlineevent>>
 
 	<<addinlineevent "livestock_overhear 6">>
-		"那个医生给我一种很不舒服的感觉，"一个<<person>>说道。
+		"That doctor makes me uncomfortable," a <<person>> says.
 		<br>
-		"那孩子？"一个<<person2>><<person>>笑道："别傻了。"
+		"The kid?" a <<person2>><<person>> laughs. "Don't be daft."
 		<br>
-		"<<nnpc_Hes "Harper">>对于这样的一个地方简直宛如天使， 这也太反常了."
+		"<<nnpc_Hes "Harper">> too nice for a place like this. Something's not right."
 		<br>
-		"我觉得你只是害怕医生罢了。"
+		"I think you're just afraid of doctors."
 		<br><br>
-		那两个家伙走开了。
+		They walk out of earshot.
 		<br><br>
 	<</addinlineevent>>
 
 	<<addinlineevent "livestock_overhear 7">>
-		一个<<person>>问道："那些家伙从哪里搞来的新<<girls>>？""是从大街上拐来的？"
+		"Where'd they get new <<girls>> anyway?" a <<person>> asks. "Just grab em off the street?"
 		<br>
-		"雷米认识几个卖家," 其中一个<<person2>><<person>>说道: "我也不清楚那些家伙是怎么搞到手的，我只知道有些时候那些警察会向我们扔垃圾."
+		"Remy knows a few sellers," a <<person2>><<person>> responds. "Dunno how they get them. Police sometimes throw trash our way."
 		<br>
-		"那些警察坐在警车里解释说以为那些家伙在敲诈我们."
+		"Explains the squad car. Thought they were just shaking us down."
 		<br>
-		"也许真的在敲诈呢."
+		"They probably were."
 		<br><br>
-		那两个家伙走开了。
+		They walk out of earshot.
 		<br><br>
 	<</addinlineevent>>
 
 	<<addinlineevent "livestock_overhear 8">>
-		"那个新来的<<girl>>很可爱，"其中一个<<person>>说道。
+		"That new <<girl>> is cute," a <<person>> says.
 		<br>
-		"你是说那个新来的<<if $player.gender_appearance is "m">>公牛<<else>>母牛<</if>>?"另一个<<person2>><<person>>回应道。
+		"That new <<if $player.gender_appearance is "m">>bull<<else>>cow<</if>> you mean," a <<person2>><<person>> responds.
 		<br>
-		"没错，那家伙看起来很不错。"
+		"Right. Tasty looking thing."
 		<br>
-		"别想太多了，雷米不喜欢我们去干涉这些动物。"
+		"Just don't get any ideas. Remy don't like us interfering."
 		<br><br>
-		那两个家伙走开了。
+		They walk out of earshot.
 		<br><br>
 	<</addinlineevent>>
 
 	<<addinlineevent "livestock_overhear 9">>
-		"真希望那个家伙能让我们看看那些照片，"一个<<person>>说道。
+		"Wish they let us see the photos," a <<person>> says.
 		<br>
-		"是的，"另一个<<person2>><<person>>回应道，"我向那个摄影师要求想看一看，但<<nnpc_He "Niki">>没有理会我。"
+		"Aye," a <<person2>><<person>> responds. "Asked that photographer for a peek. <<nnpc_He "Niki">> ignored me."
 		<br>
-		"那家伙一定是把那些照片卖给了什么人。"
+		"They must be selling em to someone."
 		<br>
-		"我猜那些变态比我们更有钱。"
+		"Perverts richer than us, I guess."
 		<br><br>
-		那两个家伙走开了。
+		They walk out of earshot.
 		<br><br>
 	<</addinlineevent>>
 
@@ -236,26 +236,26 @@
 	<</addinlineevent>>
 
 	<<if playerBellyVisible() and $pregnancyspeechdisable is "f">>
-		<<addinlineevent "livestock_overhear 12">>
-			"那个怀孕的<<girl>>很可爱，"其中一个<<person>>说道。
+		<<addinlineevent "livestock_overhear 10">>
+			"That pregnant <<girl>> is cute," a <<person>> says.
 			<br>
-			"是的，"一个<<person2>><<person>>回答道："你觉得那些家伙又在做实验了吗?"
+			"Yeah," a <<person2>><<person>> responds. "Think they are experimenting again?"
 			<br>
-			"谁知道呢?你说话小心一点，别吓着这些牛了。"
+			"Who knows? Be careful what you say, don't want to scare the cattle."
 			<br>
 			<<if $player.breastsize gte 12>>
-				"好吧，不管雷米在做什么，至少它对胸部的效果相当显著。"
+				"Well, whatever Remy is doing, it's working rather well on those gazongas."
 			<<elseif $player.breastsize gte 8>>
-				"好吧，不管雷米在做什么，那效果似乎相当好，你看<<pshe>>那对漂亮的乳房。"
+				"Well, whatever Remy is doing, it seems to be working rather well, <<pshe>> has a nice pair."
 			<<elseif $player.breastsize gte 6>>
-				"好吧，不管雷米在做什么，它似乎有些起色了，<<pher>>的胸部似乎正在增大。"
+				"Well, whatever Remy is doing, it seems to be doing something, <<pher>> boobs seem to be growing."
 			<<elseif $player.breastsize gte 1>>
-				"好吧，不管雷米在做什么，它似乎毫无作用，<<pshes>>的胸部几乎没有变化。"
+				"Well, whatever Remy is doing, doesn't seem to be working this time, <<pshes>> almost flat."
 			<<else>>
-				"好吧，不管雷米在做什么，它似乎毫无作用，<<pshes>>的胸部还是一马平川。"
+				"Well, whatever Remy is doing, doesn't seem to be working this time, <<pshes>> completely flat as a board."
 			<</if>>
 			<br><br>
-			那两个家伙走开了。
+			They walk out of earshot.
 			<br><br>
 		<</addinlineevent>>
 	<</if>>

@@ -2,17 +2,34 @@
   "name": "Remy Love Mod",
   "version": "1.0.0",
   "additionFile": [
-    "game/base-combat/addon-replace/stalk-Widgets Stalk-attack case Remy.txt",
-    "game/base-combat/addon-replace/stalk-Widgets Stalk-threat case Remy.txt",
     "game/base-combat/addon-replace/actionsText-Widgets Actions Text-loveInterest.txt",
     "game/base-combat/addon-replace/speech-Widgets Speech-speechnamedrop.txt",
+    "game/base-combat/addon-replace/stalk-Widgets Stalk-attack case Remy.txt",
+    "game/base-combat/addon-replace/stalk-Widgets Stalk-run_text.txt",
+    "game/base-combat/addon-replace/stalk-Widgets Stalk-threat case Remy.txt",
     "game/base-combat/addon-replace/widgets-Widgets Combat-takeKissVirgin.txt",
-    "game/base-system/addon-replace/traits-Traits-syndrome.txt",
+
     "game/base-system/addon-replace/attitudes-Widgets Attitudes-loveInterest.txt",
     "game/base-system/addon-replace/bodywriting-objects-Widgets Bodywriting Objects-bodywriting.txt",
     "game/base-system/addon-replace/named-npcs-Widgets Named Npcs-relationship.txt",
+    "game/base-system/addon-replace/social-Social-Remy.txt",
+    "game/base-system/addon-replace/text-Widgets Text-pass_time.txt",
+    "game/base-system/addon-replace/traits-Traits-syndrome.txt",
     "game/base-system/addon-replace/widgets-Widgets-NPCRemy.txt",
-    "game/base-system/addon-replace/social-Social-Remy.txt"
+
+    "game/overworld-plains/addon-replace/field-Livestock Field-obey.txt",
+    "game/overworld-plains/addon-replace/intro-Livestock Return.txt",
+    "game/overworld-plains/addon-replace/jobs-Livestock Job End-obey.txt",
+    "game/overworld-plains/addon-replace/jobs-Livestock Job-Niki.txt",
+    "game/overworld-plains/addon-replace/main-Livestock Sleep-danger.txt",
+    "game/overworld-plains/addon-replace/widgets-Widgets Livestock-addInLineEvent.txt",
+    "game/overworld-plains/addon-replace/widgets-Widgets Livestock-HaiBao.txt",
+
+    "chachazi/game/overworld-plains/addon-replace/main-Riding School Lesson-endIf.txt",
+    "chachazi/game/overworld-plains/addon-replace/main-Riding School Lesson-special.txt",
+    "chachazi/game/overworld-plains/addon-replace/main-Riding School-intro.txt",
+    "chachazi/game/overworld-plains/addon-replace/main-Riding School-leave.txt",
+    "chachazi/game/overworld-plains/addon-replace/main-Riding School-seen.txt"
   ],
   "addonPlugin": [
     {
@@ -94,6 +111,86 @@
           "passage": "Widgets",
           "findString": "\t<<set _i to $NPCNameList.indexOf(\"Remy\")>>\n\t<<set $NPCName[_i].love = Math.clamp($NPCName[_i].love, -100, 100)>>",
           "replaceFile": "game/base-system/addon-replace/widgets-Widgets-NPCRemy.txt"
+        },
+        {
+          "passage": "Livestock Field",
+          "findString": "\t\t<<link [[Refuse|Livestock Job Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><</link>><<lobey>>\n\t\t<br>",
+          "replaceFile": "game/overworld-plains/addon-replace/field-Livestock Field-obey.txt"
+        },
+        {
+          "passage": "Livestock Return",
+          "findString": "<<effects>>",
+          "replaceFile": "game/overworld-plains/addon-replace/intro-Livestock Return.txt"
+        },
+        {
+          "passage": "Livestock Job",
+          "findString": "\t<<elseif $livestock_pig is 1>>",
+          "replaceFile": "game/overworld-plains/addon-replace/jobs-Livestock Job-Niki.txt"
+        },
+        {
+          "passage": "Livestock Job End",
+          "findString": "<<elseif $livestock_obey gte 51>>",
+          "replace": "<<elseif $livestock_obey gte 71>>"
+        },
+        {
+          "passage": "Livestock Job End",
+          "findString": "<<elseif $livestock_obey gte 21>>",
+          "replaceFile": "game/overworld-plains/addon-replace/jobs-Livestock Job End-obey.txt"
+        },
+        {
+          "passage": "Livestock Sleep",
+          "findString": "<<if $danger gte (9900 - $allure)>>",
+          "replaceFile": "game/overworld-plains/addon-replace/main-Livestock Sleep-danger.txt"
+        },
+        {
+          "passage": "Livestock Eden Escape",
+          "findString": "<<livestockescape>>",
+          "replace": "<<livestockescape>><<set $livestockEscape to \"eden\">><!-- RemyMod -->"
+        },
+        {
+          "passage": "Livestock Escape Centaur",
+          "findString": "<<pass 60>>",
+          "replace": "<<pass 60>><<set $livestockEscape to \"Centaur\">><!-- RemyMod -->"
+        },
+        {
+          "passage": "Livestock Escape Horse",
+          "findString": "<<pass 60>>",
+          "replace": "<<pass 60>><<set $livestockEscape to \"Horse\">><!-- RemyMod -->"
+        },
+        {
+          "passage": "Widgets Livestock",
+          "findString": "\t<<if playerBellyVisible() and $pregnancyspeechdisable is \"f\">>",
+          "replaceFile": "game/overworld-plains/addon-replace/widgets-Widgets Livestock-addInLineEvent.txt"
+        },
+        {
+          "passage": "Widgets Livestock",
+          "findString": "\t<<runeventpool>>",
+          "replaceFile": "game/overworld-plains/addon-replace/widgets-Widgets Livestock-HaiBao.txt"
+        },
+        {
+          "passage": "Riding School",
+          "findString": "\t\t\t\"Welcome to my riding school,\" <<he>> says as the horse comes to a stop. \"I'm Remy. We offer lessons on both riding and caring for horses. I hope we can be of service.\"",
+          "replaceFile": "game/overworld-plains/addon-replace/main-Riding School-intro.txt"
+        },
+        {
+          "passage": "Riding School",
+          "findString": "\t\t\"It's good to see you again,\" <<he>> says as the horse comes to a stop. \"I hope we can be of service.\"",
+          "replaceFile": "game/overworld-plains/addon-replace/main-Riding School-seen.txt"
+        },
+        {
+          "passage": "Riding School",
+          "findString": "\t\t<<link [[Leave|Farmland]]>><</link>>",
+          "replaceFile": "game/overworld-plains/addon-replace/main-Riding School-leave.txt"
+        },
+        {
+          "passage": "Riding School Lesson",
+          "findString": "<<if $riding_lesson gte 3>>",
+          "replaceFile": "game/overworld-plains/addon-replace/main-Riding School Lesson-special.txt"
+        },
+        {
+          "passage": "Riding School Lesson",
+          "findString": "\t\t\t<<link [[Ignore|Riding School Lesson]]>><</link>>\n\t\t\t<br>\n\t\t<</if>>\n\t<</if>>\n<</if>>",
+          "replaceFile": "game/overworld-plains/addon-replace/main-Riding School Lesson-endIf.txt"
         }
       ]
     }
