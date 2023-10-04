@@ -82,8 +82,18 @@ A river runs through one corner. The cattle stay almost as far away from the chu
 	<<link [[Next|Livestock Cell]]>><</link>>
 	<br>
 <<elseif Time.hour is 12>>
+    /* Remy Mod */
+	<<if C.npc.Remy.lust gte 10 and random(1,5) gte 3 or $debug is 6>>
+		<<npc Remy>><<person1>>
+		大门打开了，雷米骑着一匹马冲了进来。<<He>>从<<his>>的<<livestock_horse>>上下来环顾四周，直到<<his>>的目光落在你身上。"你在这里啊，<<girl>>。"<<he>>说，"我们有一份特别的工作给你，过来。"
+		<br><br>
 
-	<<if $livestock_obey gte 30>>
+		<<link [[服从|Livestock Job Obey1]]>><<npcincr Remy dom 1>><<livestock_obey 1>><</link>><<gobey>>
+		<br>
+		<<link [[拒绝|Livestock Job Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><</link>><<lobey>>
+		<br>
+	
+	<<elseif $livestock_obey gte 30>>
 		<<npc Remy>><<person1>>
 		The gate opens, and Remy rides in at the head of a group of steeds. <<He>> dismounts <<his>> <<livestock_horse>> and looks around, until <<his>> eyes rest on you. "There you are <<girl>>," <<he>> says. "We have a special job for you. Come here." <<He>> walks closer, holding a leash.
 		<br><br>
@@ -91,16 +101,6 @@ A river runs through one corner. The cattle stay almost as far away from the chu
 		<<link [[Obey|Livestock Job Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><</link>><<gobey>>
 		<br>
 		<<link [[Refuse|Livestock Job Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><</link>><<lobey>>
-		<br>
-    /* Remy Mod */
-	<<elseif C.npc.Remy.lust gte 10 and random(1,5) gte 3>>
-		<<npc Remy>><<person1>>
-		大门打开了，雷米骑着一匹马冲了进来。<<He>>下马<<his>><<livestock_horse>>环顾四周，直到<<his>>的目光落在你身上。"你来了，<<girl>>"，<<he>>说，"我们有一份特别的工作给你，过来。"<<He>>走得更近，牵着皮带。
-		<br><br>
-
-		<<link [[服从|Livestock Job Obey1]]>><<npcincr Remy dom 1>><<livestock_obey 1>><</link>><<gobey>>
-		<br>
-		<<link [[拒绝|Livestock Job Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><</link>><<lobey>>
 		<br>
 
 	<<else>>
