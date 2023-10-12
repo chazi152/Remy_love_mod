@@ -17,6 +17,17 @@ A river runs through one corner. The cattle stay almost as far away from the chu
 	<br><br>
 <</if>>
 
+/***remy mod */
+<<if $remy_pillow_1 is 1>>
+	你想起了雷米刚刚送你的那个枕头，或许你可以把它送给雷米的马来换取它们的信任，当然你也可以选择把它留在自己的小隔间里，那样会使你的小房间更加温暖舒适。
+	<br><br>
+<</if>>
+
+<<if $remy_cushion_1 is 1>>
+	你想起了雷米刚刚送你的那个垫子，或许你可以把它送给雷米的马来换取它们的信任，当然你也可以选择把它留在自己的小隔间里，那样会使你的小房间更加温暖舒适。
+	<br><br>
+<</if>>
+
 <<livestock_obey_description>>
 <br>
 <<if $livestock_grass isnot 1>>
@@ -81,9 +92,11 @@ A river runs through one corner. The cattle stay almost as far away from the chu
 	<<endevent>>
 	<<link [[Next|Livestock Cell]]>><</link>>
 	<br>
+/***remy mod */
 <<elseif Time.hour is 12>>
-    /* remy mod */
-	<<if C.npc.Remy.lust gte 10 and random(1,5) gte 3 or $debug is 6>>
+	<<if Time.weekDay is 5 and $remyromance is 1 and random(1,5) gte 3>>
+		<<remymod_livestock_gift>>
+	<<elseif C.npc.Remy.lust gte 10 and random(1,5) gte 3 and ($player.breastsize gte 6 or $player.penissize gte 4)>>
 		<<npc Remy>><<person1>>
 		大门打开了，雷米骑着一匹马冲了进来。<<He>>从<<his>>的<<livestock_horse>>上下来环顾四周，直到<<his>>的目光落在你身上。"你在这里啊，<<girl>>。"<<he>>说，"我们有一份特别的工作给你，过来。"
 		<br><br>
@@ -196,4 +209,214 @@ A river runs through one corner. The cattle stay almost as far away from the chu
 			<br>
 		<</if>>
 	<</if>>
+<</if>>
+
+:: Livestock Field Horse
+<<effects>>
+<!-- Modified for Monster People -->
+<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+	<<if maleChance() lte 0>>
+		<<set _horse_gender to "f">>
+	<<elseif maleChance() gte 100>>
+		<<set _horse_gender to "m">>
+	<<else>>
+		<<set _horse_gender to "b">>
+	<</if>>
+		<<if _horse_gender is "f">>
+			You approach Remy's steeds. They look like horses from a distance, but up close you see they have the heads and torsos of women. Long, well-cared-for manes of hair trail down their backs and chests. They seem unconcerned about their bare breasts.
+			<br><br>
+		<<elseif _horse_gender is "m">>
+			You approach Remy's steeds. They look like horses from a distance, but up close you see they have the heads and torsos of men. Long, well-cared-for manes of hair trail down their backs and chests.
+			<br><br>
+		<<else>>
+			You approach Remy's steeds. They look like horses from a distance, but up close you see they have the heads and torsos of men and women. Long, well-cared-for manes of hair trail down their backs and chests. The women seem unconcerned about their bare breasts.
+			<br><br>
+		<</if>>
+
+		Some stoop to drink from the river. Others stare at their reflections, running fingers through their hair.
+
+		<<if $livestock_horse gte 2>>
+			<span class="green">A few nod in greeting as you approach.</span>
+			<br><br>
+
+			<<link [[Brush their hair (1:00)|Livestock Field Centaur Brush]]>><<pass 60>><<tending 6>><<stress -6>><</link>><<gtending>><<lstress>>
+			<br>
+			<<if $awareness gte 200 and $horsedisable is "f">>
+				<<if maleChance() gte random(1, 100)>>
+					<<if $cbchance gte random(1, 100)>>
+						<<link [[Look beneath one (0:05)|Livestock Field Centaur Male Vagina]]>><<pass 5>><</link>><<deviant1>>
+					<<else>>
+						<<link [[Look beneath one (0:05)|Livestock Field Centaur Male]]>><<pass 5>><</link>><<deviant1>>
+					<</if>>
+				<<else>>
+					<<if $dgchance gte random(1, 100)>>
+						<<link [[Look beneath one (0:05)|Livestock Field Centaur Female]]>><<pass 5>><</link>><<deviant1>>
+					<<else>>
+						<<link [[Look beneath one (0:05)|Livestock Field Centaur Female Vagina]]>><<pass 5>><</link>><<deviant1>>
+					<</if>>
+				<</if>>
+				<br>
+			<</if>>
+
+			<<if $livestock_food gte 1>>
+				<<link [[Offer the basket of apples|Livestock Field Centaur Apples]]>><<trauma -18>><<unset $livestock_food>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			/***remy mod */
+			<<if $remy_pillow_1 gte 1>>
+				<<link [[送枕头|Livestock Field Horse pillow]]>><<trauma -18>><<unset $remy_pillow_1>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			<<if $remy_cushion_1 gte 1>>
+				<<link [[送垫子|Livestock Field Horse cushion]]>><<trauma -18>><<unset $remy_cushion_1>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			<<link [[Leave|Livestock Field]]>><</link>>
+			<br>
+		<<elseif $livestock_horse gte 1>>
+			They watch as you approach. Some look amused.
+			<br><br>
+
+			<<link [[Brush their hair (1:00)|Livestock Field Centaur Brush]]>><<pass 60>><<tending 6>><<lstress>><</link>><<gtending>><<lstress>>
+			<br>
+			<!-- Modified for Monster People -->
+			<<if $awareness gte 200 and $horsedisable is "f" and (_horse_gender isnot "b" or $bestialitydisable is "f")>>
+				<<if maleChance() gte random(1, 100)>>
+					<<if $cbchance gte random(1, 100)>>
+						<<link [[Look beneath one (0:05)|Livestock Field Centaur Male Vagina]]>><<pass 5>><</link>><<deviant1>>
+					<<else>>
+						<<link [[Look beneath one (0:05)|Livestock Field Centaur Male]]>><<pass 5>><</link>><<deviant1>>
+					<</if>>
+				<<else>>
+					<<if $dgchance gte random(1, 100)>>
+						<<link [[Look beneath one (0:05)|Livestock Field Centaur Female]]>><<pass 5>><</link>><<deviant1>>
+					<<else>>
+						<<link [[Look beneath one (0:05)|Livestock Field Centaur Female Vagina]]>><<pass 5>><</link>><<deviant1>>
+					<</if>>
+				<</if>>
+				<br>
+			<</if>>
+
+			<<if $livestock_food gte 1>>
+				<<link [[Offer the basket of apples|Livestock Field Centaur Apples]]>><<trauma -18>><<unset $livestock_food>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			/***remy mod */
+			<<if $remy_pillow_1 gte 1>>
+				<<link [[送枕头|Livestock Field Horse pillow]]>><<trauma -18>><<unset $remy_pillow_1>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			<<if $remy_cushion_1 gte 1>>
+				<<link [[送垫子|Livestock Field Horse cushion]]>><<trauma -18>><<unset $remy_cushion_1>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			<<link [[Leave|Livestock Field]]>><</link>>
+			<br>
+		<<else>>
+			<<if _horse_gender is "f">>
+				One of them, a particularly large, dark-haired specimen, faces you as you draw close. "Walk away, cattle," she says, holding her head higher. "This is our patch." The others watch you as well.
+				<br><br>
+			<<elseif _horse_gender is "m">>
+				One of them, a particularly large, dark-haired specimen, faces you as you draw close. "Walk away, cattle," he says, holding his head higher. "This is our patch." The others watch you as well.
+				<br><br>
+			<<else>>
+				One of them, a particularly large, dark-haired specimen, faces you as you draw close. "Walk away, cattle," he says, holding his head higher. "This is our patch." The others watch you as well.
+				<br><br>
+			<</if>>
+
+			<<link [[Be friendly|Livestock Field Centaur Friendly]]>><<set $livestock_horse to 1>><</link>>
+			<br>
+			<<link [[Be firm|Livestock Field Centaur Firm]]>><<set $livestock_horse to 1>><</link>>
+			<br>
+			<<link [[Walk away|Livestock Field]]>><</link>>
+			<br>
+		<</if>>
+<<else>>
+
+		You approach Remy's steeds. Their fur ranges from pale to dark brown, all well-groomed. Most stoop, either to drink from the river or to munch on grass.
+		<br><br>
+
+		<<if $livestock_horse gte 2>>
+			<span class="green">They clop closer as you approach.</span>
+			<br><br>
+
+			<<link [[Brush their hair (1:00)|Livestock Field Horse Brush]]>><<pass 60>><<tending 6>><<stress -6>><</link>><<gtending>><<lstress>>
+			<br>
+			<<if $awareness gte 200 and $bestialitydisable is "f" and $horsedisable is "f">>
+				<<if beastMaleChance() gte random(1, 100)>>
+					<<link [[Look beneath one (0:05)|Livestock Field Horse Lewd]]>><<pass 5>><</link>><<deviant1>>
+				<<else>>
+					<<link [[Look beneath one (0:05)|Livestock Field Horse Lewd Female]]>><<pass 5>><</link>><<deviant1>>
+				<</if>>
+				<br>
+			<</if>>
+
+			<<if $livestock_food gte 1>>
+				<<link [[Offer the basket of apples|Livestock Field Horse Apples]]>><<trauma -18>><<unset $livestock_food>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			/***remy mod */
+			<<if $remy_pillow_1 gte 1>>
+				<<link [[送枕头|Livestock Field Horse pillow]]>><<trauma -18>><<unset $remy_pillow_1>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			<<if $remy_cushion_1 gte 1>>
+				<<link [[送垫子|Livestock Field Horse cushion]]>><<trauma -18>><<unset $remy_cushion_1>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			<<link [[Leave|Livestock Field]]>><</link>>
+			<br>
+		<<elseif $livestock_horse gte 1>>
+			They watch as you approach. They seem calm.
+			<br><br>
+
+			<<link [[Brush their hair (1:00)|Livestock Field Horse Brush]]>><<pass 60>><<tending 6>><<lstress>><</link>><<gtending>><<lstress>>
+			<br>
+			<<if $awareness gte 200 and $bestialitydisable is "f" and $horsedisable is "f">>
+				<<if beastMaleChance() gte random(1, 100)>>
+					<<link [[Look beneath one (0:05)|Livestock Field Horse Lewd]]>><<pass 5>><</link>><<deviant1>>
+				<<else>>
+					<<link [[Look beneath one (0:05)|Livestock Field Horse Lewd Female]]>><<pass 5>><</link>><<deviant1>>
+				<</if>>
+				<br>
+			<</if>>
+
+			<<if $livestock_food gte 1>>
+				<<link [[Offer the basket of apples|Livestock Field Horse Apples]]>><<trauma -18>><<unset $livestock_food>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			/***remy mod */
+			<<if $remy_pillow_1 gte 1>>
+				<<link [[送枕头|Livestock Field Horse pillow]]>><<trauma -18>><<unset $remy_pillow_1>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			<<if $remy_cushion_1 gte 1>>
+				<<link [[送垫子|Livestock Field Horse cushion]]>><<trauma -18>><<unset $remy_cushion_1>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			<<link [[Leave|Livestock Field]]>><</link>>
+			<br>
+		<<else>>
+			One of them, a particularly large, dark-haired specimen, unleashes a deep whinny as you approach. It sounds like a warning. The others look up. They're watching you.
+			<br><br>
+
+			<<link [[Be friendly|Livestock Field Friendly]]>><<set $livestock_horse to 1>><</link>>
+			<br>
+			<<link [[Be firm|Livestock Field Firm]]>><<set $livestock_horse to 1>><</link>>
+			<br>
+			<<link [[Walk away|Livestock Field]]>><</link>>
+			<br>
+		<</if>>
 <</if>>
