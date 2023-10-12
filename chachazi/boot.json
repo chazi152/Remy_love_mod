@@ -2,6 +2,8 @@
   "name": "Remy Love Mod",
   "version": "1.0.0",
   "additionFile": [
+    "game/04-Variables/addon-replace/feats-setup.txt",
+
     "game/base-combat/addon-replace/actionsText-Widgets Actions Text-loveInterest.txt",
     "game/base-combat/addon-replace/speech-Widgets Speech-speechnamedrop.txt",
     "game/base-combat/addon-replace/stalk-Widgets Stalk-attack case Remy.txt",
@@ -13,28 +15,42 @@
     "game/base-system/addon-replace/bodywriting-objects-Widgets Bodywriting Objects-bodywriting.txt",
     "game/base-system/addon-replace/named-npcs-Widgets Named Npcs-relationship.txt",
     "game/base-system/addon-replace/social-Social-Remy.txt",
+    "game/base-system/addon-replace/social-Social-li-list.txt",
     "game/base-system/addon-replace/text-Widgets Text-pass_time.txt",
     "game/base-system/addon-replace/traits-Traits-syndrome.txt",
     "game/base-system/addon-replace/widgets-Widgets-NPCRemy.txt",
 
     "game/overworld-plains/addon-replace/field-Livestock Field-obey.txt",
+    "game/overworld-plains/addon-replace/field-Livestock Feild centaur2-food.txt",
+    "game/overworld-plains/addon-replace/field-Livestock Feild centaur1-food.txt",
+    "game/overworld-plains/addon-replace/field-Livestock Feild horse2-food.txt",
+    "game/overworld-plains/addon-replace/field-Livestock Feild horse1-food.txt",
+    "game/overworld-plains/addon-replace/field-Livestock Field-obey.txt",
     "game/overworld-plains/addon-replace/intro-Livestock Return.txt",
+    "game/overworld-plains/addon-replace/intro-Livestock Return-eden.txt",
     "game/overworld-plains/addon-replace/jobs-Livestock Job End-obey.txt",
     "game/overworld-plains/addon-replace/jobs-Livestock Job-Niki.txt",
+    "game/overworld-plains/addon-replace/main-Livestock Cell-sleep.txt",
+    "game/overworld-plains/addon-replace/main-Livestock Eden Escape.txt",
+    "game/overworld-plains/addon-replace/main-Livestock Escape Centaur.txt",
+    "game/overworld-plains/addon-replace/main-Livestock Escape Hourse.txt",
     "game/overworld-plains/addon-replace/main-Livestock Sleep-danger.txt",
+    "game/overworld-plains/addon-replace/main-Riding School Lesson-endIf.txt",    
+    "game/overworld-plains/addon-replace/main-Riding School Lesson-special.txt",        
+    "game/overworld-plains/addon-replace/main-Riding School-intro.txt",        
+    "game/overworld-plains/addon-replace/main-Riding School-leave.txt",        
+    "game/overworld-plains/addon-replace/main-Riding School-seen.txt",        
     "game/overworld-plains/addon-replace/widgets-Widgets Livestock-addInLineEvent.txt",
     "game/overworld-plains/addon-replace/widgets-Widgets Livestock-HaiBao.txt",
 
-    "game/overworld-plains/addon-replace/main-Riding School Lesson-endIf.txt",
-    "game/overworld-plains/addon-replace/main-Riding School Lesson-special.txt",
-    "game/overworld-plains/addon-replace/main-Riding School-intro.txt",
-    "game/overworld-plains/addon-replace/main-Riding School-leave.txt",
-    "game/overworld-plains/addon-replace/main-Riding School-seen.txt",
-
     "game/overworld-town/addon-replace/locHome-eventWidgets.txt",
+    "game/overworld-town/addon-replace/lochome-rent.txt",
     "game/overworld-town/addon-replace/locSchool-canteen-endIf.txt",
     "game/overworld-town/addon-replace/locSchool-canteen-poster.txt",
+    "game/overworld-town/addon-replace/locSchool-hallways-endif.txt",
     "game/overworld-town/addon-replace/locSchool-hallways-recognition.txt",
+    "game/overworld-town/addon-replace/skul-shops-main-endif.txt",
+    "game/overworld-town/addon-replace/skul-shops-main-start.txt",
     "game/overworld-town/addon-replace/specialRobin-lemonade-Robins Lemonade Help.txt"
   ],
   "addonPlugin": [
@@ -115,9 +131,15 @@
         },
         {
           "passage": "Widgets",
-          "findString": "\t<<set _i to $NPCNameList.indexOf(\"Remy\")>>\n\t<<set $NPCName[_i].love = Math.clamp($NPCName[_i].love, -100, 100)>>",
+          "findString": "\t<<set _i to $NPCNameList.indexOf(\"Remy\")>>\n\t<<set $NPCName[_i].love = Math.clamp($NPCName[_i].love, -100, 100)>>\n\t<<set $NPCName[_i].dom = Math.clamp($NPCName[_i].dom, -50, 50)>>",
           "replaceFile": "game/base-system/addon-replace/widgets-Widgets-NPCRemy.txt"
         },
+        {
+          "passage": "Livestock Field",
+          "findString": "\t\t\t\t<<link [[Offer the basket of apples|Livestock Field Centaur Apples]]>><<trauma -18>><<unset $livestock_food>><</link>><<lltrauma>>\n\t\t\t\t<br>\n\t\t\t<</if>>",
+          "replaceFile": "game/overworld-plains/addon-replace/field-Livestock Feild centaur2-food.txt"
+        },
+        /**进度*/
         {
           "passage": "Livestock Field",
           "findString": "\t\t<<link [[Refuse|Livestock Job Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><</link>><<lobey>>\n\t\t<br>",
