@@ -15,25 +15,18 @@
     "game/base-system/addon-replace/bodywriting-objects-Widgets Bodywriting Objects-bodywriting.txt",
     "game/base-system/addon-replace/named-npcs-Widgets Named Npcs-relationship.txt",
     "game/base-system/addon-replace/social-Social-Remy.txt",
-    "game/base-system/addon-replace/social-Social-li-list.txt",
     "game/base-system/addon-replace/text-Widgets Text-pass_time.txt",
     "game/base-system/addon-replace/traits-Traits-syndrome.txt",
     "game/base-system/addon-replace/widgets-Widgets-NPCRemy.txt",
 
     "game/overworld-plains/addon-replace/field-Livestock Field-obey.txt",
-    "game/overworld-plains/addon-replace/field-Livestock Feild centaur2-food.txt",
-    "game/overworld-plains/addon-replace/field-Livestock Feild centaur1-food.txt",
-    "game/overworld-plains/addon-replace/field-Livestock Feild horse2-food.txt",
-    "game/overworld-plains/addon-replace/field-Livestock Feild horse1-food.txt",
-    "game/overworld-plains/addon-replace/field-Livestock Field-obey.txt",
+    "game/overworld-plains/addon-replace/field-Livestock Feild horse-food.txt",
+    "game/overworld-plains/addon-replace/field-Livestock Field-hour12.txt",
     "game/overworld-plains/addon-replace/intro-Livestock Return.txt",
     "game/overworld-plains/addon-replace/intro-Livestock Return-eden.txt",
     "game/overworld-plains/addon-replace/jobs-Livestock Job End-obey.txt",
     "game/overworld-plains/addon-replace/jobs-Livestock Job-Niki.txt",
     "game/overworld-plains/addon-replace/main-Livestock Cell-sleep.txt",
-    "game/overworld-plains/addon-replace/main-Livestock Eden Escape.txt",
-    "game/overworld-plains/addon-replace/main-Livestock Escape Centaur.txt",
-    "game/overworld-plains/addon-replace/main-Livestock Escape Hourse.txt",
     "game/overworld-plains/addon-replace/main-Livestock Sleep-danger.txt",
     "game/overworld-plains/addon-replace/main-Riding School Lesson-endIf.txt",    
     "game/overworld-plains/addon-replace/main-Riding School Lesson-special.txt",        
@@ -44,10 +37,8 @@
     "game/overworld-plains/addon-replace/widgets-Widgets Livestock-HaiBao.txt",
 
     "game/overworld-town/addon-replace/locHome-eventWidgets.txt",
-    "game/overworld-town/addon-replace/lochome-rent.txt",
     "game/overworld-town/addon-replace/locSchool-canteen-endIf.txt",
     "game/overworld-town/addon-replace/locSchool-canteen-poster.txt",
-    "game/overworld-town/addon-replace/locSchool-hallways-endif.txt",
     "game/overworld-town/addon-replace/locSchool-hallways-recognition.txt",
     "game/overworld-town/addon-replace/skul-shops-main-endif.txt",
     "game/overworld-town/addon-replace/skul-shops-main-start.txt",
@@ -136,19 +127,28 @@
         },
         {
           "passage": "Livestock Field",
-          "findString": "\t\t\t\t<<link [[Offer the basket of apples|Livestock Field Centaur Apples]]>><<trauma -18>><<unset $livestock_food>><</link>><<lltrauma>>\n\t\t\t\t<br>\n\t\t\t<</if>>",
-          "replaceFile": "game/overworld-plains/addon-replace/field-Livestock Feild centaur2-food.txt"
+          "findString": "\t\t\t<<link [[Leave|Livestock Field]]>><</link>>\n\t\t\t<br>",
+          "replaceFile": "game/overworld-plains/addon-replace/field-Livestock Feild horse-food.txt"
         },
-        /**进度*/
         {
           "passage": "Livestock Field",
-          "findString": "\t\t<<link [[Refuse|Livestock Job Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><</link>><<lobey>>\n\t\t<br>",
+          "findString": "<<livestock_obey_description>>",
+          "replaceFile": "game/overworld-plains/addon-replace/field-Livestock Field-hour12.txt"
+        },
+        {
+          "passage": "Livestock Field",
+          "findString": "\t<<elseif $livestock_obey gte 30>>",
           "replaceFile": "game/overworld-plains/addon-replace/field-Livestock Field-obey.txt"
         },
         {
           "passage": "Livestock Return",
           "findString": "<<effects>>",
           "replaceFile": "game/overworld-plains/addon-replace/intro-Livestock Return.txt"
+        },
+        {
+          "passage": "Livestock Return",
+          "findString": "\"I didn't much appreciate you being taken from us to have that baby. But you didn't have much of a choice in it.\"",
+          "replaceFile": "game/overworld-plains/addon-replace/intro-Livestock Return-eden.txt"
         },
         {
           "passage": "Livestock Job",
@@ -164,6 +164,11 @@
           "passage": "Livestock Job End",
           "findString": "<<elseif $livestock_obey gte 21>>",
           "replaceFile": "game/overworld-plains/addon-replace/jobs-Livestock Job End-obey.txt"
+        },
+        {
+          "passage": "Livestock Cell",
+          "findString": "\t<<link [[Sleep until dawn|Livestock Sleep]]>><<incrementautosave>><<set $phase to 0>><</link>><<ltiredness>>",
+          "replaceFile": "game/overworld-plains/addon-replace/main-Livestock Cell-sleep.txt"
         },
         {
           "passage": "Livestock Sleep",
@@ -197,12 +202,12 @@
         },
         {
           "passage": "Riding School",
-          "findString": "\t\t\t\"Welcome to my riding school,\" <<he>> says as the horse comes to a stop. \"I'm Remy. We offer lessons on both riding and caring for horses. I hope we can be of service.\"",
+          "findString": "\t\t<<if $remy_seen is \"livestock\">>\n\t\t\t<<npc Remy>><<person1>>A horse trots up to you. Upon its back sits Remy, <<if $pronoun is \"m\">><<his>> pale brown hair flicking in the breeze<<else>><<his>> pale brown hair tied in a neat bun<</if>>. You tense as memories of your treatment at <<his>> farm invade your mind. However, there's no domineering malice in <<his>> eyes this time. There's no recognition at all.\n\t\t\t<br><br>",
           "replaceFile": "game/overworld-plains/addon-replace/main-Riding School-intro.txt"
         },
         {
           "passage": "Riding School",
-          "findString": "\t\t\"It's good to see you again,\" <<he>> says as the horse comes to a stop. \"I hope we can be of service.\"",
+          "findString": "\t<<elseif $remy_seen is \"livestock\">>\n\t\t<<npc Remy>><<person1>>A horse trots up to you. Upon its back sits Remy, <<if $pronoun is \"m\">><<his>> pale brown hair flicking in the breeze<<else>><<his>> pale brown hair tied in a neat bun<</if>>. You tense as memories of your treatment at <<his>> farm invade your mind. However, there's no domineering malice in <<his>> eyes this time. There's no recognition at all.\n\t\t<br><br>",
           "replaceFile": "game/overworld-plains/addon-replace/main-Riding School-seen.txt"
         },
         {
@@ -217,7 +222,7 @@
         },
         {
           "passage": "Riding School Lesson",
-          "findString": "\t\t\t<<link [[Ignore|Riding School Lesson]]>><</link>>\n\t\t\t<br>\n\t\t<</if>>\n\t<</if>>\n<</if>>",
+          "findString": "\t\t\t<<link [[Ignore|Riding School Lesson]]>><</link>>\n\t\t\t<br>",
           "replaceFile": "game/overworld-plains/addon-replace/main-Riding School Lesson-endIf.txt"
         },
         {
@@ -246,6 +251,16 @@
           "replace": "<<set $eventskip to 0>><<set $remylovemodeventskip to 0>>"
         },
         {
+          "passage": "Riding School Register",
+          "findString": "<<link [[Leave|Riding School]]>><</link>>\n<br>",
+          "replaceFile": "game/overworld-town/addon-replace/skul-shops-main-endif.txt"
+        },
+        {
+          "passage": "Riding School Register",
+          "findString": "There's a small office building beside the stables. The door is locked. Must be where the money is kept.",
+          "replace": "game/overworld-town/addon-replace/skul-shops-main-start.txt"
+        },
+        {
           "passage": "Widgets Home Events",
           "findString": "\t<<elseif $christmas is 1 and $christmas_event is undefined>>",
           "replaceFile": "game/overworld-town/addon-replace/locHome-eventWidgets.txt"
@@ -256,6 +271,21 @@
           "replace": "\t<<set $selltoremy is 1>>/**remy mod */<<link [[Next|Street Van Bailey]]>><<set $baileySold to true>><</link>>"
         }
       ]
+    },
+    {
+      "modName": "ReplacePatcher",
+      "addonName": "ReplacePatcherAddon",
+      "modVersion": "1.0.0",
+      "params": {
+        "js": [
+          {
+            "TODO": "feats.js",
+            "fileName": "feats.js",
+            "from": "setup.feats = {",
+            "to": "game/04-Variables/addon-replace/feats-setup.txt"
+          }
+        ]
+      }
     }
   ]
 }
