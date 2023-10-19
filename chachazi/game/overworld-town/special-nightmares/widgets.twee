@@ -1,0 +1,39 @@
+:: Widgets Nightmares [widget]
+
+<<widget "nightmareCheck">>
+	<!-- _args[0] should always be the *next* passage; ex, if the current passage is "Eden Cabin Bed" _args[0] should be "Cabin Sleep" -->
+    <<if $nightmares gt 0 and $controlled is 0 and !$nightmareTimer>>
+		<<set $_possibleNightmares to []>>
+
+		<<if _args[0] is "Cabin Sleep" and isLoveInterest("Eden") and C.npc.Eden.love gt 140>>
+			<<set $_possibleNightmares.push("Nightmare Eden")>>
+		<</if>>
+
+		<<if _args[0].includes("Bird Tower Sleep") and $syndromebird is 1>>
+			<<set $_possibleNightmares.push("Nightmare Bird")>>
+		<</if>>
+
+		<<if $location isnot "asylum" and $asylumstatus isnot undefined>>
+			<<set $_possibleNightmares.push("Nightmare Harper")>>
+		<</if>>
+
+		<<if $wraithPrison and $wraithPrison.vision>>
+			<<set $_possibleNightmares.push("Nightmare Wraith")>>
+		<</if>>
+
+		/***remy mod */
+		<<if $livestock_intro isnot undefined and $livestock_obey lt 60>>
+			<<set $_possibleNightmares.push("Nightmare Remy")>>
+		<</if>>
+
+		<<if $_possibleNightmares.length gte 1>>
+			<<set $nightmareNext to $_possibleNightmares.random()>>
+			<<set $nightmareRedirect to _args[0]>>
+			<<set $nightmareExit to $passage>>
+
+			<<reroute {
+				[$nightmareRedirect] : $nightmareNext
+            }>>
+        <</if>>
+    <</if>>
+<</widget>>
