@@ -4,6 +4,27 @@
 You are in your cell in the barn. There's a bucket of what looks like clean water to drink, and a pile of straw to sleep on.
 <br><br>
 
+/***remy mod */
+<<if $remy_pillow_1 is 1>>
+	<<set $remy_pillow_2 += 1>><<unset $remy_pillow_1>>
+	你把雷米送的枕头找了个好位置，把它放在了那里。
+	<br><br>
+<</if>>
+<<if $remy_cushion_1 is 1>>
+	<<set $remy_cushion_2 += 1>><<unset $remy_cushion_1>>
+	你把雷米送的垫子找了个好位置，把它放在了那里。
+	<br><br>
+<</if>>
+<<if $remy_cushion_2 gte 1 and $remy_pillow_2 gte 1>>
+	你现在已经有了<<print $remy_cushion_2>>个垫子和<<print $remy_pillow_2>>个枕头。
+	<br><br>
+<<elseif $remy_cushion_2 gte 1>>
+	你现在已经有了<<print $remy_cushion_2>>个垫子。
+	<br><br>
+<<elseif $remy_pillow_2 gte 1>>
+	你现在已经有了<<print $remy_pillow_2>>个枕头。
+	<br><br>
+<</if>>
 <<if Time.hour gte 6 and Time.hour lt 18>>
 	The barn's occupants are being herded outside, overseen by Remy.
 <<elseif Time.hour gte 18 and Time.hour lt 21>>
@@ -76,6 +97,10 @@ You are in your cell in the barn. There's a bucket of what looks like clean wate
 		<<link [[自慰(0:30)|extra Livestock Masturbation]]>><<pass 30>><<stress -12>><</link>><<llstress>>
 		<br>
 	<</if>>
+	<<if $debug is 11>>
+	<<link [[雷米噩梦|Nightmare Remy]]>><<set $sleephour to 1>><<set $nightmareExit to "Bed">><</link>>
+	<br>
+	<</if>>
 	<<link [[Sleep until dawn|Livestock Sleep]]>><<incrementautosave>><<set $phase to 0>><</link>><<ltiredness>>
 	<br><br>
 	<<link [[Settings|Livestock Settings]]>><</link>>
@@ -95,7 +120,14 @@ You are in your cell in the barn. There's a bucket of what looks like clean wate
 <<livestock_sleep>>
 
 <<if $phase is 0>>
-	<<if $cow gte 6 or $wolfgirl gte 6 or $cat gte 6 or $fox gte 6>>
+	/***remy mod */
+	<<if $remy_cushion_2 gte 1 and $remy_pillow_2 gte 1>>
+		你蜷缩在雷米送的枕头和垫子上，整个人感觉暖洋洋的。虽然深处黑暗的隔间，还失去了自由，但是你却有了一种回到了孤儿院房间中的错觉。一夜安眠。
+	<<elseif $remy_cushion_2 gte 1>>
+		你睡在雷米送的垫子上，整个人感觉暖洋洋的。虽然深处黑暗的隔间，还失去了自由，但是你却有了一种回到了孤儿院房间中的错觉。一夜安眠。
+	<<elseif $remy_pillow_2 gte 1>>
+		你把雷米送的枕头垫在身下，感觉比单纯的稻草舒服了很多。虽然深处黑暗的隔间，还失去了自由，但是你却有了一种回到了孤儿院房间中的错觉。一夜安眠。
+	<<elseif $cow gte 6 or $wolfgirl gte 6 or $cat gte 6 or $fox gte 6>>
 		You curl up on the soft straw, wondering how you ever slept in any other way. You fall asleep within moments.
 	<<elseif $cow gte 5 or $wolfgirl gte 5 or $cat gte 5 or $fox gte 5>>
 		You curl up on the soft straw, and fall asleep within moments.
@@ -263,6 +295,7 @@ Remy and the farmhands finish freeing the cattle from the machine. They turn off
 		雷米打开了你的笼子，给你套上了牵引绳，农场工人们都习以为常，毕竟你是最特殊，产的奶最美味的奶牛。
 		<br><br>
 		<<if $remyromance is undefined>>
+		    <<earnFeat "Remy's Lovely Cattle">>
 			<<set $remyromance to 1>>
 			你们一同来到那个房间，和平时没有任何区别，但是雷米迟迟没有将你束缚上去，你疑惑的看着<<he>>。
 			<br><br>

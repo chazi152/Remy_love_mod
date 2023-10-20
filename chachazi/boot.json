@@ -15,6 +15,9 @@
 
     "game/base-combat/addon-replace/actionsText-Widgets Actions Text-loveInterest.txt",
     "game/base-combat/addon-replace/speech-Widgets Speech-speechnamedrop.txt",
+    "game/base-combat/addon-replace/speech-Widget nameComments-Alex.txt",
+    "game/base-combat/addon-replace/speech-Widget nameComments-Bailey.txt",
+    "game/base-combat/addon-replace/speech-Widget nameComments-remy.txt",
     "game/base-combat/addon-replace/stalk-Widgets Stalk-attack case Remy.txt",
     "game/base-combat/addon-replace/stalk-Widgets Stalk-run_text.txt",
     "game/base-combat/addon-replace/stalk-Widgets Stalk-threat case Remy.txt",
@@ -36,7 +39,9 @@
     "game/overworld-plains/addon-replace/jobs-Livestock Job End-obey.txt",
     "game/overworld-plains/addon-replace/jobs-Livestock Job-Niki.txt",
     "game/overworld-plains/addon-replace/main-Livestock Cell-sleep.txt",
+    "game/overworld-plains/addon-replace/main-Livestock Cell-gift.txt",
     "game/overworld-plains/addon-replace/main-Livestock Sleep-danger.txt",
+    "game/overworld-plains/addon-replace/main-Livestock Sleep-sleep.txt",
     "game/overworld-plains/addon-replace/main-Livestock Lactate-start.txt",
     "game/overworld-plains/addon-replace/main-Riding School Lesson-endIf.txt",
     "game/overworld-plains/addon-replace/main-Riding School Lesson-special.txt",
@@ -52,6 +57,8 @@
     "game/overworld-town/addon-replace/locSchool-hallways-recognition.txt",
     "game/overworld-town/addon-replace/skul-shops-main-endif.txt",
     "game/overworld-town/addon-replace/skul-shops-main-start.txt",
+    "game/overworld-town/addon-replace/special-nightmares-main-nightmare test.txt",
+    "game/overworld-town/addon-replace/special-nightmares-main-nightmares.txt",
     "game/overworld-town/addon-replace/specialRobin-lemonade-Robins Lemonade Help.txt"
   ],
   "addonPlugin": [
@@ -277,8 +284,8 @@
         },
         {
           "passage": "Rent Intro",
-          "findString": "\t<<link [[Next|Street Van Bailey]]>><<set $baileySold to true>><</link>>",
-          "replace": "\t<<set $selltoremy is 1>>/**remy mod */<<link [[Next|Street Van Bailey]]>><<set $baileySold to true>><</link>>"
+          "findString": "<<elseif $rentsale is 1>>",
+          "replace": "<<set $selltoremy is 1>>/**remy mod */\n<<elseif $rentsale is 1>>"
         },
         {
           "passage": "Livestock Milking End",
@@ -299,6 +306,41 @@
           "passage": "Livestock Lactate",
           "findString": "<<if $breastfeedingdisable is \"f\">>",
           "replaceFile": "game/overworld-plains/addon-replace/main-Livestock Lactate-start.txt"
+        },
+        {
+          "passage": "Nightmare Test",
+          "findString": "<br><br>",
+          "replaceFile": "game/overworld-town/addon-replace/special-nightmares-main-nightmare test.txt"
+        },
+        {
+          "passage": "Widgets Nightmares",
+          "findString": "\t\t<<if $_possibleNightmares.length gte 1>>",
+          "replaceFile": "game/overworld-town/addon-replace/special-nightmares-main-nightmares.txt"
+        },
+        {
+          "passage": "Livestock Cell",
+          "findString": "<<if Time.hour gte 6 and Time.hour lt 18>>",
+          "replaceFile": "game/overworld-plains/addon-replace/main-Livestock Cell-gift.txt"
+        },
+        {
+          "passage": "Widgets namedNpcComments",
+          "findString": "\t\t\t\t\t\t<<set $_text_output to $_stringsPre + `\"That worthless brat can't save you.\"`>>",
+          "replaceFile": "game/base-combat/addon-replace/speech-Widget nameComments-Bailey.txt"
+        },
+        {
+          "passage": "Widgets namedNpcComments",
+          "findString": "\t<<switch _args[0]>>",
+          "replaceFile": "game/base-combat/addon-replace/speech-Widget nameComments-remy.txt"
+        },
+        {
+          "passage": "Widgets namedNpcComments",
+          "findString": "\t\t\t\t\t\t\t<<set $_text_output to `<<He>> glares. \"Did your brain get pecked in the moor? Stay out of there.\"`>>",
+          "replaceFile": "game/base-combat/addon-replace/speech-Widget nameComments-Alex.txt"
+        },
+        {
+          "passage": "Livestock Sleep",
+          "findString": "\t<<if $cow gte 6 or $wolfgirl gte 6 or $cat gte 6 or $fox gte 6>>",
+          "replaceFile": "game/overworld-plains/addon-replace/main-Livestock Sleep-sleep.txt"
         },
         {
           "passage": "Livestock Lactate",

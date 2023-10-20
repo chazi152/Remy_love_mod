@@ -13,6 +13,22 @@
             difficulty: 2,
             series: "money",
             filter: ["All", "Social"],
+            hint: "提示：让雷米'爱'上你。",
+        },
+        ["Remy's hallucination"] = {
+            title: "饮酒伤身",
+            desc: "酒能让牛变成人",
+            difficulty: 2,
+            series: "",
+            filter: ["All", "Special"],
+        },
+        ["return your 'home'"] = {
+            title: "自投罗网",
+            desc: "有谁会在好不容易逃出去后自己跑回笼子里呢？只有蠢牛了吧",
+            difficulty: 2,
+            series: "",
+            filter: ["All", "Special"],
+            hint: "提示：逃出雷米农场后主动跑到骑术学院让雷米见到你。",
         };
         console.log('[Remy_love_mod] window.DOL.setup.feats patch ok.');
         log.log('[Remy_love_mod] window.DOL.setup.feats patch ok.');

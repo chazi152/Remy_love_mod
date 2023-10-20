@@ -1,0 +1,100 @@
+	<<switch _args[0]>>
+			/***remy mod */
+		<<case "Remy">>
+			<<set _remy to statusCheck("Remy")>>
+			<<set $_stringsPre to ($enemyanger lte 60 ? "<<He>>笑了。":"<<He>>愤怒的说。")>>
+			<<if ($speechpenisvirgin is 1 and $player.virginity.penile is _args[0]) or ($speechvaginavirgin is 1 and $player.virginity.vaginal is _args[0])>>
+				<<set $_text_output to `"你还是第一次……？"<<he>>似乎有点难以相信，但立马恍然大悟，"原来如此，这就是你能一直保持牛奶鲜美的原因吗？
+				你应该早点让我知道的……"<<he>>皱了皱眉，动作也开始变得粗暴起来，似乎在发泄不满，"算了，我会找到其他让你保持产量的方法。"`>>
+			<<elseif $speechanusvirgin is 1 and $player.virginity.anal is _args[0]>>
+				<<set $_text_output to `<<He>>喘着气。"这是你第一次被这么侵犯？别紧张，否则你会更痛的，你应该抛弃那些无谓的羞耻心，牛可没有童贞的概念。"`>>
+			<<elseif $speechmouthvirgin is 1 and $player.virginity.oral is _args[0]>>
+				<<set $_text_output to `<<He>>笑着盯着你，"这肯定比你平常吃的草料美味，你会爱上这种味道的。"`>>
+			<<elseif $speechkissvirgin is 1 and $player.virginity.kiss is _args[0]>>
+				<<set $_text_output to `<<He>>说："你的舌头和你的牛奶一样美味，我会吻遍你口腔的每个角落。"`>>
+			<<elseif $speechcrossdressdisappointed is 1 and !$player.vaginaExist and knowsAboutAnyPregnancy("pc","Remy")>>
+				<<set $_text_output to `<<He>>皱起了眉头，"你之前生过孩子，我还以为……"<<He>>的失望没有持续太久，"但是既然怀过孕，就代表乳房也是有产奶的可能的吧？很好。"`>>
+			<<elseif $speechhermaroused is 1>>
+				<<set $_text_output to `<<He>>有些惊讶，但是很快就笑了。"你是双性人？不愧是我最优秀的奶牛，上面下面同时能够产奶的动物，我一定会好好利用上！"`>>
+			<<elseif $speechnamedrop is 1>>
+				<<set $speechnamedrop to 0>>
+				<<if _loveInterest is "Black Wolf" or _loveInterest is "Great Hawk">>
+					<<set $_text_output to `<<His>>对你的话毫不在意，"我的农场，那些动物可进不来，你不会以为它可以救你吧！"`>>
+				<<elseif random(1, 100) lte 50>>
+					<<switch _loveInterest>>
+						<<case "Alex">>
+							<<set $_text_output to `<<He>>嘲笑道，"你以为那个年轻人能帮助你？<<he>>一个人什么也干不成！"`>>
+						<<case "Eden">>
+							<<set $_text_output to `<<He>>皱起了眉头，"那个拿着把枪的小偷……你以为凭<<nnpc_He "Eden">>一个人能救你？"`>>
+						<<default>>
+							<<set $_text_output to `<<He>>皱眉，然后不满的掐住了你的喉咙，"不管你在外面过的什么样的生活，你现在都只是一头奶牛！"<<pain 12>><<ggpain>>`>>
+					<</switch>>
+				<<else>>
+					<<set $_text_output to `<<He>>皱眉，"看来你还不明白自己的身份，还需要接受更多的调教！"`>>
+				<</if>>
+				<<set $_text_output += "<<stress 12>><<ggstress>>">>
+			<<elseif $speechsextoy is 1>>
+				<<set $speechsextoy to 0>>
+				<<set $_sexToy to ($rightarm is "heldSexToy" and $leftarm is "heldSexToy" ? "性玩具" : "性玩具")>>
+				<<if $location is "farm">>
+					<<set $_text_output to `雷米看着你的$_sexToy。"开什么玩笑，我以为在进农场的时候你全身上下的东西都被我们给收走了。"<<he>>紧皱着眉头，"算了，账之后再找那些工人算，这些东西或许真的有些用。"`>>
+				<<else>>
+					<<set $_text_output to `雷米看着你的$_sexToy有些惊讶，但是<<he>>很快就笑了。"看来我的小奶牛在离开农场后学到了些有趣的东西，让我看看你的学习成果吧。"`>>
+				<</if>>
+			<<elseif $arousal gte 9500>>
+				<<set $_strings to [`"真淫荡，你平时就是用这副表情来引诱我农场里的工人的吗？"`,`"动物就是动物，你这幅被欲望操纵的样子可真难看。"`,`"有趣，我还是第一次知道奶牛也会这么放荡。"`,`"我喜欢你沾满淫液的放荡样子。"`]>>
+				<<set $_text_output to $_stringsPre + $_strings[random(0, $_strings.length - 1)]>>
+			<<elseif $enemyanger lte 60>>
+				<<if $rng gte 99>>
+					<<set $_text_output to $_stringsPre + `"没想到我有一天会想和一头动物做爱，我一定是疯了!"`>>
+				<<elseif $rng gte 80>>
+					<<set $_options to ["default"]>>
+					<<if $hairlength gte 600>>
+						<<run $_options.push("hair")>>
+					<</if>>
+					<<if $player.breastsize gte 6 or $player.penissize gte 4>>
+						<<run $_options.push("cow")>>
+					<</if>>
+					<<if $athletics gte 750 or $physique gte $physiquesize * 0.75>>
+						<<run $_options.push("healthy")>>
+					<</if>>
+					<<switch $_options[random(0, $_options.length - 1)]>>
+						<<case "hair">><<set $_text_output to `雷米一把揪住了你的头发，"不愧是贝利养的孤儿，各方面都很符合<<nnpc_He "Bailey">>的喜好。"`>>
+						<<case "cow">><<set $_text_output to $_stringsPre + `"很好，看来我平时给你抹的那些药膏还有哈珀的治疗很有用。"`>>
+						<<case "healthy">><<set $_text_output to $_stringsPre + `"你平时是不是在草场里锻炼的太努力了？"`>>
+						<<case "default">><<set $_text_output to $_stringsPre + `"乖一点，这样对你我都好。"`>>
+					<</switch>>
+				<<else>>
+					<<set $_strings to [`"每个人都需要一个归属之地，不是吗？"`,
+										`"我会让你忘掉农场外面的世界，只做专属于我的奶牛。"`,
+										`"外面的世界再也不会威胁你了，因为你是我的奶牛！"`,
+										`"你跟别的奶牛不一样。"`,
+										`"在如何取悦主人这点上，你做得还算不错，奶牛。"`,
+										`"你总能带给我意想不到的惊喜。"`,
+										`"这会让我更了解你么？了解一头奶牛的习性？"`,
+										`"果然还是刚挤出的牛奶最新鲜可口。"`,
+										`"就是这股香醇鲜甜的味道，卖给外面那群不懂欣赏的杂种真是太浪费了。"`,
+										`"你的牛奶都满溢而出了，让我帮你好好处理一下。"`,
+										`"你不断颤抖涌出牛奶的尖端真是可爱。"`,
+										`"我或许应该早点儿试试你的滋味儿，没想到一头奶牛会让我这么舒服。"`,
+										`"还不够，你的每一滴牛奶都是我的所有物，永远不要忘记这点。"`]>>
+					<<set $_text_output to $_stringsPre + $_strings[random(0, $_strings.length - 1)]>>
+				<</if>>
+			<<else>>
+					<<set $_strings to [`"我知道怎么对付一头不听话的奶牛。"`,
+										`"真是可惜，你在浪费你的天赋。"`,
+										`"你觉得你还能逃到哪里去？"`,
+										`"什么时候奶牛也学会反抗了？"`,
+										`"该死的畜生！"`,
+										`"我会让你付出代价。"`,
+										`"你宁愿回到孤儿院，被那个贪婪的院长勒索？真是令人作呕的癖好。"`,
+										`"你不会还抱有什么天真的幻想吧？真恶心。"`,
+										`"用身体好好记住不听话的代价。"`,
+										`"现在乞求原谅已经太迟了。"`,
+										`"你颤抖的身体是因为恐惧？还是高潮？你骗不了我的。"`,
+										`"你需要学会怎么取悦你的主人。"`,
+										`"我不需要不听话的奶牛。"`,
+										`"你在恐惧下挤出的牛奶似乎比我想象得还美味，还是说你其实在享受？"`,
+										`"你身体的反应可不会说谎，你明明在享受，下贱的动物。"`]>>
+					<<set $_text_output to $_stringsPre + $_strings[random(0, $_strings.length - 1)]>>
+			<</if>>
