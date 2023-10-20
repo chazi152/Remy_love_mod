@@ -20,6 +20,7 @@ setup.feats = {
 		difficulty: 2,
 		series: "",
 		filter: ["All", "Special"],
+		hint: "提示：在晚上潜入骑术学院。",
 	},
 	"return your 'home'": {
 		title: "自投罗网",
