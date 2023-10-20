@@ -1,0 +1,165 @@
+:: Kylar Abduction Event End
+<<effects>>
+
+<<set _kylar to $NPCList[0]>>
+
+<<if $NPCName[$NPCNameList.indexOf("Kylar")].lust gte 100>>
+	<<switch $syndromekylarbuild>>
+		<<case 4>>
+			Kylar crawls towards you, and pulls <<himself>> up your legs.
+			<<if _kylar.penis isnot "none">>
+				<!-- Kylar penis - will try to fuck you -->
+				<<He>> lifts your thighs, and rests your legs against <<his>> shoulders.
+			<<elseif ($genderknown.includes("Kylar") and $player.penisExist) or $player.gender_appearance is "m">>
+				<!-- Kylar vag and you penis - will try to ride you -->
+				<<He>> straddles your thighs, pulling <<his>> body against yours.
+			<<else>>
+				<!-- Kylar vag and you vag - will try to scissor -->
+				<<He>> spreads your legs, pulling <<his>> body against yours.
+			<</if>>
+			<br><br>
+			<<if $pregnancyspeechdisable is "f" and (
+				(_kylar.vagina isnot "none" and ($genderknown.includes("Kylar") ? $player.penisExist : $player.gender_appearance is "m") )
+				or
+				(_kylar.penis isnot "none" and ($genderknown.includes("Kylar") ? $player.vaginaExist : $player.gender_appearance is "f") )
+			)>>
+				<<if $pronoun is "f">>
+					"Your sperm is so delicious," <<he>> says. "It must be potent. S-so potent. I need you to mark me again and again."
+				<<else>>
+					"I need to mark you with my sperm," <<he>> says. "S-so the universe knows you're mine. N-no one else's!"
+				<</if>>
+			<</if>>
+			<<He>> gazes into your eyes with a mad intensity. "I'm going to fuck you again and again. Until I'm the only one who can satisfy you."
+			<br><br>
+
+			<<link [[Next|Kylar Abduction Rape]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<<case 3>>
+			<<if $hypnosisdisable is "f">>
+				Kylar sits on your lap, and gazes into your eyes with a mad intensity. "I want to try helping you relax again," <<he>> says, producing a pendant. <span class="purple"><<He>> swings it in front of your face.</span>
+				<br><br>
+
+				"Wh-when I click my fingers, you will fall into a trance." <<He>> clicks <<his>> fingers. <span class="pink">You feel your consciousness shift as you enter a trance.</span>
+				<br><br>
+
+				<<link [[Resist|Kylar Abduction Hypnosis Resist]]>><</link>><<willpowerdifficulty 1 2000>>
+				<br>
+				<<link [[Let it happen|Kylar Abduction Hypnosis Let]]>><<control 10>><</link>><<gcontrol>>
+				<br>
+			<<else>>
+				<<kylarStockholmDefaultRape>>
+			<</if>>
+		<<case 2>>
+			Kylar eyes up your body, any anxiety overcome by lust.
+			<<if _kylar.penis isnot "none">>
+				<!-- Kylar penis - will try to fuck you -->
+				<<He>> lifts your thighs, and rests your legs against <<his>> shoulders.
+			<<elseif ($genderknown.includes("Kylar") and $player.penisExist) or $player.gender_appearance is "m">>
+				<!-- Kylar vag and you penis - will try to ride you -->
+				<<He>> straddles your thighs, pulling <<his>> body against yours.
+			<<else>>
+				<!-- Kylar vag and you vag - will try to scissor -->
+				<<He>> spreads your legs, pulling <<his>> body against yours.
+			<</if>>
+			<br><br>
+			<<if $pregnancyspeechdisable is "f" and (
+				(_kylar.vagina isnot "none" and ($genderknown.includes("Kylar") ? $player.penisExist : $player.gender_appearance is "m") )
+				or
+				(_kylar.penis isnot "none" and ($genderknown.includes("Kylar") ? $player.vaginaExist : $player.gender_appearance is "f") )
+			)>>
+				<<if $pronoun is "m">>
+					<<He>> rubs your belly. "I'm going to get you pregnant with my child. I-I'm fertile. I'm sure of it!"
+				<<else>>
+					<<He>> rubs <<his>> belly. "I'm going to get pregnant with your child. I-I'm fertile. I'm sure of it!"
+				<</if>>
+			<</if>>
+			<<He>> gazes into your eyes with a mad intensity. "I'm going to fuck you again and again. Until I'm the only one who can satisfy you."
+			<br><br>
+
+			<<link [[Next|Kylar Abduction Rape]]>><<set $molestationstart to 1>><</link>>
+			<br>
+		<<case 1>>
+			<<if $hypnosisdisable is "f">>
+				Kylar sits on your lap, and gazes into your eyes with a mad intensity. "I want to try something." <<He>> produces a pendant, <span class="purple">and swings it in front of your face.</span>
+				<br><br>
+
+				"Wh-when I click my fingers, you will fall into a trance." <<He>> clicks <<his>> fingers. Nothing happens. "D-did it work?"
+				<br><br>
+
+				<<link [[Pretend it worked|Kylar Abduction Hypnosis Pretend]]>><</link>>
+				<br>
+				<<link [[Say it didn't|Kylar Abduction Hypnosis]]>><</link>>
+			<<else>>
+				<<kylarStockholmDefaultRape>>
+			<</if>>
+		<<default>>
+			<<kylarStockholmDefaultRape>>
+		<</switch>>
+<<elseif $NPCName[$NPCNameList.indexOf("Kylar")].rage gte 100>>
+
+	"I don't understand," Kylar says. <<He>> sounds irritated. "I'm being so good to you. So very good. Are-" <span class="pink"><<His>> fist clenches around the knife.</span> "Are you thinking of someone else? Is that it?" There's anger in <<his>> voice now. Anger and fear.
+	<br><br>
+
+	<<link [[Get angry yourself|Kylar Abduction Event Response]]>><<trauma -6>><<stress -6>><<set $phase to "angry">><</link>><<ltrauma>><<lstress>>
+	<br>
+	<<link [[Apologise|Kylar Abduction Event Response]]>><<trauma -12>><<set $phase to "apologise">><</link>><<lltrauma>>
+	<br>
+	<<link [[Remain silent|Kylar Abduction Event Response]]>><<stress -12>><<set $phase to "silent">><</link>><<llstress>>
+	<br>
+	<<if isLoveInterest("Eden")>>
+		<<link [[Say Eden will rescue you|Kylar Abduction Event Response]]>><<stress -12>><<set $phase to "Eden">><</link>><<llstress>>
+		<br>
+	<</if>>
+	<<if isLoveInterest("Robin")>>
+		<<link [[Say Robin will rescue you|Kylar Abduction Event Response]]>><<trauma -12>><<set $phase to "Robin">><</link>><<lltrauma>>
+		<br>
+	<</if>>
+	<<if isLoveInterest("Whitney")>>
+		<<link [[Say Whitney will rescue you|Kylar Abduction Event Response]]>><<trauma -12>><<set $phase to "Whitney">><</link>><<lltrauma>>
+		<br>
+	<</if>>
+	<<if isLoveInterest("Sydney")>>
+		<<link [[Say Sydney will rescue you|Kylar Abduction Event Response]]>><<trauma -12>><<set $phase to "Sydney">><</link>><<lltrauma>>
+		<br>
+	<</if>>
+	<<if isLoveInterest("Alex")>>
+		<<link [[Say Alex will rescue you|Kylar Abduction Event Response]]>><<trauma -12>><<set $phase to "Alex">><</link>><<lltrauma>>
+		<br>
+	<</if>>
+	<<if isLoveInterest("Remy")>>
+		<<link [[说雷米会来救你|Kylar Abduction Event Response]]>><<stress -12>><<set $phase to "Remy">><</link>><<llstress>>
+		<br>
+	<</if>>
+	<<if isLoveInterest("Avery")>>
+		<<link [[Say Avery will rescue you|Kylar Abduction Event Response]]>><<stress -12>><<set $phase to "Avery">><</link>><<llstress>>
+		<br>
+	<</if>>
+	<<if isLoveInterest("Black Wolf")>>
+		<<link [[Say the wolf pack will rescue you|Kylar Abduction Event Response]]>><<stress -12>><<set $phase to "Wolf">><</link>><<llstress>>
+		<br>
+	<</if>>
+	<<if isLoveInterest("Great Hawk")>>
+		<<link [[Say the Great Hawk will rescue you|Kylar Abduction Event Response]]>><<stress -12>><<set $phase to "Hawk">><</link>><<llstress>>
+		<br>
+	<</if>>
+
+<<elseif $syndromekylarbuild gte 5>>
+	Kylar paces in front of you, up and down the room, debating <<himself>> as to whether it's time to introduce you to <<his>> parents. The madness you saw earlier is gone. <<He>> mutters about getting everything just right.
+	<br><br>
+
+	You're struck by just how much work <<hes>> put into this, all for you, all alone. It's so unfair. Everyone deserves a friend.
+	<br><br>
+
+	<span class="red">You've gained the Stockholm Syndrome: Kylar trait.</span>
+	<br><br>
+	<<kylar_stockholm_start>>
+	<<link [[Next|Kylar Abduction Stockholm]]>><</link>>
+	<br>
+
+<<else>>
+	The light above rattles as a heavy thud shakes the ceiling. "I will be back soon <<kylar_pet_name>>," <<he>> says, tearing <<his>> eyes away from you. The door shuts behind <<him>>, leaving you alone.
+	<br><br>
+
+	<<link [[Next|Kylar Abduction]]>><<endevent>><</link>>
+	<br>
+<</if>>

@@ -14,6 +14,9 @@
     "game/04-Variables/addon-replace/feats-setup.txt",
 
     "game/base-combat/addon-replace/actionsText-Widgets Actions Text-loveInterest.txt",
+    "game/base-combat/addon-replace/effects-ask noCondoms.txt",
+    "game/base-combat/addon-replace/actions-text_plead.txt",
+    "game/base-combat/addon-replace/actions-text_demand.txt",
     "game/base-combat/addon-replace/speech-Widgets Speech-speechnamedrop.txt",
     "game/base-combat/addon-replace/speech-Widget nameComments-Alex.txt",
     "game/base-combat/addon-replace/speech-Widget nameComments-Bailey.txt",
@@ -346,7 +349,43 @@
           "passage": "Livestock Lactate",
           "findString": "\t<</if>>\n<</if>>",
           "replace": "\t<</if>>\n<</if>>\n<</if>>"
+        },
+        {
+          "passage": "Kylar Abduction Event End",
+          "findString": "\t<<if isLoveInterest(\"Avery\")>>",
+          "replace": "\t<<if isLoveInterest(\"Remy\")>>\n\t\t<<link [[说雷米会来救你|Kylar Abduction Event Response]]>><<stress -12>><<set $phase to \"Remy\">><</link>><<llstress>>\n\t\t<br>\n\t<</if>>\n\t<<if isLoveInterest(\"Avery\")>>"
+        },
+        {
+          "passage": "Kylar Abduction Event Response",
+          "findString": "\t\t<<case \"Robin\">>",
+          "replace": "\t\t<<case \"Remy\">>\n\t\t\t\"雷米一定会找到我的！\"你威胁道，\"就连贝利都忌惮<<nnpc_he \"Remy\">>，你绑架我的事要是被知道了，<<nnpc_he \"Remy\">>一定不会让你好过！\"\n\t\t\t<br><br>\n\t\t\t\"雷米？你说的是谁……？\"\n\t\t<<case \"Robin\">>"
+        },
+        {
+          "passage": "Kylar Abduction Event Response",
+          "findString": "\t\t\t<<switch $NPCList[0].fullDescription>>",
+          "replace": "\t\t\t<<switch $NPCList[0].fullDescription>>\n\t\t\t\t<<case \"Remy\">>\n\t\t\t\t\t<<set $speechsextoy to 1>>"
+        },
+        {
+          "passage": "Widgets Effects Man",
+          "findString": "\t\t\t\t\t\t\t<<case \"Robin\">>\n\t\t\t\t\t\t\t\t/*Default pregnancyAvoidance is 50. Will have a condom if NPC condoms are enabled.*/",
+          "replace": "\t<<case \"Remy\">>\n<<switch $_speech>>\n<<case \"accept\">>\n<<He_Short>>瞥了你一眼，什么都没说，但是你想雷米可能是默许了。\n<<case \"acceptGive\">>\n<<He_Short>>瞥了你一眼，\"我凭什么要在乎一头动物的安全？除非你能给我一个。\"<<He_Short>>明显是抱着<span class=\"blue\">看笑话</span>的心态说的这些话。\n<<case \"acceptHas\">>\n<<case \"reject\">>\n<<He_Short>>掐住了你的喉咙，\"<span class=\"red\">别想命令我，认清你的位置!</span>\"\n<</switch>>\n\t\t\t\t\t\t\t<<case \"Robin\">>\n\t\t\t\t\t\t\t\t/*Default pregnancyAvoidance is 50. Will have a condom if NPC condoms are enabled.*/"
+        },
+        {
+          "passage": "Widgets Effects Man",
+          "findString": "\t\t\t\t\t\t\t\t\t\t<<He_Short>> refuses. \"<span class=\"red\">We can't be reckless!</span>\"\n\t\t\t\t\t\t\t\t<</switch>>",
+          "replaceFile": "game/base-combat/addon-replace/effects-ask noCondoms.txt"
+        },
+        {
+          "passage": "Widgets Actions Text",
+          "findString": "\t\t\t\t\t\t\t\"No... I need to get back to Robin...\"\n\t\t\t\t\t\t<</if>>\n\t\t\t\t\t<</if>>",
+          "replaceFile": "game/base-combat/addon-replace/actions-text_plead.txt"
+        },
+        {
+          "passage": "Widgets Actions Text",
+          "findString": "\t\t\t\t\t\t\t\"Only Robin can... make me feel like this! Not you!\"\n\t\t\t\t\t\t<</if>>\n\t\t\t\t\t<</if>>",
+          "replaceFile": "game/base-combat/addon-replace/actions-text_demand.txt"
         }
+
       ]
     },
     {
