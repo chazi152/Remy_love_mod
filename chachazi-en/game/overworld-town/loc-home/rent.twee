@@ -1,0 +1,142 @@
+:: Rent Intro
+<<effects>>
+<<set $baileydefeatedchain to 0>><<set $soldCount += 1>>
+<<set _robin to statusCheck("Robin")>>
+<<unset $bailey_encroach>>
+<<npc Bailey 1>>
+
+<<set _robinIsPresent to ($phase is 1)>>
+<<set _andRobin to (_robinIsPresent ? "and Robin" : "")>>
+
+With your head covered by a hood and your arms bound behind your back, you _andRobin are led down a flight of stairs and along a tunnel.
+You trip a couple of times, prompting Bailey to drag you back to your feet and slap your face in anger.
+<br><br>
+
+<<if _robinIsPresent>>
+	"Please, stop hurting <<phim>>!" Robin begs. Bailey ignores <<nnpc_him "Robin">>.
+	<br><br>
+<</if>>
+<<pass 20>>
+
+<<if $rentsale is 3>>
+	<<set $rentsale to 0>><<generate2>><<person2>>
+	After journeying for some time you hear another set of footsteps.
+	<<if _robinIsPresent>>
+		"Hand them over," says a <<personsimple>>'s voice.
+		<br><br>
+
+		"Money first," responds Bailey. "Will I get them back?"
+		<br><br>
+
+		"You won't want them when we're done."
+		<br><br>
+	<<else>>
+		"Hand <<phim>> over," says a <<personsimple>>'s voice.
+		<br><br>
+
+		"Money first," responds Bailey. "Will I get <<phim>> back?"
+		<br><br>
+
+		"You won't want <<phim>> when we're done."
+		<br><br>
+	<</if>>
+
+	You hear a rustle of paper before being dragged further along the tunnel.
+	<br><br>
+	<<if _robinIsPresent>>
+		<<link [[Next|Underground Intro]]>><<set $baileySold to true>><<endevent "phaseless">><<set $phase to 1>><</link>>
+	<<else>>
+		<<link [[Next|Underground Intro]]>><<set $baileySold to true>><</link>>
+	<</if>>
+	<br>
+<<elseif $rentsale is 2>>
+	<<set $rentsale += 1>>
+	<<leash 21>>
+	<<if _robinIsPresent>>
+		You journey for some time until you feel solid concrete beneath your feet. Another set of footsteps approach.
+		You think you hear the rustle of an officer's belt.
+		<br><br>
+
+		"Hand the suspect over," a voice commands.
+		<br><br>
+
+		"Cash first. No time behind bars." Bailey's anger is very apparent. "I want <<nnpc_him "Robin">> back in one piece."
+		<br><br>
+
+		"Very well. We have other plans for this one anyway." You hear what sounds like the rustling of cash.
+		<br><br>
+
+		Robin begins to cry. "I-I didn't do anything! Please, don't!" <<nnpc_His "Robin">> voice trails off. Bailey tugs you elsewhere.
+		<<robinPunishment "pillory">>
+		<br><br>
+
+		You continue for a while longer,
+	<<else>>
+		You journey for some time,
+	<</if>>
+	until you hear the sound of engines up ahead. The sound echoes, becoming closer, until you hear it all around you.
+	"Good stock," says an unfamiliar voice. "Would make a fine breeder."
+	<br>
+	"The money," Bailey responds, impatient.
+	<br>
+	"Ah. Here." There's a rustle to one side, then someone tugs on your leash, pulling you forward.
+	<br>
+	"A pleasure," Bailey says, already walking away.
+	<br><br>
+
+	"Watch the step," says the unfamiliar voice. Whatever you've stepped onto is rumbling. "Sit."
+	You fumble around your knees, and find what feels like a bench.
+	You sit, then hear the slam of doors, and a few moment later you lurch as the floor moves beneath you. You're in a vehicle.
+	<br><br>
+
+	<<link [[Next|Street Van Bailey]]>><<set $baileySold to true>><</link>>
+	<br>
+<<set $selltoremy is 1>>/**remy mod */
+<<elseif $rentsale is 1>>
+	<<set $rentsale += 1>>
+	<<if _robinIsPresent>>
+		<<rentRobinPunishment>>
+		<<endevent>>
+		<<npc Bailey 1>><<person1>>
+		<br><br>
+
+		Your journey with Bailey continues.
+	<<else>>
+		After journeying for some time you emerge outside.
+	<</if>>
+	You hear wind rustling through leaves.
+	Bailey lifts you and hooks your bindings on something behind you, leaving you suspended in the air.
+	"Don't go anywhere, you'll be picked up shortly," <<he>> says. You hear <<him>> walk away, leaving you alone.
+	<br><br>
+
+	<<endevent>>
+	<<rentEdenTrade>>
+<<else>>
+	<<set $rentsale to 1>>
+	<<generate2>><<person2>>
+	After journeying for some time you hear another set of footsteps. "This is the merchandise?" says a <<personsimple>>'s voice.
+	<br><br>
+	<<if _robinIsPresent>>
+		"No, I'm just taking my <<print (_robin.pronoun is $player.gender_appearance ? (_robin.pronoun is "m" ? "boys" : "girls") : "kids")>> for a walk,"
+	<<else>>
+		"No, I'm just taking my <<girl>> for a walk,"
+	<</if>>
+	says Bailey, <<person1>><<his>> temper barely concealed beneath the sarcasm.
+	"Just give me the cash. And I want them back in one piece, you're not paying enough..."
+	<br><br>
+
+	<<if _robinIsPresent>>
+		<<if _robin.dom lte 50>>
+			"Please, let us go! We didn't do anything-"
+		<<else>>
+			"Wait! Let <<phim>> go! Please don't hurt my <<girlfriend>>-"
+		<</if>>
+		Robin's voice suddenly becomes muffled, and to your alarm, you hear <<nnpc_him "Robin">> fall to the ground soon after.
+		<br><br>
+	<</if>>
+	A moment later, you feel someone press something against your mouth, and your consciousness fades. <<arousal 6000>><<gggarousal>>
+	<br><br>
+
+	<<link [[Next|Danube Meal]]>><<endevent>><<set $phase to (_robinIsPresent ? 1 : 0)>><</link>>
+	<br>
+<</if>>

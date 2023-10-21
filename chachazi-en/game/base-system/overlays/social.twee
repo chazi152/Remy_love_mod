@@ -1,0 +1,510 @@
+:: Social [widget]
+
+<<widget "social">>
+	<div id="relation-display">
+		<<silently>>
+			<<script>>
+				if (V.wolfpackharmony) C.npc["Black Wolf"].harmony = V.wolfpackharmony;
+				if (V.wolfpackferocity) C.npc["Black Wolf"].ferocity = V.wolfpackferocity;
+				/*data config for non-standard NPCs boxes, allows for different stat configs, custom display data, and dynamic requirements*/
+				T.npcConfig = {
+					/***remy mod */
+					"Remy" : {
+						important : true,
+						love : { maxValue : 100 },
+						lust : { maxValue : 100 },
+						dom : { maxValue : 100 }
+					},
+					"Robin" : {
+						important : true,
+						dom : { name : "Confidence", activeIcon : "img/ui/confidence.png", color: "blue" }
+					},
+					"Whitney" : {
+						important : true,
+						love : { maxValue : 30 },
+						dom : { maxValue: 20 }
+					},
+					"Eden" : {
+						important : true,
+						love : { maxValue: 200 },
+						dom : { maxValue: 150 } /*false always hides this stat*/
+					},
+					"Kylar" : {
+						important : true,
+						rage : { name : "Jealousy", activeIcon : "img/ui/wideeye.png", color: "green" }
+					},
+					"Avery" : {
+						important : true,
+						rage : { requirements : V.averyragerevealed }
+					},
+					"Great Hawk" : {
+						important : true,
+					},
+					"Black Wolf" : {
+						important : true,
+						love : { maxValue : 30 },
+						harmony : { name : "Wolf Pack Harmony", maxValue: 20, activeIcon : "img/ui/wolfharmony.png" },
+						ferocity : { name : "Wolf Pack Ferocity", maxValue: 20, activeIcon : "img/ui/wolfferocity.png" }
+					},
+					"Sydney" : {
+						important : true,
+						love : { maxValue: 150 },
+						purity : { requirements : V.NPCName[28].purity > 0, maxValue : 100, minValue : 0 },
+						corruption : { requirements : V.NPCName[28].corruption > 0, maxValue : 50, minValue : 0 }
+					},
+					"Mason" : {
+						love : { maxValue : 50 }
+					},
+					"Alex" : {
+						important : true,
+						love : { maxValue : 100 },
+						lust : { maxValue : 100 },
+						dom : { maxValue : 100 }
+					},
+					"Darryl" : {
+						love : { maxValue : 50 }
+					},
+					"River" : {
+						love : { maxValue : 50 }
+					},
+					"Sam" : {
+						love : { maxValue : 50 }
+					},
+					"Ivory Wraith" : {
+						lust : { name: "Obsession", activeIcon : (V.wraith && (V.wraith.state == "haunt" || V.wraith.state == "despair") ? "img/ui/obsessionblood.png" : "img/ui/obsession.png"), inactiveIcon : "img/ui/obsessionempty.png", maxValue : 20 }
+					}
+				};
+
+				/* This list dictates the order that the important NPCs will show up in on the social menu screen */
+				/***remy mod */
+				T.importantNpcOrder = ["Robin", "Whitney", "Eden", "Kylar", "Sydney", "Avery", "Great Hawk", "Black Wolf", "Alex", "Remy"];
+				T.specialNPCs = ["Ivory Wraith"];
+
+				/* this list is sorted */
+				T.importantNPCs = T.importantNpcOrder.map(name => V.NPCName[V.NPCNameList.indexOf(name)]);
+
+				/* this list is unsorted */
+				T.otherNPCs = V.NPCName.filter(npc => !T.importantNpcOrder.includes(npc.nam) && !T.specialNPCs.includes(npc.nam));
+
+				/* sorting takes the lower value and puts it first, so if a < b, a goes first. */
+				/* yes, this works on words, somehow. it's math shit, but it works. read a book if necessary. */
+				T.otherNPCs.sort((a,b) => a.nam - b.nam);
+			<</script>>
+		<</silently>>
+
+		<br>
+		<span class="gold">Primary Relationships</span>
+		<div id="npc-relations" class="relation-box-list">
+			<<set _initNPC to 0>>
+			<<for _k = 0; _k lt _importantNPCs.length; _k++>>
+				<<relation-box _importantNPCs[_k] _npcConfig[_importantNPCs[_k].nam]>>
+				<<set _initNPC += _npcData.init>>
+			<</for>>
+		</div>
+		<<if _initNPC is 0>>
+			//No primary relationships//
+			<br>
+		<</if>>
+
+		<br>
+		<span class="gold">People of Interest</span>
+		<div id="secondary-npcs" class="relation-box-list">
+			<<set _initNPC to 0>>
+			<<for _k= 0; _k lt _otherNPCs.length; _k++>>
+				<<relation-box _otherNPCs[_k] _npcConfig[_otherNPCs[_k].nam]>>
+				<<set _initNPC += _npcData.init>>
+			<</for>>
+		</div>
+		<div id="secondary-npcs" class="relation-box-list">
+			<<for _ik= 0; _ik lt _specialNPCs.length; _ik++>>
+				<<relation-box $NPCName[$NPCNameList.indexOf(_specialNPCs[_ik])] _npcConfig[_specialNPCs[_ik]]>>
+				<<set _initNPC += _npcData.init>>
+			<</for>>
+		</div>
+		<<if _initNPC is 0>>
+			//No secondary relationships//
+			<br>
+		<</if>>
+
+		<br>
+		<span class="gold">Reputation</span>
+		<div id="faction-reputations" class="relation-box-list">
+			<<silently>>
+				/* Police config */
+				<<set _policeCrimeConfig = { currentValue : $crimehistory, states : [
+					{ requiredValue: 0,		color: 'green',		description: 'The police aren\'t concerned with you,'},
+					{ requiredValue: 1000,	color: 'teal',		description: 'The police have you on their records,'},
+					{ requiredValue: 2000,	color: 'lblue',		description: 'The police consider you a person of interest,'},
+					{ requiredValue: 3000,	color: 'blue',		description: 'The police consider you a troublemaker,'},
+					{ requiredValue: 5000,	color: 'purple',	description: 'The police consider you a criminal,'},
+					{ requiredValue: 10000,	color: 'pink',		description: 'The police have a binder devoted to you,'},
+					{ requiredValue: 30000,	color: 'red',		description: 'The police have a filing cabinet devoted to you,'}
+				]}>>
+				<<set _policeEvidenceConfig = { currentValue : $crimehistory, secondaryValue : $crime, states : [
+					{ requiredValue: 0, secondaryStates : [
+						{ requiredValue: 0,	color: 'green',	description: 'and have no evidence linking you to any crime.'},
+						{ requiredValue: 1,	color: 'teal',	description: 'despite having a little evidence linking you to crime.'},
+					]},
+					{ requiredValue: 1000, secondaryStates : [
+						{ requiredValue: 0,		color: 'green',	description: 'but lack enough evidence for an arrest.'},
+						{ requiredValue: 1000,	color: 'pink',	description: 'and have enough evidence for an arrest.'},
+						{ requiredValue: 5000,	color: 'red',	description: 'and have more than enough evidence for an arrest.'},
+					]}
+				]}>>
+				<<set _policeBoxConfig = { name : "Police", icon : "img/misc/icon/police.png", description: "<<relation-text _policeCrimeConfig>> <<relation-text _policeEvidenceConfig>>"}>>
+
+				/* Orphanage */
+				<<set _orphanageMoodConfig = { currentValue: $orphan_hope, secondaryValue: $orphan_reb, preText: 'The atmosphere in the orphanage is ', states : [
+					{ requiredValue: -100, secondaryStates : [
+						{ requiredValue: -100,	color: 'pink',	description: 'hopeless.'},
+						{ requiredValue: -40,	color: 'pink',	description: 'crestfallen.'},
+						{ requiredValue: -10,	color: 'pink',	description: 'unhappy.'},
+						{ requiredValue: 10,	color: 'pink',	description: 'spiteful.'},
+						{ requiredValue: 40,	color: 'def',	description: 'vengeful.'},
+					]},
+					{ requiredValue: -40, secondaryStates : [
+						{ requiredValue: -100,	color: 'purple',	description: 'morose.'},
+						{ requiredValue: -40,	color: 'purple',	description: 'dispirited.'},
+						{ requiredValue: -10,	color: 'purple',	description: 'resigned.'},
+						{ requiredValue: 10,	color: 'purple',	description: 'disobedient.'},
+						{ requiredValue: 40,	color: 'def',		description: 'unruly.'},
+					]},
+					{ requiredValue: -10, secondaryStates : [
+						{ requiredValue: -100,	color: 'blue',	description: 'obedient.'},
+						{ requiredValue: -40,	color: 'blue',	description: 'compliant.'},
+						{ requiredValue: -10,	color: 'blue',	description: 'calm.'},
+						{ requiredValue: 10,	color: 'blue',	description: 'subversive.'},
+						{ requiredValue: 40,	color: 'def',	description: 'defiant.'},
+					]},
+					{ requiredValue: 10, secondaryStates : [
+						{ requiredValue: -100,	color: 'teal',	description: 'enduring.'},
+						{ requiredValue: -40,	color: 'teal',	description: 'unresistant.'},
+						{ requiredValue: -10,	color: 'teal',	description: 'optimistic.'},
+						{ requiredValue: 10,	color: 'teal',	description: 'rebellious.'},
+						{ requiredValue: 40,	color: 'def',	description: 'mutinous.'},
+					]},
+					{ requiredValue: 40, secondaryStates : [
+						{ requiredValue: -100,	color: 'green',	description: 'kind.'},
+						{ requiredValue: -40,	color: 'green',	description: 'friendly.'},
+						{ requiredValue: -10,	color: 'green',	description: 'hopeful.'},
+						{ requiredValue: 10,	color: 'green',	description: 'idealistic.'},
+						{ requiredValue: 40,	color: 'def',	description: 'revolutionary.'},
+					]},
+				]}>>
+				<<set _orphanageBoxConfig = { name : "Orphanage", icon : "img/misc/icon/orphanage.png", description: "<<relation-text _orphanageMoodConfig>>"}>>
+
+				/* School config */
+				<<set _teacherRepConfig = { currentValue: $delinquency, preText: 'You are considered ', postText: ' by the teachers.', states : [
+					{ requiredValue: 0,		color: 'green',		description: 'an ideal student'},
+					{ requiredValue: 10,	color: 'teal',		description: 'a normal student'},
+					{ requiredValue: 200,	color: 'lblue',		description: 'a bad student'},
+					{ requiredValue: 400,	color: 'blue',		description: 'a delinquent'},
+					{ requiredValue: 600,	color: 'purple',	description: 'a delinquent'},
+					{ requiredValue: 800,	color: 'pink',		description: 'a delinquent'},
+					{ requiredValue: 1000,	color: 'red',		description: 'a terror'}
+				]}>>
+				<<set _studentRepConfig = { currentValue: $cool, preText: 'Your fellow students think you\'re ', states : [
+					{ requiredValue: 0,		color: 'red',		preText: 'Your fellow students ', description: 'avoid you.'},
+					{ requiredValue: 40,	color: 'pink',		description: 'odd.'},
+					{ requiredValue: 80,	color: 'purple',	description: 'dorky.'},
+					{ requiredValue: 120,	color: 'blue',		description: 'ok.'},
+					{ requiredValue: 160,	color: 'lblue',		description: 'cool.'},
+					{ requiredValue: 240,	color: 'teal',		description: 'very cool.'},
+					{ requiredValue: 400,	color: 'green',		preText: 'Your fellow students ', description: 'aspire to be seen with you.'}
+				]}>>
+				<<set _teacherBoxConfig = { name : "Teachers", icon : "img/misc/icon/school.png", description: "<<relation-text _teacherRepConfig>> <<statbar $delinquency 1000>>"}>>
+				<<set _studentBoxConfig = { name : "Students", icon : "img/misc/icon/schoolnew.png", description: "<<relation-text _studentRepConfig>> <<statbarinverted $cool $coolmax>>"}>>
+
+				/*Crossdressing*/
+				<<if $schoolrep.crossdress neq 0>>
+					<<set _crossdressRepConfig = { currentValue: $schoolrep.crossdress, states : [
+						{ requiredValue: 1,	color: 'lblue',		description: 'A few cliques at school whisper amongst themselves about your crossdressing ways. Few believe it.'},
+						{ requiredValue: 2,	color: 'blue',		description: 'A rumour has taken root at school. Some say you\'re a crossdresser.'},
+						{ requiredValue: 3,	color: 'purple',	description: 'Students gossip about your supposed crossdressing, though most think it only a joke.'},
+						{ requiredValue: 4,	color: 'pink',		description: 'Everyone at school has heard the rumours of your crossdressing.'},
+						{ requiredValue: 5,	color: 'red',		description: 'Everyone at school knows that you crossdress, including the teachers.'}
+					]}>>
+					<<set _crossdressBoxConfig = { name : "Crossdressing", description : '<<relation-text _crossdressRepConfig>>'}>>
+				<</if>>
+
+				/*Herm*/
+				<<if $schoolrep.herm neq 0>>
+					<<set _hermRepConfig = { currentValue: $schoolrep.herm, states : [
+						{ requiredValue: 1,	color: 'lblue',		description: 'A few cliques at school gossip about a student with both boy and girl parts. Few believe it.'},
+						{ requiredValue: 2,	color: 'blue',		description: 'Rumours of a student with both boy and girl parts have spread through the school.'},
+						{ requiredValue: 3,	color: 'purple',	description: 'The school is rife with gossip about a student with both boy and girl parts.'},
+						{ requiredValue: 4,	color: 'pink',		description: 'Everyone at school has heard the rumours about your unique genitalia.'},
+						{ requiredValue: 5,	color: 'red',		description: 'Everyone at school has heard of your unique genitalia, including the teachers.'}
+					]}>>
+					<<set _hermBoxConfig = { name : "Genitalia", description : '<<relation-text _hermRepConfig>>'}>>
+				<</if>>
+
+				/* Prison */
+				<<if $prison>>
+					<<set _prisonMoodConfig = { currentValue: $prison.hope, secondaryValue: $prison.reb, preText: 'The atmosphere in the prison is ', states : [
+						{ requiredValue: 0, secondaryStates : [
+							{ requiredValue: 0,	color: 'pink',	description: 'hopeless.'},
+							{ requiredValue: 20,	color: 'pink',	description: 'crestfallen.'},
+							{ requiredValue: 40,	color: 'pink',	description: 'unhappy.'},
+							{ requiredValue: 60,	color: 'pink',	description: 'spiteful.'},
+							{ requiredValue: 80,	color: 'def',	description: 'vengeful.'},
+						]},
+						{ requiredValue: 20, secondaryStates : [
+							{ requiredValue: 0,	color: 'purple',	description: 'morose.'},
+							{ requiredValue: 20,	color: 'purple',	description: 'dispirited.'},
+							{ requiredValue: 40,	color: 'purple',	description: 'resigned.'},
+							{ requiredValue: 60,	color: 'purple',	description: 'disobedient.'},
+							{ requiredValue: 80,	color: 'def',		description: 'unruly.'},
+						]},
+						{ requiredValue: 40, secondaryStates : [
+							{ requiredValue: 0,	color: 'blue',	description: 'obedient.'},
+							{ requiredValue: 20,	color: 'blue',	description: 'compliant.'},
+							{ requiredValue: 40,	color: 'blue',	description: 'calm.'},
+							{ requiredValue: 60,	color: 'blue',	description: 'subversive.'},
+							{ requiredValue: 80,	color: 'def',	description: 'defiant.'},
+						]},
+						{ requiredValue: 60, secondaryStates : [
+							{ requiredValue: 0,	color: 'teal',	description: 'enduring.'},
+							{ requiredValue: 20,	color: 'teal',	description: 'unresistant.'},
+							{ requiredValue: 40,	color: 'teal',	description: 'optimistic.'},
+							{ requiredValue: 60,	color: 'teal',	description: 'rebellious.'},
+							{ requiredValue: 80,	color: 'def',	description: 'mutinous.'},
+						]},
+						{ requiredValue: 80, secondaryStates : [
+							{ requiredValue: 0,	color: 'green',	description: 'tolerant.'},
+							{ requiredValue: 20,	color: 'green',	description: 'patient.'},
+							{ requiredValue: 40,	color: 'green',	description: 'hopeful.'},
+							{ requiredValue: 60,	color: 'green',	description: 'idealistic.'},
+							{ requiredValue: 80,	color: 'def',	description: 'revolutionary.'},
+						]},
+					]}>>
+					<<set _guardRepConfig = { currentValue: $prison.guards, preText: 'The guards ', states : [
+						{ requiredValue: 0,		color: 'red',		description: 'have you under constant surveillance.'},
+						{ requiredValue: 15,	color: 'pink',		description: 'consider you a problem.'},
+						{ requiredValue: 30,	color: 'purple',		description: 'watch you.'},
+						{ requiredValue: 45,	color: 'blue',		description: 'are keeping an eye on you.'},
+						{ requiredValue: 60,	color: 'lblue',		description: 'expect no trouble from you.'},
+						{ requiredValue: 80,	color: 'teal',		description: 'overlook you.'},
+						{ requiredValue: 100,	color: 'green',		description: 'forget you are here.'}
+					]}>>
+					<<set _inmateRepConfig = { currentValue: $prison.inmates, preText: 'Most fellow inmates ', states : [
+						{ requiredValue: 0,		color: 'red',		description: 'see you as meat.'},
+						{ requiredValue: 15,	color: 'pink',		description: 'think you\'re a fucktoy.'},
+						{ requiredValue: 30,	color: 'purple',	description: 'consider you a bitch.'},
+						{ requiredValue: 45,	color: 'blue',		description: 'see you as one of them.'},
+						{ requiredValue: 60,	color: 'lblue',		description: 'have a good opinion of you.'},
+						{ requiredValue: 80,	color: 'teal',		description: 'respect you.'},
+						{ requiredValue: 100,	color: 'green',		description: 'think you\'re the boss.'}
+					]}>>
+					<<set _prisonBoxConfig = { name : "Prison atmosphere", icon : "img/misc/icon/police.png", description: "<<relation-text _prisonMoodConfig>>"}>>
+					<<set _guardBoxConfig = { name : "Prison guards", icon : "img/misc/icon/police.png", description: "<<relation-text _guardRepConfig>>"}>>
+					<<set _inmateBoxConfig = { name : "Prison inmates", icon : "img/misc/icon/police.png", description: "<<relation-text _inmateRepConfig>>"}>>
+				<</if>>
+				/*Docks */
+				<<if $dockwork gte 2>>
+					<<set _dockRepConfig = { currentValue: $dockstatus, preText: 'The other workers ', states : [
+						{ requiredValue: 0,	    color: 'purple',	description: 'view you with contempt.'},
+						{ requiredValue: 10,	color: 'blue',		description: 'view you with suspicion.'},
+						{ requiredValue: 30,	color: 'lblue',		description: 'tolerate you.'},
+						{ requiredValue: 80,	color: 'teal',		description: 'accept you.'},
+						{ requiredValue: 100,	color: 'green',		description: 'respect you.'}
+					]}>>
+					<<set _dockBoxConfig = { name : "Docks", icon : "img/misc/icon/mer.png", description : '<<relation-text _dockRepConfig>>'}>>
+				<</if>>
+			<</silently>>
+			<<relation-box-simple _policeBoxConfig>>
+			<<relation-box-simple _orphanageBoxConfig>>
+			<<relation-box-simple _teacherBoxConfig>>
+			<<relation-box-simple _studentBoxConfig>>
+			<<if $schoolrep.crossdress neq 0>>
+				<<relation-box-simple _crossdressBoxConfig>>
+			<</if>>
+			<<if $schoolrep.herm neq 0>>
+				<<relation-box-simple _hermBoxConfig>>
+			<</if>>
+			<<if $prison>>
+				<<relation-box-simple _guardBoxConfig>>
+				<<relation-box-simple _inmateBoxConfig>>
+				<<relation-box-simple _prisonBoxConfig>>
+			<</if>>
+			<<if $dockwork gte 2>>
+				<<relation-box-simple _dockBoxConfig>>
+			<</if>>
+				<<relation-box-wolves>>
+
+		</div>
+		<<if $farm_stage gte 2>>
+			<<silently>>
+				/* Farm Animals */
+				/*Horses*/
+				<<set _farmHorseRepConfig = { currentValue: $farm.beasts.horses, preText: 'The steeds of the farm ', postText: ' you.', states: [
+					{ requiredValue: -100,	color: 'pink',		description: 'see you as a fucktoy.', postText: ' '},
+					{ requiredValue: -20,	color: 'purple',	description: 'have little respect', postText: ' for you.'},
+					{ requiredValue: -5,	color: '',			description: 'are wary of'},
+					{ requiredValue: 5,		color: 'lblue',		description: 'trust'},
+					{ requiredValue: 20,	color: 'green',		description: 'respect'}
+				]}>>
+				/*Pigs*/
+				<<set _farmPigRepConfig = { currentValue: $farm.beasts.pigs, preText: 'The pigs ', postText: ' you.', states: [
+					{ requiredValue: -100,	color: 'pink',		description: 'see you as a fucktoy.', postText: ' '},
+					{ requiredValue: -20,	color: 'purple',	description: 'have little respect', postText: ' for you.'},
+					{ requiredValue: -5,	color: '',			description: 'are wary of'},
+					{ requiredValue: 5,		color: 'lblue',		description: 'trust'},
+					{ requiredValue: 20,	color: 'green',		description: 'respect'}
+				]}>>
+				/*Cattle*/
+				<<set _farmCattleRepConfig = { currentValue: $farm.beasts.cattle, preText: 'The cattle ', postText: ' you.', states: [
+					{ requiredValue: -100,	color: 'pink',		description: 'see you as an annoyance.', postText: ' '},
+					{ requiredValue: -20,	color: 'purple',	description: 'have little respect', postText: ' for you.'},
+					{ requiredValue: -5,	color: '',			description: 'are wary of'},
+					{ requiredValue: 5,		color: 'lblue',		description: 'trust'},
+					{ requiredValue: 20,	color: 'green',		description: 'respect'}
+				]}>>
+				/*Dogs*/
+				<<set _farmDogRepConfig = { currentValue: $farm.beasts.dogs, preText: 'The dogs ', postText: ' you.', states: [
+					{ requiredValue: -100,	color: 'pink',		description: 'see you as a fucktoy.', postText: ' '},
+					{ requiredValue: -20,	color: 'purple',	description: 'have little respect', postText: ' for you.'},
+					{ requiredValue: -5,	color: '',			description: 'are wary of'},
+					{ requiredValue: 5,		color: 'lblue',		description: 'trust'},
+					{ requiredValue: 20,	color: 'green',		description: 'respect'}
+				]}>>
+				<<set _farmHorseBoxConfig =		{ name: "Horses",	description : '<<relation-text _farmHorseRepConfig>>'}>>
+				<<set _farmPigBoxConfig =		{ name: "Pigs",		description : '<<relation-text _farmPigRepConfig>>'}>>
+				<<set _farmCattleBoxConfig =	{ name: "Cattle",	description : '<<relation-text _farmCattleRepConfig>>'}>>
+				<<set _farmDogBoxConfig =		{ name: "Dogs",		description : '<<relation-text _farmDogRepConfig>>'}>>
+
+				<<if $farm_stage gte 5>>
+					/* Farm Sabotage */
+					<<set _farmSabotageConfig = { currentValue: $farm.aggro, states: [
+						{ requiredValue: 0,		color: 'green',		description: 'The farm is peaceful.'},
+						{ requiredValue: 1,		color: 'teal',		description: 'Strange people have been seen watching the farm.'},
+						{ requiredValue: 10,	color: 'lblue',		description: 'Signs of intrusion have been found around the farm.'},
+						{ requiredValue: 20,	color: 'blue',		description: 'Something is spooking the beasts of the farm.'},
+						{ requiredValue: 40,	color: 'purple',	description: 'The farm is being sabotaged at night.'},
+						{ requiredValue: 60,	color: 'pink',		description: 'The farm is being sabotaged, day and night.'},
+						{ requiredValue: 100,	color: 'red',		description: 'Remy\'s goons operate in the open, sabotaging the farm and its business.'},
+					]}>>
+					<<set _farmSabotageBoxConfig = { name: "Farm Safety", description : '<<relation-text _farmSabotageConfig>>'}>>
+				<</if>>
+			<</silently>>
+
+			<br>
+			<span class="gold">Farm Status</span>
+			<div id="farm-status" class="relation-box-list">
+				<<relation-box-simple _farmHorseBoxConfig>>
+				<<relation-box-simple _farmPigBoxConfig>>
+				<<relation-box-simple _farmCattleBoxConfig>>
+				<<relation-box-simple _farmDogBoxConfig>>
+				<<if $farm_stage gte 5>>
+				<<relation-box-simple _farmSabotageBoxConfig>>
+				<</if>>
+			</div>
+		<</if>>
+
+		<br>
+		<span class="gold">Fame</span>
+		<div id="global-recognition" class="relation-box-list">
+			<<silently>>
+				<<set _fameStates = [
+					{ requiredValue: 0,		color: 'green',		description: ' Unknown'},
+					{ requiredValue: 30,	color: 'teal',		description: ' Obscure'},
+					{ requiredValue: 100,	color: 'lblue',		description: ' Low-key'},
+					{ requiredValue: 200,	color: 'blue',		description: ' Known'},
+					{ requiredValue: 400,	color: 'purple',	description: ' Recognised'},
+					{ requiredValue: 600,	color: 'pink',		description: ' Famous'},
+					{ requiredValue: 1000,	color: 'red',		description: ' Notorious _config.flavorText'}
+				]>>
+				<<set _inverseFameStates = [
+					{ requiredValue: 0,		color: 'red',		description: ' Unknown'},
+					{ requiredValue: 30,	color: 'pink',		description: ' Obscure'},
+					{ requiredValue: 100,	color: 'purple',	description: ' Low-key'},
+					{ requiredValue: 200,	color: 'blue',		description: ' Known'},
+					{ requiredValue: 400,	color: 'lblue',		description: ' Recognised'},
+					{ requiredValue: 600,	color: 'teal',		description: ' Famous'},
+					{ requiredValue: 1000,	color: 'green',		description: ' Notorious _config.flavorText'}
+				]>>
+
+				<<set _sexFameConfig =				{ currentValue: $fame.sex,				preText: 'Sex:',			flavorText: 'slut',				states: _fameStates }>>
+				<<set _prostitutionFameConfig =		{ currentValue: $fame.prostitution,		preText: 'Prostitution:',	flavorText: 'whore',			states: _fameStates }>>
+				<<set _rapeFameConfig =				{ currentValue: $fame.rape,				preText: 'Rape:',			flavorText: 'fucktoy',			states: _fameStates }>>
+				<<if $bestialitydisable is "f">>
+					<<set $_pre to "Bestiality:">>
+					<<set $_flavor to "bitch">>
+				<<else>>
+					<<set $_pre to "Monster People:">>
+					<<set $_flavor to "monster fucker">>
+				<</if>>
+				<<set _bestialityFameConfig =		{ currentValue: $fame.bestiality,		preText: $_pre,				flavorText: $_flavor,			states: _fameStates }>>
+				<<set _exhibitionismFameConfig =	{ currentValue: $fame.exhibitionism,	preText: 'Exhibitionism:',	flavorText: 'flaunter',			states: _fameStates }>>
+				<<if $fame.pregnancy gte 600>>
+					<<set $_name to "broodmother">>
+				<<elseif $fame.pregnancy gte 200>>
+					<<set $_name to "breeder">>
+				<<else>>
+					<<set $_name to "mother">>
+				<</if>>
+				<<set _pregnancyFameConfig =		{ currentValue: $fame.pregnancy,		preText: 'Pregnancy:',		flavorText: $_name,				states: _fameStates }>>
+				<<if $fame.impreg gte 600>>
+					<<set $_name to "allfather">>
+				<<elseif $fame.impreg gte 200>>
+					<<set $_name to "sire">>
+				<<else>>
+					<<set $_name to "inseminator">>
+				<</if>>
+				<<set _impregFameConfig =			{ currentValue: $fame.impreg,			preText: 'Pregnancy:',		flavorText: $_name,				states: _fameStates }>>
+				<<set _combatFameConfig =			{ currentValue: $fame.scrap,			preText: 'Combat:',			flavorText: 'scrapper',			states: _inverseFameStates }>>
+				<<set _kindnessFameConfig =			{ currentValue: $fame.good,				preText: 'Kindness:',		flavorText: 'do-gooder',		states: _inverseFameStates }>>
+				<<set _businessFameConfig =			{ currentValue: $fame.business,			preText: 'Business:',		flavorText: 'entrepreneur',		states: _inverseFameStates }>>
+				<<set _socialFameConfig =			{ currentValue: $fame.social,			preText: 'Socialite:',		flavorText: 'schmoozer',		states: _inverseFameStates }>>
+				<<set _modelFameConfig =			{ currentValue: $fame.model,			preText: 'Modelling:',		flavorText: 'show off',			states: _inverseFameStates }>>
+				<<set _overallFameConfig =			{ currentValue: fameTotal(),			preText: 'Overall:',		flavorText: '',					states: [
+					{ requiredValue: 0,		color: 'green',		description: ' Unknown'},
+					{ requiredValue: 100,	color: 'teal',		description: ' Obscure'},
+					{ requiredValue: 500,	color: 'lblue',		description: ' Low-key'},
+					{ requiredValue: 1000,	color: 'blue',		description: ' Known'},
+					{ requiredValue: 2000,	color: 'purple',	description: ' Recognised'},
+					{ requiredValue: 3000,	color: 'pink',		description: ' Famous'},
+					{ requiredValue: 4000,	color: 'red',		description: ' Notorious'}
+				]}>>
+
+				<<set _sexFameBoxConfig =			{ description : '<<relation-text _sexFameConfig>>' }>>
+				<<set _prostitutionFameBoxConfig =	{ description : '<<relation-text _prostitutionFameConfig>>' }>>
+				<<set _rapeFameBoxConfig =			{ description : '<<relation-text _rapeFameConfig>>' }>>
+				<<set _bestialityFameBoxConfig =	{ description : '<<relation-text _bestialityFameConfig>>' }>>
+				<<set _exhibitionismFameBoxConfig =	{ description : '<<relation-text _exhibitionismFameConfig>>' }>>
+				<<set _pregnancyFameBoxConfig =		{ description : '<<relation-text _pregnancyFameConfig>>' }>>
+				<<set _combatFameBoxConfig =		{ description : '<<relation-text _combatFameConfig>>' }>>
+				<<set _kindnessFameBoxConfig =		{ description : '<<relation-text _kindnessFameConfig>>' }>>
+				<<set _businessFameBoxConfig =		{ description : '<<relation-text _businessFameConfig>>' }>>
+				<<set _socialFameBoxConfig =		{ description : '<<relation-text _socialFameConfig>>' }>>
+				<<set _modelFameBoxConfig =			{ description : '<<relation-text _modelFameConfig>>' }>>
+				<<set _overallFameBoxConfig =		{ description : '<<relation-text _overallFameConfig>>' }>>
+			<</silently>>
+
+			<<relation-box-simple _sexFameBoxConfig>>
+			<<relation-box-simple _prostitutionFameBoxConfig>>
+			<<relation-box-simple _rapeFameBoxConfig>>
+			<<relation-box-simple _bestialityFameBoxConfig>>
+			<<relation-box-simple _exhibitionismFameBoxConfig>>
+			<<if $fame.model gte 1>>
+				<<relation-box-simple _modelFameBoxConfig>>
+			<</if>>
+			<<relation-box-simple _pregnancyFameBoxConfig>>
+			<<relation-box-simple _combatFameBoxConfig>>
+			<<relation-box-simple _kindnessFameBoxConfig>>
+			<<relation-box-simple _businessFameBoxConfig>>
+			<<relation-box-simple _socialFameBoxConfig>>
+			<<relation-box-simple _overallFameBoxConfig>>
+
+			<div class="relation-box" @style="(_boxConfig.style || '')">
+				<div class="relation-description">
+				The townsfolk know you as <span class="teal"><<overworld_nickname>>.</span> Those in the criminal underworld call you <span class="pink"><<underworld_nickname>>.</span>
+				</div>
+			</div>
+
+		</div>
+
+		<br>
+	</div>
+	<br>
+<</widget>>

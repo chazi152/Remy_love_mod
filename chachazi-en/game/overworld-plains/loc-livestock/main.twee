@@ -1,0 +1,462 @@
+:: Livestock Cell
+<<set $outside to 0>><<set $location to "farm">><<effects>>
+
+You are in your cell in the barn. There's a bucket of what looks like clean water to drink, and a pile of straw to sleep on.
+<br><br>
+
+/***remy mod */
+<<if $remy_pillow_1 is 1>>
+	<<set $remy_pillow_2 += 1>><<unset $remy_pillow_1>>
+	你把雷米送的枕头找了个好位置，把它放在了那里。
+	<br><br>
+<</if>>
+<<if $remy_cushion_1 is 1>>
+	<<set $remy_cushion_2 += 1>><<unset $remy_cushion_1>>
+	你把雷米送的垫子找了个好位置，把它放在了那里。
+	<br><br>
+<</if>>
+<<if $remy_cushion_2 gte 1 and $remy_pillow_2 gte 1>>
+	你现在已经有了<<print $remy_cushion_2>>个垫子和<<print $remy_pillow_2>>个枕头。
+	<br><br>
+<<elseif $remy_cushion_2 gte 1>>
+	你现在已经有了<<print $remy_cushion_2>>个垫子。
+	<br><br>
+<<elseif $remy_pillow_2 gte 1>>
+	你现在已经有了<<print $remy_pillow_2>>个枕头。
+	<br><br>
+<</if>>
+<<if Time.hour gte 6 and Time.hour lt 18>>
+	The barn's occupants are being herded outside, overseen by Remy.
+<<elseif Time.hour gte 18 and Time.hour lt 21>>
+	<!-- Modified for Monster People -->
+	<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+		<<livestock_cows "cap">> line up at the edge of their cells as farmhands affix milking machines to their bodies.
+	<<else>>
+		<<livestock_cows "cap">> line up at the edge of their cells as farmhands affix milking machines to their bodies.
+	<</if>>
+<<else>>
+	Bovine snoring fills the hall.
+<</if>>
+<<if $uncomfortable.nude is true>><<covered>><</if>>
+<br><br>
+
+<<if isPlayerNonparasitePregnancyEnding()>>
+	<<pregnancyWatersBrokenPassout "remy">>
+<<elseif $stress gte $stressmax>>
+	<<passoutremy>>
+	<<if Time.hour gte 5 and Time.hour lt 18>>
+		<<hunger 1000>>
+		<<set $livestock_noise to false>>
+	<</if>>
+<<elseif Time.hour gte 6 and Time.hour lt 18>>
+	<<set $livestock_noise to false>>
+	Remy and the farmhands circle the barn, opening cells and releasing their occupants. One of them opens yours.
+	<br><br>
+
+	<<link [[Leave your cell|Livestock Cell Leave]]>><<livestock_obey 1>><</link>><<gobey>>
+	<br>
+	<<link [[Refuse to leave|Livestock Cell Refuse]]>><<livestock_obey -1>><<pain 6>><</link>><<lobey>><<gpain>>
+	<br>
+<<elseif Time.hour gte 18 and Time.hour lt 21>>
+	/* once every 4 days after pc's been missing for more than they have permissions for, when eden cares strongly enough to leave the forest and go all the way to the farmlands. if you think it's too easy, remember that grinding enough swimming to escape is easier than grinding eden's love, so see Figure 1. looking at you, fangi. */
+	<<if !(Time.days % 4) and $daily.eden.farmRescue isnot 1 and C.npc.Eden.love gte 120 and ($edenfreedom is 1 and $edendays gte 4 or $edenfreedom gte 2 and $edendays gte 9)>>
+		<<npc Eden>><<person1>>You feel a draft as Remy opens the gate and enters your cell. A hat drifts to your feet. Before you know what to do, something else <<if 150 - $submissive / 20 lt C.npc.Eden.dom>>commands<<else>>draws<</if>> your attention.
+		<br><br>
+		<span class="green">You hear Eden's voice,</span> arguing with someone near the front of the barn.
+		<br><br>
+		<<link [[Shout for Eden|Eden Shout]]>><<npcincr Eden dom 5>><<set $daily.eden.farmRescue to 1>><<livestock_obey -20>><</link>><<lllobey>><<gggdom>>
+		<br>
+		<<link [[Ignore it|Eden Shout Ignore]]>><<npcincr Remy dom 1>><<set $daily.eden.farmRescue to 1>><<livestock_obey 5>><</link>><<ggobey>>
+		<br>
+	<<elseif $livestock_obey lte 30>>
+		<<npc Remy>><<person1>>Remy marches over, looking you right in the eyes. "You're a problem specimen," <<he>> says, entering your cell. "So I'll handle you myself. Come here."
+		<br><br>
+
+		<<link [[Obey|Livestock Milking Obey]]>><<npcincr Remy dom 1>><<livestock_obey 5>><</link>><<ggobey>>
+		<br>
+		<<link [[Refuse|Livestock Milking Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -5>><</link>><<lobey>>
+		<br>
+	<<else>>
+		<<npc Remy>><<person1>>Remy walks over, looking you right in the eyes. "I'll handle this one myself," <<he>> says, entering your cell. "Come here."
+		<br><br>
+
+		<<link [[Obey|Livestock Milking Obey]]>><<npcincr Remy dom 1>><<livestock_obey 5>><</link>><<ggobey>>
+		<br>
+		<<link [[Refuse|Livestock Milking Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -5>><</link>><<lobey>>
+		<br>
+	<</if>>
+<<else>>
+	<<link [[Work out (1:00)|Livestock Workout]]>><</link>><<gtiredness>><<lstress>>
+	<br>
+	<<if $livestock_noise is false>>
+		<<link [[Make noise (0:10)|Livestock Noise]]>><<pass 10>><<stress -12>><<trauma -6>><<set $livestock_noise to true>><</link>><<llstress>><<ltrauma>><<lobey>>
+		<br>
+	<</if>>
+	/***remy mod */
+	<<if playerHeatMinArousal() or playerRutMinArousal()>>
+		<<link [[自慰(0:30)|extra Livestock Masturbation]]>><<pass 30>><<stress -12>><</link>><<llstress>>
+		<br>
+	<</if>>
+	<<if $debug is 11>>
+	<<link [[雷米噩梦|Nightmare Remy]]>><<set $sleephour to 1>><<set $nightmareExit to "Bed">><</link>>
+	<br>
+	<</if>>
+	<<link [[Sleep until dawn|Livestock Sleep]]>><<incrementautosave>><<set $phase to 0>><</link>><<ltiredness>>
+	<br><br>
+	<<link [[Settings|Livestock Settings]]>><</link>>
+	<br>
+	<<attitudesControlCheck>>
+	<<if $attitudesControl.showGoldLink is true>>
+		<span class="goldLink"><<link [[Attitudes]]>><<set $attitudesExitPassage to $passage>><</link>> </span><span class="red">!!</span>
+	<<else>>
+		<<link [[Attitudes]]>><<set $attitudesExitPassage to $passage>><</link>>
+	<</if>>
+	<br><br>
+<</if>>
+
+:: Livestock Sleep
+<<effects>>
+
+<<livestock_sleep>>
+
+<<if $phase is 0>>
+	/***remy mod */
+	<<if $remy_cushion_2 gte 1 and $remy_pillow_2 gte 1>>
+		你蜷缩在雷米送的枕头和垫子上，整个人感觉暖洋洋的。虽然深处黑暗的隔间，还失去了自由，但是你却有了一种回到了孤儿院房间中的错觉。一夜安眠。
+	<<elseif $remy_cushion_2 gte 1>>
+		你睡在雷米送的垫子上，整个人感觉暖洋洋的。虽然深处黑暗的隔间，还失去了自由，但是你却有了一种回到了孤儿院房间中的错觉。一夜安眠。
+	<<elseif $remy_pillow_2 gte 1>>
+		你把雷米送的枕头垫在身下，感觉比单纯的稻草舒服了很多。虽然深处黑暗的隔间，还失去了自由，但是你却有了一种回到了孤儿院房间中的错觉。一夜安眠。
+	<<elseif $cow gte 6 or $wolfgirl gte 6 or $cat gte 6 or $fox gte 6>>
+		You curl up on the soft straw, wondering how you ever slept in any other way. You fall asleep within moments.
+	<<elseif $cow gte 5 or $wolfgirl gte 5 or $cat gte 5 or $fox gte 5>>
+		You curl up on the soft straw, and fall asleep within moments.
+	<<elseif $cow gte 4 or $wolfgirl gte 4 or $cat gte 4 or $fox gte 4>>
+		You curl up on the straw. This isn't so bad. You're awoken by a heavy rattling.
+	<<elseif $cow gte 3 or $wolfgirl gte 3 or $cat gte 3 or $fox gte 3>>
+		You curl up on the straw and try to make the best of it. You're awoken by a heavy rattling.
+	<<elseif $cow gte 2 or $wolfgirl gte 2 or $cat gte 2 or $fox gte 2>>
+		You gather more straw to make your bed softer. It helps, a little. Your sleep is broken by a heavy rattling.
+	<<elseif $cow gte 1 or $wolfgirl gte 1 or $cat gte 1 or $fox gte 1>>
+		You lie down on the straw. It's little better than just sleeping on the floor. You don't think you'll ever be able to sleep here, but the next thing you know you're being woken by a heavy rattling.
+	<<else>>
+		You sit and lean against the wall, ignoring the pile of straw. You're not an animal. It takes a while to fall asleep. You're awoken by a heavy rattling.
+	<</if>>
+<</if>>
+A weak light pierces the high windows. It's dawn.
+<<wakingEffects true>>
+<br><br>
+
+<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+/* remy mod */
+<<if random(1,10) gte 5>>
+	<<remymod_livestock_morning>>
+<<elseif $danger gte (9900 - $allure)>>
+	<<generate1>><<person1>>
+	Your eyes adjust, and you see a <<person>> stood outside your cell, watching you. <<He>> glances over your shoulder. "Shouldn't get caught if I'm quick," <<he>> mutters to <<himself>> as <<he>> opens the gate. You try to stand, but <<he>> pushes you back onto the straw.
+	<br><br>
+
+	<<link [[Next|Livestock Cell Rape]]>><<set $molestationstart to 1>><</link>>
+	<br>
+<<else>>
+	<<link [[Next|Livestock Cell]]>><</link>>
+	<br>
+<</if>>
+
+:: Livestock Eden Escape
+<<effects>>
+You run with Eden across the open moor, but soon hear the thundering of hooves behind you. You glance over your shoulder and see Remy riding a <<livestock_horse>>. <<nnpc_He "Remy">>'s approaching fast.
+<br><br>
+Eden unslings <<his>> rifle, and takes aim. <<He>> fires a shot at the <<livestock_horse>>'s feet. It rears back in fear and falls to the ground, taking Remy with it.
+<br><br>
+Seizing the chance, you and Eden dash across the fields. You crest a hill. The forest lies beyond.
+<<livestockescape>><<set $livestockEscape to "eden">><!-- remy mod -->
+<br><br>
+<<link [[Next|Eden Farm Rescue]]>><</link>>
+
+:: Livestock Escape Centaur
+<<location "forest">><<effects>>
+<<pass 60>>
+<<set $livestockEscape to "Centaur">><!-- remy mod -->
+The centaur carries you over fields and hills, until coming to a stop at a crest dotted with trees. You see the forest and town beneath you.
+<br><br>
+"That's as far as I can go," the centaur says, lifting you off its back. "I'm gonna get a bollicking at the farm, but my family is there." <<He>> places you on the ground.
+<br><br>
+<<if $worn.face.type.includes("gag")>>
+	"Oh," <<he>> says, regarding you. "Here." <<He>> reaches behind your head, <span class="lblue">and unties your $worn.face.name.</span>
+	<<set $worn.face.type.push("broken")>>
+	<<faceruined>>
+	<br><br>
+<</if>>
+
+<<link [[Thank|Livestock Escape Thank]]>><</link>>
+<br>
+<<link [[Kiss|Livestock Escape Kiss]]>><</link>><<deviant1>>
+<br>
+
+:: Livestock Escape Horse
+<<location "forest">><<effects>>
+<<pass 60>>
+<<set $livestockEscape to "Horse">><!-- remy mod -->
+The horse carries you over fields and hills, until coming to a stop at a crest dotted with trees. You see the forest and town beneath you.
+<br><br>
+The horse will go no further. You climb from its back. It rubs its head against you, and you pet it back.
+<<lltrauma>><<lllstress>><<trauma -24>><<stress -36>>
+<br><br>
+
+<<if $worn.face.type.includes("gag")>>
+	It licks your neck, then you feel a tug. It <span class="lblue"> unties your $worn.face.name.</span>
+	<<set $worn.face.type.push("broken")>>
+	<<faceruined>>
+	<br><br>
+<</if>>
+
+Satisfied, it turns back toward the farm. It dashes forward, disappearing behind the hill.
+<br><br>
+
+<<link [[Next|Livestock Escape Town]]>><<endevent>><</link>>
+<br>
+
+:: Livestock Milking End
+<<effects>>
+<<pass 180>>
+<<endevent>>
+<<npc Remy>><<person1>>
+You're slumped, panting, above the straw-strewn floor. Next thing you know, Remy stands in front of the milking machine. <<He>> examines the glass canister attached to you.
+<br><br>
+/***remy mod */
+<<if $livestock_milk_max is undefined>><<set $livestock_milk_max to 0>><</if>>
+<<if $livestock_milk is undefined>><<set $livestock_milk to 0>><</if>>
+<<if $livestock_semen is undefined>><<set $livestock_semen to 0>><</if>>
+<<set $fluid_forced_stat += ($livestock_milk + $livestock_semen)>>
+<<if $livestock_milk + $livestock_semen gte 5000>><<earnFeat "Pride of the Farm">>
+<<npcincr Remy love 3>>"Phenomenal productivity," <<he>> says, gazing in awe at the <span class="green">vast</span> quantity of white fluid in front of <<him>>. "I know of no other <<if $player.gender_appearance is "m">>bull<<else>>cow<</if>> that could produce so much."
+<<gglove>><<set $livestock_milk_max += 1>>/***remy mod */
+<<elseif $livestock_milk + $livestock_semen gte 3000>>
+<<npcincr Remy love 2>>"You're a very good <<girl>>," <<he>> says, staring at the <span class="teal">great</span> quantity of white fluid in front of <<him>>. "Only trouble is," <<he>> smiles. "It might be a bit heavy."
+<<glove>><<set $livestock_milk_max += 1>>/***remy mod */
+<<elseif $livestock_milk + $livestock_semen gte 1000>>
+<<npcincr Remy love 1>>"With produce like this," <<he>> says, looking at the <span class="lblue">large</span> quantity of white fluid in front of <<him>>. "You're one of the most valuable members of our herd."
+<<glove>>
+<<elseif $livestock_milk + $livestock_semen gte 500>>
+	"Very good," <<he>> says, looking at the <span class="blue">decent</span> amount of white fluid in front of <<him>>. "You're a valuable member of our herd."
+<<elseif $livestock_milk + $livestock_semen gte 300>>
+	"Good," <<he>> says, looking at the <span class="purple">small</span> amount of white fluid in front of <<him>>. "I bet you can do better, though."
+<<elseif $livestock_milk + $livestock_semen gte 100>>
+	"Not much for a <<if $player.gender_appearance is "m">>bull<<else>>cow<</if>>," <<he>> says, looking at the <span class="pink">tiny</span> amount of white fluid in front of <<him>>. "But better than nothing."
+<<elseif $livestock_milk + $livestock_semen gte 1>>
+	"A pitiable amount," <<he>> sighs, looking at the <span class="red">dribble</span> of white fluid in front of <<him>>. "But it means there's something to work with, at least."
+<<else>>
+	"Nothing?" <<he>> sighs. "Don't worry. You'll be a productive member of our herd yet."
+<</if>>
+<<He>> opens the gate and kneels beside you, resting one hand on your shoulder. The treatment left your body so sensitive that even this sends a shiver of arousal down your spine.
+<br><br>
+
+<<if $breastfeedingdisable is "f">>
+	<<if $player.penisExist and !playerChastity("penis")>>
+		<<He>> reaches beneath you, and tugs free the pump stuck to your pelvis. It's almost enough to send you over the edge. The pumps stuck to your <<breasts>> come next.
+	<<else>>
+		<<He>> reaches beneath you, and tugs free the pumps stuck to your <<breasts>>. It's almost enough to send you over the edge.
+	<</if>>
+<<else>>
+	<<He>> reaches beneath you, and tugs free the pump surrounding your <<penis>>. It's almost enough to send you over the edge.
+<</if>>
+
+<<if $livestock_obey gte 80>>
+	"You're such a good <<girl>>," <<he>> says, scratching you behind the ear. "Time for bed." <<He>> stands and walks to the gate. <<He>> smiles at you as <<he>> shuts the cage.
+<<elseif $livestock_obey gte 20>>
+	<<He>> wraps <<his>> fingers around your collar and pulls you close. "You're going to be a good <<girl>> tonight, okay?" <<he>> whispers. "No keeping the other cattle up." <<He>> releases you, stands, and walks over to the gate. It shuts with a clank.
+<<else>>
+	<<He>> grasps your ear and pulls you close. "It's time for bed. I better not hear you got up to mischief overnight. Understood?" <<He>> releases you, stands, and walks to the gate without waiting for a response.
+<</if>>
+<br><br>
+
+Remy and the farmhands finish freeing the cattle from the machine. They turn off the lights as they leave, plunging the barn into darkness.
+<br><br>
+
+<<endevent>>
+
+<<unset $livestock_semen>>
+<<unset $livestock_milk>>
+<<unbind>>
+
+<<link [[Next|Livestock Cell]]>><</link>>
+<br>
+
+:: Livestock Lactate
+<<effects>>
+
+/***remy mod */
+<<if $remyrape_count is undefined>>
+	<<set $remyrape_count to 0>>
+<</if>>
+<<if C.npc.Remy.love gte 70 and $remysex is 1 and $livestock_milk_max gt 20 and random(1,10) gte 6 and ($breastfeedingdisable is "f" or ($player.penisExist and !playerChastity()))>>
+	<<if $remyrape_count gt 8>>
+		雷米打开了你的笼子，给你套上了牵引绳，农场工人们都习以为常，毕竟你是最特殊，产的奶最美味的奶牛。
+		<br><br>
+		<<if $remyromance is undefined>>
+		    <<earnFeat "Remy's Lovely Cattle">>
+			<<set $remyromance to 1>>
+			你们一同来到那个房间，和平时没有任何区别，但是雷米迟迟没有将你束缚上去，你疑惑的看着<<he>>。
+			<br><br>
+			"在我的眼中，一直以来你和其他的奶牛都没有任何区别。"雷米长呼了一口气，揉着自己皱起的眉头，"我知道农场里的工人们很多都有些奇怪的想法。"
+			<br><br>
+			"是因为孤单？还是因为没处发泄身体的火气？他们才会对农场里的动物有不一样的想法？"
+			<br><br>
+			"他们有些人说你很漂亮，很吸引人……"雷米托起你的脸，盯着你的眼睛，"不管是味道，还是产量，不管是身材，还是外貌，你的确比其他牛优秀很多，但是再漂亮的牛也只是牛。"
+			<br><br>
+			"不会说话，温顺，的，一头牛……"
+			<br><br>
+			雷米眯起了眼睛，"这样看来，这的确是你难得的优点了，只要你一直听话下去，我就会一直保护你。"
+			<br><br>
+			你睁大眼睛害怕的看着<<he>>，看着你的表情雷米却笑了，"继续害怕我吧，只有恐惧才能让你不敢反抗我。"
+			<br><br>
+			"也不要想着逃跑，不管你逃跑多少次，所以我的手下都会将带回我的身边，只要你还在这个镇子上，永远不可能彻底摆脱我。"
+			<br><br>
+			"仔细想想，留在农场对你来说也没那么糟糕对不对？我会保护好你，只要你还在我的农场中，我就会保护好你。"雷米在你的额头上亲吻，"成为我们的家人，农场的一份子。"
+			<br><br>
+			"好了，进行今天的挤奶吧，你会让我满意的。"
+			<br><br>
+			雷米向你承诺，只要你在<<he>>的农场里面，你就会永远安全幸福的生活下去。
+			<br><br>
+			<<if $loveInterest.primary is "None">>
+				<<set $loveInterest.primary to "Remy">>
+				<span class = "gold">雷米现在是你的爱人了！<<he>>只是比起人类来说更加喜欢动物而已，而你就是<<he>>的动物。</span>
+			<<else>>
+				<span class = "gold">雷米现在可以称为你的爱人了！<<he>>只是比起人类来说更加喜欢动物而已，而你就是<<he>>的动物。<br>
+				你可以在"态度"菜单中改变你的爱情对象。</span>
+			<</if>>
+			<br><br>
+		<</if>>	
+		<<link [[咬雷米的裤子|remymod milk sex pants]]>><<npcincr Remy dom -1>><<livestock_obey -1>><</link>><<lobey>>
+		<br>
+		<<link [[用头蹭雷米手|remymod milk sex hand]]>><<npcincr Remy dom 2>><<livestock_obey 1>><</link>><<gobey>>
+		<br>
+		<<link [[含雷米的手指|remymod milk sex finger]]>><<npcincr Remy dom 1>><<livestock_obey 1>><</link>><<gobey>>
+		<br>
+		<<link [[打滚|remymod milk sex ground]]>><<npcincr Remy dom -2>><<livestock_obey -1>><</link>><<lobey>>
+		<br>
+
+	<<else>>
+		<<set $remyrape_count += 1>>
+		雷米打开了你的笼子，给你套上了牵引绳，一名农场工人看见后问道："雷米老大，又单独给<<pShe>>挤奶了？"
+		<br><br>
+		"<<pShe>>的牛奶可不能和其他牛混在一起，不然预订了<<pShe>>牛奶的顾客可不会满意，我带<<pShe>>去专门的房间。"雷米拽着你的牵引绳，向着一个房
+		间走去。
+		<br><br>
+		<<he>>推开了那间房间门，房间里面是一个束缚你的铁架，和专门存放你奶水的储存桶。
+		<br><br>
+		"跪下，<<girl>>。"雷米对你命令道。
+		<br><br>
+
+		<<if $cow gte 6>>
+			<<link [[发出牛叫|remymod milk rape Moo]]>><<npcincr Remy dom 1>><<npcincr Remy love 1>><<livestock_obey 5>><<sub 1>><<transform cow 1>><</link>><<ggobey>>
+			<br>
+		<</if>>
+		<<link [[服从|remymod milk rape Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><<sub 1>><<transform cow 1>><</link>><<gobey>>
+		<br>
+		<<link [[拒绝|remymod milk rape Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<def 1>><</link>><<lobey>>
+		<br>
+	<</if>>
+<<elseif C.npc.Remy.love gte 50 and $milk_hand_first is 1 and $livestock_milk_max gt 15 and C.npc.Remy.lust gte 20 and random(1,10) gte 6 and ($breastfeedingdisable is "f" or ($player.penisExist and !playerChastity()))>>
+	<<set $remysex to 1>>
+	雷米从你的笼子外面拿了几个玻璃泵。它连着一根管子，通向一个更大的机器。和其他牛连接的是同一台机器。<<he>>抓住你的项圈，把你拉向大门。"跪下，<<girl>>。"
+	<br><br>
+	雷米打开了你的笼子，给你套上了牵引绳，一名农场工人看见后问道："雷米老大，你这是？"
+	<br><br>
+	"<<pShe>>的牛奶可不能和其他牛混在一起，刚好前段时间不是收拾出来了一间房间，我带<<pShe>>去那边。"雷米拽着你的牵引绳，向着一个房间走去。
+	<br><br>
+	<<he>>推开了那间房间门，房间里面是一个束缚你的铁架，和专门存放你奶水的储存桶。
+	<br><br>
+	"跪下，<<girl>>。"雷米对你命令道。
+	<br><br>
+
+	<<if $cow gte 6>>
+		<<link [[发出牛叫|remymod milk mouth Moo]]>><<npcincr Remy dom 1>><<npcincr Remy love 1>><<livestock_obey 5>><<sub 1>><<transform cow 1>><</link>><<ggobey>>
+		<br>
+	<</if>>
+	<<link [[服从|remymod milk mouth Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><<sub 1>><<transform cow 1>><</link>><<gobey>>
+	<br>
+	<<link [[拒绝|remymod milk mouth Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<def 1>><</link>><<lobey>>
+	<br>
+
+<<elseif C.npc.Remy.love gte 30 and $livestock_milk_max gt 10 and C.npc.Remy.lust gte 20 and random(1,10) gte 6 and ($breastfeedingdisable is "f" or ($player.penisExist and !playerChastity()))>>
+	<<set $milk_hand_first to 1>>
+	雷米从你的笼子外面拿了几个玻璃泵。它连着一根管子，通向一个更大的机器。和其他牛连接的是同一台机器。<<he>>抓住你的项圈，把你拉向大门。"跪下，<<girl>>。"
+	<br><br>
+	雷米打开了你的笼子，给你套上了牵引绳，一名农场工人看见后问道："雷米老大，你这是？"
+	<br><br>
+	"<<pShe>>的牛奶可不能和其他牛混在一起，刚好前段时间不是收拾出来了一间房间，我带<<pShe>>去那边。"雷米拽着你的牵引绳，向着一个房间走去。
+	<br><br>
+	<<he>>推开了那间房间门，房间里面是一个束缚你的铁架，和专门存放你奶水的储存桶。
+	<br><br>
+	"跪下，<<girl>>。"雷米对你命令道。
+	<br><br>
+
+	<<if $cow gte 6>>
+		<<link [[发出牛叫|remymod milk hand Moo]]>><<npcincr Remy dom 1>><<npcincr Remy love 1>><<livestock_obey 5>><<sub 1>><<transform cow 1>><</link>><<ggobey>>
+		<br>
+	<</if>>
+	<<link [[服从|remymod milk hand Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><<sub 1>><<transform cow 1>><</link>><<gobey>>
+	<br>
+	<<link [[拒绝|remymod milk hand Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<def 1>><</link>><<lobey>>
+	<br>
+
+<<else>>
+<<if $breastfeedingdisable is "f">>
+	<<if $player.penisExist and !playerChastity("penis")>>
+		Remy retrieves a few glass pumps from just outside your cage. It's attached to a tube leading to a much larger machine. The same machine the other cattle are being connected to. <<He>> grasps your collar and pulls you towards the gate. "On your knees, <<girl>>."
+		<br><br>
+
+		<<if $cow gte 6>>
+			<<link [[Moo|Livestock Lactate Moo]]>><<npcincr Remy dom 1>><<npcincr Remy love 1>><<livestock_obey 5>><<sub 1>><<transform cow 1>><</link>><<ggobey>>
+			<br>
+		<</if>>
+		<<link [[Obey|Livestock Lactate Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><<sub 1>><<transform cow 1>><</link>><<gobey>>
+		<br>
+		<<link [[Refuse|Livestock Lactate Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<def 1>><</link>><<lobey>>
+		<br>
+	<<else>>
+		Remy retrieves a couple of glass pumps from just outside your cage. It's attached to a tube leading to a much larger machine. The same machine the other cattle are being connected to. <<He>> grasps your collar and pulls you towards the gate. "On your knees, <<girl>>."
+		<br><br>
+
+		<<if $cow gte 6>>
+			<<link [[Moo|Livestock Lactate Moo]]>><<npcincr Remy dom 1>><<npcincr Remy love 1>><<livestock_obey 5>><<sub 1>><<transform cow 1>><</link>><<ggobey>>
+			<br>
+		<</if>>
+		<<link [[Obey|Livestock Lactate Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><<sub 1>><<transform cow 1>><</link>><<gobey>>
+		<br>
+		<<link [[Refuse|Livestock Lactate Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<def 1>><</link>><<lobey>>
+		<br>
+	<</if>>
+<<else>>
+	<<if $player.penisExist and !playerChastity("penis")>>
+		Remy retrieves a glass pump from just outside your cage. It's attached to a tube leading to a much larger machine. The same machine the other cattle are being connected to. <<He>> grasps your collar and pulls you towards the gate. "On your knees, <<girl>>."
+		<br><br>
+
+		<<if $cow gte 6>>
+			<<link [[Moo|Livestock Lactate Moo]]>><<npcincr Remy dom 1>><<npcincr Remy love 1>><<livestock_obey 5>><<sub 1>><<transform cow 1>><</link>><<ggobey>>
+			<br>
+		<</if>>
+		<<link [[Obey|Livestock Lactate Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><<sub 1>><<transform cow 1>><</link>><<gobey>>
+		<br>
+		<<link [[Refuse|Livestock Lactate Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<def 1>><</link>><<lobey>>
+		<br>
+	<<else>>
+		"You're not much use for now," Remy says. "But that doesn't mean you shouldn't be treated." <<He>> retrieves a small pink pill-shaped object attached to a wire that leads to the milking machine. The same machine the other cattle are being connected to. <<He>> grasps your collar and pulls you towards the gate. "On your knees, <<girl>>."
+		<br><br>
+
+		<<if $cow gte 6>>
+			<<link [[Moo|Livestock Lactate Moo]]>><<npcincr Remy dom 1>><<npcincr Remy love 1>><<livestock_obey 5>><<sub 1>><<transform cow 1>><</link>><<ggobey>>
+			<br>
+		<</if>>
+		<<link [[Obey|Livestock Lactate Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><<sub 1>><<transform cow 1>><</link>><<gobey>>
+		<br>
+		<<link [[Refuse|Livestock Lactate Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<def 1>><</link>><<lobey>>
+		<br>
+
+	<</if>>
+<</if>>
+<</if>>/***remy mod */
+
+

@@ -1,0 +1,423 @@
+:: Livestock Field
+<<set $outside to 1>><<effects>>
+
+You are on the cattle field within Remy's farm.
+<!-- Modified for Monster People -->
+<<if ($monsterchance gte 1 and ($hallucinations gte 1 or $monsterhallucinations is "f"))>>
+	<<livestock_cows "cap">> munch on grass, staying well away from the electric perimeter fence despite the grass growing thick beside it.
+<<else>>
+	Cows munch on grass, staying well away from the electric perimeter fence despite the grass growing thick beside it.
+<</if>>
+
+A river runs through one corner. The cattle stay almost as far away from the churning water as they do the fence.
+<br><br>
+
+<<if Time.hour gte 12>>
+	Remy's steeds feed near the river. The <<livestock_cows>> avoid them.
+	<br><br>
+<</if>>
+
+/***remy mod */
+<<if $remy_pillow_1 is 1 and $remy_gift_pillow is undefined>>
+	<<set $remy_gift_pillow to "known">>
+	你想起了雷米刚刚送你的那个枕头，或许你以后可以把它们送给雷米的马来换取它们的信任，当然你也可以选择把它留在自己的小隔间里，那样会使你的小房间更加温暖舒适。
+	<br><br>
+<</if>>
+
+<<if $remy_cushion_1 is 1 and $remy_gift_cushion is undefined>>
+	<<set $remy_gift_cushion to "known">>
+	你想起了雷米刚刚送你的那个垫子，或许你以后可以把它们送给雷米的马来换取它们的信任，当然你也可以选择把它留在自己的小隔间里，那样会使你的小房间更加温暖舒适。
+	<br><br>
+<</if>>
+
+<<livestock_obey_description>>
+<br>
+<<if $livestock_grass isnot 1>>
+	<<hunger_description>>
+<</if>>
+<br><br>
+
+<<if isPlayerNonparasitePregnancyEnding()>>
+	<<pregnancyWatersBrokenPassout "remy">>
+<<elseif $stress gte $stressmax>>
+	<<passoutremy>>
+<<elseif Time.hour gte 18>>
+	<<npc Remy>><<person1>>
+	The gate rattles as two farmhands push it open. Remy strides in, mounts a <<livestock_horse>>, and spurs it around the field. <<He>> circles the cattle, rounding them together and pushing them towards the exit.
+	<br><br>
+	<<if $hunger gte 2000>>
+		You feel faint. <span class="red">You're starving.</span> Even the thought of grass is appetising.
+		<<gggstress>><<stress 36>>/*<<physique_loss 36>><<willpower 12>>*/
+	<<elseif $hunger gte 1600>>
+		Your stomach gives an angry rumble. <span class="pink">You're so hungry.</span> Even the thought of grass is appetising.
+		<<ggstress>><<stress 18>>
+	<<elseif $hunger gte 1200>>
+		Your stomach rumbles. <span class="purple">You're hungry.</span> Even the food at the orphanage would be palatable.
+		<<gstress>><<stress 6>>
+	<<elseif $hunger gte 800>>
+		<span class="blue">You're a bit peckish,</span> but that's tolerable given the situation.
+	<<elseif $hunger gte 400>>
+		You wish you had something nice to eat, <span class="lblue">but at least you're not hungry</span>
+		<<lstress>><<stress -6>>
+	<<elseif $hunger gte 1>>
+		<span class="teal">You feel satiated.</span> At least hunger pangs won't be keeping you awake.
+		<<lstress>><<stress -6>>
+	<<else>>
+		<span class="green">Your stomach is full.</span> At least hunger pangs won't be keeping you awake.
+		<<lstress>><<stress -6>>
+	<</if>>
+	<br><br>
+	<<if $livestock_muzzle is 1>>
+		<<if $livestock_obey gte 60>>
+			<<unset $livestock_muzzle>>
+			You and the cattle are led back to the barn. A couple of farmhands pull you aside at the entrance, and affix a muzzle around your mouth.
+			<br><br>
+
+			"Wait," says Remy's voice from behind. <<He>> rides behind the last of the cattle, and stops beside you. <<He>> looks down. "I think it's proven itself safe," <<he>> says. "The muzzle is unnecessary." <<He>> rides away as the farmhand removes the device, freeing your mouth.
+			<br><br>
+
+			You're led into the barn, where a farmhand pushes you into your cell.
+			<br><br>
+		<<else>>
+			You and the cattle are led back to the barn. A couple of farmhands pull you aside at the entrance, and <span class="purple">affix a muzzle around your mouth.</span>
+			<<facewear 23>>
+			<br><br>
+
+			You're led into the barn, where a farmhand pushes you into your cell.
+			<br><br>
+		<</if>>
+	<<else>>
+		You and the cattle are led back to the barn, where a farmhand pushes you into your cell.
+		<br><br>
+	<</if>>
+
+	<<endevent>>
+	<<link [[Next|Livestock Cell]]>><</link>>
+	<br>
+/***remy mod */
+<<elseif Time.hour is 12>>
+	<<if Time.weekDay is 5 and $remyromance is 1 and random(1,5) gte 3>>
+		<<remymod_livestock_gift>>
+	<<elseif C.npc.Remy.lust gte 10 and random(1,5) gte 3 and ($player.breastsize gte 6 or $player.penissize gte 4)>>
+		<<npc Remy>><<person1>>
+		大门打开了，雷米骑着一匹马冲了进来。<<He>>从<<his>>的<<livestock_horse>>上下来环顾四周，直到<<his>>的目光落在你身上。"你在这里啊，<<girl>>。"<<he>>说，"我们有一份特别的工作给你，过来。"
+		<br><br>
+
+		<<link [[服从|Livestock Job Obey1]]>><<npcincr Remy dom 1>><<livestock_obey 1>><</link>><<gobey>>
+		<br>
+		<<link [[拒绝|Livestock Job Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><</link>><<lobey>>
+		<br>
+	
+	<<elseif $livestock_obey gte 30>>
+		<<npc Remy>><<person1>>
+		The gate opens, and Remy rides in at the head of a group of steeds. <<He>> dismounts <<his>> <<livestock_horse>> and looks around, until <<his>> eyes rest on you. "There you are <<girl>>," <<he>> says. "We have a special job for you. Come here." <<He>> walks closer, holding a leash.
+		<br><br>
+
+		<<link [[Obey|Livestock Job Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><</link>><<gobey>>
+		<br>
+		<<link [[Refuse|Livestock Job Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><</link>><<lobey>>
+		<br>
+
+	<<else>>
+		<<npc Remy>><<person1>>
+		The gate opens, and Remy rides in at the head of a group of steeds, each ridden by a farmhand. <<He>> pulls to a stop, but the farmhands continue riding. They form a circle around you. Each carries a long cattle prod.
+		<br><br>
+		Remy dismounts and walks closer, holding a leash. "We have a special job for you. Come here."
+		<br><br>
+
+		<<link [[Obey|Livestock Job Disobedient Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><</link>><<gobey>>
+		<br>
+		<<link [[Refuse|Livestock Job Disobedient Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<pain 6>><</link>><<lobey>><<gpain>>
+		<br>
+	<</if>>
+
+<<else>>
+	<<if $livestock_grass is 1>>
+		<<unset $livestock_grass>>
+		You look around the field. There's a lot of open space for exercise, but there doesn't seem to be anything else to do.
+		<br><br>
+		<<generate1>><<person1>><<set $hunger to 1200>>
+		<span class="pink">Your stomach rumbles.</span> You hear a chuckle. One of the farmhands watches you from the other side of the fence. "Hungry, <<girl>>?" <<he>> laughs again. "There's plenty of grass in there. You'd best be a good <<if $player.gender_appearance is "m">>bull<<else>>cow<</if>> and get chewing."
+		<br><br>
+
+		<<link [[Eat grass|Livestock Field Intro Grass]]>><<hunger -400>><<livestock_obey 1>><<transform cow 1>><</link>><<gobey>><<lhunger>>
+		<br>
+		<<link [[Ignore|Livestock Field Intro Ignore]]>><</link>>
+		<br>
+		<<link [[Protest|Livestock Field Intro Protest]]>><</link>>
+		<br>
+	<<elseif $arousal gte $arousalmax>>
+		<<orgasm>> Your knees buckle, and you fall to the grass.
+		<!-- Modified for Monster People -->
+		<<if ($monsterchance gte 1 and ($hallucinations gte 1 or $monsterhallucinations is "f"))>>
+			<<if maleChance() lt random(1, 100)>>
+				Cowgirls around the field look over in confusion.
+
+			<<else>>
+				Bullboys around the field look over in confusion.
+
+			<</if>>
+		<<else>>
+		<</if>>
+		<br><br>
+		<<generate1>><<generate2>><<generate3>><<generate4>><<person1>>
+		You lie in the field, and soon hear footsteps approach. "What have we here?" Says a <<personsimple>>'s voice beside you. "Is it unwell?"
+		<br><br>
+		"I think it needs a seeing to," says a <<person2>><<person>> as <<he>> crouches beside you, pinning your shoulders to the ground. You hear more farmhands approach.
+		<br><br>
+
+		<<link [[Next|Livestock Field Gang]]>><<set $molestationstart to 1>><</link>>
+		<br>
+	<<elseif !(Time.days % 6) and $daily.eden.farmRescue isnot 1 and C.npc.Eden.love gte 120 and ($edenfreedom is 1 and $edendays gte 4 or $edenfreedom gte 2 and $edendays gte 9)>>
+		You see a figure in the distance, lurking on the moor.
+		<br><br>
+		<<link [[Investigate|Eden Fence Rescue]]>><<npcincr Eden dom 5>><<set $daily.eden.farmRescue to 1>><</link>>
+		<br>
+		<<link [[Ignore it|Eden Fence Ignore]]>><<set $daily.eden.farmRescue to 1>><</link>>
+		<br>
+	<<else>>
+		<<link [[Eat grass (1:00)|Livestock Field Grass]]>><<pass 60>><<livestock_obey 1>><<transform cow 1>><<hunger -400>><</link>><<gobey>><<lhunger>>
+		<br>
+		<<link [[Exercise (1:00)|Livestock Field Exercise]]>><<pass 60>><<tiredness 6>><<athletics 6>><</link>><<gtiredness>><<gathletics>>
+		<br>
+		<<if $livestock_fence is 1>>
+			<<link [[Examine the fence|Livestock Field Fence]]>><<unset $livestock_fence>><</link>>
+			<br>
+		<<elseif $livestock_dig gte 25>>
+			<<link [[Approach the tunnel under the fence|Livestock Tunnel]]>><</link>>
+			<br>
+		<<elseif $livestock_dig gte 24 and $physiquesize lte 12000>>
+			<<link [[Approach the tunnel under the fence|Livestock Tunnel]]>><</link>><<small_text>>
+			<br>
+		<<elseif $livestock_dig gte 23 and $physiquesize lte 10000>>
+			<<link [[Approach the tunnel under the fence|Livestock Tunnel]]>><</link>><<small_text>>
+			<br>
+		<<elseif $livestock_dig gte 22 and $physiquesize lte 6000>>
+			<<link [[Approach the tunnel under the fence|Livestock Tunnel]]>><</link>><<small_text>>
+			<br>
+		<<else>>
+			<<link [[Dig beneath the fence (1:00)|Livestock Field Dig]]>><<pass 60>><<tiredness 6>><<set $livestock_dig += 1>><</link>><<gtiredness>>
+			<br>
+		<</if>>
+		<<if $livestock_river is 1>>
+			<<link [[Examine the river|Livestock Field River Examine]]>><<unset $livestock_river>><</link>>
+			<br>
+		<<else>>
+			<<link [[Approach the river|Livestock Field River]]>><</link>>
+			<br>
+		<</if>>
+		<<if Time.hour gte 12>>
+			<<link [[Approach Remy's horses|Livestock Field Horse]]>><</link>>
+			<br>
+		<</if>>
+	<</if>>
+<</if>>
+
+:: Livestock Field Horse
+<<effects>>
+<!-- Modified for Monster People -->
+<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+	<<if maleChance() lte 0>>
+		<<set _horse_gender to "f">>
+	<<elseif maleChance() gte 100>>
+		<<set _horse_gender to "m">>
+	<<else>>
+		<<set _horse_gender to "b">>
+	<</if>>
+		<<if _horse_gender is "f">>
+			You approach Remy's steeds. They look like horses from a distance, but up close you see they have the heads and torsos of women. Long, well-cared-for manes of hair trail down their backs and chests. They seem unconcerned about their bare breasts.
+			<br><br>
+		<<elseif _horse_gender is "m">>
+			You approach Remy's steeds. They look like horses from a distance, but up close you see they have the heads and torsos of men. Long, well-cared-for manes of hair trail down their backs and chests.
+			<br><br>
+		<<else>>
+			You approach Remy's steeds. They look like horses from a distance, but up close you see they have the heads and torsos of men and women. Long, well-cared-for manes of hair trail down their backs and chests. The women seem unconcerned about their bare breasts.
+			<br><br>
+		<</if>>
+
+		Some stoop to drink from the river. Others stare at their reflections, running fingers through their hair.
+
+		<<if $livestock_horse gte 2>>
+			<span class="green">A few nod in greeting as you approach.</span>
+			<br><br>
+
+			<<link [[Brush their hair (1:00)|Livestock Field Centaur Brush]]>><<pass 60>><<tending 6>><<stress -6>><</link>><<gtending>><<lstress>>
+			<br>
+			<<if $awareness gte 200 and $horsedisable is "f">>
+				<<if maleChance() gte random(1, 100)>>
+					<<if $cbchance gte random(1, 100)>>
+						<<link [[Look beneath one (0:05)|Livestock Field Centaur Male Vagina]]>><<pass 5>><</link>><<deviant1>>
+					<<else>>
+						<<link [[Look beneath one (0:05)|Livestock Field Centaur Male]]>><<pass 5>><</link>><<deviant1>>
+					<</if>>
+				<<else>>
+					<<if $dgchance gte random(1, 100)>>
+						<<link [[Look beneath one (0:05)|Livestock Field Centaur Female]]>><<pass 5>><</link>><<deviant1>>
+					<<else>>
+						<<link [[Look beneath one (0:05)|Livestock Field Centaur Female Vagina]]>><<pass 5>><</link>><<deviant1>>
+					<</if>>
+				<</if>>
+				<br>
+			<</if>>
+
+			<<if $livestock_food gte 1>>
+				<<link [[Offer the basket of apples|Livestock Field Centaur Apples]]>>
+			<</if>>
+
+			/***remy mod */
+			<<if $remy_pillow_1 gte 1>>
+				<<link [[送枕头|Livestock Field Horse pillow]]>><<trauma -18>><<unset $remy_pillow_1>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			<<if $remy_cushion_1 gte 1>>
+				<<link [[送垫子|Livestock Field Horse cushion]]>><<trauma -18>><<unset $remy_cushion_1>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			<<link [[Leave|Livestock Field]]>><</link>>
+			<br>
+		<<elseif $livestock_horse gte 1>>
+			They watch as you approach. Some look amused.
+			<br><br>
+
+			<<link [[Brush their hair (1:00)|Livestock Field Centaur Brush]]>><<pass 60>><<tending 6>><<lstress>><</link>><<gtending>><<lstress>>
+			<br>
+			<!-- Modified for Monster People -->
+			<<if $awareness gte 200 and $horsedisable is "f" and (_horse_gender isnot "b" or $bestialitydisable is "f")>>
+				<<if maleChance() gte random(1, 100)>>
+					<<if $cbchance gte random(1, 100)>>
+						<<link [[Look beneath one (0:05)|Livestock Field Centaur Male Vagina]]>><<pass 5>><</link>><<deviant1>>
+					<<else>>
+						<<link [[Look beneath one (0:05)|Livestock Field Centaur Male]]>><<pass 5>><</link>><<deviant1>>
+					<</if>>
+				<<else>>
+					<<if $dgchance gte random(1, 100)>>
+						<<link [[Look beneath one (0:05)|Livestock Field Centaur Female]]>><<pass 5>><</link>><<deviant1>>
+					<<else>>
+						<<link [[Look beneath one (0:05)|Livestock Field Centaur Female Vagina]]>><<pass 5>><</link>><<deviant1>>
+					<</if>>
+				<</if>>
+				<br>
+			<</if>>
+
+			<<if $livestock_food gte 1>>
+				<<link [[Offer the basket of apples|Livestock Field Centaur Apples]]>><<trauma -18>><<unset $livestock_food>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			/***remy mod */
+			<<if $remy_pillow_1 gte 1>>
+				<<link [[送枕头|Livestock Field Horse pillow]]>><<trauma -18>><<unset $remy_pillow_1>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			<<if $remy_cushion_1 gte 1>>
+				<<link [[送垫子|Livestock Field Horse cushion]]>><<trauma -18>><<unset $remy_cushion_1>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			<<link [[Leave|Livestock Field]]>><</link>>
+			<br>
+		<<else>>
+			<<if _horse_gender is "f">>
+				One of them, a particularly large, dark-haired specimen, faces you as you draw close. "Walk away, cattle," she says, holding her head higher. "This is our patch." The others watch you as well.
+				<br><br>
+			<<elseif _horse_gender is "m">>
+				One of them, a particularly large, dark-haired specimen, faces you as you draw close. "Walk away, cattle," he says, holding his head higher. "This is our patch." The others watch you as well.
+				<br><br>
+			<<else>>
+				One of them, a particularly large, dark-haired specimen, faces you as you draw close. "Walk away, cattle," he says, holding his head higher. "This is our patch." The others watch you as well.
+				<br><br>
+			<</if>>
+
+			<<link [[Be friendly|Livestock Field Centaur Friendly]]>><<set $livestock_horse to 1>><</link>>
+			<br>
+			<<link [[Be firm|Livestock Field Centaur Firm]]>><<set $livestock_horse to 1>><</link>>
+			<br>
+			<<link [[Walk away|Livestock Field]]>><</link>>
+			<br>
+		<</if>>
+<<else>>
+
+		You approach Remy's steeds. Their fur ranges from pale to dark brown, all well-groomed. Most stoop, either to drink from the river or to munch on grass.
+		<br><br>
+
+		<<if $livestock_horse gte 2>>
+			<span class="green">They clop closer as you approach.</span>
+			<br><br>
+
+			<<link [[Brush their hair (1:00)|Livestock Field Horse Brush]]>><<pass 60>><<tending 6>><<stress -6>><</link>><<gtending>><<lstress>>
+			<br>
+			<<if $awareness gte 200 and $bestialitydisable is "f" and $horsedisable is "f">>
+				<<if beastMaleChance() gte random(1, 100)>>
+					<<link [[Look beneath one (0:05)|Livestock Field Horse Lewd]]>><<pass 5>><</link>><<deviant1>>
+				<<else>>
+					<<link [[Look beneath one (0:05)|Livestock Field Horse Lewd Female]]>><<pass 5>><</link>><<deviant1>>
+				<</if>>
+				<br>
+			<</if>>
+
+			<<if $livestock_food gte 1>>
+				<<link [[Offer the basket of apples|Livestock Field Horse Apples]]>><<trauma -18>><<unset $livestock_food>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			/***remy mod */
+			<<if $remy_pillow_1 gte 1>>
+				<<link [[送枕头|Livestock Field Horse pillow]]>><<trauma -18>><<unset $remy_pillow_1>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			<<if $remy_cushion_1 gte 1>>
+				<<link [[送垫子|Livestock Field Horse cushion]]>><<trauma -18>><<unset $remy_cushion_1>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			<<link [[Leave|Livestock Field]]>><</link>>
+			<br>
+		<<elseif $livestock_horse gte 1>>
+			They watch as you approach. They seem calm.
+			<br><br>
+
+			<<link [[Brush their hair (1:00)|Livestock Field Horse Brush]]>><<pass 60>><<tending 6>><<lstress>><</link>><<gtending>><<lstress>>
+			<br>
+			<<if $awareness gte 200 and $bestialitydisable is "f" and $horsedisable is "f">>
+				<<if beastMaleChance() gte random(1, 100)>>
+					<<link [[Look beneath one (0:05)|Livestock Field Horse Lewd]]>><<pass 5>><</link>><<deviant1>>
+				<<else>>
+					<<link [[Look beneath one (0:05)|Livestock Field Horse Lewd Female]]>><<pass 5>><</link>><<deviant1>>
+				<</if>>
+				<br>
+			<</if>>
+
+			<<if $livestock_food gte 1>>
+				<<link [[Offer the basket of apples|Livestock Field Horse Apples]]>><<trauma -18>><<unset $livestock_food>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			/***remy mod */
+			<<if $remy_pillow_1 gte 1>>
+				<<link [[送枕头|Livestock Field Horse pillow]]>><<trauma -18>><<unset $remy_pillow_1>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			<<if $remy_cushion_1 gte 1>>
+				<<link [[送垫子|Livestock Field Horse cushion]]>><<trauma -18>><<unset $remy_cushion_1>><</link>><<lltrauma>>
+				<br>
+			<</if>>
+
+			<<link [[Leave|Livestock Field]]>><</link>>
+			<br>
+		<<else>>
+			One of them, a particularly large, dark-haired specimen, unleashes a deep whinny as you approach. It sounds like a warning. The others look up. They're watching you.
+			<br><br>
+
+			<<link [[Be friendly|Livestock Field Friendly]]>><<set $livestock_horse to 1>><</link>>
+			<br>
+			<<link [[Be firm|Livestock Field Firm]]>><<set $livestock_horse to 1>><</link>>
+			<br>
+			<<link [[Walk away|Livestock Field]]>><</link>>
+			<br>
+		<</if>>
+<</if>>
