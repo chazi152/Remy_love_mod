@@ -37,6 +37,7 @@
     "game/overworld-plains/addon-replace/field-Livestock Field-obey.txt",
     "game/overworld-plains/addon-replace/field-Livestock Feild horse-food.txt",
     "game/overworld-plains/addon-replace/field-Livestock Field-hour12.txt",
+    "game/overworld-plains/addon-replace/field-Livestock Field-pregnancy.txt",
     "game/overworld-plains/addon-replace/intro-Livestock Return.txt",
     "game/overworld-plains/addon-replace/intro-Livestock Return-eden.txt",
     "game/overworld-plains/addon-replace/jobs-Livestock Job End-obey.txt",
@@ -161,13 +162,18 @@
           "replaceFile": "game/overworld-plains/addon-replace/field-Livestock Field-obey.txt"
         },
         {
+          "passage": "Livestock Field",
+          "findString": "\t<<pregnancyWatersBrokenPassout \"remy\">>",
+          "replaceFile": "game/overworld-plains/addon-replace/field-Livestock Field-pregnancy.txt"
+        },
+        {
           "passage": "Livestock Return",
           "findString": "<<effects>>",
           "replaceFile": "game/overworld-plains/addon-replace/intro-Livestock Return.txt"
         },
         {
           "passage": "Livestock Return",
-          "findString": "\"I didn't much appreciate you being taken from us to have that baby. But you didn't have much of a choice in it.\"",
+          "findString": "\"I didn't much appreciate you being taken from us to have that baby. But you didn't have much of a choice in it.\"\n<<else>>",
           "replaceFile": "game/overworld-plains/addon-replace/intro-Livestock Return-eden.txt"
         },
         {
@@ -379,6 +385,11 @@
           "passage": "Widgets Effects Man",
           "findString": "\t\t\t\t\t\t\t<<case \"Robin\">>\n\t\t\t\t\t\t\t\t/*Default pregnancyAvoidance is 50. Will have a condom if NPC condoms are enabled.*/",
           "replace": "\t<<case \"Remy\">>\n<<switch $_speech>>\n<<case \"accept\">>\n<<He_Short>>瞥了你一眼，什么都没说，但是你想雷米可能是默许了。\n<<case \"acceptGive\">>\n<<He_Short>>瞥了你一眼，\"我凭什么要在乎一头动物的安全？除非你能给我一个。\"<<He_Short>>明显是抱着<span class=\"blue\">看笑话</span>的心态说的这些话。\n<<case \"acceptHas\">>\n<<case \"reject\">>\n<<He_Short>>掐住了你的喉咙，\"<span class=\"red\">别想命令我，认清你的位置!</span>\"\n<</switch>>\n\t\t\t\t\t\t\t<<case \"Robin\">>\n\t\t\t\t\t\t\t\t/*Default pregnancyAvoidance is 50. Will have a condom if NPC condoms are enabled.*/"
+        },
+        {
+          "passage": "Pregnancy",
+          "findString": "\t\t\t\t<<case \"Robin\" \"Whitney\" \"Alex\" \"Wren\" \"Avery\">><<set $NPCName[$NPCNameList.indexOf($_name)].pregnancyAvoidance to 50>>",
+          "replace": "\t\t\t\t<<case \"Robin\" \"Whitney\" \"Alex\" \"Wren\" \"Avery\">><<set $NPCName[$NPCNameList.indexOf($_name)].pregnancyAvoidance to 50>>\n\t<<case \"Remy\">><<if pregnancyCountBetweenParents(\"Remy\", \"pc\") lte 0 or pregnancyCountBetweenParents(\"pc\", \"Remy\") lte 0>><<set $NPCName[$NPCNameList.indexOf($_name)].pregnancyAvoidance to 50>><<else>><<set $NPCName[$NPCNameList.indexOf($_name)].pregnancyAvoidance to 100>><</if>>"
         },
         {
           "passage": "Widgets Effects Man",
