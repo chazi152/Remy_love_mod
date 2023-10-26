@@ -100,6 +100,10 @@
 雷米解开了你的牵引绳后，将自己手中的包裹打开，
 <<switch random(1,6)>>
     <<case 1>>/**花环 */
+        <<if isConnectedToHood("head")>>
+            <<toggleHood>>
+        <</if>>
+        <<set $worn.head to "remymod_garland">>
         包裹里面是一个精美的花环，花环上的花朵十分新鲜，你隐隐约约嗅到了一丝花香，似乎是摘下来没多久的。
         <br><br>
         "我平时会在骑术学院那边教学生，"雷米靠近你，将花环戴在你的头上，"今天有一个学员在中间休息的时候在编这个花环，我看到后觉得很适合你，
@@ -113,7 +117,7 @@
         <br>
         <<link [[把花环藏起来|remymod_gift flower hide]]>><</link>>
         <br>
-        <<link [[戴上花环|remymod_gift flower head]]>><</link>>
+        <<link [[乖乖戴着花环|remymod_gift flower head]]>><</link>>
         <br>
         <<link [[嚼上面的花|remymod_gift flower eat]]>><<hunger -6>><</link>><<lhunger>>
         <br>
@@ -533,6 +537,10 @@
 
 :: remymod_gift hair near
 <<effects>>/***保留 */
+<<if isConnectedToHood("head")>>
+    <<toggleHood>>
+<</if>>
+<<set $worn.head to "remymod_Cow hairpins">>
 你听到了雷米的话语，撒欢的主动凑到了<<he>>的身边，看见你那么主动，雷米伸手撩起你的刘海，在你的额头上印下一个吻。
 <br><br>
 雷米折腾着你的头发，将发夹在你头上比弄着，你任由<<he>>折腾，好一会儿雷米才找到了自己满意的角度，将发夹夹在了你的头上。
@@ -583,6 +591,7 @@
 
 :: remymod_gift flower push
 <<effects>>
+<<headruined>><<set $worn.head.type.push("broken")>>
 <<if $cow gte 6 and $willpower gte random(1, 1000)>>
     你使劲的摇着脑袋，将头上的花环甩了下来，花环掉在了地上，你一脚将花环踢到了边上那一堆工器具里面，惊起来一片灰尘，心满意足的点了点头。
     <br><br>
@@ -606,6 +615,7 @@
 
 :: remymod_gift flower hide
 <<effects>>/***保留 */
+<<headruined>>
 <<if $cow gte 6 and $willpower gte random(1, 1000)>>
     你摇晃着脑袋，让花环从头上掉落下来，低头用嘴巴将花环叼起，在仓库里面晃悠着。
     <br><br>
@@ -663,6 +673,7 @@
 
 :: Widget Remy Love Mod gift Flower [widget]
 <<widget "remymod_livestock_flower_eat">>
+<<headruined>><<set $worn.head.type.push("broken")>>
 <<npc Remy>><<person1>>
 不知道为什么，你的脑内蹦出来这样一个念头，你能吃草，那么你能不能吃花？
 <br><br> 
