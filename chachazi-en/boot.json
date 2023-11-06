@@ -35,6 +35,7 @@
     "game/base-combat/addon-replace/widgets-Widgets Combat-takeKissVirgin.txt",
 
     "game/base-system/addon-replace/attitudes-Widgets Attitudes-loveInterest.txt",
+    "game/base-system/addon-replace/events-Pregnancy Birth Hospital 5-remy.txt",
     "game/base-system/addon-replace/bodywriting-objects-Widgets Bodywriting Objects-bodywriting.txt",
     "game/base-system/addon-replace/named-npcs-Widgets Named Npcs-relationship.txt",
     "game/base-system/addon-replace/social-Social-Remy.txt",
@@ -408,6 +409,16 @@
           "replace": "<<link [[抵抗|Livestock Eden Resist]]>><<set $daily.eden.farmRescue to 1>><<set $syndromeremybuild += 1>><<npcincr Eden love -10>><<livestock_obey 10>><</link>><<llove>><<gggobey>><<if $syndromeremy is undefined>><<gstockholm>><</if>>"
         },
         {
+          "passage": "Pregnancy Birth Hospital 2",
+          "findString": "/*Alex variables*/",
+          "replace": "<<if (getPregnancyObject().potentialFathers.length is 1 or getPregnancyObject().potentialFathers.length is undefined) and getPregnancyObject().fetus[0].father is \"Remy\">>\n<<set $remy_pregnancy to {}>>\n<<set $remy_pregnancy.knows to knowsAboutPregnancy(\"pc\",\"Remy\")>>\n<<set $remy_pregnancy.talked to talkedAboutPregnancy(\"pc\",\"Remy\")>>\n<<set $remy_pregnancy.source to getPregnancyObject().fetus[0].father>>\n<</if>>\n/*Alex variables*/"
+        },
+        {
+          "passage": "Pregnancy Birth Hospital 5",
+          "findString": "<<if $alex_pregnancy isnot undefined and $litter_potention_fathers is 1 and $alex_pregnancy.source is \"Alex\">>",
+          "replaceFile": "game/base-system/addon-replace/events-Pregnancy Birth Hospital 5-remy.txt"
+        },
+        {
           "passage": "Widgets Effects Man",
           "findString": "\t\t\t\t\t\t\t\t\t\t<<He_Short>> refuses. \"<span class=\"red\">We can't be reckless!</span>\"\n\t\t\t\t\t\t\t\t<</switch>>",
           "replaceFile": "game/base-combat/addon-replace/effects-ask noCondoms.txt"
@@ -435,6 +446,11 @@
             "from": "\t// Alex",
             "to": "\t//Remy\n\tif (V.remysex >= 1) fragment.append(wikifier(\"npcincr\", \"Remy\", \"lust\", 1));\n\tif (V.syndromeremy >= 1) fragment.append(wikifier(\"livestock_obey\", 2));\n\t// Alex",
             "fileName": "time.js"
+          },
+          {
+            "from": "\t\t\t\t\t\tcase \"Alex\":",
+            "to": "case \"Remy\":\nbirthLocation = \"riding_school\";\nlocation = \"riding_school\";\nbreak;\n\t\t\t\t\t\tcase \"Alex\":",
+            "fileName": "pregnancy.js"
           }
         ]
       }

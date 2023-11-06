@@ -1,0 +1,150 @@
+
+:: Pregnancy Birth Hospital 2
+<<effects>>
+
+The midwife places a mask over your face. You feel your consciousness fade. Several other figures appear around you, their forms ablur.
+<br><br>
+
+<<set $litter_potention_fathers to getPregnancyObject().potentialFathers.length>>
+
+<<if (getPregnancyObject().potentialFathers.length is 1 or getPregnancyObject().potentialFathers.length is undefined) and getPregnancyObject().fetus[0].father is "Remy">>
+	<<set $remy_pregnancy to {}>>
+	<<set $remy_pregnancy.knows to knowsAboutPregnancy("pc","Remy")>>
+	<<set $remy_pregnancy.talked to talkedAboutPregnancy("pc","Remy")>>
+	<<set $remy_pregnancy.source to getPregnancyObject().fetus[0].father>>
+
+<</if>>
+/*Alex variables*/
+<<if (getPregnancyObject().potentialFathers.length is 1 or getPregnancyObject().potentialFathers.length is undefined) and getPregnancyObject().fetus[0].father is "Alex">>
+	<<set $alex_pregnancy to {}>>
+	<<set $alex_pregnancy.knows to knowsAboutPregnancy("pc","Alex")>>
+	<<set $alex_pregnancy.talked to talkedAboutPregnancy("pc","Alex")>>
+	<<set $alex_pregnancy.source to getPregnancyObject().fetus[0].father>>
+
+<</if>>
+
+<<set _pregnancy to getPregnancyObject()>>
+<<if _pregnancy.totalBirthEvents gte 5>>
+	<<set _min to 15>>
+	<<set _max to 60>>
+<<elseif _pregnancy.totalBirthEvents gte 3>>
+	<<set _min to 30>>
+	<<set _max to 120>>
+<<else>>
+	<<set _min to 60>>
+	<<set _max to 180>>
+<</if>>
+
+<<set _max to Math.floor(_max * (1 + Math.floor(_pregnancy.fetus.length * 0.2)))>>
+<<set _min to Math.floor(_min * (1 + Math.floor(_pregnancy.fetus.length * 0.2)))>>
+
+<<set _timeCalc to random(_min, _max)>>
+<<set _hours to Math.floor(_timeCalc / 60)>>
+<<set _minutes to _timeCalc % 60>>
+
+/* Note: Pregnancy species */
+<<switch playerNormalPregnancyType()>>
+	<<case "human">>
+		<<setKnowsAboutPregnancy "pc" "Bailey">>
+		Harper's voice floats through the fog. "Normal human<<if !$player.vaginaExist>>, abnormal delivery<</if>>, but keep the others on the line, just in case..."
+		<br><br>
+
+		The pain grows as time seems to rapidly speed up and slow down. You hear the words "breathe" and "push" many times, and you do your best to comply.
+		<br><br>
+
+		<<link [["Next ("+_hours+":"+(_minutes lt 10 ? "0": "")+_minutes+")"| Pregnancy Birth Hospital 3]]>><<endevent>><<pass _timeCalc>><<playerPrebirth>><</link>>
+	<<case "wolf">>
+		Harper's voice floats through the fog. "Not human. This will be an abnormal delivery. Follow my instructions to the letter..."
+		<br><br>
+		<<link [["Next ("+_hours+":"+(_minutes lt 10 ? "0": "")+_minutes+")"| Pregnancy Birth Hospital Wolf]]>><<endevent>><<pass _timeCalc>><</link>>
+<</switch>>
+
+:: Pregnancy Birth Hospital 5
+<<effects>>
+
+<<if $litter_size gte 2>><<childrenNames $bornChildrenIds>> lie<<else>><<childname>> lies<</if>> in a cradle while the midwife helps you stand.
+
+<<if $first_birth or playerNormalPregnancyTotal() is 0>>
+	You feel your insides drop as you stand, but <<he>> assures you that's normal.
+	<br><br>
+
+	Despite the pain, you feel a lot more comfortable walking than you did before the birth. You'd forgotten how easy it is to move without people inside you.
+	<br><br>
+
+	The midwife helps you to dress. "You should be good to go," <<he>> says.
+<<elseif between(playerNormalPregnancyTotal(), 1, 2)>>
+	You feel your insides drop as you stand. You remember this feeling from your last birth, and know it's normal.
+	<br><br>
+
+	Despite the pain, you feel a lot more comfortable walking than you did before the birth. You'd forgotten how easy it is to move without people inside you.
+	<br><br>
+
+	The midwife helps you to dress. "You should be good to go," <<he>> says.
+<<elseif between(playerNormalPregnancyTotal(), 3, 7)>>
+	You feel your insides drop as you stand. You're still not used to the feeling.
+	<br><br>
+
+	You get walking again quite easily. It's a little awkward, but the transition isn't as bad as it used to be. It's still easier to move around when there isn't another human inside you.
+	<br><br>
+
+	The midwife still insists on helping you dress. "You should be good to go," <<he>> says.
+<<elseif between(playerNormalPregnancyTotal(), 8, 49)>>
+	You stand up without a hitch. There's hardly any difference in feeling anymore, although you do feel much more nimble.
+	<br><br>
+
+	<<He>> looks impressed at your mobility, only keeping an arm around you for stability. "I don't see many people get back up that quickly. You must be hardy!"
+	<br><br>
+
+	The midwife still insists on helping you dress. "You should be good to go," <<he>> says.
+<<elseif playerNormalPregnancyTotal() gte 50>>
+	You stand up without assistace, feeling empty inside. You already miss the feeling of being pregnant.
+	<br><br>
+
+	<<He>> stares at you, mouth agape, as you walk without any assistance. You throw your clothes back on quickly.
+	<br><br>
+
+	"Y-you should be good to go," <<he>> says.
+<</if>>
+"Someone's waiting for you. 
+
+<<if $remy_pregnancy isnot undefined and $litter_potention_fathers is 1 and $remy_pregnancy.source is "Remy">>
+
+	<<if pregnancyCountBetweenParents("pc","Remy") gte 2 or pregnancyCountBetweenParents("Remy","pc") gte 2>>
+		是一个穿着骑马装的<<if $NPCName[$NPCNameList.indexOf("Remy")].pronoun is "f">>女人<<else>>男人<</if>>，呃……我不知道该怎么形容。"
+		<<link [[继续|Pregnancy Birth Hospital Alex 5]]>><<endevent>><</link>>
+		<br><br>
+		助产士低声对你说，"那个人快要过来了。"
+		<br><br>
+		<<link [[继续|Pregnancy Birth Hospital Remy]]>><</link>>
+	<<else>>
+		一共有两个人，他们看起来都很可怕，我不知道他们是谁。但是其中一个人声称是你的<<if $NPCName[$NPCNameList.indexOf("Bailey")].pronoun is "f">>妈妈<<else>>爸爸<</if>>，还拿出了一份材料。"
+		<br><br>
+		助产士低声对你说，"他们快要过来了。"
+		<br><br>
+		<<link [[继续|Pregnancy Birth Hospital Remy Bailey]]>><</link>>
+
+	<</if>>
+
+<<elseif $alex_pregnancy isnot undefined and $litter_potention_fathers is 1 and $alex_pregnancy.source is "Alex">>
+
+	<<if C.npc.Alex.pregnancy.nursery is true>>
+		Your <<if $NPCName[$NPCNameList.indexOf("Alex")].pronoun is "f">>girlfriend<<else>>boyfriend<</if>> I think."
+		<br><br>
+
+		<<link [[Next|Pregnancy Birth Hospital Alex]]>><</link>>
+
+	<<else>>
+		<<set C.npc.Alex.pregnancy.hospitalBirth to true>>
+		Your <<if $NPCName[$NPCNameList.indexOf("Bailey")].pronoun is "f">>mum<<else>>dad<</if>> I think."
+		<br><br>
+
+		<<link [[Next|Pregnancy Birth Hospital 6]]>><<endevent>><</link>>
+
+	<</if>>
+
+<<else>>
+	Your <<if $NPCName[$NPCNameList.indexOf("Bailey")].pronoun is "f">>mum<<else>>dad<</if>> I think."
+	<br><br>
+
+	<<link [[Next|Pregnancy Birth Hospital 6]]>><<endevent>><</link>>
+<</if>>
