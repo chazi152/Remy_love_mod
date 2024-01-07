@@ -110,7 +110,6 @@ A river runs through one corner. The cattle stay almost as far away from the chu
 		<br><br>	
 
 	<</if>>
-
 /***雷米生产 */
 <<elseif npcPregnancyEnding("Remy")>>
 <<remylivestockBirth>>
@@ -180,8 +179,11 @@ A river runs through one corner. The cattle stay almost as far away from the chu
 	<<elseif npcIsPregnant("Remy") and !talkedAboutPregnancy("Remy","pc") and npcBellySize("Remy") gte 1>>
 	/***女雷米怀孕 */
 		<<remy_farm_pregnancy_reveal>>
+	/***孕检 */
+	<<elseif C.npc.Remy.pregnancy.knowledge is true and $remy_ultrasound_cnt isnot 5 and $player.vaginaExist>>
+		<<remyPregnancyUltrasound>>
 	<<elseif C.npc.Remy.lust gte 10 and random(1,10) gte 4 and ($player.breastsize gte 6 or $player.penissize gte 4)>>
-		<<npc Remy>><<person1>>
+		<<npc harper 1>><<person1>><<npc Remy 2>><<person2>>
 		大门打开了，雷米骑着一匹马冲了进来。<<He>>从<<his>>的<<livestock_horse>>上下来环顾四周，直到<<his>>的目光落在你身上。"你在这里啊，<<girl>>。"<<he>>说，"我们有一份特别的工作给你，过来。"
 		<br><br>
 

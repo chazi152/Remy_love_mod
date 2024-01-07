@@ -1,0 +1,133 @@
+:: Bird Tower Mate LL
+<<effects>><<npc "Great Hawk">>
+<<bird_schedule>>
+<<if $bird.activity is "sleep">>
+    你走向在巢中睡觉的<<hawkText>>。<br><br>
+    <<link [[为做爱而唤醒|Bird Tower Nest Rub]]>><<transform bird 1>><<npcincr "Great Hawk" love 3>><<npcincr "Great Hawk" dom 1>><<set $phase to 2>><</link>>
+<<elseif $bird.activity is "sing" or $bird.activity is "groom">>
+    你走向栖木，<<hawkText>>正在栖木上待着。<<bHe>>看到你靠近，展开了翅膀。
+	<br><br>
+    <<if $speech_attitude is "meek">>
+		你钻进了<<hawkText>>的怀里，用你的<<bottom>>渴望地磨蹭着<<bhim>>，"<<nnpc_wife "Great Hawk">>，我……我想要你。"
+	<<elseif $speech_attitude is "bratty">>
+		你一把跨在了<<bhim>>的身上，让<<bhe>>无法拒绝。"是时候干活了，<<nnpc_wife "Great Hawk">>。"
+	<<else>>
+		你站在<<bhe>>面前，笑着向<<bhe>>展示你的<<genitals>>。"交配的时间到了，<<nnpc_wife "Great Hawk">>。"
+	<</if>>
+    <<deviancy3>>
+    <<if $monster is 1>>
+		"<<Wife>>准备好交配了吗？" <<bHis>>的眼睛亮了起来， "愿意为你效劳。"
+	<<else>>
+		<<beasttype>>喜悦地拍打着翅膀，试图骑上你。
+	<</if>>
+	<br><br>
+    <<link [[继续|Bird Tower Mate Sex LL]]>><<set $sexstart to 1>><<npcincr "Great Hawk" love 3>><<npcincr "Great Hawk" dom 1>><<transform bird 1>><</link>><br>
+<<elseif $bird.activity is "bathe">>
+    你走向雨水池，<<hawkText>>正在雨水池里洗澡。看到你靠近，<<print either("<<beasttype>>呼唤着你加入<<bhim>>","<<beasttype>>顽皮地向你泼水。","<<beasttype>>抖掉翅膀上的水，然后朝你的方向泼了一些水。")>>
+	<<strip>><<wash>><br><br>
+	<<if $speech_attitude is "meek">>
+		你踏入水中，钻进了<<hawkText>>的怀里，用你的<<bottom>>渴望地磨蹭着<<bhim>>，"<<nnpc_wife "Great Hawk">>……<<if $pregnancyspeechdisable is "f">>我们来造宝宝吧。<</if>>"
+	<<elseif $speech_attitude is "bratty">>
+		你跳进水里，一把跨在了<<bhim>>的身上，让<<bhe>>无法拒绝。"来玩点更有趣的吧，<<nnpc_wife "Great Hawk">>。"
+	<<else>>
+		你走进水中，站在<<bhe>>面前，笑着向<<bhe>>展示你的<<genitals>>。"是时候交配了，<<nnpc_wife "Great Hawk">>。"
+	<</if>>
+    <<deviancy3>>
+    <<if $monster is 1>>
+		"<<Wife>>准备好交配了吗？" <<bHis>>的眼睛亮了起来， "愿意为你效劳。"
+	<<else>>
+		<<beasttype>>喜悦地拍打着翅膀，试图骑上你。
+	<</if>><br><br>
+    <<link [[继续|Bird Tower Mate Sex LL]]>><<set $sexstart to 1>><<npcincr "Great Hawk" love 3>><<npcincr "Great Hawk" dom 1>><<transform bird 1>><</link>><br>
+<<elseif $bird.activity is "build">>
+    你走向巢，<<hawkText>>正在巢里调整一些<<print either("树枝","树叶","木棍")>>的位置。看到你靠近，<<bHe>>停下了爪中的活计。
+	<br><br>
+	<<if $speech_attitude is "meek">>
+		你在巢里趴下，用你的<<bottom>>渴望地磨蹭着<<bhim>>，"想、想来交配吗，<<nnpc_wife "Great Hawk">>？"
+	<<elseif $speech_attitude is "bratty">>
+		你靠在<<bhim>>的身上，让<<bhe>>无法拒绝。"来做点更有趣的吧，<<nnpc_wife "Great Hawk">>。"
+	<<else>>
+		你在巢里躺下，笑着向<<bhe>>展示你的<<genitals>>。"来交配吧，<<nnpc_wife "Great Hawk">>。"
+	<</if>>
+    <<deviancy3>>
+    <<if $monster is 1>>
+		"<<Wife>>准备好交配了吗？" <<bHis>>的眼睛亮了起来， "愿意为你效劳。"
+	<<else>>
+		<<beasttype>>喜悦地拍打着翅膀，试图骑上你。
+	<</if>><br><br>
+    <<link [[继续|Bird Tower Mate Sex LL]]>><<set $sexstart to 1>><<npcincr "Great Hawk" love 3>><<npcincr "Great Hawk" dom 1>><<transform bird 1>><</link>><br>
+<</if>>
+
+:: Bird Tower Mate Sex LL
+<<if $sexstart is 1>>
+	<<set $sexstart to 0>>
+	<<consensual>>
+	<<set $consensual to 1>>
+	<<neutral 1>>
+	<<beastCombatInit>>
+	<<set $enemytrust += 200>>
+	<<set $enemyhealthmax to 600>>
+	<<set $enemyhealth to 600>>
+	<<if $monster isnot 1>>
+		<<set $position to "doggy">>
+		<<set $NPCList[0].stance to "top">>
+	<</if>>
+		<<npc_attempt_sex>>
+		<<deviancy1>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<br>
+<<beast $enemyno>>
+<br><br>
+<<stateman>>
+<br><br>
+<<actionsman>>
+
+<<if _combatend>>
+	<span id="next"><<link [[Next|Bird Tower Mate Sex Finish LL]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[Next|Bird Tower Mate Sex LL]]>><</link>></span><<nexttext>>
+<</if>>
+
+:: Bird Tower Mate Sex Finish LL
+<<effects>>
+
+<<if $enemyarousal gte $enemyarousalmax>>
+
+	<<beastejaculation>>
+	<<set $bird.satisfied to true>>
+	<<if $monster is 1>>"我会永远爱着我的<<wife>>。" <</if>><<beasttype>>膨起自己的羽毛，满足地回到了之前的活动中。
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Bird Tower]]>><</link>>
+
+<<elseif $enemyhealth lte 0>>
+
+	<<beasttype>>边发出尖鸣边拍打<<bhis>>的翅膀，跳到了一旁。<<if $monster is 1>>"<<Wife>>的战斗精神好可怕。"<</if>>
+	<<bHe>>小心地看着你，回到了之前的活动中。
+	<<set $bird.satisfied to true>>
+	<br><br>
+
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Bird Tower]]>><</link>>
+
+<<else>>
+
+	<<if $monster is 1>>
+		"呜。好吧，你的舒适第一。" <<bHe>>回到了之前的活动中。
+	<<else>>
+		<<beasttype>>从你身边跳开，回到了之前的活动中。
+	<</if>>
+	<br><br>
+	<<clotheson>>
+	<<endcombat>>
+
+	<<link [[继续|Bird Tower]]>><</link>>
+
+<</if>>

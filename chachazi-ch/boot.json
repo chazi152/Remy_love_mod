@@ -12,11 +12,12 @@
     "img/clothes/default/head/remymod_garland/full.png"
   ],
   "scriptFileList": [
-  "patch-setup_feats.js",
   "game/03-JavaScript/func.js"
   ],
   "scriptFileList_preload": [],
   "additionFile": [
+    "remy_feats.json5",
+
     "img/addon-clothes/clothes_head.json",
 
     "game/04-Variables/addon-replace/feats-setup.txt",
@@ -64,6 +65,7 @@
     "game/overworld-plains/addon-replace/main-Riding School-seen.txt",
     "game/overworld-plains/addon-replace/widgets-Widgets Livestock-addInLineEvent.txt",
     "game/overworld-plains/addon-replace/widgets-Widgets Livestock-HaiBao.txt",
+    "game/overworld-plains/addon-replace/main_Mirror Locket 2_remy.txt",
 
     "game/overworld-town/addon-replace/locHome-eventWidgets.txt",
     "game/overworld-town/addon-replace/locSchool-canteen-endIf.txt",
@@ -123,7 +125,7 @@
         },
         {
           "passage": "Traits",
-          "findString": "\t\t\ttitle: \"NPC特质\",\n\t\t\ttraits: [",
+          "findString": "\t\t\t\t\ttext: \"罗宾依赖着你，你需要坚强起来。额外增加每天的创伤恢复\",\n\t\t\t\t},",
           "replaceFile": "game/base-system/addon-replace/traits-Traits-syndrome.txt"
         },
         {
@@ -158,13 +160,13 @@
         },
         {
           "passage": "Livestock Field Horse",
-          "findString": "\t\t\t\t<<link [[给一篮苹果|Livestock Field Centaur Apples]]>><<trauma -18>><<unset $livestock_food>><</link>><<lltrauma>>\n\t\t\t\t<br>\n\t\t\t<</if>>",
+          "findString": "\t\t\t\t<<ind>><<link [[给一篮苹果|Livestock Field Centaur Apples]]>><<trauma -18>><<unset $livestock_food>><</link>><<lltrauma>>\n\t\t\t\t<br>\n\t\t\t<</if>>",
           "replaceFile": "game/overworld-plains/addon-replace/field-Livestock Feild horse-food.txt",
           "all": true
         },
         {
           "passage": "Livestock Field Horse",
-          "findString": "\t\t\t\t<<link [[献上一篮子苹果|Livestock Field Horse Apples]]>><<trauma -18>><<unset $livestock_food>><</link>><<lltrauma>>\n\t\t\t\t<br>\n\t\t\t<</if>>",
+          "findString": "\t\t\t\t<<ind>><<link [[给一篮苹果|Livestock Field Horse Apples]]>><<trauma -18>><<unset $livestock_food>><</link>><<lltrauma>>\n\t\t\t\t<br>\n\t\t\t<</if>>",
           "replaceFile": "game/overworld-plains/addon-replace/field-Livestock Feild horse-food2.txt",
           "all": true
         },
@@ -255,7 +257,7 @@
         },
         {
           "passage": "Riding School",
-          "findString": "\t\t<<link [[离开|Farmland]]>><</link>>\n\t\t<br>",
+          "findString": "\t<<getouticon>><<link [[离开|Farmland]]>><</link>>\n\t\t<br>",
           "replaceFile": "game/overworld-plains/addon-replace/main-Riding School-leave.txt"
         },
         {
@@ -414,6 +416,16 @@
           "replace": "<<if (getPregnancyObject().potentialFathers.length is 1 or getPregnancyObject().potentialFathers.length is undefined) and getPregnancyObject().fetus[0].father is \"Remy\">>\n<<set $remy_pregnancy to {}>>\n<<set $remy_pregnancy.knows to knowsAboutPregnancy(\"pc\",\"Remy\")>>\n<<set $remy_pregnancy.talked to talkedAboutPregnancy(\"pc\",\"Remy\")>>\n<<set $remy_pregnancy.source to getPregnancyObject().fetus[0].father>>\n<</if>>\n/*Alex variables*/"
         },
         {
+          "passage": "Mirror Locket",
+          "findString": "<<elseif $worn.neck.photo is \"Alex\">>",
+          "replace": "<<elseif $worn.neck.photo is \"Remy\">>\n\t你打开脖子上的吊坠。照片上的雷米正在抚摸着马的鬃毛，<<nnpc_He \"Remy\">>笑的很温柔。\n\t<br><br>\n<<elseif $worn.neck.photo is \"Alex\">>"
+        },
+        {
+          "passage": "Mirror Locket",
+          "findString": "<<if $worn.neck.photo isnot \"Alex\" and ($loveInterest.primary is \"Alex\" or $loveInterest.secondary is \"Alex\")>>",
+          "replace": "<<if $worn.neck.photo isnot \"Remy\" and ($loveInterest.primary is \"Remy\" or $loveInterest.secondary is \"Remy\")>>\n\t<<if $worn.neck.photo>>\n\t\t<<link [[把照片换成雷米|Mirror Locket 2]]>><<set $worn.neck.photo to \"Remy\">><</link>>\n\t\t<br>\n\t<<else>>\n\t\t<<link [[放入雷米的照片|Mirror Locket 2]]>><<set $worn.neck.photo to \"Remy\">><</link>>\n\t\t<br>\n\t<</if>>\n<</if>>\n<<if $worn.neck.photo isnot \"Alex\" and ($loveInterest.primary is \"Alex\" or $loveInterest.secondary is \"Alex\")>>"
+        },
+        {
           "passage": "Widgets variablesStatic",
           "findString": "\t\tcanBePregnant: [\"Alex\",\"Black Wolf\"],",
           "replace": "\t\tcanBePregnant: [\"Alex\",\"Black Wolf\",\"Remy\"],"
@@ -427,6 +439,11 @@
           "passage": "Pregnancy Birth Hospital 5",
           "findString": "<<if $alex_pregnancy isnot undefined and $litter_potention_fathers is 1 and $alex_pregnancy.source is \"Alex\">>",
           "replaceFile": "game/base-system/addon-replace/events-Pregnancy Birth Hospital 5-remy.txt"
+        },
+        {
+          "passage": "Mirror Locket 2",
+          "findString": "\t<<case \"Alex\">>",
+          "replaceFile": "game/overworld-plains/addon-replace/main_Mirror Locket 2_remy.txt"
         },
         {
           "passage": "Widgets Effects Man",
@@ -444,6 +461,16 @@
           "replaceFile": "game/base-combat/addon-replace/actions-text_demand.txt"
         }
       ]
+    },
+    {
+      "modName": "ModdedFeatsAddon",
+      "addonName": "ModdedFeatsAddon",
+      "modVersion": "^1.0.0",
+      "params": {
+        "feats": [
+          "remy_feats.json5"
+        ]
+      }
     },
     {
       "modName": "ReplacePatcher",
@@ -487,6 +514,14 @@
 
   ],
   "dependenceInfo": [
+    {
+      "modName": "ModdedFeatsAddon",
+      "version": ">=1.0.0"
+    },
+    {
+      "modName": "ModLoader DoL ImageLoaderHook",
+      "version": ">=2.3.0"
+    },
     {
       "modName": "ModLoader",
       "version": ">=1.2.2"

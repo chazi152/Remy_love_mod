@@ -1,0 +1,77 @@
+
+<<if $worn.neck.name is "love locket" and $rng gte 90 and !$daily.sydney.lovelocket and $NPCName[$NPCNameList.indexOf("Sydney")].love gte 10>>
+<<set $daily.sydney.lovelocket to 1>>
+<<He>>注意到了你的同心吊坠。<br>
+    <<if $sydneyromance is 1>>
+    "这是爱情吊坠？"<<He>>伸手拨弄了一下你的吊坠，"里面有放照片吗？"<br>
+        <<switch $worn.neck.photo>>
+            <<case undefined "none">>
+            你摇摇头，向<<he>>打开了吊坠。很明显，里面空无一物。
+                <<if _sydneyStatus.includes("corrupt")>>
+                    <<He>>撇撇嘴，"我还以为会有我的照片呢……"<<he>>随即又笑起来，"现在放一张进去也不迟。"
+                <<else>>
+                    "嗯……"<<He>>思考了一会儿，对你微笑，"或许我们可以找个时间一起拍一张。"
+                <</if>>
+            <<case "Sydney">>
+            你打开了吊坠，照片里的悉尼在静静地祷告着。
+                <<if _sydneyStatus.includes("corrupt")>>
+                    "真是甜蜜。"<<he>>坏笑着捏了捏你的脸，"我就不问你是从哪里搞来的照片了。"
+                <<else>>
+                    <<He>>脸红了。"哦！这真是……甜蜜。"这之后每当<<he>>望向你的吊坠，<<his>>的脸上就无法扼制地扬起笑容。
+                <</if>><<npcincr Sydney love 2>><<glove>><<lstress>><<stress -2>>
+            <<case "Great Hawk">>
+            你打开了吊坠，里面是巨鹰的照片。悉尼愣住了一刻，
+            <<if random(1,10) is 1>>
+            <<He>>睁大了双眼，喃喃道，"……the Giant Goshawk，一种巨型苍鹰。我曾经见过它们。"<<He>>似乎想起来什么，但很快镇定了下来。
+            <</if>>
+            随后<<his>>的眼神亮了起来。"真是一只漂亮的鹰！你也喜欢鸟类吗？"
+            你们就鸟类<<print either("形态各异的飞羽","优美的歌声","食性和喙形状的联系")>>的话题又讨论了一会儿。<<ltrauma>><<trauma -5>>
+            <<default>>
+            你<<if $speech_attitude is "meek">>移开目光<<elseif $speech_attitude is "bratty">>耸耸肩<<else>>摇摇头<</if>>，告诉悉尼你只是把它作为单纯的颈饰。<br>
+                <<if _sydneyStatus.includes("corrupt")>>
+                    <<He>>撇撇嘴，"我还以为会有我的照片呢……"<<he>>撅着嘴戳你，"放一张进去也没什么嘛。"
+                <<else>>
+                    "很适合你。"<<He>>对你微笑，"或许我们可以找个时间一起拍一张。"
+                <</if>><<gstress>><<stress 3>>
+        <</switch>>
+    <<elseif $sydneyFriendZoned>>
+    <<he>>愣了一下，随后平静地移开了视线。
+    <<else>>
+    "那是同心吊坠？"<<He>>感兴趣地看向你，"介意我问问里面有什么吗？"<br>
+    你略微犹豫一刻，打开了吊坠。
+        <<switch $worn.neck.photo>>
+            <<case undefined "none">>
+            很明显，里面空无一物。你告诉悉尼你只是把它作为单纯的颈饰。<br>
+            "很适合你。"悉尼对你微笑。<<lstress>><<stress -1>>
+            <<case "Sydney">>
+            里面是悉尼的照片。"那是我吗？！等等……但是，为什么？"悉尼看起来很困惑。
+            <span class="red">"我不觉得这是可能做到的事，也许你应该把这个汇报给mod作者。"</span>
+            <<case "Kylar">>
+            里面是凯拉尔的照片。看到<<nnpc_him Kylar>>的照片，悉尼明显地愣住了一刻。
+            "看来你和<<nnpc_him Kylar>>的关系确实很好。"<<He>>想起了什么事，笑了起来，"难怪<<nnpc_he Kylar>>最近经常会在食堂靠过来。"<<ltrauma>><<trauma -4>>
+            <<case "Robin">>
+            里面是罗宾的照片。看到<<nnpc_him Robin>>的照片，悉尼笑了起来。
+            "你们的关系总是很好。很高兴我能和两个书品很好的人做朋友。"<<ltrauma>><<trauma -4>>
+            <<case "Whitney">>
+            里面是惠特尼的照片。看到<<nnpc_him Whitney>>的照片，悉尼似乎有点惊讶。
+                <<if $cool gte 240>>"考虑你受欢迎的程度……你和<<nnpc_him Whitney>>关系很好也不奇怪。"
+                <<else>>"我很高兴你能和<<nnpc_him Whitney>>关系这么好。"<<He>>犹豫着说道。
+                <</if>>
+            <<ltrauma>><<trauma -4>>
+            <<case "Black Wolf">>
+            里面是黑狼的照片。悉尼瞪大了眼睛，"哇哦，那是神殿花园里会出现的那种狼吗？"介于照片的角度，<<He>>似乎没有注意到黑狼异于其他狼的体型。
+            随后你们就<<print either("森林里的狼群","花园里偶尔会出现的狼","有关狼的传言")>>的话题又讨论了一会儿。<<ltrauma>><<trauma -3>>
+            <<case "Great Hawk">>
+            里面是巨鹰的照片。悉尼愣住了一刻，
+            <<if random(1,10) is 1>>
+            <<He>>睁大了双眼，喃喃道，"……the Giant Goshawk，一种巨型苍鹰。我曾经见过它们。"<<He>>似乎想起来什么，但很快镇定了下来。
+            <</if>>
+            随后<<his>>的眼神亮了起来。"真是一只漂亮的鹰！你也喜欢鸟类吗？"
+            你们就鸟类<<print either("形态各异的飞羽","优美的歌声","食性和喙形状的联系")>>的话题又讨论了一会儿。<<ltrauma>><<trauma -5>>
+            <<default>>
+                <<He>>咯咯地笑起来。"把恋人的照片贴身带在身上……真是甜蜜。"<<ltrauma>><<trauma -4>>
+        <</switch>>
+    <</if>>
+<br><br>
+<</if>>
+<<if $daily.sydney.classWarn is 1>>

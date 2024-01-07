@@ -1,0 +1,239 @@
+<br><br>
+<<if $location is "home">>
+	<<if $arousal gte ($arousalmax / 2) or $drugged gte 200>>
+		你的身体因欲望而抽痛。你用手指轻抚照片中的<<hawkText>>，一种淫荡的想法从你心中升起。<br><br>
+		<<link [[自慰|Home Masturbation LL]]>><<set $masturbationstart to 1>><<set $phase to "GreatHawk">><</link>>
+	<<elseif $drunk gte 360 or $hallucinogen gte 200>>
+		你迷迷糊糊地看着相片里的<<hawkText>>。<<nnpc_He "Great Hawk">>好像在回望着你。
+	<<elseif $pain gte 60>>
+		你很难从泪水中看清<<hawkText>>的照片。你擦了擦眼睛，才发现原来是眼泪落在了吊坠上。<<pain -5>>
+	<<elseif $stress gte (($stressmax / 5) * 3)>>
+		焦虑压迫着你的胸腔，使你几乎无法呼吸。你把吊坠紧紧地抓在手里。<<lstress>><<stress -3>>
+	<<elseif $trauma gte ($traumamax / 5) * 3>>
+		不安感使你心烦意乱。你深呼吸，把吊坠紧紧地贴在胸口。<<ltrauma>><<trauma -3>>
+	<<elseif $tiredness gte (C.tiredness.max / 5) * 4>>
+		你迷迷瞪瞪地盯了一会儿相片里的<<hawkText>>。真漂亮！<<lstress>><<stress -3>>
+	<<elseif $lurkers_held gte 1>>
+		你想起你抓住的潜伏者。或许可以把它作为礼物带给<<hawkText>>，<<nnpc_He "Great Hawk">>会很喜欢的。
+	<<else>>
+		你凝视了一会儿<<hawkText>>的照片，关上了吊坠盒。<<if random(1,10) is 1>>也许你可以找个时间回去高塔看看<<nnpc_him "Great Hawk">>。<</if>>
+	<</if>>
+<<elseif $location is "tower">>
+<<bird_schedule>>
+<<switch random(1, 3)>>
+	<<case 1>>
+		<<if $bird.state isnot "home">>
+			<<hawkText>>不在巢里。你希望<<nnpc_him "Great Hawk">>能快一点回来。
+		<<elseif $bird.activity is "sing">>
+			你能听到<<hawkText>>的歌声从栖木传来，<<nnpc_him "Great Hawk">>的歌声在召唤你。
+		<<elseif $bird.activity is "sleep">>
+			<<hawkText>>在你身后安静地睡着，一切喧嚣都离你们很远。<<lstress>><<stress -3>>
+		<<else>>
+			你偶尔会思考当时为什么要把这块镜子搬上塔顶。
+		<</if>>
+	<<case 2>>
+		<<if Time.dayState is "night" and isBloodmoon()>>
+			不详的血色在镜中照映着，你感到一阵不安。
+		<<elseif $weather is "rain">>
+			雨水砸在雨水池里的声音在你耳边回荡。尽管<<print either("阴雨连绵","大雨倾盆","细雨如丝")>>，但你已经习惯了这种寒冷。
+		<<elseif $weather is "snow">>
+			外面很冷，荒原已经被白雪覆盖。<<if $harpy gte 6>>还好，你身上有保暖的羽毛覆盖。<</if>>
+		<<elseif $weather is "clear">>
+			今天晴空万里，不知道<<hawkText>>在烈日下飞行会不会感到炎热。
+		<<elseif $weather is "overcast">>
+			处在高塔上，头顶的云层看起来离你很近。<<if $harpy gte 6>>你的翅膀轻轻拍打着，想要顺应风的召唤。<</if>>
+		<<else>>
+			你身后的景象……看起来很奇怪。<span class="red">或许你把这个应该汇报给mod作者。</span>
+		<</if>>
+	<<case 3>>
+	<<if $bird.state isnot "home">>
+		<<if $arousal gte ($arousalmax / 2) or $drugged gte 200>>
+			你的身体因欲望而抽痛，你发现自己很渴望<<hawkText>>的触碰。你希望<<nnpc_him "Great Hawk">>能快点回来。
+		<<elseif $drunk gte 360 or $hallucinogen gte 200>>
+			你迷迷糊糊地看着相片里的<<hawkText>>。<<nnpc_He "Great Hawk">>好似在关切地回望着你。
+		<<elseif $pain gte 60>>
+			你很难从泪水中看清<<hawkText>>的照片。你擦了擦眼睛，才发现原来是眼泪落在了吊坠上。<<pain -5>>
+		<<elseif $stress gte (($stressmax / 5) * 3)>>
+			焦虑压迫着你的胸腔，使你几乎无法呼吸。你把吊坠紧紧地抓在手里，期望<<hawkText>>能快点回来。<<lstress>><<stress -3>>
+		<<elseif $trauma gte ($traumamax / 5) * 3>>
+			不安感使你心烦意乱。你深呼吸，把吊坠紧紧地贴在胸口。也许你可以到栖木上等着<<hawkText>>回来。<<ltrauma>><<trauma -3>>
+		<<elseif $tiredness gte (C.tiredness.max / 5) * 4>>
+			你迷迷瞪瞪地盯了一会儿相片里的<<hawkText>>。真漂亮！<<lstress>><<stress -3>>
+		<<elseif $lurkers_held gte 1>>
+			你想起你抓住的潜伏者。或许可以把它作为礼物送给<<hawkText>>，<<nnpc_He "Great Hawk">>会很喜欢的。
+		<<else>>
+			你凝视了一会儿<<hawkText>>的照片，关上了吊坠盒。你希望<<nnpc_him "Great Hawk">>能快点回来。
+		<</if>>
+	<<else>>
+		<<npc "Great Hawk">>
+		<<if $arousal gte ($arousalmax / 2) or $drugged gte 200 or $_heatArousal or $_rutArousal>>
+			<<if $_heatArousal or $_rutArousal>>你内心的野兽让你燥热，<<else>>你的身体因欲望而抽痛，<</if>>
+			你用手指轻抚照片中的<<hawkText>>，一个淫荡的想法从你心中升起。<br><br>
+			<<link [[求欢|Bird Tower Mate LL]]>><</link>><<gglove>><<gdom "Great Hawk">>
+		<<elseif $drunk gte 360 or $hallucinogen gte 200>>
+			你迷迷糊糊地看着相片里的<<hawkText>>。<<nnpc_He "Great Hawk">>好似在关切地回望着你。
+		<<elseif $pain gte 60>>
+			你很难从泪水中看清<<hawkText>>的照片。你擦了擦眼睛，才发现原来是眼泪落在了吊坠上。<br><br>
+			忽然，<<beasttype>>的翅膀从你身后出现，轻轻地拍抚着你的脸庞。
+			<<if $monster is 1>>
+				你回头，发现<<bhe>>关切地看着你，"<<Wife>>受伤了？一定要注意安全。"<<bHe>>给了你一个拥抱，便走开了。
+			<<else>>
+				你回头，<<bhe>>用喙蹭了蹭你，便走开了。
+			<</if>><<llpain>><<pain -10>>
+		<<elseif $stress gte (($stressmax / 5) * 3)>>
+			焦虑压迫着你的胸腔，使你几乎无法呼吸。你把吊坠紧紧地抓在手里。<<lstress>><<stress -3>>
+			<<if $bird.activity is "groom" or $bird.activity is "sing">><br><br>
+				<<if $monster is 1>>
+				<<hawkText>>的声音从你身后响起，"<<Wife>>应该和我一起来。对身体很好。"你回头，<<bHe>>展开翅膀跳向了栖木，试图邀请你过去。
+				<<else>>
+				你感到身后被碰了碰。你回头，<<hawkText>>向你展开翅膀，跳向了栖木，试图邀请你过去。
+				<</if>>
+			<</if>>
+		<<elseif $trauma gte ($traumamax / 5) * 3>>
+			不安感使你心烦意乱。你深呼吸，把吊坠紧紧地贴在胸口。<<ltrauma>><<trauma -3>>
+			<<if $bird.activity is "sing">><br><br>
+				<<hawkText>>的声音从栖木传来，也许你可以去加入<<bhim>>。
+			<</if>>
+		<<elseif $tiredness gte (C.tiredness.max / 5) * 4>>
+			你迷迷瞪瞪地盯了一会儿相片里的<<hawkText>>。真漂亮！<<lstress>><<stress -3>>
+			<<if $bird.activity is "build" and $monster is 1>><br><br>
+				<<hawkText>>的声音从你身后响起，"<<Wife>>如果困了可以先睡。"你回头，<<bHe>>向你展示着<<bhis>>筑巢的成果。
+			<<elseif $bird.activity is "build">><br><br>
+				你感到身后被拽了拽。你回头，<<hawkText>>走向巢，向你展示筑巢的成果。
+			<</if>>
+		<<elseif $lurkers_held gte 1>>
+			你想起你抓住的潜伏者。或许可以把它作为礼物送给<<hawkText>>，<<nnpc_He "Great Hawk">>会很喜欢的。
+		<<else>>
+			你凝视了一会儿<<hawkText>>的照片，关上了吊坠盒。
+	<</if>><<endevent>><</if>>
+<</switch>>
+<<elseif $location is "island">>
+你的思绪转向了<<nnpc_him "Great Hawk">>。
+<<switch random(1, 5)>>
+    <<case 1>>
+    	在岛上茂密的森林的遮挡下，哪怕是<<nnpc_him "Great Hawk">>恐怕也找不到你的位置。你不知道这算好事还是坏事，毕竟足够的遮挡是选择营地的一大标准。
+    <<case 2>>
+		<<nnpc_He "Great Hawk">>一定也正在思念着你。<<if $harpy gte 6>>你不禁轻轻唱起了思念的歌曲。<</if>><<lstress>><<stress -3>>
+	<<case 3>>
+		你眼前浮现出<<nnpc_he "Great Hawk">>在<<print either("荒原上空捕猎","栖木上清理羽毛","雨水池里洗澡","塔的边缘唱歌","筑巢")>>的样子。
+	<<case 4>>
+		<<nnpc_him "Great Hawk">>今天也在荒原上空翱翔狩猎吗？
+	<<case 5>>
+		<<if $arousal gte ($arousalmax / 2) or $drugged gte 200>>
+		你的身体因欲望而抽痛。你用手指轻抚照片中<<hawkText>>的脸，一种淫荡的想法从你心中升起。<br><br>
+		<<link [[自慰|Island Masturbation]]>><<set $masturbationstart to 1>><</link>>
+		<<elseif $drunk gte 360 or $hallucinogen gte 200>>
+		你迷迷糊糊地看着相片里的<<hawkText>>。<<nnpc_He "Great Hawk">>好像在回望着你。
+		<<elseif $pain gte 60>>
+		你很难从泪水中看清<<hawkText>>的照片。你擦了擦眼睛，才发现原来是眼泪落在了吊坠上。<<pain -5>>
+		<<elseif $stress gte (($stressmax / 5) * 3)>>
+		焦虑压迫着你的胸腔，使你几乎无法呼吸。你把吊坠紧紧地抓在手里。<<lstress>><<stress -3>>
+		<<elseif $trauma gte ($traumamax / 5) * 3>>
+		不安感使你心烦意乱。你深呼吸，把吊坠紧紧地贴在胸口。<<ltrauma>><<trauma -3>>
+		<<elseif $tiredness gte (C.tiredness.max / 5) * 4>>
+		你迷迷瞪瞪地盯了一会儿相片里的<<hawkText>>。真漂亮！<<lstress>><<stress -3>>
+		<<else>>
+		你很想念<<nnpc_him "Great Hawk">>的翅膀带来的温暖。
+		<</if>>
+<</switch>>
+<<elseif $location is "asylum">>
+你轻轻抚摸着<<hawkText>>的相片。
+	<<if $innocencestate is 1>>
+		<<if $loveInterest.primary is "Great Hawk" or $loveInterest.secondary is "Great Hawk">>
+			<<if random(1,10) is 1>>
+			一些记忆从你的脑海中闪过，你回想起<<hawkText>><<print either("深邃的眼瞳","蓬松的羽毛","有力的脚爪","美妙的歌声")>>。<<gawareness>><<awareness 2>>
+			<<elseif random(1,10) lte 6>>
+			虽然不太清楚为什么，但是每当看到<<nnpc_him "Great Hawk">>的身姿，你就感到心中十分宁静。<<lstress>><<stress -3>>
+			<<else>>
+			在这里的日子很轻松，
+				<<if $harpy gte 6>>
+				但天空在召唤你。<<gawareness>><<awareness 1>>
+				<<else>>
+				生活规律也未尝不是件好事。
+				<</if>>
+			<</if>>
+		<<else>>
+			你不太清楚为什么里面有<<nnpc_him "Great Hawk">>的照片。你把它取了出来。<<set $worn.neck.photo to "none">>
+		<</if>>
+	<<else>>
+		<<switch random(1, 5)>>
+    		<<case 1>>
+    		你试着思考医生所告诉你的那些话……但没过多久<<hawkText>>的歌声就占据了你的头脑。<<lstress>><<stress -3>>
+			<<case 2>>
+			你很想念<<nnpc_him "Great Hawk">>。<<gtrauma>><<trauma 3>>
+			<<case 3>>
+			你回想起在高塔上远远眺望到过森林深处的一所建筑，而现在你就在这所建筑里。<<if $harpy gte 6>>就像一只囚鸟。<</if>><<gtrauma>><<trauma 3>>
+			<<case 4>>
+				在这里的日子很轻松，也很难熬。
+				<<if $harpy gte 6 and $birdFly gte 1>>
+					你总会想起曾经自由地翱翔在森林上方的滋味。<<gstress>><<stress 3>>
+				<<elseif $harpy gte 6>>
+					天空在召唤你。<<gstress>><<stress 2>>
+				<<else>>
+					生活太规律也未尝不是件坏事。
+				<</if>>
+			<<case 5>>
+				<<if $arousal gte ($arousalmax / 2) or $drugged gte 200>>
+				你的身体因欲望而抽痛。你很渴望<<nnpc_him "Great Hawk">>的触碰。
+				<<elseif $drunk gte 360 or $hallucinogen gte 200>>
+				你迷迷糊糊地看着相片里的<<hawkText>>。<<nnpc_He "Great Hawk">>好像在回望着你。
+				<<elseif $pain gte 60>>
+				你很难从泪水中看清<<hawkText>>的照片。你擦了擦眼睛，才发现原来是眼泪落在了吊坠上。<<pain -5>>
+				<<elseif $stress gte (($stressmax / 5) * 3)>>
+				焦虑压迫着你的胸腔，使你几乎无法呼吸。你把吊坠紧紧地抓在手里。<<lstress>><<stress -3>>
+				<<elseif $trauma gte ($traumamax / 5) * 3>>
+				不安感使你心烦意乱。你深呼吸，把吊坠紧紧地贴在胸口。<<ltrauma>><<trauma -3>>
+				<<elseif $tiredness gte (C.tiredness.max / 5) * 4>>
+				你迷迷瞪瞪地盯了一会儿相片里的<<hawkText>>。真漂亮！<<lstress>><<stress -3>>
+				<<else>>
+				你很想念<<nnpc_him "Great Hawk">>有力的双翼。
+				<</if>>
+		<</switch>>	
+	<</if>>
+<<elseif $location is "prison">>
+你看着照片，思绪放空。
+	<<switch random(1, 5)>>
+		<<case 1>>
+			<<nnpc_He "Great Hawk">>一定在找你，但你觉得<<nnpc_he "Great Hawk">>到不了这么远的地方。<<gtrauma>><<trauma 3>>
+		<<case 2>>
+			你想到那些盘旋在监狱上空的鸟儿们。不知道<<hawkText>>对他们了解多少？
+		<<case 3>>
+			<<if $prison.schedule is "revolt">>
+			囚犯们很吵。如果这次能乘乱逃出去，也许很快就能获得自由了……也许吧。
+			<<elseif $prison.wren_names is 2>>
+			你已经集齐了伦恩需要的所有名字。只需等一个好时机。
+			<<elseif $prison.birds gte 30>>
+			监狱上空的鸟儿们现在很喜欢你。或许你就是很擅长和鸟儿们相处。<<lstress>><<stress -3>>
+			<<elseif $prison.wren_names is 1>>
+			一想到要怎样得到守卫的名字，你就感到一阵头疼。<<gstress>><<stress 3>>
+			<<elseif $prison.tunnel gte 120>>
+			海报后的隧道已经完全被你挖穿了。微咸的风轻轻吹拂着你。
+			<<elseif $prison.tunnel gte 10>>
+			不知道海报后的隧道到底通向什么地方？
+			<<elseif $harpy gte 6 and $birdFly gte 1>>
+			你的翅膀很强劲。如果有一个好的高处，也许你能从这里一路飞到大陆。
+			<<else>>
+			你对怎样离开这座监狱毫无头绪。也许好好服役总能带来点好处。
+			<</if>>
+		<<case 4>>
+			<<nnpc_him "Great Hawk">>今天也在荒原上空自由地飞翔吗？<<if $birdFly gte 1>>你很怀念飞翔的滋味。<</if>>
+		<<case 5>>
+			<<if $arousal gte ($arousalmax / 2) or $drugged gte 200>>
+			你的身体因欲望而抽痛。你很渴望<<nnpc_him "Great Hawk">>的触碰。
+			<<elseif $drunk gte 360 or $hallucinogen gte 200>>
+			你迷迷糊糊地看着相片里的<<hawkText>>。<<nnpc_He "Great Hawk">>好像在回望着你。
+			<<elseif $pain gte 60>>
+			你很难从泪水中看清<<hawkText>>的照片。你擦了擦眼睛，才发现原来是眼泪落在了吊坠上。<<pain -5>>
+			<<elseif $stress gte (($stressmax / 5) * 3)>>
+			焦虑压迫着你的胸腔，使你几乎无法呼吸。你把吊坠紧紧地抓在手里。<<lstress>><<stress -3>>
+			<<elseif $trauma gte ($traumamax / 5) * 3>>
+			不安感使你心烦意乱。你深呼吸，把吊坠紧紧地贴在胸口。<<ltrauma>><<trauma -3>>
+			<<elseif $tiredness gte (C.tiredness.max / 5) * 4>>
+			你迷迷瞪瞪地盯了一会儿相片里的<<hawkText>>。真漂亮！<<lstress>><<stress -3>>
+			<<else>>
+			你很想念<<nnpc_him "Great Hawk">>漂亮的羽翼。
+			<</if>>
+	<</switch>>
+<</if>>
+<br><br>
+<</if>>
