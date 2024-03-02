@@ -93,36 +93,8 @@
         自己打起来肯定吃亏，<<he>>似乎放弃了。
         <br><br>
     <</if>>
-    <<set _robin to statusCheck("Robin")>>
-    <<if $robinpaid is 1 and C.npc.Robin.love gte 60 and (_robin_location is "orphanage" or _robin_location is "sleep")>>
-        你的肩膀突然被人摁住了，吓的你几乎要尖叫起来。
-        <br><br>
-        "嘘，是我。"你回头看，发现是罗宾，<<person3>><<he>>脸色不是很好，<<he>>似乎也发现了贝利和雷米。
-        <br><br>
-        "小心，那些人似乎是来找你的。"罗宾低声说道，并且示意和你一起离开。
-        <br><br>
-        你和罗宾来到了<<he>>的房间，<<he>>终于松了一口气。
-        <br><br>
-        "你还记得之前你在我的柠檬水摊子上帮忙的时候吗，那些人里面有个人我见过。"罗宾看着自己的房间门，眼中都是对你的不安。
-        <br><br>
-        "之前我差点眼睁睁看着你被那个人带走，虽然阻止了，但是没想到居然上门来了。"
-        <br><br>
-        罗宾抱住了你，你感觉<<he>>身体在颤抖，<<he>>真的很担心你。
-        <br><br>
-        <<link [[抱住|return livestock embrace robin]]>><<npcincr Robin love 2>><<npcincr Remy dom -2>><<stress -6>><</link>><<gglove>><<lldom "雷米">><<lstress>>
-        <br>
-        <<link [[推开|return livestock push away robin]]>><<npcincr Robin love -1>><<stress -6>><</link>><<llove>><<lstress>>
-        <br>
-
-    <<else>>
-        你看着雷米他们似乎要离开了，你决定。
-        <br><br>
-        <<link [[躲起来(0:30)|return livestock hide]]>><<pass 30>><</link>>
-        <br>
-        <<link [[走到雷米面前|return livestock show remy]]>><<npcincr Remy dom 2>><<set $syndromeremybuild += 1>><<livestock_obey 5>><</link>><<ggdom "雷米">><<gobey>><<if $syndromeremy is undefined>><<gstockholm>><</if>>
-        <br>
-
-    <</if>>
+    <<link [[继续|return livestock1]]>><</link>>
+    <br>
 <<else>>
     你好奇的跑过去围观，你看见贝利似乎和谁在争吵什么。
     <br><br>
@@ -215,6 +187,12 @@
         "每次都欠钱，小<<if $player.gender_appearance is "m">>公<<else>>母<</if>>牛可是真的努力啊。"<<npcincr Remy love -3>><<llllove>>
         <br><br>
     <</if>>
+    <<link [[继续|return livestock2]]>><</link>>
+    <br>
+<</if>>
+
+:: return livestock2
+<<effects>>
     <<set _robin to statusCheck("Robin")>>
     <<if $robinpaid is 1 and C.npc.Robin.love gte 60 and (_robin_location is "orphanage" or _robin_location is "sleep")>>
         你的肩膀突然被人摁住了，吓的你几乎要尖叫起来。
@@ -240,7 +218,39 @@
         <br>
         <<link [[到大厅里等待雷米(0:20)|return livestock show remy2]]>><<pass 20>><<npcincr Remy dom 2>><<npcincr Remy love 1>><<livestock_obey 5>><</link>><<ggdom "雷米">><<glove>><<gobey>>
     <</if>>
-<</if>>
+
+:: return livestock1
+<<effects>>
+<<set _robin to statusCheck("Robin")>>
+    <<if $robinpaid is 1 and C.npc.Robin.love gte 60 and (_robin_location is "orphanage" or _robin_location is "sleep")>>
+        你的肩膀突然被人摁住了，吓的你几乎要尖叫起来。
+        <br><br>
+        "嘘，是我。"你回头看，发现是罗宾，<<person3>><<he>>脸色不是很好，<<he>>似乎也发现了贝利和雷米。
+        <br><br>
+        "小心，那些人似乎是来找你的。"罗宾低声说道，并且示意和你一起离开。
+        <br><br>
+        你和罗宾来到了<<he>>的房间，<<he>>终于松了一口气。
+        <br><br>
+        "你还记得之前你在我的柠檬水摊子上帮忙的时候吗，那些人里面有个人我见过。"罗宾看着自己的房间门，眼中都是对你的不安。
+        <br><br>
+        "之前我差点眼睁睁看着你被那个人带走，虽然阻止了，但是没想到居然上门来了。"
+        <br><br>
+        罗宾抱住了你，你感觉<<he>>身体在颤抖，<<he>>真的很担心你。
+        <br><br>
+        <<link [[抱住|return livestock embrace robin]]>><<npcincr Robin love 2>><<npcincr Remy dom -2>><<stress -6>><</link>><<gglove>><<lldom "雷米">><<lstress>>
+        <br>
+        <<link [[推开|return livestock push away robin]]>><<npcincr Robin love -1>><<stress -6>><</link>><<llove>><<lstress>>
+        <br>
+
+    <<else>>
+        你看着雷米他们似乎要离开了，你决定。
+        <br><br>
+        <<link [[躲起来(0:30)|return livestock hide]]>><<pass 30>><</link>>
+        <br>
+        <<link [[走到雷米面前|return livestock show remy]]>><<npcincr Remy dom 2>><<set $syndromeremybuild += 1>><<livestock_obey 5>><</link>><<ggdom "雷米">><<gobey>><<if $syndromeremy is undefined>><<gstockholm>><</if>>
+        <br>
+
+    <</if>>
 
 :: return livestock robin goon
 <<effects>>
