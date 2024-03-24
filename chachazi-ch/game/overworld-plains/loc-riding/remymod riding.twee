@@ -992,20 +992,18 @@
 <</if>>
 <br><br>
 
+<<if $corruptionMasturbation>>
+	<span class="red">你耳朵里的史莱姆不让你停下。</span>
+<</if>>
 <div id="masturbationButtons">
-	<<if $timer lte 0>>
-		<div id="next"><<link [[继续|escape remyriding class Masturbate Finish]]>><</link>><<nexttext>></div>
+	<<if $masturbation_fluid gte 500>>
+		<div id="next"><<link [[继续|$passage + " Finish"]]>><<set $finish to 1>><</link>><<nexttext>></div>
 	<<else>>
-		<div id="next"><<link [[继续|escape remyriding class Masturbate]]>><</link>><<nexttext>></div>
+		<div id="next"><<link [[继续|$passage]]>><</link>><<nexttext>></div>
 	<</if>>
-	<<if $corruptionMasturbation isnot true and random(0,3) gt $orgasmcurrent and $corruption_slime gt (currentSkillValue('willpower') / 10)>>
-		<div><<link [[停止|$passage]]>><<set $corruptionMasturbation to true>><</link>></div>
-	<<elseif $corruptionMasturbation isnot true>>
-		<div><<link [[停止|escape remyriding class Masturbate Finish]]>><<set $finish to 1>><</link>></div>
-	<<else>>
-		<div class="red">你耳朵里的史莱姆让你无法停下。</div>
-	<</if>>
+	<<masturbationStopControls>>
 </div>
+<br><br><br><br><br>
 
 :: escape remyriding class Masturbate Finish
 <<effects>>
