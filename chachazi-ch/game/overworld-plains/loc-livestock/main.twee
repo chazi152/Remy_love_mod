@@ -168,6 +168,33 @@ A weak light pierces the high windows. It's dawn.
 	<br>
 <</if>>
 
+:: Livestock Cell Rape
+
+<<if $molestationstart is 1>>
+	<<set $molestationstart to 0>>
+	<<controlloss>>
+	<<violence 1>>
+	<<neutral 1>>
+	<<molested>>
+	<<maninit>>
+<</if>>
+
+<<effects>>
+<<effectsman>>
+<<man>>
+<<stateman>>
+<br><br>
+<<actionsman>>
+<<set $alarmvalue to random(1, 100)>>
+
+<<if $alarm is 1 and $livestock_obey gte 40 and C.npc.Remy.love gte 20 and $alarmvalue gte (120 - C.npc.Remy.love)>>
+	<span id="next"><<link [[继续|Livestock Cell rape alarm]]>><</link>></span><<nexttext>>
+<<elseif _combatend>>
+	<span id="next"><<link [[继续|Livestock Cell Rape Finish]]>><</link>></span><<nexttext>>
+<<else>>
+	<span id="next"><<link [[继续|Livestock Cell Rape]]>><</link>></span><<nexttext>>
+<</if>>
+
 :: Livestock Eden Escape
 <<effects>>
 You run with Eden across the open moor, but soon hear the thundering of hooves behind you. You glance over your shoulder and see Remy riding a <<livestock_horse>>. <<nnpc_He "Remy">>'s approaching fast.

@@ -1,0 +1,191 @@
+:: Robin Chocolate Help
+<<npc Robin>><<person1>>
+<<set _robin to statusCheck("Robin")>>
+<<effects>>
+<<if $leftarm is "bound" or $rightarm is "bound">>
+	<<He>>看着你的胳膊。"哦，你这样帮不上忙，来。"<<He>>走到你身后，用灵巧的双手解开了你的束缚。<<unbind>>
+	<br><br>
+<</if>>
+<<if Time.hour gte 17>>
+	<<if _robin.trauma gte 40>>
+		"我想我要回家了，"罗宾颤抖着说道，"已经冷得我有些受不了了。"
+	<<else>>
+		"不知道你能不能帮个忙把东西搬回家呢，"罗宾说道，"天气越来越冷了。"
+	<</if>>
+	<br><br>
+	你和罗宾一起踏上返回孤儿院的路。
+	<br><br>
+
+	<<if $arousal gte $arousalmax>>
+		就在你快要到家的时候，你的身体突然背叛了你。
+		<<orgasm>>
+		虽然罗宾礼貌性地看向了别处，但还是多多少少的受到了一点影响。<<npcincr Robin lust 1>>
+		<br>
+	<</if>>
+	<<endevent>>
+	<<link [[继续|Orphanage]]>><</link>>
+	<br>
+<<elseif $robin.timer.hurt gte 1>>
+	<<balloonRobinAngryHelp>>
+	<<robinChocolateOfferHelp>>
+<<else>>
+	<<He>>向你露出笑容。
+	<<if $rng gte 81 and $cow gte 6 and $livestock_intro isnot undefined>>
+		/***remy mod */
+		<<if $remy_known is undefined>>
+			<<set $remy_known to 1>>
+		<</if>>
+		<<if _robin.trauma gte 40>>
+			"我想我现在没事了，但你能不能留下陪着我呢？"<<he>>不安地提问。
+		<<else>>
+			"我需要的东西都齐了。不过欢迎你留下来。我喜欢有你陪在身边。"
+		<</if>>
+		<br><br>
+		你陪着<<he>>摆摊，在没有顾客的时候和<<him>>聊天。
+		<<npcincr Robin love 1>><<glove>><<ltrauma>><<lstress>><<trauma -3>><<stress -6>>
+		<br><br>
+
+		<<generate2>><<person2>>
+		一个<<person>>走近小摊。
+		<<if _robin.trauma gte 40>>
+			"嗨，"罗宾低下了头，"可以的话一杯巧克力两……两磅。"
+		<<else>>
+			"欢迎，"罗宾说道，"两镑一杯热巧克力。"
+		<</if>>
+		<br><br>
+		"当然，亲爱的，"<<person>>回答道，然后面向你，露出了一个好色的、扭曲的微笑，"我记得你，我们在农场里见过。你为什么不跟我走呢？我会带你回家的。"那人伸出手。
+		<br><br>
+		你左右为难——你遭受凌辱的回忆与身处旷野的快乐相冲突。你踌躇了一会，随后将你的手递向对方。
+		<<if _robin.dom gte 60>>
+			<br><br>
+			<<link [[继续|Robin Chocolate Cow]]>><</link>>
+			<br>
+
+		<<else>>
+			罗宾介入了进来，"打，打扰一下，<<sir>>，"罗宾打断了那人，"你的热巧克力。"
+			<br><br>
+			<<person>>看起来很惊讶，但笑容并没有褪去。"谢谢，亲爱的，"<<he>>接过递过来的杯子，"多关注关注你的朋友。"然后就离开了。
+			<br><br>
+			其他的顾客就没有那么毛骨悚然了，但罗宾似乎被吓到了。
+			<br><br>
+
+			<<robinChocolateOfferHelp>>
+		<</if>>
+	<<elseif $rng gte 61>>
+		"我想送出免费试喝。你能不能带着这个托盘在公园里转转，然后给那些感觉寒冷的人们分一些？我希望它不会太重。"
+		<<if _robin.trauma gte 40>>
+			<<He>>在把托盘递给你之前停顿了一下。"请快点回来，"<<he>>用微弱的声音补充道。
+		<</if>>
+		<br><br>
+		你拿着托盘穿行在公园。你发现了很多又冷又渴的人，你在分发试喝时尽量确保自己提到了罗宾的摊位。
+		<<set $robinmoney += 5>>
+		<<generate2>><<person2>>
+		<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $danger gte (9900 - $allure)>>
+			<br><br>
+			一个<<person>>悄悄来到你身后，
+			<<if setup.clothes.lower[clothesIndex('lower', $worn.lower)].skirt is 1>>
+				<span class="purple">抓住了你裙子的下摆。</span>
+			<<elseif $worn.lower.set isnot $worn.upper.set>>
+				<span class="purple">抓住了你$worn.lower.cn_name_cap的下摆。</span>
+			<<else>>
+				<span class="purple">并抓住你的<<breasts>>。</span>
+			<</if>>
+			<<gstress>><<stress 6>>
+			<br><br>
+
+			你想阻止<<him>>，但尴尬的是你的手正端着托盘。
+			<br><br>
+
+			<<link [[推搡|Robin Chocolate Slap]]>><<def 1>><</link>><<dancedifficulty 1 1000>>
+			<br>
+			<<link [[忍耐|Robin Chocolate Endure]]>><<sub 1>><<trauma 6>><<stress 6>><</link>><<gtrauma>><<gstress>>
+			<br>
+		<<else>>
+			<<famebusiness 1>>
+			<<rng 5>>
+			<<switch $rng>>
+				<<case 1>>经过一个公共汽车站时，你轻松清空了一半的托盘。
+				<<case 2>>一个红鼻子的<<father>>特别感激你分享的两杯饮料，<<he>>用它们把<<his>>的孩子们从树上哄了下来。
+				<<case 3>>一个无家可归的<<personsimple>>拿了一杯，用杯子暖着<<his>>的手。
+				<<case 4>>一个<<person>>在<<he>>跑步经过时抓起一杯，不紧不慢地喝下。
+				<<case 5>>许多人没有为寒冷做好准备。
+			<</switch>>
+			<br><br>
+			<<person1>>
+			你回到罗宾的身边，<<him>>冲你露出一个微笑。
+			<<if _robin.trauma gte 40>>
+				<<He>>在你放下托盘的一刻拥抱了你。"谢谢你。"
+			<<else>>
+				"生意好多了，"<<he>>说道，"谢谢你。"
+			<</if>>
+			<br><br>
+			<<robinChocolateOfferHelp>>
+		<</if>>
+	<<elseif $rng gte 21>>
+		<<if _robin.trauma gte 40>>
+			"我需要再买一些牛奶。抱歉，我知道这很重，但你能帮忙买一些吗？"即使穿着<<his>>那保暖的衣服，<<He>>依旧因为寒冷而打颤，"在丰收街有卖。"<<He>>递给你£5和一个大瓶子。"装满这一瓶就差不多了。"
+		<<else>>
+			"我需要开始加热另一锅牛奶。可能会很重，我本来不想麻烦你的，但你能再买一些吗？丰收街那边能买到新鲜的。"<<He>>递给你£5和一个大瓶子，"大概装满这一瓶就够了。"
+		<</if>>
+		<br><br>
+		<<if $breastfeedingdisable is "f" and $lactating is 1 and $promiscuity gte 35 and $awareness gte 100>>
+			当你经过厕所时，一个想法突然出现。有一个更近的鲜奶来源。
+			<br><br>
+
+			<<link [[自己挤奶|Robin Milk Masturbation]]>><<set $masturbationstart to 1>><</link>><<promiscuous3>>
+			<br>
+		<<else>>
+			你离开公园，沿路走到丰收街。
+			<br><br>
+		<</if>>
+		<<link [[买牛奶|Robin Milk Buy]]>><</link>>
+		<br>
+		<<set $skulduggerydifficulty to 400>>
+		<<link [[偷牛奶|Robin Milk Steal]]>><<crimeUp 5 "petty">><</link>><<skulduggerydifficulty>><<crime "petty">>
+		<br>
+		<<if $promiscuity gte 15>>
+			<<link [[为了优惠调情|Robin Milk Seduction]]>><</link>><<promiscuous2>>
+			<br>
+		<</if>>
+	<<else>>
+		<<if _robin.trauma gte 40>>
+			"我想我现在没事了，但你能不能留下陪着我呢？"<<he>>不安地提问。
+		<<else>>
+			"我需要的东西都齐了。不过欢迎你留下来。我喜欢有你陪在身边。"
+		<</if>>
+		<br><br>
+		你陪着<<he>>摆摊，在没有顾客的时候和<<him>>聊天。
+		<<npcincr Robin love 1>><<glove>><<ltrauma>><<lstress>><<trauma -3>><<stress -6>>
+		<br><br>
+		<<set $danger to random(1, 10000)>><<set $dangerevent to 0>>
+		<<if $danger gte (9900 - $allure) and !$daily.robin.parkSnow>>
+			<<set $daily.robin.parkSnow to 1>>
+			一个雪球在空中飞过。
+			<<if _robin.trauma gte 40>>
+				罗宾看到了雪球，但却愣住了，<<hes>>只来得及做出一个畏缩的动作，然后就被雪球正中脸颊。你躲开了，把<<him>>拉着蹲了下来。
+				<br><br>
+				罗宾擦了擦<<his>>脸上的雪，打了个寒颤。"我们等……等吧……"<<he>>说。"他们总会放过我们的。"
+			<<else>>
+				罗宾及时躲开，然后抓住你的胳膊，把你拉到地面上。另一个雪球从头顶飞过。你们听到少年的笑声。
+				<br><br>
+				"他们觉得无聊了就会离开的，我们只需要有耐心。"罗宾坐在雪地上说。
+			<</if>>
+			<br><br>
+			<<link [[等待|Robin Chocolate Wait]]>><</link>>
+			<br>
+			<<link [[与首领单挑|Robin Chocolate Challenge]]>><</link>>
+			<br>
+			<<link [[把他们全打倒|Robin Chocolate Take]]>><</link>>
+			<br>
+			<<if $robinromance is 1>>
+				<<link [[接吻|Robin Chocolate Kiss]]>><<npcincr Robin love 1>><<npcincr Robin lust 1>><</link>><<promiscuous1>><<glove>><<glust>>
+				<br>
+			<</if>>
+		<<else>>
+			"谢谢你花时间陪我，"过了一会儿，<<he>>说。
+			<br><br>
+			<<robinChocolateOfferHelp>>
+		<</if>>
+	<</if>>
+<</if>>

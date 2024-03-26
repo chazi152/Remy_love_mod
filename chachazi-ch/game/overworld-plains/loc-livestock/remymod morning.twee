@@ -209,10 +209,67 @@
 	<<unset $syndromeremybuild>>
 <</widget>>
 
+:: Livestock Cell rape alarm
+<<effects>>
+		<<if C.npc.Remy.love gte 50>>
+            <<switch random(1,2)>>
+                <<case 1>>
+                "砰！"谷仓的门被人一脚踹开了。
+                <br><br>
+                你在<<person>>的身体下挣扎着，然后听到了一声皮鞭击打地面的声音，你和身上的人都吓了一跳。
+                <br><br>
+                <<person>>连忙从你身上爬开了，你看见雷米带着一群农场工人站在门口，<<nnpc_He "Remy">>俯视着你们，看起来很不高兴。
+                <br><br>
+                "让你带奶牛出栏，磨磨蹭蹭这么久我当你是干什么呢，原来是来做这档子事的。"雷米笑着靠近了<<person>>，<<he>>支支吾吾地想解释些什么。
+                <br><br>
+                "没什么好说的了，我们所有人都看得到。"雷米揪住了<<person>>的领子，将<<he>>拖向门口，"工作消极，还强奸农场里的动物，肆意对我的财产下手……"
+                <br><br>
+                一堆农场工人笑嘻嘻的围了上来，将求饶的<<person>>带走了。
+                <br><br>
+                "去，让<<he>>好好长长教训。"雷米靠在门边。
+                <br><br>
+                你愣愣的坐在稻草上，感到非常的茫然。
+                <br><br>
+                <<link [[继续|extra love mod morning 2]]>><</link>>
+                <br>
+
+                <<case 2>>
+                    突然，你听见了啪的一声。一股巨响响彻了整个谷仓，你的视线越过看他，看见了手持马鞭的雷米。
+                    <br><br>
+                    那股响声是<<nnpc_He "Remy">>击打谷仓大门造成的。
+                    <br><br>
+                    <<link [[踹|extra love mod morning struggle1]]>><<npcincr Remy love 1>><<livestock_obey -5>><</link>><<llobey>>
+                    <br>
+                    <<link [[发愣|extra love mod morning Silent1]]>><<npcincr Remy love -1>><<livestock_obey 5>><</link>><<ggobey>>
+                    <br>
+                    <<link [[牛叫|extra love mod morning mooo]]>><<set $syndromeremybuild += 1>><<transform cow 1>><<npcincr Remy love 1>><<npcincr Remy dom 1>><<livestock_obey 5>><</link>><<ggobey>><<if $syndromeremy is undefined>><<gstockholm>><</if>>
+                    <br>
+
+            <</switch>>
+		<<else>>
+			突然，一道冷漠的声音从你的谷仓牢房大门处传来："你们在干什么？"
+			<br><br>
+			<<person>>吓的连忙从你的身上起来。
+			<br><br>
+			你的视线越过<<he>>的肩膀，看见了倚靠着谷仓牢房大门的雷米。
+			<br><br>
+			<<link [[踹一脚侵犯者|extra love mod morning struggle]]>><<npcincr Remy love -1>><<livestock_obey -5>><</link>><<llobey>>
+			<br>
+			<<link [[一动不动|extra love mod morning Silent]]>><<npcincr Remy love -1>><<livestock_obey 5>><</link>><<ggobey>>
+			<br>
+			<<if $promiscuity gte 35>>
+				<<link [[诱惑|extra love mod morning youhuo]]>><<npcincr Remy love -3>><<npcincr Remy lust 2>><<livestock_obey 5>><</link>><<ggobey>>
+				<br>
+			<<else>>
+			<span class="blue">你还没有淫乱到能引诱他人的地步。</span>
+			<</if>>
+        <</if>>
+            
 :: extra love mod morning 2
 <<effects>>
+<<npc Remy 1>><<person1>>
 <<if $remy_dislikecity_reason is undefined>>
-    又过了好久，你发现雷米还是没有离开。<<person1>><<he>>只是一言不发地站在门口，目送着农场工人们离去。
+    又过了好久，你发现雷米还是没有离开。<<he>>只是一言不发地站在门口，目送着农场工人们离去。
     <br><br>
     "那些农场工人都是些粗鲁的乡下人，我知道他们大多数都只是表面上对我很恭顺而已，但是只要能做好分内事，我一般都会纵容他们。"雷米转身，朝你走了过来，
     你有些害怕地向后缩去，"但是他们的胆子好像越来越大了……"
@@ -382,6 +439,7 @@
 
 :: extra love mod morning goon2
 <<effects>>
+<<npc Remy 1>><<person1>>
 就在雷米要转身离开的时候，<<he>>听到了身后传来的微弱的声音。
 <br><br>
 "为什么，为什么要救我……"那头年幼的奶牛蜷缩在小隔间的角落里，<<pshe>>浑身赤裸，浑身到处都有稻草划出的，平时爬行时留下的伤口的痕迹。
@@ -444,7 +502,7 @@
 
 :: extra love mod morning struggle
 <<effects>>
-<<person>>正要和雷米解释什么，但是你果断的一脚踹踹在了<<he>>小腿之上，<<he>>吃痛的扑通一下跪在了雷米面前。<<stress -6>><<lstress>>
+<<person>>正要和雷米解释什么，但是你果断的一脚踹在了<<he>>小腿之上，<<he>>吃痛的扑通一下跪在了雷米面前。<<stress -6>><<lstress>>
 <br><br>
 <<switch random(1, 3)>>
 	<<case 1>>
@@ -482,7 +540,7 @@
 
 :: extra love mod morning Silent
 <<effects>>
-你看着<<person>>急匆匆的来到雷米的身边，似乎和<<person1>><<he>>解释什么，雷米心不在焉的听着，手里把玩着马鞭。
+你看着<<person>>急匆匆的来到雷米的身边，似乎和<<nnpc_He "Remy">>解释什么，雷米心不在焉的听着，手里把玩着马鞭。
 <br><br>
 你也不知道他们聊了什么，最后看着他们离开了。
 <br><br>
@@ -514,7 +572,7 @@
 　　你知道你的举动落入了二人眼中，你眼神迷离的看着他们。
 <br><br>
 <<if playerBellyVisible()>>
-　　"我做了一个梦，梦中我肚子里的孩子在哭，<<he>>和我说<<he>>饿了，很想吃东西，你们能帮我喂喂<<he>>吗？"
+　　"我做了一个梦，梦中我肚子里的孩子在哭，他和我说他饿了，很想吃东西，你们能帮我喂喂他吗？"
 <br><br>
 <<else>>
 　　"相信我，我是可以生育的，<<if $player.penisExist and $player.vaginaExist>>我可以让别人怀上我的孩子成为父亲，我可以怀上别人的孩子成为母亲，
