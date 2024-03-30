@@ -1,50 +1,104 @@
-:: Livestock Return
-<<effects>><<unset $remy_known>>
+:: Livestock Intro
+<<set $outside to 0>><<set $location to "farm">><<effects>>
+/*** remy mod */
+<<unset $livestockEscape>>
+<<unset $remy_known>>
 <<unset $remylovemodeventskip>>
-"Well well," Remy says, <<his>> black riding boots disturbing the straw strewn on the floor with each step.
-<<if $livestockEscape is "birth">>
-	<<unset $livestockEscape>>
-	"I didn't much appreciate you being taken from us to have that baby. But you didn't have much of a choice in it."
-	/*** remy mod */
-<<elseif $livestockEscape is "eden">>
-	<<unset $livestockEscape>>
-	"看看是谁回来了，这不是被偷猎者带走的小奶牛吗？看来那个混蛋没把你保护好啊……"
+<<endevent>>
+<<npc Remy>><<person1>><<pain 1>>
+You are led through a pair of large doors.
+<<if Time.dayState is "night">>
+	Your eyes adjust to the dim light, and you find yourself facing another, larger barn. It's hard to tell in the dark, but you think you're on a farm.
+<<elseif Time.dayState is "dusk">>
+	Your eyes adjust to the dimming light, and you find yourself facing another, larger barn. Fields stretch in all other directions, up and over the surrounding hills. You're on a farm.
+<<elseif Time.dayState is "dawn">>
+	Your eyes adjust to the dim light, and you find yourself facing another, larger barn. Fields stretch in all other directions, up and over the surrounding hills. You're on a farm.
 <<else>>
-	"Our little runaway returns."
-	<<lllobey>><<livestock_obey -10>>
-<</if>>
-<br><br>
-
-<<if $exposed lte 1 or $worn.head.name isnot "naked" or $worn.face.name isnot "naked" or $worn.legs.name isnot "naked" or $worn.feet.name isnot "naked" or $worn.hands.name isnot "naked" or $worn.over_upper.name isnot "naked" or $worn.over_lower.name isnot "naked" or $worn.over_head.name isnot "naked">>
-	<<He>> nods, and arms grasp your clothes from behind, <span class="lewd">tearing the fabric from your body.</span>
-	<br><br>
-	<<overheadruined>><<overupperruined>><<overlowerruined>><<upperruined>><<lowerruined>><<underupperruined>><<underruined>>
-	<<headruined>><<faceruined>><<legsruined>><<feetruined>><<handsruined>>
+	You find yourself facing another, larger barn. Fields stretch in all other directions, up and over the surrounding hills. You're on a farm.
 <</if>>
 
-<<generate2>><<generate3>>
-"I'll take it from here," <<he>> continues, taking hold of your leash. <<He>> leads you into an adjoining room. A <<person2>><<person>> and <<person3>><<person>> are chatting inside. They fall silent as the doors open.
+Your handler gives the leash a rough tug, and you're led inside.
 <br><br>
-<<person1>>
-Without waiting for a command, they step forward and grasp both your arms before bending you over a hay bale. A firm push shunts you on top. The clanking of metal follows as <span class="lewd">your legs are forced into immobile iron shackles,</span> forcing you to stay on your knees. You feel <<his>> eyes on your <<bottom>> and <<genitals>>, and resist the urge to squirm.
-<<legbind>>
-<br><br>
+<<set $livestock_robin to 1>>
+<<set $livestock_noise to false>>
+<<set $livestock_dig to 0>>
+<<if $livestock_intro is undefined>><<set $livestock_intro to 0>>
+	<<livestock_init>>
+	<<set $livestock_obey to 50>>
+	<!-- Modified for Monster People -->
+	<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
 
-<<if $bodywritingLvl is 0>>
+		Rows of caged cattle line the edge, eating cereal from troughs. It's only as you're pulled closer that you realise they aren't cows, but people with cow ears and tails. They eat from their troughs all the same, their feeding broken only by the occasional moo.
+		<br><br>
 
-	<<link [[Next|Livestock Return 3]]>><</link>>
-	<br>
+		<<if $remy_seen is "riding_school">>
+			A <<if $pronoun is "m">>man with short, pale brown hair<<else>>woman with pale brown hair tied in a bun<</if>> tends to them. <<He>> turns to face you as you enter. It's Remy. <<He>> holds a whip in <<his>> gloved hand. <<He>> smiles, and <<his>> green eyes glimmer. There's not a flicker of recognition.
+			<br><br>
+		<<else>>
+			A <<if $pronoun is "m">>man with short, pale brown hair<<else>>woman with pale brown hair tied in a bun<</if>> tends to them. <<He>> turns to face you as you enter. <<He>> holds a whip in <<his>> gloved hand. <<He>> smiles, and <<his>> green eyes glimmer.
+			<br><br>
+		<</if>>
 
-<<else>>
-	<<if $skin.left_bottom.special isnot "cattle">>
-
-		<<link [[Next|Livestock Return 2]]>><</link>>
+		<<link [[Next|Livestock Intro 2]]>><</link>>
 		<br>
-
 	<<else>>
 
-		<<link [[Next|Livestock Return 3]]>><</link>>
-		<br>
+		Rows of caged cows line each edge.
 
+		<<if $remy_seen is "riding_school" or $remy_seen is "farm">>
+			A <<if $pronoun is "m">>man with short, pale brown hair<<else>>woman with pale brown hair tied in a bun<</if>> tends to them. <<He>> turns to face you as you enter. It's Remy. There's a whip in <<his>> gloved hand. <<He>> smiles, and <<his>> green eyes glimmer. There's not a flicker of recoginition.
+			<br><br>
+		<<else>>
+			A <<if $pronoun is "m">>man with short, pale brown hair<<else>>woman with pale brown hair tied in a bun<</if>> tends to them. <<He>> turns to face you as you enter. <<He>> holds a whip in <<his>> gloved hand. <<He>> smiles, and <<his>> green eyes glimmer.
+			<br><br>
+		<</if>>
+
+		<<link [[Next|Livestock Intro 2]]>><</link>>
+		<br>
+	<</if>>
+<<else>>
+	<<livestock_obey -10>>
+	<!-- Modified for Monster People -->
+	<<if ($monsterchance gte 1 and $hallucinations gte 1) or ($monsterchance gte 1 and $monsterhallucinations is "f")>>
+
+		Rows of caged cattle line the edge, eating cereal from troughs. It's only as you're pulled closer that you realise they aren't cows, but people with cow ears and tails. They eat from their troughs all the same, their feeding broken only by the occasional moo.
+		<br><br>
+
+		<<if $livestock_obey lte 10>>
+			You expect to be placed in a cell right along with them. Instead, you're pulled forward, past the cages and through another set of doors.
+			<br><br>
+
+			"Don't you worry, you'll be back home in no time," your handler chuckles. "But the boss has got something special for you first."<<stress 6>><<gstress>>
+			<br><br>
+
+			<<link [[Next|Livestock Return Kennel]]>><<endevent>><</link>>
+			<br>
+		<<else>>
+			Remy the farmer tends to them. <<He>> turns to face you as you enter. <<He>> stretches <<his>> whip in <<his>> glove and <<his>> green eyes glimmer as <<he>> regards you.
+			<br><br>
+
+			<<link [[Next|Livestock Return]]>><</link>>
+			<br>
+		<</if>>
+	<<else>>
+
+		Rows of caged cows line each edge.
+		<<if $livestock_obey lte 10>>
+			You expect to be placed in a cell right along with them. Instead, you're pulled forward, past the cages and through another set of doors.
+			<br><br>
+
+			"Don't you worry, you'll be back home in no time," your handler chuckles. "But the boss has got something special for you first."<<stress 6>><<gstress>>
+			<br><br>
+
+			<<link [[Next|Livestock Return Kennel]]>><<endevent>><</link>>
+			<br>
+		<<else>>
+			Remy the farmer tends to them. <<He>> turns to face you as you enter. <<He>> stretches <<his>> whip in <<his>> glove and <<his>> green eyes glimmer as <<he>> regards you.
+			<br><br>
+
+			<<link [[Next|Livestock Return]]>><</link>>
+			<br>
+		<</if>>
 	<</if>>
 <</if>>
+<<set $remy_seen to "livestock">>
