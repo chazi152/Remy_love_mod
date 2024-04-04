@@ -1,5 +1,5 @@
 {
-  "name": "Remy Love Mod",
+  "name": "Remy Love Mod0.4.6",
   "version": "1.0.0",
   "styleFileList": [],
   "tweeFileList": [],
@@ -46,7 +46,6 @@
 
     "game/overworld-plains/addon-replace/field-Livestock Field-obey.txt",
     "game/overworld-plains/addon-replace/field-Livestock Feild horse-food.txt",
-    "game/overworld-plains/addon-replace/field-Livestock Feild horse-food2.txt",
     "game/overworld-plains/addon-replace/field-Livestock Field-hour12.txt",
     "game/overworld-plains/addon-replace/field-Livestock Field-pregnancy.txt",
     "game/overworld-plains/addon-replace/intro-Livestock Return.txt",
@@ -65,6 +64,7 @@
     "game/overworld-plains/addon-replace/widgets-Widgets Livestock-addInLineEvent.txt",
     "game/overworld-plains/addon-replace/widgets-Widgets Livestock-HaiBao.txt",
     "game/overworld-plains/addon-replace/main_Mirror Locket 2_remy.txt",
+    "game/overworld-plains/addon-replace/main_Mirror Locket_remy.txt",
     "game/base-combat/addon-replace/ejaculation-Widgets ejaculation.txt",
 
     "game/overworld-town/addon-replace/locHome-eventWidgets.txt",
@@ -148,11 +148,7 @@
           "findString": "\t\t<!-- Default cases for all other NNPCs -->",
           "replaceFile": "game/base-system/addon-replace/named-npcs-Widgets Named Npcs-relationship.txt"
         },
-        {
-          "passage": "Widgets Text",
-          "findString": "<<widget \"lcorruption\">>",
-          "replaceFile": "game/base-system/addon-replace/text-Widgets Text-pass_time.txt"
-        },
+      
         {
           "passage": "Widgets",
           "findString": "\t<<set _i to $NPCNameList.indexOf(\"Remy\")>>\n\t<<set $NPCName[_i].love = Math.clamp($NPCName[_i].love, -100, 100)>>\n\t<<set $NPCName[_i].dom = Math.clamp($NPCName[_i].dom, -50, 50)>>",
@@ -160,14 +156,8 @@
         },
         {
           "passage": "Livestock Field Horse",
-          "findString": "\t\t\t\t<<ind>><<link [[给一篮苹果|Livestock Field Centaur Apples]]>><<trauma -18>><<unset $livestock_food>><</link>><<lltrauma>>\n\t\t\t\t<br>\n\t\t\t<</if>>",
+          "findString": "\t<<if $livestock_food gte 1>>",
           "replaceFile": "game/overworld-plains/addon-replace/field-Livestock Feild horse-food.txt",
-          "all": true
-        },
-        {
-          "passage": "Livestock Field Horse",
-          "findString": "\t\t\t\t<<ind>><<link [[给一篮苹果|Livestock Field Horse Apples]]>><<trauma -18>><<unset $livestock_food>><</link>><<lltrauma>>\n\t\t\t\t<br>\n\t\t\t<</if>>",
-          "replaceFile": "game/overworld-plains/addon-replace/field-Livestock Feild horse-food2.txt",
           "all": true
         },
         {
@@ -207,7 +197,7 @@
         },
         {
           "passage": "Livestock Cell",
-          "findString": "\t<<link [[睡到天亮|Livestock Sleep]]>><<set $phase to 0>><</link>><<ltiredness>>",
+          "findString": "\t<<bedicon \"zzz\">><<link [[睡到天亮|Livestock Sleep]]>><<set $phase to 0>><</link>><<ltiredness>>",
           "replaceFile": "game/overworld-plains/addon-replace/main-Livestock Cell-sleep.txt"
         },
         {
@@ -402,8 +392,8 @@
         },
         {
           "passage": "Pregnancy2",
-          "findString": "\t\t\t\t<<default>><<set $NPCName[$NPCNameList.indexOf($_name)].pregnancyAvoidance to 100>>",
-          "replace": "\t<<case \"Remy\">><<set $NPCName[$NPCNameList.indexOf($_name)].pregnancyAvoidance to 70>>\n\t\t\t\t<<default>><<set $NPCName[$NPCNameList.indexOf($_name)].pregnancyAvoidance to 100>>"
+          "findString": "\t\t\t\t<<default>><<set C.npc[$_name].pregnancyAvoidance to 100>>",
+          "replace": "\t<<case \"Remy\">><<set C.npc[$_name].pregnancyAvoidance to 70>>\n\t\t\t\t<<default>><<set C.npc[$_name].pregnancyAvoidance to 100>>"
         },
         {
           "passage": "Eden Fence Rescue",
@@ -422,8 +412,8 @@
         },
         {
           "passage": "Mirror Locket",
-          "findString": "<<if $worn.neck.photo isnot \"Alex\" and ($loveInterest.primary is \"Alex\" or $loveInterest.secondary is \"Alex\")>>",
-          "replace": "<<if $worn.neck.photo isnot \"Remy\" and ($loveInterest.primary is \"Remy\" or $loveInterest.secondary is \"Remy\")>>\n\t<<if $worn.neck.photo>>\n\t\t<<link [[把照片换成雷米|Mirror Locket 2]]>><<set $worn.neck.photo to \"Remy\">><</link>>\n\t\t<br>\n\t<<else>>\n\t\t<<link [[放入雷米的照片|Mirror Locket 2]]>><<set $worn.neck.photo to \"Remy\">><</link>>\n\t\t<br>\n\t<</if>>\n<</if>>\n<<if $worn.neck.photo isnot \"Alex\" and ($loveInterest.primary is \"Alex\" or $loveInterest.secondary is \"Alex\")>>"
+          "findString": "\t\t\t<<if $worn.neck.photo>>",
+          "replaceFile": "game/overworld-plains/addon-replace/main_Mirror Locket_remy.txt"
         },
         {
           "passage": "Widgets variablesStatic",
