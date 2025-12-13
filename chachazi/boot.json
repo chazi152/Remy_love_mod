@@ -1,5 +1,5 @@
 {
-  "name": "Remy Love Mod0.4.7",
+  "name": "Remy Love Mod",
   "version": "1.0.0",
   "styleFileList": [],
   "tweeFileList": [],
@@ -61,6 +61,7 @@
     "game/overworld-plains/addon-replace/main-Riding School-intro.txt",
     "game/overworld-plains/addon-replace/main-Riding School-leave.txt",
     "game/overworld-plains/addon-replace/main-Riding School-seen.txt",
+    "game/overworld-plains/addon-replace/main-Riding School-approch.txt",
     "game/overworld-plains/addon-replace/widgets-Widgets Livestock-addInLineEvent.txt",
     "game/overworld-plains/addon-replace/widgets-Widgets Livestock-HaiBao.txt",
     "game/overworld-plains/addon-replace/main_Mirror Locket 2_remy.txt",
@@ -133,8 +134,13 @@
         },
         {
           "passage": "Widgets Attitudes",
-          "findString": "\t<<set _npc = [\"None\",\"Robin\",\"Whitney\",\"Kylar\",\"Sydney\",\"Eden\",\"Avery\",\"Black Wolf\",\"Great Hawk\",\"Alex\"]>>",
-          "replace": "\t<<set _npc = [\"None\",\"Robin\",\"Whitney\",\"Kylar\",\"Sydney\",\"Eden\",\"Avery\",\"Black Wolf\",\"Great Hawk\",\"Alex\",\"Remy\"]>>"
+          "findString": "\t\t<<set _loveInterestcn to {}>><<run _potentialLoveInterests.forEach((x)=>_loveInterestcn[x.replace(\"None\",\"没有人\").replace(\"Robin\",\"罗宾\").replace(\"Whitney\",\"惠特尼\").replace(\"Kylar\",\"凯拉尔\").replace(\"Eden\",\"伊甸\").replace(\"Avery\",\"艾弗里\").replace(\"Sydney\",\"悉尼\").replace(\"Alex\",\"艾利克斯\").replace(\"Black Wolf\",\"黑狼\").replace(\"Great Hawk\",\"巨鹰\")] = x)>><<listbox \"$loveInterest.primary\" autoselect>>",
+          "replace": "\t\t<<set _loveInterestcn to {}>><<run _potentialLoveInterests.forEach((x)=>_loveInterestcn[x.replace(\"None\",\"没有人\").replace(\"Robin\",\"罗宾\").replace(\"Whitney\",\"惠特尼\").replace(\"Kylar\",\"凯拉尔\").replace(\"Eden\",\"伊甸\").replace(\"Avery\",\"艾弗里\").replace(\"Sydney\",\"悉尼\").replace(\"Alex\",\"艾利克斯\").replace(\"Black Wolf\",\"黑狼\").replace(\"Great Hawk\",\"巨鹰\").replace(\"Remy\",\"雷米\")] = x)>><<listbox \"$loveInterest.primary\" autoselect>>"
+        },
+        {
+          "passage": "Widgets Attitudes",
+          "findString": "\t\t\t<<run _potentialLoveInterests.delete($loveInterest.primary)>><<run delete _loveInterestcn[$loveInterest.primary.replace(\"None\",\"没有人\").replace(\"Robin\",\"罗宾\").replace(\"Whitney\",\"惠特尼\").replace(\"Kylar\",\"凯拉尔\").replace(\"Eden\",\"伊甸\").replace(\"Avery\",\"艾弗里\").replace(\"Sydney\",\"悉尼\").replace(\"Alex\",\"艾利克斯\").replace(\"Black Wolf\",\"黑狼\").replace(\"Great Hawk\",\"巨鹰\")]>>",
+          "replace": "\t\t\t<<run _potentialLoveInterests.delete($loveInterest.primary)>><<run delete _loveInterestcn[$loveInterest.primary.replace(\"None\",\"没有人\").replace(\"Robin\",\"罗宾\").replace(\"Whitney\",\"惠特尼\").replace(\"Kylar\",\"凯拉尔\").replace(\"Eden\",\"伊甸\").replace(\"Avery\",\"艾弗里\").replace(\"Sydney\",\"悉尼\").replace(\"Alex\",\"艾利克斯\").replace(\"Black Wolf\",\"黑狼\").replace(\"Great Hawk\",\"巨鹰\").replace(\"Remy\",\"雷米\")]>>"
         },
         {
           "passage": "Widgets Attitudes",
@@ -145,6 +151,11 @@
           "passage": "Widgets Bodywriting Objects",
           "findString": "\t}>>\n\t<<set setup.bodywriting_namebyindex to []>>",
           "replaceFile": "game/base-system/addon-replace/bodywriting-objects-Widgets Bodywriting Objects-bodywriting.txt"
+        },
+        {
+          "passage": "Riding School",
+          "findString": "\t\t<<if $money gte 2500>>",
+          "replaceFile": "game/overworld-plains/addon-replace/main-Riding School-approch.txt"
         },
         {
           "passage": "Widgets Named Npcs",
@@ -235,7 +246,7 @@
         },
         {
           "passage": "Riding School",
-          "findString": "\t\t\t“欢迎来到我的骑术学校，”<<he>>勒住<<beasttype 1>>停下，“我是雷米。我们这儿有骑马和护理马的课。希望能有所帮助。”",
+          "findString": "\t\t\t“欢迎来到我的骑术学校，”<<he>>勒住<<beasttype 1>>停下，“我是雷米。我们这儿有骑马与育马课程。希望能对您有帮助。”",
           "replaceFile": "game/overworld-plains/addon-replace/main-Riding School-intro.txt"
         },
         {
@@ -285,7 +296,7 @@
         },
         {
           "passage": "Riding School Register",
-          "findString": "<<getouticon>><<link [[离开|Riding School]]>><</link>>\n<br>",
+          "findString": "<<getouticon>><<link [[离开|Riding School]]>><<handheldon>><</link>>\n<br>",
           "replaceFile": "game/overworld-town/addon-replace/skul-shops-main-endif.txt"
         },
         {
@@ -325,7 +336,7 @@
         },
         {
           "passage": "Nightmare Test",
-          "findString": "<br><br>",
+          "findString": "<<link [[关于伊甸的恶梦|Nightmare Eden]]>><<set $sleephour to 1>><<set $nightmareExit to \"Eden Cabin Bed\">><</link>>",
           "replaceFile": "game/overworld-town/addon-replace/special-nightmares-main-nightmare test.txt"
         },
         {
@@ -410,13 +421,8 @@
         },
         {
           "passage": "Mirror Locket",
-          "findString": "<<elseif $worn.neck.photo is \"Alex\">>",
-          "replace": "<<elseif $worn.neck.photo is \"Remy\">>\n\t你打开脖子上的吊坠。照片上的雷米正在抚摸着马的鬃毛，<<nnpc_He \"Remy\">>笑的很温柔。\n\t<br><br>\n<<elseif $worn.neck.photo is \"Alex\">>"
-        },
-        {
-          "passage": "Mirror Locket",
-          "findString": "\t\t\t<<if $worn.neck.photo>>",
-          "replaceFile": "game/overworld-plains/addon-replace/main_Mirror Locket_remy.txt"
+          "findString": "\t\t\t<<case \"Robin\">>",
+          "replace": "\t\t\t<<case \"Remy\">>\n\t\t\t\t<<set _locket_text to \"你打开脖子上的吊坠。照片上的雷米正在抚摸着马的鬃毛，<<nnpc_He \"Remy\">>笑的很温柔。\">>\n\t\t\t<<case \"Robin\">>"
         },
         {
           "passage": "Widgets variablesStatic",
@@ -484,11 +490,6 @@
           "replace": "<<if $nextPassageCheck is \"Livestock Field Mirror\">>\n\t<span class=\"nextLink\"><<mirroricon>><<link [[观察你的倒影|Livestock Field Mirror]]>><<preMirror>><</link>></span><<else>>\t<<mirroricon>><<link [[观察你的倒影|Livestock Field Mirror]]>><<preMirror>><</link>><</if>>"
         },
         {
-          "passage": "Widgets Wraith",
-          "findString": "\t\t<<if $npc.includes(\"Robin\") or $_npcWraith is \"Robin\">>",
-          "replaceFile": "game/overworld-plains/addon-replace/Widgets Wraith_remy_comment.txt"
-        },
-        {
           "passage": "Widgets Ejaculation",
           "findString": "\t\t\t\t\t\t<<case \"Alex\">>",
           "replaceFile": "game/base-combat/addon-replace/ejaculation-Widgets ejaculation.txt"
@@ -513,7 +514,7 @@
         "js": [
           {
             "from": "\t// Alex",
-            "to": "\t//Remy\n\tif (V.milk_hand_first >= 1) fragment.append(wikifier(\"npcincr\", \"Remy\", \"lust\", 1));\n\tif (V.syndromeremy >= 1) fragment.append(wikifier(\"livestock_obey\", 1));\n\t// Alex",
+            "to": "\t//Remy\n\tif (V.milk_hand_first >= 1) wikifier(\"npcincr\", \"Remy\", \"lust\", 1);\n\tif (V.syndromeremy >= 1) wikifier(\"livestock_obey\", 1);\n\t// Alex",
             "fileName": "time.js"
           },
           {

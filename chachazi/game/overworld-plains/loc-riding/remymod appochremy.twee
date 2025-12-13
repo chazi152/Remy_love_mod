@@ -1,0 +1,36 @@
+:: Riding School approch []
+<<set $outside to 1>><<set $location to "riding_school">><<effects>>
+<<if $sydneySeen is undefined>>
+	<<npc "Sydney">><<person1>>
+	<<set $sydneySeen.pushUnique("library")>><<set $sydneyFirstSeen to "library">>
+    雷米笑着说了些什么，距离离得太远，你没有听清，但是学员们似乎很满意，他们兴奋的离开了。
+	你走进出租柜台。柜台后面坐着一个神情疲惫的<<personsimple>>，<<he>>一个抬头看到你在面前，温和地笑了笑，好像认出了你。<<sydneyGreeting>>是悉尼，一个以纯洁品性闻名的学生。只见一副眼镜突显出了<<his>>那琥珀色的眸子，<<npcHairColour "Sydney">>马尾搭在脑后，胸前还挂着一条十字架。<<He>>似乎有些过劳了。
+	<br><br>
+	<<if $temple_rank isnot undefined and $temple_rank isnot "prospective">>
+		<<set $sydneySeen.pushUnique("initiate")>>
+		<<if $temple_rank is "initiate">>
+			"我在任何地方都能认出神殿的见习教徒。"
+		<<else>>
+			"我在任何地方都能认出<<temple_title>>。"
+		<</if>>
+	<</if>>
+	稍后，<<He>>在借阅账本上又盖了一个章。"请问，你是首次来租书的么？你可以在这里租赁教科书，不过一次只能租借一本……"<<he>><<if $daily.sydney.greeting and Time.hour lte 12>>又<</if>>停下来打了个呵欠。"一本书。你也可以在这里购买校服——<<nnpc_Title "Leighton">>把它的价格定的比较高，不过<span class="green">成绩优秀的学生可以享受到折扣</span>就是了。"<<His>>欢快地向你介绍着。你注意到<<his>>的脸上虽然堆满了疲倦，但依旧遮掩不住<<he>>语气里的激动。
+	<br><br>
+	“<span class="gold">每本书可以出借两周的时间</span>，你可以在任何时候续租……”说着<<He>>突然低头看向了自己的手，上面被盖上了一个“<span class="red"><i>逾期未还</i></span>”的印记。<<He>>尴尬地对着你笑了笑，然后重新坐好。“如果你没按时还书的话，这就是例子。我的名字叫悉尼！很高兴见到你。”
+	<br><br>
+<<elseif !$sydneySeen.includes("library")>>
+	<<npc "Sydney">><<person1>>
+	<<set $sydneySeen.pushUnique("library")>>
+	你靠近租借柜台，悉尼正坐在后面。<<he>>抬起头来，对着你笑了笑，眼神里带着疲惫。<<if $sydneySeen.includes("Rescue") and $sydneyRescueMessage isnot 1>><<set $sydneyRescueMessage to 1>>"嘿，希望上次那事没有影响到你。"<<else>><<sydneyGreeting>><</if>>
+	<br><br>
+	稍后，<<He>>在借阅账本上又盖了一个章。"请问，你是首次来租书的么？你可以在这里租赁教科书，不过一次只能租借一本……"<<he>><<if $daily.sydney.greeting and Time.hour lte 12>>又<</if>>停下来打了个呵欠。"一本书。你也可以在这里购买校服——<<nnpc_Title "Leighton">>把它的价格定的比较高，不过<span class="green">成绩优秀的学生可以享受到折扣</span>就是了。"<<His>>欢快地向你介绍着。你注意到<<his>>的脸上虽然堆满了疲倦，但依旧遮掩不住<<he>>语气里的激动。
+	<br><br>
+	"<span class="gold">每本书可以出借两周的时间</span>，你可以在任何时候续——"<<He>>低头看向了<<his>>的手，你发现<<hes>>的手背被盖上了一个"<span class="red"><i>逾期未还</i></span>"的印记。<<He>>腼腆地笑了起来，"你这下知道了如果迟还或损坏书会有什么惩罚了吧。"
+	<br><br>
+<</if>>
+<<link [[礼貌地回应|Sydney Library Intro 2]]>><<set $phase to 1>><<npcincr Sydney love 1>><</link>>
+<br>
+<<link [[讽刺地回应|Sydney Library Intro 2]]>><<set $phase to 2>><<trauma -2>><</link>>
+<br>
+<<link [[调情地回应|Sydney Library Intro 2]]>><<set $phase to 3>><<npcincr Sydney purity -2>><</link>><<promiscuous1>>
+<br>
