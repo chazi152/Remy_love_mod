@@ -1,5 +1,9 @@
 {
   "name": "Remy Love Mod",
+  "nickName": {
+  "en": "Remy Love Mod",
+  "cn": "雷米恋爱Mod"
+  },
   "version": "1.0.0",
   "styleFileList": [],
   "tweeFileList": [],
@@ -35,7 +39,7 @@
     "game/base-combat/addon-replace/stalk-Widgets Stalk-threat case Remy.txt",
     "game/base-combat/addon-replace/widgets-Widgets Combat-takeKissVirgin.txt",
 
-    "game/base-system/addon-replace/attitudes-Widgets Attitudes-loveInterest.txt",
+
     "game/base-system/addon-replace/events-Pregnancy Birth Hospital 5-remy.txt",
     "game/base-system/addon-replace/bodywriting-objects-Widgets Bodywriting Objects-bodywriting.txt",
     "game/base-system/addon-replace/named-npcs-Widgets Named Npcs-relationship.txt",
@@ -132,21 +136,7 @@
           "findString": "\t\t\t\t\ttext: \"罗宾依赖着你，你需要坚强起来。额外增加每天的创伤恢复。\",\n\t\t\t\t},",
           "replaceFile": "game/base-system/addon-replace/traits-Traits-syndrome.txt"
         },
-        {
-          "passage": "Widgets Attitudes",
-          "findString": "\t\t<<set _loveInterestcn to {}>><<run _potentialLoveInterests.forEach((x)=>_loveInterestcn[x.replace(\"None\",\"没有人\").replace(\"Robin\",\"罗宾\").replace(\"Whitney\",\"惠特尼\").replace(\"Kylar\",\"凯拉尔\").replace(\"Eden\",\"伊甸\").replace(\"Avery\",\"艾弗里\").replace(\"Sydney\",\"悉尼\").replace(\"Alex\",\"艾利克斯\").replace(\"Black Wolf\",\"黑狼\").replace(\"Great Hawk\",\"巨鹰\")] = x)>><<listbox \"$loveInterest.primary\" autoselect>>",
-          "replace": "\t\t<<set _loveInterestcn to {}>><<run _potentialLoveInterests.forEach((x)=>_loveInterestcn[x.replace(\"None\",\"没有人\").replace(\"Robin\",\"罗宾\").replace(\"Whitney\",\"惠特尼\").replace(\"Kylar\",\"凯拉尔\").replace(\"Eden\",\"伊甸\").replace(\"Avery\",\"艾弗里\").replace(\"Sydney\",\"悉尼\").replace(\"Alex\",\"艾利克斯\").replace(\"Black Wolf\",\"黑狼\").replace(\"Great Hawk\",\"巨鹰\").replace(\"Remy\",\"雷米\")] = x)>><<listbox \"$loveInterest.primary\" autoselect>>"
-        },
-        {
-          "passage": "Widgets Attitudes",
-          "findString": "\t\t\t<<run _potentialLoveInterests.delete($loveInterest.primary)>><<run delete _loveInterestcn[$loveInterest.primary.replace(\"None\",\"没有人\").replace(\"Robin\",\"罗宾\").replace(\"Whitney\",\"惠特尼\").replace(\"Kylar\",\"凯拉尔\").replace(\"Eden\",\"伊甸\").replace(\"Avery\",\"艾弗里\").replace(\"Sydney\",\"悉尼\").replace(\"Alex\",\"艾利克斯\").replace(\"Black Wolf\",\"黑狼\").replace(\"Great Hawk\",\"巨鹰\")]>>",
-          "replace": "\t\t\t<<run _potentialLoveInterests.delete($loveInterest.primary)>><<run delete _loveInterestcn[$loveInterest.primary.replace(\"None\",\"没有人\").replace(\"Robin\",\"罗宾\").replace(\"Whitney\",\"惠特尼\").replace(\"Kylar\",\"凯拉尔\").replace(\"Eden\",\"伊甸\").replace(\"Avery\",\"艾弗里\").replace(\"Sydney\",\"悉尼\").replace(\"Alex\",\"艾利克斯\").replace(\"Black Wolf\",\"黑狼\").replace(\"Great Hawk\",\"巨鹰\").replace(\"Remy\",\"雷米\")]>>"
-        },
-        {
-          "passage": "Widgets Attitudes",
-          "findString": "\t<<set _potentialLoveInterests = [\"None\"]>>",
-          "replaceFile": "game/base-system/addon-replace/attitudes-Widgets Attitudes-loveInterest.txt"
-        },
+
         {
           "passage": "Widgets Bodywriting Objects",
           "findString": "\t}>>\n\t<<set setup.bodywriting_namebyindex to []>>",
@@ -159,7 +149,7 @@
         },
         {
           "passage": "Widgets Named Npcs",
-          "findString": "\t\t<!-- Default cases for all other NNPCs -->",
+          "findString": "\t\t<!-- Default cases -->",
           "replaceFile": "game/base-system/addon-replace/named-npcs-Widgets Named Npcs-relationship.txt"
         },
       
@@ -216,7 +206,7 @@
         },
         {
           "passage": "Livestock Sleep",
-          "findString": "<<if $danger gte (9900 - $allure)>>",
+          "findString": "<<if dangerEvent()>>",
           "replaceFile": "game/overworld-plains/addon-replace/main-Livestock Sleep-danger.txt"
         },
         {
@@ -236,7 +226,7 @@
         },
         {
           "passage": "Widgets Livestock",
-          "findString": "\t<<if playerBellyVisible() and $pregnancyspeechdisable is \"f\">>",
+          "findString": "\t<<if playerBellyVisible() and $settings.pregnancySpeechEnabled>>",
           "replaceFile": "game/overworld-plains/addon-replace/widgets-Widgets Livestock-addInLineEvent.txt"
         },
         {
@@ -331,7 +321,7 @@
         },
         {
           "passage": "Livestock Lactate",
-          "findString": "<<if $breastfeedingdisable is \"f\">>",
+          "findString": "<<if $settings.breastFeedingEnabled>>",
           "replaceFile": "game/overworld-plains/addon-replace/main-Livestock Lactate-start.txt"
         },
         {
@@ -391,8 +381,8 @@
         },
         {
           "passage": "Widgets NPCs",
-          "findString": "\t\t<<elseif $crossdressing is 2>> <!-- Herm PC -->\n\t\t\t<<if $npc.length is 1 and ([\"Kylar\",\"Sydney\"].includes($npc[0]))>>",
-          "replace": "\t\t<<elseif $crossdressing is 2>> <!-- Herm PC -->\n\t\t\t<<if $npc.length is 1 and ([\"Kylar\",\"Sydney\",\"Remy\"].includes($npc[0]))>>"
+          "findString": "\t\t<<elseif $crossdressing is 2>> <!-- Herm PC -->\n\t\t\t<<if $npc.length is 1 and ([\"Kylar\",\"Sydney\"",
+          "replace": "\t\t<<elseif $crossdressing is 2>> <!-- Herm PC -->\n\t\t\t<<if $npc.length is 1 and ([\"Kylar\",\"Sydney\",\"Remy\""
         },
         {
           "passage": "Widgets NPCs",
@@ -435,6 +425,12 @@
           "replace": "\t\tcanImpregnatePlayer: [\"Alex\",\"Black Wolf\",\"Remy\",\"Great Hawk\"],"
         },
         {
+          "_comment1": "添加进恋人列表，用相对更稳定的pushUnique",
+          "passage": "Widgets variablesStatic",
+          "findString": "\t<<set setup.loveAlias to {",
+          "replace": "\t<<set setup.loveInterestNpc.pushUnique(\"Remy\")>>\n\t<<set setup.loveAlias to {"
+        },
+        {
           "passage": "Pregnancy Birth Hospital 5",
           "findString": "<<if $alex_pregnancy isnot undefined and $litter_potention_fathers is 1 and $alex_pregnancy.source is \"Alex\">>",
           "replaceFile": "game/base-system/addon-replace/events-Pregnancy Birth Hospital 5-remy.txt"
@@ -446,7 +442,7 @@
         },
         {
           "passage": "Widgets Effects Man",
-          "findString": "\t\t\t\t\t\t\t\t\t\t<<He_Short>>拒绝。\"<span class=\"red\">我们不能莽撞！</span>\"\n\t\t\t\t\t\t\t\t<</switch>>",
+          "findString": "\t\t\t\t\t\t\t\t\t\t<<He_Short>>拒绝！<span class=\"red\">\"那个孤儿是我的！\"</span>\n\t\t\t\t\t\t\t\t<</switch>>",
           "replaceFile": "game/base-combat/addon-replace/effects-ask noCondoms.txt"
         },
         {
@@ -521,6 +517,12 @@
             "from": "\t\t\t\t\t\tcase \"Alex\":",
             "to": "\t\t\t\t\t\tcase \"Remy\":\n\t\t\t\t\t\t\tbirthLocation = \"riding_school\";\n\t\t\t\t\t\t\tlocation = \"riding_school\";\n\t\t\t\t\t\t\tbreak;\n\t\t\t\t\t\tcase \"Alex\":",
             "fileName": "pregnancy.js"
+          },
+          {
+            "_comment1": "添加雷米进恋人函数判定，至于恋人关系则在其他地方指定",
+            "from": "\t\t\treturn V.farm_stage >= 7 && V.alex_countdown === undefined;",
+            "to": "\t\t\treturn V.farm_stage >= 7 && V.alex_countdown === undefined;\n\t\tcase \"Remy\":\n\t\t\treturn V.remyromance === 1;",
+            "fileName": "ingame.js"
           }
         ]
       }
