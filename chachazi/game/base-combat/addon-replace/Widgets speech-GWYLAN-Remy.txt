@@ -1,0 +1,42 @@
+						/***remy mod */
+			<<case "Remy">>
+				<<if $gwylanSeen.includes("romance")>>
+					<<set _gwyText to `<<He>>一副深受打击的神情，不可置信的看着你。“亲爱的，你明明知道他们是什么样的人，又对世界造成了多少伤害，为什么你还会这么依赖高麋鹿？<span class="red">我们可是许下过相伴一生的承诺啊！你都忘记了吗？</span>”
+					<<if $auriga_scar gte 1>>
+						<<He>>的手向下移动，覆在了你的胸口。你能感觉到你的伤疤正在<<he>>的掌下跳动。“而且你明明也知道这道伤疤代表着什么……”
+					<<else>>
+					<</if>>
+				<<elseif $auriga_scar gte 1>>
+					<<set _gwyText to `<<He>>紧盯着你，你能看出<<he>>此刻情绪有多么的痛苦。“我不明白是为什么，我不知道高麋鹿他们向你承诺了什么才会让你有这种想法！你明明知道他们的所作所为，可你却依旧愿意跟在麋鹿身边，难道说你真的被洗脑了吗？”
+				<<else>>
+					<<set _gwyText to `<<He>>直直地盯着你。“在这种时候你不应该提别人的名字，特别还是那个人，<<nnpc_he "Remy">>和<<nnpc_he "Remy">>的同伙们可是造成毒素的罪魁祸首啊……”
+				<</if>>
+				<<stress 9>><<ggstress>><<npcincr Gwylan dom -4>>
+				<br>
+				你张开嘴想说些什么，
+				<<if $hypnosis_traits.devotion gte 2 and !$combat_silenced>>
+					但<<his>>的手指却沿着你的脖子往上抚摸。
+					<<if $hallucinations gte 2>>
+					<<hypnosisText "<span class='red'>一道蓝雾从你口中飘出，被<<he>>轻轻抓在<<his>>的手中。无论你怎么努力，都发不出声响，仿佛声音已被偷走。</span>">>
+					<<else>>
+					<<hypnosisText "<span class='red'>你的声音卡在喉咙里。无论如何努力，你一个字也说不出来。</span>">>
+					<</if>>
+					<br>
+					<<gwylanHypnoName "cap">>开口说道，“这都是你的错，亲爱的。我现在可是非常不高兴，这都是因为你说了我不爱听的话。现在我暂时不想听到你的声音了。”<<He>>又回到了之前的姿势。
+					<<set $combat_silenced to true>>
+				<<elseif $NPCList[0].lefthand is 0 and $mouthuse is 0>>
+					<<set $NPCList[0].lefthand to "mouth">>但<<his>>用手捂住你的嘴，让你发不出声音。
+					<br>
+					<<he>>开口说道，“这都是你的错，亲爱的。我现在可是非常不高兴，这都是因为你说了我不爱听的话。现在我暂时不想听到你的声音了。”<<He>>又回到了之前的姿势。
+					<<set $enemytrust -= 40>><<set $mouthuse to "lefthand">>
+				<<elseif $NPCList[0].righthand is 0 and $mouthuse is 0>>
+					<<set $NPCList[0].righthand to "mouth">>但<<his>>用手捂住你的嘴，让你发不出声音。
+					<br>
+					<<he>>开口说道，“这都是你的错，亲爱的。我现在可是非常不高兴，这都是因为你说了我不爱听的话。现在我暂时不想听到你的声音了。”<<He>>又回到了之前的姿势。
+					<<set $enemytrust -= 40>><<set $mouthuse to "righthand">>
+				<</if>>
+				<<if $consensual is 1>>
+					<<set $consensual to 0>>
+					<<molested>><<controlloss>>
+				<</if>><br><br>`>>
+			<<case "Black Wolf" "Great Hawk">>

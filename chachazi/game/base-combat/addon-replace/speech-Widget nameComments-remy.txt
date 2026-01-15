@@ -15,12 +15,14 @@
 				<<set $_text_output to `<<He>>皱起了眉头，"你之前生过孩子，我还以为……"<<He>>的失望没有持续太久，"但是既然怀过孕，就代表乳房也是有产奶的可能的吧？很好。"`>>
 			<<elseif $speechhermaroused is 1>>
 				<<set $_text_output to `<<He>>有些惊讶，但是很快就笑了。"你是双性人？不愧是我最优秀的奶牛，上面下面同时能够产奶的动物，我一定会好好利用上！"`>>
-			<<elseif $speechchastity is 1>>
+			<<elseif $speechchastity is 1 and $worn.genitals.type.includesAll("chastity", "hidden")>>
 				<<if $location is "farm">>
 					<<set $_text_output to `雷米用手抚摸着你的<<printChastity>>。"开什么玩笑，我以为在进农场的时候你全身上下的东西都被我们给收走了。"<<he>>紧皱着眉头，"我可从没想过我还会遇到这种阻碍。"`>>
 				<<else>>
 					<<set $_text_output to `雷米的目光紧紧地盯着你的<<printChastity>>。"你在农场里可是一直裸体的，现在却穿着这种东西，难道是为了……防备我？"`>>
 				<</if>>
+			<<elseif $speechgenitals is 1 and !playerChastity()>>
+					<<set $_text_output to `<<He>>在看到你露出来的<<genitals>>时满意地笑了。"很好。"`>>
 			<<elseif $speechnamedrop is 1>>
 				<<set $speechnamedrop to 0>>
 				<<if _loveInterest is "Black Wolf" or _loveInterest is "Great Hawk">>
@@ -31,6 +33,8 @@
 							<<set $_text_output to `<<He>>嘲笑道，"你以为那个年轻人能帮助你？<<he>>一个人什么也干不成！"`>>
 						<<case "Eden">>
 							<<set $_text_output to `<<He>>皱起了眉头，"那个拿着把枪的小偷……你以为凭<<nnpc_He "Eden">>一个人能救你？"`>>
+						<<case "Avery">>
+							<<set $_text_output to `<<He>>轻蔑一笑。"艾弗里？你认为<<nnpc_He "Avery">>会不惜代价的救你？"`>>
 						<<default>>
 							<<set $_text_output to `<<He>>皱眉，然后不满的掐住了你的喉咙，"不管你在外面过的什么样的生活，你现在都只是一头奶牛！"<<pain 12>><<ggpain>>`>>
 					<</switch>>
@@ -46,6 +50,8 @@
 				<<else>>
 					<<set $_text_output to `雷米看着你的$_sexToy有些惊讶，但是<<he>>很快就笑了。"看来我的小奶牛在离开农场后学到了些有趣的东西，让我看看你的学习成果吧。"`>>
 				<</if>>
+			<<elseif $speechdemand is 1 and $remy_mask is 1>>
+					<<set $_text_output to `雷米<span class="red">狠狠扇了你一耳光。</span>你被打的偏过头去，<<he>>愤怒的瞪着你，手还抚摸着脸上的白色面具。<<he>>眼中闪烁着仇恨的光芒。"畜生就是畜生，给我管好你的嘴！"<<trauma 6>><<gtrauma>><<stress 6>><<gstress>><<pain 6>><<gpain>><<violence 3>>`>>
 			<<elseif $arousal gte 9500>>
 				<<set $_strings to [`"真淫荡，你平时就是用这副表情来引诱我农场里的工人的吗？"`,`"动物就是动物，你这幅被欲望操纵的样子可真难看。"`,`"有趣，我还是第一次知道奶牛也会这么放荡。"`,`"我喜欢你沾满淫液的放荡样子。"`]>>
 				<<set $_text_output to $_stringsPre + $_strings[random(0, $_strings.length - 1)]>>

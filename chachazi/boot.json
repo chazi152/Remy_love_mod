@@ -47,6 +47,8 @@
     "game/base-system/addon-replace/text-Widgets Text-pass_time.txt",
     "game/base-system/addon-replace/traits-Traits-syndrome.txt",
     "game/base-system/addon-replace/widgets-Widgets-NPCRemy.txt",
+    "game/base-combat/addon-replace/Widgets speech-GWYLAN-Remy.txt",
+    "game/base-combat/addon-replace/speech-Widget nameComments-Avery.txt",
 
     "game/overworld-plains/addon-replace/field-Livestock Field-obey.txt",
     "game/overworld-plains/addon-replace/field-Livestock Feild horse-food.txt",
@@ -74,6 +76,9 @@
     "game/overworld-plains/addon-replace/Widgets Wraith_remy.txt",
     "game/overworld-plains/addon-replace/Widgets Wraith_remy_comment.txt",
     "game/base-combat/addon-replace/ejaculation-Widgets ejaculation.txt",
+    "game/base-combat/addon-replace/cheats-npcs-Widget remy.txt",
+    "game/base-combat/addon-replace/widgets-Temple Prayer-remy.txt",
+    "game/overworld-plains/addon-replace/Livestock Milking Obey-remy.txt",
 
     "game/overworld-town/addon-replace/locHome-eventWidgets.txt",
     "game/overworld-town/addon-replace/locSchool-canteen-endIf.txt",
@@ -107,6 +112,11 @@
           "replaceFile": "game/base-combat/addon-replace/stalk-Widgets Stalk-run_text.txt"
         },
         {
+          "passage": "Temple Prayer",
+          "findString": "\t<<case 7>>",
+          "replaceFile": "game/base-combat/addon-replace/widgets-Temple Prayer-remy.txt"
+        },
+        {
           "passage": "Widgets Actions Text",
           "findString": "\t\t\t\t\"你是我唯一需要的人，凯拉尔。\"",
           "replaceFile": "game/base-combat/addon-replace/actionsText-Widgets Actions Text-loveInterest.txt"
@@ -130,6 +140,11 @@
           "passage": "Social",
           "findString": "\t\t\t\tT.importantNpcOrder = [\"Robin\", \"Whitney\", \"Eden\", \"Kylar\", \"Sydney\", \"Avery\", \"Great Hawk\", \"Black Wolf\", \"Alex\"];",
           "replace": "T.importantNpcOrder = [\"Robin\", \"Whitney\", \"Eden\", \"Kylar\", \"Sydney\", \"Avery\", \"Great Hawk\", \"Black Wolf\", \"Alex\", \"Remy\"];"
+        },
+        {
+          "passage": "Livestock Fight Finish",
+          "findString": "\t<<link [[继续|Livestock Milking Obey]]>><</link>>",
+          "replace": "\t<<link [[继续|Livestock Milking Obey]]>><<set $mmilkfight_phase to 1>><</link>>"
         },
         {
           "passage": "Traits",
@@ -173,6 +188,11 @@
           "passage": "Livestock Field",
           "findString": "\t<<if $livestock_obey gte 30>>",
           "replaceFile": "game/overworld-plains/addon-replace/field-Livestock Field-obey.txt"
+        },
+        {
+          "passage": "Widgets Attitudes",
+          "findString": "\t\t\t<<case \"Alex\">>终于，你们可以一起生活了。",
+          "replace": "\t\t\t<<case \"Alex\">>终于，你们可以一起生活了。\n\t\t\t<<case \"Remy\">><<he>>只是比起人类来说更加喜欢动物而已，而你就是<<he>>的动物。"
         },
         {
           "passage": "Livestock Field",
@@ -355,6 +375,26 @@
           "replaceFile": "game/base-combat/addon-replace/speech-Widget nameComments-Alex.txt"
         },
         {
+          "passage": "Widgets speech-GWYLAN",
+          "findString": "\t\t\t<<case \"Black Wolf\" \"Great Hawk\">>",
+          "replaceFile": "game/base-combat/addon-replace/Widgets speech-GWYLAN-Remy.txt"
+        },
+        {
+          "passage": "Widgets Speech",
+          "findString": "\t\t\t\t\t\t<<set $_text_output to `<<His>>的脸黑了下来。“我总看见你跟那个小混蛋在一起，我早该知道的。”`>>",
+          "replaceFile": "game/base-combat/addon-replace/speech-Widget nameComments-Avery.txt"
+        },
+        {
+          "passage": "Cheats",
+          "findString": "\t\t\t<<numberStepper \"<<symbol love>>尼奇<<print setup.loveAlias.Niki()>>\" `C.npc.Niki.love` { callback: value => { C.npc.Niki.love = value } }>>\n\t\t\t<<numberStepper \"<<symbol love>>雷米<<print setup.loveAlias.Remy()>>\" `C.npc.Remy.love` { callback: value => { C.npc.Remy.love = value } }>>",
+          "replace": "\t\t\t<<numberStepper \"<<symbol love>>尼奇<<print setup.loveAlias.Niki()>>\" `C.npc.Niki.love` { callback: value => { C.npc.Niki.love = value } }>>"
+        },
+        {
+          "passage": "Cheats",
+          "findString": "\t\t<<if $gwylanSeen?.includes(\"yearning\")>>",
+          "replaceFile": "game/base-combat/addon-replace/cheats-npcs-Widget remy.txt"
+        },
+        {
           "passage": "Livestock Sleep",
           "findString": "\t<<if $cow gte 6 or $wolfgirl gte 6 or $cat gte 6 or $fox gte 6>>",
           "replaceFile": "game/overworld-plains/addon-replace/main-Livestock Sleep-sleep.txt"
@@ -362,7 +402,22 @@
         {
           "passage": "Livestock Lactate",
           "findString": "\t<</if>>\n<</if>>",
-          "replace": "\t<</if>>\n<</if>>\n<</if>>"
+          "replace": "\t<</if>>\n<</if>>\n<<if $mmilkfight_phase is undefined>><</if>><</if>>"
+        },
+        {
+          "passage": "Livestock Milking Obey",
+          "findString": "\t\t<<link [[继续|Livestock Penis]]>><</link>>",
+          "replace": "\t\t<<link [[继续|Livestock Penis]]>><<unset $mmilkfight_phase>><</link>>"
+        },
+        {
+          "passage": "Livestock Milking Obey",
+          "findString": "\t<<He>>伸手去抓你的项圈，然后停了下来。“也许我该换种更传统的方法，虽然花时间，但要是我们宝贵的<<if $player.gender_appearance is \"m\">>公牛<<else>>母牛<</if>>能产更多奶，那也值得。”<<he>>喃喃自语。\n\t<br><br>",
+          "replaceFile": "game/overworld-plains/addon-replace/Livestock Milking Obey-remy.txt"
+        },
+        {
+          "passage": "Livestock Milking Obey",
+          "findString": "\t<<link [[摇头|Livestock Handmilking Refuse]]>><</link>>",
+          "replace": "\t<<link [[摇头|Livestock Handmilking Refuse]]>><</link>>\n\t<</if>>"
         },
         {
           "passage": "Kylar Abduction Event End",
@@ -459,6 +514,21 @@
           "passage": "Livestock Cell Rape",
           "findString": "<<if _combatend>>",
           "replace": "<<set $alarmvalue to random(1, 100)>>\n\n<<if $alarm is 1 and $livestock_obey gte 40 and C.npc.Remy.love gte 20 and $alarmvalue gte (120 - C.npc.Remy.love)>>\n\t<span id=\"next\"><<link [[继续|Livestock Cell rape alarm]]>><</link>></span><<nexttext>>\n<<elseif _combatend>>"
+        },
+        {
+          "passage": "Widgets Combat",
+          "findString": "\t\t\t\t\t\t<<case \"Harper\">><<earnFeat \"Harper the Hypnotist\">>",
+          "replace": "\t\t\t\t\t\t<<case \"Harper\">><<earnFeat \"Harper the Hypnotist\">>\n\t\t\t\t\t\t<<case \"Remy\">><<earnFeat \"Remy 'farmer'\">>"
+        },
+        {
+          "passage": "Widgets Combat",
+          "findString": "\t\t\t\t\t\t<<case \"Harper\">><<displayFeatFake \"Harper the Hypnotist\">>",
+          "replace": "\t\t\t\t\t\t<<case \"Harper\">><<displayFeatFake \"Harper the Hypnotist\">>\n\t\t\t\t\t\t<<case \"Remy\">><<displayFeatFake \"Remy 'farmer'\">>"
+        },
+        {
+          "passage": "Widgets variablesVersionUpdate",
+          "findString": "\t<<if $player.virginity.vaginal is \"Harper\" or $player.virginity.penile is \"Harper\">>",
+          "replace": "\t<<if $player.virginity.vaginal is \"Remy\" or $player.virginity.penile is \"Remy\">>\n\t\t<<earnFeat \"Remy 'farmer'\">>\n\t<</if>>\t<<if $player.virginity.vaginal is \"Harper\" or $player.virginity.penile is \"Harper\">>"
         },
         {
           "passage": "Widgets Wraith Snatched",
