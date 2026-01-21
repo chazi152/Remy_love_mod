@@ -12,6 +12,8 @@
     "img/misc/icon/clothes/remymod_garland.png",
     "img/clothes/paril/head/remymod_Cow hairpins/full.png",
     "img/clothes/paril/head/remymod_garland/full.png",
+    "img/clothes/goose/head/remymod_Cow hairpins/full.png",
+    "img/clothes/goose/head/remymod_garland/full.png",
     "img/clothes/head/remymod_Cow hairpins/full.png",
     "img/clothes/head/remymod_garland/full.png",
     "img/clothes/default/head/remymod_Cow hairpins/full.png",
@@ -115,6 +117,11 @@
           "passage": "Temple Prayer",
           "findString": "\t<<case 7>>",
           "replaceFile": "game/base-combat/addon-replace/widgets-Temple Prayer-remy.txt"
+        },
+        {
+          "passage": "Livestock Cell",
+          "findString": "\t<<if $livestock_obey gte 80 and C.npc.Remy.love gte 50 and random(1,100) gte 60 and !playerChastity()>>",
+          "replace": "\t<<if $livestock_obey gte 50 and C.npc.Remy.love gte 20 and random(1,100) gte 60 and !playerChastity()>>"
         },
         {
           "passage": "Widgets Actions Text",
@@ -329,6 +336,11 @@
           "findString": "<<if $livestock_milk is undefined>><<set $livestock_milk to 0>><</if>>",
           "replace": "<<if $livestock_milk_max is undefined>><<set $livestock_milk_max to 0>><</if>>\n<<if $livestock_milk is undefined>><<set $livestock_milk to 0>><</if>>"
         },
+{
+          "passage": "Livestock Handmilking End",
+          "findString": "<<if $livestock_milk is undefined>><<set $livestock_milk to 0>><</if>>",
+          "replace": "<<if $livestock_milk_max is undefined>><<set $livestock_milk_max to 0>><</if>>\n<<if $livestock_milk is undefined>><<set $livestock_milk to 0>><</if>><<set $milk_hand_first to 1>>"
+        },
         {
           "passage": "Livestock Milking End",
           "findString": "<<gglove>>",
@@ -336,6 +348,16 @@
         },
         {
           "passage": "Livestock Milking End",
+          "findString": "<<glove>>",
+          "replace": "<<glove>><<npcincr Remy lust 1>><<glust>><<set $livestock_milk_max += 1>>/***remy mod */"
+        }, 
+               {
+          "passage": "Livestock Handmilking End",
+          "findString": "<<gglove>>",
+          "replace": "<<gglove>><<npcincr Remy lust 1>><<glust>><<set $livestock_milk_max += 1>>/***remy mod */"
+        },
+        {
+          "passage": "Livestock Handmilking End",
           "findString": "<<glove>>",
           "replace": "<<glove>><<npcincr Remy lust 1>><<glust>><<set $livestock_milk_max += 1>>/***remy mod */"
         },
@@ -417,7 +439,7 @@
         {
           "passage": "Livestock Milking Obey",
           "findString": "\t<<link [[摇头|Livestock Handmilking Refuse]]>><</link>>",
-          "replace": "\t<<link [[摇头|Livestock Handmilking Refuse]]>><</link>>\n\t<</if>>"
+          "replace": "\t<<link [[摇头|Livestock Handmilking Refuse]]>><<set $mmilkfight_phase to 1>><</link>>\n\t<</if>>"
         },
         {
           "passage": "Kylar Abduction Event End",
@@ -601,8 +623,7 @@
       "modName": "ModLoader DoL ImageLoaderHook",
       "addonName": "ImageLoaderAddon",
       "modVersion": "^2.3.0",
-      "params": [
-      ]
+      "params": []
     },
     {
       "modName": "ModdedClothesAddon",
@@ -617,7 +638,6 @@
         ]
       }
     }
-
   ],
   "dependenceInfo": [
     {

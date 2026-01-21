@@ -1,11 +1,112 @@
-<<if $player.penisExist and (!playerChastity("hidden") or $genderknown.includes("Remy"))>>
-	<<He>>伸手去抓你的项圈，然后停了下来。“也许我该换种更传统的方法，虽然花时间，但要是我们宝贵的<<if $player.gender_appearance is "m">>公牛<<else>>母牛<</if>>能产更多奶，那也值得。”<<he>>喃喃自语。
+<<if $remyrape_count is undefined>>
+	<<set $remyrape_count to 0>>
+<</if>>
+<<rngWraith 2 "noBlood">>
+<<set $modmilkvalue to random(1, 100)>>
+<<if C.npc.Remy.love gte 70 and $remysex gte 1 and $livestock_milk_max gte 15 and ($settings.breastFeedingEnabled or ($player.penisExist and !playerChastity())) and ($modmilkvalue + C.npc.Remy.lust) gte 80 and $mmilkfight_phase is undefined>>
+	<<if $remyrape_count gte 5>>
+		雷米给你的项圈套上牵引绳，农场工人们都习以为常，毕竟你是农场里最特殊，产的奶最美味的奶牛。
+		<br><br>
+		<<if $remyromance is undefined>>
+			<<earnFeat "Remy's Lovely Cattle">>
+			你们一同来到那个房间，和平时没有任何区别，但是雷米迟迟没有将你束缚上去，你疑惑的看着<<he>>。
+			<br><br>
+			"在我的眼中，一直以来你和其他奶牛都没有任何区别。"雷米长呼了一口气，揉着自己皱起的眉头，"我知道农场里的工人们很多都有些稀奇古怪的想法。"
+			<br><br>
+			"是因为孤单？还是因为没地方发泄身体的火气？他们才会对农场里的动物打歪主意？"
+			<br><br>
+			"他们有些人在背地里说你很漂亮，很吸引人……"雷米用手捏住你的脸，盯着你的眼睛，"是不是吸引人我不知道，不过不管是味道、产量、还是外貌，你的确
+               比其他牛优秀很多，但是再漂亮的牛也只是牛。"
+			<br><br>
+			"只是不会说话，温顺，的，一头牛……"
+			<br><br>
+			雷米眯起了眼睛，"这样看来，这的确是你难得的优点了，只要你一直听话下去，我就会一直保护你。"
+			<br><br>
+			你睁大眼睛看着<<he>>，看着你的表情雷米却笑了，"继续害怕我吧，小奶牛，只有恐惧才能让你不敢反抗我。"
+			<br><br>
+			"也不要想着逃跑，不管你逃跑多少次，我的手下都会将你带回我的身边，只要你还在这个镇子上，永远不可能彻底摆脱我。"
+			<br><br>
+			"仔细想想，留在农场对你来说也没那么糟糕对不对？我会保护你，只要你还在我的农场中，我就会保护好你。"雷米在你的额头上亲吻，"成为我们的家人，
+               农场的一份子。"
+			<br><br>
+			"好了，进行你今天的工作吧，你会让我满意的。"
+			<br><br>
+			雷米向你承诺，只要你在<<he>>的农场里面，你就会永远安全幸福的生活下去。
+			<br><br>
+			<<loveInterestAdd "Remy">>
+			<<set $remyromance to 1>>
+			<br><br>
+		<<else>>   
+			你们一来到了那个房间，和平时没有任何区别。
+			<br><br> 
+		<</if>>	
+		<<if (_wraithEvent is true and C.npc["Ivory Wraith"].lust gte 20 and $rng gte 61) or $debug is 3>>
+			<<set $wraith.mimic to "Remy">><<set $wraith.exit to "remy_mod_milk">>
+			<<link [[咬雷米的裤子|Wraith Mimic remymod milk sex]]>><<set $phase to 1>><</link>><<gglust>><<lobey>>
+			<br>
+			<<link [[用头蹭雷米的手|Wraith Mimic remymod milk sex]]>><<set $phase to 2>><</link>><<glove>><<gobey>>
+			<br>
+			<<link [[含雷米的手指|Wraith Mimic remymod milk sex]]>><<set $phase to 3>><</link>><<glust>><<gobey>>
+			<br>
+			<<link [[打滚|Wraith Mimic remymod milk sex]]>><</link>><<llove>><<lobey>>
+			<br>
+		<<else>>
+			<<link [[咬雷米的裤子|remymod milk sex pants]]>><<npcincr Remy dom -1>><<npcincr Remy lust 2>><<livestock_obey -1>><</link>><<gglust>><<lobey>>
+			<br>
+			<<link [[用头蹭雷米的手|remymod milk sex hand]]>><<npcincr Remy dom 2>><<npcincr Remy love 1>><<livestock_obey 1>><</link>><<glove>><<gobey>>
+			<br>
+			<<link [[含雷米的手指|remymod milk sex finger]]>><<npcincr Remy dom 1>><<npcincr Remy lust 1>><<livestock_obey 1>><</link>><<glust>><<gobey>>
+			<br>
+			<<link [[打滚|remymod milk sex ground]]>><<npcincr Remy dom -2>><<npcincr Remy love -1>><<livestock_obey -1>><</link>><<llove>><<lobey>>
+			<br>
+		<</if>>   
+	<<else>>
+		<<set $remyrape_count += 1>>
+		雷米给你的项圈套上牵引绳，一名农场工人看见后问道："雷米老大，又单独给<<pShe>>挤奶了？"
+		<br><br>
+		"<<pShe>>的牛奶可不能和其他牛混在一起，不然预订了<<pShe>>牛奶的顾客可不会满意，我带<<pShe>>去专门的房间。"雷米拽着你的牵引绳，向着一个房
+		间走去。
+		<br><br>
+		<<he>>推开了那间房间门，房间里面是一个束缚你的铁架，和专门存放你奶水的储存桶。
+		<br><br>
+		"跪下，<<girl>>。"雷米对你命令道。
+		<br><br>
+
+		<<if $cow gte 6>>
+			<<link [[发出牛叫|remymod milk rape Moo]]>><<npcincr Remy dom 1>><<npcincr Remy love 1>><<livestock_obey 5>><<sub 1>><<transform cow 1>><</link>><<ggobey>>
+			<br>
+		<</if>>
+		<<link [[服从|remymod milk rape Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><<sub 1>><<transform cow 1>><</link>><<gobey>>
+		<br>
+		<<link [[拒绝|remymod milk rape Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<def 1>><</link>><<lobey>>
+		<br>
+	<</if>>
+<<elseif C.npc.Remy.love gte 50 and $milk_hand_first is 1 and $livestock_milk_max gte 10 and ($settings.breastFeedingEnabled or ($player.penisExist and !playerChastity())) and ($modmilkvalue + C.npc.Remy.lust) gte 50 and $mmilkfight_phase is undefined>>
+	<<if $remysex is undefined>>
+		<<set $remysex to 1>>
+				雷米给你的项圈套上牵引绳，一名农场工人看见后问道："雷米老大，你要单独给<<pShe>>挤奶吗？"
+	<<else>>
+				雷米打开了你的笼子，给你套上了牵引绳，一名农场工人看见后问道："雷米老大，又单独给<<pShe>>挤奶了？"
+	<</if>>
 	<br><br>
-	<<link [[鼓励|Livestock Handmilking]]>><</link>>
+	"<<pShe>>的牛奶可不能和其他牛混在一起，刚好前段时间不是收拾出来了一间房间，我带<<pShe>>去那边。"雷米拽着你的牵引绳，向着一个房间走去。
+	<br><br>
+	<<he>>推开了那间房间门，房间里面是一个束缚你的铁架，和专门存放你奶水的储存桶。
+	<br><br>
+	"跪下，<<girl>>。"雷米对你命令道。
+	<br><br>
+	<<if $cow gte 6 or $transformationHistory.includes("cow")>>
+		<<link [[发出牛叫|remymod milk mouth Moo]]>><<npcincr Remy dom 1>><<npcincr Remy love 1>><<livestock_obey 5>><<sub 1>><<transform cow 1>><</link>><<ggobey>>
+		<br>
+	<<else>>
+		你没有变成过奶牛，无法做出模仿奶牛的行为。
+		<br>
+	<</if>>
+	<<link [[服从|remymod milk mouth Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><<sub 1>><<transform cow 1>><</link>><<gobey>>
 	<br>
-	<<link [[摇头|Livestock Handmilking Refusess]]>><</link>>
-<<elseif random(1,10) gte 6>>	
-	<<link [[继续|Livestock Lactate]]>><</link>>
+	<<link [[拒绝|remymod milk mouth Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<def 1>><</link>><<lobey>>
+	<br>
 <<else>>
+	<<unset $mmilkfight_phase>>
 	<<He>>伸手去抓你的项圈，然后停了下来。“也许我该换种更传统的方法，虽然花时间，但要是我们宝贵的<<if $player.gender_appearance is "m">>公牛<<else>>母牛<</if>>能产更多奶，那也值得。”<<he>>喃喃自语。
 	<br><br>

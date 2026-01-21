@@ -2,8 +2,9 @@
 <<if $remyrape_count is undefined>>
 	<<set $remyrape_count to 0>>
 <</if>>
-	<<rngWraith 1>>
-	<<if C.npc.Remy.love gte 50 and $remysex gte 1 and $livestock_milk_max gte 15 and ($breastfeedingdisable is "f" or ($player.penisExist and !playerChastity())) and (random(1,10) gte 6 or C.npc.Remy.lust gte 50) and $mmilkfight_phase is undefined>>
+<<rngWraith 2 "noBlood">>
+<<set $modmilkvalue to random(1, 100)>>
+	<<if C.npc.Remy.love gte 70 and $remysex gte 1 and $livestock_milk_max gte 15 and ($settings.breastFeedingEnabled or ($player.penisExist and !playerChastity())) and ($modmilkvalue + C.npc.Remy.lust) gte 80 and $mmilkfight_phase is undefined>>
 		<<if $remyrape_count gte 5>>
 			雷米打开了你的笼子，给你套上了牵引绳，农场工人们都习以为常，毕竟你是农场里最特殊，产的奶最美味的奶牛。
 			<br><br>
@@ -82,13 +83,13 @@
 			<<link [[拒绝|remymod milk rape Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<def 1>><</link>><<lobey>>
 			<br>
 		<</if>>
-	<<elseif C.npc.Remy.love gte 30 and $milk_hand_first is 1 and $livestock_milk_max gte 10 and C.npc.Remy.lust gte 20 and random(1,10) gte 6 and ($breastfeedingdisable is "f" or ($player.penisExist and !playerChastity())) and $mmilkfight_phase is undefined>>
+	<<elseif C.npc.Remy.love gte 50 and $milk_hand_first is 1 and $livestock_milk_max gte 10 and ($settings.breastFeedingEnabled or ($player.penisExist and !playerChastity())) and ($modmilkvalue + C.npc.Remy.lust) gte 50 and $mmilkfight_phase is undefined>>
 		<<if $remysex is undefined>>
 			<<set $remysex to 1>>
+					雷米给你的项圈套上牵引绳，一名农场工人看见后问道："雷米老大，你要单独给<<pShe>>挤奶吗？"
+		<<else>>
+					雷米打开了你的笼子，给你套上了牵引绳，一名农场工人看见后问道："雷米老大，又单独给<<pShe>>挤奶了？"
 		<</if>>
-		雷米从你的笼子外面拿了几个玻璃泵。它连着一根管子，通向一个更大的机器。和其他牛连接的是同一台机器。<<he>>抓住你的项圈，把你拉向大门。"跪下，<<girl>>。"
-		<br><br>
-		雷米打开了你的笼子，给你套上了牵引绳，一名农场工人看见后问道："雷米老大，又单独给<<pShe>>挤奶了？"
 		<br><br>
 		"<<pShe>>的牛奶可不能和其他牛混在一起，刚好前段时间不是收拾出来了一间房间，我带<<pShe>>去那边。"雷米拽着你的牵引绳，向着一个房间走去。
 		<br><br>
@@ -96,35 +97,16 @@
 		<br><br>
 		"跪下，<<girl>>。"雷米对你命令道。
 		<br><br>
-
-		<<if $cow gte 6>>
+		<<if $cow gte 6 or $transformationHistory.includes("cow")>>
 			<<link [[发出牛叫|remymod milk mouth Moo]]>><<npcincr Remy dom 1>><<npcincr Remy love 1>><<livestock_obey 5>><<sub 1>><<transform cow 1>><</link>><<ggobey>>
+			<br>
+		<<else>>
+			你没有变成过奶牛，无法做出模仿奶牛的行为。
 			<br>
 		<</if>>
 		<<link [[服从|remymod milk mouth Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><<sub 1>><<transform cow 1>><</link>><<gobey>>
 		<br>
 		<<link [[拒绝|remymod milk mouth Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<def 1>><</link>><<lobey>>
-		<br>
-	<<elseif C.npc.Remy.love gte 20 and $livestock_milk_max gte 5 and C.npc.Remy.lust gte 10 and random(1,10) gte 6 and ($breastfeedingdisable is "f" or ($player.penisExist and !playerChastity())) and $mmilkfight_phase is undefined>>
-		<<set $milk_hand_first to 1>>
-		雷米从你的笼子外面拿了几个玻璃泵。它连着一根管子，通向一个更大的机器。和其他牛连接的是同一台机器。<<he>>抓住你的项圈，把你拉向大门。"跪下，<<girl>>。"
-		<br><br>
-		雷米打开了你的笼子，给你套上了牵引绳，一名农场工人看见后问道："雷米老大，<<if $milk_hand_first is 1>>又单独给<<pShe>>挤奶了？<<else>>你这是？<</if>>"
-		<br><br>
-		"<<pShe>>的牛奶可不能和其他牛混在一起，刚好前段时间不是收拾出来了一间房间，我带<<pShe>>去那边。"雷米拽着你的牵引绳，向着一个房间走去。
-		<br><br>
-		<<he>>推开了那间房间门，房间里面是一个束缚你的铁架，和专门存放你奶水的储存桶。
-		<br><br>
-		"跪下，<<girl>>。"雷米对你命令道。
-		<br><br>
-
-		<<if $cow gte 6>>
-			<<link [[发出牛叫|remymod milk hand Moo]]>><<npcincr Remy dom 1>><<npcincr Remy love 1>><<livestock_obey 5>><<sub 1>><<transform cow 1>><</link>><<ggobey>>
-			<br>
-		<</if>>
-		<<link [[服从|remymod milk hand Obey]]>><<npcincr Remy dom 1>><<livestock_obey 1>><<sub 1>><<transform cow 1>><</link>><<gobey>>
-		<br>
-		<<link [[拒绝|remymod milk hand Refuse]]>><<npcincr Remy dom -1>><<livestock_obey -1>><<def 1>><</link>><<lobey>>
 		<br>
 <<else>>
 <<unset $mmilkfight_phase>>
